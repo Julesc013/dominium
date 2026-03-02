@@ -286,6 +286,8 @@ def _network_graph_overlay_payload(
     signal_queue_data = dict(signal_queue_section.get("data") or {})
     signal_delivery_section = dict(sections.get("section.signal.delivery_status") or {})
     signal_delivery_data = dict(signal_delivery_section.get("data") or {})
+    signal_quality_section = dict(sections.get("section.signal.quality_summary") or {})
+    signal_quality_data = dict(signal_quality_section.get("data") or {})
     delayed_vehicle_ids = set(_sorted_unique_strings(list(congestion_data.get("delayed_vehicle_ids") or [])))
     congested_edge_ids = set(_sorted_unique_strings(list(congestion_data.get("congested_edge_ids") or [])))
     signal_edge_queue_rows = sorted(
@@ -847,12 +849,17 @@ def _network_graph_overlay_payload(
     )
     signal_queue_total = int(max(0, _to_int(signal_queue_data.get("queue_depth_total", 0), 0)))
     signal_delivery_status = str(signal_delivery_data.get("delivery_status", "")).strip() or None
-    if signal_queue_total > 0 or signal_delivery_status:
-        summary = "{} signal_queue={} signal_status={}".format(
+    signal_quality_bucket = str(signal_quality_data.get("quality_bucket", "")).strip() or None
+    signal_static_indicator = str(signal_quality_data.get("radio_static_indicator", "")).strip() or None
+    if signal_queue_total > 0 or signal_delivery_status or signal_quality_bucket:
+        summary = "{} signal_queue={} signal_status={} signal_quality={}".format(
             summary,
             int(signal_queue_total),
             signal_delivery_status or "n/a",
+            signal_quality_bucket or "n/a",
         )
+    if signal_static_indicator:
+        summary = "{} static={}".format(summary, signal_static_indicator)
     return {
         "mode": "networkgraph_overlay",
         "summary": summary,
@@ -909,6 +916,10 @@ def _network_graph_overlay_payload(
             "signal_delivery_ratio_permille": int(
                 max(0, _to_int(signal_delivery_data.get("delivered_ratio_permille", 0), 0))
             ),
+            "signal_quality_bucket": signal_quality_bucket,
+            "signal_radio_static_indicator": signal_static_indicator,
+            "signal_line_noisy": bool(signal_quality_data.get("line_noisy", False)),
+            "signal_jammer_detected": bool(signal_quality_data.get("jammer_detected", False)),
         },
     }
 

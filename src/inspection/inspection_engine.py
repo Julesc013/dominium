@@ -116,6 +116,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.mob.network_summary",
         "section.mob.congestion_summary",
         "section.signal.network_summary",
+        "section.signal.quality_summary",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -129,6 +130,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.network_summary",
         "section.signal.channel_queue_depth",
         "section.signal.delivery_status",
+        "section.signal.quality_summary",
         "section.signal.inbox_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
@@ -145,6 +147,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.network_summary",
         "section.signal.channel_queue_depth",
         "section.signal.delivery_status",
+        "section.signal.quality_summary",
         "section.signal.inbox_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
@@ -275,6 +278,7 @@ _DEFAULT_SECTION_ROWS = {
     "section.signal.network_summary": {"title": "Signal Network Summary", "extensions": {"cost_units": 1}},
     "section.signal.channel_queue_depth": {"title": "Signal Channel Queue Depth", "extensions": {"cost_units": 2}},
     "section.signal.delivery_status": {"title": "Signal Delivery Status", "extensions": {"cost_units": 2}},
+    "section.signal.quality_summary": {"title": "Signal Quality Summary", "extensions": {"cost_units": 2}},
     "section.signal.inbox_summary": {"title": "Signal Inbox Summary", "extensions": {"cost_units": 1}},
     "section.signal.sent_messages": {"title": "Signal Sent Messages", "extensions": {"cost_units": 2}},
     "section.signal.aggregation_status": {"title": "Signal Aggregation Status", "extensions": {"cost_units": 2}},
@@ -1611,6 +1615,109 @@ def _build_section_data(
                     "delivered_tick": int(max(0, _as_int(row.get("delivered_tick", row.get("tick", 0)), 0))),
                 }
                 for row in list(sorted_events[-128:])
+            ]
+        return payload
+    if section_id == "section.signal.quality_summary":
+        tick = int(max(0, _as_int(request.get("tick", 0), 0)))
+        signal_events = [
+            dict(item)
+            for item in list((dict(state or {})).get("message_delivery_events") or (dict(state or {})).get("message_delivery_event_rows") or [])
+            if isinstance(item, dict)
+        ]
+        sorted_events = sorted(
+            signal_events,
+            key=lambda row: (
+                _as_int(row.get("delivered_tick", row.get("tick", 0)), 0),
+                str(row.get("event_id", "")),
+            ),
+        )
+        window_start = int(max(0, tick - 256))
+        window_events = [
+            row
+            for row in sorted_events
+            if _as_int(row.get("delivered_tick", row.get("tick", 0)), 0) >= window_start
+        ]
+        delivered_count = 0
+        lost_count = 0
+        corrupted_count = 0
+        loss_modifier_values = []
+        channel_failure_counts: Dict[str, int] = {}
+        channel_total_counts: Dict[str, int] = {}
+        for row in window_events:
+            state_token = str(row.get("delivery_state", "")).strip().lower()
+            ext = dict(row.get("extensions") or {})
+            channel_id = str(ext.get("channel_id", "")).strip() or "channel.unknown"
+            channel_total_counts[channel_id] = _as_int(channel_total_counts.get(channel_id, 0), 0) + 1
+            if state_token == "delivered":
+                delivered_count += 1
+            elif state_token == "corrupted":
+                corrupted_count += 1
+                channel_failure_counts[channel_id] = _as_int(channel_failure_counts.get(channel_id, 0), 0) + 1
+            else:
+                lost_count += 1
+                channel_failure_counts[channel_id] = _as_int(channel_failure_counts.get(channel_id, 0), 0) + 1
+            loss_modifier_values.append(
+                int(max(0, _as_int(ext.get("field_loss_modifier_permille", 0), 0)))
+            )
+        event_count = int(delivered_count + lost_count + corrupted_count)
+        delivered_ratio_permille = int((1000 * delivered_count) // event_count) if event_count > 0 else 1000
+        avg_loss_modifier_permille = int(sum(loss_modifier_values) // max(1, len(loss_modifier_values)))
+        jamming_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("signal_jamming_effect_rows") or (dict(state or {})).get("signal_jamming_effects") or [])
+            if isinstance(item, dict)
+        ]
+        active_jamming_rows = []
+        for row in sorted(jamming_rows, key=lambda item: str(item.get("effect_id", ""))):
+            start_tick = int(max(0, _as_int(row.get("start_tick", 0), 0)))
+            end_tick = int(max(start_tick, _as_int(row.get("end_tick", start_tick), start_tick)))
+            if tick < start_tick or tick >= end_tick:
+                continue
+            active_jamming_rows.append(row)
+        avg_jam_strength_permille = int(
+            sum(int(max(0, _as_int(row.get("strength_modifier", 0), 0))) for row in active_jamming_rows)
+            // max(1, len(active_jamming_rows))
+        ) if active_jamming_rows else 0
+        quality_bucket = "clear"
+        if delivered_ratio_permille < 700 or avg_jam_strength_permille >= 700:
+            quality_bucket = "poor"
+        elif delivered_ratio_permille < 900 or avg_loss_modifier_permille >= 400:
+            quality_bucket = "noisy"
+        payload = {
+            "tick_window_start": int(window_start),
+            "event_count": int(event_count),
+            "delivered_count": int(delivered_count),
+            "lost_count": int(lost_count),
+            "corrupted_count": int(corrupted_count),
+            "delivered_ratio_permille": int(delivered_ratio_permille),
+            "avg_loss_modifier_permille": int(avg_loss_modifier_permille),
+            "active_jammer_count": int(len(active_jamming_rows)),
+            "avg_jam_strength_permille": int(avg_jam_strength_permille),
+            "quality_bucket": quality_bucket,
+            "radio_static_indicator": ("high" if quality_bucket == "poor" else ("low" if quality_bucket == "noisy" else "none")),
+            "line_noisy": bool(quality_bucket in {"noisy", "poor"}),
+            "jammer_detected": bool(active_jamming_rows),
+        }
+        if allow_hidden_state:
+            payload["channel_failure_rate_permille"] = dict(
+                (
+                    channel_id,
+                    int(
+                        (1000 * _as_int(channel_failure_counts.get(channel_id, 0), 0))
+                        // max(1, _as_int(channel_total_counts.get(channel_id, 0), 0))
+                    ),
+                )
+                for channel_id in sorted(channel_total_counts.keys())
+            )
+            payload["active_jamming_rows"] = [
+                {
+                    "effect_id": str(row.get("effect_id", "")).strip() or None,
+                    "target_channel_id": str(row.get("target_channel_id", "")).strip() or None,
+                    "strength_modifier": int(max(0, _as_int(row.get("strength_modifier", 0), 0))),
+                    "start_tick": int(max(0, _as_int(row.get("start_tick", 0), 0))),
+                    "end_tick": int(max(0, _as_int(row.get("end_tick", 0), 0))),
+                }
+                for row in active_jamming_rows[:128]
             ]
         return payload
     if section_id == "section.signal.inbox_summary":
