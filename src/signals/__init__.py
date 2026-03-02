@@ -1,5 +1,13 @@
 """SIG-0 signal substrate exports."""
 
+from .addressing import (
+    address_from_recipient_address,
+    addressing_policy_rows_by_id,
+    build_address,
+    deterministic_address_id,
+    normalize_address_rows,
+    resolve_address_recipients,
+)
 from .transport import (
     execute_channel_transport_tick,
     REFUSAL_SIGNAL_INVALID,
@@ -31,9 +39,15 @@ from .transport import (
 )
 
 __all__ = [
+    "address_from_recipient_address",
+    "addressing_policy_rows_by_id",
+    "build_address",
+    "deterministic_address_id",
     "execute_channel_transport_tick",
+    "normalize_address_rows",
     "REFUSAL_SIGNAL_INVALID",
     "REFUSAL_SIGNAL_ROUTE_UNAVAILABLE",
+    "resolve_address_recipients",
     "SignalTransportError",
     "build_knowledge_receipt",
     "build_message_delivery_event",
