@@ -12789,6 +12789,40 @@ def _append_signal_transport_invariant_findings(
             )
         )
 
+    if "query_route_result(" not in transport_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transport_rel,
+                line_number=1,
+                snippet="query_route_result(",
+                message="signal routing must use ABS routing engine query_route_result(...)",
+                rule_id="INV-SIGNALS-USE-ABS-ROUTING",
+            )
+        )
+    if "execute_channel_transport_tick(" not in transport_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transport_rel,
+                line_number=1,
+                snippet="execute_channel_transport_tick(",
+                message="signal channel capacity/delay logic must be centralized through channel executor",
+                rule_id="INV-NO-ADHOC-CAPACITY-LOGIC",
+            )
+        )
+    if "_has_direct_route(" in transport_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transport_rel,
+                line_number=1,
+                snippet="_has_direct_route(",
+                message="direct edge routing helpers are forbidden; use ABS route queries",
+                rule_id="INV-SIGNALS-USE-ABS-ROUTING",
+            )
+        )
+
     runtime_tokens = (
         'process_id == "process.signal_send"',
         'process_id == "process.signal_transport_tick"',
@@ -12853,6 +12887,44 @@ def _append_signal_transport_invariant_findings(
                     )
                 )
                 break
+
+    adhoc_capacity_patterns = (
+        re.compile(r"\bcapacity_per_tick\b", re.IGNORECASE),
+        re.compile(r"\bremaining_delay_ticks\b", re.IGNORECASE),
+        re.compile(r"\bpath_edge_ids\b", re.IGNORECASE),
+    )
+    adhoc_capacity_allow = {
+        "src/signals/transport/transport_engine.py",
+        "src/signals/transport/channel_executor.py",
+        "tools/xstack/repox/check.py",
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith("src/signals/"):
+            continue
+        if any(rel_norm == allow or rel_norm.startswith(allow) for allow in adhoc_capacity_allow):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adhoc_capacity_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="signal capacity/delay queue logic must execute only in SIG channel executor",
+                    rule_id="INV-NO-ADHOC-CAPACITY-LOGIC",
+                )
+            )
+            break
             if any(pattern.search(snippet) for pattern in direct_message_patterns):
                 findings.append(
                     _finding(
