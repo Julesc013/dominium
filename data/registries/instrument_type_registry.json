@@ -322,6 +322,71 @@
         "extensions": {}
       },
       {
+        "instrument_type_id": "instr.meter.thermometer",
+        "description": "Diegetic thermometer reading sourced from FieldLayer temperature samples.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.meter.thermometer"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.meter.hygrometer",
+        "description": "Diegetic hygrometer reading sourced from FieldLayer moisture samples.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.meter.hygrometer"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.meter.dosimeter",
+        "description": "Diegetic radiation dosimeter sourced from FieldLayer radiation samples.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.meter.dosimeter"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.meter.wind_indicator",
+        "description": "Diegetic wind indicator sourced from FieldLayer wind vectors.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.meter.wind_indicator"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.meter.visibility_indicator",
+        "description": "Diegetic visibility indicator sourced from FieldLayer attenuation.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.meter.visibility_indicator"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
         "instrument_type_id": "instr.rangefinder",
         "description": "Rangefinder stub for future domain sensor channels.",
         "required_channels_in": [

@@ -559,6 +559,11 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.warning.speed_cap",
         "ch.diegetic.warning.low_visibility",
         "ch.diegetic.warning.restricted_access",
+        "ch.diegetic.meter.thermometer",
+        "ch.diegetic.meter.hygrometer",
+        "ch.diegetic.meter.dosimeter",
+        "ch.diegetic.meter.wind_indicator",
+        "ch.diegetic.meter.visibility_indicator",
     ]
 
 
@@ -750,6 +755,18 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {
             "instrument.warning.restricted_access": dict(instruments.get("instrument.warning.restricted_access") or {})
         }
+    if channel_id == "ch.diegetic.meter.thermometer":
+        return {"instrument.meter.thermometer": dict(instruments.get("instrument.meter.thermometer") or {})}
+    if channel_id == "ch.diegetic.meter.hygrometer":
+        return {"instrument.meter.hygrometer": dict(instruments.get("instrument.meter.hygrometer") or {})}
+    if channel_id == "ch.diegetic.meter.dosimeter":
+        return {"instrument.meter.dosimeter": dict(instruments.get("instrument.meter.dosimeter") or {})}
+    if channel_id == "ch.diegetic.meter.wind_indicator":
+        return {"instrument.meter.wind_indicator": dict(instruments.get("instrument.meter.wind_indicator") or {})}
+    if channel_id == "ch.diegetic.meter.visibility_indicator":
+        return {
+            "instrument.meter.visibility_indicator": dict(instruments.get("instrument.meter.visibility_indicator") or {})
+        }
     if channel_id == "ch.diegetic.interior.alarm":
         return {"instrument.interior.alarm": dict(instruments.get("instrument.interior.alarm") or {})}
     if channel_id == "ch.diegetic.interior.pressure":
@@ -832,6 +849,11 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.interior.smoke": ["ch.diegetic.smoke_alarm", "ch.diegetic.interior.smoke_alarm"],
         "instrument.interior.flood": ["ch.diegetic.flood_alarm", "ch.diegetic.interior.flood_alarm"],
         "instrument.interior.alarm": "ch.diegetic.interior.alarm",
+        "instrument.meter.thermometer": "ch.diegetic.meter.thermometer",
+        "instrument.meter.hygrometer": "ch.diegetic.meter.hygrometer",
+        "instrument.meter.dosimeter": "ch.diegetic.meter.dosimeter",
+        "instrument.meter.wind_indicator": "ch.diegetic.meter.wind_indicator",
+        "instrument.meter.visibility_indicator": "ch.diegetic.meter.visibility_indicator",
     }
     for instrument_id, channel_spec in sorted(instrument_channels.items()):
         allowed_channels = (
@@ -962,6 +984,11 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.warning.speed_cap": {},
         "instrument.warning.low_visibility": {},
         "instrument.warning.restricted_access": {},
+        "instrument.meter.thermometer": {},
+        "instrument.meter.hygrometer": {},
+        "instrument.meter.dosimeter": {},
+        "instrument.meter.wind_indicator": {},
+        "instrument.meter.visibility_indicator": {},
     }
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
         assembly_id = str(row.get("assembly_id", "")).strip()
