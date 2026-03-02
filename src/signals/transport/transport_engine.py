@@ -124,12 +124,139 @@ def loss_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dic
             "loss_policy_id": loss_policy_id,
             "description": str(row.get("description", "")).strip(),
             "deterministic_function_id": str(row.get("deterministic_function_id", "")).strip() or "loss.none",
+            "attenuation_policy_id": str(row.get("attenuation_policy_id", "")).strip() or "att.none",
             "parameters": _as_map(row.get("parameters")),
             "uses_rng_stream": bool(row.get("uses_rng_stream", False)),
             "rng_stream_name": None if row.get("rng_stream_name") is None else str(row.get("rng_stream_name", "")).strip() or None,
             "extensions": _as_map(row.get("extensions")),
         }
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def attenuation_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = _as_map(registry_payload)
+    rows = payload.get("attenuation_policies")
+    if not isinstance(rows, list):
+        rows = _as_map(payload.get("record")).get("attenuation_policies")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("attenuation_policy_id", ""))):
+        attenuation_policy_id = str(row.get("attenuation_policy_id", "")).strip()
+        if not attenuation_policy_id:
+            continue
+        out[attenuation_policy_id] = {
+            "schema_version": "1.0.0",
+            "attenuation_policy_id": attenuation_policy_id,
+            "description": str(row.get("description", "")).strip(),
+            "base_loss_rate": int(max(0, _as_int(row.get("base_loss_rate", 0), 0))),
+            "field_modifier_ids": _sorted_tokens(row.get("field_modifier_ids")),
+            "deterministic_function_id": str(row.get("deterministic_function_id", "")).strip() or "att.none.v1",
+            "uses_rng_stream": bool(row.get("uses_rng_stream", False)),
+            "rng_stream_name": None if row.get("rng_stream_name") is None else str(row.get("rng_stream_name", "")).strip() or None,
+            "extensions": _as_map(row.get("extensions")),
+        }
+    if "att.none" not in out:
+        out["att.none"] = {
+            "schema_version": "1.0.0",
+            "attenuation_policy_id": "att.none",
+            "description": "default deterministic no-attenuation policy",
+            "base_loss_rate": 0,
+            "field_modifier_ids": [],
+            "deterministic_function_id": "att.none.v1",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "extensions": {},
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def deterministic_jamming_effect_id(*, channel_id: str, started_tick: int, sequence: int) -> str:
+    digest = canonical_sha256(
+        {
+            "channel_id": str(channel_id or "").strip(),
+            "started_tick": int(max(0, _as_int(started_tick, 0))),
+            "sequence": int(max(0, _as_int(sequence, 0))),
+        }
+    )
+    return "effect.signal_jam.{}".format(digest[:16])
+
+
+def build_jamming_effect(
+    *,
+    effect_id: str,
+    target_channel_id: str,
+    strength_modifier: int,
+    duration_ticks: int,
+    start_tick: int,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "effect_id": str(effect_id or "").strip(),
+        "target_channel_id": str(target_channel_id or "").strip(),
+        "strength_modifier": int(max(0, _as_int(strength_modifier, 0))),
+        "duration_ticks": int(max(0, _as_int(duration_ticks, 0))),
+        "start_tick": int(max(0, _as_int(start_tick, 0))),
+        "end_tick": int(max(0, _as_int(start_tick, 0)) + int(max(0, _as_int(duration_ticks, 0)))),
+        "deterministic_fingerprint": "",
+        "extensions": _as_map(extensions),
+    }
+    if not payload["effect_id"] or not payload["target_channel_id"]:
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_INVALID,
+            "jamming effect requires effect_id and target_channel_id",
+            payload,
+        )
+    return _with_fingerprint(payload)
+
+
+def normalize_jamming_effect_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: (str(item.get("target_channel_id", "")), str(item.get("effect_id", "")))):
+        effect_id = str(row.get("effect_id", "")).strip()
+        if not effect_id:
+            continue
+        try:
+            out[effect_id] = build_jamming_effect(
+                effect_id=effect_id,
+                target_channel_id=str(row.get("target_channel_id", "")).strip(),
+                strength_modifier=_as_int(row.get("strength_modifier", 0), 0),
+                duration_ticks=_as_int(row.get("duration_ticks", 0), 0),
+                start_tick=_as_int(row.get("start_tick", 0), 0),
+                extensions=_as_map(row.get("extensions")),
+            )
+        except SignalTransportError:
+            continue
+    return sorted(
+        (dict(item) for item in out.values()),
+        key=lambda item: (
+            str(item.get("target_channel_id", "")),
+            _as_int(item.get("start_tick", 0), 0),
+            str(item.get("effect_id", "")),
+        ),
+    )
+
+
+def active_jamming_rows_by_channel_id(*, current_tick: int, jamming_effect_rows: object) -> Dict[str, dict]:
+    tick = int(max(0, _as_int(current_tick, 0)))
+    active: Dict[str, dict] = {}
+    for row in normalize_jamming_effect_rows(jamming_effect_rows):
+        channel_id = str(row.get("target_channel_id", "")).strip()
+        if not channel_id:
+            continue
+        start_tick = int(max(0, _as_int(row.get("start_tick", 0), 0)))
+        end_tick = int(max(start_tick, _as_int(row.get("end_tick", start_tick), start_tick)))
+        if tick < start_tick or tick >= end_tick:
+            continue
+        existing = dict(active.get(channel_id) or {})
+        if (not existing) or (
+            _as_int(row.get("strength_modifier", 0), 0) > _as_int(existing.get("strength_modifier", 0), 0)
+        ):
+            active[channel_id] = dict(row)
+    return dict((key, dict(active[key])) for key in sorted(active.keys()))
 
 
 def encryption_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
@@ -825,6 +952,134 @@ def process_signal_send(
     }
 
 
+def process_signal_jam_start(
+    *,
+    current_tick: int,
+    channel_id: str,
+    strength_modifier: int,
+    duration_ticks: int,
+    signal_channel_rows: object,
+    jamming_effect_rows: object,
+    decision_log_rows: object = None,
+) -> dict:
+    channels = signal_channel_rows_by_id(signal_channel_rows)
+    channel_token = str(channel_id or "").strip()
+    if channel_token not in channels:
+        raise SignalTransportError(
+            REFUSAL_SIGNAL_INVALID,
+            "signal_jam_start requires a valid channel_id",
+            {"channel_id": channel_token},
+        )
+    tick = int(max(0, _as_int(current_tick, 0)))
+    next_jamming_rows = normalize_jamming_effect_rows(jamming_effect_rows)
+    channel_sequence = int(
+        len([row for row in next_jamming_rows if str(row.get("target_channel_id", "")).strip() == channel_token])
+    )
+    effect_id = deterministic_jamming_effect_id(
+        channel_id=channel_token,
+        started_tick=tick,
+        sequence=channel_sequence,
+    )
+    effect_row = build_jamming_effect(
+        effect_id=effect_id,
+        target_channel_id=channel_token,
+        strength_modifier=int(max(0, _as_int(strength_modifier, 0))),
+        duration_ticks=int(max(0, _as_int(duration_ticks, 0))),
+        start_tick=tick,
+        extensions={},
+    )
+    next_jamming_rows = _upsert_row_by_id(next_jamming_rows, "effect_id", effect_row)
+    decision_entry = {
+        "decision_id": "decision.signal_jam_start.{}".format(
+            canonical_sha256(
+                {
+                    "tick": tick,
+                    "channel_id": channel_token,
+                    "effect_id": effect_id,
+                    "strength_modifier": int(max(0, _as_int(strength_modifier, 0))),
+                    "duration_ticks": int(max(0, _as_int(duration_ticks, 0))),
+                }
+            )[:16]
+        ),
+        "tick": tick,
+        "process_id": "process.signal_jam_start",
+        "channel_id": channel_token,
+        "effect_id": effect_id,
+        "strength_modifier": int(max(0, _as_int(strength_modifier, 0))),
+        "duration_ticks": int(max(0, _as_int(duration_ticks, 0))),
+        "outcome": "started",
+        "extensions": {},
+    }
+    next_decision_rows = _upsert_row_by_id(
+        [dict(item) for item in list(decision_log_rows or []) if isinstance(item, Mapping)],
+        "decision_id",
+        decision_entry,
+    )
+    return {
+        "jamming_effect_rows": normalize_jamming_effect_rows(next_jamming_rows),
+        "effect_row": dict(effect_row),
+        "decision_log_rows": next_decision_rows,
+        "decision_log_entry": dict(decision_entry),
+    }
+
+
+def process_signal_jam_stop(
+    *,
+    current_tick: int,
+    channel_id: str,
+    jamming_effect_rows: object,
+    decision_log_rows: object = None,
+) -> dict:
+    tick = int(max(0, _as_int(current_tick, 0)))
+    channel_token = str(channel_id or "").strip()
+    next_jamming_rows = normalize_jamming_effect_rows(jamming_effect_rows)
+    stopped_ids: List[str] = []
+    amended_rows: List[dict] = []
+    for row in next_jamming_rows:
+        effect_row = dict(row)
+        if str(effect_row.get("target_channel_id", "")).strip() != channel_token:
+            amended_rows.append(effect_row)
+            continue
+        start_tick = int(max(0, _as_int(effect_row.get("start_tick", 0), 0)))
+        end_tick = int(max(start_tick, _as_int(effect_row.get("end_tick", start_tick), start_tick)))
+        if tick < start_tick or tick >= end_tick:
+            amended_rows.append(effect_row)
+            continue
+        effect_row["end_tick"] = int(tick)
+        effect_row["duration_ticks"] = int(max(0, tick - start_tick))
+        effect_row = _with_fingerprint(effect_row)
+        stopped_ids.append(str(effect_row.get("effect_id", "")).strip())
+        amended_rows.append(effect_row)
+    decision_entry = {
+        "decision_id": "decision.signal_jam_stop.{}".format(
+            canonical_sha256(
+                {
+                    "tick": tick,
+                    "channel_id": channel_token,
+                    "stopped_effect_ids": list(sorted(stopped_ids)),
+                }
+            )[:16]
+        ),
+        "tick": tick,
+        "process_id": "process.signal_jam_stop",
+        "channel_id": channel_token,
+        "stopped_effect_ids": list(sorted(stopped_ids)),
+        "outcome": "stopped" if stopped_ids else "none_active",
+        "extensions": {},
+    }
+    next_decision_rows = _upsert_row_by_id(
+        [dict(item) for item in list(decision_log_rows or []) if isinstance(item, Mapping)],
+        "decision_id",
+        decision_entry,
+    )
+    return {
+        "jamming_effect_rows": normalize_jamming_effect_rows(amended_rows),
+        "stopped_effect_ids": list(sorted(stopped_ids)),
+        "decision_log_rows": next_decision_rows,
+        "decision_log_entry": dict(decision_entry),
+    }
+
+
 def process_knowledge_acquire(
     *,
     current_tick: int,
@@ -908,7 +1163,11 @@ def process_signal_transport_tick(
     routing_policy_registry: Mapping[str, object] | None,
     max_cost_units: int,
     cost_units_per_delivery: int,
+    attenuation_policy_registry: Mapping[str, object] | None = None,
+    jamming_effect_rows: object = None,
+    field_samples_by_node_id: Mapping[str, object] | None = None,
     route_cache_state: Mapping[str, object] | None = None,
+    field_sample_cache_state: Mapping[str, object] | None = None,
     courier_arrival_rows: object = None,
     default_trust_weight: float = 1.0,
     trust_weight_by_subject_id: Mapping[str, object] | None = None,
@@ -921,10 +1180,14 @@ def process_signal_transport_tick(
         existing_delivery_event_rows=message_delivery_event_rows,
         network_graph_rows=network_graph_rows,
         loss_policy_registry=loss_policy_registry,
+        attenuation_policy_registry=attenuation_policy_registry,
         routing_policy_registry=routing_policy_registry,
+        jamming_effect_rows=jamming_effect_rows,
+        field_samples_by_node_id=field_samples_by_node_id,
         max_cost_units=int(max(0, _as_int(max_cost_units, 0))),
         cost_units_per_delivery=int(max(1, _as_int(cost_units_per_delivery, 1))),
         route_cache_state=route_cache_state,
+        field_sample_cache_state=field_sample_cache_state,
         courier_arrival_rows=courier_arrival_rows,
     )
     next_receipts = normalize_knowledge_receipt_rows(knowledge_receipt_rows)
@@ -1085,28 +1348,169 @@ def _routing_compatible_graph_row(*, graph_row: Mapping[str, object], default_po
     return row
 
 
-def _delivery_state(*, policy_row: Mapping[str, object], queue_row: Mapping[str, object], current_tick: int) -> str:
-    policy_id = str(policy_row.get("loss_policy_id", "loss.none")).strip() or "loss.none"
+def _clamp_permille(value: object, default_value: int = 0) -> int:
+    return int(max(0, min(1000, _as_int(value, default_value))))
+
+
+def _attenuation_loss_permille(
+    *,
+    policy_row: Mapping[str, object],
+    attenuation_row: Mapping[str, object] | None,
+    queue_row: Mapping[str, object],
+    channel_row: Mapping[str, object],
+) -> int:
     params = _as_map(policy_row.get("parameters"))
     queue_ext = _as_map(_as_map(queue_row).get("extensions"))
     path_edge_ids = [str(item).strip() for item in list(queue_ext.get("path_edge_ids") or []) if str(item).strip()]
-    field_loss_modifier_permille = int(max(0, _as_int(queue_ext.get("field_loss_modifier_permille", 0), 0)))
+    tag_loss_modifier_permille = _clamp_permille(queue_ext.get("tag_loss_modifier_permille", 0), 0)
+    field_visibility_modifier_permille = _clamp_permille(queue_ext.get("field_visibility_modifier_permille", 0), 0)
+    field_radiation_modifier_permille = _clamp_permille(queue_ext.get("field_radiation_modifier_permille", 0), 0)
+    field_wind_modifier_permille = _clamp_permille(queue_ext.get("field_wind_modifier_permille", 0), 0)
+    field_loss_modifier_permille = _clamp_permille(queue_ext.get("field_loss_modifier_permille", 0), 0)
+    jamming_modifier_permille = _clamp_permille(queue_ext.get("jamming_modifier_permille", 0), 0)
+
+    attenuation = _as_map(attenuation_row)
+    attenuation_ext = _as_map(attenuation.get("extensions"))
+    base_loss_permille = _clamp_permille(
+        params.get(
+            "base_loss_permille",
+            attenuation.get("base_loss_rate", 0),
+        ),
+        0,
+    )
+    distance_loss_permille = _clamp_permille(
+        params.get(
+            "distance_loss_permille",
+            attenuation_ext.get("distance_loss_permille", 0),
+        ),
+        0,
+    )
+    channel_type_id = str(channel_row.get("channel_type_id", "")).strip()
+    default_visibility_weight = 1000 if channel_type_id == "channel.optical_line_of_sight" else 250
+    default_radiation_weight = 700 if channel_type_id == "channel.radio_basic" else 200
+    default_wind_weight = 150 if channel_type_id in {"channel.radio_basic", "channel.optical_line_of_sight"} else 0
+
+    field_visibility_weight_permille = _clamp_permille(
+        params.get(
+            "field_visibility_weight_permille",
+            attenuation_ext.get("field_visibility_weight_permille", default_visibility_weight),
+        ),
+        default_visibility_weight,
+    )
+    field_radiation_weight_permille = _clamp_permille(
+        params.get(
+            "field_radiation_weight_permille",
+            attenuation_ext.get("field_radiation_weight_permille", default_radiation_weight),
+        ),
+        default_radiation_weight,
+    )
+    field_wind_weight_permille = _clamp_permille(
+        params.get(
+            "field_wind_weight_permille",
+            attenuation_ext.get("field_wind_weight_permille", default_wind_weight),
+        ),
+        default_wind_weight,
+    )
+
+    distance_component = int(max(0, distance_loss_permille * len(path_edge_ids)))
+    weighted_visibility = int(max(0, (field_visibility_modifier_permille * field_visibility_weight_permille) // 1000))
+    weighted_radiation = int(max(0, (field_radiation_modifier_permille * field_radiation_weight_permille) // 1000))
+    weighted_wind = int(max(0, (field_wind_modifier_permille * field_wind_weight_permille) // 1000))
+    fallback_field = int(max(0, field_loss_modifier_permille if (weighted_visibility + weighted_radiation + weighted_wind) == 0 else 0))
+
+    loss_permille = int(
+        min(
+            2000,
+            max(
+                0,
+                base_loss_permille
+                + distance_component
+                + tag_loss_modifier_permille
+                + weighted_visibility
+                + weighted_radiation
+                + weighted_wind
+                + fallback_field
+                + jamming_modifier_permille,
+            ),
+        )
+    )
+    return int(loss_permille)
+
+
+def _delivery_roll_permille(
+    *,
+    stream_name: str,
+    queue_row: Mapping[str, object],
+    current_tick: int,
+    channel_row: Mapping[str, object],
+) -> int:
+    return int(
+        int(
+            canonical_sha256(
+                {
+                    "stream": str(stream_name or "").strip() or "rng.signals.loss.default",
+                    "channel_id": str(channel_row.get("channel_id", "")).strip(),
+                    "envelope_id": str(queue_row.get("envelope_id", "")).strip(),
+                    "queue_key": str(queue_row.get("queue_key", "")).strip(),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:8],
+            16,
+        )
+        % 1000
+    )
+
+
+def _delivery_state(
+    *,
+    policy_row: Mapping[str, object],
+    channel_row: Mapping[str, object],
+    queue_row: Mapping[str, object],
+    current_tick: int,
+) -> str:
+    policy_id = str(policy_row.get("loss_policy_id", "loss.none")).strip() or "loss.none"
     if policy_id == "loss.none":
         return "delivered"
+
+    params = _as_map(policy_row.get("parameters"))
+    attenuation_row = _as_map(policy_row.get("attenuation_policy_row"))
+    attenuation_loss_permille = _attenuation_loss_permille(
+        policy_row=policy_row,
+        attenuation_row=attenuation_row,
+        queue_row=queue_row,
+        channel_row=channel_row,
+    )
+    loss_threshold_permille = int(max(0, _as_int(params.get("loss_threshold_permille", 1000), 1000)))
+    corruption_threshold_permille = int(max(0, _as_int(params.get("corruption_threshold_permille", 1200), 1200)))
+
     if policy_id == "loss.linear_attenuation":
-        base_loss_permille = int(max(0, _as_int(params.get("base_loss_permille", 0), 0)))
-        distance_loss_permille = int(max(0, _as_int(params.get("distance_loss_permille", 0), 0)))
-        field_visibility_weight_permille = int(max(0, _as_int(params.get("field_visibility_weight_permille", 1000), 1000)))
-        distance_component = int(max(0, distance_loss_permille * len(path_edge_ids)))
-        weighted_field_component = int(max(0, (field_loss_modifier_permille * field_visibility_weight_permille) // 1000))
-        loss_permille = int(min(1000, base_loss_permille + distance_component + weighted_field_component))
-        return "lost" if loss_permille >= 1000 else "delivered"
+        if attenuation_loss_permille >= loss_threshold_permille:
+            return "lost"
+        if attenuation_loss_permille >= corruption_threshold_permille:
+            return "corrupted"
+        return "delivered"
+
     if policy_id == "loss.deterministic_rng":
         stream_name = str(policy_row.get("rng_stream_name", "rng.signals.loss.default")).strip() or "rng.signals.loss.default"
         base_threshold = int(max(0, min(1000, _as_int(params.get("loss_permille", 50), 50))))
-        threshold = int(max(0, min(1000, base_threshold + field_loss_modifier_permille)))
-        roll = int(int(canonical_sha256({"stream": stream_name, "envelope_id": str(queue_row.get("envelope_id", "")).strip(), "queue_key": str(queue_row.get("queue_key", "")).strip(), "tick": int(current_tick)})[:8], 16) % 1000)
-        return "lost" if roll < threshold else "delivered"
+        loss_threshold = int(max(0, min(1000, base_threshold + attenuation_loss_permille)))
+        corruption_window = int(max(0, min(1000 - loss_threshold, _as_int(params.get("corruption_permille", 0), 0))))
+        roll = _delivery_roll_permille(
+            stream_name=stream_name,
+            queue_row=queue_row,
+            current_tick=int(current_tick),
+            channel_row=channel_row,
+        )
+        if roll < loss_threshold:
+            return "lost"
+        if roll < (loss_threshold + corruption_window):
+            return "corrupted"
+        return "delivered"
+
+    if attenuation_loss_permille >= loss_threshold_permille:
+        return "lost"
+    if attenuation_loss_permille >= corruption_threshold_permille:
+        return "corrupted"
     return "delivered"
 
 
@@ -1122,11 +1526,14 @@ def tick_signal_transport(
     routing_policy_registry: Mapping[str, object] | None,
     max_cost_units: int,
     cost_units_per_delivery: int,
+    attenuation_policy_registry: Mapping[str, object] | None = None,
+    jamming_effect_rows: object = None,
+    field_samples_by_node_id: Mapping[str, object] | None = None,
     route_cache_state: Mapping[str, object] | None = None,
+    field_sample_cache_state: Mapping[str, object] | None = None,
     courier_arrival_rows: object = None,
     field_visibility_by_channel_id: Mapping[str, object] | None = None,
 ) -> dict:
-    del field_visibility_by_channel_id
     tick = int(max(0, _as_int(current_tick, 0)))
     channels = signal_channel_rows_by_id(signal_channel_rows)
     queue_rows = normalize_transport_queue_rows(signal_transport_queue_rows)
@@ -1134,7 +1541,32 @@ def tick_signal_transport(
     event_rows = normalize_message_delivery_event_rows(existing_delivery_event_rows)
     graphs = dict((str(row.get("graph_id", "")).strip(), dict(row)) for row in list(network_graph_rows or []) if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip())
     loss_rows = loss_policy_rows_by_id(loss_policy_registry)
+    attenuation_rows = attenuation_policy_rows_by_id(attenuation_policy_registry)
+    for loss_policy_id in list(loss_rows.keys()):
+        row = dict(loss_rows.get(loss_policy_id) or {})
+        attenuation_policy_id = str(row.get("attenuation_policy_id", "")).strip() or "att.none"
+        row["attenuation_policy_id"] = attenuation_policy_id
+        row["attenuation_policy_row"] = dict(attenuation_rows.get(attenuation_policy_id) or attenuation_rows.get("att.none") or {})
+        loss_rows[loss_policy_id] = row
     routing_policy_rows = _routing_policy_rows_by_id(routing_policy_registry)
+    active_jamming_rows = active_jamming_rows_by_channel_id(
+        current_tick=tick,
+        jamming_effect_rows=jamming_effect_rows,
+    )
+    merged_field_samples_by_node_id = {}
+    for node_id, sample in dict(field_samples_by_node_id or {}).items():
+        token = str(node_id).strip()
+        if not token:
+            continue
+        merged_field_samples_by_node_id[token] = sample
+    # Backward-compatible visibility-only override keyed by channel id.
+    for channel_id, sample in dict(field_visibility_by_channel_id or {}).items():
+        for queue_row in queue_rows:
+            if str(queue_row.get("channel_id", "")).strip() != str(channel_id).strip():
+                continue
+            to_node_id = str(queue_row.get("to_node_id", "")).strip()
+            if to_node_id and to_node_id not in merged_field_samples_by_node_id:
+                merged_field_samples_by_node_id[to_node_id] = {"field.visibility": _clamp_permille(sample, 0)}
     normalized_arrivals = normalize_courier_arrival_rows(courier_arrival_rows)
     arrival_queue_keys = dict(
         (str(row.get("queue_key", "")).strip(), True)
@@ -1160,6 +1592,9 @@ def tick_signal_transport(
         routing_policy_rows=routing_policy_rows,
         max_cost_units=int(max(0, _as_int(max_cost_units, 0))),
         cost_units_per_delivery=int(max(1, _as_int(cost_units_per_delivery, 1))),
+        field_samples_by_node_id=merged_field_samples_by_node_id,
+        field_sample_cache_state=field_sample_cache_state,
+        channel_jamming_rows_by_id=active_jamming_rows,
         route_cache_state=route_cache_state,
         resolve_route_fn=_resolve_route_query,
         delivery_state_fn=_delivery_state,
@@ -1185,6 +1620,8 @@ def tick_signal_transport(
         "budget_outcome": str(execution.get("budget_outcome", "complete")).strip() or "complete",
         "cost_units": int(max(0, _as_int(execution.get("cost_units", 0), 0))),
         "route_cache_state": _as_map(execution.get("route_cache_state")),
+        "field_sample_cache_state": dict(execution.get("field_sample_cache_state") or {}),
+        "active_jamming_rows_by_channel_id": dict((key, dict(value)) for key, value in active_jamming_rows.items()),
         "created_courier_commitment_rows": sorted(
             (dict(row) for row in list(execution.get("created_courier_commitment_rows") or []) if isinstance(row, Mapping)),
             key=lambda row: (
@@ -1202,12 +1639,16 @@ __all__ = [
     "REFUSAL_SIGNAL_INVALID",
     "REFUSAL_SIGNAL_ROUTE_UNAVAILABLE",
     "SignalTransportError",
+    "active_jamming_rows_by_channel_id",
+    "attenuation_policy_rows_by_id",
+    "build_jamming_effect",
     "build_message_queue_entry",
     "build_knowledge_receipt",
     "build_message_delivery_event",
     "build_signal_channel",
     "build_signal_message_envelope",
     "deterministic_courier_commitment_id",
+    "deterministic_jamming_effect_id",
     "deterministic_knowledge_receipt_id",
     "deterministic_message_queue_entry_id",
     "deterministic_message_delivery_event_id",
@@ -1222,7 +1663,10 @@ __all__ = [
     "normalize_signal_channel_rows",
     "normalize_signal_message_envelope_rows",
     "normalize_courier_arrival_rows",
+    "normalize_jamming_effect_rows",
     "normalize_transport_queue_rows",
+    "process_signal_jam_start",
+    "process_signal_jam_stop",
     "process_knowledge_acquire",
     "process_signal_send",
     "process_signal_transport_tick",

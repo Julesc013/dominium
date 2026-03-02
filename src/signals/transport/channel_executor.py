@@ -105,6 +105,78 @@ def _field_loss_modifier_permille(*, graph_row: Mapping[str, object], path_edge_
     return int(min(900, max(0, modifier)))
 
 
+def _clamp_permille(value: object, default_value: int = 0) -> int:
+    return int(max(0, min(1000, _as_int(value, default_value))))
+
+
+def _sample_value_permille(sample_row: Mapping[str, object], keys: List[str]) -> int:
+    for key in keys:
+        if key in sample_row:
+            return _clamp_permille(sample_row.get(key), 0)
+    fields = _as_map(sample_row.get("fields"))
+    for key in keys:
+        if key in fields:
+            return _clamp_permille(fields.get(key), 0)
+    return 0
+
+
+def _node_field_modifiers(
+    *,
+    tick: int,
+    path_node_ids: List[str],
+    field_samples_by_node_id: Mapping[str, object] | None,
+    field_sample_cache: Dict[str, dict],
+) -> dict:
+    samples = dict(field_samples_by_node_id or {})
+    visibility = 0
+    radiation = 0
+    wind = 0
+    for node_id in [str(item).strip() for item in list(path_node_ids or []) if str(item).strip()]:
+        cache_key = "{}::{}".format(int(max(0, _as_int(tick, 0))), node_id)
+        cached = dict(field_sample_cache.get(cache_key) or {})
+        if not cached:
+            raw = samples.get(node_id)
+            row = _as_map(raw)
+            # Allow direct scalar shorthand for visibility-only samples.
+            if not row and raw is not None:
+                row = {"field.visibility": _clamp_permille(raw, 0)}
+            cached = {
+                "visibility": _sample_value_permille(
+                    row,
+                    [
+                        "field.visibility",
+                        "visibility_permille",
+                        "visibility",
+                    ],
+                ),
+                "radiation": _sample_value_permille(
+                    row,
+                    [
+                        "field.radiation",
+                        "radiation_permille",
+                        "radiation",
+                    ],
+                ),
+                "wind": _sample_value_permille(
+                    row,
+                    [
+                        "field.wind",
+                        "wind_permille",
+                        "wind",
+                    ],
+                ),
+            }
+            field_sample_cache[cache_key] = dict(cached)
+        visibility = max(visibility, _clamp_permille(cached.get("visibility", 0), 0))
+        radiation = max(radiation, _clamp_permille(cached.get("radiation", 0), 0))
+        wind = max(wind, _clamp_permille(cached.get("wind", 0), 0))
+    return {
+        "field_visibility_modifier_permille": int(visibility),
+        "field_radiation_modifier_permille": int(radiation),
+        "field_wind_modifier_permille": int(wind),
+    }
+
+
 def _path_has_capacity(
     *,
     graph_id: str,
@@ -156,6 +228,9 @@ def execute_channel_transport_tick(
     delivery_state_fn: Callable[..., str],
     event_id_fn: Callable[..., str],
     build_event_fn: Callable[..., dict],
+    field_samples_by_node_id: Mapping[str, object] | None = None,
+    field_sample_cache_state: Mapping[str, object] | None = None,
+    channel_jamming_rows_by_id: Mapping[str, dict] | None = None,
     courier_arrival_queue_keys: Mapping[str, bool] | None = None,
     courier_arrival_subject_pairs: Mapping[Tuple[str, str], bool] | None = None,
     courier_commitment_id_fn: Callable[..., str] | None = None,
@@ -174,6 +249,11 @@ def execute_channel_transport_tick(
     next_event_rows = [dict(row) for row in list(event_rows or []) if isinstance(row, Mapping)]
     event_sequence = int(len(next_event_rows))
     next_route_cache_state = _as_map(route_cache_state)
+    next_field_sample_cache_state = {}
+    for raw_key, raw_value in dict(field_sample_cache_state or {}).items():
+        key_token = str(raw_key).strip()
+        if key_token:
+            next_field_sample_cache_state[key_token] = _as_map(raw_value)
     arrival_queue_keys = dict((str(key).strip(), bool(value)) for key, value in dict(courier_arrival_queue_keys or {}).items() if str(key).strip())
     arrival_subject_pairs = dict(((str(key[0]).strip(), str(key[1]).strip()), bool(value)) for key, value in dict(courier_arrival_subject_pairs or {}).items() if isinstance(key, tuple) and len(key) == 2 and str(key[0]).strip())
 
@@ -289,15 +369,56 @@ def execute_channel_transport_tick(
             graph_id = str(channel_row.get("network_graph_id", "")).strip()
             graph_row = dict(graph_rows_by_id.get(graph_id) or {})
             field_loss_modifier_permille = 0
-            if str(channel_row.get("channel_type_id", "")).strip() in {"channel.radio_basic", "channel.optical_line_of_sight"}:
-                field_loss_modifier_permille = _field_loss_modifier_permille(
+            quality_channel_types = {"channel.wired_basic", "channel.radio_basic", "channel.optical_line_of_sight"}
+            if str(channel_row.get("channel_type_id", "")).strip() in quality_channel_types:
+                path_edge_ids = list(route_details.get("path_edge_ids") or [])
+                path_node_ids = list(route_details.get("path_node_ids") or [])
+                tag_loss_modifier_permille = _field_loss_modifier_permille(
                     graph_row=graph_row,
-                    path_edge_ids=list(route_details.get("path_edge_ids") or []),
+                    path_edge_ids=path_edge_ids,
+                )
+                node_field_modifiers = _node_field_modifiers(
+                    tick=tick,
+                    path_node_ids=path_node_ids,
+                    field_samples_by_node_id=field_samples_by_node_id,
+                    field_sample_cache=next_field_sample_cache_state,
+                )
+                field_visibility_modifier_permille = int(node_field_modifiers.get("field_visibility_modifier_permille", 0))
+                field_radiation_modifier_permille = int(node_field_modifiers.get("field_radiation_modifier_permille", 0))
+                field_wind_modifier_permille = int(node_field_modifiers.get("field_wind_modifier_permille", 0))
+                field_loss_modifier_permille = int(
+                    min(
+                        1000,
+                        max(
+                            0,
+                            tag_loss_modifier_permille
+                            + (field_visibility_modifier_permille // 2)
+                            + (field_radiation_modifier_permille // 4)
+                            + (field_wind_modifier_permille // 8),
+                        ),
+                    )
                 )
                 queue_ext = _as_map(queue_row.get("extensions"))
+                queue_ext["tag_loss_modifier_permille"] = int(tag_loss_modifier_permille)
+                queue_ext["field_visibility_modifier_permille"] = int(field_visibility_modifier_permille)
+                queue_ext["field_radiation_modifier_permille"] = int(field_radiation_modifier_permille)
+                queue_ext["field_wind_modifier_permille"] = int(field_wind_modifier_permille)
                 queue_ext["field_loss_modifier_permille"] = int(field_loss_modifier_permille)
                 queue_row = dict(queue_row)
                 queue_row["extensions"] = queue_ext
+            jamming_modifier_permille = 0
+            jamming_row = dict((dict(channel_jamming_rows_by_id or {})).get(channel_id) or {})
+            if jamming_row:
+                start_tick = int(max(0, _as_int(jamming_row.get("start_tick", 0), 0)))
+                duration_ticks = int(max(0, _as_int(jamming_row.get("duration_ticks", 0), 0)))
+                end_tick = int(max(start_tick, _as_int(jamming_row.get("end_tick", start_tick + duration_ticks), start_tick + duration_ticks)))
+                is_active = int(tick) >= int(start_tick) and int(tick) < int(end_tick)
+                if is_active:
+                    jamming_modifier_permille = int(max(0, _as_int(jamming_row.get("strength_modifier", 0), 0)))
+            queue_ext = _as_map(queue_row.get("extensions"))
+            queue_ext["jamming_modifier_permille"] = int(min(1000, max(0, jamming_modifier_permille)))
+            queue_row = dict(queue_row)
+            queue_row["extensions"] = queue_ext
             if (not bool(route_details.get("route_unavailable", False))) and route_details.get("path_edge_ids"):
                 if not _path_has_capacity(
                     graph_id=graph_id,
@@ -311,7 +432,14 @@ def execute_channel_transport_tick(
 
             loss_policy_id = str(channel_row.get("loss_policy_id", "loss.none")).strip() or "loss.none"
             loss_row = dict(loss_rows_by_id.get(loss_policy_id) or {"loss_policy_id": loss_policy_id, "parameters": {}, "rng_stream_name": None})
-            state = str(delivery_state_fn(policy_row=loss_row, queue_row=queue_row, current_tick=tick)).strip() or "lost"
+            state = str(
+                delivery_state_fn(
+                    policy_row=loss_row,
+                    channel_row=channel_row,
+                    queue_row=queue_row,
+                    current_tick=tick,
+                )
+            ).strip() or "lost"
             if bool(route_details.get("route_unavailable", False)):
                 state = "lost"
 
@@ -351,6 +479,12 @@ def execute_channel_transport_tick(
                         "path_node_ids": list(route_details.get("path_node_ids") or []),
                         "courier_commitment_id": courier_commitment_id,
                         "field_loss_modifier_permille": int(field_loss_modifier_permille),
+                        "tag_loss_modifier_permille": int(_as_int(queue_ext.get("tag_loss_modifier_permille", 0), 0)),
+                        "field_visibility_modifier_permille": int(_as_int(queue_ext.get("field_visibility_modifier_permille", 0), 0)),
+                        "field_radiation_modifier_permille": int(_as_int(queue_ext.get("field_radiation_modifier_permille", 0), 0)),
+                        "field_wind_modifier_permille": int(_as_int(queue_ext.get("field_wind_modifier_permille", 0), 0)),
+                        "jamming_modifier_permille": int(_as_int(queue_ext.get("jamming_modifier_permille", 0), 0)),
+                        "corrupted_view": bool(state == "corrupted"),
                     },
                 )
             )
@@ -387,6 +521,7 @@ def execute_channel_transport_tick(
         "budget_outcome": "degraded" if deferred_keys else "complete",
         "cost_units": int(max(0, attempts * cost_unit)),
         "route_cache_state": dict(next_route_cache_state),
+        "field_sample_cache_state": dict(next_field_sample_cache_state),
         "created_courier_commitment_rows": sorted(
             (dict(row) for row in created_courier_commitments_by_id.values()),
             key=lambda row: (
