@@ -77,6 +77,8 @@ Deterministic mapping rules:
   - state id expresses active outgoing edge
   - transitions are process-triggered only
   - no direct edge activation bypass
+- Switch operations use control-plane process path `process.switch_set_state` and may carry
+  diegetic `action_surface_id` / `task_ref` evidence in extensions for provenance.
 - Disabled/non-active outgoing edges are unavailable to routing queries.
 
 ## 7) Formalization Promotion Contract

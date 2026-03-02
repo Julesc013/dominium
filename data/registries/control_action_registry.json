@@ -296,6 +296,63 @@
       },
       {
         "schema_version": "1.0.0",
+        "action_id": "action.mobility.network_create_from_formalization",
+        "display_name": "Create Mobility Network",
+        "produces": {
+          "process_id": "process.mobility_network_create_from_formalization",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "formalization",
+          "graph"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.mobility.switch_set_state",
+        "display_name": "Set Switch State",
+        "produces": {
+          "process_id": "process.switch_set_state",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "network_switch",
+          "graph"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.mobility.inspect_route",
+        "display_name": "Inspect Route",
+        "produces": {
+          "process_id": "process.mobility_route_query",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.inspect"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "graph",
+          "network_binding"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "action_id": "action.formalize.revert",
         "display_name": "Revert Formalization",
         "produces": {
