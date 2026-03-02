@@ -802,14 +802,23 @@ def _routing_compatible_graph_row(*, graph_row: Mapping[str, object], default_po
 def _delivery_state(*, policy_row: Mapping[str, object], queue_row: Mapping[str, object], current_tick: int) -> str:
     policy_id = str(policy_row.get("loss_policy_id", "loss.none")).strip() or "loss.none"
     params = _as_map(policy_row.get("parameters"))
+    queue_ext = _as_map(_as_map(queue_row).get("extensions"))
+    path_edge_ids = [str(item).strip() for item in list(queue_ext.get("path_edge_ids") or []) if str(item).strip()]
+    field_loss_modifier_permille = int(max(0, _as_int(queue_ext.get("field_loss_modifier_permille", 0), 0)))
     if policy_id == "loss.none":
         return "delivered"
     if policy_id == "loss.linear_attenuation":
-        loss_permille = int(max(0, _as_int(params.get("base_loss_permille", 0), 0)))
+        base_loss_permille = int(max(0, _as_int(params.get("base_loss_permille", 0), 0)))
+        distance_loss_permille = int(max(0, _as_int(params.get("distance_loss_permille", 0), 0)))
+        field_visibility_weight_permille = int(max(0, _as_int(params.get("field_visibility_weight_permille", 1000), 1000)))
+        distance_component = int(max(0, distance_loss_permille * len(path_edge_ids)))
+        weighted_field_component = int(max(0, (field_loss_modifier_permille * field_visibility_weight_permille) // 1000))
+        loss_permille = int(min(1000, base_loss_permille + distance_component + weighted_field_component))
         return "lost" if loss_permille >= 1000 else "delivered"
     if policy_id == "loss.deterministic_rng":
         stream_name = str(policy_row.get("rng_stream_name", "rng.signals.loss.default")).strip() or "rng.signals.loss.default"
-        threshold = int(max(0, min(1000, _as_int(params.get("loss_permille", 50), 50))))
+        base_threshold = int(max(0, min(1000, _as_int(params.get("loss_permille", 50), 50))))
+        threshold = int(max(0, min(1000, base_threshold + field_loss_modifier_permille)))
         roll = int(int(canonical_sha256({"stream": stream_name, "envelope_id": str(queue_row.get("envelope_id", "")).strip(), "queue_key": str(queue_row.get("queue_key", "")).strip(), "tick": int(current_tick)})[:8], 16) % 1000)
         return "lost" if roll < threshold else "delivered"
     return "delivered"

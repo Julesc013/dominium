@@ -6,6 +6,13 @@ from typing import Callable, Dict, List, Mapping, Tuple
 
 
 LARGE_CAPACITY_PER_TICK = 1_000_000_000
+FIELD_TAG_MODIFIER_PERMILLE = {
+    "tag.signal.attenuation.low": 50,
+    "tag.signal.attenuation.medium": 150,
+    "tag.signal.attenuation.high": 300,
+    "tag.signal.occluded": 250,
+    "tag.signal.interference": 200,
+}
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -82,6 +89,20 @@ def _path_delay_ticks(*, graph_row: Mapping[str, object], path_edge_ids: List[st
     for edge_id in list(path_edge_ids or []):
         total += _edge_delay_ticks(dict(edge_index.get(str(edge_id).strip()) or {}))
     return int(max(0, total))
+
+
+def _field_loss_modifier_permille(*, graph_row: Mapping[str, object], path_edge_ids: List[str]) -> int:
+    edge_index = _edge_index(graph_row)
+    modifier = 0
+    for edge_id in list(path_edge_ids or []):
+        edge_row = dict(edge_index.get(str(edge_id).strip()) or {})
+        tags = _sorted_tokens(edge_row.get("tags"))
+        payload_tags = _sorted_tokens(_as_map(edge_row.get("payload")).get("tags"))
+        payload_ref_tags = _sorted_tokens(_as_map(edge_row.get("payload_ref")).get("tags"))
+        all_tags = sorted(set(tags + payload_tags + payload_ref_tags))
+        for tag in all_tags:
+            modifier += int(max(0, _as_int(FIELD_TAG_MODIFIER_PERMILLE.get(str(tag), 0), 0)))
+    return int(min(900, max(0, modifier)))
 
 
 def _path_has_capacity(
@@ -267,6 +288,16 @@ def execute_channel_transport_tick(
 
             graph_id = str(channel_row.get("network_graph_id", "")).strip()
             graph_row = dict(graph_rows_by_id.get(graph_id) or {})
+            field_loss_modifier_permille = 0
+            if str(channel_row.get("channel_type_id", "")).strip() in {"channel.radio_basic", "channel.optical_line_of_sight"}:
+                field_loss_modifier_permille = _field_loss_modifier_permille(
+                    graph_row=graph_row,
+                    path_edge_ids=list(route_details.get("path_edge_ids") or []),
+                )
+                queue_ext = _as_map(queue_row.get("extensions"))
+                queue_ext["field_loss_modifier_permille"] = int(field_loss_modifier_permille)
+                queue_row = dict(queue_row)
+                queue_row["extensions"] = queue_ext
             if (not bool(route_details.get("route_unavailable", False))) and route_details.get("path_edge_ids"):
                 if not _path_has_capacity(
                     graph_id=graph_id,
@@ -319,6 +350,7 @@ def execute_channel_transport_tick(
                         "path_edge_ids": list(route_details.get("path_edge_ids") or []),
                         "path_node_ids": list(route_details.get("path_node_ids") or []),
                         "courier_commitment_id": courier_commitment_id,
+                        "field_loss_modifier_permille": int(field_loss_modifier_permille),
                     },
                 )
             )
