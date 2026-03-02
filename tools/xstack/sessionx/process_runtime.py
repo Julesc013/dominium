@@ -20831,6 +20831,7 @@ def execute_intent(
                 "graph_id": "",
                 "policy_id": policy_id,
                 "dt_ticks": int(dt_ticks),
+                "field_boundary_portal_count": 0,
                 "processed_channel_count": 0,
                 "remaining_channel_count": 0,
                 "processed_hazard_count": 0,
@@ -21533,6 +21534,9 @@ def execute_intent(
                 "graph_id": str(selected_graph.get("graph_id", "")).strip(),
                 "policy_id": str(flow_policy_row.get("policy_id", "")).strip(),
                 "dt_ticks": int(dt_ticks),
+                "field_boundary_portal_count": int(
+                    len([token for token in list(selected_graph.get("portals") or []) if str(token).strip()])
+                ),
                 "processed_channel_count": int(_as_int(ticked.get("processed_channel_count", 0), 0)),
                 "remaining_channel_count": int(_as_int(ticked.get("remaining_channel_count", 0), 0)),
                 "processed_hazard_count": int(_as_int(ticked.get("processed_hazard_count", 0), 0)),
