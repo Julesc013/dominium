@@ -20,6 +20,17 @@ from .constrained_motion_solver import (
     resolve_derailment_policy,
     step_micro_motion,
 )
+from .free_motion_solver import (
+    FreeMotionError,
+    build_free_motion_state,
+    free_motion_policy_rows_by_id,
+    free_motion_rows_by_subject_id,
+    normalize_free_motion_state_rows,
+    resolve_free_motion_policy,
+    step_free_motion,
+    traction_model_rows_by_id,
+    wind_model_rows_by_id,
+)
 
 __all__ = [
     "MicroMotionError",
@@ -40,4 +51,13 @@ __all__ = [
     "normalize_micro_motion_state_rows",
     "resolve_derailment_policy",
     "step_micro_motion",
+    "FreeMotionError",
+    "build_free_motion_state",
+    "free_motion_policy_rows_by_id",
+    "free_motion_rows_by_subject_id",
+    "normalize_free_motion_state_rows",
+    "resolve_free_motion_policy",
+    "step_free_motion",
+    "traction_model_rows_by_id",
+    "wind_model_rows_by_id",
 ]

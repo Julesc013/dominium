@@ -50,6 +50,10 @@ from src.core.state.state_machine_engine import (
     apply_transition,
     normalize_state_machine,
 )
+from src.core.constraints.constraint_engine import (
+    build_constraint_enforcement_hooks,
+    constraint_type_rows_by_id,
+)
 from src.logistics.logistics_engine import (
     LogisticsError,
     build_inventory_index,
@@ -323,19 +327,28 @@ from src.mobility.traffic import (
     resolve_congestion_policy,
 )
 from src.mobility.micro import (
+    FreeMotionError,
     apply_consist_offsets,
     build_coupling_constraint,
+    build_free_motion_state,
     build_micro_motion_state,
     coupling_constraint_rows_by_vehicle,
     curvature_radius_mm,
     deterministic_coupling_constraint_id,
     evaluate_derailment,
+    free_motion_policy_rows_by_id,
+    free_motion_rows_by_subject_id,
     geometry_length_mm,
     micro_motion_rows_by_vehicle_id,
     normalize_coupling_constraint_rows,
+    normalize_free_motion_state_rows,
     normalize_micro_motion_state_rows,
     resolve_derailment_policy,
+    resolve_free_motion_policy,
+    step_free_motion,
     step_micro_motion,
+    traction_model_rows_by_id,
+    wind_model_rows_by_id,
 )
 from src.mechanics import (
     build_structural_edge,
@@ -468,6 +481,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.travel_start": "entitlement.control.admin",
     "process.travel_tick": "session.boot",
     "process.mobility_micro_tick": "session.boot",
+    "process.mobility_free_tick": "session.boot",
     "process.mob_derail": "entitlement.control.admin",
     "process.coupler_attach": "entitlement.tool.operating",
     "process.vehicle_register_from_structure": "entitlement.control.admin",
@@ -602,6 +616,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.travel_start": "operator",
     "process.travel_tick": "observer",
     "process.mobility_micro_tick": "observer",
+    "process.mobility_free_tick": "observer",
     "process.mob_derail": "operator",
     "process.coupler_attach": "operator",
     "process.vehicle_register_from_structure": "operator",
@@ -683,6 +698,7 @@ CONTROL_PROCESS_IDS = {
     "process.travel_start",
     "process.travel_tick",
     "process.mobility_micro_tick",
+    "process.mobility_free_tick",
     "process.mob_derail",
     "process.coupler_attach",
     "process.vehicle_register_from_structure",
@@ -1724,6 +1740,12 @@ def _ensure_micro_motion_state_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows if isinstance(row, dict)]
 
 
+def _ensure_free_motion_state_rows(state: dict) -> List[dict]:
+    rows = normalize_free_motion_state_rows(state.get("free_motion_states"))
+    state["free_motion_states"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
 def _ensure_coupling_constraint_rows(state: dict) -> List[dict]:
     rows = normalize_coupling_constraint_rows(state.get("coupling_constraints"))
     state["coupling_constraints"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -1834,6 +1856,15 @@ def _persist_mobility_micro_state(
         state["coupling_constraints"] = [dict(row) for row in list(coupling_constraints or []) if isinstance(row, Mapping)]
     _ensure_micro_motion_state_rows(state)
     _ensure_coupling_constraint_rows(state)
+
+
+def _persist_mobility_free_state(
+    state: dict,
+    *,
+    free_motion_states: List[dict],
+) -> None:
+    state["free_motion_states"] = [dict(row) for row in list(free_motion_states or []) if isinstance(row, Mapping)]
+    _ensure_free_motion_state_rows(state)
 
 
 def _persist_mobility_network_state(
@@ -3365,6 +3396,7 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("edge_occupancies", "edge_id"),
         ("mobility_reservations", "reservation_id"),
         ("micro_motion_states", "vehicle_id"),
+        ("free_motion_states", "subject_id"),
         ("coupling_constraints", "constraint_id"),
         ("structural_graphs", "structural_graph_id"),
         ("structural_nodes", "node_id"),
@@ -13455,6 +13487,7 @@ def execute_intent(
     edge_occupancies = _ensure_edge_occupancy_rows(state)
     mobility_reservations = _ensure_mobility_reservation_rows(state)
     micro_motion_states = _ensure_micro_motion_state_rows(state)
+    free_motion_states = _ensure_free_motion_state_rows(state)
     coupling_constraints = _ensure_coupling_constraint_rows(state)
     vehicles = _ensure_vehicle_rows(state)
     vehicle_motion_states = _ensure_vehicle_motion_state_rows(state)
@@ -23261,6 +23294,820 @@ def execute_intent(
             "instrument_row_count": int(len(instrument_rows_by_vehicle)),
             "derail_policy_id": str(derail_policy.get("derail_policy_id", "derail.strict_threshold")).strip()
             or "derail.strict_threshold",
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mobility_free_tick":
+        requested_subject_ids = _sorted_tokens(list(inputs.get("subject_ids") or []))
+        roi_subject_ids = _sorted_tokens(list(inputs.get("roi_subject_ids") or []))
+        if not roi_subject_ids:
+            return refusal(
+                "refusal.mob.fidelity_denied",
+                "process.mobility_free_tick requires explicit ROI subject ids",
+                "Provide roi_subject_ids and keep micro free-motion scoped to ROI.",
+                {"process_id": process_id},
+                "$.intent.inputs.roi_subject_ids",
+            )
+
+        free_rows_by_subject = free_motion_rows_by_subject_id(free_motion_states)
+        if not requested_subject_ids:
+            requested_subject_ids = sorted(free_rows_by_subject.keys())
+        known_subject_ids = [subject_id for subject_id in requested_subject_ids if subject_id in free_rows_by_subject]
+        roi_subject_set = set(roi_subject_ids)
+        roi_candidates = [subject_id for subject_id in known_subject_ids if subject_id in roi_subject_set]
+        deferred_subject_ids = [
+            subject_id for subject_id in known_subject_ids if subject_id not in roi_subject_set
+        ]
+
+        max_updates = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_subject_updates_per_tick",
+                        (dict(policy_context or {})).get("mobility_free_max_subject_updates_per_tick", 64),
+                    ),
+                    64,
+                ),
+            )
+        )
+        processed_subject_ids = list(roi_candidates[:max_updates])
+        deferred_subject_ids.extend(list(roi_candidates[max_updates:]))
+        deferred_subject_ids = _sorted_tokens(deferred_subject_ids)
+        downgrade_to_meso = bool(inputs.get("downgrade_to_meso", True))
+        dt_ticks = int(max(1, _as_int(inputs.get("dt_ticks", 1), 1)))
+
+        free_motion_policy_registry = dict(_policy_payload(policy_context, "free_motion_policy_registry") or {})
+        if not free_motion_policy_registry:
+            free_motion_policy_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/free_motion_policy_registry.json",
+                default_payload={"record": {"free_motion_policies": []}},
+            )
+        traction_model_registry = dict(_policy_payload(policy_context, "traction_model_registry") or {})
+        if not traction_model_registry:
+            traction_model_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/traction_model_registry.json",
+                default_payload={"record": {"traction_models": []}},
+            )
+        wind_model_registry = dict(_policy_payload(policy_context, "wind_model_registry") or {})
+        if not wind_model_registry:
+            wind_model_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/wind_model_registry.json",
+                default_payload={"record": {"wind_models": []}},
+            )
+        mobility_constraint_type_registry = dict(_policy_payload(policy_context, "mobility_constraint_type_registry") or {})
+        if not mobility_constraint_type_registry:
+            mobility_constraint_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/mobility_constraint_type_registry.json",
+                default_payload={"record": {"constraint_types": []}},
+            )
+
+        free_policy_rows = free_motion_policy_rows_by_id(free_motion_policy_registry)
+        traction_rows = traction_model_rows_by_id(traction_model_registry)
+        wind_rows = wind_model_rows_by_id(wind_model_registry)
+        constraint_type_rows = constraint_type_rows_by_id(mobility_constraint_type_registry)
+
+        effect_type_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="effect_type_registry",
+            registry_rel_path="data/registries/effect_type_registry.json",
+            entry_key="effect_types",
+        )
+        stacking_policy_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="stacking_policy_registry",
+            registry_rel_path="data/registries/stacking_policy_registry.json",
+            entry_key="stacking_policies",
+        )
+        effect_rows = prune_expired_effect_rows(effect_rows=effect_rows, current_tick=int(current_tick))
+        state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, dict)]
+
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        field_modifier_snapshot_rows = field_modifier_snapshot(
+            field_layer_rows=field_layers,
+            field_cell_rows=field_cells,
+            field_type_registry=field_type_registry,
+            sample_rows=[
+                {
+                    "target_id": subject_id,
+                    "spatial_position": {
+                        "position_mm": dict(
+                            (_find_body(body_rows=bodies, body_id=str(dict(free_rows_by_subject.get(subject_id) or {}).get("body_id", ""))) or {}).get(
+                                "transform_mm",
+                                {"x": 0, "y": 0, "z": 0},
+                            )
+                        ),
+                    },
+                }
+                for subject_id in processed_subject_ids
+            ],
+        )
+        field_rows_by_subject = dict(
+            (
+                str(row.get("target_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(field_modifier_snapshot_rows.get("rows") or [])
+            if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+        )
+
+        body_rows_by_id = dict(
+            (
+                str(row.get("assembly_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(bodies or [])
+            if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+        )
+        guide_geometry_rows_by_id = dict(
+            (
+                str(row.get("geometry_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(guide_geometries or [])
+            if isinstance(row, Mapping) and str(row.get("geometry_id", "")).strip()
+        )
+        motion_rows_by_vehicle = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicle_motion_states or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        vehicle_rows_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compliance_check_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="compliance_check_registry",
+            registry_rel_path="data/registries/compliance_check_registry.json",
+            entry_key="compliance_checks",
+        )
+        spec_rows, _spec_load_errors = _spec_sheet_rows(
+            policy_context=policy_context,
+            spec_type_registry=spec_type_registry,
+            tolerance_policy_registry=tolerance_policy_registry,
+            compliance_check_registry=compliance_check_registry,
+        )
+        spec_rows_by_id = spec_sheet_rows_by_id(spec_rows)
+
+        existing_effect_rows = [
+            dict(row)
+            for row in list(effect_rows or [])
+            if isinstance(row, Mapping)
+            and not (
+                str((dict(row.get("extensions") or {})).get("source_process_id", "")).strip() == process_id
+                and str((dict(row.get("extensions") or {})).get("effect_auto_key", "")).strip().startswith("free_motion_")
+            )
+        ]
+        auto_effect_rows: List[dict] = []
+        travel_event_rows = list(travel_events or [])
+        event_seq = int(len(travel_event_rows))
+        vehicle_event_rows = [dict(row) for row in list(vehicle_events or []) if isinstance(row, Mapping)]
+        instrument_rows: Dict[str, dict] = {}
+        decision_rows: List[dict] = []
+        incident_rows: List[dict] = []
+        processed_count = 0
+        for subject_id in processed_subject_ids:
+            free_row = dict(free_rows_by_subject.get(subject_id) or {})
+            if not free_row:
+                continue
+            body_id = str(free_row.get("body_id", "")).strip()
+            body_row = dict(body_rows_by_id.get(body_id) or {})
+            if not body_row:
+                continue
+
+            policy_id_by_subject = (
+                dict(inputs.get("policy_id_by_subject") or {})
+                if isinstance(inputs.get("policy_id_by_subject"), Mapping)
+                else {}
+            )
+            policy_id = str(policy_id_by_subject.get(subject_id, "")).strip()
+            if not policy_id:
+                policy_id = str((dict(free_row.get("extensions") or {})).get("policy_id", "")).strip()
+            if not policy_id:
+                policy_id = str(inputs.get("default_policy_id", "free.default_ground")).strip() or "free.default_ground"
+            policy_row = dict(resolve_free_motion_policy(registry_payload=free_motion_policy_registry, policy_id=policy_id))
+            traction_row = dict(traction_rows.get(str(policy_row.get("traction_model_id", "")).strip()) or {})
+            wind_row = dict(wind_rows.get(str(policy_row.get("wind_model_id", "")).strip()) or {})
+
+            corridor_geometry_id = str(free_row.get("corridor_geometry_id", "")).strip()
+            volume_geometry_id = str(free_row.get("volume_geometry_id", "")).strip()
+            corridor_geometry_row = dict(guide_geometry_rows_by_id.get(corridor_geometry_id) or {})
+            volume_geometry_row = dict(guide_geometry_rows_by_id.get(volume_geometry_id) or {})
+
+            constraint_rows = []
+            if corridor_geometry_id:
+                constraint_rows.append(
+                    {
+                        "constraint_id": "constraint.free.corridor.{}".format(
+                            canonical_sha256({"subject_id": subject_id, "geometry_id": corridor_geometry_id})[:16]
+                        ),
+                        "constraint_type_id": "constraint.follow_corridor",
+                        "enforcement_policy_id": "enforce.mobility.default",
+                        "participant_ids": [subject_id, corridor_geometry_id],
+                        "active": True,
+                        "parameters": {},
+                        "extensions": {},
+                    }
+                )
+            if volume_geometry_id:
+                constraint_rows.append(
+                    {
+                        "constraint_id": "constraint.free.volume.{}".format(
+                            canonical_sha256({"subject_id": subject_id, "geometry_id": volume_geometry_id})[:16]
+                        ),
+                        "constraint_type_id": "constraint.follow_volume",
+                        "enforcement_policy_id": "enforce.mobility.default",
+                        "participant_ids": [subject_id, volume_geometry_id],
+                        "active": True,
+                        "parameters": {},
+                        "extensions": {},
+                    }
+                )
+            known_participants = [subject_id]
+            if corridor_geometry_id:
+                known_participants.append(corridor_geometry_id)
+            if volume_geometry_id:
+                known_participants.append(volume_geometry_id)
+            constraint_eval = build_constraint_enforcement_hooks(
+                constraint_rows=constraint_rows,
+                known_participant_ids=known_participants,
+                max_constraints=8,
+                cost_units_per_constraint=1,
+            )
+            has_constraint_violation = bool(list(constraint_eval.get("violations") or []))
+            declared_constraint_types = set(constraint_type_rows.keys())
+            if corridor_geometry_id and "constraint.follow_corridor" not in declared_constraint_types:
+                has_constraint_violation = True
+            if volume_geometry_id and "constraint.follow_volume" not in declared_constraint_types:
+                has_constraint_violation = True
+            if has_constraint_violation and str(policy_row.get("corridor_enforcement_mode", "clamp")).strip() == "refuse":
+                control_input = {
+                    "throttle_permille": 0,
+                    "brake_permille": 1000,
+                    "move_vector_permille": {"x": 0, "y": 0, "z": 0},
+                }
+            else:
+                control_input = dict((dict(inputs.get("control_inputs_by_subject") or {})).get(subject_id) or {})
+
+            field_row = dict(field_rows_by_subject.get(subject_id) or {})
+            field_values = {
+                "friction_permille": int(max(100, _as_int(field_row.get("traction_permille", 1000), 1000))),
+                "wind_vector": _vector3_int(field_row.get("wind"), "wind") or {"x": 0, "y": 0, "z": 0},
+                "visibility_permille": int(max(0, _as_int(field_row.get("visibility", 1000), 1000))),
+            }
+
+            effect_target_id = (
+                str(free_row.get("vehicle_id", "")).strip()
+                or str(free_row.get("agent_id", "")).strip()
+                or subject_id
+            )
+            effect_map_rows = get_effective_modifier_map(
+                target_id=effect_target_id,
+                keys=["max_speed_permille", "traction_permille", "wind_drift_permille", "visibility_permille"],
+                effect_rows=effect_rows,
+                current_tick=int(current_tick),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            effect_values = {
+                "max_speed_permille": int(
+                    _as_int((dict(effect_map_rows.get("max_speed_permille") or {})).get("value", 1000), 1000)
+                ),
+                "traction_permille": int(
+                    _as_int((dict(effect_map_rows.get("traction_permille") or {})).get("value", 1000), 1000)
+                ),
+                "wind_drift_permille": int(
+                    _as_int((dict(effect_map_rows.get("wind_drift_permille") or {})).get("value", 0), 0)
+                ),
+                "visibility_permille": int(
+                    _as_int((dict(effect_map_rows.get("visibility_permille") or {})).get("value", 1000), 1000)
+                ),
+            }
+            try:
+                stepped = step_free_motion(
+                    free_motion_row=free_row,
+                    body_row=body_row,
+                    control_input=control_input,
+                    policy_row=policy_row,
+                    traction_model_row=traction_row,
+                    wind_model_row=wind_row,
+                    field_values=field_values,
+                    effect_modifiers=effect_values,
+                    corridor_geometry_row=(corridor_geometry_row if corridor_geometry_row else None),
+                    volume_geometry_row=(volume_geometry_row if volume_geometry_row else None),
+                    dt_ticks=int(dt_ticks),
+                    current_tick=int(current_tick),
+                )
+            except FreeMotionError as exc:
+                return refusal(
+                    str(getattr(exc, "reason_code", "refusal.mob.network_invalid")),
+                    "free-motion step failed for subject '{}'".format(subject_id),
+                    "Ensure free_motion_state rows and policy/model references are valid.",
+                    dict(getattr(exc, "details", {}) or {}),
+                    "$.state.free_motion_states",
+                )
+            next_free_row = dict(stepped.get("free_motion_state") or {})
+            next_transform = _vector3_int(stepped.get("candidate_transform_mm"), "candidate_transform_mm") or _vector3_int(
+                body_row.get("transform_mm"),
+                "transform_mm",
+            )
+            telemetry = dict(stepped.get("telemetry") or {})
+            vehicle_id = str(free_row.get("vehicle_id", "")).strip()
+            motion_row = dict(motion_rows_by_vehicle.get(vehicle_id) or {}) if vehicle_id else {}
+            itinerary_id = (
+                str((dict(motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip()
+                if isinstance(motion_row.get("macro_state"), Mapping)
+                else ""
+            ) or "itinerary.none"
+
+            vehicle_row = dict(vehicle_rows_by_id.get(vehicle_id) or {})
+            speed_limit_mm_per_tick = 0
+            min_visibility_permille = 0
+            for spec_id in _sorted_tokens(
+                list(vehicle_row.get("spec_ids") or [])
+                + [str(corridor_geometry_row.get("spec_id", "")).strip(), str(volume_geometry_row.get("spec_id", "")).strip()]
+            ):
+                spec_row = dict(spec_rows_by_id.get(spec_id) or {})
+                params = dict(spec_row.get("parameters") or {})
+                speed_kph = int(max(0, _as_int(params.get("max_speed_kph", 0), 0)))
+                speed_mm = int(max(0, _as_int(params.get("max_speed_mm_per_tick", 0), 0)))
+                visibility_limit = int(max(0, _as_int(params.get("min_visibility_permille", 0), 0)))
+                if visibility_limit > 0:
+                    min_visibility_permille = visibility_limit if min_visibility_permille <= 0 else min(min_visibility_permille, visibility_limit)
+                if speed_mm <= 0 and speed_kph > 0:
+                    speed_mm = int(speed_kph * 278)
+                if speed_mm <= 0:
+                    continue
+                speed_limit_mm_per_tick = speed_mm if speed_limit_mm_per_tick <= 0 else min(speed_limit_mm_per_tick, speed_mm)
+            velocity_row = _vector3_int(next_free_row.get("velocity"), "velocity")
+            est_speed = int(
+                max(
+                    abs(_as_int(velocity_row.get("x", 0), 0)),
+                    abs(_as_int(velocity_row.get("y", 0), 0)),
+                    abs(_as_int(velocity_row.get("z", 0), 0)),
+                )
+            )
+            if speed_limit_mm_per_tick > 0 and est_speed > speed_limit_mm_per_tick:
+                for axis in ("x", "y", "z"):
+                    velocity_row[axis] = int(max(-speed_limit_mm_per_tick, min(speed_limit_mm_per_tick, int(velocity_row.get(axis, 0)))))
+                next_free_row = build_free_motion_state(
+                    subject_id=str(next_free_row.get("subject_id", "")).strip(),
+                    vehicle_id=(None if next_free_row.get("vehicle_id") is None else str(next_free_row.get("vehicle_id", "")).strip() or None),
+                    agent_id=(None if next_free_row.get("agent_id") is None else str(next_free_row.get("agent_id", "")).strip() or None),
+                    body_id=str(next_free_row.get("body_id", "")).strip(),
+                    velocity=velocity_row,
+                    acceleration=_vector3_int(next_free_row.get("acceleration"), "acceleration"),
+                    corridor_geometry_id=(None if next_free_row.get("corridor_geometry_id") is None else str(next_free_row.get("corridor_geometry_id", "")).strip() or None),
+                    volume_geometry_id=(None if next_free_row.get("volume_geometry_id") is None else str(next_free_row.get("volume_geometry_id", "")).strip() or None),
+                    last_update_tick=int(current_tick),
+                    extensions=dict(next_free_row.get("extensions") or {}),
+                )
+                next_transform = {
+                    "x": int(_as_int((_vector3_int(body_row.get("transform_mm"), "transform_mm") or {}).get("x", 0), 0)) + int(velocity_row["x"]) * int(dt_ticks),
+                    "y": int(_as_int((_vector3_int(body_row.get("transform_mm"), "transform_mm") or {}).get("y", 0), 0)) + int(velocity_row["y"]) * int(dt_ticks),
+                    "z": int(_as_int((_vector3_int(body_row.get("transform_mm"), "transform_mm") or {}).get("z", 0), 0)) + int(velocity_row["z"]) * int(dt_ticks),
+                }
+                speed_event = build_travel_event(
+                    event_id=deterministic_travel_event_id(
+                        vehicle_id=vehicle_id or subject_id,
+                        itinerary_id=itinerary_id,
+                        kind="incident_stub",
+                        tick=int(current_tick),
+                        sequence=int(event_seq),
+                    ),
+                    tick=int(current_tick),
+                    vehicle_id=vehicle_id or subject_id,
+                    itinerary_id=itinerary_id,
+                    kind="incident_stub",
+                    details={
+                        "reason_code": "refusal.mob.speed_cap_exceeded",
+                        "subject_id": subject_id,
+                        "safe_speed_mm_per_tick": int(speed_limit_mm_per_tick),
+                        "requested_speed_mm_per_tick": int(est_speed),
+                    },
+                    extensions={"source_process_id": process_id},
+                )
+                travel_event_rows = _upsert_row_by_id(travel_event_rows, "event_id", speed_event)
+                event_seq += 1
+            visibility_now = int(max(0, _as_int(field_values.get("visibility_permille", 1000), 1000)))
+            if min_visibility_permille > 0 and visibility_now < min_visibility_permille:
+                visibility_event = build_travel_event(
+                    event_id=deterministic_travel_event_id(
+                        vehicle_id=vehicle_id or subject_id,
+                        itinerary_id=itinerary_id,
+                        kind="incident_stub",
+                        tick=int(current_tick),
+                        sequence=int(event_seq),
+                    ),
+                    tick=int(current_tick),
+                    vehicle_id=vehicle_id or subject_id,
+                    itinerary_id=itinerary_id,
+                    kind="incident_stub",
+                    details={
+                        "reason_code": "incident.visibility_low",
+                        "subject_id": subject_id,
+                        "visibility_permille": int(visibility_now),
+                        "min_visibility_permille": int(min_visibility_permille),
+                    },
+                    extensions={"source_process_id": process_id},
+                )
+                travel_event_rows = _upsert_row_by_id(travel_event_rows, "event_id", visibility_event)
+                event_seq += 1
+                incident_rows.append(
+                    {
+                        "tick": int(current_tick),
+                        "subject_id": subject_id,
+                        "vehicle_id": vehicle_id or None,
+                        "kind": "visibility_warning",
+                        "details": {
+                            "visibility_permille": int(visibility_now),
+                            "min_visibility_permille": int(min_visibility_permille),
+                        },
+                    }
+                )
+
+            body_row["transform_mm"] = dict(next_transform)
+            body_row["velocity_mm_per_tick"] = dict(_vector3_int(next_free_row.get("velocity"), "velocity"))
+            body_rows_by_id[body_id] = dict(body_row)
+            state["body_assemblies"] = sorted(
+                [dict(body_rows_by_id[key]) for key in sorted(body_rows_by_id.keys())],
+                key=lambda row: str(row.get("assembly_id", "")),
+            )
+            collision_result = _resolve_body_collisions(
+                state=state,
+                moved_body_id=body_id,
+                ghost_collisions_enabled=False,
+                policy_context=policy_context,
+            )
+            if str(collision_result.get("result", "")) != "complete":
+                return collision_result
+            resolved_pairs = _sorted_tokens(list(collision_result.get("resolved_pairs") or []))
+            unresolved_pairs = _sorted_tokens(list(collision_result.get("unresolved_pairs") or []))
+            if resolved_pairs or unresolved_pairs:
+                collision_event = build_travel_event(
+                    event_id=deterministic_travel_event_id(
+                        vehicle_id=vehicle_id or subject_id,
+                        itinerary_id=itinerary_id,
+                        kind="incident_stub",
+                        tick=int(current_tick),
+                        sequence=int(event_seq),
+                    ),
+                    tick=int(current_tick),
+                    vehicle_id=vehicle_id or subject_id,
+                    itinerary_id=itinerary_id,
+                    kind="incident_stub",
+                    details={
+                        "reason_code": "incident.collision",
+                        "subject_id": subject_id,
+                        "resolved_pairs": list(resolved_pairs),
+                        "unresolved_pairs": list(unresolved_pairs),
+                    },
+                    extensions={"source_process_id": process_id},
+                )
+                travel_event_rows = _upsert_row_by_id(travel_event_rows, "event_id", collision_event)
+                event_seq += 1
+                incident_rows.append(
+                    {
+                        "tick": int(current_tick),
+                        "subject_id": subject_id,
+                        "vehicle_id": vehicle_id or None,
+                        "kind": "collision",
+                        "details": {
+                            "resolved_pairs": list(resolved_pairs),
+                            "unresolved_pairs": list(unresolved_pairs),
+                        },
+                    }
+                )
+            bodies = _ensure_body_assemblies(state)
+            body_rows_by_id = dict(
+                (
+                    str(row.get("assembly_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(bodies or [])
+                if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+            )
+
+            free_rows_by_subject[subject_id] = dict(next_free_row)
+            processed_count += 1
+            instrument_rows[subject_id] = {
+                "subject_id": subject_id,
+                "tick": int(current_tick),
+                "speed_mm_per_tick": int(
+                    max(
+                        abs(_as_int((dict(next_free_row.get("velocity") or {})).get("x", 0), 0)),
+                        abs(_as_int((dict(next_free_row.get("velocity") or {})).get("y", 0), 0)),
+                        abs(_as_int((dict(next_free_row.get("velocity") or {})).get("z", 0), 0)),
+                    )
+                ),
+                "wind_vector": dict(_vector3_int(field_values.get("wind_vector"), "wind_vector")),
+                "visibility_permille": int(max(0, _as_int(field_values.get("visibility_permille", 1000), 1000))),
+                "corridor_status": str(telemetry.get("corridor_status", "none")).strip() or "none",
+                "volume_status": str(telemetry.get("volume_status", "none")).strip() or "none",
+            }
+            drift_accel = dict(telemetry.get("drift_accel") or {"x": 0, "y": 0, "z": 0})
+            drift_accel_units = int(
+                abs(_as_int(drift_accel.get("x", 0), 0))
+                + abs(_as_int(drift_accel.get("y", 0), 0))
+                + abs(_as_int(drift_accel.get("z", 0), 0))
+            )
+            drift_warning_threshold = int(max(0, _as_int(inputs.get("wind_drift_warning_accel_threshold", 64), 64)))
+            if drift_accel_units >= drift_warning_threshold:
+                drift_event = build_travel_event(
+                    event_id=deterministic_travel_event_id(
+                        vehicle_id=vehicle_id or subject_id,
+                        itinerary_id=itinerary_id,
+                        kind="incident_stub",
+                        tick=int(current_tick),
+                        sequence=int(event_seq),
+                    ),
+                    tick=int(current_tick),
+                    vehicle_id=vehicle_id or subject_id,
+                    itinerary_id=itinerary_id,
+                    kind="incident_stub",
+                    details={
+                        "reason_code": "incident.wind_exceeded",
+                        "subject_id": subject_id,
+                        "drift_accel_units": int(drift_accel_units),
+                        "drift_threshold_units": int(drift_warning_threshold),
+                    },
+                    extensions={"source_process_id": process_id},
+                )
+                travel_event_rows = _upsert_row_by_id(travel_event_rows, "event_id", drift_event)
+                event_seq += 1
+                incident_rows.append(
+                    {
+                        "tick": int(current_tick),
+                        "subject_id": subject_id,
+                        "vehicle_id": vehicle_id or None,
+                        "kind": "drift",
+                        "details": {
+                            "drift_accel_units": int(drift_accel_units),
+                            "drift_threshold_units": int(drift_warning_threshold),
+                        },
+                    }
+                )
+            if int(max(0, _as_int(field_values.get("visibility_permille", 1000), 1000))) < 1000:
+                vis_value = int(max(0, _as_int(field_values.get("visibility_permille", 1000), 1000)))
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.visibility_reduction",
+                        target_id=effect_target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(max(1, _as_int(inputs.get("effect_duration_ticks", 1), 1))),
+                        magnitude={"visibility_permille": int(vis_value)},
+                        stacking_policy_id="stack.min",
+                        extensions={"source_process_id": process_id, "effect_auto_key": "free_motion_visibility"},
+                    )
+                )
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.speed_cap",
+                        target_id=effect_target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(max(1, _as_int(inputs.get("effect_duration_ticks", 1), 1))),
+                        magnitude={"max_speed_permille": int(max(200, min(1000, vis_value + 100)))},
+                        stacking_policy_id="stack.min",
+                        extensions={"source_process_id": process_id, "effect_auto_key": "free_motion_speed_cap"},
+                    )
+                )
+            if str(telemetry.get("corridor_status", "none")).strip() in {"warned", "refused"} or str(
+                telemetry.get("volume_status", "none")
+            ).strip() in {"warned", "refused"}:
+                status_event = build_travel_event(
+                    event_id=deterministic_travel_event_id(
+                        vehicle_id=vehicle_id or subject_id,
+                        itinerary_id=itinerary_id,
+                        kind="incident_stub",
+                        tick=int(current_tick),
+                        sequence=int(event_seq),
+                    ),
+                    tick=int(current_tick),
+                    vehicle_id=vehicle_id or subject_id,
+                    itinerary_id=itinerary_id,
+                    kind="incident_stub",
+                    details={
+                        "reason_code": "incident.collision"
+                        if str(telemetry.get("volume_status", "none")).strip() == "refused"
+                        else "incident.visibility_low",
+                        "subject_id": subject_id,
+                        "corridor_status": str(telemetry.get("corridor_status", "none")).strip(),
+                        "volume_status": str(telemetry.get("volume_status", "none")).strip(),
+                    },
+                    extensions={"source_process_id": process_id},
+                )
+                travel_event_rows = _upsert_row_by_id(travel_event_rows, "event_id", status_event)
+                event_seq += 1
+                incident_rows.append(
+                    {
+                        "tick": int(current_tick),
+                        "subject_id": subject_id,
+                        "vehicle_id": vehicle_id or None,
+                        "kind": "off_corridor"
+                        if str(telemetry.get("corridor_status", "none")).strip() in {"warned", "refused"}
+                        else "off_volume",
+                        "details": {
+                            "corridor_status": str(telemetry.get("corridor_status", "none")).strip(),
+                            "volume_status": str(telemetry.get("volume_status", "none")).strip(),
+                        },
+                    }
+                )
+            decision_rows.append(
+                _geometry_decision_entry(
+                    geometry_id=subject_id,
+                    intent_id=str(intent_id),
+                    process_id=process_id,
+                    tick=int(current_tick),
+                    reason="field.free_motion.influence",
+                    resolved_level="micro",
+                    cost_allocated=1,
+                    extensions={
+                        "friction_permille": int(max(100, _as_int(field_values.get("friction_permille", 1000), 1000))),
+                        "visibility_permille": int(max(0, _as_int(field_values.get("visibility_permille", 1000), 1000))),
+                        "wind_vector": dict(_vector3_int(field_values.get("wind_vector"), "wind_vector")),
+                    },
+                )
+            )
+
+            if vehicle_id:
+                body_after = dict(body_rows_by_id.get(body_id) or {})
+                motion_rows_by_vehicle[vehicle_id] = build_motion_state(
+                    vehicle_id=vehicle_id,
+                    tier="micro",
+                    macro_state=dict(motion_row.get("macro_state") or {}),
+                    meso_state=dict(motion_row.get("meso_state") or {}),
+                    micro_state={
+                        "geometry_id": None,
+                        "s_param": None,
+                        "body_ref": body_id,
+                        "position_mm": dict(_vector3_int(body_after.get("transform_mm"), "transform_mm")),
+                        "orientation_mdeg": dict(_angles_int(body_after.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}),
+                        "velocity_mm_per_tick": dict(_vector3_int(next_free_row.get("velocity"), "velocity")),
+                        "accel_mm_per_tick2": dict(_vector3_int(next_free_row.get("acceleration"), "acceleration")),
+                    },
+                    last_update_tick=int(current_tick),
+                    extensions=dict(motion_row.get("extensions") or {}),
+                )
+                vehicle_event_rows = _upsert_row_by_id(
+                    vehicle_event_rows,
+                    "event_id",
+                    _vehicle_event_row(
+                        vehicle_id=vehicle_id,
+                        event_kind="vehicle_free_motion_tick",
+                        tick=int(current_tick),
+                        process_id=process_id,
+                        intent_id=str(intent_id),
+                        extensions={
+                            "subject_id": subject_id,
+                            "speed_mm_per_tick": int(instrument_rows.get(subject_id, {}).get("speed_mm_per_tick", 0)),
+                            "visibility_permille": int(instrument_rows.get(subject_id, {}).get("visibility_permille", 1000)),
+                            "drift_accel_units": int(drift_accel_units),
+                        },
+                    ),
+                )
+        if downgrade_to_meso and deferred_subject_ids:
+            for subject_id in deferred_subject_ids:
+                deferred_row = dict(free_rows_by_subject.get(subject_id) or {})
+                deferred_vehicle_id = str(deferred_row.get("vehicle_id", "")).strip()
+                if not deferred_vehicle_id:
+                    continue
+                deferred_motion_row = dict(motion_rows_by_vehicle.get(deferred_vehicle_id) or {})
+                motion_rows_by_vehicle[deferred_vehicle_id] = build_motion_state(
+                    vehicle_id=deferred_vehicle_id,
+                    tier="meso",
+                    macro_state=dict(deferred_motion_row.get("macro_state") or {}),
+                    meso_state=dict(deferred_motion_row.get("meso_state") or {}),
+                    micro_state=dict(deferred_motion_row.get("micro_state") or {}),
+                    last_update_tick=int(current_tick),
+                    extensions=dict(deferred_motion_row.get("extensions") or {}),
+                )
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=subject_id,
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.free_budget",
+                        resolved_level="meso",
+                        cost_allocated=0,
+                        extensions={"max_subject_updates_per_tick": int(max_updates)},
+                    )
+                    for subject_id in list(_sorted_tokens(deferred_subject_ids))[:128]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+
+        if decision_rows:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[dict(row) for row in list(decision_rows) if isinstance(row, Mapping)],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+
+        free_motion_states = normalize_free_motion_state_rows(
+            [dict(free_rows_by_subject[key]) for key in sorted(free_rows_by_subject.keys())]
+        )
+        vehicle_motion_states = normalize_motion_state_rows(
+            [dict(motion_rows_by_vehicle[key]) for key in sorted(motion_rows_by_vehicle.keys())]
+        )
+        travel_events = normalize_travel_event_rows(travel_event_rows)
+        vehicle_events = _ensure_vehicle_events({"vehicle_events": vehicle_event_rows})
+        effect_rows = normalize_effect_rows(
+            [dict(row) for row in list(existing_effect_rows or []) if isinstance(row, Mapping)]
+            + [dict(row) for row in list(auto_effect_rows or []) if isinstance(row, Mapping)]
+        )
+        bodies = [
+            dict(body_rows_by_id[key])
+            for key in sorted(body_rows_by_id.keys())
+        ]
+
+        state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, Mapping)]
+        _ensure_effect_rows(state)
+        state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
+        _ensure_travel_event_rows(state)
+        state["body_assemblies"] = [dict(row) for row in list(bodies or []) if isinstance(row, Mapping)]
+        _ensure_body_assemblies(state)
+        _persist_mobility_free_state(state, free_motion_states=free_motion_states)
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
+
+        state["mobility_free_instruments"] = [
+            dict(instrument_rows[key])
+            for key in sorted(instrument_rows.keys())
+        ]
+        state["mobility_free_incidents"] = sorted(
+            [dict(row) for row in list(incident_rows or []) if isinstance(row, Mapping)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("subject_id", "")),
+                str(row.get("kind", "")),
+            ),
+        )
+        completed_subject_ids = _sorted_tokens(list(instrument_rows.keys()))
+        budget_outcome = "degraded" if deferred_subject_ids else "complete"
+        state["mobility_free_runtime_state"] = {
+            "tick": int(current_tick),
+            "dt_ticks": int(dt_ticks),
+            "roi_subject_ids": list(roi_subject_ids),
+            "processed_subject_ids": list(completed_subject_ids),
+            "deferred_subject_ids": list(_sorted_tokens(deferred_subject_ids)),
+            "max_subject_updates_per_tick": int(max_updates),
+            "processed_count": int(processed_count),
+            "budget_outcome": budget_outcome,
+            "downgrade_to_meso": bool(downgrade_to_meso),
+            "auto_effect_count": int(len(auto_effect_rows)),
+            "incident_count": int(len(state.get("mobility_free_incidents") or [])),
+            "server_authoritative": True,
+        }
+        result_metadata = {
+            "processed_subject_ids": list(completed_subject_ids),
+            "deferred_subject_ids": list(_sorted_tokens(deferred_subject_ids)),
+            "budget_outcome": budget_outcome,
+            "free_motion_count": int(len(free_motion_states)),
+            "instrument_row_count": int(len(instrument_rows)),
+            "travel_event_count": int(len(travel_events)),
+            "auto_effect_count": int(len(auto_effect_rows)),
+            "incident_count": int(len(state.get("mobility_free_incidents") or [])),
+            "max_subject_updates_per_tick": int(max_updates),
+            "roi_subject_ids": list(roi_subject_ids),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_register_from_structure":
