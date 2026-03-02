@@ -322,6 +322,21 @@ from src.mobility.traffic import (
     reserve_edge_capacity,
     resolve_congestion_policy,
 )
+from src.mobility.micro import (
+    apply_consist_offsets,
+    build_coupling_constraint,
+    build_micro_motion_state,
+    coupling_constraint_rows_by_vehicle,
+    curvature_radius_mm,
+    deterministic_coupling_constraint_id,
+    evaluate_derailment,
+    geometry_length_mm,
+    micro_motion_rows_by_vehicle_id,
+    normalize_coupling_constraint_rows,
+    normalize_micro_motion_state_rows,
+    resolve_derailment_policy,
+    step_micro_motion,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -452,6 +467,9 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.travel_schedule_set": "entitlement.control.admin",
     "process.travel_start": "entitlement.control.admin",
     "process.travel_tick": "session.boot",
+    "process.mobility_micro_tick": "session.boot",
+    "process.mob_derail": "entitlement.control.admin",
+    "process.coupler_attach": "entitlement.tool.operating",
     "process.vehicle_register_from_structure": "entitlement.control.admin",
     "process.vehicle_check_compatibility": "entitlement.inspect",
     "process.vehicle_apply_environment_hooks": "session.boot",
@@ -583,6 +601,9 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.travel_schedule_set": "operator",
     "process.travel_start": "operator",
     "process.travel_tick": "observer",
+    "process.mobility_micro_tick": "observer",
+    "process.mob_derail": "operator",
+    "process.coupler_attach": "operator",
     "process.vehicle_register_from_structure": "operator",
     "process.vehicle_check_compatibility": "observer",
     "process.vehicle_apply_environment_hooks": "observer",
@@ -661,6 +682,9 @@ CONTROL_PROCESS_IDS = {
     "process.travel_schedule_set",
     "process.travel_start",
     "process.travel_tick",
+    "process.mobility_micro_tick",
+    "process.mob_derail",
+    "process.coupler_attach",
     "process.vehicle_register_from_structure",
     "process.vehicle_check_compatibility",
     "process.vehicle_apply_environment_hooks",
@@ -1694,6 +1718,18 @@ def _ensure_mobility_reservation_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows if isinstance(row, dict)]
 
 
+def _ensure_micro_motion_state_rows(state: dict) -> List[dict]:
+    rows = normalize_micro_motion_state_rows(state.get("micro_motion_states"))
+    state["micro_motion_states"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_coupling_constraint_rows(state: dict) -> List[dict]:
+    rows = normalize_coupling_constraint_rows(state.get("coupling_constraints"))
+    state["coupling_constraints"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
 def _ensure_vehicle_rows(state: dict) -> List[dict]:
     rows = normalize_vehicle_rows(state.get("vehicles"))
     state["vehicles"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -1785,6 +1821,19 @@ def _persist_vehicle_state(
     _ensure_vehicle_motion_state_rows(state)
     _ensure_vehicle_compatibility_rows(state)
     _ensure_vehicle_events(state)
+
+
+def _persist_mobility_micro_state(
+    state: dict,
+    *,
+    micro_motion_states: List[dict],
+    coupling_constraints: List[dict] | None = None,
+) -> None:
+    state["micro_motion_states"] = [dict(row) for row in list(micro_motion_states or []) if isinstance(row, Mapping)]
+    if coupling_constraints is not None:
+        state["coupling_constraints"] = [dict(row) for row in list(coupling_constraints or []) if isinstance(row, Mapping)]
+    _ensure_micro_motion_state_rows(state)
+    _ensure_coupling_constraint_rows(state)
 
 
 def _persist_mobility_network_state(
@@ -1882,6 +1931,456 @@ def _vehicle_event_row(
     }
     row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
     return row
+
+
+def _micro_motion_row_from_vehicle_motion(
+    *,
+    vehicle_id: str,
+    motion_state_row: Mapping[str, object] | None,
+    current_tick: int,
+) -> dict:
+    motion = dict(motion_state_row or {})
+    micro = dict(motion.get("micro_state") or {})
+    geometry_id = str(micro.get("geometry_id", "")).strip()
+    if not geometry_id:
+        raise ValueError("vehicle micro_state is missing geometry_id")
+    velocity = 0
+    accel = 0
+    velocity_payload = micro.get("velocity_mm_per_tick")
+    if isinstance(velocity_payload, Mapping):
+        velocity = int(_as_int(dict(velocity_payload).get("x", 0), 0))
+    elif isinstance(velocity_payload, (int, float)):
+        velocity = int(_as_int(velocity_payload, 0))
+    accel_payload = micro.get("accel_mm_per_tick2")
+    if isinstance(accel_payload, Mapping):
+        accel = int(_as_int(dict(accel_payload).get("x", 0), 0))
+    elif isinstance(accel_payload, (int, float)):
+        accel = int(_as_int(accel_payload, 0))
+    direction = "back" if int(velocity) < 0 else "forward"
+    return build_micro_motion_state(
+        vehicle_id=str(vehicle_id).strip(),
+        geometry_id=geometry_id,
+        s_param=int(max(0, _as_int(micro.get("s_param", 0), 0))),
+        velocity=int(velocity),
+        acceleration=int(accel),
+        direction=direction,
+        last_update_tick=int(max(0, _as_int(current_tick, 0))),
+        extensions={},
+    )
+
+
+def _vehicle_body_id(vehicle_id: str) -> str:
+    digest = canonical_sha256({"vehicle_id": str(vehicle_id).strip()})
+    return "body.vehicle.{}".format(digest[:16])
+
+
+def _stochastic_derailment_trigger(
+    *,
+    derail_policy: Mapping[str, object] | None,
+    vehicle_id: str,
+    geometry_id: str,
+    tick: int,
+    lateral_accel_units: int,
+    threshold_units: int,
+) -> dict:
+    policy = dict(derail_policy or {})
+    if not bool(policy.get("allow_stochastic", False)):
+        return {
+            "triggered": False,
+            "chance_permille": 0,
+            "roll_permille": None,
+            "rng_stream_name": None,
+        }
+    rng_stream_name = str(policy.get("rng_stream_name", "")).strip()
+    if not rng_stream_name:
+        return {
+            "triggered": False,
+            "chance_permille": 0,
+            "roll_permille": None,
+            "rng_stream_name": None,
+        }
+    extensions = dict(policy.get("extensions") or {})
+    base_chance_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _as_int(extensions.get("base_failure_chance_permille", 0), 0),
+            ),
+        )
+    )
+    if int(threshold_units) <= 0:
+        overload_permille = 1000
+    else:
+        overload_permille = int(
+            max(
+                0,
+                (int(max(0, _as_int(lateral_accel_units, 0))) * 1000)
+                // int(max(1, _as_int(threshold_units, 1)))
+                - 1000,
+            )
+        )
+    chance_permille = int(min(1000, int(base_chance_permille) + int(overload_permille)))
+    if int(chance_permille) <= 0:
+        return {
+            "triggered": False,
+            "chance_permille": int(chance_permille),
+            "roll_permille": None,
+            "rng_stream_name": rng_stream_name,
+        }
+    seed = canonical_sha256(
+        {
+            "rng_stream_name": rng_stream_name,
+            "vehicle_id": str(vehicle_id).strip(),
+            "geometry_id": str(geometry_id).strip(),
+            "tick": int(max(0, _as_int(tick, 0))),
+        }
+    )
+    roll_permille = int(int(seed[:8], 16) % 1000)
+    return {
+        "triggered": bool(int(roll_permille) < int(chance_permille)),
+        "chance_permille": int(chance_permille),
+        "roll_permille": int(roll_permille),
+        "rng_stream_name": rng_stream_name,
+    }
+
+
+def _network_edge_row_by_id(state: dict, edge_id: str) -> dict:
+    token = str(edge_id).strip()
+    if not token:
+        return {}
+    for graph_row in sorted(
+        (item for item in list(state.get("network_graphs") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("graph_id", "")),
+    ):
+        for edge_row in sorted(
+            (item for item in list(dict(graph_row).get("edges") or []) if isinstance(item, Mapping)),
+            key=lambda item: (
+                str(item.get("from_node_id", "")),
+                str(item.get("to_node_id", "")),
+                str(item.get("edge_id", "")),
+            ),
+        ):
+            if str(edge_row.get("edge_id", "")).strip() == token:
+                return dict(edge_row)
+    return {}
+
+
+def _switch_active_geometry_candidates(
+    *,
+    state: dict,
+    junction_row: Mapping[str, object],
+    switch_state_rows_by_machine_id: Mapping[str, dict],
+) -> List[str]:
+    row = dict(junction_row or {})
+    state_machine_id = str(row.get("state_machine_id", "")).strip()
+    if not state_machine_id:
+        return []
+    machine_row = dict(switch_state_rows_by_machine_id.get(state_machine_id) or {})
+    active_edge_id = str(machine_row.get("state_id", "")).strip()
+    if not active_edge_id:
+        return []
+    edge_row = _network_edge_row_by_id(state, active_edge_id)
+    payload = dict(edge_row.get("payload") or {})
+    geometry_id = str(payload.get("guide_geometry_id", "")).strip()
+    if geometry_id:
+        return [geometry_id]
+    return []
+
+
+def _itinerary_geometry_sequence_for_vehicle(
+    *,
+    vehicle_id: str,
+    itineraries: object,
+    motion_state_rows_by_vehicle_id: Mapping[str, dict],
+) -> List[str]:
+    token = str(vehicle_id).strip()
+    if not token:
+        return []
+    motion_row = dict(motion_state_rows_by_vehicle_id.get(token) or {})
+    macro_state = dict(motion_row.get("macro_state") or {})
+    active_itinerary_id = str(macro_state.get("itinerary_id", "")).strip()
+    candidate_rows = [
+        dict(row)
+        for row in list(itineraries or [])
+        if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip() == token
+    ]
+    if active_itinerary_id:
+        candidate_rows = [
+            row
+            for row in list(candidate_rows or [])
+            if str(row.get("itinerary_id", "")).strip() == active_itinerary_id
+        ] or candidate_rows
+    candidate_rows = sorted(
+        candidate_rows,
+        key=lambda row: (
+            int(max(0, _as_int(row.get("departure_tick", 0), 0))),
+            str(row.get("itinerary_id", "")),
+        ),
+    )
+    if not candidate_rows:
+        return []
+    row = dict(candidate_rows[-1])
+    ext = dict(row.get("extensions") or {})
+    profile_rows = [
+        dict(item)
+        for item in list(ext.get("per_edge_profile") or [])
+        if isinstance(item, Mapping) and str(item.get("guide_geometry_id", "")).strip()
+    ]
+    profile_rows = sorted(
+        profile_rows,
+        key=lambda item: (
+            int(max(0, _as_int(item.get("sequence", 0), 0))),
+            str(item.get("edge_id", "")),
+        ),
+    )
+    out = []
+    for profile in profile_rows:
+        geometry_id = str(profile.get("guide_geometry_id", "")).strip()
+        if geometry_id and geometry_id not in out:
+            out.append(geometry_id)
+    return list(out)
+
+
+def _next_geometry_candidate(
+    *,
+    state: dict,
+    current_geometry_id: str,
+    vehicle_id: str,
+    itineraries: object,
+    motion_state_rows_by_vehicle_id: Mapping[str, dict],
+    mobility_junction_rows: object,
+    switch_state_rows: object,
+) -> str | None:
+    current_token = str(current_geometry_id).strip()
+    if not current_token:
+        return None
+    itinerary_sequence = _itinerary_geometry_sequence_for_vehicle(
+        vehicle_id=vehicle_id,
+        itineraries=itineraries,
+        motion_state_rows_by_vehicle_id=motion_state_rows_by_vehicle_id,
+    )
+    itinerary_next = None
+    for idx, token in enumerate(itinerary_sequence):
+        if token != current_token:
+            continue
+        if idx + 1 < len(itinerary_sequence):
+            itinerary_next = itinerary_sequence[idx + 1]
+        break
+
+    switch_state_rows_by_machine_id = dict(
+        (
+            str(row.get("machine_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(switch_state_rows or [])
+        if isinstance(row, Mapping) and str(row.get("machine_id", "")).strip()
+    )
+    connected_rows = [
+        dict(row)
+        for row in list(mobility_junction_rows or [])
+        if isinstance(row, Mapping) and current_token in set(_sorted_tokens(row.get("connected_geometry_ids")))
+    ]
+    switch_candidates: List[str] = []
+    fallback_candidates: List[str] = []
+    for junction_row in sorted(connected_rows, key=lambda row: str(row.get("junction_id", ""))):
+        connected = [token for token in _sorted_tokens(junction_row.get("connected_geometry_ids")) if token != current_token]
+        fallback_candidates.extend(connected)
+        switch_candidates.extend(
+            _switch_active_geometry_candidates(
+                state=state,
+                junction_row=junction_row,
+                switch_state_rows_by_machine_id=switch_state_rows_by_machine_id,
+            )
+        )
+    switch_candidates = [token for token in _sorted_tokens(switch_candidates) if token != current_token]
+    fallback_candidates = [token for token in _sorted_tokens(fallback_candidates) if token != current_token]
+
+    if itinerary_next and (not switch_candidates or itinerary_next in set(switch_candidates)):
+        return itinerary_next
+    if switch_candidates:
+        return switch_candidates[0]
+    if itinerary_next:
+        return itinerary_next
+    if fallback_candidates:
+        return fallback_candidates[0]
+    return None
+
+
+def _apply_derailment_transition(
+    *,
+    state: dict,
+    vehicle_id: str,
+    current_tick: int,
+    process_id: str,
+    intent_id: str,
+    vehicle_rows_by_id: Mapping[str, dict],
+    motion_rows_by_vehicle: Mapping[str, dict],
+    micro_rows_by_vehicle: Mapping[str, dict],
+    coupling_constraints: List[dict],
+    travel_events: List[dict],
+    vehicle_events: List[dict],
+    reason_code: str,
+    details: Mapping[str, object] | None = None,
+) -> dict:
+    token_vehicle_id = str(vehicle_id).strip()
+    vehicle_row = dict(vehicle_rows_by_id.get(token_vehicle_id) or {})
+    motion_row = dict(motion_rows_by_vehicle.get(token_vehicle_id) or {})
+    micro_row = dict(micro_rows_by_vehicle.get(token_vehicle_id) or {})
+    if not vehicle_row or not motion_row or not micro_row:
+        raise ValueError("vehicle derailment requires vehicle/motion/micro rows")
+
+    geometry_id = str(micro_row.get("geometry_id", "")).strip() or None
+    event_seq = int(len(list(travel_events or [])))
+    itinerary_id = str((dict(motion_row.get("macro_state") or {})).get("itinerary_id", "")).strip() or "itinerary.none"
+    incident_event = build_travel_event(
+        event_id=deterministic_travel_event_id(
+            vehicle_id=token_vehicle_id,
+            itinerary_id=itinerary_id,
+            kind="incident_stub",
+            tick=int(current_tick),
+            sequence=int(event_seq),
+        ),
+        tick=int(current_tick),
+        vehicle_id=token_vehicle_id,
+        itinerary_id=itinerary_id,
+        kind="incident_stub",
+        details={
+            "reason_code": str(reason_code).strip() or "incident.derailment.curvature",
+            "geometry_id": geometry_id,
+            **dict(details or {}),
+        },
+        extensions={
+            "source_process_id": process_id,
+            "intent_id": str(intent_id),
+            "triggered_process_id": "process.mob_derail",
+        },
+    )
+    travel_events = normalize_travel_event_rows(
+        _upsert_row_by_id(travel_events, "event_id", incident_event)
+    )
+
+    vehicle_event = _vehicle_event_row(
+        vehicle_id=token_vehicle_id,
+        event_kind="vehicle_derailed",
+        tick=int(current_tick),
+        process_id=process_id,
+        intent_id=str(intent_id),
+        extensions={
+            "reason_code": str(reason_code).strip() or "incident.derailment.curvature",
+            "geometry_id": geometry_id,
+        },
+    )
+    vehicle_events = _ensure_vehicle_events(
+        {"vehicle_events": _upsert_row_by_id(vehicle_events, "event_id", vehicle_event)}
+    )
+
+    body_id = _vehicle_body_id(token_vehicle_id)
+    body_rows = _ensure_body_assemblies(state)
+    existing_body = _find_body(body_rows=body_rows, body_id=body_id)
+    position = _target_spatial_position(state, token_vehicle_id)
+    transform = _vector3_int(dict(position).get("position_mm"), "position_mm") or {"x": 0, "y": 0, "z": 0}
+    if existing_body:
+        existing_body["dynamic"] = True
+        existing_body["ghost"] = False
+        existing_body["transform_mm"] = dict(transform)
+        existing_body["velocity_mm_per_tick"] = {"x": int(_as_int(micro_row.get("velocity", 0), 0)), "y": 0, "z": 0}
+    else:
+        body_rows.append(
+            {
+                "assembly_id": body_id,
+                "owner_assembly_id": str(token_vehicle_id),
+                "owner_agent_id": None,
+                "shard_id": str(vehicle_row.get("spatial_id", "shard.0")).strip() or "shard.0",
+                "shape_type": "aabb",
+                "shape_parameters": {
+                    "radius_mm": 0,
+                    "height_mm": 0,
+                    "half_extents_mm": {"x": 900, "y": 700, "z": 700},
+                    "vertex_ref_id": "",
+                },
+                "collision_layer": "layer.vehicle",
+                "dynamic": True,
+                "ghost": False,
+                "transform_mm": dict(transform),
+                "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                "velocity_mm_per_tick": {"x": int(_as_int(micro_row.get("velocity", 0), 0)), "y": 0, "z": 0},
+            }
+        )
+    state["body_assemblies"] = sorted(
+        (dict(item) for item in body_rows if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("assembly_id", "")),
+    )
+
+    updated_motion = build_motion_state(
+        vehicle_id=token_vehicle_id,
+        tier="micro",
+        macro_state=dict(motion_row.get("macro_state") or {}),
+        meso_state=dict(motion_row.get("meso_state") or {}),
+        micro_state={
+            "geometry_id": None,
+            "s_param": None,
+            "body_ref": body_id,
+            "position_mm": dict(transform),
+            "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+            "velocity_mm_per_tick": {"x": int(_as_int(micro_row.get("velocity", 0), 0)), "y": 0, "z": 0},
+            "accel_mm_per_tick2": {"x": int(_as_int(micro_row.get("acceleration", 0), 0)), "y": 0, "z": 0},
+        },
+        last_update_tick=int(current_tick),
+        extensions=dict(motion_row.get("extensions") or {}),
+    )
+    motion_rows_by_vehicle[token_vehicle_id] = dict(updated_motion)
+
+    updated_micro = build_micro_motion_state(
+        vehicle_id=token_vehicle_id,
+        geometry_id=str(geometry_id or "geometry.derailed"),
+        s_param=int(max(0, _as_int(micro_row.get("s_param", 0), 0))),
+        velocity=int(_as_int(micro_row.get("velocity", 0), 0)),
+        acceleration=0,
+        direction="forward" if int(_as_int(micro_row.get("velocity", 0), 0)) >= 0 else "back",
+        last_update_tick=int(current_tick),
+        extensions={
+            **dict(micro_row.get("extensions") or {}),
+            "derailed": True,
+            "derailed_tick": int(current_tick),
+            "reason_code": str(reason_code).strip() or "incident.derailment.curvature",
+            "body_ref": body_id,
+        },
+    )
+    micro_rows_by_vehicle[token_vehicle_id] = dict(updated_micro)
+
+    coupling_constraints_out: List[dict] = []
+    for row in list(coupling_constraints or []):
+        if not isinstance(row, Mapping):
+            continue
+        item = dict(row)
+        left = str(item.get("vehicle_a_id", "")).strip()
+        right = str(item.get("vehicle_b_id", "")).strip()
+        if token_vehicle_id in {left, right}:
+            item = build_coupling_constraint(
+                constraint_id=str(item.get("constraint_id", "")).strip(),
+                vehicle_a_id=left,
+                vehicle_b_id=right,
+                coupling_type_id=str(item.get("coupling_type_id", "coupler.basic")).strip() or "coupler.basic",
+                active=False,
+                extensions={
+                    **dict(item.get("extensions") or {}),
+                    "disabled_reason": "derailed",
+                    "disabled_tick": int(current_tick),
+                },
+            )
+        coupling_constraints_out.append(dict(item))
+
+    return {
+        "motion_rows_by_vehicle": dict(motion_rows_by_vehicle),
+        "micro_rows_by_vehicle": dict(micro_rows_by_vehicle),
+        "coupling_constraints": normalize_coupling_constraint_rows(coupling_constraints_out),
+        "travel_events": normalize_travel_event_rows(travel_events),
+        "vehicle_events": list(vehicle_events),
+        "incident_event": dict(incident_event),
+        "vehicle_event": dict(vehicle_event),
+        "body_id": body_id,
+    }
 
 
 def _create_or_update_mobility_network(
@@ -2865,6 +3364,8 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("travel_events", "event_id"),
         ("edge_occupancies", "edge_id"),
         ("mobility_reservations", "reservation_id"),
+        ("micro_motion_states", "vehicle_id"),
+        ("coupling_constraints", "constraint_id"),
         ("structural_graphs", "structural_graph_id"),
         ("structural_nodes", "node_id"),
         ("structural_edges", "edge_id"),
@@ -12953,6 +13454,8 @@ def execute_intent(
     travel_events = _ensure_travel_event_rows(state)
     edge_occupancies = _ensure_edge_occupancy_rows(state)
     mobility_reservations = _ensure_mobility_reservation_rows(state)
+    micro_motion_states = _ensure_micro_motion_state_rows(state)
+    coupling_constraints = _ensure_coupling_constraint_rows(state)
     vehicles = _ensure_vehicle_rows(state)
     vehicle_motion_states = _ensure_vehicle_motion_state_rows(state)
     vehicle_compatibility_results = _ensure_vehicle_compatibility_rows(state)
@@ -21947,6 +22450,817 @@ def execute_intent(
             ),
             "travel_event_count": int(len(travel_events)),
             "travel_commitment_count": int(len(travel_commitments)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.coupler_attach":
+        vehicle_a_id = str(inputs.get("vehicle_a_id", "")).strip()
+        vehicle_b_id = str(inputs.get("vehicle_b_id", "")).strip()
+        if (not vehicle_a_id) or (not vehicle_b_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.coupler_attach requires vehicle_a_id and vehicle_b_id",
+                "Provide deterministic vehicle ids for coupling.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        if vehicle_a_id == vehicle_b_id:
+            return refusal(
+                "refusal.mob.coupling_incompatible",
+                "vehicle cannot couple to itself",
+                "Provide two distinct vehicle ids.",
+                {"vehicle_id": vehicle_a_id},
+                "$.intent.inputs",
+            )
+        vehicles_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        vehicle_a_row = dict(vehicles_by_id.get(vehicle_a_id) or {})
+        vehicle_b_row = dict(vehicles_by_id.get(vehicle_b_id) or {})
+        if not vehicle_a_row or not vehicle_b_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle ids must be registered before coupling",
+                "Register vehicles first via process.vehicle_register_from_structure.",
+                {"vehicle_a_id": vehicle_a_id, "vehicle_b_id": vehicle_b_id},
+                "$.intent.inputs",
+            )
+
+        coupling_type_registry = dict(_policy_payload(policy_context, "coupling_type_registry") or {})
+        if not coupling_type_registry:
+            coupling_type_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/coupling_type_registry.json",
+                default_payload={"record": {"coupling_types": []}},
+            )
+        declared_coupling_type_ids = _sorted_tokens(
+            [
+                row.get("coupling_type_id")
+                for row in list((dict(coupling_type_registry.get("record") or {})).get("coupling_types") or [])
+                if isinstance(row, Mapping)
+            ]
+        )
+        coupling_type_id = str(inputs.get("coupling_type_id", "coupler.basic")).strip() or "coupler.basic"
+        if declared_coupling_type_ids and coupling_type_id not in set(declared_coupling_type_ids):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "coupling_type_id '{}' is not declared".format(coupling_type_id),
+                "Use coupling_type_id from coupling_type_registry.",
+                {"coupling_type_id": coupling_type_id},
+                "$.intent.inputs.coupling_type_id",
+            )
+
+        mount_point_a_id = str(inputs.get("mount_point_a_id", "")).strip()
+        mount_point_b_id = str(inputs.get("mount_point_b_id", "")).strip()
+        if bool(mount_point_a_id) != bool(mount_point_b_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "mount_point_a_id and mount_point_b_id must be provided together",
+                "Provide both mount point ids or omit both for abstract coupling.",
+                {"mount_point_a_id": mount_point_a_id, "mount_point_b_id": mount_point_b_id},
+                "$.intent.inputs",
+            )
+        attached_mount_rows = {}
+        if mount_point_a_id and mount_point_b_id:
+            mount_rows_by_id = dict(
+                (
+                    str(row.get("mount_point_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(mount_points or [])
+                if isinstance(row, Mapping) and str(row.get("mount_point_id", "")).strip()
+            )
+            mount_row_a = dict(mount_rows_by_id.get(mount_point_a_id) or {})
+            mount_row_b = dict(mount_rows_by_id.get(mount_point_b_id) or {})
+            if not mount_row_a or not mount_row_b:
+                return refusal(
+                    "refusal.mob.coupling_incompatible",
+                    "mount point ids must exist before coupling",
+                    "Use valid mount point ids from registered vehicle assemblies.",
+                    {"mount_point_a_id": mount_point_a_id, "mount_point_b_id": mount_point_b_id},
+                    "$.intent.inputs",
+                )
+            owner_a = str(mount_row_a.get("parent_assembly_id", "")).strip()
+            owner_b = str(mount_row_b.get("parent_assembly_id", "")).strip()
+            allowed_owner_a = {
+                vehicle_a_id,
+                str(vehicle_a_row.get("parent_structure_instance_id", "")).strip(),
+            }
+            allowed_owner_b = {
+                vehicle_b_id,
+                str(vehicle_b_row.get("parent_structure_instance_id", "")).strip(),
+            }
+            if owner_a not in set(token for token in allowed_owner_a if token):
+                return refusal(
+                    "refusal.mob.coupling_incompatible",
+                    "mount_point_a_id is not owned by vehicle_a_id",
+                    "Attach using mount points belonging to vehicle_a_id or its parent structure.",
+                    {
+                        "vehicle_a_id": vehicle_a_id,
+                        "mount_point_a_id": mount_point_a_id,
+                        "owner": owner_a,
+                    },
+                    "$.intent.inputs.mount_point_a_id",
+                )
+            if owner_b not in set(token for token in allowed_owner_b if token):
+                return refusal(
+                    "refusal.mob.coupling_incompatible",
+                    "mount_point_b_id is not owned by vehicle_b_id",
+                    "Attach using mount points belonging to vehicle_b_id or its parent structure.",
+                    {
+                        "vehicle_b_id": vehicle_b_id,
+                        "mount_point_b_id": mount_point_b_id,
+                        "owner": owner_b,
+                    },
+                    "$.intent.inputs.mount_point_b_id",
+                )
+            try:
+                attached_mount_rows = attach_mount_points(
+                    mount_point_a_row=mount_row_a,
+                    mount_point_b_row=mount_row_b,
+                )
+            except MountError as exc:
+                return refusal(
+                    "refusal.mob.coupling_incompatible",
+                    "mount compatibility failed for coupling",
+                    "Use compatible coupler mount tags/alignment on both vehicles.",
+                    dict(getattr(exc, "details", {}) or {}),
+                    "$.intent.inputs",
+                )
+            mount_points = normalize_mount_point_rows(
+                _upsert_row_by_id(
+                    _upsert_row_by_id(
+                        mount_points,
+                        "mount_point_id",
+                        dict(attached_mount_rows.get("mount_point_a") or {}),
+                    ),
+                    "mount_point_id",
+                    dict(attached_mount_rows.get("mount_point_b") or {}),
+                )
+            )
+
+        constraint_id = str(inputs.get("constraint_id", "")).strip()
+        if not constraint_id:
+            constraint_id = deterministic_coupling_constraint_id(
+                vehicle_a_id=vehicle_a_id,
+                vehicle_b_id=vehicle_b_id,
+                coupling_type_id=coupling_type_id,
+                created_tick_bucket=int(current_tick),
+            )
+        coupling_offset_mm = int(max(0, _as_int(inputs.get("coupling_offset_mm", 2000), 2000)))
+        constraint_row = build_coupling_constraint(
+            constraint_id=constraint_id,
+            vehicle_a_id=vehicle_a_id,
+            vehicle_b_id=vehicle_b_id,
+            coupling_type_id=coupling_type_id,
+            active=True,
+            extensions={
+                "mount_point_a_id": mount_point_a_id or None,
+                "mount_point_b_id": mount_point_b_id or None,
+                "coupling_offset_mm": int(coupling_offset_mm),
+                "created_tick": int(current_tick),
+                "consist_order_vehicle_ids": _sorted_tokens([vehicle_a_id, vehicle_b_id]),
+            },
+        )
+        coupling_constraints = normalize_coupling_constraint_rows(
+            _upsert_row_by_id(coupling_constraints, "constraint_id", constraint_row)
+        )
+        _persist_mobility_micro_state(
+            state,
+            micro_motion_states=micro_motion_states,
+            coupling_constraints=coupling_constraints,
+        )
+        if mount_point_a_id and mount_point_b_id:
+            _persist_pose_mount_state(
+                state,
+                pose_slots=pose_slots,
+                mount_points=mount_points,
+                provenance_events=pose_mount_provenance_events,
+            )
+        result_metadata = {
+            "constraint_id": str(constraint_row.get("constraint_id", "")).strip(),
+            "vehicle_a_id": str(constraint_row.get("vehicle_a_id", "")).strip(),
+            "vehicle_b_id": str(constraint_row.get("vehicle_b_id", "")).strip(),
+            "coupling_type_id": str(constraint_row.get("coupling_type_id", "")).strip(),
+            "coupling_offset_mm": int(coupling_offset_mm),
+            "mount_attached": bool(mount_point_a_id and mount_point_b_id),
+            "mount_point_a_id": mount_point_a_id or None,
+            "mount_point_b_id": mount_point_b_id or None,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mob_derail":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        if not vehicle_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mob_derail requires vehicle_id",
+                "Provide deterministic vehicle_id input.",
+                {"process_id": process_id},
+                "$.intent.inputs.vehicle_id",
+            )
+        vehicle_rows_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        motion_rows_by_vehicle = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicle_motion_states or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        micro_rows_by_vehicle = micro_motion_rows_by_vehicle_id(micro_motion_states)
+        if vehicle_id not in micro_rows_by_vehicle:
+            motion_row = dict(motion_rows_by_vehicle.get(vehicle_id) or {})
+            if motion_row:
+                try:
+                    micro_rows_by_vehicle[vehicle_id] = _micro_motion_row_from_vehicle_motion(
+                        vehicle_id=vehicle_id,
+                        motion_state_row=motion_row,
+                        current_tick=int(current_tick),
+                    )
+                except ValueError:
+                    pass
+        if vehicle_id not in micro_rows_by_vehicle:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle has no active micro constrained motion state",
+                "Enter micro tier with geometry-bound micro_state before derailment transition.",
+                {"vehicle_id": vehicle_id},
+                "$.intent.inputs.vehicle_id",
+            )
+        try:
+            derail_result = _apply_derailment_transition(
+                state=state,
+                vehicle_id=vehicle_id,
+                current_tick=int(current_tick),
+                process_id=process_id,
+                intent_id=str(intent_id),
+                vehicle_rows_by_id=vehicle_rows_by_id,
+                motion_rows_by_vehicle=motion_rows_by_vehicle,
+                micro_rows_by_vehicle=micro_rows_by_vehicle,
+                coupling_constraints=list(coupling_constraints or []),
+                travel_events=list(travel_events or []),
+                vehicle_events=list(vehicle_events or []),
+                reason_code=str(inputs.get("reason_code", "incident.derailment.curvature")).strip()
+                or "incident.derailment.curvature",
+                details=dict(inputs.get("details") or {}) if isinstance(inputs.get("details"), Mapping) else {},
+            )
+        except ValueError:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "unable to apply derailment transition for vehicle",
+                "Ensure vehicle, motion, and micro rows are valid before invoking process.mob_derail.",
+                {"vehicle_id": vehicle_id},
+                "$.intent.inputs.vehicle_id",
+            )
+
+        motion_rows_by_vehicle = dict(derail_result.get("motion_rows_by_vehicle") or {})
+        micro_rows_by_vehicle = dict(derail_result.get("micro_rows_by_vehicle") or {})
+        coupling_constraints = normalize_coupling_constraint_rows(
+            list(derail_result.get("coupling_constraints") or [])
+        )
+        travel_events = normalize_travel_event_rows(list(derail_result.get("travel_events") or []))
+        vehicle_events = _ensure_vehicle_events({"vehicle_events": list(derail_result.get("vehicle_events") or [])})
+        vehicle_motion_states = normalize_motion_state_rows(
+            [dict(motion_rows_by_vehicle[key]) for key in sorted(motion_rows_by_vehicle.keys())]
+        )
+        micro_motion_states = normalize_micro_motion_state_rows(
+            [dict(micro_rows_by_vehicle[key]) for key in sorted(micro_rows_by_vehicle.keys())]
+        )
+        _persist_mobility_micro_state(
+            state,
+            micro_motion_states=micro_motion_states,
+            coupling_constraints=coupling_constraints,
+        )
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
+        state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
+        _ensure_travel_event_rows(state)
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "incident_event_id": str((dict(derail_result.get("incident_event") or {})).get("event_id", "")).strip(),
+            "vehicle_event_id": str((dict(derail_result.get("vehicle_event") or {})).get("event_id", "")).strip(),
+            "body_id": str(derail_result.get("body_id", "")).strip(),
+            "reason_code": str(inputs.get("reason_code", "incident.derailment.curvature")).strip()
+            or "incident.derailment.curvature",
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mobility_micro_tick":
+        motion_rows_by_vehicle = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicle_motion_states or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        micro_rows_by_vehicle = micro_motion_rows_by_vehicle_id(micro_motion_states)
+        for vehicle_id, row in sorted(motion_rows_by_vehicle.items(), key=lambda item: str(item[0])):
+            if vehicle_id in micro_rows_by_vehicle:
+                continue
+            if str((dict(row.get("micro_state") or {})).get("geometry_id", "")).strip():
+                try:
+                    micro_rows_by_vehicle[vehicle_id] = _micro_motion_row_from_vehicle_motion(
+                        vehicle_id=vehicle_id,
+                        motion_state_row=row,
+                        current_tick=int(current_tick),
+                    )
+                except ValueError:
+                    continue
+        requested_vehicle_ids = _sorted_tokens(list(inputs.get("vehicle_ids") or []))
+        if not requested_vehicle_ids:
+            requested_vehicle_ids = sorted(micro_rows_by_vehicle.keys())
+        roi_vehicle_ids = _sorted_tokens(
+            list(
+                inputs.get(
+                    "roi_vehicle_ids",
+                    state.get("mobility_micro_roi_vehicle_ids")
+                    or (dict(policy_context or {})).get("mobility_micro_roi_vehicle_ids", []),
+                )
+                or []
+            )
+        )
+        if not roi_vehicle_ids:
+            return refusal(
+                "refusal.mob.fidelity_denied",
+                "process.mobility_micro_tick requires explicit ROI vehicle ids",
+                "Provide roi_vehicle_ids or policy_context.mobility_micro_roi_vehicle_ids.",
+                {"process_id": process_id},
+                "$.intent.inputs.roi_vehicle_ids",
+            )
+        roi_set = set(roi_vehicle_ids)
+        candidate_vehicle_ids = [vehicle_id for vehicle_id in requested_vehicle_ids if vehicle_id in roi_set]
+        max_updates = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_vehicle_updates_per_tick",
+                        (dict(policy_context or {})).get("mobility_micro_max_vehicle_updates_per_tick", 32),
+                    ),
+                    32,
+                ),
+            )
+        )
+        dt_ticks = int(max(1, _as_int(inputs.get("dt_ticks", 1), 1)))
+        default_speed_cap_mm_per_tick = int(max(100, _as_int(inputs.get("default_speed_cap_mm_per_tick", 1000), 1000)))
+        default_derail_threshold_units = int(max(1, _as_int(inputs.get("base_derail_threshold_units", 64), 64)))
+        downgrade_to_meso = bool(inputs.get("downgrade_to_meso_on_budget", True))
+
+        effect_type_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="effect_type_registry",
+            registry_rel_path="data/registries/effect_type_registry.json",
+            entry_key="effect_types",
+        )
+        stacking_policy_registry = _effect_registry_payload(
+            policy_context=policy_context,
+            key="stacking_policy_registry",
+            registry_rel_path="data/registries/stacking_policy_registry.json",
+            entry_key="stacking_policies",
+        )
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        sample_rows = [
+            {"target_id": vehicle_id, "spatial_position": _target_spatial_position(state, vehicle_id)}
+            for vehicle_id in list(candidate_vehicle_ids or [])
+        ]
+        modifier_snapshot = field_modifier_snapshot(
+            field_layer_rows=field_layers,
+            field_cell_rows=field_cells,
+            field_type_registry=field_type_registry,
+            sample_rows=sample_rows,
+        )
+        modifier_rows_by_vehicle = dict(
+            (
+                str(row.get("target_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(dict(modifier_snapshot).get("rows") or [])
+            if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+        )
+
+        derailment_policy_registry = dict(_policy_payload(policy_context, "derailment_policy_registry") or {})
+        if not derailment_policy_registry:
+            derailment_policy_registry = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/derailment_policy_registry.json",
+                default_payload={"record": {"derailment_policies": []}},
+            )
+        derail_policy = resolve_derailment_policy(
+            registry_payload=derailment_policy_registry,
+            derail_policy_id=str(inputs.get("derail_policy_id", "derail.strict_threshold")).strip() or "derail.strict_threshold",
+        )
+
+        guide_geometry_rows_by_id = dict(
+            (
+                str(row.get("geometry_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(guide_geometries or [])
+            if isinstance(row, Mapping) and str(row.get("geometry_id", "")).strip()
+        )
+        geometry_metric_rows_by_geometry_id = dict(
+            (
+                str(row.get("geometry_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(geometry_derived_metrics or [])
+            if isinstance(row, Mapping) and str(row.get("geometry_id", "")).strip()
+        )
+        vehicle_rows_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+
+        processed_vehicle_ids: List[str] = []
+        deferred_vehicle_ids: List[str] = []
+        derailed_vehicle_ids: List[str] = []
+        stochastic_derail_rows: List[dict] = []
+        instrument_rows_by_vehicle: Dict[str, dict] = {}
+        event_seq = int(len(list(travel_events or [])))
+        for vehicle_id in sorted(candidate_vehicle_ids):
+            if len(processed_vehicle_ids) >= int(max_updates):
+                deferred_vehicle_ids.append(vehicle_id)
+                continue
+            micro_row = dict(micro_rows_by_vehicle.get(vehicle_id) or {})
+            geometry_id = str(micro_row.get("geometry_id", "")).strip()
+            geometry_row = dict(guide_geometry_rows_by_id.get(geometry_id) or {})
+            if not micro_row or (not geometry_id) or (not geometry_row):
+                deferred_vehicle_ids.append(vehicle_id)
+                continue
+            metric_row = dict(geometry_metric_rows_by_geometry_id.get(geometry_id) or {})
+            control_inputs_by_vehicle = dict(inputs.get("control_inputs_by_vehicle") or {}) if isinstance(inputs.get("control_inputs_by_vehicle"), Mapping) else {}
+            control_input = dict(control_inputs_by_vehicle.get(vehicle_id) or {})
+            effect_map = get_effective_modifier_map(
+                target_id=vehicle_id,
+                keys=["max_speed_permille", "traction_permille"],
+                effect_rows=effect_rows,
+                current_tick=int(current_tick),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            effect_modifier_rows = dict(effect_map.get("modifiers") or {})
+            max_speed_row = dict(effect_modifier_rows.get("max_speed_permille") or {})
+            traction_row = dict(effect_modifier_rows.get("traction_permille") or {})
+            effect_modifiers = {
+                "max_speed_permille": int(_as_int(max_speed_row.get("value", 1000), 1000)),
+                "traction_permille": int(_as_int(traction_row.get("value", 1000), 1000)),
+                "speed_cap_mm_per_tick": int(default_speed_cap_mm_per_tick),
+            }
+            field_row = dict(modifier_rows_by_vehicle.get(vehicle_id) or {})
+            field_values = {"friction_permille": int(max(100, _as_int(field_row.get("traction_permille", 1000), 1000)))}
+            step_result = step_micro_motion(
+                motion_row=micro_row,
+                geometry_row=geometry_row,
+                metric_row=metric_row,
+                control_input=control_input,
+                effect_modifiers=effect_modifiers,
+                field_values=field_values,
+                dt_ticks=int(dt_ticks),
+                current_tick=int(current_tick),
+            )
+            next_micro_row = dict(step_result.get("motion_state") or {})
+            telemetry = dict(step_result.get("telemetry") or {})
+            if bool(telemetry.get("blocked", False)):
+                next_geometry_id = _next_geometry_candidate(
+                    state=state,
+                    current_geometry_id=geometry_id,
+                    vehicle_id=vehicle_id,
+                    itineraries=itineraries,
+                    motion_state_rows_by_vehicle_id=motion_rows_by_vehicle,
+                    mobility_junction_rows=mobility_junctions,
+                    switch_state_rows=mobility_switch_state_machines,
+                )
+                if next_geometry_id:
+                    next_micro_row = build_micro_motion_state(
+                        vehicle_id=vehicle_id,
+                        geometry_id=next_geometry_id,
+                        s_param=0,
+                        velocity=int(_as_int(next_micro_row.get("velocity", 0), 0)),
+                        acceleration=int(_as_int(next_micro_row.get("acceleration", 0), 0)),
+                        direction=str(next_micro_row.get("direction", "forward")).strip() or "forward",
+                        last_update_tick=int(current_tick),
+                        extensions=dict(next_micro_row.get("extensions") or {}),
+                    )
+                else:
+                    itinerary_id = str((dict(motion_rows_by_vehicle.get(vehicle_id) or {}).get("macro_state") or {}).get("itinerary_id", "")).strip() or "itinerary.none"
+                    blocked_event = build_travel_event(
+                        event_id=deterministic_travel_event_id(
+                            vehicle_id=vehicle_id,
+                            itinerary_id=itinerary_id,
+                            kind="incident_stub",
+                            tick=int(current_tick),
+                            sequence=int(event_seq),
+                        ),
+                        tick=int(current_tick),
+                        vehicle_id=vehicle_id,
+                        itinerary_id=itinerary_id,
+                        kind="incident_stub",
+                        details={"reason_code": "event.blocked", "geometry_id": geometry_id},
+                        extensions={"source_process_id": process_id},
+                    )
+                    travel_events = _upsert_row_by_id(travel_events, "event_id", blocked_event)
+                    event_seq += 1
+
+            radius_mm = int(max(1, curvature_radius_mm(metric_row)))
+            track_wear_permille = int(max(100, _as_int((dict(metric_row.get("extensions") or {})).get("track_wear_permille", 1000), 1000)))
+            maintenance_permille = int(max(100, _as_int((dict(vehicle_rows_by_id.get(vehicle_id, {}) or {}).get("extensions") or {}).get("maintenance_permille", 1000), 1000)))
+            derail_eval = evaluate_derailment(
+                velocity_mm_per_tick=int(_as_int(next_micro_row.get("velocity", 0), 0)),
+                radius_mm=int(radius_mm),
+                base_threshold=int(default_derail_threshold_units),
+                track_wear_permille=int(track_wear_permille),
+                friction_permille=int(max(100, _as_int(field_values.get("friction_permille", 1000), 1000))),
+                maintenance_permille=int(maintenance_permille),
+            )
+            stochastic_eval = _stochastic_derailment_trigger(
+                derail_policy=derail_policy,
+                vehicle_id=vehicle_id,
+                geometry_id=str(next_micro_row.get("geometry_id", "")).strip(),
+                tick=int(current_tick),
+                lateral_accel_units=int(max(0, _as_int(derail_eval.get("lateral_accel_units", 0), 0))),
+                threshold_units=int(max(1, _as_int(derail_eval.get("threshold_units", 1), 1))),
+            )
+            if bool(stochastic_eval.get("triggered", False)):
+                stochastic_derail_rows.append(
+                    {
+                        "vehicle_id": vehicle_id,
+                        "geometry_id": str(next_micro_row.get("geometry_id", "")).strip(),
+                        "chance_permille": int(_as_int(stochastic_eval.get("chance_permille", 0), 0)),
+                        "roll_permille": int(_as_int(stochastic_eval.get("roll_permille", 0), 0)),
+                        "rng_stream_name": str(stochastic_eval.get("rng_stream_name", "")).strip() or None,
+                    }
+                )
+            lateral_accel_units = int(max(0, _as_int(derail_eval.get("lateral_accel_units", 0), 0)))
+            threshold_units = int(max(1, _as_int(derail_eval.get("threshold_units", 1), 1)))
+            derail_risk_permille = int(min(2000, (int(lateral_accel_units) * 1000) // int(max(1, threshold_units))))
+            derail_risk_band = "high" if int(derail_risk_permille) >= 1000 else ("medium" if int(derail_risk_permille) >= 700 else "low")
+            instrument_rows_by_vehicle[vehicle_id] = {
+                "vehicle_id": vehicle_id,
+                "tick": int(current_tick),
+                "speed_mm_per_tick": int(_as_int(next_micro_row.get("velocity", 0), 0)),
+                "eta_hint_ticks": None,
+                "derail_risk_permille": int(derail_risk_permille),
+                "derail_risk_band": derail_risk_band,
+                "curvature_radius_mm": int(radius_mm),
+                "track_wear_permille": int(track_wear_permille),
+            }
+            should_derail = bool(derail_eval.get("derail", False)) or bool(stochastic_eval.get("triggered", False))
+            if should_derail:
+                reason_code = "incident.derailment.curvature"
+                if (not bool(derail_eval.get("derail", False))) and bool(stochastic_eval.get("triggered", False)):
+                    reason_code = "incident.derailment.track_wear"
+                derail_result = _apply_derailment_transition(
+                    state=state,
+                    vehicle_id=vehicle_id,
+                    current_tick=int(current_tick),
+                    process_id=process_id,
+                    intent_id=str(intent_id),
+                    vehicle_rows_by_id=vehicle_rows_by_id,
+                    motion_rows_by_vehicle=motion_rows_by_vehicle,
+                    micro_rows_by_vehicle={**micro_rows_by_vehicle, vehicle_id: next_micro_row},
+                    coupling_constraints=list(coupling_constraints or []),
+                    travel_events=list(travel_events or []),
+                    vehicle_events=list(vehicle_events or []),
+                    reason_code=reason_code,
+                    details={
+                        "geometry_id": str(next_micro_row.get("geometry_id", "")).strip(),
+                        "speed": int(_as_int(next_micro_row.get("velocity", 0), 0)),
+                        "radius": int(radius_mm),
+                        "lateral_accel_units": int(lateral_accel_units),
+                        "threshold_units": int(threshold_units),
+                        "track_condition": {
+                            "track_wear_permille": int(track_wear_permille),
+                            "friction_permille": int(max(100, _as_int(field_values.get("friction_permille", 1000), 1000))),
+                            "maintenance_permille": int(maintenance_permille),
+                        },
+                        "stochastic": {
+                            "triggered": bool(stochastic_eval.get("triggered", False)),
+                            "chance_permille": int(_as_int(stochastic_eval.get("chance_permille", 0), 0)),
+                            "roll_permille": (
+                                None
+                                if stochastic_eval.get("roll_permille") is None
+                                else int(_as_int(stochastic_eval.get("roll_permille", 0), 0))
+                            ),
+                            "rng_stream_name": str(stochastic_eval.get("rng_stream_name", "")).strip() or None,
+                        },
+                    },
+                )
+                motion_rows_by_vehicle = dict(derail_result.get("motion_rows_by_vehicle") or {})
+                micro_rows_by_vehicle = dict(derail_result.get("micro_rows_by_vehicle") or {})
+                coupling_constraints = normalize_coupling_constraint_rows(list(derail_result.get("coupling_constraints") or []))
+                travel_events = normalize_travel_event_rows(list(derail_result.get("travel_events") or []))
+                vehicle_events = _ensure_vehicle_events({"vehicle_events": list(derail_result.get("vehicle_events") or [])})
+                derailed_vehicle_ids.append(vehicle_id)
+                processed_vehicle_ids.append(vehicle_id)
+                continue
+
+            micro_rows_by_vehicle[vehicle_id] = dict(next_micro_row)
+            motion_row = dict(motion_rows_by_vehicle.get(vehicle_id) or {})
+            motion_rows_by_vehicle[vehicle_id] = build_motion_state(
+                vehicle_id=vehicle_id,
+                tier="micro",
+                macro_state=dict(motion_row.get("macro_state") or {}),
+                meso_state=dict(motion_row.get("meso_state") or {}),
+                micro_state={
+                    "geometry_id": str(next_micro_row.get("geometry_id", "")).strip() or None,
+                    "s_param": int(max(0, _as_int(next_micro_row.get("s_param", 0), 0))),
+                    "body_ref": None,
+                    "position_mm": {"x": int(max(0, _as_int(next_micro_row.get("s_param", 0), 0))), "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": int(_as_int(telemetry.get("heading_yaw_mdeg", 0), 0)), "pitch": 0, "roll": 0},
+                    "velocity_mm_per_tick": {"x": int(_as_int(next_micro_row.get("velocity", 0), 0)), "y": 0, "z": 0},
+                    "accel_mm_per_tick2": {"x": int(_as_int(next_micro_row.get("acceleration", 0), 0)), "y": 0, "z": 0},
+                },
+                last_update_tick=int(current_tick),
+                extensions=dict(motion_row.get("extensions") or {}),
+            )
+            processed_vehicle_ids.append(vehicle_id)
+
+        active_couplings = [
+            dict(row)
+            for row in list(coupling_constraints or [])
+            if isinstance(row, Mapping) and bool(row.get("active", False))
+        ]
+        deferred_vehicle_set = set(str(token).strip() for token in list(deferred_vehicle_ids or []) if str(token).strip())
+        derailed_vehicle_set = set(str(token).strip() for token in list(derailed_vehicle_ids or []) if str(token).strip())
+        for coupling_row in sorted(
+            active_couplings,
+            key=lambda row: (
+                str(row.get("vehicle_a_id", "")),
+                str(row.get("vehicle_b_id", "")),
+                str(row.get("constraint_id", "")),
+            ),
+        ):
+            lead_id = str(coupling_row.get("vehicle_a_id", "")).strip()
+            trail_id = str(coupling_row.get("vehicle_b_id", "")).strip()
+            if lead_id in deferred_vehicle_set or trail_id in deferred_vehicle_set:
+                continue
+            if lead_id in derailed_vehicle_set or trail_id in derailed_vehicle_set:
+                continue
+            lead_row = dict(micro_rows_by_vehicle.get(lead_id) or {})
+            trail_row = dict(micro_rows_by_vehicle.get(trail_id) or {})
+            if not lead_row or not trail_row:
+                continue
+            if str(lead_row.get("geometry_id", "")).strip() != str(trail_row.get("geometry_id", "")).strip():
+                continue
+            geometry_id = str(lead_row.get("geometry_id", "")).strip()
+            geometry_row = dict(guide_geometry_rows_by_id.get(geometry_id) or {})
+            metric_row = dict(geometry_metric_rows_by_geometry_id.get(geometry_id) or {})
+            length_mm = int(max(1, geometry_length_mm(geometry_row=geometry_row, metric_row=metric_row)))
+            offset_mm = int(
+                max(
+                    0,
+                    _as_int(
+                        (dict(coupling_row.get("extensions") or {})).get(
+                            "coupling_offset_mm",
+                            inputs.get("default_coupling_offset_mm", 2000),
+                        ),
+                        2000,
+                    ),
+                )
+            )
+            propagated = apply_consist_offsets(
+                lead_row=lead_row,
+                trailing_rows=[trail_row],
+                offset_mm_by_vehicle_id={trail_id: int(offset_mm)},
+                geometry_length_mm_value=int(length_mm),
+                current_tick=int(current_tick),
+            )
+            if not propagated:
+                continue
+            next_trail = dict(propagated[0])
+            micro_rows_by_vehicle[trail_id] = dict(next_trail)
+            trail_motion = dict(motion_rows_by_vehicle.get(trail_id) or {})
+            motion_rows_by_vehicle[trail_id] = build_motion_state(
+                vehicle_id=trail_id,
+                tier="micro",
+                macro_state=dict(trail_motion.get("macro_state") or {}),
+                meso_state=dict(trail_motion.get("meso_state") or {}),
+                micro_state={
+                    "geometry_id": str(next_trail.get("geometry_id", "")).strip() or None,
+                    "s_param": int(max(0, _as_int(next_trail.get("s_param", 0), 0))),
+                    "body_ref": None,
+                    "position_mm": {"x": int(max(0, _as_int(next_trail.get("s_param", 0), 0))), "y": 0, "z": 0},
+                    "orientation_mdeg": dict((dict(motion_rows_by_vehicle.get(lead_id) or {}).get("micro_state") or {}).get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0}),
+                    "velocity_mm_per_tick": {"x": int(_as_int(next_trail.get("velocity", 0), 0)), "y": 0, "z": 0},
+                    "accel_mm_per_tick2": {"x": int(_as_int(next_trail.get("acceleration", 0), 0)), "y": 0, "z": 0},
+                },
+                last_update_tick=int(current_tick),
+                extensions=dict(trail_motion.get("extensions") or {}),
+            )
+
+        if downgrade_to_meso and deferred_vehicle_ids:
+            for vehicle_id in deferred_vehicle_ids:
+                motion_row = dict(motion_rows_by_vehicle.get(vehicle_id) or {})
+                motion_rows_by_vehicle[vehicle_id] = build_motion_state(
+                    vehicle_id=vehicle_id,
+                    tier="meso",
+                    macro_state=dict(motion_row.get("macro_state") or {}),
+                    meso_state=dict(motion_row.get("meso_state") or {}),
+                    micro_state=dict(motion_row.get("micro_state") or {}),
+                    last_update_tick=int(current_tick),
+                    extensions=dict(motion_row.get("extensions") or {}),
+                )
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=vehicle_id,
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.micro_budget",
+                        resolved_level="meso",
+                        cost_allocated=0,
+                        extensions={"max_vehicle_updates_per_tick": int(max_updates)},
+                    )
+                    for vehicle_id in list(_sorted_tokens(deferred_vehicle_ids))[:128]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+
+        vehicle_motion_states = normalize_motion_state_rows(
+            [dict(motion_rows_by_vehicle[key]) for key in sorted(motion_rows_by_vehicle.keys())]
+        )
+        micro_motion_states = normalize_micro_motion_state_rows(
+            [dict(micro_rows_by_vehicle[key]) for key in sorted(micro_rows_by_vehicle.keys())]
+        )
+        coupling_constraints = normalize_coupling_constraint_rows(coupling_constraints)
+        travel_events = normalize_travel_event_rows(travel_events)
+        _persist_mobility_micro_state(
+            state,
+            micro_motion_states=micro_motion_states,
+            coupling_constraints=coupling_constraints,
+        )
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
+        state["travel_events"] = [dict(row) for row in list(travel_events or []) if isinstance(row, Mapping)]
+        _ensure_travel_event_rows(state)
+        deferred_vehicle_ids = _sorted_tokens(deferred_vehicle_ids)
+        coupling_rows_by_vehicle = coupling_constraint_rows_by_vehicle(coupling_constraints)
+        state["mobility_micro_instruments"] = [
+            dict(instrument_rows_by_vehicle[key])
+            for key in sorted(instrument_rows_by_vehicle.keys())
+        ]
+        state["mobility_micro_runtime_state"] = {
+            "tick": int(current_tick),
+            "dt_ticks": int(dt_ticks),
+            "roi_vehicle_ids": list(roi_vehicle_ids),
+            "processed_vehicle_ids": list(_sorted_tokens(processed_vehicle_ids)),
+            "deferred_vehicle_ids": list(deferred_vehicle_ids),
+            "derailed_vehicle_ids": list(_sorted_tokens(derailed_vehicle_ids)),
+            "stochastic_derail_rows": [dict(row) for row in sorted(stochastic_derail_rows, key=lambda row: str(row.get("vehicle_id", "")))],
+            "max_vehicle_updates_per_tick": int(max_updates),
+            "budget_outcome": "degraded" if deferred_vehicle_ids else "complete",
+            "derail_policy_id": str(derail_policy.get("derail_policy_id", "derail.strict_threshold")).strip()
+            or "derail.strict_threshold",
+            "active_consist_vehicle_count": int(len(coupling_rows_by_vehicle)),
+        }
+        result_metadata = {
+            "processed_vehicle_ids": list(_sorted_tokens(processed_vehicle_ids)),
+            "deferred_vehicle_ids": list(deferred_vehicle_ids),
+            "derailed_vehicle_ids": list(_sorted_tokens(derailed_vehicle_ids)),
+            "stochastic_derail_count": int(len(stochastic_derail_rows)),
+            "budget_outcome": "degraded" if deferred_vehicle_ids else "complete",
+            "max_vehicle_updates_per_tick": int(max_updates),
+            "roi_vehicle_ids": list(roi_vehicle_ids),
+            "coupling_count": int(len(coupling_constraints)),
+            "active_consist_vehicle_count": int(len(coupling_rows_by_vehicle)),
+            "micro_motion_count": int(len(micro_motion_states)),
+            "travel_event_count": int(len(travel_events)),
+            "instrument_row_count": int(len(instrument_rows_by_vehicle)),
+            "derail_policy_id": str(derail_policy.get("derail_policy_id", "derail.strict_threshold")).strip()
+            or "derail.strict_threshold",
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_register_from_structure":
