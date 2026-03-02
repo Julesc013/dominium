@@ -65,6 +65,21 @@ from .travel import (
     start_macro_travel,
     tick_macro_travel,
 )
+from .traffic import (
+    REFUSAL_MOBILITY_RESERVATION_CONFLICT,
+    TrafficEngineError as MesoTrafficError,
+    apply_congestion_to_speed,
+    apply_traffic_events_to_occupancy,
+    build_edge_occupancy,
+    compute_congestion_ratio_permille,
+    congestion_multiplier_permille,
+    congestion_policy_rows_by_id,
+    edge_occupancy_rows_by_edge_id,
+    ensure_edge_occupancy_rows,
+    normalize_edge_occupancy_rows,
+    resolve_congestion_policy,
+    resolve_edge_capacity_units,
+)
 
 __all__ = [
     "build_geometry_candidate",
@@ -124,4 +139,17 @@ __all__ = [
     "speed_policy_rows_by_id",
     "start_macro_travel",
     "tick_macro_travel",
+    "REFUSAL_MOBILITY_RESERVATION_CONFLICT",
+    "MesoTrafficError",
+    "apply_congestion_to_speed",
+    "apply_traffic_events_to_occupancy",
+    "build_edge_occupancy",
+    "compute_congestion_ratio_permille",
+    "congestion_multiplier_permille",
+    "congestion_policy_rows_by_id",
+    "edge_occupancy_rows_by_edge_id",
+    "ensure_edge_occupancy_rows",
+    "normalize_edge_occupancy_rows",
+    "resolve_congestion_policy",
+    "resolve_edge_capacity_units",
 ]
