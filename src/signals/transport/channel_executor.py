@@ -135,6 +135,9 @@ def execute_channel_transport_tick(
     delivery_state_fn: Callable[..., str],
     event_id_fn: Callable[..., str],
     build_event_fn: Callable[..., dict],
+    courier_arrival_queue_keys: Mapping[str, bool] | None = None,
+    courier_arrival_subject_pairs: Mapping[Tuple[str, str], bool] | None = None,
+    courier_commitment_id_fn: Callable[..., str] | None = None,
 ) -> dict:
     cost_unit = int(max(1, _as_int(cost_units_per_delivery, 1)))
     max_attempts = int(max(0, _as_int(max_cost_units, 0)) // cost_unit)
@@ -146,9 +149,12 @@ def execute_channel_transport_tick(
     processed_keys: List[str] = []
     deferred_keys: List[str] = []
     delivered_rows: List[dict] = []
+    created_courier_commitments_by_id: Dict[str, dict] = {}
     next_event_rows = [dict(row) for row in list(event_rows or []) if isinstance(row, Mapping)]
     event_sequence = int(len(next_event_rows))
     next_route_cache_state = _as_map(route_cache_state)
+    arrival_queue_keys = dict((str(key).strip(), bool(value)) for key, value in dict(courier_arrival_queue_keys or {}).items() if str(key).strip())
+    arrival_subject_pairs = dict(((str(key[0]).strip(), str(key[1]).strip()), bool(value)) for key, value in dict(courier_arrival_subject_pairs or {}).items() if isinstance(key, tuple) and len(key) == 2 and str(key[0]).strip())
 
     grouped: Dict[str, List[dict]] = {}
     for queue_row in sorted((dict(row) for row in list(queue_rows or []) if isinstance(row, Mapping)), key=_queue_sort_key):
@@ -180,6 +186,42 @@ def execute_channel_transport_tick(
                 continue
 
             queue_ext = _as_map(queue_row.get("extensions"))
+            courier_commitment_id = None
+            is_courier_channel = str(channel_row.get("channel_type_id", "")).strip() == "channel.courier_route"
+            if is_courier_channel:
+                courier_commitment_id = str(queue_ext.get("courier_commitment_id", "")).strip() or None
+                if courier_commitment_id is None and callable(courier_commitment_id_fn):
+                    courier_commitment_id = str(
+                        courier_commitment_id_fn(
+                            channel_id=channel_id,
+                            envelope_id=envelope_id,
+                            recipient_subject_id=str(queue_row.get("recipient_subject_id", "")).strip() or None,
+                            queue_key=queue_key,
+                        )
+                    ).strip() or None
+                if courier_commitment_id:
+                    created_courier_commitments_by_id[courier_commitment_id] = {
+                        "commitment_id": courier_commitment_id,
+                        "channel_id": channel_id,
+                        "envelope_id": envelope_id,
+                        "artifact_id": str(envelope_row.get("artifact_id", "")).strip(),
+                        "recipient_subject_id": queue_row.get("recipient_subject_id"),
+                        "queue_key": queue_key,
+                        "created_tick": int(tick),
+                        "status": "in_transit",
+                    }
+                    next_row = dict(queue_row)
+                    next_ext = _as_map(next_row.get("extensions"))
+                    next_ext["courier_commitment_id"] = courier_commitment_id
+                    next_row["extensions"] = next_ext
+                    queue_row = next_row
+                    queue_ext = next_ext
+                recipient_subject_id = str(queue_row.get("recipient_subject_id", "")).strip()
+                arrived = bool(arrival_queue_keys.get(queue_key, False)) or bool(arrival_subject_pairs.get((envelope_id, recipient_subject_id), False))
+                if not arrived:
+                    pending_rows.append(dict(queue_row))
+                    continue
+
             route_initialized = bool(queue_ext.get("route_initialized", False))
             route_details = {
                 "route_policy_id": str(queue_ext.get("route_policy_id", "")).strip() or str(_as_map(channel_row.get("extensions")).get("routing_policy_id", "")).strip() or "route.shortest_delay",
@@ -188,7 +230,7 @@ def execute_channel_transport_tick(
                 "path_node_ids": [str(item).strip() for item in list(queue_ext.get("path_node_ids") or []) if str(item).strip()],
                 "route_unavailable": False,
             }
-            if not route_initialized:
+            if not route_initialized and (not is_courier_channel):
                 try:
                     resolved = resolve_route_fn(
                         channel_row=channel_row,
@@ -276,6 +318,7 @@ def execute_channel_transport_tick(
                         "route_cache_key": route_details.get("route_cache_key"),
                         "path_edge_ids": list(route_details.get("path_edge_ids") or []),
                         "path_node_ids": list(route_details.get("path_node_ids") or []),
+                        "courier_commitment_id": courier_commitment_id,
                     },
                 )
             )
@@ -312,5 +355,13 @@ def execute_channel_transport_tick(
         "budget_outcome": "degraded" if deferred_keys else "complete",
         "cost_units": int(max(0, attempts * cost_unit)),
         "route_cache_state": dict(next_route_cache_state),
+        "created_courier_commitment_rows": sorted(
+            (dict(row) for row in created_courier_commitments_by_id.values()),
+            key=lambda row: (
+                str(row.get("channel_id", "")),
+                str(row.get("envelope_id", "")),
+                str(row.get("recipient_subject_id", "")),
+                str(row.get("commitment_id", "")),
+            ),
+        ),
     }
-

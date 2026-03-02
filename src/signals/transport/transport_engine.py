@@ -279,6 +279,18 @@ def deterministic_message_delivery_event_id(*, envelope_id: str, from_node_id: s
     return "event.signal_delivery.{}".format(digest[:16])
 
 
+def deterministic_courier_commitment_id(*, channel_id: str, envelope_id: str, recipient_subject_id: str | None, queue_key: str) -> str:
+    digest = canonical_sha256(
+        {
+            "channel_id": str(channel_id or "").strip(),
+            "envelope_id": str(envelope_id or "").strip(),
+            "recipient_subject_id": None if recipient_subject_id is None else str(recipient_subject_id).strip() or None,
+            "queue_key": str(queue_key or "").strip(),
+        }
+    )
+    return "commitment.signal_courier.{}".format(digest[:16])
+
+
 def build_message_delivery_event(*, event_id: str, envelope_id: str, from_node_id: str, to_node_id: str, delivered_tick: int, delivery_state: str, extensions: Mapping[str, object] | None = None) -> dict:
     state_token = str(delivery_state or "").strip().lower()
     if state_token not in {"delivered", "lost", "corrupted"}:
@@ -320,6 +332,34 @@ def normalize_message_delivery_event_rows(rows: object) -> List[dict]:
         except SignalTransportError:
             continue
     return [dict(out[key]) for key in sorted(out.keys(), key=lambda key: (_as_int(out[key].get("delivered_tick", 0), 0), str(key)))]
+
+
+def normalize_courier_arrival_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out = []
+    for row in rows:
+        if not isinstance(row, Mapping):
+            continue
+        out.append(
+            {
+                "schema_version": "1.0.0",
+                "queue_key": str(row.get("queue_key", "")).strip() or None,
+                "envelope_id": str(row.get("envelope_id", "")).strip() or None,
+                "recipient_subject_id": str(row.get("recipient_subject_id", "")).strip() or None,
+                "arrival_tick": int(max(0, _as_int(row.get("arrival_tick", 0), 0))),
+                "extensions": _as_map(row.get("extensions")),
+            }
+        )
+    return sorted(
+        out,
+        key=lambda row: (
+            str(row.get("queue_key", "")),
+            str(row.get("envelope_id", "")),
+            str(row.get("recipient_subject_id", "")),
+            _as_int(row.get("arrival_tick", 0), 0),
+        ),
+    )
 
 
 def deterministic_knowledge_receipt_id(*, subject_id: str, artifact_id: str, envelope_id: str, acquired_tick: int) -> str:
@@ -583,6 +623,7 @@ def process_signal_transport_tick(
     max_cost_units: int,
     cost_units_per_delivery: int,
     route_cache_state: Mapping[str, object] | None = None,
+    courier_arrival_rows: object = None,
     default_trust_weight: float = 1.0,
     trust_weight_by_subject_id: Mapping[str, object] | None = None,
 ) -> dict:
@@ -598,6 +639,7 @@ def process_signal_transport_tick(
         max_cost_units=int(max(0, _as_int(max_cost_units, 0))),
         cost_units_per_delivery=int(max(1, _as_int(cost_units_per_delivery, 1))),
         route_cache_state=route_cache_state,
+        courier_arrival_rows=courier_arrival_rows,
     )
     next_receipts = normalize_knowledge_receipt_rows(knowledge_receipt_rows)
     created_receipts = []
@@ -786,6 +828,7 @@ def tick_signal_transport(
     max_cost_units: int,
     cost_units_per_delivery: int,
     route_cache_state: Mapping[str, object] | None = None,
+    courier_arrival_rows: object = None,
     field_visibility_by_channel_id: Mapping[str, object] | None = None,
 ) -> dict:
     del field_visibility_by_channel_id
@@ -797,6 +840,20 @@ def tick_signal_transport(
     graphs = dict((str(row.get("graph_id", "")).strip(), dict(row)) for row in list(network_graph_rows or []) if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip())
     loss_rows = loss_policy_rows_by_id(loss_policy_registry)
     routing_policy_rows = _routing_policy_rows_by_id(routing_policy_registry)
+    normalized_arrivals = normalize_courier_arrival_rows(courier_arrival_rows)
+    arrival_queue_keys = dict(
+        (str(row.get("queue_key", "")).strip(), True)
+        for row in list(normalized_arrivals or [])
+        if str(row.get("queue_key", "")).strip()
+    )
+    arrival_subject_pairs = dict(
+        (
+            (str(row.get("envelope_id", "")).strip(), str(row.get("recipient_subject_id", "")).strip()),
+            True,
+        )
+        for row in list(normalized_arrivals or [])
+        if str(row.get("envelope_id", "")).strip()
+    )
     execution = execute_channel_transport_tick(
         tick=int(tick),
         channels_by_id=channels,
@@ -813,6 +870,9 @@ def tick_signal_transport(
         delivery_state_fn=_delivery_state,
         event_id_fn=deterministic_message_delivery_event_id,
         build_event_fn=build_message_delivery_event,
+        courier_arrival_queue_keys=arrival_queue_keys,
+        courier_arrival_subject_pairs=arrival_subject_pairs,
+        courier_commitment_id_fn=deterministic_courier_commitment_id,
     )
     return {
         "signal_transport_queue_rows": normalize_transport_queue_rows(execution.get("signal_transport_queue_rows")),
@@ -830,6 +890,15 @@ def tick_signal_transport(
         "budget_outcome": str(execution.get("budget_outcome", "complete")).strip() or "complete",
         "cost_units": int(max(0, _as_int(execution.get("cost_units", 0), 0))),
         "route_cache_state": _as_map(execution.get("route_cache_state")),
+        "created_courier_commitment_rows": sorted(
+            (dict(row) for row in list(execution.get("created_courier_commitment_rows") or []) if isinstance(row, Mapping)),
+            key=lambda row: (
+                str(row.get("channel_id", "")),
+                str(row.get("envelope_id", "")),
+                str(row.get("recipient_subject_id", "")),
+                str(row.get("commitment_id", "")),
+            ),
+        ),
     }
 
 
@@ -841,6 +910,7 @@ __all__ = [
     "build_message_delivery_event",
     "build_signal_channel",
     "build_signal_message_envelope",
+    "deterministic_courier_commitment_id",
     "deterministic_knowledge_receipt_id",
     "deterministic_message_delivery_event_id",
     "deterministic_signal_message_envelope_id",
@@ -851,6 +921,7 @@ __all__ = [
     "normalize_message_delivery_event_rows",
     "normalize_signal_channel_rows",
     "normalize_signal_message_envelope_rows",
+    "normalize_courier_arrival_rows",
     "normalize_transport_queue_rows",
     "process_knowledge_acquire",
     "process_signal_send",
