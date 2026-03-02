@@ -302,7 +302,7 @@ def build_signal_channel(
         "channel_id": str(channel_id or "").strip(),
         "channel_type_id": str(channel_type_id or "").strip(),
         "network_graph_id": str(network_graph_id or "").strip(),
-        "capacity_per_tick": int(max(1, _as_int(capacity_per_tick, 1))),
+        "capacity_per_tick": int(max(0, _as_int(capacity_per_tick, 1))),
         "base_delay_ticks": int(max(0, _as_int(base_delay_ticks, 0))),
         "loss_policy_id": str(loss_policy_id or "").strip() or "loss.none",
         "encryption_policy_id": None if encryption_policy_id is None else str(encryption_policy_id).strip() or None,

@@ -325,6 +325,7 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-STRUCTURAL-FAILURE-THROUGH-MECH",
     "INV-NO-ADHOC-WEATHER-FLAGS",
     "INV-FIELD-QUERIES-ONLY",
+    "INV-NO-ADHOC-SAFETY-LOGIC",
     "INV-NO-VEHICLE-SPECIALCASE",
     "INV-VEHICLES-AS-ASSEMBLIES",
     "INV-SPEC-COMPATIBILITY-REQUIRED",
@@ -12955,6 +12956,130 @@ def _append_mobility_invariant_findings(
             break
 
 
+def _append_safety_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    safety_engine_rel = "src/safety/safety_engine.py"
+    safety_registry_rel = "data/registries/safety_pattern_registry.json"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    safety_engine_text = _file_text(repo_root, safety_engine_rel)
+    safety_registry_text = _file_text(repo_root, safety_registry_rel)
+
+    required_runtime_tokens = (
+        'elif process_id == "process.safety_tick":',
+        "_load_safety_pattern_registry(",
+        "evaluate_safety_instances(",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="safety protections must run through process.safety_tick and Safety Pattern evaluation helpers",
+                rule_id="INV-NO-ADHOC-SAFETY-LOGIC",
+            )
+        )
+
+    required_engine_tokens = (
+        "def safety_pattern_rows_by_id(",
+        "def normalize_safety_instance_rows(",
+        "def evaluate_safety_instances(",
+    )
+    for token in required_engine_tokens:
+        if token in safety_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=safety_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="safety engine must expose deterministic pattern/instance evaluation primitives",
+                rule_id="INV-NO-ADHOC-SAFETY-LOGIC",
+            )
+        )
+
+    required_pattern_ids = (
+        "safety.interlock_block",
+        "safety.fail_safe_stop",
+        "safety.relief_pressure",
+        "safety.breaker_trip",
+        "safety.redundant_pair",
+        "safety.deadman_basic",
+        "safety.loto_basic",
+        "safety.graceful_degrade_basic",
+    )
+    for token in required_pattern_ids:
+        if token in safety_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=safety_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="safety registry must include baseline SAFETY-0 pattern template ids",
+                rule_id="INV-NO-ADHOC-SAFETY-LOGIC",
+            )
+        )
+
+    inline_safety_patterns = (
+        re.compile(r"\b(?:interlock|failsafe|fail_safe|deadman|watchdog|lockout|tagout|breaker|relief)\b[^\n]*(?:=|apply|state|speed_cap)", re.IGNORECASE),
+        re.compile(r"\bif\b[^\n]*(?:overload|fault|trip|interlock|watchdog|lockout)[^\n]*(?:then|return|apply|set)", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        runtime_rel,
+        safety_engine_rel,
+        "src/mobility/signals/signal_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in inline_safety_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="protective safety behavior must use registered safety patterns, not inline domain logic",
+                    rule_id="INV-NO-ADHOC-SAFETY-LOGIC",
+                )
+            )
+            break
+
+
 def _append_signal_transport_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -13545,6 +13670,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mobility_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_safety_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

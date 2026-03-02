@@ -202,6 +202,8 @@ from analyzers import e173_unlogged_trust_change_smell
 from analyzers import e174_direct_schedule_mutation_smell
 from analyzers import e175_institutional_bypass_smell
 from analyzers import e176_affordance_gap_smell
+from analyzers import e177_inline_protection_smell
+from analyzers import e178_missing_failsafe_smell
 
 
 ANALYZERS = (
@@ -407,6 +409,8 @@ ANALYZERS = (
     e174_direct_schedule_mutation_smell,
     e175_institutional_bypass_smell,
     e176_affordance_gap_smell,
+    e177_inline_protection_smell,
+    e178_missing_failsafe_smell,
 )
 
 
