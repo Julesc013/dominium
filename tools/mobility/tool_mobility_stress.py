@@ -226,6 +226,8 @@ def _simulate_scenario(config: Mapping[str, object]) -> dict:
     micro_grants_by_vehicle = dict((vehicle_id, 0) for vehicle_id in vehicle_ids)
     micro_requests_by_vehicle = dict((vehicle_id, 0) for vehicle_id in vehicle_ids)
     service_ticks_by_vehicle = dict((vehicle_id, 0) for vehicle_id in vehicle_ids)
+    current_tier_by_vehicle = dict((vehicle_id, "meso") for vehicle_id in vehicle_ids)
+    occupancy_peak_by_edge = dict((edge_id, 0) for edge_id in edge_ids)
 
     travel_events: List[dict] = []
     decision_rows: List[dict] = []
@@ -251,6 +253,8 @@ def _simulate_scenario(config: Mapping[str, object]) -> dict:
         )
         granted_micro_set = set(granted_micro)
         deferred_micro = sorted(vehicle_id for vehicle_id in requested_micro if vehicle_id not in granted_micro_set)
+        for vehicle_id in vehicle_ids:
+            current_tier_by_vehicle[vehicle_id] = "micro" if vehicle_id in granted_micro_set else "meso"
         for vehicle_id in granted_micro:
             micro_grants_by_vehicle[vehicle_id] = int(micro_grants_by_vehicle.get(vehicle_id, 0) + 1)
         for vehicle_id in deferred_micro:
@@ -269,6 +273,7 @@ def _simulate_scenario(config: Mapping[str, object]) -> dict:
             itinerary_id = str(itinerary_by_vehicle.get(vehicle_id, "itinerary.none"))
             edge_id = edge_ids[(idx + int(tick)) % len(edge_ids)]
             occupancy_by_edge[edge_id] = int(occupancy_by_edge.get(edge_id, 0) + 1)
+            occupancy_peak_by_edge[edge_id] = int(max(int(occupancy_peak_by_edge.get(edge_id, 0)), int(occupancy_by_edge.get(edge_id, 0))))
             event_kind = "edge_enter" if (idx + int(tick)) % 2 == 0 else "edge_exit"
             event = build_travel_event(
                 event_id=deterministic_travel_event_id(
@@ -344,7 +349,7 @@ def _simulate_scenario(config: Mapping[str, object]) -> dict:
             build_edge_occupancy(
                 edge_id=edge_id,
                 capacity_units=int(capacity_units),
-                current_occupancy=0,
+                current_occupancy=int(max(0, _as_int(occupancy_peak_by_edge.get(edge_id, 0), 0))),
                 extensions={},
             )
             for edge_id in edge_ids
@@ -366,6 +371,26 @@ def _simulate_scenario(config: Mapping[str, object]) -> dict:
                 str(row.get("downgrade_reason", "")),
             ),
         )
+    )
+    motion_state_hash = canonical_sha256(
+        [
+            {
+                "vehicle_id": vehicle_id,
+                "tier": str(current_tier_by_vehicle.get(vehicle_id, "meso")),
+            }
+            for vehicle_id in sorted(vehicle_ids)
+        ]
+    )
+    occupancy_hash = canonical_sha256(
+        [
+            {
+                "edge_id": str(row.get("edge_id", "")).strip(),
+                "capacity_units": int(max(1, _as_int(row.get("capacity_units", 1), 1))),
+                "current_occupancy": int(max(0, _as_int(row.get("current_occupancy", 0), 0))),
+                "congestion_ratio_permille": int(max(0, _as_int(row.get("congestion_ratio_permille", 0), 0))),
+            }
+            for row in occupancy_rows
+        ]
     )
     fairness_requested_ids = sorted(vehicle_id for vehicle_id in vehicle_ids if int(micro_requests_by_vehicle.get(vehicle_id, 0)) > 0)
     micro_starved_ids = sorted(
@@ -389,6 +414,9 @@ def _simulate_scenario(config: Mapping[str, object]) -> dict:
             "downgrade_count": int(downgrade_count),
             "incident_frequency": dict((key, int(incident_frequency[key])) for key in sorted(incident_frequency.keys())),
             "decision_log_stability": str(decision_log_stability),
+            "motion_state_hash": str(motion_state_hash),
+            "event_stream_hash": str(proof_hashes.get("mobility_event_hash", "")),
+            "occupancy_hash": str(occupancy_hash),
             "proof_bundle_hash": canonical_sha256(
                 {
                     "scenario_id": scenario_id,
