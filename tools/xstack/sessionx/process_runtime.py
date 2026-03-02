@@ -24083,6 +24083,28 @@ def execute_intent(
         )
         completed_subject_ids = _sorted_tokens(list(instrument_rows.keys()))
         budget_outcome = "degraded" if deferred_subject_ids else "complete"
+        reenactment_event_ids = _sorted_tokens(
+            [
+                str(row.get("event_id", "")).strip()
+                for row in list(travel_events or [])
+                if isinstance(row, Mapping)
+                and str((dict(row.get("extensions") or {})).get("source_process_id", "")).strip() == process_id
+                and int(max(0, _as_int(row.get("tick", current_tick), current_tick))) == int(current_tick)
+                and str(row.get("event_id", "")).strip()
+            ]
+        )
+        lockstep_anchor = canonical_sha256(
+            {
+                "tick": int(current_tick),
+                "dt_ticks": int(dt_ticks),
+                "roi_subject_ids": list(roi_subject_ids),
+                "processed_subject_ids": list(completed_subject_ids),
+                "deferred_subject_ids": list(_sorted_tokens(deferred_subject_ids)),
+                "max_subject_updates_per_tick": int(max_updates),
+                "budget_outcome": str(budget_outcome),
+                "reenactment_event_ids": list(reenactment_event_ids),
+            }
+        )
         state["mobility_free_runtime_state"] = {
             "tick": int(current_tick),
             "dt_ticks": int(dt_ticks),
@@ -24095,6 +24117,8 @@ def execute_intent(
             "downgrade_to_meso": bool(downgrade_to_meso),
             "auto_effect_count": int(len(auto_effect_rows)),
             "incident_count": int(len(state.get("mobility_free_incidents") or [])),
+            "reenactment_event_ids": list(reenactment_event_ids),
+            "lockstep_anchor": str(lockstep_anchor),
             "server_authoritative": True,
         }
         result_metadata = {
@@ -24108,6 +24132,8 @@ def execute_intent(
             "incident_count": int(len(state.get("mobility_free_incidents") or [])),
             "max_subject_updates_per_tick": int(max_updates),
             "roi_subject_ids": list(roi_subject_ids),
+            "reenactment_event_ids": list(reenactment_event_ids),
+            "lockstep_anchor": str(lockstep_anchor),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_register_from_structure":
