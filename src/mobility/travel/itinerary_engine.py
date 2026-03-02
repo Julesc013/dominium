@@ -25,6 +25,7 @@ _VALID_SPEED_POLICIES = {
 }
 
 _DEFAULT_ALLOWED_SPEED_MM_PER_TICK = 1000
+_CURVATURE_WARN_RADIUS_MM = 12000
 
 
 class ItineraryError(ValueError):
@@ -433,18 +434,53 @@ def plan_itinerary(
             geometry_metric_rows_by_geometry_id=geometry_metric_rows_by_geometry_id,
             spec_rows_by_id=spec_rows_by_id,
         )
+        edge_payload = _as_map(edge_row.get("payload"))
+        geometry_id = str(edge_payload.get("guide_geometry_id", "")).strip()
+        geometry_row = dict(guide_geometry_rows_by_id.get(geometry_id) or {})
+        metric_row = dict(geometry_metric_rows_by_geometry_id.get(geometry_id) or {})
+        curvature_bands = _as_map(metric_row.get("curvature_bands"))
+        high_band_count = int(max(0, _as_int(curvature_bands.get("high", 0), 0)))
+        min_curvature_radius_mm = int(max(0, _as_int(metric_row.get("min_curvature_radius_mm", 0), 0)))
+        edge_spec_id = str(edge_payload.get("spec_id", "")).strip()
+        geometry_spec_id = str(geometry_row.get("spec_id", "")).strip()
         total_ticks += int(edge_ticks)
         per_edge_rows.append(
             {
                 "edge_id": edge_id,
+                "guide_geometry_id": geometry_id or None,
+                "spec_id": edge_spec_id or geometry_spec_id or None,
                 "length_mm": int(length_mm),
                 "allowed_speed_mm_per_tick": int(allowed_speed_mm_per_tick),
                 "eta_ticks": int(edge_ticks),
+                "min_curvature_radius_mm": int(min_curvature_radius_mm),
+                "curvature_high_band_count": int(high_band_count),
+                "curvature_warning": bool(
+                    high_band_count > 0
+                    or (0 < min_curvature_radius_mm <= int(_CURVATURE_WARN_RADIUS_MM))
+                ),
+                "spec_warning": bool((not edge_spec_id) and (not geometry_spec_id)),
             }
         )
 
     depart_tick = int(max(int(current_tick), int(_as_int(departure_tick, current_tick))))
     arrival_tick = int(max(depart_tick, depart_tick + int(total_ticks)))
+    curvature_warning_edge_ids = sorted(
+        str(row.get("edge_id", "")).strip()
+        for row in per_edge_rows
+        if bool(row.get("curvature_warning", False)) and str(row.get("edge_id", "")).strip()
+    )
+    spec_warning_edge_ids = sorted(
+        str(row.get("edge_id", "")).strip()
+        for row in per_edge_rows
+        if bool(row.get("spec_warning", False)) and str(row.get("edge_id", "")).strip()
+    )
+    route_result_with_profile = dict(route_result)
+    route_result_with_profile["itinerary_id"] = ""
+    route_result_with_profile["speed_policy_id"] = speed_policy_token
+    route_result_with_profile["estimated_arrival_tick"] = int(arrival_tick)
+    route_result_with_profile["per_edge_profile"] = [dict(row) for row in per_edge_rows]
+    route_result_with_profile["curvature_warning_edge_ids"] = list(curvature_warning_edge_ids)
+    route_result_with_profile["spec_warning_edge_ids"] = list(spec_warning_edge_ids)
     itinerary_id = deterministic_itinerary_id(
         vehicle_id=vehicle_id,
         graph_id=graph_id,
@@ -463,7 +499,7 @@ def plan_itinerary(
         extensions={
             "graph_id": graph_id,
             "route_policy_id": route_policy_token,
-            "route_result": dict(route_result),
+            "route_result": dict(route_result_with_profile, itinerary_id=itinerary_id),
             "cache_hit": bool(route_runtime_payload.get("cache_hit", False)),
             "route_cost_units": int(max(0, _as_int(route_runtime_payload.get("route_cost_units", 0), 0))),
             "cross_shard_route_plan": dict(route_runtime_payload.get("cross_shard_route_plan") or {}),
@@ -472,7 +508,7 @@ def plan_itinerary(
     )
     return {
         "itinerary": itinerary_row,
-        "route_result": route_result,
+        "route_result": dict(route_result_with_profile, itinerary_id=itinerary_id),
         "cache_state": dict(route_runtime_payload.get("cache_state") or {}),
         "cache_hit": bool(route_runtime_payload.get("cache_hit", False)),
         "route_cost_units": int(max(0, _as_int(route_runtime_payload.get("route_cost_units", 0), 0))),
