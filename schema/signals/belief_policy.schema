@@ -1,0 +1,22 @@
+SCHEMA: signals/belief_policy.schema
+schema_id: dominium.schema.signals.belief_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic policy contract for message acceptance and trust decay/update behavior.
+
+REQUIRED SHAPE:
+record belief_policy
+  required:
+    - schema_version: semver
+    - belief_policy_id: id
+    - acceptance_threshold: fixed-point[0..1]
+    - decay_rate_per_tick: fixed-point[0..1]
+    - update_rule_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Acceptance threshold and decay rate are clamped into [0,1].
+- update_rule_id must resolve to a registered trust update rule.

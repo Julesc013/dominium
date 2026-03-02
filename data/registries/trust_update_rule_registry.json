@@ -1,0 +1,33 @@
+{
+  "schema_id": "dominium.registry.trust_update_rule_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.trust_update_rule_registry",
+    "registry_version": "1.0.0",
+    "trust_update_rules": [
+      {
+        "schema_version": "1.0.0",
+        "update_rule_id": "update.simple_bayesian_stub",
+        "description": "Evidence-count weighted deterministic update with bounded adjustment by verification outcome.",
+        "extensions": {
+          "model": "bayesian_stub",
+          "delta_verified": 0.08,
+          "delta_disputed": -0.06,
+          "delta_failed": -0.12
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "update_rule_id": "update.linear_adjust",
+        "description": "Fixed-step deterministic adjustment by verification outcome.",
+        "extensions": {
+          "model": "linear_adjust",
+          "delta_verified": 0.1,
+          "delta_disputed": -0.08,
+          "delta_failed": -0.15
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

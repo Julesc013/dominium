@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.belief_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.belief_policy_registry",
+    "registry_version": "1.0.0",
+    "belief_policies": [
+      {
+        "schema_version": "1.0.0",
+        "belief_policy_id": "belief.default",
+        "acceptance_threshold": 0.5,
+        "decay_rate_per_tick": 0.0,
+        "update_rule_id": "update.linear_adjust",
+        "extensions": {
+          "acceptance_mode": "threshold"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "belief_policy_id": "belief.skeptical",
+        "acceptance_threshold": 0.75,
+        "decay_rate_per_tick": 0.0005,
+        "update_rule_id": "update.simple_bayesian_stub",
+        "extensions": {
+          "acceptance_mode": "threshold"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "belief_policy_id": "belief.gullible",
+        "acceptance_threshold": 0.25,
+        "decay_rate_per_tick": 0.0,
+        "update_rule_id": "update.linear_adjust",
+        "extensions": {
+          "acceptance_mode": "threshold"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
