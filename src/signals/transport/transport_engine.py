@@ -8,6 +8,7 @@ from src.core.graph.routing_engine import RoutingError, query_route_result
 from src.signals.addressing import address_from_recipient_address, resolve_address_recipients
 from src.signals.trust import (
     belief_policy_rows_by_id,
+    evaluate_receipt_acceptance,
     trust_weight_for_pair,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -1090,6 +1091,7 @@ def process_knowledge_acquire(
     delivered_row: Mapping[str, object],
     knowledge_receipt_rows: object,
     trust_weight: float = 1.0,
+    belief_policy_row: Mapping[str, object] | None = None,
 ) -> dict:
     row = dict(delivered_row or {})
     subject_id = str(row.get("recipient_subject_id", "")).strip()
@@ -1127,6 +1129,12 @@ def process_knowledge_acquire(
         envelope_id=envelope_id,
         acquired_tick=int(max(0, _as_int(current_tick, 0))),
     )
+    acceptance_result = evaluate_receipt_acceptance(
+        trust_weight=float(trust_weight),
+        belief_policy_row=belief_policy_row,
+    )
+    accepted = bool(acceptance_result.get("accepted", False))
+    acceptance_threshold = float(acceptance_result.get("acceptance_threshold", 0.5))
     receipt_row = build_knowledge_receipt(
         receipt_id=receipt_id,
         subject_id=subject_id,
@@ -1140,6 +1148,10 @@ def process_knowledge_acquire(
             "channel_id": str(row.get("channel_id", "")).strip() or None,
             "sender_subject_id": str(row.get("sender_subject_id", "")).strip() or None,
             "idempotency_key": canonical_sha256({"subject_id": subject_id, "artifact_id": artifact_id}),
+            "accepted": bool(accepted),
+            "belief_policy_id": str(dict(belief_policy_row or {}).get("belief_policy_id", "")).strip() or "belief.default",
+            "acceptance_threshold": float(acceptance_threshold),
+            "confidence_tag": ("accepted" if accepted else "untrusted"),
         },
     )
     next_rows = _upsert_row_by_id(
@@ -1237,6 +1249,7 @@ def process_signal_transport_tick(
             delivered_row=dict(delivered_row or {}),
             knowledge_receipt_rows=next_receipts,
             trust_weight=float(subject_trust),
+            belief_policy_row=belief_policy_row,
         )
         next_receipts = normalize_knowledge_receipt_rows(acquire_result.get("knowledge_receipt_rows"))
         if bool(acquire_result.get("acquired", False)):
@@ -1254,6 +1267,14 @@ def process_signal_transport_tick(
     )
     out["delivery_count"] = int(len(list(dict(out).get("delivered_rows") or [])))
     out["receipt_count"] = int(len(list(out.get("created_receipt_rows") or [])))
+    out["accepted_receipt_count"] = int(
+        sum(
+            1
+            for row in list(out.get("created_receipt_rows") or [])
+            if bool(dict(dict(row).get("extensions") or {}).get("accepted", False))
+        )
+    )
+    out["untrusted_receipt_count"] = int(max(0, int(out["receipt_count"]) - int(out["accepted_receipt_count"])))
     out["belief_policy_id"] = str(belief_policy_row.get("belief_policy_id", "")).strip() or "belief.default"
     return out
 
