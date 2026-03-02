@@ -1,0 +1,24 @@
+SCHEMA: mobility/mobility_edge_payload.schema
+schema_id: dominium.schema.mobility.mobility_edge_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for MobilityNetworkGraph edges.
+
+REQUIRED SHAPE:
+record mobility_edge_payload
+  required:
+    - schema_version: semver
+    - edge_kind: enum(track|road|lane|corridor|orbit_link|custom)
+    - guide_geometry_id: id
+    - tags: list[id]
+    - extensions: map
+  optional:
+    - spec_id: id
+    - capacity_units: int
+    - max_speed_policy_id: id
+
+INVARIANTS:
+- Edge payloads map to canonical GuideGeometry ids.
+- Capacity/speed policy values are deterministic and inspectable.

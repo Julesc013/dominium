@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Node Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-2 MobilityNetworkGraph node payload.",
+  "x-doc-ref": [
+    "docs/mobility/MOBILITY_NETWORKGRAPH.md",
+    "docs/audit/MOBILITY_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_kind",
+    "parent_spatial_id",
+    "tags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_kind": {
+      "type": "string",
+      "enum": [
+        "endpoint",
+        "junction",
+        "station",
+        "switch",
+        "waypoint"
+      ]
+    },
+    "parent_spatial_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "position_ref": {
+      "type": [
+        "string",
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "junction_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "state_machine_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_kind": "switch",
+      "parent_spatial_id": "spatial.world.0",
+      "position_ref": "junction.mob.demo.switch",
+      "junction_id": "junction.mob.demo.switch",
+      "state_machine_id": "state_machine.mob.switch.demo",
+      "tags": [
+        "mobility",
+        "switch"
+      ],
+      "extensions": {}
+    }
+  ]
+}
