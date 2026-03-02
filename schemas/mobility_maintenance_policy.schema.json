@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Maintenance Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-9 mobility maintenance policy row.",
+  "x-doc-ref": [
+    "docs/mobility/MAINTENANCE_AND_WEAR.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "maintenance_policy_id",
+    "target_kind",
+    "inspection_interval_ticks",
+    "service_action_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "maintenance_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inspection_interval_ticks": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "service_action_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "maintenance_policy_id": "maint.track_standard",
+      "target_kind": "edge",
+      "inspection_interval_ticks": 1440,
+      "service_action_id": "task.service_track",
+      "extensions": {}
+    }
+  ]
+}

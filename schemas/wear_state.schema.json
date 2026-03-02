@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Wear State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-9 wear accumulation state row.",
+  "x-doc-ref": [
+    "docs/mobility/MAINTENANCE_AND_WEAR.md",
+    "docs/audit/MAINTENANCE_WEAR_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_id",
+    "wear_type_id",
+    "accumulated_value",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "wear_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accumulated_value": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "target_id": "edge.mob.travel.ab",
+      "wear_type_id": "wear.track",
+      "accumulated_value": 1200,
+      "last_update_tick": 10,
+      "deterministic_fingerprint": "a850ea8a2f74503f958bc6cf86f2ed43f5bc3f03f6ed6076f6f95b49553f6664",
+      "extensions": {}
+    }
+  ]
+}

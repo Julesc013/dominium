@@ -1,0 +1,19 @@
+SCHEMA: mobility/wear_accumulation_policy.schema
+schema_id: dominium.schema.mobility.wear_accumulation_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic mobility wear accumulation policy row.
+
+REQUIRED SHAPE:
+record wear_accumulation_policy
+  required:
+    - schema_version: semver
+    - accumulation_policy_id: id
+    - description: string
+    - extensions: map
+
+INVARIANTS:
+- Policy evaluation is deterministic for identical inputs.
+- Wear accumulation policy selection is explicit and inspectable.

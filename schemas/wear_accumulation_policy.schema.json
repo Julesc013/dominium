@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Wear Accumulation Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-9 wear accumulation policy row.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "accumulation_policy_id",
+    "description",
+    "schema_ref",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "accumulation_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "schema_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "accumulation_policy_id": "accum.per_tick",
+      "description": "Deterministic per-tick wear accumulation.",
+      "schema_ref": "dominium.schema.mobility.wear_type@1.0.0",
+      "extensions": {}
+    }
+  ]
+}

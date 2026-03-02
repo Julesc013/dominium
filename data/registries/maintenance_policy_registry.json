@@ -41,6 +41,45 @@
         "extensions": {
           "maintenance_disabled": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "maintenance_policy_id": "maint.track_standard",
+        "description": "Mobility track maintenance baseline profile.",
+        "inspection_interval_ticks": 1440,
+        "maintenance_interval_ticks": 4320,
+        "backlog_growth_rule_id": "backlog.linear_stub",
+        "max_backlog": 1000000,
+        "extensions": {
+          "target_kind": "edge",
+          "service_action_id": "task.service_track"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "maintenance_policy_id": "maint.vehicle_standard",
+        "description": "Mobility vehicle maintenance baseline profile.",
+        "inspection_interval_ticks": 960,
+        "maintenance_interval_ticks": 2880,
+        "backlog_growth_rule_id": "backlog.linear_stub",
+        "max_backlog": 1000000,
+        "extensions": {
+          "target_kind": "vehicle",
+          "service_action_id": "task.service_vehicle"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "maintenance_policy_id": "maint.signal_standard",
+        "description": "Mobility signal and switch maintenance baseline profile.",
+        "inspection_interval_ticks": 720,
+        "maintenance_interval_ticks": 2160,
+        "backlog_growth_rule_id": "backlog.stepwise_stub",
+        "max_backlog": 750000,
+        "extensions": {
+          "target_kind": "node",
+          "service_action_id": "task.service_signal"
+        }
       }
     ],
     "extensions": {}
