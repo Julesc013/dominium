@@ -11811,6 +11811,35 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-SWITCH-STATE-MACHINE-ONLY",
             )
         )
+    if (
+        'elif process_id == "process.signal_set_aspect":' not in runtime_text
+        or 'elif process_id == "process.signal_tick":' not in runtime_text
+        or "select_signal_transition_id(" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.signal_set_aspect/process.signal_tick",
+                message="signal transitions must be process/state-machine mediated through signaling processes",
+                rule_id="INV-SIGNALS-STATE-MACHINE-ONLY",
+            )
+        )
+    if (
+        "evaluate_signal_aspects(" not in runtime_text
+        or "signal_rule_policy_registry" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="evaluate_signal_aspects",
+                message="interlocking decisions must route through policy-driven signal evaluation",
+                rule_id="INV-INTERLOCKING-POLICY-DRIVEN",
+            )
+        )
     if "query_route_result(" not in runtime_text:
         findings.append(
             _finding(
@@ -11822,6 +11851,41 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-NO-ADHOC-ROUTING",
             )
         )
+    adhoc_stop_patterns = (
+        re.compile(r"\bif\b[^\n]*(?:signal|aspect)[^\n]*(?:stop)[^\n]*(?:velocity|speed|brake)", re.IGNORECASE),
+    )
+    adhoc_stop_allowed = {
+        process_runtime_rel,
+        "src/mobility/signals/signal_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in adhoc_stop_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adhoc_stop_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="ad-hoc stop logic is forbidden; stop/go must be policy-driven via signaling layer",
+                    rule_id="INV-NO-ADHOC-STOP-LOGIC",
+                )
+            )
+            break
     if (
         'elif process_id == "process.itinerary_create":' not in runtime_text
         or 'elif process_id == "process.travel_start":' not in runtime_text
