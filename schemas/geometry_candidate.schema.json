@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Geometry Candidate Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FORM->MOB guide geometry candidate bridge row.",
+  "x-doc-ref": [
+    "docs/mobility/GUIDE_GEOMETRY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "formalization_id",
+    "geometry_preview_ref",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "formalization_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "geometry_preview_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposed_spec_id": {
+      "type": ["string", "null"]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "candidate_id": "candidate.demo.0001",
+      "formalization_id": "formalization.demo.0001",
+      "geometry_preview_ref": "preview.formalization.demo.0001",
+      "proposed_spec_id": "spec.track.standard_gauge.v1",
+      "deterministic_fingerprint": "e0ae85ebce5ebf0e8f89f731db4a6b96e7fe637f3afaf95e3720f18ac14f43a8",
+      "extensions": {}
+    }
+  ]
+}
