@@ -318,6 +318,149 @@ def apply_traffic_events_to_occupancy(
     }
 
 
+def deterministic_reservation_id(
+    *,
+    vehicle_id: str,
+    edge_id: str,
+    start_tick: int,
+    end_tick: int,
+) -> str:
+    digest = canonical_sha256(
+        {
+            "vehicle_id": str(vehicle_id or "").strip(),
+            "edge_id": str(edge_id or "").strip(),
+            "start_tick": int(max(0, _as_int(start_tick, 0))),
+            "end_tick": int(max(0, _as_int(end_tick, 0))),
+        }
+    )
+    return "reservation.mob.{}".format(digest[:16])
+
+
+def build_reservation(
+    *,
+    reservation_id: str,
+    vehicle_id: str,
+    edge_id: str,
+    start_tick: int,
+    end_tick: int,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    start_value = int(max(0, _as_int(start_tick, 0)))
+    end_value = int(max(start_value, _as_int(end_tick, start_value)))
+    payload = {
+        "schema_version": "1.0.0",
+        "reservation_id": str(reservation_id or "").strip(),
+        "vehicle_id": str(vehicle_id or "").strip(),
+        "edge_id": str(edge_id or "").strip(),
+        "start_tick": int(start_value),
+        "end_tick": int(end_value),
+        "deterministic_fingerprint": "",
+        "extensions": _canon(_as_map(extensions)),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_reservation_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("reservation_id", ""))):
+        reservation_id = str(row.get("reservation_id", "")).strip()
+        vehicle_id = str(row.get("vehicle_id", "")).strip()
+        edge_id = str(row.get("edge_id", "")).strip()
+        if (not reservation_id) or (not vehicle_id) or (not edge_id):
+            continue
+        out[reservation_id] = build_reservation(
+            reservation_id=reservation_id,
+            vehicle_id=vehicle_id,
+            edge_id=edge_id,
+            start_tick=int(max(0, _as_int(row.get("start_tick", 0), 0))),
+            end_tick=int(max(0, _as_int(row.get("end_tick", row.get("start_tick", 0)), 0))),
+            extensions=_as_map(row.get("extensions")),
+        )
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _overlap(
+    *,
+    start_tick: int,
+    end_tick: int,
+    other_start_tick: int,
+    other_end_tick: int,
+) -> bool:
+    return not (int(end_tick) < int(other_start_tick) or int(start_tick) > int(other_end_tick))
+
+
+def reserve_edge_capacity(
+    *,
+    reservation_rows: object,
+    edge_occupancy_rows: object,
+    vehicle_id: str,
+    edge_id: str,
+    start_tick: int,
+    end_tick: int,
+) -> dict:
+    reservations = normalize_reservation_rows(reservation_rows)
+    edge_token = str(edge_id or "").strip()
+    vehicle_token = str(vehicle_id or "").strip()
+    if (not edge_token) or (not vehicle_token):
+        raise TrafficEngineError(
+            REFUSAL_MOBILITY_RESERVATION_CONFLICT,
+            "reservation requires non-empty vehicle_id and edge_id",
+            {"vehicle_id": vehicle_token, "edge_id": edge_token},
+        )
+    start_value = int(max(0, _as_int(start_tick, 0)))
+    end_value = int(max(start_value, _as_int(end_tick, start_value)))
+    occupancy_by_edge = edge_occupancy_rows_by_edge_id(edge_occupancy_rows)
+    capacity_units = int(max(1, _as_int((dict(occupancy_by_edge.get(edge_token) or {})).get("capacity_units", 1), 1)))
+    conflicting = []
+    for row in reservations:
+        if str(row.get("edge_id", "")).strip() != edge_token:
+            continue
+        if not _overlap(
+            start_tick=start_value,
+            end_tick=end_value,
+            other_start_tick=int(max(0, _as_int(row.get("start_tick", 0), 0))),
+            other_end_tick=int(max(0, _as_int(row.get("end_tick", 0), 0))),
+        ):
+            continue
+        conflicting.append(dict(row))
+    conflicting = sorted(conflicting, key=lambda row: (str(row.get("vehicle_id", "")), str(row.get("reservation_id", ""))))
+    if int(len(conflicting)) >= int(capacity_units):
+        raise TrafficEngineError(
+            REFUSAL_MOBILITY_RESERVATION_CONFLICT,
+            "reservation conflicts with deterministic edge capacity",
+            {
+                "vehicle_id": vehicle_token,
+                "edge_id": edge_token,
+                "capacity_units": int(capacity_units),
+                "conflicting_reservation_ids": _sorted_tokens([row.get("reservation_id") for row in conflicting]),
+            },
+        )
+    reservation_id = deterministic_reservation_id(
+        vehicle_id=vehicle_token,
+        edge_id=edge_token,
+        start_tick=int(start_value),
+        end_tick=int(end_value),
+    )
+    new_row = build_reservation(
+        reservation_id=reservation_id,
+        vehicle_id=vehicle_token,
+        edge_id=edge_token,
+        start_tick=int(start_value),
+        end_tick=int(end_value),
+        extensions={},
+    )
+    reservations = normalize_reservation_rows(list(reservations) + [dict(new_row)])
+    return {
+        "reservations": list(reservations),
+        "reservation": dict(new_row),
+        "capacity_units": int(capacity_units),
+        "conflicting_count": int(len(conflicting)),
+    }
+
+
 __all__ = [
     "REFUSAL_MOBILITY_RESERVATION_CONFLICT",
     "TrafficEngineError",
@@ -327,9 +470,13 @@ __all__ = [
     "compute_congestion_ratio_permille",
     "congestion_multiplier_permille",
     "congestion_policy_rows_by_id",
+    "deterministic_reservation_id",
     "edge_occupancy_rows_by_edge_id",
     "ensure_edge_occupancy_rows",
+    "build_reservation",
     "normalize_edge_occupancy_rows",
+    "normalize_reservation_rows",
+    "reserve_edge_capacity",
     "resolve_congestion_policy",
     "resolve_edge_capacity_units",
 ]

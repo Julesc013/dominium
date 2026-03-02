@@ -312,6 +312,14 @@ from src.mobility.travel import (
     start_macro_travel,
     tick_macro_travel,
 )
+from src.mobility.traffic import (
+    REFUSAL_MOBILITY_RESERVATION_CONFLICT,
+    TrafficEngineError,
+    ensure_edge_occupancy_rows,
+    normalize_edge_occupancy_rows,
+    normalize_reservation_rows,
+    reserve_edge_capacity,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -438,6 +446,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.switch_set_state": "entitlement.control.admin",
     "process.mobility_route_query": "entitlement.inspect",
     "process.itinerary_create": "entitlement.control.admin",
+    "process.mobility_reserve_edge": "entitlement.control.admin",
     "process.travel_schedule_set": "entitlement.control.admin",
     "process.travel_start": "entitlement.control.admin",
     "process.travel_tick": "session.boot",
@@ -568,6 +577,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.switch_set_state": "operator",
     "process.mobility_route_query": "observer",
     "process.itinerary_create": "operator",
+    "process.mobility_reserve_edge": "operator",
     "process.travel_schedule_set": "operator",
     "process.travel_start": "operator",
     "process.travel_tick": "observer",
@@ -645,6 +655,7 @@ CONTROL_PROCESS_IDS = {
     "process.switch_set_state",
     "process.mobility_route_query",
     "process.itinerary_create",
+    "process.mobility_reserve_edge",
     "process.travel_schedule_set",
     "process.travel_start",
     "process.travel_tick",
@@ -1666,6 +1677,18 @@ def _ensure_travel_commitment_rows(state: dict) -> List[dict]:
 def _ensure_travel_event_rows(state: dict) -> List[dict]:
     rows = normalize_travel_event_rows(state.get("travel_events"))
     state["travel_events"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_edge_occupancy_rows(state: dict) -> List[dict]:
+    rows = normalize_edge_occupancy_rows(state.get("edge_occupancies"))
+    state["edge_occupancies"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mobility_reservation_rows(state: dict) -> List[dict]:
+    rows = normalize_reservation_rows(state.get("mobility_reservations"))
+    state["mobility_reservations"] = [dict(row) for row in rows if isinstance(row, dict)]
     return [dict(row) for row in rows if isinstance(row, dict)]
 
 
@@ -2838,6 +2861,8 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("travel_schedules", "schedule_id"),
         ("travel_commitments", "commitment_id"),
         ("travel_events", "event_id"),
+        ("edge_occupancies", "edge_id"),
+        ("mobility_reservations", "reservation_id"),
         ("structural_graphs", "structural_graph_id"),
         ("structural_nodes", "node_id"),
         ("structural_edges", "edge_id"),
@@ -10217,6 +10242,8 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("travel_schedules", "schedule_id"),
         ("travel_commitments", "commitment_id"),
         ("travel_events", "event_id"),
+        ("edge_occupancies", "edge_id"),
+        ("mobility_reservations", "reservation_id"),
         ("vehicles", "vehicle_id"),
         ("vehicle_motion_states", "vehicle_id"),
         ("vehicle_compatibility_results", "result_id"),
@@ -12922,6 +12949,8 @@ def execute_intent(
     travel_schedules = _ensure_travel_schedule_rows(state)
     travel_commitments = _ensure_travel_commitment_rows(state)
     travel_events = _ensure_travel_event_rows(state)
+    edge_occupancies = _ensure_edge_occupancy_rows(state)
+    mobility_reservations = _ensure_mobility_reservation_rows(state)
     vehicles = _ensure_vehicle_rows(state)
     vehicle_motion_states = _ensure_vehicle_motion_state_rows(state)
     vehicle_compatibility_results = _ensure_vehicle_compatibility_rows(state)
@@ -20624,6 +20653,71 @@ def execute_intent(
 
         itinerary_row = dict(itinerary_result.get("itinerary") or {})
         itinerary_id = str(itinerary_row.get("itinerary_id", "")).strip()
+        reserved_rows: List[dict] = []
+        if bool(inputs.get("reserve_edges", False)):
+            route_edge_ids = [
+                str(item).strip()
+                for item in list(itinerary_row.get("route_edge_ids") or [])
+                if str(item).strip()
+            ]
+            profile_rows = sorted(
+                [
+                    dict(item)
+                    for item in list((dict(itinerary_row.get("extensions") or {})).get("per_edge_profile") or [])
+                    if isinstance(item, Mapping) and str(item.get("edge_id", "")).strip()
+                ],
+                key=lambda row: (
+                    str(row.get("edge_id", "")),
+                    _as_int(row.get("sequence", 0), 0),
+                ),
+            )
+            profile_by_edge = dict(
+                (
+                    str(row.get("edge_id", "")).strip(),
+                    dict(row),
+                )
+                for row in profile_rows
+                if str(row.get("edge_id", "")).strip()
+            )
+            edge_occupancies = ensure_edge_occupancy_rows(
+                edge_occupancy_rows=edge_occupancies,
+                graph_row=graph_row,
+            )
+            reservation_rows = normalize_reservation_rows(mobility_reservations)
+            edge_start_tick = int(max(0, _as_int(itinerary_row.get("departure_tick", current_tick), current_tick)))
+            for edge_id in route_edge_ids:
+                profile_row = dict(profile_by_edge.get(edge_id) or {})
+                edge_eta_ticks = int(max(1, _as_int(profile_row.get("eta_ticks", 1), 1)))
+                edge_end_tick = int(max(edge_start_tick, edge_start_tick + edge_eta_ticks - 1))
+                try:
+                    reserve_result = reserve_edge_capacity(
+                        reservation_rows=reservation_rows,
+                        edge_occupancy_rows=edge_occupancies,
+                        vehicle_id=vehicle_id,
+                        edge_id=edge_id,
+                        start_tick=int(edge_start_tick),
+                        end_tick=int(edge_end_tick),
+                    )
+                except TrafficEngineError as exc:
+                    return refusal(
+                        str(exc.reason_code or REFUSAL_MOBILITY_RESERVATION_CONFLICT),
+                        str(exc),
+                        "Adjust reservation windows or disable reserve_edges for this itinerary request.",
+                        dict(exc.details),
+                        "$.intent.inputs.reserve_edges",
+                    )
+                reservation_rows = normalize_reservation_rows(list(reserve_result.get("reservations") or []))
+                reserved_rows.append(dict(reserve_result.get("reservation") or {}))
+                edge_start_tick = int(edge_end_tick + 1)
+            mobility_reservations = normalize_reservation_rows(reservation_rows)
+            state["mobility_reservations"] = [
+                dict(row) for row in list(mobility_reservations or []) if isinstance(row, Mapping)
+            ]
+            _ensure_mobility_reservation_rows(state)
+            state["edge_occupancies"] = [
+                dict(row) for row in list(edge_occupancies or []) if isinstance(row, Mapping)
+            ]
+            _ensure_edge_occupancy_rows(state)
         itineraries = normalize_itinerary_rows(
             _upsert_row_by_id(itineraries, "itinerary_id", itinerary_row)
         )
@@ -20692,6 +20786,109 @@ def execute_intent(
             "cross_shard_route_plan": dict(itinerary_result.get("cross_shard_route_plan") or {}),
             "decision_id": str(decision_entry.get("decision_id", "")).strip(),
             "decision_log_ref": str(decision_entry.get("decision_log_ref", "")).strip() or None,
+            "reserved_edge_count": int(len(reserved_rows)),
+            "reserved_reservation_ids": _sorted_tokens(
+                [row.get("reservation_id") for row in list(reserved_rows or [])]
+            ),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.mobility_reserve_edge":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        edge_id = str(inputs.get("edge_id", "")).strip()
+        if (not vehicle_id) or (not edge_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.mobility_reserve_edge requires vehicle_id and edge_id",
+                "Provide deterministic vehicle_id and edge_id for reservation.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        start_tick = int(max(0, _as_int(inputs.get("start_tick", current_tick), current_tick)))
+        end_tick = int(max(start_tick, _as_int(inputs.get("end_tick", start_tick), start_tick)))
+        graph_rows_by_id = dict(
+            (
+                str(row.get("graph_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("network_graphs") or [])
+            if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip()
+        )
+        graph_id = str(inputs.get("graph_id", "")).strip()
+        graph_row = dict(graph_rows_by_id.get(graph_id) or {})
+        if not graph_row:
+            candidate_rows = []
+            for row in sorted(graph_rows_by_id.values(), key=lambda item: str(item.get("graph_id", ""))):
+                edge_ids = set(
+                    str(edge.get("edge_id", "")).strip()
+                    for edge in list((dict(row or {})).get("edges") or [])
+                    if isinstance(edge, Mapping) and str(edge.get("edge_id", "")).strip()
+                )
+                if edge_id in edge_ids:
+                    candidate_rows.append(dict(row))
+            if candidate_rows:
+                graph_row = dict(candidate_rows[0])
+                graph_id = str(graph_row.get("graph_id", "")).strip()
+        if not graph_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "unable to resolve graph containing edge_id '{}'".format(edge_id),
+                "Provide graph_id for an existing NetworkGraph containing edge_id.",
+                {"edge_id": edge_id},
+                "$.intent.inputs.edge_id",
+            )
+        edge_tokens = set(
+            str(edge.get("edge_id", "")).strip()
+            for edge in list((dict(graph_row or {})).get("edges") or [])
+            if isinstance(edge, Mapping) and str(edge.get("edge_id", "")).strip()
+        )
+        if edge_id not in edge_tokens:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "edge_id '{}' is not present in graph_id '{}'".format(edge_id, graph_id),
+                "Provide edge_id present in selected graph.",
+                {"edge_id": edge_id, "graph_id": graph_id},
+                "$.intent.inputs.edge_id",
+            )
+
+        edge_occupancies = ensure_edge_occupancy_rows(
+            edge_occupancy_rows=edge_occupancies,
+            graph_row=graph_row,
+        )
+        state["edge_occupancies"] = [dict(row) for row in list(edge_occupancies or []) if isinstance(row, Mapping)]
+        _ensure_edge_occupancy_rows(state)
+        try:
+            reservation_result = reserve_edge_capacity(
+                reservation_rows=mobility_reservations,
+                edge_occupancy_rows=edge_occupancies,
+                vehicle_id=vehicle_id,
+                edge_id=edge_id,
+                start_tick=int(start_tick),
+                end_tick=int(end_tick),
+            )
+        except TrafficEngineError as exc:
+            return refusal(
+                str(exc.reason_code or REFUSAL_MOBILITY_RESERVATION_CONFLICT),
+                str(exc),
+                "Adjust reservation window or choose an edge with available capacity.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        mobility_reservations = normalize_reservation_rows(
+            list(reservation_result.get("reservations") or [])
+        )
+        state["mobility_reservations"] = [
+            dict(row) for row in list(mobility_reservations or []) if isinstance(row, Mapping)
+        ]
+        _ensure_mobility_reservation_rows(state)
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "graph_id": graph_id,
+            "edge_id": edge_id,
+            "start_tick": int(start_tick),
+            "end_tick": int(end_tick),
+            "reservation": dict(reservation_result.get("reservation") or {}),
+            "capacity_units": int(max(1, _as_int(reservation_result.get("capacity_units", 1), 1))),
+            "conflicting_count": int(max(0, _as_int(reservation_result.get("conflicting_count", 0), 0))),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.travel_schedule_set":
