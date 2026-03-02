@@ -779,6 +779,14 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.interior.flood": dict(instruments.get("instrument.interior.flood") or {})}
     if channel_id == "ch.diegetic.interior.alarm":
         return {"instrument.interior.alarm": dict(instruments.get("instrument.interior.alarm") or {})}
+    if channel_id == "ch.diegetic.vehicle.pressure":
+        return {"instrument.vehicle.pressure": dict(instruments.get("instrument.vehicle.pressure") or {})}
+    if channel_id == "ch.diegetic.vehicle.oxygen":
+        return {"instrument.vehicle.oxygen": dict(instruments.get("instrument.vehicle.oxygen") or {})}
+    if channel_id == "ch.diegetic.vehicle.smoke_alarm":
+        return {"instrument.vehicle.smoke_alarm": dict(instruments.get("instrument.vehicle.smoke_alarm") or {})}
+    if channel_id == "ch.diegetic.vehicle.flood_alarm":
+        return {"instrument.vehicle.flood_alarm": dict(instruments.get("instrument.vehicle.flood_alarm") or {})}
     truth_overlay = dict(perceived_model.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -849,6 +857,10 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.interior.smoke": ["ch.diegetic.smoke_alarm", "ch.diegetic.interior.smoke_alarm"],
         "instrument.interior.flood": ["ch.diegetic.flood_alarm", "ch.diegetic.interior.flood_alarm"],
         "instrument.interior.alarm": "ch.diegetic.interior.alarm",
+        "instrument.vehicle.pressure": "ch.diegetic.vehicle.pressure",
+        "instrument.vehicle.oxygen": "ch.diegetic.vehicle.oxygen",
+        "instrument.vehicle.smoke_alarm": "ch.diegetic.vehicle.smoke_alarm",
+        "instrument.vehicle.flood_alarm": "ch.diegetic.vehicle.flood_alarm",
         "instrument.meter.thermometer": "ch.diegetic.meter.thermometer",
         "instrument.meter.hygrometer": "ch.diegetic.meter.hygrometer",
         "instrument.meter.dosimeter": "ch.diegetic.meter.dosimeter",
@@ -981,6 +993,10 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.interior.smoke": {},
         "instrument.interior.flood": {},
         "instrument.interior.alarm": {},
+        "instrument.vehicle.pressure": {},
+        "instrument.vehicle.oxygen": {},
+        "instrument.vehicle.smoke_alarm": {},
+        "instrument.vehicle.flood_alarm": {},
         "instrument.warning.speed_cap": {},
         "instrument.warning.low_visibility": {},
         "instrument.warning.restricted_access": {},

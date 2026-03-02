@@ -32584,6 +32584,132 @@ def execute_intent(
                     "state": {"status": alarm_state},
                     "outputs": {"rows": alarms[:max_row_count]},
                 },
+                "instrument.vehicle.pressure": {
+                    "assembly_id": "instrument.vehicle.pressure",
+                    "instrument_type": "gauge.vehicle_pressure",
+                    "instrument_type_id": "instr.vehicle.pressure",
+                    "quality": "coarse",
+                    "quality_value": gauge_quality,
+                    "reading": (
+                        "NORMAL"
+                        if (
+                            not pressure_rows
+                            or min(int(max(0, _as_int(row.get("pressure", 0), 0))) for row in pressure_rows) >= 900
+                        )
+                        else ("LOW" if min(int(max(0, _as_int(row.get("pressure", 0), 0))) for row in pressure_rows) >= 700 else "CRITICAL")
+                    ),
+                    "state": {
+                        "status": (
+                            "OK"
+                            if (
+                                not pressure_rows
+                                or min(int(max(0, _as_int(row.get("pressure", 0), 0))) for row in pressure_rows) >= 900
+                            )
+                            else ("WARN" if min(int(max(0, _as_int(row.get("pressure", 0), 0))) for row in pressure_rows) >= 700 else "ALERT")
+                        ),
+                        "vehicle_id": owner_vehicle_id or None,
+                    },
+                    "outputs": {
+                        "rows": [
+                            {
+                                "vehicle_id": owner_vehicle_id or None,
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "status": (
+                                    "OK"
+                                    if (
+                                        not pressure_rows
+                                        or min(int(max(0, _as_int(row.get("pressure", 0), 0))) for row in pressure_rows) >= 900
+                                    )
+                                    else ("WARN" if min(int(max(0, _as_int(row.get("pressure", 0), 0))) for row in pressure_rows) >= 700 else "ALERT")
+                                ),
+                            }
+                        ]
+                    },
+                },
+                "instrument.vehicle.oxygen": {
+                    "assembly_id": "instrument.vehicle.oxygen",
+                    "instrument_type": "gauge.vehicle_oxygen",
+                    "instrument_type_id": "instr.vehicle.oxygen",
+                    "quality": "coarse",
+                    "quality_value": gauge_quality,
+                    "reading": (
+                        "NORMAL"
+                        if (
+                            not oxygen_rows
+                            or min(int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))) for row in oxygen_rows) >= 200
+                        )
+                        else ("LOW" if min(int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))) for row in oxygen_rows) >= 160 else "CRITICAL")
+                    ),
+                    "state": {
+                        "status": (
+                            "OK"
+                            if (
+                                not oxygen_rows
+                                or min(int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))) for row in oxygen_rows) >= 200
+                            )
+                            else ("WARN" if min(int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))) for row in oxygen_rows) >= 160 else "ALERT")
+                        ),
+                        "vehicle_id": owner_vehicle_id or None,
+                    },
+                    "outputs": {
+                        "rows": [
+                            {
+                                "vehicle_id": owner_vehicle_id or None,
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "status": (
+                                    "OK"
+                                    if (
+                                        not oxygen_rows
+                                        or min(int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))) for row in oxygen_rows) >= 200
+                                    )
+                                    else ("WARN" if min(int(max(0, _as_int(row.get("oxygen_fraction", 0), 0))) for row in oxygen_rows) >= 160 else "ALERT")
+                                ),
+                            }
+                        ]
+                    },
+                },
+                "instrument.vehicle.smoke_alarm": {
+                    "assembly_id": "instrument.vehicle.smoke_alarm",
+                    "instrument_type": "alarm.vehicle_smoke",
+                    "instrument_type_id": "instr.vehicle.smoke_alarm",
+                    "quality": "coarse",
+                    "quality_value": gauge_quality,
+                    "reading": "WARN" if any(int(max(0, _as_int(row.get("smoke_density", 0), 0))) > 0 for row in smoke_rows) else "OK",
+                    "state": {
+                        "status": "WARN" if any(int(max(0, _as_int(row.get("smoke_density", 0), 0))) > 0 for row in smoke_rows) else "OK",
+                        "vehicle_id": owner_vehicle_id or None,
+                    },
+                    "outputs": {
+                        "rows": [
+                            {
+                                "vehicle_id": owner_vehicle_id or None,
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "status": "WARN" if any(int(max(0, _as_int(row.get("smoke_density", 0), 0))) > 0 for row in smoke_rows) else "OK",
+                            }
+                        ]
+                    },
+                },
+                "instrument.vehicle.flood_alarm": {
+                    "assembly_id": "instrument.vehicle.flood_alarm",
+                    "instrument_type": "alarm.vehicle_flood",
+                    "instrument_type_id": "instr.vehicle.flood_alarm",
+                    "quality": "coarse",
+                    "quality_value": gauge_quality,
+                    "reading": "WARN" if any(int(max(0, _as_int(row.get("water_volume", 0), 0))) > 0 for row in flood_rows) else "OK",
+                    "state": {
+                        "status": "WARN" if any(int(max(0, _as_int(row.get("water_volume", 0), 0))) > 0 for row in flood_rows) else "OK",
+                        "vehicle_id": owner_vehicle_id or None,
+                    },
+                    "outputs": {
+                        "rows": [
+                            {
+                                "vehicle_id": owner_vehicle_id or None,
+                                "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                                "status": "WARN" if any(int(max(0, _as_int(row.get("water_volume", 0), 0))) > 0 for row in flood_rows) else "OK",
+                            }
+                        ]
+                    },
+                },
                 "instrument.interior.portal_state": {
                     "assembly_id": "instrument.interior.portal_state",
                     "instrument_type": "panel.portal_state",
@@ -32636,6 +32762,14 @@ def execute_intent(
                     },
                 },
             }
+            if not owner_vehicle_id:
+                for assembly_id in (
+                    "instrument.vehicle.pressure",
+                    "instrument.vehicle.oxygen",
+                    "instrument.vehicle.smoke_alarm",
+                    "instrument.vehicle.flood_alarm",
+                ):
+                    gauge_payloads.pop(assembly_id, None)
             instrument_by_id = dict(
                 (str(row.get("assembly_id", "")).strip(), dict(row))
                 for row in list(instrument_rows or [])
