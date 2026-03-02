@@ -20656,6 +20656,16 @@ def execute_intent(
         itinerary_row = dict(itinerary_result.get("itinerary") or {})
         itinerary_id = str(itinerary_row.get("itinerary_id", "")).strip()
         reserved_rows: List[dict] = []
+        displaced_reservation_ids: List[str] = []
+        reservation_policy_id = (
+            str(
+                inputs.get(
+                    "congestion_policy_id",
+                    (dict(policy_context or {})).get("mobility_congestion_policy_id", "cong.default_linear"),
+                )
+            ).strip()
+            or "cong.default_linear"
+        )
         if bool(inputs.get("reserve_edges", False)):
             route_edge_ids = [
                 str(item).strip()
@@ -20699,6 +20709,7 @@ def execute_intent(
                         edge_id=edge_id,
                         start_tick=int(edge_start_tick),
                         end_tick=int(edge_end_tick),
+                        fairness_policy_id=reservation_policy_id,
                     )
                 except TrafficEngineError as exc:
                     return refusal(
@@ -20710,6 +20721,10 @@ def execute_intent(
                     )
                 reservation_rows = normalize_reservation_rows(list(reserve_result.get("reservations") or []))
                 reserved_rows.append(dict(reserve_result.get("reservation") or {}))
+                displaced_reservation_ids = _sorted_tokens(
+                    list(displaced_reservation_ids)
+                    + list(reserve_result.get("displaced_reservation_ids") or [])
+                )
                 edge_start_tick = int(edge_end_tick + 1)
             mobility_reservations = normalize_reservation_rows(reservation_rows)
             state["mobility_reservations"] = [
@@ -20792,6 +20807,8 @@ def execute_intent(
             "reserved_reservation_ids": _sorted_tokens(
                 [row.get("reservation_id") for row in list(reserved_rows or [])]
             ),
+            "reservation_policy_id": reservation_policy_id,
+            "displaced_reservation_ids": list(displaced_reservation_ids),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_reserve_edge":
@@ -20858,6 +20875,15 @@ def execute_intent(
         )
         state["edge_occupancies"] = [dict(row) for row in list(edge_occupancies or []) if isinstance(row, Mapping)]
         _ensure_edge_occupancy_rows(state)
+        reservation_policy_id = (
+            str(
+                inputs.get(
+                    "congestion_policy_id",
+                    (dict(policy_context or {})).get("mobility_congestion_policy_id", "cong.default_linear"),
+                )
+            ).strip()
+            or "cong.default_linear"
+        )
         try:
             reservation_result = reserve_edge_capacity(
                 reservation_rows=mobility_reservations,
@@ -20866,6 +20892,7 @@ def execute_intent(
                 edge_id=edge_id,
                 start_tick=int(start_tick),
                 end_tick=int(end_tick),
+                fairness_policy_id=reservation_policy_id,
             )
         except TrafficEngineError as exc:
             return refusal(
@@ -20891,6 +20918,11 @@ def execute_intent(
             "reservation": dict(reservation_result.get("reservation") or {}),
             "capacity_units": int(max(1, _as_int(reservation_result.get("capacity_units", 1), 1))),
             "conflicting_count": int(max(0, _as_int(reservation_result.get("conflicting_count", 0), 0))),
+            "reservation_policy_id": reservation_policy_id,
+            "strict_fair": bool(reservation_result.get("strict_fair", False)),
+            "displaced_reservation_ids": _sorted_tokens(
+                list(reservation_result.get("displaced_reservation_ids") or [])
+            ),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.travel_schedule_set":
@@ -21219,11 +21251,35 @@ def execute_intent(
         schedule_start_count = 0
         schedule_skip_rows: List[dict] = []
         event_seq = int(len(list(travel_events or [])))
+        fairness_policy_id = (
+            str(
+                inputs.get(
+                    "congestion_policy_id",
+                    (dict(policy_context or {})).get("mobility_congestion_policy_id", "cong.default_linear"),
+                )
+            ).strip()
+            or "cong.default_linear"
+        )
+        strict_fair_departure = str(fairness_policy_id) == "cong.rank_strict_fair"
         due_schedule_events = [
             dict(row)
             for row in list(schedule_tick.get("due_events") or [])
             if isinstance(row, Mapping)
         ]
+        if strict_fair_departure:
+            due_schedule_events = sorted(
+                due_schedule_events,
+                key=lambda row: (
+                    str(
+                        (dict(schedule_rows_by_id.get(str(row.get("schedule_id", "")).strip()) or {})).get(
+                            "target_id", ""
+                        )
+                    ).strip(),
+                    str(row.get("schedule_id", "")).strip(),
+                    _as_int(row.get("next_due_tick", 0), 0),
+                    str(row.get("event_id", "")),
+                ),
+            )
         for due_row in due_schedule_events:
             schedule_id = str(due_row.get("schedule_id", "")).strip()
             schedule_row = dict(schedule_rows_by_id.get(schedule_id) or {})
@@ -21848,6 +21904,8 @@ def execute_intent(
             "deferred_schedule_ids": list(deferred_schedule_ids),
             "congestion_policy_id": str(congestion_policy.get("congestion_policy_id", "")).strip()
             or "cong.default_linear",
+            "fairness_policy_id": str(fairness_policy_id or "").strip() or "cong.default_linear",
+            "strict_fair_departure": bool(strict_fair_departure),
             "congestion_delay_count": int(len(congestion_delay_rows)),
             "edge_occupancy_count": int(len(edge_occupancies)),
             "edge_over_capacity_count": int(
@@ -21877,6 +21935,8 @@ def execute_intent(
             "travel_event_stream_itinerary_ids": list(touched_itinerary_ids),
             "congestion_policy_id": str(congestion_policy.get("congestion_policy_id", "")).strip()
             or "cong.default_linear",
+            "fairness_policy_id": str(fairness_policy_id or "").strip() or "cong.default_linear",
+            "strict_fair_departure": bool(strict_fair_departure),
             "congestion_delay_count": int(len(congestion_delay_rows)),
             "congestion_delay_rows": [dict(row) for row in list(congestion_delay_rows)[:64]],
             "edge_occupancy_count": int(len(edge_occupancies)),
