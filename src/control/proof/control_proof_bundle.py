@@ -64,6 +64,27 @@ def _mobility_surface_hash(
     )
 
 
+def _signal_surface_hash(
+    *,
+    key: str,
+    surface: Mapping[str, object] | None,
+    tick_start: int,
+    tick_end: int,
+    decision_log_hashes: List[str],
+) -> str:
+    payload = dict(surface or {})
+    return _hash64(
+        payload.get(str(key), ""),
+        {
+            "key": str(key),
+            "tick_start": int(max(0, _to_int(tick_start, 0))),
+            "tick_end": int(max(0, _to_int(tick_end, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+            "surface_kind": "signals",
+        },
+    )
+
+
 def collect_control_decision_markers(envelopes: Iterable[Mapping[str, object]]) -> List[dict]:
     """Extract deterministic control-decision proof markers from intent envelopes."""
 
@@ -237,6 +258,41 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    signal_network_hash = _signal_surface_hash(
+        key="signal_network_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    message_delivery_event_hash_chain = _signal_surface_hash(
+        key="message_delivery_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    receipt_hash_chain = _signal_surface_hash(
+        key="receipt_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    trust_update_hash_chain = _signal_surface_hash(
+        key="trust_update_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    jamming_event_hash_chain = _signal_surface_hash(
+        key="jamming_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
 
     payload = {
         "schema_version": "1.0.0",
@@ -254,6 +310,11 @@ def build_control_proof_bundle_from_markers(
         "congestion_hash": str(congestion_hash),
         "signal_state_hash": str(signal_state_hash),
         "derailment_hash": str(derailment_hash),
+        "signal_network_hash": str(signal_network_hash),
+        "message_delivery_event_hash_chain": str(message_delivery_event_hash_chain),
+        "receipt_hash_chain": str(receipt_hash_chain),
+        "trust_update_hash_chain": str(trust_update_hash_chain),
+        "jamming_event_hash_chain": str(jamming_event_hash_chain),
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
     }
@@ -283,6 +344,11 @@ def build_control_proof_bundle_from_markers(
                     "congestion_hash": str(payload.get("congestion_hash", "")),
                     "signal_state_hash": str(payload.get("signal_state_hash", "")),
                     "derailment_hash": str(payload.get("derailment_hash", "")),
+                    "signal_network_hash": str(payload.get("signal_network_hash", "")),
+                    "message_delivery_event_hash_chain": str(payload.get("message_delivery_event_hash_chain", "")),
+                    "receipt_hash_chain": str(payload.get("receipt_hash_chain", "")),
+                    "trust_update_hash_chain": str(payload.get("trust_update_hash_chain", "")),
+                    "jamming_event_hash_chain": str(payload.get("jamming_event_hash_chain", "")),
                 }
             )[:16]
         )
