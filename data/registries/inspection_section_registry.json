@@ -111,6 +111,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.mob.edge_occupancy",
+        "title": "Mobility Edge Occupancy",
+        "data": {
+          "data_kind": "mobility_edge_occupancy"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.mob.congestion_summary",
+        "title": "Mobility Congestion Summary",
+        "data": {
+          "data_kind": "mobility_congestion_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.vehicle.summary",
         "title": "Vehicle Summary",
         "data": {
