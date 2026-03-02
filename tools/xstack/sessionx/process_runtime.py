@@ -20497,11 +20497,199 @@ def execute_intent(
                 {"process_id": process_id},
                 "$.intent.inputs",
             )
+        vehicle_rows_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        vehicle_row = dict(vehicle_rows_by_id.get(vehicle_id) or {})
+        if not vehicle_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle_id '{}' is not registered".format(vehicle_id),
+                "Register vehicle first via process.vehicle_register_from_structure.",
+                {"vehicle_id": vehicle_id},
+                "$.intent.inputs.vehicle_id",
+            )
+        target_edge_row = {}
+        for graph_row in sorted(
+            (item for item in list(state.get("network_graphs") or []) if isinstance(item, Mapping)),
+            key=lambda item: str(item.get("graph_id", "")),
+        ):
+            for edge_row in sorted(
+                (item for item in list(dict(graph_row).get("edges") or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("from_node_id", "")),
+                    str(item.get("to_node_id", "")),
+                    str(item.get("edge_id", "")),
+                ),
+            ):
+                if str(edge_row.get("edge_id", "")).strip() != target_edge_id:
+                    continue
+                target_edge_row = dict(edge_row)
+                break
+            if target_edge_row:
+                break
+        if not target_edge_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "target_edge_id '{}' is not present".format(target_edge_id),
+                "Query edge IDs from mobility network graph inspection before compatibility checks.",
+                {"target_edge_id": target_edge_id},
+                "$.intent.inputs.target_edge_id",
+            )
+
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compliance_check_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="compliance_check_registry",
+            registry_rel_path="data/registries/compliance_check_registry.json",
+            entry_key="compliance_checks",
+        )
+        spec_rows, spec_load_errors = _spec_sheet_rows(
+            policy_context=policy_context,
+            spec_type_registry=spec_type_registry,
+            tolerance_policy_registry=tolerance_policy_registry,
+            compliance_check_registry=compliance_check_registry,
+        )
+        if spec_load_errors:
+            first_error = dict(spec_load_errors[0] if spec_load_errors else {})
+            return refusal(
+                "refusal.spec.invalid_sheet",
+                str(first_error.get("message", "spec sheet validation failed")),
+                "Fix spec sheet pack data and rerun vehicle compatibility checks.",
+                {"vehicle_id": vehicle_id, "target_edge_id": target_edge_id},
+                str(first_error.get("path", "$.spec_sheets")),
+            )
+        spec_rows_index = spec_sheet_rows_by_id(spec_rows)
+        guide_geometry_rows_by_id = dict(
+            (
+                str(row.get("geometry_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(guide_geometries or [])
+            if isinstance(row, Mapping) and str(row.get("geometry_id", "")).strip()
+        )
+        geometry_metric_rows_by_geometry_id: Dict[str, dict] = {}
+        for row in sorted(
+            (item for item in list(geometry_derived_metrics or []) if isinstance(item, Mapping)),
+            key=lambda item: (
+                str(item.get("geometry_id", "")),
+                _as_int(item.get("computed_tick", 0), 0),
+                str(item.get("geometry_hash", "")),
+            ),
+        ):
+            geometry_id = str(row.get("geometry_id", "")).strip()
+            if not geometry_id:
+                continue
+            geometry_metric_rows_by_geometry_id[geometry_id] = dict(row)
+        try:
+            compatibility_result = evaluate_vehicle_edge_compatibility(
+                vehicle_row=vehicle_row,
+                target_edge_row=target_edge_row,
+                spec_rows_by_id=spec_rows_index,
+                guide_geometry_rows_by_id=guide_geometry_rows_by_id,
+                geometry_metric_rows_by_geometry_id=geometry_metric_rows_by_geometry_id,
+            )
+        except VehicleError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Provide valid vehicle/network graph references before compatibility checks.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+
+        result_seed = {
+            "vehicle_id": vehicle_id,
+            "target_edge_id": target_edge_id,
+            "tick": int(current_tick),
+            "intent_id": str(intent_id),
+        }
+        result_id = "vehicle.compat.{}".format(canonical_sha256(result_seed)[:16])
+        result_row = {
+            "schema_version": "1.0.0",
+            "result_id": result_id,
+            "vehicle_id": vehicle_id,
+            "target_edge_id": target_edge_id,
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "compatible": bool(compatibility_result.get("compatible", False)),
+            "reason_code": (
+                None
+                if compatibility_result.get("reason_code") is None
+                else str(compatibility_result.get("reason_code", "")).strip() or None
+            ),
+            "details": dict(compatibility_result.get("details") or {}),
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        }
+        result_row["deterministic_fingerprint"] = canonical_sha256(dict(result_row, deterministic_fingerprint=""))
+        vehicle_compatibility_results = _ensure_vehicle_compatibility_rows(
+            {
+                "vehicle_compatibility_results": _upsert_row_by_id(
+                    vehicle_compatibility_results,
+                    "result_id",
+                    result_row,
+                )
+            }
+        )
+        event_row = _vehicle_event_row(
+            vehicle_id=vehicle_id,
+            event_kind="vehicle_compatibility_checked",
+            tick=int(current_tick),
+            process_id=process_id,
+            intent_id=str(intent_id),
+            extensions={
+                "result_id": result_id,
+                "target_edge_id": target_edge_id,
+                "compatible": bool(result_row.get("compatible", False)),
+            },
+        )
+        vehicle_events = _ensure_vehicle_events(
+            {"vehicle_events": _upsert_row_by_id(vehicle_events, "event_id", event_row)}
+        )
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
+        enforce = bool(inputs.get("enforce", True))
+        if bool(enforce) and not bool(result_row.get("compatible", False)):
+            refusal_code = (
+                str(result_row.get("reason_code", "")).strip() or REFUSAL_MOBILITY_SPEC_NONCOMPLIANT
+            )
+            return refusal(
+                refusal_code,
+                "vehicle compatibility check failed",
+                "Use compliant gauge/clearance specs or disable strict enforcement for diagnostics.",
+                {
+                    "vehicle_id": vehicle_id,
+                    "target_edge_id": target_edge_id,
+                    "result_id": result_id,
+                },
+                "$.intent.inputs",
+            )
         result_metadata = {
             "vehicle_id": vehicle_id,
             "target_edge_id": target_edge_id,
-            "compatible": True,
-            "provisional": True,
+            "compatibility_result": dict(result_row),
+            "event_id": str(event_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_apply_environment_hooks":
