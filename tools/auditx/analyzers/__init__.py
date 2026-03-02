@@ -183,6 +183,8 @@ from analyzers import e154_derailment_bypass_smell
 from analyzers import e155_direct_velocity_mutation_smell
 from analyzers import e156_signal_bypass_smell
 from analyzers import e157_adhoc_interlocking_smell
+from analyzers import e158_inline_wear_smell
+from analyzers import e159_maintenance_bypass_smell
 
 
 ANALYZERS = (
@@ -369,6 +371,8 @@ ANALYZERS = (
     e155_direct_velocity_mutation_smell,
     e156_signal_bypass_smell,
     e157_adhoc_interlocking_smell,
+    e158_inline_wear_smell,
+    e159_maintenance_bypass_smell,
 )
 
 

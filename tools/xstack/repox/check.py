@@ -11942,6 +11942,39 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-DERAILMENT-PROCESS-ONLY",
             )
         )
+    for token in (
+        'elif process_id == "process.mobility_wear_tick":',
+        'elif process_id == "process.inspect_track":',
+        'elif process_id == "process.service_track":',
+        'elif process_id == "process.inspect_vehicle":',
+        'elif process_id == "process.service_vehicle":',
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="mobility wear/inspection/service flows must be process-mediated through MOB-9 handlers",
+                rule_id="INV-WEAR-THROUGH-HAZARD-ONLY",
+            )
+        )
+    if (
+        'elif process_id == "process.mob_failure":' not in runtime_text
+        or 'elif process_id == "process.mob_track_failure":' not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.mob_failure/process.mob_track_failure",
+                message="wear threshold breaches must route through explicit mobility failure processes",
+                rule_id="INV-WEAR-THROUGH-HAZARD-ONLY",
+            )
+        )
     if not any(token in runtime_text for token in guide_geometry_tokens):
         findings.append(
             _finding(
@@ -12159,6 +12192,79 @@ def _append_mobility_invariant_findings(
                     snippet=snippet[:140],
                     message="friction/wind modifiers must route through FieldLayer + mobility free-motion/effect paths",
                     rule_id="INV-NO-ADHOC-FRICTION-WIND",
+                )
+            )
+            break
+    adhoc_wear_flag_patterns = (
+        re.compile(r"\b(?:wear|degradation)_(?:flag|state|critical|broken)\b", re.IGNORECASE),
+        re.compile(
+            r"\b(?:track_wear|wheel_wear|brake_wear|engine_wear|signal_wear|switch_wear)\b\s*(?:[*+\-\/]=|=\s*(?:True|False|0|1)\b)",
+            re.IGNORECASE,
+        ),
+        re.compile(r"\bif\b[^\n]*(?:track_wear|wheel_wear|brake_wear|engine_wear|signal_wear|switch_wear)\b", re.IGNORECASE),
+    )
+    adhoc_wear_allowed = {
+        process_runtime_rel,
+        "src/mobility/maintenance/wear_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in adhoc_wear_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adhoc_wear_flag_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="ad-hoc wear/degradation flags are forbidden; use mobility wear state + hazard/schedule processes",
+                    rule_id="INV-NO-ADHOC-WEAR-FLAGS",
+                )
+            )
+            break
+    wear_state_mutation_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']mobility_wear_states[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    wear_state_mutation_allowed = {
+        process_runtime_rel,
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in wear_state_mutation_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in wear_state_mutation_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="mobility wear truth writes outside process runtime are forbidden",
+                    rule_id="INV-WEAR-THROUGH-HAZARD-ONLY",
                 )
             )
             break
