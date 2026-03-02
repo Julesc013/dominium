@@ -26,6 +26,7 @@ This constitution forbids omniscient message teleportation in authoritative trut
 ### Receipt
 - Knowledge changes occur through explicit receipt creation (`knowledge_receipt`) per subject.
 - Receipt creation is process-mediated and auditable.
+- Receipt rows carry `trust_weight` (default `1.0`) as a deterministic acceptance hook.
 
 ## B) Transport Guarantees
 
@@ -59,6 +60,7 @@ This constitution forbids omniscient message teleportation in authoritative trut
 - Delivery outcomes are logged as `message_delivery_event` artifacts.
 - Receipt creation is logged as process-provenance events.
 - Trust metadata changes are logged independently from artifact content.
+- Transport and receipt layers do not rewrite artifact payloads; trust only influences downstream acceptance.
 - Replay must reconstruct transport and receipt outcomes deterministically from event stream + policy registries.
 
 ## F) Modding Contract
