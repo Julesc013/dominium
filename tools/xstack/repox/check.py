@@ -12754,6 +12754,119 @@ def _append_mobility_invariant_findings(
             break
 
 
+def _append_signal_transport_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+
+    transport_rel = "src/signals/transport/transport_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    transport_text = _file_text(repo_root, transport_rel)
+    runtime_text = _file_text(repo_root, runtime_rel)
+
+    required_tokens = (
+        "def process_signal_send(",
+        "def process_signal_transport_tick(",
+        "def process_knowledge_acquire(",
+        "enqueue_signal_envelope(",
+        "tick_signal_transport(",
+        "build_knowledge_receipt(",
+    )
+    for token in required_tokens:
+        if token in transport_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transport_rel,
+                line_number=1,
+                snippet=token,
+                message="signal communication must route through deterministic transport and receipt process helpers",
+                rule_id="INV-SIGNAL-TRANSPORT-ONLY",
+            )
+        )
+
+    runtime_tokens = (
+        'process_id == "process.signal_send"',
+        'process_id == "process.signal_transport_tick"',
+        'process_id == "process.knowledge_acquire"',
+    )
+    if runtime_text and (not all(token in runtime_text for token in runtime_tokens)):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet="process.signal_send/process.signal_transport_tick/process.knowledge_acquire",
+                message="authoritative runtime should expose SIG transport process hooks to prevent direct message bypasses",
+                rule_id="INV-SIGNAL-TRANSPORT-ONLY",
+            )
+        )
+
+    direct_knowledge_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']knowledge_receipts[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bknowledge_receipts\s*\.append\s*\(", re.IGNORECASE),
+        re.compile(r"\bsubject_knowledge\b\s*=", re.IGNORECASE),
+    )
+    direct_message_patterns = (
+        re.compile(r"\b(?:inbox|mailbox|message_queue)\b\s*\.append\s*\(", re.IGNORECASE),
+        re.compile(r"\b(?:inbox|mailbox|message_queue)\b\s*\[", re.IGNORECASE),
+    )
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        transport_rel,
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if any(pattern.search(snippet) for pattern in direct_knowledge_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="knowledge receipt mutation must be process-mediated through SIG transport flow",
+                        rule_id="INV-NO-DIRECT-KNOWLEDGE-TRANSFER",
+                    )
+                )
+                break
+            if any(pattern.search(snippet) for pattern in direct_message_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="direct message queue mutation detected outside SIG transport helpers/runtime",
+                        rule_id="INV-SIGNAL-TRANSPORT-ONLY",
+                    )
+                )
+                break
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -12950,6 +13063,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mobility_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_signal_transport_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
