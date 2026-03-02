@@ -124,3 +124,24 @@ Inference candidates remain derived-only until accepted; promotion never mutates
 - No congestion solver.
 - No interlocking/signal logic.
 - No wall-clock dependence or nondeterministic switching.
+
+## 12) UX + Inspection Hooks
+
+Mobility network UX affordances are data-driven and control-plane mediated:
+
+- `interaction.promote_to_network`
+- `interaction.inspect_route`
+- `interaction.toggle_switch`
+- `interaction.inspect_mobility_node`
+- `interaction.inspect_mobility_edge`
+
+Inspection snapshots expose mobility-focused sections:
+
+- `section.mob.network_summary`
+- `section.mob.route_result`
+
+Render overlays for graph inspection include:
+
+- edge/route line overlays following graph edges
+- switch node state glyph labels
+- spec-missing edge indicators
