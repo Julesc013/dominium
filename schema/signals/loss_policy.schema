@@ -1,0 +1,24 @@
+SCHEMA: signals/loss_policy.schema
+schema_id: dominium.schema.signals.loss_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic transport loss policy contract.
+
+REQUIRED SHAPE:
+record loss_policy
+  required:
+    - schema_version: semver
+    - loss_policy_id: id
+    - description: string
+    - deterministic_function_id: id
+    - parameters: map
+    - uses_rng_stream: bool
+    - rng_stream_name: id|null
+    - extensions: map
+
+INVARIANTS:
+- Loss policy evaluation is deterministic for identical inputs.
+- RNG-enabled policies must use named streams only.
+- Policies must not reference wall-clock or platform entropy.
