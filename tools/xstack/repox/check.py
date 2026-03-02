@@ -11853,6 +11853,20 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-MICRO-MOTION-ROI-ONLY",
             )
         )
+    if (
+        'elif process_id == "process.mobility_free_tick":' not in runtime_text
+        or "roi_subject_ids" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.mobility_free_tick",
+                message="micro free motion must run through process.mobility_free_tick with explicit ROI subject gating",
+                rule_id="INV-FREE-MOTION-ROI-ONLY",
+            )
+        )
     if 'elif process_id == "process.mob_derail":' not in runtime_text:
         findings.append(
             _finding(
@@ -11947,6 +11961,41 @@ def _append_mobility_invariant_findings(
             )
             break
 
+    free_motion_mutation_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']free_motion_states[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']body_assemblies[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    free_motion_allowed = {
+        process_runtime_rel,
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in free_motion_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in free_motion_mutation_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="free-motion position/body truth writes must happen through mobility free process runtime only",
+                    rule_id="INV-POSITION-UPDATES-PROCESS-ONLY",
+                )
+            )
+            break
+
     derail_bypass_pattern = re.compile(r"\b(?:incident\.derailment|vehicle_derailed)\b", re.IGNORECASE)
     derail_allowed_files = {
         process_runtime_rel,
@@ -12007,6 +12056,45 @@ def _append_mobility_invariant_findings(
                     snippet=snippet[:140],
                     message="wall-clock APIs are forbidden in mobility motion paths; use tick inputs only",
                     rule_id="INV-NO-WALLCLOCK-IN-MOTION",
+                )
+            )
+            break
+
+    adhoc_friction_wind_patterns = (
+        re.compile(r"\b(?:friction|traction)\b\s*[*+\-\/]=\s*(?:0?\.\d+|\d+\s*/\s*\d+|\d+)", re.IGNORECASE),
+        re.compile(r"\b(?:wind|drift)\b\s*[*+\-\/]=\s*(?:0?\.\d+|\d+\s*/\s*\d+|\d+)", re.IGNORECASE),
+        re.compile(r"\bif\b[^\n]*(?:rain|snow|ice|fog|weather|wind)[^\n]*(?:speed|traction|friction|drift)\b", re.IGNORECASE),
+    )
+    adhoc_friction_wind_allowed = {
+        process_runtime_rel,
+        "src/fields/field_engine.py",
+        "src/mobility/micro/free_motion_solver.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in adhoc_friction_wind_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adhoc_friction_wind_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="friction/wind modifiers must route through FieldLayer + mobility free-motion/effect paths",
+                    rule_id="INV-NO-ADHOC-FRICTION-WIND",
                 )
             )
             break
