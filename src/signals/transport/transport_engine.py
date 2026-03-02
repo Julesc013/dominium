@@ -6,6 +6,10 @@ from typing import Dict, List, Mapping
 
 from src.core.graph.routing_engine import RoutingError, query_route_result
 from src.signals.addressing import address_from_recipient_address, resolve_address_recipients
+from src.signals.trust import (
+    belief_policy_rows_by_id,
+    trust_weight_for_pair,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from .channel_executor import execute_channel_transport_tick
 
@@ -1134,6 +1138,7 @@ def process_knowledge_acquire(
         delivery_event_id=None if row.get("delivery_event_id") is None else str(row.get("delivery_event_id", "")).strip() or None,
         extensions={
             "channel_id": str(row.get("channel_id", "")).strip() or None,
+            "sender_subject_id": str(row.get("sender_subject_id", "")).strip() or None,
             "idempotency_key": canonical_sha256({"subject_id": subject_id, "artifact_id": artifact_id}),
         },
     )
@@ -1171,6 +1176,9 @@ def process_signal_transport_tick(
     courier_arrival_rows: object = None,
     default_trust_weight: float = 1.0,
     trust_weight_by_subject_id: Mapping[str, object] | None = None,
+    trust_edge_rows: object = None,
+    belief_policy_registry: Mapping[str, object] | None = None,
+    belief_policy_id: str = "belief.default",
 ) -> dict:
     transport = tick_signal_transport(
         current_tick=int(max(0, _as_int(current_tick, 0))),
@@ -1193,11 +1201,37 @@ def process_signal_transport_tick(
     next_receipts = normalize_knowledge_receipt_rows(knowledge_receipt_rows)
     created_receipts = []
     trust_rows = dict((str(key).strip(), value) for key, value in dict(trust_weight_by_subject_id or {}).items() if str(key).strip())
+    belief_rows = belief_policy_rows_by_id(belief_policy_registry)
+    belief_policy_row = dict(belief_rows.get(str(belief_policy_id or "").strip()) or belief_rows.get("belief.default") or {})
+    signature_verified_boost = _clamp_trust_weight(
+        dict(belief_policy_row.get("extensions") or {}).get("signature_verified_boost", 0.0)
+    )
     for delivered_row in list(dict(transport).get("delivered_rows") or []):
         recipient_subject_id = str(dict(delivered_row or {}).get("recipient_subject_id", "")).strip()
+        sender_subject_id = str(dict(delivered_row or {}).get("sender_subject_id", "")).strip()
         subject_trust = _clamp_trust_weight(default_trust_weight)
         if recipient_subject_id in trust_rows:
             subject_trust = _clamp_trust_weight(trust_rows.get(recipient_subject_id))
+        elif recipient_subject_id and sender_subject_id:
+            subject_trust = _clamp_trust_weight(
+                trust_weight_for_pair(
+                    trust_edge_rows=trust_edge_rows,
+                    from_subject_id=recipient_subject_id,
+                    to_subject_id=sender_subject_id,
+                    default_weight=subject_trust,
+                )
+            )
+        envelope_extensions = _as_map(dict(delivered_row or {}).get("envelope_extensions"))
+        security_header = _as_map(envelope_extensions.get("security_header"))
+        security_mode = str(security_header.get("security_mode", "")).strip().lower()
+        signature_verified = bool(security_header.get("signature_verified", False))
+        if (
+            not signature_verified
+            and str(security_header.get("verification_state", "")).strip().lower() == "verified"
+        ):
+            signature_verified = True
+        if signature_verified and ("signed" in security_mode):
+            subject_trust = _clamp_trust_weight(float(subject_trust) + float(signature_verified_boost))
         acquire_result = process_knowledge_acquire(
             current_tick=int(max(0, _as_int(current_tick, 0))),
             delivered_row=dict(delivered_row or {}),
@@ -1220,6 +1254,7 @@ def process_signal_transport_tick(
     )
     out["delivery_count"] = int(len(list(dict(out).get("delivered_rows") or [])))
     out["receipt_count"] = int(len(list(out.get("created_receipt_rows") or [])))
+    out["belief_policy_id"] = str(belief_policy_row.get("belief_policy_id", "")).strip() or "belief.default"
     return out
 
 

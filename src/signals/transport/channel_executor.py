@@ -496,9 +496,11 @@ def execute_channel_transport_tick(
                     {
                         "envelope_id": envelope_id,
                         "artifact_id": str(envelope_row.get("artifact_id", "")).strip(),
+                        "sender_subject_id": str(envelope_row.get("sender_subject_id", "")).strip() or None,
                         "recipient_subject_id": queue_row.get("recipient_subject_id"),
                         "delivery_event_id": event_id,
                         "channel_id": channel_id,
+                        "envelope_extensions": _as_map(envelope_row.get("extensions")),
                     }
                 )
 
