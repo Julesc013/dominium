@@ -94,6 +94,50 @@ def _artifact_subject_id(artifact_row: Mapping[str, object]) -> str:
     return str(ext.get("subject_id", "")).strip() or str(row.get("subject_ref", "")).strip()
 
 
+def _receipt_acceptance_maps(*, knowledge_receipt_rows: object, subject_id: str) -> dict:
+    subject_token = str(subject_id or "").strip()
+    accepted_ids: set[str] = set()
+    confidence_by_artifact_id: Dict[str, str] = {}
+    if not subject_token:
+        return {
+            "accepted_artifact_ids": accepted_ids,
+            "confidence_tag_by_artifact_id": confidence_by_artifact_id,
+        }
+    rows = [
+        dict(item)
+        for item in list(knowledge_receipt_rows or [])
+        if isinstance(item, Mapping)
+        and str(item.get("subject_id", "")).strip() == subject_token
+        and str(item.get("artifact_id", "")).strip()
+    ]
+    rows = sorted(
+        rows,
+        key=lambda item: (
+            str(item.get("artifact_id", "")),
+            _as_int(item.get("acquired_tick", 0), 0),
+            str(item.get("receipt_id", "")),
+        ),
+    )
+    latest_by_artifact: Dict[str, dict] = {}
+    for row in rows:
+        artifact_id = str(row.get("artifact_id", "")).strip()
+        latest_by_artifact[artifact_id] = dict(row)
+    for artifact_id in sorted(latest_by_artifact.keys()):
+        row = dict(latest_by_artifact.get(artifact_id) or {})
+        ext = _as_map(row.get("extensions"))
+        accepted = bool(ext.get("accepted", False))
+        confidence_tag = str(ext.get("confidence_tag", "")).strip().lower()
+        if not confidence_tag:
+            confidence_tag = "accepted" if accepted else "untrusted"
+        confidence_by_artifact_id[artifact_id] = confidence_tag
+        if accepted:
+            accepted_ids.add(artifact_id)
+    return {
+        "accepted_artifact_ids": accepted_ids,
+        "confidence_tag_by_artifact_id": confidence_by_artifact_id,
+    }
+
+
 def _collect_policy_inputs(*, policy_row: Mapping[str, object], current_tick: int, info_artifact_rows: object) -> List[dict]:
     rows = normalize_info_artifact_rows(info_artifact_rows)
     families = set(_sorted_tokens(policy_row.get("input_family_ids")))
@@ -102,6 +146,15 @@ def _collect_policy_inputs(*, policy_row: Mapping[str, object], current_tick: in
     max_refs = int(max(1, _as_int(rules.get("max_source_refs", 256), 256)))
     window_start = int(max(0, int(current_tick) - window_ticks)) if window_ticks > 0 else 0
     selected = []
+    policy_ext = _as_map(policy_row.get("extensions"))
+    receipt_subject_id = str(policy_ext.get("receipt_subject_id", "")).strip()
+    acceptance_mode = str(policy_ext.get("acceptance_mode", "include_all")).strip().lower() or "include_all"
+    acceptance_maps = _receipt_acceptance_maps(
+        knowledge_receipt_rows=policy_ext.get("_runtime_knowledge_receipt_rows"),
+        subject_id=receipt_subject_id,
+    )
+    accepted_artifact_ids = set(acceptance_maps.get("accepted_artifact_ids") or set())
+    confidence_tag_by_artifact_id = dict(acceptance_maps.get("confidence_tag_by_artifact_id") or {})
     for row in rows:
         item = dict(row)
         family_id = str(item.get("artifact_family_id", "")).strip()
@@ -110,6 +163,14 @@ def _collect_policy_inputs(*, policy_row: Mapping[str, object], current_tick: in
         created_tick = int(max(0, _as_int(item.get("created_tick", 0), 0)))
         if window_ticks > 0 and created_tick < window_start:
             continue
+        artifact_id = str(item.get("artifact_id", "")).strip()
+        if receipt_subject_id and acceptance_mode == "accepted_only" and artifact_id and artifact_id not in accepted_artifact_ids:
+            continue
+        confidence_tag = str(confidence_tag_by_artifact_id.get(artifact_id, "")).strip()
+        if confidence_tag:
+            item_ext = _as_map(item.get("extensions"))
+            item_ext["belief_acceptance"] = confidence_tag
+            item["extensions"] = item_ext
         selected.append(item)
     return sorted(selected, key=lambda item: (_as_int(item.get("created_tick", 0), 0), str(item.get("artifact_id", ""))))[:max_refs]
 
@@ -147,13 +208,18 @@ def _summarize_artifacts(*, policy_row: Mapping[str, object], artifacts: List[di
             "rows": rows,
         }
     family_counts: Dict[str, int] = {}
+    confidence_counts: Dict[str, int] = {}
     for artifact in artifacts:
         family_id = str(dict(artifact).get("artifact_family_id", "")).strip() or "UNKNOWN"
         family_counts[family_id] = _as_int(family_counts.get(family_id, 0), 0) + 1
+        confidence = str(_as_map(dict(artifact).get("extensions")).get("belief_acceptance", "")).strip().lower()
+        if confidence:
+            confidence_counts[confidence] = _as_int(confidence_counts.get(confidence, 0), 0) + 1
     return {
         "method": "count_by_family",
         "artifact_count": int(len(artifacts)),
         "family_counts": dict((key, int(family_counts[key])) for key in sorted(family_counts.keys())),
+        "confidence_counts": dict((key, int(confidence_counts[key])) for key in sorted(confidence_counts.keys())),
     }
 
 
@@ -169,6 +235,7 @@ def process_signal_aggregation_tick(
     group_membership_rows: object = None,
     broadcast_scope_rows: object = None,
     decision_log_rows: object = None,
+    knowledge_receipt_rows: object = None,
 ) -> dict:
     tick = int(max(0, _as_int(current_tick, 0)))
     policies = aggregation_policy_rows_by_id(aggregation_policy_registry)
@@ -186,6 +253,10 @@ def process_signal_aggregation_tick(
 
     for policy_id in sorted(policies.keys()):
         policy_row = dict(policies.get(policy_id) or {})
+        policy_row["extensions"] = {
+            **_as_map(policy_row.get("extensions")),
+            "_runtime_knowledge_receipt_rows": [dict(row) for row in list(knowledge_receipt_rows or []) if isinstance(row, Mapping)],
+        }
         if not _policy_due(policy_row=policy_row, current_tick=tick, schedule_rows_by_id=schedule_by_id):
             continue
         selected = _collect_policy_inputs(policy_row=policy_row, current_tick=tick, info_artifact_rows=next_artifacts)
