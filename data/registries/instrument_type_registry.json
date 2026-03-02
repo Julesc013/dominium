@@ -270,6 +270,58 @@
         "extensions": {}
       },
       {
+        "instrument_type_id": "instr.vehicle.pressure",
+        "description": "Diegetic vehicle pressure status indicator emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.vehicle.pressure"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.vehicle.oxygen",
+        "description": "Diegetic vehicle oxygen status indicator emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.vehicle.oxygen"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.vehicle.smoke_alarm",
+        "description": "Diegetic vehicle smoke alarm indicator emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.vehicle.smoke_alarm"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.vehicle.flood_alarm",
+        "description": "Diegetic vehicle flood alarm indicator emitted from compartment flow states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.vehicle.flood_alarm"
+        ],
+        "update_process_id": "process.compartment_flow_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
         "instrument_type_id": "instr.panel.portal_state",
         "description": "Diegetic panel indicator for local portal open/closed/locked/damaged status.",
         "required_channels_in": [
