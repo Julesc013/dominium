@@ -2752,6 +2752,7 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("controller_assemblies", "assembly_id"),
         ("camera_assemblies", "assembly_id"),
         ("tool_assemblies", "tool_id"),
+        ("vehicles", "vehicle_id"),
         ("machine_assemblies", "machine_id"),
         ("machine_ports", "port_id"),
         ("interior_graphs", "graph_id"),
@@ -2815,6 +2816,7 @@ def _target_spatial_position(state: dict, target_id: str) -> dict:
     if not token:
         return {"position_mm": {"x": 0, "y": 0, "z": 0}}
     id_table = (
+        ("vehicles", "vehicle_id"),
         ("body_assemblies", "assembly_id"),
         ("camera_assemblies", "assembly_id"),
         ("agent_states", "agent_id"),
@@ -20709,10 +20711,287 @@ def execute_intent(
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_apply_environment_hooks":
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        field_update_policy_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_update_policy_registry",
+            registry_rel_path="data/registries/field_update_policy_registry.json",
+            entry_key="policies",
+        )
+        field_type_rows = field_type_rows_by_id(field_type_registry)
+        field_policy_rows = field_update_policy_rows_by_id(field_update_policy_registry)
+        del field_type_rows
+        del field_policy_rows
+
+        requested_vehicle_ids = _sorted_tokens(list(inputs.get("vehicle_ids") or []))
+        vehicles_by_id = dict(
+            (
+                str(row.get("vehicle_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicles or [])
+            if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
+        )
+        if not requested_vehicle_ids:
+            requested_vehicle_ids = sorted(vehicles_by_id.keys())
+        sampled_vehicle_ids = [
+            vehicle_id for vehicle_id in list(requested_vehicle_ids or []) if vehicle_id in vehicles_by_id
+        ]
+        sample_rows = [
+            {
+                "target_id": vehicle_id,
+                "spatial_position": _target_spatial_position(state, vehicle_id),
+            }
+            for vehicle_id in sampled_vehicle_ids
+        ]
+        modifier_snapshot = field_modifier_snapshot(
+            field_layer_rows=field_layers,
+            field_cell_rows=field_cells,
+            field_type_registry=field_type_registry,
+            sample_rows=sample_rows,
+        )
+        modifier_rows = [
+            dict(row)
+            for row in list(modifier_snapshot.get("rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        field_modifier_rows = [
+            dict(row)
+            for row in list(field_modifier_rows or [])
+            if isinstance(row, Mapping)
+        ]
+        field_modifier_rows.extend(modifier_rows)
+        field_modifier_rows = sorted(
+            field_modifier_rows,
+            key=lambda row: (
+                str(row.get("target_id", "")),
+                str(row.get("field_type_id", "")),
+                str(row.get("modifier_id", "")),
+            ),
+        )
+
+        existing_effect_rows = [
+            dict(row)
+            for row in list(effect_rows or [])
+            if isinstance(row, dict)
+            and not (
+                str((dict(row.get("extensions") or {})).get("source_process_id", "")).strip() == process_id
+                and str((dict(row.get("extensions") or {})).get("effect_auto_key", "")).strip().startswith("vehicle_env_")
+            )
+        ]
+        auto_effect_rows: List[dict] = []
+        vehicle_event_rows: List[dict] = []
+        effect_duration_ticks = max(
+            1,
+            _as_int(inputs.get("effect_duration_ticks", inputs.get("duration_ticks", 1)), 1),
+        )
+        stress_threshold_permille = int(
+            max(
+                1,
+                _as_int(inputs.get("stress_threshold_permille", 900), 900),
+            )
+        )
+        for vehicle_id in sampled_vehicle_ids:
+            vehicle_row = dict(vehicles_by_id.get(vehicle_id) or {})
+            if not vehicle_row:
+                continue
+            modifier_row = next(
+                (
+                    dict(row)
+                    for row in modifier_rows
+                    if str(row.get("target_id", "")).strip() == vehicle_id
+                ),
+                {},
+            )
+            traction_permille = int(max(0, _as_int(modifier_row.get("traction_permille", 1000), 1000)))
+            wind_drift_permille = int(max(0, _as_int(modifier_row.get("wind_drift_permille", 0), 0)))
+            visibility_permille = int(max(0, _as_int(modifier_row.get("visibility", 1000), 1000)))
+            wind_vector = _vector3_int(modifier_row.get("wind"), "wind") or {"x": 0, "y": 0, "z": 0}
+            icing_active = bool(modifier_row.get("icing_active", False))
+            if int(traction_permille) < 1000 or icing_active:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.traction_reduction",
+                        target_id=vehicle_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={"traction_permille": int(max(0, traction_permille))},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "vehicle_env_traction",
+                            "icing_active": bool(icing_active),
+                        },
+                    )
+                )
+            if int(wind_drift_permille) > 0:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.wind_drift",
+                        target_id=vehicle_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={
+                            "wind_drift_permille": int(max(0, wind_drift_permille)),
+                            "wind_vector": {
+                                "x": int(_as_int(wind_vector.get("x", 0), 0)),
+                                "y": int(_as_int(wind_vector.get("y", 0), 0)),
+                                "z": int(_as_int(wind_vector.get("z", 0), 0)),
+                            },
+                            "wind_x": int(_as_int(wind_vector.get("x", 0), 0)),
+                            "wind_y": int(_as_int(wind_vector.get("y", 0), 0)),
+                            "wind_z": int(_as_int(wind_vector.get("z", 0), 0)),
+                        },
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "vehicle_env_wind",
+                        },
+                    )
+                )
+            if int(visibility_permille) < 1000:
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.visibility_reduction",
+                        target_id=vehicle_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={"visibility_permille": int(max(0, visibility_permille))},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "vehicle_env_visibility",
+                        },
+                    )
+                )
+                speed_cap_permille = int(max(300, min(1000, visibility_permille + 100)))
+                if speed_cap_permille < 1000:
+                    auto_effect_rows.append(
+                        build_effect(
+                            effect_type_id="effect.speed_cap",
+                            target_id=vehicle_id,
+                            applied_tick=int(current_tick),
+                            duration_ticks=int(effect_duration_ticks),
+                            magnitude={"max_speed_permille": int(speed_cap_permille)},
+                            stacking_policy_id="stack.min",
+                            extensions={
+                                "source_process_id": process_id,
+                                "effect_auto_key": "vehicle_env_speed_cap",
+                            },
+                        )
+                    )
+
+            structural_target_id = (
+                str(vehicle_row.get("parent_structure_instance_id", "")).strip()
+                or str(vehicle_row.get("vehicle_id", "")).strip()
+            )
+            stress_summary = summarize_stress_for_target(
+                target_id=structural_target_id,
+                structural_graph_rows=structural_graphs,
+                structural_edge_rows=structural_edges,
+            )
+            max_stress_ratio_permille = int(
+                max(0, _as_int(stress_summary.get("max_stress_ratio_permille", 0), 0))
+            )
+            if int(max_stress_ratio_permille) >= int(stress_threshold_permille):
+                machine_output_permille = int(
+                    max(100, min(1000, 1000 - max(0, int(max_stress_ratio_permille) - 800)))
+                )
+                auto_effect_rows.append(
+                    build_effect(
+                        effect_type_id="effect.machine_degraded",
+                        target_id=vehicle_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=int(effect_duration_ticks),
+                        magnitude={"machine_output_permille": int(machine_output_permille)},
+                        stacking_policy_id="stack.min",
+                        extensions={
+                            "source_process_id": process_id,
+                            "effect_auto_key": "vehicle_env_stress",
+                            "max_stress_ratio_permille": int(max_stress_ratio_permille),
+                        },
+                    )
+                )
+
+            vehicle_event_rows.append(
+                _vehicle_event_row(
+                    vehicle_id=vehicle_id,
+                    event_kind="vehicle_environment_hook",
+                    tick=int(current_tick),
+                    process_id=process_id,
+                    intent_id=str(intent_id),
+                    extensions={
+                        "traction_permille": int(traction_permille),
+                        "visibility_permille": int(visibility_permille),
+                        "wind_drift_permille": int(wind_drift_permille),
+                        "max_stress_ratio_permille": int(max_stress_ratio_permille),
+                    },
+                )
+            )
+
+        effect_rows = normalize_effect_rows(existing_effect_rows + auto_effect_rows)
+        if auto_effect_rows:
+            provenance_rows = [dict(row) for row in list(effect_provenance_events or []) if isinstance(row, dict)]
+            for row in auto_effect_rows:
+                provenance_rows.append(
+                    _effect_provenance_row(
+                        event_type="effect_applied",
+                        tick=int(current_tick),
+                        intent_id=intent_id,
+                        process_id=process_id,
+                        target_id=str(row.get("target_id", "")).strip(),
+                        effect_id=str(row.get("effect_id", "")).strip(),
+                        effect_type_id=str(row.get("effect_type_id", "")).strip(),
+                        extensions={
+                            "effect_auto_key": str((dict(row.get("extensions") or {})).get("effect_auto_key", "")),
+                        },
+                    )
+                )
+            effect_provenance_events = sorted(
+                provenance_rows,
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+        vehicle_event_by_id = dict(
+            (
+                str(row.get("event_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(vehicle_events or [])
+            if isinstance(row, Mapping) and str(row.get("event_id", "")).strip()
+        )
+        for row in vehicle_event_rows:
+            event_id = str(row.get("event_id", "")).strip()
+            if event_id:
+                vehicle_event_by_id[event_id] = dict(row)
+        vehicle_events = [dict(vehicle_event_by_id[key]) for key in sorted(vehicle_event_by_id.keys())]
+        _persist_effect_state(
+            state,
+            effect_rows=effect_rows,
+            provenance_events=effect_provenance_events,
+        )
+        _persist_field_state(
+            state,
+            field_layers=field_layers,
+            field_cells=field_cells,
+            field_modifier_rows=field_modifier_rows,
+        )
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
         result_metadata = {
-            "vehicle_count": int(len(list(vehicles or []))),
-            "updated_vehicle_count": 0,
-            "provisional": True,
+            "vehicle_count": int(len(sampled_vehicle_ids)),
+            "updated_vehicle_count": int(len(vehicle_event_rows)),
+            "auto_effect_count": int(len(auto_effect_rows)),
+            "field_modifier_count": int(len(modifier_rows)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.geometry_create":
