@@ -175,6 +175,8 @@ from analyzers import e146_hardcoded_track_spec_smell
 from analyzers import e147_mobility_graph_duplication_smell
 from analyzers import e148_switch_bypass_smell
 from analyzers import e149_vehicle_hardcode_smell
+from analyzers import e150_silent_teleport_smell
+from analyzers import e151_adhoc_travel_smell
 
 
 ANALYZERS = (
@@ -353,6 +355,8 @@ ANALYZERS = (
     e147_mobility_graph_duplication_smell,
     e148_switch_bypass_smell,
     e149_vehicle_hardcode_smell,
+    e150_silent_teleport_smell,
+    e151_adhoc_travel_smell,
 )
 
 
