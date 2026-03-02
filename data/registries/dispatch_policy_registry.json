@@ -1,0 +1,32 @@
+{
+  "schema_id": "dominium.registry.dispatch_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.dispatch_policy_registry",
+    "registry_version": "1.0.0",
+    "dispatch_policies": [
+      {
+        "schema_version": "1.0.0",
+        "dispatch_policy_id": "dispatch.rail_basic",
+        "allowed_schedule_kinds": [
+          "travel.departure",
+          "travel.arrival",
+          "maintenance.window"
+        ],
+        "priority_rules": {
+          "tie_break": "itinerary_id_lexicographic",
+          "priority_order": [
+            "emergency",
+            "safety",
+            "passenger",
+            "freight"
+          ]
+        },
+        "extensions": {
+          "route_optimization": "none"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
