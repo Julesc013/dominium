@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Action Family Schema",
+  "version": "1.0.0",
+  "description": "META-ACTION-0 canonical action family row.",
+  "x-doc-ref": [
+    "docs/meta/ACTION_GRAMMAR_CONSTITUTION.md",
+    "docs/audit/ACTION_GRAMMAR_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "action_family_id",
+    "description",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "action_family_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "action_family_id": "action_family.transform",
+      "description": "Material or structural transformation actions.",
+      "deterministic_fingerprint": "ebf22fcb0a91157cb8cccf3a538dbfd2da8ccc9837db32a8f4787f1944cecc12",
+      "extensions": {}
+    }
+  ]
+}

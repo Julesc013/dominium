@@ -1,0 +1,27 @@
+SCHEMA: meta/action_template.schema
+schema_id: dominium.schema.meta.action_template
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical META-ACTION-0 action template descriptor used for control-plane validation.
+
+REQUIRED SHAPE:
+record action_template
+  required:
+    - schema_version: semver
+    - action_template_id: id
+    - action_family_id: id
+    - required_tool_tags: list[id]
+    - required_surface_types: list[id]
+    - required_capabilities: list[id]
+    - produced_artifact_types: list[id]
+    - produced_hazard_types: list[id]
+    - affected_substrates: list[enum(Flow|Field|Mechanics|Schedule|Spec|Interior|Network)]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Every control-plane-exposed action must resolve to exactly one action_template row.
+- Template requirements are declarative and deterministic.
+- Substrate touch declarations must remain auditable and must not be bypassed by bespoke action logic.
