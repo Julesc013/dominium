@@ -6,6 +6,7 @@ from typing import Dict, List, Mapping
 
 from src.core.graph.routing_engine import RoutingError, query_route_result
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from .channel_executor import execute_channel_transport_tick
 
 
 REFUSAL_SIGNAL_INVALID = "refusal.signal.invalid"
@@ -793,114 +794,42 @@ def tick_signal_transport(
     queue_rows = normalize_transport_queue_rows(signal_transport_queue_rows)
     envelope_by_id = dict((str(row.get("envelope_id", "")).strip(), dict(row)) for row in normalize_signal_message_envelope_rows(envelope_rows) if str(row.get("envelope_id", "")).strip())
     event_rows = normalize_message_delivery_event_rows(existing_delivery_event_rows)
-    event_sequence = int(len(event_rows))
     graphs = dict((str(row.get("graph_id", "")).strip(), dict(row)) for row in list(network_graph_rows or []) if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip())
     loss_rows = loss_policy_rows_by_id(loss_policy_registry)
     routing_policy_rows = _routing_policy_rows_by_id(routing_policy_registry)
-    next_route_cache_state = _as_map(route_cache_state)
-
-    cost_unit = int(max(1, _as_int(cost_units_per_delivery, 1)))
-    max_attempts = int(max(0, _as_int(max_cost_units, 0)) // cost_unit)
-
-    processed = []
-    deferred = []
-    delivered = []
-    pending = []
-    attempts = 0
-    channel_attempts: Dict[str, int] = {}
-
-    for queue_row in queue_rows:
-        channel_id = str(queue_row.get("channel_id", "")).strip()
-        channel_row = dict(channels.get(channel_id) or {})
-        envelope_id = str(queue_row.get("envelope_id", "")).strip()
-        envelope_row = dict(envelope_by_id.get(envelope_id) or {})
-        if not channel_row or not envelope_row:
-            deferred.append(str(queue_row.get("queue_key", "")).strip())
-            pending.append(dict(queue_row))
-            continue
-        if int(_as_int(queue_row.get("remaining_delay_ticks", 0), 0)) > 0:
-            next_row = dict(queue_row)
-            next_row["remaining_delay_ticks"] = int(max(0, _as_int(queue_row.get("remaining_delay_ticks", 0), 0) - 1))
-            pending.append(next_row)
-            continue
-        used_on_channel = int(channel_attempts.get(channel_id, 0))
-        channel_cap = int(max(1, _as_int(channel_row.get("capacity_per_tick", 1), 1)))
-        if used_on_channel >= channel_cap or attempts >= max_attempts:
-            deferred.append(str(queue_row.get("queue_key", "")).strip())
-            pending.append(dict(queue_row))
-            continue
-
-        loss_policy_id = str(channel_row.get("loss_policy_id", "loss.none")).strip() or "loss.none"
-        loss_row = dict(loss_rows.get(loss_policy_id) or {"loss_policy_id": loss_policy_id, "parameters": {}, "rng_stream_name": None})
-        route_details = {
-            "route_policy_id": str(_as_map(channel_row.get("extensions")).get("routing_policy_id", "")).strip() or "route.shortest_delay",
-            "route_cache_key": None,
-            "path_edge_ids": [],
-            "path_node_ids": [],
-            "route_unavailable": False,
-        }
-        try:
-            route_query = _resolve_route_query(
-                channel_row=channel_row,
-                queue_row=queue_row,
-                graph_rows_by_id=graphs,
-                routing_policy_rows=routing_policy_rows,
-                route_cache_state=next_route_cache_state,
-            )
-            next_route_cache_state = _as_map(route_query.get("cache_state"))
-            route_details["route_policy_id"] = str(route_query.get("policy_id", "")).strip() or route_details["route_policy_id"]
-            route_details["route_cache_key"] = route_query.get("cache_key")
-            route_details["path_edge_ids"] = list(route_query.get("path_edge_ids") or [])
-            route_details["path_node_ids"] = list(route_query.get("path_node_ids") or [])
-        except SignalTransportError:
-            route_details["route_unavailable"] = True
-        state = _delivery_state(policy_row=loss_row, queue_row=queue_row, current_tick=tick)
-        if state == "delivered" and bool(route_details.get("route_unavailable")):
-            state = "lost"
-
-        event_id = deterministic_message_delivery_event_id(
-            envelope_id=envelope_id,
-            from_node_id=str(queue_row.get("from_node_id", "")).strip(),
-            to_node_id=str(queue_row.get("to_node_id", "")).strip(),
-            delivered_tick=tick,
-            delivery_state=state,
-            sequence=event_sequence,
-        )
-        event_sequence += 1
-        event_rows.append(
-            build_message_delivery_event(
-                event_id=event_id,
-                envelope_id=envelope_id,
-                from_node_id=str(queue_row.get("from_node_id", "")).strip(),
-                to_node_id=str(queue_row.get("to_node_id", "")).strip(),
-                delivered_tick=tick,
-                delivery_state=state,
-                extensions={
-                    "channel_id": channel_id,
-                    "loss_policy_id": loss_policy_id,
-                    "recipient_subject_id": queue_row.get("recipient_subject_id"),
-                    "route_policy_id": route_details.get("route_policy_id"),
-                    "route_cache_key": route_details.get("route_cache_key"),
-                    "path_edge_ids": list(route_details.get("path_edge_ids") or []),
-                    "path_node_ids": list(route_details.get("path_node_ids") or []),
-                },
-            )
-        )
-        attempts += 1
-        channel_attempts[channel_id] = used_on_channel + 1
-        processed.append(str(queue_row.get("queue_key", "")).strip())
-        if state == "delivered":
-            delivered.append({"envelope_id": envelope_id, "artifact_id": str(envelope_row.get("artifact_id", "")).strip(), "recipient_subject_id": queue_row.get("recipient_subject_id"), "delivery_event_id": event_id, "channel_id": channel_id})
-
+    execution = execute_channel_transport_tick(
+        tick=int(tick),
+        channels_by_id=channels,
+        queue_rows=queue_rows,
+        envelope_by_id=envelope_by_id,
+        event_rows=event_rows,
+        graph_rows_by_id=graphs,
+        loss_rows_by_id=loss_rows,
+        routing_policy_rows=routing_policy_rows,
+        max_cost_units=int(max(0, _as_int(max_cost_units, 0))),
+        cost_units_per_delivery=int(max(1, _as_int(cost_units_per_delivery, 1))),
+        route_cache_state=route_cache_state,
+        resolve_route_fn=_resolve_route_query,
+        delivery_state_fn=_delivery_state,
+        event_id_fn=deterministic_message_delivery_event_id,
+        build_event_fn=build_message_delivery_event,
+    )
     return {
-        "signal_transport_queue_rows": normalize_transport_queue_rows(pending),
-        "message_delivery_event_rows": normalize_message_delivery_event_rows(event_rows),
-        "processed_queue_keys": _sorted_tokens(processed),
-        "deferred_queue_keys": _sorted_tokens(deferred),
-        "delivered_rows": sorted((dict(row) for row in delivered), key=lambda row: (str(row.get("envelope_id", "")), str(row.get("recipient_subject_id", "")), str(row.get("delivery_event_id", "")))),
-        "budget_outcome": "degraded" if deferred else "complete",
-        "cost_units": int(max(0, attempts * cost_unit)),
-        "route_cache_state": dict(next_route_cache_state),
+        "signal_transport_queue_rows": normalize_transport_queue_rows(execution.get("signal_transport_queue_rows")),
+        "message_delivery_event_rows": normalize_message_delivery_event_rows(execution.get("message_delivery_event_rows")),
+        "processed_queue_keys": _sorted_tokens(execution.get("processed_queue_keys")),
+        "deferred_queue_keys": _sorted_tokens(execution.get("deferred_queue_keys")),
+        "delivered_rows": sorted(
+            (dict(row) for row in list(execution.get("delivered_rows") or []) if isinstance(row, Mapping)),
+            key=lambda row: (
+                str(row.get("envelope_id", "")),
+                str(row.get("recipient_subject_id", "")),
+                str(row.get("delivery_event_id", "")),
+            ),
+        ),
+        "budget_outcome": str(execution.get("budget_outcome", "complete")).strip() or "complete",
+        "cost_units": int(max(0, _as_int(execution.get("cost_units", 0), 0))),
+        "route_cache_state": _as_map(execution.get("route_cache_state")),
     }
 
 
