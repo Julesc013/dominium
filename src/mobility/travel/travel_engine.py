@@ -292,6 +292,8 @@ def start_macro_travel(
     first_edge_id = str(route_edge_ids[0]).strip()
     profile_row = _profile_row_for_edge(itinerary_row=itinerary_row, edge_id=first_edge_id)
     first_edge_eta_ticks = int(max(1, _as_int(profile_row.get("eta_ticks", 1), 1)))
+    first_geometry_id = str(profile_row.get("guide_geometry_id", "")).strip() or None
+    first_planned_speed_mm_per_tick = int(max(0, _as_int(profile_row.get("allowed_speed_mm_per_tick", 0), 0)))
     arrival_tick = int(max(int(current_tick), _as_int(itinerary_row.get("estimated_arrival_tick", current_tick), current_tick)))
 
     next_motion_state = build_motion_state(
@@ -369,11 +371,15 @@ def start_macro_travel(
         details={
             "edge_id": first_edge_id,
             "edge_index": 0,
+            "guide_geometry_id": first_geometry_id,
+            "planned_speed_mm_per_tick": int(first_planned_speed_mm_per_tick),
         },
         extensions={
             "process_id": str(process_id).strip(),
             "intent_id": str(intent_id).strip(),
             "decision_log_ref": None if decision_log_ref is None else str(decision_log_ref).strip() or None,
+            "target_semantic_id": itinerary_id,
+            "vehicle_id": vehicle_id,
         },
     )
 
@@ -455,6 +461,7 @@ def tick_macro_travel(
     travel_event_rows: object,
     current_tick: int,
     max_updates: int,
+    forced_deferred_vehicle_ids: object = None,
 ) -> dict:
     itinerary_by_id = _itinerary_rows_by_id(itinerary_rows)
     motion_by_vehicle = _motion_state_rows_by_vehicle_id(motion_state_rows)
@@ -462,22 +469,28 @@ def tick_macro_travel(
     events = normalize_travel_event_rows(travel_event_rows)
     event_index = int(len(events))
 
-    active_vehicle_ids = [
-        vehicle_id
-        for vehicle_id, row in sorted(motion_by_vehicle.items(), key=lambda item: str(item[0]))
-        if str(_as_map(row.get("macro_state")).get("itinerary_id", "")).strip()
-    ]
+    active_vehicle_ids = []
+    for vehicle_id, row in sorted(motion_by_vehicle.items(), key=lambda item: str(item[0])):
+        itinerary_value = _as_map(row.get("macro_state")).get("itinerary_id")
+        itinerary_token = str(itinerary_value).strip() if itinerary_value is not None else ""
+        if itinerary_token:
+            active_vehicle_ids.append(vehicle_id)
 
+    forced_deferred = set(_sorted_tokens(forced_deferred_vehicle_ids))
     processed: List[str] = []
     deferred: List[str] = []
     for vehicle_id in active_vehicle_ids:
+        if vehicle_id in forced_deferred:
+            deferred.append(vehicle_id)
+            continue
         if len(processed) >= int(max(0, _as_int(max_updates, len(active_vehicle_ids)))):
             deferred.append(vehicle_id)
             continue
         processed.append(vehicle_id)
         motion_row = dict(motion_by_vehicle.get(vehicle_id) or {})
         macro = _as_map(motion_row.get("macro_state"))
-        itinerary_id = str(macro.get("itinerary_id", "")).strip()
+        itinerary_value = macro.get("itinerary_id")
+        itinerary_id = str(itinerary_value).strip() if itinerary_value is not None else ""
         itinerary_row = dict(itinerary_by_id.get(itinerary_id) or {})
         route_edge_ids = [str(item).strip() for item in list(itinerary_row.get("route_edge_ids") or []) if str(item).strip()]
         if not itinerary_row or not route_edge_ids:
@@ -514,8 +527,13 @@ def tick_macro_travel(
                     details={
                         "edge_id": current_edge_id,
                         "edge_index": int(edge_index),
+                        "guide_geometry_id": str(profile_row.get("guide_geometry_id", "")).strip() or None,
+                        "planned_speed_mm_per_tick": int(max(0, _as_int(profile_row.get("allowed_speed_mm_per_tick", 0), 0))),
                     },
-                    extensions={},
+                    extensions={
+                        "target_semantic_id": itinerary_id,
+                        "vehicle_id": vehicle_id,
+                    },
                 )
             )
             event_index += 1
@@ -553,8 +571,14 @@ def tick_macro_travel(
                         details={
                             "edge_index": int(edge_index),
                             "route_edge_count": int(len(route_edge_ids)),
+                            "edge_id": current_edge_id,
+                            "guide_geometry_id": str(profile_row.get("guide_geometry_id", "")).strip() or None,
+                            "planned_speed_mm_per_tick": int(max(0, _as_int(profile_row.get("allowed_speed_mm_per_tick", 0), 0))),
                         },
-                        extensions={},
+                        extensions={
+                            "target_semantic_id": itinerary_id,
+                            "vehicle_id": vehicle_id,
+                        },
                     )
                 )
                 event_index += 1
@@ -584,8 +608,13 @@ def tick_macro_travel(
                     details={
                         "edge_id": next_edge_id,
                         "edge_index": int(next_edge_index),
+                        "guide_geometry_id": str(next_profile.get("guide_geometry_id", "")).strip() or None,
+                        "planned_speed_mm_per_tick": int(max(0, _as_int(next_profile.get("allowed_speed_mm_per_tick", 0), 0))),
                     },
-                    extensions={},
+                    extensions={
+                        "target_semantic_id": itinerary_id,
+                        "vehicle_id": vehicle_id,
+                    },
                 )
             )
             event_index += 1
@@ -638,8 +667,8 @@ def tick_macro_travel(
         "motion_state_rows": motion_rows_out,
         "travel_commitments": normalize_travel_commitment_rows(commitments),
         "travel_events": normalize_travel_event_rows(events),
-        "processed_vehicle_ids": list(processed),
-        "deferred_vehicle_ids": list(deferred),
+        "processed_vehicle_ids": _sorted_tokens(processed),
+        "deferred_vehicle_ids": _sorted_tokens(deferred),
         "budget_outcome": "degraded" if deferred else "complete",
     }
 
