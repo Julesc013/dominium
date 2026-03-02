@@ -11613,10 +11613,12 @@ def _append_mobility_invariant_findings(
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     control_plane_rel = "src/control/control_plane_engine.py"
     constitution_rel = "docs/mobility/MOBILITY_CONSTITUTION.md"
+    travel_engine_rel = "src/mobility/travel/travel_engine.py"
 
     runtime_text = _file_text(repo_root, process_runtime_rel)
     control_text = _file_text(repo_root, control_plane_rel)
     constitution_text = _file_text(repo_root, constitution_rel)
+    travel_engine_text = _file_text(repo_root, travel_engine_rel)
     constitution_lower = constitution_text.lower()
 
     if "process.body_move_attempt" not in runtime_text:
@@ -11881,6 +11883,108 @@ def _append_mobility_invariant_findings(
                     snippet=snippet[:140],
                     message="silent vehicle position/progress mutation outside process runtime is forbidden",
                     rule_id="INV-NO-SILENT-POSITION-UPDATES",
+                )
+            )
+            break
+    if "edge_occupancies" not in runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="edge_occupancies",
+                message="travel tick must persist deterministic edge occupancy state alongside edge transition events",
+                rule_id="INV-NO-SILENT-EDGE-ENTRY",
+            )
+        )
+    if ("event.delay.congestion" not in runtime_text) and ("event.delay.congestion" not in travel_engine_text):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=travel_engine_rel,
+                line_number=1,
+                snippet="event.delay.congestion",
+                message="congestion-induced travel delays must emit explicit delay events with deterministic reason metadata",
+                rule_id="INV-NO-ADHOC-CONGESTION",
+            )
+        )
+    silent_edge_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']edge_occupancies[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    silent_edge_allowed = {
+        process_runtime_rel,
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in silent_edge_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in silent_edge_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="edge occupancy mutation outside authoritative travel process/runtime path is forbidden",
+                    rule_id="INV-NO-SILENT-EDGE-ENTRY",
+                )
+            )
+            break
+    adhoc_congestion_patterns = (
+        re.compile(
+            r"\bif\b[^\n]*(?:congestion|occupancy|capacity|traffic)[^\n]*(?:speed|eta|delay|arrival|progress)\b",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"\b(?:edge_eta_ticks|estimated_arrival_tick|delay_ticks|allowed_speed_mm_per_tick)\b\s*[*+\-\/]=\s*(?:0?\.\d+|\d+\s*/\s*\d+|\d+)",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"\b(?:congestion_ratio_permille|current_occupancy|capacity_units)\b\s*[<>]=?\s*\d+",
+            re.IGNORECASE,
+        ),
+    )
+    adhoc_congestion_allowed = {
+        process_runtime_rel,
+        "src/mobility/travel/travel_engine.py",
+        "src/mobility/traffic/traffic_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        if rel_norm in adhoc_congestion_allowed:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adhoc_congestion_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="congestion speed/eta/delay logic must route through mobility traffic + travel engines only",
+                    rule_id="INV-NO-ADHOC-CONGESTION",
                 )
             )
             break

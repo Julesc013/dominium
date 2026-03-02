@@ -177,6 +177,8 @@ from analyzers import e148_switch_bypass_smell
 from analyzers import e149_vehicle_hardcode_smell
 from analyzers import e150_silent_teleport_smell
 from analyzers import e151_adhoc_travel_smell
+from analyzers import e152_silent_occupancy_change_smell
+from analyzers import e153_inline_delay_modifier_smell
 
 
 ANALYZERS = (
@@ -357,6 +359,8 @@ ANALYZERS = (
     e149_vehicle_hardcode_smell,
     e150_silent_teleport_smell,
     e151_adhoc_travel_smell,
+    e152_silent_occupancy_change_smell,
+    e153_inline_delay_modifier_smell,
 )
 
 
