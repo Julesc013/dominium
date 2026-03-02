@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Safety Instance Schema",
+  "version": "1.0.0",
+  "description": "SAFETY-0 instantiated safety pattern row bound to concrete targets.",
+  "x-doc-ref": [
+    "docs/safety/SAFETY_PATTERN_LIBRARY.md",
+    "docs/audit/SAFETY_PATTERN_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "instance_id",
+    "pattern_id",
+    "target_ids",
+    "active",
+    "created_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "instance_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pattern_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "instance_id": "safety.instance.rail.switch.001",
+      "pattern_id": "safety.interlock_block",
+      "target_ids": [
+        "switch.rail.01",
+        "edge.rail.main.01"
+      ],
+      "active": true,
+      "created_tick": 100,
+      "deterministic_fingerprint": "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+      "extensions": {}
+    }
+  ]
+}

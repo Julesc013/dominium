@@ -115,6 +115,7 @@
         "stacking_policy_registry_hash",
         "field_type_registry_hash",
         "field_update_policy_registry_hash",
+        "safety_pattern_registry_hash",
         "spec_type_registry_hash",
         "tolerance_policy_registry_hash",
         "compliance_check_registry_hash",
@@ -430,6 +431,10 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "field_update_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "safety_pattern_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -791,6 +796,7 @@
         "control_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "field_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "field_update_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "safety_pattern_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "formalization_target_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "formalization_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "interaction_action_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
