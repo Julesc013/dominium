@@ -21011,8 +21011,11 @@ def execute_intent(
                 key=lambda item: (str(item.get("check_id", "")), str(item.get("deterministic_fingerprint", ""))),
             )
             overall_grade = "pass"
+            grade_rank = {"pass": 0, "warn": 1, "fail": 2}
             for row in compliance_checks:
-                overall_grade = _best_grade(overall_grade, str(row.get("grade", "warn")).strip() or "warn")
+                token_grade = str(row.get("grade", "warn")).strip() or "warn"
+                if grade_rank.get(token_grade, 1) > grade_rank.get(overall_grade, 1):
+                    overall_grade = token_grade if token_grade in grade_rank else "warn"
             compliance_result["check_results"] = compliance_checks
             compliance_result["overall_grade"] = overall_grade
             if bool(strict_spec) and gauge_grade == "fail" and not strict_refusal_code:
