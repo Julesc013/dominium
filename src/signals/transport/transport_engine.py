@@ -376,7 +376,21 @@ def deterministic_knowledge_receipt_id(*, subject_id: str, artifact_id: str, env
     return "receipt.knowledge.{}".format(digest[:16])
 
 
-def build_knowledge_receipt(*, receipt_id: str, subject_id: str, artifact_id: str, envelope_id: str, acquired_tick: int, trust_weight: float = 1.0, delivery_event_id: str | None = None, extensions: Mapping[str, object] | None = None) -> dict:
+def build_knowledge_receipt(
+    *,
+    receipt_id: str,
+    subject_id: str,
+    artifact_id: str,
+    envelope_id: str,
+    acquired_tick: int,
+    trust_weight: float = 1.0,
+    verification_state: str = "unverified",
+    delivery_event_id: str | None = None,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    verification_token = str(verification_state or "").strip().lower() or "unverified"
+    if verification_token not in {"unverified", "verified", "disputed"}:
+        verification_token = "unverified"
     payload = {
         "schema_version": "1.0.0",
         "receipt_id": str(receipt_id or "").strip(),
@@ -386,6 +400,7 @@ def build_knowledge_receipt(*, receipt_id: str, subject_id: str, artifact_id: st
         "delivery_event_id": None if delivery_event_id is None else str(delivery_event_id).strip() or None,
         "acquired_tick": int(max(0, _as_int(acquired_tick, 0))),
         "trust_weight": float(trust_weight),
+        "verification_state": verification_token,
         "deterministic_fingerprint": "",
         "extensions": _as_map(extensions),
     }
@@ -410,6 +425,7 @@ def normalize_knowledge_receipt_rows(rows: object) -> List[dict]:
                 envelope_id=str(row.get("envelope_id", "")).strip(),
                 acquired_tick=_as_int(row.get("acquired_tick", 0), 0),
                 trust_weight=float(row.get("trust_weight", 1.0)),
+                verification_state=str(row.get("verification_state", "unverified")).strip() or "unverified",
                 delivery_event_id=None if row.get("delivery_event_id") is None else str(row.get("delivery_event_id", "")).strip() or None,
                 extensions=_as_map(row.get("extensions")),
             )
@@ -818,11 +834,13 @@ def process_knowledge_acquire(
 ) -> dict:
     row = dict(delivered_row or {})
     subject_id = str(row.get("recipient_subject_id", "")).strip()
+    next_rows = normalize_knowledge_receipt_rows(knowledge_receipt_rows)
     if not subject_id:
         return {
-            "knowledge_receipt_rows": normalize_knowledge_receipt_rows(knowledge_receipt_rows),
+            "knowledge_receipt_rows": next_rows,
             "knowledge_receipt_row": None,
             "acquired": False,
+            "idempotent_skip": False,
         }
     artifact_id = str(row.get("artifact_id", "")).strip()
     envelope_id = str(row.get("envelope_id", "")).strip()
@@ -832,6 +850,18 @@ def process_knowledge_acquire(
             "knowledge_acquire requires delivered artifact_id and envelope_id",
             {"delivered_row": row},
         )
+    for existing in next_rows:
+        existing_row = dict(existing)
+        if str(existing_row.get("subject_id", "")).strip() != subject_id:
+            continue
+        if str(existing_row.get("artifact_id", "")).strip() != artifact_id:
+            continue
+        return {
+            "knowledge_receipt_rows": next_rows,
+            "knowledge_receipt_row": existing_row,
+            "acquired": False,
+            "idempotent_skip": True,
+        }
     receipt_id = deterministic_knowledge_receipt_id(
         subject_id=subject_id,
         artifact_id=artifact_id,
@@ -845,13 +875,15 @@ def process_knowledge_acquire(
         envelope_id=envelope_id,
         acquired_tick=int(max(0, _as_int(current_tick, 0))),
         trust_weight=float(trust_weight),
+        verification_state="unverified",
         delivery_event_id=None if row.get("delivery_event_id") is None else str(row.get("delivery_event_id", "")).strip() or None,
         extensions={
             "channel_id": str(row.get("channel_id", "")).strip() or None,
+            "idempotency_key": canonical_sha256({"subject_id": subject_id, "artifact_id": artifact_id}),
         },
     )
     next_rows = _upsert_row_by_id(
-        normalize_knowledge_receipt_rows(knowledge_receipt_rows),
+        next_rows,
         "receipt_id",
         receipt_row,
     )
@@ -859,6 +891,7 @@ def process_knowledge_acquire(
         "knowledge_receipt_rows": next_rows,
         "knowledge_receipt_row": dict(receipt_row),
         "acquired": True,
+        "idempotent_skip": False,
     }
 
 
