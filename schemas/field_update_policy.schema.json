@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Field Update Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FIELD-1 field update policy declaration.",
+  "x-doc-ref": [
+    "docs/fields/FIELD_LAYER_MODEL.md",
+    "docs/audit/FIELD_LAYER_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "update_policy_id",
+    "description",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "update_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "schedule_id": {
+      "type": ["string", "null"]
+    },
+    "flow_channel_ref": {
+      "type": ["string", "null"]
+    },
+    "hazard_ref": {
+      "type": ["string", "null"]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "update_policy_id": "field.scheduled",
+      "description": "Update field via deterministic schedule ticks.",
+      "schedule_id": "schedule.field.hourly",
+      "flow_channel_ref": null,
+      "hazard_ref": null,
+      "extensions": {}
+    }
+  ]
+}

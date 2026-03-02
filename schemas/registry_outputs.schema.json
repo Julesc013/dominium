@@ -31,9 +31,13 @@
     "control_policy_registry_hash",
     "effect_type_registry_hash",
     "stacking_policy_registry_hash",
+    "field_type_registry_hash",
+    "field_update_policy_registry_hash",
     "spec_type_registry_hash",
     "tolerance_policy_registry_hash",
     "compliance_check_registry_hash",
+    "formalization_target_registry_hash",
+    "formalization_policy_registry_hash",
     "governance_type_registry_hash",
     "diplomatic_state_registry_hash",
     "cohort_mapping_policy_registry_hash",
@@ -162,6 +166,14 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "field_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "field_update_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "spec_type_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -171,6 +183,14 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "compliance_check_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "formalization_target_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "formalization_policy_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },

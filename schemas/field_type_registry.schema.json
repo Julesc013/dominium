@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Field Type Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic FIELD-1 field type registry output.",
+  "x-doc-ref": [
+    "docs/fields/FIELD_LAYER_MODEL.md",
+    "docs/audit/FIELD_LAYER_BASELINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "field_types",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pack_id", "version", "canonical_hash", "signature_status"],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {"type": "string"},
+          "version": {"type": "string"},
+          "canonical_hash": {"type": "string"},
+          "signature_status": {"type": "string"}
+        }
+      }
+    },
+    "field_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "field_type_id",
+          "description",
+          "value_kind",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {"type": "string", "const": "1.0.0"},
+          "field_type_id": {"type": "string"},
+          "description": {"type": "string"},
+          "value_kind": {"type": "string", "enum": ["scalar", "vector"]},
+          "extensions": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}
