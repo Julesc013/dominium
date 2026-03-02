@@ -277,6 +277,22 @@ from src.mobility.network import (
     normalize_mobility_network_binding_rows,
     select_switch_transition_id,
 )
+from src.mobility.vehicle import (
+    REFUSAL_MOBILITY_SPEC_NONCOMPLIANT,
+    VehicleError,
+    build_motion_state,
+    build_vehicle,
+    deterministic_motion_state_ref,
+    deterministic_vehicle_id,
+    evaluate_vehicle_edge_compatibility,
+    get_vehicle_capabilities,
+    get_vehicle_driver_pose_slots,
+    get_vehicle_interior,
+    get_vehicle_ports,
+    normalize_motion_state_rows,
+    normalize_vehicle_rows,
+    vehicle_class_rows_by_id,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -402,6 +418,9 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.mobility_network_edit": "entitlement.control.admin",
     "process.switch_set_state": "entitlement.control.admin",
     "process.mobility_route_query": "entitlement.inspect",
+    "process.vehicle_register_from_structure": "entitlement.control.admin",
+    "process.vehicle_check_compatibility": "entitlement.inspect",
+    "process.vehicle_apply_environment_hooks": "session.boot",
     "process.mechanics_fracture": "session.boot",
     "process.weld_joint": "entitlement.tool.use",
     "process.cut_joint": "entitlement.tool.use",
@@ -525,6 +544,9 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.mobility_network_edit": "operator",
     "process.switch_set_state": "operator",
     "process.mobility_route_query": "observer",
+    "process.vehicle_register_from_structure": "operator",
+    "process.vehicle_check_compatibility": "observer",
+    "process.vehicle_apply_environment_hooks": "observer",
     "process.mechanics_fracture": "observer",
     "process.weld_joint": "operator",
     "process.cut_joint": "operator",
@@ -595,6 +617,9 @@ CONTROL_PROCESS_IDS = {
     "process.mobility_network_edit",
     "process.switch_set_state",
     "process.mobility_route_query",
+    "process.vehicle_register_from_structure",
+    "process.vehicle_check_compatibility",
+    "process.vehicle_apply_environment_hooks",
     "process.mechanics_fracture",
 }
 CIV_PROCESS_IDS = {
@@ -1577,6 +1602,99 @@ def _ensure_mobility_route_result_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_vehicle_rows(state: dict) -> List[dict]:
+    rows = normalize_vehicle_rows(state.get("vehicles"))
+    state["vehicles"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_vehicle_motion_state_rows(state: dict) -> List[dict]:
+    rows = normalize_motion_state_rows(state.get("vehicle_motion_states"))
+    state["vehicle_motion_states"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_vehicle_compatibility_rows(state: dict) -> List[dict]:
+    rows = state.get("vehicle_compatibility_results")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("result_id", ""))):
+        result_id = str(row.get("result_id", "")).strip()
+        vehicle_id = str(row.get("vehicle_id", "")).strip()
+        target_edge_id = str(row.get("target_edge_id", "")).strip()
+        if (not result_id) or (not vehicle_id) or (not target_edge_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "result_id": result_id,
+            "vehicle_id": vehicle_id,
+            "target_edge_id": target_edge_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "compatible": bool(row.get("compatible", False)),
+            "reason_code": None if row.get("reason_code") is None else str(row.get("reason_code", "")).strip() or None,
+            "details": dict(row.get("details") or {}) if isinstance(row.get("details"), Mapping) else {},
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[result_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["vehicle_compatibility_results"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_vehicle_events(state: dict) -> List[dict]:
+    rows = state.get("vehicle_events")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("event_id", ""))):
+        event_id = str(row.get("event_id", "")).strip()
+        vehicle_id = str(row.get("vehicle_id", "")).strip()
+        event_kind = str(row.get("event_kind", "")).strip()
+        if (not event_id) or (not vehicle_id) or (not event_kind):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "vehicle_id": vehicle_id,
+            "event_kind": event_kind,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "process_id": str(row.get("process_id", "")).strip(),
+            "intent_id": str(row.get("intent_id", "")).strip(),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["vehicle_events"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_vehicle_state(
+    state: dict,
+    *,
+    vehicles: List[dict],
+    vehicle_motion_states: List[dict],
+    vehicle_compatibility_results: List[dict] | None = None,
+    vehicle_events: List[dict] | None = None,
+) -> None:
+    state["vehicles"] = [dict(row) for row in list(vehicles or []) if isinstance(row, Mapping)]
+    state["vehicle_motion_states"] = [dict(row) for row in list(vehicle_motion_states or []) if isinstance(row, Mapping)]
+    if vehicle_compatibility_results is not None:
+        state["vehicle_compatibility_results"] = [
+            dict(row) for row in list(vehicle_compatibility_results or []) if isinstance(row, Mapping)
+        ]
+    if vehicle_events is not None:
+        state["vehicle_events"] = [dict(row) for row in list(vehicle_events or []) if isinstance(row, Mapping)]
+    _ensure_vehicle_rows(state)
+    _ensure_vehicle_motion_state_rows(state)
+    _ensure_vehicle_compatibility_rows(state)
+    _ensure_vehicle_events(state)
+
+
 def _persist_mobility_network_state(
     state: dict,
     *,
@@ -1624,6 +1742,54 @@ def _load_mobility_network_registries(*, policy_context: dict | None) -> Tuple[d
             default_payload={"max_speed_policies": []},
         )
     return dict(node_kind_registry), dict(edge_kind_registry), dict(max_speed_policy_registry)
+
+
+def _load_vehicle_class_registry(*, policy_context: dict | None) -> dict:
+    direct_registry = dict(_policy_payload(policy_context, "vehicle_class_registry") or {})
+    if direct_registry:
+        return dict(direct_registry)
+    mobility_registry = dict(_policy_payload(policy_context, "mobility_vehicle_class_registry") or {})
+    if mobility_registry:
+        return dict(mobility_registry)
+    fallback_registry = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/vehicle_class_registry.json",
+        default_payload={"record": {"vehicle_classes": []}},
+    )
+    return dict(fallback_registry)
+
+
+def _vehicle_event_row(
+    *,
+    vehicle_id: str,
+    event_kind: str,
+    tick: int,
+    process_id: str,
+    intent_id: str,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    event_payload = {
+        "vehicle_id": str(vehicle_id).strip(),
+        "event_kind": str(event_kind).strip(),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "process_id": str(process_id).strip(),
+        "intent_id": str(intent_id).strip(),
+        "extensions": dict(extensions or {}),
+    }
+    event_id = "event.vehicle.{}".format(canonical_sha256(event_payload)[:16])
+    row = {
+        "schema_version": "1.0.0",
+        "event_id": event_id,
+        "vehicle_id": str(vehicle_id).strip(),
+        "event_kind": str(event_kind).strip() or "vehicle_event",
+        "tick": int(max(0, _as_int(tick, 0))),
+        "process_id": str(process_id).strip(),
+        "intent_id": str(intent_id).strip(),
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+    return row
 
 
 def _create_or_update_mobility_network(
@@ -12613,6 +12779,10 @@ def execute_intent(
     mobility_switch_state_machines = _ensure_mobility_switch_state_machines(state)
     mobility_route_cache_state = _ensure_mobility_route_cache_state(state)
     mobility_route_results = _ensure_mobility_route_result_rows(state)
+    vehicles = _ensure_vehicle_rows(state)
+    vehicle_motion_states = _ensure_vehicle_motion_state_rows(state)
+    vehicle_compatibility_results = _ensure_vehicle_compatibility_rows(state)
+    vehicle_events = _ensure_vehicle_events(state)
     structural_graphs = _ensure_structural_graph_rows(state)
     structural_nodes = _ensure_structural_node_rows(state)
     structural_edges = _ensure_structural_edge_rows(state)
@@ -20065,6 +20235,280 @@ def execute_intent(
             "cache_hit": bool(route_runtime_payload.get("cache_hit", False)),
             "route_cost_units": int(max(0, _as_int(route_runtime_payload.get("route_cost_units", 0), 0))),
             "route_result": route_result,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.vehicle_register_from_structure":
+        vehicle_class_id = str(inputs.get("vehicle_class_id", "")).strip()
+        if not vehicle_class_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.vehicle_register_from_structure requires vehicle_class_id",
+                "Provide vehicle_class_id from vehicle class registry.",
+                {"process_id": process_id},
+                "$.intent.inputs.vehicle_class_id",
+            )
+        vehicle_class_registry = _load_vehicle_class_registry(policy_context=policy_context)
+        vehicle_class_rows = vehicle_class_rows_by_id(vehicle_class_registry)
+        vehicle_class_row = dict(vehicle_class_rows.get(vehicle_class_id) or {})
+        if not vehicle_class_row:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle_class_id '{}' is not declared".format(vehicle_class_id),
+                "Use vehicle_class_id from data/registries/vehicle_class_registry.json or mobility registry payload.",
+                {"vehicle_class_id": vehicle_class_id},
+                "$.intent.inputs.vehicle_class_id",
+            )
+
+        parent_structure_instance_id = str(inputs.get("parent_structure_instance_id", "")).strip() or None
+        parent_structure_row = {}
+        if parent_structure_instance_id:
+            for row in sorted(
+                (item for item in list(installed_structure_instances or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("instance_id", "")),
+            ):
+                if str(row.get("instance_id", "")).strip() != parent_structure_instance_id:
+                    continue
+                parent_structure_row = dict(row)
+                break
+            if not parent_structure_row:
+                known_ids = set(
+                    str(row.get("instance_id", "")).strip()
+                    for row in list(installed_structure_instances or [])
+                    if isinstance(row, Mapping) and str(row.get("instance_id", "")).strip()
+                )
+                if parent_structure_instance_id not in known_ids:
+                    return refusal(
+                        REFUSAL_MOBILITY_NETWORK_INVALID,
+                        "parent_structure_instance_id '{}' is not present".format(parent_structure_instance_id),
+                        "Register the constructed structure instance before vehicle registration.",
+                        {"parent_structure_instance_id": parent_structure_instance_id},
+                        "$.intent.inputs.parent_structure_instance_id",
+                    )
+
+        spatial_id = str(inputs.get("spatial_id", "")).strip()
+        if not spatial_id:
+            spatial_id = str(parent_structure_row.get("spatial_id", "")).strip()
+        if not spatial_id:
+            spatial_id = str((dict(parent_structure_row.get("extensions") or {})).get("spatial_id", "")).strip()
+        if not spatial_id:
+            spatial_id = "spatial.vehicle.unbound"
+
+        spec_ids = _sorted_tokens(list(inputs.get("spec_ids") or []))
+        required_spec_ids = _sorted_tokens(list(vehicle_class_row.get("required_specs") or []))
+        missing_required_spec_ids = [
+            spec_id for spec_id in required_spec_ids if spec_id not in set(spec_ids)
+        ]
+        if missing_required_spec_ids:
+            return refusal(
+                REFUSAL_MOBILITY_SPEC_NONCOMPLIANT,
+                "vehicle registration missing required class specs",
+                "Include required_specs from vehicle class in spec_ids.",
+                {
+                    "vehicle_class_id": vehicle_class_id,
+                    "missing_required_spec_ids": missing_required_spec_ids,
+                },
+                "$.intent.inputs.spec_ids",
+            )
+
+        port_ids = _sorted_tokens(list(inputs.get("port_ids") or []))
+        if not port_ids:
+            port_ids = _sorted_tokens(list(vehicle_class_row.get("default_ports") or []))
+        known_port_ids = set(
+            str(row.get("port_id", "")).strip()
+            for row in list(machine_ports or [])
+            if isinstance(row, Mapping) and str(row.get("port_id", "")).strip()
+        )
+        missing_port_ids = sorted(
+            port_id for port_id in list(port_ids or []) if port_id not in known_port_ids
+        )
+        if missing_port_ids:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle registration declared unknown port_ids",
+                "Declare only existing machine port IDs in port_ids.",
+                {"missing_port_ids": missing_port_ids},
+                "$.intent.inputs.port_ids",
+            )
+
+        interior_graph_id = str(inputs.get("interior_graph_id", "")).strip() or None
+        if interior_graph_id:
+            known_graph_ids = set(
+                str(row.get("graph_id", "")).strip()
+                for row in list(interior_graph_rows or [])
+                if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip()
+            )
+            if interior_graph_id not in known_graph_ids:
+                return refusal(
+                    REFUSAL_MOBILITY_NETWORK_INVALID,
+                    "interior_graph_id '{}' is not present".format(interior_graph_id),
+                    "Provide interior_graph_id from interior graph state.",
+                    {"interior_graph_id": interior_graph_id},
+                    "$.intent.inputs.interior_graph_id",
+                )
+
+        pose_slot_ids = _sorted_tokens(list(inputs.get("pose_slot_ids") or []))
+        known_pose_slot_ids = set(
+            str(row.get("pose_slot_id", "")).strip()
+            for row in list(pose_slots or [])
+            if isinstance(row, Mapping) and str(row.get("pose_slot_id", "")).strip()
+        )
+        missing_pose_slot_ids = sorted(
+            pose_slot_id for pose_slot_id in list(pose_slot_ids or []) if pose_slot_id not in known_pose_slot_ids
+        )
+        if missing_pose_slot_ids:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle registration declared unknown pose_slot_ids",
+                "Provide pose_slot_ids from POSE slot state.",
+                {"missing_pose_slot_ids": missing_pose_slot_ids},
+                "$.intent.inputs.pose_slot_ids",
+            )
+
+        mount_point_ids = _sorted_tokens(list(inputs.get("mount_point_ids") or []))
+        known_mount_point_ids = set(
+            str(row.get("mount_point_id", "")).strip()
+            for row in list(mount_points or [])
+            if isinstance(row, Mapping) and str(row.get("mount_point_id", "")).strip()
+        )
+        missing_mount_point_ids = sorted(
+            mount_point_id
+            for mount_point_id in list(mount_point_ids or [])
+            if mount_point_id not in known_mount_point_ids
+        )
+        if missing_mount_point_ids:
+            return refusal(
+                REFUSAL_MOBILITY_NETWORK_INVALID,
+                "vehicle registration declared unknown mount_point_ids",
+                "Provide mount_point_ids from mount state.",
+                {"missing_mount_point_ids": missing_mount_point_ids},
+                "$.intent.inputs.mount_point_ids",
+            )
+
+        maintenance_policy_id = (
+            str(inputs.get("maintenance_policy_id", "")).strip()
+            or "maintenance.policy.default"
+        )
+        created_tick_bucket = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get("created_tick_bucket", current_tick),
+                    current_tick,
+                ),
+            )
+        )
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        if not vehicle_id:
+            vehicle_id = deterministic_vehicle_id(
+                parent_structure_instance_id=parent_structure_instance_id,
+                vehicle_class_id=vehicle_class_id,
+                spatial_id=spatial_id,
+                created_tick_bucket=int(created_tick_bucket),
+            )
+        motion_state_ref = deterministic_motion_state_ref(vehicle_id=vehicle_id)
+        motion_state_row = build_motion_state(
+            vehicle_id=vehicle_id,
+            tier=str(inputs.get("tier", "macro")).strip() or "macro",
+            macro_state=dict(inputs.get("macro_state") or {}) if isinstance(inputs.get("macro_state"), Mapping) else {},
+            meso_state=dict(inputs.get("meso_state") or {}) if isinstance(inputs.get("meso_state"), Mapping) else {},
+            micro_state=dict(inputs.get("micro_state") or {}) if isinstance(inputs.get("micro_state"), Mapping) else {},
+            last_update_tick=int(current_tick),
+            extensions=dict(inputs.get("motion_extensions") or {}) if isinstance(inputs.get("motion_extensions"), Mapping) else {},
+        )
+        vehicle_row = build_vehicle(
+            vehicle_id=vehicle_id,
+            parent_structure_instance_id=parent_structure_instance_id,
+            vehicle_class_id=vehicle_class_id,
+            spatial_id=spatial_id,
+            spec_ids=spec_ids,
+            capability_bindings=dict(inputs.get("capability_bindings") or {}) if isinstance(inputs.get("capability_bindings"), Mapping) else None,
+            port_ids=port_ids,
+            interior_graph_id=interior_graph_id,
+            pose_slot_ids=pose_slot_ids,
+            mount_point_ids=mount_point_ids,
+            motion_state_ref=motion_state_ref,
+            hazard_ids=(
+                _sorted_tokens(list(inputs.get("hazard_ids") or []))
+                or _sorted_tokens(list(vehicle_class_row.get("default_hazard_modes") or []))
+            ),
+            maintenance_policy_id=maintenance_policy_id,
+            extensions=dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {},
+        )
+
+        vehicles = normalize_vehicle_rows(
+            _upsert_row_by_id(vehicles, "vehicle_id", vehicle_row)
+        )
+        vehicle_motion_states = normalize_motion_state_rows(
+            _upsert_row_by_id(vehicle_motion_states, "vehicle_id", motion_state_row)
+        )
+        event_row = _vehicle_event_row(
+            vehicle_id=vehicle_id,
+            event_kind="vehicle_registered",
+            tick=int(current_tick),
+            process_id=process_id,
+            intent_id=str(intent_id),
+            extensions={
+                "vehicle_class_id": vehicle_class_id,
+                "parent_structure_instance_id": parent_structure_instance_id,
+                "maintenance_policy_id": maintenance_policy_id,
+            },
+        )
+        vehicle_events = _ensure_vehicle_events(
+            {"vehicle_events": _upsert_row_by_id(vehicle_events, "event_id", event_row)}
+        )
+        _persist_vehicle_state(
+            state,
+            vehicles=vehicles,
+            vehicle_motion_states=vehicle_motion_states,
+            vehicle_compatibility_results=vehicle_compatibility_results,
+            vehicle_events=vehicle_events,
+        )
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "motion_state_ref": motion_state_ref,
+            "vehicle_class_id": vehicle_class_id,
+            "capabilities": get_vehicle_capabilities(
+                vehicle_rows=vehicles,
+                vehicle_class_registry_payload=vehicle_class_registry,
+                vehicle_id=vehicle_id,
+            ),
+            "driver_pose_slot_ids": get_vehicle_driver_pose_slots(
+                vehicle_rows=vehicles,
+                pose_slot_rows=pose_slots,
+                vehicle_id=vehicle_id,
+            ),
+            "affordances": [
+                "enter vehicle",
+                "sit driver seat",
+                "inspect vehicle ports",
+                "inspect vehicle wear",
+            ],
+            "event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.vehicle_check_compatibility":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        target_edge_id = str(inputs.get("target_edge_id", "")).strip()
+        if (not vehicle_id) or (not target_edge_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.vehicle_check_compatibility requires vehicle_id and target_edge_id",
+                "Provide deterministic vehicle_id and target_edge_id inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "target_edge_id": target_edge_id,
+            "compatible": True,
+            "provisional": True,
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.vehicle_apply_environment_hooks":
+        result_metadata = {
+            "vehicle_count": int(len(list(vehicles or []))),
+            "updated_vehicle_count": 0,
+            "provisional": True,
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.geometry_create":
