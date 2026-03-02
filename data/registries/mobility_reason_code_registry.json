@@ -1,0 +1,97 @@
+{
+  "schema_id": "dominium.registry.mobility_reason_code_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.mobility_reason_code_registry",
+    "registry_version": "1.0.0",
+    "mobility_refusal_codes": [
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.no_route",
+        "description": "No legal or available route exists for the requested mobility intent.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.spec_noncompliant",
+        "description": "Requested mobility action violates applicable mobility SpecSheet constraints.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.control_not_granted",
+        "description": "Control authority is not granted for the requested mobility action.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.fidelity_denied",
+        "description": "Requested mobility fidelity tier was denied by deterministic arbitration policy.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.speed_cap_exceeded",
+        "description": "Requested mobility command exceeds current speed cap policy.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.signal_violation",
+        "description": "Requested movement violates a governing signal/rule state.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.coupling_incompatible",
+        "description": "Coupling/docking request is incompatible with declared constraint interfaces.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "refusal.mob.cross_shard_motion_forbidden",
+        "description": "Cross-shard mobility transition is forbidden until declared support is enabled.",
+        "extensions": {}
+      }
+    ],
+    "mobility_incident_reason_codes": [
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "incident.derailment.curvature",
+        "description": "Derailment reason classified as curvature/policy exceedance.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "incident.derailment.track_wear",
+        "description": "Derailment reason classified as track wear/degradation.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "incident.collision",
+        "description": "Mobility incident classified as collision.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "incident.breakdown.engine",
+        "description": "Mobility incident classified as engine/propulsion breakdown.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "incident.visibility_low",
+        "description": "Mobility incident classified with low-visibility contribution.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "reason_code": "incident.wind_exceeded",
+        "description": "Mobility incident classified with wind envelope exceedance.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
