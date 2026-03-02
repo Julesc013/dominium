@@ -111,6 +111,71 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.vehicle.summary",
+        "title": "Vehicle Summary",
+        "data": {
+          "data_kind": "vehicle_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.vehicle.specs",
+        "title": "Vehicle Specs",
+        "data": {
+          "data_kind": "vehicle_specs"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.vehicle.ports",
+        "title": "Vehicle Ports",
+        "data": {
+          "data_kind": "vehicle_ports"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.vehicle.pose_slots",
+        "title": "Vehicle Pose Slots",
+        "data": {
+          "data_kind": "vehicle_pose_slots"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.vehicle.wear_risk",
+        "title": "Vehicle Wear Risk",
+        "data": {
+          "data_kind": "vehicle_wear_risk"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.networkgraph.capacity_utilization",
         "title": "NetworkGraph Capacity Utilization",
         "data": {

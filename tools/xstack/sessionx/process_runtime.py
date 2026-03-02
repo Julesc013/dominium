@@ -9682,6 +9682,8 @@ def _inspection_capability_entity_id(target_payload: dict) -> str:
     payload = dict(target_payload or {})
     collection = str(payload.get("collection", "")).strip()
     row = dict(payload.get("row") or {})
+    if collection == "vehicles":
+        return str(row.get("vehicle_id", "")).strip()
     if collection == "pose_slots":
         return str(row.get("parent_assembly_id", "")).strip()
     if collection == "mount_points":
@@ -9817,8 +9819,17 @@ def _augment_inspection_target_payload_for_mechanics(
     target_id = str(payload.get("target_id", "")).strip()
     if not target_id:
         return payload
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    mechanics_target_id = str(target_id)
+    if collection == "vehicles":
+        mechanics_target_id = (
+            str(row.get("parent_structure_instance_id", "")).strip()
+            or str(row.get("vehicle_id", "")).strip()
+            or mechanics_target_id
+        )
     summary = summarize_stress_for_target(
-        target_id=target_id,
+        target_id=mechanics_target_id,
         structural_graph_rows=state.get("structural_graphs"),
         structural_edge_rows=state.get("structural_edges"),
     )
@@ -9830,6 +9841,7 @@ def _augment_inspection_target_payload_for_mechanics(
         "risk_rows": [
             {
                 "target_id": target_id,
+                "stress_target_id": mechanics_target_id,
                 "max_stress_ratio_permille": int(_as_int(summary.get("max_stress_ratio_permille", 0), 0)),
                 "near_fracture_edge_count": int(_as_int(summary.get("near_fracture_edge_count", 0), 0)),
                 "failed_edge_count": int(_as_int(summary.get("failed_edge_count", 0), 0)),
@@ -10027,6 +10039,16 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "guide_geometries",
                 "row": row,
             }
+    if token.startswith("vehicle."):
+        vehicle_id = str(token).strip()
+        row = _row_by_id_value(state.get("vehicles"), "vehicle_id", vehicle_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "vehicles",
+                "row": row,
+            }
     if token.startswith("junction."):
         junction_id = str(token).strip()
         row = _row_by_id_value(state.get("mobility_junctions"), "junction_id", junction_id)
@@ -10084,6 +10106,10 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("mobility_network_bindings", "binding_id"),
         ("mobility_switch_state_machines", "machine_id"),
         ("mobility_route_results", "query_id"),
+        ("vehicles", "vehicle_id"),
+        ("vehicle_motion_states", "vehicle_id"),
+        ("vehicle_compatibility_results", "result_id"),
+        ("vehicle_events", "event_id"),
         ("geometry_candidates", "candidate_id"),
         ("geometry_derived_metrics", "geometry_id"),
         ("structural_graphs", "structural_graph_id"),
