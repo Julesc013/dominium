@@ -132,6 +132,9 @@
         "mobility_constraint_type_registry_hash",
         "mobility_signal_type_registry_hash",
         "mobility_speed_policy_registry_hash",
+        "mobility_node_kind_registry_hash",
+        "mobility_edge_kind_registry_hash",
+        "mobility_max_speed_policy_registry_hash",
         "port_type_registry_hash",
         "tool_tag_registry_hash",
         "tool_type_registry_hash",
@@ -495,6 +498,18 @@
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
+        "mobility_node_kind_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_edge_kind_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_max_speed_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
         "port_type_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
@@ -775,6 +790,9 @@
         "mobility_constraint_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "mobility_signal_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "mobility_speed_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_node_kind_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_edge_kind_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_max_speed_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "port_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "tool_tag_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "tool_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
