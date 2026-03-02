@@ -266,6 +266,22 @@ def _network_graph_overlay_payload(
         sections.get("section.mob.network_summary") or sections.get("section.networkgraph.summary") or {}
     )
     network_summary_data = dict(network_summary_section.get("data") or {})
+    occupancy_section = dict(sections.get("section.mob.edge_occupancy") or {})
+    occupancy_data = dict(occupancy_section.get("data") or {})
+    occupancy_rows = [
+        dict(item)
+        for item in list(occupancy_data.get("edges") or [])
+        if isinstance(item, dict) and str(item.get("edge_id", "")).strip()
+    ]
+    occupancy_by_edge = dict(
+        (str(item.get("edge_id", "")).strip(), dict(item))
+        for item in occupancy_rows
+        if str(item.get("edge_id", "")).strip()
+    )
+    congestion_section = dict(sections.get("section.mob.congestion_summary") or {})
+    congestion_data = dict(congestion_section.get("data") or {})
+    delayed_vehicle_ids = set(_sorted_unique_strings(list(congestion_data.get("delayed_vehicle_ids") or [])))
+    congested_edge_ids = set(_sorted_unique_strings(list(congestion_data.get("congested_edge_ids") or [])))
     switch_state_rows = sorted(
         [dict(item) for item in list(network_summary_data.get("switch_states") or []) if isinstance(item, dict)],
         key=lambda item: str(item.get("node_id", "")),
@@ -284,12 +300,28 @@ def _network_graph_overlay_payload(
     switch_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_switch"}, floor=70)
     spec_warn_color = {"r": 220, "g": 86, "b": 84}
     curve_warn_color = {"r": 244, "g": 176, "b": 62}
+    congestion_low_color = {"r": 104, "g": 188, "b": 110}
+    congestion_med_color = {"r": 236, "g": 168, "b": 78}
+    congestion_high_color = {"r": 224, "g": 86, "b": 86}
+    delayed_color = {"r": 252, "g": 206, "b": 88}
     edge_material_id = "mat.inspect.networkgraph.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
     node_material_id = "mat.inspect.networkgraph.node.{}".format(canonical_sha256({"graph_id": graph_id, "node": True})[:12])
     route_material_id = "mat.inspect.networkgraph.route.{}".format(canonical_sha256({"graph_id": graph_id, "route": True})[:12])
     switch_material_id = "mat.inspect.networkgraph.switch.{}".format(canonical_sha256({"graph_id": graph_id, "switch": True})[:12])
     spec_warn_material_id = "mat.inspect.networkgraph.specwarn.{}".format(canonical_sha256({"graph_id": graph_id, "specwarn": True})[:12])
     curve_warn_material_id = "mat.inspect.networkgraph.curvewarn.{}".format(canonical_sha256({"graph_id": graph_id, "curvewarn": True})[:12])
+    congestion_low_material_id = "mat.inspect.networkgraph.cong.low.{}".format(
+        canonical_sha256({"graph_id": graph_id, "congestion": "low"})[:12]
+    )
+    congestion_med_material_id = "mat.inspect.networkgraph.cong.med.{}".format(
+        canonical_sha256({"graph_id": graph_id, "congestion": "med"})[:12]
+    )
+    congestion_high_material_id = "mat.inspect.networkgraph.cong.high.{}".format(
+        canonical_sha256({"graph_id": graph_id, "congestion": "high"})[:12]
+    )
+    delayed_material_id = "mat.inspect.networkgraph.delayed.{}".format(
+        canonical_sha256({"graph_id": graph_id, "board": "delayed"})[:12]
+    )
     materials = sorted(
         [
             {
@@ -358,6 +390,50 @@ def _network_graph_overlay_payload(
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_curvature_warning"},
             },
+            {
+                "schema_version": "1.0.0",
+                "material_id": congestion_low_material_id,
+                "base_color": dict(congestion_low_color),
+                "roughness": 260,
+                "metallic": 0,
+                "emission": {"r": congestion_low_color["r"], "g": congestion_low_color["g"], "b": congestion_low_color["b"], "strength": 180},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_congestion_low"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": congestion_med_material_id,
+                "base_color": dict(congestion_med_color),
+                "roughness": 250,
+                "metallic": 0,
+                "emission": {"r": congestion_med_color["r"], "g": congestion_med_color["g"], "b": congestion_med_color["b"], "strength": 220},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_congestion_med"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": congestion_high_material_id,
+                "base_color": dict(congestion_high_color),
+                "roughness": 240,
+                "metallic": 0,
+                "emission": {"r": congestion_high_color["r"], "g": congestion_high_color["g"], "b": congestion_high_color["b"], "strength": 260},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_congestion_high"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": delayed_material_id,
+                "base_color": dict(delayed_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": delayed_color["r"], "g": delayed_color["g"], "b": delayed_color["b"], "strength": 260},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_delayed_board"},
+            },
         ],
         key=lambda row: str(row.get("material_id", "")),
     )
@@ -372,6 +448,30 @@ def _network_graph_overlay_payload(
         is_route = edge_id in route_edge_ids
         route_spec_warning = edge_id in route_spec_warning_edge_ids
         route_curvature_warning = edge_id in route_curvature_warning_edge_ids
+        occupancy_row = dict(occupancy_by_edge.get(edge_id) or {})
+        occupancy_capacity_units = int(max(1, _to_int(occupancy_row.get("capacity_units", 1), 1)))
+        occupancy_current = int(max(0, _to_int(occupancy_row.get("current_occupancy", 0), 0)))
+        occupancy_ratio_permille = int(
+            max(
+                0,
+                _to_int(
+                    occupancy_row.get(
+                        "congestion_ratio_permille",
+                        (dict(occupancy_row.get("extensions") or {})).get(
+                            "congestion_ratio_permille",
+                            (int(occupancy_current) * 1000) // int(max(1, occupancy_capacity_units)),
+                        ),
+                    ),
+                    0,
+                ),
+            )
+        )
+        occupancy_over_capacity = bool(occupancy_ratio_permille > 1000)
+        occupancy_heat_material_id = congestion_low_material_id
+        if occupancy_ratio_permille > 1500:
+            occupancy_heat_material_id = congestion_high_material_id
+        elif occupancy_ratio_permille > 1000:
+            occupancy_heat_material_id = congestion_med_material_id
         payload = dict(edge.get("payload") or {})
         spec_id = str(payload.get("spec_id", "")).strip() or None
         spec_missing = not bool(spec_id)
@@ -384,6 +484,8 @@ def _network_graph_overlay_payload(
         material_id = edge_material_id
         if is_route:
             material_id = route_material_id
+        if occupancy_over_capacity:
+            material_id = occupancy_heat_material_id
         if route_spec_warning or spec_missing:
             material_id = spec_warn_material_id
         if route_curvature_warning:
@@ -415,6 +517,10 @@ def _network_graph_overlay_payload(
                     "spec_missing": bool(spec_missing),
                     "route_spec_warning": bool(route_spec_warning),
                     "route_curvature_warning": bool(route_curvature_warning),
+                    "capacity_units": int(occupancy_capacity_units),
+                    "current_occupancy": int(occupancy_current),
+                    "congestion_ratio_permille": int(occupancy_ratio_permille),
+                    "over_capacity": bool(occupancy_over_capacity),
                 },
             }
         )
@@ -438,6 +544,35 @@ def _network_graph_overlay_payload(
                     "interaction_overlay": True,
                     "overlay_kind": "networkgraph_direction",
                     "edge_id": edge_id,
+                },
+            }
+        )
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.networkgraph.occupancy.{}".format(
+                    canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "occupancy": True})[:16]
+                ),
+                "semantic_id": "overlay.inspect.networkgraph.occupancy.{}".format(edge_id),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 850,
+                },
+                "material_id": occupancy_heat_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": "OCC {}/{}".format(int(occupancy_current), int(occupancy_capacity_units)),
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": bool(occupancy_over_capacity)},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "networkgraph_occupancy_bar",
+                    "edge_id": edge_id,
+                    "capacity_units": int(occupancy_capacity_units),
+                    "current_occupancy": int(occupancy_current),
+                    "congestion_ratio_permille": int(occupancy_ratio_permille),
+                    "over_capacity": bool(occupancy_over_capacity),
                 },
             }
         )
@@ -530,12 +665,85 @@ def _network_graph_overlay_payload(
                 },
             }
         )
-    summary = "graph:{} nodes={} edges={} route_edges={} warnings={}".format(
+    timetable_board_rows = sorted(
+        [dict(item) for item in list(network_summary_data.get("timetable_board_rows") or []) if isinstance(item, dict)],
+        key=lambda item: (
+            _to_int(item.get("next_departure_tick", 0), 0),
+            str(item.get("schedule_id", "")),
+            str(item.get("vehicle_id", "")),
+        ),
+    )
+    delayed_board_count = 0
+    for board_row in list(timetable_board_rows)[:64]:
+        schedule_id = str(board_row.get("schedule_id", "")).strip()
+        vehicle_id = str(board_row.get("vehicle_id", "")).strip()
+        delayed = bool(vehicle_id and vehicle_id in delayed_vehicle_ids)
+        if delayed:
+            delayed_board_count += 1
+        renderables.append(
+            {
+                "schema_version": "1.0.0",
+                "renderable_id": "overlay.inspect.networkgraph.board.{}".format(
+                    canonical_sha256({"graph_id": graph_id, "schedule_id": schedule_id, "vehicle_id": vehicle_id})[:16]
+                ),
+                "semantic_id": "overlay.inspect.networkgraph.board.{}".format(
+                    schedule_id or canonical_sha256({"vehicle_id": vehicle_id, "graph_id": graph_id})[:10]
+                ),
+                "primitive_id": "prim.glyph.label",
+                "transform": {
+                    "position_mm": {"x": 0, "y": 0, "z": 0},
+                    "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                    "scale_permille": 900,
+                },
+                "material_id": delayed_material_id if delayed else node_material_id,
+                "layer_tags": ["overlay", "ui"],
+                "label": "{} {}".format(
+                    vehicle_id or "vehicle",
+                    "DELAYED" if delayed else "ON-TIME",
+                ),
+                "lod_hint": "lod.band.mid",
+                "flags": {"selectable": False, "highlighted": bool(delayed)},
+                "extensions": {
+                    "interaction_overlay": True,
+                    "overlay_kind": "networkgraph_station_board",
+                    "schedule_id": schedule_id or None,
+                    "vehicle_id": vehicle_id or None,
+                    "next_departure_tick": int(max(0, _to_int(board_row.get("next_departure_tick", 0), 0))),
+                    "projected_arrival_tick": int(max(0, _to_int(board_row.get("projected_arrival_tick", 0), 0))),
+                    "delayed": bool(delayed),
+                },
+            }
+        )
+    congested_edge_count = int(
+        len(
+            [
+                edge_id
+                for edge_id, row in occupancy_by_edge.items()
+                if str(edge_id).strip()
+                and int(
+                    max(
+                        0,
+                        _to_int(
+                            row.get(
+                                "congestion_ratio_permille",
+                                (dict(row.get("extensions") or {})).get("congestion_ratio_permille", 0),
+                            ),
+                            0,
+                        ),
+                    )
+                )
+                > 1000
+            ]
+        )
+    )
+    summary = "graph:{} nodes={} edges={} route_edges={} warnings={} congested={} delayed={}".format(
         graph_id,
         len(node_rows),
         len(edge_rows),
         len(route_edge_ids),
         int(len(route_spec_warning_edge_ids) + len(route_curvature_warning_edge_ids)),
+        int(max(congested_edge_count, len(congested_edge_ids))),
+        int(delayed_board_count),
     )
     return {
         "mode": "networkgraph_overlay",
@@ -557,6 +765,34 @@ def _network_graph_overlay_payload(
             "route_spec_warning_edge_count": int(spec_warning_edge_count),
             "route_curvature_warning_edge_ids": sorted(route_curvature_warning_edge_ids),
             "route_curvature_warning_edge_count": int(curvature_warning_edge_count),
+            "congested_edge_ids": sorted(
+                set(
+                    list(congested_edge_ids)
+                    + [
+                        str(edge_id).strip()
+                        for edge_id, row in occupancy_by_edge.items()
+                        if str(edge_id).strip()
+                        and int(
+                            max(
+                                0,
+                                _to_int(
+                                    row.get(
+                                        "congestion_ratio_permille",
+                                        (dict(row.get("extensions") or {})).get("congestion_ratio_permille", 0),
+                                    ),
+                                    0,
+                                ),
+                            )
+                        )
+                        > 1000
+                    ]
+                )
+            )[:512],
+            "congested_edge_count": int(max(congested_edge_count, len(congested_edge_ids))),
+            "delayed_vehicle_ids": sorted(delayed_vehicle_ids),
+            "delayed_board_count": int(delayed_board_count),
+            "congestion_delay_event_count": int(max(0, _to_int(congestion_data.get("delay_event_count", 0), 0))),
+            "congestion_policy_id": str(congestion_data.get("congestion_policy_id", "")).strip() or None,
         },
     }
 

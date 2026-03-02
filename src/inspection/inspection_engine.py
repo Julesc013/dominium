@@ -114,6 +114,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.capabilities_summary",
         "section.networkgraph.summary",
         "section.mob.network_summary",
+        "section.mob.congestion_summary",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -121,6 +122,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.mob.network_summary",
         "section.networkgraph.route",
         "section.mob.route_result",
+        "section.mob.congestion_summary",
+        "section.mob.edge_occupancy",
         "section.networkgraph.capacity_utilization",
     ],
     "micro": [
@@ -129,6 +132,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.mob.network_summary",
         "section.networkgraph.route",
         "section.mob.route_result",
+        "section.mob.congestion_summary",
+        "section.mob.edge_occupancy",
         "section.networkgraph.capacity_utilization",
     ],
 }
@@ -245,6 +250,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.networkgraph.route": {"title": "NetworkGraph Route", "extensions": {"cost_units": 2}},
     "section.mob.network_summary": {"title": "Mobility Network Summary", "extensions": {"cost_units": 1}},
     "section.mob.route_result": {"title": "Mobility Route Result", "extensions": {"cost_units": 2}},
+    "section.mob.edge_occupancy": {"title": "Mobility Edge Occupancy", "extensions": {"cost_units": 2}},
+    "section.mob.congestion_summary": {"title": "Mobility Congestion Summary", "extensions": {"cost_units": 1}},
     "section.networkgraph.capacity_utilization": {
         "title": "NetworkGraph Capacity Utilization",
         "extensions": {"cost_units": 2},
@@ -1294,6 +1301,130 @@ def _build_section_data(
             "warning_edge_ids": warning_edge_ids,
             "warning_count": int(len(warning_edge_ids)),
             "per_edge_profile": list(per_edge_profile)[:256],
+        }
+    if section_id == "section.mob.edge_occupancy":
+        graph = _graph_row()
+        edge_rows = sorted(
+            [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, dict)],
+            key=lambda item: str(item.get("edge_id", "")),
+        )
+        occupancy_rows_by_edge = _row_index((dict(state or {})).get("edge_occupancies"), "edge_id")
+        edge_items: List[dict] = []
+        over_capacity_edge_count = 0
+        peak_ratio_permille = 0
+        for edge in edge_rows:
+            edge_id = str(edge.get("edge_id", "")).strip()
+            if not edge_id:
+                continue
+            occupancy_row = dict(occupancy_rows_by_edge.get(edge_id) or {})
+            payload = dict(edge.get("payload") or {})
+            capacity_units = int(
+                max(
+                    1,
+                    _as_int(
+                        occupancy_row.get(
+                            "capacity_units",
+                            payload.get("capacity_units", edge.get("capacity", 1)),
+                        ),
+                        1,
+                    ),
+                )
+            )
+            current_occupancy = int(max(0, _as_int(occupancy_row.get("current_occupancy", 0), 0)))
+            ratio_permille = int(
+                max(
+                    0,
+                    _as_int(
+                        (dict(occupancy_row.get("extensions") or {})).get(
+                            "congestion_ratio_permille",
+                            (int(current_occupancy) * 1000) // int(max(1, capacity_units)),
+                        ),
+                        0,
+                    ),
+                )
+            )
+            if int(ratio_permille) > 1000:
+                over_capacity_edge_count += 1
+            peak_ratio_permille = max(int(peak_ratio_permille), int(ratio_permille))
+            edge_items.append(
+                {
+                    "edge_id": edge_id,
+                    "capacity_units": int(capacity_units),
+                    "current_occupancy": int(current_occupancy),
+                    "congestion_ratio_permille": int(ratio_permille),
+                    "congestion_ratio": float(ratio_permille) / 1000.0,
+                    "over_capacity": bool(ratio_permille > 1000),
+                }
+            )
+        return {
+            "graph_id": str(graph.get("graph_id", "")).strip(),
+            "edge_count": int(len(edge_items)),
+            "over_capacity_edge_count": int(over_capacity_edge_count),
+            "peak_congestion_ratio_permille": int(peak_ratio_permille),
+            "edges": list(edge_items)[:512],
+        }
+    if section_id == "section.mob.congestion_summary":
+        edge_occ = _build_section_data(
+            "section.mob.edge_occupancy",
+            state=state,
+            target_payload=target_payload,
+            request=request,
+            quant_step=quant_step,
+            include_part_ids=include_part_ids,
+            allow_hidden_state=allow_hidden_state,
+        )
+        edge_rows = [dict(item) for item in list((dict(edge_occ or {})).get("edges") or []) if isinstance(item, dict)]
+        congested_edge_ids = sorted(
+            str(item.get("edge_id", "")).strip()
+            for item in edge_rows
+            if str(item.get("edge_id", "")).strip() and int(max(0, _as_int(item.get("congestion_ratio_permille", 0), 0))) > 1000
+        )
+        travel_events = [dict(item) for item in list((dict(state or {})).get("travel_events") or []) if isinstance(item, dict)]
+        delay_events = []
+        for row in travel_events:
+            if str(row.get("kind", "")).strip() != "delay":
+                continue
+            details = dict(row.get("details") or {})
+            if str(details.get("reason", "")).strip() != "event.delay.congestion":
+                continue
+            delay_events.append(dict(row))
+        delay_events = sorted(
+            delay_events,
+            key=lambda row: (
+                _as_int(row.get("tick", 0), 0),
+                str(row.get("event_id", "")),
+            ),
+        )
+        last_tick = int(max(0, _as_int(request.get("tick", 0), 0)))
+        latest_delay_events = [
+            dict(row)
+            for row in delay_events
+            if int(max(0, _as_int(row.get("tick", 0), 0))) == int(last_tick)
+        ]
+        delayed_vehicle_ids = _sorted_unique_strings(
+            [row.get("vehicle_id") for row in latest_delay_events]
+        )
+        total_delay_ticks = int(
+            sum(
+                int(max(0, _as_int((dict(row.get("details") or {})).get("delta_ticks", 0), 0)))
+                for row in latest_delay_events
+            )
+        )
+        runtime_state = dict((dict(state or {})).get("mobility_travel_runtime_state") or {})
+        return {
+            "graph_id": str((dict(edge_occ or {})).get("graph_id", "")).strip() or None,
+            "edge_count": int(max(0, _as_int((dict(edge_occ or {})).get("edge_count", 0), 0))),
+            "over_capacity_edge_count": int(max(0, _as_int((dict(edge_occ or {})).get("over_capacity_edge_count", 0), 0))),
+            "peak_congestion_ratio_permille": int(
+                max(0, _as_int((dict(edge_occ or {})).get("peak_congestion_ratio_permille", 0), 0))
+            ),
+            "congested_edge_ids": list(congested_edge_ids)[:256],
+            "congested_edge_count": int(len(congested_edge_ids)),
+            "congestion_policy_id": str(runtime_state.get("congestion_policy_id", "")).strip() or None,
+            "delay_event_count": int(len(latest_delay_events)),
+            "total_delay_ticks": int(total_delay_ticks),
+            "delayed_vehicle_ids": list(delayed_vehicle_ids)[:256],
+            "delay_status": "delayed" if latest_delay_events else "on_time",
         }
     if section_id == "section.networkgraph.capacity_utilization":
         graph = _graph_row()
