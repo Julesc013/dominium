@@ -1,0 +1,66 @@
+{
+  "schema_id": "dominium.registry.aggregation_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.aggregation_policy_registry",
+    "registry_version": "1.0.0",
+    "aggregation_policies": [
+      {
+        "schema_version": "1.0.0",
+        "aggregation_policy_id": "agg.daily_summary",
+        "input_family_ids": [
+          "INFO.OBSERVATION",
+          "INFO.RECORD"
+        ],
+        "output_family_id": "REPORT",
+        "schedule_id": "schedule.signal.agg.daily_summary",
+        "summarization_rules": {
+          "method": "count_by_family",
+          "window_ticks": 1440,
+          "max_source_refs": 256
+        },
+        "extensions": {
+          "dispatch_channel_id": "channel.local_institutional",
+          "dispatch_address_type": "group",
+          "dispatch_target_id": "group.dispatch.default"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "aggregation_policy_id": "agg.incident_batch",
+        "input_family_ids": [
+          "INFO.INCIDENT",
+          "INFO.RECORD"
+        ],
+        "output_family_id": "REPORT",
+        "schedule_id": "schedule.signal.agg.incident_batch",
+        "summarization_rules": {
+          "method": "latest_by_subject",
+          "window_ticks": 240,
+          "max_source_refs": 256
+        },
+        "extensions": {
+          "dispatch_channel_id": "channel.local_institutional",
+          "dispatch_address_type": "group",
+          "dispatch_target_id": "group.dispatch.incident"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "aggregation_policy_id": "agg.none",
+        "input_family_ids": [],
+        "output_family_id": "REPORT",
+        "schedule_id": "schedule.signal.agg.none",
+        "summarization_rules": {
+          "method": "disabled",
+          "window_ticks": 0,
+          "max_source_refs": 0
+        },
+        "extensions": {
+          "disabled": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

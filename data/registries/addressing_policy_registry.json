@@ -1,0 +1,40 @@
+{
+  "schema_id": "dominium.registry.addressing_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.addressing_policy_registry",
+    "registry_version": "1.0.0",
+    "addressing_policies": [
+      {
+        "schema_version": "1.0.0",
+        "addressing_policy_id": "addressing.subject_direct",
+        "description": "Unicast resolution to exactly one subject target.",
+        "supported_address_types": [
+          "subject"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "addressing_policy_id": "addressing.group_registry",
+        "description": "Group target resolved from deterministic membership registry rows.",
+        "supported_address_types": [
+          "group"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "addressing_policy_id": "addressing.broadcast_scope",
+        "description": "Broadcast scope resolved via deterministic graph/scope memberships.",
+        "supported_address_types": [
+          "broadcast"
+        ],
+        "extensions": {
+          "requires_scope_membership": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

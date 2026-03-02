@@ -1,0 +1,24 @@
+SCHEMA: signals/message_queue_entry.schema
+schema_id: dominium.schema.signals.message_queue_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic queue entry for envelope transport execution.
+
+REQUIRED SHAPE:
+record message_queue_entry
+  required:
+    - schema_version: semver
+    - queue_entry_id: id
+    - channel_id: id
+    - envelope_id: id
+    - next_hop_node_id: id
+    - scheduled_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Queue ordering is deterministic.
+- Queue entries are produced by process-mediated send/transport stages only.
+- Queue timestamps are simulation ticks only (no wall-clock).
