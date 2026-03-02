@@ -50,11 +50,20 @@ from .vehicle import (
 )
 from .travel import (
     ItineraryError,
+    TravelEngineError,
     build_itinerary,
+    build_travel_commitment,
+    build_travel_event,
     deterministic_itinerary_id,
+    deterministic_travel_commitment_id,
+    deterministic_travel_event_id,
     normalize_itinerary_rows,
+    normalize_travel_commitment_rows,
+    normalize_travel_event_rows,
     plan_itinerary,
     speed_policy_rows_by_id,
+    start_macro_travel,
+    tick_macro_travel,
 )
 
 __all__ = [
@@ -101,9 +110,18 @@ __all__ = [
     "vehicle_class_rows_by_id",
     "vehicle_rows_by_id",
     "ItineraryError",
+    "TravelEngineError",
     "build_itinerary",
+    "build_travel_commitment",
+    "build_travel_event",
     "deterministic_itinerary_id",
+    "deterministic_travel_commitment_id",
+    "deterministic_travel_event_id",
     "normalize_itinerary_rows",
+    "normalize_travel_commitment_rows",
+    "normalize_travel_event_rows",
     "plan_itinerary",
     "speed_policy_rows_by_id",
+    "start_macro_travel",
+    "tick_macro_travel",
 ]

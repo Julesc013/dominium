@@ -8,6 +8,17 @@ from .itinerary_engine import (
     plan_itinerary,
     speed_policy_rows_by_id,
 )
+from .travel_engine import (
+    TravelEngineError,
+    build_travel_commitment,
+    build_travel_event,
+    deterministic_travel_commitment_id,
+    deterministic_travel_event_id,
+    normalize_travel_commitment_rows,
+    normalize_travel_event_rows,
+    start_macro_travel,
+    tick_macro_travel,
+)
 
 __all__ = [
     "ItineraryError",
@@ -16,4 +27,13 @@ __all__ = [
     "normalize_itinerary_rows",
     "plan_itinerary",
     "speed_policy_rows_by_id",
+    "TravelEngineError",
+    "build_travel_commitment",
+    "build_travel_event",
+    "deterministic_travel_commitment_id",
+    "deterministic_travel_event_id",
+    "normalize_travel_commitment_rows",
+    "normalize_travel_event_rows",
+    "start_macro_travel",
+    "tick_macro_travel",
 ]

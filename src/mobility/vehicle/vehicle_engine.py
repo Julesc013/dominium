@@ -114,6 +114,30 @@ def build_motion_state(
                 if macro.get("eta_tick") is None
                 else int(max(0, _as_int(macro.get("eta_tick", 0), 0)))
             ),
+            "current_edge_id": None
+            if macro.get("current_edge_id") is None
+            else str(macro.get("current_edge_id", "")).strip() or None,
+            "current_edge_index": (
+                None
+                if macro.get("current_edge_index") is None
+                else int(max(0, _as_int(macro.get("current_edge_index", 0), 0)))
+            ),
+            "current_node_id": None
+            if macro.get("current_node_id") is None
+            else str(macro.get("current_node_id", "")).strip() or None,
+            "progress_fraction_q16": int(max(0, min(65535, _as_int(macro.get("progress_fraction_q16", 0), 0)))),
+            "edge_elapsed_ticks": int(max(0, _as_int(macro.get("edge_elapsed_ticks", 0), 0))),
+            "edge_eta_ticks": int(max(0, _as_int(macro.get("edge_eta_ticks", 0), 0))),
+            "started_tick": (
+                None
+                if macro.get("started_tick") is None
+                else int(max(0, _as_int(macro.get("started_tick", 0), 0)))
+            ),
+            "last_progress_tick": (
+                None
+                if macro.get("last_progress_tick") is None
+                else int(max(0, _as_int(macro.get("last_progress_tick", 0), 0)))
+            ),
         },
         "meso_state": {
             "current_edge_id": None
