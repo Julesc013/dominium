@@ -350,6 +350,26 @@ from src.mobility.micro import (
     traction_model_rows_by_id,
     wind_model_rows_by_id,
 )
+from src.mobility.signals.signal_engine import (
+    REFUSAL_MOBILITY_SIGNAL_INVALID,
+    REFUSAL_MOBILITY_SIGNAL_VIOLATION,
+    SignalEngineError,
+    active_block_reservation_rows,
+    build_block_reservation,
+    deterministic_block_reservation_id,
+    deterministic_switch_lock_id,
+    ensure_signal_state_machine_rows,
+    evaluate_signal_aspects,
+    normalize_block_reservation_rows,
+    normalize_signal_rows,
+    normalize_switch_lock_rows,
+    route_reservation_windows,
+    select_signal_transition_id,
+    signal_rule_policy_rows_by_id,
+    signal_state_machine_rows_by_id,
+    signal_type_rows_by_id,
+    switch_lock_rows_by_machine_id,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -474,6 +494,13 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.mobility_network_create_from_formalization": "entitlement.control.admin",
     "process.mobility_network_edit": "entitlement.control.admin",
     "process.switch_set_state": "entitlement.control.admin",
+    "process.switch_lock": "entitlement.control.admin",
+    "process.switch_unlock": "entitlement.control.admin",
+    "process.signal_set_aspect": "entitlement.control.admin",
+    "process.signal_tick": "session.boot",
+    "process.route_reserve_blocks": "entitlement.control.admin",
+    "process.signal_hazard_set": "entitlement.control.admin",
+    "process.signal_maintenance_tick": "session.boot",
     "process.mobility_route_query": "entitlement.inspect",
     "process.itinerary_create": "entitlement.control.admin",
     "process.mobility_reserve_edge": "entitlement.control.admin",
@@ -609,6 +636,13 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.mobility_network_create_from_formalization": "operator",
     "process.mobility_network_edit": "operator",
     "process.switch_set_state": "operator",
+    "process.switch_lock": "operator",
+    "process.switch_unlock": "operator",
+    "process.signal_set_aspect": "operator",
+    "process.signal_tick": "observer",
+    "process.route_reserve_blocks": "operator",
+    "process.signal_hazard_set": "operator",
+    "process.signal_maintenance_tick": "observer",
     "process.mobility_route_query": "observer",
     "process.itinerary_create": "operator",
     "process.mobility_reserve_edge": "operator",
@@ -691,6 +725,13 @@ CONTROL_PROCESS_IDS = {
     "process.mobility_network_create_from_formalization",
     "process.mobility_network_edit",
     "process.switch_set_state",
+    "process.switch_lock",
+    "process.switch_unlock",
+    "process.signal_set_aspect",
+    "process.signal_tick",
+    "process.route_reserve_blocks",
+    "process.signal_hazard_set",
+    "process.signal_maintenance_tick",
     "process.mobility_route_query",
     "process.itinerary_create",
     "process.mobility_reserve_edge",
@@ -1734,6 +1775,103 @@ def _ensure_mobility_reservation_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows if isinstance(row, dict)]
 
 
+def _ensure_mobility_signal_rows(state: dict) -> List[dict]:
+    rows = normalize_signal_rows(state.get("mobility_signals"))
+    state["mobility_signals"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mobility_signal_state_machine_rows(state: dict) -> List[dict]:
+    rows = signal_state_machine_rows_by_id(state.get("mobility_signal_state_machines"))
+    normalized = [dict(rows[key]) for key in sorted(rows.keys())]
+    state["mobility_signal_state_machines"] = [dict(row) for row in normalized if isinstance(row, dict)]
+    return [dict(row) for row in normalized if isinstance(row, dict)]
+
+
+def _ensure_mobility_block_reservation_rows(state: dict) -> List[dict]:
+    rows = normalize_block_reservation_rows(state.get("mobility_block_reservations"))
+    state["mobility_block_reservations"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mobility_switch_lock_rows(state: dict) -> List[dict]:
+    rows = normalize_switch_lock_rows(state.get("mobility_switch_locks"))
+    state["mobility_switch_locks"] = [dict(row) for row in rows if isinstance(row, dict)]
+    return [dict(row) for row in rows if isinstance(row, dict)]
+
+
+def _ensure_mobility_signal_hazard_rows(state: dict) -> List[dict]:
+    rows = state.get("mobility_signal_hazards")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("signal_id", ""))):
+        signal_id = str(row.get("signal_id", "")).strip()
+        if not signal_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "signal_id": signal_id,
+            "hazard_type_id": str(row.get("hazard_type_id", "hazard.mob.signal_failure")).strip() or "hazard.mob.signal_failure",
+            "active": bool(row.get("active", False)),
+            "severity": str(row.get("severity", "warning")).strip() or "warning",
+            "updated_tick": int(max(0, _as_int(row.get("updated_tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[signal_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["mobility_signal_hazards"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_mobility_signal_maintenance_schedule_rows(state: dict) -> List[dict]:
+    rows = state.get("mobility_signal_maintenance_schedules")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("schedule_id", ""))):
+        try:
+            normalized = normalize_schedule(row)
+        except ScheduleError:
+            continue
+        schedule_id = str(normalized.get("schedule_id", "")).strip()
+        if not schedule_id:
+            continue
+        out[schedule_id] = dict(normalized)
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["mobility_signal_maintenance_schedules"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_mobility_signal_maintenance_event_rows(state: dict) -> List[dict]:
+    rows = state.get("mobility_signal_maintenance_events")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("event_id", ""))):
+        event_id = str(row.get("event_id", "")).strip()
+        schedule_id = str(row.get("schedule_id", "")).strip()
+        if (not event_id) or (not schedule_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "schedule_id": schedule_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "status": str(row.get("status", "due")).strip() or "due",
+            "details": dict(row.get("details") or {}) if isinstance(row.get("details"), Mapping) else {},
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["mobility_signal_maintenance_events"] = normalized
+    return [dict(row) for row in normalized]
+
+
 def _ensure_micro_motion_state_rows(state: dict) -> List[dict]:
     rows = normalize_micro_motion_state_rows(state.get("micro_motion_states"))
     state["micro_motion_states"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -1891,6 +2029,44 @@ def _persist_mobility_network_state(
     _ensure_mobility_route_result_rows(state)
 
 
+def _persist_mobility_signal_state(
+    state: dict,
+    *,
+    mobility_signals: List[dict],
+    mobility_signal_state_machines: List[dict],
+    mobility_block_reservations: List[dict],
+    mobility_switch_locks: List[dict],
+    mobility_signal_hazards: List[dict] | None = None,
+    mobility_signal_maintenance_schedules: List[dict] | None = None,
+    mobility_signal_maintenance_events: List[dict] | None = None,
+) -> None:
+    state["mobility_signals"] = [dict(row) for row in list(mobility_signals or []) if isinstance(row, Mapping)]
+    state["mobility_signal_state_machines"] = [
+        dict(row) for row in list(mobility_signal_state_machines or []) if isinstance(row, Mapping)
+    ]
+    state["mobility_block_reservations"] = [
+        dict(row) for row in list(mobility_block_reservations or []) if isinstance(row, Mapping)
+    ]
+    state["mobility_switch_locks"] = [dict(row) for row in list(mobility_switch_locks or []) if isinstance(row, Mapping)]
+    if mobility_signal_hazards is not None:
+        state["mobility_signal_hazards"] = [dict(row) for row in list(mobility_signal_hazards or []) if isinstance(row, Mapping)]
+    if mobility_signal_maintenance_schedules is not None:
+        state["mobility_signal_maintenance_schedules"] = [
+            dict(row) for row in list(mobility_signal_maintenance_schedules or []) if isinstance(row, Mapping)
+        ]
+    if mobility_signal_maintenance_events is not None:
+        state["mobility_signal_maintenance_events"] = [
+            dict(row) for row in list(mobility_signal_maintenance_events or []) if isinstance(row, Mapping)
+        ]
+    _ensure_mobility_signal_rows(state)
+    _ensure_mobility_signal_state_machine_rows(state)
+    _ensure_mobility_block_reservation_rows(state)
+    _ensure_mobility_switch_lock_rows(state)
+    _ensure_mobility_signal_hazard_rows(state)
+    _ensure_mobility_signal_maintenance_schedule_rows(state)
+    _ensure_mobility_signal_maintenance_event_rows(state)
+
+
 def _load_mobility_network_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
     node_kind_registry = dict(_policy_payload(policy_context, "mobility_node_kind_registry") or {})
     if not node_kind_registry:
@@ -1914,6 +2090,32 @@ def _load_mobility_network_registries(*, policy_context: dict | None) -> Tuple[d
             default_payload={"max_speed_policies": []},
         )
     return dict(node_kind_registry), dict(edge_kind_registry), dict(max_speed_policy_registry)
+
+
+def _load_signal_registries(*, policy_context: dict | None) -> Tuple[dict, dict]:
+    signal_type_registry = dict(_policy_payload(policy_context, "signal_type_registry") or {})
+    if not signal_type_registry:
+        signal_type_registry = dict(_policy_payload(policy_context, "mobility_signal_type_registry") or {})
+    if not signal_type_registry:
+        signal_type_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/signal_type_registry.json",
+            default_payload={"record": {"signal_types": []}},
+        )
+    if not signal_type_registry:
+        signal_type_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/mobility_signal_type_registry.json",
+            default_payload={"record": {"signal_types": []}},
+        )
+    signal_rule_policy_registry = dict(_policy_payload(policy_context, "signal_rule_policy_registry") or {})
+    if not signal_rule_policy_registry:
+        signal_rule_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/signal_rule_policy_registry.json",
+            default_payload={"record": {"signal_rule_policies": []}},
+        )
+    return dict(signal_type_registry), dict(signal_rule_policy_registry)
 
 
 def _load_vehicle_class_registry(*, policy_context: dict | None) -> dict:
@@ -2095,6 +2297,128 @@ def _network_edge_row_by_id(state: dict, edge_id: str) -> dict:
             if str(edge_row.get("edge_id", "")).strip() == token:
                 return dict(edge_row)
     return {}
+
+
+def _switch_connected_edge_ids(*, state: dict, machine_id: str) -> List[str]:
+    machine_token = str(machine_id or "").strip()
+    if not machine_token:
+        return []
+    node_ids: List[str] = []
+    edges: List[str] = []
+    for graph_row in sorted(
+        (item for item in list(state.get("network_graphs") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("graph_id", "")),
+    ):
+        nodes = [
+            dict(item)
+            for item in list(dict(graph_row).get("nodes") or [])
+            if isinstance(item, Mapping)
+        ]
+        for node_row in sorted(nodes, key=lambda item: str(item.get("node_id", ""))):
+            payload = dict(node_row.get("payload") or {})
+            if str(payload.get("state_machine_id", "")).strip() == machine_token:
+                node_id = str(node_row.get("node_id", "")).strip()
+                if node_id:
+                    node_ids.append(node_id)
+        edge_rows = [
+            dict(item)
+            for item in list(dict(graph_row).get("edges") or [])
+            if isinstance(item, Mapping)
+        ]
+        for edge_row in sorted(
+            edge_rows,
+            key=lambda item: (
+                str(item.get("from_node_id", "")),
+                str(item.get("to_node_id", "")),
+                str(item.get("edge_id", "")),
+            ),
+        ):
+            edge_id = str(edge_row.get("edge_id", "")).strip()
+            if not edge_id:
+                continue
+            from_node_id = str(edge_row.get("from_node_id", "")).strip()
+            to_node_id = str(edge_row.get("to_node_id", "")).strip()
+            if from_node_id in node_ids or to_node_id in node_ids:
+                edges.append(edge_id)
+    return _sorted_tokens(edges)
+
+
+def _switch_node_id_for_machine(*, state: dict, machine_id: str) -> str:
+    machine_token = str(machine_id or "").strip()
+    if not machine_token:
+        return ""
+    for graph_row in sorted(
+        (item for item in list(state.get("network_graphs") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("graph_id", "")),
+    ):
+        for node_row in sorted(
+            (dict(item) for item in list(dict(graph_row).get("nodes") or []) if isinstance(item, Mapping)),
+            key=lambda item: str(item.get("node_id", "")),
+        ):
+            payload = dict(node_row.get("payload") or {})
+            if str(payload.get("state_machine_id", "")).strip() != machine_token:
+                continue
+            node_id = str(node_row.get("node_id", "")).strip()
+            if node_id:
+                return node_id
+    return ""
+
+
+def _signal_aspect_for_edge(
+    *,
+    edge_id: str,
+    signal_rows: object,
+    signal_state_machine_rows: object,
+) -> str:
+    edge_token = str(edge_id or "").strip()
+    if not edge_token:
+        return "clear"
+    machine_rows = signal_state_machine_rows_by_id(signal_state_machine_rows)
+    signal_rows_sorted = normalize_signal_rows(signal_rows)
+    candidates: List[str] = []
+    for signal_row in signal_rows_sorted:
+        attached_to = dict(signal_row.get("attached_to") or {})
+        attached_edge_id = str(attached_to.get("edge_id", "")).strip()
+        if attached_edge_id != edge_token:
+            continue
+        machine_id = str(signal_row.get("state_machine_id", "")).strip()
+        machine_row = dict(machine_rows.get(machine_id) or {})
+        state_id = str(machine_row.get("state_id", "")).strip().lower()
+        if state_id:
+            candidates.append(state_id)
+    if not candidates:
+        return "clear"
+    if "stop" in candidates:
+        return "stop"
+    if "caution" in candidates:
+        return "caution"
+    return "clear"
+
+
+def _edge_id_by_geometry_id(state: dict) -> Dict[str, str]:
+    out: Dict[str, str] = {}
+    for graph_row in sorted(
+        (item for item in list(state.get("network_graphs") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("graph_id", "")),
+    ):
+        for edge_row in sorted(
+            (dict(item) for item in list(dict(graph_row).get("edges") or []) if isinstance(item, Mapping)),
+            key=lambda item: (
+                str(item.get("from_node_id", "")),
+                str(item.get("to_node_id", "")),
+                str(item.get("edge_id", "")),
+            ),
+        ):
+            edge_id = str(edge_row.get("edge_id", "")).strip()
+            if not edge_id:
+                continue
+            payload = dict(edge_row.get("payload") or {})
+            geometry_id = str(payload.get("guide_geometry_id", "")).strip()
+            if not geometry_id:
+                continue
+            if geometry_id not in out:
+                out[geometry_id] = edge_id
+    return dict((key, out[key]) for key in sorted(out.keys()))
 
 
 def _switch_active_geometry_candidates(
@@ -3395,6 +3719,10 @@ def _effect_target_ids(state: dict) -> List[str]:
         ("travel_events", "event_id"),
         ("edge_occupancies", "edge_id"),
         ("mobility_reservations", "reservation_id"),
+        ("mobility_signals", "signal_id"),
+        ("mobility_signal_state_machines", "machine_id"),
+        ("mobility_block_reservations", "reservation_id"),
+        ("mobility_switch_locks", "switch_lock_id"),
         ("micro_motion_states", "vehicle_id"),
         ("free_motion_states", "subject_id"),
         ("coupling_constraints", "constraint_id"),
@@ -10779,6 +11107,10 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("travel_events", "event_id"),
         ("edge_occupancies", "edge_id"),
         ("mobility_reservations", "reservation_id"),
+        ("mobility_signals", "signal_id"),
+        ("mobility_signal_state_machines", "machine_id"),
+        ("mobility_block_reservations", "reservation_id"),
+        ("mobility_switch_locks", "switch_lock_id"),
         ("vehicles", "vehicle_id"),
         ("vehicle_motion_states", "vehicle_id"),
         ("vehicle_compatibility_results", "result_id"),
@@ -13486,6 +13818,13 @@ def execute_intent(
     travel_events = _ensure_travel_event_rows(state)
     edge_occupancies = _ensure_edge_occupancy_rows(state)
     mobility_reservations = _ensure_mobility_reservation_rows(state)
+    mobility_signals = _ensure_mobility_signal_rows(state)
+    mobility_signal_state_machines = _ensure_mobility_signal_state_machine_rows(state)
+    mobility_block_reservations = _ensure_mobility_block_reservation_rows(state)
+    mobility_switch_locks = _ensure_mobility_switch_lock_rows(state)
+    mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(state)
+    mobility_signal_maintenance_schedules = _ensure_mobility_signal_maintenance_schedule_rows(state)
+    mobility_signal_maintenance_events = _ensure_mobility_signal_maintenance_event_rows(state)
     micro_motion_states = _ensure_micro_motion_state_rows(state)
     free_motion_states = _ensure_free_motion_state_rows(state)
     coupling_constraints = _ensure_coupling_constraint_rows(state)
@@ -20663,6 +21002,394 @@ def execute_intent(
                 "applied_ops": apply_rows,
             }
             _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_set_aspect":
+        signal_id = str(inputs.get("signal_id", "")).strip()
+        machine_id = str(inputs.get("state_machine_id", "")).strip()
+        target_aspect = str(inputs.get("target_aspect", "stop")).strip().lower() or "stop"
+        signal_rows_by_id = dict(
+            (str(row.get("signal_id", "")).strip(), dict(row))
+            for row in list(mobility_signals or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        )
+        if signal_id and (not machine_id):
+            machine_id = str((dict(signal_rows_by_id.get(signal_id) or {})).get("state_machine_id", "")).strip()
+        if machine_id and (not signal_id):
+            for row in list(mobility_signals or []):
+                if not isinstance(row, Mapping):
+                    continue
+                if str(row.get("state_machine_id", "")).strip() == machine_id:
+                    signal_id = str(row.get("signal_id", "")).strip()
+                    break
+        if (not signal_id) or (not machine_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.signal_set_aspect requires signal_id or state_machine_id",
+                "Provide signal_id (preferred) or state_machine_id bound to a mobility signal.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
+        machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+        if not machine_row:
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_INVALID,
+                "signal state machine '{}' is not present".format(machine_id),
+                "Create a mobility signal row and run process.signal_tick to ensure state machines.",
+                {"machine_id": machine_id, "signal_id": signal_id},
+                "$.intent.inputs.state_machine_id",
+            )
+        try:
+            transition_id = select_signal_transition_id(
+                machine_row=machine_row,
+                target_aspect=target_aspect,
+            )
+            transitioned = apply_transition(
+                machine_row,
+                trigger_process_id=process_id,
+                transition_id=transition_id,
+                current_tick=int(current_tick),
+            )
+        except (SignalEngineError, StateMachineError) as exc:
+            reason_code = str(getattr(exc, "reason_code", REFUSAL_MOBILITY_SIGNAL_INVALID))
+            details = dict(getattr(exc, "details", {}) or {})
+            return refusal(
+                reason_code,
+                str(exc),
+                "Use a valid signal aspect transition for the selected signal.",
+                details,
+                "$.intent.inputs.target_aspect",
+            )
+        machine_next = dict(transitioned.get("machine") or {})
+        machine_rows_by_id[machine_id] = dict(machine_next)
+        mobility_signal_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        signal_event = {
+            "schema_version": "1.0.0",
+            "event_id": "event.mob.signal.{}".format(
+                canonical_sha256(
+                    {
+                        "signal_id": signal_id,
+                        "machine_id": machine_id,
+                        "target_aspect": target_aspect,
+                        "tick": int(current_tick),
+                        "intent_id": str(intent_id),
+                    }
+                )[:16]
+            ),
+            "signal_id": signal_id,
+            "machine_id": machine_id,
+            "aspect": str(dict(machine_next).get("state_id", "")).strip().lower() or target_aspect,
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "process_id": process_id,
+            "intent_id": str(intent_id),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "target_aspect": target_aspect,
+                "decision_log_ref": str(inputs.get("decision_log_ref", "")).strip() or None,
+            },
+        }
+        signal_event["deterministic_fingerprint"] = canonical_sha256(dict(signal_event, deterministic_fingerprint=""))
+        state["mobility_signal_events"] = sorted(
+            [dict(row) for row in list(state.get("mobility_signal_events") or []) if isinstance(row, Mapping)]
+            + [signal_event],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        result_metadata = {
+            "signal_id": signal_id,
+            "machine_id": machine_id,
+            "aspect": str(signal_event.get("aspect", "")).strip(),
+            "signal_event_id": str(signal_event.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_tick":
+        signal_type_registry, signal_rule_policy_registry = _load_signal_registries(policy_context=policy_context)
+        signal_type_rows = signal_type_rows_by_id(signal_type_registry)
+        signal_rule_rows = signal_rule_policy_rows_by_id(signal_rule_policy_registry)
+        if not signal_type_rows:
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_INVALID,
+                "signal_type_registry is empty",
+                "Register at least one signal type before ticking signal state.",
+                {"registry": "signal_type_registry"},
+                "$.policy_context.signal_type_registry",
+            )
+        if not signal_rule_rows:
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_INVALID,
+                "signal_rule_policy_registry is empty",
+                "Register at least one signal rule policy before ticking signal state.",
+                {"registry": "signal_rule_policy_registry"},
+                "$.policy_context.signal_rule_policy_registry",
+            )
+        mobility_signals = normalize_signal_rows(mobility_signals)
+        signal_rows_by_id = dict(
+            (str(row.get("signal_id", "")).strip(), dict(row))
+            for row in list(mobility_signals or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        )
+        for signal_id, signal_row in list(signal_rows_by_id.items()):
+            signal_type_id = str(signal_row.get("signal_type_id", "")).strip()
+            if signal_type_id not in signal_type_rows:
+                return refusal(
+                    REFUSAL_MOBILITY_SIGNAL_INVALID,
+                    "signal '{}' references unknown signal_type_id '{}'".format(signal_id, signal_type_id),
+                    "Attach a registered signal_type_id from signal_type_registry.",
+                    {"signal_id": signal_id, "signal_type_id": signal_type_id},
+                    "$.state.mobility_signals",
+                )
+            policy_id = str(signal_row.get("rule_policy_id", "")).strip()
+            if policy_id not in signal_rule_rows:
+                return refusal(
+                    REFUSAL_MOBILITY_SIGNAL_INVALID,
+                    "signal '{}' references unknown rule_policy_id '{}'".format(signal_id, policy_id),
+                    "Attach a registered rule_policy_id from signal_rule_policy_registry.",
+                    {"signal_id": signal_id, "rule_policy_id": policy_id},
+                    "$.state.mobility_signals",
+                )
+        mobility_signal_state_machines = ensure_signal_state_machine_rows(
+            signal_rows=mobility_signals,
+            signal_rule_policy_rows_by_id=signal_rule_rows,
+            signal_state_machine_rows=mobility_signal_state_machines,
+        )
+        hazard_states_input = dict(inputs.get("hazard_states_by_signal_id") or {}) if isinstance(inputs.get("hazard_states_by_signal_id"), Mapping) else {}
+        hazard_rows_by_signal = dict(
+            (
+                str(row.get("signal_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_signal_hazards or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        )
+        if hazard_states_input:
+            for signal_id in sorted(hazard_states_input.keys(), key=lambda token: str(token)):
+                signal_token = str(signal_id).strip()
+                if not signal_token:
+                    continue
+                active = bool(hazard_states_input.get(signal_id))
+                row = dict(hazard_rows_by_signal.get(signal_token) or {})
+                row["signal_id"] = signal_token
+                row["active"] = bool(active)
+                row["updated_tick"] = int(current_tick)
+                row.setdefault("hazard_type_id", "hazard.mob.signal_failure")
+                row.setdefault("severity", "warning")
+                row.setdefault("extensions", {})
+                hazard_rows_by_signal[signal_token] = row
+        mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(
+            {"mobility_signal_hazards": [dict(hazard_rows_by_signal[key]) for key in sorted(hazard_rows_by_signal.keys())]}
+        )
+        hazard_rows_by_signal = dict(
+            (
+                str(row.get("signal_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_signal_hazards or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        )
+        occupancy_by_edge = dict(
+            (
+                str(row.get("edge_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(edge_occupancies or [])
+            if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+        )
+        switch_machine_by_id = dict(
+            (
+                str(row.get("machine_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_switch_state_machines or [])
+            if isinstance(row, Mapping) and str(row.get("machine_id", "")).strip()
+        )
+        max_signal_updates = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_signal_updates_per_tick",
+                        (dict(policy_context or {})).get("mobility_signal_max_updates_per_tick", 128),
+                    ),
+                    128,
+                ),
+            )
+        )
+        eval_result = evaluate_signal_aspects(
+            signal_rows=mobility_signals,
+            signal_rule_policy_rows_by_id=signal_rule_rows,
+            edge_occupancy_rows_by_edge_id=occupancy_by_edge,
+            block_reservation_rows=mobility_block_reservations,
+            switch_machine_rows_by_id=switch_machine_by_id,
+            hazard_rows_by_signal_id=hazard_rows_by_signal,
+            current_tick=int(current_tick),
+            max_signal_updates=int(max_signal_updates),
+        )
+        machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
+        signal_rows_by_id = dict(
+            (
+                str(row.get("signal_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_signals or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        )
+        signal_events = [dict(row) for row in list(state.get("mobility_signal_events") or []) if isinstance(row, Mapping)]
+        for evaluation in list(eval_result.get("evaluations") or []):
+            eval_row = dict(evaluation or {})
+            signal_id = str(eval_row.get("signal_id", "")).strip()
+            target_aspect = str(eval_row.get("target_aspect", "stop")).strip().lower() or "stop"
+            signal_row = dict(signal_rows_by_id.get(signal_id) or {})
+            if not signal_row:
+                continue
+            machine_id = str(signal_row.get("state_machine_id", "")).strip()
+            machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+            if not machine_row:
+                continue
+            current_aspect = str(machine_row.get("state_id", "")).strip().lower()
+            if current_aspect == target_aspect:
+                continue
+            try:
+                transition_id = select_signal_transition_id(
+                    machine_row=machine_row,
+                    target_aspect=target_aspect,
+                )
+                transitioned = apply_transition(
+                    machine_row,
+                    trigger_process_id="process.signal_set_aspect",
+                    transition_id=transition_id,
+                    current_tick=int(current_tick),
+                )
+            except (SignalEngineError, StateMachineError):
+                continue
+            machine_next = dict(transitioned.get("machine") or {})
+            machine_rows_by_id[machine_id] = machine_next
+            signal_event = {
+                "schema_version": "1.0.0",
+                "event_id": "event.mob.signal.tick.{}".format(
+                    canonical_sha256(
+                        {
+                            "signal_id": signal_id,
+                            "machine_id": machine_id,
+                            "target_aspect": target_aspect,
+                            "tick": int(current_tick),
+                            "reason": str(eval_row.get("reason", "")),
+                        }
+                    )[:16]
+                ),
+                "signal_id": signal_id,
+                "machine_id": machine_id,
+                "aspect": str(machine_next.get("state_id", "")).strip().lower() or target_aspect,
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "process_id": process_id,
+                "intent_id": str(intent_id),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "reason": str(eval_row.get("reason", "")).strip(),
+                    "details": dict(eval_row.get("details") or {}),
+                },
+            }
+            signal_event["deterministic_fingerprint"] = canonical_sha256(dict(signal_event, deterministic_fingerprint=""))
+            signal_events.append(signal_event)
+        mobility_signal_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+        active_block_rows = active_block_reservation_rows(
+            mobility_block_reservations,
+            current_tick=int(current_tick),
+        )
+        lock_rows_by_machine = switch_lock_rows_by_machine_id(mobility_switch_locks)
+        for switch_machine_row in sorted(
+            (dict(row) for row in list(mobility_switch_state_machines or []) if isinstance(row, Mapping)),
+            key=lambda row: str(row.get("machine_id", "")),
+        ):
+            machine_id = str(switch_machine_row.get("machine_id", "")).strip()
+            if not machine_id:
+                continue
+            connected_edge_ids = _switch_connected_edge_ids(state=state, machine_id=machine_id)
+            occupied = False
+            reserved = False
+            for edge_id in connected_edge_ids:
+                occupancy_row = dict(occupancy_by_edge.get(edge_id) or {})
+                if int(max(0, _as_int(occupancy_row.get("current_occupancy", 0), 0))) > 0:
+                    occupied = True
+                if any(str(row.get("edge_id", "")).strip() == edge_id for row in list(active_block_rows or [])):
+                    reserved = True
+            should_lock = bool(occupied or reserved)
+            switch_node_id = _switch_node_id_for_machine(state=state, machine_id=machine_id)
+            existing_lock = dict(lock_rows_by_machine.get(machine_id) or {})
+            switch_lock_id = str(existing_lock.get("switch_lock_id", "")).strip() or deterministic_switch_lock_id(
+                machine_id=machine_id,
+                switch_node_id=switch_node_id,
+            )
+            lock_rows_by_machine[machine_id] = {
+                "schema_version": "1.0.0",
+                "switch_lock_id": switch_lock_id,
+                "machine_id": machine_id,
+                "switch_node_id": switch_node_id,
+                "status": ("locked" if should_lock else "unlocked"),
+                "locked_tick": int(current_tick),
+                "reason_code": ("occupied_or_reserved" if should_lock else "clear"),
+                "deterministic_fingerprint": "",
+                "extensions": {"occupied": occupied, "reserved": reserved},
+            }
+        mobility_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        state["mobility_signal_events"] = sorted(
+            [dict(row) for row in list(signal_events or []) if isinstance(row, Mapping)],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        state["mobility_signal_runtime_state"] = {
+            "tick": int(current_tick),
+            "processed_signal_ids": list(_sorted_tokens(eval_result.get("processed_signal_ids"))),
+            "deferred_signal_ids": list(_sorted_tokens(eval_result.get("deferred_signal_ids"))),
+            "budget_outcome": str(eval_result.get("budget_outcome", "complete")).strip() or "complete",
+            "cost_units": int(max(0, _as_int(eval_result.get("cost_units", 0), 0))),
+            "max_signal_updates_per_tick": int(max_signal_updates),
+        }
+        if str(eval_result.get("budget_outcome", "complete")).strip() == "degraded":
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id="signal.{}".format(signal_id),
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="degrade.mob.signal_budget",
+                        resolved_level="meso",
+                        cost_allocated=0,
+                        extensions={"max_signal_updates_per_tick": int(max_signal_updates)},
+                    )
+                    for signal_id in list(_sorted_tokens(eval_result.get("deferred_signal_ids")))[:128]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
+        result_metadata = {
+            "processed_signal_ids": list(_sorted_tokens(eval_result.get("processed_signal_ids"))),
+            "deferred_signal_ids": list(_sorted_tokens(eval_result.get("deferred_signal_ids"))),
+            "budget_outcome": str(eval_result.get("budget_outcome", "complete")).strip() or "complete",
+            "cost_units": int(max(0, _as_int(eval_result.get("cost_units", 0), 0))),
+            "signal_event_count": int(len(state.get("mobility_signal_events") or [])),
+            "switch_lock_count": int(len(mobility_switch_locks)),
+            "max_signal_updates_per_tick": int(max_signal_updates),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.switch_set_state":
         target_edge_id = str(inputs.get("target_edge_id", "")).strip()
         if not target_edge_id:
@@ -20714,6 +21441,57 @@ def execute_intent(
                 "switch state machine '{}' is not present".format(machine_id),
                 "Create mobility network from formalization first.",
                 {"machine_id": machine_id},
+                "$.intent.inputs.machine_id",
+            )
+        lock_rows_by_machine = switch_lock_rows_by_machine_id(mobility_switch_locks)
+        lock_row = dict(lock_rows_by_machine.get(machine_id) or {})
+        if str(lock_row.get("status", "")).strip().lower() == "locked":
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_VIOLATION,
+                "switch '{}' is locked".format(machine_id),
+                "Unlock switch via process.switch_unlock or wait for interlocking clear.",
+                {
+                    "machine_id": machine_id,
+                    "switch_lock_id": str(lock_row.get("switch_lock_id", "")).strip(),
+                    "reason_code": str(lock_row.get("reason_code", "")).strip() or None,
+                },
+                "$.intent.inputs.machine_id",
+            )
+        connected_edge_ids = _switch_connected_edge_ids(state=state, machine_id=machine_id)
+        occupancy_by_edge = dict(
+            (
+                str(row.get("edge_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(edge_occupancies or [])
+            if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+        )
+        occupied_edge_ids = sorted(
+            edge_id
+            for edge_id in list(connected_edge_ids or [])
+            if int(max(0, _as_int((dict(occupancy_by_edge.get(edge_id) or {})).get("current_occupancy", 0), 0))) > 0
+        )
+        active_block_rows = active_block_reservation_rows(
+            mobility_block_reservations,
+            current_tick=int(current_tick),
+        )
+        reserved_edge_ids = sorted(
+            set(
+                str(row.get("edge_id", "")).strip()
+                for row in list(active_block_rows or [])
+                if str(row.get("edge_id", "")).strip() in set(connected_edge_ids)
+            )
+        )
+        if occupied_edge_ids or reserved_edge_ids:
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_VIOLATION,
+                "switch '{}' cannot transition while occupied or reserved".format(machine_id),
+                "Wait for occupancy/reservations to clear before changing switch state.",
+                {
+                    "machine_id": machine_id,
+                    "occupied_edge_ids": list(occupied_edge_ids),
+                    "reserved_edge_ids": list(reserved_edge_ids),
+                },
                 "$.intent.inputs.machine_id",
             )
         try:
@@ -20785,6 +21563,347 @@ def execute_intent(
             "from_state_id": str(applied_transition.get("from_state_id", "")).strip(),
             "to_state_id": str(applied_transition.get("to_state_id", "")).strip(),
             "switch_event_id": str(switch_event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.switch_lock":
+        machine_id = str(inputs.get("machine_id", "")).strip()
+        if not machine_id:
+            switch_node_id = str(inputs.get("switch_node_id", "")).strip()
+            if switch_node_id:
+                for graph_row in list(state.get("network_graphs") or []):
+                    if not isinstance(graph_row, Mapping):
+                        continue
+                    for node in list(dict(graph_row).get("nodes") or []):
+                        if not isinstance(node, Mapping):
+                            continue
+                        if str(node.get("node_id", "")).strip() != switch_node_id:
+                            continue
+                        machine_id = str((dict(node.get("payload") or {})).get("state_machine_id", "")).strip()
+                        if machine_id:
+                            break
+                    if machine_id:
+                        break
+        if not machine_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.switch_lock requires machine_id or switch_node_id",
+                "Provide deterministic switch machine identifier.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        switch_node_id = _switch_node_id_for_machine(state=state, machine_id=machine_id)
+        lock_rows_by_machine = switch_lock_rows_by_machine_id(mobility_switch_locks)
+        existing_row = dict(lock_rows_by_machine.get(machine_id) or {})
+        switch_lock_id = str(existing_row.get("switch_lock_id", "")).strip() or deterministic_switch_lock_id(
+            machine_id=machine_id,
+            switch_node_id=switch_node_id,
+        )
+        lock_rows_by_machine[machine_id] = {
+            "schema_version": "1.0.0",
+            "switch_lock_id": switch_lock_id,
+            "machine_id": machine_id,
+            "switch_node_id": switch_node_id,
+            "status": "locked",
+            "locked_tick": int(current_tick),
+            "reason_code": str(inputs.get("reason_code", "manual_lock")).strip() or "manual_lock",
+            "deterministic_fingerprint": "",
+            "extensions": dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {},
+        }
+        mobility_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        result_metadata = {
+            "machine_id": machine_id,
+            "switch_lock_id": switch_lock_id,
+            "status": "locked",
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.switch_unlock":
+        machine_id = str(inputs.get("machine_id", "")).strip()
+        if not machine_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.switch_unlock requires machine_id",
+                "Provide deterministic switch machine identifier.",
+                {"process_id": process_id},
+                "$.intent.inputs.machine_id",
+            )
+        lock_rows_by_machine = switch_lock_rows_by_machine_id(mobility_switch_locks)
+        existing_row = dict(lock_rows_by_machine.get(machine_id) or {})
+        if not existing_row:
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_INVALID,
+                "switch lock not found for machine_id '{}'".format(machine_id),
+                "Lock the switch first or provide a valid machine_id.",
+                {"machine_id": machine_id},
+                "$.intent.inputs.machine_id",
+            )
+        switch_node_id = str(existing_row.get("switch_node_id", "")).strip() or _switch_node_id_for_machine(
+            state=state,
+            machine_id=machine_id,
+        )
+        switch_lock_id = str(existing_row.get("switch_lock_id", "")).strip() or deterministic_switch_lock_id(
+            machine_id=machine_id,
+            switch_node_id=switch_node_id,
+        )
+        lock_rows_by_machine[machine_id] = {
+            "schema_version": "1.0.0",
+            "switch_lock_id": switch_lock_id,
+            "machine_id": machine_id,
+            "switch_node_id": switch_node_id,
+            "status": "unlocked",
+            "locked_tick": int(current_tick),
+            "reason_code": str(inputs.get("reason_code", "manual_unlock")).strip() or "manual_unlock",
+            "deterministic_fingerprint": "",
+            "extensions": dict(existing_row.get("extensions") or {}),
+        }
+        mobility_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        result_metadata = {
+            "machine_id": machine_id,
+            "switch_lock_id": switch_lock_id,
+            "status": "unlocked",
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_hazard_set":
+        signal_id = str(inputs.get("signal_id", "")).strip()
+        if not signal_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.signal_hazard_set requires signal_id",
+                "Provide deterministic signal_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.signal_id",
+            )
+        active = bool(inputs.get("active", True))
+        hazard_rows_by_signal = dict(
+            (
+                str(row.get("signal_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(mobility_signal_hazards or [])
+            if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+        )
+        hazard_rows_by_signal[signal_id] = {
+            "schema_version": "1.0.0",
+            "signal_id": signal_id,
+            "hazard_type_id": str(inputs.get("hazard_type_id", "hazard.mob.signal_failure")).strip()
+            or "hazard.mob.signal_failure",
+            "active": bool(active),
+            "severity": str(inputs.get("severity", "warning")).strip() or "warning",
+            "updated_tick": int(current_tick),
+            "deterministic_fingerprint": "",
+            "extensions": dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {},
+        }
+        mobility_signal_hazards = _ensure_mobility_signal_hazard_rows(
+            {"mobility_signal_hazards": [dict(hazard_rows_by_signal[key]) for key in sorted(hazard_rows_by_signal.keys())]}
+        )
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        result_metadata = {
+            "signal_id": signal_id,
+            "active": bool(active),
+            "hazard_type_id": str(inputs.get("hazard_type_id", "hazard.mob.signal_failure")).strip()
+            or "hazard.mob.signal_failure",
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_maintenance_tick":
+        schedule_rows = _ensure_mobility_signal_maintenance_schedule_rows(state)
+        ticked = tick_schedules(
+            schedule_rows=schedule_rows,
+            current_tick=int(current_tick),
+        )
+        schedule_rows = [dict(row) for row in list(ticked.get("schedules") or []) if isinstance(row, Mapping)]
+        due_rows = [
+            dict(row)
+            for row in list(ticked.get("due_schedules") or [])
+            if isinstance(row, Mapping)
+        ]
+        maintenance_events = [dict(row) for row in list(mobility_signal_maintenance_events or []) if isinstance(row, Mapping)]
+        for idx, row in enumerate(sorted(due_rows, key=lambda item: str(item.get("schedule_id", "")))):
+            schedule_id = str(row.get("schedule_id", "")).strip()
+            if not schedule_id:
+                continue
+            event_id = "event.mob.signal.maint.{}".format(
+                canonical_sha256(
+                    {
+                        "schedule_id": schedule_id,
+                        "tick": int(current_tick),
+                        "sequence": int(idx),
+                    }
+                )[:16]
+            )
+            maintenance_events.append(
+                {
+                    "schema_version": "1.0.0",
+                    "event_id": event_id,
+                    "schedule_id": schedule_id,
+                    "tick": int(current_tick),
+                    "status": "due",
+                    "details": {"schedule_kind": str(row.get("schedule_kind", "")).strip() or "interval"},
+                    "deterministic_fingerprint": "",
+                    "extensions": {},
+                }
+            )
+        mobility_signal_maintenance_schedules = schedule_rows
+        mobility_signal_maintenance_events = _ensure_mobility_signal_maintenance_event_rows(
+            {"mobility_signal_maintenance_events": maintenance_events}
+        )
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        result_metadata = {
+            "due_schedule_count": int(len(due_rows)),
+            "maintenance_event_count": int(len(mobility_signal_maintenance_events)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.route_reserve_blocks":
+        vehicle_id = str(inputs.get("vehicle_id", "")).strip()
+        itinerary_id = str(inputs.get("itinerary_id", "")).strip()
+        if (not vehicle_id) or (not itinerary_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.route_reserve_blocks requires vehicle_id and itinerary_id",
+                "Provide deterministic vehicle_id and itinerary_id inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        itinerary_row = next(
+            (
+                dict(row)
+                for row in list(itineraries or [])
+                if isinstance(row, Mapping)
+                and str(row.get("itinerary_id", "")).strip() == itinerary_id
+                and str(row.get("vehicle_id", "")).strip() == vehicle_id
+            ),
+            {},
+        )
+        if not itinerary_row:
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_INVALID,
+                "itinerary '{}' for vehicle '{}' was not found".format(itinerary_id, vehicle_id),
+                "Create itinerary first before reserving route blocks.",
+                {"vehicle_id": vehicle_id, "itinerary_id": itinerary_id},
+                "$.intent.inputs.itinerary_id",
+            )
+        reservation_windows = route_reservation_windows(
+            route_edge_ids=list(itinerary_row.get("route_edge_ids") or []),
+            departure_tick=int(max(0, _as_int(itinerary_row.get("departure_tick", current_tick), current_tick))),
+            estimated_arrival_tick=int(max(0, _as_int(itinerary_row.get("estimated_arrival_tick", current_tick), current_tick))),
+        )
+        if not reservation_windows:
+            return refusal(
+                REFUSAL_MOBILITY_SIGNAL_INVALID,
+                "itinerary '{}' has no route edges to reserve".format(itinerary_id),
+                "Ensure itinerary route_edge_ids is populated.",
+                {"itinerary_id": itinerary_id},
+                "$.state.itineraries",
+            )
+        occupancy_by_edge = dict(
+            (
+                str(row.get("edge_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(edge_occupancies or [])
+            if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+        )
+        existing_rows = normalize_block_reservation_rows(mobility_block_reservations)
+        planned_rows: List[dict] = []
+        for window in sorted(reservation_windows, key=lambda row: (str(row.get("edge_id", "")), _as_int(row.get("start_tick", 0), 0))):
+            edge_id = str(window.get("edge_id", "")).strip()
+            start_tick = int(max(0, _as_int(window.get("start_tick", current_tick), current_tick)))
+            end_tick = int(max(start_tick, _as_int(window.get("end_tick", start_tick), start_tick)))
+            capacity_units = int(max(1, _as_int((dict(occupancy_by_edge.get(edge_id) or {})).get("capacity_units", 1), 1)))
+            overlap_count = 0
+            for existing in list(existing_rows + planned_rows):
+                if str(existing.get("edge_id", "")).strip() != edge_id:
+                    continue
+                status = str(existing.get("status", "")).strip().lower()
+                if status not in {"pending", "active"}:
+                    continue
+                existing_start = int(max(0, _as_int(existing.get("start_tick", 0), 0)))
+                existing_end = int(max(existing_start, _as_int(existing.get("end_tick", existing_start), existing_start)))
+                if (end_tick < existing_start) or (start_tick > existing_end):
+                    continue
+                overlap_count += 1
+            if overlap_count >= capacity_units:
+                return refusal(
+                    REFUSAL_MOBILITY_SIGNAL_VIOLATION,
+                    "block reservation conflict for edge '{}'".format(edge_id),
+                    "Choose a non-conflicting departure window or clear conflicting reservations.",
+                    {
+                        "vehicle_id": vehicle_id,
+                        "itinerary_id": itinerary_id,
+                        "edge_id": edge_id,
+                        "capacity_units": capacity_units,
+                        "overlap_count": overlap_count,
+                    },
+                    "$.intent.inputs.itinerary_id",
+                )
+            reservation_id = deterministic_block_reservation_id(
+                vehicle_id=vehicle_id,
+                edge_id=edge_id,
+                start_tick=int(start_tick),
+                end_tick=int(end_tick),
+            )
+            reservation_row = build_block_reservation(
+                reservation_id=reservation_id,
+                vehicle_id=vehicle_id,
+                edge_id=edge_id,
+                start_tick=int(start_tick),
+                end_tick=int(end_tick),
+                status="pending",
+                extensions={"itinerary_id": itinerary_id, "created_by_process": process_id},
+            )
+            planned_rows.append(reservation_row)
+        mobility_block_reservations = normalize_block_reservation_rows(list(existing_rows) + list(planned_rows))
+        _persist_mobility_signal_state(
+            state,
+            mobility_signals=mobility_signals,
+            mobility_signal_state_machines=mobility_signal_state_machines,
+            mobility_block_reservations=mobility_block_reservations,
+            mobility_switch_locks=mobility_switch_locks,
+            mobility_signal_hazards=mobility_signal_hazards,
+            mobility_signal_maintenance_schedules=mobility_signal_maintenance_schedules,
+            mobility_signal_maintenance_events=mobility_signal_maintenance_events,
+        )
+        result_metadata = {
+            "vehicle_id": vehicle_id,
+            "itinerary_id": itinerary_id,
+            "reservation_count": int(len(planned_rows)),
+            "reservation_ids": [str(row.get("reservation_id", "")).strip() for row in list(planned_rows or [])],
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_route_query":
@@ -22928,6 +24047,11 @@ def execute_intent(
             for row in list(vehicles or [])
             if isinstance(row, Mapping) and str(row.get("vehicle_id", "")).strip()
         )
+        edge_id_by_geometry = _edge_id_by_geometry_id(state)
+        signal_caution_speed_cap_mm_per_tick = int(
+            max(1, _as_int(inputs.get("signal_caution_speed_cap_mm_per_tick", max(1, default_speed_cap_mm_per_tick // 2)), max(1, default_speed_cap_mm_per_tick // 2)))
+        )
+        signal_decision_rows: List[dict] = []
 
         processed_vehicle_ids: List[str] = []
         deferred_vehicle_ids: List[str] = []
@@ -22964,6 +24088,30 @@ def execute_intent(
                 "traction_permille": int(_as_int(traction_row.get("value", 1000), 1000)),
                 "speed_cap_mm_per_tick": int(default_speed_cap_mm_per_tick),
             }
+            signal_edge_id = str(edge_id_by_geometry.get(geometry_id, "")).strip()
+            signal_aspect = _signal_aspect_for_edge(
+                edge_id=signal_edge_id,
+                signal_rows=mobility_signals,
+                signal_state_machine_rows=mobility_signal_state_machines,
+            )
+            if signal_aspect == "stop":
+                effect_modifiers["speed_cap_mm_per_tick"] = 0
+                control_input = dict(control_input or {})
+                control_input["throttle_permille"] = 0
+                control_input["brake_permille"] = 1000
+            elif signal_aspect == "caution":
+                effect_modifiers["speed_cap_mm_per_tick"] = int(
+                    min(int(effect_modifiers.get("speed_cap_mm_per_tick", default_speed_cap_mm_per_tick)), int(signal_caution_speed_cap_mm_per_tick))
+                )
+            if signal_aspect in {"stop", "caution"}:
+                signal_decision_rows.append(
+                    {
+                        "vehicle_id": vehicle_id,
+                        "geometry_id": geometry_id,
+                        "edge_id": signal_edge_id or None,
+                        "signal_aspect": signal_aspect,
+                    }
+                )
             field_row = dict(modifier_rows_by_vehicle.get(vehicle_id) or {})
             field_values = {"friction_permille": int(max(100, _as_int(field_row.get("traction_permille", 1000), 1000)))}
             step_result = step_micro_motion(
@@ -22978,6 +24126,10 @@ def execute_intent(
             )
             next_micro_row = dict(step_result.get("motion_state") or {})
             telemetry = dict(step_result.get("telemetry") or {})
+            if signal_aspect == "stop":
+                next_micro_row["s_param"] = int(max(0, _as_int(micro_row.get("s_param", 0), 0)))
+                next_micro_row["velocity"] = 0
+                next_micro_row["acceleration"] = 0
             if bool(telemetry.get("blocked", False)):
                 next_geometry_id = _next_geometry_candidate(
                     state=state,
@@ -23265,6 +24417,35 @@ def execute_intent(
             dict(instrument_rows_by_vehicle[key])
             for key in sorted(instrument_rows_by_vehicle.keys())
         ]
+        state["mobility_signal_control_decisions"] = [
+            dict(row)
+            for row in sorted(
+                signal_decision_rows,
+                key=lambda row: (str(row.get("vehicle_id", "")), str(row.get("geometry_id", "")), str(row.get("signal_aspect", ""))),
+            )
+        ]
+        if signal_decision_rows:
+            _append_fidelity_decision_entries(
+                state,
+                entries=[
+                    _geometry_decision_entry(
+                        geometry_id=str(row.get("geometry_id", "")).strip() or str(row.get("edge_id", "")).strip() or "signal.unknown",
+                        intent_id=str(intent_id),
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        reason="signal.{}".format(str(row.get("signal_aspect", "")).strip() or "unknown"),
+                        resolved_level="micro",
+                        cost_allocated=0,
+                        extensions={
+                            "vehicle_id": str(row.get("vehicle_id", "")).strip() or None,
+                            "edge_id": str(row.get("edge_id", "")).strip() or None,
+                        },
+                    )
+                    for row in list(signal_decision_rows)[:128]
+                ],
+                process_id=process_id,
+                tick=int(current_tick),
+            )
         state["mobility_micro_runtime_state"] = {
             "tick": int(current_tick),
             "dt_ticks": int(dt_ticks),
@@ -23278,6 +24459,7 @@ def execute_intent(
             "derail_policy_id": str(derail_policy.get("derail_policy_id", "derail.strict_threshold")).strip()
             or "derail.strict_threshold",
             "active_consist_vehicle_count": int(len(coupling_rows_by_vehicle)),
+            "signal_override_count": int(len(signal_decision_rows)),
         }
         result_metadata = {
             "processed_vehicle_ids": list(_sorted_tokens(processed_vehicle_ids)),
@@ -23294,6 +24476,7 @@ def execute_intent(
             "instrument_row_count": int(len(instrument_rows_by_vehicle)),
             "derail_policy_id": str(derail_policy.get("derail_policy_id", "derail.strict_threshold")).strip()
             or "derail.strict_threshold",
+            "signal_override_count": int(len(signal_decision_rows)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_free_tick":
