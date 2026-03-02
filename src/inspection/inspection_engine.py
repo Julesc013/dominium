@@ -112,17 +112,22 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
     "macro": [
         "section.capabilities_summary",
         "section.networkgraph.summary",
+        "section.mob.network_summary",
     ],
     "meso": [
         "section.capabilities_summary",
         "section.networkgraph.summary",
+        "section.mob.network_summary",
         "section.networkgraph.route",
+        "section.mob.route_result",
         "section.networkgraph.capacity_utilization",
     ],
     "micro": [
         "section.capabilities_summary",
         "section.networkgraph.summary",
+        "section.mob.network_summary",
         "section.networkgraph.route",
+        "section.mob.route_result",
         "section.networkgraph.capacity_utilization",
     ],
 }
@@ -210,6 +215,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.flow_utilization": {"title": "Flow Utilization", "extensions": {"cost_units": 1}},
     "section.networkgraph.summary": {"title": "NetworkGraph Summary", "extensions": {"cost_units": 1}},
     "section.networkgraph.route": {"title": "NetworkGraph Route", "extensions": {"cost_units": 2}},
+    "section.mob.network_summary": {"title": "Mobility Network Summary", "extensions": {"cost_units": 1}},
+    "section.mob.route_result": {"title": "Mobility Route Result", "extensions": {"cost_units": 2}},
     "section.networkgraph.capacity_utilization": {
         "title": "NetworkGraph Capacity Utilization",
         "extensions": {"cost_units": 2},
@@ -1100,11 +1107,41 @@ def _build_section_data(
             "utilization_permille": int(max(0, total_util)),
             "edges": edge_rows[:256],
         }
-    if section_id == "section.networkgraph.summary":
+    if section_id in {"section.networkgraph.summary", "section.mob.network_summary"}:
         graph = _graph_row()
         node_rows = [dict(item) for item in list(graph.get("nodes") or []) if isinstance(item, dict)]
         edge_rows = [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, dict)]
         validation_mode = str(graph.get("validation_mode", "")).strip() or "strict"
+        switch_rows = []
+        switch_count = 0
+        switch_machine_rows = {
+            str(item.get("machine_id", "")).strip(): dict(item)
+            for item in list((dict(state or {})).get("mobility_switch_state_machines") or [])
+            if isinstance(item, dict) and str(item.get("machine_id", "")).strip()
+        }
+        spec_missing_edge_count = 0
+        edge_kind_counts: Dict[str, int] = {}
+        for edge in edge_rows:
+            payload = dict(edge.get("payload") or {})
+            edge_kind = str(payload.get("edge_kind", "")).strip() or "unknown"
+            edge_kind_counts[edge_kind] = _as_int(edge_kind_counts.get(edge_kind, 0), 0) + 1
+            if not str(payload.get("spec_id", "")).strip():
+                spec_missing_edge_count += 1
+        for node in node_rows:
+            payload = dict(node.get("payload") or {})
+            if str(payload.get("node_kind", "")).strip() != "switch":
+                continue
+            switch_count += 1
+            machine_id = str(payload.get("state_machine_id", "")).strip()
+            machine = dict(switch_machine_rows.get(machine_id) or {})
+            switch_rows.append(
+                {
+                    "node_id": str(node.get("node_id", "")).strip(),
+                    "machine_id": machine_id or None,
+                    "active_edge_id": str(machine.get("state_id", "")).strip() or None,
+                    "outgoing_edge_ids": _sorted_unique_strings((dict(machine.get("extensions") or {})).get("outgoing_edge_ids")),
+                }
+            )
         return {
             "graph_id": str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip(),
             "node_count": len(node_rows),
@@ -1112,8 +1149,12 @@ def _build_section_data(
             "validation_mode": validation_mode,
             "routing_policy_id": str(graph.get("deterministic_routing_policy_id", "")).strip(),
             "graph_partition_id": str(graph.get("graph_partition_id", "")).strip() or None,
+            "switch_count": int(switch_count),
+            "switch_states": sorted(switch_rows, key=lambda item: str(item.get("node_id", ""))),
+            "spec_missing_edge_count": int(spec_missing_edge_count),
+            "edge_kind_counts": dict((k, edge_kind_counts[k]) for k in sorted(edge_kind_counts.keys())),
         }
-    if section_id == "section.networkgraph.route":
+    if section_id in {"section.networkgraph.route", "section.mob.route_result"}:
         route_payload = {}
         for candidate in (
             dict(payload_extensions.get("route_result") or {}),
