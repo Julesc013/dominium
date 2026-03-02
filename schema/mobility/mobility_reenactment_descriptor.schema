@@ -1,0 +1,36 @@
+SCHEMA: mobility/mobility_reenactment_descriptor.schema
+schema_id: dominium.schema.mobility.mobility_reenactment_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic MOB-11 mobility reenactment descriptor that binds travel/congestion/signal/incident proof surfaces.
+
+REQUIRED SHAPE:
+record mobility_reenactment_descriptor
+  required:
+    - schema_version: semver
+    - descriptor_id: id
+    - target_id: id
+    - tick_range: map
+      required:
+        - start_tick: int
+        - end_tick: int
+    - event_ids: list[id]
+    - event_kind_counts: map
+    - available_fidelity_levels: list[enum(macro|meso|micro)]
+    - default_fidelity_level: enum(macro|meso|micro)
+    - requested_fidelity_level: enum(macro|meso|micro)
+    - resolved_fidelity_level: enum(macro|meso|micro)
+    - event_stream_hash: sha256
+    - mobility_event_hash: sha256
+    - congestion_hash: sha256
+    - signal_state_hash: sha256
+    - derailment_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Descriptor payload is derived-only from deterministic mobility event/state surfaces.
+- Fidelity levels are bounded by policy/law; requested level may be downgraded deterministically.
+- Descriptor is wall-clock independent and replay-hash stable for identical inputs.
