@@ -1,0 +1,26 @@
+SCHEMA: signals/signal_channel.schema
+schema_id: dominium.schema.signals.signal_channel
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic signal transport channel definition.
+
+REQUIRED SHAPE:
+record signal_channel
+  required:
+    - schema_version: semver
+    - channel_id: id
+    - channel_type_id: id
+    - network_graph_id: id
+    - capacity_per_tick: int
+    - base_delay_ticks: int
+    - loss_policy_id: id
+    - encryption_policy_id: id|null
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Channel scheduling uses simulation ticks only.
+- Capacity and delay are deterministic for identical inputs.
+- Loss behavior is delegated to declared loss policy.

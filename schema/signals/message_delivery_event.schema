@@ -1,0 +1,25 @@
+SCHEMA: signals/message_delivery_event.schema
+schema_id: dominium.schema.signals.message_delivery_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic transport event emitted per envelope delivery attempt.
+
+REQUIRED SHAPE:
+record message_delivery_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - envelope_id: id
+    - from_node_id: id
+    - to_node_id: id
+    - delivered_tick: int
+    - delivery_state: enum(delivered|lost|corrupted)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Delivery events are append-only and replayable.
+- Delivery state transitions are deterministic under declared channel/loss policy.
+- Receipt creation must depend on delivered events only.
