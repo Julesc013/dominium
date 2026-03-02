@@ -252,6 +252,7 @@ def compile_control_ir(
     control_policy: Mapping[str, object],
     control_action_registry: Mapping[str, object],
     control_policy_registry: Mapping[str, object],
+    action_template_registry: Mapping[str, object] | None = None,
     policy_context: Mapping[str, object] | None = None,
     repo_root: str = "",
     rs5_budget_units: int = 0,
@@ -408,6 +409,7 @@ def compile_control_ir(
             policy_context=control_policy_context,
             control_action_registry=dict(control_action_registry or {}),
             control_policy_registry=dict(control_policy_registry or {}),
+            action_template_registry=dict(action_template_registry or {}),
             repo_root=str(repo_root or ""),
         )
         if str(resolved.get("result", "")) != "complete":
@@ -627,6 +629,7 @@ def verify_and_compile_control_ir(
     law_profile: Mapping[str, object],
     control_action_registry: Mapping[str, object],
     control_policy_registry: Mapping[str, object],
+    action_template_registry: Mapping[str, object] | None = None,
     policy_context: Mapping[str, object] | None = None,
     repo_root: str = "",
     rs5_budget_units: int = 0,
@@ -647,6 +650,7 @@ def verify_and_compile_control_ir(
         control_policy=control_policy,
         control_action_registry=control_action_registry,
         control_policy_registry=control_policy_registry,
+        action_template_registry=action_template_registry,
         policy_context=policy_context,
         repo_root=repo_root,
         rs5_budget_units=rs5_budget_units,

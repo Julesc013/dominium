@@ -10123,6 +10123,12 @@ def _compile_control_ir_stub_program(
         registry_rel_path="data/registries/control_policy_registry.json",
         default_payload={"policies": []},
     )
+    action_template_registry = _control_ir_registry_payload(
+        policy_context=policy_context,
+        key="action_template_registry",
+        registry_rel_path="data/registries/action_template_registry.json",
+        default_payload={"templates": []},
+    )
     capability_registry = _control_ir_registry_payload(
         policy_context=policy_context,
         key="capability_registry",
@@ -10179,6 +10185,7 @@ def _compile_control_ir_stub_program(
         law_profile=dict(law_profile or {}),
         control_action_registry=dict(control_action_registry or {}),
         control_policy_registry=dict(control_policy_registry or {}),
+        action_template_registry=dict(action_template_registry or {}),
         policy_context=compile_policy_context,
         repo_root=REPO_ROOT_HINT,
         rs5_budget_units=int(max(0, _as_int(rs5_budget_units, 0))),
@@ -20272,6 +20279,12 @@ def execute_intent(
             registry_rel_path="data/registries/control_policy_registry.json",
             default_payload={"policies": []},
         )
+        action_template_registry = _control_ir_registry_payload(
+            policy_context=policy_context,
+            key="action_template_registry",
+            registry_rel_path="data/registries/action_template_registry.json",
+            default_payload={"templates": []},
+        )
         effect_type_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="effect_type_registry",
@@ -20427,6 +20440,7 @@ def execute_intent(
             policy_context=execution_policy_context,
             control_action_registry=control_action_registry,
             control_policy_registry=control_policy_registry,
+            action_template_registry=action_template_registry,
             repo_root=REPO_ROOT_HINT,
         )
         if str(execution_resolution_result.get("result", "")) != "complete":
