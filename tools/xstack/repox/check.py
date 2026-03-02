@@ -10436,6 +10436,207 @@ def _append_action_grammar_invariant_findings(
             )
 
 
+def _append_affordance_matrix_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    matrix_rel = "data/meta/real_world_affordance_matrix.json"
+    matrix_payload, matrix_err = _load_json_object(repo_root, matrix_rel)
+
+    if matrix_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=matrix_rel,
+                line_number=1,
+                snippet="",
+                message="RWAM metadata is missing or invalid; new series/substrates cannot declare affordance coverage",
+                rule_id="INV-AFFORDANCE-DECLARED",
+            )
+        )
+        return
+
+    affordance_rows = list(matrix_payload.get("affordances") or [])
+    if not affordance_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=matrix_rel,
+                line_number=1,
+                snippet="affordances",
+                message="RWAM must declare canonical affordance rows",
+                rule_id="INV-AFFORDANCE-DECLARED",
+            )
+        )
+        return
+
+    required_affordance_ids = {
+        "matter_transformation",
+        "motion_force_transmission",
+        "containment_interfaces",
+        "measurement_verification",
+        "communication_coordination",
+        "institutions_contracts",
+        "environment_living_systems",
+        "time_synchronization",
+        "safety_protection",
+    }
+    affordance_ids: Set[str] = set()
+    allowed_tiers = {"macro", "meso", "micro"}
+    for row in affordance_rows:
+        if not isinstance(row, dict):
+            continue
+        affordance_id = str(row.get("id", "")).strip()
+        if not affordance_id:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=matrix_rel,
+                    line_number=1,
+                    snippet="id",
+                    message="RWAM affordance rows must declare id",
+                    rule_id="INV-AFFORDANCE-DECLARED",
+                )
+            )
+            continue
+        affordance_ids.add(affordance_id)
+
+        substrates = list(row.get("substrates") or [])
+        if not substrates:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=matrix_rel,
+                    line_number=1,
+                    snippet=affordance_id,
+                    message="RWAM affordance '{}' must declare substrates".format(affordance_id),
+                    rule_id="INV-AFFORDANCE-DECLARED",
+                )
+            )
+        tiers = [str(item).strip() for item in (row.get("tiers") or []) if str(item).strip()]
+        if not tiers:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=matrix_rel,
+                    line_number=1,
+                    snippet=affordance_id,
+                    message="RWAM affordance '{}' must declare tiers".format(affordance_id),
+                    rule_id="INV-AFFORDANCE-DECLARED",
+                )
+            )
+        elif any(token not in allowed_tiers for token in tiers):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=matrix_rel,
+                    line_number=1,
+                    snippet=affordance_id,
+                    message="RWAM affordance '{}' uses unknown tier labels".format(affordance_id),
+                    rule_id="INV-AFFORDANCE-DECLARED",
+                )
+            )
+        implemented = [str(item).strip() for item in (row.get("series_implemented") or []) if str(item).strip()]
+        planned = [str(item).strip() for item in (row.get("series_planned") or []) if str(item).strip()]
+        if (not implemented) and (not planned):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=matrix_rel,
+                    line_number=1,
+                    snippet=affordance_id,
+                    message="RWAM affordance '{}' must declare implemented or planned series coverage".format(affordance_id),
+                    rule_id="INV-AFFORDANCE-DECLARED",
+                )
+            )
+
+    missing_affordances = sorted(required_affordance_ids - affordance_ids)
+    for affordance_id in missing_affordances:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=matrix_rel,
+                line_number=1,
+                snippet=affordance_id,
+                message="canonical affordance '{}' is missing from RWAM".format(affordance_id),
+                rule_id="INV-AFFORDANCE-DECLARED",
+            )
+        )
+
+    covered_series: Set[str] = set()
+    for row in affordance_rows:
+        if not isinstance(row, dict):
+            continue
+        for token in list(row.get("series_implemented") or []):
+            series_id = str(token).strip()
+            if series_id:
+                covered_series.add(series_id)
+        for token in list(row.get("series_planned") or []):
+            series_id = str(token).strip()
+            if series_id:
+                covered_series.add(series_id)
+
+    series_rows = list(matrix_payload.get("series_affordance_coverage") or [])
+    for row in series_rows:
+        if not isinstance(row, dict):
+            continue
+        series_id = str(row.get("series_id", "")).strip()
+        if series_id:
+            covered_series.add(series_id)
+        row_affordances = [str(item).strip() for item in (row.get("affordance_ids") or []) if str(item).strip()]
+        if not row_affordances:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=matrix_rel,
+                    line_number=1,
+                    snippet=series_id or "series_affordance_coverage",
+                    message="RWAM series_affordance_coverage rows must declare affordance_ids",
+                    rule_id="INV-AFFORDANCE-DECLARED",
+                )
+            )
+            continue
+        for affordance_id in row_affordances:
+            if affordance_id in required_affordance_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=matrix_rel,
+                    line_number=1,
+                    snippet=affordance_id,
+                    message="RWAM series mapping references unknown affordance id",
+                    rule_id="INV-AFFORDANCE-DECLARED",
+                )
+            )
+
+    retro_audit_dir = os.path.join(repo_root, "docs", "audit")
+    discovered_series: Set[str] = set()
+    if os.path.isdir(retro_audit_dir):
+        retro_re = re.compile(r"^([A-Z]+)\d+_RETRO_AUDIT\.md$")
+        for name in os.listdir(retro_audit_dir):
+            token = str(name).strip()
+            match = retro_re.fullmatch(token)
+            if match:
+                discovered_series.add(str(match.group(1)).strip())
+
+    for series_id in sorted(discovered_series):
+        if series_id in covered_series:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=matrix_rel,
+                line_number=1,
+                snippet=series_id,
+                message="series '{}' appears in retro audits but is not declared in RWAM".format(series_id),
+                rule_id="INV-AFFORDANCE-DECLARED",
+            )
+        )
+
+
 def _append_platform_renderer_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -13279,6 +13480,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_action_grammar_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_affordance_matrix_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

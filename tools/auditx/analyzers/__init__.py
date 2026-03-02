@@ -201,6 +201,7 @@ from analyzers import e172_truth_based_trust_smell
 from analyzers import e173_unlogged_trust_change_smell
 from analyzers import e174_direct_schedule_mutation_smell
 from analyzers import e175_institutional_bypass_smell
+from analyzers import e176_affordance_gap_smell
 
 
 ANALYZERS = (
@@ -405,6 +406,7 @@ ANALYZERS = (
     e173_unlogged_trust_change_smell,
     e174_direct_schedule_mutation_smell,
     e175_institutional_bypass_smell,
+    e176_affordance_gap_smell,
 )
 
 
