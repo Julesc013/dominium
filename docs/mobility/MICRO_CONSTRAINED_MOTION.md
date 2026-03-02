@@ -118,6 +118,7 @@ After derailment/off-guide:
 - vehicle transitions to free micro body participation for collision
 - collision handling uses existing EB collision substrate
 - constrained solver no longer applies follow-spline updates to that vehicle until reattached
+- body ownership and velocity snapshot are captured during derail transition for replay stability
 
 ## Fidelity and Budget
 
