@@ -8,6 +8,11 @@ from .addressing import (
     normalize_address_rows,
     resolve_address_recipients,
 )
+from .aggregation import (
+    aggregation_policy_rows_by_id,
+    normalize_schedule_rows,
+    process_signal_aggregation_tick,
+)
 from .transport import (
     execute_channel_transport_tick,
     REFUSAL_SIGNAL_ARTIFACT_INVALID,
@@ -46,6 +51,7 @@ from .transport import (
 __all__ = [
     "address_from_recipient_address",
     "addressing_policy_rows_by_id",
+    "aggregation_policy_rows_by_id",
     "build_address",
     "build_message_queue_entry",
     "deterministic_address_id",
@@ -53,11 +59,13 @@ __all__ = [
     "execute_channel_transport_tick",
     "REFUSAL_SIGNAL_ARTIFACT_INVALID",
     "normalize_address_rows",
+    "normalize_schedule_rows",
     "normalize_info_artifact_rows",
     "normalize_message_queue_entry_rows",
     "REFUSAL_SIGNAL_INVALID",
     "REFUSAL_SIGNAL_ROUTE_UNAVAILABLE",
     "resolve_address_recipients",
+    "process_signal_aggregation_tick",
     "SignalTransportError",
     "build_knowledge_receipt",
     "build_message_delivery_event",
