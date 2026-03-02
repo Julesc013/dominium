@@ -48,6 +48,14 @@ from .vehicle import (
     vehicle_class_rows_by_id,
     vehicle_rows_by_id,
 )
+from .travel import (
+    ItineraryError,
+    build_itinerary,
+    deterministic_itinerary_id,
+    normalize_itinerary_rows,
+    plan_itinerary,
+    speed_policy_rows_by_id,
+)
 
 __all__ = [
     "build_geometry_candidate",
@@ -92,4 +100,10 @@ __all__ = [
     "normalize_vehicle_rows",
     "vehicle_class_rows_by_id",
     "vehicle_rows_by_id",
+    "ItineraryError",
+    "build_itinerary",
+    "deterministic_itinerary_id",
+    "normalize_itinerary_rows",
+    "plan_itinerary",
+    "speed_policy_rows_by_id",
 ]
