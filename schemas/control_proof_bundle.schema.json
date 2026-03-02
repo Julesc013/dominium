@@ -17,6 +17,10 @@
     "abstraction_downgrade_hash",
     "view_policy_changes_hash",
     "meta_override_hash",
+    "mobility_event_hash",
+    "congestion_hash",
+    "signal_state_hash",
+    "derailment_hash",
     "deterministic_fingerprint",
     "extensions"
   ],
@@ -71,6 +75,22 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "mobility_event_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "congestion_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "signal_state_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "derailment_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "deterministic_fingerprint": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -95,6 +115,10 @@
       "abstraction_downgrade_hash": "6151a9fd0fd6f4c2996d2e67f4b7406f34ecab95e36c8efcd3be2dce21472be6",
       "view_policy_changes_hash": "89d1162efddf60e9bb57f59cb92e0fcf737f68b956b6f2fd32f6a8a7828e3768",
       "meta_override_hash": "5caea08ec8ce7be3140fe6fd5141b52dceaa2ef96f03ec4cfda8f811fef3d649",
+      "mobility_event_hash": "9095f80f43f56f0754dbf868ff19f95e797f9f04f43e145f8ec57efd78a42f0e",
+      "congestion_hash": "4ce95da2d0a97f9fe3b6e0f8de9a01eaad0d78d34bd8a587f8ae4d58ce0b27fe",
+      "signal_state_hash": "5ae6cf497530329ef4bf0ca9cfdf52275f9c4bbaddd4f57ba0eb8432cc8d31ff",
+      "derailment_hash": "a58be3d7d2ebf18377a4d457c3417eb91fcb6536d47e85f42f111bc4a8575748",
       "deterministic_fingerprint": "f1fcbca386d927f736ebfef0643ebf821d13d8da38f8e3f1360ab2164ec22e6a",
       "extensions": {
         "network_policy_id": "policy.net.server_authoritative",

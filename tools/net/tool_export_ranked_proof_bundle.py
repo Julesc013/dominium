@@ -225,6 +225,70 @@ def _load_control_ir_verification_hashes(repo_root: str, run_meta: dict, run_met
     }, ""
 
 
+def _load_mobility_proof_hashes(repo_root: str, run_meta: dict, run_meta_abs: str) -> Tuple[dict, str]:
+    candidate_dirs: List[str] = []
+    if run_meta_abs:
+        run_meta_dir = os.path.dirname(run_meta_abs)
+        candidate_dirs.append(os.path.join(run_meta_dir, "control_proofs"))
+    last_ref = str(run_meta.get("control_proof_bundle_ref", "")).strip()
+    if last_ref:
+        ref_abs = _abs(repo_root, last_ref)
+        if ref_abs:
+            candidate_dirs.append(os.path.dirname(ref_abs))
+    candidate_dirs.append(os.path.join(repo_root, "run_meta", "control_proofs"))
+
+    unique_dirs: List[str] = []
+    for path in candidate_dirs:
+        normalized = os.path.normpath(str(path or ""))
+        if not normalized or normalized in unique_dirs:
+            continue
+        unique_dirs.append(normalized)
+
+    mobility_event_hashes = set()
+    congestion_hashes = set()
+    signal_state_hashes = set()
+    derailment_hashes = set()
+    bundle_refs = set()
+    scanned_files = 0
+    for directory in unique_dirs:
+        if not os.path.isdir(directory):
+            continue
+        for name in sorted(os.listdir(directory)):
+            if not str(name).lower().endswith(".json"):
+                continue
+            abs_path = os.path.join(directory, name)
+            payload, err = _load_json(abs_path)
+            if err:
+                return {}, "invalid control proof bundle '{}'".format(norm(os.path.relpath(abs_path, repo_root)))
+            for key, sink in (
+                ("mobility_event_hash", mobility_event_hashes),
+                ("congestion_hash", congestion_hashes),
+                ("signal_state_hash", signal_state_hashes),
+                ("derailment_hash", derailment_hashes),
+            ):
+                token = str(payload.get(key, "")).strip()
+                if token:
+                    sink.add(token)
+            bundle_ref = norm(os.path.relpath(abs_path, repo_root))
+            if bundle_ref:
+                bundle_refs.add(bundle_ref)
+            scanned_files += 1
+
+    return {
+        "mobility_event_hashes": sorted(mobility_event_hashes),
+        "congestion_hashes": sorted(congestion_hashes),
+        "signal_state_hashes": sorted(signal_state_hashes),
+        "derailment_hashes": sorted(derailment_hashes),
+        "control_proof_bundle_refs": sorted(bundle_refs),
+        "control_proof_bundle_count": int(scanned_files),
+        "control_proof_dirs": [
+            norm(os.path.relpath(path, repo_root))
+            for path in unique_dirs
+            if os.path.isdir(path)
+        ],
+    }, ""
+
+
 def _build_markdown(bundle: dict) -> str:
     pack_signatures = list(bundle.get("pack_signatures") or [])
     hash_anchors = list(bundle.get("hash_anchor_frames") or [])
@@ -232,6 +296,10 @@ def _build_markdown(bundle: dict) -> str:
     anti_cheat_actions = list(bundle.get("enforcement_actions") or [])
     ir_hashes = list(bundle.get("control_ir_verification_report_hashes") or [])
     decision_hashes = list(bundle.get("control_decision_log_hashes") or [])
+    mobility_event_hashes = list(bundle.get("mobility_event_hashes") or [])
+    congestion_hashes = list(bundle.get("congestion_hashes") or [])
+    signal_state_hashes = list(bundle.get("signal_state_hashes") or [])
+    derailment_hashes = list(bundle.get("derailment_hashes") or [])
     lines = [
         "# Ranked Proof Bundle",
         "",
@@ -248,6 +316,10 @@ def _build_markdown(bundle: dict) -> str:
         "- Enforcement Actions: `{}`".format(int(len(anti_cheat_actions))),
         "- Control IR Verification Hashes: `{}`".format(int(len(ir_hashes))),
         "- Control Decision Hashes: `{}`".format(int(len(decision_hashes))),
+        "- Mobility Event Hashes: `{}`".format(int(len(mobility_event_hashes))),
+        "- Congestion Hashes: `{}`".format(int(len(congestion_hashes))),
+        "- Signal State Hashes: `{}`".format(int(len(signal_state_hashes))),
+        "- Derailment Hashes: `{}`".format(int(len(derailment_hashes))),
         "",
         "## Registry Hashes",
     ]
@@ -263,6 +335,7 @@ def _build_markdown(bundle: dict) -> str:
         "anti_cheat_manifest_path",
         "hash_anchor_path",
         "control_ir_decision_log_dirs",
+        "control_proof_dirs",
     ):
         lines.append("- `{}`: `{}`".format(key, str(source.get(key, "")) or "<none>"))
     return "\n".join(lines) + "\n"
@@ -425,6 +498,25 @@ def main() -> int:
             )
         )
         return 2
+    mobility_hashes, mobility_hashes_err = _load_mobility_proof_hashes(
+        repo_root=repo_root,
+        run_meta=run_meta,
+        run_meta_abs=run_meta_abs,
+    )
+    if mobility_hashes_err:
+        print(
+            json.dumps(
+                _refusal(
+                    "refusal.net.envelope_invalid",
+                    mobility_hashes_err,
+                    "Repair control proof artifacts before exporting ranked proof bundle.",
+                    {"run_meta_path": norm(run_meta_abs) if run_meta_abs else ""},
+                ),
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return 2
 
     handshake_response = dict(handshake_payload.get("response") or {})
     network_handshake = dict(run_meta.get("network_handshake") or {})
@@ -439,6 +531,10 @@ def main() -> int:
     enforcement_actions = list(anti_cheat_rows.get("actions") or [])
     ir_verification_report_hashes = list(control_ir_hashes.get("verification_report_hashes") or [])
     control_decision_log_hashes = list(control_ir_hashes.get("decision_log_hashes") or [])
+    mobility_event_hashes = list(mobility_hashes.get("mobility_event_hashes") or [])
+    congestion_hashes = list(mobility_hashes.get("congestion_hashes") or [])
+    signal_state_hashes = list(mobility_hashes.get("signal_state_hashes") or [])
+    derailment_hashes = list(mobility_hashes.get("derailment_hashes") or [])
 
     deterministic_seed = {
         "pack_lock_hash": pack_lock_hash,
@@ -450,6 +546,10 @@ def main() -> int:
         "enforcement_actions_hash": canonical_sha256(enforcement_actions),
         "control_ir_verification_report_hashes_hash": canonical_sha256(ir_verification_report_hashes),
         "control_decision_log_hashes_hash": canonical_sha256(control_decision_log_hashes),
+        "mobility_event_hashes_hash": canonical_sha256(mobility_event_hashes),
+        "congestion_hashes_hash": canonical_sha256(congestion_hashes),
+        "signal_state_hashes_hash": canonical_sha256(signal_state_hashes),
+        "derailment_hashes_hash": canonical_sha256(derailment_hashes),
     }
     proof_bundle_hash = canonical_sha256(deterministic_seed)
     proof_bundle_id = "ranked.proof.{}".format(proof_bundle_hash[:16])
@@ -473,6 +573,10 @@ def main() -> int:
         "enforcement_actions": enforcement_actions,
         "control_ir_verification_report_hashes": ir_verification_report_hashes,
         "control_decision_log_hashes": control_decision_log_hashes,
+        "mobility_event_hashes": mobility_event_hashes,
+        "congestion_hashes": congestion_hashes,
+        "signal_state_hashes": signal_state_hashes,
+        "derailment_hashes": derailment_hashes,
         "source_artifacts": {
             "run_meta_path": norm(os.path.relpath(run_meta_abs, repo_root)) if run_meta_abs else "",
             "handshake_path": norm(os.path.relpath(handshake_abs, repo_root)),
@@ -480,6 +584,7 @@ def main() -> int:
             "anti_cheat_manifest_path": str(anti_cheat_rows.get("manifest_path", "")),
             "hash_anchor_path": norm(os.path.relpath(anchor_abs, repo_root)) if anchor_abs else "",
             "control_ir_decision_log_dirs": list(control_ir_hashes.get("decision_log_dirs") or []),
+            "control_proof_dirs": list(mobility_hashes.get("control_proof_dirs") or []),
         },
         "provenance": {
             "artifact_type_id": "net.ranked_proof_bundle",
@@ -495,6 +600,11 @@ def main() -> int:
         "extensions": {
             "control_ir_decision_log_count": int(control_ir_hashes.get("decision_log_count", 0) or 0),
             "control_decision_log_hash_count": int(len(control_decision_log_hashes)),
+            "control_proof_bundle_count": int(mobility_hashes.get("control_proof_bundle_count", 0) or 0),
+            "mobility_event_hash_count": int(len(mobility_event_hashes)),
+            "congestion_hash_count": int(len(congestion_hashes)),
+            "signal_state_hash_count": int(len(signal_state_hashes)),
+            "derailment_hash_count": int(len(derailment_hashes)),
         },
     }
     bundle["proof_bundle_hash"] = canonical_sha256(bundle)
@@ -522,6 +632,10 @@ def main() -> int:
             "enforcement_actions": len(enforcement_actions),
             "control_ir_verification_report_hashes": len(ir_verification_report_hashes),
             "control_decision_log_hashes": len(control_decision_log_hashes),
+            "mobility_event_hashes": len(mobility_event_hashes),
+            "congestion_hashes": len(congestion_hashes),
+            "signal_state_hashes": len(signal_state_hashes),
+            "derailment_hashes": len(derailment_hashes),
         },
     }
     print(json.dumps(response, indent=2, sort_keys=True))

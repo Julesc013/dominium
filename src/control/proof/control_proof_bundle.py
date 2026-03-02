@@ -44,6 +44,26 @@ def _marker_hash_list(decision_markers: List[dict], key: str) -> List[str]:
     return _sorted_unique_strings(out)
 
 
+def _mobility_surface_hash(
+    *,
+    key: str,
+    surface: Mapping[str, object] | None,
+    tick_start: int,
+    tick_end: int,
+    decision_log_hashes: List[str],
+) -> str:
+    payload = dict(surface or {})
+    return _hash64(
+        payload.get(str(key), ""),
+        {
+            "key": str(key),
+            "tick_start": int(max(0, _to_int(tick_start, 0))),
+            "tick_end": int(max(0, _to_int(tick_end, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+
+
 def collect_control_decision_markers(envelopes: Iterable[Mapping[str, object]]) -> List[dict]:
     """Extract deterministic control-decision proof markers from intent envelopes."""
 
@@ -169,6 +189,7 @@ def build_control_proof_bundle_from_markers(
     tick_end: int,
     decision_markers: Iterable[Mapping[str, object]],
     proof_id: str = "",
+    mobility_proof_surface: Mapping[str, object] | None = None,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     """Build deterministic control proof bundle from pre-computed decision markers."""
@@ -188,6 +209,34 @@ def build_control_proof_bundle_from_markers(
     abstraction_hashes = _marker_hash_list(markers, "control_abstraction_downgrade_hash")
     view_hashes = _marker_hash_list(markers, "control_view_policy_changes_hash")
     meta_hashes = _marker_hash_list(markers, "control_meta_override_hash")
+    mobility_event_hash = _mobility_surface_hash(
+        key="mobility_event_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    congestion_hash = _mobility_surface_hash(
+        key="congestion_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    signal_state_hash = _mobility_surface_hash(
+        key="signal_state_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    derailment_hash = _mobility_surface_hash(
+        key="derailment_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
 
     payload = {
         "schema_version": "1.0.0",
@@ -201,6 +250,10 @@ def build_control_proof_bundle_from_markers(
         "abstraction_downgrade_hash": canonical_sha256(list(abstraction_hashes)),
         "view_policy_changes_hash": canonical_sha256(list(view_hashes)),
         "meta_override_hash": canonical_sha256(list(meta_hashes)),
+        "mobility_event_hash": str(mobility_event_hash),
+        "congestion_hash": str(congestion_hash),
+        "signal_state_hash": str(signal_state_hash),
+        "derailment_hash": str(derailment_hash),
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
     }
@@ -226,6 +279,10 @@ def build_control_proof_bundle_from_markers(
                     "abstraction_downgrade_hash": str(payload.get("abstraction_downgrade_hash", "")),
                     "view_policy_changes_hash": str(payload.get("view_policy_changes_hash", "")),
                     "meta_override_hash": str(payload.get("meta_override_hash", "")),
+                    "mobility_event_hash": str(payload.get("mobility_event_hash", "")),
+                    "congestion_hash": str(payload.get("congestion_hash", "")),
+                    "signal_state_hash": str(payload.get("signal_state_hash", "")),
+                    "derailment_hash": str(payload.get("derailment_hash", "")),
                 }
             )[:16]
         )
@@ -241,6 +298,7 @@ def build_control_proof_bundle_from_decision_logs(
     tick_end: int,
     decision_log_rows: Iterable[Mapping[str, object]],
     proof_id: str = "",
+    mobility_proof_surface: Mapping[str, object] | None = None,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     """Build deterministic control proof bundle directly from decision-log rows."""
@@ -255,6 +313,7 @@ def build_control_proof_bundle_from_decision_logs(
         tick_end=int(tick_end),
         decision_markers=markers,
         proof_id=str(proof_id),
+        mobility_proof_surface=dict(mobility_proof_surface or {}),
         extensions=dict(extensions or {}),
     )
 
