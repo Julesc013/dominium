@@ -1,0 +1,57 @@
+{
+  "schema_id": "dominium.registry.signal_channel_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.signal_channel_policy_registry",
+    "registry_version": "1.0.0",
+    "channel_policies": [
+      {
+        "schema_version": "1.0.0",
+        "channel_policy_id": "sig.policy.wired_basic",
+        "routing_policy_id": "route.min_delay_ticks",
+        "capacity_policy_id": "sig.capacity.edge_and_channel",
+        "delay_policy_id": "sig.delay.channel_plus_edge",
+        "loss_policy_id": "loss.none",
+        "budget_cost_units": 1,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_policy_id": "sig.policy.radio_basic",
+        "routing_policy_id": "route.min_delay_ticks",
+        "capacity_policy_id": "sig.capacity.edge_and_channel",
+        "delay_policy_id": "sig.delay.channel_plus_edge",
+        "loss_policy_id": "loss.linear_attenuation",
+        "budget_cost_units": 1,
+        "extensions": {
+          "attenuation_mode": "field_or_tag_modifier"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_policy_id": "sig.policy.courier_basic",
+        "routing_policy_id": "route.min_delay_ticks",
+        "capacity_policy_id": "sig.capacity.channel_only",
+        "delay_policy_id": "sig.delay.mobility_arrival",
+        "loss_policy_id": "loss.none",
+        "budget_cost_units": 2,
+        "extensions": {
+          "delegated_transport": "mobility.courier"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_policy_id": "sig.policy.optical_stub",
+        "routing_policy_id": "route.min_delay_ticks",
+        "capacity_policy_id": "sig.capacity.edge_and_channel",
+        "delay_policy_id": "sig.delay.channel_plus_edge",
+        "loss_policy_id": "loss.linear_attenuation",
+        "budget_cost_units": 1,
+        "extensions": {
+          "line_of_sight_stub": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

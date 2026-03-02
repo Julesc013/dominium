@@ -1,0 +1,19 @@
+SCHEMA: signals/signal_node_payload.schema
+schema_id: dominium.schema.signals.signal_node_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for SignalNetworkGraph nodes.
+
+REQUIRED SHAPE:
+record signal_node_payload
+  required:
+    - schema_version: semver
+    - node_kind: enum(exchange|tower|router|station|antenna|relay)
+    - tags: list[id]
+    - extensions: map
+
+INVARIANTS:
+- Node kind is registry-defined and deterministic.
+- Signal node payloads are process-authored only.

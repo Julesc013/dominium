@@ -1,0 +1,24 @@
+SCHEMA: signals/channel_policy.schema
+schema_id: dominium.schema.signals.channel_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic channel execution policy for signal transport.
+
+REQUIRED SHAPE:
+record channel_policy
+  required:
+    - schema_version: semver
+    - channel_policy_id: id
+    - routing_policy_id: id
+    - capacity_policy_id: id
+    - delay_policy_id: id
+    - loss_policy_id: id
+    - budget_cost_units: int
+    - extensions: map
+
+INVARIANTS:
+- Routing must resolve through ABS routing policy id.
+- Capacity and delay policy identifiers are deterministic policy selectors.
+- Budget cost units are tick-scoped and deterministic.
