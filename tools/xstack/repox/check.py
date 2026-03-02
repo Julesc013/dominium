@@ -11731,6 +11731,45 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-MOB-USES-NETWORKGRAPH",
             )
         )
+    if (
+        'elif process_id == "process.mobility_network_create_from_formalization":' not in runtime_text
+        or "build_mobility_network_graph(" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.mobility_network_create_from_formalization",
+                message="mobility network promotion must create graph topology through NetworkGraph payload mapping",
+                rule_id="INV-MOB-NETWORK-USES-NETWORKGRAPH",
+            )
+        )
+    if (
+        'elif process_id == "process.switch_set_state":' not in runtime_text
+        or "apply_transition(" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.switch_set_state",
+                message="switching must route through state-machine transitions only",
+                rule_id="INV-SWITCH-STATE-MACHINE-ONLY",
+            )
+        )
+    if "query_route_result(" not in runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="query_route_result(",
+                message="mobility routing must route through ABS deterministic routing engine",
+                rule_id="INV-NO-ADHOC-ROUTING",
+            )
+        )
     if not any(token in runtime_text for token in guide_geometry_tokens):
         findings.append(
             _finding(
@@ -11742,6 +11781,50 @@ def _append_mobility_invariant_findings(
                 rule_id="INV-MOB-USES-GUIDEGEOMETRY",
             )
         )
+    adhoc_routing_patterns = (
+        re.compile(r"\b(?:dijkstra|a[_-]?star|bellman[_-]?ford|floyd[_-]?warshall)\b", re.IGNORECASE),
+        re.compile(r"\broute\b[^\n]*(?:for\s+\w+\s+in\s+\w+)", re.IGNORECASE),
+        re.compile(r"\b(?:neighbors|adjacency)\b[^\n]*(?:route|path)", re.IGNORECASE),
+    )
+    adhoc_routing_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    adhoc_routing_allow = {
+        "src/core/graph/routing_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(adhoc_routing_skip_prefixes):
+            continue
+        if rel_norm in adhoc_routing_allow:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adhoc_routing_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="ad-hoc mobility routing logic detected; route queries must use NetworkGraph/ABS routing",
+                    rule_id="INV-NO-ADHOC-ROUTING",
+                )
+            )
+            break
     for token in (
         'elif process_id == "process.geometry_create":',
         'elif process_id == "process.geometry_edit":',
