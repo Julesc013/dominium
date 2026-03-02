@@ -1,0 +1,68 @@
+{
+  "schema_id": "dominium.registry.signal_channel_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.signal_channel_type_registry",
+    "registry_version": "1.0.0",
+    "signal_channel_types": [
+      {
+        "schema_version": "1.0.0",
+        "channel_type_id": "channel.wired_basic",
+        "description": "Deterministic wired channel with fixed delay profile.",
+        "schema_ref": "dominium.schema.signals.signal_channel@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "wired"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_type_id": "channel.radio_basic",
+        "description": "Deterministic radio channel with policy-driven attenuation/loss.",
+        "schema_ref": "dominium.schema.signals.signal_channel@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "radio"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_type_id": "channel.optical_line_of_sight",
+        "description": "Deterministic optical channel requiring line-of-sight policy checks.",
+        "schema_ref": "dominium.schema.signals.signal_channel@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "optical",
+            "los"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_type_id": "channel.courier_route",
+        "description": "Physical courier transport channel over mobility network commitments.",
+        "schema_ref": "dominium.schema.signals.signal_channel@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "physical",
+            "mobility"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "channel_type_id": "channel.local_institutional",
+        "description": "Institution-scoped deterministic local communications channel.",
+        "schema_ref": "dominium.schema.signals.signal_channel@1.0.0",
+        "extensions": {
+          "domain_tags": [
+            "institutional"
+          ]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
