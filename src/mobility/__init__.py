@@ -138,6 +138,18 @@ from .signals import (
     signal_type_rows_by_id,
     switch_lock_rows_by_machine_id,
 )
+from .maintenance import (
+    apply_wear_updates,
+    build_wear_state,
+    normalize_wear_state_rows,
+    service_wear_rows,
+    track_wear_modifier_permille,
+    wear_accumulation_policy_rows_by_id,
+    wear_ratio_permille,
+    wear_rows_by_target_and_type,
+    wear_summary_for_target,
+    wear_type_rows_by_id,
+)
 
 __all__ = [
     "build_geometry_candidate",
@@ -264,4 +276,14 @@ __all__ = [
     "signal_state_machine_rows_by_id",
     "signal_type_rows_by_id",
     "switch_lock_rows_by_machine_id",
+    "apply_wear_updates",
+    "build_wear_state",
+    "normalize_wear_state_rows",
+    "service_wear_rows",
+    "track_wear_modifier_permille",
+    "wear_accumulation_policy_rows_by_id",
+    "wear_ratio_permille",
+    "wear_rows_by_target_and_type",
+    "wear_summary_for_target",
+    "wear_type_rows_by_id",
 ]
