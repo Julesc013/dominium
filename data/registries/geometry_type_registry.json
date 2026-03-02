@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.geometry_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geometry_type_registry",
+    "registry_version": "1.0.0",
+    "geometry_types": [
+      {
+        "schema_version": "1.0.0",
+        "geometry_type_id": "geo.spline1D",
+        "schema_ref": "dominium.schema.mobility.guide_geometry@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "geometry_type_id": "geo.corridor2D",
+        "schema_ref": "dominium.schema.mobility.guide_geometry@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "geometry_type_id": "geo.volume3D",
+        "schema_ref": "dominium.schema.mobility.guide_geometry@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "geometry_type_id": "geo.orbital_path",
+        "schema_ref": "dominium.schema.mobility.guide_geometry@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "geometry_type_id": "geo.field_following",
+        "schema_ref": "dominium.schema.mobility.guide_geometry@1.0.0",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema_id": "dominium.registry.geometry_snap_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geometry_snap_policy_registry",
+    "registry_version": "1.0.0",
+    "snap_policies": [
+      {
+        "schema_version": "1.0.0",
+        "snap_policy_id": "snap.none",
+        "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "snap_policy_id": "snap.endpoint",
+        "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "snap_policy_id": "snap.grid",
+        "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "snap_policy_id": "snap.spec_compliant",
+        "schema_ref": "dominium.schema.mobility.snap_policy.stub@1.0.0",
+        "extensions": {
+          "uses_spec_tolerance": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

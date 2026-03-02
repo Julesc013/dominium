@@ -38,6 +38,9 @@
     "compliance_check_registry_hash",
     "formalization_target_registry_hash",
     "formalization_policy_registry_hash",
+    "geometry_type_registry_hash",
+    "junction_type_registry_hash",
+    "geometry_snap_policy_registry_hash",
     "governance_type_registry_hash",
     "diplomatic_state_registry_hash",
     "cohort_mapping_policy_registry_hash",
@@ -191,6 +194,18 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "formalization_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "geometry_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "junction_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "geometry_snap_policy_registry_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
