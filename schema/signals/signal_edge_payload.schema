@@ -1,0 +1,23 @@
+SCHEMA: signals/signal_edge_payload.schema
+schema_id: dominium.schema.signals.signal_edge_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for SignalNetworkGraph edges.
+
+REQUIRED SHAPE:
+record signal_edge_payload
+  required:
+    - schema_version: semver
+    - edge_kind: enum(wire|fiber|relay_link|broadcast_link|courier_link)
+    - capacity_per_tick: int
+    - delay_ticks: int
+    - tags: list[id]
+    - extensions: map
+  optional:
+    - loss_modifier: map
+
+INVARIANTS:
+- Capacity and delay values are deterministic and inspectable.
+- Loss modifiers are policy inputs only and do not bypass loss policy resolution.
