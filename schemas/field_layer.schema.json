@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Field Layer Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FIELD-1 field layer descriptor.",
+  "x-doc-ref": [
+    "docs/fields/FIELD_LAYER_MODEL.md",
+    "docs/audit/FIELD_LAYER_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "field_id",
+    "field_type_id",
+    "spatial_scope_id",
+    "resolution_level",
+    "update_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "field_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "field_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spatial_scope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolution_level": {
+      "type": "string",
+      "enum": ["macro", "meso", "micro"]
+    },
+    "update_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "field_id": "field.layer.temperature.global",
+      "field_type_id": "field.temperature",
+      "spatial_scope_id": "spatial.world.0",
+      "resolution_level": "macro",
+      "update_policy_id": "field.scheduled",
+      "deterministic_fingerprint": "7f4c8a8e9085ec80db49f10e7286f5a4109ff5f73d1177330fe6f7cb3f1a71c3",
+      "extensions": {}
+    }
+  ]
+}

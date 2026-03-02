@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Field Update Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic FIELD-1 field update policy registry output.",
+  "x-doc-ref": [
+    "docs/fields/FIELD_LAYER_MODEL.md",
+    "docs/audit/FIELD_LAYER_BASELINE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pack_id", "version", "canonical_hash", "signature_status"],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {"type": "string"},
+          "version": {"type": "string"},
+          "canonical_hash": {"type": "string"},
+          "signature_status": {"type": "string"}
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "update_policy_id",
+          "description",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {"type": "string", "const": "1.0.0"},
+          "update_policy_id": {"type": "string"},
+          "description": {"type": "string"},
+          "schedule_id": {"type": ["string", "null"]},
+          "flow_channel_ref": {"type": ["string", "null"]},
+          "hazard_ref": {"type": ["string", "null"]},
+          "extensions": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}

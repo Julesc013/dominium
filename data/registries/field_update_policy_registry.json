@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.registry.field_update_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.field_update_policy_registry",
+    "registry_version": "1.0.0",
+    "policies": [
+      {
+        "schema_version": "1.0.0",
+        "update_policy_id": "field.static",
+        "description": "Static field values; no automatic update during field ticks.",
+        "schedule_id": null,
+        "flow_channel_ref": null,
+        "hazard_ref": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "update_policy_id": "field.scheduled",
+        "description": "Deterministic scheduled updates from tick schedule inputs.",
+        "schedule_id": "schedule.field.default",
+        "flow_channel_ref": null,
+        "hazard_ref": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "update_policy_id": "field.flow_linked",
+        "description": "Field updates derived from FlowSystem channels.",
+        "schedule_id": null,
+        "flow_channel_ref": "flow.channel.default",
+        "hazard_ref": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "update_policy_id": "field.hazard_linked",
+        "description": "Field updates derived from HazardModel states.",
+        "schedule_id": null,
+        "flow_channel_ref": null,
+        "hazard_ref": "hazard.default",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

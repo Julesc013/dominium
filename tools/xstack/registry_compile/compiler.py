@@ -1878,6 +1878,157 @@ def _effect_registry_rows(
     return effect_type_rows, stacking_policy_rows, errors
 
 
+def _field_registry_rows(
+    repo_root: str,
+    schema_root: str,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    field_type_record, field_type_rows_raw, field_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/field_type_registry.json",
+        expected_schema_id="dominium.registry.field_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="field_types",
+    )
+    if field_type_load_errors:
+        return [], [], field_type_load_errors
+
+    policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/field_update_policy_registry.json",
+        expected_schema_id="dominium.registry.field_update_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    if policy_load_errors:
+        return [], [], policy_load_errors
+
+    del field_type_record
+    del policy_record
+    errors: List[dict] = []
+
+    field_type_rows: List[dict] = []
+    seen_field_type_ids = set()
+    allowed_value_kinds = {"scalar", "vector"}
+    for entry in sorted(field_type_rows_raw, key=lambda row: str((row or {}).get("field_type_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_field_type_entry",
+                    "message": "field type entry must be object",
+                    "path": "$.field_types",
+                }
+            )
+            continue
+        field_type_id = str(entry.get("field_type_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        value_kind = str(entry.get("value_kind", "")).strip()
+        extensions = entry.get("extensions")
+        if (
+            (not field_type_id)
+            or (value_kind not in allowed_value_kinds)
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_field_type_entry",
+                    "message": "field type entry missing required fields",
+                    "path": "$.field_types",
+                }
+            )
+            continue
+        if field_type_id in seen_field_type_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_field_type_id",
+                    "message": "duplicate field_type_id '{}'".format(field_type_id),
+                    "path": "$.field_types.field_type_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "field_type_id": field_type_id,
+            "description": description,
+            "value_kind": value_kind,
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="field_type",
+            payload=schema_payload,
+            path="data/registries/field_type_registry.json#{}".format(field_type_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_field_type_ids.add(field_type_id)
+        field_type_rows.append(schema_payload)
+    field_type_rows = sorted(field_type_rows, key=lambda row: str(row.get("field_type_id", "")))
+
+    policy_rows: List[dict] = []
+    seen_policy_ids = set()
+    for entry in sorted(policy_rows_raw, key=lambda row: str((row or {}).get("update_policy_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_field_update_policy_entry",
+                    "message": "field update policy entry must be object",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        update_policy_id = str(entry.get("update_policy_id", "")).strip()
+        description = str(entry.get("description", "")).strip()
+        schedule_id = entry.get("schedule_id")
+        flow_channel_ref = entry.get("flow_channel_ref")
+        hazard_ref = entry.get("hazard_ref")
+        extensions = entry.get("extensions")
+        if (
+            (not update_policy_id)
+            or (not isinstance(extensions, dict))
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_field_update_policy_entry",
+                    "message": "field update policy entry missing required fields",
+                    "path": "$.policies",
+                }
+            )
+            continue
+        if update_policy_id in seen_policy_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_field_update_policy_id",
+                    "message": "duplicate update_policy_id '{}'".format(update_policy_id),
+                    "path": "$.policies.update_policy_id",
+                }
+            )
+            continue
+        schema_payload = {
+            "schema_version": "1.0.0",
+            "update_policy_id": update_policy_id,
+            "description": description,
+            "schedule_id": None if schedule_id is None else str(schedule_id).strip() or None,
+            "flow_channel_ref": None if flow_channel_ref is None else str(flow_channel_ref).strip() or None,
+            "hazard_ref": None if hazard_ref is None else str(hazard_ref).strip() or None,
+            "extensions": dict(extensions),
+        }
+        schema_errors = _validate_schema_item(
+            schema_root=schema_root,
+            schema_name="field_update_policy",
+            payload=schema_payload,
+            path="data/registries/field_update_policy_registry.json#{}".format(update_policy_id),
+        )
+        if schema_errors:
+            errors.extend(schema_errors)
+            continue
+        seen_policy_ids.add(update_policy_id)
+        policy_rows.append(schema_payload)
+    policy_rows = sorted(policy_rows, key=lambda row: str(row.get("update_policy_id", "")))
+
+    return field_type_rows, policy_rows, errors
+
+
 def _spec_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -10711,6 +10862,14 @@ def compile_bundle(
         schema_root=schema_root,
     )
     (
+        field_type_rows,
+        field_update_policy_rows,
+        field_registry_errors,
+    ) = _field_registry_rows(
+        repo_root=repo_root,
+        schema_root=schema_root,
+    )
+    (
         spec_type_rows,
         tolerance_policy_rows,
         compliance_check_rows,
@@ -11115,6 +11274,7 @@ def compile_bundle(
         + control_registry_errors
         + capability_registry_errors
         + effect_registry_errors
+        + field_registry_errors
         + spec_registry_errors
         + formalization_registry_errors
         + interaction_registry_errors
@@ -11555,6 +11715,20 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "stacking_policies": stacking_policy_rows,
+        }
+    )
+    field_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "field_types": field_type_rows,
+        }
+    )
+    field_update_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": field_update_policy_rows,
         }
     )
     spec_type_payload = _finalize_registry_payload(
@@ -12105,6 +12279,8 @@ def compile_bundle(
         "control_policy_registry": ("control_policy_registry", control_policy_payload),
         "effect_type_registry": ("effect_type_registry", effect_type_payload),
         "stacking_policy_registry": ("stacking_policy_registry", stacking_policy_payload),
+        "field_type_registry": ("field_type_registry", field_type_payload),
+        "field_update_policy_registry": ("field_update_policy_registry", field_update_policy_payload),
         "spec_type_registry": ("spec_type_registry", spec_type_payload),
         "tolerance_policy_registry": ("tolerance_policy_registry", tolerance_policy_payload),
         "compliance_check_registry": ("compliance_check_registry", compliance_check_payload),
@@ -12244,6 +12420,8 @@ def compile_bundle(
         "control_policy_registry",
         "effect_type_registry",
         "stacking_policy_registry",
+        "field_type_registry",
+        "field_update_policy_registry",
         "spec_type_registry",
         "tolerance_policy_registry",
         "compliance_check_registry",
@@ -12394,6 +12572,8 @@ def compile_bundle(
             "control_policy_registry_hash": registry_hashes["control_policy_registry_hash"],
             "effect_type_registry_hash": registry_hashes["effect_type_registry_hash"],
             "stacking_policy_registry_hash": registry_hashes["stacking_policy_registry_hash"],
+            "field_type_registry_hash": registry_hashes["field_type_registry_hash"],
+            "field_update_policy_registry_hash": registry_hashes["field_update_policy_registry_hash"],
             "spec_type_registry_hash": registry_hashes["spec_type_registry_hash"],
             "tolerance_policy_registry_hash": registry_hashes["tolerance_policy_registry_hash"],
             "compliance_check_registry_hash": registry_hashes["compliance_check_registry_hash"],

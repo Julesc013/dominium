@@ -113,9 +113,13 @@
         "control_policy_registry_hash",
         "effect_type_registry_hash",
         "stacking_policy_registry_hash",
+        "field_type_registry_hash",
+        "field_update_policy_registry_hash",
         "spec_type_registry_hash",
         "tolerance_policy_registry_hash",
         "compliance_check_registry_hash",
+        "formalization_target_registry_hash",
+        "formalization_policy_registry_hash",
         "interaction_action_registry_hash",
         "surface_type_registry_hash",
         "posture_registry_hash",
@@ -408,6 +412,14 @@
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
+        "field_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "field_update_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
         "spec_type_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
@@ -417,6 +429,14 @@
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
         "compliance_check_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "formalization_target_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "formalization_policy_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
         },
@@ -704,6 +724,10 @@
         "control_action_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "capability_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "control_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "field_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "field_update_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "formalization_target_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "formalization_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "interaction_action_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "surface_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "posture_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",

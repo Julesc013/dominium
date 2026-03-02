@@ -1,0 +1,23 @@
+SCHEMA: fields/field_cell.schema
+schema_id: dominium.schema.fields.field_cell
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic FIELD-1 macro cell value row.
+
+REQUIRED SHAPE:
+record field_cell
+  required:
+    - schema_version: semver
+    - field_id: id
+    - cell_id: id
+    - value: fixed_point_or_vector
+    - last_updated_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Cell updates are tick-driven only.
+- Ordering uses (field_id, cell_id).
+- Values are deterministic fixed-point or integer-vector payloads.

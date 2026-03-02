@@ -1,0 +1,53 @@
+{
+  "schema_id": "dominium.registry.field_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.field_type_registry",
+    "registry_version": "1.0.0",
+    "field_types": [
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.temperature",
+        "description": "Ambient temperature scalar field.",
+        "value_kind": "scalar",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.moisture",
+        "description": "Moisture/saturation scalar field.",
+        "value_kind": "scalar",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.friction",
+        "description": "Surface friction coefficient scalar field.",
+        "value_kind": "scalar",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.radiation",
+        "description": "Radiation dose-rate scalar field.",
+        "value_kind": "scalar",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.visibility",
+        "description": "Visibility attenuation scalar field.",
+        "value_kind": "scalar",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.wind",
+        "description": "Coarse wind vector field.",
+        "value_kind": "vector",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
