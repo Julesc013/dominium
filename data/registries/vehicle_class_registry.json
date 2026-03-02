@@ -1,0 +1,101 @@
+{
+  "schema_id": "dominium.registry.vehicle_class_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.vehicle_class_registry",
+    "registry_version": "1.0.0",
+    "vehicle_classes": [
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.rail_handcart",
+        "description": "Placeholder rail handcart class.",
+        "supported_motion_modes": [
+          "rail_constrained"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.rail_wagon",
+        "description": "Placeholder rail wagon class.",
+        "supported_motion_modes": [
+          "rail_constrained"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.rail_locomotive_stub",
+        "description": "Placeholder rail locomotive class.",
+        "supported_motion_modes": [
+          "rail_constrained"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.road_cart",
+        "description": "Placeholder road cart class.",
+        "supported_motion_modes": [
+          "corridor"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.road_car_stub",
+        "description": "Placeholder road car class.",
+        "supported_motion_modes": [
+          "corridor"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.boat_stub",
+        "description": "Placeholder boat class.",
+        "supported_motion_modes": [
+          "corridor"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.plane_stub",
+        "description": "Placeholder plane class.",
+        "supported_motion_modes": [
+          "free"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.drone_stub",
+        "description": "Placeholder drone class.",
+        "supported_motion_modes": [
+          "free"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.spacecraft_stub",
+        "description": "Placeholder spacecraft class.",
+        "supported_motion_modes": [
+          "orbit"
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "vehicle_class_id": "veh.mobile_platform_stub",
+        "description": "Placeholder mobile platform class.",
+        "supported_motion_modes": [
+          "free"
+        ],
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
