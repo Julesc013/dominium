@@ -167,6 +167,9 @@ from analyzers import e138_inline_strength_check_smell
 from analyzers import e139_inline_friction_smell
 from analyzers import e140_inline_temperature_smell
 from analyzers import e141_weather_hack_smell
+from analyzers import e142_mobility_special_case_smell
+from analyzers import e143_direct_position_mutation_smell
+from analyzers import e144_adhoc_speed_limit_smell
 
 
 ANALYZERS = (
@@ -337,6 +340,9 @@ ANALYZERS = (
     e139_inline_friction_smell,
     e140_inline_temperature_smell,
     e141_weather_hack_smell,
+    e142_mobility_special_case_smell,
+    e143_direct_position_mutation_smell,
+    e144_adhoc_speed_limit_smell,
 )
 
 

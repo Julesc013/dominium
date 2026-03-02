@@ -11553,6 +11553,7 @@ def _append_field_invariant_findings(
     allowed_prefixes = (
         "src/fields/",
         "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/",
         "tools/auditx/analyzers/",
         "tools/xstack/testx/tests/",
         "docs/",
@@ -11594,6 +11595,153 @@ def _append_field_invariant_findings(
                     )
                 )
                 break
+
+
+def _append_mobility_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+
+    process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    control_plane_rel = "src/control/control_plane_engine.py"
+    constitution_rel = "docs/mobility/MOBILITY_CONSTITUTION.md"
+
+    runtime_text = _file_text(repo_root, process_runtime_rel)
+    control_text = _file_text(repo_root, control_plane_rel)
+    constitution_text = _file_text(repo_root, constitution_rel)
+    constitution_lower = constitution_text.lower()
+
+    if "process.body_move_attempt" not in runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="process.body_move_attempt",
+                message="mobility movement application must remain process-mediated through control dispatch",
+                rule_id="INV-MOB-THROUGH-CONTROL",
+            )
+        )
+    if "ControlIntent" not in control_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_plane_rel,
+                line_number=1,
+                snippet="ControlIntent",
+                message="mobility driving and scheduling intents must route through ControlIntent/IR",
+                rule_id="INV-MOB-THROUGH-CONTROL",
+            )
+        )
+
+    if ("guide geometry" not in constitution_lower) and ("guide_geometry" not in constitution_lower):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=constitution_rel,
+                line_number=1,
+                snippet="guide geometry",
+                message="mobility constitution must declare guide geometry usage for deterministic movement constraints",
+                rule_id="INV-MOB-USES-GUIDEGEOMETRY",
+            )
+        )
+    if ("network graph" not in constitution_lower) and ("networkgraph" not in constitution_lower):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=constitution_rel,
+                line_number=1,
+                snippet="network graph",
+                message="mobility constitution must declare NetworkGraph dependency for route/network constraints",
+                rule_id="INV-MOB-USES-NETWORKGRAPH",
+            )
+        )
+
+    train_special_case_pattern = re.compile(
+        r"\b(?:spec\.track|movement_surface\b[^\n]*(?:track|rail|road)|if\b[^\n]*(?:train|rail|track|road)[^\n]*(?:speed|traction|signal|derail|curve|curvature))\b",
+        re.IGNORECASE,
+    )
+    global_micro_motion_pattern = re.compile(
+        r"\bfor\b[^\n]*(?:body_assemblies|vehicle|agent|entity)[^\n]*(?:in|range)\b",
+        re.IGNORECASE,
+    )
+    global_micro_effect_pattern = re.compile(
+        r"\b(?:transform_mm|position_mm|velocity|speed_cap|collision|drift)\b",
+        re.IGNORECASE,
+    )
+    network_graph_tokens = ("network_graph", "NetworkGraph", "route_query", "route_result")
+    guide_geometry_tokens = ("guide_geometry", "guide spline", "follow_spline", "constraint.follow_spline")
+
+    train_skip_prefixes = (
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+        "docs/",
+        "schema/",
+        "schemas/",
+    )
+    mobility_scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(mobility_scan_prefixes):
+            continue
+        if rel_norm.startswith(train_skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if train_special_case_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="train/road/rail movement special-casing must migrate into unified MOB constraints",
+                        rule_id="INV-NO-TRAIN-SPECIALCASE",
+                    )
+                )
+                break
+            if global_micro_motion_pattern.search(snippet) and global_micro_effect_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="global micro-motion loops are forbidden; micro movement must remain ROI-scoped",
+                        rule_id="INV-NO-GLOBAL-MICRO-MOTION",
+                    )
+                )
+                break
+
+    if not any(token in runtime_text for token in network_graph_tokens):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="network_graph",
+                message="mobility runtime should route graph traversal through NetworkGraph interfaces",
+                rule_id="INV-MOB-USES-NETWORKGRAPH",
+            )
+        )
+    if not any(token in runtime_text for token in guide_geometry_tokens):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_runtime_rel,
+                line_number=1,
+                snippet="guide_geometry",
+                message="mobility runtime should consume guide geometry constraints rather than hardcoded movement branches",
+                rule_id="INV-MOB-USES-GUIDEGEOMETRY",
+            )
+        )
 
 
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
@@ -11782,6 +11930,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_field_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_mobility_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
