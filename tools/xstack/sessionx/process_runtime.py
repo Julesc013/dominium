@@ -32822,6 +32822,10 @@ def execute_intent(
                 "owner_vehicle_id": owner_vehicle_id or None,
                 "owner_vehicle_motion_tier": owner_motion_tier if owner_vehicle_id else None,
                 "owner_vehicle_speed_mm_per_tick": int(owner_vehicle_speed) if owner_vehicle_id else None,
+                "overlay_hints": {
+                    "portal_glyph_count": int(len(list(portal_indicator_rows or []))),
+                    "warning_glyph_count": int(len([row for row in list(alarms or []) if isinstance(row, Mapping) and str(row.get("overall", "")).strip() in {"warn", "danger"}])),
+                },
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id in (
