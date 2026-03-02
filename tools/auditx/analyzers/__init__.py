@@ -193,6 +193,8 @@ from analyzers import e164_direct_message_smell
 from analyzers import e165_knowledge_bypass_smell
 from analyzers import e166_signal_routing_bypass_smell
 from analyzers import e167_nondeterministic_queue_order_smell
+from analyzers import e168_direct_knowledge_mutation_smell
+from analyzers import e169_broadcast_bypass_smell
 
 
 ANALYZERS = (
@@ -389,6 +391,8 @@ ANALYZERS = (
     e165_knowledge_bypass_smell,
     e166_signal_routing_bypass_smell,
     e167_nondeterministic_queue_order_smell,
+    e168_direct_knowledge_mutation_smell,
+    e169_broadcast_bypass_smell,
 )
 
 

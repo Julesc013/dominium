@@ -12774,6 +12774,8 @@ def _append_signal_transport_invariant_findings(
         "enqueue_signal_envelope(",
         "tick_signal_transport(",
         "build_knowledge_receipt(",
+        "resolve_address_recipients(",
+        "normalize_info_artifact_rows(",
     )
     for token in required_tokens:
         if token in transport_text:
@@ -12809,6 +12811,17 @@ def _append_signal_transport_invariant_findings(
                 snippet="execute_channel_transport_tick(",
                 message="signal channel capacity/delay logic must be centralized through channel executor",
                 rule_id="INV-NO-ADHOC-CAPACITY-LOGIC",
+            )
+        )
+    if "process_knowledge_acquire(" not in transport_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=transport_rel,
+                line_number=1,
+                snippet="process_knowledge_acquire(",
+                message="knowledge acquisition requires receipt process mediation",
+                rule_id="INV-RECEIPT-REQUIRED-FOR-KNOWLEDGE",
             )
         )
     if "_has_direct_route(" in transport_text:
@@ -12887,6 +12900,18 @@ def _append_signal_transport_invariant_findings(
                     )
                 )
                 break
+            if any(pattern.search(snippet) for pattern in direct_message_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="artifact/message delivery bypasses deterministic SIG queue execution",
+                        rule_id="INV-NO-DIRECT-ARTIFACT-DELIVERY",
+                    )
+                )
+                break
 
     adhoc_capacity_patterns = (
         re.compile(r"\bcapacity_per_tick\b", re.IGNORECASE),
@@ -12925,18 +12950,44 @@ def _append_signal_transport_invariant_findings(
                 )
             )
             break
-            if any(pattern.search(snippet) for pattern in direct_message_patterns):
-                findings.append(
-                    _finding(
-                        severity=severity,
-                        file_path=rel_norm,
-                        line_number=line_no,
-                        snippet=snippet[:140],
-                        message="direct message queue mutation detected outside SIG transport helpers/runtime",
-                        rule_id="INV-SIGNAL-TRANSPORT-ONLY",
-                    )
+
+    receipt_required_allow = {
+        transport_rel,
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+    }
+    receipt_bypass_patterns = (
+        re.compile(r"\bknowledge_receipt_rows\s*=", re.IGNORECASE),
+        re.compile(r"\bbuild_knowledge_receipt\s*\(", re.IGNORECASE),
+        re.compile(r"\bprocess_knowledge_acquire\s*\(", re.IGNORECASE),
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if any(rel_norm == allow or rel_norm.startswith(allow) for allow in receipt_required_allow):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in receipt_bypass_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="knowledge changes must be coupled to SIG receipt process path",
+                    rule_id="INV-RECEIPT-REQUIRED-FOR-KNOWLEDGE",
                 )
-                break
+            )
+            break
 
 
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
