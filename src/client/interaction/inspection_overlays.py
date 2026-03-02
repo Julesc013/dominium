@@ -276,16 +276,20 @@ def _network_graph_overlay_payload(
         if str(item.get("node_id", "")).strip()
     )
     route_edge_ids = set(_sorted_unique_strings(route_data.get("path_edge_ids")))
+    route_spec_warning_edge_ids = set(_sorted_unique_strings(route_data.get("spec_warning_edge_ids")))
+    route_curvature_warning_edge_ids = set(_sorted_unique_strings(route_data.get("curvature_warning_edge_ids")))
     edge_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_edge"}, floor=60)
     node_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_node"}, floor=72)
     route_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_route"}, floor=68)
     switch_color = _color_from_seed({"graph_id": graph_id, "kind": "graph_switch"}, floor=70)
     spec_warn_color = {"r": 220, "g": 86, "b": 84}
+    curve_warn_color = {"r": 244, "g": 176, "b": 62}
     edge_material_id = "mat.inspect.networkgraph.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
     node_material_id = "mat.inspect.networkgraph.node.{}".format(canonical_sha256({"graph_id": graph_id, "node": True})[:12])
     route_material_id = "mat.inspect.networkgraph.route.{}".format(canonical_sha256({"graph_id": graph_id, "route": True})[:12])
     switch_material_id = "mat.inspect.networkgraph.switch.{}".format(canonical_sha256({"graph_id": graph_id, "switch": True})[:12])
     spec_warn_material_id = "mat.inspect.networkgraph.specwarn.{}".format(canonical_sha256({"graph_id": graph_id, "specwarn": True})[:12])
+    curve_warn_material_id = "mat.inspect.networkgraph.curvewarn.{}".format(canonical_sha256({"graph_id": graph_id, "curvewarn": True})[:12])
     materials = sorted(
         [
             {
@@ -343,21 +347,47 @@ def _network_graph_overlay_payload(
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_spec_missing"},
             },
+            {
+                "schema_version": "1.0.0",
+                "material_id": curve_warn_material_id,
+                "base_color": dict(curve_warn_color),
+                "roughness": 230,
+                "metallic": 0,
+                "emission": {"r": curve_warn_color["r"], "g": curve_warn_color["g"], "b": curve_warn_color["b"], "strength": 280},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_curvature_warning"},
+            },
         ],
         key=lambda row: str(row.get("material_id", "")),
     )
     renderables: list[dict] = []
     spec_missing_edge_count = 0
+    spec_warning_edge_count = 0
+    curvature_warning_edge_count = 0
     for edge in edge_rows:
         edge_id = str(edge.get("edge_id", "")).strip()
         if not edge_id:
             continue
         is_route = edge_id in route_edge_ids
+        route_spec_warning = edge_id in route_spec_warning_edge_ids
+        route_curvature_warning = edge_id in route_curvature_warning_edge_ids
         payload = dict(edge.get("payload") or {})
         spec_id = str(payload.get("spec_id", "")).strip() or None
         spec_missing = not bool(spec_id)
         if spec_missing:
             spec_missing_edge_count += 1
+        if route_spec_warning:
+            spec_warning_edge_count += 1
+        if route_curvature_warning:
+            curvature_warning_edge_count += 1
+        material_id = edge_material_id
+        if is_route:
+            material_id = route_material_id
+        if route_spec_warning or spec_missing:
+            material_id = spec_warn_material_id
+        if route_curvature_warning:
+            material_id = curve_warn_material_id
         renderables.append(
             {
                 "schema_version": "1.0.0",
@@ -369,15 +399,11 @@ def _network_graph_overlay_payload(
                     "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
                     "scale_permille": 1000,
                 },
-                "material_id": (
-                    route_material_id
-                    if is_route
-                    else (spec_warn_material_id if spec_missing else edge_material_id)
-                ),
+                "material_id": material_id,
                 "layer_tags": ["overlay", "ui"],
                 "label": None,
                 "lod_hint": "lod.band.mid",
-                "flags": {"selectable": False, "highlighted": bool(is_route or spec_missing)},
+                "flags": {"selectable": False, "highlighted": bool(is_route or spec_missing or route_spec_warning or route_curvature_warning)},
                 "extensions": {
                     "interaction_overlay": True,
                     "overlay_kind": "networkgraph_edge",
@@ -387,6 +413,8 @@ def _network_graph_overlay_payload(
                     "directional": True,
                     "spec_id": spec_id,
                     "spec_missing": bool(spec_missing),
+                    "route_spec_warning": bool(route_spec_warning),
+                    "route_curvature_warning": bool(route_curvature_warning),
                 },
             }
         )
@@ -401,15 +429,11 @@ def _network_graph_overlay_payload(
                     "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
                     "scale_permille": 1000,
                 },
-                "material_id": (
-                    route_material_id
-                    if is_route
-                    else (spec_warn_material_id if spec_missing else edge_material_id)
-                ),
+                "material_id": material_id,
                 "layer_tags": ["overlay", "ui"],
                 "label": ">",
                 "lod_hint": "lod.band.mid",
-                "flags": {"selectable": False, "highlighted": bool(is_route or spec_missing)},
+                "flags": {"selectable": False, "highlighted": bool(is_route or spec_missing or route_spec_warning or route_curvature_warning)},
                 "extensions": {
                     "interaction_overlay": True,
                     "overlay_kind": "networkgraph_direction",
@@ -417,12 +441,12 @@ def _network_graph_overlay_payload(
                 },
             }
         )
-        if spec_missing:
+        if spec_missing or route_spec_warning:
             renderables.append(
                 {
                     "schema_version": "1.0.0",
                     "renderable_id": "overlay.inspect.networkgraph.specwarn.{}".format(
-                        canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "specwarn": True})[:16]
+                        canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "specwarn": True, "route_spec_warning": bool(route_spec_warning)})[:16]
                     ),
                     "semantic_id": "overlay.inspect.networkgraph.specwarn.{}".format(edge_id),
                     "primitive_id": "prim.glyph.label",
@@ -433,12 +457,39 @@ def _network_graph_overlay_payload(
                     },
                     "material_id": spec_warn_material_id,
                     "layer_tags": ["overlay", "ui"],
-                    "label": "SPEC?",
+                    "label": "SPEC!" if route_spec_warning else "SPEC?",
                     "lod_hint": "lod.band.mid",
                     "flags": {"selectable": False, "highlighted": True},
                     "extensions": {
                         "interaction_overlay": True,
-                        "overlay_kind": "networkgraph_spec_missing",
+                        "overlay_kind": "networkgraph_spec_warning" if route_spec_warning else "networkgraph_spec_missing",
+                        "edge_id": edge_id,
+                        "route_spec_warning": bool(route_spec_warning),
+                    },
+                }
+            )
+        if route_curvature_warning:
+            renderables.append(
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.networkgraph.curvewarn.{}".format(
+                        canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "curvewarn": True})[:16]
+                    ),
+                    "semantic_id": "overlay.inspect.networkgraph.curvewarn.{}".format(edge_id),
+                    "primitive_id": "prim.glyph.label",
+                    "transform": {
+                        "position_mm": {"x": 0, "y": 0, "z": 0},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 900,
+                    },
+                    "material_id": curve_warn_material_id,
+                    "layer_tags": ["overlay", "ui"],
+                    "label": "CURVE",
+                    "lod_hint": "lod.band.mid",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": "networkgraph_curvature_warning",
                         "edge_id": edge_id,
                     },
                 }
@@ -479,11 +530,12 @@ def _network_graph_overlay_payload(
                 },
             }
         )
-    summary = "graph:{} nodes={} edges={} route_edges={}".format(
+    summary = "graph:{} nodes={} edges={} route_edges={} warnings={}".format(
         graph_id,
         len(node_rows),
         len(edge_rows),
         len(route_edge_ids),
+        int(len(route_spec_warning_edge_ids) + len(route_curvature_warning_edge_ids)),
     )
     return {
         "mode": "networkgraph_overlay",
@@ -501,6 +553,10 @@ def _network_graph_overlay_payload(
             "route_edge_ids": sorted(route_edge_ids),
             "switch_count": int(len(switch_state_rows)),
             "spec_missing_edge_count": int(spec_missing_edge_count),
+            "route_spec_warning_edge_ids": sorted(route_spec_warning_edge_ids),
+            "route_spec_warning_edge_count": int(spec_warning_edge_count),
+            "route_curvature_warning_edge_ids": sorted(route_curvature_warning_edge_ids),
+            "route_curvature_warning_edge_count": int(curvature_warning_edge_count),
         },
     }
 

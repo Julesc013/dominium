@@ -280,6 +280,7 @@ _DEFAULT_SECTION_ROWS = {
     "section.reenactment_link": {"title": "Reenactment", "extensions": {"cost_units": 1}},
     "section.micro_parts_summary": {"title": "Micro Parts Summary", "extensions": {"cost_units": 4}},
 }
+_MOBILITY_CURVATURE_WARN_RADIUS_MM = 12000
 
 
 class InspectionError(ValueError):
@@ -1147,6 +1148,7 @@ def _build_section_data(
         }
     if section_id in {"section.networkgraph.summary", "section.mob.network_summary"}:
         graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip()
         node_rows = [dict(item) for item in list(graph.get("nodes") or []) if isinstance(item, dict)]
         edge_rows = [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, dict)]
         validation_mode = str(graph.get("validation_mode", "")).strip() or "strict"
@@ -1180,8 +1182,40 @@ def _build_section_data(
                     "outgoing_edge_ids": _sorted_unique_strings((dict(machine.get("extensions") or {})).get("outgoing_edge_ids")),
                 }
             )
+        itinerary_rows_by_id = _row_index((dict(state or {})).get("itineraries"), "itinerary_id")
+        timetable_board_rows = []
+        for schedule_row in sorted(
+            (dict(item) for item in list((dict(state or {})).get("travel_schedules") or []) if isinstance(item, dict)),
+            key=lambda item: (_as_int(item.get("next_due_tick", 0), 0), str(item.get("schedule_id", ""))),
+        ):
+            if not bool(schedule_row.get("active", True)):
+                continue
+            itinerary_id = str((dict(schedule_row.get("extensions") or {})).get("itinerary_id", "")).strip()
+            itinerary_row = dict(itinerary_rows_by_id.get(itinerary_id) or {})
+            if not itinerary_row:
+                continue
+            itinerary_ext = dict(itinerary_row.get("extensions") or {})
+            if str(itinerary_ext.get("graph_id", "")).strip() != graph_id:
+                continue
+            departure_tick = int(max(0, _as_int(itinerary_row.get("departure_tick", 0), 0)))
+            estimated_arrival_tick = int(max(0, _as_int(itinerary_row.get("estimated_arrival_tick", departure_tick), departure_tick)))
+            duration_ticks = int(max(0, estimated_arrival_tick - departure_tick))
+            next_due_tick = int(max(0, _as_int(schedule_row.get("next_due_tick", schedule_row.get("start_tick", 0)), 0)))
+            route_node_ids = [str(item).strip() for item in list(itinerary_row.get("route_node_ids") or []) if str(item).strip()]
+            timetable_board_rows.append(
+                {
+                    "schedule_id": str(schedule_row.get("schedule_id", "")).strip() or None,
+                    "vehicle_id": str(schedule_row.get("target_id", "")).strip() or None,
+                    "itinerary_id": itinerary_id,
+                    "next_departure_tick": int(next_due_tick),
+                    "projected_arrival_tick": int(next_due_tick + duration_ticks),
+                    "origin_node_id": route_node_ids[0] if route_node_ids else None,
+                    "destination_node_id": route_node_ids[-1] if route_node_ids else None,
+                    "travel_state": str(itinerary_ext.get("status", "")).strip() or "planned",
+                }
+            )
         return {
-            "graph_id": str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip(),
+            "graph_id": graph_id,
             "node_count": len(node_rows),
             "edge_count": len(edge_rows),
             "validation_mode": validation_mode,
@@ -1191,6 +1225,8 @@ def _build_section_data(
             "switch_states": sorted(switch_rows, key=lambda item: str(item.get("node_id", ""))),
             "spec_missing_edge_count": int(spec_missing_edge_count),
             "edge_kind_counts": dict((k, edge_kind_counts[k]) for k in sorted(edge_kind_counts.keys())),
+            "timetable_board_count": int(len(timetable_board_rows)),
+            "timetable_board_rows": list(timetable_board_rows)[:128],
         }
     if section_id in {"section.networkgraph.route", "section.mob.route_result"}:
         route_payload = {}
@@ -1204,12 +1240,60 @@ def _build_section_data(
                 break
         path_edge_ids = [str(item).strip() for item in list(route_payload.get("path_edge_ids") or []) if str(item).strip()]
         path_node_ids = [str(item).strip() for item in list(route_payload.get("path_node_ids") or []) if str(item).strip()]
+        graph_row = _graph_row()
+        edge_rows_by_id = dict(
+            (str(edge.get("edge_id", "")).strip(), dict(edge))
+            for edge in list(graph_row.get("edges") or [])
+            if isinstance(edge, dict) and str(edge.get("edge_id", "")).strip()
+        )
+        guide_geometry_rows_by_id = _row_index((dict(state or {})).get("guide_geometries"), "geometry_id")
+        geometry_metrics_by_id = _row_index((dict(state or {})).get("geometry_derived_metrics"), "geometry_id")
+        spec_warning_edge_ids = []
+        curvature_warning_edge_ids = []
+        for edge_id in path_edge_ids:
+            edge_row = dict(edge_rows_by_id.get(edge_id) or {})
+            payload = dict(edge_row.get("payload") or {})
+            geometry_id = str(payload.get("guide_geometry_id", "")).strip()
+            geometry_row = dict(guide_geometry_rows_by_id.get(geometry_id) or {})
+            metric_row = dict(geometry_metrics_by_id.get(geometry_id) or {})
+            edge_spec_id = str(payload.get("spec_id", "")).strip()
+            geometry_spec_id = str(geometry_row.get("spec_id", "")).strip()
+            if (not edge_spec_id) and (not geometry_spec_id):
+                spec_warning_edge_ids.append(edge_id)
+            curvature_bands = _as_map(metric_row.get("curvature_bands"))
+            high_band_count = int(max(0, _as_int(curvature_bands.get("high", 0), 0)))
+            min_radius = int(max(0, _as_int(metric_row.get("min_curvature_radius_mm", 0), 0)))
+            if high_band_count > 0 or (0 < min_radius <= int(_MOBILITY_CURVATURE_WARN_RADIUS_MM)):
+                curvature_warning_edge_ids.append(edge_id)
+        itinerary_id = str(route_payload.get("itinerary_id", "")).strip() or None
+        speed_policy_id = str(route_payload.get("speed_policy_id", "")).strip() or None
+        estimated_arrival_tick = (
+            int(max(0, _as_int(route_payload.get("estimated_arrival_tick", 0), 0)))
+            if route_payload.get("estimated_arrival_tick") is not None
+            else None
+        )
+        per_edge_profile = [
+            dict(item)
+            for item in list(route_payload.get("per_edge_profile") or [])
+            if isinstance(item, dict)
+        ]
+        warning_edge_ids = sorted(set(list(spec_warning_edge_ids) + list(curvature_warning_edge_ids)))
         return {
             "available": bool(route_payload),
             "path_node_ids": list(path_node_ids),
             "path_edge_ids": list(path_edge_ids),
             "total_cost": int(max(0, _as_int(route_payload.get("total_cost", 0), 0))),
             "route_policy_id": str(route_payload.get("route_policy_id", "")).strip(),
+            "itinerary_id": itinerary_id,
+            "speed_policy_id": speed_policy_id,
+            "estimated_arrival_tick": estimated_arrival_tick,
+            "curvature_warning_edge_ids": sorted(set(curvature_warning_edge_ids)),
+            "curvature_warning_count": int(len(set(curvature_warning_edge_ids))),
+            "spec_warning_edge_ids": sorted(set(spec_warning_edge_ids)),
+            "spec_warning_count": int(len(set(spec_warning_edge_ids))),
+            "warning_edge_ids": warning_edge_ids,
+            "warning_count": int(len(warning_edge_ids)),
+            "per_edge_profile": list(per_edge_profile)[:256],
         }
     if section_id == "section.networkgraph.capacity_utilization":
         graph = _graph_row()
@@ -1625,24 +1709,107 @@ def _build_section_data(
         vehicle_row = dict(row)
         vehicle_id = str(vehicle_row.get("vehicle_id", "")).strip()
         motion_row = dict(_row_index((dict(state or {})).get("vehicle_motion_states"), "vehicle_id").get(vehicle_id) or {})
+        macro_state = dict(motion_row.get("macro_state") or {})
+        itinerary_id = str(macro_state.get("itinerary_id", "")).strip()
+        itinerary_row = dict(_row_index((dict(state or {})).get("itineraries"), "itinerary_id").get(itinerary_id) or {})
+        itinerary_ext = dict(itinerary_row.get("extensions") or {})
+        per_edge_profile = [dict(item) for item in list(itinerary_ext.get("per_edge_profile") or []) if isinstance(item, dict)]
+        current_edge_id = str(macro_state.get("current_edge_id", "")).strip()
+        current_profile = next(
+            (
+                dict(item)
+                for item in per_edge_profile
+                if str(item.get("edge_id", "")).strip() == current_edge_id
+            ),
+            {},
+        )
+        speed_estimate_mm_per_tick = int(max(0, _as_int(current_profile.get("allowed_speed_mm_per_tick", 0), 0)))
+        current_tick = int(max(0, _as_int((dict(state or {})).get("simulation_time", {}).get("tick", 0), 0)))
+        eta_tick = (
+            int(max(0, _as_int(macro_state.get("eta_tick", itinerary_row.get("estimated_arrival_tick", 0)), 0)))
+            if (macro_state.get("eta_tick") is not None or itinerary_row.get("estimated_arrival_tick") is not None)
+            else None
+        )
+        eta_ticks_remaining = None if eta_tick is None else int(max(0, int(eta_tick) - int(current_tick)))
+        schedule_rows = sorted(
+            [
+                dict(item)
+                for item in list((dict(state or {})).get("travel_schedules") or [])
+                if isinstance(item, dict)
+                and str(item.get("target_id", "")).strip() == vehicle_id
+                and bool(item.get("active", True))
+            ],
+            key=lambda item: (_as_int(item.get("next_due_tick", 0), 0), str(item.get("schedule_id", ""))),
+        )
+        next_schedule_row = dict(schedule_rows[0] if schedule_rows else {})
+        next_due_tick = (
+            None
+            if not next_schedule_row
+            else int(max(0, _as_int(next_schedule_row.get("next_due_tick", next_schedule_row.get("start_tick", 0)), 0)))
+        )
         payload = {
             "available": bool(vehicle_id),
             "vehicle_id": vehicle_id or None,
             "vehicle_class_id": str(vehicle_row.get("vehicle_class_id", "")).strip() or None,
             "spatial_id": str(vehicle_row.get("spatial_id", "")).strip() or None,
             "motion_tier": str(motion_row.get("tier", "")).strip() or None,
+            "travel_state": (
+                "enroute"
+                if itinerary_id
+                else ("scheduled" if bool(next_schedule_row) else "idle")
+            ),
             "has_interior_graph": bool(str(vehicle_row.get("interior_graph_id", "")).strip()),
             "port_count": int(len(_sorted_unique_strings(vehicle_row.get("port_ids")))),
             "pose_slot_count": int(len(_sorted_unique_strings(vehicle_row.get("pose_slot_ids")))),
             "mount_point_count": int(len(_sorted_unique_strings(vehicle_row.get("mount_point_ids")))),
         }
         if not allow_hidden_state:
+            payload["driver_instrument"] = {
+                "speed_state": (
+                    "stopped"
+                    if int(speed_estimate_mm_per_tick) <= 0
+                    else ("cruise" if int(speed_estimate_mm_per_tick) >= 1000 else "limited")
+                ),
+                "eta_state": (
+                    None
+                    if eta_ticks_remaining is None
+                    else (
+                        "imminent"
+                        if int(eta_ticks_remaining) <= 16
+                        else ("soon" if int(eta_ticks_remaining) <= 64 else "later")
+                    )
+                ),
+                "timetable_state": (
+                    None
+                    if next_due_tick is None
+                    else ("due" if int(next_due_tick) <= int(current_tick) else "scheduled")
+                ),
+            }
             payload["epistemic_redaction"] = "coarse_summary"
             return payload
         payload["parent_structure_instance_id"] = (
             str(vehicle_row.get("parent_structure_instance_id", "")).strip() or None
         )
         payload["maintenance_policy_id"] = str(vehicle_row.get("maintenance_policy_id", "")).strip() or None
+        payload["macro_travel"] = {
+            "itinerary_id": itinerary_id or None,
+            "current_edge_id": current_edge_id or None,
+            "progress_fraction_q16": int(max(0, _as_int(macro_state.get("progress_fraction_q16", 0), 0))),
+            "speed_estimate_mm_per_tick": int(max(0, speed_estimate_mm_per_tick)),
+            "eta_tick": eta_tick,
+            "eta_ticks_remaining": eta_ticks_remaining,
+            "next_schedule_due_tick": next_due_tick,
+            "next_schedule_id": str(next_schedule_row.get("schedule_id", "")).strip() or None,
+            "speed_policy_id": str(itinerary_row.get("speed_policy_id", "")).strip() or None,
+        }
+        payload["upcoming_timetable_rows"] = [
+            {
+                "schedule_id": str(item.get("schedule_id", "")).strip() or None,
+                "next_due_tick": int(max(0, _as_int(item.get("next_due_tick", item.get("start_tick", 0)), 0))),
+                "itinerary_id": str((dict(item.get("extensions") or {})).get("itinerary_id", "")).strip() or None,
+            }
+            for item in list(schedule_rows)[:8]
+        ]
         payload["motion_state"] = dict(motion_row)
         payload["hazard_ids"] = _sorted_unique_strings(vehicle_row.get("hazard_ids"))
         payload["epistemic_redaction"] = "none"
