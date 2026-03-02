@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Travel Event Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-4 macro travel event row.",
+  "x-doc-ref": [
+    "docs/mobility/MACRO_TRAVEL_MODEL.md",
+    "docs/audit/MACRO_TRAVEL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "tick",
+    "vehicle_id",
+    "itinerary_id",
+    "kind",
+    "details",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "itinerary_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "depart",
+        "arrive",
+        "edge_enter",
+        "edge_exit",
+        "delay",
+        "incident_stub"
+      ]
+    },
+    "details": {
+      "type": "object",
+      "maxProperties": 32,
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "event_id": "event.travel.demo.001",
+      "tick": 100,
+      "vehicle_id": "vehicle.demo.001",
+      "itinerary_id": "itinerary.vehicle.demo.001",
+      "kind": "depart",
+      "details": {
+        "edge_id": "edge.mob.demo.001"
+      },
+      "deterministic_fingerprint": "d368b74fc86b058bbf630f0e0f03648c5cad5f8e6dbaf0ec32733adf9b4a8ce2",
+      "extensions": {}
+    }
+  ]
+}

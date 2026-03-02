@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Travel Commitment Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-4 travel commitment row.",
+  "x-doc-ref": [
+    "docs/mobility/MACRO_TRAVEL_MODEL.md",
+    "docs/audit/MACRO_TRAVEL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "commitment_id",
+    "vehicle_id",
+    "itinerary_id",
+    "kind",
+    "scheduled_tick",
+    "status",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "commitment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "itinerary_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "depart",
+        "arrive",
+        "waypoint"
+      ]
+    },
+    "scheduled_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "commitment.travel.demo.001",
+      "vehicle_id": "vehicle.demo.001",
+      "itinerary_id": "itinerary.vehicle.demo.001",
+      "kind": "depart",
+      "scheduled_tick": 100,
+      "status": "scheduled",
+      "deterministic_fingerprint": "88cc63f6db4bca3a6102ad6c8e5efff8681b0e94c2fb35f03cd8c7a8fd6cb707",
+      "extensions": {}
+    }
+  ]
+}

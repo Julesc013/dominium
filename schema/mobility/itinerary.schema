@@ -1,0 +1,26 @@
+SCHEMA: mobility/itinerary.schema
+schema_id: dominium.schema.mobility.itinerary
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic MOB-4 macro travel itinerary over MobilityNetworkGraph.
+
+REQUIRED SHAPE:
+record itinerary
+  required:
+    - schema_version: semver
+    - itinerary_id: id
+    - vehicle_id: id
+    - route_edge_ids: list[id]
+    - route_node_ids: list[id]
+    - departure_tick: int
+    - estimated_arrival_tick: int
+    - speed_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Itineraries are created through process-only mutation.
+- Route ordering is canonical and deterministic.
+- ETA is deterministic for identical route/spec/policy inputs.
