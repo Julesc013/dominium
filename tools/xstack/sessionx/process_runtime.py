@@ -7040,6 +7040,25 @@ def _pose_slot_accessible_by_path(
         return False
 
 
+def _vehicle_row_for_pose_slot(state: dict, pose_slot_row: Mapping[str, object]) -> dict:
+    slot = dict(pose_slot_row or {})
+    slot_id = str(slot.get("pose_slot_id", "")).strip()
+    slot_ext = dict(slot.get("extensions") or {}) if isinstance(slot.get("extensions"), Mapping) else {}
+    explicit_vehicle_id = str(slot_ext.get("vehicle_id", "")).strip()
+    vehicle_rows = _vehicle_rows_by_id(state)
+    if explicit_vehicle_id:
+        return dict(vehicle_rows.get(explicit_vehicle_id) or {})
+    parent_assembly_id = str(slot.get("parent_assembly_id", "")).strip()
+    if parent_assembly_id and parent_assembly_id in vehicle_rows:
+        return dict(vehicle_rows.get(parent_assembly_id) or {})
+    for vehicle_id in sorted(vehicle_rows.keys()):
+        vehicle_row = dict(vehicle_rows.get(vehicle_id) or {})
+        pose_slot_ids = set(_sorted_tokens(list(vehicle_row.get("pose_slot_ids") or [])))
+        if slot_id and slot_id in pose_slot_ids:
+            return vehicle_row
+    return {}
+
+
 def _inventory_debit(
     *,
     inventory_index: Dict[str, dict],
@@ -16404,6 +16423,39 @@ def execute_intent(
                     {"pose_slot_id": pose_slot_id, "agent_id": agent_id},
                     "$.intent.inputs.pose_slot_id",
                 )
+        if should_enter and (not override):
+            moving_vehicle_row = _vehicle_row_for_pose_slot(state, pose_slot_row)
+            moving_vehicle_id = str(moving_vehicle_row.get("vehicle_id", "")).strip()
+            if moving_vehicle_id and _vehicle_is_in_motion(state, moving_vehicle_id):
+                pose_ext = dict(pose_slot_row.get("extensions") or {})
+                vehicle_ext = dict(moving_vehicle_row.get("extensions") or {})
+                allow_move_while_moving = bool(
+                    inputs.get("allow_compartment_move_while_in_motion", False)
+                    or pose_ext.get("allow_compartment_move_while_in_motion", False)
+                    or vehicle_ext.get("allow_compartment_move_while_in_motion", False)
+                )
+                from_volume_id = _agent_current_volume_id(agent)
+                to_volume_id = str(pose_slot_row.get("interior_volume_id", "")).strip()
+                moving_between_compartments = (
+                    bool(from_volume_id)
+                    and bool(to_volume_id)
+                    and str(from_volume_id).strip() != str(to_volume_id).strip()
+                )
+                if moving_between_compartments and (not allow_move_while_moving):
+                    return refusal(
+                        "refusal.pose.movement_restricted",
+                        "compartment transfer is restricted while vehicle '{}' is in motion".format(
+                            moving_vehicle_id
+                        ),
+                        "Stop vehicle movement or grant allow_compartment_move_while_in_motion policy before seat transfer.",
+                        {
+                            "vehicle_id": moving_vehicle_id,
+                            "pose_slot_id": pose_slot_id,
+                            "from_volume_id": from_volume_id,
+                            "to_volume_id": to_volume_id,
+                        },
+                        "$.intent.inputs.pose_slot_id",
+                    )
         posture_id = ""
         try:
             if should_enter:
