@@ -21,6 +21,16 @@ from .protection import (
     normalize_protection_settings_rows,
     protection_device_kind_rows_by_id,
 )
+from .storage import (
+    REFUSAL_ELEC_STORAGE_INVALID,
+    ElectricStorageError,
+    SOC_SCALE,
+    apply_storage_charge,
+    apply_storage_discharge,
+    build_storage_state,
+    normalize_storage_state_rows,
+    storage_state_rows_by_node_id,
+)
 from .power_network_engine import (
     ElectricError,
     REFUSAL_ELEC_NETWORK_INVALID,
@@ -53,6 +63,14 @@ __all__ = [
     "normalize_protection_device_rows",
     "normalize_protection_settings_rows",
     "protection_device_kind_rows_by_id",
+    "REFUSAL_ELEC_STORAGE_INVALID",
+    "ElectricStorageError",
+    "SOC_SCALE",
+    "apply_storage_charge",
+    "apply_storage_discharge",
+    "build_storage_state",
+    "normalize_storage_state_rows",
+    "storage_state_rows_by_node_id",
     "ElectricError",
     "REFUSAL_ELEC_NETWORK_INVALID",
     "REFUSAL_ELEC_SPEC_NONCOMPLIANT",

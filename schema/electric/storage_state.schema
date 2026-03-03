@@ -1,0 +1,23 @@
+SCHEMA: electric/storage_state.schema
+schema_id: dominium.schema.electric.storage_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic state row for electrical storage nodes (battery SoC baseline).
+
+REQUIRED SHAPE:
+record storage_state
+  required:
+    - schema_version: semver
+    - node_id: id
+    - state_of_charge: fixed_point_0_to_1
+    - capacity_energy: int
+    - last_update_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Storage state mutates only through deterministic processes.
+- `state_of_charge` is clamped to [0,1] fixed-point representation.
+- `capacity_energy >= 0`.

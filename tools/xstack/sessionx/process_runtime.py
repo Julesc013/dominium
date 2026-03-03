@@ -384,11 +384,15 @@ from src.mobility.maintenance import (
 from src.electric import (
     ElectricFaultError,
     ElectricProtectionError,
+    ElectricStorageError,
     ElectricError,
     REFUSAL_ELEC_FAULT_INVALID,
     REFUSAL_ELEC_NETWORK_INVALID,
     REFUSAL_ELEC_PROTECTION_INVALID,
+    REFUSAL_ELEC_STORAGE_INVALID,
     REFUSAL_ELEC_SPEC_NONCOMPLIANT,
+    apply_storage_charge,
+    apply_storage_discharge,
     build_power_flow_channel,
     build_protection_device,
     build_protection_settings,
@@ -402,6 +406,7 @@ from src.electric import (
     normalize_fault_state_rows,
     normalize_protection_device_rows,
     normalize_protection_settings_rows,
+    normalize_storage_state_rows,
     solve_power_network_e0,
     solve_power_network_e1,
 )
@@ -598,6 +603,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.vehicle_register_from_structure": "entitlement.control.admin",
     "process.vehicle_check_compatibility": "entitlement.inspect",
     "process.vehicle_apply_environment_hooks": "session.boot",
+    "process.storage_charge": "entitlement.control.admin",
+    "process.storage_discharge": "entitlement.control.admin",
     "process.elec.connect_wire": "entitlement.control.admin",
     "process.elec.flip_breaker": "entitlement.tool.operating",
     "process.elec_apply_loto": "entitlement.tool.operating",
@@ -759,6 +766,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.vehicle_register_from_structure": "operator",
     "process.vehicle_check_compatibility": "observer",
     "process.vehicle_apply_environment_hooks": "observer",
+    "process.storage_charge": "operator",
+    "process.storage_discharge": "operator",
     "process.elec.connect_wire": "operator",
     "process.elec.flip_breaker": "operator",
     "process.elec_apply_loto": "operator",
@@ -867,6 +876,8 @@ CONTROL_PROCESS_IDS = {
     "process.vehicle_register_from_structure",
     "process.vehicle_check_compatibility",
     "process.vehicle_apply_environment_hooks",
+    "process.storage_charge",
+    "process.storage_discharge",
     "process.elec.connect_wire",
     "process.elec.flip_breaker",
     "process.elec_apply_loto",
@@ -15400,6 +15411,8 @@ def execute_intent(
         for row in list(state.get("elec_node_status_rows") or [])
         if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
     ]
+    elec_storage_states = normalize_storage_state_rows(state.get("elec_storage_states") or [])
+    state["elec_storage_states"] = [dict(row) for row in list(elec_storage_states or []) if isinstance(row, Mapping)]
     elec_network_runtime_state = dict(state.get("elec_network_runtime_state") or {})
     signal_jamming_effect_rows = normalize_jamming_effect_rows(
         state.get("signal_jamming_effect_rows") or state.get("signal_jamming_effects") or []
@@ -16415,7 +16428,7 @@ def execute_intent(
         tool_id = str(inputs.get("tool_id", "")).strip()
         if not subject_id or not tool_id:
             return refusal(
-                "PROCESS_INPUT_INVALID",
+                REFUSAL_ELEC_STORAGE_INVALID,
                 "process.tool_bind requires subject_id and tool_id",
                 "Provide deterministic subject_id and tool_id in process inputs.",
                 {"process_id": process_id},
@@ -16436,7 +16449,7 @@ def execute_intent(
         known_effect_models = _tool_effect_model_rows(policy_context)
         if known_tool_types and tool_type_id not in known_tool_types:
             return refusal(
-                "PROCESS_INPUT_INVALID",
+                REFUSAL_ELEC_STORAGE_INVALID,
                 "tool type '{}' is not present in tool_type_registry".format(tool_type_id or "<missing>"),
                 "Declare tool type in tool_type_registry or update tool assembly metadata.",
                 {"tool_id": tool_id, "tool_type_id": tool_type_id or "<missing>"},
@@ -21735,6 +21748,97 @@ def execute_intent(
             "component_quantity_id": component_quantity_id or None,
             "delta": int(delta),
             "accumulated_delta": int(accumulated_delta),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.storage_charge":
+        node_id = str(inputs.get("node_id", "")).strip()
+        energy_delta = int(max(0, _as_int(inputs.get("energy_delta", 0), 0)))
+        if (not node_id) or energy_delta <= 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.storage_charge requires node_id and energy_delta>0",
+                "Provide deterministic node_id and positive energy_delta for charge operation.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        capacity_energy = inputs.get("capacity_energy")
+        elec_storage_states = normalize_storage_state_rows(state.get("elec_storage_states") or [])
+        if capacity_energy is not None:
+            rows_by_node = dict(
+                (
+                    str(row.get("node_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(elec_storage_states or [])
+                if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+            )
+            row = dict(rows_by_node.get(node_id) or {})
+            if row:
+                row["capacity_energy"] = int(max(0, _as_int(capacity_energy, 0)))
+                rows_by_node[node_id] = row
+                elec_storage_states = [dict(rows_by_node[key]) for key in sorted(rows_by_node.keys())]
+        try:
+            charge_result = apply_storage_charge(
+                storage_rows=elec_storage_states,
+                node_id=node_id,
+                energy_delta=int(energy_delta),
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+            )
+        except ElectricStorageError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix storage inputs and retry charge operation.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs",
+            )
+        state["elec_storage_states"] = [
+            dict(row)
+            for row in list(charge_result.get("storage_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        result_metadata = {
+            "node_id": node_id,
+            "requested_energy_delta": int(energy_delta),
+            "accepted_energy_delta": int(max(0, _as_int(charge_result.get("accepted_energy_delta", 0), 0))),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.storage_discharge":
+        node_id = str(inputs.get("node_id", "")).strip()
+        energy_delta = int(max(0, _as_int(inputs.get("energy_delta", 0), 0)))
+        if (not node_id) or energy_delta <= 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.storage_discharge requires node_id and energy_delta>0",
+                "Provide deterministic node_id and positive energy_delta for discharge operation.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        elec_storage_states = normalize_storage_state_rows(state.get("elec_storage_states") or [])
+        try:
+            discharge_result = apply_storage_discharge(
+                storage_rows=elec_storage_states,
+                node_id=node_id,
+                energy_delta=int(energy_delta),
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+            )
+        except ElectricStorageError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix storage inputs and retry discharge operation.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs",
+            )
+        state["elec_storage_states"] = [
+            dict(row)
+            for row in list(discharge_result.get("storage_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        result_metadata = {
+            "node_id": node_id,
+            "requested_energy_delta": int(energy_delta),
+            "accepted_energy_delta": int(max(0, _as_int(discharge_result.get("accepted_energy_delta", 0), 0))),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.elec.connect_wire":
