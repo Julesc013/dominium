@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model Cache Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic constitutive model cache policy registry output.",
+  "type": "object",
+  "required": ["format_version", "generated_from", "cache_policies", "registry_hash"],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {"type": "string", "const": "1.0.0"},
+    "generated_from": {"type": "array"},
+    "cache_policies": {"type": "array", "items": {"$ref": "cache_policy.schema.json"}},
+    "registry_hash": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}
+  }
+}

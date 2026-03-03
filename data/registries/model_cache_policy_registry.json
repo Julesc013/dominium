@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.registry.model_cache_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.model_cache_policy_registry",
+    "registry_version": "1.0.0",
+    "cache_policies": [
+      {
+        "schema_version": "1.0.0",
+        "cache_policy_id": "cache.none",
+        "mode": "none",
+        "ttl_ticks": null,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "cache_policy_id": "cache.by_inputs_hash",
+        "mode": "by_inputs_hash",
+        "ttl_ticks": 64,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
