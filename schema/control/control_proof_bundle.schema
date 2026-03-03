@@ -24,6 +24,7 @@ record control_proof_bundle
     - congestion_hash: sha256
     - signal_state_hash: sha256
     - derailment_hash: sha256
+    - power_flow_hash: sha256
     - signal_network_hash: sha256
     - message_delivery_event_hash_chain: sha256
     - receipt_hash_chain: sha256

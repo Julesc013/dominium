@@ -54,6 +54,7 @@ from src.core.constraints.constraint_engine import (
     build_constraint_enforcement_hooks,
     constraint_type_rows_by_id,
 )
+from src.core.flow import normalize_flow_channel as normalize_core_flow_channel
 from src.logistics.logistics_engine import (
     LogisticsError,
     build_inventory_index,
@@ -380,6 +381,16 @@ from src.mobility.maintenance import (
     wear_summary_for_target,
     wear_type_rows_by_id,
 )
+from src.electric import (
+    ElectricError,
+    REFUSAL_ELEC_NETWORK_INVALID,
+    REFUSAL_ELEC_SPEC_NONCOMPLIANT,
+    build_power_flow_channel,
+    evaluate_connection_spec_compatibility,
+    normalize_elec_edge_payload,
+    solve_power_network_e0,
+    solve_power_network_e1,
+)
 from src.mechanics import (
     build_structural_edge,
     build_structural_node,
@@ -573,6 +584,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.vehicle_register_from_structure": "entitlement.control.admin",
     "process.vehicle_check_compatibility": "entitlement.inspect",
     "process.vehicle_apply_environment_hooks": "session.boot",
+    "process.elec.connect_wire": "entitlement.control.admin",
+    "process.elec.flip_breaker": "entitlement.tool.operating",
+    "process.elec.lockout_tagout": "entitlement.tool.operating",
+    "process.elec.network_tick": "session.boot",
     "process.mechanics_fracture": "session.boot",
     "process.weld_joint": "entitlement.tool.use",
     "process.cut_joint": "entitlement.tool.use",
@@ -728,6 +743,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.vehicle_register_from_structure": "operator",
     "process.vehicle_check_compatibility": "observer",
     "process.vehicle_apply_environment_hooks": "observer",
+    "process.elec.connect_wire": "operator",
+    "process.elec.flip_breaker": "operator",
+    "process.elec.lockout_tagout": "operator",
+    "process.elec.network_tick": "observer",
     "process.mechanics_fracture": "observer",
     "process.weld_joint": "operator",
     "process.cut_joint": "operator",
@@ -830,6 +849,10 @@ CONTROL_PROCESS_IDS = {
     "process.vehicle_register_from_structure",
     "process.vehicle_check_compatibility",
     "process.vehicle_apply_environment_hooks",
+    "process.elec.connect_wire",
+    "process.elec.flip_breaker",
+    "process.elec.lockout_tagout",
+    "process.elec.network_tick",
     "process.mechanics_fracture",
     "process.safety_tick",
     "process.model_evaluate_tick",
@@ -3740,12 +3763,20 @@ def _safety_context_rows_by_target_id(
         for row in list((dict(state or {})).get("mobility_wear_states") or [])
         if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
     )
-    channel_rows_by_id = dict(
+    signal_channel_rows_by_id = dict(
         (
             str(row.get("channel_id", "")).strip(),
             dict(row),
         )
         for row in list((dict(state or {})).get("signal_channel_rows") or (dict(state or {})).get("signal_channels") or [])
+        if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+    )
+    elec_channel_rows_by_id = dict(
+        (
+            str(row.get("channel_id", "")).strip(),
+            dict(row),
+        )
+        for row in list((dict(state or {})).get("elec_flow_channels") or [])
         if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
     )
     heartbeat_rows_by_target = dict(
@@ -3802,11 +3833,28 @@ def _safety_context_rows_by_target_id(
         machine_row = dict(signal_machine_by_id.get(token) or {})
         if machine_row:
             _set_nested_context_value(context_row, "state.current", str(machine_row.get("state_id", "")).strip())
-        channel_row = dict(channel_rows_by_id.get(token) or {})
+        channel_row = dict(signal_channel_rows_by_id.get(token) or {})
+        if not channel_row:
+            channel_row = dict(elec_channel_rows_by_id.get(token) or {})
         if channel_row:
             ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
             _set_nested_context_value(context_row, "flow.capacity_units", int(max(0, _as_int(channel_row.get("capacity_per_tick", 0), 0))))
-            _set_nested_context_value(context_row, "flow.load_units", int(max(0, _as_int(ext.get("queue_depth", 0), 0))))
+            _set_nested_context_value(
+                context_row,
+                "flow.load_units",
+                int(
+                    max(
+                        0,
+                        _as_int(
+                            ext.get(
+                                "elec.load_units",
+                                ext.get("power_load_units", ext.get("queue_depth", 0)),
+                            ),
+                            0,
+                        ),
+                    )
+                ),
+            )
             _set_nested_context_value(context_row, "flow.pressure_kpa", int(max(0, _as_int(ext.get("pressure_kpa", 0), 0))))
         wear_row = dict(wear_rows_by_target.get(token) or {})
         if wear_row:
@@ -3891,15 +3939,30 @@ def _apply_safety_actions(
         for row in list(effect_rows or [])
         if isinstance(row, Mapping) and str(row.get("effect_id", "")).strip()
     )
-    channel_rows = [dict(row) for row in list(state.get("signal_channel_rows") or state.get("signal_channels") or []) if isinstance(row, Mapping)]
-    channel_rows_by_id = dict(
+    signal_channel_rows = [dict(row) for row in list(state.get("signal_channel_rows") or state.get("signal_channels") or []) if isinstance(row, Mapping)]
+    signal_channel_rows_by_id = dict(
         (
             str(row.get("channel_id", "")).strip(),
             dict(row),
         )
-        for row in channel_rows
+        for row in signal_channel_rows
         if str(row.get("channel_id", "")).strip()
     )
+    elec_channel_rows = [dict(row) for row in list(state.get("elec_flow_channels") or []) if isinstance(row, Mapping)]
+    elec_channel_rows_by_id = dict(
+        (
+            str(row.get("channel_id", "")).strip(),
+            dict(row),
+        )
+        for row in elec_channel_rows
+        if str(row.get("channel_id", "")).strip()
+    )
+    channel_domain_by_id = dict((channel_id, "signal") for channel_id in signal_channel_rows_by_id.keys())
+    for channel_id in elec_channel_rows_by_id.keys():
+        channel_domain_by_id[channel_id] = "elec"
+    channel_rows_by_id = dict(signal_channel_rows_by_id)
+    for channel_id, row in elec_channel_rows_by_id.items():
+        channel_rows_by_id[channel_id] = dict(row)
     known_effect_targets = set(_effect_target_ids(state))
     action_outcomes: List[dict] = []
 
@@ -4013,13 +4076,24 @@ def _apply_safety_actions(
                 row = dict(channel_rows_by_id.get(target_id) or {})
                 if not row:
                     continue
+                domain = str(channel_domain_by_id.get(target_id, "signal"))
                 ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
                 ext["safety_disconnected"] = True
                 ext["safety_disconnect_tick"] = int(current_tick)
                 ext["source_instance_id"] = str(action.get("instance_id", "")).strip()
+                if domain == "elec":
+                    ext["breaker_state"] = "tripped"
                 row["extensions"] = ext
                 row["capacity_per_tick"] = 0
-                channel_rows_by_id[target_id] = row
+                if domain == "elec":
+                    try:
+                        row = normalize_core_flow_channel(row)
+                    except Exception:
+                        pass
+                    elec_channel_rows_by_id[target_id] = dict(row)
+                else:
+                    signal_channel_rows_by_id[target_id] = dict(row)
+                channel_rows_by_id[target_id] = dict(row)
                 applied_targets.append(target_id)
             status = "applied" if applied_targets else "ignored"
         elif action_type == "emit_refusal":
@@ -4040,10 +4114,20 @@ def _apply_safety_actions(
     normalized_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
     normalized_signal_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
     normalized_effect_rows = normalize_effect_rows([dict(effect_by_id[key]) for key in sorted(effect_by_id.keys())])
-    normalized_channel_rows = normalize_signal_channel_rows([dict(channel_rows_by_id[key]) for key in sorted(channel_rows_by_id.keys())])
-    if normalized_channel_rows:
-        state["signal_channel_rows"] = [dict(row) for row in normalized_channel_rows]
-        state["signal_channels"] = [dict(row) for row in normalized_channel_rows]
+    normalized_signal_channel_rows = normalize_signal_channel_rows(
+        [dict(signal_channel_rows_by_id[key]) for key in sorted(signal_channel_rows_by_id.keys())]
+    )
+    if normalized_signal_channel_rows:
+        state["signal_channel_rows"] = [dict(row) for row in normalized_signal_channel_rows]
+        state["signal_channels"] = [dict(row) for row in normalized_signal_channel_rows]
+    normalized_elec_channel_rows: List[dict] = []
+    for key in sorted(elec_channel_rows_by_id.keys()):
+        try:
+            normalized_elec_channel_rows.append(normalize_core_flow_channel(elec_channel_rows_by_id[key]))
+        except Exception:
+            continue
+    if normalized_elec_channel_rows:
+        state["elec_flow_channels"] = [dict(row) for row in normalized_elec_channel_rows]
 
     return {
         "mobility_switch_locks": normalized_switch_locks,
@@ -15268,6 +15352,35 @@ def execute_intent(
     model_runtime_state = _ensure_model_runtime_state(state)
     model_hazard_rows = _ensure_model_hazard_rows(state)
     model_flow_adjustment_rows = _ensure_model_flow_adjustment_rows(state)
+    elec_flow_channels = []
+    for _row in list(state.get("elec_flow_channels") or []):
+        if not isinstance(_row, Mapping):
+            continue
+        try:
+            elec_flow_channels.append(normalize_core_flow_channel(dict(_row)))
+        except Exception:
+            continue
+    elec_flow_channels = sorted(
+        (dict(row) for row in list(elec_flow_channels or [])),
+        key=lambda row: str(row.get("channel_id", "")),
+    )
+    state["elec_flow_channels"] = [dict(row) for row in list(elec_flow_channels or []) if isinstance(row, Mapping)]
+    power_network_graphs = [
+        dict(row)
+        for row in list(state.get("power_network_graphs") or [])
+        if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip()
+    ]
+    elec_edge_status_rows = [
+        dict(row)
+        for row in list(state.get("elec_edge_status_rows") or [])
+        if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+    ]
+    elec_node_status_rows = [
+        dict(row)
+        for row in list(state.get("elec_node_status_rows") or [])
+        if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+    ]
+    elec_network_runtime_state = dict(state.get("elec_network_runtime_state") or {})
     signal_jamming_effect_rows = normalize_jamming_effect_rows(
         state.get("signal_jamming_effect_rows") or state.get("signal_jamming_effects") or []
     )
@@ -21525,7 +21638,15 @@ def execute_intent(
         adjustment_rows_by_id[row_id] = payload
         model_flow_adjustment_rows = [dict(adjustment_rows_by_id[key]) for key in sorted(adjustment_rows_by_id.keys())]
         signal_channel_rows = normalize_signal_channel_rows(state.get("signal_channel_rows") or state.get("signal_channels") or [])
-        if signal_channel_rows:
+        elec_flow_channel_rows = []
+        for _row in list(state.get("elec_flow_channels") or []):
+            if not isinstance(_row, Mapping):
+                continue
+            try:
+                elec_flow_channel_rows.append(normalize_core_flow_channel(dict(_row)))
+            except Exception:
+                continue
+        if signal_channel_rows or elec_flow_channel_rows:
             channel_rows_by_id = dict(
                 (
                     str(row.get("channel_id", "")).strip(),
@@ -21534,7 +21655,19 @@ def execute_intent(
                 for row in list(signal_channel_rows or [])
                 if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
             )
+            elec_channel_rows_by_id = dict(
+                (
+                    str(row.get("channel_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(elec_flow_channel_rows or [])
+                if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+            )
             selected = dict(channel_rows_by_id.get(channel_id) or {})
+            selected_domain = "signal"
+            if not selected:
+                selected = dict(elec_channel_rows_by_id.get(channel_id) or {})
+                selected_domain = "elec"
             if selected:
                 ext = dict(selected.get("extensions") or {}) if isinstance(selected.get("extensions"), Mapping) else {}
                 ext_key = (
@@ -21551,12 +21684,21 @@ def execute_intent(
                     base_capacity = int(max(0, _as_int(selected.get("capacity_per_tick", 0), 0)))
                     selected["capacity_per_tick"] = int(max(0, int(base_capacity + delta)))
                 selected["extensions"] = ext
-                channel_rows_by_id[channel_id] = selected
-                normalized_channels = normalize_signal_channel_rows(
-                    [dict(channel_rows_by_id[key]) for key in sorted(channel_rows_by_id.keys())]
-                )
-                state["signal_channel_rows"] = [dict(row) for row in normalized_channels]
-                state["signal_channels"] = [dict(row) for row in normalized_channels]
+                if selected_domain == "elec":
+                    try:
+                        selected = normalize_core_flow_channel(selected)
+                    except Exception:
+                        pass
+                    elec_channel_rows_by_id[channel_id] = dict(selected)
+                    normalized_elec_channels = [dict(elec_channel_rows_by_id[key]) for key in sorted(elec_channel_rows_by_id.keys())]
+                    state["elec_flow_channels"] = [dict(row) for row in normalized_elec_channels]
+                else:
+                    channel_rows_by_id[channel_id] = selected
+                    normalized_channels = normalize_signal_channel_rows(
+                        [dict(channel_rows_by_id[key]) for key in sorted(channel_rows_by_id.keys())]
+                    )
+                    state["signal_channel_rows"] = [dict(row) for row in normalized_channels]
+                    state["signal_channels"] = [dict(row) for row in normalized_channels]
         _persist_model_state(
             state,
             model_bindings=model_bindings,
@@ -21573,6 +21715,519 @@ def execute_intent(
             "component_quantity_id": component_quantity_id or None,
             "delta": int(delta),
             "accumulated_delta": int(accumulated_delta),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.elec.connect_wire":
+        graph_id = str(inputs.get("graph_id", "")).strip()
+        edge_id = str(inputs.get("edge_id", "")).strip()
+        if (not graph_id) or (not edge_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.elec.connect_wire requires graph_id and edge_id",
+                "Provide deterministic graph_id and edge_id for the power edge to connect.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        graph_row = {}
+        for row in list(power_network_graphs or []):
+            if not isinstance(row, Mapping):
+                continue
+            if str(row.get("graph_id", "")).strip() == graph_id:
+                graph_row = dict(row)
+                break
+        if not graph_row:
+            for row in list(state.get("network_graphs") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                if str(row.get("graph_id", "")).strip() == graph_id:
+                    graph_row = dict(row)
+                    break
+        if not graph_row:
+            return refusal(
+                REFUSAL_ELEC_NETWORK_INVALID,
+                "power graph '{}' was not found".format(graph_id),
+                "Create/register a power network graph before connecting wires.",
+                {"graph_id": graph_id, "edge_id": edge_id},
+                "$.intent.inputs.graph_id",
+            )
+        edge_row = {}
+        for row in list(graph_row.get("edges") or []):
+            if not isinstance(row, Mapping):
+                continue
+            if str(row.get("edge_id", "")).strip() == edge_id:
+                edge_row = dict(row)
+                break
+        if not edge_row:
+            return refusal(
+                REFUSAL_ELEC_NETWORK_INVALID,
+                "power graph edge '{}' was not found".format(edge_id),
+                "Use an existing edge_id from the selected power graph.",
+                {"graph_id": graph_id, "edge_id": edge_id},
+                "$.intent.inputs.edge_id",
+            )
+        try:
+            edge_payload = normalize_elec_edge_payload(dict(edge_row.get("payload") or {}))
+        except ElectricError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix electrical edge payload schema fields and retry wire connection.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs.edge_id",
+            )
+
+        connector_spec_id = str(inputs.get("connector_spec_id", "")).strip()
+        edge_spec_id = str(edge_payload.get("spec_id", "")).strip()
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compliance_check_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="compliance_check_registry",
+            registry_rel_path="data/registries/compliance_check_registry.json",
+            entry_key="compliance_checks",
+        )
+        spec_rows, spec_load_errors = _spec_sheet_rows(
+            policy_context=policy_context,
+            spec_type_registry=spec_type_registry,
+            tolerance_policy_registry=tolerance_policy_registry,
+            compliance_check_registry=compliance_check_registry,
+        )
+        if spec_load_errors:
+            return refusal(
+                "PROCESS_POLICY_INVALID",
+                "spec registry resolution failed during electrical connector validation",
+                "Load SPEC registry rows before electrical connection checks.",
+                {"errors": list(spec_load_errors)},
+                "$.policy_context",
+            )
+        spec_rows_index = spec_sheet_rows_by_id(spec_rows)
+        compatibility = evaluate_connection_spec_compatibility(
+            connector_spec_row=dict(spec_rows_index.get(connector_spec_id) or {}),
+            edge_spec_row=dict(spec_rows_index.get(edge_spec_id) or {}),
+        )
+        if connector_spec_id and (not bool(compatibility.get("compatible", False))):
+            return refusal(
+                REFUSAL_ELEC_SPEC_NONCOMPLIANT,
+                "electrical connector spec is non-compliant with edge spec",
+                "Align voltage/current/connector compatibility or use a compatible edge.",
+                {
+                    "connector_spec_id": connector_spec_id,
+                    "edge_spec_id": edge_spec_id or None,
+                    "reasons": list(compatibility.get("reasons") or []),
+                },
+                "$.intent.inputs.connector_spec_id",
+            )
+
+        channel_row = build_power_flow_channel(
+            graph_id=graph_id,
+            edge_id=edge_id,
+            source_node_id=str(edge_row.get("from_node_id", "")).strip(),
+            sink_node_id=str(edge_row.get("to_node_id", "")).strip(),
+            capacity_rating=int(max(0, _as_int(edge_payload.get("capacity_rating", 0), 0))),
+        )
+        ext = dict(channel_row.get("extensions") or {})
+        ext["elec.base_capacity_per_tick"] = int(max(0, _as_int(channel_row.get("capacity_per_tick", 0), 0)))
+        ext["edge_id"] = edge_id
+        ext["graph_id"] = graph_id
+        channel_row["extensions"] = ext
+        channel_row = normalize_core_flow_channel(channel_row)
+
+        channels_by_id = dict(
+            (
+                str(row.get("channel_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(elec_flow_channels or [])
+            if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+        )
+        channels_by_id[str(channel_row.get("channel_id", "")).strip()] = dict(channel_row)
+        elec_flow_channels = [dict(channels_by_id[key]) for key in sorted(channels_by_id.keys())]
+        state["elec_flow_channels"] = [dict(row) for row in list(elec_flow_channels or []) if isinstance(row, Mapping)]
+
+        power_graphs_by_id = dict(
+            (
+                str(row.get("graph_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(power_network_graphs or [])
+            if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip()
+        )
+        power_graphs_by_id[graph_id] = dict(graph_row)
+        power_network_graphs = [dict(power_graphs_by_id[key]) for key in sorted(power_graphs_by_id.keys())]
+        state["power_network_graphs"] = [dict(row) for row in list(power_network_graphs or []) if isinstance(row, Mapping)]
+
+        result_metadata = {
+            "graph_id": graph_id,
+            "edge_id": edge_id,
+            "channel_id": str(channel_row.get("channel_id", "")).strip(),
+            "capacity_per_tick": int(max(0, _as_int(channel_row.get("capacity_per_tick", 0), 0))),
+            "connector_spec_id": connector_spec_id or None,
+            "edge_spec_id": edge_spec_id or None,
+            "spec_compatible": bool(compatibility.get("compatible", True)),
+            "spec_reasons": list(compatibility.get("reasons") or []),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.elec.flip_breaker":
+        channel_id = str(inputs.get("channel_id", "")).strip()
+        if not channel_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.elec.flip_breaker requires channel_id",
+                "Provide deterministic channel_id for the electrical flow channel.",
+                {"process_id": process_id},
+                "$.intent.inputs.channel_id",
+            )
+        requested_state = str(inputs.get("breaker_state", inputs.get("state", "tripped"))).strip().lower() or "tripped"
+        channels_by_id = dict(
+            (
+                str(row.get("channel_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(elec_flow_channels or [])
+            if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+        )
+        selected = dict(channels_by_id.get(channel_id) or {})
+        if not selected:
+            return refusal(
+                REFUSAL_ELEC_NETWORK_INVALID,
+                "electrical flow channel '{}' was not found".format(channel_id),
+                "Connect wire/channel before flipping breaker state.",
+                {"channel_id": channel_id},
+                "$.intent.inputs.channel_id",
+            )
+        ext = dict(selected.get("extensions") or {}) if isinstance(selected.get("extensions"), Mapping) else {}
+        base_capacity = int(max(0, _as_int(ext.get("elec.base_capacity_per_tick", selected.get("capacity_per_tick", 0)), 0)))
+        if requested_state in {"tripped", "open"}:
+            selected["capacity_per_tick"] = 0
+            ext["breaker_state"] = "tripped"
+            ext["safety_disconnected"] = True
+        elif requested_state in {"closed", "reset"}:
+            selected["capacity_per_tick"] = int(base_capacity)
+            ext["breaker_state"] = "closed"
+            ext["safety_disconnected"] = False
+        else:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "breaker_state must be tripped|open|closed|reset",
+                "Provide a supported breaker_state token.",
+                {"breaker_state": requested_state},
+                "$.intent.inputs.breaker_state",
+            )
+        ext["last_breaker_process_id"] = process_id
+        ext["last_breaker_intent_id"] = str(intent_id)
+        selected["extensions"] = ext
+        try:
+            selected = normalize_core_flow_channel(selected)
+        except Exception:
+            pass
+        channels_by_id[channel_id] = dict(selected)
+        elec_flow_channels = [dict(channels_by_id[key]) for key in sorted(channels_by_id.keys())]
+        state["elec_flow_channels"] = [dict(row) for row in list(elec_flow_channels or []) if isinstance(row, Mapping)]
+        result_metadata = {
+            "channel_id": channel_id,
+            "breaker_state": str(ext.get("breaker_state", "")),
+            "capacity_per_tick": int(max(0, _as_int(selected.get("capacity_per_tick", 0), 0))),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.elec.lockout_tagout":
+        channel_id = str(inputs.get("channel_id", "")).strip()
+        if not channel_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.elec.lockout_tagout requires channel_id",
+                "Provide deterministic channel_id for lockout target.",
+                {"process_id": process_id},
+                "$.intent.inputs.channel_id",
+            )
+        lock_tag = str(inputs.get("lock_tag", "")).strip() or "loto.elec.default"
+        active = bool(inputs.get("active", True))
+        lockout_rows_by_target = dict(
+            (
+                str(row.get("target_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("safety_lockouts") or [])
+            if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+        )
+        lockout_rows_by_target[channel_id] = {
+            "target_id": channel_id,
+            "lock_tag": lock_tag,
+            "active": bool(active),
+            "created_tick": int(max(0, _as_int(current_tick, 0))),
+            "extensions": {
+                "source_process_id": process_id,
+                "source_intent_id": str(intent_id),
+            },
+        }
+        state["safety_lockouts"] = [dict(lockout_rows_by_target[key]) for key in sorted(lockout_rows_by_target.keys())]
+        result_metadata = {
+            "channel_id": channel_id,
+            "lock_tag": lock_tag,
+            "active": bool(active),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.elec.network_tick":
+        requested_graph_id = str(inputs.get("graph_id", "")).strip()
+        max_network_solves = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get("max_network_solves_per_tick", (dict(policy_context or {})).get("elec_max_network_solves_per_tick", 16)),
+                    16,
+                ),
+            )
+        )
+        max_edges_per_network = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get("max_edges_per_network", (dict(policy_context or {})).get("elec_max_edges_per_network", 2048)),
+                    2048,
+                ),
+            )
+        )
+        e1_enabled = bool(inputs.get("e1_enabled", (dict(policy_context or {})).get("elec_e1_enabled", True)))
+
+        graph_candidates = [dict(row) for row in list(power_network_graphs or []) if isinstance(row, Mapping)]
+        if not graph_candidates:
+            for row in list(state.get("network_graphs") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                edge_rows = [dict(edge) for edge in list(row.get("edges") or []) if isinstance(edge, Mapping)]
+                has_elec_edge = False
+                for edge in edge_rows:
+                    try:
+                        normalize_elec_edge_payload(dict(edge.get("payload") or {}))
+                        has_elec_edge = True
+                        break
+                    except Exception:
+                        continue
+                if has_elec_edge:
+                    graph_candidates.append(dict(row))
+        graph_candidates = sorted(
+            (
+                dict(row)
+                for row in list(graph_candidates or [])
+                if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip()
+            ),
+            key=lambda row: str(row.get("graph_id", "")),
+        )
+        if requested_graph_id:
+            graph_candidates = [dict(row) for row in graph_candidates if str(row.get("graph_id", "")).strip() == requested_graph_id]
+        if not graph_candidates:
+            return refusal(
+                REFUSAL_ELEC_NETWORK_INVALID,
+                "no electrical power graphs available for process.elec.network_tick",
+                "Populate power_network_graphs or provide a valid graph_id.",
+                {"graph_id": requested_graph_id or None},
+                "$.intent.inputs.graph_id",
+            )
+
+        channels_by_id = dict(
+            (
+                str(row.get("channel_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(elec_flow_channels or [])
+            if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+        )
+        network_results = []
+        downgraded_graph_ids: List[str] = []
+        edge_status_by_key = {}
+        node_status_by_key = {}
+        overload_context_overrides = {}
+        breaker_instances = []
+        for idx, graph_row in enumerate(graph_candidates):
+            graph_id = str(graph_row.get("graph_id", "")).strip()
+            if idx >= int(max_network_solves):
+                solved = solve_power_network_e0(
+                    graph_row=graph_row,
+                    model_binding_rows=model_bindings,
+                    current_tick=int(current_tick),
+                    reason="degrade.elec.network_budget",
+                )
+                downgraded_graph_ids.append(graph_id)
+            elif not e1_enabled:
+                solved = solve_power_network_e0(
+                    graph_row=graph_row,
+                    model_binding_rows=model_bindings,
+                    current_tick=int(current_tick),
+                    reason="degrade.elec.e1_disabled",
+                )
+                downgraded_graph_ids.append(graph_id)
+            else:
+                try:
+                    solved = solve_power_network_e1(
+                        graph_row=graph_row,
+                        model_binding_rows=model_bindings,
+                        current_tick=int(current_tick),
+                        max_processed_edges=int(max_edges_per_network),
+                    )
+                except ElectricError as exc:
+                    return refusal(
+                        str(exc.reason_code),
+                        str(exc),
+                        "Fix electrical network/model payloads and retry process.elec.network_tick.",
+                        dict(getattr(exc, "details", {}) or {}),
+                        "$.state.power_network_graphs",
+                    )
+                if str(solved.get("mode", "")).strip() == "E0":
+                    downgraded_graph_ids.append(graph_id)
+            network_results.append(dict(solved))
+            for channel_row in list(solved.get("flow_channels") or []):
+                if not isinstance(channel_row, Mapping):
+                    continue
+                channel_id = str(channel_row.get("channel_id", "")).strip()
+                if not channel_id:
+                    continue
+                normalized_channel = normalize_core_flow_channel(dict(channel_row))
+                ext = dict(normalized_channel.get("extensions") or {})
+                ext["graph_id"] = graph_id
+                normalized_channel["extensions"] = ext
+                channels_by_id[channel_id] = normalized_channel
+            for row in list(solved.get("edge_status_rows") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                edge_id = str(row.get("edge_id", "")).strip()
+                if not edge_id:
+                    continue
+                payload = dict(row)
+                payload["graph_id"] = graph_id
+                edge_status_by_key["{}::{}".format(graph_id, edge_id)] = payload
+                channel_id = str(payload.get("channel_id", "")).strip()
+                if channel_id and bool(payload.get("overloaded", False)):
+                    overload_context_overrides[channel_id] = {
+                        "flow.load_units": int(max(0, _as_int(payload.get("S", 0), 0))),
+                        "flow.capacity_units": int(max(0, _as_int(payload.get("capacity_rating", 0), 0))),
+                    }
+                    instance_id = "instance.safety.elec.breaker.{}".format(
+                        canonical_sha256({"graph_id": graph_id, "channel_id": channel_id})[:16]
+                    )
+                    breaker_instances = _upsert_row_by_id(
+                        breaker_instances,
+                        "instance_id",
+                        {
+                            "schema_version": "1.0.0",
+                            "instance_id": instance_id,
+                            "pattern_id": "safety.breaker_trip",
+                            "target_ids": [channel_id],
+                            "active": True,
+                            "created_tick": int(max(0, _as_int(current_tick, 0))),
+                            "deterministic_fingerprint": "",
+                            "extensions": {"graph_id": graph_id},
+                        },
+                    )
+            for row in list(solved.get("node_status_rows") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                node_id = str(row.get("node_id", "")).strip()
+                if not node_id:
+                    continue
+                payload = dict(row)
+                payload["graph_id"] = graph_id
+                node_status_by_key["{}::{}".format(graph_id, node_id)] = payload
+
+        elec_flow_channels = [dict(channels_by_id[key]) for key in sorted(channels_by_id.keys())]
+        state["elec_flow_channels"] = [dict(row) for row in list(elec_flow_channels or []) if isinstance(row, Mapping)]
+        elec_edge_status_rows = [dict(edge_status_by_key[key]) for key in sorted(edge_status_by_key.keys())]
+        elec_node_status_rows = [dict(node_status_by_key[key]) for key in sorted(node_status_by_key.keys())]
+        state["elec_edge_status_rows"] = [dict(row) for row in list(elec_edge_status_rows or []) if isinstance(row, Mapping)]
+        state["elec_node_status_rows"] = [dict(row) for row in list(elec_node_status_rows or []) if isinstance(row, Mapping)]
+        state["power_network_graphs"] = [dict(row) for row in list(graph_candidates or []) if isinstance(row, Mapping)]
+
+        if breaker_instances and overload_context_overrides:
+            safety_registry = _load_safety_pattern_registry(policy_context=policy_context)
+            pattern_rows_by_id = safety_pattern_rows_by_id(safety_registry)
+            context_rows_by_target_id = _safety_context_rows_by_target_id(
+                state=state,
+                inputs={"condition_overrides": overload_context_overrides},
+                target_ids=sorted(overload_context_overrides.keys()),
+                current_tick=int(current_tick),
+                safety_runtime_state=safety_runtime_state,
+            )
+            evaluation = evaluate_safety_instances(
+                instance_rows=breaker_instances,
+                pattern_rows_by_id=pattern_rows_by_id,
+                context_rows_by_target_id=context_rows_by_target_id,
+                current_tick=int(current_tick),
+                max_instance_updates=int(max(1, len(list(breaker_instances or [])))),
+            )
+            action_result = _apply_safety_actions(
+                state=state,
+                actions=[dict(row) for row in list(evaluation.get("actions") or []) if isinstance(row, Mapping)],
+                current_tick=int(current_tick),
+                process_id=process_id,
+                intent_id=str(intent_id),
+                mobility_signals=mobility_signals,
+                mobility_signal_state_machines=mobility_signal_state_machines,
+                mobility_switch_locks=mobility_switch_locks,
+                effect_rows=effect_rows,
+            )
+            effect_rows = normalize_effect_rows(list(action_result.get("effect_rows") or []))
+            state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, Mapping)]
+            safety_events = normalize_safety_event_rows(
+                [dict(row) for row in list(safety_events or []) if isinstance(row, Mapping)]
+                + [dict(row) for row in list(evaluation.get("events") or []) if isinstance(row, Mapping)]
+            )
+            state["safety_events"] = [dict(row) for row in list(safety_events or []) if isinstance(row, Mapping)]
+            safety_instances = normalize_safety_instance_rows(
+                [dict(row) for row in list(safety_instances or []) if isinstance(row, Mapping)]
+                + [dict(row) for row in list(breaker_instances or []) if isinstance(row, Mapping)]
+            )
+            state["safety_instances"] = [dict(row) for row in list(safety_instances or []) if isinstance(row, Mapping)]
+            elec_flow_channels = []
+            for _row in list(state.get("elec_flow_channels") or []):
+                if not isinstance(_row, Mapping):
+                    continue
+                try:
+                    elec_flow_channels.append(normalize_core_flow_channel(dict(_row)))
+                except Exception:
+                    continue
+            state["elec_flow_channels"] = [dict(row) for row in sorted(elec_flow_channels, key=lambda row: str(row.get("channel_id", "")))]
+
+        power_flow_hash = canonical_sha256(
+            {
+                "networks": [str(row.get("power_flow_hash", "")) for row in network_results],
+                "edge_status_rows": [
+                    {
+                        "graph_id": str(row.get("graph_id", "")),
+                        "edge_id": str(row.get("edge_id", "")),
+                        "P": int(max(0, _as_int(row.get("P", 0), 0))),
+                        "Q": int(max(0, _as_int(row.get("Q", 0), 0))),
+                        "S": int(max(0, _as_int(row.get("S", 0), 0))),
+                    }
+                    for row in sorted(elec_edge_status_rows, key=lambda item: (str(item.get("graph_id", "")), str(item.get("edge_id", ""))))
+                ],
+            }
+        )
+        elec_network_runtime_state = {
+            "last_tick": int(max(0, _as_int(current_tick, 0))),
+            "last_power_flow_hash": power_flow_hash,
+            "last_budget_outcome": "degraded" if downgraded_graph_ids else "complete",
+            "last_downgraded_graph_ids": sorted(set(downgraded_graph_ids)),
+            "last_network_count": int(len(graph_candidates)),
+            "extensions": {},
+        }
+        state["elec_network_runtime_state"] = dict(elec_network_runtime_state)
+        state["power_flow_hash"] = str(power_flow_hash)
+        result_metadata = {
+            "graph_count": int(len(graph_candidates)),
+            "edge_status_count": int(len(elec_edge_status_rows)),
+            "node_status_count": int(len(elec_node_status_rows)),
+            "flow_channel_count": int(len(elec_flow_channels)),
+            "downgraded_graph_ids": sorted(set(downgraded_graph_ids)),
+            "budget_outcome": str(elec_network_runtime_state.get("last_budget_outcome", "complete")),
+            "power_flow_hash": str(power_flow_hash),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.effect_apply":

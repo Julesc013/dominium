@@ -258,6 +258,13 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    power_flow_hash = _mobility_surface_hash(
+        key="power_flow_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     signal_network_hash = _signal_surface_hash(
         key="signal_network_hash",
         surface=mobility_proof_surface,
@@ -310,6 +317,7 @@ def build_control_proof_bundle_from_markers(
         "congestion_hash": str(congestion_hash),
         "signal_state_hash": str(signal_state_hash),
         "derailment_hash": str(derailment_hash),
+        "power_flow_hash": str(power_flow_hash),
         "signal_network_hash": str(signal_network_hash),
         "message_delivery_event_hash_chain": str(message_delivery_event_hash_chain),
         "receipt_hash_chain": str(receipt_hash_chain),
@@ -344,6 +352,7 @@ def build_control_proof_bundle_from_markers(
                     "congestion_hash": str(payload.get("congestion_hash", "")),
                     "signal_state_hash": str(payload.get("signal_state_hash", "")),
                     "derailment_hash": str(payload.get("derailment_hash", "")),
+                    "power_flow_hash": str(payload.get("power_flow_hash", "")),
                     "signal_network_hash": str(payload.get("signal_network_hash", "")),
                     "message_delivery_event_hash_chain": str(payload.get("message_delivery_event_hash_chain", "")),
                     "receipt_hash_chain": str(payload.get("receipt_hash_chain", "")),
