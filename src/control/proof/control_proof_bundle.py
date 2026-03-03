@@ -265,6 +265,13 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    power_flow_hash_chain = _mobility_surface_hash(
+        key="power_flow_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     fault_state_hash_chain = _mobility_surface_hash(
         key="fault_state_hash_chain",
         surface=mobility_proof_surface,
@@ -272,8 +279,29 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    protection_state_hash_chain = _mobility_surface_hash(
+        key="protection_state_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    degradation_event_hash_chain = _mobility_surface_hash(
+        key="degradation_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     trip_event_hash_chain = _mobility_surface_hash(
         key="trip_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    trip_explanation_hash_chain = _mobility_surface_hash(
+        key="trip_explanation_hash_chain",
         surface=mobility_proof_surface,
         tick_start=int(start_tick),
         tick_end=int(end_tick),
@@ -332,8 +360,12 @@ def build_control_proof_bundle_from_markers(
         "signal_state_hash": str(signal_state_hash),
         "derailment_hash": str(derailment_hash),
         "power_flow_hash": str(power_flow_hash),
+        "power_flow_hash_chain": str(power_flow_hash_chain),
         "fault_state_hash_chain": str(fault_state_hash_chain),
+        "protection_state_hash_chain": str(protection_state_hash_chain),
+        "degradation_event_hash_chain": str(degradation_event_hash_chain),
         "trip_event_hash_chain": str(trip_event_hash_chain),
+        "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
         "signal_network_hash": str(signal_network_hash),
         "message_delivery_event_hash_chain": str(message_delivery_event_hash_chain),
         "receipt_hash_chain": str(receipt_hash_chain),
@@ -369,8 +401,12 @@ def build_control_proof_bundle_from_markers(
                     "signal_state_hash": str(payload.get("signal_state_hash", "")),
                     "derailment_hash": str(payload.get("derailment_hash", "")),
                     "power_flow_hash": str(payload.get("power_flow_hash", "")),
+                    "power_flow_hash_chain": str(payload.get("power_flow_hash_chain", "")),
                     "fault_state_hash_chain": str(payload.get("fault_state_hash_chain", "")),
+                    "protection_state_hash_chain": str(payload.get("protection_state_hash_chain", "")),
+                    "degradation_event_hash_chain": str(payload.get("degradation_event_hash_chain", "")),
                     "trip_event_hash_chain": str(payload.get("trip_event_hash_chain", "")),
+                    "trip_explanation_hash_chain": str(payload.get("trip_explanation_hash_chain", "")),
                     "signal_network_hash": str(payload.get("signal_network_hash", "")),
                     "message_delivery_event_hash_chain": str(payload.get("message_delivery_event_hash_chain", "")),
                     "receipt_hash_chain": str(payload.get("receipt_hash_chain", "")),

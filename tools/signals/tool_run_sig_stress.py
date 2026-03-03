@@ -305,7 +305,7 @@ def _run_scenario(
             pending_broadcast_count=int(pending_broadcast_count),
             pending_low_priority_count=int(pending_low_priority_count),
             nonessential_send_candidate_count=int(pending_low_priority_count),
-            ranked_mode=bool(str(budget_envelope_id).strip().lower() == "sig.envelope.rank_strict"),
+            strict_profile_enabled=bool(str(budget_envelope_id).strip().lower() == "sig.envelope.rank_strict"),
             allow_broadcast_fanout_degrade=True,
         )
         decision_log_rows.extend([dict(row) for row in list(degrade_plan.get("decision_log_rows") or []) if isinstance(row, Mapping)])
@@ -507,6 +507,7 @@ def _run_scenario(
         aggregation_outputs_per_tick.append(int(len(list(agg_result.get("created_report_artifacts") or []))))
 
         field_samples_by_node_id = dict((node_id, {"field.visibility": 100}) for node_id in _sorted_tokens(subject_to_node.values()))
+        pre_transport_queue_depth = int(len(queue_rows))
         transport_result = process_signal_transport_tick(
             current_tick=int(tick),
             signal_channel_rows=channel_rows,
@@ -537,7 +538,8 @@ def _run_scenario(
 
         delivered_now = _delivery_event_rows_for_tick(delivery_event_rows, tick=int(tick))
         delivered_count = int(sum(1 for row in delivered_now if str(row.get("delivery_state", "")).strip() == "delivered"))
-        if (delivered_count == 0) and int(len(delivered_now)) > 0:
+        post_transport_queue_depth = int(len(queue_rows))
+        if int(pre_transport_queue_depth) > int(post_transport_queue_depth) and int(len(delivered_now)) <= 0:
             silent_drop_detected = True
         throughput_per_tick.append(delivered_count)
         queue_depth_per_tick.append(int(len(queue_rows)))

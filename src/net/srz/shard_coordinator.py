@@ -670,6 +670,30 @@ def _emit_control_proof_bundle(
         edge_occupancy_rows=list(global_state.get("edge_occupancies") or []),
         signal_state_rows=list(global_state.get("mobility_signals") or []),
     )
+    elec_surface = dict(global_state.get("elec_proof_surface") or {})
+    mobility_surface.update(
+        {
+            "power_flow_hash": str(elec_surface.get("power_flow_hash", global_state.get("power_flow_hash", ""))).strip(),
+            "power_flow_hash_chain": str(
+                elec_surface.get("power_flow_hash_chain", global_state.get("power_flow_hash_chain", ""))
+            ).strip(),
+            "fault_state_hash_chain": str(
+                elec_surface.get("fault_state_hash_chain", global_state.get("fault_state_hash_chain", ""))
+            ).strip(),
+            "protection_state_hash_chain": str(
+                elec_surface.get("protection_state_hash_chain", global_state.get("protection_state_hash_chain", ""))
+            ).strip(),
+            "degradation_event_hash_chain": str(
+                elec_surface.get("degradation_event_hash_chain", global_state.get("degradation_event_hash_chain", ""))
+            ).strip(),
+            "trip_event_hash_chain": str(
+                elec_surface.get("trip_event_hash_chain", global_state.get("trip_event_hash_chain", ""))
+            ).strip(),
+            "trip_explanation_hash_chain": str(
+                elec_surface.get("trip_explanation_hash_chain", global_state.get("trip_explanation_hash_chain", ""))
+            ).strip(),
+        }
+    )
     bundle = build_control_proof_bundle_from_markers(
         tick_start=int(tick),
         tick_end=int(tick),

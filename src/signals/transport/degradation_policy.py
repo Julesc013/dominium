@@ -39,7 +39,7 @@ def apply_sig_budget_degradation(
     pending_broadcast_count: int,
     pending_low_priority_count: int,
     nonessential_send_candidate_count: int,
-    ranked_mode: bool,
+    strict_profile_enabled: bool,
     allow_broadcast_fanout_degrade: bool = True,
 ) -> dict:
     """Apply SIG deterministic degradation order under budget pressure.
@@ -126,7 +126,7 @@ def apply_sig_budget_degradation(
     if (
         overload_ratio_permille > 2000
         and allow_broadcast_fanout_degrade
-        and (not _as_bool(ranked_mode))
+        and (not _as_bool(strict_profile_enabled))
         and pending_broadcast > 0
     ):
         broadcast_fanout_cap = int(max(1, pending_broadcast // 2))
@@ -137,7 +137,7 @@ def apply_sig_budget_degradation(
             {
                 "pending_broadcast_count": int(pending_broadcast),
                 "broadcast_fanout_cap": int(broadcast_fanout_cap),
-                "ranked_mode": bool(ranked_mode),
+                "strict_profile_enabled": bool(strict_profile_enabled),
             },
         )
 
@@ -202,4 +202,3 @@ __all__ = [
     "REFUSAL_SIG_NONESSENTIAL_SEND",
     "apply_sig_budget_degradation",
 ]
-

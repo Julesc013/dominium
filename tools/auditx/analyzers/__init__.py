@@ -215,6 +215,11 @@ from analyzers import e186_direct_flow_mutation_smell
 from analyzers import e187_inline_trip_smell
 from analyzers import e188_fault_bypass_smell
 from analyzers import e189_unlogged_trip_smell
+from analyzers import e190_omniscient_electrical_ui_leak_smell
+from analyzers import e191_direct_breaker_toggle_smell
+from analyzers import e192_infinite_cascade_smell
+from analyzers import e193_unbudgeted_solve_smell
+from analyzers import e194_silent_degrade_smell
 
 
 ANALYZERS = (
@@ -433,6 +438,11 @@ ANALYZERS = (
     e187_inline_trip_smell,
     e188_fault_bypass_smell,
     e189_unlogged_trip_smell,
+    e190_omniscient_electrical_ui_leak_smell,
+    e191_direct_breaker_toggle_smell,
+    e192_infinite_cascade_smell,
+    e193_unbudgeted_solve_smell,
+    e194_silent_degrade_smell,
 )
 
 
