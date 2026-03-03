@@ -22472,6 +22472,60 @@ def execute_intent(
                 "coordination_policy_id": resolved_coordination_policy_id,
             },
         }
+        active_fault_rows_by_id = dict(
+            (
+                str(row.get("fault_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_fault_states") or [])
+            if isinstance(row, Mapping) and bool(row.get("active", False)) and str(row.get("fault_id", "")).strip()
+        )
+        trip_cascade_rows = []
+        for row in sorted(
+            [dict(item) for item in list(protection_eval.get("trip_rows") or []) if isinstance(item, Mapping)],
+            key=lambda item: (
+                str(item.get("coordination_group_id", "")),
+                str(item.get("device_id", "")),
+                str(item.get("fault_id", "")),
+            ),
+        ):
+            fault_id = str(row.get("fault_id", "")).strip()
+            fault_row = dict(active_fault_rows_by_id.get(fault_id) or {})
+            trip_cascade_rows.append(
+                {
+                    "cascade_id": "cascade.elec.trip.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "device_id": str(row.get("device_id", "")).strip(),
+                                "fault_id": fault_id,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "device_id": str(row.get("device_id", "")).strip() or None,
+                    "channel_id": str(row.get("channel_id", "")).strip() or None,
+                    "edge_id": str(row.get("edge_id", "")).strip() or None,
+                    "fault_id": fault_id or None,
+                    "fault_kind_id": str(fault_row.get("fault_kind_id", row.get("fault_kind_id", ""))).strip() or None,
+                    "fault_severity": int(max(0, _as_int(fault_row.get("severity", row.get("fault_severity", 0)), 0))),
+                    "trip_threshold": int(max(0, _as_int(row.get("trip_threshold", 0), 0))),
+                    "coordination_group_id": str(row.get("coordination_group_id", "")).strip() or None,
+                    "coordination_policy_id": str(row.get("coordination_policy_id", "")).strip() or resolved_coordination_policy_id,
+                    "reenactment_event_ids": _sorted_tokens(
+                        [
+                            str(fault_id).strip(),
+                            str(row.get("device_id", "")).strip(),
+                            str(row.get("edge_id", "")).strip(),
+                        ]
+                    ),
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "source_intent_id": str(intent_id),
+                    },
+                }
+            )
+        state["elec_trip_cascade_rows"] = [dict(row) for row in list(trip_cascade_rows or []) if isinstance(row, Mapping)]
         active_fault_rows = [
             dict(row)
             for row in list(state.get("elec_fault_states") or [])
@@ -22646,6 +22700,21 @@ def execute_intent(
         }
         state["elec_network_runtime_state"] = dict(elec_network_runtime_state)
         state["power_flow_hash"] = str(power_flow_hash)
+        elec_proof_surface = {
+            "power_flow_hash": str(power_flow_hash),
+            "fault_state_hash_chain": str(state.get("fault_state_hash_chain", "")).strip() or None,
+            "trip_event_hash_chain": str(state.get("trip_event_hash_chain", "")).strip() or None,
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "power_flow_hash": str(power_flow_hash),
+                    "fault_state_hash_chain": str(state.get("fault_state_hash_chain", "")).strip(),
+                    "trip_event_hash_chain": str(state.get("trip_event_hash_chain", "")).strip(),
+                }
+            ),
+        }
+        state["elec_proof_surface"] = dict(elec_proof_surface)
         result_metadata = {
             "graph_count": int(len(graph_candidates)),
             "edge_status_count": int(len(elec_edge_status_rows)),
@@ -22662,6 +22731,8 @@ def execute_intent(
             "power_flow_hash": str(power_flow_hash),
             "fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
             "trip_event_hash_chain": str(protection_eval.get("trip_event_hash_chain", "")),
+            "elec_proof_surface_hash": str((dict(state.get("elec_proof_surface") or {})).get("deterministic_fingerprint", "")),
+            "trip_cascade_count": int(len(list(state.get("elec_trip_cascade_rows") or []))),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.effect_apply":
