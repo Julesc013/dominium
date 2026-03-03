@@ -95,6 +95,14 @@ Mandatory rules:
 - families are ontology-neutral (no train-only/chemistry-only/biology-only families)
 - no runtime mode branch may alter family semantics
 
+ELEC-0 canonical action mapping examples:
+
+- `connect wire` -> `TRANSFORM`
+- `flip breaker` -> `DECIDE/AUTHORIZE`
+- `lockout / tagout` -> `MAINTAIN`
+
+These remain templates over existing substrates; they do not introduce electrical-only family classes.
+
 ## 4) Action Template Contract
 
 Every action template must declare:

@@ -90,7 +90,8 @@
         "MAT"
       ],
       "series_planned": [
-        "SCI"
+        "SCI",
+        "ELEC"
       ],
       "substrates": [
         "INFO_GRAMMAR",
@@ -115,7 +116,8 @@
       "series_planned": [
         "MIL",
         "ECO",
-        "SCI"
+        "SCI",
+        "ELEC"
       ],
       "substrates": [
         "SIG",
@@ -277,6 +279,21 @@
       ]
     },
     {
+      "series_id": "ELEC",
+      "affordance_ids": [
+        "matter_transformation",
+        "containment_interfaces",
+        "measurement_verification",
+        "communication_coordination",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
       "affordance_ids": [
         "environment_living_systems",
         "motion_force_transmission",
@@ -329,15 +346,10 @@
       "affordance_ids": [
         "matter_transformation",
         "motion_force_transmission",
-        "containment_interfaces",
-        "measurement_verification",
-        "communication_coordination",
-        "institutions_contracts",
-        "environment_living_systems",
-        "time_synchronization",
-        "safety_protection"
+        "safety_protection",
+        "environment_living_systems"
       ],
-      "series_id": "META_MODEL",
+      "series_id": "MECH",
       "tiers": [
         "macro",
         "meso",
@@ -348,10 +360,15 @@
       "affordance_ids": [
         "matter_transformation",
         "motion_force_transmission",
-        "safety_protection",
-        "environment_living_systems"
+        "containment_interfaces",
+        "measurement_verification",
+        "communication_coordination",
+        "institutions_contracts",
+        "environment_living_systems",
+        "time_synchronization",
+        "safety_protection"
       ],
-      "series_id": "MECH",
+      "series_id": "META_MODEL",
       "tiers": [
         "macro",
         "meso",
