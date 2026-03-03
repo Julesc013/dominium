@@ -134,6 +134,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.insulation_effects",
         "section.thermal.ambient_exchange_summary",
         "section.thermal.radiator_efficiency",
+        "section.thermal.fire_states",
+        "section.thermal.runaway_events",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -171,6 +173,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.insulation_effects",
         "section.thermal.ambient_exchange_summary",
         "section.thermal.radiator_efficiency",
+        "section.thermal.fire_states",
+        "section.thermal.runaway_events",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -208,6 +212,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.insulation_effects",
         "section.thermal.ambient_exchange_summary",
         "section.thermal.radiator_efficiency",
+        "section.thermal.fire_states",
+        "section.thermal.runaway_events",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -381,6 +387,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.thermal.insulation_effects": {"title": "Thermal Insulation Effects", "extensions": {"cost_units": 2}},
     "section.thermal.ambient_exchange_summary": {"title": "Thermal Ambient Exchange", "extensions": {"cost_units": 2}},
     "section.thermal.radiator_efficiency": {"title": "Thermal Radiator Efficiency", "extensions": {"cost_units": 2}},
+    "section.thermal.fire_states": {"title": "Thermal Fire States", "extensions": {"cost_units": 2}},
+    "section.thermal.runaway_events": {"title": "Thermal Runaway Events", "extensions": {"cost_units": 2}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
     "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
     "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
@@ -2487,6 +2495,117 @@ def _build_section_data(
                     "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
                 }
                 for row in sorted(radiator_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.thermal.fire_states":
+        runtime_state = dict((dict(state or {})).get("thermal_runtime_state") or {})
+        fire_rows = [
+            dict(item)
+            for item in list(
+                (dict(state or {})).get("thermal_fire_state_rows")
+                or (dict(state or {})).get("fire_state_rows")
+                or runtime_state.get("fire_state_rows")
+                or []
+            )
+            if isinstance(item, dict)
+        ]
+        active_rows = [row for row in fire_rows if bool(row.get("active", False))]
+        total_fuel_remaining = int(sum(max(0, _as_int(row.get("fuel_remaining", 0), 0)) for row in fire_rows))
+        payload = {
+            "fire_state_count": int(len(fire_rows)),
+            "active_fire_count": int(len(active_rows)),
+            "total_fuel_remaining": int(total_fuel_remaining),
+            "fire_state_hash_chain": str(
+                (dict(state or {})).get("fire_state_hash_chain", runtime_state.get("fire_state_hash_chain", ""))
+            ).strip()
+            or None,
+        }
+        if allow_hidden_state:
+            payload["fire_states"] = [
+                {
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "active": bool(row.get("active", False)),
+                    "fuel_remaining": int(max(0, _as_int(row.get("fuel_remaining", 0), 0))),
+                    "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+                }
+                for row in sorted(fire_rows, key=lambda item: str(item.get("target_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.thermal.runaway_events":
+        runtime_state = dict((dict(state or {})).get("thermal_runtime_state") or {})
+        fire_event_rows = [
+            dict(item)
+            for item in list(
+                (dict(state or {})).get("thermal_fire_event_rows")
+                or (dict(state or {})).get("fire_event_rows")
+                or runtime_state.get("fire_event_rows")
+                or []
+            )
+            if isinstance(item, dict)
+        ]
+        runaway_rows = [
+            dict(item)
+            for item in list(
+                (dict(state or {})).get("thermal_safety_event_rows")
+                or (dict(state or {})).get("safety_event_rows")
+                or runtime_state.get("safety_event_rows")
+                or []
+            )
+            if isinstance(item, dict) and str(item.get("pattern_id", "")).strip() == "safety.thermal_runaway"
+        ]
+        started_count = len(
+            [
+                row
+                for row in fire_event_rows
+                if str(row.get("event_type", "")).strip() in {"event.fire_started", "event.fire_spread_started"}
+            ]
+        )
+        spread_count = len(
+            [
+                row
+                for row in fire_event_rows
+                if str(row.get("event_type", "")).strip() == "event.fire_spread_started"
+            ]
+        )
+        payload = {
+            "fire_event_count": int(len(fire_event_rows)),
+            "fire_started_count": int(started_count),
+            "fire_spread_count": int(spread_count),
+            "runaway_event_count": int(len(runaway_rows)),
+            "ignition_event_hash_chain": str(
+                (dict(state or {})).get("ignition_event_hash_chain", runtime_state.get("ignition_event_hash_chain", ""))
+            ).strip()
+            or None,
+            "fire_spread_hash_chain": str(
+                (dict(state or {})).get("fire_spread_hash_chain", runtime_state.get("fire_spread_hash_chain", ""))
+            ).strip()
+            or None,
+            "runaway_event_hash_chain": str(
+                (dict(state or {})).get("runaway_event_hash_chain", runtime_state.get("runaway_event_hash_chain", ""))
+            ).strip()
+            or None,
+        }
+        if allow_hidden_state:
+            payload["runaway_events"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "target_ids": [str(token).strip() for token in list(row.get("target_ids") or []) if str(token).strip()],
+                    "pattern_id": str(row.get("pattern_id", "")).strip() or None,
+                }
+                for row in sorted(runaway_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
+            ]
+            payload["fire_events"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "event_type": str(row.get("event_type", "")).strip() or None,
+                    "fuel_after": int(max(0, _as_int(row.get("fuel_after", 0), 0))),
+                    "heat_emission": int(max(0, _as_int(row.get("heat_emission", 0), 0))),
+                    "pollutant_emission": int(max(0, _as_int(row.get("pollutant_emission", 0), 0))),
+                }
+                for row in sorted(fire_event_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
             ]
         return payload
     if section_id == "section.signal.inbox_summary":

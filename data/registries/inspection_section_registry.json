@@ -397,6 +397,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.thermal.fire_states",
+        "title": "Thermal Fire States",
+        "data": {
+          "data_kind": "thermal_fire_states"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.runaway_events",
+        "title": "Thermal Runaway Events",
+        "data": {
+          "data_kind": "thermal_runaway_events"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.models.summary",
         "title": "Constitutive Model Summary",
         "data": {
