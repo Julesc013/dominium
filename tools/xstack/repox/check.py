@@ -326,6 +326,10 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-ADHOC-WEATHER-FLAGS",
     "INV-FIELD-QUERIES-ONLY",
     "INV-NO-ADHOC-SAFETY-LOGIC",
+    "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
+    "INV-LOSS-MUST-DECLARE-TARGET",
+    "INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
+    "INV-REALISM-DETAIL-MUST-BE-MODEL",
     "INV-NO-VEHICLE-SPECIALCASE",
     "INV-VEHICLES-AS-ASSEMBLIES",
     "INV-SPEC-COMPATIBILITY-REQUIRED",
@@ -845,6 +849,35 @@ def _load_json_object(repo_root: str, rel_path: str) -> Tuple[dict, str]:
 
 def _invariant_severity(profile: str) -> str:
     return "refusal" if str(profile).strip().upper() in ("STRICT", "FULL") else "fail"
+
+
+def _strict_only_severity(profile: str) -> str:
+    token = str(profile).strip().upper()
+    return _invariant_severity(token) if token in ("STRICT", "FULL") else "warn"
+
+
+def _deprecated_inline_response_curve_sites(repo_root: str) -> Set[Tuple[str, int]]:
+    rel_path = "data/registries/deprecation_registry.json"
+    payload, err = _load_json_object(repo_root, rel_path)
+    if err:
+        return set()
+    rows = list((dict(payload.get("record") or {})).get("deprecations") or [])
+    out: Set[Tuple[str, int]] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        status = str(row.get("status", "")).strip().lower()
+        if status and status not in {"active", "warning"}:
+            continue
+        ext = dict(row.get("extensions") or {})
+        invariant_id = str(ext.get("invariant_id", "")).strip()
+        if invariant_id not in {"INV-REALISM-DETAIL-MUST-BE-MODEL", "INV-RESPONSE-CURVES-MUST-BE-MODELS"}:
+            continue
+        source_path = _norm(str(ext.get("source_path", "")).strip())
+        line_start = int(max(0, int(ext.get("line_start", 0) or 0)))
+        if source_path and line_start:
+            out.add((source_path, line_start))
+    return out
 
 
 def _append_session_pipeline_invariant_findings(
@@ -8380,7 +8413,7 @@ def _append_deprecation_framework_invariant_findings(
         for deprecated_id in deprecated_ids:
             if deprecated_id not in text:
                 continue
-            if rel_norm == DEPRECATIONS_REGISTRY_REL:
+            if rel_norm in {DEPRECATIONS_REGISTRY_REL, "tools/xstack/repox/check.py"}:
                 continue
             if rel_norm in adapter_paths:
                 continue
@@ -10252,7 +10285,7 @@ def _append_action_grammar_invariant_findings(
     repo_root: str,
     profile: str,
 ) -> None:
-    severity = _invariant_severity(profile)
+    severity = _strict_only_severity(profile)
     control_rel = "data/registries/control_action_registry.json"
     interaction_rel = "data/registries/interaction_action_registry.json"
     task_rel = "data/registries/task_type_registry.json"
@@ -10433,6 +10466,112 @@ def _append_action_grammar_invariant_findings(
                     snippet=template_id,
                     message="task_type template is not registered in task_type_registry",
                     rule_id="INV-NO-UNREGISTERED-ACTION",
+                )
+            )
+
+
+def _append_info_grammar_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    template_rel = "data/registries/action_template_registry.json"
+    mapping_rel = "data/registries/info_artifact_family_registry.json"
+
+    template_payload, template_err = _load_json_object(repo_root, template_rel)
+    mapping_payload, mapping_err = _load_json_object(repo_root, mapping_rel)
+    if mapping_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=mapping_rel,
+                line_number=1,
+                snippet="",
+                message="info artifact-family mapping registry is missing or invalid",
+                rule_id="INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
+            )
+        )
+        return
+    if template_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=template_rel,
+                line_number=1,
+                snippet="",
+                message="action_template registry missing/invalid; cannot verify artifact family mappings",
+                rule_id="INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
+            )
+        )
+        return
+
+    mapping_record = dict(mapping_payload.get("record") or {})
+    family_rows = list(mapping_record.get("families") or [])
+    known_families: Set[str] = set()
+    for row in family_rows:
+        if not isinstance(row, dict):
+            continue
+        family_id = str(row.get("info_family_id", "")).strip()
+        if family_id:
+            known_families.add(family_id)
+
+    mapping_rows = list(mapping_record.get("artifact_type_mappings") or [])
+    artifact_to_family: Dict[str, str] = {}
+    for row in mapping_rows:
+        if not isinstance(row, dict):
+            continue
+        artifact_type_id = str(row.get("artifact_type_id", "")).strip()
+        info_family_id = str(row.get("info_family_id", "")).strip()
+        if not artifact_type_id:
+            continue
+        artifact_to_family[artifact_type_id] = info_family_id
+        if (not info_family_id) or (known_families and info_family_id not in known_families):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=mapping_rel,
+                    line_number=1,
+                    snippet="{}->{}".format(artifact_type_id, info_family_id),
+                    message="artifact type mapping must reference a valid info_family_id",
+                    rule_id="INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
+                )
+            )
+
+    template_rows = list((dict(template_payload.get("record") or {})).get("templates") or [])
+    required_artifact_types: Set[str] = set()
+    for row in template_rows:
+        if not isinstance(row, dict):
+            continue
+        artifact_types = list(row.get("produced_artifact_types") or [])
+        for token in artifact_types:
+            artifact_type_id = str(token).strip()
+            if artifact_type_id:
+                required_artifact_types.add(artifact_type_id)
+
+    for artifact_type_id in sorted(required_artifact_types):
+        info_family_id = str(artifact_to_family.get(artifact_type_id, "")).strip()
+        if not info_family_id:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=mapping_rel,
+                    line_number=1,
+                    snippet=artifact_type_id,
+                    message="artifact type produced by action templates has no info family mapping",
+                    rule_id="INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
+                )
+            )
+            continue
+        if known_families and info_family_id not in known_families:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=mapping_rel,
+                    line_number=1,
+                    snippet="{}->{}".format(artifact_type_id, info_family_id),
+                    message="artifact type maps to unknown info family id",
+                    rule_id="INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
                 )
             )
 
@@ -13016,8 +13155,7 @@ def _append_safety_invariant_findings(
     repo_root: str,
     profile: str,
 ) -> None:
-    del profile
-    severity = "warn"
+    severity = _strict_only_severity(profile)
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     safety_engine_rel = "src/safety/safety_engine.py"
@@ -13106,6 +13244,7 @@ def _append_safety_invariant_findings(
         runtime_rel,
         safety_engine_rel,
         "src/mobility/signals/signal_engine.py",
+        "tools/xstack/sessionx/observation.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -13460,20 +13599,20 @@ def _append_thermal_invariant_findings(
     repo_root: str,
     profile: str,
 ) -> None:
-    del profile
     severity = "warn"
+    strict_severity = _strict_only_severity(profile)
 
     convention_rel = "docs/thermal/LOSS_TO_HEAT_CONVENTION.md"
     convention_abs = os.path.join(repo_root, convention_rel.replace("/", os.sep))
     if not os.path.isfile(convention_abs):
         findings.append(
             _finding(
-                severity=severity,
+                severity=strict_severity,
                 file_path=convention_rel,
                 line_number=1,
                 snippet="",
                 message="loss-to-heat convention must exist so dissipated energy remains auditable and replay-safe",
-                rule_id="INV-LOSS-MAPPED-TO-HEAT",
+                rule_id="INV-LOSS-MUST-DECLARE-TARGET",
             )
         )
 
@@ -13531,12 +13670,12 @@ def _append_thermal_invariant_findings(
             continue
         findings.append(
             _finding(
-                severity=severity,
+                severity=strict_severity,
                 file_path=power_engine_rel,
                 line_number=1,
                 snippet=token,
                 message="electrical dissipation pathways should map loss outputs to thermal quantity/effect conventions",
-                rule_id="INV-LOSS-MAPPED-TO-HEAT",
+                rule_id="INV-LOSS-MUST-DECLARE-TARGET",
             )
         )
 
@@ -13910,13 +14049,173 @@ def _append_thermal_invariant_findings(
             break
 
 
+def _append_cross_domain_mutation_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    scan_specs = (
+        {
+            "root": "src/electric/",
+            "pattern": re.compile(
+                r"\bstate\s*\[\s*[\"'](?:temperature|field\.temperature|thermal_|heat_)[^\"']*[\"']\s*\]\s*=",
+                re.IGNORECASE,
+            ),
+            "allowed": {
+                "src/electric/power_network_engine.py",
+                "src/models/model_engine.py",
+                "tools/xstack/repox/check.py",
+            },
+            "message": "ELEC must not directly mutate THERM state; use constitutive model outputs + effect/hazard/process pathways",
+        },
+        {
+            "root": "src/thermal/",
+            "pattern": re.compile(
+                r"\bstate\s*\[\s*[\"'](?:stress|strain|joint|fracture|failure|mech\.)[^\"']*[\"']\s*\]\s*=",
+                re.IGNORECASE,
+            ),
+            "allowed": {
+                "src/thermal/network/thermal_network_engine.py",
+                "src/models/model_engine.py",
+                "tools/xstack/repox/check.py",
+            },
+            "message": "THERM must not directly mutate MECH state; couple through constitutive model outputs and process/effect/hazard channels",
+        },
+        {
+            "root": "src/fluid/",
+            "pattern": re.compile(
+                r"\bstate\s*\[\s*[\"'](?:temperature|thermal_|stress|strain|breaker|fault|signal_)[^\"']*[\"']\s*\]\s*=",
+                re.IGNORECASE,
+            ),
+            "allowed": {
+                "src/models/model_engine.py",
+                "tools/xstack/repox/check.py",
+            },
+            "message": "FLUID cross-domain writes must be model-mediated; direct mutation of foreign-domain truth is forbidden",
+        },
+    )
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    for spec in scan_specs:
+        root = str(spec.get("root", ""))
+        if not root:
+            continue
+        pattern = spec.get("pattern")
+        if not isinstance(pattern, re.Pattern):
+            continue
+        allowed_files = set(spec.get("allowed") or set())
+        message = str(spec.get("message", "")).strip() or "cross-domain mutation must remain model-mediated"
+        for rel_path in _scan_files(repo_root):
+            rel_norm = _norm(rel_path)
+            if not rel_norm.endswith(".py"):
+                continue
+            if not rel_norm.startswith(root):
+                continue
+            if rel_norm.startswith(skip_prefixes):
+                continue
+            if rel_norm in allowed_files:
+                continue
+            for line_no, line in _iter_lines(repo_root, rel_norm):
+                snippet = str(line).strip()
+                if (not snippet) or snippet.startswith("#"):
+                    continue
+                if not pattern.search(snippet):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message=message,
+                        rule_id="INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
+                    )
+                )
+                break
+
+
+def _append_loss_target_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    power_engine_rel = "src/electric/power_network_engine.py"
+    power_engine_text = _file_text(repo_root, power_engine_rel)
+    for token in ("quantity.thermal.heat_loss_stub", "effect.temperature_increase_local"):
+        if token in power_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=power_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="loss pathways must declare explicit heat quantity/effect target",
+                rule_id="INV-LOSS-MUST-DECLARE-TARGET",
+            )
+        )
+
+    loss_assignment_pattern = re.compile(
+        r"\b(?:loss_p|line_loss|heat_loss|dissipated_loss|resistance_proxy|loss_permille)\b\s*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/electric/", "src/thermal/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        power_engine_rel,
+        "src/thermal/network/thermal_network_engine.py",
+        "src/models/model_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not loss_assignment_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="loss source must declare explicit target quantity/effect (heat_loss or temperature effect)",
+                    rule_id="INV-LOSS-MUST-DECLARE-TARGET",
+                )
+            )
+            break
+
+
 def _append_constitutive_model_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
     profile: str,
 ) -> None:
-    del profile
-    severity = "warn"
+    severity = _strict_only_severity(profile)
+    deprecated_sites = _deprecated_inline_response_curve_sites(repo_root)
 
     constitution_rel = "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
     catalog_rel = "docs/meta/CONSTITUTIVE_MODEL_CATALOG.md"
@@ -13924,11 +14223,11 @@ def _append_constitutive_model_invariant_findings(
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
         if os.path.isfile(abs_path):
             continue
-        findings.append(
-            _finding(
-                severity=severity,
-                file_path=rel_path,
-                line_number=1,
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
                 snippet="",
                 message="constitutive model governance docs missing; realism response curves cannot be centrally registered",
                 rule_id="INV-REALISM-DETAIL-MUST-BE-MODEL",
@@ -13977,14 +14276,16 @@ def _append_constitutive_model_invariant_findings(
                 continue
             if not any(pattern.search(snippet) for pattern in inline_response_patterns):
                 continue
+            if (rel_norm, line_no) in deprecated_sites:
+                break
             findings.append(
                 _finding(
                     severity=severity,
                     file_path=rel_norm,
                     line_number=line_no,
                     snippet=snippet[:140],
-                    message="realism detail response logic should be registered as a constitutive model (warn phase)",
-                    rule_id="INV-RESPONSE-CURVES-MUST-BE-MODELS",
+                    message="realism detail response logic must be registered as a constitutive model or mapped in deprecation registry",
+                    rule_id="INV-REALISM-DETAIL-MUST-BE-MODEL",
                 )
             )
             break
@@ -14597,6 +14898,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         repo_root=repo_root,
         profile=token,
     )
+    _append_info_grammar_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
     _append_affordance_matrix_invariant_findings(
         findings=findings,
         repo_root=repo_root,
@@ -14663,6 +14969,16 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_thermal_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_cross_domain_mutation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_loss_target_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

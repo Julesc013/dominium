@@ -40,7 +40,12 @@ def _status_from_findings(findings: List[Dict[str, object]]) -> str:
     return "pass"
 
 
-def _report_findings(repo_root: str) -> List[Dict[str, object]]:
+STRICT_PROMOTED_ANALYZERS = {
+    "E179_INLINE_RESPONSE_CURVE_SMELL": "fail",
+}
+
+
+def _report_findings(repo_root: str, profile: str) -> List[Dict[str, object]]:
     findings_path = os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")
     if not os.path.isfile(findings_path):
         return []
@@ -52,24 +57,28 @@ def _report_findings(repo_root: str) -> List[Dict[str, object]]:
     if not isinstance(rows, list):
         return []
     out: List[Dict[str, object]] = []
+    token = str(profile or "").strip().upper()
+    strict_mode = token in {"STRICT", "FULL"}
     for row in rows:
         if not isinstance(row, dict):
             continue
+        analyzer_id = str(row.get("analyzer_id", "")).strip()
+        severity = "warn"
+        if strict_mode and analyzer_id in STRICT_PROMOTED_ANALYZERS:
+            severity = str(STRICT_PROMOTED_ANALYZERS[analyzer_id]).strip().lower() or "fail"
         out.append(
             {
-                "severity": "warn",
+                "severity": severity,
                 "code": "auditx.finding",
                 "message": "{} {} {}".format(
                     str(row.get("severity", "")).strip() or "UNKNOWN",
-                    str(row.get("analyzer_id", "")).strip() or "analyzer",
+                    analyzer_id or "analyzer",
                     str(row.get("finding_id", "")).strip() or "finding",
                 ).strip(),
                 "file_path": _norm(str((row.get("location") or {}).get("file_path", ""))),
                 "line_number": int(((row.get("location") or {}).get("line_start", 0) or 0)),
             }
         )
-        if len(out) >= 50:
-            break
     return sorted(
         out,
         key=lambda item: (
@@ -99,12 +108,14 @@ def run_auditx_check(repo_root: str, profile: str) -> Dict[str, object]:
 
     findings: List[Dict[str, object]] = []
     if result == "scan_complete":
-        findings.extend(_report_findings(repo_root))
+        findings.extend(_report_findings(repo_root, token))
+        status = _status_from_findings(findings)
         return {
-            "status": "pass",
-            "message": "auditx scan complete (changed_only={}, findings={})".format(
+            "status": status,
+            "message": "auditx scan complete (changed_only={}, findings={}, promoted_blockers={})".format(
                 "true" if changed_only else "false",
                 int(payload.get("findings_count", 0) or 0),
+                len([row for row in findings if str(row.get("severity", "")).strip().lower() in {"fail", "refusal"}]),
             ),
             "findings": findings,
         }
