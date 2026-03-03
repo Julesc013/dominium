@@ -600,6 +600,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.vehicle_apply_environment_hooks": "session.boot",
     "process.elec.connect_wire": "entitlement.control.admin",
     "process.elec.flip_breaker": "entitlement.tool.operating",
+    "process.elec_apply_loto": "entitlement.tool.operating",
+    "process.elec_remove_loto": "entitlement.tool.operating",
     "process.elec.lockout_tagout": "entitlement.tool.operating",
     "process.elec.network_tick": "session.boot",
     "process.mechanics_fracture": "session.boot",
@@ -759,6 +761,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.vehicle_apply_environment_hooks": "observer",
     "process.elec.connect_wire": "operator",
     "process.elec.flip_breaker": "operator",
+    "process.elec_apply_loto": "operator",
+    "process.elec_remove_loto": "operator",
     "process.elec.lockout_tagout": "operator",
     "process.elec.network_tick": "observer",
     "process.mechanics_fracture": "observer",
@@ -865,6 +869,8 @@ CONTROL_PROCESS_IDS = {
     "process.vehicle_apply_environment_hooks",
     "process.elec.connect_wire",
     "process.elec.flip_breaker",
+    "process.elec_apply_loto",
+    "process.elec_remove_loto",
     "process.elec.lockout_tagout",
     "process.elec.network_tick",
     "process.mechanics_fracture",
@@ -21921,6 +21927,43 @@ def execute_intent(
             )
         ext = dict(selected.get("extensions") or {}) if isinstance(selected.get("extensions"), Mapping) else {}
         base_capacity = int(max(0, _as_int(ext.get("elec.base_capacity_per_tick", selected.get("capacity_per_tick", 0)), 0)))
+        active_lockouts = {}
+        for row in list(state.get("safety_lockouts") or []):
+            if not isinstance(row, Mapping):
+                continue
+            target_id = str(row.get("target_id", "")).strip()
+            if not target_id:
+                continue
+            active_lockouts[target_id] = dict(row)
+        lockout_target_ids = {channel_id}
+        for device_row in list(state.get("elec_protection_devices") or []):
+            if not isinstance(device_row, Mapping):
+                continue
+            device_ext = dict(device_row.get("extensions") or {}) if isinstance(device_row.get("extensions"), Mapping) else {}
+            if str(device_ext.get("channel_id", "")).strip() != channel_id:
+                continue
+            token = str(device_row.get("device_id", "")).strip()
+            if token:
+                lockout_target_ids.add(token)
+        active_lockout_rows = [
+            dict(active_lockouts[target_id])
+            for target_id in sorted(lockout_target_ids)
+            if bool(dict(active_lockouts.get(target_id) or {}).get("active", False))
+        ]
+        if requested_state in {"closed", "reset"} and active_lockout_rows:
+            return refusal(
+                "refusal.maintenance.lockout_active",
+                "breaker reclose blocked by active lockout/tagout",
+                "Remove active lockout first using process.elec_remove_loto.",
+                {
+                    "channel_id": channel_id,
+                    "lockout_target_ids": sorted(lockout_target_ids),
+                    "active_lock_tags": sorted(
+                        set(str(row.get("lock_tag", "")).strip() for row in active_lockout_rows if str(row.get("lock_tag", "")).strip())
+                    ),
+                },
+                "$.intent.inputs.channel_id",
+            )
         if requested_state in {"tripped", "open"}:
             selected["capacity_per_tick"] = 0
             ext["breaker_state"] = "tripped"
@@ -21953,18 +21996,27 @@ def execute_intent(
             "capacity_per_tick": int(max(0, _as_int(selected.get("capacity_per_tick", 0), 0))),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
-    elif process_id == "process.elec.lockout_tagout":
-        channel_id = str(inputs.get("channel_id", "")).strip()
-        if not channel_id:
+    elif process_id in {"process.elec.lockout_tagout", "process.elec_apply_loto", "process.elec_remove_loto"}:
+        target_id = (
+            str(inputs.get("target_id", "")).strip()
+            or str(inputs.get("channel_id", "")).strip()
+            or str(inputs.get("device_id", "")).strip()
+        )
+        if not target_id:
             return refusal(
                 "PROCESS_INPUT_INVALID",
-                "process.elec.lockout_tagout requires channel_id",
-                "Provide deterministic channel_id for lockout target.",
+                "{} requires target_id or channel_id/device_id".format(process_id),
+                "Provide deterministic target identifier for lockout target.",
                 {"process_id": process_id},
-                "$.intent.inputs.channel_id",
+                "$.intent.inputs.target_id",
             )
         lock_tag = str(inputs.get("lock_tag", "")).strip() or "loto.elec.default"
-        active = bool(inputs.get("active", True))
+        if process_id == "process.elec_apply_loto":
+            active = True
+        elif process_id == "process.elec_remove_loto":
+            active = False
+        else:
+            active = bool(inputs.get("active", True))
         lockout_rows_by_target = dict(
             (
                 str(row.get("target_id", "")).strip(),
@@ -21973,19 +22025,53 @@ def execute_intent(
             for row in list(state.get("safety_lockouts") or [])
             if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
         )
-        lockout_rows_by_target[channel_id] = {
-            "target_id": channel_id,
+        lockout_rows_by_target[target_id] = {
+            "target_id": target_id,
             "lock_tag": lock_tag,
             "active": bool(active),
             "created_tick": int(max(0, _as_int(current_tick, 0))),
             "extensions": {
                 "source_process_id": process_id,
                 "source_intent_id": str(intent_id),
+                "authority_subject_id": str(authority_context.get("subject_id", "")).strip() or None,
             },
         }
         state["safety_lockouts"] = [dict(lockout_rows_by_target[key]) for key in sorted(lockout_rows_by_target.keys())]
+        # Mirror lockout state onto protection device rows to keep state-machine/tooling paths deterministic.
+        protection_rows_by_id = dict(
+            (
+                str(row.get("device_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_protection_devices") or [])
+            if isinstance(row, Mapping) and str(row.get("device_id", "")).strip()
+        )
+        if target_id in protection_rows_by_id:
+            row = dict(protection_rows_by_id.get(target_id) or {})
+            ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+            ext["loto_active"] = bool(active)
+            ext["loto_lock_tag"] = lock_tag if bool(active) else None
+            ext["loto_process_id"] = process_id
+            ext["loto_intent_id"] = str(intent_id)
+            row["extensions"] = ext
+            protection_rows_by_id[target_id] = row
+        else:
+            for device_id, row in list(protection_rows_by_id.items()):
+                ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+                if str(ext.get("channel_id", "")).strip() != target_id:
+                    continue
+                ext["loto_active"] = bool(active)
+                ext["loto_lock_tag"] = lock_tag if bool(active) else None
+                ext["loto_process_id"] = process_id
+                ext["loto_intent_id"] = str(intent_id)
+                row["extensions"] = ext
+                protection_rows_by_id[device_id] = row
+        if protection_rows_by_id:
+            state["elec_protection_devices"] = normalize_protection_device_rows(
+                [dict(protection_rows_by_id[key]) for key in sorted(protection_rows_by_id.keys())]
+            )
         result_metadata = {
-            "channel_id": channel_id,
+            "target_id": target_id,
             "lock_tag": lock_tag,
             "active": bool(active),
         }
