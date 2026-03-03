@@ -39,6 +39,34 @@
         "description": "Thermal conductance constitutive model stub.",
         "parameter_schema_id": "dominium.schema.models.model_binding.v1",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.elec_pf_correction",
+        "description": "Electrical PF correction constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.elec_transformer_stub",
+        "description": "Electrical transformer step/ratio constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.elec_storage_battery",
+        "description": "Electrical storage battery constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.elec_device_loss",
+        "description": "Electrical device loss-to-heat constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
       }
     ],
     "extensions": {}

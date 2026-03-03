@@ -35,6 +35,13 @@
       },
       {
         "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.elec.storage_degradation",
+        "description": "Electrical storage degradation hazard family driven by battery wear/loss hooks.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "hazard_type_id": "hazard.wear.general",
         "description": "Generic wear accumulation hazard family.",
         "trigger_mode": "threshold",
