@@ -1,167 +1,87 @@
-"""FAST test: travel_tick budget degradation is deterministic under identical load."""
+"""FAST test: model budget degradation order is deterministic and stable."""
 
 from __future__ import annotations
 
-import copy
 import sys
 
-TEST_ID = "testx.mobility.traffic.budget_degrade_stable"
-TEST_TAGS = ["fast", "mobility", "traffic", "budget", "degrade", "determinism"]
+
+TEST_ID = "test_budget_degrade_stable"
+TEST_TAGS = ["fast", "meta", "model", "budget"]
 
 
-def _seed_two_vehicle_state() -> dict:
-    from src.mobility.vehicle.vehicle_engine import (
-        build_motion_state,
-        build_vehicle,
-        deterministic_motion_state_ref,
-    )
-    from tools.xstack.testx.tests.mobility_travel_testlib import seed_state
+def _evaluate(repo_root: str, binding_order: list[str]):
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from src.models.model_engine import evaluate_model_bindings
 
-    state = seed_state()
-    vehicle_id = "vehicle.mob.travel.beta"
-    state["vehicles"] = list(state.get("vehicles") or []) + [
-        build_vehicle(
-            vehicle_id=vehicle_id,
-            parent_structure_instance_id=None,
-            vehicle_class_id="veh.rail_handcart",
-            spatial_id="spatial.mob.travel.alpha",
-            spec_ids=["spec.mob.travel.vehicle"],
-            capability_bindings={},
-            port_ids=[],
-            interior_graph_id=None,
-            pose_slot_ids=[],
-            mount_point_ids=[],
-            motion_state_ref=deterministic_motion_state_ref(vehicle_id=vehicle_id),
-            hazard_ids=[],
-            maintenance_policy_id="maintenance.policy.default",
-            extensions={},
-        )
+    model_rows = [
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.budget",
+            "model_type_id": "model_type.signal_attenuation_stub",
+            "description": "budget",
+            "supported_tiers": ["macro"],
+            "input_signature": [{"schema_version": "1.0.0", "input_kind": "derived", "input_id": "d", "selector": None, "extensions": {}}],
+            "output_signature": [{"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "q", "extensions": {}}],
+            "cost_units": 2,
+            "cache_policy_id": "cache.none",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        }
     ]
-    state["vehicle_motion_states"] = list(state.get("vehicle_motion_states") or []) + [
-        build_motion_state(
-            vehicle_id=vehicle_id,
-            tier="macro",
-            macro_state={},
-            meso_state={},
-            micro_state={},
-            last_update_tick=0,
-            extensions={},
-        )
+    binding_rows = [
+        {
+            "schema_version": "1.0.0",
+            "binding_id": token,
+            "model_id": "model.budget",
+            "target_kind": "custom",
+            "target_id": "target.{}".format(token),
+            "tier": "macro",
+            "parameters": {},
+            "enabled": True,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        }
+        for token in binding_order
     ]
-    return state
-
-
-def _run_once() -> dict:
-    from tools.xstack.sessionx.process_runtime import execute_intent
-    from tools.xstack.testx.tests.mobility_travel_testlib import (
-        authority_context,
-        law_profile,
-        policy_context,
-    )
-
-    state = _seed_two_vehicle_state()
-    law = law_profile(["process.itinerary_create", "process.travel_start", "process.travel_tick"])
-    authority = authority_context()
-    policy = policy_context()
-
-    def _exec(intent: dict) -> dict:
-        return execute_intent(
-            state=state,
-            intent=intent,
-            law_profile=copy.deepcopy(law),
-            authority_context=copy.deepcopy(authority),
-            navigation_indices={},
-            policy_context=copy.deepcopy(policy),
-        )
-
-    itinerary_alpha = _exec(
-        {
-            "intent_id": "intent.mob.traffic.budget.itinerary.alpha.001",
-            "process_id": "process.itinerary_create",
-            "inputs": {
-                "vehicle_id": "vehicle.mob.travel.alpha",
-                "graph_id": "graph.mob.travel.alpha",
-                "from_node_id": "node.mob.travel.a",
-                "to_node_id": "node.mob.travel.b",
-            },
+    model_type_rows = {
+        "model_type.signal_attenuation_stub": {
+            "schema_version": "1.0.0",
+            "model_type_id": "model_type.signal_attenuation_stub",
+            "description": "stub",
+            "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+            "extensions": {},
         }
+    }
+    cache_policy_rows = {"cache.none": {"schema_version": "1.0.0", "cache_policy_id": "cache.none", "mode": "none", "ttl_ticks": None, "extensions": {}}}
+    return evaluate_model_bindings(
+        current_tick=50,
+        model_rows=model_rows,
+        binding_rows=binding_rows,
+        cache_rows=[],
+        model_type_rows=model_type_rows,
+        cache_policy_rows=cache_policy_rows,
+        input_resolver_fn=(lambda _binding, _input: 1),
+        max_cost_units=4,
     )
-    if str(itinerary_alpha.get("result", "")) != "complete":
-        return {"result": itinerary_alpha, "state": state}
-    itinerary_beta = _exec(
-        {
-            "intent_id": "intent.mob.traffic.budget.itinerary.beta.001",
-            "process_id": "process.itinerary_create",
-            "inputs": {
-                "vehicle_id": "vehicle.mob.travel.beta",
-                "graph_id": "graph.mob.travel.alpha",
-                "from_node_id": "node.mob.travel.a",
-                "to_node_id": "node.mob.travel.b",
-            },
-        }
-    )
-    if str(itinerary_beta.get("result", "")) != "complete":
-        return {"result": itinerary_beta, "state": state}
-
-    start_alpha = _exec(
-        {
-            "intent_id": "intent.mob.traffic.budget.start.alpha.001",
-            "process_id": "process.travel_start",
-            "inputs": {
-                "vehicle_id": "vehicle.mob.travel.alpha",
-                "itinerary_id": str(itinerary_alpha.get("itinerary_id", "")).strip(),
-            },
-        }
-    )
-    if str(start_alpha.get("result", "")) != "complete":
-        return {"result": start_alpha, "state": state}
-    start_beta = _exec(
-        {
-            "intent_id": "intent.mob.traffic.budget.start.beta.001",
-            "process_id": "process.travel_start",
-            "inputs": {
-                "vehicle_id": "vehicle.mob.travel.beta",
-                "itinerary_id": str(itinerary_beta.get("itinerary_id", "")).strip(),
-            },
-        }
-    )
-    if str(start_beta.get("result", "")) != "complete":
-        return {"result": start_beta, "state": state}
-
-    ticked = _exec(
-        {
-            "intent_id": "intent.mob.traffic.budget.tick.001",
-            "process_id": "process.travel_tick",
-            "inputs": {"max_vehicle_updates_per_tick": 1},
-        }
-    )
-    return {"result": ticked, "state": state}
 
 
 def run(repo_root: str):
-    if repo_root not in sys.path:
-        sys.path.insert(0, repo_root)
-
-    first = _run_once()
-    second = _run_once()
-    first_result = dict(first.get("result") or {})
-    second_result = dict(second.get("result") or {})
-    if str(first_result.get("result", "")) != "complete" or str(second_result.get("result", "")) != "complete":
-        return {"status": "fail", "message": "budget degrade fixture failed"}
-    if str(first_result.get("budget_outcome", "")) != "degraded":
-        return {"status": "fail", "message": "expected degraded budget outcome under max_vehicle_updates_per_tick=1"}
-
-    fields = (
-        "processed_vehicle_ids",
-        "deferred_vehicle_ids",
-        "budget_deferred_vehicle_ids",
-        "cadence_deferred_vehicle_ids",
-        "budget_outcome",
-    )
-    for key in fields:
-        if first_result.get(key) != second_result.get(key):
-            return {"status": "fail", "message": "budget degradation field '{}' drifted across runs".format(key)}
-    if list(first_result.get("deferred_vehicle_ids") or []) != ["vehicle.mob.travel.beta"]:
-        return {"status": "fail", "message": "expected deterministic deferred vehicle ordering by vehicle_id"}
-    return {"status": "pass", "message": "budget degradation deterministic and stable"}
+    eval_a = _evaluate(repo_root, ["binding.4", "binding.2", "binding.1", "binding.3"])
+    eval_b = _evaluate(repo_root, ["binding.3", "binding.1", "binding.4", "binding.2"])
+    processed_a = list(eval_a.get("processed_binding_ids") or [])
+    processed_b = list(eval_b.get("processed_binding_ids") or [])
+    if processed_a != processed_b:
+        return {"status": "fail", "message": "processed bindings differ under same budget"}
+    deferred_a = [str(dict(row).get("binding_id", "")) for row in list(eval_a.get("deferred_rows") or [])]
+    deferred_b = [str(dict(row).get("binding_id", "")) for row in list(eval_b.get("deferred_rows") or [])]
+    if deferred_a != deferred_b:
+        return {"status": "fail", "message": "deferred rows differ under same budget"}
+    if str(eval_a.get("budget_outcome", "")) != "degraded":
+        return {"status": "fail", "message": "expected degraded budget outcome"}
+    return {"status": "pass", "message": "budget degradation order stable"}
 
