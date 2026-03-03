@@ -26,6 +26,11 @@
     "fault_state_hash_chain",
     "protection_state_hash_chain",
     "degradation_event_hash_chain",
+    "trip_event_hash_chain",
+    "trip_explanation_hash_chain",
+    "thermal_network_hash",
+    "overheat_event_hash_chain",
+    "ambient_exchange_hash",
     "signal_network_hash",
     "message_delivery_event_hash_chain",
     "receipt_hash_chain",
@@ -121,6 +126,26 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "trip_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "trip_explanation_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "thermal_network_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "overheat_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "ambient_exchange_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "signal_network_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -174,6 +199,11 @@
       "fault_state_hash_chain": "c310acfa3238f13f34c7cb7f97d67e4fc58dbf21f7f6774fd75337d33bb99c5f",
       "protection_state_hash_chain": "cd11409b01317ea7fb1ff06f3681b56a042662f8f0b0fa1becd28f3e36ec0f84",
       "degradation_event_hash_chain": "e7e0bc933fdb2b728f4f4ee901bc0f8f8f5ec6c5c043f05f8876be6a95ed3765",
+      "trip_event_hash_chain": "a5e6276c14ea8bdd9a31031873de2a24e75782c5f2f81ccf7e8efb77bc1f9b7c",
+      "trip_explanation_hash_chain": "7608eb0bc45dc7acc2871e9c9860f23acae17c585633fd64fda094ec318f00d5",
+      "thermal_network_hash": "3f9ceb4f7f20bd61c0b5b3a90a2f7f520418c36bf1f540fc12ed9de269ea5906",
+      "overheat_event_hash_chain": "fce1f86f5e79c70445cdb8f2a9cd1c84bbf166473ec43fdf0cdf35a7886498d3",
+      "ambient_exchange_hash": "2a348ed278a9d287be9af3122bf4f4ddaf1368b66dd03e2d4a43fe0419f87d5c",
       "signal_network_hash": "15643da4e24ac24512435f4f4d0f0d8f0b5db9ac14d551408ff8fa79d8d40cce",
       "message_delivery_event_hash_chain": "9eb46fb8a3b0c47017b76d1cc7a8add5f381e9ce0ca0b1f39ea56bcf8796f876",
       "receipt_hash_chain": "8aef2f52c9e946bd2f2f8f4f25f15f5f8dd355c991d95af39a8cb6f31da2a0ca",

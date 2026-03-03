@@ -307,6 +307,27 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    thermal_network_hash = _mobility_surface_hash(
+        key="thermal_network_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    overheat_event_hash_chain = _mobility_surface_hash(
+        key="overheat_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    ambient_exchange_hash = _mobility_surface_hash(
+        key="ambient_exchange_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     signal_network_hash = _signal_surface_hash(
         key="signal_network_hash",
         surface=mobility_proof_surface,
@@ -366,6 +387,9 @@ def build_control_proof_bundle_from_markers(
         "degradation_event_hash_chain": str(degradation_event_hash_chain),
         "trip_event_hash_chain": str(trip_event_hash_chain),
         "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
+        "thermal_network_hash": str(thermal_network_hash),
+        "overheat_event_hash_chain": str(overheat_event_hash_chain),
+        "ambient_exchange_hash": str(ambient_exchange_hash),
         "signal_network_hash": str(signal_network_hash),
         "message_delivery_event_hash_chain": str(message_delivery_event_hash_chain),
         "receipt_hash_chain": str(receipt_hash_chain),
@@ -407,6 +431,9 @@ def build_control_proof_bundle_from_markers(
                     "degradation_event_hash_chain": str(payload.get("degradation_event_hash_chain", "")),
                     "trip_event_hash_chain": str(payload.get("trip_event_hash_chain", "")),
                     "trip_explanation_hash_chain": str(payload.get("trip_explanation_hash_chain", "")),
+                    "thermal_network_hash": str(payload.get("thermal_network_hash", "")),
+                    "overheat_event_hash_chain": str(payload.get("overheat_event_hash_chain", "")),
+                    "ambient_exchange_hash": str(payload.get("ambient_exchange_hash", "")),
                     "signal_network_hash": str(payload.get("signal_network_hash", "")),
                     "message_delivery_event_hash_chain": str(payload.get("message_delivery_event_hash_chain", "")),
                     "receipt_hash_chain": str(payload.get("receipt_hash_chain", "")),

@@ -29,6 +29,11 @@ record control_proof_bundle
     - fault_state_hash_chain: sha256
     - protection_state_hash_chain: sha256
     - degradation_event_hash_chain: sha256
+    - trip_event_hash_chain: sha256
+    - trip_explanation_hash_chain: sha256
+    - thermal_network_hash: sha256
+    - overheat_event_hash_chain: sha256
+    - ambient_exchange_hash: sha256
     - signal_network_hash: sha256
     - message_delivery_event_hash_chain: sha256
     - receipt_hash_chain: sha256
