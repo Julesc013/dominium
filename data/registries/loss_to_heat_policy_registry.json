@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.registry.loss_to_heat_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.loss_to_heat_policy_registry",
+    "registry_version": "1.0.0",
+    "loss_to_heat_policies": [
+      {
+        "schema_version": "1.0.0",
+        "loss_to_heat_policy_id": "loss_to_heat.required",
+        "description": "All modeled loss must map to quantity.heat_loss or explicit temperature effect.",
+        "map_loss_to_heat": true,
+        "require_exception_log": true,
+        "allow_disabled": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "loss_to_heat_policy_id": "loss_to_heat.optional",
+        "description": "Loss-to-heat mapping is preferred; non-mapped loss requires explicit exception logging.",
+        "map_loss_to_heat": false,
+        "require_exception_log": true,
+        "allow_disabled": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "loss_to_heat_policy_id": "loss_to_heat.disabled",
+        "description": "Loss-to-heat mapping disabled for exotic profiles only; exceptions must be logged.",
+        "map_loss_to_heat": false,
+        "require_exception_log": true,
+        "allow_disabled": true,
+        "extensions": {
+          "restricted_profile_class": "exotic"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "PHYS0-2"
+    }
+  }
+}

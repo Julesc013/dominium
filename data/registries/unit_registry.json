@@ -73,6 +73,39 @@
       },
       {
         "schema_version": "1.0.0",
+        "unit_id": "unit.N_m",
+        "dimension_id": "dim.torque",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "N*m",
+        "description": "Canonical newton-meter torque unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.N_s",
+        "dimension_id": "dim.momentum",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "N*s",
+        "description": "Canonical newton-second linear momentum unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.N_m_s",
+        "dimension_id": "dim.angular_momentum",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "N*m*s",
+        "description": "Canonical newton-meter-second angular momentum unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "unit_id": "unit.J",
         "dimension_id": "dim.energy",
         "scale_factor_to_canonical": 16777216,

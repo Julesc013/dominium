@@ -1,0 +1,96 @@
+{
+  "schema_id": "dominium.registry.physics_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.physics_profile_registry",
+    "registry_version": "1.0.0",
+    "physics_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "physics_profile_id": "phys.realistic.default",
+        "description": "Default realistic profile: enforce mass+energy, track momentum.",
+        "invariants_enforced": [
+          "mass",
+          "energy"
+        ],
+        "invariants_track_only": [
+          "momentum"
+        ],
+        "allowed_exceptions": [
+          "boundary_flux"
+        ],
+        "loss_to_heat_policy_id": "loss_to_heat.required",
+        "determinism_policy_id": "rng.policy.named_streams",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "physics_profile_id": "phys.realistic.rank_strict",
+        "description": "Ranked strict realistic profile: enforce mass+energy+momentum where applicable.",
+        "invariants_enforced": [
+          "mass",
+          "energy",
+          "momentum"
+        ],
+        "invariants_track_only": [],
+        "allowed_exceptions": [
+          "boundary_flux"
+        ],
+        "loss_to_heat_policy_id": "loss_to_heat.required",
+        "determinism_policy_id": "rng.policy.named_streams",
+        "extensions": {
+          "ranked": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "physics_profile_id": "phys.fantasy.permissive",
+        "description": "Permissive fantasy profile: allows controlled exceptions with mandatory logging.",
+        "invariants_enforced": [
+          "mass",
+          "energy"
+        ],
+        "invariants_track_only": [
+          "momentum"
+        ],
+        "allowed_exceptions": [
+          "boundary_flux",
+          "conservation_violation",
+          "magic_injection",
+          "custom"
+        ],
+        "loss_to_heat_policy_id": "loss_to_heat.optional",
+        "determinism_policy_id": "rng.policy.named_streams",
+        "extensions": {
+          "requires_exception_artifacts": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "physics_profile_id": "phys.lab.exotic",
+        "description": "Lab exotic profile allowing controlled violations for experiments with full audit trail.",
+        "invariants_enforced": [],
+        "invariants_track_only": [
+          "mass",
+          "energy",
+          "momentum",
+          "charge"
+        ],
+        "allowed_exceptions": [
+          "boundary_flux",
+          "conservation_violation",
+          "magic_injection",
+          "custom"
+        ],
+        "loss_to_heat_policy_id": "loss_to_heat.disabled",
+        "determinism_policy_id": "rng.policy.named_streams",
+        "extensions": {
+          "lab_only": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "PHYS0-2"
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Physics Profile Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic physics invariant and exception policy profile.",
+  "x-doc-ref": [
+    "docs/physics/PHYSICS_CONSTITUTION.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "physics_profile_id",
+    "description",
+    "invariants_enforced",
+    "invariants_track_only",
+    "allowed_exceptions",
+    "loss_to_heat_policy_id",
+    "determinism_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "physics_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "invariants_enforced": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "mass",
+          "energy",
+          "momentum",
+          "charge",
+          "custom"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "invariants_track_only": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "mass",
+          "energy",
+          "momentum",
+          "charge",
+          "custom"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "allowed_exceptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "loss_to_heat_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "determinism_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "physics_profile_id": "phys.realistic.default",
+      "description": "Default realistic profile enforcing mass and energy conservation.",
+      "invariants_enforced": [
+        "mass",
+        "energy"
+      ],
+      "invariants_track_only": [
+        "momentum"
+      ],
+      "allowed_exceptions": [
+        "boundary_flux"
+      ],
+      "loss_to_heat_policy_id": "loss_to_heat.required",
+      "determinism_policy_id": "rng.policy.named_streams",
+      "extensions": {}
+    }
+  ]
+}

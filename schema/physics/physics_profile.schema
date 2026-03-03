@@ -1,0 +1,24 @@
+SCHEMA: physics/physics_profile.schema
+schema_id: dominium.schema.physics.physics_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic physics invariant policy selection for a session/universe context.
+- Make invariant enforcement and exception allowance explicit and auditable.
+
+NON-SEMANTICS:
+- This schema does not execute solver logic.
+- It declares policy anchors consumed by governance/runtime selection layers.
+
+REQUIRED SHAPE:
+record physics_profile
+  required:
+    - physics_profile_id: id
+    - description: text
+    - invariants_enforced: [enum(mass|energy|momentum|charge|custom)]
+    - invariants_track_only: [enum(mass|energy|momentum|charge|custom)]
+    - allowed_exceptions: [id]
+    - loss_to_heat_policy_id: id
+    - determinism_policy_id: id
+    - extensions: map

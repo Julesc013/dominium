@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Physics Exception Event Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic physics exception event payload.",
+  "x-doc-ref": [
+    "docs/physics/PHYSICS_CONSTITUTION.md",
+    "docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "exception_id",
+    "tick",
+    "exception_kind",
+    "affected_quantities",
+    "reason_code",
+    "originating_process_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "exception_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "exception_kind": {
+      "type": "string",
+      "enum": [
+        "boundary_flux",
+        "conservation_violation",
+        "magic_injection",
+        "custom"
+      ]
+    },
+    "affected_quantities": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^quantity\\.[a-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "number"
+        ]
+      }
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "originating_process_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "exception_id": "exc.physics.000001",
+      "tick": 42,
+      "exception_kind": "boundary_flux",
+      "affected_quantities": {
+        "quantity.energy_total": -120,
+        "quantity.heat_loss": 120
+      },
+      "reason_code": "boundary.radiative_exchange",
+      "originating_process_id": "process.thermal_exchange",
+      "deterministic_fingerprint": "5b4cc0f4bc6ae4bc4d5c81f9a63f4a3592c23f0f0afbeecb7de8167d31b6df1a",
+      "extensions": {}
+    }
+  ]
+}

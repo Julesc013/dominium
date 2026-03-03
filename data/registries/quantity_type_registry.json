@@ -34,6 +34,123 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.momentum_linear",
+        "dimension_id": "dim.momentum",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.N_s",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.momentum_angular",
+        "dimension_id": "dim.angular_momentum",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.N_m_s",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.force",
+        "dimension_id": "dim.force",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.N",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.torque",
+        "dimension_id": "dim.torque",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.N_m",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_kinetic",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_potential",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_thermal",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_electrical",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_chemical",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_total",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.heat_loss",
+        "dimension_id": "dim.power",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.W",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.entropy_index",
+        "dimension_id": "dim.energy_per_temperature",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J_per_K",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.radiation_dose",
+        "dimension_id": "dim.specific_energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J_per_kg",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.power.active_stub",
         "dimension_id": "dim.power",
         "invariant_numeric_type": "fixed_point",
@@ -73,6 +190,24 @@
         "extensions": {
           "loss_hook_only": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.heat_flow_stub",
+        "dimension_id": "dim.power",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.W",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.energy_store_stub",
+        "dimension_id": "dim.energy",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.J",
+        "conservation_applicable": true,
+        "extensions": {}
       },
       {
         "schema_version": "1.0.0",
