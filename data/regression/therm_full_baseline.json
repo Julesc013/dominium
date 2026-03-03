@@ -1,0 +1,73 @@
+{
+  "baseline_id": "therm.full.baseline.v1",
+  "composite_therm_hash_anchor": "978117e8f59d602beddd34b2169c6d87e6d5eb0c600264ebfc6332c2b9687ec2",
+  "description": "THERM-5 deterministic final hardening baseline for stress, degradation, proof, and replay envelope.",
+  "deterministic_fingerprint": "69f4825ae207b63fdf8ec830ac0078adfab264e774b91474257af79ccb671c7b",
+  "extensions": {
+    "assertions": {
+      "degradation_window_match": true,
+      "event_window_match": true,
+      "full_proof_summary_match": true,
+      "proof_window_match": true,
+      "replay_complete": true,
+      "stress_complete": true,
+      "temperature_window_match": true
+    },
+    "building_cooling_snapshot": {
+      "max_temperature_observed": 104,
+      "total_fire_events": 0,
+      "total_overtemp_trips": 0
+    },
+    "downgrade_snapshot": {
+      "max_temperature_observed": 129,
+      "total_downgraded_networks": 36,
+      "total_fire_events": 15,
+      "total_overtemp_trips": 0
+    },
+    "runaway_snapshot": {
+      "max_temperature_observed": 114,
+      "total_fire_events": 8,
+      "total_overtemp_trips": 0
+    }
+  },
+  "fixed_seed_scenario": {
+    "budget_envelope_id": "therm.envelope.standard",
+    "replay_report_path": "build/thermal/therm5_replay_window_report.json",
+    "scenario_id": "scenario.therm.stress.85f4064b339c",
+    "scenario_path": "build/thermal/therm5_stress_scenario.json",
+    "scenario_seed": 7705,
+    "stress_report_path": "build/thermal/therm5_stress_report.json",
+    "tick_count": 48
+  },
+  "pattern_hashes": {
+    "cache_hit_pattern_hash": "7c2f80660e7e9b75f320564208429350c406d3ef128f382a29d5fb0116b7e22d",
+    "cost_units_pattern_hash": "6c6aa915ec957847690ed944fae275d7072a808a2a462151d62a5535148cf717",
+    "downgrade_pattern_hash": "7c2f80660e7e9b75f320564208429350c406d3ef128f382a29d5fb0116b7e22d",
+    "fire_pattern_hash": "4da4174b9b046cab016beac7bf72235eb8db7b6eb7650b5888862bb22b9071fa",
+    "overtemp_pattern_hash": "7c2f80660e7e9b75f320564208429350c406d3ef128f382a29d5fb0116b7e22d",
+    "temperature_pattern_hash": "3bb52e1047e42f5b2210e90b466edcd72692b0f0c6f5c8c3700442c56ef23e7a"
+  },
+  "proof_hashes": {
+    "degradation_event_hash_chain": "0000000000000000000000000000000000000000000000000000000000000000",
+    "fire_cascade_hash_chain": "5aaac19afd6dbe9a48314e5236eb64726cb7c34cae750c0f33f0814b10a312a2",
+    "heat_input_hash_chain": "e1c4da743aac790e65bef83f211bb58fc24dfd38974c503e7bf8769af18e7958",
+    "overtemp_trip_hash_chain": "0000000000000000000000000000000000000000000000000000000000000000",
+    "proof_hash_summary": "42c5b1550a25b2cdf45ff1c3d0d7406fef66d9a12f30fcc8e7333c396ac0fcd3",
+    "replay_expected_window_proof_chain": "48151a4045267c6fba41d9336a93d3550072ff1c7b7e37c5c2b008dad6b1cf2d",
+    "replay_observed_window_proof_chain": "48151a4045267c6fba41d9336a93d3550072ff1c7b7e37c5c2b008dad6b1cf2d",
+    "thermal_network_state_hash_chain": "6e04f1c1061a1d1109f2a36cc4cba1aa1023065b840b9d4ef8594a3626429b91"
+  },
+  "scenario_fingerprints": {
+    "building_cooling_fingerprint": "0609261d566980237a8046be9abf3dcd0a5822da7d7192020b3ab8154ff0be62",
+    "downgrade_fingerprint": "6c84f9e9b18d70e09888859511374e892b18b4c1d0953c9e862fb035d72cc64d",
+    "main_replay_fingerprint": "70d2eefcdbabd03e382be4f21505cc7e32cec75c99604641c9e7d4bd7b91b4b7",
+    "main_report_fingerprint": "5d4ce667609a69dd0721c05fc57d850a8c4a7fda2a050cca5083eff6fbaac9a1",
+    "main_scenario_fingerprint": "4605bba9fc152e69ee7eafdabf137c6f22e36a0d6dfff2f1df083b822190214c",
+    "runaway_fingerprint": "ecdc52664d6217da4644ef676b9d701fac3cc4da77e4a6237df0d3d6fb9f3140"
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic THERM stress+replay rerun and explicit THERM-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "THERM-REGRESSION-UPDATE"
+  }
+}
