@@ -53,4 +53,6 @@ INVARIANTS:
 - Proof bundle fields must be derived deterministically from control decisions.
 - Mobility proof hashes must be derived deterministically from authoritative mobility event/state surfaces.
 - Bundle generation must be tick-driven and wall-clock independent.
+- Physics exception artifacts (`exception_event`) are INFO `RECORD` and must be included as deterministic witness coverage when present in tick range.
+- Replay windows must reproduce exception-event ordering and deterministic fingerprints for equivalent inputs.
 - Extensions remain open-map for forward-compatible domain augmentation.

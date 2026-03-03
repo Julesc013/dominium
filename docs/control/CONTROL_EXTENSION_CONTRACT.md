@@ -28,7 +28,8 @@ Domain extensions that touch control behavior must:
 1. Preserve deterministic fingerprints for control decisions under fixed inputs.
 2. Preserve replay/proof compatibility by keeping control artifact schemas versioned in CompatX.
 3. Include control decision markers in proof artifacts for authoritative/hybrid and lockstep composite anchors.
-4. Provide explicit migration route or refusal path for any control schema major-version bump.
+4. Include physics exception-event witnesses in proof bundles when invariant exceptions are present in the tick window.
+5. Provide explicit migration route or refusal path for any control schema major-version bump.
 
 ## Forbidden Patterns
 
