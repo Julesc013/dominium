@@ -509,6 +509,120 @@
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_ignite_stub",
+        "model_type_id": "model_type.therm_ignite_stub",
+        "description": "THERM-4 deterministic fire ignition threshold model stub.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "material_property",
+            "input_id": "material.combustion_profile",
+            "selector": "target.material",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.ignite_trigger",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.ignition_threshold",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.spread_threshold",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "2bb4b0031fe4ad34fdd63a4f009e292cfcc66c9ed72eef41a96f08ce4ebb6d7f",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_combust_stub",
+        "model_type_id": "model_type.therm_combust_stub",
+        "description": "THERM-4 deterministic combustion stub producing heat and pollutant outputs.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.therm.fire_state",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "material_property",
+            "input_id": "material.combustion_profile",
+            "selector": "target.material",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "quantity.thermal.heat_loss_stub",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.pollutant.emission_stub",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.fuel_consumed",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.fire.basic",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "02f0095463b1020ad2fd2358afaa661b8d4a1187c5318e56972625f9660e03f3",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
       }
     ],
     "extensions": {}
