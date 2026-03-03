@@ -371,6 +371,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.thermal.ambient_exchange_summary",
+        "title": "Thermal Ambient Exchange",
+        "data": {
+          "data_kind": "thermal_ambient_exchange_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.radiator_efficiency",
+        "title": "Thermal Radiator Efficiency",
+        "data": {
+          "data_kind": "thermal_radiator_efficiency"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.models.summary",
         "title": "Constitutive Model Summary",
         "data": {

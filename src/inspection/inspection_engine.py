@@ -132,6 +132,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.phase_states",
         "section.thermal.cure_progress",
         "section.thermal.insulation_effects",
+        "section.thermal.ambient_exchange_summary",
+        "section.thermal.radiator_efficiency",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -167,6 +169,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.phase_states",
         "section.thermal.cure_progress",
         "section.thermal.insulation_effects",
+        "section.thermal.ambient_exchange_summary",
+        "section.thermal.radiator_efficiency",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -202,6 +206,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.phase_states",
         "section.thermal.cure_progress",
         "section.thermal.insulation_effects",
+        "section.thermal.ambient_exchange_summary",
+        "section.thermal.radiator_efficiency",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -373,6 +379,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.thermal.phase_states": {"title": "Thermal Phase States", "extensions": {"cost_units": 2}},
     "section.thermal.cure_progress": {"title": "Thermal Cure Progress", "extensions": {"cost_units": 2}},
     "section.thermal.insulation_effects": {"title": "Thermal Insulation Effects", "extensions": {"cost_units": 2}},
+    "section.thermal.ambient_exchange_summary": {"title": "Thermal Ambient Exchange", "extensions": {"cost_units": 2}},
+    "section.thermal.radiator_efficiency": {"title": "Thermal Radiator Efficiency", "extensions": {"cost_units": 2}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
     "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
     "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
@@ -2341,6 +2349,145 @@ def _build_section_data(
         }
         if allow_hidden_state:
             payload["edges"] = list(tracked)[:256]
+        return payload
+    if section_id == "section.thermal.ambient_exchange_summary":
+        runtime_state = dict((dict(state or {})).get("thermal_runtime_state") or {})
+        ambient_rows = [
+            dict(item)
+            for item in list(
+                (dict(state or {})).get("thermal_ambient_exchange_rows")
+                or (dict(state or {})).get("ambient_exchange_rows")
+                or runtime_state.get("ambient_exchange_rows")
+                or []
+            )
+            if isinstance(item, dict)
+        ]
+        radiator_rows = [
+            dict(item)
+            for item in list(
+                (dict(state or {})).get("thermal_radiator_exchange_rows")
+                or (dict(state or {})).get("radiator_exchange_rows")
+                or runtime_state.get("radiator_exchange_rows")
+                or []
+            )
+            if isinstance(item, dict)
+        ]
+        combined_rows = sorted(
+            [dict(item) for item in list(ambient_rows) + list(radiator_rows)],
+            key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))),
+        )
+        temp_values = [
+            int(_as_int(row.get("ambient_temperature", 0), 0))
+            for row in combined_rows
+            if row.get("ambient_temperature") is not None
+        ]
+        total_exchange = int(sum(max(0, _as_int(row.get("heat_exchange", 0), 0)) for row in combined_rows))
+        total_delta_energy = int(sum(_as_int(row.get("delta_thermal_energy", 0), 0) for row in combined_rows))
+        payload = {
+            "ambient_row_count": int(len(ambient_rows)),
+            "radiator_row_count": int(len(radiator_rows)),
+            "exchange_row_count": int(len(combined_rows)),
+            "total_heat_exchange": int(total_exchange),
+            "net_delta_thermal_energy": int(total_delta_energy),
+            "average_ambient_temperature": int(
+                (sum(temp_values) // max(1, len(temp_values)))
+                if temp_values
+                else 0
+            ),
+            "ambient_eval_stride": int(
+                max(
+                    1,
+                    _as_int(
+                        (dict(state or {})).get("ambient_eval_stride", runtime_state.get("ambient_eval_stride", 1)),
+                        1,
+                    ),
+                )
+            ),
+            "ambient_deferred_count": int(
+                max(
+                    0,
+                    _as_int(
+                        (dict(state or {})).get("ambient_deferred_count", runtime_state.get("ambient_deferred_count", 0)),
+                        0,
+                    ),
+                )
+            ),
+            "ambient_exchange_hash": str(
+                (dict(state or {})).get("ambient_exchange_hash", runtime_state.get("ambient_exchange_hash", ""))
+            ).strip()
+            or None,
+        }
+        if allow_hidden_state:
+            payload["ambient_rows"] = [
+                {
+                    "node_id": str(row.get("node_id", "")).strip(),
+                    "heat_exchange": int(max(0, _as_int(row.get("heat_exchange", 0), 0))),
+                    "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
+                    "node_temperature": int(_as_int(row.get("node_temperature", 0), 0)),
+                    "ambient_temperature": int(_as_int(row.get("ambient_temperature", 0), 0)),
+                }
+                for row in sorted(ambient_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))[:256]
+            ]
+            payload["radiator_rows"] = [
+                {
+                    "node_id": str(row.get("node_id", "")).strip(),
+                    "radiator_profile_id": str(row.get("radiator_profile_id", "")).strip() or None,
+                    "forced_cooling_on": bool(row.get("forced_cooling_on", False)),
+                    "heat_exchange": int(max(0, _as_int(row.get("heat_exchange", 0), 0))),
+                    "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
+                }
+                for row in sorted(radiator_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.thermal.radiator_efficiency":
+        runtime_state = dict((dict(state or {})).get("thermal_runtime_state") or {})
+        radiator_rows = [
+            dict(item)
+            for item in list(
+                (dict(state or {})).get("thermal_radiator_exchange_rows")
+                or (dict(state or {})).get("radiator_exchange_rows")
+                or runtime_state.get("radiator_exchange_rows")
+                or []
+            )
+            if isinstance(item, dict)
+        ]
+        forced_on_count = len([row for row in radiator_rows if bool(row.get("forced_cooling_on", False))])
+        passive_count = int(max(0, len(radiator_rows) - forced_on_count))
+        total_exchange = int(sum(max(0, _as_int(row.get("heat_exchange", 0), 0)) for row in radiator_rows))
+        efficiency_terms = []
+        for row in sorted(radiator_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", "")))):
+            delta_temp = abs(_as_int(row.get("node_temperature", 0), 0) - _as_int(row.get("ambient_temperature", 0), 0))
+            if delta_temp <= 0:
+                continue
+            efficiency_terms.append(
+                int((max(0, _as_int(row.get("heat_exchange", 0), 0)) * 1000) // max(1, delta_temp))
+            )
+        avg_efficiency_permille = int(
+            (sum(efficiency_terms) // max(1, len(efficiency_terms)))
+            if efficiency_terms
+            else 0
+        )
+        payload = {
+            "radiator_count": int(len(radiator_rows)),
+            "forced_cooling_on_count": int(forced_on_count),
+            "passive_count": int(passive_count),
+            "total_heat_exchange": int(total_exchange),
+            "average_exchange_per_delta_temp_permille": int(avg_efficiency_permille),
+            "status": "forced" if forced_on_count > 0 else ("passive" if radiator_rows else "none"),
+        }
+        if allow_hidden_state:
+            payload["radiators"] = [
+                {
+                    "node_id": str(row.get("node_id", "")).strip(),
+                    "radiator_profile_id": str(row.get("radiator_profile_id", "")).strip() or None,
+                    "forced_cooling_on": bool(row.get("forced_cooling_on", False)),
+                    "node_temperature": int(_as_int(row.get("node_temperature", 0), 0)),
+                    "ambient_temperature": int(_as_int(row.get("ambient_temperature", 0), 0)),
+                    "heat_exchange": int(max(0, _as_int(row.get("heat_exchange", 0), 0))),
+                    "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
+                }
+                for row in sorted(radiator_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))[:256]
+            ]
         return payload
     if section_id == "section.signal.inbox_summary":
         receipts = [
