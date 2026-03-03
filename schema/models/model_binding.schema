@@ -1,0 +1,25 @@
+SCHEMA: models/model_binding.schema
+schema_id: dominium.schema.models.model_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Bind a constitutive model instance to a deterministic target and tier.
+
+REQUIRED SHAPE:
+record model_binding
+  required:
+    - schema_version: semver
+    - binding_id: id
+    - model_id: id
+    - target_kind: enum(node|edge|vehicle|structure|volume|channel|custom)
+    - target_id: id
+    - tier: enum(macro|meso|micro)
+    - parameters: map
+    - enabled: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Bindings are deterministic and process-authored.
+- Disabled bindings do not evaluate.
