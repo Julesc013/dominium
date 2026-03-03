@@ -406,6 +406,109 @@
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_ambient_exchange",
+        "model_type_id": "model_type.therm_ambient_exchange",
+        "description": "THERM-3 deterministic ambient boundary exchange model.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "ambient.sample",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.therm.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.ambient_exchange",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.ambient_delta_energy",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "a7f101ef94b422a1d4897799b23d7f1ca8451b071829bcd2b6a1e9d2b3d802f8",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_radiator_exchange",
+        "model_type_id": "model_type.therm_radiator_exchange",
+        "description": "THERM-3 deterministic radiator/heat-sink exchange model.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "ambient.sample",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.therm.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.heat_exchanger.effectiveness",
+            "selector": null,
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.radiator_exchange",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.radiator_delta_energy",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "74b2f90d37906e8ca39165b08adf5fbeeb4e5b8bca20526f649f69a2f1b16f43",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
       }
     ],
     "extensions": {}
