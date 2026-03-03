@@ -347,6 +347,27 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-PHYS-PROFILE-DECLARED",
+      "severity": "FAIL",
+      "scope_paths": ["schema/session/session_spec.schema", "schemas/session_spec.schema.json", "tools/xstack/sessionx/creator.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-phys-profile-declared",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-UNREGISTERED-QUANTITY-FORBIDDEN",
+      "severity": "FAIL",
+      "scope_paths": ["src", "tools/xstack/sessionx", "data/registries/quantity_registry.json", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-unregistered-quantity-forbidden",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-LOSS-MAPPED-TO-HEAT",
+      "severity": "FAIL",
+      "scope_paths": ["src/electric", "src/thermal", "data/registries/loss_to_heat_policy_registry.json", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-loss-mapped-to-heat",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-ACTION-MUST-HAVE-FAMILY",
       "severity": "FAIL",
       "scope_paths": ["data/registries/action_template_registry.json", "data/registries/action_family_registry.json", "tools/xstack/repox/check.py"],

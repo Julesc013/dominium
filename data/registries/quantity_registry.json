@@ -119,6 +119,16 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.capacity_per_tick",
+        "description": "Canonical per-tick channel/flow capacity quantity.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.W",
+        "extensions": {
+          "domain_agnostic_channel_capacity": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.entropy_index",
         "description": "Canonical entropy/irreversibility diagnostic channel.",
         "numeric_type": "fixed_point",

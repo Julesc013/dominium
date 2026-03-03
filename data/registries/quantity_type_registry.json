@@ -133,6 +133,17 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.capacity_per_tick",
+        "dimension_id": "dim.power",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.W",
+        "conservation_applicable": false,
+        "extensions": {
+          "domain_agnostic_channel_capacity": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.entropy_index",
         "dimension_id": "dim.energy_per_temperature",
         "invariant_numeric_type": "fixed_point",

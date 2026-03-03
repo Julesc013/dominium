@@ -1510,6 +1510,7 @@ def create_session_spec(
         "mission_id": None if str(mission_id).strip() in ("", "null", "None") else str(mission_id),
         "experience_id": str(experience_id),
         "parameter_bundle_id": str(parameter_bundle_id),
+        "physics_profile_id": str(identity_payload.get("physics_profile_id", "")).strip(),
         "authority_context": {
             "authority_origin": "client",
             "experience_id": str(experience_id),

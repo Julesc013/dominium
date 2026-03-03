@@ -230,6 +230,9 @@ from analyzers import e201_inline_fire_logic_smell
 from analyzers import e202_unbounded_spread_smell
 from analyzers import e203_unbudgeted_therm_solve_smell
 from analyzers import e204_silent_therm_degrade_smell
+from analyzers import e205_energy_bypass_smell
+from analyzers import e206_momentum_bypass_smell
+from analyzers import e207_magic_silent_violation_smell
 
 
 ANALYZERS = (
@@ -463,6 +466,9 @@ ANALYZERS = (
     e202_unbounded_spread_smell,
     e203_unbudgeted_therm_solve_smell,
     e204_silent_therm_degrade_smell,
+    e205_energy_bypass_smell,
+    e206_momentum_bypass_smell,
+    e207_magic_silent_violation_smell,
 )
 
 
