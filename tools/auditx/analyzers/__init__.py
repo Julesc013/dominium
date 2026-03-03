@@ -224,6 +224,8 @@ from analyzers import e195_heat_loss_bypass_smell
 from analyzers import e196_thermal_bypass_smell
 from analyzers import e197_inline_phase_change_smell
 from analyzers import e198_inline_cure_smell
+from analyzers import e199_inline_cooling_smell
+from analyzers import e200_direct_temperature_ambient_smell
 
 
 ANALYZERS = (
@@ -451,6 +453,8 @@ ANALYZERS = (
     e196_thermal_bypass_smell,
     e197_inline_phase_change_smell,
     e198_inline_cure_smell,
+    e199_inline_cooling_smell,
+    e200_direct_temperature_ambient_smell,
 )
 
 
