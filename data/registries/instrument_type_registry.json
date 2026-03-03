@@ -439,6 +439,45 @@
         "extensions": {}
       },
       {
+        "instrument_type_id": "instr.elec.test_lamp",
+        "description": "Diegetic electrical test lamp showing energized yes/no state.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.test_lamp"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.elec.breaker_panel",
+        "description": "Diegetic breaker panel indicator showing tripped/open/closed states.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.breaker_panel"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
+        "instrument_type_id": "instr.elec.ground_fault_indicator",
+        "description": "Diegetic coarse indicator for active electrical ground faults.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.ground_fault"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {}
+      },
+      {
         "instrument_type_id": "instr.rangefinder",
         "description": "Rangefinder stub for future domain sensor channels.",
         "required_channels_in": [
