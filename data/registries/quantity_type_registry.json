@@ -34,6 +34,48 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.active_stub",
+        "dimension_id": "dim.power",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.W",
+        "conservation_applicable": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.reactive_stub",
+        "dimension_id": "dim.power",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.W",
+        "conservation_applicable": false,
+        "extensions": {
+          "placeholder_unit": "var_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.apparent_stub",
+        "dimension_id": "dim.power",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.W",
+        "conservation_applicable": false,
+        "extensions": {
+          "placeholder_unit": "VA_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.heat_loss_stub",
+        "dimension_id": "dim.power",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.W",
+        "conservation_applicable": false,
+        "extensions": {
+          "loss_hook_only": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.charge_total",
         "dimension_id": "dim.charge",
         "invariant_numeric_type": "fixed_point",
