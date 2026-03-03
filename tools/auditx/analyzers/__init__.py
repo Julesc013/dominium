@@ -226,6 +226,8 @@ from analyzers import e197_inline_phase_change_smell
 from analyzers import e198_inline_cure_smell
 from analyzers import e199_inline_cooling_smell
 from analyzers import e200_direct_temperature_ambient_smell
+from analyzers import e201_inline_fire_logic_smell
+from analyzers import e202_unbounded_spread_smell
 
 
 ANALYZERS = (
@@ -455,6 +457,8 @@ ANALYZERS = (
     e198_inline_cure_smell,
     e199_inline_cooling_smell,
     e200_direct_temperature_ambient_smell,
+    e201_inline_fire_logic_smell,
+    e202_unbounded_spread_smell,
 )
 
 

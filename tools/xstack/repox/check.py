@@ -13584,7 +13584,32 @@ def _append_thermal_invariant_findings(
                 rule_id="INV-PHASE-CHANGE-MODEL-ONLY",
             )
         )
-
+    for token in ("model_type.therm_ignite_stub", "model_type.therm_combust_stub"):
+        if token in model_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=model_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="THERM fire ignition/combustion logic must be declared and dispatched through constitutive model types",
+                rule_id="INV-FIRE-MODEL-ONLY",
+            )
+        )
+    for token in ("max_fire_spread_per_tick", "fire_iteration_limit", "spread_cap_reached"):
+        if token in thermal_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=thermal_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="fire spread evaluation must be deterministically bounded in thermal network solve",
+                rule_id="INV-FIRE-MODEL-ONLY",
+            )
+        )
     for token in (
         "_cooling_binding_rows(",
         "_apply_boundary_exchange_outputs(",
@@ -13653,6 +13678,23 @@ def _append_thermal_invariant_findings(
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     runtime_text = _file_text(repo_root, runtime_rel)
     for token in (
+        "elif process_id == \"process.start_fire\":",
+        "elif process_id == \"process.fire_tick\":",
+        "elif process_id == \"process.end_fire\":",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="fire state transitions must execute through explicit deterministic process handlers",
+                rule_id="INV-FIRE-MODEL-ONLY",
+            )
+        )
+    for token in (
         "elif process_id == \"process.material_transform_phase\":",
         "elif process_id == \"process.cure_state_tick\":",
         "_load_material_phase_registry(",
@@ -13711,7 +13753,54 @@ def _append_thermal_invariant_findings(
                     line_number=line_no,
                     snippet=snippet[:140],
                     message="phase/cure state mutation appears outside canonical model/process handlers",
-                    rule_id="INV-NO-ADHOC-CURE-LOGIC",
+                rule_id="INV-NO-ADHOC-CURE-LOGIC",
+            )
+        )
+            break
+
+    burn_pattern = re.compile(
+        r"\b(?:fire|ignition|combust|fuel_remaining|spread_threshold|heat_release_rate)\b[^\n]*(?:=|\.append\(|\.extend\()",
+        re.IGNORECASE,
+    )
+    burn_allowed_files = {
+        "src/models/model_engine.py",
+        "src/thermal/network/thermal_network_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/inspection/inspection_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    burn_scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    burn_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(burn_scan_prefixes):
+            continue
+        if rel_norm.startswith(burn_skip_prefixes):
+            continue
+        if rel_norm in burn_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not burn_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="fire/combustion state mutation appears outside canonical thermal model/process handlers",
+                    rule_id="INV-NO-ADHOC-BURN-LOGIC",
                 )
             )
             break
