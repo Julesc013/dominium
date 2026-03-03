@@ -2247,18 +2247,25 @@ def _ensure_model_flow_adjustment_rows(state: dict) -> List[dict]:
         (dict(item) for item in rows if isinstance(item, Mapping)),
         key=lambda item: (
             str(item.get("channel_id", "")),
+            str(item.get("quantity_bundle_id", "")),
+            str(item.get("component_quantity_id", "")),
             str(item.get("quantity_id", "")),
         ),
     ):
         channel_id = str(row.get("channel_id", "")).strip()
-        quantity_id = str(row.get("quantity_id", "")).strip()
+        quantity_bundle_id = str(row.get("quantity_bundle_id", "")).strip()
+        component_quantity_id = str(row.get("component_quantity_id", "")).strip()
+        quantity_id = str(row.get("quantity_id", "")).strip() or component_quantity_id
+        component_quantity_id = component_quantity_id or quantity_id
         if (not channel_id) or (not quantity_id):
             continue
-        row_id = "{}::{}".format(channel_id, quantity_id)
+        row_id = "{}::{}::{}".format(channel_id, quantity_bundle_id or "-", component_quantity_id)
         payload = {
             "schema_version": "1.0.0",
             "channel_id": channel_id,
             "quantity_id": quantity_id,
+            "quantity_bundle_id": quantity_bundle_id or None,
+            "component_quantity_id": component_quantity_id or None,
             "accumulated_delta": int(_as_int(row.get("accumulated_delta", 0), 0)),
             "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
             "deterministic_fingerprint": "",
@@ -21463,12 +21470,15 @@ def execute_intent(
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.flow_adjust":
         channel_id = str(inputs.get("channel_id", "")).strip()
-        quantity_id = str(inputs.get("quantity_id", "")).strip()
+        quantity_bundle_id = str(inputs.get("quantity_bundle_id", "")).strip()
+        component_quantity_id = str(inputs.get("component_quantity_id", "")).strip()
+        quantity_id = str(inputs.get("quantity_id", "")).strip() or component_quantity_id
+        component_quantity_id = component_quantity_id or quantity_id
         if (not channel_id) or (not quantity_id):
             return refusal(
                 "PROCESS_INPUT_INVALID",
-                "process.flow_adjust requires channel_id and quantity_id",
-                "Provide deterministic channel_id, quantity_id, and optional delta_or_policy.",
+                "process.flow_adjust requires channel_id and quantity_id/component_quantity_id",
+                "Provide deterministic channel_id plus quantity_id or component_quantity_id and optional delta_or_policy.",
                 {"process_id": process_id},
                 "$.intent.inputs",
             )
@@ -21478,17 +21488,21 @@ def execute_intent(
                 0,
             )
         )
-        row_id = "{}::{}".format(channel_id, quantity_id)
         adjustment_rows_by_id = dict(
             (
-                "{}::{}".format(str(row.get("channel_id", "")).strip(), str(row.get("quantity_id", "")).strip()),
+                "{}::{}::{}".format(
+                    str(row.get("channel_id", "")).strip(),
+                    str(row.get("quantity_bundle_id", "")).strip() or "-",
+                    str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip(),
+                ),
                 dict(row),
             )
             for row in list(model_flow_adjustment_rows or [])
             if isinstance(row, Mapping)
             and str(row.get("channel_id", "")).strip()
-            and str(row.get("quantity_id", "")).strip()
+            and (str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip())
         )
+        row_id = "{}::{}::{}".format(channel_id, quantity_bundle_id or "-", component_quantity_id)
         row = dict(adjustment_rows_by_id.get(row_id) or {})
         base_delta = int(_as_int(row.get("accumulated_delta", 0), 0))
         accumulated_delta = int(base_delta + delta)
@@ -21496,6 +21510,8 @@ def execute_intent(
             "schema_version": "1.0.0",
             "channel_id": channel_id,
             "quantity_id": quantity_id,
+            "quantity_bundle_id": quantity_bundle_id or None,
+            "component_quantity_id": component_quantity_id or None,
             "accumulated_delta": int(accumulated_delta),
             "last_update_tick": int(current_tick),
             "deterministic_fingerprint": "",
@@ -21521,7 +21537,11 @@ def execute_intent(
             selected = dict(channel_rows_by_id.get(channel_id) or {})
             if selected:
                 ext = dict(selected.get("extensions") or {}) if isinstance(selected.get("extensions"), Mapping) else {}
-                ext_key = "model_adjust.{}".format(quantity_id)
+                ext_key = (
+                    "model_adjust.{}::{}".format(quantity_bundle_id, component_quantity_id)
+                    if quantity_bundle_id
+                    else "model_adjust.{}".format(component_quantity_id)
+                )
                 ext[ext_key] = int(accumulated_delta)
                 if quantity_id in {
                     "quantity.capacity_per_tick",
@@ -21549,6 +21569,8 @@ def execute_intent(
         result_metadata = {
             "channel_id": channel_id,
             "quantity_id": quantity_id,
+            "quantity_bundle_id": quantity_bundle_id or None,
+            "component_quantity_id": component_quantity_id or None,
             "delta": int(delta),
             "accumulated_delta": int(accumulated_delta),
         }
@@ -32755,9 +32777,58 @@ def execute_intent(
                         value = sample.get("vector") or 0
                     return value
                 if input_kind == "flow_quantity":
+                    selector_channel_id = token_target_id
+                    selector_component_id = ""
+                    if selector.startswith("channel:"):
+                        selector_parts = [str(part).strip() for part in selector.split(":") if str(part).strip()]
+                        if len(selector_parts) >= 2:
+                            selector_channel_id = str(selector_parts[1]).strip()
+                        if len(selector_parts) >= 4 and selector_parts[2] == "component":
+                            selector_component_id = str(selector_parts[3]).strip()
+                    elif selector.startswith("component:"):
+                        selector_component_id = str(selector.split(":", 1)[1]).strip()
+                    if not selector_component_id:
+                        selector_component_id = str(
+                            (dict(binding_row.get("parameters") or {})).get("component_quantity_id", "")
+                        ).strip()
+                    if (not selector_component_id) and str(
+                        (dict(binding_row.get("parameters") or {})).get("quantity_bundle_id", "")
+                    ).strip():
+                        selector_component_id = input_id
+
+                    direct_key_candidates = [
+                        "{}::{}".format(selector_channel_id, selector_component_id) if selector_component_id else "",
+                        "{}::{}".format(token_target_id, input_id),
+                        input_id,
+                    ]
+                    for key in [token for token in direct_key_candidates if token]:
+                        if key in flow_quantity_map:
+                            return flow_quantity_map[key]
+                    channel_map = flow_quantity_map.get(selector_channel_id)
+                    if isinstance(channel_map, Mapping):
+                        if selector_component_id and selector_component_id in channel_map:
+                            return channel_map.get(selector_component_id)
+                        if input_id in channel_map:
+                            return channel_map.get(input_id)
+
+                    adjustment_lookup = "{}::{}::{}".format(
+                        selector_channel_id,
+                        str((dict(binding_row.get("parameters") or {})).get("quantity_bundle_id", "")).strip() or "-",
+                        selector_component_id or input_id,
+                    )
+                    for row in list(model_flow_adjustment_rows or []):
+                        if not isinstance(row, Mapping):
+                            continue
+                        row_key = "{}::{}::{}".format(
+                            str(row.get("channel_id", "")).strip(),
+                            str(row.get("quantity_bundle_id", "")).strip() or "-",
+                            str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip(),
+                        )
+                        if row_key == adjustment_lookup:
+                            return int(_as_int(row.get("accumulated_delta", 0), 0))
                     if input_id in flow_quantity_map:
                         return flow_quantity_map[input_id]
-                    channel_row = dict(signal_channels_by_id.get(token_target_id) or {})
+                    channel_row = dict(signal_channels_by_id.get(selector_channel_id) or {})
                     if channel_row:
                         ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
                         if input_id in {
@@ -32766,6 +32837,17 @@ def execute_intent(
                             "channel.capacity_per_tick",
                         }:
                             return int(max(0, _as_int(channel_row.get("capacity_per_tick", 0), 0)))
+                        if selector_component_id:
+                            bundle_token = str(
+                                (dict(binding_row.get("parameters") or {})).get("quantity_bundle_id", "")
+                            ).strip()
+                            if bundle_token:
+                                comp_key_bundle = "model_adjust.{}::{}".format(bundle_token, selector_component_id)
+                                if comp_key_bundle in ext:
+                                    return ext.get(comp_key_bundle)
+                            comp_key = "model_adjust.{}".format(selector_component_id)
+                            if comp_key in ext:
+                                return ext.get(comp_key)
                         if input_id in ext:
                             return ext.get(input_id)
                     return 0
@@ -32858,13 +32940,17 @@ def execute_intent(
             )
             flow_adjust_rows_by_id = dict(
                 (
-                    "{}::{}".format(str(row.get("channel_id", "")).strip(), str(row.get("quantity_id", "")).strip()),
+                    "{}::{}::{}".format(
+                        str(row.get("channel_id", "")).strip(),
+                        str(row.get("quantity_bundle_id", "")).strip() or "-",
+                        str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip(),
+                    ),
                     dict(row),
                 )
                 for row in list(model_flow_adjustment_rows or [])
                 if isinstance(row, Mapping)
                 and str(row.get("channel_id", "")).strip()
-                and str(row.get("quantity_id", "")).strip()
+                and (str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip())
             )
             signal_channel_rows = normalize_signal_channel_rows(state.get("signal_channel_rows") or state.get("signal_channels") or [])
             channel_rows_by_id = dict(
@@ -32960,13 +33046,18 @@ def execute_intent(
                 if output_kind == "flow_adjustment":
                     delta = int(_as_int(payload.get("delta", 0), 0))
                     channel_id = target_id
-                    key = "{}::{}".format(channel_id, output_id)
+                    quantity_bundle_id = str(payload.get("quantity_bundle_id", "")).strip()
+                    component_quantity_id = str(payload.get("component_quantity_id", "")).strip() or output_id
+                    quantity_id = str(payload.get("quantity_id", "")).strip() or component_quantity_id
+                    key = "{}::{}::{}".format(channel_id, quantity_bundle_id or "-", component_quantity_id)
                     row = dict(flow_adjust_rows_by_id.get(key) or {})
                     base_delta = int(_as_int(row.get("accumulated_delta", 0), 0))
                     updated = {
                         "schema_version": "1.0.0",
                         "channel_id": channel_id,
-                        "quantity_id": output_id,
+                        "quantity_id": quantity_id,
+                        "quantity_bundle_id": quantity_bundle_id or None,
+                        "component_quantity_id": component_quantity_id or None,
                         "accumulated_delta": int(base_delta + delta),
                         "last_update_tick": int(current_tick),
                         "deterministic_fingerprint": "",
@@ -32981,14 +33072,21 @@ def execute_intent(
                     channel_row = dict(channel_rows_by_id.get(channel_id) or {})
                     if channel_row:
                         ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
-                        ext["model_adjust.{}".format(output_id)] = int(updated.get("accumulated_delta", 0))
+                        ext_key = (
+                            "model_adjust.{}::{}".format(quantity_bundle_id, component_quantity_id)
+                            if quantity_bundle_id
+                            else "model_adjust.{}".format(component_quantity_id)
+                        )
+                        ext[ext_key] = int(updated.get("accumulated_delta", 0))
                         channel_row["extensions"] = ext
                         channel_rows_by_id[channel_id] = channel_row
                     output_process_events.append(
                         {
                             "process_id": "process.flow_adjust",
                             "target_id": channel_id,
-                            "output_id": output_id,
+                            "output_id": quantity_id,
+                            "quantity_bundle_id": quantity_bundle_id or None,
+                            "component_quantity_id": component_quantity_id or None,
                             "status": "applied",
                         }
                     )
