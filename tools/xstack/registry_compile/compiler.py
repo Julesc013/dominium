@@ -7200,6 +7200,191 @@ def _core_abstraction_registry_rows(
     )
 
 
+def _quantity_bundle_registry_rows(
+    repo_root: str,
+) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
+    errors: List[dict] = []
+    _bundle_record, bundle_rows_raw, bundle_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/quantity_bundle_registry.json",
+        expected_schema_id="dominium.registry.quantity_bundle_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="quantity_bundles",
+    )
+    _component_capacity_record, component_capacity_rows_raw, component_capacity_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/component_capacity_policy_registry.json",
+        expected_schema_id="dominium.registry.component_capacity_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    _component_loss_record, component_loss_rows_raw, component_loss_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/component_loss_policy_registry.json",
+        expected_schema_id="dominium.registry.component_loss_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="policies",
+    )
+    load_errors = (
+        list(bundle_load_errors or [])
+        + list(component_capacity_load_errors or [])
+        + list(component_loss_load_errors or [])
+    )
+    if load_errors:
+        return [], [], [], load_errors
+
+    quantity_bundle_rows: List[dict] = []
+    bundle_ids = set()
+    for entry in sorted(bundle_rows_raw, key=lambda row: str((row or {}).get("bundle_id", ""))):
+        if not isinstance(entry, dict):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quantity_bundle_entry",
+                    "message": "quantity bundle entry must be object",
+                    "path": "$.quantity_bundles",
+                }
+            )
+            continue
+        bundle_id = str(entry.get("bundle_id", "")).strip()
+        quantity_ids_raw = entry.get("quantity_ids")
+        description = str(entry.get("description", "")).strip()
+        extensions = entry.get("extensions")
+        if (
+            not bundle_id
+            or not isinstance(quantity_ids_raw, list)
+            or not isinstance(extensions, dict)
+        ):
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quantity_bundle_entry",
+                    "message": "quantity bundle entry missing required fields",
+                    "path": "$.quantity_bundles",
+                }
+            )
+            continue
+        quantity_ids = [str(item).strip() for item in quantity_ids_raw if str(item).strip()]
+        if not quantity_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.invalid_quantity_bundle_entry",
+                    "message": "quantity bundle '{}' must declare at least one quantity_id".format(bundle_id or "<unknown>"),
+                    "path": "$.quantity_bundles.quantity_ids",
+                }
+            )
+            continue
+        if bundle_id in bundle_ids:
+            errors.append(
+                {
+                    "code": "refuse.registry_compile.duplicate_quantity_bundle_id",
+                    "message": "duplicate quantity bundle id '{}'".format(bundle_id),
+                    "path": "$.quantity_bundles.bundle_id",
+                }
+            )
+            continue
+        bundle_ids.add(bundle_id)
+        payload = {
+            "schema_version": "1.0.0",
+            "bundle_id": bundle_id,
+            "quantity_ids": list(quantity_ids),
+            "description": description,
+            "deterministic_fingerprint": str(entry.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(extensions),
+        }
+        if not payload["deterministic_fingerprint"]:
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        quantity_bundle_rows.append(payload)
+    quantity_bundle_rows = sorted(quantity_bundle_rows, key=lambda row: str(row.get("bundle_id", "")))
+
+    def _normalize_component_rule(rule_value: object) -> dict:
+        row = dict(rule_value or {}) if isinstance(rule_value, dict) else {}
+        capacity_limit = row.get("capacity_limit")
+        if capacity_limit is not None:
+            capacity_limit = int(max(0, _as_int(capacity_limit, 0)))
+        capacity_scale_permille = row.get("capacity_scale_permille")
+        if capacity_scale_permille is not None:
+            capacity_scale_permille = int(max(0, _as_int(capacity_scale_permille, 0)))
+        loss_fraction = row.get("loss_fraction")
+        if loss_fraction is not None:
+            loss_fraction = int(max(0, _as_int(loss_fraction, 0)))
+        transform_to_quantity_id = row.get("transform_to_quantity_id")
+        transform_to_quantity_id = (
+            None
+            if transform_to_quantity_id is None
+            else str(transform_to_quantity_id).strip() or None
+        )
+        preserve_conservation = row.get("preserve_conservation")
+        if preserve_conservation is not None:
+            preserve_conservation = bool(preserve_conservation)
+        return {
+            "capacity_limit": capacity_limit,
+            "capacity_scale_permille": capacity_scale_permille,
+            "loss_fraction": loss_fraction,
+            "transform_to_quantity_id": transform_to_quantity_id,
+            "preserve_conservation": preserve_conservation,
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {},
+        }
+
+    def _normalize_component_policy_rows(rows: List[dict], *, error_code_prefix: str) -> List[dict]:
+        normalized_rows: List[dict] = []
+        policy_ids = set()
+        for entry in sorted(rows, key=lambda row: str((row or {}).get("policy_id", ""))):
+            if not isinstance(entry, dict):
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.invalid_{}_entry".format(error_code_prefix),
+                        "message": "{} entry must be object".format(error_code_prefix),
+                        "path": "$.policies",
+                    }
+                )
+                continue
+            policy_id = str(entry.get("policy_id", "")).strip()
+            rules = entry.get("per_quantity_rules")
+            extensions = entry.get("extensions")
+            if not policy_id or not isinstance(rules, dict) or not isinstance(extensions, dict):
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.invalid_{}_entry".format(error_code_prefix),
+                        "message": "{} entry missing required fields".format(error_code_prefix),
+                        "path": "$.policies",
+                    }
+                )
+                continue
+            if policy_id in policy_ids:
+                errors.append(
+                    {
+                        "code": "refuse.registry_compile.duplicate_{}_id".format(error_code_prefix),
+                        "message": "duplicate {} id '{}'".format(error_code_prefix, policy_id),
+                        "path": "$.policies.policy_id",
+                    }
+                )
+                continue
+            policy_ids.add(policy_id)
+            normalized_rules = {}
+            for quantity_id in sorted(str(key).strip() for key in rules.keys() if str(key).strip()):
+                normalized_rules[quantity_id] = _normalize_component_rule(rules.get(quantity_id))
+            payload = {
+                "schema_version": "1.0.0",
+                "policy_id": policy_id,
+                "per_quantity_rules": normalized_rules,
+                "deterministic_fingerprint": str(entry.get("deterministic_fingerprint", "")).strip(),
+                "extensions": dict(extensions),
+            }
+            if not payload["deterministic_fingerprint"]:
+                payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+            normalized_rows.append(payload)
+        return sorted(normalized_rows, key=lambda row: str(row.get("policy_id", "")))
+
+    component_capacity_policy_rows = _normalize_component_policy_rows(
+        [dict(row) for row in list(component_capacity_rows_raw or []) if isinstance(row, dict)],
+        error_code_prefix="component_capacity_policy",
+    )
+    component_loss_policy_rows = _normalize_component_policy_rows(
+        [dict(row) for row in list(component_loss_rows_raw or []) if isinstance(row, dict)],
+        error_code_prefix="component_loss_policy",
+    )
+    return quantity_bundle_rows, component_capacity_policy_rows, component_loss_policy_rows, errors
+
+
 def _logistics_registry_rows(
     repo_root: str,
     schema_root: str,
@@ -11887,6 +12072,14 @@ def compile_bundle(
         repo_root=repo_root,
     )
     (
+        quantity_bundle_rows,
+        component_capacity_policy_rows,
+        component_loss_policy_rows,
+        quantity_bundle_registry_errors,
+    ) = _quantity_bundle_registry_rows(
+        repo_root=repo_root,
+    )
+    (
         logistics_routing_rule_rows,
         logistics_graph_rows,
         logistics_registry_errors,
@@ -12178,6 +12371,7 @@ def compile_bundle(
         + material_structure_registry_errors
         + interior_registry_errors
         + core_abstraction_registry_errors
+        + quantity_bundle_registry_errors
         + logistics_registry_errors
         + construction_registry_errors
         + maintenance_registry_errors
@@ -12450,6 +12644,27 @@ def compile_bundle(
             "format_version": REGISTRY_FORMAT_VERSION,
             "generated_from": generated_from,
             "solver_policies": core_flow_solver_policy_rows,
+        }
+    )
+    quantity_bundle_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "quantity_bundles": quantity_bundle_rows,
+        }
+    )
+    component_capacity_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": component_capacity_policy_rows,
+        }
+    )
+    component_loss_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "policies": component_loss_policy_rows,
         }
     )
     core_constraint_type_payload = _finalize_registry_payload(
@@ -13275,6 +13490,18 @@ def compile_bundle(
             "core_flow_solver_policy_registry",
             core_flow_solver_policy_payload,
         ),
+        "quantity_bundle_registry": (
+            "quantity_bundle_registry",
+            quantity_bundle_payload,
+        ),
+        "component_capacity_policy_registry": (
+            "component_capacity_policy_registry",
+            component_capacity_policy_payload,
+        ),
+        "component_loss_policy_registry": (
+            "component_loss_policy_registry",
+            component_loss_policy_payload,
+        ),
         "core_constraint_type_registry": (
             "core_constraint_type_registry",
             core_constraint_type_payload,
@@ -13456,6 +13683,9 @@ def compile_bundle(
         "portal_flow_template_registry",
         "core_routing_policy_registry",
         "core_flow_solver_policy_registry",
+        "quantity_bundle_registry",
+        "component_capacity_policy_registry",
+        "component_loss_policy_registry",
         "core_constraint_type_registry",
         "core_state_machine_type_registry",
         "core_hazard_type_registry",
@@ -13642,6 +13872,9 @@ def compile_bundle(
             "portal_flow_template_registry_hash": registry_hashes["portal_flow_template_registry_hash"],
             "core_routing_policy_registry_hash": registry_hashes["core_routing_policy_registry_hash"],
             "core_flow_solver_policy_registry_hash": registry_hashes["core_flow_solver_policy_registry_hash"],
+            "quantity_bundle_registry_hash": registry_hashes["quantity_bundle_registry_hash"],
+            "component_capacity_policy_registry_hash": registry_hashes["component_capacity_policy_registry_hash"],
+            "component_loss_policy_registry_hash": registry_hashes["component_loss_policy_registry_hash"],
             "core_constraint_type_registry_hash": registry_hashes["core_constraint_type_registry_hash"],
             "core_state_machine_type_registry_hash": registry_hashes["core_state_machine_type_registry_hash"],
             "core_hazard_type_registry_hash": registry_hashes["core_hazard_type_registry_hash"],

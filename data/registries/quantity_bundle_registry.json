@@ -1,0 +1,56 @@
+{
+  "schema_id": "dominium.registry.quantity_bundle_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.quantity_bundle_registry",
+    "registry_version": "1.0.0",
+    "quantity_bundles": [
+      {
+        "schema_version": "1.0.0",
+        "bundle_id": "bundle.power_phasor",
+        "quantity_ids": [
+          "quantity.power.active_stub",
+          "quantity.power.reactive_stub",
+          "quantity.power.apparent_stub"
+        ],
+        "description": "Power phasor placeholder bundle (P,Q,S).",
+        "deterministic_fingerprint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "bundle_id": "bundle.fluid_basic",
+        "quantity_ids": [
+          "quantity.fluid.mass_flow_stub",
+          "quantity.fluid.pressure_stub"
+        ],
+        "description": "Fluid placeholder bundle (mass_flow, pressure_stub).",
+        "deterministic_fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "bundle_id": "bundle.data_basic",
+        "quantity_ids": [
+          "quantity.data.bytes_stub",
+          "quantity.data.latency_stub"
+        ],
+        "description": "Data placeholder bundle (bytes, latency_stub).",
+        "deterministic_fingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "bundle_id": "bundle.thermal_basic",
+        "quantity_ids": [
+          "quantity.thermal.heat_flow_stub",
+          "quantity.thermal.heat_loss_stub"
+        ],
+        "description": "Thermal placeholder bundle (heat_flow, heat_loss_stub).",
+        "deterministic_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
