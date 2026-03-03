@@ -21,6 +21,7 @@
     "congestion_hash",
     "signal_state_hash",
     "derailment_hash",
+    "power_flow_hash",
     "signal_network_hash",
     "message_delivery_event_hash_chain",
     "receipt_hash_chain",
@@ -96,6 +97,10 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "power_flow_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "signal_network_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -144,6 +149,7 @@
       "congestion_hash": "4ce95da2d0a97f9fe3b6e0f8de9a01eaad0d78d34bd8a587f8ae4d58ce0b27fe",
       "signal_state_hash": "5ae6cf497530329ef4bf0ca9cfdf52275f9c4bbaddd4f57ba0eb8432cc8d31ff",
       "derailment_hash": "a58be3d7d2ebf18377a4d457c3417eb91fcb6536d47e85f42f111bc4a8575748",
+      "power_flow_hash": "86046eab5a6e2fca46f79a95d6e4115063c53db099daf1fe4f74e70413fd5ac0",
       "signal_network_hash": "15643da4e24ac24512435f4f4d0f0d8f0b5db9ac14d551408ff8fa79d8d40cce",
       "message_delivery_event_hash_chain": "9eb46fb8a3b0c47017b76d1cc7a8add5f381e9ce0ca0b1f39ea56bcf8796f876",
       "receipt_hash_chain": "8aef2f52c9e946bd2f2f8f4f25f15f5f8dd355c991d95af39a8cb6f31da2a0ca",
