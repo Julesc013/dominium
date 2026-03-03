@@ -1,0 +1,33 @@
+{
+  "schema_id": "dominium.registry.radiator_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.radiator_profile_registry",
+    "registry_version": "1.0.0",
+    "radiator_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "radiator_id": "radiator.passive_basic",
+        "base_conductance": 220,
+        "forced_cooling_multiplier": 1000,
+        "spec_id": null,
+        "deterministic_fingerprint": "9166f43a1cbd26f2a6af976a1baa361f1656a50d5fdcb7cff2b9d21fcb6a77ac",
+        "extensions": {
+          "cooling_mode": "passive"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "radiator_id": "radiator.forced_basic",
+        "base_conductance": 220,
+        "forced_cooling_multiplier": 1850,
+        "spec_id": null,
+        "deterministic_fingerprint": "f57aebac73be6cd76167a8e340b760bc76f1f9fc8f0d76f7d3f4a23faaf73611",
+        "extensions": {
+          "cooling_mode": "forced"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

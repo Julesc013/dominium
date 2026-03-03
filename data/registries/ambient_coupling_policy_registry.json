@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.ambient_coupling_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.ambient_coupling_policy_registry",
+    "registry_version": "1.0.0",
+    "ambient_coupling_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "ambient.default",
+        "ambient_coupling_coefficient": 280,
+        "insulation_factor": 1000,
+        "deterministic_fingerprint": "68929bf9153f2cfdd01cb65667f513a76679f17de8acef9de16af9c6c6cf5770",
+        "extensions": {
+          "forced_cooling_default_multiplier": 1000
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "ambient.insulated",
+        "ambient_coupling_coefficient": 280,
+        "insulation_factor": 420,
+        "deterministic_fingerprint": "3642278ce6f48a3055f4c453ef8a20ea99995db43f7f24fd42d87345a7f5038a",
+        "extensions": {
+          "forced_cooling_default_multiplier": 1000
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "ambient.exposed",
+        "ambient_coupling_coefficient": 400,
+        "insulation_factor": 1000,
+        "deterministic_fingerprint": "6393d25c9202c71dc4add80185ded036fd8a734527e1fbc9d54795efcdfd82a4",
+        "extensions": {
+          "forced_cooling_default_multiplier": 1200
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

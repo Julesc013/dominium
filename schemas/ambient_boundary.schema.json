@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ambient Boundary Schema",
+  "version": "1.0.0",
+  "description": "Deterministic THERM-3 ambient boundary coupling row.",
+  "x-doc-ref": [
+    "docs/thermal/COOLING_AND_AMBIENT_MODEL.md",
+    "docs/audit/THERMAL_COOLING_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_id",
+    "ambient_coupling_coefficient",
+    "insulation_factor",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ambient_coupling_coefficient": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "insulation_factor": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_id": "node.therm.radiator.1",
+      "ambient_coupling_coefficient": 300,
+      "insulation_factor": 1000,
+      "deterministic_fingerprint": "2de8e26426f89e4343d988f00f66e25f82e21f24f0208f3f7a5f2d4963d4b807",
+      "extensions": {}
+    }
+  ]
+}

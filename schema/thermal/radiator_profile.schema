@@ -1,0 +1,23 @@
+SCHEMA: thermal/radiator_profile.schema
+schema_id: dominium.schema.thermal.radiator_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic radiator/heat-sink profile contract for THERM cooling models.
+
+REQUIRED SHAPE:
+record radiator_profile
+  required:
+    - schema_version: semver
+    - radiator_id: id
+    - base_conductance: fixed_point
+    - forced_cooling_multiplier: fixed_point
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Radiator cooling coefficients are data-driven and deterministic.
+- Forced cooling multiplier is applied by constitutive model only.
