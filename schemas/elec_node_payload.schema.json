@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Electrical Node Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ELEC-1 PowerNetworkGraph node payload.",
+  "x-doc-ref": [
+    "docs/electric/ELECTRICAL_CONSTITUTION.md",
+    "docs/audit/POWER_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_kind",
+    "model_bindings",
+    "safety_instances",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_kind": {
+      "type": "string",
+      "enum": [
+        "bus",
+        "generator",
+        "load",
+        "storage",
+        "breaker"
+      ]
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_bindings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "safety_instances": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_kind": "load",
+      "spec_id": "spec.elec.load.basic",
+      "model_bindings": [
+        "binding.model.elec.load.main"
+      ],
+      "safety_instances": [
+        "instance.safety.breaker.load.main"
+      ],
+      "deterministic_fingerprint": "57bcb97a5b690bdcbf2c921be96242046ad686895f8f0418b13ca93f73412c2a",
+      "extensions": {}
+    }
+  ]
+}

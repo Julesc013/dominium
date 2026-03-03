@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Electrical Edge Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ELEC-1 PowerNetworkGraph edge payload.",
+  "x-doc-ref": [
+    "docs/electric/ELECTRICAL_CONSTITUTION.md",
+    "docs/audit/POWER_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_kind",
+    "length",
+    "resistance_proxy",
+    "capacity_rating",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_kind": {
+      "type": "string",
+      "enum": [
+        "conductor",
+        "switch",
+        "transformer_stub"
+      ]
+    },
+    "length": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "resistance_proxy": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "capacity_rating": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_kind": "conductor",
+      "length": 1000,
+      "resistance_proxy": 25,
+      "capacity_rating": 120,
+      "spec_id": "spec.elec.conductor.basic",
+      "deterministic_fingerprint": "2833a95f9183eb73d0507790f1469f9595f9029d6a1d4d44af89d53c509f8104",
+      "extensions": {}
+    }
+  ]
+}

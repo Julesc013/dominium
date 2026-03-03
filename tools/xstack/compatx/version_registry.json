@@ -1050,6 +1050,20 @@
         "1.0.0"
       ]
     },
+    "elec_edge_payload": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "elec_node_payload": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "effect": {
       "current_version": "1.0.0",
       "migrations": {},
