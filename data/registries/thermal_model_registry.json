@@ -49,6 +49,20 @@
       },
       {
         "schema_version": "1.0.0",
+        "model_id": "model.therm_ambient_exchange",
+        "model_type_id": "model_type.therm_ambient_exchange",
+        "status": "active",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_radiator_exchange",
+        "model_type_id": "model_type.therm_radiator_exchange",
+        "status": "active",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "model_id": "model.therm_conductance_stub",
         "model_type_id": "model_type.therm_conductance_stub",
         "status": "stub",

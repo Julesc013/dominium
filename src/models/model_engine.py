@@ -1207,6 +1207,111 @@ def _evaluate_therm_insulation_modifier_model(
     return outputs
 
 
+def _evaluate_therm_ambient_exchange_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    node_temp = int(_binding_param_int(binding=binding, key="node_temperature", default_value=20))
+    ambient_temp = int(_binding_param_int(binding=binding, key="ambient_temperature", default_value=20))
+    coupling = int(max(0, _binding_param_int(binding=binding, key="ambient_coupling_coefficient", default_value=0)))
+    insulation = int(max(0, _binding_param_int(binding=binding, key="insulation_factor_permille", default_value=1000)))
+    effective_coupling = int(max(0, (int(coupling) * int(insulation)) // 1000))
+    delta_t = int(node_temp - ambient_temp)
+    exchange = int(max(0, (int(effective_coupling) * abs(int(delta_t))) // 1000))
+    delta_energy = int(-exchange if delta_t > 0 else exchange if delta_t < 0 else 0)
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind != "derived_quantity":
+            continue
+        value = int(exchange)
+        if output_id.endswith("delta_energy"):
+            value = int(delta_energy)
+        outputs.append(
+            _build_output_row(
+                model_id=model_id,
+                binding_id=binding_id,
+                target_id=target_id,
+                output_kind=output_kind,
+                output_id=output_id,
+                payload={
+                    "quantity_id": output_id,
+                    "value": int(value),
+                    "heat_exchange": int(exchange),
+                    "delta_thermal_energy": int(delta_energy),
+                    "node_temperature": int(node_temp),
+                    "ambient_temperature": int(ambient_temp),
+                    "ambient_coupling_coefficient": int(coupling),
+                    "insulation_factor_permille": int(insulation),
+                },
+            )
+        )
+    return outputs
+
+
+def _evaluate_therm_radiator_exchange_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+    node_temp = int(_binding_param_int(binding=binding, key="node_temperature", default_value=20))
+    ambient_temp = int(_binding_param_int(binding=binding, key="ambient_temperature", default_value=20))
+    base_conductance = int(max(0, _binding_param_int(binding=binding, key="base_conductance", default_value=0)))
+    forced_multiplier = int(max(0, _binding_param_int(binding=binding, key="forced_cooling_multiplier", default_value=1000)))
+    fan_on = bool(params.get("fan_on", False))
+    insulation = int(max(0, _binding_param_int(binding=binding, key="insulation_factor_permille", default_value=1000)))
+    active_multiplier = int(forced_multiplier if fan_on else 1000)
+    effective_coupling = int(max(0, ((int(base_conductance) * int(active_multiplier)) // 1000)))
+    effective_coupling = int(max(0, (int(effective_coupling) * int(insulation)) // 1000))
+    delta_t = int(node_temp - ambient_temp)
+    exchange = int(max(0, (int(effective_coupling) * abs(int(delta_t))) // 1000))
+    delta_energy = int(-exchange if delta_t > 0 else exchange if delta_t < 0 else 0)
+    profile_id = str(params.get("radiator_profile_id", "")).strip() or None
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind != "derived_quantity":
+            continue
+        value = int(exchange)
+        if output_id.endswith("delta_energy"):
+            value = int(delta_energy)
+        outputs.append(
+            _build_output_row(
+                model_id=model_id,
+                binding_id=binding_id,
+                target_id=target_id,
+                output_kind=output_kind,
+                output_id=output_id,
+                payload={
+                    "quantity_id": output_id,
+                    "value": int(value),
+                    "heat_exchange": int(exchange),
+                    "delta_thermal_energy": int(delta_energy),
+                    "node_temperature": int(node_temp),
+                    "ambient_temperature": int(ambient_temp),
+                    "base_conductance": int(base_conductance),
+                    "forced_cooling_multiplier": int(forced_multiplier),
+                    "forced_cooling_on": bool(fan_on),
+                    "radiator_profile_id": profile_id,
+                    "insulation_factor_permille": int(insulation),
+                },
+            )
+        )
+    return outputs
+
+
 def _evaluate_known_model_outputs(
     *,
     model_row: Mapping[str, object],
@@ -1284,6 +1389,18 @@ def _evaluate_known_model_outputs(
         )
     if model_type_id == "model_type.therm_insulation_modifier":
         return _evaluate_therm_insulation_modifier_model(
+            model_row=model_row,
+            binding=binding,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_ambient_exchange":
+        return _evaluate_therm_ambient_exchange_model(
+            model_row=model_row,
+            binding=binding,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_radiator_exchange":
+        return _evaluate_therm_radiator_exchange_model(
             model_row=model_row,
             binding=binding,
             output_signature=output_signature,

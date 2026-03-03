@@ -84,6 +84,20 @@
       },
       {
         "schema_version": "1.0.0",
+        "model_type_id": "model_type.therm_ambient_exchange",
+        "description": "Thermal ambient boundary exchange constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.therm_radiator_exchange",
+        "description": "Thermal radiator/heat-sink exchange constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "model_type_id": "model_type.elec_pf_correction",
         "description": "Electrical PF correction constitutive model.",
         "parameter_schema_id": "dominium.schema.models.model_binding.v1",
