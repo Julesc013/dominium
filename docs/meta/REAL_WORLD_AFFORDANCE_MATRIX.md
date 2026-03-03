@@ -233,6 +233,19 @@ Constitutive response mapping:
 - new realism details must map through registered constitutive models, not bespoke inline domain logic
 - RWAM machine mappings must include `META_MODEL` affordance coverage declarations where those details are touched
 
+ELEC-0 domain declaration:
+
+- `ELEC` explicitly maps to:
+  - `matter_transformation` (fuel/drive conversion to electrical power context)
+  - `containment_interfaces` (connector and rating interfaces)
+  - `measurement_verification` (instrument/compliance inspection)
+  - `communication_coordination` (dispatch/reporting and SIG integration)
+  - `safety_protection` (breaker/fail-safe/interlock/LOTO patterns)
+- electrical tier declaration:
+  - macro (`E0`) bookkeeping baseline
+  - meso (`E1`) phasor approximation
+  - micro (`E2`) ROI-limited waveform lab tier (optional)
+
 ## 4) Non-Goals
 
 - no runtime behavior changes

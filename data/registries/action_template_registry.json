@@ -2,7 +2,7 @@
   "record": {
     "extensions": {
       "generated_by": "meta_action0_registry_builder",
-      "template_count": 177
+      "template_count": 180
     },
     "registry_id": "dominium.registry.action_template_registry",
     "registry_version": "1.0.0",
@@ -31,6 +31,107 @@
         "required_surface_types": [],
         "required_tool_tags": [],
         "schema_version": "1.0.0"
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_template_id": "action.elec.connect_wire",
+        "action_family_id": "action_family.transform",
+        "required_tool_tags": [
+          "tool_tag.wiring"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "produced_artifact_types": [
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "uses_constitutive_model_ids": [
+          "model.elec.load.phasor.default"
+        ],
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "cbdf7bf284344537b7457a56c495e1602651beeb4666a3904c38d873de7e18c5",
+        "extensions": {
+          "action_id": "action.elec.connect_wire",
+          "plan_intent_type": "",
+          "process_id": "process.elec.connect_wire",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_template_id": "action.elec.flip_breaker",
+        "action_family_id": "action_family.decide_authorize",
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "required_surface_types": [
+          "surface.handle",
+          "surface.panel"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "produced_artifact_types": [
+          "artifact.decision"
+        ],
+        "produced_hazard_types": [],
+        "uses_constitutive_model_ids": [],
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "47310dc4f893193661b71bebabb9815e484535ad92b7a55fbb28676aa9a69652",
+        "extensions": {
+          "action_id": "action.elec.flip_breaker",
+          "plan_intent_type": "",
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_template_id": "action.elec.lockout_tagout",
+        "action_family_id": "action_family.maintain",
+        "required_tool_tags": [
+          "tool_tag.tagout"
+        ],
+        "required_surface_types": [
+          "surface.panel"
+        ],
+        "required_capabilities": [
+          "capability.maintenance.perform"
+        ],
+        "produced_artifact_types": [
+          "artifact.maintenance",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "uses_constitutive_model_ids": [],
+        "affected_substrates": [
+          "Network",
+          "Schedule",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "a57f7c370082eaeff795188db22d0c931df115676dd680ba4a8bd14dd6c40fa6",
+        "extensions": {
+          "action_id": "action.elec.lockout_tagout",
+          "plan_intent_type": "",
+          "process_id": "process.elec.lockout_tagout",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        }
       },
       {
         "action_family_id": "action_family.decide_authorize",

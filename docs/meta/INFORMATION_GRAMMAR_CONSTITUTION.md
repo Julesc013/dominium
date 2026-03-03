@@ -33,7 +33,17 @@ Constitutive models do not create a new information ontology.
 - no direct truth mutation from message transport or report generation
 - all artifact generation remains deterministic and replay-safe
 
-## 5) Non-Goals
+## 5) Electrical Domain Mapping (ELEC-0)
+
+Electrical information outputs map to existing families only:
+
+- instrument readings, meter samples, and derived PF/loss summaries -> `OBSERVATION`
+- breaker trips, overload/protection outcomes, and fault traces -> `RECORD`
+- compliance packs, standards audits, and grid status bulletins -> `REPORT`
+
+No electrical-specific information ontology is introduced.
+
+## 6) Non-Goals
 
 - no runtime semantic changes in META-MODEL-0
 - no new artifact family additions in this phase
