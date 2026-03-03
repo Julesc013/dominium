@@ -208,6 +208,8 @@ from analyzers import e179_inline_response_curve_smell
 from analyzers import e180_model_bypass_smell
 from analyzers import e181_coupled_channel_hack_smell
 from analyzers import e182_bundle_bypass_smell
+from analyzers import e183_electric_special_case_smell
+from analyzers import e184_breaker_bypass_smell
 
 
 ANALYZERS = (
@@ -419,6 +421,8 @@ ANALYZERS = (
     e180_model_bypass_smell,
     e181_coupled_channel_hack_smell,
     e182_bundle_bypass_smell,
+    e183_electric_special_case_smell,
+    e184_breaker_bypass_smell,
 )
 
 

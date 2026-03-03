@@ -56,6 +56,30 @@
       "documentation": "docs/architecture/QUANTITY_BUNDLES.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
+    },
+    {
+      "rule_id": "INV-ELEC-USES-FLOW-BUNDLE",
+      "severity": "WARN",
+      "scope_paths": ["src/core/flow", "src/models", "src/machines", "tools/xstack/sessionx"],
+      "documentation": "docs/electric/ELECTRICAL_CONSTITUTION.md",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2026-12-31"
+    },
+    {
+      "rule_id": "INV-ELEC-SAFETY-THROUGH-PATTERNS",
+      "severity": "WARN",
+      "scope_paths": ["src/safety", "src/mobility", "src/machines", "tools/xstack/sessionx"],
+      "documentation": "docs/electric/ELECTRICAL_CONSTITUTION.md",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2026-12-31"
+    },
+    {
+      "rule_id": "INV-NO-ADHOC-PF-LOGIC",
+      "severity": "WARN",
+      "scope_paths": ["src/core/flow", "src/models", "src/machines", "tools/xstack/sessionx"],
+      "documentation": "docs/electric/ELECTRICAL_CONSTITUTION.md",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2026-12-31"
     }
   ]
 }
