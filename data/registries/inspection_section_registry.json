@@ -293,6 +293,84 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.thermal.node_summary",
+        "title": "Thermal Node Summary",
+        "data": {
+          "data_kind": "thermal_node_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.edge_summary",
+        "title": "Thermal Edge Summary",
+        "data": {
+          "data_kind": "thermal_edge_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.overheat_risks",
+        "title": "Thermal Overheat Risks",
+        "data": {
+          "data_kind": "thermal_overheat_risks"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.phase_states",
+        "title": "Thermal Phase States",
+        "data": {
+          "data_kind": "thermal_phase_states"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.cure_progress",
+        "title": "Thermal Cure Progress",
+        "data": {
+          "data_kind": "thermal_cure_progress"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.insulation_effects",
+        "title": "Thermal Insulation Effects",
+        "data": {
+          "data_kind": "thermal_insulation_effects"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.models.summary",
         "title": "Constitutive Model Summary",
         "data": {

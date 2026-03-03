@@ -1,0 +1,23 @@
+SCHEMA: materials/phase_profile.schema
+schema_id: dominium.schema.materials.phase_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic material phase-threshold profile data consumed by THERM constitutive models.
+
+REQUIRED SHAPE:
+record phase_profile
+  required:
+    - schema_version: semver
+    - material_id: id
+    - phase_tags_by_temperature: list<map>
+    - extensions: map
+  optional:
+    - freeze_point: fixed_point
+    - melt_point: fixed_point
+    - boil_point: fixed_point
+
+INVARIANTS:
+- Threshold interpretation is deterministic and process/model driven.
+- Unknown extension fields are allowed and must be preserved.

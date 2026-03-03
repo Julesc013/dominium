@@ -1,0 +1,114 @@
+{
+  "schema_id": "dominium.registry.material_phase_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.material_phase_registry",
+    "registry_version": "1.0.0",
+    "material_phase_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.water",
+        "freeze_point": 27315,
+        "melt_point": 27315,
+        "boil_point": 37315,
+        "phase_tags_by_temperature": [
+          {
+            "min_temp": -100000,
+            "max_temp": 27314,
+            "phase_tag": "solid"
+          },
+          {
+            "min_temp": 27315,
+            "max_temp": 37314,
+            "phase_tag": "liquid"
+          },
+          {
+            "min_temp": 37315,
+            "max_temp": 200000,
+            "phase_tag": "gas"
+          }
+        ],
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.iron",
+        "freeze_point": null,
+        "melt_point": 181100,
+        "boil_point": null,
+        "phase_tags_by_temperature": [
+          {
+            "min_temp": -100000,
+            "max_temp": 181099,
+            "phase_tag": "solid"
+          },
+          {
+            "min_temp": 181100,
+            "max_temp": 300000,
+            "phase_tag": "liquid"
+          }
+        ],
+        "extensions": {
+          "stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.adhesive_basic",
+        "freeze_point": null,
+        "melt_point": null,
+        "boil_point": null,
+        "phase_tags_by_temperature": [
+          {
+            "min_temp": -100000,
+            "max_temp": 26314,
+            "phase_tag": "brittle"
+          },
+          {
+            "min_temp": 26315,
+            "max_temp": 33314,
+            "phase_tag": "curing_window"
+          },
+          {
+            "min_temp": 33315,
+            "max_temp": 200000,
+            "phase_tag": "overheated"
+          }
+        ],
+        "extensions": {
+          "cure_temp_min": 28315,
+          "cure_temp_max": 31315
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "material_id": "material.concrete_basic",
+        "freeze_point": null,
+        "melt_point": null,
+        "boil_point": null,
+        "phase_tags_by_temperature": [
+          {
+            "min_temp": -100000,
+            "max_temp": 26814,
+            "phase_tag": "freeze_risk"
+          },
+          {
+            "min_temp": 26815,
+            "max_temp": 32314,
+            "phase_tag": "curing_window"
+          },
+          {
+            "min_temp": 32315,
+            "max_temp": 200000,
+            "phase_tag": "heat_damage_risk"
+          }
+        ],
+        "extensions": {
+          "cure_temp_min": 27815,
+          "cure_temp_max": 30815
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

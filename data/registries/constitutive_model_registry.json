@@ -270,6 +270,142 @@
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_heat_capacity",
+        "model_type_id": "model_type.therm_heat_capacity",
+        "description": "THERM-1 heat-capacity mapping model (E->T proxy).",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "quantity.thermal.energy_store_stub", "selector": "target.node", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.therm.heat_capacity", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.temperature", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "1111111111111111111111111111111111111111111111111111111111111111",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_conductance",
+        "model_type_id": "model_type.therm_conductance",
+        "description": "THERM-1 deterministic graph conduction model.",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.therm.temperature", "selector": "target.edge", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.therm.conductance", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.heat_transfer", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.thermal.heat_flow_stub", "extensions": {"quantity_bundle_id": "bundle.thermal_basic", "component_quantity_id": "quantity.thermal.heat_flow_stub"}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "2222222222222222222222222222222222222222222222222222222222222222",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_loss_to_temp",
+        "model_type_id": "model_type.therm_loss_to_temp",
+        "description": "THERM-1 loss-to-temperature mapping model.",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.thermal.heat_loss_stub", "selector": "target.node", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.thermal.energy_store_stub", "extensions": {"component_quantity_id": "quantity.thermal.energy_store_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "3333333333333333333333333333333333333333333333333333333333333333",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_phase_transition",
+        "model_type_id": "model_type.therm_phase_transition",
+        "description": "THERM-2 deterministic temperature-threshold phase transition trigger model.",
+        "supported_tiers": ["macro", "meso", "micro"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "material_property", "input_id": "phase_profile.thresholds", "selector": "target.material", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.phase_transition_trigger", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "4444444444444444444444444444444444444444444444444444444444444444",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_cure_progress",
+        "model_type_id": "model_type.therm_cure_progress",
+        "description": "THERM-2 deterministic curing progress and defect hazard model.",
+        "supported_tiers": ["meso", "micro"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.therm.cure_progress", "selector": "target.id", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.cure_progress_delta_permille", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.cure_defect_delta", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "hazard_increment", "output_id": "hazard.cure_defect.basic", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "5555555555555555555555555555555555555555555555555555555555555555",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_insulation_modifier",
+        "model_type_id": "model_type.therm_insulation_modifier",
+        "description": "THERM-2 deterministic insulation conductance modifier model.",
+        "supported_tiers": ["meso", "micro"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.thermal_insulation.factor_permille", "selector": null, "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.therm.base_conductance", "selector": "target.edge", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.insulation_factor_permille", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.effective_conductance", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "6666666666666666666666666666666666666666666666666666666666666666",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
       }
     ],
     "extensions": {}

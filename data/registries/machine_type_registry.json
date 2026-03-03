@@ -83,6 +83,29 @@
           "rate_units_per_tick": 1000
         },
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "machine_type_id": "machine.heat_exchanger.stub",
+        "description": "Thermal/fluid interface stub for THERM-2 and future FLUID coupling.",
+        "required_ports": [
+          "port.thermal_in",
+          "port.thermal_out",
+          "port.fluid_in_stub",
+          "port.fluid_out_stub"
+        ],
+        "supported_process_ids": [
+          "process.machine_operate",
+          "process.machine_pull_from_node",
+          "process.machine_push_to_node"
+        ],
+        "default_rate_params": {
+          "rate_units_per_tick": 1000
+        },
+        "extensions": {
+          "stub": true,
+          "spec_template_id": "spec.heat_exchanger"
+        }
       }
     ],
     "extensions": {}
