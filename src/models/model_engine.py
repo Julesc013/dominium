@@ -503,7 +503,26 @@ def evaluate_model_bindings(
                 elif output_kind == "hazard_increment":
                     payload = {"hazard_type_id": output_id, "delta": int(1 + (value % 17))}
                 elif output_kind == "flow_adjustment":
-                    payload = {"quantity_id": output_id, "delta": int((value % 21) - 10)}
+                    output_extensions = dict(output_ref.get("extensions") or {}) if isinstance(output_ref.get("extensions"), Mapping) else {}
+                    binding_parameters = dict(binding.get("parameters") or {}) if isinstance(binding.get("parameters"), Mapping) else {}
+                    quantity_bundle_id = str(
+                        output_extensions.get("quantity_bundle_id")
+                        or binding_parameters.get("quantity_bundle_id")
+                        or ""
+                    ).strip()
+                    component_quantity_id = str(
+                        output_extensions.get("component_quantity_id")
+                        or output_extensions.get("quantity_id")
+                        or binding_parameters.get("component_quantity_id")
+                        or output_id
+                    ).strip()
+                    payload = {
+                        "quantity_id": output_id,
+                        "component_quantity_id": component_quantity_id or output_id,
+                        "delta": int((value % 21) - 10),
+                    }
+                    if quantity_bundle_id:
+                        payload["quantity_bundle_id"] = quantity_bundle_id
                 elif output_kind == "compliance_signal":
                     grade = ("pass", "warn", "fail")[int(value) % 3]
                     payload = {"signal_id": output_id, "grade": grade, "score_permille": int(value % 1000)}
