@@ -385,6 +385,107 @@
             "resulting_caps"
           ]
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.overtemp_trip",
+        "pattern_type": "failsafe",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Trip or shutdown deterministic targets when overtemperature thresholds are exceeded.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.overtemp_threshold_crossed",
+              "operator": "gte",
+              "left_operand": "thermal.temperature",
+              "right_operand": 1
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.overtemp_shutdown",
+              "action_type": "apply_effect",
+              "process_id": "process.effect_apply",
+              "target_ref": "thermal.target",
+              "parameters": {
+                "effect_type_id": "effect.shutdown"
+              }
+            }
+          ],
+          "required_substrates": [
+            "HazardModel",
+            "Effect",
+            "StateMachineComponent"
+          ],
+          "hazards": [
+            "hazard.overheat"
+          ],
+          "effects": [
+            "effect.shutdown",
+            "effect.warning.overtemp"
+          ],
+          "logging_requirements": [
+            "target_id",
+            "observed_temperature",
+            "threshold",
+            "policy_id"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.thermal_runaway",
+        "pattern_type": "graceful_degradation",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Deterministic thermal runaway hook that escalates warnings and degrades operation capacity.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.runaway_risk_high",
+              "operator": "gte",
+              "left_operand": "thermal.runaway_risk_permille",
+              "right_operand": 1
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.runaway_warning",
+              "action_type": "emit_warning",
+              "process_id": "process.effect_apply",
+              "target_ref": "thermal.target",
+              "parameters": {
+                "effect_type_id": "effect.warning.thermal_runaway"
+              }
+            },
+            {
+              "action_id": "act.runaway_degrade",
+              "action_type": "apply_effect",
+              "process_id": "process.effect_apply",
+              "target_ref": "thermal.target",
+              "parameters": {
+                "effect_type_id": "effect.graceful_degradation"
+              }
+            }
+          ],
+          "required_substrates": [
+            "HazardModel",
+            "Effect",
+            "ScheduleComponent"
+          ],
+          "hazards": [
+            "hazard.overheat",
+            "hazard.thermal_runaway_risk"
+          ],
+          "effects": [
+            "effect.warning.thermal_runaway",
+            "effect.graceful_degradation"
+          ],
+          "logging_requirements": [
+            "target_id",
+            "runaway_risk_permille",
+            "policy_id"
+          ]
+        }
       }
     ],
     "extensions": {}

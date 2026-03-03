@@ -42,6 +42,34 @@
       },
       {
         "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.cure_defect.basic",
+        "description": "Thermal curing defect hazard family triggered by out-of-window curing temperatures.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.overheat",
+        "description": "Thermal overtemperature hazard family triggered when node/device temperatures exceed configured thresholds.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.thermal_runaway",
+        "description": "Escalated thermal runaway hazard family for repeated overtemperature conditions.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.thermal_runaway_risk",
+        "description": "Thermal runaway risk hazard family used by safety pattern escalation policies.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "hazard_type_id": "hazard.wear.general",
         "description": "Generic wear accumulation hazard family.",
         "trigger_mode": "threshold",
