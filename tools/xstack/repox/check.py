@@ -13558,6 +13558,19 @@ def _append_thermal_invariant_findings(
 
     model_engine_rel = "src/models/model_engine.py"
     model_engine_text = _file_text(repo_root, model_engine_rel)
+    for token in ("model_type.therm_ambient_exchange", "model_type.therm_radiator_exchange"):
+        if token in model_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=model_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="ambient/radiator exchange must be declared and dispatched via constitutive model types",
+                rule_id="INV-THERM-AMBIENT-THROUGH-MODEL",
+            )
+        )
     for token in ("model_type.therm_phase_transition", "model_type.therm_cure_progress"):
         if token in model_engine_text:
             continue
@@ -13571,6 +13584,71 @@ def _append_thermal_invariant_findings(
                 rule_id="INV-PHASE-CHANGE-MODEL-ONLY",
             )
         )
+
+    for token in (
+        "_cooling_binding_rows(",
+        "_apply_boundary_exchange_outputs(",
+        "model.therm_ambient_exchange",
+        "model.therm_radiator_exchange",
+    ):
+        if token in thermal_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=thermal_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="thermal ambient and radiator exchange must flow through model bindings and deterministic output application",
+                rule_id="INV-THERM-AMBIENT-THROUGH-MODEL",
+            )
+        )
+
+    cooling_pattern = re.compile(
+        r"\b(?:ambient_coupling_coefficient|forced_cooling_multiplier|radiator_profile_id|heat_exchange)\b[^\n]*(?:=|\.append\(|\.extend\()",
+        re.IGNORECASE,
+    )
+    cooling_scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    cooling_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    cooling_allowed_files = {
+        thermal_engine_rel,
+        model_engine_rel,
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(cooling_scan_prefixes):
+            continue
+        if rel_norm.startswith(cooling_skip_prefixes):
+            continue
+        if rel_norm in cooling_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not cooling_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="cooling/ambient coupling logic appears outside canonical thermal model pathways",
+                    rule_id="INV-NO-ADHOC-COOLING",
+                )
+            )
+            break
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     runtime_text = _file_text(repo_root, runtime_rel)
