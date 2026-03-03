@@ -29,11 +29,14 @@
     "trip_event_hash_chain",
     "trip_explanation_hash_chain",
     "thermal_network_hash",
+    "thermal_network_state_hash_chain",
+    "heat_input_hash_chain",
     "overheat_event_hash_chain",
     "ambient_exchange_hash",
     "fire_state_hash_chain",
     "ignition_event_hash_chain",
     "fire_spread_hash_chain",
+    "fire_cascade_hash_chain",
     "runaway_event_hash_chain",
     "signal_network_hash",
     "message_delivery_event_hash_chain",
@@ -142,6 +145,14 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "thermal_network_state_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "heat_input_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "overheat_event_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -159,6 +170,10 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "fire_spread_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "fire_cascade_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -222,11 +237,14 @@
       "trip_event_hash_chain": "a5e6276c14ea8bdd9a31031873de2a24e75782c5f2f81ccf7e8efb77bc1f9b7c",
       "trip_explanation_hash_chain": "7608eb0bc45dc7acc2871e9c9860f23acae17c585633fd64fda094ec318f00d5",
       "thermal_network_hash": "3f9ceb4f7f20bd61c0b5b3a90a2f7f520418c36bf1f540fc12ed9de269ea5906",
+      "thermal_network_state_hash_chain": "cfdc4ea4f8640ac8ec078a40e6f55cb52afc538a6fd9af1ef57d47231f66eb6e",
+      "heat_input_hash_chain": "56a7bd4a8adfdb7557ecb3f11f8df6afca2d3b89fa89f6248ad5f22182336cb3",
       "overheat_event_hash_chain": "fce1f86f5e79c70445cdb8f2a9cd1c84bbf166473ec43fdf0cdf35a7886498d3",
       "ambient_exchange_hash": "2a348ed278a9d287be9af3122bf4f4ddaf1368b66dd03e2d4a43fe0419f87d5c",
       "fire_state_hash_chain": "8a77e8f83d5854b4f4f877287ef0a1d9f77a8e1ceda0f84f8b08dc9252dc2930",
       "ignition_event_hash_chain": "a79e0a0b47e576af8c4cdafcc1578e2923f654ad94a3057f1079b339a840bc82",
       "fire_spread_hash_chain": "d0fd42e8a4f5b10d6faec2f47efb8cb6a255a6d3f2a7049a99f547b2b5a6d3e8",
+      "fire_cascade_hash_chain": "6f0ee735c84444a6a19ce9f7f8f3f09d2f8d8c198291fb5b90364e98931ab695",
       "runaway_event_hash_chain": "1d07cdf9384dcfb4ec7adf4c5e1f7ec79c7f37467f5741192ccf3dc0c11f9de9",
       "signal_network_hash": "15643da4e24ac24512435f4f4d0f0d8f0b5db9ac14d551408ff8fa79d8d40cce",
       "message_delivery_event_hash_chain": "9eb46fb8a3b0c47017b76d1cc7a8add5f381e9ce0ca0b1f39ea56bcf8796f876",
