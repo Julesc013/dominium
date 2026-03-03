@@ -254,6 +254,19 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.models.summary",
+        "title": "Constitutive Model Summary",
+        "data": {
+          "data_kind": "models_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.institution.bulletins",
         "title": "Institution Bulletins",
         "data": {

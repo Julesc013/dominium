@@ -118,6 +118,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.mob.congestion_summary",
         "section.signal.network_summary",
         "section.signal.quality_summary",
+        "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
     ],
@@ -139,6 +140,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.trust.edges_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
+        "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
     ],
@@ -160,6 +162,7 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.trust.edges_summary",
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
+        "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
     ],
@@ -317,6 +320,7 @@ _DEFAULT_SECTION_ROWS = {
     "section.trust.edges_summary": {"title": "Trust Edge Summary", "extensions": {"cost_units": 2}},
     "section.signal.sent_messages": {"title": "Signal Sent Messages", "extensions": {"cost_units": 2}},
     "section.signal.aggregation_status": {"title": "Signal Aggregation Status", "extensions": {"cost_units": 2}},
+    "section.models.summary": {"title": "Constitutive Model Summary", "extensions": {"cost_units": 2}},
     "section.safety.instances": {"title": "Safety Instances", "extensions": {"cost_units": 1}},
     "section.safety.events": {"title": "Safety Events", "extensions": {"cost_units": 2}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
@@ -2015,6 +2019,60 @@ def _build_section_data(
                     "aggregation_policy_id": str(dict(row.get("extensions") or {}).get("aggregation_policy_id", "")).strip() or None,
                 }
                 for row in list(agg_artifacts[-128:])
+            ]
+        return payload
+    if section_id == "section.models.summary":
+        bindings = [
+            dict(item)
+            for item in list((dict(state or {})).get("model_bindings") or [])
+            if isinstance(item, dict)
+        ]
+        results = [
+            dict(item)
+            for item in list((dict(state or {})).get("model_evaluation_results") or [])
+            if isinstance(item, dict)
+        ]
+        cache_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("model_cache_rows") or [])
+            if isinstance(item, dict)
+        ]
+        runtime = dict((dict(state or {})).get("model_runtime_state") or {})
+        by_model: Dict[str, int] = {}
+        by_tier: Dict[str, int] = {}
+        for row in bindings:
+            model_id = str(row.get("model_id", "")).strip() or "model.unknown"
+            tier = str(row.get("tier", "")).strip() or "macro"
+            by_model[model_id] = _as_int(by_model.get(model_id, 0), 0) + 1
+            by_tier[tier] = _as_int(by_tier.get(tier, 0), 0) + 1
+        payload = {
+            "binding_count": int(len(bindings)),
+            "evaluation_result_count": int(len(results)),
+            "cache_entry_count": int(len(cache_rows)),
+            "model_counts": dict((key, int(by_model[key])) for key in sorted(by_model.keys())),
+            "tier_counts": dict((key, int(by_tier[key])) for key in sorted(by_tier.keys())),
+            "last_tick": int(max(0, _as_int(runtime.get("last_tick", 0), 0))),
+            "last_budget_outcome": str(runtime.get("last_budget_outcome", "complete")).strip() or "complete",
+        }
+        if allow_hidden_state:
+            payload["last_cost_units"] = int(max(0, _as_int(runtime.get("last_cost_units", 0), 0)))
+            payload["last_processed_binding_count"] = int(
+                max(0, _as_int(runtime.get("last_processed_binding_count", 0), 0))
+            )
+            payload["last_deferred_binding_count"] = int(
+                max(0, _as_int(runtime.get("last_deferred_binding_count", 0), 0))
+            )
+            payload["recent_results"] = [
+                {
+                    "result_id": str(row.get("result_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "model_id": str(row.get("model_id", "")).strip() or None,
+                    "binding_id": str(row.get("binding_id", "")).strip() or None,
+                }
+                for row in sorted(
+                    results,
+                    key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("result_id", ""))),
+                )[-128:]
             ]
         return payload
     if section_id == "section.safety.instances":
