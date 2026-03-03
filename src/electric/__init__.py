@@ -31,6 +31,10 @@ from .storage import (
     normalize_storage_state_rows,
     storage_state_rows_by_node_id,
 )
+from .degradation_policy import (
+    REFUSAL_ELEC_LOW_PRIORITY_CONNECTION,
+    apply_elec_budget_degradation,
+)
 from .power_network_engine import (
     ElectricError,
     REFUSAL_ELEC_NETWORK_INVALID,
@@ -71,6 +75,8 @@ __all__ = [
     "build_storage_state",
     "normalize_storage_state_rows",
     "storage_state_rows_by_node_id",
+    "REFUSAL_ELEC_LOW_PRIORITY_CONNECTION",
+    "apply_elec_budget_degradation",
     "ElectricError",
     "REFUSAL_ELEC_NETWORK_INVALID",
     "REFUSAL_ELEC_SPEC_NONCOMPLIANT",

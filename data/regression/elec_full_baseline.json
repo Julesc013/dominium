@@ -1,0 +1,63 @@
+{
+  "assertions": {
+    "full_proof_summary_match": true,
+    "no_infinite_loops": true,
+    "no_unlogged_trips": true,
+    "replay_complete": true,
+    "stress_complete": true,
+    "window_hashes_match": true
+  },
+  "baseline_id": "elec.full.baseline.v1",
+  "composite_elec_hash_anchor": "1fb701878cb6905e7608db69ff4cf106be9d676306e927060bc7caa276ef8c5e",
+  "description": "ELEC-5 deterministic final hardening baseline for stress, cascade, degradation, proof, and replay envelope.",
+  "deterministic_fingerprint": "35363bac2de7f96d18600bde433cee6cbd644f00cfe1c4ad42294346e3dc04be",
+  "extensions": {
+    "cascade_behavior_fingerprint": "97dfbf44c9fa0cdae6fc627477664e1847b5b63ec1e3cb64bcf12e65b2f6cbc3",
+    "degradation_sequence_fingerprint": "e7d8693729086bb869f7956134701598fb93320fd15a46537190b6db6d0e0f76",
+    "stress_results_snapshot": {
+      "boundary_transfer_count": 192,
+      "cascaded_trip_count": 218,
+      "degraded_solve_count": 0,
+      "fault_event_count": 464,
+      "ticks_to_steady_state": 2,
+      "trip_event_count": 10385
+    }
+  },
+  "fixed_seed_scenario": {
+    "budget_envelope_id": "elec.envelope.standard",
+    "replay_report_path": "build/electric/elec5_replay_window_report.json",
+    "scenario_id": "scenario.elec.stress.76425e9f5d0c",
+    "scenario_path": "build/electric/elec5_stress_scenario.json",
+    "scenario_seed": 5705,
+    "stress_report_path": "build/electric/elec5_stress_report.json",
+    "tick_count": 48
+  },
+  "pattern_hashes": {
+    "cost_units_pattern_hash": "7b2c63d3855cc3ede2099d70598a3e5c0aaa0b21b73c4b5f71e2429b89061519",
+    "degradation_pattern_hash": "306ccb9ba420b946fecc8d1ad8e412175abdbf84c3287448d62c941f6312f041",
+    "fault_pattern_hash": "e472bcfb4abafac9be1e3e08e79c051d2a106de190b4a71bbd6480376d4d11b4",
+    "power_flow_pattern_hash": "7271a3e3edb4d62008e103bc439feeb35df9fe0213d0c22b77c53684038733fa",
+    "proof_tick_pattern_hash": "544f5fe1ce4f2f72e43baa5a87ae778585139b92d4782b25f28e84e0abb38651",
+    "trip_pattern_hash": "d844def78eb3fb3e4b21346135c46277735542f8784084f9255cd49e87e2744c"
+  },
+  "proof_hashes": {
+    "degradation_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "fault_state_hash_chain": "492a36eb00e6f65cb72b8e86aa0080ef3573af25ae28b94b46a7f862d4216f33",
+    "power_flow_hash_chain": "acf606c96aadcea6f7ec74e4526055d4a02c059682c3d43ed9c8f450d9fa0fdd",
+    "proof_surface_hash": "af1936d125957a2fabb5fb7cbf396a01eb0dbf305affbf8a4137b91ffd232220",
+    "protection_state_hash_chain": "e77041ac96d657efb1127b331521b6ee4537fcd45a6e5cce1343fd9c3a8dd313",
+    "replay_expected_window_chain": "4fd96a4afea6fda04f231a1d5d7d8cfebb0623abae7ae133fa6540790123543a",
+    "replay_observed_window_chain": "4fd96a4afea6fda04f231a1d5d7d8cfebb0623abae7ae133fa6540790123543a",
+    "trip_event_hash_chain": "461e8be964fb7d5910f3c741095cb246d4fe43b28fa2054df0d4b401c0ddbe72"
+  },
+  "report_fingerprints": {
+    "replay_report_fingerprint": "3465ae31a652cb73a5c7d56fa3cefca311bf0f806f407585cd58c2f2082081a1",
+    "scenario_fingerprint": "260c6a9a950a8b4f1a59a885f8c44be6d3b096ee24ce0a4f81f3dc7960be953c",
+    "stress_report_fingerprint": "9715ea62207b75996f03bd9afa6b68c2da9282a2d3aeb8bedf09f343b2b28cfd"
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic elec stress + replay rerun and explicit ELEC-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "ELEC-REGRESSION-UPDATE"
+  }
+}

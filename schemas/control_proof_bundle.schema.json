@@ -22,6 +22,10 @@
     "signal_state_hash",
     "derailment_hash",
     "power_flow_hash",
+    "power_flow_hash_chain",
+    "fault_state_hash_chain",
+    "protection_state_hash_chain",
+    "degradation_event_hash_chain",
     "signal_network_hash",
     "message_delivery_event_hash_chain",
     "receipt_hash_chain",
@@ -101,6 +105,22 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "power_flow_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "fault_state_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "protection_state_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "degradation_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "signal_network_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -150,6 +170,10 @@
       "signal_state_hash": "5ae6cf497530329ef4bf0ca9cfdf52275f9c4bbaddd4f57ba0eb8432cc8d31ff",
       "derailment_hash": "a58be3d7d2ebf18377a4d457c3417eb91fcb6536d47e85f42f111bc4a8575748",
       "power_flow_hash": "86046eab5a6e2fca46f79a95d6e4115063c53db099daf1fe4f74e70413fd5ac0",
+      "power_flow_hash_chain": "0d902f3a0f9843ed69095c2ed9225a6b743ca5a9569d106c4ca3195752b117c9",
+      "fault_state_hash_chain": "c310acfa3238f13f34c7cb7f97d67e4fc58dbf21f7f6774fd75337d33bb99c5f",
+      "protection_state_hash_chain": "cd11409b01317ea7fb1ff06f3681b56a042662f8f0b0fa1becd28f3e36ec0f84",
+      "degradation_event_hash_chain": "e7e0bc933fdb2b728f4f4ee901bc0f8f8f5ec6c5c043f05f8876be6a95ed3765",
       "signal_network_hash": "15643da4e24ac24512435f4f4d0f0d8f0b5db9ac14d551408ff8fa79d8d40cce",
       "message_delivery_event_hash_chain": "9eb46fb8a3b0c47017b76d1cc7a8add5f381e9ce0ca0b1f39ea56bcf8796f876",
       "receipt_hash_chain": "8aef2f52c9e946bd2f2f8f4f25f15f5f8dd355c991d95af39a8cb6f31da2a0ca",

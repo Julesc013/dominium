@@ -2,7 +2,7 @@
   "record": {
     "extensions": {
       "generated_by": "meta_action0_registry_builder",
-      "template_count": 180
+      "template_count": 205
     },
     "registry_id": "dominium.registry.action_template_registry",
     "registry_version": "1.0.0",
@@ -33,26 +33,75 @@
         "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "action_template_id": "action.elec.connect_wire",
-        "action_family_id": "action_family.transform",
-        "required_tool_tags": [
-          "tool_tag.wiring"
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "action.elec.breaker.reset",
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
         ],
-        "required_surface_types": [
-          "surface.panel",
-          "surface.port"
+        "deterministic_fingerprint": "d12ba9912770d4dbf6f425ca0d75ea9a871f8f1a0f1ed26ad7e1a378a582e181",
+        "extensions": {
+          "action_id": "action.elec.breaker.reset",
+          "plan_intent_type": "",
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance",
+          "artifact.decision"
         ],
+        "produced_hazard_types": [],
         "required_capabilities": [
           "capability.has_power_network"
         ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.decide_authorize",
+        "action_template_id": "action.elec.breaker.toggle",
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "c6ac3ff43490ee19fc73df26ca2d9f86e9534a11f9d9af0b53f648e56f3f8e9a",
+        "extensions": {
+          "action_id": "action.elec.breaker.toggle",
+          "plan_intent_type": "",
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
         "produced_artifact_types": [
-          "artifact.transform"
+          "artifact.decision"
         ],
         "produced_hazard_types": [],
-        "uses_constitutive_model_ids": [
-          "model.elec.load.phasor.default"
+        "required_capabilities": [
+          "capability.has_power_network"
         ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "action.elec.connect_wire",
         "affected_substrates": [
           "Flow",
           "Network",
@@ -65,27 +114,129 @@
           "process_id": "process.elec.connect_wire",
           "task_type_id": "",
           "template_kind": "control_action"
-        }
-      },
-      {
-        "schema_version": "1.0.0",
-        "action_template_id": "action.elec.flip_breaker",
-        "action_family_id": "action_family.decide_authorize",
-        "required_tool_tags": [
-          "tool_tag.operating"
+        },
+        "produced_artifact_types": [
+          "artifact.transform"
         ],
-        "required_surface_types": [
-          "surface.handle",
-          "surface.panel"
-        ],
+        "produced_hazard_types": [],
         "required_capabilities": [
           "capability.has_power_network"
         ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.wiring"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.elec.load.phasor.default"
+        ]
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "action.elec.connector.plug",
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "84f83f8ae9399b64adf79ac8b0f256fa543f3fb72992e59f26f5d8d189fbf3ed",
+        "extensions": {
+          "action_id": "action.elec.connector.plug",
+          "plan_intent_type": "",
+          "process_id": "process.port_connect",
+          "task_type_id": "task.elec.connector.plug",
+          "template_kind": "control_action"
+        },
         "produced_artifact_types": [
-          "artifact.decision"
+          "artifact.transform"
         ],
         "produced_hazard_types": [],
-        "uses_constitutive_model_ids": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "action.elec.connector.unplug",
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "5f5a00a0882d48c9ba6e95ee0030db332f8d6f26937442227d4abf283cebff8c",
+        "extensions": {
+          "action_id": "action.elec.connector.unplug",
+          "plan_intent_type": "",
+          "process_id": "process.port_disconnect",
+          "task_type_id": "task.elec.connector.unplug",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.sense_measure",
+        "action_template_id": "action.elec.explain_trip",
+        "affected_substrates": [
+          "Spec",
+          "Network",
+          "Schedule"
+        ],
+        "deterministic_fingerprint": "1cc32439796f8f53f752868bb5079452bc3c2759d95b11c23d2d64b811c184fd",
+        "extensions": {
+          "action_id": "action.elec.explain_trip",
+          "plan_intent_type": "",
+          "process_id": "process.elec.explain_trip",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.measurement",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.decide_authorize",
+        "action_template_id": "action.elec.flip_breaker",
         "affected_substrates": [
           "Flow",
           "Network",
@@ -98,27 +249,93 @@
           "process_id": "process.elec.flip_breaker",
           "task_type_id": "",
           "template_kind": "control_action"
-        }
-      },
-      {
-        "schema_version": "1.0.0",
-        "action_template_id": "action.elec.lockout_tagout",
-        "action_family_id": "action_family.maintain",
-        "required_tool_tags": [
-          "tool_tag.tagout"
+        },
+        "produced_artifact_types": [
+          "artifact.decision"
         ],
-        "required_surface_types": [
-          "surface.panel"
-        ],
+        "produced_hazard_types": [],
         "required_capabilities": [
           "capability.has_power_network"
         ],
+        "required_surface_types": [
+          "surface.handle",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "action.elec.isolator.close",
+        "affected_substrates": [
+          "Flow",
+          "Network"
+        ],
+        "deterministic_fingerprint": "fcaebf10a9017fc4f0fb9487f4754cb2f72bc0896edd942f4db11aa1660e9512",
+        "extensions": {
+          "action_id": "action.elec.isolator.close",
+          "plan_intent_type": "",
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
         "produced_artifact_types": [
-          "artifact.maintenance",
-          "artifact.record"
+          "artifact.record",
+          "artifact.decision"
         ],
         "produced_hazard_types": [],
-        "uses_constitutive_model_ids": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "action.elec.isolator.open",
+        "affected_substrates": [
+          "Flow",
+          "Network"
+        ],
+        "deterministic_fingerprint": "8463c95af9f5e1417cffb17d80d4c6a40dd49855fa52dd4f3a7f0df95eb2bf8f",
+        "extensions": {
+          "action_id": "action.elec.isolator.open",
+          "plan_intent_type": "",
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.record",
+          "artifact.decision"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "action.elec.lockout_tagout",
         "affected_substrates": [
           "Network",
           "Schedule",
@@ -131,7 +348,155 @@
           "process_id": "process.elec.lockout_tagout",
           "task_type_id": "",
           "template_kind": "control_action"
-        }
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.tagout"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "action.elec.loto.apply",
+        "affected_substrates": [
+          "Schedule",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "9c548d7b4f2b5d5592f5b7b53bb2e1732db6f9320cb272f63d8e192da420e69b",
+        "extensions": {
+          "action_id": "action.elec.loto.apply",
+          "plan_intent_type": "",
+          "process_id": "process.elec_apply_loto",
+          "task_type_id": "task.elec.loto.apply",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "action.elec.loto.remove",
+        "affected_substrates": [
+          "Schedule",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "ecfcedf4aca8fc6f06f7ad241ca9f079a20f6b9242e4ae2f6069f2e2e3d6e7b8",
+        "extensions": {
+          "action_id": "action.elec.loto.remove",
+          "plan_intent_type": "",
+          "process_id": "process.elec_remove_loto",
+          "task_type_id": "task.elec.loto.remove",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "action.elec.panel.close",
+        "affected_substrates": [
+          "Schedule",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "04cae17f9283b1fd93fcd282f47b5f85ab05380276cf42f41597bcf6e5bdbd43",
+        "extensions": {
+          "action_id": "action.elec.panel.close",
+          "plan_intent_type": "",
+          "process_id": "process.portal_close",
+          "task_type_id": "task.elec.panel.close",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "action.elec.panel.open",
+        "affected_substrates": [
+          "Schedule",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "178740fc353263f5e8f28bb96822b68b91fe0f819387af4ef2dc72af8b17dd48",
+        "extensions": {
+          "action_id": "action.elec.panel.open",
+          "plan_intent_type": "",
+          "process_id": "process.portal_open",
+          "task_type_id": "task.elec.panel.open",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
       },
       {
         "action_family_id": "action_family.decide_authorize",
@@ -818,6 +1183,192 @@
         },
         "produced_artifact_types": [
           "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "interaction.elec.apply_loto",
+        "affected_substrates": [
+          "Network",
+          "Schedule",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "b225a6c93b0722cb799e235e89be8af4eb6033fd9ef81f8ea3223d16c46e262f",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.apply_loto",
+          "process_id": "process.elec_apply_loto",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.containment",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "interaction.elec.close_panel",
+        "affected_substrates": [
+          "Interior",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "9fac13f658d4c86e54420b298e8fdb18af37cc2c71fae53e809d5ab3d53828fb",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.close_panel",
+          "process_id": "process.portal_close",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.containment",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.sense_measure",
+        "action_template_id": "interaction.elec.explain_trip",
+        "affected_substrates": [
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "e16826e4befe7d3be8f6a90d4e6b99e90dd4f2434f5e5d6ee4f65b9d3d6a4269",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.explain_trip",
+          "process_id": "process.elec.explain_trip",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.measurement",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "interaction.elec.open_panel",
+        "affected_substrates": [
+          "Interior",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "5e2f51272339f57a93f95c387d4d360d40fec564d7d18bd2d4794bb3bba2dffd",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.open_panel",
+          "process_id": "process.portal_open",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.transform",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.move",
+        "action_template_id": "interaction.elec.remove_loto",
+        "affected_substrates": [
+          "Network",
+          "Schedule"
+        ],
+        "deterministic_fingerprint": "bf7255624c24a7f9c98910982af8ad3918f95a7030d82fc61b8253497485fdd0",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.remove_loto",
+          "process_id": "process.elec_remove_loto",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.motion",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.move",
+        "action_template_id": "interaction.elec.replay_outage",
+        "affected_substrates": [
+          "Schedule",
+          "Network"
+        ],
+        "deterministic_fingerprint": "f8b4d6cbf40ca73f4edfa01953eb3564896a4d4f45142468ccf38154ad05c7f8",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.replay_outage",
+          "process_id": "process.reenactment_generate",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.motion",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.move",
+        "action_template_id": "interaction.elec.replay_trip_cascade",
+        "affected_substrates": [
+          "Schedule",
+          "Network"
+        ],
+        "deterministic_fingerprint": "3508f8f47de9d23e88d934a7b2bc25bbca1b8380bb83bb237017d7a85ecff52e",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.replay_trip_cascade",
+          "process_id": "process.reenactment_play",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.motion",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [],
+        "required_tool_tags": [],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.decide_authorize",
+        "action_template_id": "interaction.elec.toggle_breaker",
+        "affected_substrates": [
+          "Network",
+          "Flow",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "7fc1cb6c5cb6848a2f52c4c9d56f9d57e6714a357266ab453b0a6ac0f752b172",
+        "extensions": {
+          "interaction_action_id": "interaction.elec.toggle_breaker",
+          "process_id": "process.elec.flip_breaker",
+          "template_kind": "interaction_action"
+        },
+        "produced_artifact_types": [
+          "artifact.decision",
+          "artifact.record"
         ],
         "produced_hazard_types": [],
         "required_capabilities": [],
@@ -4272,6 +4823,162 @@
         ],
         "required_tool_tags": [
           "tool_tag.drilling"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "task.elec.connector.plug",
+        "affected_substrates": [
+          "Mechanics"
+        ],
+        "deterministic_fingerprint": "24cdf7d80be77a672770a7adab86d7f7c00d949c9204b1fe22bed4f4f8ccaabc",
+        "extensions": {
+          "completion_process_id": "process.port_connect",
+          "task_type_id": "task.elec.connector.plug",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "task.elec.connector.unplug",
+        "affected_substrates": [
+          "Mechanics"
+        ],
+        "deterministic_fingerprint": "c12538a8a0053ed3ba5ee130d315cae4cdd519b5dc65db55e7fbc3a6e8f296e2",
+        "extensions": {
+          "completion_process_id": "process.port_disconnect",
+          "task_type_id": "task.elec.connector.unplug",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "task.elec.loto.apply",
+        "affected_substrates": [
+          "Mechanics"
+        ],
+        "deterministic_fingerprint": "51fcb13be9e1c7a1c1f869558f0a08dafaa8e48a1316f5c39474979266b4b557",
+        "extensions": {
+          "completion_process_id": "process.elec_apply_loto",
+          "task_type_id": "task.elec.loto.apply",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "task.elec.loto.remove",
+        "affected_substrates": [
+          "Mechanics"
+        ],
+        "deterministic_fingerprint": "0bf215a775b9b9ca6b46e514e2f16c0d179adb8d9ea718013cf16225adb6f9f8",
+        "extensions": {
+          "completion_process_id": "process.elec_remove_loto",
+          "task_type_id": "task.elec.loto.remove",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "task.elec.panel.close",
+        "affected_substrates": [
+          "Mechanics"
+        ],
+        "deterministic_fingerprint": "99d904f8c57f935b61bcedd1327229cd54a6d79f6dbc69cb29f00d48a44f13f3",
+        "extensions": {
+          "completion_process_id": "process.portal_close",
+          "task_type_id": "task.elec.panel.close",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "task.elec.panel.open",
+        "affected_substrates": [
+          "Mechanics"
+        ],
+        "deterministic_fingerprint": "ca686f02918ecdf2ea2a0c844b620add95a3948b02d8d8d3e2d1b21bf609bd43",
+        "extensions": {
+          "completion_process_id": "process.portal_open",
+          "task_type_id": "task.elec.panel.open",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
         ],
         "schema_version": "1.0.0"
       },

@@ -11338,6 +11338,61 @@ def _append_capability_enforcement_invariant_findings(
                 )
                 break
 
+    for token in (
+        "apply_elec_budget_degradation(",
+        "state[\"elec_degradation_events\"]",
+        "degradation_event_hash_chain",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical network tick must apply deterministic budget degradation and emit degradation events",
+                rule_id="INV-ELEC-BUDGETED",
+            )
+        )
+
+    for token in (
+        "cascade_max_iterations",
+        "cascade_iteration_limit_reached",
+        "elec_cascade_iteration_rows",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical cascade processing must be bounded with deterministic iteration caps and state",
+                rule_id="INV-ELEC-CASCADE-BOUNDED",
+            )
+        )
+
+    for token in (
+        "state[\"elec_trip_events\"]",
+        "state[\"trip_event_hash_chain\"]",
+        "evaluate_protection_trip_plan(",
+        "build_safety_event(",
+    ):
+        if token in runtime_text or token in power_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical trip mutations must be logged and hash-chained through runtime safety/protection paths",
+                rule_id="INV-ELEC-ALL-TRIPS-LOGGED",
+            )
+        )
+
 
 def _append_effect_system_invariant_findings(
     findings: List[Dict[str, object]],
@@ -13182,6 +13237,111 @@ def _append_electric_invariant_findings(
                 rule_id="INV-LOTO-STATE_MACHINE-ONLY",
             )
         )
+
+    observation_rel = "tools/xstack/sessionx/observation.py"
+    inspection_rel = "src/inspection/inspection_engine.py"
+    overlay_rel = "src/client/interaction/inspection_overlays.py"
+    control_registry_rel = "data/registries/control_action_registry.json"
+    action_template_rel = "data/registries/action_template_registry.json"
+    observation_text = _file_text(repo_root, observation_rel)
+    inspection_text = _file_text(repo_root, inspection_rel)
+    overlay_text = _file_text(repo_root, overlay_rel)
+    control_registry_text = _file_text(repo_root, control_registry_rel)
+    action_template_text = _file_text(repo_root, action_template_rel)
+
+    for token in (
+        "ch.diegetic.elec.energized",
+        "ch.diegetic.elec.voltage",
+        "ch.diegetic.elec.current_proxy",
+        "ch.diegetic.elec.pf",
+        "ch.diegetic.elec.trip_warning",
+    ):
+        if token in observation_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=observation_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical UX channels must be surfaced through observation/perceived-model pathways",
+                rule_id="INV-NO-TRUTH-IN-UI",
+            )
+        )
+
+    for token in (
+        "action.elec.panel.open",
+        "action.elec.panel.close",
+        "action.elec.breaker.toggle",
+        "action.elec.breaker.reset",
+        "action.elec.isolator.open",
+        "action.elec.isolator.close",
+        "action.elec.loto.apply",
+        "action.elec.loto.remove",
+        "action.elec.connector.plug",
+        "action.elec.connector.unplug",
+        "action.elec.explain_trip",
+    ):
+        if token in control_registry_text and token in action_template_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=control_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical interactive actions must be declared in control/action-template registries",
+                rule_id="INV-ALL-ELEC-ACTIONS-THROUGH-CONTROL",
+            )
+        )
+
+    for token in (
+        'elif process_id == "process.elec.explain_trip":',
+        "state[\"elec_trip_explanations\"]",
+        "section.elec.device_states",
+        "section.elec.fault_summary",
+    ):
+        if token in runtime_text or token in inspection_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel if "process_id" in token or "state[" in token else inspection_rel,
+                line_number=1,
+                snippet=token,
+                message="trip explanations must remain derived artifacts from fault/safety/decision records",
+                rule_id="INV-EPILOG-EXPLANATIONS-DERIVED-ONLY",
+            )
+        )
+
+    truth_ui_patterns = (
+        re.compile(r"ch\.truth\.overlay\.[^\n]*elec", re.IGNORECASE),
+        re.compile(r"truth_overlay[^\n]*elec", re.IGNORECASE),
+    )
+    for rel_norm, text in (
+        (observation_rel, observation_text),
+        (overlay_rel, overlay_text),
+        (inspection_rel, inspection_text),
+    ):
+        if not text:
+            continue
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in truth_ui_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="electrical UX must not consume truth-overlay channels directly",
+                    rule_id="INV-NO-TRUTH-IN-UI",
+                )
+            )
+            break
 
     inline_power_loss_pattern = re.compile(
         r"\b(?:loss_p|heat_loss|line_loss|resistance_proxy|pf_permille)\b\s*=\s*[^#\n]*(?:\*|/|\+|-|//)",

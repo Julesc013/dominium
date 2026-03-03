@@ -387,10 +387,12 @@ from src.electric import (
     ElectricStorageError,
     ElectricError,
     REFUSAL_ELEC_FAULT_INVALID,
+    REFUSAL_ELEC_LOW_PRIORITY_CONNECTION,
     REFUSAL_ELEC_NETWORK_INVALID,
     REFUSAL_ELEC_PROTECTION_INVALID,
     REFUSAL_ELEC_STORAGE_INVALID,
     REFUSAL_ELEC_SPEC_NONCOMPLIANT,
+    apply_elec_budget_degradation,
     apply_storage_charge,
     apply_storage_discharge,
     build_power_flow_channel,
@@ -610,6 +612,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.elec_apply_loto": "entitlement.tool.operating",
     "process.elec_remove_loto": "entitlement.tool.operating",
     "process.elec.lockout_tagout": "entitlement.tool.operating",
+    "process.elec.explain_trip": "entitlement.inspect",
     "process.elec.network_tick": "session.boot",
     "process.mechanics_fracture": "session.boot",
     "process.weld_joint": "entitlement.tool.use",
@@ -773,6 +776,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.elec_apply_loto": "operator",
     "process.elec_remove_loto": "operator",
     "process.elec.lockout_tagout": "operator",
+    "process.elec.explain_trip": "observer",
     "process.elec.network_tick": "observer",
     "process.mechanics_fracture": "observer",
     "process.weld_joint": "operator",
@@ -883,6 +887,7 @@ CONTROL_PROCESS_IDS = {
     "process.elec_apply_loto",
     "process.elec_remove_loto",
     "process.elec.lockout_tagout",
+    "process.elec.explain_trip",
     "process.elec.network_tick",
     "process.mechanics_fracture",
     "process.safety_tick",
@@ -22180,6 +22185,249 @@ def execute_intent(
             "active": bool(active),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.elec.explain_trip":
+        device_id = str(inputs.get("device_id", "")).strip()
+        if not device_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.elec.explain_trip requires device_id",
+                "Provide deterministic device_id from electrical protection inspection output.",
+                {"process_id": process_id},
+                "$.intent.inputs.device_id",
+            )
+        protection_by_id = dict(
+            (
+                str(row.get("device_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_protection_devices") or [])
+            if isinstance(row, Mapping) and str(row.get("device_id", "")).strip()
+        )
+        device_row = dict(protection_by_id.get(device_id) or {})
+        if not device_row:
+            return refusal(
+                REFUSAL_ELEC_NETWORK_INVALID,
+                "protection device '{}' was not found".format(device_id),
+                "Use an existing protection device_id from electrical inspection data.",
+                {"device_id": device_id},
+                "$.intent.inputs.device_id",
+            )
+
+        attached_to = dict(device_row.get("attached_to") or {})
+        device_ext = dict(device_row.get("extensions") or {}) if isinstance(device_row.get("extensions"), Mapping) else {}
+        edge_id = str(attached_to.get("edge_id", "")).strip() or str(device_ext.get("edge_id", "")).strip()
+        settings_id = str(device_row.get("settings_ref", "")).strip()
+        settings_rows_by_id = dict(
+            (
+                str(row.get("settings_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_protection_settings") or [])
+            if isinstance(row, Mapping) and str(row.get("settings_id", "")).strip()
+        )
+        settings_row = dict(settings_rows_by_id.get(settings_id) or {})
+
+        active_fault_rows = [
+            dict(row)
+            for row in list(state.get("elec_fault_states") or [])
+            if isinstance(row, Mapping) and bool(row.get("active", False))
+        ]
+        related_fault_rows = []
+        for row in sorted(active_fault_rows, key=lambda item: (str(item.get("target_id", "")), str(item.get("fault_kind_id", "")), str(item.get("fault_id", "")))):
+            target_kind = str(row.get("target_kind", "")).strip()
+            target_id = str(row.get("target_id", "")).strip()
+            if target_kind == "device" and target_id == device_id:
+                related_fault_rows.append(row)
+                continue
+            if edge_id and target_kind == "edge" and target_id == edge_id:
+                related_fault_rows.append(row)
+                continue
+        fault_ids = _sorted_tokens(str(row.get("fault_id", "")).strip() for row in related_fault_rows)
+        fault_kind_ids = _sorted_tokens(str(row.get("fault_kind_id", "")).strip() for row in related_fault_rows)
+
+        trip_rows = [
+            dict(row)
+            for row in list(state.get("elec_trip_events") or [])
+            if isinstance(row, Mapping)
+        ]
+        related_trip_rows = []
+        for row in sorted(trip_rows, key=lambda item: (int(max(0, _as_int(item.get("tick", 0), 0))), str(item.get("event_id", "")))):
+            details = dict(row.get("details") or {})
+            if str(details.get("device_id", "")).strip() == device_id:
+                related_trip_rows.append(row)
+        latest_trip = dict(related_trip_rows[-1]) if related_trip_rows else {}
+        latest_trip_id = str(latest_trip.get("event_id", "")).strip() or None
+
+        edge_status_rows = [
+            dict(row)
+            for row in list(state.get("elec_edge_status_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        selected_edge_status = {}
+        if edge_id:
+            for row in edge_status_rows:
+                if str(row.get("edge_id", "")).strip() == edge_id:
+                    selected_edge_status = dict(row)
+                    break
+
+        thresholds_exceeded: List[dict] = []
+        trip_threshold_s = None if settings_row.get("trip_threshold_S") is None else int(max(0, _as_int(settings_row.get("trip_threshold_S", 0), 0)))
+        if trip_threshold_s is not None:
+            observed_s = int(max(0, _as_int(selected_edge_status.get("S", 0), 0)))
+            exceeded = bool(observed_s > int(trip_threshold_s))
+            thresholds_exceeded.append(
+                {
+                    "threshold_id": "trip_threshold_S",
+                    "threshold_value": int(trip_threshold_s),
+                    "observed_value": int(observed_s),
+                    "exceeded": bool(exceeded),
+                }
+            )
+        gfci_threshold = None if settings_row.get("gfci_threshold") is None else int(max(0, _as_int(settings_row.get("gfci_threshold", 0), 0)))
+        if gfci_threshold is not None:
+            ground_fault_active = bool("fault.ground_fault" in set(fault_kind_ids))
+            thresholds_exceeded.append(
+                {
+                    "threshold_id": "gfci_threshold",
+                    "threshold_value": int(gfci_threshold),
+                    "observed_value": int(gfci_threshold if ground_fault_active else 0),
+                    "exceeded": bool(ground_fault_active),
+                }
+            )
+
+        policy_ids = _sorted_tokens(
+            [
+                str(inputs.get("coordination_policy_id", "")).strip(),
+                str(settings_row.get("coordination_group_id", "")).strip(),
+                str(device_ext.get("coordination_policy_id", "")).strip(),
+                str((dict((state.get("elec_protection_runtime_state") or {}))).get("last_coordination_policy_id", "")).strip(),
+            ]
+        )
+        if not policy_ids:
+            policy_ids = ["coord.downstream_first"]
+
+        explanation_payload = {
+            "device_id": device_id,
+            "fault_ids": list(fault_ids),
+            "fault_kind_ids": list(fault_kind_ids),
+            "contributing_edges": [edge_id] if edge_id else [],
+            "thresholds_exceeded": list(thresholds_exceeded),
+            "policy_ids_applied": list(policy_ids),
+            "source_trip_event_id": latest_trip_id,
+            "generated_tick": int(max(0, _as_int(current_tick, 0))),
+        }
+        explanation_id = "trip.expl.{}".format(canonical_sha256(explanation_payload)[:16])
+        explanation_row = {
+            "schema_version": "1.0.0",
+            "explanation_id": explanation_id,
+            "device_id": str(device_id),
+            "fault_ids": list(fault_ids),
+            "contributing_edges": [edge_id] if edge_id else [],
+            "thresholds_exceeded": list(thresholds_exceeded),
+            "policy_ids_applied": list(policy_ids),
+            "generated_tick": int(max(0, _as_int(current_tick, 0))),
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "explanation_id": explanation_id,
+                    "device_id": str(device_id),
+                    "fault_ids": list(fault_ids),
+                    "contributing_edges": [edge_id] if edge_id else [],
+                    "thresholds_exceeded": list(thresholds_exceeded),
+                    "policy_ids_applied": list(policy_ids),
+                    "generated_tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            ),
+            "extensions": {
+                "source_trip_event_id": latest_trip_id,
+                "fault_kind_ids": list(fault_kind_ids),
+                "edge_status": {
+                    "edge_id": edge_id or None,
+                    "P": int(max(0, _as_int(selected_edge_status.get("P", 0), 0))),
+                    "Q": int(max(0, _as_int(selected_edge_status.get("Q", 0), 0))),
+                    "S": int(max(0, _as_int(selected_edge_status.get("S", 0), 0))),
+                },
+            },
+        }
+        explanation_rows_by_id = dict(
+            (
+                str(row.get("explanation_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_trip_explanations") or [])
+            if isinstance(row, Mapping) and str(row.get("explanation_id", "")).strip()
+        )
+        explanation_rows_by_id[explanation_id] = dict(explanation_row)
+        state["elec_trip_explanations"] = [
+            dict(explanation_rows_by_id[key])
+            for key in sorted(explanation_rows_by_id.keys())
+        ]
+        trip_explanation_hash_chain = canonical_sha256(
+            [
+                {
+                    "explanation_id": str(row.get("explanation_id", "")).strip(),
+                    "device_id": str(row.get("device_id", "")).strip(),
+                    "fault_ids": _sorted_tokens(list(row.get("fault_ids") or [])),
+                    "contributing_edges": _sorted_tokens(list(row.get("contributing_edges") or [])),
+                    "policy_ids_applied": _sorted_tokens(list(row.get("policy_ids_applied") or [])),
+                    "generated_tick": int(max(0, _as_int(row.get("generated_tick", 0), 0))),
+                    "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                }
+                for row in sorted(
+                    [dict(item) for item in list(state.get("elec_trip_explanations") or []) if isinstance(item, Mapping)],
+                    key=lambda item: (str(item.get("device_id", "")), str(item.get("explanation_id", ""))),
+                )
+            ]
+        )
+        state["trip_explanation_hash_chain"] = str(trip_explanation_hash_chain)
+        existing_surface = dict(state.get("elec_proof_surface") or {})
+        if existing_surface:
+            surface_payload = {
+                "power_flow_hash": str(existing_surface.get("power_flow_hash", "")).strip() or None,
+                "power_flow_hash_chain": str(existing_surface.get("power_flow_hash_chain", "")).strip()
+                or str(state.get("power_flow_hash_chain", "")).strip()
+                or None,
+                "fault_state_hash_chain": str(existing_surface.get("fault_state_hash_chain", "")).strip()
+                or str(state.get("fault_state_hash_chain", "")).strip()
+                or None,
+                "protection_state_hash_chain": str(existing_surface.get("protection_state_hash_chain", "")).strip()
+                or str(state.get("protection_state_hash_chain", "")).strip()
+                or None,
+                "degradation_event_hash_chain": str(existing_surface.get("degradation_event_hash_chain", "")).strip()
+                or str(state.get("degradation_event_hash_chain", "")).strip()
+                or None,
+                "trip_event_hash_chain": str(existing_surface.get("trip_event_hash_chain", "")).strip()
+                or str(state.get("trip_event_hash_chain", "")).strip()
+                or None,
+                "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
+                "boundary_transfer_hash_chain": str(existing_surface.get("boundary_transfer_hash_chain", "")).strip()
+                or str(state.get("elec_boundary_transfer_hash_chain", "")).strip()
+                or None,
+                "tick": int(max(0, _as_int(current_tick, 0))),
+            }
+            existing_surface = dict(surface_payload)
+            existing_surface["deterministic_fingerprint"] = canonical_sha256(
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "power_flow_hash": str(surface_payload.get("power_flow_hash", "")).strip(),
+                    "power_flow_hash_chain": str(surface_payload.get("power_flow_hash_chain", "")).strip(),
+                    "fault_state_hash_chain": str(surface_payload.get("fault_state_hash_chain", "")).strip(),
+                    "protection_state_hash_chain": str(surface_payload.get("protection_state_hash_chain", "")).strip(),
+                    "degradation_event_hash_chain": str(surface_payload.get("degradation_event_hash_chain", "")).strip(),
+                    "trip_event_hash_chain": str(surface_payload.get("trip_event_hash_chain", "")).strip(),
+                    "trip_explanation_hash_chain": str(surface_payload.get("trip_explanation_hash_chain", "")).strip(),
+                    "boundary_transfer_hash_chain": str(surface_payload.get("boundary_transfer_hash_chain", "")).strip(),
+                }
+            )
+            state["elec_proof_surface"] = existing_surface
+        result_metadata = {
+            "explanation_id": explanation_id,
+            "device_id": device_id,
+            "fault_count": int(len(fault_ids)),
+            "source_trip_event_id": latest_trip_id,
+            "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
+            "trip_explanation": dict(explanation_row),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.elec.network_tick":
         requested_graph_id = str(inputs.get("graph_id", "")).strip()
         max_network_solves = int(
@@ -22237,6 +22485,47 @@ def execute_intent(
                 "$.intent.inputs.graph_id",
             )
 
+        pending_low_priority_connections = [
+            dict(row)
+            for row in list(inputs.get("pending_low_priority_connections") or [])
+            if isinstance(row, Mapping)
+            and str(row.get("priority", "low")).strip().lower() in {"low", "optional", "non_critical"}
+        ]
+        strict_profile_enabled = (
+            str((dict(policy_context or {})).get("server_profile_id", "")).strip() == "server.profile.rank_strict"
+        )
+        degradation_eval = apply_elec_budget_degradation(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            budget_envelope_id=str(
+                inputs.get(
+                    "budget_envelope_id",
+                    (dict(policy_context or {})).get("budget_envelope_id", "elec.envelope.standard"),
+                )
+            ),
+            network_count=int(len(graph_candidates)),
+            max_network_solves=int(max_network_solves),
+            e1_enabled=bool(e1_enabled),
+            pending_low_priority_connections=int(len(pending_low_priority_connections)),
+            strict_profile_enabled=bool(strict_profile_enabled),
+            base_model_cost_cap=int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get("max_model_cost_units", (dict(policy_context or {})).get("elec_max_model_cost_units", 4096)),
+                        4096,
+                    ),
+                )
+            ),
+        )
+        solve_stride = int(max(1, _as_int(degradation_eval.get("solve_stride", 1), 1)))
+        force_e0 = bool(degradation_eval.get("force_e0", False))
+        defer_noncritical_models = bool(degradation_eval.get("defer_noncritical_models", False))
+        model_cost_cap = int(max(1, _as_int(degradation_eval.get("model_cost_cap", 4096), 4096)))
+        refused_low_priority_connections = int(
+            max(0, _as_int(degradation_eval.get("refused_low_priority_connections", 0), 0))
+        )
+        refusal_codes = _sorted_tokens(list(degradation_eval.get("refusal_codes") or []))
+
         channels_by_id = dict(
             (
                 str(row.get("channel_id", "")).strip(),
@@ -22251,9 +22540,19 @@ def execute_intent(
         node_status_by_key = {}
         overload_context_overrides = {}
         breaker_instances = []
+        bucket = int(max(0, _as_int(current_tick, 0))) % int(max(1, solve_stride))
         for idx, graph_row in enumerate(graph_candidates):
             graph_id = str(graph_row.get("graph_id", "")).strip()
-            if idx >= int(max_network_solves):
+            stride_degraded = bool(int(max(1, solve_stride)) > 1 and int(idx % int(max(1, solve_stride))) != int(bucket))
+            if stride_degraded:
+                solved = solve_power_network_e0(
+                    graph_row=graph_row,
+                    model_binding_rows=model_bindings,
+                    current_tick=int(current_tick),
+                    reason="degrade.elec.solve_stride",
+                )
+                downgraded_graph_ids.append(graph_id)
+            elif idx >= int(max_network_solves):
                 solved = solve_power_network_e0(
                     graph_row=graph_row,
                     model_binding_rows=model_bindings,
@@ -22261,7 +22560,7 @@ def execute_intent(
                     reason="degrade.elec.network_budget",
                 )
                 downgraded_graph_ids.append(graph_id)
-            elif not e1_enabled:
+            elif (not e1_enabled) or bool(force_e0):
                 solved = solve_power_network_e0(
                     graph_row=graph_row,
                     model_binding_rows=model_bindings,
@@ -22276,6 +22575,7 @@ def execute_intent(
                         model_binding_rows=model_bindings,
                         current_tick=int(current_tick),
                         max_processed_edges=int(max_edges_per_network),
+                        max_model_cost_units=int(max(1, model_cost_cap)),
                     )
                 except ElectricError as exc:
                     return refusal(
@@ -22542,29 +22842,215 @@ def execute_intent(
                 ),
             )
         )
-        try:
-            protection_eval = evaluate_protection_trip_plan(
-                fault_rows=state.get("elec_fault_states") or [],
-                protection_device_rows=protection_device_rows,
-                protection_settings_rows=protection_settings_rows,
-                current_tick=int(current_tick),
-                coordination_policy_id=resolved_coordination_policy_id,
-                max_trip_actions=int(max_trip_actions),
+        cascade_max_iterations = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "cascade_max_iterations",
+                        (dict(policy_context or {})).get("elec_cascade_max_iterations", 4),
+                    ),
+                    4,
+                ),
             )
-        except ElectricProtectionError as exc:
-            return refusal(
-                str(exc.reason_code),
-                str(exc),
-                "Fix electrical protection settings/co-ordination inputs and retry process.elec.network_tick.",
-                dict(getattr(exc, "details", {}) or {}),
-                "$.state.elec_protection_settings",
+        )
+        cascade_iteration_count = 0
+        cascade_iteration_limit_reached = False
+        cascade_iteration_rows = []
+        cascade_seen_signatures = set()
+        cascade_fault_events = []
+        working_fault_rows = [dict(row) for row in list(state.get("elec_fault_states") or []) if isinstance(row, Mapping)]
+        working_channel_rows = [dict(row) for row in list(elec_flow_channels or []) if isinstance(row, Mapping)]
+        for iteration_index in range(int(cascade_max_iterations)):
+            cascade_iteration_count = int(iteration_index + 1)
+            try:
+                fault_eval = detect_faults(
+                    edge_status_rows=elec_edge_status_rows,
+                    channel_rows=working_channel_rows,
+                    fault_rows=working_fault_rows,
+                    current_tick=int(current_tick),
+                    max_fault_evals=int(max_fault_evals),
+                    grounding_policy_row=selected_grounding_policy,
+                    protection_settings_rows_by_target_id=protection_settings_by_target_id,
+                )
+            except ElectricFaultError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Fix electrical fault/grounding policy inputs and retry process.elec.network_tick.",
+                    dict(getattr(exc, "details", {}) or {}),
+                    "$.intent.inputs",
+                )
+            working_fault_rows = [dict(row) for row in list(fault_eval.get("fault_rows") or []) if isinstance(row, Mapping)]
+            cascade_fault_events.extend(
+                dict(row) for row in list(fault_eval.get("events") or []) if isinstance(row, Mapping)
             )
+            try:
+                protection_eval = evaluate_protection_trip_plan(
+                    fault_rows=working_fault_rows,
+                    protection_device_rows=protection_device_rows,
+                    protection_settings_rows=protection_settings_rows,
+                    current_tick=int(current_tick),
+                    coordination_policy_id=resolved_coordination_policy_id,
+                    max_trip_actions=int(max_trip_actions),
+                )
+            except ElectricProtectionError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Fix electrical protection settings/co-ordination inputs and retry process.elec.network_tick.",
+                    dict(getattr(exc, "details", {}) or {}),
+                    "$.state.elec_protection_settings",
+                )
+            trip_rows = [
+                dict(row)
+                for row in list(protection_eval.get("trip_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            signature = canonical_sha256(
+                {
+                    "fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
+                    "trip_event_hash_chain": str(protection_eval.get("trip_event_hash_chain", "")),
+                    "trip_rows": [
+                        {
+                            "device_id": str(row.get("device_id", "")).strip(),
+                            "fault_id": str(row.get("fault_id", "")).strip(),
+                            "channel_id": str(row.get("channel_id", "")).strip(),
+                        }
+                        for row in sorted(
+                            trip_rows,
+                            key=lambda item: (
+                                str(item.get("device_id", "")),
+                                str(item.get("fault_id", "")),
+                                str(item.get("channel_id", "")),
+                            ),
+                        )
+                    ],
+                }
+            )
+            cascade_iteration_rows.append(
+                {
+                    "iteration_index": int(cascade_iteration_count),
+                    "fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
+                    "trip_event_hash_chain": str(protection_eval.get("trip_event_hash_chain", "")),
+                    "trip_count": int(len(trip_rows)),
+                    "signature": str(signature),
+                }
+            )
+            if signature in cascade_seen_signatures:
+                break
+            cascade_seen_signatures.add(signature)
+            if not trip_rows:
+                break
+
+            channel_rows_by_id = dict(
+                (
+                    str(row.get("channel_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(working_channel_rows or [])
+                if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+            )
+            for trip_row in sorted(
+                trip_rows,
+                key=lambda item: (
+                    str(item.get("coordination_group_id", "")),
+                    str(item.get("device_id", "")),
+                ),
+            ):
+                channel_id = str(trip_row.get("channel_id", "")).strip()
+                if not channel_id:
+                    continue
+                channel_row = dict(channel_rows_by_id.get(channel_id) or {})
+                if not channel_row:
+                    continue
+                channel_row["capacity_per_tick"] = 0
+                ext = dict(channel_row.get("extensions") or {})
+                ext["breaker_state"] = "tripped"
+                ext["safety_disconnected"] = True
+                channel_row["extensions"] = ext
+                channel_rows_by_id[channel_id] = channel_row
+            working_channel_rows = [dict(channel_rows_by_id[key]) for key in sorted(channel_rows_by_id.keys())]
+        else:
+            cascade_iteration_limit_reached = True
+
+        state["elec_fault_states"] = [dict(row) for row in list(working_fault_rows or []) if isinstance(row, Mapping)]
+        state["fault_state_hash_chain"] = str(fault_eval.get("fault_state_hash_chain", ""))
+        state["elec_fault_runtime_state"] = {
+            "last_tick": int(max(0, _as_int(current_tick, 0))),
+            "last_fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
+            "last_budget_outcome": str(fault_eval.get("budget_outcome", "complete")).strip() or "complete",
+            "last_detected_fault_count": int(len(list(fault_eval.get("detected_fault_ids") or []))),
+            "last_active_fault_count": int(len(list(fault_eval.get("active_fault_ids") or []))),
+            "last_deferred_target_ids": sorted(
+                set(str(item).strip() for item in list(fault_eval.get("deferred_target_ids") or []) if str(item).strip())
+            ),
+            "extensions": {
+                "grounding_policy_id": str(selected_grounding_policy.get("grounding_policy_id", "")).strip() or requested_grounding_policy_id,
+                "fault_detection_rule_id": str(selected_grounding_policy.get("fault_detection_rule_id", "")).strip() or None,
+            },
+        }
+        existing_fault_events = [dict(row) for row in list(state.get("elec_fault_events") or []) if isinstance(row, Mapping)]
+        merged_fault_events = normalize_safety_event_rows(
+            existing_fault_events + [dict(row) for row in list(cascade_fault_events or []) if isinstance(row, Mapping)]
+        )
+        state["elec_fault_events"] = [dict(row) for row in list(merged_fault_events or []) if isinstance(row, Mapping)]
+        if isinstance(working_channel_rows, list) and working_channel_rows:
+            elec_flow_channels = [dict(row) for row in list(working_channel_rows or []) if isinstance(row, Mapping)]
+            state["elec_flow_channels"] = [dict(row) for row in list(elec_flow_channels or []) if isinstance(row, Mapping)]
         existing_trip_events = [dict(row) for row in list(state.get("elec_trip_events") or []) if isinstance(row, Mapping)]
         merged_trip_events = normalize_safety_event_rows(
             existing_trip_events + [dict(row) for row in list(protection_eval.get("events") or []) if isinstance(row, Mapping)]
         )
         state["elec_trip_events"] = [dict(row) for row in list(merged_trip_events or []) if isinstance(row, Mapping)]
         state["trip_event_hash_chain"] = str(protection_eval.get("trip_event_hash_chain", ""))
+        channels_by_id_for_protection = dict(
+            (
+                str(row.get("channel_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_flow_channels") or [])
+            if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+        )
+        protection_state_hash_chain = canonical_sha256(
+            [
+                {
+                    "device_id": str(row.get("device_id", "")).strip(),
+                    "device_kind_id": str(row.get("device_kind_id", "")).strip(),
+                    "state_machine_id": str(row.get("state_machine_id", "")).strip(),
+                    "settings_ref": str(row.get("settings_ref", "")).strip(),
+                    "edge_id": str((dict(row.get("attached_to") or {})).get("edge_id", "")).strip(),
+                    "channel_id": str((dict(row.get("extensions") or {})).get("channel_id", "")).strip(),
+                    "breaker_state": str(
+                        (
+                            dict(
+                                channels_by_id_for_protection.get(
+                                    str((dict(row.get("extensions") or {})).get("channel_id", "")).strip()
+                                )
+                                or {}
+                            ).get("extensions")
+                            or {}
+                        ).get("breaker_state", "")
+                    ).strip(),
+                    "safety_disconnected": bool(
+                        (
+                            dict(
+                                channels_by_id_for_protection.get(
+                                    str((dict(row.get("extensions") or {})).get("channel_id", "")).strip()
+                                )
+                                or {}
+                            ).get("extensions")
+                            or {}
+                        ).get("safety_disconnected", False)
+                    ),
+                }
+                for row in sorted(
+                    [dict(item) for item in list(protection_device_rows or []) if isinstance(item, Mapping)],
+                    key=lambda item: str(item.get("device_id", "")),
+                )
+            ]
+        )
+        state["protection_state_hash_chain"] = str(protection_state_hash_chain)
         state["elec_protection_runtime_state"] = {
             "last_tick": int(max(0, _as_int(current_tick, 0))),
             "last_budget_outcome": str(protection_eval.get("budget_outcome", "complete")).strip() or "complete",
@@ -22574,6 +23060,7 @@ def execute_intent(
             ),
             "extensions": {
                 "coordination_policy_id": resolved_coordination_policy_id,
+                "protection_state_hash_chain": str(protection_state_hash_chain),
             },
         }
         active_fault_rows_by_id = dict(
@@ -22630,6 +23117,13 @@ def execute_intent(
                 }
             )
         state["elec_trip_cascade_rows"] = [dict(row) for row in list(trip_cascade_rows or []) if isinstance(row, Mapping)]
+        state["elec_cascade_iteration_rows"] = [
+            dict(row)
+            for row in sorted(
+                [dict(row) for row in list(cascade_iteration_rows or []) if isinstance(row, Mapping)],
+                key=lambda row: int(max(0, _as_int(row.get("iteration_index", 0), 0))),
+            )
+        ]
         active_fault_rows = [
             dict(row)
             for row in list(state.get("elec_fault_states") or [])
@@ -22794,27 +23288,409 @@ def execute_intent(
                 ],
             }
         )
+        power_flow_hash_chain = canonical_sha256(
+            [
+                {
+                    "graph_id": str(row.get("graph_id", "")).strip(),
+                    "power_flow_hash": str(row.get("power_flow_hash", "")).strip(),
+                }
+                for row in sorted(
+                    [dict(item) for item in list(network_results or []) if isinstance(item, Mapping)],
+                    key=lambda item: str(item.get("graph_id", "")),
+                )
+            ]
+        )
+
+        decision_log_rows = [
+            dict(item)
+            for item in list(state.get("control_decision_log") or [])
+            if isinstance(item, Mapping)
+        ]
+        for row in list(degradation_eval.get("decision_log_rows") or []):
+            if not isinstance(row, Mapping):
+                continue
+            decision_log_rows.append(dict(row))
+        state["control_decision_log"] = sorted(
+            [dict(item) for item in list(decision_log_rows or []) if isinstance(item, Mapping)],
+            key=lambda item: (
+                int(max(0, _as_int(item.get("tick", 0), 0))),
+                str(item.get("decision_id", "")),
+            ),
+        )
+
+        degradation_rows_by_id = dict(
+            (
+                str(row.get("event_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_degradation_events") or [])
+            if isinstance(row, Mapping) and str(row.get("event_id", "")).strip()
+        )
+        for row in list(degradation_eval.get("decision_log_rows") or []):
+            if not isinstance(row, Mapping):
+                continue
+            event_id = "event.elec.degrade.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(row.get("tick", current_tick), current_tick))),
+                        "decision_id": str(row.get("decision_id", "")).strip(),
+                    }
+                )[:16]
+            )
+            event_row = {
+                "event_id": event_id,
+                "tick": int(max(0, _as_int(row.get("tick", current_tick), current_tick))),
+                "kind": "degradation_step",
+                "step_index": int(max(0, _as_int(row.get("step_index", 0), 0))),
+                "step_name": str(row.get("step_name", "")).strip() or None,
+                "budget_envelope_id": str(row.get("budget_envelope_id", "")).strip() or None,
+                "graph_id": None,
+                "details": dict(row.get("details") or {}),
+                "deterministic_fingerprint": "",
+            }
+            event_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(event_row, deterministic_fingerprint="")
+            )
+            degradation_rows_by_id[event_id] = event_row
+        for graph_id in sorted(set(downgraded_graph_ids)):
+            event_id = "event.elec.degrade.graph.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "graph_id": str(graph_id),
+                    }
+                )[:16]
+            )
+            event_row = {
+                "event_id": event_id,
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "kind": "network_downgrade",
+                "step_index": 2,
+                "step_name": "downgrade_networks_to_e0",
+                "budget_envelope_id": str(degradation_eval.get("budget_envelope_id", "")).strip() or None,
+                "graph_id": str(graph_id),
+                "details": {
+                    "downgrade_reason": "degrade.elec.network_budget_or_stride",
+                },
+                "deterministic_fingerprint": "",
+            }
+            event_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(event_row, deterministic_fingerprint="")
+            )
+            degradation_rows_by_id[event_id] = event_row
+        if int(refused_low_priority_connections) > 0:
+            refused_requests = [
+                dict(row)
+                for row in sorted(
+                    [dict(row) for row in list(pending_low_priority_connections or []) if isinstance(row, Mapping)],
+                    key=lambda row: str(row.get("request_id", "")),
+                )[: int(refused_low_priority_connections)]
+            ]
+            state["elec_pending_low_priority_connections"] = [
+                dict(row)
+                for row in sorted(
+                    [dict(row) for row in list(pending_low_priority_connections or []) if isinstance(row, Mapping)],
+                    key=lambda row: str(row.get("request_id", "")),
+                )[int(refused_low_priority_connections) :]
+            ]
+            event_id = "event.elec.degrade.refusal.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "count": int(refused_low_priority_connections),
+                        "reason": REFUSAL_ELEC_LOW_PRIORITY_CONNECTION,
+                    }
+                )[:16]
+            )
+            event_row = {
+                "event_id": event_id,
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "kind": "refusal_low_priority_connection",
+                "step_index": 4,
+                "step_name": "refuse_low_priority_connections",
+                "budget_envelope_id": str(degradation_eval.get("budget_envelope_id", "")).strip() or None,
+                "graph_id": None,
+                "details": {
+                    "refusal_code": REFUSAL_ELEC_LOW_PRIORITY_CONNECTION,
+                    "refused_requests": [
+                        str(row.get("request_id", "")).strip()
+                        for row in list(refused_requests or [])
+                        if str(row.get("request_id", "")).strip()
+                    ],
+                },
+                "deterministic_fingerprint": "",
+            }
+            event_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(event_row, deterministic_fingerprint="")
+            )
+            degradation_rows_by_id[event_id] = event_row
+        if bool(cascade_iteration_limit_reached):
+            event_id = "event.elec.degrade.cascade_limit.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "cascade_max_iterations": int(cascade_max_iterations),
+                    }
+                )[:16]
+            )
+            event_row = {
+                "event_id": event_id,
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "kind": "cascade_iteration_limit_reached",
+                "step_index": 0,
+                "step_name": "cascade_iteration_cap",
+                "budget_envelope_id": str(degradation_eval.get("budget_envelope_id", "")).strip() or None,
+                "graph_id": None,
+                "details": {
+                    "cascade_iteration_count": int(cascade_iteration_count),
+                    "cascade_max_iterations": int(cascade_max_iterations),
+                },
+                "deterministic_fingerprint": "",
+            }
+            event_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(event_row, deterministic_fingerprint="")
+            )
+            degradation_rows_by_id[event_id] = event_row
+        elec_degradation_events = [
+            dict(degradation_rows_by_id[key])
+            for key in sorted(degradation_rows_by_id.keys())
+        ]
+        state["elec_degradation_events"] = [dict(row) for row in list(elec_degradation_events or []) if isinstance(row, Mapping)]
+        degradation_event_hash_chain = canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "kind": str(row.get("kind", "")).strip(),
+                    "step_index": int(max(0, _as_int(row.get("step_index", 0), 0))),
+                    "graph_id": str(row.get("graph_id", "")).strip() or None,
+                    "details": dict(row.get("details") or {}),
+                }
+                for row in sorted(
+                    [dict(item) for item in list(elec_degradation_events or []) if isinstance(item, Mapping)],
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("event_id", "")),
+                    ),
+                )
+            ]
+        )
+        state["degradation_event_hash_chain"] = str(degradation_event_hash_chain)
+
+        graph_rows_by_id = dict(
+            (
+                str(row.get("graph_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(graph_candidates or [])
+            if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip()
+        )
+        edge_status_by_graph_and_edge = dict(
+            (
+                "{}::{}".format(str(row.get("graph_id", "")).strip(), str(row.get("edge_id", "")).strip()),
+                dict(row),
+            )
+            for row in list(elec_edge_status_rows or [])
+            if isinstance(row, Mapping)
+            and str(row.get("graph_id", "")).strip()
+            and str(row.get("edge_id", "")).strip()
+        )
+        boundary_transfer_rows_by_id = dict(
+            (
+                str(row.get("artifact_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("elec_boundary_transfer_artifacts") or [])
+            if isinstance(row, Mapping) and str(row.get("artifact_id", "")).strip()
+        )
+        for graph_id in sorted(graph_rows_by_id.keys()):
+            graph_row = dict(graph_rows_by_id.get(graph_id) or {})
+            node_rows = [dict(row) for row in list(graph_row.get("nodes") or []) if isinstance(row, Mapping)]
+            edge_rows = [dict(row) for row in list(graph_row.get("edges") or []) if isinstance(row, Mapping)]
+            node_attrs = {}
+            for node_row in node_rows:
+                node_id = str(node_row.get("node_id", "")).strip()
+                if not node_id:
+                    continue
+                payload_ext = dict((dict(node_row.get("payload") or {})).get("extensions") or {})
+                node_ext = dict(node_row.get("extensions") or {})
+                shard_id = (
+                    str(payload_ext.get("shard_id", "")).strip()
+                    or str(node_ext.get("shard_id", "")).strip()
+                )
+                boundary_node = bool(payload_ext.get("boundary_node", False) or node_ext.get("boundary_node", False))
+                node_attrs[node_id] = {
+                    "shard_id": shard_id,
+                    "boundary_node": bool(boundary_node),
+                }
+            for edge_row in sorted(edge_rows, key=lambda row: str(row.get("edge_id", ""))):
+                edge_id = str(edge_row.get("edge_id", "")).strip()
+                if not edge_id:
+                    continue
+                edge_ext = dict(edge_row.get("extensions") or {})
+                edge_payload_ext = dict((dict(edge_row.get("payload") or {})).get("extensions") or {})
+                from_node_id = str(edge_row.get("from_node_id", "")).strip()
+                to_node_id = str(edge_row.get("to_node_id", "")).strip()
+                from_meta = dict(node_attrs.get(from_node_id) or {})
+                to_meta = dict(node_attrs.get(to_node_id) or {})
+                from_shard_id = str(from_meta.get("shard_id", "")).strip()
+                to_shard_id = str(to_meta.get("shard_id", "")).strip()
+                cross_shard = bool(
+                    edge_ext.get("cross_shard_boundary", False)
+                    or edge_payload_ext.get("cross_shard_boundary", False)
+                    or (from_shard_id and to_shard_id and from_shard_id != to_shard_id)
+                )
+                if not cross_shard:
+                    continue
+                if (not from_shard_id) or (not to_shard_id) or from_shard_id == to_shard_id:
+                    return refusal(
+                        "refusal.elec.shard_boundary_invalid",
+                        "cross-shard electrical edge '{}' missing valid distinct shard ids".format(edge_id),
+                        "Assign shard_id metadata to boundary nodes and ensure distinct source/target shards.",
+                        {
+                            "graph_id": graph_id,
+                            "edge_id": edge_id,
+                            "from_node_id": from_node_id,
+                            "to_node_id": to_node_id,
+                        },
+                        "$.state.power_network_graphs",
+                    )
+                if (not bool(from_meta.get("boundary_node", False))) or (not bool(to_meta.get("boundary_node", False))):
+                    return refusal(
+                        "refusal.elec.shard_boundary_invalid",
+                        "cross-shard electrical edge '{}' endpoints must be explicit boundary nodes".format(edge_id),
+                        "Mark both endpoint nodes with boundary_node=true for cross-shard connections.",
+                        {
+                            "graph_id": graph_id,
+                            "edge_id": edge_id,
+                            "from_node_id": from_node_id,
+                            "to_node_id": to_node_id,
+                        },
+                        "$.state.power_network_graphs",
+                    )
+                edge_status_row = dict(edge_status_by_graph_and_edge.get("{}::{}".format(graph_id, edge_id)) or {})
+                transfer_row = {
+                    "artifact_id": "artifact.elec.boundary_transfer.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "graph_id": graph_id,
+                                "edge_id": edge_id,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "graph_id": str(graph_id),
+                    "edge_id": str(edge_id),
+                    "from_shard_id": str(from_shard_id),
+                    "to_shard_id": str(to_shard_id),
+                    "transferred_components": {
+                        "P": int(max(0, _as_int(edge_status_row.get("P", 0), 0))),
+                        "Q": int(max(0, _as_int(edge_status_row.get("Q", 0), 0))),
+                        "S": int(max(0, _as_int(edge_status_row.get("S", 0), 0))),
+                    },
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "source_intent_id": str(intent_id),
+                    },
+                    "deterministic_fingerprint": "",
+                }
+                transfer_row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(transfer_row, deterministic_fingerprint="")
+                )
+                boundary_transfer_rows_by_id[str(transfer_row.get("artifact_id", "")).strip()] = transfer_row
+        elec_boundary_transfer_artifacts = [
+            dict(boundary_transfer_rows_by_id[key])
+            for key in sorted(boundary_transfer_rows_by_id.keys())
+        ]
+        state["elec_boundary_transfer_artifacts"] = [
+            dict(row) for row in list(elec_boundary_transfer_artifacts or []) if isinstance(row, Mapping)
+        ]
+        boundary_transfer_hash_chain = canonical_sha256(
+            [
+                {
+                    "artifact_id": str(row.get("artifact_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "graph_id": str(row.get("graph_id", "")).strip(),
+                    "edge_id": str(row.get("edge_id", "")).strip(),
+                    "from_shard_id": str(row.get("from_shard_id", "")).strip(),
+                    "to_shard_id": str(row.get("to_shard_id", "")).strip(),
+                    "transferred_components": dict(row.get("transferred_components") or {}),
+                }
+                for row in sorted(
+                    [dict(item) for item in list(elec_boundary_transfer_artifacts or []) if isinstance(item, Mapping)],
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("artifact_id", "")),
+                    ),
+                )
+            ]
+        )
+        state["elec_boundary_transfer_hash_chain"] = str(boundary_transfer_hash_chain)
+
+        trip_explanation_hash_chain = canonical_sha256(
+            [
+                {
+                    "explanation_id": str(row.get("explanation_id", "")).strip(),
+                    "device_id": str(row.get("device_id", "")).strip(),
+                    "fault_ids": _sorted_tokens(list(row.get("fault_ids") or [])),
+                    "contributing_edges": _sorted_tokens(list(row.get("contributing_edges") or [])),
+                    "policy_ids_applied": _sorted_tokens(list(row.get("policy_ids_applied") or [])),
+                    "generated_tick": int(max(0, _as_int(row.get("generated_tick", 0), 0))),
+                    "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                }
+                for row in sorted(
+                    [dict(item) for item in list(state.get("elec_trip_explanations") or []) if isinstance(item, Mapping)],
+                    key=lambda item: (str(item.get("device_id", "")), str(item.get("explanation_id", ""))),
+                )
+            ]
+        )
+        state["trip_explanation_hash_chain"] = str(trip_explanation_hash_chain)
         elec_network_runtime_state = {
             "last_tick": int(max(0, _as_int(current_tick, 0))),
             "last_power_flow_hash": power_flow_hash,
-            "last_budget_outcome": "degraded" if downgraded_graph_ids else "complete",
+            "last_budget_outcome": (
+                "degraded"
+                if (downgraded_graph_ids or bool(degradation_eval.get("applied_steps")) or str(protection_eval.get("budget_outcome", "complete")) == "degraded")
+                else "complete"
+            ),
             "last_downgraded_graph_ids": sorted(set(downgraded_graph_ids)),
             "last_network_count": int(len(graph_candidates)),
-            "extensions": {},
+            "extensions": {
+                "solve_stride": int(max(1, solve_stride)),
+                "force_e0": bool(force_e0),
+                "defer_noncritical_models": bool(defer_noncritical_models),
+                "model_cost_cap": int(max(1, model_cost_cap)),
+                "cascade_iteration_count": int(cascade_iteration_count),
+                "cascade_max_iterations": int(cascade_max_iterations),
+                "cascade_iteration_limit_reached": bool(cascade_iteration_limit_reached),
+                "refused_low_priority_connections": int(refused_low_priority_connections),
+            },
         }
         state["elec_network_runtime_state"] = dict(elec_network_runtime_state)
         state["power_flow_hash"] = str(power_flow_hash)
+        state["power_flow_hash_chain"] = str(power_flow_hash_chain)
         elec_proof_surface = {
             "power_flow_hash": str(power_flow_hash),
+            "power_flow_hash_chain": str(power_flow_hash_chain),
             "fault_state_hash_chain": str(state.get("fault_state_hash_chain", "")).strip() or None,
+            "protection_state_hash_chain": str(state.get("protection_state_hash_chain", "")).strip() or None,
+            "degradation_event_hash_chain": str(degradation_event_hash_chain),
             "trip_event_hash_chain": str(state.get("trip_event_hash_chain", "")).strip() or None,
+            "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
+            "boundary_transfer_hash_chain": str(boundary_transfer_hash_chain),
             "tick": int(max(0, _as_int(current_tick, 0))),
             "deterministic_fingerprint": canonical_sha256(
                 {
                     "tick": int(max(0, _as_int(current_tick, 0))),
                     "power_flow_hash": str(power_flow_hash),
+                    "power_flow_hash_chain": str(power_flow_hash_chain),
                     "fault_state_hash_chain": str(state.get("fault_state_hash_chain", "")).strip(),
+                    "protection_state_hash_chain": str(state.get("protection_state_hash_chain", "")).strip(),
+                    "degradation_event_hash_chain": str(degradation_event_hash_chain),
                     "trip_event_hash_chain": str(state.get("trip_event_hash_chain", "")).strip(),
+                    "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
+                    "boundary_transfer_hash_chain": str(boundary_transfer_hash_chain),
                 }
             ),
         }
@@ -22832,11 +23708,24 @@ def execute_intent(
             "coordination_policy_id": str(resolved_coordination_policy_id),
             "downgraded_graph_ids": sorted(set(downgraded_graph_ids)),
             "budget_outcome": str(elec_network_runtime_state.get("last_budget_outcome", "complete")),
+            "degradation_steps_applied": [int(max(0, _as_int(item, 0))) for item in list(degradation_eval.get("applied_steps") or [])],
+            "solve_stride": int(max(1, solve_stride)),
+            "refused_low_priority_connections": int(refused_low_priority_connections),
+            "refusal_codes": list(refusal_codes),
             "power_flow_hash": str(power_flow_hash),
+            "power_flow_hash_chain": str(power_flow_hash_chain),
             "fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
+            "protection_state_hash_chain": str(protection_state_hash_chain),
+            "degradation_event_hash_chain": str(degradation_event_hash_chain),
             "trip_event_hash_chain": str(protection_eval.get("trip_event_hash_chain", "")),
+            "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
             "elec_proof_surface_hash": str((dict(state.get("elec_proof_surface") or {})).get("deterministic_fingerprint", "")),
             "trip_cascade_count": int(len(list(state.get("elec_trip_cascade_rows") or []))),
+            "cascade_iteration_count": int(cascade_iteration_count),
+            "cascade_max_iterations": int(cascade_max_iterations),
+            "cascade_iteration_limit_reached": bool(cascade_iteration_limit_reached),
+            "boundary_transfer_count": int(len(list(elec_boundary_transfer_artifacts or []))),
+            "boundary_transfer_hash_chain": str(boundary_transfer_hash_chain),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.effect_apply":
@@ -37979,6 +38868,203 @@ def execute_intent(
             instrument_type_id="instr.meter.visibility_indicator",
             channel_id="ch.diegetic.meter.visibility_indicator",
             reading_payload=visibility_indicator_reading,
+            tick=int(current_tick),
+        )
+        elec_edge_status_rows = [
+            dict(row)
+            for row in list(state.get("elec_edge_status_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        elec_fault_rows = [
+            dict(row)
+            for row in list(state.get("elec_fault_states") or [])
+            if isinstance(row, Mapping) and bool(row.get("active", False))
+        ]
+        elec_protection_rows = [
+            dict(row)
+            for row in list(state.get("elec_protection_devices") or [])
+            if isinstance(row, Mapping)
+        ]
+        total_active_p = int(sum(max(0, _as_int(row.get("P", 0), 0)) for row in elec_edge_status_rows))
+        total_apparent_s = int(sum(max(0, _as_int(row.get("S", 0), 0)) for row in elec_edge_status_rows))
+        total_heat_loss = int(sum(max(0, _as_int(row.get("heat_loss_stub", 0), 0)) for row in elec_edge_status_rows))
+        pf_permille = int((1000 * int(total_active_p)) // max(1, int(total_apparent_s))) if total_apparent_s > 0 else 0
+        current_proxy = int(total_apparent_s // 10) if total_apparent_s > 0 else 0
+        voltage_proxy = int(total_apparent_s // max(1, current_proxy)) if current_proxy > 0 else (240 if total_active_p > 0 else 0)
+        voltage_proxy = int(max(0, min(50000, voltage_proxy)))
+        tripped_count = int(
+            sum(
+                1
+                for row in elec_protection_rows
+                if str((dict(row.get("extensions") or {})).get("breaker_state", "")).strip() == "tripped"
+            )
+        )
+        ground_fault_active = bool(
+            any(str(row.get("fault_kind_id", "")).strip() == "fault.ground_fault" for row in elec_fault_rows)
+        )
+        trip_warning_active = bool(tripped_count > 0 or elec_fault_rows)
+        energized = bool(total_active_p > 0 and tripped_count == 0)
+
+        if coarse_only:
+            voltage_band = "OFF"
+            if energized and voltage_proxy >= 400:
+                voltage_band = "HIGH"
+            elif energized and voltage_proxy >= 180:
+                voltage_band = "NOMINAL"
+            elif energized:
+                voltage_band = "LOW"
+            current_band = "NONE"
+            if current_proxy >= 200:
+                current_band = "HIGH"
+            elif current_proxy >= 50:
+                current_band = "MEDIUM"
+            elif current_proxy > 0:
+                current_band = "LOW"
+            pf_band = "UNKNOWN"
+            if pf_permille >= 950:
+                pf_band = "GOOD"
+            elif pf_permille >= 800:
+                pf_band = "FAIR"
+            elif pf_permille > 0:
+                pf_band = "POOR"
+            energized_payload = {
+                "status": "COARSE",
+                "energized": bool(energized),
+                "tick": int(current_tick),
+            }
+            voltage_payload = {
+                "status": "COARSE",
+                "voltage_band": str(voltage_band),
+                "tick": int(current_tick),
+            }
+            current_payload = {
+                "status": "COARSE",
+                "current_band": str(current_band),
+                "tick": int(current_tick),
+            }
+            pf_payload = {
+                "status": "COARSE",
+                "pf_band": str(pf_band),
+                "tick": int(current_tick),
+            }
+        else:
+            energized_payload = {
+                "status": "PRECISE",
+                "energized": bool(energized),
+                "active_power_p": int(total_active_p),
+                "apparent_power_s": int(total_apparent_s),
+                "tick": int(current_tick),
+            }
+            voltage_payload = {
+                "status": "PRECISE",
+                "voltage_proxy": int((int(voltage_proxy) // 5) * 5),
+                "tick": int(current_tick),
+            }
+            current_payload = {
+                "status": "PRECISE",
+                "current_proxy": int((int(current_proxy) // 5) * 5),
+                "tick": int(current_tick),
+            }
+            pf_payload = {
+                "status": "PRECISE",
+                "pf_permille": int((int(pf_permille) // 5) * 5),
+                "tick": int(current_tick),
+            }
+        trip_warning_payload = {
+            "status": "WARN" if bool(trip_warning_active) else "OK",
+            "trip_warning": bool(trip_warning_active),
+            "ground_fault_active": bool(ground_fault_active),
+            "tripped_count": int(tripped_count),
+            "active_fault_count": int(len(elec_fault_rows)),
+            "heat_loss_stub_total": int(total_heat_loss),
+            "tick": int(current_tick),
+        }
+        test_lamp_payload = {
+            "status": "ON" if bool(energized) else "OFF",
+            "energized": bool(energized),
+            "tick": int(current_tick),
+        }
+        breaker_panel_payload = {
+            "status": "TRIPPED" if tripped_count > 0 else "NORMAL",
+            "tripped_count": int(tripped_count),
+            "active_fault_count": int(len(elec_fault_rows)),
+            "tick": int(current_tick),
+        }
+        ground_fault_payload = {
+            "status": "WARN" if bool(ground_fault_active) else "OK",
+            "ground_fault_active": bool(ground_fault_active),
+            "tick": int(current_tick),
+        }
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.test_lamp",
+            instrument_type="elec.test_lamp",
+            instrument_type_id="instr.elec.test_lamp",
+            channel_id="ch.diegetic.elec.test_lamp",
+            reading_payload=test_lamp_payload,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.breaker_panel",
+            instrument_type="elec.breaker_panel",
+            instrument_type_id="instr.elec.breaker_panel",
+            channel_id="ch.diegetic.elec.breaker_panel",
+            reading_payload=breaker_panel_payload,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.ground_fault_indicator",
+            instrument_type="elec.ground_fault_indicator",
+            instrument_type_id="instr.elec.ground_fault_indicator",
+            channel_id="ch.diegetic.elec.ground_fault",
+            reading_payload=ground_fault_payload,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.energized_indicator",
+            instrument_type="elec.energized_indicator",
+            instrument_type_id="instr.elec.energized_indicator",
+            channel_id="ch.diegetic.elec.energized",
+            reading_payload=energized_payload,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.voltage_meter",
+            instrument_type="elec.voltage_meter",
+            instrument_type_id="instr.elec.voltage_meter",
+            channel_id="ch.diegetic.elec.voltage",
+            reading_payload=voltage_payload,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.current_proxy_meter",
+            instrument_type="elec.current_proxy_meter",
+            instrument_type_id="instr.elec.current_proxy_meter",
+            channel_id="ch.diegetic.elec.current_proxy",
+            reading_payload=current_payload,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.pf_meter",
+            instrument_type="elec.pf_meter",
+            instrument_type_id="instr.elec.pf_meter",
+            channel_id="ch.diegetic.elec.pf",
+            reading_payload=pf_payload,
+            tick=int(current_tick),
+        )
+        _upsert_tool_readout_instrument(
+            rows,
+            assembly_id="instrument.elec.trip_warning",
+            instrument_type="elec.trip_warning",
+            instrument_type_id="instr.elec.trip_warning",
+            channel_id="ch.diegetic.elec.trip_warning",
+            reading_payload=trip_warning_payload,
             tick=int(current_tick),
         )
         state["instrument_assemblies"] = sorted(

@@ -3,10 +3,22 @@
 from __future__ import annotations
 
 import math
-from typing import Dict, List, Mapping
+from typing import Dict, List, Mapping, Tuple
 
 from src.core.flow import normalize_flow_channel
 from src.core.graph.network_graph_engine import normalize_network_graph
+from src.electric.storage import (
+    SOC_SCALE,
+    apply_storage_charge,
+    apply_storage_discharge,
+    normalize_storage_state_rows,
+)
+from src.models.model_engine import (
+    cache_policy_rows_by_id,
+    evaluate_model_bindings,
+    model_type_rows_by_id,
+    normalize_constitutive_model_rows,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -19,6 +31,16 @@ _VALID_EDGE_KINDS = {"conductor", "switch", "transformer_stub"}
 _Q_ACTIVE = "quantity.power.active_stub"
 _Q_REACTIVE = "quantity.power.reactive_stub"
 _Q_APPARENT = "quantity.power.apparent_stub"
+_Q_HEAT_LOSS = "quantity.thermal.heat_loss_stub"
+
+_ELEC_MODEL_IDS = {
+    "model.elec_load_resistive_stub",
+    "model.elec_load_motor_stub",
+    "model.elec_pf_correction",
+    "model.elec_transformer_stub",
+    "model.elec_storage_battery",
+    "model.elec_device_loss",
+}
 
 
 class ElectricError(ValueError):
@@ -55,6 +77,246 @@ def _canon(value: object):
     if value is None or isinstance(value, (str, int, float, bool)):
         return value
     return str(value)
+
+
+def _default_model_type_registry_payload() -> dict:
+    return {
+        "record": {
+            "model_types": [
+                {
+                    "schema_version": "1.0.0",
+                    "model_type_id": "model_type.elec_load_phasor_stub",
+                    "description": "ELEC load phasor stub",
+                    "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "model_type_id": "model_type.elec_pf_correction",
+                    "description": "ELEC PF correction",
+                    "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "model_type_id": "model_type.elec_transformer_stub",
+                    "description": "ELEC transformer stub",
+                    "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "model_type_id": "model_type.elec_storage_battery",
+                    "description": "ELEC storage battery",
+                    "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "model_type_id": "model_type.elec_device_loss",
+                    "description": "ELEC device loss",
+                    "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+                    "extensions": {},
+                },
+            ]
+        }
+    }
+
+
+def _default_model_cache_policy_registry_payload() -> dict:
+    return {
+        "record": {
+            "cache_policies": [
+                {
+                    "schema_version": "1.0.0",
+                    "cache_policy_id": "cache.none",
+                    "mode": "none",
+                    "ttl_ticks": None,
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "cache_policy_id": "cache.by_inputs_hash",
+                    "mode": "by_inputs_hash",
+                    "ttl_ticks": 8,
+                    "extensions": {},
+                },
+            ]
+        }
+    }
+
+
+def _default_constitutive_model_rows() -> List[dict]:
+    return [
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.elec_load_resistive_stub",
+            "model_type_id": "model_type.elec_load_phasor_stub",
+            "description": "resistive load",
+            "supported_tiers": ["meso"],
+            "input_signature": [],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_ACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_ACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_REACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_REACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_APPARENT, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_APPARENT}},
+            ],
+            "cost_units": 1,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.elec_load_motor_stub",
+            "model_type_id": "model_type.elec_load_phasor_stub",
+            "description": "motor load",
+            "supported_tiers": ["meso"],
+            "input_signature": [],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_ACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_ACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_REACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_REACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_APPARENT, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_APPARENT}},
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.power_factor", "extensions": {}},
+            ],
+            "cost_units": 1,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.elec_pf_correction",
+            "model_type_id": "model_type.elec_pf_correction",
+            "description": "pf correction",
+            "supported_tiers": ["meso"],
+            "input_signature": [
+                {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": _Q_ACTIVE, "selector": "target.node", "extensions": {}},
+                {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": _Q_REACTIVE, "selector": "target.node", "extensions": {}},
+            ],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_REACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_REACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.pf_adjusted_q", "extensions": {}},
+            ],
+            "cost_units": 1,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.elec_transformer_stub",
+            "model_type_id": "model_type.elec_transformer_stub",
+            "description": "transformer",
+            "supported_tiers": ["meso"],
+            "input_signature": [
+                {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": _Q_ACTIVE, "selector": "target.edge", "extensions": {}},
+                {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": _Q_REACTIVE, "selector": "target.edge", "extensions": {}},
+            ],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_ACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_ACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_REACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_REACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_APPARENT, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_APPARENT}},
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": _Q_HEAT_LOSS, "extensions": {}},
+            ],
+            "cost_units": 2,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.elec_storage_battery",
+            "model_type_id": "model_type.elec_storage_battery",
+            "description": "storage battery",
+            "supported_tiers": ["meso"],
+            "input_signature": [],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_ACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_ACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_REACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_REACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_APPARENT, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_APPARENT}},
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": _Q_HEAT_LOSS, "extensions": {}},
+                {"schema_version": "1.0.0", "output_kind": "hazard_increment", "output_id": "hazard.elec.storage_degradation", "extensions": {}},
+            ],
+            "cost_units": 2,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.elec_device_loss",
+            "model_type_id": "model_type.elec_device_loss",
+            "description": "device loss",
+            "supported_tiers": ["meso"],
+            "input_signature": [
+                {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": _Q_ACTIVE, "selector": "target.edge", "extensions": {}},
+            ],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": _Q_ACTIVE, "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": _Q_ACTIVE}},
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": _Q_HEAT_LOSS, "extensions": {}},
+                {"schema_version": "1.0.0", "output_kind": "effect", "output_id": "effect.temperature_increase_local", "extensions": {}},
+            ],
+            "cost_units": 1,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+    ]
+
+
+def _merge_model_rows(registry_rows: object) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_constitutive_model_rows(_default_constitutive_model_rows()):
+        out[str(row.get("model_id", "")).strip()] = dict(row)
+    for row in normalize_constitutive_model_rows(registry_rows):
+        model_id = str(row.get("model_id", "")).strip()
+        if model_id:
+            out[model_id] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _merge_model_type_rows(registry_rows: Mapping[str, dict] | None) -> Dict[str, dict]:
+    defaults = model_type_rows_by_id(_default_model_type_registry_payload())
+    out = dict((str(key).strip(), dict(value)) for key, value in defaults.items() if str(key).strip())
+    for key, value in dict(registry_rows or {}).items():
+        token = str(key).strip()
+        if token:
+            out[token] = dict(value or {})
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _merge_cache_policy_rows(registry_rows: Mapping[str, dict] | None) -> Dict[str, dict]:
+    defaults = cache_policy_rows_by_id(_default_model_cache_policy_registry_payload())
+    out = dict((str(key).strip(), dict(value)) for key, value in defaults.items() if str(key).strip())
+    for key, value in dict(registry_rows or {}).items():
+        token = str(key).strip()
+        if token:
+            out[token] = dict(value or {})
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
 def compute_pf_permille(*, active_p: int, apparent_s: int) -> int:
@@ -188,39 +450,121 @@ def _load_binding_rows_for_node(*, node_payload: Mapping[str, object], model_bin
     return sorted(rows, key=lambda row: (str(row.get("model_id", "")), str(row.get("binding_id", ""))))
 
 
-def _evaluate_load_from_binding(binding_row: Mapping[str, object]) -> dict:
-    model_id = str(binding_row.get("model_id", "")).strip()
-    params = _as_map(binding_row.get("parameters"))
-    demand_p = int(max(0, _as_int(params.get("demand_p", params.get("demand", 0)), 0)))
-    if model_id == "model.elec_load_resistive_stub":
-        p = int(demand_p)
-        q = 0
-        s = int(p)
-    elif model_id == "model.elec_load_motor_stub":
-        pf_permille = int(max(1, min(1000, _as_int(params.get("pf_permille", 850), 850))))
-        p = int(demand_p)
-        s = int((p * 1000 + pf_permille - 1) // pf_permille) if p > 0 else 0
-        q2 = max(0, int(s * s) - int(p * p))
-        q = int(math.isqrt(q2))
-    else:
-        p = 0
-        q = 0
-        s = 0
-    return {"P": int(p), "Q": int(q), "S": int(max(s, _apparent_from_components(active_p=p, reactive_q=q)))}
-
-
 def _aggregate_load_for_node(*, node_payload: Mapping[str, object], model_binding_rows_by_id: Mapping[str, dict]) -> dict:
+    p_total = 0
+    q_total = 0
+    for row in _load_binding_rows_for_node(
+        node_payload=node_payload,
+        model_binding_rows_by_id=model_binding_rows_by_id,
+    ):
+        model_id = str(row.get("model_id", "")).strip()
+        params = _as_map(row.get("parameters"))
+        demand_p = int(max(0, _as_int(params.get("demand_p", params.get("demand_kw", 0)), 0)))
+        if model_id == "model.elec_load_resistive_stub":
+            p_total += int(demand_p)
+            q_total += int(max(0, _as_int(params.get("demand_q", 0), 0)))
+        elif model_id == "model.elec_load_motor_stub":
+            pf_permille = int(max(1, min(1000, _as_int(params.get("pf_permille", 850), 850))))
+            s_required = int(max(demand_p, (demand_p * 1000 + pf_permille - 1) // pf_permille))
+            q_required = int(math.isqrt(max(0, (s_required * s_required) - (demand_p * demand_p))))
+            p_total += int(demand_p)
+            q_total += int(max(0, q_required))
+    s_total = int(_apparent_from_components(active_p=int(p_total), reactive_q=int(q_total)))
+    return {
+        "P": int(max(0, p_total)),
+        "Q": int(max(0, q_total)),
+        "S": int(max(0, s_total)),
+    }
+
+
+def _binding_rows_for_target(
+    *,
+    target_id: str,
+    target_kind: str,
+    model_binding_rows: object,
+    explicit_binding_ids: object = None,
+) -> List[dict]:
+    rows_by_id = _binding_rows_by_id(model_binding_rows)
+    out: Dict[str, dict] = {}
+    for binding_id in _sorted_tokens(explicit_binding_ids):
+        row = dict(rows_by_id.get(binding_id) or {})
+        if row:
+            out[binding_id] = row
+    for row in list(rows_by_id.values()):
+        binding_id = str(row.get("binding_id", "")).strip()
+        if not binding_id:
+            continue
+        if str(row.get("target_id", "")).strip() != str(target_id).strip():
+            continue
+        if str(row.get("target_kind", "custom")).strip().lower() != str(target_kind).strip().lower():
+            continue
+        out[binding_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys(), key=lambda token: (str(out[token].get("model_id", "")), token))]
+
+
+def _filter_elec_model_rows_for_bindings(*, bindings: List[dict], merged_model_rows_by_id: Mapping[str, dict]) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for row in list(bindings or []):
+        model_id = str(row.get("model_id", "")).strip()
+        if not model_id:
+            continue
+        selected = dict(merged_model_rows_by_id.get(model_id) or {})
+        if not selected:
+            continue
+        out[model_id] = selected
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _model_context_value(
+    *,
+    context_by_target_id: Mapping[str, Mapping[str, int]],
+    binding: Mapping[str, object],
+    input_ref: Mapping[str, object],
+) -> object:
+    target_id = str(binding.get("target_id", "")).strip()
+    input_id = str(input_ref.get("input_id", "")).strip()
+    row = dict(context_by_target_id.get(target_id) or {})
+    return row.get(input_id)
+
+
+def _sum_model_flow_adjustments(
+    *,
+    model_output_actions: object,
+    target_id: str,
+) -> Dict[str, int]:
     p = 0
     q = 0
     s = 0
-    for binding_row in _load_binding_rows_for_node(node_payload=node_payload, model_binding_rows_by_id=model_binding_rows_by_id):
-        load = _evaluate_load_from_binding(binding_row)
-        p += int(load.get("P", 0))
-        q += int(load.get("Q", 0))
-        s += int(load.get("S", 0))
-    if s <= 0:
-        s = _apparent_from_components(active_p=p, reactive_q=q)
-    return {"P": int(max(0, p)), "Q": int(max(0, q)), "S": int(max(0, s))}
+    heat = 0
+    storage_discharge = 0
+    for row in list(model_output_actions or []):
+        if not isinstance(row, Mapping):
+            continue
+        if str(row.get("target_id", "")).strip() != str(target_id).strip():
+            continue
+        output_kind = str(row.get("output_kind", "")).strip()
+        output_id = str(row.get("output_id", "")).strip()
+        payload = _as_map(row.get("payload"))
+        if output_kind == "flow_adjustment":
+            delta = int(_as_int(payload.get("delta", 0), 0))
+            component_quantity_id = str(payload.get("component_quantity_id", output_id)).strip() or output_id
+            if component_quantity_id == _Q_ACTIVE:
+                p += delta
+                if str(row.get("model_id", "")).strip() == "model.elec_storage_battery" and delta < 0:
+                    storage_discharge += int(-1 * delta)
+            elif component_quantity_id == _Q_REACTIVE:
+                q += delta
+            elif component_quantity_id == _Q_APPARENT:
+                s += delta
+        elif output_kind == "derived_quantity" and output_id == _Q_HEAT_LOSS:
+            heat += int(max(0, _as_int(payload.get("value", 0), 0)))
+    return {
+        "P": int(p),
+        "Q": int(q),
+        "S": int(s),
+        "heat_loss": int(heat),
+        "storage_discharge": int(storage_discharge),
+    }
 
 
 def _weighted_integer_split(*, total: int, keys: List[str], weights: Mapping[str, int]) -> Dict[str, int]:
@@ -259,6 +603,12 @@ def solve_power_network_e1(
     model_binding_rows: object,
     current_tick: int,
     max_processed_edges: int,
+    constitutive_model_rows: object = None,
+    model_type_rows: Mapping[str, dict] | None = None,
+    model_cache_policy_rows: Mapping[str, dict] | None = None,
+    model_cache_rows: object = None,
+    storage_state_rows: object = None,
+    max_model_cost_units: int = 4096,
 ) -> dict:
     graph = normalize_network_graph(graph_row)
     graph_id = str(graph.get("graph_id", "")).strip()
@@ -266,31 +616,234 @@ def solve_power_network_e1(
     edges = [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, Mapping)]
     if not graph_id:
         raise ElectricError(REFUSAL_ELEC_NETWORK_INVALID, "power graph missing graph_id", {})
+    merged_model_rows_by_id = _merge_model_rows(constitutive_model_rows)
+    merged_model_type_rows = _merge_model_type_rows(model_type_rows)
+    merged_cache_policy_rows = _merge_cache_policy_rows(model_cache_policy_rows)
+    storage_rows_runtime = normalize_storage_state_rows(storage_state_rows or [])
+    model_cache_rows_runtime = [dict(row) for row in list(model_cache_rows or []) if isinstance(row, Mapping)]
 
-    binding_rows_by_id = _binding_rows_by_id(model_binding_rows)
+    model_evaluation_results: List[dict] = []
+    model_observation_rows: List[dict] = []
+    model_output_actions: List[dict] = []
+    model_cost_units = 0
+    model_budget_outcome = "complete"
+
+    def _run_model_eval(bindings: List[dict], context_by_target_id: Mapping[str, Mapping[str, int]]) -> List[dict]:
+        nonlocal model_cache_rows_runtime
+        nonlocal model_cost_units
+        nonlocal model_budget_outcome
+        if not bindings:
+            return []
+        eval_model_rows = _filter_elec_model_rows_for_bindings(
+            bindings=bindings,
+            merged_model_rows_by_id=merged_model_rows_by_id,
+        )
+        if not eval_model_rows:
+            return []
+        remaining_budget = int(max(0, int(max_model_cost_units) - int(model_cost_units)))
+        if remaining_budget <= 0:
+            model_budget_outcome = "degraded"
+            return []
+        evaluated = evaluate_model_bindings(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            model_rows=eval_model_rows,
+            binding_rows=bindings,
+            cache_rows=model_cache_rows_runtime,
+            model_type_rows=merged_model_type_rows,
+            cache_policy_rows=merged_cache_policy_rows,
+            input_resolver_fn=lambda binding, input_ref: _model_context_value(
+                context_by_target_id=context_by_target_id,
+                binding=binding,
+                input_ref=input_ref,
+            ),
+            max_cost_units=int(remaining_budget),
+        )
+        model_cache_rows_runtime = [dict(row) for row in list(evaluated.get("cache_rows") or []) if isinstance(row, Mapping)]
+        model_evaluation_results.extend(
+            dict(row)
+            for row in list(evaluated.get("evaluation_results") or [])
+            if isinstance(row, Mapping)
+        )
+        model_observation_rows.extend(
+            dict(row)
+            for row in list(evaluated.get("observation_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        model_output_actions.extend(
+            dict(row)
+            for row in list(evaluated.get("output_actions") or [])
+            if isinstance(row, Mapping)
+        )
+        model_cost_units += int(max(0, _as_int(evaluated.get("cost_units", 0), 0)))
+        if str(evaluated.get("budget_outcome", "complete")).strip() == "degraded":
+            model_budget_outcome = "degraded"
+        return [
+            dict(row)
+            for row in list(evaluated.get("output_actions") or [])
+            if isinstance(row, Mapping)
+        ]
+
     node_loads: Dict[str, dict] = {}
+    pending_pf_bindings: List[dict] = []
+    pending_storage_bindings: List[Tuple[str, dict]] = []
     for node in sorted(nodes, key=lambda row: str(row.get("node_id", ""))):
         node_id = str(node.get("node_id", "")).strip()
         payload = normalize_elec_node_payload(_as_map(node.get("payload")))
-        if payload.get("node_kind") == "load":
-            node_loads[node_id] = _aggregate_load_for_node(node_payload=payload, model_binding_rows_by_id=binding_rows_by_id)
+        node_bindings = _binding_rows_for_target(
+            target_id=node_id,
+            target_kind="node",
+            model_binding_rows=model_binding_rows,
+            explicit_binding_ids=payload.get("model_bindings"),
+        )
+        node_kind = str(payload.get("node_kind", "")).strip()
+        if node_kind == "load":
+            load_bindings = [
+                dict(row)
+                for row in list(node_bindings or [])
+                if str(row.get("model_id", "")).strip() in {"model.elec_load_resistive_stub", "model.elec_load_motor_stub"}
+            ]
+            load_actions = _run_model_eval(load_bindings, {})
+            totals = _sum_model_flow_adjustments(model_output_actions=load_actions, target_id=node_id)
+            p = int(max(0, _as_int(totals.get("P", 0), 0)))
+            q = int(max(0, _as_int(totals.get("Q", 0), 0)))
+            s = int(max(_apparent_from_components(active_p=p, reactive_q=q), _as_int(totals.get("S", 0), 0)))
+            node_loads[node_id] = {"P": int(p), "Q": int(q), "S": int(s)}
+            pending_pf_bindings.extend(
+                dict(row)
+                for row in list(node_bindings or [])
+                if str(row.get("model_id", "")).strip() == "model.elec_pf_correction"
+            )
+        elif node_kind == "storage":
+            pending_storage_bindings.extend(
+                (node_id, dict(row))
+                for row in list(node_bindings or [])
+                if str(row.get("model_id", "")).strip() == "model.elec_storage_battery"
+            )
 
-    total_p = sum(int(_as_int(row.get("P", 0), 0)) for row in node_loads.values())
-    total_q = sum(int(_as_int(row.get("Q", 0), 0)) for row in node_loads.values())
-    total_s = max(_apparent_from_components(active_p=total_p, reactive_q=total_q), sum(int(_as_int(row.get("S", 0), 0)) for row in node_loads.values()))
+    for binding_row in sorted(
+        (dict(row) for row in list(pending_pf_bindings or [])),
+        key=lambda row: str(row.get("binding_id", "")),
+    ):
+        target_id = str(binding_row.get("target_id", "")).strip()
+        current_row = dict(node_loads.get(target_id) or {"P": 0, "Q": 0, "S": 0})
+        params = _as_map(binding_row.get("parameters"))
+        params["current_p"] = int(max(0, _as_int(current_row.get("P", 0), 0)))
+        params["current_q"] = int(max(0, _as_int(current_row.get("Q", 0), 0)))
+        runtime_binding = dict(binding_row)
+        runtime_binding["parameters"] = params
+        pf_actions = _run_model_eval(
+            [runtime_binding],
+            {
+                target_id: {
+                    _Q_ACTIVE: int(max(0, _as_int(current_row.get("P", 0), 0))),
+                    _Q_REACTIVE: int(max(0, _as_int(current_row.get("Q", 0), 0))),
+                }
+            },
+        )
+        deltas = _sum_model_flow_adjustments(model_output_actions=pf_actions, target_id=target_id)
+        current_row["Q"] = int(
+            max(
+                0,
+                int(max(0, _as_int(current_row.get("Q", 0), 0)))
+                + int(_as_int(deltas.get("Q", 0), 0)),
+            )
+        )
+        current_row["S"] = int(max(_apparent_from_components(active_p=int(current_row.get("P", 0)), reactive_q=int(current_row.get("Q", 0))), int(_as_int(current_row.get("S", 0), 0)) + int(_as_int(deltas.get("S", 0), 0))))
+        node_loads[target_id] = current_row
+
+    total_p = sum(int(max(0, _as_int(row.get("P", 0), 0))) for row in node_loads.values())
+    total_q = sum(int(max(0, _as_int(row.get("Q", 0), 0))) for row in node_loads.values())
+    total_s = max(
+        _apparent_from_components(active_p=total_p, reactive_q=total_q),
+        sum(int(max(0, _as_int(row.get("S", 0), 0))) for row in node_loads.values()),
+    )
+
+    storage_rows_by_node = dict(
+        (
+            str(row.get("node_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(storage_rows_runtime or [])
+        if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+    )
+    for node_id, binding_row in sorted(
+        ((str(node_id), dict(binding_row)) for node_id, binding_row in list(pending_storage_bindings or [])),
+        key=lambda row: str(row[1].get("binding_id", "")),
+    ):
+        storage_row = dict(storage_rows_by_node.get(node_id) or {})
+        params = _as_map(binding_row.get("parameters"))
+        params["state_of_charge"] = int(max(0, _as_int(storage_row.get("state_of_charge", 0), 0)))
+        params["capacity_energy"] = int(max(0, _as_int(storage_row.get("capacity_energy", params.get("capacity_energy", 0)), 0)))
+        params["current_p"] = int(max(0, total_p))
+        runtime_binding = dict(binding_row)
+        runtime_binding["parameters"] = params
+        storage_actions = _run_model_eval(
+            [runtime_binding],
+            {node_id: {"derived.elec.storage_state_of_charge": int(max(0, _as_int(params.get("state_of_charge", 0), 0)))}},
+        )
+        deltas = _sum_model_flow_adjustments(model_output_actions=storage_actions, target_id=node_id)
+        total_p = int(max(0, total_p + int(_as_int(deltas.get("P", 0), 0))))
+        total_q = int(max(0, total_q + int(_as_int(deltas.get("Q", 0), 0))))
+        total_s = int(max(_apparent_from_components(active_p=total_p, reactive_q=total_q), total_s + int(_as_int(deltas.get("S", 0), 0))))
+        discharge_amount = int(max(0, _as_int(deltas.get("storage_discharge", 0), 0)))
+        if discharge_amount > 0:
+            storage_update = apply_storage_discharge(
+                storage_rows=[dict(value) for value in storage_rows_by_node.values()],
+                node_id=node_id,
+                energy_delta=int(discharge_amount),
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+            )
+            storage_rows_by_node = dict(
+                (
+                    str(row.get("node_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(storage_update.get("storage_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+            )
+        elif int(_as_int(deltas.get("P", 0), 0)) > 0:
+            storage_update = apply_storage_charge(
+                storage_rows=[dict(value) for value in storage_rows_by_node.values()],
+                node_id=node_id,
+                energy_delta=int(_as_int(deltas.get("P", 0), 0)),
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+            )
+            storage_rows_by_node = dict(
+                (
+                    str(row.get("node_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(storage_update.get("storage_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+            )
+    storage_rows_runtime = [dict(storage_rows_by_node[key]) for key in sorted(storage_rows_by_node.keys())]
 
     edge_rows = sorted(edges, key=lambda row: str(row.get("edge_id", "")))
     if int(max_processed_edges) <= 0 or len(edge_rows) > int(max_processed_edges):
-        return solve_power_network_e0(graph_row=graph, model_binding_rows=model_binding_rows, current_tick=current_tick, reason="degrade.elec.e1_budget")
+        degraded = solve_power_network_e0(
+            graph_row=graph,
+            model_binding_rows=model_binding_rows,
+            current_tick=current_tick,
+            reason="degrade.elec.e1_budget",
+        )
+        degraded["model_evaluation_results"] = [dict(row) for row in model_evaluation_results]
+        degraded["model_output_actions"] = [dict(row) for row in model_output_actions]
+        degraded["model_observation_rows"] = [dict(row) for row in model_observation_rows]
+        degraded["model_cache_rows"] = [dict(row) for row in model_cache_rows_runtime]
+        degraded["model_cost_units"] = int(max(0, model_cost_units))
+        degraded["model_budget_outcome"] = "degraded"
+        degraded["storage_state_rows"] = [dict(row) for row in storage_rows_runtime]
+        return degraded
 
     weights = {}
     for edge in edge_rows:
         edge_id = str(edge.get("edge_id", "")).strip()
         payload = normalize_elec_edge_payload(_as_map(edge.get("payload")))
         weights[edge_id] = int(max(1, _as_int(payload.get("capacity_rating", 0), 0)))
-    p_by_edge = _weighted_integer_split(total=total_p, keys=[str(edge.get("edge_id", "")).strip() for edge in edge_rows], weights=weights)
-    q_by_edge = _weighted_integer_split(total=total_q, keys=[str(edge.get("edge_id", "")).strip() for edge in edge_rows], weights=weights)
-    s_by_edge = _weighted_integer_split(total=total_s, keys=[str(edge.get("edge_id", "")).strip() for edge in edge_rows], weights=weights)
+    edge_ids = [str(edge.get("edge_id", "")).strip() for edge in edge_rows]
+    p_by_edge = _weighted_integer_split(total=total_p, keys=edge_ids, weights=weights)
+    q_by_edge = _weighted_integer_split(total=total_q, keys=edge_ids, weights=weights)
+    s_by_edge = _weighted_integer_split(total=total_s, keys=edge_ids, weights=weights)
 
     edge_status_rows: List[dict] = []
     flow_channels: List[dict] = []
@@ -311,10 +864,67 @@ def solve_power_network_e1(
             p_req = int((p_req * scale) // max(1, s_req))
             q_req = int((q_req * scale) // max(1, s_req))
             s_req = int(scale)
-        loss_p = int((p_req * resistance) // max(1, capacity if capacity > 0 else 1))
-        p_del = int(max(0, p_req - loss_p))
-        q_del = int(max(0, q_req))
-        s_del = int(max(_apparent_from_components(active_p=p_del, reactive_q=q_del), min(s_req, p_del + q_del)))
+
+        edge_bindings = _binding_rows_for_target(
+            target_id=edge_id,
+            target_kind="edge",
+            model_binding_rows=model_binding_rows,
+        )
+        runtime_edge_bindings: List[dict] = []
+        synthetic_loss_coeff = int((int(max(0, resistance)) * 1000) // max(1, int(capacity) if capacity > 0 else 1))
+        runtime_edge_bindings.append(
+            {
+                "schema_version": "1.0.0",
+                "binding_id": "binding.elec.synthetic_loss.{}".format(edge_id),
+                "model_id": "model.elec_device_loss",
+                "target_kind": "edge",
+                "target_id": edge_id,
+                "tier": "meso",
+                "parameters": {
+                    "current_p": int(p_req),
+                    "current_q": int(q_req),
+                    "current_s": int(s_req),
+                    "loss_coeff_permille": int(max(0, synthetic_loss_coeff)),
+                },
+                "enabled": True,
+                "deterministic_fingerprint": "",
+                "extensions": {"synthetic": True},
+            }
+        )
+        for binding_row in list(edge_bindings or []):
+            model_id = str(binding_row.get("model_id", "")).strip()
+            if model_id not in _ELEC_MODEL_IDS:
+                continue
+            params = _as_map(binding_row.get("parameters"))
+            params["current_p"] = int(p_req)
+            params["current_q"] = int(q_req)
+            params["current_s"] = int(s_req)
+            runtime_binding = dict(binding_row)
+            runtime_binding["parameters"] = params
+            runtime_edge_bindings.append(runtime_binding)
+
+        edge_actions = _run_model_eval(
+            runtime_edge_bindings,
+            {
+                edge_id: {
+                    _Q_ACTIVE: int(p_req),
+                    _Q_REACTIVE: int(q_req),
+                    _Q_APPARENT: int(s_req),
+                }
+            },
+        )
+        deltas = _sum_model_flow_adjustments(model_output_actions=edge_actions, target_id=edge_id)
+        p_del = int(max(0, p_req + int(_as_int(deltas.get("P", 0), 0))))
+        q_del = int(max(0, q_req + int(_as_int(deltas.get("Q", 0), 0))))
+        requested_s = int(max(0, s_req + int(_as_int(deltas.get("S", 0), 0))))
+        s_del = int(max(_apparent_from_components(active_p=p_del, reactive_q=q_del), requested_s))
+        if capacity > 0 and s_del > capacity:
+            scale = int(capacity)
+            p_del = int((p_del * scale) // max(1, s_del))
+            q_del = int((q_del * scale) // max(1, s_del))
+            s_del = int(scale)
+            overloaded = True
+
         channel = build_power_flow_channel(
             graph_id=graph_id,
             edge_id=edge_id,
@@ -327,6 +937,7 @@ def solve_power_network_e1(
         if overloaded and channel_id:
             overloaded_channel_ids.append(channel_id)
         pf_permille = compute_pf_permille(active_p=p_del, apparent_s=s_del)
+        heat_loss = int(max(0, _as_int(deltas.get("heat_loss", 0), 0)))
         edge_status_rows.append(
             {
                 "edge_id": edge_id,
@@ -336,7 +947,7 @@ def solve_power_network_e1(
                 "Q": int(q_del),
                 "S": int(s_del),
                 "pf_permille": int(pf_permille),
-                "heat_loss_stub": int(loss_p),
+                "heat_loss_stub": int(heat_loss),
                 "capacity_rating": int(capacity),
                 "overloaded": bool(overloaded),
                 "deterministic_fingerprint": canonical_sha256(
@@ -345,7 +956,7 @@ def solve_power_network_e1(
                         "P": int(p_del),
                         "Q": int(q_del),
                         "S": int(s_del),
-                        "heat_loss_stub": int(loss_p),
+                        "heat_loss_stub": int(heat_loss),
                         "overloaded": bool(overloaded),
                     }
                 ),
@@ -358,6 +969,7 @@ def solve_power_network_e1(
             for row in sorted(edge_status_rows, key=lambda row: str(row.get("edge_id", "")))
         ]
     )
+    combined_budget_outcome = "degraded" if model_budget_outcome == "degraded" else "complete"
     return {
         "mode": "E1",
         "graph_id": graph_id,
@@ -377,8 +989,24 @@ def solve_power_network_e1(
             key=lambda row: str(row.get("node_id", "")),
         ),
         "overloaded_channel_ids": sorted(set(overloaded_channel_ids)),
-        "budget_outcome": "complete",
+        "budget_outcome": combined_budget_outcome,
         "power_flow_hash": power_flow_hash,
+        "model_evaluation_results": sorted(
+            (dict(row) for row in list(model_evaluation_results or []) if isinstance(row, Mapping)),
+            key=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("result_id", ""))),
+        ),
+        "model_output_actions": sorted(
+            (dict(row) for row in list(model_output_actions or []) if isinstance(row, Mapping)),
+            key=lambda row: (str(row.get("model_id", "")), str(row.get("binding_id", "")), str(row.get("output_id", ""))),
+        ),
+        "model_observation_rows": sorted(
+            (dict(row) for row in list(model_observation_rows or []) if isinstance(row, Mapping)),
+            key=lambda row: str(row.get("artifact_id", "")),
+        ),
+        "model_cache_rows": [dict(row) for row in list(model_cache_rows_runtime or []) if isinstance(row, Mapping)],
+        "model_cost_units": int(max(0, model_cost_units)),
+        "model_budget_outcome": model_budget_outcome,
+        "storage_state_rows": [dict(row) for row in list(storage_rows_runtime or []) if isinstance(row, Mapping)],
     }
 
 
