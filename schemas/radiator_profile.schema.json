@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Radiator Profile Schema",
+  "version": "1.0.0",
+  "description": "Deterministic THERM-3 radiator profile row.",
+  "x-doc-ref": [
+    "docs/thermal/COOLING_AND_AMBIENT_MODEL.md",
+    "docs/audit/THERMAL_COOLING_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "radiator_id",
+    "base_conductance",
+    "forced_cooling_multiplier",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "radiator_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_conductance": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "forced_cooling_multiplier": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "radiator_id": "radiator.passive_basic",
+      "base_conductance": 240,
+      "forced_cooling_multiplier": 1000,
+      "spec_id": null,
+      "deterministic_fingerprint": "ac96900f4ce9f9e1fecde4cb5c891e41e1552be8ea253577a1355d7c27f82f51",
+      "extensions": {}
+    }
+  ]
+}
