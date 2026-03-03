@@ -504,6 +504,20 @@
         "1.0.0"
       ]
     },
+    "component_capacity_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "component_loss_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "compartment_flow_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2367,6 +2381,13 @@
       ]
     },
     "quantity_bundle": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "quantity_bundle_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

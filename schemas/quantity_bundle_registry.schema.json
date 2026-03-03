@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quantity Bundle Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic quantity bundle registry output.",
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "quantity_bundles",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "quantity_bundles": {
+      "type": "array",
+      "items": {
+        "$ref": "quantity_bundle.schema.json"
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  }
+}
