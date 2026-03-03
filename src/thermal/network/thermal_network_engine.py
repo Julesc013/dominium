@@ -107,6 +107,20 @@ def _default_model_type_registry_payload() -> dict:
                 },
                 {
                     "schema_version": "1.0.0",
+                    "model_type_id": "model_type.therm_ambient_exchange",
+                    "description": "THERM ambient boundary exchange model",
+                    "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
+                    "model_type_id": "model_type.therm_radiator_exchange",
+                    "description": "THERM radiator/heat-sink exchange model",
+                    "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+                    "extensions": {},
+                },
+                {
+                    "schema_version": "1.0.0",
                     "model_type_id": "model_type.therm_conductance_stub",
                     "description": "THERM conduction model stub",
                     "parameter_schema_id": "dominium.schema.models.model_binding.v1",
@@ -211,6 +225,46 @@ def _default_constitutive_model_rows() -> List[dict]:
             "output_signature": [
                 {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.insulation_factor_permille", "extensions": {}},
                 {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.effective_conductance", "extensions": {}},
+            ],
+            "cost_units": 1,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.therm_ambient_exchange",
+            "model_type_id": "model_type.therm_ambient_exchange",
+            "description": "ambient boundary exchange model",
+            "supported_tiers": ["macro", "meso"],
+            "input_signature": [],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.ambient_exchange", "extensions": {}},
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.ambient_delta_energy", "extensions": {}},
+            ],
+            "cost_units": 1,
+            "cache_policy_id": "cache.by_inputs_hash",
+            "uses_rng_stream": False,
+            "rng_stream_name": None,
+            "version_introduced": "1.0.0",
+            "deprecated": False,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        },
+        {
+            "schema_version": "1.0.0",
+            "model_id": "model.therm_radiator_exchange",
+            "model_type_id": "model_type.therm_radiator_exchange",
+            "description": "radiator/heat-sink ambient exchange model",
+            "supported_tiers": ["macro", "meso"],
+            "input_signature": [],
+            "output_signature": [
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.radiator_exchange", "extensions": {}},
+                {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.radiator_delta_energy", "extensions": {}},
             ],
             "cost_units": 1,
             "cache_policy_id": "cache.by_inputs_hash",
@@ -558,6 +612,223 @@ def _apply_conduction_outputs(
     return sorted(applied_rows, key=lambda item: (str(item.get("edge_id", "")), str(item.get("from_node_id", "")), str(item.get("to_node_id", ""))))
 
 
+def _ambient_temperature_by_node_id(
+    *,
+    node_ids: List[str],
+    ambient_temperature: int,
+    ambient_temperature_by_node: Mapping[str, object] | None,
+    ambient_field_rows: object,
+) -> Dict[str, int]:
+    out = dict((str(node_id), int(_ambient_temperature_value(ambient_temperature, 20))) for node_id in list(node_ids or []))
+    direct_map = dict(ambient_temperature_by_node or {})
+    for node_id in sorted(out.keys()):
+        if node_id in direct_map:
+            out[node_id] = int(_ambient_temperature_value(direct_map.get(node_id), out[node_id]))
+    for row in sorted((dict(item) for item in list(ambient_field_rows or []) if isinstance(item, Mapping)), key=lambda item: str(item.get("cell_id", ""))):
+        value = int(_ambient_temperature_value(row.get("value", ambient_temperature), ambient_temperature))
+        ext = _as_map(row.get("extensions"))
+        node_id = str(ext.get("node_id", "")).strip()
+        if node_id and node_id in out:
+            out[node_id] = int(value)
+    return dict((key, int(out[key])) for key in sorted(out.keys()))
+
+
+def _radiator_profiles_by_id(rows: object) -> Dict[str, dict]:
+    out: Dict[str, dict] = {
+        "radiator.passive_basic": {
+            "radiator_id": "radiator.passive_basic",
+            "base_conductance": 220,
+            "forced_cooling_multiplier": 1000,
+            "spec_id": None,
+            "extensions": {"cooling_mode": "passive"},
+        },
+        "radiator.forced_basic": {
+            "radiator_id": "radiator.forced_basic",
+            "base_conductance": 220,
+            "forced_cooling_multiplier": 1850,
+            "spec_id": None,
+            "extensions": {"cooling_mode": "forced"},
+        },
+    }
+    for row in sorted((dict(item) for item in list(rows or []) if isinstance(item, Mapping)), key=lambda item: str(item.get("radiator_id", ""))):
+        radiator_id = str(row.get("radiator_id", "")).strip()
+        if not radiator_id:
+            continue
+        out[radiator_id] = {
+            "radiator_id": radiator_id,
+            "base_conductance": int(max(0, _as_int(row.get("base_conductance", 0), 0))),
+            "forced_cooling_multiplier": int(max(0, _as_int(row.get("forced_cooling_multiplier", 1000), 1000))),
+            "spec_id": None if row.get("spec_id") is None else str(row.get("spec_id", "")).strip() or None,
+            "extensions": _as_map(row.get("extensions")),
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _cooling_binding_rows(
+    *,
+    normalized_nodes: Mapping[str, dict],
+    temperature_by_node_id: Mapping[str, int],
+    ambient_temperature_by_node_id: Mapping[str, int],
+    ambient_coupling_policy_by_id: Mapping[str, dict],
+    radiator_profile_by_id: Mapping[str, dict],
+) -> Tuple[List[dict], List[dict]]:
+    ambient_rows: List[dict] = []
+    radiator_rows: List[dict] = []
+    for node_id in sorted(normalized_nodes.keys()):
+        payload = dict(normalized_nodes.get(node_id) or {})
+        ext = _as_map(payload.get("extensions"))
+        node_temp = int(_as_int(temperature_by_node_id.get(node_id, 20), 20))
+        ambient_temp = int(_as_int(ambient_temperature_by_node_id.get(node_id, 20), 20))
+        policy_id = str(ext.get("ambient_coupling_policy_id", "ambient.default")).strip() or "ambient.default"
+        policy_row = dict(ambient_coupling_policy_by_id.get(policy_id) or ambient_coupling_policy_by_id.get("ambient.default") or {})
+        coupling = int(
+            max(
+                0,
+                _as_int(
+                    ext.get("ambient_coupling_coefficient", policy_row.get("ambient_coupling_coefficient", 0)),
+                    _as_int(policy_row.get("ambient_coupling_coefficient", 0), 0),
+                ),
+            )
+        )
+        insulation_factor = int(
+            max(
+                0,
+                _as_int(
+                    ext.get("insulation_factor_permille", ext.get("insulation_factor", policy_row.get("insulation_factor", 1000))),
+                    _as_int(policy_row.get("insulation_factor", 1000), 1000),
+                ),
+            )
+        )
+        if bool(ext.get("boundary_to_ambient", False)) and coupling > 0:
+            ambient_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "binding_id": "binding.therm.ambient_exchange.{}".format(node_id),
+                    "model_id": "model.therm_ambient_exchange",
+                    "target_kind": "node",
+                    "target_id": str(node_id),
+                    "tier": "meso",
+                    "parameters": {
+                        "node_temperature": int(node_temp),
+                        "ambient_temperature": int(ambient_temp),
+                        "ambient_coupling_coefficient": int(coupling),
+                        "insulation_factor_permille": int(insulation_factor),
+                    },
+                    "enabled": True,
+                    "deterministic_fingerprint": "",
+                    "extensions": {},
+                }
+            )
+
+        if str(payload.get("node_kind", "")).strip() == "radiator":
+            profile_id = str(ext.get("radiator_profile_id", "radiator.passive_basic")).strip() or "radiator.passive_basic"
+            profile_row = dict(radiator_profile_by_id.get(profile_id) or radiator_profile_by_id.get("radiator.passive_basic") or {})
+            base_conductance = int(max(0, _as_int(ext.get("base_conductance", profile_row.get("base_conductance", coupling)), coupling)))
+            forced_multiplier = int(
+                max(
+                    0,
+                    _as_int(
+                        ext.get("forced_cooling_multiplier", profile_row.get("forced_cooling_multiplier", 1000)),
+                        _as_int(profile_row.get("forced_cooling_multiplier", 1000), 1000),
+                    ),
+                )
+            )
+            fan_on = bool(ext.get("forced_cooling_on", False))
+            radiator_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "binding_id": "binding.therm.radiator_exchange.{}".format(node_id),
+                    "model_id": "model.therm_radiator_exchange",
+                    "target_kind": "node",
+                    "target_id": str(node_id),
+                    "tier": "meso",
+                    "parameters": {
+                        "node_temperature": int(node_temp),
+                        "ambient_temperature": int(ambient_temp),
+                        "base_conductance": int(base_conductance),
+                        "forced_cooling_multiplier": int(forced_multiplier),
+                        "fan_on": bool(fan_on),
+                        "insulation_factor_permille": int(insulation_factor),
+                        "radiator_profile_id": profile_id,
+                    },
+                    "enabled": True,
+                    "deterministic_fingerprint": "",
+                    "extensions": {},
+                }
+            )
+    return (
+        sorted(ambient_rows, key=lambda row: str(row.get("binding_id", ""))),
+        sorted(radiator_rows, key=lambda row: str(row.get("binding_id", ""))),
+    )
+
+
+def _select_budgeted_bindings(
+    *,
+    rows: List[dict],
+    current_tick: int,
+    max_cost_units: int,
+    model_cost_units: int,
+    default_stride: int = 1,
+) -> Tuple[List[dict], int]:
+    ordered = sorted((dict(row) for row in list(rows or []) if isinstance(row, Mapping)), key=lambda row: str(row.get("binding_id", "")))
+    if not ordered:
+        return [], 1
+    stride = int(max(1, _as_int(default_stride, 1)))
+    if int(max_cost_units) > 0:
+        remaining = int(max(0, int(max_cost_units) - int(max(0, model_cost_units))))
+        if remaining <= 0:
+            return [], int(len(ordered) + 1)
+        if remaining < len(ordered):
+            required_stride = int((len(ordered) + remaining - 1) // max(1, remaining))
+            stride = int(max(stride, required_stride))
+    selected: List[dict] = []
+    for idx, row in enumerate(ordered):
+        if int(stride) <= 1 or (idx % int(stride)) == (int(max(0, _as_int(current_tick, 0))) % int(stride)):
+            selected.append(dict(row))
+    return selected, int(stride)
+
+
+def _apply_boundary_exchange_outputs(
+    *,
+    output_actions: List[dict],
+    thermal_energy_by_node_id: Dict[str, int],
+) -> Tuple[List[dict], List[dict]]:
+    ambient_rows: List[dict] = []
+    radiator_rows: List[dict] = []
+    for row in sorted((dict(item) for item in list(output_actions or []) if isinstance(item, Mapping)), key=lambda item: (str(item.get("binding_id", "")), str(item.get("output_id", "")))):
+        if str(row.get("output_kind", "")).strip() != "derived_quantity":
+            continue
+        output_id = str(row.get("output_id", "")).strip()
+        if output_id not in {"derived.therm.ambient_exchange", "derived.therm.radiator_exchange"}:
+            continue
+        node_id = str(row.get("target_id", "")).strip()
+        if not node_id:
+            continue
+        payload = _as_map(row.get("payload"))
+        delta_energy = int(_as_int(payload.get("delta_thermal_energy", 0), 0))
+        current_energy = int(max(0, _as_int(thermal_energy_by_node_id.get(node_id, 0), 0)))
+        thermal_energy_by_node_id[node_id] = int(max(0, current_energy + delta_energy))
+        mapped = {
+            "node_id": node_id,
+            "model_id": str(row.get("model_id", "")).strip(),
+            "binding_id": str(row.get("binding_id", "")).strip(),
+            "ambient_temperature": int(_as_int(payload.get("ambient_temperature", 0), 0)),
+            "node_temperature": int(_as_int(payload.get("node_temperature", 0), 0)),
+            "heat_exchange": int(max(0, _as_int(payload.get("heat_exchange", payload.get("value", 0)), 0))),
+            "delta_thermal_energy": int(delta_energy),
+        }
+        if output_id == "derived.therm.ambient_exchange":
+            ambient_rows.append(mapped)
+        else:
+            mapped["forced_cooling_on"] = bool(payload.get("forced_cooling_on", False))
+            mapped["radiator_profile_id"] = str(payload.get("radiator_profile_id", "")).strip() or None
+            radiator_rows.append(mapped)
+    return (
+        sorted(ambient_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", "")))),
+        sorted(radiator_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", "")))),
+    )
+
+
 def _temperature_cells_from_node_rows(
     *,
     node_rows: List[dict],
@@ -617,6 +888,43 @@ def _safety_rows_for_overtemp(
         }
         hazard["deterministic_fingerprint"] = canonical_sha256(dict(hazard, deterministic_fingerprint=""))
         hazard_rows.append(hazard)
+        prior_events = int(max(0, _as_int(ext.get("overtemp_event_count", 0), 0)))
+        event_threshold = int(max(1, _as_int(ext.get("thermal_runaway_event_threshold", 3), 3)))
+        if int(prior_events + 1) >= int(event_threshold):
+            runaway = {
+                "schema_version": "1.0.0",
+                "target_id": node_id,
+                "hazard_type_id": "hazard.thermal_runaway",
+                "accumulated_value": int(max(0, over_by + prior_events + 1)),
+                "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "temperature": int(temp),
+                    "threshold": int(threshold),
+                    "overtemp_event_count": int(prior_events + 1),
+                },
+            }
+            runaway["deterministic_fingerprint"] = canonical_sha256(dict(runaway, deterministic_fingerprint=""))
+            hazard_rows.append(runaway)
+            safety_events.append(
+                build_safety_event(
+                    event_id="",
+                    tick=int(max(0, _as_int(current_tick, 0))),
+                    instance_id="instance.safety.thermal_runaway.{}".format(node_id),
+                    pattern_id="safety.thermal_runaway",
+                    pattern_type="failsafe",
+                    status="triggered",
+                    target_ids=[node_id],
+                    action_count=1,
+                    details={
+                        "temperature": int(temp),
+                        "threshold": int(threshold),
+                        "hazard_type_id": "hazard.thermal_runaway",
+                        "recommended_action": "effect.shutdown",
+                    },
+                    extensions={},
+                )
+            )
         safety_events.append(
             build_safety_event(
                 event_id="",
@@ -648,6 +956,7 @@ def solve_thermal_network_t0(
     current_tick: int,
     heat_input_rows: object = None,
     ambient_temperature: int = 20,
+    ambient_temperature_by_node: Mapping[str, object] | None = None,
     downgrade_reason: str = "degrade.therm.t1_disabled",
 ) -> dict:
     graph = normalize_network_graph(graph_row)
@@ -655,18 +964,75 @@ def solve_thermal_network_t0(
     heat_input_by_node_id = _heat_input_rows_by_node_id(heat_input_rows)
     node_rows = sorted((dict(item) for item in list(graph.get("nodes") or []) if isinstance(item, Mapping)), key=lambda item: str(item.get("node_id", "")))
     edge_rows = sorted((dict(item) for item in list(graph.get("edges") or []) if isinstance(item, Mapping)), key=lambda item: str(item.get("edge_id", "")))
+    node_ids = [str(dict(row).get("node_id", "")).strip() for row in list(node_rows or []) if str(dict(row).get("node_id", "")).strip()]
+    ambient_temp_by_node_id = _ambient_temperature_by_node_id(
+        node_ids=node_ids,
+        ambient_temperature=int(ambient_temperature),
+        ambient_temperature_by_node=ambient_temperature_by_node,
+        ambient_field_rows=[],
+    )
 
     node_status_rows: List[dict] = []
+    ambient_exchange_rows: List[dict] = []
+    radiator_exchange_rows: List[dict] = []
     for node in node_rows:
         node_id = str(node.get("node_id", "")).strip()
         if not node_id:
             continue
         payload = normalize_thermal_node_payload(_as_map(node.get("payload")))
+        ext = _as_map(payload.get("extensions"))
         thermal_energy = int(max(0, _as_int(payload.get("current_thermal_energy", 0), 0)) + int(max(0, _as_int(heat_input_by_node_id.get(node_id, 0), 0))))
+        ambient_temp = int(_as_int(ambient_temp_by_node_id.get(node_id, ambient_temperature), ambient_temperature))
+        pre_temp = _temperature_from_energy(
+            thermal_energy=int(thermal_energy),
+            heat_capacity=int(max(1, _as_int(payload.get("heat_capacity_value", 1), 1))),
+            ambient_temperature=int(ambient_temp),
+        )
+        coupling = int(max(0, _as_int(ext.get("ambient_coupling_coefficient", 0), 0)))
+        insulation_factor = int(max(0, _as_int(ext.get("insulation_factor_permille", ext.get("insulation_factor", 1000)), 1000)))
+        if bool(ext.get("boundary_to_ambient", False)) and coupling > 0:
+            effective_coupling = int(max(0, (int(coupling) * int(insulation_factor)) // 1000))
+            delta_t = int(pre_temp - ambient_temp)
+            exchange = int(max(0, (effective_coupling * abs(delta_t)) // 1000))
+            delta_energy = int(-exchange if delta_t > 0 else exchange if delta_t < 0 else 0)
+            thermal_energy = int(max(0, thermal_energy + delta_energy))
+            ambient_exchange_rows.append(
+                {
+                    "node_id": node_id,
+                    "ambient_temperature": int(ambient_temp),
+                    "node_temperature": int(pre_temp),
+                    "heat_exchange": int(exchange),
+                    "delta_thermal_energy": int(delta_energy),
+                    "binding_id": "binding.therm.ambient_exchange.{}".format(node_id),
+                    "model_id": "model.therm_ambient_exchange",
+                }
+            )
+        if str(payload.get("node_kind", "")).strip() == "radiator":
+            base_conductance = int(max(0, _as_int(ext.get("base_conductance", coupling), coupling)))
+            forced_multiplier = int(max(0, _as_int(ext.get("forced_cooling_multiplier", 1000), 1000)))
+            fan_on = bool(ext.get("forced_cooling_on", False))
+            effective_coupling = int(max(0, ((base_conductance * (forced_multiplier if fan_on else 1000)) // 1000)))
+            delta_t = int(pre_temp - ambient_temp)
+            exchange = int(max(0, (effective_coupling * abs(delta_t)) // 1000))
+            delta_energy = int(-exchange if delta_t > 0 else exchange if delta_t < 0 else 0)
+            thermal_energy = int(max(0, thermal_energy + delta_energy))
+            radiator_exchange_rows.append(
+                {
+                    "node_id": node_id,
+                    "ambient_temperature": int(ambient_temp),
+                    "node_temperature": int(pre_temp),
+                    "heat_exchange": int(exchange),
+                    "delta_thermal_energy": int(delta_energy),
+                    "forced_cooling_on": bool(fan_on),
+                    "radiator_profile_id": str(ext.get("radiator_profile_id", "radiator.passive_basic")).strip() or "radiator.passive_basic",
+                    "binding_id": "binding.therm.radiator_exchange.{}".format(node_id),
+                    "model_id": "model.therm_radiator_exchange",
+                }
+            )
         temperature = _temperature_from_energy(
             thermal_energy=int(thermal_energy),
             heat_capacity=int(max(1, _as_int(payload.get("heat_capacity_value", 1), 1))),
-            ambient_temperature=int(ambient_temperature),
+            ambient_temperature=int(ambient_temp),
         )
         node_status_rows.append(
             {
@@ -675,6 +1041,7 @@ def solve_thermal_network_t0(
                 "thermal_energy": int(thermal_energy),
                 "temperature": int(temperature),
                 "heat_input": int(max(0, _as_int(heat_input_by_node_id.get(node_id, 0), 0))),
+                "ambient_temperature": int(ambient_temp),
                 "extensions": dict(payload.get("extensions") or {}),
             }
         )
@@ -722,6 +1089,27 @@ def solve_thermal_network_t0(
             "edges": [{"edge_id": str(row.get("edge_id", "")), "heat_transfer": int(_as_int(row.get("heat_transfer", 0), 0))} for row in edge_status_rows],
         }
     )
+    ambient_exchange_hash = canonical_sha256(
+        {
+            "ambient_exchange_rows": [
+                {
+                    "node_id": str(row.get("node_id", "")),
+                    "heat_exchange": int(_as_int(row.get("heat_exchange", 0), 0)),
+                    "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
+                }
+                for row in sorted(ambient_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))
+            ],
+            "radiator_exchange_rows": [
+                {
+                    "node_id": str(row.get("node_id", "")),
+                    "heat_exchange": int(_as_int(row.get("heat_exchange", 0), 0)),
+                    "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
+                    "forced_cooling_on": bool(row.get("forced_cooling_on", False)),
+                }
+                for row in sorted(radiator_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))
+            ],
+        }
+    )
     decision_log_rows = [
         {
             "process_id": "process.therm_budget_degrade",
@@ -751,6 +1139,9 @@ def solve_thermal_network_t0(
             current_tick=int(max(0, _as_int(current_tick, 0))),
         ),
         "thermal_network_hash": str(thermal_network_hash),
+        "ambient_exchange_rows": sorted(ambient_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", "")))),
+        "radiator_exchange_rows": sorted(radiator_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", "")))),
+        "ambient_exchange_hash": str(ambient_exchange_hash),
         "overheat_event_hash_chain": canonical_sha256([]),
         "decision_log_rows": decision_log_rows,
         "budget_outcome": "degraded",
@@ -770,6 +1161,11 @@ def solve_thermal_network_t1(
     max_processed_edges: int = 4096,
     max_cost_units: int = 0,
     ambient_temperature: int = 20,
+    ambient_temperature_by_node: Mapping[str, object] | None = None,
+    ambient_field_rows: object = None,
+    radiator_profile_rows: object = None,
+    ambient_coupling_policy_rows: object = None,
+    ambient_eval_stride: int = 1,
     overtemp_threshold_default: int = 120,
     safety_pattern_id: str = "safety.overtemp_trip",
 ) -> dict:
@@ -783,6 +1179,7 @@ def solve_thermal_network_t1(
             current_tick=int(current_tick),
             heat_input_rows=heat_input_rows,
             ambient_temperature=int(ambient_temperature),
+            ambient_temperature_by_node=ambient_temperature_by_node,
             downgrade_reason="degrade.therm.t1_budget",
         )
     estimated_cost = int(len(node_rows) + len(edge_rows))
@@ -792,6 +1189,7 @@ def solve_thermal_network_t1(
             current_tick=int(current_tick),
             heat_input_rows=heat_input_rows,
             ambient_temperature=int(ambient_temperature),
+            ambient_temperature_by_node=ambient_temperature_by_node,
             downgrade_reason="degrade.therm.t1_budget",
         )
 
@@ -807,6 +1205,43 @@ def solve_thermal_network_t1(
     for node_id in sorted(normalized_nodes.keys()):
         payload = dict(normalized_nodes.get(node_id) or {})
         node_thermal_energy[node_id] = int(max(0, _as_int(payload.get("current_thermal_energy", 0), 0)))
+    ambient_temp_by_node_id = _ambient_temperature_by_node_id(
+        node_ids=list(sorted(normalized_nodes.keys())),
+        ambient_temperature=int(ambient_temperature),
+        ambient_temperature_by_node=ambient_temperature_by_node,
+        ambient_field_rows=ambient_field_rows,
+    )
+    ambient_policy_by_id: Dict[str, dict] = {
+        "ambient.default": {
+            "policy_id": "ambient.default",
+            "ambient_coupling_coefficient": 280,
+            "insulation_factor": 1000,
+            "extensions": {"forced_cooling_default_multiplier": 1000},
+        },
+        "ambient.insulated": {
+            "policy_id": "ambient.insulated",
+            "ambient_coupling_coefficient": 280,
+            "insulation_factor": 420,
+            "extensions": {"forced_cooling_default_multiplier": 1000},
+        },
+        "ambient.exposed": {
+            "policy_id": "ambient.exposed",
+            "ambient_coupling_coefficient": 400,
+            "insulation_factor": 1000,
+            "extensions": {"forced_cooling_default_multiplier": 1200},
+        },
+    }
+    for row in sorted((dict(item) for item in list(ambient_coupling_policy_rows or []) if isinstance(item, Mapping)), key=lambda item: str(item.get("policy_id", ""))):
+        policy_id = str(row.get("policy_id", "")).strip()
+        if not policy_id:
+            continue
+        ambient_policy_by_id[policy_id] = {
+            "policy_id": policy_id,
+            "ambient_coupling_coefficient": int(max(0, _as_int(row.get("ambient_coupling_coefficient", 0), 0))),
+            "insulation_factor": int(max(0, _as_int(row.get("insulation_factor", 1000), 1000))),
+            "extensions": _as_map(row.get("extensions")),
+        }
+    radiator_profile_by_id = _radiator_profiles_by_id(radiator_profile_rows)
 
     merged_model_rows = _merge_model_rows(model_rows)
     merged_model_types = _merge_model_type_rows(model_type_rows)
@@ -998,7 +1433,62 @@ def solve_thermal_network_t1(
         temperature_by_node_id[node_id] = _temperature_from_energy(
             thermal_energy=int(node_thermal_energy.get(node_id, 0)),
             heat_capacity=int(max(1, _as_int(payload.get("heat_capacity_value", 1), 1))),
-            ambient_temperature=int(ambient_temperature),
+            ambient_temperature=int(_as_int(ambient_temp_by_node_id.get(node_id, ambient_temperature), ambient_temperature)),
+        )
+
+    ambient_bindings, radiator_bindings = _cooling_binding_rows(
+        normalized_nodes=normalized_nodes,
+        temperature_by_node_id=temperature_by_node_id,
+        ambient_temperature_by_node_id=ambient_temp_by_node_id,
+        ambient_coupling_policy_by_id=ambient_policy_by_id,
+        radiator_profile_by_id=radiator_profile_by_id,
+    )
+    cooling_bindings = sorted(
+        [dict(row) for row in list(ambient_bindings or []) if isinstance(row, Mapping)]
+        + [dict(row) for row in list(radiator_bindings or []) if isinstance(row, Mapping)],
+        key=lambda row: str(row.get("binding_id", "")),
+    )
+    selected_cooling_bindings, cooling_stride = _select_budgeted_bindings(
+        rows=cooling_bindings,
+        current_tick=int(current_tick),
+        max_cost_units=int(max_cost_units),
+        model_cost_units=int(model_cost_units),
+        default_stride=int(max(1, _as_int(ambient_eval_stride, 1))),
+    )
+    deferred_cooling_count = int(max(0, len(cooling_bindings) - len(selected_cooling_bindings)))
+    ambient_exchange_rows: List[dict] = []
+    radiator_exchange_rows: List[dict] = []
+    if selected_cooling_bindings:
+        cooling_eval = evaluate_model_bindings(
+            current_tick=int(current_tick),
+            model_rows=[dict(row) for row in merged_model_rows.values()],
+            binding_rows=selected_cooling_bindings,
+            cache_rows=cache_rows_runtime,
+            model_type_rows=merged_model_types,
+            cache_policy_rows=merged_cache_policies,
+            input_resolver_fn=_resolve_input,
+            max_cost_units=1_000_000 if int(max_cost_units) <= 0 else int(max(1, max_cost_units)),
+            far_target_ids=[],
+            far_tick_stride=1,
+        )
+        cache_rows_runtime = [dict(row) for row in list(cooling_eval.get("cache_rows") or []) if isinstance(row, Mapping)]
+        model_evaluation_results.extend([dict(row) for row in list(cooling_eval.get("evaluation_results") or []) if isinstance(row, Mapping)])
+        model_output_actions.extend([dict(row) for row in list(cooling_eval.get("output_actions") or []) if isinstance(row, Mapping)])
+        model_observation_rows.extend([dict(row) for row in list(cooling_eval.get("observation_rows") or []) if isinstance(row, Mapping)])
+        model_cost_units += int(max(0, _as_int(cooling_eval.get("cost_units", 0), 0)))
+        if str(cooling_eval.get("budget_outcome", "")).strip() == "degraded":
+            model_budget_outcome = "degraded"
+        ambient_exchange_rows, radiator_exchange_rows = _apply_boundary_exchange_outputs(
+            output_actions=[dict(row) for row in list(cooling_eval.get("output_actions") or []) if isinstance(row, Mapping)],
+            thermal_energy_by_node_id=node_thermal_energy,
+        )
+
+    for node_id in sorted(normalized_nodes.keys()):
+        payload = dict(normalized_nodes.get(node_id) or {})
+        temperature_by_node_id[node_id] = _temperature_from_energy(
+            thermal_energy=int(node_thermal_energy.get(node_id, 0)),
+            heat_capacity=int(max(1, _as_int(payload.get("heat_capacity_value", 1), 1))),
+            ambient_temperature=int(_as_int(ambient_temp_by_node_id.get(node_id, ambient_temperature), ambient_temperature)),
         )
 
     node_status_rows: List[dict] = []
@@ -1015,6 +1505,7 @@ def solve_thermal_network_t1(
                 "temperature": int(_as_int(temperature_by_node_id.get(node_id, ambient_temperature), ambient_temperature)),
                 "heat_capacity_value": int(max(1, _as_int(node_payload.get("heat_capacity_value", 1), 1))),
                 "heat_input": int(max(0, _as_int(heat_input_by_node_id.get(node_id, 0), 0))),
+                "ambient_temperature": int(_as_int(ambient_temp_by_node_id.get(node_id, ambient_temperature), ambient_temperature)),
                 "extensions": dict(node_payload.get("extensions") or {}),
             }
         )
@@ -1093,6 +1584,28 @@ def solve_thermal_network_t1(
             for row in safety_event_rows
         ]
     )
+    ambient_exchange_hash = canonical_sha256(
+        {
+            "ambient_exchange_rows": [
+                {
+                    "node_id": str(row.get("node_id", "")),
+                    "heat_exchange": int(_as_int(row.get("heat_exchange", 0), 0)),
+                    "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
+                }
+                for row in sorted(ambient_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))
+            ],
+            "radiator_exchange_rows": [
+                {
+                    "node_id": str(row.get("node_id", "")),
+                    "heat_exchange": int(_as_int(row.get("heat_exchange", 0), 0)),
+                    "delta_thermal_energy": int(_as_int(row.get("delta_thermal_energy", 0), 0)),
+                    "forced_cooling_on": bool(row.get("forced_cooling_on", False)),
+                    "radiator_profile_id": str(row.get("radiator_profile_id", "")).strip(),
+                }
+                for row in sorted(radiator_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", ""))))
+            ],
+        }
+    )
     decision_log_rows: List[dict] = []
     if model_budget_outcome == "degraded":
         decision_log_rows.append(
@@ -1102,6 +1615,20 @@ def solve_thermal_network_t1(
                 "target_id": graph_id,
                 "reason_code": "degrade.therm.model_budget",
                 "details": {"mode": "T1"},
+            }
+        )
+    if deferred_cooling_count > 0:
+        decision_log_rows.append(
+            {
+                "process_id": "process.therm_budget_degrade",
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "target_id": graph_id,
+                "reason_code": "degrade.therm.ambient_budget",
+                "details": {
+                    "mode": "T1",
+                    "cooling_stride": int(cooling_stride),
+                    "deferred_cooling_count": int(deferred_cooling_count),
+                },
             }
         )
 
@@ -1134,9 +1661,14 @@ def solve_thermal_network_t1(
             current_tick=int(max(0, _as_int(current_tick, 0))),
         ),
         "thermal_network_hash": str(thermal_network_hash),
+        "ambient_exchange_rows": sorted(ambient_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", "")))),
+        "radiator_exchange_rows": sorted(radiator_exchange_rows, key=lambda item: (str(item.get("node_id", "")), str(item.get("binding_id", "")))),
+        "ambient_exchange_hash": str(ambient_exchange_hash),
+        "ambient_eval_stride": int(cooling_stride),
+        "ambient_deferred_count": int(deferred_cooling_count),
         "overheat_event_hash_chain": str(overheat_event_hash_chain),
         "decision_log_rows": decision_log_rows,
-        "budget_outcome": "degraded" if str(model_budget_outcome) == "degraded" else "complete",
+        "budget_outcome": "degraded" if (str(model_budget_outcome) == "degraded" or deferred_cooling_count > 0) else "complete",
     }
 
 
