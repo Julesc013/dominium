@@ -33,13 +33,14 @@ Current substrate coverage:
 
 Series coverage:
 
-- implemented: MAT, MECH, SPEC
+- implemented: MAT, MECH, SPEC, THERM
 - planned: DOM, ELEC, SCI
 
 Known gaps:
 
 - no dedicated chemistry/electrochem transform solver yet
 - no full biological metabolism substrate yet
+- thermal constitutive solver detail beyond THERM-0 constitution is deferred to THERM-1+
 
 ### B) Motion And Force Transmission
 
@@ -53,10 +54,11 @@ Current substrate coverage:
 - MECH
 - ABS (constraints/state/schedule)
 - FIELD
+- PHYS
 
 Series coverage:
 
-- implemented: MOB, MECH, FIELD
+- implemented: MOB, MECH, FIELD, PHYS
 - planned: ADV
 
 Known gaps:
@@ -167,12 +169,13 @@ Current substrate coverage:
 
 Series coverage:
 
-- implemented: FIELD (baseline), MAT (wear hooks)
+- implemented: FIELD (baseline), MAT (wear hooks), THERM (constitution baseline)
 - planned: DOM, BIO
 
 Known gaps:
 
 - full living systems and disease ecology are future domain work
+- meso thermal network solver execution is deferred to THERM-1+
 
 ### H) Time And Synchronization
 
@@ -211,12 +214,13 @@ Current substrate coverage:
 
 Series coverage:
 
-- implemented: MOB, MECH, MAT, CTRL
+- implemented: MOB, MECH, MAT, CTRL, THERM
 - planned: ELEC, LOGIC, MIL
 
 Known gaps:
 
 - generalized power-protection and automation interlock domains are future work
+- thermal runaway and advanced thermal protection dynamics beyond hooks are future THERM work
 
 ## 3) Governance Rules
 
@@ -245,6 +249,29 @@ ELEC-0 domain declaration:
   - macro (`E0`) bookkeeping baseline
   - meso (`E1`) phasor approximation
   - micro (`E2`) ROI-limited waveform lab tier (optional)
+
+THERM-0 domain declaration:
+
+- `THERM` explicitly maps to:
+  - `matter_transformation` (energy dissipation bookkeeping and conversion accounting)
+  - `measurement_verification` (temperature and heat-loss observations)
+  - `environment_living_systems` (temperature field substrate coupling)
+  - `safety_protection` (overtemperature and runaway hooks)
+- thermal tier declaration:
+  - macro (`T0`) bookkeeping baseline
+  - meso (`T1`) thermal-network conduction policy layer
+  - micro (`T2`) ROI diffusion tier (future/optional)
+
+PHYS-0 domain declaration:
+
+- `PHYS` explicitly maps to:
+  - `motion_force_transmission` (canonical momentum/force/torque substrate contract)
+  - `measurement_verification` (exception/proof/ledger observability)
+  - `time_synchronization` (deterministic replay/proof window equivalence)
+- physics tier declaration:
+  - macro (`P0`) conservation-ledger and invariant accounting
+  - meso (`P1`) constitutive coupling and network/field bridge policy
+  - micro (`P2`) ROI-only force/impulse integration contract (future PHYS-1+)
 
 ## 4) Non-Goals
 

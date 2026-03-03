@@ -101,7 +101,21 @@ ELEC-0 canonical action mapping examples:
 - `flip breaker` -> `DECIDE/AUTHORIZE`
 - `lockout / tagout` -> `MAINTAIN`
 
+THERM-0 canonical action mapping examples:
+
+- `insulate` -> `MAINTAIN`
+- `cool` -> `MAINTAIN`
+- `vent heat` -> `STORE/CONTAIN`
+- `measure temperature` -> `SENSE/MEASURE`
+
 These remain templates over existing substrates; they do not introduce electrical-only family classes.
+
+PHYS-0 canonical action mapping examples:
+
+- `apply force` -> `TRANSFORM` when the action directly mutates physical state through lawful process execution.
+- `apply impulse` -> `TRANSFORM` when the action directly changes momentum through constitutive/effect pathways.
+- `inject energy` -> `TRANSFORM` by default when it performs physical quantity transformation.
+- `authorize force application` / `authorize energy injection` -> `DECIDE/AUTHORIZE` when the action only grants policy authority and does not mutate physics directly.
 
 ## 4) Action Template Contract
 
