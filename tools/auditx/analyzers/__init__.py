@@ -204,6 +204,7 @@ from analyzers import e175_institutional_bypass_smell
 from analyzers import e176_affordance_gap_smell
 from analyzers import e177_inline_protection_smell
 from analyzers import e178_missing_failsafe_smell
+from analyzers import e179_inline_response_curve_smell
 
 
 ANALYZERS = (
@@ -411,6 +412,7 @@ ANALYZERS = (
     e176_affordance_gap_smell,
     e177_inline_protection_smell,
     e178_missing_failsafe_smell,
+    e179_inline_response_curve_smell,
 )
 
 
