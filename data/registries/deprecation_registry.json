@@ -1,0 +1,117 @@
+{
+  "schema_id": "dominium.registry.deprecation",
+  "schema_version": "1.0.0",
+  "record": {
+    "deprecations": [
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.runtime.graph_substrate",
+        "replacement_id": "src/core/graph/network_graph_engine.py",
+        "reason": "ABS core graph substrate is canonical",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "ARCH-REF-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.inline_response_curve.fields.freeze_threshold",
+        "replacement_id": "model.therm_ignite_stub",
+        "reason": "Inline freeze threshold logic remains during staged constitutive migration",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "REFACTOR-PATCH-1",
+          "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+          "source_path": "src/fields/field_engine.py",
+          "line_start": 720
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.inline_response_curve.mech.stress_ratio",
+        "replacement_id": "model.mech.stress.response_stub",
+        "reason": "Stress response remains inline pending constitutive migration route",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "REFACTOR-PATCH-1",
+          "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+          "source_path": "src/mechanics/structural_graph_engine.py",
+          "line_start": 550
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.inline_response_curve.mobility.wear_threshold",
+        "replacement_id": "model.mech.fatigue_rate",
+        "reason": "Wear threshold normalization still inline in maintenance path",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "REFACTOR-PATCH-1",
+          "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+          "source_path": "src/mobility/maintenance/wear_engine.py",
+          "line_start": 165
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.inline_response_curve.mobility.track_wear",
+        "replacement_id": "model.mech.fatigue_rate",
+        "reason": "Track wear clamping remains inline pending model binding split",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "REFACTOR-PATCH-1",
+          "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+          "source_path": "src/mobility/micro/constrained_motion_solver.py",
+          "line_start": 309
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.inline_response_curve.mobility.congestion_ratio",
+        "replacement_id": "model.mobility.congestion.response_stub",
+        "reason": "Congestion ratio normalization remains inline pending model rollout",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "REFACTOR-PATCH-1",
+          "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+          "source_path": "src/mobility/traffic/traffic_engine.py",
+          "line_start": 125
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.inline_response_curve.mobility.speed_multiplier",
+        "replacement_id": "model.mobility.speed.policy_stub",
+        "reason": "Travel speed multiplier remains inline pending full constitutive extraction",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "REFACTOR-PATCH-1",
+          "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+          "source_path": "src/mobility/travel/travel_engine.py",
+          "line_start": 621
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "deprecated_id": "legacy.inline_response_curve.signals.acceptance_threshold",
+        "replacement_id": "model.sig.trust_acceptance_stub",
+        "reason": "Trust acceptance threshold remains inline during compatibility stage",
+        "removal_target_version": "2.0.0",
+        "status": "active",
+        "extensions": {
+          "source": "REFACTOR-PATCH-1",
+          "invariant_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+          "source_path": "src/signals/trust/trust_engine.py",
+          "line_start": 346
+        }
+      }
+    ]
+  }
+}
