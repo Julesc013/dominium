@@ -329,6 +329,25 @@
       "affordance_ids": [
         "matter_transformation",
         "motion_force_transmission",
+        "containment_interfaces",
+        "measurement_verification",
+        "communication_coordination",
+        "institutions_contracts",
+        "environment_living_systems",
+        "time_synchronization",
+        "safety_protection"
+      ],
+      "series_id": "META_MODEL",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "matter_transformation",
+        "motion_force_transmission",
         "safety_protection",
         "environment_living_systems"
       ],

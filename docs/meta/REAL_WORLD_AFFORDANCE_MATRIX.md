@@ -227,6 +227,12 @@ Mandatory:
 - every declared affordance mapping must list substrates, tiers, determinism, and replay/proof impact
 - no new ontology primitive can bypass matrix declaration
 
+Constitutive response mapping:
+
+- realism-detail response logic (thresholds, response curves, attenuation laws, wear response) is governed by `META-MODEL`
+- new realism details must map through registered constitutive models, not bespoke inline domain logic
+- RWAM machine mappings must include `META_MODEL` affordance coverage declarations where those details are touched
+
 ## 4) Non-Goals
 
 - no runtime behavior changes
