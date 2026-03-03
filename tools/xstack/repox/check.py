@@ -13610,6 +13610,61 @@ def _append_thermal_invariant_findings(
                 rule_id="INV-FIRE-MODEL-ONLY",
             )
         )
+    thermal_stress_tool_rel = "tools/thermal/tool_run_therm_stress.py"
+    thermal_stress_tool_text = _file_text(repo_root, thermal_stress_tool_rel)
+    for token in (
+        "max_cost_units_per_tick",
+        "remaining_budget",
+        "solve_thermal_network_t1(",
+        "solve_thermal_network_t0(",
+    ):
+        if token in thermal_stress_tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=thermal_stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="thermal stress execution must enforce deterministic budget envelopes and explicit T1/T0 downgrade paths",
+                rule_id="INV-THERM-BUDGETED",
+            )
+        )
+    for token in (
+        "control_decision_log",
+        "thermal_degradation_event_rows",
+        "degrade.therm",
+    ):
+        if token in thermal_stress_tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=thermal_stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="thermal degradation decisions must be explicit and logged in deterministic decision/event streams",
+                rule_id="INV-THERM-DEGRADE-LOGGED",
+            )
+        )
+    proof_bundle_rel = "src/control/proof/control_proof_bundle.py"
+    proof_bundle_text = _file_text(repo_root, proof_bundle_rel)
+    for token in (
+        "heat_input_hash_chain",
+        "thermal_heat_input_log_rows",
+    ):
+        if token in thermal_stress_tool_text or token in proof_bundle_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=thermal_stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="thermal heat inputs must be logged and hash-chained for replay/proof auditability",
+                rule_id="INV-HEAT_INPUTS-LOGGED",
+            )
+        )
     for token in (
         "_cooling_binding_rows(",
         "_apply_boundary_exchange_outputs(",
