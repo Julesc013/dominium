@@ -1225,6 +1225,13 @@
         "1.0.0"
       ]
     },
+    "fault_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "fidelity_allocation": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1429,6 +1436,13 @@
       ]
     },
     "graph_partition": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "grounding_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2353,6 +2367,20 @@
       ]
     },
     "progress_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "protection_device": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "protection_settings": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

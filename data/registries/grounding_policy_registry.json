@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.grounding_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.grounding_policy_registry",
+    "registry_version": "1.0.0",
+    "grounding_policies": [
+      {
+        "schema_version": "1.0.0",
+        "grounding_policy_id": "ground.basic_grounded",
+        "schema_ref": "dominium.schema.electric.grounding_policy@1.0.0",
+        "extensions": {
+          "default_mode": "grounded",
+          "gfci_required": true,
+          "fault_detection_rule_id": "rule.ground.imbalance_basic"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "grounding_policy_id": "ground.floating_lab",
+        "schema_ref": "dominium.schema.electric.grounding_policy@1.0.0",
+        "extensions": {
+          "default_mode": "floating",
+          "gfci_required": false,
+          "fault_detection_rule_id": "rule.ground.floating_notice"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "grounding_policy_id": "ground.rank_strict_grounded",
+        "schema_ref": "dominium.schema.electric.grounding_policy@1.0.0",
+        "extensions": {
+          "default_mode": "grounded",
+          "gfci_required": true,
+          "fault_detection_rule_id": "rule.ground.rank_strict"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

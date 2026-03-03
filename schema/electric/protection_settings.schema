@@ -1,0 +1,25 @@
+SCHEMA: electric/protection_settings.schema
+schema_id: dominium.schema.electric.protection_settings
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic protection threshold and coordination profile for electrical protection devices.
+
+REQUIRED SHAPE:
+record protection_settings
+  required:
+    - schema_version: semver
+    - settings_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - trip_threshold_P: int
+    - trip_threshold_S: int
+    - trip_delay_ticks: int
+    - gfci_threshold: int
+    - coordination_group_id: id
+
+INVARIANTS:
+- Settings are interpreted by deterministic protection/co-ordination policy evaluation.
+- Values are deterministic configuration, not runtime-randomized.
