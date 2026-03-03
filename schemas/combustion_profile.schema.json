@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combustion Profile Schema",
+  "version": "1.0.0",
+  "description": "Deterministic THERM-4 combustion profile for ignition/combustion stub models.",
+  "x-doc-ref": [
+    "docs/thermal/FIRE_AND_RUNAWAY_MODEL.md",
+    "docs/audit/FIRE_RUNAWAY_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "material_id",
+    "ignition_threshold",
+    "heat_release_rate",
+    "fuel_consumption_rate",
+    "spread_threshold",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "material_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ignition_threshold": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "heat_release_rate": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fuel_consumption_rate": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spread_threshold": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "material_id": "material.wood_basic",
+      "ignition_threshold": 500,
+      "heat_release_rate": 220,
+      "fuel_consumption_rate": 20,
+      "spread_threshold": 420,
+      "deterministic_fingerprint": "27c5612ce2f2c5eb08f8e175d0c2aca43d447a477f2f1a82b4d36dc2ca60a51f",
+      "extensions": {
+        "initial_fuel": 1200,
+        "pollutant_emission_rate": 55
+      }
+    }
+  ]
+}
