@@ -13080,6 +13080,86 @@ def _append_safety_invariant_findings(
             break
 
 
+def _append_constitutive_model_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+
+    constitution_rel = "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+    catalog_rel = "docs/meta/CONSTITUTIVE_MODEL_CATALOG.md"
+    for rel_path in (constitution_rel, catalog_rel):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="",
+                message="constitutive model governance docs missing; realism response curves cannot be centrally registered",
+                rule_id="INV-REALISM-DETAIL-MUST-BE-MODEL",
+            )
+        )
+
+    inline_response_patterns = (
+        re.compile(
+            r"\b(?:threshold|multiplier|attenuation|friction|wear|drift|derail|curve|coefficient|ratio)\w*\b\s*=\s*[^#\n]*(?:\*|/|\+|-|min\(|max\(|clamp)",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"\bif\b[^\n]*(?:friction|wear|attenuation|curvature|threshold|ratio|temperature|moisture|wind|radiation)\b[^\n]*(?:>=|<=|>|<)",
+            re.IGNORECASE,
+        ),
+    )
+    scan_prefixes = (
+        "src/fields/",
+        "src/mobility/",
+        "src/signals/",
+        "src/mechanics/",
+    )
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in inline_response_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="realism detail response logic should be registered as a constitutive model (warn phase)",
+                    rule_id="INV-REALISM-DETAIL-MUST-BE-MODEL",
+                )
+            )
+            break
+
+
 def _append_signal_transport_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -13675,6 +13755,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_safety_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_constitutive_model_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
