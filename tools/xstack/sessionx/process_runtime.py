@@ -382,12 +382,17 @@ from src.mobility.maintenance import (
     wear_type_rows_by_id,
 )
 from src.electric import (
+    ElectricFaultError,
     ElectricError,
+    REFUSAL_ELEC_FAULT_INVALID,
     REFUSAL_ELEC_NETWORK_INVALID,
     REFUSAL_ELEC_SPEC_NONCOMPLIANT,
     build_power_flow_channel,
+    detect_faults,
     evaluate_connection_spec_compatibility,
+    grounding_policy_rows_by_id,
     normalize_elec_edge_payload,
+    normalize_fault_state_rows,
     solve_power_network_e0,
     solve_power_network_e1,
 )
@@ -22145,6 +22150,90 @@ def execute_intent(
         state["elec_node_status_rows"] = [dict(row) for row in list(elec_node_status_rows or []) if isinstance(row, Mapping)]
         state["power_network_graphs"] = [dict(row) for row in list(graph_candidates or []) if isinstance(row, Mapping)]
 
+        max_fault_evals = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get(
+                        "max_fault_evals_per_tick",
+                        (dict(policy_context or {})).get("elec_max_fault_evals_per_tick", len(elec_edge_status_rows)),
+                    ),
+                    len(elec_edge_status_rows),
+                ),
+            )
+        )
+        grounding_registry_payload = _policy_payload(policy_context, "grounding_policy_registry")
+        if not grounding_registry_payload:
+            grounding_registry_payload = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/grounding_policy_registry.json",
+                default_payload={"grounding_policies": []},
+            )
+        grounding_policy_rows = grounding_policy_rows_by_id(grounding_registry_payload)
+        requested_grounding_policy_id = (
+            str(inputs.get("grounding_policy_id", (dict(policy_context or {})).get("grounding_policy_id", "ground.basic_grounded"))).strip()
+            or "ground.basic_grounded"
+        )
+        selected_grounding_policy = dict(
+            grounding_policy_rows.get(requested_grounding_policy_id)
+            or grounding_policy_rows.get("ground.basic_grounded")
+            or {
+                "grounding_policy_id": requested_grounding_policy_id,
+                "default_mode": "grounded",
+                "gfci_required": False,
+                "fault_detection_rule_id": "rule.ground.imbalance_basic",
+            }
+        )
+        protection_settings_by_target_id = {}
+        for row in list(state.get("elec_protection_settings") or []):
+            if not isinstance(row, Mapping):
+                continue
+            target_id = (
+                str(row.get("target_id", "")).strip()
+                or str((dict(row.get("extensions") or {})).get("target_id", "")).strip()
+            )
+            if not target_id:
+                continue
+            protection_settings_by_target_id[target_id] = dict(row)
+        fault_rows = normalize_fault_state_rows(state.get("elec_fault_states") or [])
+        try:
+            fault_eval = detect_faults(
+                edge_status_rows=elec_edge_status_rows,
+                channel_rows=elec_flow_channels,
+                fault_rows=fault_rows,
+                current_tick=int(current_tick),
+                max_fault_evals=int(max_fault_evals),
+                grounding_policy_row=selected_grounding_policy,
+                protection_settings_rows_by_target_id=protection_settings_by_target_id,
+            )
+        except ElectricFaultError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix electrical fault/grounding policy inputs and retry process.elec.network_tick.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs",
+            )
+        state["elec_fault_states"] = [dict(row) for row in list(fault_eval.get("fault_rows") or []) if isinstance(row, Mapping)]
+        existing_fault_events = [dict(row) for row in list(state.get("elec_fault_events") or []) if isinstance(row, Mapping)]
+        merged_fault_events = normalize_safety_event_rows(
+            existing_fault_events + [dict(row) for row in list(fault_eval.get("events") or []) if isinstance(row, Mapping)]
+        )
+        state["elec_fault_events"] = [dict(row) for row in list(merged_fault_events or []) if isinstance(row, Mapping)]
+        state["fault_state_hash_chain"] = str(fault_eval.get("fault_state_hash_chain", ""))
+        state["elec_fault_runtime_state"] = {
+            "last_tick": int(max(0, _as_int(current_tick, 0))),
+            "last_fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
+            "last_budget_outcome": str(fault_eval.get("budget_outcome", "complete")).strip() or "complete",
+            "last_detected_fault_count": int(len(list(fault_eval.get("detected_fault_ids") or []))),
+            "last_active_fault_count": int(len(list(fault_eval.get("active_fault_ids") or []))),
+            "last_deferred_target_ids": sorted(set(str(item).strip() for item in list(fault_eval.get("deferred_target_ids") or []) if str(item).strip())),
+            "extensions": {
+                "grounding_policy_id": str(selected_grounding_policy.get("grounding_policy_id", "")).strip() or requested_grounding_policy_id,
+                "fault_detection_rule_id": str(selected_grounding_policy.get("fault_detection_rule_id", "")).strip() or None,
+            },
+        }
+
         if breaker_instances and overload_context_overrides:
             safety_registry = _load_safety_pattern_registry(policy_context=policy_context)
             pattern_rows_by_id = safety_pattern_rows_by_id(safety_registry)
@@ -22225,9 +22314,13 @@ def execute_intent(
             "edge_status_count": int(len(elec_edge_status_rows)),
             "node_status_count": int(len(elec_node_status_rows)),
             "flow_channel_count": int(len(elec_flow_channels)),
+            "fault_state_count": int(len(list(state.get("elec_fault_states") or []))),
+            "active_fault_count": int(len(list(fault_eval.get("active_fault_ids") or []))),
+            "fault_budget_outcome": str(fault_eval.get("budget_outcome", "complete")).strip() or "complete",
             "downgraded_graph_ids": sorted(set(downgraded_graph_ids)),
             "budget_outcome": str(elec_network_runtime_state.get("last_budget_outcome", "complete")),
             "power_flow_hash": str(power_flow_hash),
+            "fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.effect_apply":

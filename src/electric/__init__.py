@@ -1,5 +1,14 @@
 """ELEC-1 package exports."""
 
+from .fault import (
+    REFUSAL_ELEC_FAULT_INVALID,
+    ElectricFaultError,
+    build_fault_state,
+    detect_faults,
+    fault_kind_rows_by_id,
+    grounding_policy_rows_by_id,
+    normalize_fault_state_rows,
+)
 from .power_network_engine import (
     ElectricError,
     REFUSAL_ELEC_NETWORK_INVALID,
@@ -15,6 +24,13 @@ from .power_network_engine import (
 )
 
 __all__ = [
+    "REFUSAL_ELEC_FAULT_INVALID",
+    "ElectricFaultError",
+    "build_fault_state",
+    "detect_faults",
+    "fault_kind_rows_by_id",
+    "grounding_policy_rows_by_id",
+    "normalize_fault_state_rows",
     "ElectricError",
     "REFUSAL_ELEC_NETWORK_INVALID",
     "REFUSAL_ELEC_SPEC_NONCOMPLIANT",
