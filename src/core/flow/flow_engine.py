@@ -38,6 +38,20 @@ def _sorted_unique_strings(values: object) -> List[str]:
     return sorted(set(str(item).strip() for item in values if str(item).strip()))
 
 
+def _ordered_unique_strings(values: object) -> List[str]:
+    if not isinstance(values, list):
+        return []
+    out: List[str] = []
+    seen = set()
+    for item in values:
+        token = str(item).strip()
+        if not token or token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
+
+
 def _round_div_away_from_zero(numerator: int, denominator: int) -> int:
     if int(denominator) == 0:
         raise FlowEngineError(
@@ -66,6 +80,338 @@ def _canonicalize_value(value: object) -> object:
     if isinstance(value, list):
         return [_canonicalize_value(item) for item in list(value)]
     return value
+
+
+def _normalize_component_map(value: object) -> Dict[str, int]:
+    if not isinstance(value, Mapping):
+        return {}
+    out: Dict[str, int] = {}
+    for key in sorted(value.keys(), key=lambda item: str(item)):
+        token = str(key).strip()
+        if not token:
+            continue
+        out[token] = int(max(0, _as_int(value.get(key, 0), 0)))
+    return out
+
+
+def _component_policy_row_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    root = dict(registry_payload or {})
+    rows = root.get("policies")
+    if not isinstance(rows, list):
+        rows = ((root.get("record") or {}).get("policies") or [])
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in list(rows or []) if isinstance(item, dict)), key=lambda item: str(item.get("policy_id", ""))):
+        policy_id = str(row.get("policy_id", "")).strip()
+        if not policy_id:
+            continue
+        raw_rules = dict(row.get("per_quantity_rules") or {}) if isinstance(row.get("per_quantity_rules"), Mapping) else {}
+        normalized_rules: Dict[str, dict] = {}
+        for quantity_id in sorted(raw_rules.keys(), key=lambda item: str(item)):
+            token = str(quantity_id).strip()
+            if not token:
+                continue
+            raw_rule = dict(raw_rules.get(quantity_id) or {}) if isinstance(raw_rules.get(quantity_id), Mapping) else {}
+            cap_limit = raw_rule.get("capacity_limit")
+            if cap_limit is not None:
+                cap_limit = int(max(0, _as_int(cap_limit, 0)))
+            cap_scale = raw_rule.get("capacity_scale_permille")
+            if cap_scale is not None:
+                cap_scale = int(max(0, _as_int(cap_scale, 0)))
+            loss_fraction = raw_rule.get("loss_fraction")
+            if loss_fraction is not None:
+                loss_fraction = int(max(0, _as_int(loss_fraction, 0)))
+            transform_to_quantity_id = raw_rule.get("transform_to_quantity_id")
+            transform_to_quantity_id = None if transform_to_quantity_id is None else str(transform_to_quantity_id).strip() or None
+            preserve_conservation = raw_rule.get("preserve_conservation")
+            if preserve_conservation is not None:
+                preserve_conservation = bool(preserve_conservation)
+            normalized_rules[token] = {
+                "capacity_limit": cap_limit,
+                "capacity_scale_permille": cap_scale,
+                "loss_fraction": loss_fraction,
+                "transform_to_quantity_id": transform_to_quantity_id,
+                "preserve_conservation": preserve_conservation,
+                "extensions": dict(_canonicalize_value(dict(raw_rule.get("extensions") or {}))),
+            }
+        out[policy_id] = {
+            "schema_version": "1.0.0",
+            "policy_id": policy_id,
+            "per_quantity_rules": normalized_rules,
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(_canonicalize_value(dict(row.get("extensions") or {}))),
+        }
+    return out
+
+
+def _quantity_bundle_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    root = dict(registry_payload or {})
+    rows = root.get("quantity_bundles")
+    if not isinstance(rows, list):
+        rows = ((root.get("record") or {}).get("quantity_bundles") or [])
+    out: Dict[str, dict] = {}
+    for row in sorted((item for item in list(rows or []) if isinstance(item, dict)), key=lambda item: str(item.get("bundle_id", ""))):
+        bundle_id = str(row.get("bundle_id", "")).strip()
+        if not bundle_id:
+            continue
+        quantity_ids = _ordered_unique_strings(list(row.get("quantity_ids") or []))
+        if not quantity_ids:
+            continue
+        out[bundle_id] = {
+            "schema_version": "1.0.0",
+            "bundle_id": bundle_id,
+            "quantity_ids": quantity_ids,
+            "description": str(row.get("description", "")).strip(),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(_canonicalize_value(dict(row.get("extensions") or {}))),
+        }
+    return out
+
+
+def _allocate_total_by_component_weights(*, total: int, component_ids: List[str], weights: Mapping[str, int] | None = None) -> Dict[str, int]:
+    normalized_total = int(max(0, _as_int(total, 0)))
+    ordered_ids = [str(item).strip() for item in list(component_ids or []) if str(item).strip()]
+    if not ordered_ids:
+        return {}
+    weight_map_raw = dict(weights or {})
+    weight_map: Dict[str, int] = {}
+    for component_id in ordered_ids:
+        raw_weight = weight_map_raw.get(component_id)
+        weight_map[component_id] = int(max(0, _as_int(raw_weight, 0)))
+    if all(value <= 0 for value in weight_map.values()):
+        weight_map = dict((component_id, 1) for component_id in ordered_ids)
+    weight_sum = int(sum(weight_map.values()))
+    if weight_sum <= 0:
+        return dict((component_id, 0) for component_id in ordered_ids)
+    out: Dict[str, int] = {}
+    allocated = 0
+    for component_id in ordered_ids:
+        numerator = int(normalized_total) * int(weight_map.get(component_id, 0))
+        share = int(max(0, _round_div_away_from_zero(numerator, weight_sum)))
+        out[component_id] = int(share)
+        allocated += int(share)
+    if allocated > normalized_total:
+        overflow = int(allocated - normalized_total)
+        for component_id in reversed(ordered_ids):
+            if overflow <= 0:
+                break
+            current = int(out.get(component_id, 0))
+            if current <= 0:
+                continue
+            delta = min(current, overflow)
+            out[component_id] = int(current - delta)
+            overflow -= int(delta)
+    elif allocated < normalized_total:
+        remainder = int(normalized_total - allocated)
+        for component_id in ordered_ids:
+            if remainder <= 0:
+                break
+            out[component_id] = int(out.get(component_id, 0) + 1)
+            remainder -= 1
+    return dict((component_id, int(out.get(component_id, 0))) for component_id in ordered_ids)
+
+
+def _sum_component_map(values: Mapping[str, object] | None) -> int:
+    if not isinstance(values, Mapping):
+        return 0
+    total = 0
+    for key in values.keys():
+        total += int(max(0, _as_int(values.get(key, 0), 0)))
+    return int(max(0, total))
+
+
+def _take_from_component_map(
+    *,
+    component_map: Mapping[str, object] | None,
+    amount: int,
+    component_ids: List[str],
+    weights: Mapping[str, int] | None = None,
+) -> Dict[str, int]:
+    normalized_map = _normalize_component_map(component_map)
+    target = int(max(0, _as_int(amount, 0)))
+    if target <= 0:
+        return dict((component_id, 0) for component_id in list(component_ids or []))
+    available_total = _sum_component_map(normalized_map)
+    if available_total <= 0:
+        return _allocate_total_by_component_weights(
+            total=target,
+            component_ids=list(component_ids or []),
+            weights=weights,
+        )
+    desired = _allocate_total_by_component_weights(
+        total=min(target, available_total),
+        component_ids=list(component_ids or []),
+        weights=weights,
+    )
+    out: Dict[str, int] = {}
+    taken = 0
+    for component_id in list(component_ids or []):
+        value = int(max(0, _as_int(desired.get(component_id, 0), 0)))
+        available = int(max(0, _as_int(normalized_map.get(component_id, 0), 0)))
+        value = min(value, available)
+        out[component_id] = int(value)
+        taken += int(value)
+    if taken < min(target, available_total):
+        remainder = int(min(target, available_total) - taken)
+        for component_id in list(component_ids or []):
+            if remainder <= 0:
+                break
+            available = int(max(0, _as_int(normalized_map.get(component_id, 0), 0)))
+            current = int(out.get(component_id, 0))
+            room = int(max(0, available - current))
+            if room <= 0:
+                continue
+            delta = min(room, remainder)
+            out[component_id] = int(current + delta)
+            remainder -= int(delta)
+    return dict((component_id, int(max(0, _as_int(out.get(component_id, 0), 0)))) for component_id in list(component_ids or []))
+
+
+def _subtract_component_maps(base: Mapping[str, object] | None, delta: Mapping[str, object] | None) -> Dict[str, int]:
+    base_map = _normalize_component_map(base)
+    delta_map = _normalize_component_map(delta)
+    out: Dict[str, int] = {}
+    for key in sorted(set(list(base_map.keys()) + list(delta_map.keys()))):
+        value = int(max(0, int(base_map.get(key, 0)) - int(delta_map.get(key, 0))))
+        if value > 0:
+            out[key] = value
+    return out
+
+
+def _add_component_maps(left: Mapping[str, object] | None, right: Mapping[str, object] | None) -> Dict[str, int]:
+    left_map = _normalize_component_map(left)
+    right_map = _normalize_component_map(right)
+    out: Dict[str, int] = {}
+    for key in sorted(set(list(left_map.keys()) + list(right_map.keys()))):
+        value = int(max(0, int(left_map.get(key, 0)) + int(right_map.get(key, 0))))
+        if value > 0:
+            out[key] = value
+    return out
+
+
+def _bundle_component_outcome(
+    *,
+    transferred_amount: int,
+    lost_amount: int,
+    component_ids: List[str],
+    capacity_policy_row: Mapping[str, object] | None,
+    loss_policy_row: Mapping[str, object] | None,
+    scale: int,
+    channel_loss_fraction: int,
+    channel_extensions: Mapping[str, object] | None,
+) -> dict:
+    ids = [str(item).strip() for item in list(component_ids or []) if str(item).strip()]
+    if not ids:
+        return {
+            "transferred_components": {},
+            "lost_components": {},
+            "loss_transforms": {},
+            "conservation_exceptions": [],
+        }
+    ext = dict(channel_extensions or {})
+    requested_weights = _normalize_component_map(ext.get("component_weights"))
+    transfer_components = _allocate_total_by_component_weights(
+        total=int(max(0, _as_int(transferred_amount, 0))),
+        component_ids=ids,
+        weights=requested_weights,
+    )
+    lost_components = _allocate_total_by_component_weights(
+        total=int(max(0, _as_int(lost_amount, 0))),
+        component_ids=ids,
+        weights=requested_weights,
+    )
+
+    capacity_rules = dict((dict(capacity_policy_row or {}).get("per_quantity_rules") or {}))
+    adjusted_transfer: Dict[str, int] = dict((component_id, int(transfer_components.get(component_id, 0))) for component_id in ids)
+    for component_id in ids:
+        rule = dict(capacity_rules.get(component_id) or {})
+        value = int(adjusted_transfer.get(component_id, 0))
+        capacity_limit = rule.get("capacity_limit")
+        if capacity_limit is not None:
+            value = min(value, int(max(0, _as_int(capacity_limit, 0))))
+        capacity_scale_permille = rule.get("capacity_scale_permille")
+        if capacity_scale_permille is not None:
+            scaled = _round_div_away_from_zero(
+                int(adjusted_transfer.get(component_id, 0)) * int(max(0, _as_int(capacity_scale_permille, 0))),
+                1000,
+            )
+            value = min(value, int(max(0, scaled)))
+        trimmed = int(max(0, int(adjusted_transfer.get(component_id, 0)) - int(value)))
+        adjusted_transfer[component_id] = int(value)
+        if trimmed > 0:
+            lost_components[component_id] = int(max(0, int(lost_components.get(component_id, 0)) + int(trimmed)))
+
+    transfer_total = int(sum(adjusted_transfer.values()))
+    target_transfer = int(max(0, _as_int(transferred_amount, 0)))
+    if transfer_total < target_transfer:
+        remainder = int(target_transfer - transfer_total)
+        for component_id in ids:
+            if remainder <= 0:
+                break
+            adjusted_transfer[component_id] = int(adjusted_transfer.get(component_id, 0) + 1)
+            remainder -= 1
+    elif transfer_total > target_transfer:
+        overflow = int(transfer_total - target_transfer)
+        for component_id in reversed(ids):
+            if overflow <= 0:
+                break
+            current = int(adjusted_transfer.get(component_id, 0))
+            if current <= 0:
+                continue
+            delta = min(current, overflow)
+            adjusted_transfer[component_id] = int(current - delta)
+            lost_components[component_id] = int(max(0, int(lost_components.get(component_id, 0)) + int(delta)))
+            overflow -= int(delta)
+
+    loss_rules = dict((dict(loss_policy_row or {}).get("per_quantity_rules") or {}))
+    loss_transforms: Dict[str, int] = {}
+    conservation_exceptions: List[dict] = []
+    for component_id in ids:
+        rule = dict(loss_rules.get(component_id) or {})
+        rule_loss_fraction = rule.get("loss_fraction")
+        if rule_loss_fraction is not None:
+            # Re-partition total loss deterministically with per-component override.
+            desired = _round_div_away_from_zero(
+                int(max(0, _as_int(adjusted_transfer.get(component_id, 0), 0) + _as_int(lost_components.get(component_id, 0), 0)))
+                * int(max(0, _as_int(rule_loss_fraction, 0))),
+                int(max(1, _as_int(scale, 1))),
+            )
+            current_loss = int(max(0, _as_int(lost_components.get(component_id, 0), 0)))
+            if desired > current_loss:
+                delta = int(desired - current_loss)
+                steal = min(delta, int(max(0, _as_int(adjusted_transfer.get(component_id, 0), 0))))
+                adjusted_transfer[component_id] = int(max(0, int(adjusted_transfer.get(component_id, 0)) - int(steal)))
+                lost_components[component_id] = int(current_loss + int(steal))
+            elif desired < current_loss:
+                delta = int(current_loss - desired)
+                lost_components[component_id] = int(max(0, current_loss - delta))
+                adjusted_transfer[component_id] = int(max(0, int(adjusted_transfer.get(component_id, 0)) + int(delta)))
+        transform_to_quantity_id = rule.get("transform_to_quantity_id")
+        transform_to_quantity_id = None if transform_to_quantity_id is None else str(transform_to_quantity_id).strip() or None
+        if transform_to_quantity_id:
+            loss_transforms[transform_to_quantity_id] = int(
+                max(0, int(loss_transforms.get(transform_to_quantity_id, 0)) + int(max(0, _as_int(lost_components.get(component_id, 0), 0))))
+            )
+        elif bool(rule.get("preserve_conservation", False)) and int(max(0, _as_int(lost_components.get(component_id, 0), 0))) > 0:
+            conservation_exceptions.append(
+                {
+                    "quantity_id": component_id,
+                    "lost_amount": int(max(0, _as_int(lost_components.get(component_id, 0), 0))),
+                    "reason": "missing_transform_target",
+                }
+            )
+
+    if int(max(0, _as_int(channel_loss_fraction, 0))) <= 0:
+        # Keep deterministic output stable for zero-loss channels.
+        loss_transforms = dict((key, int(loss_transforms[key])) for key in sorted(loss_transforms.keys()))
+    return {
+        "transferred_components": dict((component_id, int(max(0, _as_int(adjusted_transfer.get(component_id, 0), 0)))) for component_id in ids),
+        "lost_components": dict((component_id, int(max(0, _as_int(lost_components.get(component_id, 0), 0)))) for component_id in ids),
+        "loss_transforms": dict((key, int(loss_transforms[key])) for key in sorted(loss_transforms.keys())),
+        "conservation_exceptions": sorted(
+            (dict(row) for row in conservation_exceptions if isinstance(row, dict)),
+            key=lambda row: (str(row.get("quantity_id", "")), int(_as_int(row.get("lost_amount", 0), 0))),
+        ),
+    }
 
 
 def normalize_flow_solver_policy(row: Mapping[str, object]) -> dict:
@@ -117,10 +463,13 @@ def normalize_flow_channel(row: Mapping[str, object]) -> dict:
     channel_id = str(payload.get("channel_id", "")).strip()
     graph_id = str(payload.get("graph_id", "")).strip()
     quantity_id = str(payload.get("quantity_id", "")).strip()
+    quantity_bundle_id = str(payload.get("quantity_bundle_id", "")).strip()
+    component_capacity_policy_id = str(payload.get("component_capacity_policy_id", "")).strip()
+    component_loss_policy_id = str(payload.get("component_loss_policy_id", "")).strip()
     source_node_id = str(payload.get("source_node_id", "")).strip()
     sink_node_id = str(payload.get("sink_node_id", "")).strip()
     solver_policy_id = str(payload.get("solver_policy_id", "")).strip()
-    if not channel_id or not graph_id or not quantity_id or not source_node_id or not sink_node_id or not solver_policy_id:
+    if not channel_id or not graph_id or not source_node_id or not sink_node_id or not solver_policy_id:
         raise FlowEngineError(
             REFUSAL_CORE_FLOW_INVALID,
             "flow channel missing required identifiers",
@@ -128,9 +477,20 @@ def normalize_flow_channel(row: Mapping[str, object]) -> dict:
                 "channel_id": channel_id,
                 "graph_id": graph_id,
                 "quantity_id": quantity_id,
+                "quantity_bundle_id": quantity_bundle_id,
                 "source_node_id": source_node_id,
                 "sink_node_id": sink_node_id,
                 "solver_policy_id": solver_policy_id,
+            },
+        )
+    if (not quantity_id) and (not quantity_bundle_id):
+        raise FlowEngineError(
+            REFUSAL_CORE_FLOW_INVALID,
+            "flow channel requires quantity_id or quantity_bundle_id",
+            {
+                "channel_id": channel_id,
+                "quantity_id": quantity_id,
+                "quantity_bundle_id": quantity_bundle_id,
             },
         )
     capacity_per_tick = payload.get("capacity_per_tick")
@@ -173,11 +533,17 @@ def normalize_flow_channel(row: Mapping[str, object]) -> dict:
             "flow channel priority must be >= 0",
             {"channel_id": channel_id, "priority": int(priority)},
         )
+    schema_version = str(payload.get("schema_version", "")).strip()
+    if schema_version not in {"1.0.0", "1.1.0"}:
+        schema_version = "1.1.0" if quantity_bundle_id else "1.0.0"
     return {
-        "schema_version": "1.0.0",
+        "schema_version": schema_version,
         "channel_id": channel_id,
         "graph_id": graph_id,
-        "quantity_id": quantity_id,
+        "quantity_id": quantity_id or None,
+        "quantity_bundle_id": quantity_bundle_id or None,
+        "component_capacity_policy_id": component_capacity_policy_id or None,
+        "component_loss_policy_id": component_loss_policy_id or None,
         "source_node_id": source_node_id,
         "sink_node_id": sink_node_id,
         "capacity_per_tick": normalized_capacity,
@@ -202,14 +568,21 @@ def normalize_flow_transfer_event(row: Mapping[str, object]) -> dict:
     tick = max(0, _as_int(payload.get("tick", 0), 0))
     transferred_amount = max(0, _as_int(payload.get("transferred_amount", 0), 0))
     lost_amount = max(0, _as_int(payload.get("lost_amount", 0), 0))
+    transferred_components = _normalize_component_map(payload.get("transferred_components"))
+    lost_components = _normalize_component_map(payload.get("lost_components"))
+    schema_version = str(payload.get("schema_version", "")).strip()
+    if schema_version not in {"1.0.0", "1.1.0"}:
+        schema_version = "1.1.0" if transferred_components or lost_components else "1.0.0"
     ledger_delta_refs = _sorted_unique_strings(payload.get("ledger_delta_refs"))
     row_out = {
-        "schema_version": "1.0.0",
+        "schema_version": schema_version,
         "event_id": event_id,
         "tick": int(tick),
         "channel_id": channel_id,
         "transferred_amount": int(transferred_amount),
         "lost_amount": int(lost_amount),
+        "transferred_components": dict(transferred_components),
+        "lost_components": dict(lost_components),
         "ledger_delta_refs": list(ledger_delta_refs),
         "deterministic_fingerprint": str(payload.get("deterministic_fingerprint", "")).strip(),
         "extensions": dict(_canonicalize_value(dict(payload.get("extensions") or {}))),
@@ -315,15 +688,23 @@ def _normalize_channel_runtime(value: Mapping[str, object] | None) -> Dict[str, 
             continue
         row = dict(rows.get(key) or {})
         queued_amount = max(0, _as_int(row.get("queued_amount", 0), 0))
+        queued_components = _normalize_component_map(row.get("queued_components"))
         in_transit = []
         for item in sorted((entry for entry in list(row.get("in_transit") or []) if isinstance(entry, dict)), key=lambda entry: (_as_int(entry.get("ready_tick", 0), 0), _as_int(entry.get("amount", 0), 0))):
             amount = max(0, _as_int(item.get("amount", 0), 0))
             ready_tick = max(0, _as_int(item.get("ready_tick", 0), 0))
             if amount <= 0:
                 continue
-            in_transit.append({"ready_tick": int(ready_tick), "amount": int(amount)})
+            in_transit.append(
+                {
+                    "ready_tick": int(ready_tick),
+                    "amount": int(amount),
+                    "components": _normalize_component_map(item.get("components")),
+                }
+            )
         out[channel_id] = {
             "queued_amount": int(queued_amount),
+            "queued_components": dict(queued_components),
             "in_transit": list(in_transit),
         }
     return out
@@ -398,6 +779,9 @@ def tick_flow_channels(
     graph_row: Mapping[str, object] | None = None,
     partition_row: Mapping[str, object] | None = None,
     cost_units_per_channel: int = 1,
+    quantity_bundle_rows: Mapping[str, object] | None = None,
+    component_capacity_policies: Mapping[str, object] | None = None,
+    component_loss_policies: Mapping[str, object] | None = None,
 ) -> dict:
     if not isinstance(channels, list):
         channels = []
@@ -410,6 +794,47 @@ def tick_flow_channels(
     runtime_by_channel = _normalize_channel_runtime(channel_runtime)
     conserved_ids = set(_sorted_unique_strings(list(conserved_quantity_ids or [])))
     policy_rows = dict(solver_policies or {})
+    bundle_rows_by_id = _quantity_bundle_rows_by_id(quantity_bundle_rows)
+    if (not bundle_rows_by_id) and isinstance(quantity_bundle_rows, Mapping):
+        for key in sorted(quantity_bundle_rows.keys(), key=lambda item: str(item)):
+            token = str(key).strip()
+            row = dict(quantity_bundle_rows.get(key) or {}) if isinstance(quantity_bundle_rows.get(key), Mapping) else {}
+            quantity_ids = _ordered_unique_strings(list(row.get("quantity_ids") or []))
+            if token and quantity_ids:
+                bundle_rows_by_id[token] = {
+                    "schema_version": "1.0.0",
+                    "bundle_id": token,
+                    "quantity_ids": quantity_ids,
+                    "description": str(row.get("description", "")).strip(),
+                    "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                    "extensions": dict(_canonicalize_value(dict(row.get("extensions") or {}))),
+                }
+    capacity_policy_rows = _component_policy_row_by_id(component_capacity_policies)
+    if (not capacity_policy_rows) and isinstance(component_capacity_policies, Mapping):
+        for key in sorted(component_capacity_policies.keys(), key=lambda item: str(item)):
+            token = str(key).strip()
+            row = dict(component_capacity_policies.get(key) or {}) if isinstance(component_capacity_policies.get(key), Mapping) else {}
+            if token and isinstance(row.get("per_quantity_rules"), Mapping):
+                capacity_policy_rows[token] = {
+                    "schema_version": "1.0.0",
+                    "policy_id": token,
+                    "per_quantity_rules": dict(row.get("per_quantity_rules") or {}),
+                    "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                    "extensions": dict(_canonicalize_value(dict(row.get("extensions") or {}))),
+                }
+    loss_policy_rows = _component_policy_row_by_id(component_loss_policies)
+    if (not loss_policy_rows) and isinstance(component_loss_policies, Mapping):
+        for key in sorted(component_loss_policies.keys(), key=lambda item: str(item)):
+            token = str(key).strip()
+            row = dict(component_loss_policies.get(key) or {}) if isinstance(component_loss_policies.get(key), Mapping) else {}
+            if token and isinstance(row.get("per_quantity_rules"), Mapping):
+                loss_policy_rows[token] = {
+                    "schema_version": "1.0.0",
+                    "policy_id": token,
+                    "per_quantity_rules": dict(row.get("per_quantity_rules") or {}),
+                    "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                    "extensions": dict(_canonicalize_value(dict(row.get("extensions") or {}))),
+                }
 
     scale = max(1, _as_int(fixed_point_scale, 1))
     tick = max(0, _as_int(current_tick, 0))
@@ -435,8 +860,9 @@ def tick_flow_channels(
         sink_node_id = str(channel_row.get("sink_node_id", ""))
         source_available = max(0, _as_int(balances.get(source_node_id, 0), 0))
         sink_current = max(0, _as_int(balances.get(sink_node_id, 0), 0))
-        runtime_row = dict(runtime_by_channel.get(channel_id) or {"queued_amount": 0, "in_transit": []})
+        runtime_row = dict(runtime_by_channel.get(channel_id) or {"queued_amount": 0, "queued_components": {}, "in_transit": []})
         queued_amount = max(0, _as_int(runtime_row.get("queued_amount", 0), 0))
+        queued_components = _normalize_component_map(runtime_row.get("queued_components"))
         in_transit_rows = [
             dict(item)
             for item in sorted(
@@ -446,16 +872,52 @@ def tick_flow_channels(
         ]
 
         releasable_amount = 0
+        releasable_components: Dict[str, int] = {}
         future_in_transit: List[dict] = []
         for row in in_transit_rows:
             amount = max(0, _as_int(row.get("amount", 0), 0))
             ready_tick = max(0, _as_int(row.get("ready_tick", 0), 0))
+            components = _normalize_component_map(row.get("components"))
             if amount <= 0:
                 continue
             if ready_tick <= int(tick):
                 releasable_amount += int(amount)
+                for quantity_id in sorted(components.keys()):
+                    releasable_components[quantity_id] = int(
+                        max(0, int(releasable_components.get(quantity_id, 0)) + int(components.get(quantity_id, 0)))
+                    )
             else:
-                future_in_transit.append({"ready_tick": int(ready_tick), "amount": int(amount)})
+                future_in_transit.append(
+                    {
+                        "ready_tick": int(ready_tick),
+                        "amount": int(amount),
+                        "components": dict(components),
+                    }
+                )
+
+        channel_extensions = dict(channel_row.get("extensions") or {})
+        quantity_bundle_id = str(channel_row.get("quantity_bundle_id", "") or "").strip()
+        is_bundle_channel = bool(quantity_bundle_id)
+        component_ids: List[str] = []
+        if is_bundle_channel:
+            bundle_row = dict(bundle_rows_by_id.get(quantity_bundle_id) or {})
+            component_ids = _ordered_unique_strings(list(bundle_row.get("quantity_ids") or []))
+            if not component_ids:
+                component_ids = _ordered_unique_strings(list(channel_extensions.get("bundle_quantity_ids") or []))
+            if not component_ids and str(channel_row.get("quantity_id", "") or "").strip():
+                component_ids = [str(channel_row.get("quantity_id", "")).strip()]
+            if not component_ids:
+                raise FlowEngineError(
+                    REFUSAL_CORE_FLOW_INVALID,
+                    "bundle flow channel requires component quantity ids",
+                    {"channel_id": channel_id, "quantity_bundle_id": quantity_bundle_id},
+                )
+        component_capacity_policy_row = dict(
+            capacity_policy_rows.get(str(channel_row.get("component_capacity_policy_id", "") or "").strip()) or {}
+        )
+        component_loss_policy_row = dict(
+            loss_policy_rows.get(str(channel_row.get("component_loss_policy_id", "") or "").strip()) or {}
+        )
 
         requested_outbound = int(source_available + queued_amount)
         channel_capacity = channel_row.get("capacity_per_tick")
@@ -503,6 +965,7 @@ def tick_flow_channels(
             source_debit += int(source_overflow)
         if source_debit > 0:
             balances[source_node_id] = int(max(0, int(source_available) - int(source_debit)))
+        component_weights = _normalize_component_map(channel_extensions.get("component_weights"))
 
         delay_ticks = int(max(0, _as_int(channel_row.get("delay_ticks", 0), 0)))
         immediate_arrival = 0
@@ -542,16 +1005,53 @@ def tick_flow_channels(
         net_transfer = int(max(0, _as_int(transfer_result.get("delivered_mass", 0), 0)))
         loss_fraction_loss = int(max(0, _as_int(transfer_result.get("loss_mass", 0), 0)))
         total_lost = int(max(0, int(loss_fraction_loss) + int(spill_loss)))
+        transferred_components: Dict[str, int] = {}
+        lost_components: Dict[str, int] = {}
+        loss_transforms: Dict[str, int] = {}
+        conservation_exceptions: List[dict] = []
+        if is_bundle_channel:
+            effective_weights = dict(component_weights)
+            if not effective_weights:
+                effective_weights = _add_component_maps(queued_components, releasable_components)
+            bundle_outcome = _bundle_component_outcome(
+                transferred_amount=int(net_transfer),
+                lost_amount=int(total_lost),
+                component_ids=list(component_ids),
+                capacity_policy_row=component_capacity_policy_row,
+                loss_policy_row=component_loss_policy_row,
+                scale=int(scale),
+                channel_loss_fraction=int(channel_row.get("loss_fraction", 0)),
+                channel_extensions={**channel_extensions, "component_weights": effective_weights},
+            )
+            transferred_components = dict(bundle_outcome.get("transferred_components") or {})
+            lost_components = dict(bundle_outcome.get("lost_components") or {})
+            loss_transforms = dict(bundle_outcome.get("loss_transforms") or {})
+            conservation_exceptions = [
+                dict(row)
+                for row in list(bundle_outcome.get("conservation_exceptions") or [])
+                if isinstance(row, dict)
+            ]
+            net_transfer = int(max(0, _sum_component_map(transferred_components)))
+            total_lost = int(max(0, _sum_component_map(lost_components)))
         if net_transfer > 0:
             balances[sink_node_id] = int(max(0, int(sink_current) + int(net_transfer)))
 
+        queued_components_out = {}
+        if is_bundle_channel:
+            queued_components_out = _allocate_total_by_component_weights(
+                total=int(max(0, queued_after)),
+                component_ids=list(component_ids),
+                weights=queued_components if queued_components else component_weights,
+            )
         runtime_by_channel[channel_id] = {
             "queued_amount": int(max(0, int(queued_after))),
+            "queued_components": dict(queued_components_out),
             "in_transit": sorted(
                 (
                     {
                         "ready_tick": int(max(0, _as_int(item.get("ready_tick", 0), 0))),
                         "amount": int(max(0, _as_int(item.get("amount", 0), 0))),
+                        "components": _normalize_component_map(item.get("components")),
                     }
                     for item in future_in_transit
                     if max(0, _as_int(item.get("amount", 0), 0)) > 0
@@ -569,7 +1069,7 @@ def tick_flow_channels(
         )
         event_row = normalize_flow_transfer_event(
             {
-                "schema_version": "1.0.0",
+                "schema_version": "1.1.0" if is_bundle_channel else "1.0.0",
                 "event_id": "flow.event.{}".format(
                     canonical_sha256({"channel_id": channel_id, "tick": int(tick), "sequence": int(processed_count)})[:24]
                 ),
@@ -577,31 +1077,76 @@ def tick_flow_channels(
                 "channel_id": channel_id,
                 "transferred_amount": int(net_transfer),
                 "lost_amount": int(total_lost),
+                "transferred_components": dict(transferred_components),
+                "lost_components": dict(lost_components),
                 "ledger_delta_refs": list(ledger_refs),
                 "deterministic_fingerprint": "",
                 "extensions": {
                     "quantity_id": str(channel_row.get("quantity_id", "")),
+                    "quantity_bundle_id": quantity_bundle_id or None,
                     "source_node_id": source_node_id,
                     "sink_node_id": sink_node_id,
                     "launched_amount": int(launched_amount),
                     "releasable_amount": int(releasable_amount),
                     "spill_loss": int(spill_loss),
                     "policy_id": str(policy_row.get("solver_policy_id", "")),
+                    "loss_transforms": dict(loss_transforms),
+                    "conservation_exceptions": list(conservation_exceptions),
                 },
             }
         )
         transfer_events.append(event_row)
 
         if int(total_lost) > 0:
-            loss_row = {
-                "channel_id": channel_id,
-                "quantity_id": str(channel_row.get("quantity_id", "")),
-                "source_node_id": source_node_id,
-                "sink_node_id": sink_node_id,
-                "lost_amount": int(total_lost),
-                "conserved": bool(str(channel_row.get("quantity_id", "")) in conserved_ids),
-            }
-            loss_entries.append(loss_row)
+            if is_bundle_channel and lost_components:
+                component_rules = dict(component_loss_policy_row.get("per_quantity_rules") or {})
+                for quantity_id in sorted(lost_components.keys()):
+                    component_lost = int(max(0, _as_int(lost_components.get(quantity_id, 0), 0)))
+                    if component_lost <= 0:
+                        continue
+                    rule = dict(component_rules.get(quantity_id) or {})
+                    loss_row = {
+                        "channel_id": channel_id,
+                        "quantity_id": quantity_id,
+                        "source_node_id": source_node_id,
+                        "sink_node_id": sink_node_id,
+                        "lost_amount": int(component_lost),
+                        "conserved": bool(quantity_id in conserved_ids),
+                        "transform_to_quantity_id": (
+                            None
+                            if rule.get("transform_to_quantity_id") is None
+                            else str(rule.get("transform_to_quantity_id", "")).strip() or None
+                        ),
+                        "preserve_conservation": bool(rule.get("preserve_conservation", False)),
+                    }
+                    transform_to_quantity_id = loss_row.get("transform_to_quantity_id")
+                    if bool(loss_row.get("preserve_conservation", False)) and bool(loss_row.get("conserved", False)) and not transform_to_quantity_id:
+                        loss_row["conservation_exception_logged"] = True
+                        loss_row["exception_code"] = "exception.flow.missing_transform_target"
+                    loss_entries.append(loss_row)
+                    if transform_to_quantity_id and component_lost > 0:
+                        loss_entries.append(
+                            {
+                                "channel_id": channel_id,
+                                "quantity_id": str(transform_to_quantity_id),
+                                "source_node_id": source_node_id,
+                                "sink_node_id": sink_node_id,
+                                "lost_amount": int(component_lost),
+                                "conserved": bool(str(transform_to_quantity_id) in conserved_ids),
+                                "transformed_from_quantity_id": quantity_id,
+                                "transform_applied": True,
+                            }
+                        )
+            else:
+                loss_row = {
+                    "channel_id": channel_id,
+                    "quantity_id": str(channel_row.get("quantity_id", "")).strip() or quantity_bundle_id,
+                    "source_node_id": source_node_id,
+                    "sink_node_id": sink_node_id,
+                    "lost_amount": int(total_lost),
+                    "conserved": bool(str(channel_row.get("quantity_id", "")).strip() in conserved_ids),
+                }
+                loss_entries.append(loss_row)
 
         deferred_amount = int(
             max(0, int(runtime_by_channel[channel_id]["queued_amount"]))
@@ -610,12 +1155,15 @@ def tick_flow_channels(
         channel_results.append(
             {
                 "channel_id": channel_id,
-                "quantity_id": str(channel_row.get("quantity_id", "")),
+                "quantity_id": str(channel_row.get("quantity_id", "")).strip() or quantity_bundle_id,
+                "quantity_bundle_id": quantity_bundle_id or None,
                 "source_node_id": source_node_id,
                 "sink_node_id": sink_node_id,
                 "launched_amount": int(launched_amount),
                 "transferred_amount": int(net_transfer),
                 "lost_amount": int(total_lost),
+                "transferred_components": dict(transferred_components),
+                "lost_components": dict(lost_components),
                 "deferred_amount": int(max(0, deferred_amount)),
             }
         )
