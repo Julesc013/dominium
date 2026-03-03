@@ -1,0 +1,22 @@
+SCHEMA: thermal/cure_state.schema
+schema_id: dominium.schema.thermal.cure_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic cure-progress state for thermal curing workflows.
+
+REQUIRED SHAPE:
+record cure_state
+  required:
+    - schema_version: semver
+    - target_id: id
+    - cure_progress: fixed_point
+    - last_update_tick: int
+    - defect_flags: list<id>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- cure_progress is monotonic in [0,1] under valid process updates.
+- defect flag changes are deterministic and logged through process execution.

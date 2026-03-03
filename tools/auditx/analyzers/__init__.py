@@ -220,6 +220,10 @@ from analyzers import e191_direct_breaker_toggle_smell
 from analyzers import e192_infinite_cascade_smell
 from analyzers import e193_unbudgeted_solve_smell
 from analyzers import e194_silent_degrade_smell
+from analyzers import e195_heat_loss_bypass_smell
+from analyzers import e196_thermal_bypass_smell
+from analyzers import e197_inline_phase_change_smell
+from analyzers import e198_inline_cure_smell
 
 
 ANALYZERS = (
@@ -443,6 +447,10 @@ ANALYZERS = (
     e192_infinite_cascade_smell,
     e193_unbudgeted_solve_smell,
     e194_silent_degrade_smell,
+    e195_heat_loss_bypass_smell,
+    e196_thermal_bypass_smell,
+    e197_inline_phase_change_smell,
+    e198_inline_cure_smell,
 )
 
 

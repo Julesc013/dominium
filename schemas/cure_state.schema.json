@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thermal Cure State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic cure-progress state for THERM-2 process updates.",
+  "x-doc-ref": [
+    "docs/thermal/PHASE_CHANGE_AND_CURING.md",
+    "docs/audit/THERM_PHASE_CURE_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_id",
+    "cure_progress",
+    "last_update_tick",
+    "defect_flags",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cure_progress": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000,
+      "description": "Fixed-point permille representation of 0..1 cure progress."
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "defect_flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "target_id": "structure.foundation.alpha",
+      "cure_progress": 450,
+      "last_update_tick": 120,
+      "defect_flags": [],
+      "deterministic_fingerprint": "a6a3383bb8a2e8d2b4f64f1d6f98681f4f5200ce78f7f1fa3e6e396216f95eb4",
+      "extensions": {}
+    }
+  ]
+}

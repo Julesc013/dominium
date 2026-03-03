@@ -121,8 +121,17 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
+        "section.elec.local_panel_state",
+        "section.elec.pf_summary",
+        "section.elec.loss_heat_summary",
         "section.elec.fault_summary",
         "section.elec.compliance_summary",
+        "section.thermal.node_summary",
+        "section.thermal.edge_summary",
+        "section.thermal.overheat_risks",
+        "section.thermal.phase_states",
+        "section.thermal.cure_progress",
+        "section.thermal.insulation_effects",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -145,9 +154,19 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
+        "section.elec.local_panel_state",
         "section.elec.fault_summary",
         "section.elec.protection_device_states",
+        "section.elec.device_states",
+        "section.elec.pf_summary",
+        "section.elec.loss_heat_summary",
         "section.elec.compliance_summary",
+        "section.thermal.node_summary",
+        "section.thermal.edge_summary",
+        "section.thermal.overheat_risks",
+        "section.thermal.phase_states",
+        "section.thermal.cure_progress",
+        "section.thermal.insulation_effects",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -170,9 +189,19 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
+        "section.elec.local_panel_state",
         "section.elec.fault_summary",
         "section.elec.protection_device_states",
+        "section.elec.device_states",
+        "section.elec.pf_summary",
+        "section.elec.loss_heat_summary",
         "section.elec.compliance_summary",
+        "section.thermal.node_summary",
+        "section.thermal.edge_summary",
+        "section.thermal.overheat_risks",
+        "section.thermal.phase_states",
+        "section.thermal.cure_progress",
+        "section.thermal.insulation_effects",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -331,9 +360,19 @@ _DEFAULT_SECTION_ROWS = {
     "section.models.summary": {"title": "Constitutive Model Summary", "extensions": {"cost_units": 2}},
     "section.safety.instances": {"title": "Safety Instances", "extensions": {"cost_units": 1}},
     "section.safety.events": {"title": "Safety Events", "extensions": {"cost_units": 2}},
+    "section.elec.local_panel_state": {"title": "Electrical Local Panel State", "extensions": {"cost_units": 1}},
+    "section.elec.device_states": {"title": "Electrical Device States", "extensions": {"cost_units": 2}},
     "section.elec.fault_summary": {"title": "Electrical Fault Summary", "extensions": {"cost_units": 2}},
     "section.elec.protection_device_states": {"title": "Electrical Protection Devices", "extensions": {"cost_units": 2}},
+    "section.elec.pf_summary": {"title": "Electrical PF Summary", "extensions": {"cost_units": 1}},
+    "section.elec.loss_heat_summary": {"title": "Electrical Loss/Heat Summary", "extensions": {"cost_units": 1}},
     "section.elec.compliance_summary": {"title": "Electrical Compliance Summary", "extensions": {"cost_units": 1}},
+    "section.thermal.node_summary": {"title": "Thermal Node Summary", "extensions": {"cost_units": 1}},
+    "section.thermal.edge_summary": {"title": "Thermal Edge Summary", "extensions": {"cost_units": 2}},
+    "section.thermal.overheat_risks": {"title": "Thermal Overheat Risks", "extensions": {"cost_units": 2}},
+    "section.thermal.phase_states": {"title": "Thermal Phase States", "extensions": {"cost_units": 2}},
+    "section.thermal.cure_progress": {"title": "Thermal Cure Progress", "extensions": {"cost_units": 2}},
+    "section.thermal.insulation_effects": {"title": "Thermal Insulation Effects", "extensions": {"cost_units": 2}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
     "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
     "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
@@ -1779,6 +1818,169 @@ def _build_section_data(
                 for row in active_jamming_rows[:128]
             ]
         return payload
+    if section_id == "section.elec.local_panel_state":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        edge_status_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_edge_status_rows") or [])
+            if isinstance(item, dict)
+        ]
+        fault_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_fault_states") or [])
+            if isinstance(item, dict) and bool(item.get("active", False))
+        ]
+        protection_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_protection_devices") or [])
+            if isinstance(item, dict)
+        ]
+        total_p = int(sum(max(0, _as_int(row.get("P", 0), 0)) for row in edge_status_rows))
+        total_s = int(sum(max(0, _as_int(row.get("S", 0), 0)) for row in edge_status_rows))
+        energized = bool(total_p > 0)
+        tripped_count = int(
+            sum(
+                1
+                for row in protection_rows
+                if str((dict(row.get("extensions") or {})).get("breaker_state", "")).strip() == "tripped"
+            )
+        )
+        active_fault_count = int(len(fault_rows))
+        payload = {
+            "graph_id": graph_id,
+            "energized": bool(energized and tripped_count == 0),
+            "active_power_p": int(total_p),
+            "apparent_power_s": int(total_s),
+            "tripped_count": int(tripped_count),
+            "active_fault_count": int(active_fault_count),
+            "panel_status": "tripped" if tripped_count > 0 else ("warning" if active_fault_count > 0 else ("energized" if energized else "deenergized")),
+        }
+        if allow_hidden_state:
+            payload["edge_status_rows"] = [
+                {
+                    "edge_id": str(row.get("edge_id", "")).strip(),
+                    "P": int(max(0, _as_int(row.get("P", 0), 0))),
+                    "Q": int(max(0, _as_int(row.get("Q", 0), 0))),
+                    "S": int(max(0, _as_int(row.get("S", 0), 0))),
+                    "pf_permille": int(max(0, _as_int(row.get("pf_permille", 0), 0))),
+                }
+                for row in sorted(edge_status_rows, key=lambda item: str(item.get("edge_id", "")))[:128]
+            ]
+        return payload
+    if section_id == "section.elec.device_states":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        graph_edge_ids = set(
+            str(edge.get("edge_id", "")).strip()
+            for edge in list(graph.get("edges") or [])
+            if isinstance(edge, dict) and str(edge.get("edge_id", "")).strip()
+        )
+        protection_rows = sorted(
+            [dict(item) for item in list((dict(state or {})).get("elec_protection_devices") or []) if isinstance(item, dict)],
+            key=lambda item: str(item.get("device_id", "")),
+        )
+        explanation_rows = sorted(
+            [dict(item) for item in list((dict(state or {})).get("elec_trip_explanations") or []) if isinstance(item, dict)],
+            key=lambda item: (str(item.get("device_id", "")), str(item.get("explanation_id", ""))),
+        )
+        device_rows = []
+        for row in protection_rows:
+            device_id = str(row.get("device_id", "")).strip()
+            if not device_id:
+                continue
+            attached_to = dict(row.get("attached_to") or {})
+            edge_id = str(attached_to.get("edge_id", "")).strip()
+            if graph_edge_ids and edge_id and edge_id not in graph_edge_ids:
+                continue
+            ext = dict(row.get("extensions") or {})
+            device_rows.append(
+                {
+                    "device_id": device_id,
+                    "device_kind_id": str(row.get("device_kind_id", "")).strip() or "breaker",
+                    "edge_id": edge_id or None,
+                    "channel_id": str(ext.get("channel_id", "")).strip() or None,
+                    "breaker_state": str(ext.get("breaker_state", "closed")).strip() or "closed",
+                    "loto_active": bool(ext.get("loto_active", False)),
+                    "state_machine_id": str(row.get("state_machine_id", "")).strip() or None,
+                }
+            )
+        payload = {
+            "graph_id": graph_id,
+            "device_count": int(len(device_rows)),
+            "tripped_count": int(len([row for row in device_rows if str(row.get("breaker_state", "")).strip() == "tripped"])),
+            "loto_active_count": int(len([row for row in device_rows if bool(row.get("loto_active", False))])),
+            "trip_explanation_count": int(len(explanation_rows)),
+        }
+        if allow_hidden_state:
+            payload["devices"] = list(device_rows)[:256]
+            payload["trip_explanations"] = list(explanation_rows)[-128:]
+        return payload
+    if section_id == "section.elec.pf_summary":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        edge_status_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_edge_status_rows") or [])
+            if isinstance(item, dict)
+        ]
+        total_p = int(sum(max(0, _as_int(row.get("P", 0), 0)) for row in edge_status_rows))
+        total_s = int(sum(max(0, _as_int(row.get("S", 0), 0)) for row in edge_status_rows))
+        aggregate_pf_permille = int((1000 * int(total_p)) // max(1, int(total_s))) if total_s > 0 else 0
+        payload = {
+            "graph_id": graph_id,
+            "edge_count": int(len(edge_status_rows)),
+            "active_power_p": int(total_p),
+            "apparent_power_s": int(total_s),
+            "aggregate_pf_permille": int(aggregate_pf_permille),
+            "pf_bucket": (
+                "good"
+                if aggregate_pf_permille >= 950
+                else ("fair" if aggregate_pf_permille >= 800 else ("poor" if aggregate_pf_permille > 0 else "none"))
+            ),
+        }
+        if allow_hidden_state:
+            payload["edges"] = [
+                {
+                    "edge_id": str(row.get("edge_id", "")).strip(),
+                    "pf_permille": int(max(0, _as_int(row.get("pf_permille", 0), 0))),
+                    "P": int(max(0, _as_int(row.get("P", 0), 0))),
+                    "S": int(max(0, _as_int(row.get("S", 0), 0))),
+                }
+                for row in sorted(edge_status_rows, key=lambda item: str(item.get("edge_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.elec.loss_heat_summary":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        edge_status_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_edge_status_rows") or [])
+            if isinstance(item, dict)
+        ]
+        total_heat_loss = int(sum(max(0, _as_int(row.get("heat_loss_stub", 0), 0)) for row in edge_status_rows))
+        high_loss_edges = [
+            dict(row)
+            for row in sorted(edge_status_rows, key=lambda item: (int(max(0, _as_int(item.get("heat_loss_stub", 0), 0))), str(item.get("edge_id", ""))), reverse=True)
+            if int(max(0, _as_int(row.get("heat_loss_stub", 0), 0))) > 0
+        ]
+        payload = {
+            "graph_id": graph_id,
+            "edge_count": int(len(edge_status_rows)),
+            "heat_loss_total_stub": int(total_heat_loss),
+            "high_loss_edge_count": int(len(high_loss_edges)),
+            "loss_state": "high" if total_heat_loss >= 1000 else ("medium" if total_heat_loss >= 200 else ("low" if total_heat_loss > 0 else "none")),
+        }
+        if allow_hidden_state:
+            payload["edges"] = [
+                {
+                    "edge_id": str(row.get("edge_id", "")).strip(),
+                    "heat_loss_stub": int(max(0, _as_int(row.get("heat_loss_stub", 0), 0))),
+                    "S": int(max(0, _as_int(row.get("S", 0), 0))),
+                }
+                for row in high_loss_edges[:256]
+            ]
+        return payload
     if section_id == "section.elec.fault_summary":
         graph = _graph_row()
         graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
@@ -1938,6 +2140,207 @@ def _build_section_data(
                 for edge in edge_rows
                 if not str((dict(edge.get("payload") or {})).get("spec_id", "")).strip()
             ][:64]
+        return payload
+    if section_id == "section.thermal.node_summary":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("thermal_node_status_rows") or [])
+            if isinstance(item, dict)
+        ]
+        total_energy = int(sum(max(0, _as_int(row.get("thermal_energy", 0), 0)) for row in rows))
+        avg_temp = int(
+            (sum(_as_int(row.get("temperature", 0), 0) for row in rows) // max(1, len(rows)))
+            if rows
+            else 0
+        )
+        max_temp = int(max([_as_int(row.get("temperature", 0), 0) for row in rows], default=0))
+        payload = {
+            "graph_id": graph_id,
+            "node_count": int(len(rows)),
+            "total_thermal_energy": int(total_energy),
+            "average_temperature": int(avg_temp),
+            "max_temperature": int(max_temp),
+            "thermal_network_hash": str((dict(state or {})).get("thermal_network_hash", "")).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["nodes"] = [
+                {
+                    "node_id": str(row.get("node_id", "")).strip(),
+                    "node_kind": str(row.get("node_kind", "")).strip() or None,
+                    "temperature": int(_as_int(row.get("temperature", 0), 0)),
+                    "thermal_energy": int(max(0, _as_int(row.get("thermal_energy", 0), 0))),
+                    "heat_input": int(max(0, _as_int(row.get("heat_input", 0), 0))),
+                }
+                for row in sorted(rows, key=lambda item: str(item.get("node_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.thermal.edge_summary":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("thermal_edge_status_rows") or [])
+            if isinstance(item, dict)
+        ]
+        total_transfer = int(sum(max(0, _as_int(row.get("heat_transfer", 0), 0)) for row in rows))
+        payload = {
+            "graph_id": graph_id,
+            "edge_count": int(len(rows)),
+            "total_heat_transfer": int(total_transfer),
+            "active_edge_count": int(
+                len([row for row in rows if int(max(0, _as_int(row.get("heat_transfer", 0), 0))) > 0])
+            ),
+            "budget_outcome": str((dict(state or {})).get("thermal_budget_outcome", "")).strip()
+            or str((dict((dict(state or {})).get("thermal_runtime_state") or {})).get("last_budget_outcome", "")).strip()
+            or "complete",
+        }
+        if allow_hidden_state:
+            payload["edges"] = [
+                {
+                    "edge_id": str(row.get("edge_id", "")).strip(),
+                    "from_node_id": str(row.get("effective_from_node_id", row.get("from_node_id", ""))).strip() or None,
+                    "to_node_id": str(row.get("effective_to_node_id", row.get("to_node_id", ""))).strip() or None,
+                    "heat_transfer": int(max(0, _as_int(row.get("heat_transfer", 0), 0))),
+                    "channel_id": str(row.get("channel_id", "")).strip() or None,
+                }
+                for row in sorted(rows, key=lambda item: str(item.get("edge_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.thermal.overheat_risks":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        hazard_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("thermal_hazard_rows") or (dict(state or {})).get("hazard_rows") or [])
+            if isinstance(item, dict) and str(item.get("hazard_type_id", "")).strip() == "hazard.overheat"
+        ]
+        safety_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("thermal_safety_event_rows") or (dict(state or {})).get("safety_event_rows") or [])
+            if isinstance(item, dict) and str(item.get("pattern_id", "")).strip() == "safety.overtemp_trip"
+        ]
+        payload = {
+            "graph_id": graph_id,
+            "overheat_hazard_count": int(len(hazard_rows)),
+            "overtemp_trip_count": int(len(safety_rows)),
+            "overheat_event_hash_chain": str((dict(state or {})).get("overheat_event_hash_chain", "")).strip() or None,
+            "risk_state": "critical" if hazard_rows else "normal",
+        }
+        if allow_hidden_state:
+            payload["hazards"] = [
+                {
+                    "target_id": str(row.get("target_id", "")).strip(),
+                    "accumulated_value": int(max(0, _as_int(row.get("accumulated_value", 0), 0))),
+                    "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+                }
+                for row in sorted(hazard_rows, key=lambda item: str(item.get("target_id", "")))[:256]
+            ]
+            payload["safety_events"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "target_ids": [str(token).strip() for token in list(row.get("target_ids") or []) if str(token).strip()],
+                }
+                for row in sorted(safety_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.thermal.phase_states":
+        batches = [
+            dict(item)
+            for item in list((dict(state or {})).get("material_batches") or [])
+            if isinstance(item, dict)
+        ]
+        phase_events = [
+            dict(item)
+            for item in list((dict(state or {})).get("thermal_phase_events") or [])
+            if isinstance(item, dict)
+        ]
+        phase_counts: Dict[str, int] = {}
+        for batch in sorted(batches, key=lambda item: str(item.get("batch_id", ""))):
+            phase_tag = str((dict(batch.get("extensions") or {})).get("phase_tag", "")).strip() or "unknown"
+            phase_counts[phase_tag] = _as_int(phase_counts.get(phase_tag, 0), 0) + 1
+        payload = {
+            "batch_count": int(len(batches)),
+            "phase_counts": dict((key, int(phase_counts[key])) for key in sorted(phase_counts.keys())),
+            "phase_event_count": int(len(phase_events)),
+        }
+        if allow_hidden_state:
+            payload["recent_events"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "batch_id": str(row.get("batch_id", "")).strip() or None,
+                    "from_phase": str(row.get("from_phase", "")).strip() or None,
+                    "to_phase": str(row.get("to_phase", "")).strip() or None,
+                }
+                for row in sorted(phase_events, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[-128:]
+            ]
+        return payload
+    if section_id == "section.thermal.cure_progress":
+        cure_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("cure_states") or [])
+            if isinstance(item, dict)
+        ]
+        avg_permille = int(
+            sum(int(max(0, min(1000, _as_int(row.get("cure_progress", 0), 0)))) for row in cure_rows) // max(1, len(cure_rows))
+        ) if cure_rows else 0
+        defect_count = len(
+            [
+                row for row in cure_rows
+                if list(row.get("defect_flags") or [])
+            ]
+        )
+        payload = {
+            "target_count": int(len(cure_rows)),
+            "average_progress_permille": int(avg_permille),
+            "average_progress_percent": int((avg_permille * 100) // 1000),
+            "defect_target_count": int(defect_count),
+        }
+        if allow_hidden_state:
+            payload["targets"] = [
+                {
+                    "target_id": str(row.get("target_id", "")).strip(),
+                    "cure_progress_permille": int(max(0, min(1000, _as_int(row.get("cure_progress", 0), 0)))),
+                    "defect_flags": _sorted_unique_strings(list(row.get("defect_flags") or [])),
+                    "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+                }
+                for row in sorted(cure_rows, key=lambda item: str(item.get("target_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.thermal.insulation_effects":
+        edge_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("thermal_edge_status_rows") or [])
+            if isinstance(item, dict)
+        ]
+        tracked = []
+        for row in sorted(edge_rows, key=lambda item: str(item.get("edge_id", ""))):
+            base_conductance = int(max(0, _as_int(row.get("base_conductance_value", row.get("conductance_value", 0)), 0)))
+            effective_conductance = int(max(0, _as_int(row.get("effective_conductance_value", base_conductance), base_conductance)))
+            factor = int(max(0, _as_int(row.get("insulation_factor_permille", 1000), 1000)))
+            if (base_conductance <= 0) and (effective_conductance <= 0):
+                continue
+            tracked.append(
+                {
+                    "edge_id": str(row.get("edge_id", "")).strip(),
+                    "base_conductance_value": int(base_conductance),
+                    "effective_conductance_value": int(effective_conductance),
+                    "insulation_factor_permille": int(factor),
+                }
+            )
+        payload = {
+            "insulated_edge_count": int(len(tracked)),
+            "average_factor_permille": int(
+                (sum(int(row.get("insulation_factor_permille", 1000)) for row in tracked) // max(1, len(tracked)))
+                if tracked
+                else 1000
+            ),
+        }
+        if allow_hidden_state:
+            payload["edges"] = list(tracked)[:256]
         return payload
     if section_id == "section.signal.inbox_summary":
         receipts = [

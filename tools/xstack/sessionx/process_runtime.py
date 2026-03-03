@@ -107,6 +107,7 @@ from src.materials.commitments.commitment_engine import (
     resolve_causality_strictness_row,
     strictness_requires_commitment,
 )
+from src.materials import create_material_batch
 from src.materials.provenance.event_stream_index import (
     build_event_stream_index,
     normalize_event_stream_index_row,
@@ -618,6 +619,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.weld_joint": "entitlement.tool.use",
     "process.cut_joint": "entitlement.tool.use",
     "process.drill_hole": "entitlement.tool.use",
+    "process.material_transform_phase": "entitlement.control.admin",
+    "process.cure_state_tick": "session.boot",
     "process.mechanics_tick": "session.boot",
     "process.field_tick": "session.boot",
     "process.safety_tick": "session.boot",
@@ -782,6 +785,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.weld_joint": "operator",
     "process.cut_joint": "operator",
     "process.drill_hole": "operator",
+    "process.material_transform_phase": "operator",
+    "process.cure_state_tick": "observer",
     "process.mechanics_tick": "observer",
     "process.field_tick": "observer",
     "process.safety_tick": "observer",
@@ -890,6 +895,8 @@ CONTROL_PROCESS_IDS = {
     "process.elec.explain_trip",
     "process.elec.network_tick",
     "process.mechanics_fracture",
+    "process.material_transform_phase",
+    "process.cure_state_tick",
     "process.safety_tick",
     "process.model_evaluate_tick",
     "process.hazard_increment",
@@ -937,6 +944,7 @@ MAINTENANCE_PROCESS_IDS = {
     "process.service_track",
     "process.inspect_vehicle",
     "process.service_vehicle",
+    "process.cure_state_tick",
 }
 INTERIOR_PROCESS_IDS = {
     "process.compartment_flow_tick",
@@ -2749,6 +2757,84 @@ def _load_maintenance_policy_registry(*, policy_context: dict | None) -> dict:
         registry_rel_path="data/registries/maintenance_policy_registry.json",
         default_payload={"record": {"policies": []}},
     )
+
+
+def _load_material_phase_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "material_phase_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/material_phase_registry.json",
+        default_payload={"record": {"material_phase_profiles": []}},
+    )
+
+
+def _material_phase_profiles_by_material_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("material_phase_profiles")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("material_phase_profiles")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("material_id", ""))):
+        material_id = str(row.get("material_id", "")).strip()
+        if not material_id:
+            continue
+        phase_rows: List[dict] = []
+        for phase_row in sorted(
+            (dict(item) for item in list(row.get("phase_tags_by_temperature") or []) if isinstance(item, Mapping)),
+            key=lambda item: (
+                _as_int(item.get("min_temp", -10_000_000), -10_000_000),
+                _as_int(item.get("max_temp", 10_000_000), 10_000_000),
+                str(item.get("phase_tag", "")),
+            ),
+        ):
+            phase_tag = str(phase_row.get("phase_tag", "")).strip()
+            if not phase_tag:
+                continue
+            phase_rows.append(
+                {
+                    "min_temp": int(_as_int(phase_row.get("min_temp", -10_000_000), -10_000_000)),
+                    "max_temp": int(_as_int(phase_row.get("max_temp", 10_000_000), 10_000_000)),
+                    "phase_tag": phase_tag,
+                }
+            )
+        out[material_id] = {
+            "schema_version": "1.0.0",
+            "material_id": material_id,
+            "freeze_point": None if row.get("freeze_point") is None else int(_as_int(row.get("freeze_point", 0), 0)),
+            "melt_point": None if row.get("melt_point") is None else int(_as_int(row.get("melt_point", 0), 0)),
+            "boil_point": None if row.get("boil_point") is None else int(_as_int(row.get("boil_point", 0), 0)),
+            "phase_tags_by_temperature": phase_rows,
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _phase_tag_for_temperature(*, profile_row: Mapping[str, object], temperature: int, fallback: str = "unknown") -> str:
+    phase_rows = [
+        dict(item)
+        for item in list((dict(profile_row or {})).get("phase_tags_by_temperature") or [])
+        if isinstance(item, Mapping)
+    ]
+    for row in sorted(
+        phase_rows,
+        key=lambda item: (
+            _as_int(item.get("min_temp", -10_000_000), -10_000_000),
+            _as_int(item.get("max_temp", 10_000_000), 10_000_000),
+            str(item.get("phase_tag", "")),
+        ),
+    ):
+        phase_tag = str(row.get("phase_tag", "")).strip()
+        if not phase_tag:
+            continue
+        min_temp = int(_as_int(row.get("min_temp", -10_000_000), -10_000_000))
+        max_temp = int(_as_int(row.get("max_temp", 10_000_000), 10_000_000))
+        if int(min_temp) <= int(temperature) <= int(max_temp):
+            return phase_tag
+    return str(fallback or "unknown")
 
 
 def _maintenance_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
@@ -7130,6 +7216,118 @@ def _ensure_materialization_reenactment_descriptors(state: dict) -> List[dict]:
             continue
     state["materialization_reenactment_descriptors"] = normalized
     return normalized
+
+
+def _ensure_material_batches(state: dict) -> List[dict]:
+    rows = state.get("material_batches")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("batch_id", ""))):
+        batch_id = str(row.get("batch_id", "")).strip()
+        material_id = str(row.get("material_id", "")).strip()
+        if (not batch_id) or (not material_id):
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "batch_id": batch_id,
+                "material_id": material_id,
+                "quantity_mass_raw": int(max(0, _as_int(row.get("quantity_mass_raw", 0), 0))),
+                "origin_process_id": str(row.get("origin_process_id", "")).strip() or "process.unknown",
+                "origin_tick": int(max(0, _as_int(row.get("origin_tick", 0), 0))),
+                "parent_batch_ids": _sorted_tokens(list(row.get("parent_batch_ids") or [])),
+                "quality_distribution": dict(row.get("quality_distribution") or {})
+                if isinstance(row.get("quality_distribution"), Mapping)
+                else {},
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+            }
+        )
+    state["material_batches"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_thermal_phase_events(state: dict) -> List[dict]:
+    rows = state.get("thermal_phase_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "batch_id": str(row.get("batch_id", "")).strip() or None,
+            "material_id": str(row.get("material_id", "")).strip() or None,
+            "from_phase": str(row.get("from_phase", "")).strip() or None,
+            "to_phase": str(row.get("to_phase", "")).strip() or None,
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["thermal_phase_events"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_thermal_cure_events(state: dict) -> List[dict]:
+    rows = state.get("thermal_cure_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (item for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("event_id", ""))),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "target_id": str(row.get("target_id", "")).strip() or None,
+            "temperature": int(_as_int(row.get("temperature", 0), 0)),
+            "progress_before": int(max(0, min(1000, _as_int(row.get("progress_before", 0), 0)))),
+            "progress_after": int(max(0, min(1000, _as_int(row.get("progress_after", 0), 0)))),
+            "defect_delta": int(max(0, _as_int(row.get("defect_delta", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["thermal_cure_events"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_cure_state_rows(state: dict) -> List[dict]:
+    rows = state.get("cure_states")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted((item for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("target_id", ""))):
+        target_id = str(row.get("target_id", "")).strip()
+        if not target_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "target_id": target_id,
+            "cure_progress": int(max(0, min(1000, _as_int(row.get("cure_progress", 0), 0)))),
+            "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            "defect_flags": _sorted_tokens(list(row.get("defect_flags") or [])),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["cure_states"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
 
 
 def _persist_materialization_state(
@@ -15332,6 +15530,10 @@ def execute_intent(
     materialization_states = _ensure_materialization_states(state)
     distribution_aggregates = _ensure_distribution_aggregates(state)
     materialization_reenactment_descriptors = _ensure_materialization_reenactment_descriptors(state)
+    material_batches = _ensure_material_batches(state)
+    thermal_phase_events = _ensure_thermal_phase_events(state)
+    thermal_cure_events = _ensure_thermal_cure_events(state)
+    cure_states = _ensure_cure_state_rows(state)
     material_commitments = _ensure_material_commitments(state)
     event_stream_indices = _ensure_event_stream_indices(state)
     reenactment_requests = _ensure_reenactment_requests(state)
@@ -21559,6 +21761,569 @@ def execute_intent(
             "spec_compliance": dict(execution_policy_context.get("spec_compliance") or {}),
             "emitted_commitment_count": len(emitted_commitments),
             "emitted_event_count": len(emitted_events),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.material_transform_phase":
+        batch_id = str(inputs.get("batch_id", "")).strip()
+        material_stock_id = str(inputs.get("material_stock_id", "")).strip()
+        node_id = str(inputs.get("node_id", "")).strip()
+        explicit_material_id = str(inputs.get("material_id", "")).strip()
+        to_material_id = str(inputs.get("to_material_id", "")).strip()
+        from_phase_input = str(inputs.get("from_phase", "")).strip()
+        to_phase_input = str(inputs.get("to_phase", "")).strip()
+        temperature = int(
+            _as_int(
+                inputs.get("temperature", inputs.get("temperature_centi_kelvin", 0)),
+                0,
+            )
+        )
+        if (not batch_id) and (not material_stock_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.material_transform_phase requires batch_id or material_stock_id",
+                "Provide deterministic batch_id (preferred) or material_stock_id and target phase.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        material_phase_registry = _load_material_phase_registry(policy_context=policy_context)
+        phase_profiles_by_material = _material_phase_profiles_by_material_id(material_phase_registry)
+
+        batch_rows_by_id = dict(
+            (
+                str(row.get("batch_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(material_batches or [])
+            if isinstance(row, Mapping) and str(row.get("batch_id", "")).strip()
+        )
+        selected_batch = dict(batch_rows_by_id.get(batch_id) or {})
+        if (not selected_batch) and material_stock_id:
+            for row in list(batch_rows_by_id.values()):
+                ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+                if str(ext.get("material_stock_id", "")).strip() == material_stock_id:
+                    selected_batch = dict(row)
+                    break
+        if not selected_batch and batch_id and explicit_material_id:
+            quantity_mass_raw = int(max(0, _as_int(inputs.get("quantity_mass_raw", 0), 0)))
+            if quantity_mass_raw > 0:
+                created_batch = create_material_batch(
+                    material_id=explicit_material_id,
+                    quantity_mass_raw=int(quantity_mass_raw),
+                    origin_process_id=process_id,
+                    origin_tick=int(max(0, _as_int(current_tick, 0))),
+                    parent_batch_ids=[],
+                    quality_distribution={},
+                )
+                created_batch["batch_id"] = str(batch_id)
+                created_ext = dict(created_batch.get("extensions") or {})
+                if material_stock_id:
+                    created_ext["material_stock_id"] = material_stock_id
+                if node_id:
+                    created_ext["node_id"] = node_id
+                created_batch["extensions"] = created_ext
+                selected_batch = dict(created_batch)
+                batch_rows_by_id[batch_id] = dict(created_batch)
+                material_batches = [dict(batch_rows_by_id[key]) for key in sorted(batch_rows_by_id.keys())]
+        if not selected_batch:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "material batch could not be resolved for phase transform",
+                "Provide a valid batch_id/material_stock_id or create a batch first.",
+                {"batch_id": batch_id, "material_stock_id": material_stock_id},
+                "$.intent.inputs",
+            )
+
+        resolved_batch_id = str(selected_batch.get("batch_id", "")).strip()
+        material_id = str(explicit_material_id or selected_batch.get("material_id", "")).strip()
+        if not material_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "resolved material batch is missing material_id",
+                "Supply material_id in process inputs or on the selected batch.",
+                {"batch_id": resolved_batch_id},
+                "$.intent.inputs.material_id",
+            )
+        profile_row = dict(phase_profiles_by_material.get(material_id) or {})
+        if not profile_row:
+            profile_row = {
+                "material_id": material_id,
+                "phase_tags_by_temperature": [],
+                "freeze_point": None,
+                "melt_point": None,
+                "boil_point": None,
+                "extensions": {},
+            }
+        current_ext = dict(selected_batch.get("extensions") or {}) if isinstance(selected_batch.get("extensions"), Mapping) else {}
+        from_phase = str(from_phase_input or current_ext.get("phase_tag", "")).strip()
+        if (not from_phase) and int(temperature) != 0:
+            from_phase = _phase_tag_for_temperature(profile_row=profile_row, temperature=int(temperature), fallback="unknown")
+        if not from_phase:
+            from_phase = "unknown"
+        to_phase = str(to_phase_input).strip()
+        if not to_phase:
+            sample_temp = int(temperature if int(temperature) != 0 else _as_int(current_ext.get("last_temperature", 0), 0))
+            if sample_temp != 0:
+                to_phase = _phase_tag_for_temperature(profile_row=profile_row, temperature=sample_temp, fallback=from_phase)
+        if not to_phase:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "phase transition target is undefined",
+                "Provide to_phase directly or include temperature with material phase profile thresholds.",
+                {"batch_id": resolved_batch_id, "material_id": material_id},
+                "$.intent.inputs.to_phase",
+            )
+
+        updated_batch = dict(selected_batch)
+        updated_batch["material_id"] = str(to_material_id or material_id)
+        batch_ext = dict(updated_batch.get("extensions") or {}) if isinstance(updated_batch.get("extensions"), Mapping) else {}
+        batch_ext["phase_tag"] = str(to_phase)
+        batch_ext["last_phase_tag"] = str(from_phase)
+        batch_ext["last_phase_update_tick"] = int(max(0, _as_int(current_tick, 0)))
+        batch_ext["last_phase_process_id"] = process_id
+        batch_ext["last_phase_intent_id"] = str(intent_id)
+        if material_stock_id:
+            batch_ext["material_stock_id"] = material_stock_id
+        if node_id:
+            batch_ext["node_id"] = node_id
+        if int(temperature) != 0:
+            batch_ext["last_temperature"] = int(temperature)
+        updated_batch["extensions"] = batch_ext
+        batch_rows_by_id[resolved_batch_id] = updated_batch
+        material_batches = [dict(batch_rows_by_id[key]) for key in sorted(batch_rows_by_id.keys())]
+        state["material_batches"] = [dict(row) for row in material_batches]
+        _ensure_material_batches(state)
+
+        transformed_stock = False
+        if node_id and str(to_material_id).strip() and str(to_material_id).strip() != material_id:
+            inventory_index = build_inventory_index(logistics_inventory_rows)
+            transformed_mass = int(max(0, _as_int(updated_batch.get("quantity_mass_raw", 0), 0)))
+            if transformed_mass > 0:
+                try:
+                    _inventory_debit(
+                        inventory_index=inventory_index,
+                        node_id=node_id,
+                        material_id=material_id,
+                        mass=int(transformed_mass),
+                        batch_id=resolved_batch_id,
+                    )
+                    _inventory_credit(
+                        inventory_index=inventory_index,
+                        node_id=node_id,
+                        material_id=str(to_material_id).strip(),
+                        mass=int(transformed_mass),
+                        batch_id=resolved_batch_id,
+                    )
+                    logistics_inventory_rows = inventory_rows_from_index(inventory_index)
+                    _persist_logistics_state(
+                        state,
+                        manifests=logistics_manifests,
+                        commitments=shipment_commitment_rows,
+                        inventories=logistics_inventory_rows,
+                        events=logistics_provenance_events,
+                        runtime_state=logistics_runtime_state,
+                    )
+                    transformed_stock = True
+                except LogisticsError:
+                    transformed_stock = False
+
+        phase_event = {
+            "schema_version": "1.0.0",
+            "event_id": "event.therm.phase.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "batch_id": resolved_batch_id,
+                        "from_phase": from_phase,
+                        "to_phase": to_phase,
+                        "intent_id": str(intent_id),
+                    }
+                )[:16]
+            ),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "batch_id": resolved_batch_id,
+            "material_id": str(updated_batch.get("material_id", "")).strip() or None,
+            "from_phase": str(from_phase),
+            "to_phase": str(to_phase),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "process_id": process_id,
+                "intent_id": str(intent_id),
+                "material_stock_id": material_stock_id or None,
+                "node_id": node_id or None,
+                "stock_transformed": bool(transformed_stock),
+            },
+        }
+        phase_event["deterministic_fingerprint"] = canonical_sha256(dict(phase_event, deterministic_fingerprint=""))
+        thermal_phase_events = sorted(
+            [dict(row) for row in list(thermal_phase_events or []) if isinstance(row, Mapping)] + [phase_event],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        state["thermal_phase_events"] = [dict(row) for row in thermal_phase_events]
+        _ensure_thermal_phase_events(state)
+
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": "artifact.record.therm.phase.{}".format(
+                        canonical_sha256({"event_id": str(phase_event.get("event_id", ""))})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "event_id": str(phase_event.get("event_id", "")).strip(),
+                        "event_type": "incident.phase_transition",
+                        "batch_id": resolved_batch_id,
+                        "from_phase": str(from_phase),
+                        "to_phase": str(to_phase),
+                    },
+                }
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+        if str(to_phase).strip().lower() in {"gas", "steam", "vapor"} and str(inputs.get("sealed_volume_id", "")).strip():
+            hazard_type_id = "hazard.overpressure"
+            target_id = str(inputs.get("sealed_volume_id", "")).strip()
+            row_id = "{}::{}".format(target_id, hazard_type_id)
+            hazard_rows_by_id = dict(
+                (
+                    "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(model_hazard_rows or [])
+                if isinstance(row, Mapping)
+                and str(row.get("target_id", "")).strip()
+                and str(row.get("hazard_type_id", "")).strip()
+            )
+            existing_hazard = dict(hazard_rows_by_id.get(row_id) or {})
+            updated_hazard = {
+                "schema_version": "1.0.0",
+                "target_id": target_id,
+                "hazard_type_id": hazard_type_id,
+                "accumulated_value": int(max(0, _as_int(existing_hazard.get("accumulated_value", 0), 0) + 1)),
+                "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    **(dict(existing_hazard.get("extensions") or {}) if isinstance(existing_hazard.get("extensions"), Mapping) else {}),
+                    "last_source_process_id": process_id,
+                    "last_intent_id": str(intent_id),
+                    "hook": "phase_gas_in_sealed_volume",
+                },
+            }
+            updated_hazard["deterministic_fingerprint"] = canonical_sha256(dict(updated_hazard, deterministic_fingerprint=""))
+            hazard_rows_by_id[row_id] = updated_hazard
+            model_hazard_rows = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
+            _persist_model_state(
+                state,
+                model_bindings=model_bindings,
+                model_evaluation_results=model_evaluation_results,
+                model_cache_rows=model_cache_rows,
+                model_runtime_state=model_runtime_state,
+                model_hazard_rows=model_hazard_rows,
+                model_flow_adjustment_rows=model_flow_adjustment_rows,
+            )
+
+        result_metadata = {
+            "batch_id": resolved_batch_id,
+            "material_id": str(updated_batch.get("material_id", "")).strip(),
+            "from_phase": str(from_phase),
+            "to_phase": str(to_phase),
+            "phase_event_id": str(phase_event.get("event_id", "")).strip(),
+            "stock_transformed": bool(transformed_stock),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.cure_state_tick":
+        material_phase_registry = _load_material_phase_registry(policy_context=policy_context)
+        phase_profiles_by_material = _material_phase_profiles_by_material_id(material_phase_registry)
+
+        target_rows: List[dict] = []
+        for row in list(inputs.get("targets") or []):
+            if isinstance(row, Mapping):
+                target_rows.append(dict(row))
+        explicit_target_id = str(inputs.get("target_id", "")).strip()
+        if explicit_target_id and explicit_target_id not in {str(row.get("target_id", "")).strip() for row in target_rows}:
+            target_rows.append({"target_id": explicit_target_id})
+        if not target_rows:
+            target_rows = [{"target_id": str(row.get("target_id", "")).strip()} for row in list(cure_states or []) if str(row.get("target_id", "")).strip()]
+        if not target_rows:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.cure_state_tick requires at least one target",
+                "Provide target_id or targets[] for deterministic cure progression.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+
+        cure_rows_by_id = dict(
+            (
+                str(row.get("target_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(cure_states or [])
+            if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+        )
+        thermal_node_status_by_id = dict(
+            (
+                str(row.get("node_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("thermal_node_status_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+        )
+        temp_map = dict(inputs.get("temperature_by_target") or {}) if isinstance(inputs.get("temperature_by_target"), Mapping) else {}
+        default_temp = int(_as_int(inputs.get("temperature", 29315), 29315))
+        default_cure_rate = int(max(0, _as_int(inputs.get("cure_rate_permille", 10), 10)))
+        default_defect_rate = int(max(0, _as_int(inputs.get("defect_rate", 1), 1)))
+        default_strength_mod = int(max(0, _as_int(inputs.get("strength_modifier_permille", 1100), 1100)))
+        processed_targets: List[str] = []
+        defect_updates = 0
+        progressed_updates = 0
+
+        hazard_rows_by_id = dict(
+            (
+                "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                dict(row),
+            )
+            for row in list(model_hazard_rows or [])
+            if isinstance(row, Mapping)
+            and str(row.get("target_id", "")).strip()
+            and str(row.get("hazard_type_id", "")).strip()
+        )
+        structural_node_by_id = dict(
+            (
+                str(row.get("node_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(structural_nodes or [])
+            if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+        )
+        structural_edge_by_id = dict(
+            (
+                str(row.get("edge_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(structural_edges or [])
+            if isinstance(row, Mapping) and str(row.get("edge_id", "")).strip()
+        )
+
+        for row in sorted(target_rows, key=lambda item: str(item.get("target_id", ""))):
+            target_id = str(row.get("target_id", "")).strip()
+            if not target_id:
+                continue
+            cure_row = dict(cure_rows_by_id.get(target_id) or {})
+            if not cure_row:
+                cure_row = {
+                    "schema_version": "1.0.0",
+                    "target_id": target_id,
+                    "cure_progress": int(max(0, min(1000, _as_int(inputs.get("initial_cure_progress", 0), 0)))),
+                    "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                    "defect_flags": [],
+                    "deterministic_fingerprint": "",
+                    "extensions": {},
+                }
+            cure_ext = dict(cure_row.get("extensions") or {}) if isinstance(cure_row.get("extensions"), Mapping) else {}
+            material_id = str(
+                row.get("material_id", "")
+                or cure_ext.get("material_id", "")
+                or inputs.get("material_id", "")
+            ).strip()
+            profile_row = dict(phase_profiles_by_material.get(material_id) or {})
+            profile_ext = dict(profile_row.get("extensions") or {}) if isinstance(profile_row.get("extensions"), Mapping) else {}
+            cure_temp_min = int(
+                _as_int(
+                    row.get("cure_temp_min", cure_ext.get("cure_temp_min", profile_ext.get("cure_temp_min", 27815))),
+                    27815,
+                )
+            )
+            cure_temp_max = int(
+                _as_int(
+                    row.get("cure_temp_max", cure_ext.get("cure_temp_max", profile_ext.get("cure_temp_max", 30815))),
+                    30815,
+                )
+            )
+            if cure_temp_max < cure_temp_min:
+                cure_temp_max = cure_temp_min
+            cure_rate = int(
+                max(
+                    0,
+                    _as_int(
+                        row.get("cure_rate_permille", cure_ext.get("cure_rate_permille", default_cure_rate)),
+                        default_cure_rate,
+                    ),
+                )
+            )
+            defect_rate = int(
+                max(
+                    0,
+                    _as_int(
+                        row.get("defect_rate", cure_ext.get("defect_rate", default_defect_rate)),
+                        default_defect_rate,
+                    ),
+                )
+            )
+            thermal_ref_target_id = str(cure_ext.get("thermal_node_id", target_id)).strip() or target_id
+            temperature = int(
+                _as_int(
+                    row.get(
+                        "temperature",
+                        temp_map.get(
+                            target_id,
+                            dict(thermal_node_status_by_id.get(thermal_ref_target_id) or {}).get("temperature", default_temp),
+                        ),
+                    ),
+                    default_temp,
+                )
+            )
+            progress_before = int(max(0, min(1000, _as_int(cure_row.get("cure_progress", 0), 0))))
+            in_window = bool(int(cure_temp_min) <= int(temperature) <= int(cure_temp_max))
+            progress_delta = int(cure_rate if in_window else 0)
+            defect_delta = int(defect_rate if (not in_window) else 0)
+            progress_after = int(max(0, min(1000, int(progress_before + progress_delta))))
+            defect_flags = _sorted_tokens(list(cure_row.get("defect_flags") or []))
+            if defect_delta > 0:
+                defect_updates += 1
+                defect_flag = "temp_out_of_range_low" if int(temperature) < int(cure_temp_min) else "temp_out_of_range_high"
+                defect_flags = _sorted_tokens(defect_flags + [defect_flag])
+            if progress_after > progress_before:
+                progressed_updates += 1
+
+            cure_ext["material_id"] = material_id or None
+            cure_ext["cure_temp_min"] = int(cure_temp_min)
+            cure_ext["cure_temp_max"] = int(cure_temp_max)
+            cure_ext["cure_rate_permille"] = int(cure_rate)
+            cure_ext["defect_rate"] = int(defect_rate)
+            cure_ext["last_temperature"] = int(temperature)
+            if progress_before < 1000 and progress_after >= 1000:
+                cure_ext["cured"] = True
+                cure_ext["cured_tick"] = int(max(0, _as_int(current_tick, 0)))
+                cure_ext["strength_modifier_permille"] = int(default_strength_mod)
+                node_row = dict(structural_node_by_id.get(target_id) or {})
+                if node_row:
+                    node_ext = dict(node_row.get("extensions") or {}) if isinstance(node_row.get("extensions"), Mapping) else {}
+                    node_ext["cure_strength_modifier_permille"] = int(default_strength_mod)
+                    node_row["extensions"] = node_ext
+                    structural_node_by_id[target_id] = node_row
+                edge_row = dict(structural_edge_by_id.get(target_id) or {})
+                if edge_row:
+                    edge_ext = dict(edge_row.get("extensions") or {}) if isinstance(edge_row.get("extensions"), Mapping) else {}
+                    edge_ext["cure_strength_modifier_permille"] = int(default_strength_mod)
+                    edge_row["extensions"] = edge_ext
+                    structural_edge_by_id[target_id] = edge_row
+
+            cure_row["schema_version"] = "1.0.0"
+            cure_row["target_id"] = target_id
+            cure_row["cure_progress"] = int(progress_after)
+            cure_row["last_update_tick"] = int(max(0, _as_int(current_tick, 0)))
+            cure_row["defect_flags"] = defect_flags
+            cure_row["extensions"] = cure_ext
+            cure_row["deterministic_fingerprint"] = canonical_sha256(dict(cure_row, deterministic_fingerprint=""))
+            cure_rows_by_id[target_id] = cure_row
+            processed_targets.append(target_id)
+
+            if defect_delta > 0:
+                hazard_type_id = str(inputs.get("hazard_type_id", "hazard.cure_defect.basic")).strip() or "hazard.cure_defect.basic"
+                hazard_key = "{}::{}".format(target_id, hazard_type_id)
+                hazard_row = dict(hazard_rows_by_id.get(hazard_key) or {})
+                hazard_updated = {
+                    "schema_version": "1.0.0",
+                    "target_id": target_id,
+                    "hazard_type_id": hazard_type_id,
+                    "accumulated_value": int(max(0, _as_int(hazard_row.get("accumulated_value", 0), 0) + defect_delta)),
+                    "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        **(dict(hazard_row.get("extensions") or {}) if isinstance(hazard_row.get("extensions"), Mapping) else {}),
+                        "last_source_process_id": process_id,
+                        "last_intent_id": str(intent_id),
+                    },
+                }
+                hazard_updated["deterministic_fingerprint"] = canonical_sha256(dict(hazard_updated, deterministic_fingerprint=""))
+                hazard_rows_by_id[hazard_key] = hazard_updated
+
+            cure_event = {
+                "schema_version": "1.0.0",
+                "event_id": "event.therm.cure.{}".format(
+                    canonical_sha256(
+                        {
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                            "target_id": target_id,
+                            "progress_before": int(progress_before),
+                            "progress_after": int(progress_after),
+                            "intent_id": str(intent_id),
+                        }
+                    )[:16]
+                ),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "target_id": target_id,
+                "temperature": int(temperature),
+                "progress_before": int(progress_before),
+                "progress_after": int(progress_after),
+                "defect_delta": int(max(0, defect_delta)),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "process_id": process_id,
+                    "intent_id": str(intent_id),
+                    "within_cure_window": bool(in_window),
+                },
+            }
+            cure_event["deterministic_fingerprint"] = canonical_sha256(dict(cure_event, deterministic_fingerprint=""))
+            thermal_cure_events.append(cure_event)
+        cure_states = [dict(cure_rows_by_id[key]) for key in sorted(cure_rows_by_id.keys())]
+        state["cure_states"] = [dict(row) for row in cure_states]
+        _ensure_cure_state_rows(state)
+        thermal_cure_events = sorted(
+            [dict(row) for row in list(thermal_cure_events or []) if isinstance(row, Mapping)],
+            key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+        )
+        state["thermal_cure_events"] = [dict(row) for row in thermal_cure_events]
+        _ensure_thermal_cure_events(state)
+        model_hazard_rows = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
+        structural_nodes = [dict(structural_node_by_id[key]) for key in sorted(structural_node_by_id.keys())]
+        structural_edges = [dict(structural_edge_by_id[key]) for key in sorted(structural_edge_by_id.keys())]
+        _persist_model_state(
+            state,
+            model_bindings=model_bindings,
+            model_evaluation_results=model_evaluation_results,
+            model_cache_rows=model_cache_rows,
+            model_runtime_state=model_runtime_state,
+            model_hazard_rows=model_hazard_rows,
+            model_flow_adjustment_rows=model_flow_adjustment_rows,
+        )
+        _persist_mechanics_state(
+            state,
+            structural_graphs=structural_graphs,
+            structural_nodes=structural_nodes,
+            structural_edges=structural_edges,
+            mechanics_provenance_events=mechanics_provenance_events,
+        )
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": "artifact.record.therm.cure.{}".format(
+                        canonical_sha256({"event_id": str(row.get("event_id", ""))})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "event_type": "incident.cure_progress",
+                        "target_id": str(row.get("target_id", "")).strip(),
+                    },
+                }
+                for row in list(thermal_cure_events[-64:])
+                if isinstance(row, Mapping)
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+        result_metadata = {
+            "processed_target_ids": list(_sorted_tokens(processed_targets)),
+            "target_count": int(len(processed_targets)),
+            "progressed_count": int(progressed_updates),
+            "defect_update_count": int(defect_updates),
+            "cure_event_count": int(len(processed_targets)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.hazard_increment":

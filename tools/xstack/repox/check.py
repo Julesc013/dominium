@@ -13073,6 +13073,8 @@ def _append_safety_invariant_findings(
         "safety.deadman_basic",
         "safety.loto_basic",
         "safety.graceful_degrade_basic",
+        "safety.overtemp_trip",
+        "safety.thermal_runaway",
     )
     for token in required_pattern_ids:
         if token in safety_registry_text:
@@ -13451,6 +13453,239 @@ def _append_electric_invariant_findings(
                     )
                 )
                 break
+
+
+def _append_thermal_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+
+    convention_rel = "docs/thermal/LOSS_TO_HEAT_CONVENTION.md"
+    convention_abs = os.path.join(repo_root, convention_rel.replace("/", os.sep))
+    if not os.path.isfile(convention_abs):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=convention_rel,
+                line_number=1,
+                snippet="",
+                message="loss-to-heat convention must exist so dissipated energy remains auditable and replay-safe",
+                rule_id="INV-LOSS-MAPPED-TO-HEAT",
+            )
+        )
+
+    thermal_policy_rel = "data/registries/thermal_policy_registry.json"
+    thermal_policy_text = _file_text(repo_root, thermal_policy_rel)
+    for token in (
+        "therm.policy.default",
+        "therm.policy.rank_strict",
+        "therm.policy.none",
+    ):
+        if token in thermal_policy_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=thermal_policy_rel,
+                line_number=1,
+                snippet=token,
+                message="thermal policy registry must include explicit optional/null policy coverage for deterministic null-boot safety",
+                rule_id="INV-THERM-POLICIES-OPTIONAL",
+            )
+        )
+
+    runtime_files = (
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py",
+        "tools/xstack/sessionx/process_runtime.py",
+    )
+    for rel_path in runtime_files:
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            continue
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if "therm.policy.default" not in snippet:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="runtime must not force mandatory thermal policy at boot; thermal policy remains optional",
+                    rule_id="INV-THERM-POLICIES-OPTIONAL",
+                )
+            )
+            break
+
+    power_engine_rel = "src/electric/power_network_engine.py"
+    power_engine_text = _file_text(repo_root, power_engine_rel)
+    for token in ("quantity.thermal.heat_loss_stub", "effect.temperature_increase_local"):
+        if token in power_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=power_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical dissipation pathways should map loss outputs to thermal quantity/effect conventions",
+                rule_id="INV-LOSS-MAPPED-TO-HEAT",
+            )
+        )
+
+    thermal_engine_rel = "src/thermal/network/thermal_network_engine.py"
+    thermal_engine_text = _file_text(repo_root, thermal_engine_rel)
+    for token in ("evaluate_model_bindings(", "solve_thermal_network_t1(", "solve_thermal_network_t0("):
+        if token in thermal_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=thermal_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="thermal network solve must remain model-driven with deterministic T1/T0 downgrade path",
+                rule_id="INV-THERM-MODEL-ONLY",
+            )
+        )
+
+    model_engine_rel = "src/models/model_engine.py"
+    model_engine_text = _file_text(repo_root, model_engine_rel)
+    for token in ("model_type.therm_phase_transition", "model_type.therm_cure_progress"):
+        if token in model_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=model_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="THERM phase/cure behavior must be declared in constitutive models and dispatched through model engine",
+                rule_id="INV-PHASE-CHANGE-MODEL-ONLY",
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in (
+        "elif process_id == \"process.material_transform_phase\":",
+        "elif process_id == \"process.cure_state_tick\":",
+        "_load_material_phase_registry(",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="phase transition and cure progression must execute through explicit deterministic process handlers",
+                rule_id="INV-NO-ADHOC-CURE-LOGIC",
+            )
+        )
+
+    phase_cure_pattern = re.compile(
+        r"\b(?:phase_tag|cure_progress|cure_temp_min|cure_temp_max)\b[^\n]*(?:=|\.append\(|\.extend\()",
+        re.IGNORECASE,
+    )
+    phase_cure_allowed_files = {
+        "src/models/model_engine.py",
+        "src/thermal/network/thermal_network_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py",
+    }
+    phase_cure_scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    phase_cure_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(phase_cure_scan_prefixes):
+            continue
+        if rel_norm.startswith(phase_cure_skip_prefixes):
+            continue
+        if rel_norm in phase_cure_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not phase_cure_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="phase/cure state mutation appears outside canonical model/process handlers",
+                    rule_id="INV-NO-ADHOC-CURE-LOGIC",
+                )
+            )
+            break
+
+    mutation_pattern = re.compile(
+        r"\bstate\s*\[\s*[\"'](?:temperature|field\.temperature|thermal_)[^\"']*[\"']\s*\]\s*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = (
+        "src/",
+        "tools/xstack/sessionx/",
+    )
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        thermal_engine_rel,
+        "src/fields/field_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not mutation_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="temperature writes must go through thermal model/process paths only",
+                    rule_id="INV-NO-DIRECT-TEMP-MUTATION",
+                )
+            )
+            break
 
 
 def _append_constitutive_model_invariant_findings(
@@ -14201,6 +14436,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mobility_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_thermal_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

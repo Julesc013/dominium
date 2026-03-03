@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material Phase Profile Schema",
+  "version": "1.0.0",
+  "description": "Deterministic material phase-threshold profile used by THERM phase transition models.",
+  "x-doc-ref": [
+    "docs/thermal/PHASE_CHANGE_AND_CURING.md",
+    "docs/audit/THERM_PHASE_CURE_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "material_id",
+    "phase_tags_by_temperature",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "material_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "freeze_point": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "melt_point": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "boil_point": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "phase_tags_by_temperature": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "min_temp",
+          "max_temp",
+          "phase_tag"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "min_temp": {
+            "type": "integer"
+          },
+          "max_temp": {
+            "type": "integer"
+          },
+          "phase_tag": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "material_id": "material.water",
+      "freeze_point": 27315,
+      "melt_point": 27315,
+      "boil_point": 37315,
+      "phase_tags_by_temperature": [
+        {
+          "min_temp": -100000,
+          "max_temp": 27314,
+          "phase_tag": "solid"
+        },
+        {
+          "min_temp": 27315,
+          "max_temp": 37314,
+          "phase_tag": "liquid"
+        },
+        {
+          "min_temp": 37315,
+          "max_temp": 200000,
+          "phase_tag": "gas"
+        }
+      ],
+      "extensions": {}
+    }
+  ]
+}

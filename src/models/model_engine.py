@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import Callable, Dict, List, Mapping, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -373,6 +374,923 @@ def _rng_permille(*, stream_name: str, inputs_hash: str, tick: int) -> int:
     return int(int(digest[:8], 16) % 1000)
 
 
+def _resolved_input_int(
+    *,
+    resolved_inputs: List[dict],
+    input_id: str,
+    default_value: int = 0,
+) -> int:
+    token = str(input_id or "").strip()
+    for row in list(resolved_inputs or []):
+        if str(row.get("input_id", "")).strip() != token:
+            continue
+        return int(_as_int(row.get("value"), default_value))
+    return int(default_value)
+
+
+def _binding_param_int(*, binding: Mapping[str, object], key: str, default_value: int = 0) -> int:
+    params = _as_map(binding.get("parameters"))
+    if key not in params:
+        return int(default_value)
+    return int(_as_int(params.get(key), default_value))
+
+
+def _build_output_row(
+    *,
+    model_id: str,
+    binding_id: str,
+    target_id: str,
+    output_kind: str,
+    output_id: str,
+    payload: Mapping[str, object],
+) -> dict:
+    return {
+        "model_id": str(model_id),
+        "binding_id": str(binding_id),
+        "target_id": str(target_id),
+        "output_kind": str(output_kind),
+        "output_id": str(output_id),
+        "payload": _canon(dict(payload or {})),
+    }
+
+
+def _evaluate_elec_load_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    demand_p = int(max(0, _binding_param_int(binding=binding, key="demand_p", default_value=_binding_param_int(binding=binding, key="demand", default_value=0))))
+    if "motor" in model_id:
+        pf_permille = int(max(1, min(1000, _binding_param_int(binding=binding, key="pf_permille", default_value=850))))
+        p_val = int(demand_p)
+        s_val = int((p_val * 1000 + pf_permille - 1) // pf_permille) if p_val > 0 else 0
+        q_val = int(math.isqrt(max(0, int(s_val * s_val) - int(p_val * p_val))))
+    else:
+        p_val = int(demand_p)
+        q_val = int(max(0, _binding_param_int(binding=binding, key="demand_q", default_value=0)))
+        s_val = int(max(p_val, math.isqrt(max(0, int(p_val * p_val) + int(q_val * q_val)))))
+    pf_val = int(1000 if s_val <= 0 else max(0, min(1000, (p_val * 1000) // max(1, s_val))))
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            if output_id.endswith(".active_stub"):
+                delta = int(p_val)
+            elif output_id.endswith(".reactive_stub"):
+                delta = int(q_val)
+            elif output_id.endswith(".apparent_stub"):
+                delta = int(s_val)
+            else:
+                delta = 0
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(delta),
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            value = int(pf_val if "power_factor" in output_id else s_val)
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(value)},
+                )
+            )
+        elif output_kind == "compliance_signal":
+            grade = "pass" if pf_val >= 900 else "warn" if pf_val >= 750 else "fail"
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"signal_id": output_id, "grade": grade, "score_permille": int(pf_val)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_elec_pf_correction_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    current_p = int(max(0, _binding_param_int(binding=binding, key="current_p", default_value=_resolved_input_int(
+        resolved_inputs=resolved_inputs,
+        input_id="quantity.power.active_stub",
+        default_value=0,
+    ))))
+    current_q = int(max(0, _binding_param_int(binding=binding, key="current_q", default_value=_resolved_input_int(
+        resolved_inputs=resolved_inputs,
+        input_id="quantity.power.reactive_stub",
+        default_value=0,
+    ))))
+    desired_pf = int(max(1, min(1000, _binding_param_int(binding=binding, key="desired_pf_permille", default_value=_binding_param_int(binding=binding, key="pf_target_permille", default_value=950)))))
+    max_comp_permille = int(max(0, min(1000, _binding_param_int(binding=binding, key="max_compensation_permille", default_value=1000))))
+    target_s = int((current_p * 1000 + desired_pf - 1) // max(1, desired_pf)) if current_p > 0 else 0
+    target_q = int(math.isqrt(max(0, int(target_s * target_s) - int(current_p * current_p))))
+    raw_delta = int(target_q - current_q)
+    min_delta = int(-1 * ((current_q * max_comp_permille) // 1000))
+    q_delta = int(max(min_delta, raw_delta))
+    adjusted_q = int(max(0, current_q + q_delta))
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(q_delta if output_id.endswith(".reactive_stub") else 0),
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(adjusted_q)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_elec_transformer_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    in_p = int(max(0, _binding_param_int(binding=binding, key="current_p", default_value=_resolved_input_int(
+        resolved_inputs=resolved_inputs,
+        input_id="quantity.power.active_stub",
+        default_value=0,
+    ))))
+    in_q = int(max(0, _binding_param_int(binding=binding, key="current_q", default_value=_resolved_input_int(
+        resolved_inputs=resolved_inputs,
+        input_id="quantity.power.reactive_stub",
+        default_value=0,
+    ))))
+    ratio_permille = int(max(1, _binding_param_int(binding=binding, key="transformer_ratio_permille", default_value=1000)))
+    loss_coeff = int(max(0, _binding_param_int(binding=binding, key="loss_coeff_permille", default_value=15)))
+    scaled_p = int((in_p * ratio_permille) // 1000)
+    scaled_q = int((in_q * ratio_permille) // 1000)
+    scaled_s = int(max(0, math.isqrt(max(0, int(scaled_p * scaled_p) + int(scaled_q * scaled_q)))))
+    heat_loss = int((scaled_p * loss_coeff) // 1000)
+    out_p = int(max(0, scaled_p - heat_loss))
+    out_q = int(max(0, scaled_q))
+    out_s = int(max(out_p, math.isqrt(max(0, int(out_p * out_p) + int(out_q * out_q)))))
+    delta_map = {
+        "quantity.power.active_stub": int(out_p - in_p),
+        "quantity.power.reactive_stub": int(out_q - in_q),
+        "quantity.power.apparent_stub": int(out_s - max(0, _binding_param_int(binding=binding, key="current_s", default_value=scaled_s))),
+    }
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            delta = int(delta_map.get(output_id, 0))
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(delta),
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            value = int(heat_loss if output_id == "quantity.thermal.heat_loss_stub" else out_s)
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(value)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_elec_storage_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    soc_scale = 1_000_000
+    state_of_charge = int(max(0, min(soc_scale, _binding_param_int(binding=binding, key="state_of_charge", default_value=_resolved_input_int(
+        resolved_inputs=resolved_inputs,
+        input_id="derived.elec.storage_state_of_charge",
+        default_value=0,
+    )))))
+    capacity_energy = int(max(0, _binding_param_int(binding=binding, key="capacity_energy", default_value=0)))
+    current_p = int(max(0, _binding_param_int(binding=binding, key="current_p", default_value=_binding_param_int(binding=binding, key="demand_p", default_value=0))))
+    available_energy = int((state_of_charge * capacity_energy) // soc_scale) if capacity_energy > 0 else 0
+    max_discharge = int(max(0, _binding_param_int(binding=binding, key="max_discharge_p", default_value=current_p)))
+    discharge = int(max(0, min(current_p, max_discharge, available_energy)))
+    delta_p = int(-1 * discharge)
+    delta_q = int(0)
+    delta_s = int(delta_p)
+    internal_resistance = int(max(0, _binding_param_int(binding=binding, key="internal_resistance_permille", default_value=_binding_param_int(binding=binding, key="internal_resistance_proxy", default_value=25))))
+    heat_loss = int((discharge * internal_resistance) // 1000)
+    hazard_delta = int(1 if discharge > 0 else 0)
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            if output_id.endswith(".active_stub"):
+                delta = int(delta_p)
+            elif output_id.endswith(".reactive_stub"):
+                delta = int(delta_q)
+            elif output_id.endswith(".apparent_stub"):
+                delta = int(delta_s)
+            else:
+                delta = 0
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(delta),
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            value = int(heat_loss if output_id == "quantity.thermal.heat_loss_stub" else discharge)
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(value)},
+                )
+            )
+        elif output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"hazard_type_id": output_id, "delta": int(hazard_delta)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_elec_device_loss_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    current_p = int(max(0, _binding_param_int(binding=binding, key="current_p", default_value=_resolved_input_int(
+        resolved_inputs=resolved_inputs,
+        input_id="quantity.power.active_stub",
+        default_value=0,
+    ))))
+    loss_coeff = int(max(0, _binding_param_int(binding=binding, key="loss_coeff_permille", default_value=20)))
+    heat_loss = int((current_p * loss_coeff) // 1000)
+    delta_p = int(-1 * heat_loss)
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(delta_p if output_id.endswith(".active_stub") else 0),
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(heat_loss)},
+                )
+            )
+        elif output_kind == "effect":
+            magnitude = int(max(0, min(1000, heat_loss)))
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"effect_type_id": output_id, "magnitude_permille": int(magnitude)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_therm_heat_capacity_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    current_energy = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="current_thermal_energy",
+                default_value=0,
+            ),
+        )
+    )
+    heat_flow_in = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="heat_flow_in",
+                default_value=0,
+            ),
+        )
+    )
+    heat_capacity = int(
+        max(
+            1,
+            _binding_param_int(
+                binding=binding,
+                key="heat_capacity_value",
+                default_value=1,
+            ),
+        )
+    )
+    ambient_temp = int(
+        _binding_param_int(
+            binding=binding,
+            key="ambient_temperature",
+            default_value=20,
+        )
+    )
+    updated_energy = int(max(0, current_energy + heat_flow_in))
+    temperature = int(ambient_temp + (updated_energy // max(1, heat_capacity)))
+    delta_energy = int(max(0, updated_energy - current_energy))
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(delta_energy),
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            value = int(temperature if output_id == "derived.therm.temperature" else updated_energy)
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(value)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_therm_conductance_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    node_a_temperature = int(_binding_param_int(binding=binding, key="node_a_temperature", default_value=20))
+    node_b_temperature = int(_binding_param_int(binding=binding, key="node_b_temperature", default_value=20))
+    conductance = int(max(0, _binding_param_int(binding=binding, key="conductance_value", default_value=0)))
+    source_node_id = str(
+        _as_map(binding.get("parameters")).get("source_node_id", "")
+    ).strip()
+    sink_node_id = str(
+        _as_map(binding.get("parameters")).get("sink_node_id", "")
+    ).strip()
+    if node_a_temperature >= node_b_temperature:
+        from_node_id = source_node_id
+        to_node_id = sink_node_id
+        delta_t = int(node_a_temperature - node_b_temperature)
+    else:
+        from_node_id = sink_node_id
+        to_node_id = source_node_id
+        delta_t = int(node_b_temperature - node_a_temperature)
+    transfer = int(max(0, (conductance * delta_t) // 10))
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(transfer),
+                "from_node_id": from_node_id,
+                "to_node_id": to_node_id,
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": int(transfer),
+                        "from_node_id": from_node_id,
+                        "to_node_id": to_node_id,
+                    },
+                )
+            )
+    return outputs
+
+
+def _evaluate_therm_loss_to_temp_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    heat_loss = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="heat_loss",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.thermal.heat_loss_stub",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "flow_adjustment":
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": str(
+                    _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+                ).strip()
+                or output_id,
+                "delta": int(heat_loss),
+            }
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(heat_loss)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_therm_phase_transition_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+    temperature = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=20000,
+            ),
+        )
+    )
+    current_phase = str(params.get("current_phase", "solid")).strip() or "solid"
+    freeze_point = params.get("freeze_point")
+    melt_point = params.get("melt_point")
+    boil_point = params.get("boil_point")
+    freeze_value = None if freeze_point is None else int(_as_int(freeze_point, 0))
+    melt_value = None if melt_point is None else int(_as_int(melt_point, 0))
+    boil_value = None if boil_point is None else int(_as_int(boil_point, 0))
+    next_phase = str(current_phase)
+    if boil_value is not None and temperature >= int(boil_value):
+        next_phase = "gas"
+    elif melt_value is not None and temperature >= int(melt_value):
+        next_phase = "liquid"
+    elif freeze_value is not None and temperature <= int(freeze_value):
+        next_phase = "solid"
+    transition_triggered = bool(next_phase != current_phase)
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind in {"derived_quantity", "compliance_signal"}:
+            payload = {
+                "quantity_id": output_id,
+                "value": int(1 if transition_triggered else 0),
+                "temperature": int(temperature),
+                "from_phase": str(current_phase),
+                "to_phase": str(next_phase),
+                "transition_triggered": bool(transition_triggered),
+            }
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+    return outputs
+
+
+def _evaluate_therm_cure_progress_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+    temperature = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    min_temp = int(max(-200000, _binding_param_int(binding=binding, key="cure_temp_min", default_value=27815)))
+    max_temp = int(max(min_temp, _binding_param_int(binding=binding, key="cure_temp_max", default_value=30815)))
+    cure_rate = int(max(0, _binding_param_int(binding=binding, key="cure_rate_permille", default_value=10)))
+    defect_rate = int(max(0, _binding_param_int(binding=binding, key="defect_rate", default_value=1)))
+    current_progress = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="cure_progress",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.therm.cure_progress",
+                        default_value=0,
+                    ),
+                ),
+            ),
+        )
+    )
+    in_range = bool(int(min_temp) <= int(temperature) <= int(max_temp))
+    progress_delta = int(cure_rate if in_range else 0)
+    projected = int(max(0, min(1000, current_progress + progress_delta)))
+    defect_delta = int(defect_rate if (not in_range) else 0)
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "derived_quantity":
+            value = int(progress_delta)
+            if output_id.endswith("cure_defect_delta"):
+                value = int(defect_delta)
+            elif output_id.endswith("cure_progress_projected"):
+                value = int(projected)
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": int(value),
+                        "temperature": int(temperature),
+                        "within_cure_window": bool(in_range),
+                    },
+                )
+            )
+        elif output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"hazard_type_id": output_id, "delta": int(defect_delta)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_therm_insulation_modifier_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    conductance_value = int(max(0, _binding_param_int(binding=binding, key="conductance_value", default_value=0)))
+    factor_permille = int(max(0, _binding_param_int(binding=binding, key="insulation_factor_permille", default_value=1000)))
+    effective = int(max(0, (conductance_value * factor_permille) // 1000))
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind != "derived_quantity":
+            continue
+        value = int(effective)
+        if output_id.endswith("insulation_factor_permille"):
+            value = int(factor_permille)
+        outputs.append(
+            _build_output_row(
+                model_id=model_id,
+                binding_id=binding_id,
+                target_id=target_id,
+                output_kind=output_kind,
+                output_id=output_id,
+                payload={"quantity_id": output_id, "value": int(value)},
+            )
+        )
+    return outputs
+
+
+def _evaluate_known_model_outputs(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict] | None:
+    model_type_id = str(model_row.get("model_type_id", "")).strip()
+    if model_type_id == "model_type.elec_load_phasor_stub":
+        return _evaluate_elec_load_model(
+            model_row=model_row,
+            binding=binding,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.elec_pf_correction":
+        return _evaluate_elec_pf_correction_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.elec_transformer_stub":
+        return _evaluate_elec_transformer_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.elec_storage_battery":
+        return _evaluate_elec_storage_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.elec_device_loss":
+        return _evaluate_elec_device_loss_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_heat_capacity":
+        return _evaluate_therm_heat_capacity_model(
+            model_row=model_row,
+            binding=binding,
+            output_signature=output_signature,
+        )
+    if model_type_id in {"model_type.therm_conductance", "model_type.therm_conductance_stub"}:
+        return _evaluate_therm_conductance_model(
+            model_row=model_row,
+            binding=binding,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_loss_to_temp":
+        return _evaluate_therm_loss_to_temp_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_phase_transition":
+        return _evaluate_therm_phase_transition_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_cure_progress":
+        return _evaluate_therm_cure_progress_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_insulation_modifier":
+        return _evaluate_therm_insulation_modifier_model(
+            model_row=model_row,
+            binding=binding,
+            output_signature=output_signature,
+        )
+    return None
+
+
 def evaluate_model_bindings(
     *,
     current_tick: int,
@@ -493,51 +1411,64 @@ def evaluate_model_bindings(
                 (dict(item) for item in list(model_row.get("output_signature") or []) if isinstance(item, Mapping)),
                 key=lambda item: (str(item.get("output_kind", "")), str(item.get("output_id", ""))),
             )
-            for idx, output_ref in enumerate(output_signature):
-                output_kind = str(output_ref.get("output_kind", "")).strip()
-                output_id = str(output_ref.get("output_id", "")).strip()
-                discriminator = int(int(canonical_sha256({"output_id": output_id, "idx": int(idx)})[:8], 16) % 1000)
-                value = int((int(base_value) + int(discriminator)) % 10000)
-                if output_kind == "effect":
-                    payload = {"effect_type_id": output_id, "magnitude_permille": int(value % 1000)}
-                elif output_kind == "hazard_increment":
-                    payload = {"hazard_type_id": output_id, "delta": int(1 + (value % 17))}
-                elif output_kind == "flow_adjustment":
-                    output_extensions = dict(output_ref.get("extensions") or {}) if isinstance(output_ref.get("extensions"), Mapping) else {}
-                    binding_parameters = dict(binding.get("parameters") or {}) if isinstance(binding.get("parameters"), Mapping) else {}
-                    quantity_bundle_id = str(
-                        output_extensions.get("quantity_bundle_id")
-                        or binding_parameters.get("quantity_bundle_id")
-                        or ""
-                    ).strip()
-                    component_quantity_id = str(
-                        output_extensions.get("component_quantity_id")
-                        or output_extensions.get("quantity_id")
-                        or binding_parameters.get("component_quantity_id")
-                        or output_id
-                    ).strip()
-                    payload = {
-                        "quantity_id": output_id,
-                        "component_quantity_id": component_quantity_id or output_id,
-                        "delta": int((value % 21) - 10),
-                    }
-                    if quantity_bundle_id:
-                        payload["quantity_bundle_id"] = quantity_bundle_id
-                elif output_kind == "compliance_signal":
-                    grade = ("pass", "warn", "fail")[int(value) % 3]
-                    payload = {"signal_id": output_id, "grade": grade, "score_permille": int(value % 1000)}
-                else:
-                    payload = {"quantity_id": output_id, "value": int(value)}
-                outputs.append(
-                    {
-                        "model_id": model_id,
-                        "binding_id": binding_id,
-                        "target_id": target_id,
-                        "output_kind": output_kind,
-                        "output_id": output_id,
-                        "payload": payload,
-                    }
-                )
+            evaluated = _evaluate_known_model_outputs(
+                model_row=model_row,
+                binding=binding,
+                resolved_inputs=resolved_inputs,
+                output_signature=output_signature,
+            )
+            if evaluated is not None:
+                outputs = [
+                    dict(item)
+                    for item in list(evaluated or [])
+                    if isinstance(item, Mapping)
+                ]
+            else:
+                for idx, output_ref in enumerate(output_signature):
+                    output_kind = str(output_ref.get("output_kind", "")).strip()
+                    output_id = str(output_ref.get("output_id", "")).strip()
+                    discriminator = int(int(canonical_sha256({"output_id": output_id, "idx": int(idx)})[:8], 16) % 1000)
+                    value = int((int(base_value) + int(discriminator)) % 10000)
+                    if output_kind == "effect":
+                        payload = {"effect_type_id": output_id, "magnitude_permille": int(value % 1000)}
+                    elif output_kind == "hazard_increment":
+                        payload = {"hazard_type_id": output_id, "delta": int(1 + (value % 17))}
+                    elif output_kind == "flow_adjustment":
+                        output_extensions = dict(output_ref.get("extensions") or {}) if isinstance(output_ref.get("extensions"), Mapping) else {}
+                        binding_parameters = dict(binding.get("parameters") or {}) if isinstance(binding.get("parameters"), Mapping) else {}
+                        quantity_bundle_id = str(
+                            output_extensions.get("quantity_bundle_id")
+                            or binding_parameters.get("quantity_bundle_id")
+                            or ""
+                        ).strip()
+                        component_quantity_id = str(
+                            output_extensions.get("component_quantity_id")
+                            or output_extensions.get("quantity_id")
+                            or binding_parameters.get("component_quantity_id")
+                            or output_id
+                        ).strip()
+                        payload = {
+                            "quantity_id": output_id,
+                            "component_quantity_id": component_quantity_id or output_id,
+                            "delta": int((value % 21) - 10),
+                        }
+                        if quantity_bundle_id:
+                            payload["quantity_bundle_id"] = quantity_bundle_id
+                    elif output_kind == "compliance_signal":
+                        grade = ("pass", "warn", "fail")[int(value) % 3]
+                        payload = {"signal_id": output_id, "grade": grade, "score_permille": int(value % 1000)}
+                    else:
+                        payload = {"quantity_id": output_id, "value": int(value)}
+                    outputs.append(
+                        {
+                            "model_id": model_id,
+                            "binding_id": binding_id,
+                            "target_id": target_id,
+                            "output_kind": output_kind,
+                            "output_id": output_id,
+                            "payload": payload,
+                        }
+                    )
             outputs_hash = canonical_sha256(outputs)
             if mode == "by_inputs_hash":
                 ttl_ticks = cache_policy.get("ttl_ticks")
