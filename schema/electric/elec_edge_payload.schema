@@ -1,0 +1,24 @@
+SCHEMA: electric/elec_edge_payload.schema
+schema_id: dominium.schema.electric.elec_edge_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for PowerNetworkGraph edges.
+
+REQUIRED SHAPE:
+record elec_edge_payload
+  required:
+    - schema_version: semver
+    - edge_kind: enum(conductor|switch|transformer_stub)
+    - length: int
+    - resistance_proxy: int
+    - capacity_rating: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Edge ratings and resistance proxies are deterministic inputs to E1 solve/loss models.
+- Protection behavior must route through registered SAFETY patterns.
