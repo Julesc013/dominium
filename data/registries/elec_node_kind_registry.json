@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.registry.elec_node_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.elec_node_kind_registry",
+    "registry_version": "1.0.0",
+    "node_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "node.bus",
+        "schema_ref": "dominium.schema.electric.elec_node_payload@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "node.generator",
+        "schema_ref": "dominium.schema.electric.elec_node_payload@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "node.load",
+        "schema_ref": "dominium.schema.electric.elec_node_payload@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "node.storage",
+        "schema_ref": "dominium.schema.electric.elec_node_payload@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "node.breaker",
+        "schema_ref": "dominium.schema.electric.elec_node_payload@1.0.0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "node.transformer_stub",
+        "schema_ref": "dominium.schema.electric.elec_node_payload@1.0.0",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
