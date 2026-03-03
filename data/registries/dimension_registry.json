@@ -79,6 +79,15 @@
       },
       {
         "schema_version": "1.0.0",
+        "dimension_id": "dim.torque",
+        "base_exponents": {"M": 1, "L": 2, "T": -2},
+        "description": "Torque dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "dimension_id": "dim.energy",
         "base_exponents": {"M": 1, "L": 2, "T": -2},
         "description": "Energy dimension.",

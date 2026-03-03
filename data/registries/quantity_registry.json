@@ -31,6 +31,110 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.momentum_linear",
+        "description": "Canonical linear momentum channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.N_s",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.momentum_angular",
+        "description": "Canonical angular momentum channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.N_m_s",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.force",
+        "description": "Canonical force channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.N",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.torque",
+        "description": "Canonical torque channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.N_m",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_kinetic",
+        "description": "Canonical kinetic-energy accounting channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_potential",
+        "description": "Canonical potential-energy accounting channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_thermal",
+        "description": "Canonical thermal-energy accounting channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_electrical",
+        "description": "Canonical electrical-energy accounting label channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_chemical",
+        "description": "Canonical chemical-energy accounting label channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_total",
+        "description": "Canonical total-energy ledger aggregate channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.heat_loss",
+        "description": "Canonical energy-per-tick loss channel mapped to heat by policy.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.W",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.entropy_index",
+        "description": "Canonical entropy/irreversibility diagnostic channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J_per_K",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.radiation_dose",
+        "description": "Canonical radiation dose channel using specific-energy policy.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J_per_kg",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.power.active_stub",
         "description": "Electrical active-power placeholder component (P).",
         "numeric_type": "fixed_point",
@@ -66,6 +170,22 @@
         "extensions": {
           "loss_hook_only": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.heat_flow_stub",
+        "description": "Thermal conduction flow component for network edge transfer.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.W",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.energy_store_stub",
+        "description": "Thermal node energy store component used by THERM-1 heat-capacity mapping.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.J",
+        "extensions": {}
       },
       {
         "schema_version": "1.0.0",
