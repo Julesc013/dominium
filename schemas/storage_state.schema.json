@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Electrical Storage State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ELEC-3 storage state row for battery-capable nodes.",
+  "x-doc-ref": [
+    "docs/electric/DEVICE_MODELS.md",
+    "docs/audit/ELECTRICAL_DEVICE_MODELS_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_id",
+    "state_of_charge",
+    "capacity_energy",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state_of_charge": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000,
+      "description": "Fixed-point SoC in millionths [0..1_000_000]."
+    },
+    "capacity_energy": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_id": "node.elec.storage.main",
+      "state_of_charge": 650000,
+      "capacity_energy": 100000,
+      "last_update_tick": 120,
+      "deterministic_fingerprint": "f1f30409f5f06499911cbef8da2c094ca1ab155900c6db17d5d30911a221fdca",
+      "extensions": {}
+    }
+  ]
+}
