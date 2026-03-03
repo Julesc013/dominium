@@ -328,6 +328,34 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    fire_state_hash_chain = _mobility_surface_hash(
+        key="fire_state_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    ignition_event_hash_chain = _mobility_surface_hash(
+        key="ignition_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    fire_spread_hash_chain = _mobility_surface_hash(
+        key="fire_spread_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    runaway_event_hash_chain = _mobility_surface_hash(
+        key="runaway_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     signal_network_hash = _signal_surface_hash(
         key="signal_network_hash",
         surface=mobility_proof_surface,
@@ -390,6 +418,10 @@ def build_control_proof_bundle_from_markers(
         "thermal_network_hash": str(thermal_network_hash),
         "overheat_event_hash_chain": str(overheat_event_hash_chain),
         "ambient_exchange_hash": str(ambient_exchange_hash),
+        "fire_state_hash_chain": str(fire_state_hash_chain),
+        "ignition_event_hash_chain": str(ignition_event_hash_chain),
+        "fire_spread_hash_chain": str(fire_spread_hash_chain),
+        "runaway_event_hash_chain": str(runaway_event_hash_chain),
         "signal_network_hash": str(signal_network_hash),
         "message_delivery_event_hash_chain": str(message_delivery_event_hash_chain),
         "receipt_hash_chain": str(receipt_hash_chain),
@@ -434,6 +466,10 @@ def build_control_proof_bundle_from_markers(
                     "thermal_network_hash": str(payload.get("thermal_network_hash", "")),
                     "overheat_event_hash_chain": str(payload.get("overheat_event_hash_chain", "")),
                     "ambient_exchange_hash": str(payload.get("ambient_exchange_hash", "")),
+                    "fire_state_hash_chain": str(payload.get("fire_state_hash_chain", "")),
+                    "ignition_event_hash_chain": str(payload.get("ignition_event_hash_chain", "")),
+                    "fire_spread_hash_chain": str(payload.get("fire_spread_hash_chain", "")),
+                    "runaway_event_hash_chain": str(payload.get("runaway_event_hash_chain", "")),
                     "signal_network_hash": str(payload.get("signal_network_hash", "")),
                     "message_delivery_event_hash_chain": str(payload.get("message_delivery_event_hash_chain", "")),
                     "receipt_hash_chain": str(payload.get("receipt_hash_chain", "")),

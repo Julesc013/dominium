@@ -34,6 +34,10 @@ record control_proof_bundle
     - thermal_network_hash: sha256
     - overheat_event_hash_chain: sha256
     - ambient_exchange_hash: sha256
+    - fire_state_hash_chain: sha256
+    - ignition_event_hash_chain: sha256
+    - fire_spread_hash_chain: sha256
+    - runaway_event_hash_chain: sha256
     - signal_network_hash: sha256
     - message_delivery_event_hash_chain: sha256
     - receipt_hash_chain: sha256
