@@ -31,6 +31,44 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.active_stub",
+        "description": "Electrical active-power placeholder component (P).",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.W",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.reactive_stub",
+        "description": "Electrical reactive-power placeholder component (Q).",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.W",
+        "extensions": {
+          "placeholder_unit": "var_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.apparent_stub",
+        "description": "Electrical apparent-power placeholder component (S).",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.W",
+        "extensions": {
+          "placeholder_unit": "VA_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.heat_loss_stub",
+        "description": "Thermalized loss placeholder quantity emitted by model-driven loss hooks.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.W",
+        "extensions": {
+          "loss_hook_only": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.charge_total",
         "description": "Aggregate charge accounting channel.",
         "numeric_type": "fixed_point",
