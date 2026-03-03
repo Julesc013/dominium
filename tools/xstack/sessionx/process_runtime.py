@@ -383,16 +383,25 @@ from src.mobility.maintenance import (
 )
 from src.electric import (
     ElectricFaultError,
+    ElectricProtectionError,
     ElectricError,
     REFUSAL_ELEC_FAULT_INVALID,
     REFUSAL_ELEC_NETWORK_INVALID,
+    REFUSAL_ELEC_PROTECTION_INVALID,
     REFUSAL_ELEC_SPEC_NONCOMPLIANT,
     build_power_flow_channel,
+    build_protection_device,
+    build_protection_settings,
     detect_faults,
+    deterministic_protection_device_id,
     evaluate_connection_spec_compatibility,
+    evaluate_protection_trip_plan,
+    coordination_policy_rows_by_id,
     grounding_policy_rows_by_id,
     normalize_elec_edge_payload,
     normalize_fault_state_rows,
+    normalize_protection_device_rows,
+    normalize_protection_settings_rows,
     solve_power_network_e0,
     solve_power_network_e1,
 )
@@ -22109,29 +22118,6 @@ def execute_intent(
                 payload = dict(row)
                 payload["graph_id"] = graph_id
                 edge_status_by_key["{}::{}".format(graph_id, edge_id)] = payload
-                channel_id = str(payload.get("channel_id", "")).strip()
-                if channel_id and bool(payload.get("overloaded", False)):
-                    overload_context_overrides[channel_id] = {
-                        "flow.load_units": int(max(0, _as_int(payload.get("S", 0), 0))),
-                        "flow.capacity_units": int(max(0, _as_int(payload.get("capacity_rating", 0), 0))),
-                    }
-                    instance_id = "instance.safety.elec.breaker.{}".format(
-                        canonical_sha256({"graph_id": graph_id, "channel_id": channel_id})[:16]
-                    )
-                    breaker_instances = _upsert_row_by_id(
-                        breaker_instances,
-                        "instance_id",
-                        {
-                            "schema_version": "1.0.0",
-                            "instance_id": instance_id,
-                            "pattern_id": "safety.breaker_trip",
-                            "target_ids": [channel_id],
-                            "active": True,
-                            "created_tick": int(max(0, _as_int(current_tick, 0))),
-                            "deterministic_fingerprint": "",
-                            "extensions": {"graph_id": graph_id},
-                        },
-                    )
             for row in list(solved.get("node_status_rows") or []):
                 if not isinstance(row, Mapping):
                     continue
@@ -22233,6 +22219,188 @@ def execute_intent(
                 "fault_detection_rule_id": str(selected_grounding_policy.get("fault_detection_rule_id", "")).strip() or None,
             },
         }
+        existing_settings_rows = normalize_protection_settings_rows(state.get("elec_protection_settings") or [])
+        settings_by_id = dict(
+            (
+                str(row.get("settings_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(existing_settings_rows or [])
+            if isinstance(row, Mapping) and str(row.get("settings_id", "")).strip()
+        )
+        for channel_row in list(elec_flow_channels or []):
+            if not isinstance(channel_row, Mapping):
+                continue
+            channel_id = str(channel_row.get("channel_id", "")).strip()
+            if not channel_id:
+                continue
+            ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
+            settings_id = str(ext.get("protection_settings_id", "")).strip()
+            if not settings_id:
+                settings_id = "settings.elec.{}".format(canonical_sha256({"channel_id": channel_id})[:16])
+            if settings_id in settings_by_id:
+                continue
+            base_threshold_s = int(max(1, _as_int(ext.get("elec.base_capacity_per_tick", channel_row.get("capacity_per_tick", 1)), 1)))
+            settings_by_id[settings_id] = build_protection_settings(
+                settings_id=settings_id,
+                trip_threshold_P=int(base_threshold_s),
+                trip_threshold_S=int(base_threshold_s),
+                trip_delay_ticks=int(max(0, _as_int(ext.get("trip_delay_ticks", 0), 0))),
+                gfci_threshold=int(max(1, _as_int(ext.get("gfci_threshold", 30), 30))),
+                coordination_group_id=str(ext.get("coordination_group_id", "")).strip() or "coord.group.default",
+                extensions={
+                    "target_id": str(ext.get("edge_id", "")).strip() or channel_id,
+                    "channel_id": channel_id,
+                    "graph_id": str(ext.get("graph_id", "")).strip() or None,
+                },
+            )
+        protection_settings_rows = [dict(settings_by_id[key]) for key in sorted(settings_by_id.keys())]
+        state["elec_protection_settings"] = [dict(row) for row in list(protection_settings_rows or []) if isinstance(row, Mapping)]
+
+        existing_device_rows = normalize_protection_device_rows(state.get("elec_protection_devices") or [])
+        device_by_id = dict(
+            (
+                str(row.get("device_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(existing_device_rows or [])
+            if isinstance(row, Mapping) and str(row.get("device_id", "")).strip()
+        )
+        for channel_row in list(elec_flow_channels or []):
+            if not isinstance(channel_row, Mapping):
+                continue
+            channel_id = str(channel_row.get("channel_id", "")).strip()
+            if not channel_id:
+                continue
+            ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
+            graph_id = str(ext.get("graph_id", "")).strip()
+            edge_id = str(ext.get("edge_id", "")).strip()
+            if not edge_id:
+                for edge_row in list(elec_edge_status_rows or []):
+                    if not isinstance(edge_row, Mapping):
+                        continue
+                    if str(edge_row.get("channel_id", "")).strip() != channel_id:
+                        continue
+                    edge_id = str(edge_row.get("edge_id", "")).strip()
+                    if not graph_id:
+                        graph_id = str(edge_row.get("graph_id", "")).strip()
+                    break
+            if not edge_id:
+                continue
+            device_id = deterministic_protection_device_id(graph_id=graph_id, channel_id=channel_id, device_kind_id="breaker")
+            if device_id in device_by_id:
+                continue
+            settings_id = str(ext.get("protection_settings_id", "")).strip() or "settings.elec.{}".format(canonical_sha256({"channel_id": channel_id})[:16])
+            try:
+                device_row = build_protection_device(
+                    device_id=device_id,
+                    device_kind_id="breaker",
+                    attached_to={"edge_id": edge_id},
+                    state_machine_id="machine.elec.protection.{}".format(canonical_sha256({"device_id": device_id})[:16]),
+                    settings_ref=settings_id,
+                    spec_id=None,
+                    extensions={
+                        "channel_id": channel_id,
+                        "graph_id": graph_id or None,
+                        "edge_id": edge_id,
+                        "downstream_rank": int(max(0, _as_int(ext.get("downstream_rank", 0), 0))),
+                    },
+                )
+            except ElectricProtectionError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Fix electrical protection device inputs and retry process.elec.network_tick.",
+                    dict(getattr(exc, "details", {}) or {}),
+                    "$.state.elec_protection_devices",
+                )
+            device_by_id[device_id] = dict(device_row)
+        protection_device_rows = [dict(device_by_id[key]) for key in sorted(device_by_id.keys())]
+        state["elec_protection_devices"] = [dict(row) for row in list(protection_device_rows or []) if isinstance(row, Mapping)]
+
+        coordination_registry_payload = _policy_payload(policy_context, "coordination_policy_registry")
+        if not coordination_registry_payload:
+            coordination_registry_payload = _read_registry_fallback(
+                repo_root=REPO_ROOT_HINT,
+                registry_rel_path="data/registries/coordination_policy_registry.json",
+                default_payload={"coordination_policies": []},
+            )
+        coordination_rows = coordination_policy_rows_by_id(coordination_registry_payload)
+        requested_coordination_policy_id = (
+            str(
+                inputs.get(
+                    "coordination_policy_id",
+                    (dict(policy_context or {})).get("elec_coordination_policy_id", "coord.downstream_first"),
+                )
+            ).strip()
+            or "coord.downstream_first"
+        )
+        resolved_coordination_policy_id = (
+            requested_coordination_policy_id
+            if requested_coordination_policy_id in coordination_rows
+            else "coord.downstream_first"
+        )
+        max_trip_actions = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get(
+                        "max_trip_actions_per_tick",
+                        (dict(policy_context or {})).get("elec_max_trip_actions_per_tick", len(protection_device_rows)),
+                    ),
+                    len(protection_device_rows),
+                ),
+            )
+        )
+        try:
+            protection_eval = evaluate_protection_trip_plan(
+                fault_rows=state.get("elec_fault_states") or [],
+                protection_device_rows=protection_device_rows,
+                protection_settings_rows=protection_settings_rows,
+                current_tick=int(current_tick),
+                coordination_policy_id=resolved_coordination_policy_id,
+                max_trip_actions=int(max_trip_actions),
+            )
+        except ElectricProtectionError as exc:
+            return refusal(
+                str(exc.reason_code),
+                str(exc),
+                "Fix electrical protection settings/co-ordination inputs and retry process.elec.network_tick.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.state.elec_protection_settings",
+            )
+        existing_trip_events = [dict(row) for row in list(state.get("elec_trip_events") or []) if isinstance(row, Mapping)]
+        merged_trip_events = normalize_safety_event_rows(
+            existing_trip_events + [dict(row) for row in list(protection_eval.get("events") or []) if isinstance(row, Mapping)]
+        )
+        state["elec_trip_events"] = [dict(row) for row in list(merged_trip_events or []) if isinstance(row, Mapping)]
+        state["trip_event_hash_chain"] = str(protection_eval.get("trip_event_hash_chain", ""))
+        state["elec_protection_runtime_state"] = {
+            "last_tick": int(max(0, _as_int(current_tick, 0))),
+            "last_budget_outcome": str(protection_eval.get("budget_outcome", "complete")).strip() or "complete",
+            "last_trip_count": int(len(list(protection_eval.get("trip_rows") or []))),
+            "last_deferred_device_ids": sorted(
+                set(str(item).strip() for item in list(protection_eval.get("deferred_device_ids") or []) if str(item).strip())
+            ),
+            "extensions": {
+                "coordination_policy_id": resolved_coordination_policy_id,
+            },
+        }
+
+        overload_context_overrides = {}
+        breaker_instances = [dict(row) for row in list(protection_eval.get("safety_instances") or []) if isinstance(row, Mapping)]
+        for trip_row in list(protection_eval.get("trip_rows") or []):
+            if not isinstance(trip_row, Mapping):
+                continue
+            channel_id = str(trip_row.get("channel_id", "")).strip()
+            if not channel_id:
+                continue
+            threshold = int(max(1, _as_int(trip_row.get("trip_threshold", 1), 1)))
+            severity = int(max(0, _as_int(trip_row.get("fault_severity", 0), 0)))
+            overload_context_overrides[channel_id] = {
+                "flow.load_units": int(max(1, threshold + max(1, severity))),
+                "flow.capacity_units": int(max(1, threshold)),
+            }
 
         if breaker_instances and overload_context_overrides:
             safety_registry = _load_safety_pattern_registry(policy_context=policy_context)
@@ -22317,10 +22485,14 @@ def execute_intent(
             "fault_state_count": int(len(list(state.get("elec_fault_states") or []))),
             "active_fault_count": int(len(list(fault_eval.get("active_fault_ids") or []))),
             "fault_budget_outcome": str(fault_eval.get("budget_outcome", "complete")).strip() or "complete",
+            "trip_count": int(len(list(protection_eval.get("trip_rows") or []))),
+            "trip_budget_outcome": str(protection_eval.get("budget_outcome", "complete")).strip() or "complete",
+            "coordination_policy_id": str(resolved_coordination_policy_id),
             "downgraded_graph_ids": sorted(set(downgraded_graph_ids)),
             "budget_outcome": str(elec_network_runtime_state.get("last_budget_outcome", "complete")),
             "power_flow_hash": str(power_flow_hash),
             "fault_state_hash_chain": str(fault_eval.get("fault_state_hash_chain", "")),
+            "trip_event_hash_chain": str(protection_eval.get("trip_event_hash_chain", "")),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.effect_apply":
