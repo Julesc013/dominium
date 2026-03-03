@@ -13147,12 +13147,56 @@ def _append_electric_invariant_findings(
             )
         )
 
+    for token in (
+        "evaluate_protection_trip_plan(",
+        "detect_faults(",
+        "safety.breaker_trip",
+        "_apply_safety_actions(",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical protection/fault orchestration must route through deterministic SAFETY and fault engines",
+                rule_id="INV-ELEC-PROTECTION-THROUGH-SAFETY",
+            )
+        )
+
+    for token in (
+        'elif process_id in {"process.elec.lockout_tagout", "process.elec_apply_loto", "process.elec_remove_loto"}:',
+        "state[\"safety_lockouts\"]",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="LOTO state transitions must be handled through deterministic process/state-machine paths",
+                rule_id="INV-LOTO-STATE_MACHINE-ONLY",
+            )
+        )
+
     inline_power_loss_pattern = re.compile(
         r"\b(?:loss_p|heat_loss|line_loss|resistance_proxy|pf_permille)\b\s*=\s*[^#\n]*(?:\*|/|\+|-|//)",
         re.IGNORECASE,
     )
     inline_breaker_pattern = re.compile(
         r"\bbreaker_state\b\s*=\s*[\"'](?:tripped|open|closed|reset)[\"']",
+        re.IGNORECASE,
+    )
+    inline_fault_trip_pattern = re.compile(
+        r"\b(?:fault(?:_kind)?|overcurrent|short_circuit|ground_fault|open_circuit)\b[^\n]*(?:trip|tripped|open|disconnect|capacity_per_tick\s*=\s*0|safety_disconnected)",
+        re.IGNORECASE,
+    )
+    inline_loto_pattern = re.compile(
+        r"\b(?:loto_active|loto_lock_tag|safety_lockouts)\b\s*=",
         re.IGNORECASE,
     )
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
@@ -13171,6 +13215,18 @@ def _append_electric_invariant_findings(
         "tools/xstack/repox/check.py",
     }
     allowed_breaker_files = {
+        runtime_rel,
+        "src/safety/safety_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    allowed_fault_trip_files = {
+        runtime_rel,
+        "src/electric/fault/fault_engine.py",
+        "src/electric/protection/protection_engine.py",
+        "src/safety/safety_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    allowed_loto_files = {
         runtime_rel,
         "src/safety/safety_engine.py",
         "tools/xstack/repox/check.py",
@@ -13208,6 +13264,30 @@ def _append_electric_invariant_findings(
                         snippet=snippet[:140],
                         message="breaker state mutation detected outside SAFETY/runtime protection handlers",
                         rule_id="INV-BREAKER-THROUGH-SAFETY",
+                    )
+                )
+                break
+            if rel_norm not in allowed_fault_trip_files and inline_fault_trip_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="fault/trip behavior detected outside canonical electrical fault/protection/safety paths",
+                        rule_id="INV-NO-ADHOC-FAULT-TRIP",
+                    )
+                )
+                break
+            if rel_norm not in allowed_loto_files and inline_loto_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="LOTO lock state mutation detected outside deterministic process/state-machine handlers",
+                        rule_id="INV-LOTO-STATE_MACHINE-ONLY",
                     )
                 )
                 break
