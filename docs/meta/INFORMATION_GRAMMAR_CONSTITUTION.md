@@ -43,7 +43,25 @@ Electrical information outputs map to existing families only:
 
 No electrical-specific information ontology is introduced.
 
-## 6) Non-Goals
+## 6) Thermal Domain Mapping (THERM-0)
+
+Thermal information outputs map to existing families only:
+
+- temperature samples, heat-flow summaries, and heat-loss readings -> `OBSERVATION`
+- overtemperature trips, freeze warnings, and thermal safety transitions -> `RECORD`
+- scheduled facility thermal bulletins and inspector summaries -> `REPORT`
+
+No thermal-specific information ontology is introduced.
+
+## 7) PHYS Exception Artifact Mapping
+
+Physics constitution exception artifacts map as:
+
+- `exception_event` -> `RECORD`
+
+Exception events are deterministic provenance records and must be carried in proof/replay witnesses when present.
+
+## 8) Non-Goals
 
 - no runtime semantic changes in META-MODEL-0
 - no new artifact family additions in this phase

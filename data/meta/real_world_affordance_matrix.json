@@ -8,7 +8,8 @@
       "series_implemented": [
         "MAT",
         "MECH",
-        "SPEC"
+        "SPEC",
+        "THERM"
       ],
       "series_planned": [
         "DOM",
@@ -35,7 +36,8 @@
       "series_implemented": [
         "MOB",
         "MECH",
-        "FIELD"
+        "FIELD",
+        "PHYS"
       ],
       "series_planned": [
         "ADV"
@@ -44,7 +46,8 @@
         "MOB",
         "MECH",
         "ABS",
-        "FIELD"
+        "FIELD",
+        "PHYS"
       ],
       "tiers": [
         "macro",
@@ -87,7 +90,8 @@
         "SPEC",
         "SIG",
         "MOB",
-        "MAT"
+        "MAT",
+        "THERM"
       ],
       "series_planned": [
         "SCI",
@@ -165,7 +169,8 @@
       "id": "environment_living_systems",
       "series_implemented": [
         "FIELD",
-        "MAT"
+        "MAT",
+        "THERM"
       ],
       "series_planned": [
         "DOM",
@@ -217,7 +222,8 @@
         "MOB",
         "MECH",
         "MAT",
-        "CTRL"
+        "CTRL",
+        "THERM"
       ],
       "series_planned": [
         "ELEC",
@@ -401,6 +407,19 @@
     },
     {
       "affordance_ids": [
+        "motion_force_transmission",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "series_id": "PHYS",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
         "time_synchronization",
         "measurement_verification"
       ],
@@ -435,6 +454,20 @@
       "tiers": [
         "macro",
         "meso"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "matter_transformation",
+        "measurement_verification",
+        "environment_living_systems",
+        "safety_protection"
+      ],
+      "series_id": "THERM",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
       ]
     }
   ]
