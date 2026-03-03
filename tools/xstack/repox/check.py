@@ -13154,7 +13154,85 @@ def _append_constitutive_model_invariant_findings(
                     line_number=line_no,
                     snippet=snippet[:140],
                     message="realism detail response logic should be registered as a constitutive model (warn phase)",
-                    rule_id="INV-REALISM-DETAIL-MUST-BE-MODEL",
+                    rule_id="INV-RESPONSE-CURVES-MUST-BE-MODELS",
+                )
+            )
+            break
+
+
+def _append_model_output_process_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    required_tokens = (
+        "elif process_id == \"process.model_evaluate_tick\":",
+        "elif process_id == \"process.hazard_increment\":",
+        "elif process_id == \"process.flow_adjust\":",
+        "_persist_model_state(",
+        "evaluate_model_bindings(",
+    )
+    for token in required_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="constitutive model outputs must flow through process handlers with deterministic persistence",
+                rule_id="INV-MODEL-OUTPUTS-PROCESS-ONLY",
+            )
+        )
+
+    bypass_patterns = (
+        re.compile(
+            r"\bmodel_(?:bindings|evaluation_results|cache_rows|hazard_rows|flow_adjustment_rows)\b[^\n]*(?:=|\.append\(|\.extend\(|\.pop\()",
+            re.IGNORECASE,
+        ),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        "src/models/model_engine.py",
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in bypass_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="constitutive model state/output mutations must be handled by model output process handlers",
+                    rule_id="INV-MODEL-OUTPUTS-PROCESS-ONLY",
                 )
             )
             break
@@ -13760,6 +13838,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_constitutive_model_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_model_output_process_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

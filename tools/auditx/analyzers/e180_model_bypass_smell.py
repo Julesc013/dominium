@@ -1,4 +1,4 @@
-"""E179 inline response curve smell analyzer."""
+"""E180 model bypass smell analyzer."""
 
 from __future__ import annotations
 
@@ -8,20 +8,20 @@ import re
 from analyzers.base import make_finding
 
 
-ANALYZER_ID = "E179_INLINE_RESPONSE_CURVE_SMELL"
+ANALYZER_ID = "E180_MODEL_BYPASS_SMELL"
 
 
-class InlineResponseCurveSmell:
+class ModelBypassSmell:
     analyzer_id = ANALYZER_ID
 
 
-_INLINE_RESPONSE_PATTERNS = (
+_BYPASS_PATTERNS = (
     re.compile(
-        r"\b(?:threshold|multiplier|attenuation|friction|wear|drift|derail|curve|coefficient|ratio)\w*\b\s*=\s*[^#\n]*(?:\*|/|\+|-|min\(|max\(|clamp)",
+        r"\bmodel_(?:bindings|evaluation_results|cache_rows|runtime_state|hazard_rows|flow_adjustment_rows)\b[^\n]*(?:=|\.append\(|\.extend\(|\.pop\(|\.update\()",
         re.IGNORECASE,
     ),
     re.compile(
-        r"\bif\b[^\n]*(?:friction|wear|attenuation|curvature|threshold|ratio|temperature|moisture|wind|radiation)\b[^\n]*(?:>=|<=|>|<)",
+        r"\bprocess\.(?:hazard_increment|flow_adjust)\b[^\n]*(?:TODO|bypass|direct)",
         re.IGNORECASE,
     ),
 )
@@ -44,10 +44,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
     scan_roots = (
-        os.path.join(repo_root, "src", "fields"),
-        os.path.join(repo_root, "src", "mobility"),
-        os.path.join(repo_root, "src", "signals"),
-        os.path.join(repo_root, "src", "mechanics"),
+        os.path.join(repo_root, "src"),
+        os.path.join(repo_root, "tools", "xstack", "sessionx"),
     )
     skip_prefixes = (
         "docs/",
@@ -58,8 +56,8 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "src/models/model_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
     }
-
     for root in scan_roots:
         if not os.path.isdir(root):
             continue
@@ -80,27 +78,24 @@ def run(graph, repo_root, changed_files=None):
                     snippet = str(line).strip()
                     if (not snippet) or snippet.startswith("#"):
                         continue
-                    if not any(pattern.search(snippet) for pattern in _INLINE_RESPONSE_PATTERNS):
+                    if not any(pattern.search(snippet) for pattern in _BYPASS_PATTERNS):
                         continue
                     findings.append(
                         make_finding(
                             analyzer_id=ANALYZER_ID,
-                            category="architecture.inline_response_curve_smell",
+                            category="architecture.model_bypass_smell",
                             severity="RISK",
-                            confidence=0.86,
+                            confidence=0.82,
                             file_path=rel_path,
                             line=line_no,
-                            evidence=["inline response-curve logic detected", snippet[:140]],
+                            evidence=["constitutive model output/state mutation pattern detected", snippet[:140]],
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
-                            related_invariants=[
-                                "INV-REALISM-DETAIL-MUST-BE-MODEL",
-                                "INV-RESPONSE-CURVES-MUST-BE-MODELS",
-                            ],
+                            related_invariants=["INV-MODEL-OUTPUTS-PROCESS-ONLY"],
                             related_paths=[
                                 rel_path,
-                                "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md",
-                                "docs/meta/CONSTITUTIVE_MODEL_CATALOG.md",
+                                "src/models/model_engine.py",
+                                "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )
                     )
@@ -110,3 +105,4 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
+
