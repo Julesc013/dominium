@@ -333,6 +333,48 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
+      "severity": "FAIL",
+      "scope_paths": ["src", "docs/meta", "data/registries/deprecation_registry.json", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-realism-detail-must-be-model",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
+      "severity": "FAIL",
+      "scope_paths": ["src/electric", "src/thermal", "src/fluid", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-cross-domain-mutation-must-be-model",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-ACTION-MUST-HAVE-FAMILY",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/action_template_registry.json", "data/registries/action_family_registry.json", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-action-must-have-family",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/action_template_registry.json", "data/registries/info_artifact_family_registry.json", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-info-artifact-must-have-family",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-LOSS-MUST-DECLARE-TARGET",
+      "severity": "FAIL",
+      "scope_paths": ["src/electric", "src/thermal", "docs/thermal/LOSS_TO_HEAT_CONVENTION.md", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-loss-must-declare-target",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-ADHOC-SAFETY-LOGIC",
+      "severity": "FAIL",
+      "scope_paths": ["src/safety", "data/registries/safety_pattern_registry.json", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-adhoc-safety-logic",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-ROOT-MODULE-SHIM",
       "severity": "FAIL",
       "scope_paths": ["CMakeLists.txt", "*/CMakeLists.txt", "libs", "engine", "game", "client", "server", "launcher", "setup", "tools", "app"],
