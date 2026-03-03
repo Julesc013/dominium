@@ -212,6 +212,9 @@ from analyzers import e183_electric_special_case_smell
 from analyzers import e184_breaker_bypass_smell
 from analyzers import e185_inline_power_loss_smell
 from analyzers import e186_direct_flow_mutation_smell
+from analyzers import e187_inline_trip_smell
+from analyzers import e188_fault_bypass_smell
+from analyzers import e189_unlogged_trip_smell
 
 
 ANALYZERS = (
@@ -427,6 +430,9 @@ ANALYZERS = (
     e184_breaker_bypass_smell,
     e185_inline_power_loss_smell,
     e186_direct_flow_mutation_smell,
+    e187_inline_trip_smell,
+    e188_fault_bypass_smell,
+    e189_unlogged_trip_smell,
 )
 
 
