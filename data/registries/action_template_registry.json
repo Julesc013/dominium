@@ -111,7 +111,7 @@
           "surface.panel"
         ],
         "required_capabilities": [
-          "capability.maintenance.perform"
+          "capability.has_power_network"
         ],
         "produced_artifact_types": [
           "artifact.maintenance",
