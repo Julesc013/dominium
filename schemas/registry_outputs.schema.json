@@ -93,7 +93,10 @@
     "ephemeris_registry_hash",
     "terrain_tile_registry_hash",
     "ui_registry_hash",
-    "build_timestamp"
+    "build_timestamp",
+    "model_type_registry_hash",
+    "model_cache_policy_registry_hash",
+    "constitutive_model_registry_hash"
   ],
   "additionalProperties": false,
   "properties": {
@@ -433,6 +436,18 @@
       "type": "string",
       "description": "Deterministic UTC timestamp representation: RFC3339 second precision only (YYYY-MM-DDTHH:MM:SSZ).",
       "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "model_type_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "model_cache_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "constitutive_model_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
     }
   },
   "examples": [
@@ -505,7 +520,10 @@
       "ephemeris_registry_hash": "04b2f9dfdfd2a8fdd7f9e4a9278905cfe7ec9fda8a0e96df4703ec6be8937c49",
       "terrain_tile_registry_hash": "4f45d4e0ac37c78f76f4e3d9764d38a9bf8c65424882e6c65d0452b26cd5f284",
       "ui_registry_hash": "cb9ba7bcfe954df889f9b86f6d0456e9ef22ef6b251f8d731b8c0fdb4f522f0b",
-      "build_timestamp": "2026-02-14T00:00:00Z"
+      "build_timestamp": "2026-02-14T00:00:00Z",
+      "model_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+      "model_cache_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+      "constitutive_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f"
     }
   ]
 }

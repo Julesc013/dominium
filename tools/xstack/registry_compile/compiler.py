@@ -13176,6 +13176,67 @@ def compile_bundle(
             "windows": ui_rows,
         }
     )
+    _model_type_record, model_type_rows_raw, model_type_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/model_type_registry.json",
+        expected_schema_id="dominium.registry.model_type_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="model_types",
+    )
+    _model_cache_policy_record, model_cache_policy_rows_raw, model_cache_policy_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/model_cache_policy_registry.json",
+        expected_schema_id="dominium.registry.model_cache_policy_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="cache_policies",
+    )
+    _constitutive_model_record, constitutive_model_rows_raw, constitutive_model_load_errors = _load_registry_record(
+        repo_root=repo_root,
+        registry_rel_path="data/registries/constitutive_model_registry.json",
+        expected_schema_id="dominium.registry.constitutive_model_registry",
+        expected_schema_version="1.0.0",
+        expected_entry_key="models",
+    )
+    model_load_errors = (
+        list(model_type_load_errors or [])
+        + list(model_cache_policy_load_errors or [])
+        + list(constitutive_model_load_errors or [])
+    )
+    if model_load_errors:
+        return {"result": "refused", "errors": model_load_errors}
+    model_type_rows = sorted(
+        [dict(row) for row in list(model_type_rows_raw or []) if isinstance(row, dict)],
+        key=lambda row: str(row.get("model_type_id", "")),
+    )
+    model_cache_policy_rows = sorted(
+        [dict(row) for row in list(model_cache_policy_rows_raw or []) if isinstance(row, dict)],
+        key=lambda row: str(row.get("cache_policy_id", "")),
+    )
+    constitutive_model_rows = sorted(
+        [dict(row) for row in list(constitutive_model_rows_raw or []) if isinstance(row, dict)],
+        key=lambda row: str(row.get("model_id", "")),
+    )
+    model_type_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "model_types": model_type_rows,
+        }
+    )
+    model_cache_policy_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "cache_policies": model_cache_policy_rows,
+        }
+    )
+    constitutive_model_payload = _finalize_registry_payload(
+        {
+            "format_version": REGISTRY_FORMAT_VERSION,
+            "generated_from": generated_from,
+            "models": constitutive_model_rows,
+        }
+    )
 
     registry_payloads = {
         "conservation_contract_set_registry": (
@@ -13262,6 +13323,15 @@ def compile_bundle(
         "field_type_registry": ("field_type_registry", field_type_payload),
         "field_update_policy_registry": ("field_update_policy_registry", field_update_policy_payload),
         "safety_pattern_registry": ("safety_pattern_registry", safety_pattern_payload),
+        "model_type_registry": ("model_type_registry", model_type_payload),
+        "model_cache_policy_registry": (
+            "model_cache_policy_registry",
+            model_cache_policy_payload,
+        ),
+        "constitutive_model_registry": (
+            "constitutive_model_registry",
+            constitutive_model_payload,
+        ),
         "spec_type_registry": ("spec_type_registry", spec_type_payload),
         "tolerance_policy_registry": ("tolerance_policy_registry", tolerance_policy_payload),
         "compliance_check_registry": ("compliance_check_registry", compliance_check_payload),
@@ -13425,6 +13495,9 @@ def compile_bundle(
         "field_type_registry",
         "field_update_policy_registry",
         "safety_pattern_registry",
+        "model_type_registry",
+        "model_cache_policy_registry",
+        "constitutive_model_registry",
         "spec_type_registry",
         "tolerance_policy_registry",
         "compliance_check_registry",
@@ -13608,6 +13681,9 @@ def compile_bundle(
             "field_type_registry_hash": registry_hashes["field_type_registry_hash"],
             "field_update_policy_registry_hash": registry_hashes["field_update_policy_registry_hash"],
             "safety_pattern_registry_hash": registry_hashes["safety_pattern_registry_hash"],
+            "model_type_registry_hash": registry_hashes["model_type_registry_hash"],
+            "model_cache_policy_registry_hash": registry_hashes["model_cache_policy_registry_hash"],
+            "constitutive_model_registry_hash": registry_hashes["constitutive_model_registry_hash"],
             "spec_type_registry_hash": registry_hashes["spec_type_registry_hash"],
             "tolerance_policy_registry_hash": registry_hashes["tolerance_policy_registry_hash"],
             "compliance_check_registry_hash": registry_hashes["compliance_check_registry_hash"],

@@ -1,0 +1,46 @@
+{
+  "schema_id": "dominium.registry.model_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.model_type_registry",
+    "registry_version": "1.0.0",
+    "model_types": [
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.elec_load_phasor_stub",
+        "description": "ELEC load phasor constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.signal_attenuation_stub",
+        "description": "Signal attenuation constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.mech_fatigue_rate_stub",
+        "description": "Mechanical fatigue rate constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.fluid_pump_curve_stub",
+        "description": "Fluid pump curve constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.therm_conductance_stub",
+        "description": "Thermal conductance constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

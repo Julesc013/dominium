@@ -1,0 +1,126 @@
+{
+  "schema_id": "dominium.registry.constitutive_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.constitutive_model_registry",
+    "registry_version": "1.0.0",
+    "models": [
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec.load.phasor.default",
+        "model_type_id": "model_type.elec_load_phasor_stub",
+        "description": "ELEC phasor constitutive model baseline stub.",
+        "supported_tiers": ["macro", "meso", "micro"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power_apparent", "selector": "target.channel", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.power_factor_nominal", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.power_factor", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "compliance_signal", "output_id": "compliance.power_factor_window", "extensions": {}}
+        ],
+        "cost_units": 2,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "1c3d0dcce28152e50e6f9698b8dd55f8523f89f3f7f6cb7ea8ea4f614f38e4cf",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.signal.attenuation.default",
+        "model_type_id": "model_type.signal_attenuation_stub",
+        "description": "Signal attenuation constitutive model baseline stub.",
+        "supported_tiers": ["macro", "meso", "micro"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.visibility", "selector": "target.position", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.radiation", "selector": "target.position", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.signal.loss_modifier", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "effect", "output_id": "effect.visibility_reduction", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "f4ec0285e8c9d5e4f2cc8fbb912e5f1bf4ed0d3a7f3e1f22b95c23a72bdcc3e7",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.mech.fatigue.default",
+        "model_type_id": "model_type.mech_fatigue_rate_stub",
+        "description": "Mechanical fatigue constitutive model baseline stub.",
+        "supported_tiers": ["macro", "meso", "micro"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "hazard", "input_id": "hazard.track_wear", "selector": "target.id", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "hazard_increment", "output_id": "hazard.track_wear", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.mech.fatigue_ratio", "extensions": {}}
+        ],
+        "cost_units": 2,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "e6c845bbf9e6470b94f84e5fe4e50dcbe9939a3be6f3afdb27ed0f53a4ffb407",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.fluid.pump_curve.default",
+        "model_type_id": "model_type.fluid_pump_curve_stub",
+        "description": "Fluid pump curve constitutive model baseline stub.",
+        "supported_tiers": ["macro", "meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.pressure", "selector": "target.channel", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "state_machine", "input_id": "state_machine.pump_mode", "selector": "target.id", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "flow.adjust.pressure_delta", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.fluid.operating_point", "extensions": {}}
+        ],
+        "cost_units": 2,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "9d91f9b5943740fa5bc0dfc557a337f8501cdd4b95d8b2f0c8bc5f4c4c4f6c65",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm.conductance.default",
+        "model_type_id": "model_type.therm_conductance_stub",
+        "description": "Thermal conductance constitutive model baseline stub.",
+        "supported_tiers": ["macro", "meso", "micro"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "material_property", "input_id": "mat.thermal_conductivity", "selector": "target.material", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.heat_flux", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "effect", "output_id": "effect.temperature_shift", "extensions": {}}
+        ],
+        "cost_units": 2,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "b67f05aa7d3bc1dffadf985ca108fcd6143980d765a0d7b1f12ed30f29ab16aa",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

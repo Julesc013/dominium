@@ -194,7 +194,10 @@
         "ephemeris_registry_hash",
         "terrain_tile_registry_hash",
         "real_world_affordance_matrix_hash",
-        "ui_registry_hash"
+        "ui_registry_hash",
+        "model_type_registry_hash",
+        "model_cache_policy_registry_hash",
+        "constitutive_model_registry_hash"
       ],
       "additionalProperties": false,
       "properties": {
@@ -753,6 +756,18 @@
         "ui_registry_hash": {
           "type": "string",
           "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "model_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "model_cache_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "constitutive_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
         }
       }
     },
@@ -872,7 +887,10 @@
         "ephemeris_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "terrain_tile_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
         "real_world_affordance_matrix_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
-        "ui_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f"
+        "ui_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "model_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "model_cache_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "constitutive_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f"
       },
       "compatibility_version": "1.0.0",
       "pack_lock_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed50ff7c9ab8f0e8c7ed8f2c8f0f64cc"
