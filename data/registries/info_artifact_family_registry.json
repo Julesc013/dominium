@@ -1,0 +1,86 @@
+{
+  "schema_id": "dominium.registry.info_artifact_family_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.info_artifact_family_registry",
+    "registry_version": "1.0.0",
+    "families": [
+      {
+        "schema_version": "1.0.0",
+        "info_family_id": "OBSERVATION",
+        "description": "Measured or sensed state snapshots"
+      },
+      {
+        "schema_version": "1.0.0",
+        "info_family_id": "RECORD",
+        "description": "Factual event and provenance records"
+      },
+      {
+        "schema_version": "1.0.0",
+        "info_family_id": "REPORT",
+        "description": "Deterministic aggregation and summary artifacts"
+      },
+      {
+        "schema_version": "1.0.0",
+        "info_family_id": "MESSAGE",
+        "description": "Transport envelope payload artifacts"
+      },
+      {
+        "schema_version": "1.0.0",
+        "info_family_id": "CREDENTIAL",
+        "description": "Identity/certification/security artifacts"
+      },
+      {
+        "schema_version": "1.0.0",
+        "info_family_id": "BELIEF",
+        "description": "Interpreted belief-state artifacts derived from receipts"
+      }
+    ],
+    "artifact_type_mappings": [
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.communication",
+        "info_family_id": "MESSAGE"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.containment",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.decision",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.maintenance",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.measurement",
+        "info_family_id": "OBSERVATION"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.motion",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.transform",
+        "info_family_id": "RECORD"
+      }
+    ],
+    "extensions": {
+      "source": "REFACTOR-PATCH-1",
+      "notes": "META-INFO family binding for action-template produced artifacts."
+    }
+  }
+}
