@@ -20,8 +20,11 @@ record action_template
     - affected_substrates: list[enum(Flow|Field|Mechanics|Schedule|Spec|Interior|Network)]
     - deterministic_fingerprint: sha256
     - extensions: map
+  optional:
+    - uses_constitutive_model_ids: list[id]
 
 INVARIANTS:
 - Every control-plane-exposed action must resolve to exactly one action_template row.
 - Template requirements are declarative and deterministic.
 - Substrate touch declarations must remain auditable and must not be bypassed by bespoke action logic.
+- Constitutive response dependencies, when declared, must resolve through registered constitutive model IDs.

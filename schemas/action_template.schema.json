@@ -70,6 +70,13 @@
         "minLength": 1
       }
     },
+    "uses_constitutive_model_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
     "affected_substrates": {
       "type": "array",
       "items": {

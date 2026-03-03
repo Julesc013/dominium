@@ -105,6 +105,7 @@ Every action template must declare:
 - produced artifacts (`produced_artifact_types`)
 - produced hazards (`produced_hazard_types`)
 - affected substrates (`affected_substrates`)
+- optional constitutive-model dependencies (`uses_constitutive_model_ids`)
 
 Allowed substrate tags:
 
@@ -115,6 +116,8 @@ Allowed substrate tags:
 - `Spec`
 - `Interior`
 - `Network`
+
+If `uses_constitutive_model_ids` is declared, each referenced model ID must resolve through the constitutive model registry contract (META-MODEL).
 
 ## 5) Control Plane Contract
 
