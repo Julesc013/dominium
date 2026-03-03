@@ -11,10 +11,14 @@ TEST_TAGS = ["fast", "repox", "meta", "integrity"]
 
 _REQUIRED_TOKENS = (
     "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
-    "INV-LOSS-MUST-DECLARE-TARGET",
+    "INV-LOSS-MAPPED-TO-HEAT",
+    "INV-PHYS-PROFILE-DECLARED",
+    "INV-UNREGISTERED-QUANTITY-FORBIDDEN",
     "INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
     "def _append_cross_domain_mutation_invariant_findings(",
     "def _append_loss_target_invariant_findings(",
+    "def _append_phys_profile_declared_invariant_findings(",
+    "def _append_unregistered_quantity_invariant_findings(",
     "def _append_info_grammar_invariant_findings(",
 )
 
@@ -34,4 +38,3 @@ def run(repo_root: str):
             "message": "RepoX structural hardening wiring missing tokens: {}".format(",".join(missing)),
         }
     return {"status": "pass", "message": "RepoX structural hardening invariants wired"}
-

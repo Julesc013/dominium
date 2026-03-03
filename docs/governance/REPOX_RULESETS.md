@@ -153,6 +153,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-DIST-RELEASE-LANE-GATE`
 - `INV-REALISM-DETAIL-MUST-BE-MODEL`
 - `INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL`
+- `INV-PHYS-PROFILE-DECLARED`
+- `INV-UNREGISTERED-QUANTITY-FORBIDDEN`
+- `INV-LOSS-MAPPED-TO-HEAT`
 - `INV-ACTION-MUST-HAVE-FAMILY`
 - `INV-INFO-ARTIFACT-MUST-HAVE-FAMILY`
 - `INV-LOSS-MUST-DECLARE-TARGET`
@@ -413,6 +416,22 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - STRICT/FULL fail on direct cross-domain state writes (for example ELEC writing THERM keys, THERM writing MECH keys).
 - Requires coupling through constitutive model outputs and process/effect/hazard pathways.
+
+### INV-PHYS-PROFILE-DECLARED
+
+- STRICT/FULL fail when SessionSpec omits top-level `physics_profile_id`.
+- STRICT/FULL fail when session creation fixtures/examples omit declared physics profile identity.
+- Keeps physics profile selection explicit at session composition boundary.
+
+### INV-UNREGISTERED-QUANTITY-FORBIDDEN
+
+- STRICT/FULL fail when runtime/sessionx/registry surfaces reference `quantity.*` identifiers not present in `data/registries/quantity_registry.json`.
+- Prevents silent ad hoc quantity channels and enforces MAT-1/PHYS registration discipline.
+
+### INV-LOSS-MAPPED-TO-HEAT
+
+- STRICT/FULL fail when modeled loss pathways are not mapped to canonical heat targets (`quantity.heat_loss` or explicit temperature effects).
+- Profile policy can require hard mapping or explicit logged exception pathway.
 
 ### INV-ACTION-MUST-HAVE-FAMILY
 

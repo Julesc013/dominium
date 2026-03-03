@@ -7,6 +7,7 @@
   "mission_id": null,
   "experience_id": "profile.lab.developer",
   "parameter_bundle_id": "params.lab.placeholder",
+  "physics_profile_id": "physics.null",
   "authority_context": {
     "authority_origin": "client",
     "experience_id": "profile.lab.developer",

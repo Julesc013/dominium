@@ -288,6 +288,12 @@ BOUNDARY_ALIAS_RULES = {
         "INV-RENDERER-TRUTH-ISOLATION",
         "INV-RENDERER-CONSUMES-RENDERMODEL-ONLY",
     },
+    "INV-LOSS-MAPPED-TO-HEAT": {
+        "INV-LOSS-MUST-DECLARE-TARGET",
+    },
+    "INV-PHYS-PROFILE-DECLARED": {
+        "INV-PHYSICS-PROFILE-IN-IDENTITY",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -327,6 +333,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FIELD-QUERIES-ONLY",
     "INV-NO-ADHOC-SAFETY-LOGIC",
     "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
+    "INV-PHYS-PROFILE-DECLARED",
+    "INV-UNREGISTERED-QUANTITY-FORBIDDEN",
+    "INV-LOSS-MAPPED-TO-HEAT",
     "INV-LOSS-MUST-DECLARE-TARGET",
     "INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
     "INV-REALISM-DETAIL-MUST-BE-MODEL",
@@ -5718,6 +5727,190 @@ def _append_reality_profile_invariant_findings(
                     rule_id="INV-NO-HARDCODED-PHYSICS-ASSUMPTIONS",
                 )
             )
+
+
+def _append_phys_profile_declared_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    rule_id = "INV-PHYS-PROFILE-DECLARED"
+
+    session_schema_rel = "schemas/session_spec.schema.json"
+    payload, payload_error = _load_json_object(repo_root, session_schema_rel)
+    if payload_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=session_schema_rel,
+                line_number=1,
+                snippet="",
+                message="session spec schema is missing or invalid; physics profile declaration cannot be enforced",
+                rule_id=rule_id,
+            )
+        )
+    else:
+        required = list(payload.get("required") or [])
+        if "physics_profile_id" not in required:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=session_schema_rel,
+                    line_number=1,
+                    snippet="required.physics_profile_id",
+                    message="session specs must declare top-level physics_profile_id",
+                    rule_id=rule_id,
+                )
+            )
+        properties = payload.get("properties")
+        physics_property = {}
+        if isinstance(properties, dict):
+            physics_property = dict(properties.get("physics_profile_id") or {})
+        if str(physics_property.get("type", "")).strip() != "string":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=session_schema_rel,
+                    line_number=1,
+                    snippet="properties.physics_profile_id",
+                    message="session spec physics_profile_id must be typed as string",
+                    rule_id=rule_id,
+                )
+            )
+
+    required_tokens = {
+        "schema/session/session_spec.schema": (
+            "physics_profile_id",
+        ),
+        "schemas/examples/session_spec.example.json": (
+            "\"physics_profile_id\"",
+        ),
+        "tools/xstack/testdata/session/session_spec.fixture.json": (
+            "\"physics_profile_id\"",
+        ),
+        "tools/xstack/sessionx/creator.py": (
+            "\"physics_profile_id\": str(identity_payload.get(\"physics_profile_id\", \"\")).strip()",
+        ),
+    }
+    for rel_path, tokens in required_tokens.items():
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required physics-profile declaration surface is missing",
+                    rule_id=rule_id,
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="physics profile declaration token is missing",
+                    rule_id=rule_id,
+                )
+            )
+
+
+def _append_unregistered_quantity_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    rule_id = "INV-UNREGISTERED-QUANTITY-FORBIDDEN"
+    quantity_registry_rel = "data/registries/quantity_registry.json"
+
+    payload, payload_error = _load_json_object(repo_root, quantity_registry_rel)
+    rows = list(((payload.get("record") or {}).get("quantities") or []) if not payload_error else [])
+    registered_quantities = set(
+        str(row.get("quantity_id", "")).strip()
+        for row in rows
+        if isinstance(row, dict) and str(row.get("quantity_id", "")).strip()
+    )
+
+    if payload_error or not registered_quantities:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=quantity_registry_rel,
+                line_number=1,
+                snippet="quantities",
+                message="quantity registry is missing or empty; cannot enforce registered quantity usage",
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    token_pattern = re.compile(r"\bquantity\.[A-Za-z0-9_.-]+\b")
+    scan_prefixes = (
+        "src/",
+        "tools/xstack/sessionx/",
+    )
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    skip_files = {
+        "tools/xstack/repox/check.py",
+    }
+    allowed_placeholder_quantities = {
+        "quantity.unknown",
+    }
+
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in skip_files:
+            continue
+        if not rel_norm.endswith((".py", ".json", ".schema", ".schema.json", ".md", ".txt")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            unknown_tokens: List[str] = []
+            for token in token_pattern.findall(snippet):
+                candidate = str(token).strip().rstrip(".,:;")
+                lowered = candidate.lower()
+                if lowered.endswith(".json") or lowered.endswith(".schema") or lowered.endswith(".schema.json"):
+                    continue
+                if candidate in allowed_placeholder_quantities:
+                    continue
+                if candidate in registered_quantities:
+                    continue
+                unknown_tokens.append(candidate)
+            if not unknown_tokens:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="quantity identifier is not registered in data/registries/quantity_registry.json: {}".format(
+                        ",".join(sorted(set(unknown_tokens)))
+                    ),
+                    rule_id=rule_id,
+                )
+            )
+            break
 
 
 def _append_conservation_invariant_findings(
@@ -13612,7 +13805,7 @@ def _append_thermal_invariant_findings(
                 line_number=1,
                 snippet="",
                 message="loss-to-heat convention must exist so dissipated energy remains auditable and replay-safe",
-                rule_id="INV-LOSS-MUST-DECLARE-TARGET",
+                rule_id="INV-LOSS-MAPPED-TO-HEAT",
             )
         )
 
@@ -13675,7 +13868,7 @@ def _append_thermal_invariant_findings(
                 line_number=1,
                 snippet=token,
                 message="electrical dissipation pathways should map loss outputs to thermal quantity/effect conventions",
-                rule_id="INV-LOSS-MUST-DECLARE-TARGET",
+                rule_id="INV-LOSS-MAPPED-TO-HEAT",
             )
         )
 
@@ -14158,7 +14351,7 @@ def _append_loss_target_invariant_findings(
                 line_number=1,
                 snippet=token,
                 message="loss pathways must declare explicit heat quantity/effect target",
-                rule_id="INV-LOSS-MUST-DECLARE-TARGET",
+                rule_id="INV-LOSS-MAPPED-TO-HEAT",
             )
         )
 
@@ -14203,7 +14396,7 @@ def _append_loss_target_invariant_findings(
                     line_number=line_no,
                     snippet=snippet[:140],
                     message="loss source must declare explicit target quantity/effect (heat_loss or temperature effect)",
-                    rule_id="INV-LOSS-MUST-DECLARE-TARGET",
+                    rule_id="INV-LOSS-MAPPED-TO-HEAT",
                 )
             )
             break
@@ -14798,6 +14991,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         repo_root=repo_root,
         profile=token,
     )
+    _append_phys_profile_declared_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
     _append_conservation_invariant_findings(
         findings=findings,
         repo_root=repo_root,
@@ -14979,6 +15177,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_loss_target_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_unregistered_quantity_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

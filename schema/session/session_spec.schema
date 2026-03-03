@@ -21,6 +21,7 @@ record session_spec
     - mission_id: id
     - experience_id: id
     - parameter_bundle_id: id
+    - physics_profile_id: id
     - pack_lock_hash: tag
     - authority_context: id
     - budget_policy_id: id

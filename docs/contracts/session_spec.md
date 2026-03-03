@@ -25,6 +25,7 @@ Define the canonical, deterministic session bootstrap payload for profile-driven
 - `mission_id` (string or null)
 - `experience_id` (string)
 - `parameter_bundle_id` (string)
+- `physics_profile_id` (string)
 - `authority_context` (object)
 - `pack_lock_hash` (sha256 hex string)
 - `budget_policy_id` (string)
@@ -46,6 +47,7 @@ Define the canonical, deterministic session bootstrap payload for profile-driven
 - `pack_lock_hash` must be deterministic and replay-stable.
 - `budget_policy_id` and `fidelity_policy_id` must resolve in compiled policy registries.
 - No implicit policy defaults are admitted at process runtime.
+- `physics_profile_id` is mandatory and must match UniverseIdentity physics profile during boot/handshake.
 - Unknown top-level fields are refused by strict validation.
 - Session creator writes canonical JSON under `saves/<save_id>/session_spec.json`.
 - Session boot resolves default lens from compiled experience/law/lens registries; SessionSpec remains profile-driven.
@@ -70,6 +72,7 @@ Define the canonical, deterministic session bootstrap payload for profile-driven
   "mission_id": null,
   "experience_id": "profile.lab.developer",
   "parameter_bundle_id": "params.lab.placeholder",
+  "physics_profile_id": "physics.null",
   "authority_context": {
     "authority_origin": "client",
     "experience_id": "profile.lab.developer",

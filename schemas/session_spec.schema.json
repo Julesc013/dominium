@@ -17,6 +17,7 @@
     "mission_id",
     "experience_id",
     "parameter_bundle_id",
+    "physics_profile_id",
     "authority_context",
     "pack_lock_hash",
     "budget_policy_id",
@@ -151,6 +152,10 @@
     "parameter_bundle_id": {
       "type": "string"
     },
+    "physics_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "authority_context": {
       "type": "object",
       "required": [
@@ -269,6 +274,7 @@
       "mission_id": null,
       "experience_id": "profile.lab.developer",
       "parameter_bundle_id": "params.lab.placeholder",
+      "physics_profile_id": "physics.null",
       "authority_context": {
         "authority_origin": "client",
         "experience_id": "profile.lab.developer",
