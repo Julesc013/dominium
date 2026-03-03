@@ -151,6 +151,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-PORTABLE-RUN-CONTRACT`
 - `INV-BUILD-PRESET-CONTRACT`
 - `INV-DIST-RELEASE-LANE-GATE`
+- `INV-REALISM-DETAIL-MUST-BE-MODEL`
+- `INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL`
+- `INV-ACTION-MUST-HAVE-FAMILY`
+- `INV-INFO-ARTIFACT-MUST-HAVE-FAMILY`
+- `INV-LOSS-MUST-DECLARE-TARGET`
+- `INV-NO-ADHOC-SAFETY-LOGIC`
 
 ## Key Rule Notes
 
@@ -396,3 +402,34 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when runtime source trees (`engine/`, `game/`, `client/`, `server/`) reference `tools/xstack`.
 - Fails when runtime CMake roots reference `tools/xstack`.
 - Keeps XStack removable without affecting runtime build or runtime execution paths.
+
+### INV-REALISM-DETAIL-MUST-BE-MODEL
+
+- STRICT/FULL fail when inline realism response-curve logic is present outside constitutive model pathways.
+- Transitional exceptions require explicit `data/registries/deprecation_registry.json` mapping entries with source path + line.
+- Prevents bespoke domain response logic drift.
+
+### INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL
+
+- STRICT/FULL fail on direct cross-domain state writes (for example ELEC writing THERM keys, THERM writing MECH keys).
+- Requires coupling through constitutive model outputs and process/effect/hazard pathways.
+
+### INV-ACTION-MUST-HAVE-FAMILY
+
+- STRICT/FULL fail when exposed actions/processes/tasks are missing template or family mappings.
+- Keeps META-ACTION coverage complete and deterministic.
+
+### INV-INFO-ARTIFACT-MUST-HAVE-FAMILY
+
+- STRICT/FULL fail when action-template produced artifacts are not mapped to canonical META-INFO families.
+- Mapping source: `data/registries/info_artifact_family_registry.json`.
+
+### INV-LOSS-MUST-DECLARE-TARGET
+
+- STRICT/FULL fail when loss pathways are not explicitly mapped to heat-loss quantity or temperature-effect targets.
+- Prevents silent energy disappearance in cross-domain loss accounting.
+
+### INV-NO-ADHOC-SAFETY-LOGIC
+
+- STRICT/FULL fail when protection logic bypasses SafetyPattern evaluation.
+- Covers breaker/overtemp/LOTO patterns and requires process-mediated safety execution.
