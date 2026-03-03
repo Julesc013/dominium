@@ -409,6 +409,7 @@ from src.signals import (
     deterministic_signal_message_envelope_id,
     enqueue_signal_envelope,
     normalize_jamming_effect_rows,
+    normalize_info_artifact_rows,
     loss_policy_rows_by_id,
     normalize_knowledge_receipt_rows,
     normalize_message_delivery_event_rows,
@@ -427,6 +428,15 @@ from src.safety import (
     normalize_safety_event_rows,
     normalize_safety_instance_rows,
     safety_pattern_rows_by_id,
+)
+from src.models import (
+    ModelEngineError,
+    cache_policy_rows_by_id,
+    constitutive_model_rows_by_id,
+    evaluate_model_bindings,
+    model_type_rows_by_id,
+    normalize_model_binding_rows,
+    normalize_model_evaluation_result_rows,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -570,6 +580,9 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.mechanics_tick": "session.boot",
     "process.field_tick": "session.boot",
     "process.safety_tick": "session.boot",
+    "process.model_evaluate_tick": "session.boot",
+    "process.hazard_increment": "entitlement.control.admin",
+    "process.flow_adjust": "entitlement.control.admin",
     "process.pose_enter": "entitlement.tool.operating",
     "process.pose_exit": "entitlement.tool.operating",
     "process.mount_attach": "entitlement.tool.operating",
@@ -722,6 +735,9 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.mechanics_tick": "observer",
     "process.field_tick": "observer",
     "process.safety_tick": "observer",
+    "process.model_evaluate_tick": "observer",
+    "process.hazard_increment": "operator",
+    "process.flow_adjust": "operator",
     "process.pose_enter": "operator",
     "process.pose_exit": "operator",
     "process.mount_attach": "operator",
@@ -816,6 +832,9 @@ CONTROL_PROCESS_IDS = {
     "process.vehicle_apply_environment_hooks",
     "process.mechanics_fracture",
     "process.safety_tick",
+    "process.model_evaluate_tick",
+    "process.hazard_increment",
+    "process.flow_adjust",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -2108,6 +2127,181 @@ def _ensure_safety_runtime_state(state: dict) -> dict:
     return dict(payload)
 
 
+def _ensure_model_binding_rows(state: dict) -> List[dict]:
+    rows = normalize_model_binding_rows(state.get("model_bindings"))
+    state["model_bindings"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_model_evaluation_result_rows(state: dict) -> List[dict]:
+    rows = normalize_model_evaluation_result_rows(state.get("model_evaluation_results"))
+    state["model_evaluation_results"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_model_cache_rows(state: dict) -> List[dict]:
+    rows = state.get("model_cache_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[Tuple[str, str, str, str], dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("model_id", "")),
+            str(item.get("binding_id", "")),
+            str(item.get("tier", "")),
+            str(item.get("inputs_hash", "")),
+        ),
+    ):
+        model_id = str(row.get("model_id", "")).strip()
+        binding_id = str(row.get("binding_id", "")).strip()
+        tier = str(row.get("tier", "")).strip() or "macro"
+        inputs_hash = str(row.get("inputs_hash", "")).strip()
+        outputs_hash = str(row.get("outputs_hash", "")).strip()
+        if (not model_id) or (not binding_id) or (not inputs_hash) or (not outputs_hash):
+            continue
+        key = (model_id, binding_id, tier, inputs_hash)
+        out[key] = {
+            "model_id": model_id,
+            "binding_id": binding_id,
+            "tier": tier,
+            "inputs_hash": inputs_hash,
+            "outputs_hash": outputs_hash,
+            "outputs": [dict(item) for item in list(row.get("outputs") or []) if isinstance(item, Mapping)],
+            "computed_tick": int(max(0, _as_int(row.get("computed_tick", 0), 0))),
+            "expires_tick": (
+                None
+                if row.get("expires_tick") is None
+                else int(max(0, _as_int(row.get("expires_tick", 0), 0)))
+            ),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["model_cache_rows"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_model_runtime_state(state: dict) -> dict:
+    row = dict(state.get("model_runtime_state") or {}) if isinstance(state.get("model_runtime_state"), Mapping) else {}
+    process_event_rows = [
+        dict(item)
+        for item in list(row.get("last_process_events") or [])
+        if isinstance(item, Mapping)
+    ][:256]
+    payload = {
+        "schema_version": "1.0.0",
+        "last_tick": int(max(0, _as_int(row.get("last_tick", 0), 0))),
+        "last_budget_outcome": str(row.get("last_budget_outcome", "complete")).strip() or "complete",
+        "last_cost_units": int(max(0, _as_int(row.get("last_cost_units", 0), 0))),
+        "last_processed_binding_count": int(max(0, _as_int(row.get("last_processed_binding_count", 0), 0))),
+        "last_deferred_binding_count": int(max(0, _as_int(row.get("last_deferred_binding_count", 0), 0))),
+        "last_cache_entry_count": int(max(0, _as_int(row.get("last_cache_entry_count", 0), 0))),
+        "last_output_action_count": int(max(0, _as_int(row.get("last_output_action_count", 0), 0))),
+        "last_observation_count": int(max(0, _as_int(row.get("last_observation_count", 0), 0))),
+        "last_process_events": process_event_rows,
+        "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+    }
+    state["model_runtime_state"] = payload
+    return dict(payload)
+
+
+def _ensure_model_hazard_rows(state: dict) -> List[dict]:
+    rows = state.get("model_hazard_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("target_id", "")),
+            str(item.get("hazard_type_id", "")),
+        ),
+    ):
+        target_id = str(row.get("target_id", "")).strip()
+        hazard_type_id = str(row.get("hazard_type_id", "")).strip()
+        if (not target_id) or (not hazard_type_id):
+            continue
+        row_id = "{}::{}".format(target_id, hazard_type_id)
+        payload = {
+            "schema_version": "1.0.0",
+            "target_id": target_id,
+            "hazard_type_id": hazard_type_id,
+            "accumulated_value": int(max(0, _as_int(row.get("accumulated_value", 0), 0))),
+            "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[row_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["model_hazard_rows"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_model_flow_adjustment_rows(state: dict) -> List[dict]:
+    rows = state.get("model_flow_adjustment_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("channel_id", "")),
+            str(item.get("quantity_id", "")),
+        ),
+    ):
+        channel_id = str(row.get("channel_id", "")).strip()
+        quantity_id = str(row.get("quantity_id", "")).strip()
+        if (not channel_id) or (not quantity_id):
+            continue
+        row_id = "{}::{}".format(channel_id, quantity_id)
+        payload = {
+            "schema_version": "1.0.0",
+            "channel_id": channel_id,
+            "quantity_id": quantity_id,
+            "accumulated_delta": int(_as_int(row.get("accumulated_delta", 0), 0)),
+            "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[row_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["model_flow_adjustment_rows"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _persist_model_state(
+    state: dict,
+    *,
+    model_bindings: List[dict],
+    model_evaluation_results: List[dict],
+    model_cache_rows: List[dict],
+    model_runtime_state: Mapping[str, object] | None = None,
+    model_hazard_rows: List[dict] | None = None,
+    model_flow_adjustment_rows: List[dict] | None = None,
+) -> None:
+    state["model_bindings"] = [dict(row) for row in list(model_bindings or []) if isinstance(row, Mapping)]
+    state["model_evaluation_results"] = [
+        dict(row) for row in list(model_evaluation_results or []) if isinstance(row, Mapping)
+    ]
+    state["model_cache_rows"] = [dict(row) for row in list(model_cache_rows or []) if isinstance(row, Mapping)]
+    if model_runtime_state is not None:
+        state["model_runtime_state"] = dict(model_runtime_state or {})
+    if model_hazard_rows is not None:
+        state["model_hazard_rows"] = [dict(row) for row in list(model_hazard_rows or []) if isinstance(row, Mapping)]
+    if model_flow_adjustment_rows is not None:
+        state["model_flow_adjustment_rows"] = [
+            dict(row) for row in list(model_flow_adjustment_rows or []) if isinstance(row, Mapping)
+        ]
+    _ensure_model_binding_rows(state)
+    _ensure_model_evaluation_result_rows(state)
+    _ensure_model_cache_rows(state)
+    _ensure_model_runtime_state(state)
+    _ensure_model_hazard_rows(state)
+    _ensure_model_flow_adjustment_rows(state)
+
+
 def _append_safety_hook_event(
     state: dict,
     *,
@@ -2453,6 +2647,31 @@ def _load_safety_pattern_registry(*, policy_context: dict | None) -> dict:
         registry_rel_path="data/registries/safety_pattern_registry.json",
         default_payload={"record": {"safety_patterns": []}},
     )
+
+
+def _load_model_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
+    model_type_registry = dict(_policy_payload(policy_context, "model_type_registry") or {})
+    if not model_type_registry:
+        model_type_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/model_type_registry.json",
+            default_payload={"record": {"model_types": []}},
+        )
+    model_cache_policy_registry = dict(_policy_payload(policy_context, "model_cache_policy_registry") or {})
+    if not model_cache_policy_registry:
+        model_cache_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/model_cache_policy_registry.json",
+            default_payload={"record": {"cache_policies": []}},
+        )
+    constitutive_model_registry = dict(_policy_payload(policy_context, "constitutive_model_registry") or {})
+    if not constitutive_model_registry:
+        constitutive_model_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/constitutive_model_registry.json",
+            default_payload={"record": {"models": []}},
+        )
+    return dict(model_type_registry), dict(model_cache_policy_registry), dict(constitutive_model_registry)
 
 
 def _load_maintenance_policy_registry(*, policy_context: dict | None) -> dict:
@@ -15036,6 +15255,12 @@ def execute_intent(
     safety_instances = _ensure_safety_instance_rows(state)
     safety_events = _ensure_safety_event_rows(state)
     safety_runtime_state = _ensure_safety_runtime_state(state)
+    model_bindings = _ensure_model_binding_rows(state)
+    model_evaluation_results = _ensure_model_evaluation_result_rows(state)
+    model_cache_rows = _ensure_model_cache_rows(state)
+    model_runtime_state = _ensure_model_runtime_state(state)
+    model_hazard_rows = _ensure_model_hazard_rows(state)
+    model_flow_adjustment_rows = _ensure_model_flow_adjustment_rows(state)
     signal_jamming_effect_rows = normalize_jamming_effect_rows(
         state.get("signal_jamming_effect_rows") or state.get("signal_jamming_effects") or []
     )
@@ -21176,6 +21401,156 @@ def execute_intent(
             "spec_compliance": dict(execution_policy_context.get("spec_compliance") or {}),
             "emitted_commitment_count": len(emitted_commitments),
             "emitted_event_count": len(emitted_events),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.hazard_increment":
+        target_id = str(inputs.get("target_id", "")).strip()
+        hazard_type_id = str(inputs.get("hazard_type_id", "")).strip()
+        if (not target_id) or (not hazard_type_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.hazard_increment requires target_id and hazard_type_id",
+                "Provide deterministic target_id, hazard_type_id, and optional delta.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        delta = int(_as_int(inputs.get("delta", 0), 0))
+        row_id = "{}::{}".format(target_id, hazard_type_id)
+        hazard_rows_by_id = dict(
+            (
+                "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                dict(row),
+            )
+            for row in list(model_hazard_rows or [])
+            if isinstance(row, Mapping)
+            and str(row.get("target_id", "")).strip()
+            and str(row.get("hazard_type_id", "")).strip()
+        )
+        row = dict(hazard_rows_by_id.get(row_id) or {})
+        base_value = int(max(0, _as_int(row.get("accumulated_value", 0), 0)))
+        new_value = int(max(0, int(base_value + delta)))
+        payload = {
+            "schema_version": "1.0.0",
+            "target_id": target_id,
+            "hazard_type_id": hazard_type_id,
+            "accumulated_value": int(new_value),
+            "last_update_tick": int(current_tick),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                **(dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}),
+                "last_source_process_id": process_id,
+                "last_intent_id": str(intent_id),
+            },
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        hazard_rows_by_id[row_id] = payload
+        model_hazard_rows = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
+        _persist_model_state(
+            state,
+            model_bindings=model_bindings,
+            model_evaluation_results=model_evaluation_results,
+            model_cache_rows=model_cache_rows,
+            model_runtime_state=model_runtime_state,
+            model_hazard_rows=model_hazard_rows,
+            model_flow_adjustment_rows=model_flow_adjustment_rows,
+        )
+        result_metadata = {
+            "target_id": target_id,
+            "hazard_type_id": hazard_type_id,
+            "delta": int(delta),
+            "accumulated_value": int(new_value),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.flow_adjust":
+        channel_id = str(inputs.get("channel_id", "")).strip()
+        quantity_id = str(inputs.get("quantity_id", "")).strip()
+        if (not channel_id) or (not quantity_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.flow_adjust requires channel_id and quantity_id",
+                "Provide deterministic channel_id, quantity_id, and optional delta_or_policy.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        delta = int(
+            _as_int(
+                inputs.get("delta_or_policy", inputs.get("delta", 0)),
+                0,
+            )
+        )
+        row_id = "{}::{}".format(channel_id, quantity_id)
+        adjustment_rows_by_id = dict(
+            (
+                "{}::{}".format(str(row.get("channel_id", "")).strip(), str(row.get("quantity_id", "")).strip()),
+                dict(row),
+            )
+            for row in list(model_flow_adjustment_rows or [])
+            if isinstance(row, Mapping)
+            and str(row.get("channel_id", "")).strip()
+            and str(row.get("quantity_id", "")).strip()
+        )
+        row = dict(adjustment_rows_by_id.get(row_id) or {})
+        base_delta = int(_as_int(row.get("accumulated_delta", 0), 0))
+        accumulated_delta = int(base_delta + delta)
+        payload = {
+            "schema_version": "1.0.0",
+            "channel_id": channel_id,
+            "quantity_id": quantity_id,
+            "accumulated_delta": int(accumulated_delta),
+            "last_update_tick": int(current_tick),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                **(dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}),
+                "last_source_process_id": process_id,
+                "last_intent_id": str(intent_id),
+            },
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        adjustment_rows_by_id[row_id] = payload
+        model_flow_adjustment_rows = [dict(adjustment_rows_by_id[key]) for key in sorted(adjustment_rows_by_id.keys())]
+        signal_channel_rows = normalize_signal_channel_rows(state.get("signal_channel_rows") or state.get("signal_channels") or [])
+        if signal_channel_rows:
+            channel_rows_by_id = dict(
+                (
+                    str(row.get("channel_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(signal_channel_rows or [])
+                if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+            )
+            selected = dict(channel_rows_by_id.get(channel_id) or {})
+            if selected:
+                ext = dict(selected.get("extensions") or {}) if isinstance(selected.get("extensions"), Mapping) else {}
+                ext_key = "model_adjust.{}".format(quantity_id)
+                ext[ext_key] = int(accumulated_delta)
+                if quantity_id in {
+                    "quantity.capacity_per_tick",
+                    "flow.capacity_per_tick",
+                    "channel.capacity_per_tick",
+                }:
+                    base_capacity = int(max(0, _as_int(selected.get("capacity_per_tick", 0), 0)))
+                    selected["capacity_per_tick"] = int(max(0, int(base_capacity + delta)))
+                selected["extensions"] = ext
+                channel_rows_by_id[channel_id] = selected
+                normalized_channels = normalize_signal_channel_rows(
+                    [dict(channel_rows_by_id[key]) for key in sorted(channel_rows_by_id.keys())]
+                )
+                state["signal_channel_rows"] = [dict(row) for row in normalized_channels]
+                state["signal_channels"] = [dict(row) for row in normalized_channels]
+        _persist_model_state(
+            state,
+            model_bindings=model_bindings,
+            model_evaluation_results=model_evaluation_results,
+            model_cache_rows=model_cache_rows,
+            model_runtime_state=model_runtime_state,
+            model_hazard_rows=model_hazard_rows,
+            model_flow_adjustment_rows=model_flow_adjustment_rows,
+        )
+        result_metadata = {
+            "channel_id": channel_id,
+            "quantity_id": quantity_id,
+            "delta": int(delta),
+            "accumulated_delta": int(accumulated_delta),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.effect_apply":
@@ -32249,6 +32624,442 @@ def execute_intent(
             "required_materials": dict(required_materials),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.model_evaluate_tick":
+        model_type_registry, model_cache_policy_registry, constitutive_model_registry = _load_model_registries(
+            policy_context=policy_context
+        )
+        model_type_rows = model_type_rows_by_id(model_type_registry)
+        model_cache_policy_rows = cache_policy_rows_by_id(model_cache_policy_registry)
+        constitutive_models_map = constitutive_model_rows_by_id(constitutive_model_registry)
+        constitutive_model_rows = [dict(constitutive_models_map[key]) for key in sorted(constitutive_models_map.keys())]
+        if not constitutive_model_rows:
+            return refusal(
+                "refusal.model.invalid",
+                "constitutive_model_registry is empty",
+                "Register at least one constitutive model before process.model_evaluate_tick.",
+                {"registry": "constitutive_model_registry"},
+                "$.policy_context.constitutive_model_registry",
+            )
+
+        incoming_bindings = [dict(row) for row in list(inputs.get("model_bindings") or []) if isinstance(row, Mapping)]
+        if incoming_bindings:
+            merged_rows = list(model_bindings or [])
+            for row in incoming_bindings:
+                merged_rows = _upsert_row_by_id(merged_rows, "binding_id", row)
+            model_bindings = normalize_model_binding_rows(merged_rows)
+
+        filter_model_ids = set(_sorted_tokens(list(inputs.get("model_ids") or [])))
+        active_bindings = [
+            dict(row)
+            for row in list(model_bindings or [])
+            if isinstance(row, Mapping)
+            and bool(row.get("enabled", True))
+            and (
+                (not filter_model_ids)
+                or str(row.get("model_id", "")).strip() in filter_model_ids
+            )
+        ]
+        if not active_bindings:
+            model_runtime_state = dict(model_runtime_state or {})
+            model_runtime_state["last_tick"] = int(current_tick)
+            model_runtime_state["last_budget_outcome"] = "complete"
+            model_runtime_state["last_cost_units"] = 0
+            model_runtime_state["last_processed_binding_count"] = 0
+            model_runtime_state["last_deferred_binding_count"] = 0
+            model_runtime_state["last_cache_entry_count"] = int(len(list(model_cache_rows or [])))
+            model_runtime_state["last_output_action_count"] = 0
+            model_runtime_state["last_observation_count"] = 0
+            model_runtime_state["last_process_events"] = []
+            _persist_model_state(
+                state,
+                model_bindings=model_bindings,
+                model_evaluation_results=model_evaluation_results,
+                model_cache_rows=model_cache_rows,
+                model_runtime_state=model_runtime_state,
+                model_hazard_rows=model_hazard_rows,
+                model_flow_adjustment_rows=model_flow_adjustment_rows,
+            )
+            result_metadata = {
+                "processed_binding_ids": [],
+                "deferred_rows": [],
+                "budget_outcome": "complete",
+                "cost_units": 0,
+                "output_process_count": 0,
+                "observation_count": 0,
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            field_type_registry = _field_registry_payload(
+                policy_context=policy_context,
+                key="field_type_registry",
+                registry_rel_path="data/registries/field_type_registry.json",
+                entry_key="field_types",
+            )
+            normalized_field_layers = normalize_field_layer_rows(field_layers)
+            normalized_field_cells = normalize_field_cell_rows(
+                field_cells,
+                field_layer_rows=normalized_field_layers,
+                field_type_registry=field_type_registry,
+            )
+            flow_quantity_map = dict(inputs.get("flow_quantities") or {}) if isinstance(inputs.get("flow_quantities"), Mapping) else {}
+            material_property_map = dict(inputs.get("material_properties") or {}) if isinstance(inputs.get("material_properties"), Mapping) else {}
+            derived_input_map = dict(inputs.get("derived_inputs") or {}) if isinstance(inputs.get("derived_inputs"), Mapping) else {}
+            hazard_rows_index = dict(
+                (
+                    "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(model_hazard_rows or [])
+                if isinstance(row, Mapping)
+                and str(row.get("target_id", "")).strip()
+                and str(row.get("hazard_type_id", "")).strip()
+            )
+            signal_hazard_rows_index = dict(
+                (
+                    "{}::{}".format(str(row.get("signal_id", "")).strip(), str(row.get("signal_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(mobility_signal_hazards or [])
+                if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
+            )
+            state_machine_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
+            signal_channels_by_id = dict(
+                (
+                    str(row.get("channel_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(state.get("signal_channel_rows") or state.get("signal_channels") or [])
+                if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+            )
+
+            def _resolve_model_input(binding_row: Mapping[str, object], input_row: Mapping[str, object]):
+                token_target_id = str(binding_row.get("target_id", "")).strip()
+                input_kind = str(input_row.get("input_kind", "")).strip()
+                input_id = str(input_row.get("input_id", "")).strip()
+                selector = str(input_row.get("selector", "")).strip()
+                if input_kind == "field":
+                    sample_position = _target_spatial_position(state, token_target_id)
+                    if selector == "target.cell_id":
+                        cell_id = str((dict(binding_row.get("parameters") or {})).get("cell_id", "")).strip()
+                        if cell_id:
+                            sample_position = {"cell_id": cell_id}
+                    sample = get_field_value(
+                        spatial_position=sample_position,
+                        field_id=input_id,
+                        field_layer_rows=normalized_field_layers,
+                        field_cell_rows=normalized_field_cells,
+                        field_type_registry=field_type_registry,
+                    )
+                    value = sample.get("value")
+                    if value is None:
+                        value = sample.get("vector") or 0
+                    return value
+                if input_kind == "flow_quantity":
+                    if input_id in flow_quantity_map:
+                        return flow_quantity_map[input_id]
+                    channel_row = dict(signal_channels_by_id.get(token_target_id) or {})
+                    if channel_row:
+                        ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
+                        if input_id in {
+                            "quantity.capacity_per_tick",
+                            "flow.capacity_per_tick",
+                            "channel.capacity_per_tick",
+                        }:
+                            return int(max(0, _as_int(channel_row.get("capacity_per_tick", 0), 0)))
+                        if input_id in ext:
+                            return ext.get(input_id)
+                    return 0
+                if input_kind == "hazard":
+                    row = dict(hazard_rows_index.get("{}::{}".format(token_target_id, input_id)) or {})
+                    if row:
+                        return int(max(0, _as_int(row.get("accumulated_value", 0), 0)))
+                    signal_row = dict(signal_hazard_rows_index.get("{}::{}".format(token_target_id, token_target_id)) or {})
+                    if signal_row:
+                        return int(max(0, _as_int(signal_row.get("updated_tick", 0), 0)))
+                    return 0
+                if input_kind == "state_machine":
+                    machine_row = dict(state_machine_by_id.get(input_id) or state_machine_by_id.get(token_target_id) or {})
+                    return str(machine_row.get("state_id", "")).strip() or "unknown"
+                if input_kind == "spec_param":
+                    spec_binding_row = latest_spec_binding_for_target(token_target_id, spec_bindings)
+                    spec_ext = dict(spec_binding_row.get("extensions") or {}) if isinstance(spec_binding_row, Mapping) else {}
+                    spec_params = dict(spec_ext.get("spec_params") or {}) if isinstance(spec_ext.get("spec_params"), Mapping) else {}
+                    if input_id in spec_params:
+                        return spec_params[input_id]
+                    return dict(binding_row.get("parameters") or {}).get(input_id, 0)
+                if input_kind == "material_property":
+                    scoped = dict(material_property_map.get(token_target_id) or {}) if isinstance(material_property_map.get(token_target_id), Mapping) else {}
+                    if input_id in scoped:
+                        return scoped[input_id]
+                    return material_property_map.get(input_id, 0)
+                if input_kind == "derived":
+                    if input_id in derived_input_map:
+                        return derived_input_map[input_id]
+                    scoped_key = "{}::{}".format(token_target_id, input_id)
+                    return derived_input_map.get(scoped_key, 0)
+                return 0
+
+            max_cost_units = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_cost_units",
+                            (dict(policy_context or {})).get("model_max_cost_units_per_tick", 128),
+                        ),
+                        128,
+                    ),
+                )
+            )
+            far_target_ids = _sorted_tokens(list(inputs.get("far_target_ids") or []))
+            far_tick_stride = int(max(1, _as_int(inputs.get("far_tick_stride", 4), 4)))
+            try:
+                evaluation = evaluate_model_bindings(
+                    current_tick=int(current_tick),
+                    model_rows=constitutive_model_rows,
+                    binding_rows=active_bindings,
+                    cache_rows=model_cache_rows,
+                    model_type_rows=model_type_rows,
+                    cache_policy_rows=model_cache_policy_rows,
+                    input_resolver_fn=_resolve_model_input,
+                    max_cost_units=int(max_cost_units),
+                    far_target_ids=far_target_ids,
+                    far_tick_stride=int(far_tick_stride),
+                )
+            except ModelEngineError as exc:
+                return refusal(
+                    str(exc.reason_code),
+                    str(exc),
+                    "Check model registry rows, binding rows, and cache policy definitions.",
+                    dict(exc.details),
+                    "$.intent.inputs",
+                )
+
+            model_evaluation_results = normalize_model_evaluation_result_rows(
+                list(model_evaluation_results or [])
+                + [dict(row) for row in list(evaluation.get("evaluation_results") or []) if isinstance(row, Mapping)]
+            )
+            model_cache_rows = [dict(row) for row in list(evaluation.get("cache_rows") or []) if isinstance(row, Mapping)]
+
+            effect_by_id = dict(
+                (str(row.get("effect_id", "")).strip(), dict(row))
+                for row in list(effect_rows or [])
+                if isinstance(row, Mapping) and str(row.get("effect_id", "")).strip()
+            )
+            hazard_rows_by_id = dict(
+                (
+                    "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(model_hazard_rows or [])
+                if isinstance(row, Mapping)
+                and str(row.get("target_id", "")).strip()
+                and str(row.get("hazard_type_id", "")).strip()
+            )
+            flow_adjust_rows_by_id = dict(
+                (
+                    "{}::{}".format(str(row.get("channel_id", "")).strip(), str(row.get("quantity_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(model_flow_adjustment_rows or [])
+                if isinstance(row, Mapping)
+                and str(row.get("channel_id", "")).strip()
+                and str(row.get("quantity_id", "")).strip()
+            )
+            signal_channel_rows = normalize_signal_channel_rows(state.get("signal_channel_rows") or state.get("signal_channels") or [])
+            channel_rows_by_id = dict(
+                (
+                    str(row.get("channel_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(signal_channel_rows or [])
+                if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+            )
+            output_process_events: List[dict] = []
+            for action in sorted(
+                (dict(row) for row in list(evaluation.get("output_actions") or []) if isinstance(row, Mapping)),
+                key=lambda row: (
+                    str(row.get("model_id", "")),
+                    str(row.get("binding_id", "")),
+                    str(row.get("output_kind", "")),
+                    str(row.get("output_id", "")),
+                ),
+            ):
+                output_kind = str(action.get("output_kind", "")).strip()
+                output_id = str(action.get("output_id", "")).strip()
+                target_id = str(action.get("target_id", "")).strip()
+                payload = dict(action.get("payload") or {}) if isinstance(action.get("payload"), Mapping) else {}
+                if output_kind == "effect":
+                    effect_row = build_effect(
+                        effect_id="",
+                        effect_type_id=output_id,
+                        target_id=target_id,
+                        applied_tick=int(current_tick),
+                        duration_ticks=1,
+                        magnitude=dict(payload),
+                        stacking_policy_id="stack.replace_latest",
+                        source_event_id=None,
+                        extensions={
+                            "source_process_id": process_id,
+                            "source_intent_id": str(intent_id),
+                            "source_model_id": str(action.get("model_id", "")).strip(),
+                            "source_binding_id": str(action.get("binding_id", "")).strip(),
+                        },
+                    )
+                    effect_by_id[str(effect_row.get("effect_id", "")).strip()] = dict(effect_row)
+                    effect_provenance_events.append(
+                        _effect_provenance_row(
+                            event_type="effect_applied",
+                            tick=int(current_tick),
+                            intent_id=intent_id,
+                            process_id=process_id,
+                            target_id=target_id,
+                            effect_id=str(effect_row.get("effect_id", "")).strip(),
+                            effect_type_id=output_id,
+                            extensions={"source_model_id": str(action.get("model_id", "")).strip()},
+                        )
+                    )
+                    output_process_events.append(
+                        {
+                            "process_id": "process.effect_apply",
+                            "target_id": target_id,
+                            "output_id": output_id,
+                            "status": "applied",
+                        }
+                    )
+                    continue
+                if output_kind == "hazard_increment":
+                    delta = int(_as_int(payload.get("delta", 0), 0))
+                    key = "{}::{}".format(target_id, output_id)
+                    row = dict(hazard_rows_by_id.get(key) or {})
+                    base_value = int(max(0, _as_int(row.get("accumulated_value", 0), 0)))
+                    updated = {
+                        "schema_version": "1.0.0",
+                        "target_id": target_id,
+                        "hazard_type_id": output_id,
+                        "accumulated_value": int(max(0, int(base_value + delta))),
+                        "last_update_tick": int(current_tick),
+                        "deterministic_fingerprint": "",
+                        "extensions": {
+                            **(dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}),
+                            "source_process_id": process_id,
+                            "source_model_id": str(action.get("model_id", "")).strip(),
+                        },
+                    }
+                    updated["deterministic_fingerprint"] = canonical_sha256(dict(updated, deterministic_fingerprint=""))
+                    hazard_rows_by_id[key] = updated
+                    output_process_events.append(
+                        {
+                            "process_id": "process.hazard_increment",
+                            "target_id": target_id,
+                            "output_id": output_id,
+                            "status": "applied",
+                        }
+                    )
+                    continue
+                if output_kind == "flow_adjustment":
+                    delta = int(_as_int(payload.get("delta", 0), 0))
+                    channel_id = target_id
+                    key = "{}::{}".format(channel_id, output_id)
+                    row = dict(flow_adjust_rows_by_id.get(key) or {})
+                    base_delta = int(_as_int(row.get("accumulated_delta", 0), 0))
+                    updated = {
+                        "schema_version": "1.0.0",
+                        "channel_id": channel_id,
+                        "quantity_id": output_id,
+                        "accumulated_delta": int(base_delta + delta),
+                        "last_update_tick": int(current_tick),
+                        "deterministic_fingerprint": "",
+                        "extensions": {
+                            **(dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}),
+                            "source_process_id": process_id,
+                            "source_model_id": str(action.get("model_id", "")).strip(),
+                        },
+                    }
+                    updated["deterministic_fingerprint"] = canonical_sha256(dict(updated, deterministic_fingerprint=""))
+                    flow_adjust_rows_by_id[key] = updated
+                    channel_row = dict(channel_rows_by_id.get(channel_id) or {})
+                    if channel_row:
+                        ext = dict(channel_row.get("extensions") or {}) if isinstance(channel_row.get("extensions"), Mapping) else {}
+                        ext["model_adjust.{}".format(output_id)] = int(updated.get("accumulated_delta", 0))
+                        channel_row["extensions"] = ext
+                        channel_rows_by_id[channel_id] = channel_row
+                    output_process_events.append(
+                        {
+                            "process_id": "process.flow_adjust",
+                            "target_id": channel_id,
+                            "output_id": output_id,
+                            "status": "applied",
+                        }
+                    )
+                    continue
+                output_process_events.append(
+                    {
+                        "process_id": "process.model_evaluate_tick",
+                        "target_id": target_id,
+                        "output_id": output_id,
+                        "status": "derived_only",
+                    }
+                )
+
+            model_hazard_rows = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
+            model_flow_adjustment_rows = [dict(flow_adjust_rows_by_id[key]) for key in sorted(flow_adjust_rows_by_id.keys())]
+            if channel_rows_by_id:
+                normalized_channels = normalize_signal_channel_rows(
+                    [dict(channel_rows_by_id[key]) for key in sorted(channel_rows_by_id.keys())]
+                )
+                state["signal_channel_rows"] = [dict(row) for row in normalized_channels]
+                state["signal_channels"] = [dict(row) for row in normalized_channels]
+            effect_rows = normalize_effect_rows([dict(effect_by_id[key]) for key in sorted(effect_by_id.keys())])
+            effect_provenance_events = sorted(
+                [dict(row) for row in list(effect_provenance_events or []) if isinstance(row, Mapping)],
+                key=lambda row: (_as_int(row.get("tick", 0), 0), str(row.get("event_id", ""))),
+            )
+            _persist_effect_state(
+                state,
+                effect_rows=effect_rows,
+                provenance_events=effect_provenance_events,
+            )
+
+            observation_rows = [dict(row) for row in list(evaluation.get("observation_rows") or []) if isinstance(row, Mapping)]
+            info_artifact_rows = normalize_info_artifact_rows(
+                list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                + observation_rows
+            )
+            state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+            state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+            model_runtime_state = dict(model_runtime_state or {})
+            model_runtime_state["last_tick"] = int(current_tick)
+            model_runtime_state["last_budget_outcome"] = str(evaluation.get("budget_outcome", "complete")).strip() or "complete"
+            model_runtime_state["last_cost_units"] = int(max(0, _as_int(evaluation.get("cost_units", 0), 0)))
+            model_runtime_state["last_processed_binding_count"] = int(len(list(evaluation.get("processed_binding_ids") or [])))
+            model_runtime_state["last_deferred_binding_count"] = int(len(list(evaluation.get("deferred_rows") or [])))
+            model_runtime_state["last_cache_entry_count"] = int(len(list(model_cache_rows or [])))
+            model_runtime_state["last_output_action_count"] = int(len(list(evaluation.get("output_actions") or [])))
+            model_runtime_state["last_observation_count"] = int(len(observation_rows))
+            model_runtime_state["last_process_events"] = [dict(row) for row in list(output_process_events)[:256]]
+
+            _persist_model_state(
+                state,
+                model_bindings=model_bindings,
+                model_evaluation_results=model_evaluation_results,
+                model_cache_rows=model_cache_rows,
+                model_runtime_state=model_runtime_state,
+                model_hazard_rows=model_hazard_rows,
+                model_flow_adjustment_rows=model_flow_adjustment_rows,
+            )
+            result_metadata = {
+                "processed_binding_ids": list(_sorted_tokens(evaluation.get("processed_binding_ids"))),
+                "deferred_rows": [dict(row) for row in list(evaluation.get("deferred_rows") or []) if isinstance(row, Mapping)],
+                "budget_outcome": str(evaluation.get("budget_outcome", "complete")).strip() or "complete",
+                "cost_units": int(max(0, _as_int(evaluation.get("cost_units", 0), 0))),
+                "output_process_count": int(len(output_process_events)),
+                "observation_count": int(len(observation_rows)),
+                "evaluation_result_count": int(len(list(evaluation.get("evaluation_results") or []))),
+                "cache_entry_count": int(len(model_cache_rows)),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.safety_tick":
         safety_pattern_registry = _load_safety_pattern_registry(policy_context=policy_context)
         pattern_rows_by_id = safety_pattern_rows_by_id(safety_pattern_registry)
