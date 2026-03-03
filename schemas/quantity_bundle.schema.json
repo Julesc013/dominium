@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quantity Bundle Schema",
+  "version": "1.0.0",
+  "description": "Deterministic declaration for ordered coupled quantity bundles.",
+  "x-doc-ref": [
+    "docs/architecture/QUANTITY_BUNDLES.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bundle_id",
+    "quantity_ids",
+    "description",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quantity_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "description": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "bundle_id": "bundle.power_phasor",
+      "quantity_ids": [
+        "quantity.power.active",
+        "quantity.power.reactive",
+        "quantity.power.apparent"
+      ],
+      "description": "Power phasor coupled bundle (P,Q,S).",
+      "deterministic_fingerprint": "f2e2f61d7a59fdf27d2d803cb9f780f7b4a2cf7c5a3ad32d8c7dd0787f269f94",
+      "extensions": {}
+    }
+  ]
+}

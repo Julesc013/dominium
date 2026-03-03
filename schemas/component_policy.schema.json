@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Flow Component Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic per-component capacity/loss rule policy for QuantityBundle flow channels.",
+  "x-doc-ref": [
+    "docs/architecture/QUANTITY_BUNDLES.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "per_quantity_rules",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "per_quantity_rules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "capacity_limit": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "capacity_scale_permille": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "loss_fraction": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "transform_to_quantity_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "preserve_conservation": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "comp_loss.default_bundle",
+      "per_quantity_rules": {
+        "quantity.power.active": {
+          "loss_fraction": 50,
+          "transform_to_quantity_id": "quantity.heat",
+          "preserve_conservation": true,
+          "extensions": {}
+        }
+      },
+      "deterministic_fingerprint": "79af7d7efec26c10937aaaf7c43d2f1f632de97f610d8ef8e0f4888b8f41e8f6",
+      "extensions": {}
+    }
+  ]
+}

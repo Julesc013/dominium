@@ -1,10 +1,11 @@
 SCHEMA: core/flow_channel.schema
 schema_id: dominium.schema.core.flow_channel
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
 - Define deterministic flow channels over NetworkGraph for material/energy/fluid/signal-like transfers.
+- Support both legacy single-quantity channels and new coupled QuantityBundle channels.
 
 REQUIRED SHAPE:
 record flow_channel
@@ -12,7 +13,6 @@ record flow_channel
     - schema_version: semver
     - channel_id: id
     - graph_id: id
-    - quantity_id: id
     - source_node_id: id
     - sink_node_id: id
     - capacity_per_tick: optional_fixed
@@ -21,8 +21,16 @@ record flow_channel
     - solver_policy_id: id
     - priority: u32
     - extensions: map
+  one_of:
+    - quantity_id: id
+    - quantity_bundle_id: id
+  optional:
+    - quantity_bundle_id: id
+    - component_capacity_policy_id: id
+    - component_loss_policy_id: id
 
 INVARIANTS:
-- Quantity channels are explicit (`quantity_id`) and ledger-compatible.
+- Legacy quantity channels remain explicit (`quantity_id`) and ledger-compatible.
+- Bundle channels reference `quantity_bundle_id` with deterministic per-component policy application.
 - Flow channels carry deterministic coarse controls and remain process-accounted.
 - Priority is deterministic and only affects stable ordering tie-breaks.

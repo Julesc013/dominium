@@ -1,28 +1,43 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Flow Channel Schema",
-  "version": "1.0.0",
-  "description": "Deterministic flow channel declaration over NetworkGraph.",
+  "version": "1.1.0",
+  "description": "Deterministic flow channel declaration over NetworkGraph supporting scalar and bundle quantities.",
   "x-doc-ref": [
-    "docs/architecture/CORE_ABSTRACTIONS.md"
+    "docs/architecture/CORE_ABSTRACTIONS.md",
+    "docs/architecture/QUANTITY_BUNDLES.md"
   ],
   "type": "object",
   "required": [
     "schema_version",
     "channel_id",
     "graph_id",
-    "quantity_id",
     "source_node_id",
     "sink_node_id",
     "solver_policy_id",
     "priority",
     "extensions"
   ],
+  "anyOf": [
+    {
+      "required": [
+        "quantity_id"
+      ]
+    },
+    {
+      "required": [
+        "quantity_bundle_id"
+      ]
+    }
+  ],
   "additionalProperties": false,
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "1.0.0"
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ]
     },
     "channel_id": {
       "type": "string",
@@ -33,7 +48,31 @@
       "minLength": 1
     },
     "quantity_id": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "quantity_bundle_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "component_capacity_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "component_loss_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ],
       "minLength": 1
     },
     "source_node_id": {
@@ -88,6 +127,22 @@
       "sink_node_id": "node.port.alpha",
       "capacity_per_tick": 10000,
       "delay_ticks": 4,
+      "loss_fraction": 0,
+      "solver_policy_id": "flow.coarse_default",
+      "priority": 0,
+      "extensions": {}
+    },
+    {
+      "schema_version": "1.1.0",
+      "channel_id": "flow.bundle.power.alpha",
+      "graph_id": "graph.power.alpha",
+      "quantity_bundle_id": "bundle.power_phasor",
+      "component_capacity_policy_id": "comp_capacity.default_bundle",
+      "component_loss_policy_id": "comp_loss.default_bundle",
+      "source_node_id": "node.gen.alpha",
+      "sink_node_id": "node.grid.alpha",
+      "capacity_per_tick": 20000,
+      "delay_ticks": 1,
       "loss_fraction": 0,
       "solver_policy_id": "flow.coarse_default",
       "priority": 0,
