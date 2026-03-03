@@ -22,7 +22,8 @@ def run(repo_root: str):
     except Exception as exc:  # noqa: BLE001
         return {"status": "fail", "message": "invalid thermal policy registry JSON: {}".format(exc)}
 
-    rows = list(dict(record).get("thermal_policies") or [])
+    root = dict(record)
+    rows = list((root.get("record") or {}).get("thermal_policies") or [])
     ids = set(
         str(dict(row).get("policy_id", "")).strip()
         for row in rows
