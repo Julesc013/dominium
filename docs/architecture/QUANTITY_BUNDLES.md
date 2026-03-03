@@ -59,6 +59,10 @@ All model-driven flow mutation remains process-only (`process.flow_adjust`).
 - Legacy transfer events remain valid with scalar fields.
 - Bundle fields are additive and optional.
 - CompatX supports both prior and upgraded flow schema versions.
+- Adapter helpers are provided for legacy scalar callers:
+  - `flow_channel_primary_quantity_id(...)`
+  - `flow_transfer_components(...)`
+  - `flow_loss_components(...)`
 
 ## Performance/Budget
 

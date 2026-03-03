@@ -333,6 +333,73 @@ def _loss_conservation_exceptions(entries: List[dict]) -> List[dict]:
     )
 
 
+def flow_channel_component_ids(
+    channel_row: Mapping[str, object],
+    *,
+    quantity_bundle_rows: Mapping[str, object] | None = None,
+) -> List[str]:
+    row = dict(channel_row or {})
+    quantity_id = str(row.get("quantity_id", "")).strip()
+    if quantity_id:
+        return [quantity_id]
+    bundle_id = str(row.get("quantity_bundle_id", "")).strip()
+    bundle_lookup = _quantity_bundle_rows_by_id(quantity_bundle_rows)
+    bundle_row = dict(bundle_lookup.get(bundle_id) or {})
+    component_ids = _ordered_unique_strings(list(bundle_row.get("quantity_ids") or []))
+    if component_ids:
+        return component_ids
+    extensions = dict(row.get("extensions") or {})
+    fallback = _ordered_unique_strings(list(extensions.get("bundle_quantity_ids") or []))
+    return fallback
+
+
+def flow_channel_primary_quantity_id(
+    channel_row: Mapping[str, object],
+    *,
+    quantity_bundle_rows: Mapping[str, object] | None = None,
+    default_quantity_id: str = "quantity.unknown",
+) -> str:
+    component_ids = flow_channel_component_ids(
+        channel_row,
+        quantity_bundle_rows=quantity_bundle_rows,
+    )
+    if component_ids:
+        return str(component_ids[0])
+    return str(default_quantity_id).strip() or "quantity.unknown"
+
+
+def flow_transfer_components(
+    event_row: Mapping[str, object],
+    *,
+    quantity_id_hint: str = "",
+) -> Dict[str, int]:
+    row = dict(event_row or {})
+    components = _normalize_component_map(row.get("transferred_components"))
+    if components:
+        return components
+    quantity_id = str(quantity_id_hint).strip() or str(row.get("quantity_id", "")).strip()
+    amount = int(max(0, _as_int(row.get("transferred_amount", 0), 0)))
+    if quantity_id and amount > 0:
+        return {quantity_id: amount}
+    return {}
+
+
+def flow_loss_components(
+    event_row: Mapping[str, object],
+    *,
+    quantity_id_hint: str = "",
+) -> Dict[str, int]:
+    row = dict(event_row or {})
+    components = _normalize_component_map(row.get("lost_components"))
+    if components:
+        return components
+    quantity_id = str(quantity_id_hint).strip() or str(row.get("quantity_id", "")).strip()
+    amount = int(max(0, _as_int(row.get("lost_amount", 0), 0)))
+    if quantity_id and amount > 0:
+        return {quantity_id: amount}
+    return {}
+
+
 def _bundle_component_outcome(
     *,
     transferred_amount: int,
