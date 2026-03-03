@@ -13080,6 +13080,139 @@ def _append_safety_invariant_findings(
             break
 
 
+def _append_electric_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    del profile
+    severity = "warn"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    power_engine_rel = "src/electric/power_network_engine.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    power_engine_text = _file_text(repo_root, power_engine_rel)
+
+    for token in (
+        'elif process_id == "process.elec.connect_wire":',
+        'elif process_id == "process.elec.network_tick":',
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="electrical process handlers must exist in process runtime for deterministic power flow orchestration",
+                rule_id="INV-POWER-FLOW-THROUGH-BUNDLE",
+            )
+        )
+
+    for token in (
+        "def build_power_flow_channel(",
+        '"bundle.power_phasor"',
+        "def solve_power_network_e1(",
+        "def solve_power_network_e0(",
+    ):
+        if token in power_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=power_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="power network logic must route through bundle.power_phasor helpers (E1/E0) rather than ad-hoc channels",
+                rule_id="INV-POWER-FLOW-THROUGH-BUNDLE",
+            )
+        )
+
+    for token in (
+        "safety.breaker_trip",
+        "evaluate_safety_instances(",
+        "_apply_safety_actions(",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="breaker overload handling must flow through SAFETY pattern evaluation/apply paths",
+                rule_id="INV-BREAKER-THROUGH-SAFETY",
+            )
+        )
+
+    inline_power_loss_pattern = re.compile(
+        r"\b(?:loss_p|heat_loss|line_loss|resistance_proxy|pf_permille)\b\s*=\s*[^#\n]*(?:\*|/|\+|-|//)",
+        re.IGNORECASE,
+    )
+    inline_breaker_pattern = re.compile(
+        r"\bbreaker_state\b\s*=\s*[\"'](?:tripped|open|closed|reset)[\"']",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_power_loss_files = {
+        runtime_rel,
+        power_engine_rel,
+        "src/core/flow/flow_engine.py",
+        "src/models/model_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    allowed_breaker_files = {
+        runtime_rel,
+        "src/safety/safety_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if rel_norm not in allowed_power_loss_files and inline_power_loss_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="inline electrical loss/PF logic detected outside canonical power engine/model paths",
+                        rule_id="INV-POWER-FLOW-THROUGH-BUNDLE",
+                    )
+                )
+                break
+            if rel_norm not in allowed_breaker_files and inline_breaker_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="breaker state mutation detected outside SAFETY/runtime protection handlers",
+                        rule_id="INV-BREAKER-THROUGH-SAFETY",
+                    )
+                )
+                break
+
+
 def _append_constitutive_model_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -13828,6 +13961,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_mobility_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_electric_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
