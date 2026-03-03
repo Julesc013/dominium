@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Constitutive Model Schema",
+  "version": "1.0.0",
+  "description": "Deterministic constitutive model definition row.",
+  "x-doc-ref": [
+    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "model_id",
+    "model_type_id",
+    "description",
+    "supported_tiers",
+    "input_signature",
+    "output_signature",
+    "cost_units",
+    "cache_policy_id",
+    "uses_rng_stream",
+    "deterministic_fingerprint",
+    "version_introduced",
+    "deprecated",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "model_id": {"type": "string", "minLength": 1},
+    "model_type_id": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "supported_tiers": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["macro", "meso", "micro"]}
+    },
+    "input_signature": {
+      "type": "array",
+      "items": {"$ref": "input_ref.schema.json"}
+    },
+    "output_signature": {
+      "type": "array",
+      "items": {"$ref": "output_ref.schema.json"}
+    },
+    "cost_units": {"type": "integer", "minimum": 0},
+    "cache_policy_id": {"type": "string", "minLength": 1},
+    "uses_rng_stream": {"type": "boolean"},
+    "rng_stream_name": {"type": ["string", "null"]},
+    "deterministic_fingerprint": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "version_introduced": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "deprecated": {"type": "boolean"},
+    "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "model_id": "model.signal.attenuation.default",
+      "model_type_id": "model_type.signal_attenuation_stub",
+      "description": "Signal attenuation constitutive model stub.",
+      "supported_tiers": ["macro", "meso", "micro"],
+      "input_signature": [
+        {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.visibility", "selector": "target.position", "extensions": {}}
+      ],
+      "output_signature": [
+        {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.signal.loss_rate", "extensions": {}}
+      ],
+      "cost_units": 1,
+      "cache_policy_id": "cache.by_inputs_hash",
+      "uses_rng_stream": false,
+      "rng_stream_name": null,
+      "deterministic_fingerprint": "7f220f9d87e4f4b3a8eb9f49f58f930c1103f8e0c3a04618d28fb6d7cb89ef3a",
+      "version_introduced": "1.0.0",
+      "deprecated": false,
+      "extensions": {}
+    }
+  ]
+}

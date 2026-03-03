@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Output Ref Schema",
+  "version": "1.0.0",
+  "description": "Deterministic constitutive model output reference row.",
+  "type": "object",
+  "required": ["schema_version", "output_kind", "output_id", "extensions"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "output_kind": {
+      "type": "string",
+      "enum": ["effect", "hazard_increment", "flow_adjustment", "derived_quantity", "compliance_signal"]
+    },
+    "output_id": {"type": "string", "minLength": 1},
+    "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "output_kind": "effect",
+      "output_id": "effect.speed_cap",
+      "extensions": {}
+    }
+  ]
+}

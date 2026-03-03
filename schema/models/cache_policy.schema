@@ -1,0 +1,21 @@
+SCHEMA: models/cache_policy.schema
+schema_id: dominium.schema.models.cache_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Cache policy for deterministic constitutive model evaluation.
+
+REQUIRED SHAPE:
+record cache_policy
+  required:
+    - schema_version: semver
+    - cache_policy_id: id
+    - mode: enum(none|by_inputs_hash)
+    - extensions: map
+  optional:
+    - ttl_ticks: int
+
+INVARIANTS:
+- Cache keying and TTL behavior remain deterministic.
+- `mode=none` bypasses cache explicitly.

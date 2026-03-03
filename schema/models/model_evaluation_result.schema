@@ -1,0 +1,26 @@
+SCHEMA: models/model_evaluation_result.schema
+schema_id: dominium.schema.models.model_evaluation_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Derived deterministic evaluation trace for constitutive model runs.
+
+REQUIRED SHAPE:
+record model_evaluation_result
+  required:
+    - schema_version: semver
+    - result_id: id
+    - tick: int
+    - model_id: id
+    - binding_id: id
+    - inputs_hash: sha256
+    - outputs_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - derived_observation_artifact_id: id
+
+INVARIANTS:
+- Inputs/outputs hash chains are stable across equivalent runs.
+- Result rows are derived and replay-auditable.

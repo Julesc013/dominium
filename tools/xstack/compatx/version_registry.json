@@ -1,20 +1,20 @@
 {
   "schemas": {
-    "authority_context": {
+    "action_family": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "astronomy_catalog_index": {
+    "action_surface": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "astronomy_catalog_entry": {
+    "action_template": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -35,14 +35,21 @@
         "1.0.0"
       ]
     },
-    "agent_move_intent": {
+    "address": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "agent_rotate_intent": {
+    "addressing_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "affiliation": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -63,7 +70,42 @@
         "1.0.0"
       ]
     },
-    "affiliation": {
+    "ag_edge": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "ag_node": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "agent_move_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "agent_rotate_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "aggregation_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "aggregation_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -84,14 +126,182 @@
         "1.0.0"
       ]
     },
-    "budget_policy": {
+    "arbitration_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "budget_policy_registry": {
+    "arbitration_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "arbitration_rule_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "assembly_graph": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "asset_health_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "astronomy_catalog_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "astronomy_catalog_index": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "attenuation_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "attenuation_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "authority_context": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "backlog_growth_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "backlog_growth_rule_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "base_dimension": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "base_dimension_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "belief_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "belief_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "birth_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "birth_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "block_reservation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "blueprint": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "blueprint_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "body_primitive": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "body_shape_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "bom": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "boundary_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "boundary_model_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -119,7 +329,28 @@
         "1.0.0"
       ]
     },
-    "bundle_profile": {
+    "budget_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "budget_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "bulletin_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "bulletin_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -133,63 +364,35 @@
         "1.0.0"
       ]
     },
-    "body_primitive": {
+    "bundle_profile": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "body_shape_registry": {
+    "cache_policy": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "calibration_model": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "boundary_model": {
+    "calibration_model_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "boundary_model_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "control_action": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "control_action_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "control_decision_log": {
-      "current_version": "1.0.0",
-      "migrations": {
-        "0.1.0->1.0.0": {
-          "migration_id": "migration.control_decision_log.0_1_0_to_1_0_0",
-          "status": "stub",
-          "notes": "CTRL-10 migration stub; explicit mapping required before non-stub promotion."
-        }
-      },
-      "supported_versions": [
-        "0.1.0",
-        "1.0.0"
-      ]
-    },
-    "control_binding": {
+    "camera_binding": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -214,6 +417,265 @@
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "causality_strictness": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "causality_strictness_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "channel_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cohort": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cohort_mapping_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cohort_refinement": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "commitment": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "commitment_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "commitment_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compaction_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compaction_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compartment_flow_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compliance_check": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compliance_check_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compliance_result": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compound": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "compound_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "congestion_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "congestion_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "connection_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "connection_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "conservation_contract_set": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "conservation_contract_set_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "constitutive_model": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "constitutive_model_registry": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "constraint_component": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "constraint_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "construction_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "construction_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "construction_project": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "construction_step": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_action": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_action_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_binding": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_binding_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "control_decision_log": {
+      "current_version": "1.0.0",
+      "migrations": {
+        "0.1.0->1.0.0": {
+          "migration_id": "migration.control_decision_log.0_1_0_to_1_0_0",
+          "status": "stub",
+          "notes": "CTRL-10 migration stub; explicit mapping required before non-stub promotion."
+        }
+      },
+      "supported_versions": [
+        "0.1.0",
         "1.0.0"
       ]
     },
@@ -259,13 +721,6 @@
         "1.0.0"
       ]
     },
-    "control_proof_bundle": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
     "control_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -280,6 +735,13 @@
         "1.0.0"
       ]
     },
+    "control_proof_bundle": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "control_resolution": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -287,7 +749,280 @@
         "1.0.0"
       ]
     },
+    "controller": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "controller_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "core_constraint_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "core_flow_solver_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "core_hazard_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "core_routing_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "core_schedule_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "core_state_machine_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cosmetic_assignment": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cosmetic_pack": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cosmetic_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cosmetic_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "coupling_constraint": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "coupling_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "death_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "death_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "decay_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "decay_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dem_source": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "demography_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "demography_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "deprecation_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "deprecation_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "derailment_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "derailment_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "derived_provenance": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dimension": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dimension_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "diplomatic_relation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "diplomatic_state_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dispatch_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dispatch_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "distribution_aggregate": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "domain_contract_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "domain_foundation_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "domain_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "downgrade_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dt_quantization_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "dt_quantization_rule_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "edge_occupancy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -309,6 +1044,174 @@
       ]
     },
     "effect_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "element": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "element_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "ephemeris_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "ephemeris_source": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "epistemic_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "epistemic_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "event_stream_index": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "event_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "eviction_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "eviction_rule_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "exception_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "exception_ledger": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "exception_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "execute_plan_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "experience_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "experience_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "faction": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "failure_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "failure_mode": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "failure_mode_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fidelity_allocation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fidelity_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fidelity_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fidelity_request": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -357,56 +1260,21 @@
         "1.0.0"
       ]
     },
-    "safety_pattern": {
+    "flow_channel": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "safety_instance": {
+    "flow_solver_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "safety_pattern_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "geometry_candidate": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "geometry_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "geometry_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "geometry_snap_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "guide_geometry": {
+    "flow_transfer_event": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -455,469 +1323,49 @@
         "1.0.0"
       ]
     },
-    "inference_candidate": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "stacking_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "stacking_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "spec_sheet": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "spec_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "spec_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tolerance_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tolerance_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "camera_binding": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "calibration_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "calibration_model_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "cosmetic_assignment": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "cosmetic_pack": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "cosmetic_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "cosmetic_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "controller": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "controller_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compaction_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compaction_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compliance_check": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compliance_check_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compliance_result": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "conservation_contract_set": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "conservation_contract_set_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "cohort": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "cohort_refinement": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "cohort_mapping_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "base_dimension": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "base_dimension_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "birth_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "birth_model_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "decay_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "decay_model_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "death_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "death_model_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "deprecation_entry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "deprecation_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "demography_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "demography_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "dem_source": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "dimension": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "dimension_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "derived_provenance": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "domain_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "domain_foundation_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "domain_contract_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "dt_quantization_rule": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "dt_quantization_rule_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "diplomatic_relation": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "diplomatic_state_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "ephemeris_source": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "ephemeris_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "epistemic_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "epistemic_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "exception_entry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "exception_ledger": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "exception_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "experience_profile": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "experience_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "eviction_rule": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "eviction_rule_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "fidelity_allocation": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "fidelity_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "fidelity_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "fidelity_request": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "faction": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
     "frame_summary": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "free_motion_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "free_motion_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "geometry_candidate": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "geometry_snap_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "geometry_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "geometry_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -931,7 +1379,77 @@
         "1.0.0"
       ]
     },
-    "institution_type_registry": {
+    "graph_partition": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "guide_geometry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "hazard_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inference_candidate": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "input_ref": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "inspection_cache_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inspection_cache_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inspection_request": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inspection_section": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inspection_section_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "inspection_snapshot": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -939,6 +1457,13 @@
       ]
     },
     "institution_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "institution_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -966,6 +1491,83 @@
         "1.0.0"
       ]
     },
+    "intent_envelope": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "intent_log": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "interaction_action_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "interaction_preview": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "interior_graph": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "interior_volume": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "interior_volume_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "invariant_check_result": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "itinerary": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "jamming_effect": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "jamming_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "junction": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -980,315 +1582,77 @@
         "1.0.0"
       ]
     },
-    "inspection_cache_policy": {
+    "label_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "inspection_cache_policy_registry": {
+    "law_profile": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "inspection_request": {
+    "law_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "inspection_snapshot": {
+    "lens": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "inspection_section": {
+    "lens_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "inspection_section_registry": {
+    "lod_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "interior_volume": {
+    "logistics_edge": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "portal": {
+    "logistics_graph": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "interior_graph": {
+    "logistics_graph_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "interior_volume_type_registry": {
+    "logistics_node": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "compartment_flow_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "portal_flow_template_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "portal_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "interaction_action_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "action_family": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "action_template": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "real_world_affordance_matrix": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "action_surface": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "surface_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tool_tag": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tool": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tool_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tool_effect_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "tool_bind": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "mount_point": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "motion_state": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "micro_motion_state": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "free_motion_state": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "free_motion_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_channel": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_node_payload": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_edge_payload": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "channel_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_message_envelope": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "address": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "message_queue_entry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "aggregation_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "trust_edge": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "trust_graph": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "belief_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "bulletin_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "verification_result": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "message_delivery_event": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "dispatch_policy": {
+    "logistics_routing_rule_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1302,147 +1666,168 @@
         "1.0.0"
       ]
     },
-    "attenuation_policy": {
+    "machine": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "jamming_effect": {
+    "machine_operation_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "signal_rule_policy": {
+    "machine_type": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "standards_policy": {
+    "machine_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "block_reservation": {
+    "maintenance_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "itinerary": {
+    "maintenance_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "travel_commitment": {
+    "manifest": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "travel_event": {
+    "material_batch": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "edge_occupancy": {
+    "material_class": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "reservation": {
+    "material_class_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "congestion_policy": {
+    "material_property_override": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "derailment_policy": {
+    "material_template": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "coupling_constraint": {
+    "materialization_state": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "pose_slot": {
+    "memory_item": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "pose_control_binding": {
+    "memory_store": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "surface_visibility_policy": {
+    "message": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "surface_type_registry": {
+    "message_delivery_event": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "posture_registry": {
+    "message_queue_entry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "mount_tag_registry": {
+    "micro_motion_state": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "control_binding_registry": {
+    "micro_part_instance": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "mobility_vehicle_class_registry": {
+    "migration_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "migration_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "mixture": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "mixture_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1456,154 +1841,7 @@
         "1.0.0"
       ]
     },
-    "mobility_signal_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_channel_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "attenuation_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "jamming_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "addressing_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "aggregation_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "bulletin_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "dispatch_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "belief_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "trust_update_rule_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_node_kind_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_edge_kind_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "signal_rule_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "standards_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "mobility_speed_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "congestion_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "wear_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "wear_accumulation_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "derailment_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "coupling_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "mobility_node_payload": {
+    "mobility_edge_kind_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1611,6 +1849,20 @@
       ]
     },
     "mobility_edge_payload": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "mobility_maintenance_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "mobility_max_speed_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1631,182 +1883,98 @@
         "1.0.0"
       ]
     },
-    "mobility_edge_kind_registry": {
+    "mobility_node_payload": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "mobility_max_speed_policy_registry": {
+    "mobility_signal_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "vehicle": {
+    "mobility_speed_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "vehicle_class": {
+    "mobility_vehicle_class_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "vehicle_class_registry": {
+    "model_binding": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "model_cache_policy_registry": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "model_evaluation_result": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "model_type": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "model_type_registry": {
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ],
+      "current_version": "1.0.0"
+    },
+    "motion_state": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "tool_tag_registry": {
+    "mount_point": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "tool_type_registry": {
+    "mount_tag_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "tool_effect_model_registry": {
+    "negotiation_request": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "surface_visibility_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "port": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "port_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "port_connection": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "machine": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "machine_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "port_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "machine_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "port_visibility_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "machine_operation_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "task": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "task_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "progress_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "task_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "progress_model_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "interaction_preview": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "intent_log": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "intent_envelope": {
+    "negotiation_result": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1862,34 +2030,6 @@
         "1.0.0"
       ]
     },
-    "net_snapshot": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "numeric_precision_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "numeric_precision_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "net_tick_intent_list": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
     "net_replication_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1905,6 +2045,62 @@
       ]
     },
     "net_server_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "net_snapshot": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "net_tick_intent_list": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "network_edge": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "network_graph": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "network_node": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "node_inventory": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "numeric_precision_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "numeric_precision_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1932,27 +2128,6 @@
         "1.0.0"
       ]
     },
-    "plan_artifact": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "plan_intent": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "execute_plan_intent": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
     "order_move": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1974,126 +2149,14 @@
         "1.0.0"
       ]
     },
-    "message": {
-      "current_version": "1.0.0",
+    "output_ref": {
       "migrations": {},
       "supported_versions": [
         "1.0.0"
-      ]
+      ],
+      "current_version": "1.0.0"
     },
-    "migration_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "migration_model_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "memory_item": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "memory_store": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "element": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "element_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compound": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "compound_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "mixture": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "mixture_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "material_class": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "material_class_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "material_property_override": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "quality_distribution": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "quality_distribution_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "material_batch": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "bom": {
+    "pack_manifest": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2107,336 +2170,7 @@
         "1.0.0"
       ]
     },
-    "assembly_graph": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "ag_node": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "ag_edge": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "connection_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "blueprint": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
     "part_class_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "connection_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "blueprint_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "logistics_node": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "logistics_edge": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "logistics_graph": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "manifest": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "shipment_commitment": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "routing_rule": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "node_inventory": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "logistics_routing_rule_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "logistics_graph_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "construction_project": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "construction_step": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "provenance_event": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "event_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "construction_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "provenance_event_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "construction_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "failure_mode": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "maintenance_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "mobility_maintenance_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "wear_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "wear_state": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "wear_accumulation_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "backlog_growth_rule": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "asset_health_state": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "failure_event": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "failure_mode_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "maintenance_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "backlog_growth_rule_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "micro_part_instance": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "materialization_state": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "distribution_aggregate": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "reenactment_descriptor": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "commitment": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "commitment_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "causality_strictness": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "reenactment_request": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "reenactment_artifact": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "event_stream_index": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "commitment_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "causality_strictness_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2450,140 +2184,91 @@
         "1.0.0"
       ]
     },
-    "law_profile": {
+    "plan_artifact": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "law_registry": {
+    "plan_intent": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "lens": {
+    "port": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "lens_registry": {
+    "port_connection": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "label_policy_registry": {
+    "port_type": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "lod_policy_registry": {
+    "port_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "material_template": {
+    "port_visibility_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "pack_manifest": {
+    "portal": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "profile_trace": {
+    "portal_flow_template_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "reference_frame": {
+    "portal_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "render_model": {
+    "pose_control_binding": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "render_primitive": {
+    "pose_slot": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "render_primitive_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "renderable": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "render_proxy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "render_snapshot": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "render_proxy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "representation_rule": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "representation_rule_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "role_registry": {
+    "posture_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2598,6 +2283,55 @@
       ]
     },
     "procedural_material_template_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "profile_trace": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "progress_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "progress_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "provenance_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "provenance_event_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "quality_distribution": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "quality_distribution_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2632,6 +2366,118 @@
         "1.0.0"
       ]
     },
+    "real_world_affordance_matrix": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reenactment_artifact": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reenactment_descriptor": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reenactment_request": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reference_frame": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "registry_outputs": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_primitive": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_primitive_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_proxy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_proxy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "render_snapshot": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "renderable": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "representation_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "representation_rule_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "reservation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "retention_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2640,6 +2486,62 @@
       ]
     },
     "retention_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "role_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "route_query": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "route_result": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "routing_rule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "safety_instance": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "safety_pattern": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "safety_pattern_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "schedule": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2674,7 +2576,14 @@
         "1.0.0"
       ]
     },
-    "registry_outputs": {
+    "session_artifacts": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "session_pipeline": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2695,14 +2604,98 @@
         "1.0.0"
       ]
     },
-    "session_pipeline": {
+    "shard_map": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "session_artifacts": {
+    "shard_map_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "shipment_commitment": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_channel": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_channel_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_edge_kind_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_edge_payload": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_message_envelope": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_node_kind_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_node_payload": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_rule_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_rule_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "signal_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2723,14 +2716,35 @@
         "1.0.0"
       ]
     },
-    "shard_map": {
+    "solver_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "shard_map_registry": {
+    "spatial_node": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "spec_sheet": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "spec_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "spec_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2744,7 +2758,91 @@
         "1.0.0"
       ]
     },
-    "solver_registry": {
+    "stacking_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "stacking_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "standards_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "standards_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "state_machine": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "state_transition": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "surface_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "surface_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "surface_visibility_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "surface_visibility_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "task": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "task_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "task_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2752,6 +2850,13 @@
       ]
     },
     "terrain_tile_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "territory": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2766,76 +2871,6 @@
       ]
     },
     "tier_taxonomy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "topology_edge": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "topology_map": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "topology_node": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "transition_event": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "transition_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "transition_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "arbitration_rule_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "arbitration_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "arbitration_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "invariant_check_result": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2884,28 +2919,147 @@
         "1.0.0"
       ]
     },
-    "unit": {
+    "tolerance_policy": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "unit_registry": {
+    "tolerance_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "territory": {
+    "tool": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "universe_identity": {
+    "tool_bind": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tool_effect_model": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tool_effect_model_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tool_tag": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tool_tag_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tool_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tool_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "topology_edge": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "topology_map": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "topology_node": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "transition_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "transition_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "transition_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "travel_commitment": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "travel_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "trust_edge": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "trust_graph": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "trust_update_rule_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2926,35 +3080,21 @@
         "1.0.0"
       ]
     },
-    "view_mode": {
+    "unit": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "view_binding": {
+    "unit_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
         "1.0.0"
       ]
     },
-    "view_mode_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "view_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "view_policy_registry": {
+    "universe_identity": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2982,6 +3122,104 @@
         "1.0.0"
       ]
     },
+    "vehicle": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "vehicle_class": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "vehicle_class_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "verification_result": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "view_binding": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "view_mode": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "view_mode_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "view_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "view_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_accumulation_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_accumulation_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "wear_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "worldgen_constraints": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2997,174 +3235,6 @@
       ]
     },
     "worldgen_search_plan": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "network_graph": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "network_node": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "negotiation_request": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "negotiation_result": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "network_edge": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "graph_partition": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "route_query": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "route_result": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "flow_channel": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "flow_solver_policy": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "flow_transfer_event": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "constraint_type": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "constraint_component": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "state_transition": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "state_machine": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "hazard_model": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "schedule": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "spatial_node": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "core_routing_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "core_flow_solver_policy_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "core_constraint_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "core_state_machine_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "core_hazard_type_registry": {
-      "current_version": "1.0.0",
-      "migrations": {},
-      "supported_versions": [
-        "1.0.0"
-      ]
-    },
-    "core_schedule_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
