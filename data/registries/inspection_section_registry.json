@@ -254,6 +254,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.elec.fault_summary",
+        "title": "Electrical Fault Summary",
+        "data": {
+          "data_kind": "elec_fault_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.elec.protection_device_states",
+        "title": "Electrical Protection Devices",
+        "data": {
+          "data_kind": "elec_protection_device_states"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.elec.compliance_summary",
+        "title": "Electrical Compliance Summary",
+        "data": {
+          "data_kind": "elec_compliance_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.models.summary",
         "title": "Constitutive Model Summary",
         "data": {

@@ -288,8 +288,39 @@ def _network_graph_overlay_payload(
     signal_delivery_data = dict(signal_delivery_section.get("data") or {})
     signal_quality_section = dict(sections.get("section.signal.quality_summary") or {})
     signal_quality_data = dict(signal_quality_section.get("data") or {})
+    elec_fault_section = dict(sections.get("section.elec.fault_summary") or {})
+    elec_fault_data = dict(elec_fault_section.get("data") or {})
+    elec_protection_section = dict(sections.get("section.elec.protection_device_states") or {})
+    elec_protection_data = dict(elec_protection_section.get("data") or {})
+    elec_compliance_section = dict(sections.get("section.elec.compliance_summary") or {})
+    elec_compliance_data = dict(elec_compliance_section.get("data") or {})
     delayed_vehicle_ids = set(_sorted_unique_strings(list(congestion_data.get("delayed_vehicle_ids") or [])))
     congested_edge_ids = set(_sorted_unique_strings(list(congestion_data.get("congested_edge_ids") or [])))
+    elec_fault_rows = sorted(
+        [dict(item) for item in list(elec_fault_data.get("fault_rows") or []) if isinstance(item, dict)],
+        key=lambda item: (str(item.get("target_id", "")), str(item.get("fault_kind_id", "")), str(item.get("fault_id", ""))),
+    )
+    elec_fault_rows_by_edge: Dict[str, list[dict]] = {}
+    for row in elec_fault_rows:
+        edge_id = str(row.get("target_id", "")).strip()
+        if not edge_id:
+            continue
+        elec_fault_rows_by_edge.setdefault(edge_id, []).append(dict(row))
+    elec_protection_rows = sorted(
+        [dict(item) for item in list(elec_protection_data.get("devices") or []) if isinstance(item, dict)],
+        key=lambda item: str(item.get("device_id", "")),
+    )
+    tripped_edge_ids = set(
+        str(item.get("edge_id", "")).strip()
+        for item in elec_protection_rows
+        if str(item.get("edge_id", "")).strip()
+        and (str(item.get("breaker_state", "")).strip() == "tripped" or bool(item.get("trip_planned", False)))
+    )
+    ground_fault_edge_ids = set(
+        str(item.get("target_id", "")).strip()
+        for item in elec_fault_rows
+        if str(item.get("target_id", "")).strip() and str(item.get("fault_kind_id", "")).strip() == "fault.ground_fault"
+    )
     signal_edge_queue_rows = sorted(
         [dict(item) for item in list(signal_queue_data.get("edge_queue_depth_rows") or []) if isinstance(item, dict)],
         key=lambda item: (str(item.get("edge_id", "")), _to_int(item.get("queue_depth", 0), 0)),
@@ -324,6 +355,9 @@ def _network_graph_overlay_payload(
     signal_queue_med_color = {"r": 92, "g": 128, "b": 222}
     signal_queue_high_color = {"r": 72, "g": 96, "b": 198}
     delayed_color = {"r": 252, "g": 206, "b": 88}
+    elec_fault_color = {"r": 238, "g": 78, "b": 72}
+    elec_trip_color = {"r": 252, "g": 150, "b": 84}
+    elec_ground_fault_color = {"r": 232, "g": 80, "b": 136}
     edge_material_id = "mat.inspect.networkgraph.edge.{}".format(canonical_sha256({"graph_id": graph_id})[:12])
     node_material_id = "mat.inspect.networkgraph.node.{}".format(canonical_sha256({"graph_id": graph_id, "node": True})[:12])
     route_material_id = "mat.inspect.networkgraph.route.{}".format(canonical_sha256({"graph_id": graph_id, "route": True})[:12])
@@ -350,6 +384,15 @@ def _network_graph_overlay_payload(
     )
     delayed_material_id = "mat.inspect.networkgraph.delayed.{}".format(
         canonical_sha256({"graph_id": graph_id, "board": "delayed"})[:12]
+    )
+    elec_fault_material_id = "mat.inspect.networkgraph.elec.fault.{}".format(
+        canonical_sha256({"graph_id": graph_id, "elec": "fault"})[:12]
+    )
+    elec_trip_material_id = "mat.inspect.networkgraph.elec.trip.{}".format(
+        canonical_sha256({"graph_id": graph_id, "elec": "trip"})[:12]
+    )
+    elec_ground_fault_material_id = "mat.inspect.networkgraph.elec.ground_fault.{}".format(
+        canonical_sha256({"graph_id": graph_id, "elec": "ground_fault"})[:12]
     )
     materials = sorted(
         [
@@ -496,6 +539,44 @@ def _network_graph_overlay_payload(
                 "pattern_id": None,
                 "extensions": {"interaction_overlay": True, "overlay_kind": "networkgraph_delayed_board"},
             },
+            {
+                "schema_version": "1.0.0",
+                "material_id": elec_fault_material_id,
+                "base_color": dict(elec_fault_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": elec_fault_color["r"], "g": elec_fault_color["g"], "b": elec_fault_color["b"], "strength": 280},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "elec_fault"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": elec_trip_material_id,
+                "base_color": dict(elec_trip_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {"r": elec_trip_color["r"], "g": elec_trip_color["g"], "b": elec_trip_color["b"], "strength": 260},
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "elec_trip"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "material_id": elec_ground_fault_material_id,
+                "base_color": dict(elec_ground_fault_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {
+                    "r": elec_ground_fault_color["r"],
+                    "g": elec_ground_fault_color["g"],
+                    "b": elec_ground_fault_color["b"],
+                    "strength": 300,
+                },
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "elec_ground_fault"},
+            },
         ],
         key=lambda row: str(row.get("material_id", "")),
     )
@@ -503,6 +584,9 @@ def _network_graph_overlay_payload(
     spec_missing_edge_count = 0
     spec_warning_edge_count = 0
     curvature_warning_edge_count = 0
+    elec_fault_edge_count = 0
+    elec_trip_edge_count = 0
+    elec_ground_fault_edge_count = 0
     for edge in edge_rows:
         edge_id = str(edge.get("edge_id", "")).strip()
         if not edge_id:
@@ -551,6 +635,16 @@ def _network_graph_overlay_payload(
             spec_warning_edge_count += 1
         if route_curvature_warning:
             curvature_warning_edge_count += 1
+        fault_rows_for_edge = list(elec_fault_rows_by_edge.get(edge_id) or [])
+        has_elec_fault = bool(fault_rows_for_edge)
+        has_ground_fault = bool(edge_id in ground_fault_edge_ids)
+        has_elec_trip = bool(edge_id in tripped_edge_ids)
+        if has_elec_fault:
+            elec_fault_edge_count += 1
+        if has_elec_trip:
+            elec_trip_edge_count += 1
+        if has_ground_fault:
+            elec_ground_fault_edge_count += 1
         material_id = edge_material_id
         if is_route:
             material_id = route_material_id
@@ -562,6 +656,10 @@ def _network_graph_overlay_payload(
             material_id = spec_warn_material_id
         if route_curvature_warning:
             material_id = curve_warn_material_id
+        if has_elec_trip:
+            material_id = elec_trip_material_id
+        if has_elec_fault:
+            material_id = elec_ground_fault_material_id if has_ground_fault else elec_fault_material_id
         renderables.append(
             {
                 "schema_version": "1.0.0",
@@ -595,6 +693,9 @@ def _network_graph_overlay_payload(
                     "over_capacity": bool(occupancy_over_capacity),
                     "signal_queue_depth": int(signal_queue_depth),
                     "signal_queue_heat_bucket": signal_queue_heat_bucket,
+                    "elec_fault_count": int(len(fault_rows_for_edge)),
+                    "elec_has_ground_fault": bool(has_ground_fault),
+                    "elec_tripped": bool(has_elec_trip),
                 },
             }
         )
@@ -646,6 +747,38 @@ def _network_graph_overlay_payload(
                         "edge_id": edge_id,
                         "signal_queue_depth": int(signal_queue_depth),
                         "heat_bucket": signal_queue_heat_bucket,
+                    },
+                }
+            )
+        if has_elec_fault or has_elec_trip:
+            renderables.append(
+                {
+                    "schema_version": "1.0.0",
+                    "renderable_id": "overlay.inspect.networkgraph.elecfault.{}".format(
+                        canonical_sha256({"graph_id": graph_id, "edge_id": edge_id, "elec_fault": True, "elec_trip": bool(has_elec_trip)})[:16]
+                    ),
+                    "semantic_id": "overlay.inspect.networkgraph.elecfault.{}".format(edge_id),
+                    "primitive_id": "prim.glyph.label",
+                    "transform": {
+                        "position_mm": {"x": 0, "y": 0, "z": 0},
+                        "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                        "scale_permille": 900,
+                    },
+                    "material_id": (
+                        elec_ground_fault_material_id
+                        if has_ground_fault
+                        else (elec_fault_material_id if has_elec_fault else elec_trip_material_id)
+                    ),
+                    "layer_tags": ["overlay", "ui"],
+                    "label": ("GFAULT" if has_ground_fault else ("FAULT" if has_elec_fault else "TRIP")),
+                    "lod_hint": "lod.band.mid",
+                    "flags": {"selectable": False, "highlighted": True},
+                    "extensions": {
+                        "interaction_overlay": True,
+                        "overlay_kind": ("elec_ground_fault" if has_ground_fault else ("elec_fault" if has_elec_fault else "elec_trip")),
+                        "edge_id": edge_id,
+                        "fault_count": int(len(fault_rows_for_edge)),
+                        "tripped": bool(has_elec_trip),
                     },
                 }
             )
@@ -860,6 +993,16 @@ def _network_graph_overlay_payload(
         )
     if signal_static_indicator:
         summary = "{} static={}".format(summary, signal_static_indicator)
+    if elec_fault_edge_count > 0 or elec_trip_edge_count > 0:
+        summary = "{} elec_fault_edges={} elec_trip_edges={} ground_fault_edges={}".format(
+            summary,
+            int(elec_fault_edge_count),
+            int(elec_trip_edge_count),
+            int(elec_ground_fault_edge_count),
+        )
+    elec_compliance_state = str(elec_compliance_data.get("compliance_state", "")).strip() or None
+    if elec_compliance_state:
+        summary = "{} elec_compliance={}".format(summary, elec_compliance_state)
     return {
         "mode": "networkgraph_overlay",
         "summary": summary,
@@ -880,6 +1023,11 @@ def _network_graph_overlay_payload(
             "route_spec_warning_edge_count": int(spec_warning_edge_count),
             "route_curvature_warning_edge_ids": sorted(route_curvature_warning_edge_ids),
             "route_curvature_warning_edge_count": int(curvature_warning_edge_count),
+            "elec_fault_edge_count": int(elec_fault_edge_count),
+            "elec_trip_edge_count": int(elec_trip_edge_count),
+            "elec_ground_fault_edge_count": int(elec_ground_fault_edge_count),
+            "tripped_edge_ids": sorted(tripped_edge_ids),
+            "ground_fault_edge_ids": sorted(ground_fault_edge_ids),
             "congested_edge_ids": sorted(
                 set(
                     list(congested_edge_ids)

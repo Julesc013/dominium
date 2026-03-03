@@ -121,6 +121,8 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
+        "section.elec.fault_summary",
+        "section.elec.compliance_summary",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -143,6 +145,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
+        "section.elec.fault_summary",
+        "section.elec.protection_device_states",
+        "section.elec.compliance_summary",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -165,6 +170,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.models.summary",
         "section.safety.instances",
         "section.safety.events",
+        "section.elec.fault_summary",
+        "section.elec.protection_device_states",
+        "section.elec.compliance_summary",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -323,6 +331,9 @@ _DEFAULT_SECTION_ROWS = {
     "section.models.summary": {"title": "Constitutive Model Summary", "extensions": {"cost_units": 2}},
     "section.safety.instances": {"title": "Safety Instances", "extensions": {"cost_units": 1}},
     "section.safety.events": {"title": "Safety Events", "extensions": {"cost_units": 2}},
+    "section.elec.fault_summary": {"title": "Electrical Fault Summary", "extensions": {"cost_units": 2}},
+    "section.elec.protection_device_states": {"title": "Electrical Protection Devices", "extensions": {"cost_units": 2}},
+    "section.elec.compliance_summary": {"title": "Electrical Compliance Summary", "extensions": {"cost_units": 1}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
     "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
     "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
@@ -1767,6 +1778,166 @@ def _build_section_data(
                 }
                 for row in active_jamming_rows[:128]
             ]
+        return payload
+    if section_id == "section.elec.fault_summary":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        graph_edge_ids = set(
+            str(edge.get("edge_id", "")).strip()
+            for edge in list(graph.get("edges") or [])
+            if isinstance(edge, dict) and str(edge.get("edge_id", "")).strip()
+        )
+        fault_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_fault_states") or [])
+            if isinstance(item, dict)
+        ]
+        active_rows = []
+        for row in sorted(fault_rows, key=lambda item: (str(item.get("target_id", "")), str(item.get("fault_kind_id", "")), str(item.get("fault_id", "")))):
+            if not bool(row.get("active", False)):
+                continue
+            target_kind = str(row.get("target_kind", "")).strip()
+            target_id = str(row.get("target_id", "")).strip()
+            if (not target_id) or (target_kind not in {"edge", "node", "device"}):
+                continue
+            if graph_edge_ids and target_kind == "edge" and target_id not in graph_edge_ids:
+                continue
+            active_rows.append(row)
+        by_kind: Dict[str, int] = {}
+        for row in active_rows:
+            kind = str(row.get("fault_kind_id", "")).strip() or "fault.unknown"
+            by_kind[kind] = _as_int(by_kind.get(kind, 0), 0) + 1
+        total_severity = int(sum(max(0, _as_int(row.get("severity", 0), 0)) for row in active_rows))
+        runtime_state = dict((dict(state or {})).get("elec_fault_runtime_state") or {})
+        payload = {
+            "graph_id": graph_id,
+            "active_fault_count": int(len(active_rows)),
+            "fault_kind_counts": dict((key, int(by_kind[key])) for key in sorted(by_kind.keys())),
+            "ground_fault_count": int(_as_int(by_kind.get("fault.ground_fault", 0), 0)),
+            "overcurrent_fault_count": int(_as_int(by_kind.get("fault.overcurrent", 0), 0)),
+            "fault_severity_total": int(total_severity),
+            "fault_state_hash_chain": str((dict(state or {})).get("fault_state_hash_chain", "")).strip() or None,
+            "fault_budget_outcome": str(runtime_state.get("last_budget_outcome", "")).strip() or "complete",
+        }
+        if allow_hidden_state:
+            payload["fault_rows"] = [
+                {
+                    "fault_id": str(row.get("fault_id", "")).strip(),
+                    "fault_kind_id": str(row.get("fault_kind_id", "")).strip(),
+                    "target_kind": str(row.get("target_kind", "")).strip(),
+                    "target_id": str(row.get("target_id", "")).strip(),
+                    "severity": int(max(0, _as_int(row.get("severity", 0), 0))),
+                    "detected_tick": int(max(0, _as_int(row.get("detected_tick", 0), 0))),
+                }
+                for row in active_rows[:256]
+            ]
+        return payload
+    if section_id == "section.elec.protection_device_states":
+        graph = _graph_row()
+        graph_id = str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None
+        graph_edge_ids = set(
+            str(edge.get("edge_id", "")).strip()
+            for edge in list(graph.get("edges") or [])
+            if isinstance(edge, dict) and str(edge.get("edge_id", "")).strip()
+        )
+        settings_by_id = _row_index((dict(state or {})).get("elec_protection_settings"), "settings_id")
+        trip_events = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_trip_events") or [])
+            if isinstance(item, dict)
+        ]
+        trip_event_ids = set(
+            str((dict(row.get("details") or {})).get("device_id", "")).strip()
+            for row in trip_events
+            if str(row.get("status", "")).strip() == "trip_planned"
+            and str((dict(row.get("details") or {})).get("device_id", "")).strip()
+        )
+        device_rows = []
+        for row in sorted(
+            [dict(item) for item in list((dict(state or {})).get("elec_protection_devices") or []) if isinstance(item, dict)],
+            key=lambda item: str(item.get("device_id", "")),
+        ):
+            device_id = str(row.get("device_id", "")).strip()
+            if not device_id:
+                continue
+            attached_to = dict(row.get("attached_to") or {})
+            edge_id = str(attached_to.get("edge_id", "")).strip()
+            if graph_edge_ids and edge_id and edge_id not in graph_edge_ids:
+                continue
+            ext = dict(row.get("extensions") or {})
+            settings_id = str(row.get("settings_ref", "")).strip()
+            settings_row = dict(settings_by_id.get(settings_id) or {})
+            breaker_state = str(ext.get("breaker_state", "closed")).strip() or "closed"
+            device_rows.append(
+                {
+                    "device_id": device_id,
+                    "device_kind_id": str(row.get("device_kind_id", "")).strip() or "breaker",
+                    "edge_id": edge_id or None,
+                    "channel_id": str(ext.get("channel_id", "")).strip() or None,
+                    "state_machine_id": str(row.get("state_machine_id", "")).strip() or None,
+                    "breaker_state": breaker_state,
+                    "loto_active": bool(ext.get("loto_active", False)),
+                    "trip_planned": bool(device_id in trip_event_ids),
+                    "settings_id": settings_id or None,
+                    "trip_threshold_S": None if settings_row.get("trip_threshold_S") is None else int(max(0, _as_int(settings_row.get("trip_threshold_S", 0), 0))),
+                    "gfci_threshold": None if settings_row.get("gfci_threshold") is None else int(max(0, _as_int(settings_row.get("gfci_threshold", 0), 0))),
+                }
+            )
+        tripped_count = len([row for row in device_rows if str(row.get("breaker_state", "")).strip() == "tripped"])
+        loto_count = len([row for row in device_rows if bool(row.get("loto_active", False))])
+        payload = {
+            "graph_id": graph_id,
+            "device_count": int(len(device_rows)),
+            "tripped_count": int(tripped_count),
+            "loto_active_count": int(loto_count),
+            "trip_event_hash_chain": str((dict(state or {})).get("trip_event_hash_chain", "")).strip() or None,
+            "status": "tripped" if tripped_count > 0 else ("locked_out" if loto_count > 0 else "normal"),
+        }
+        if allow_hidden_state:
+            payload["devices"] = list(device_rows)[:256]
+        return payload
+    if section_id == "section.elec.compliance_summary":
+        graph = _graph_row()
+        edge_rows = [dict(item) for item in list(graph.get("edges") or []) if isinstance(item, dict)]
+        edge_spec_missing = 0
+        for edge_row in edge_rows:
+            payload = dict(edge_row.get("payload") or {})
+            if not str(payload.get("spec_id", "")).strip():
+                edge_spec_missing += 1
+        protection_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_protection_devices") or [])
+            if isinstance(item, dict)
+        ]
+        protection_spec_missing = len(
+            [
+                row
+                for row in protection_rows
+                if not str(row.get("spec_id", "")).strip()
+            ]
+        )
+        fault_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("elec_fault_states") or [])
+            if isinstance(item, dict) and bool(item.get("active", False))
+        ]
+        compliance_ok = (edge_spec_missing == 0) and (protection_spec_missing == 0)
+        payload = {
+            "graph_id": str(graph.get("graph_id", "")).strip() or str(request.get("target_id", "")).strip() or None,
+            "edge_count": int(len(edge_rows)),
+            "edge_spec_missing_count": int(edge_spec_missing),
+            "protection_device_count": int(len(protection_rows)),
+            "protection_spec_missing_count": int(protection_spec_missing),
+            "active_fault_count": int(len(fault_rows)),
+            "compliance_state": "pass" if compliance_ok else "warn",
+            "status": "compliant" if compliance_ok else "spec_missing",
+        }
+        if allow_hidden_state:
+            payload["missing_edge_spec_ids"] = [
+                str((dict(edge.get("payload") or {})).get("spec_id", "")).strip() or None
+                for edge in edge_rows
+                if not str((dict(edge.get("payload") or {})).get("spec_id", "")).strip()
+            ][:64]
         return payload
     if section_id == "section.signal.inbox_summary":
         receipts = [
