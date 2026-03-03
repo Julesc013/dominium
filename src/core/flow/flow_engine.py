@@ -288,6 +288,51 @@ def _add_component_maps(left: Mapping[str, object] | None, right: Mapping[str, o
     return out
 
 
+def _loss_transform_rows_from_entries(entries: List[dict]) -> List[dict]:
+    rows_by_key: Dict[str, dict] = {}
+    for row in list(entries or []):
+        if not isinstance(row, Mapping):
+            continue
+        if not bool(row.get("transform_applied", False)):
+            continue
+        channel_id = str(row.get("channel_id", "")).strip()
+        to_quantity_id = str(row.get("quantity_id", "")).strip()
+        from_quantity_id = str(row.get("transformed_from_quantity_id", "")).strip()
+        amount = int(max(0, _as_int(row.get("lost_amount", 0), 0)))
+        if (not channel_id) or (not to_quantity_id) or (not from_quantity_id) or amount <= 0:
+            continue
+        row_key = "{}::{}::{}".format(channel_id, from_quantity_id, to_quantity_id)
+        current = dict(rows_by_key.get(row_key) or {})
+        rows_by_key[row_key] = {
+            "channel_id": channel_id,
+            "from_quantity_id": from_quantity_id,
+            "to_quantity_id": to_quantity_id,
+            "amount": int(max(0, _as_int(current.get("amount", 0), 0)) + amount),
+        }
+    return [dict(rows_by_key[key]) for key in sorted(rows_by_key.keys())]
+
+
+def _loss_conservation_exceptions(entries: List[dict]) -> List[dict]:
+    out: List[dict] = []
+    for row in list(entries or []):
+        if not isinstance(row, Mapping):
+            continue
+        if not bool(row.get("conservation_exception_logged", False)):
+            continue
+        out.append(
+            {
+                "channel_id": str(row.get("channel_id", "")).strip(),
+                "quantity_id": str(row.get("quantity_id", "")).strip(),
+                "lost_amount": int(max(0, _as_int(row.get("lost_amount", 0), 0))),
+                "exception_code": str(row.get("exception_code", "")).strip() or "exception.flow.conservation_unresolved",
+            }
+        )
+    return sorted(
+        (dict(item) for item in out),
+        key=lambda item: (str(item.get("channel_id", "")), str(item.get("quantity_id", ""))),
+    )
+
+
 def _bundle_component_outcome(
     *,
     transferred_amount: int,
@@ -1189,6 +1234,9 @@ def tick_flow_channels(
             {"processed_count": int(processed_count), "remaining_count": int(remaining_count)},
         )
 
+    loss_transform_rows = _loss_transform_rows_from_entries(loss_entries)
+    conservation_exceptions = _loss_conservation_exceptions(loss_entries)
+
     return {
         "node_balances": dict((str(key), int(balances[key])) for key in sorted(balances.keys())),
         "channel_runtime": dict(
@@ -1204,6 +1252,8 @@ def tick_flow_channels(
             (dict(row) for row in loss_entries if isinstance(row, dict)),
             key=lambda row: (str(row.get("channel_id", "")), str(row.get("quantity_id", ""))),
         ),
+        "loss_transform_rows": list(loss_transform_rows),
+        "conservation_exceptions": list(conservation_exceptions),
         "channel_results": sorted(
             (dict(row) for row in channel_results if isinstance(row, dict)),
             key=lambda row: str(row.get("channel_id", "")),
