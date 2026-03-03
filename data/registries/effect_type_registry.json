@@ -66,6 +66,22 @@
       },
       {
         "schema_version": "1.0.0",
+        "effect_type_id": "effect.temperature_increase_local",
+        "description": "Applies deterministic local temperature increase from fault or overload hooks.",
+        "applies_to": [
+          "edge",
+          "channel",
+          "assembly",
+          "structure"
+        ],
+        "modifies": [
+          "temperature_delta_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "effect_type_id": "effect.tool_efficiency_modifier",
         "description": "Adjusts tool efficiency for task progression and process throughput.",
         "applies_to": [

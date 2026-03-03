@@ -22472,6 +22472,89 @@ def execute_intent(
                 "coordination_policy_id": resolved_coordination_policy_id,
             },
         }
+        active_fault_rows = [
+            dict(row)
+            for row in list(state.get("elec_fault_states") or [])
+            if isinstance(row, Mapping) and bool(row.get("active", False))
+        ]
+        hook_rows_by_key = dict(
+            (
+                "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("fault_kind_id", "")).strip()),
+                dict(row),
+            )
+            for row in list(state.get("elec_fault_hook_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        hazard_rows_by_key = dict(
+            (
+                "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                dict(row),
+            )
+            for row in list(state.get("elec_fault_hazard_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        thermal_hook_effects = []
+        for fault_row in sorted(active_fault_rows, key=lambda row: (str(row.get("target_id", "")), str(row.get("fault_kind_id", "")))):
+            target_id = str(fault_row.get("target_id", "")).strip()
+            fault_kind_id = str(fault_row.get("fault_kind_id", "")).strip()
+            if not target_id or not fault_kind_id:
+                continue
+            key = "{}::{}".format(target_id, fault_kind_id)
+            severity = int(max(0, _as_int(fault_row.get("severity", 0), 0)))
+            hook_rows_by_key[key] = {
+                "target_id": target_id,
+                "fault_kind_id": fault_kind_id,
+                "effect_type_id": "effect.temperature_increase_local",
+                "hazard_type_id": "hazard.elec.insulation_breakdown",
+                "pollutant_type_id": "pollutant.smoke_stub",
+                "severity": int(severity),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "extensions": {
+                    "source_process_id": process_id,
+                    "source_intent_id": str(intent_id),
+                },
+            }
+            hazard_key = "{}::{}".format(target_id, "hazard.elec.insulation_breakdown")
+            hazard_rows_by_key[hazard_key] = {
+                "target_id": target_id,
+                "hazard_type_id": "hazard.elec.insulation_breakdown",
+                "delta": int(max(1, severity)),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "extensions": {
+                    "fault_kind_id": fault_kind_id,
+                    "source_process_id": process_id,
+                    "source_intent_id": str(intent_id),
+                },
+            }
+            thermal_hook_effects.append(
+                build_effect(
+                    effect_id="",
+                    effect_type_id="effect.temperature_increase_local",
+                    target_id=target_id,
+                    applied_tick=int(max(0, _as_int(current_tick, 0))),
+                    duration_ticks=1,
+                    expires_tick=None,
+                    magnitude={
+                        "temperature_delta_permille": int(max(1, severity)),
+                        "fault_kind_id": fault_kind_id,
+                    },
+                    stacking_policy_id="stack.replace_latest",
+                    source_event_id=None,
+                    extensions={
+                        "source_process_id": process_id,
+                        "source_intent_id": str(intent_id),
+                        "hook_type": "elec_fault_thermal_stub",
+                    },
+                )
+            )
+        state["elec_fault_hook_rows"] = [dict(hook_rows_by_key[key]) for key in sorted(hook_rows_by_key.keys())]
+        state["elec_fault_hazard_rows"] = [dict(hazard_rows_by_key[key]) for key in sorted(hazard_rows_by_key.keys())]
+        if thermal_hook_effects:
+            effect_rows = normalize_effect_rows(
+                [dict(row) for row in list(effect_rows or []) if isinstance(row, Mapping)]
+                + [dict(row) for row in list(thermal_hook_effects or []) if isinstance(row, Mapping)]
+            )
+            state["effect_rows"] = [dict(row) for row in list(effect_rows or []) if isinstance(row, Mapping)]
 
         overload_context_overrides = {}
         breaker_instances = [dict(row) for row in list(protection_eval.get("safety_instances") or []) if isinstance(row, Mapping)]
