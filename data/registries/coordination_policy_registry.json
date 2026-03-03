@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.coordination_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.coordination_policy_registry",
+    "registry_version": "1.0.0",
+    "coordination_policies": [
+      {
+        "schema_version": "1.0.0",
+        "coordination_policy_id": "coord.downstream_first",
+        "schema_ref": "dominium.schema.electric.protection_settings@1.0.0",
+        "extensions": {
+          "description": "Prefer tripping downstream devices before upstream supply devices."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "coordination_policy_id": "coord.upstream_first",
+        "schema_ref": "dominium.schema.electric.protection_settings@1.0.0",
+        "extensions": {
+          "description": "Prefer upstream trip order where explicitly configured."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "coordination_policy_id": "coord.strict_table",
+        "schema_ref": "dominium.schema.electric.protection_settings@1.0.0",
+        "extensions": {
+          "description": "Apply strict policy table ordering with deterministic tie-breaks."
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

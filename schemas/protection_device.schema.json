@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Electrical Protection Device Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ELEC-2 protection device row.",
+  "x-doc-ref": [
+    "docs/electric/PROTECTION_AND_FAULT_MODEL.md",
+    "docs/audit/ELECTRICAL_PROTECTION_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "device_id",
+    "device_kind_id",
+    "attached_to",
+    "state_machine_id",
+    "settings_ref",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "device_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "device_kind_id": {
+      "type": "string",
+      "enum": [
+        "breaker",
+        "fuse",
+        "relay",
+        "gfci",
+        "isolator"
+      ]
+    },
+    "attached_to": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edge_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "node_id"
+          ]
+        },
+        {
+          "required": [
+            "edge_id"
+          ]
+        }
+      ]
+    },
+    "state_machine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "settings_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "device_id": "device.elec.breaker.main",
+      "device_kind_id": "breaker",
+      "attached_to": {
+        "edge_id": "edge.elec.main"
+      },
+      "state_machine_id": "machine.elec.breaker.main",
+      "spec_id": "spec.elec.current_rating_basic",
+      "settings_ref": "settings.elec.breaker.main",
+      "deterministic_fingerprint": "fe2bc6f8f2bdf6747f4ea1c18cd462f26617e6af0f7f3d266f4f6cba8f9b5c53",
+      "extensions": {}
+    }
+  ]
+}
