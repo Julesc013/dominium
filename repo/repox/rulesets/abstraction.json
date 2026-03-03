@@ -48,6 +48,14 @@
       "documentation": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2026-12-31"
+    },
+    {
+      "rule_id": "INV-NO-COUPLED-QUANTITY-HACKS",
+      "severity": "WARN",
+      "scope_paths": ["src/core/flow", "src/models", "tools/xstack/sessionx"],
+      "documentation": "docs/architecture/QUANTITY_BUNDLES.md",
+      "exemption_policy": "allow_with_expiry",
+      "ratchet_after": "2026-12-31"
     }
   ]
 }
