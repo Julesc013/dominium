@@ -184,6 +184,15 @@ def _envelope_defaults(budget_envelope_id):
         return {"max_cost_units_per_tick": 1200, "base_t1_tick_stride": 1, "max_model_cost_units_per_network": 380, "max_fire_spread_per_tick": 18}
     return {"max_cost_units_per_tick": 1800, "base_t1_tick_stride": 1, "max_model_cost_units_per_network": 520, "max_fire_spread_per_tick": 24}
 
+
+_DEGRADE_ORDER = {
+    "degrade.therm.tick_bucket": 1,
+    "degrade.therm.t0_budget": 2,
+    "degrade.therm.defer_noncritical_models": 3,
+    "degrade.therm.fire_spread_cap": 4,
+}
+
+
 def run_therm_stress_scenario(
     *,
     scenario,
@@ -345,7 +354,15 @@ def run_therm_stress_scenario(
                 row.setdefault("target_id", str(graph_id))
                 code = str(row.get("reason_code", "")).strip()
                 if code.startswith("degrade.therm"):
-                    degrade_event_rows_all.append({"tick": int(max(0, _as_int(row.get("tick", tick), tick))), "target_id": str(row.get("target_id", graph_id)), "reason_code": code, "details": _as_map(row.get("details"))})
+                    degrade_event_rows_all.append(
+                        {
+                            "tick": int(max(0, _as_int(row.get("tick", tick), tick))),
+                            "target_id": str(row.get("target_id", graph_id)),
+                            "reason_code": code,
+                            "order_index": int(_DEGRADE_ORDER.get(code, 99)),
+                            "details": _as_map(row.get("details")),
+                        }
+                    )
             if result_mode == "T0":
                 has_degrade_log = any(str(row.get("reason_code", "")).strip().startswith("degrade.therm") for row in decision_rows)
                 no_silent_downgrades = bool(no_silent_downgrades and has_degrade_log)
@@ -415,6 +432,37 @@ def run_therm_stress_scenario(
         "no_silent_downgrades": bool(no_silent_downgrades),
         "no_unlogged_heat_inputs": True,
     }
+    degradation_record_rows = [
+        {
+            "artifact_id": "artifact.record.therm.degrade.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(_as_int(row.get("tick", 0), 0)),
+                        "target_id": str(row.get("target_id", "")),
+                        "reason_code": str(row.get("reason_code", "")),
+                        "order_index": int(_as_int(row.get("order_index", 99), 99)),
+                    }
+                )[:16]
+            ),
+            "artifact_family_id": "RECORD",
+            "extensions": {
+                "tick": int(_as_int(row.get("tick", 0), 0)),
+                "target_id": str(row.get("target_id", "")),
+                "reason_code": str(row.get("reason_code", "")),
+                "order_index": int(_as_int(row.get("order_index", 99), 99)),
+                "details": _as_map(row.get("details")),
+            },
+        }
+        for row in sorted(
+            [dict(item) for item in list(degrade_event_rows_all or []) if isinstance(item, dict)],
+            key=lambda item: (
+                int(_as_int(item.get("tick", 0), 0)),
+                str(item.get("target_id", "")),
+                int(_as_int(item.get("order_index", 99), 99)),
+                str(item.get("reason_code", "")),
+            ),
+        )
+    ]
 
     result = {
         "schema_version": "1.0.0",
@@ -435,12 +483,14 @@ def run_therm_stress_scenario(
             "total_fire_events": int(sum(per_tick_fire_event_counts)),
             "average_cache_hit_ratio_permille": int(0 if not per_tick_cache_hit_ratios_permille else sum(per_tick_cache_hit_ratios_permille) // max(1, len(per_tick_cache_hit_ratios_permille))),
             "proof_hash_summary": dict(proof_hash_summary),
+            "degradation_policy_order": [str(token) for token, _rank in sorted(_DEGRADE_ORDER.items(), key=lambda item: int(item[1]))],
         },
         "assertions": dict(assertions),
         "extensions": {
             "control_decision_log": [dict(row) for row in list(control_decision_log or []) if isinstance(row, dict)],
             "thermal_heat_input_log_rows": [dict(row) for row in list(heat_input_log_rows or []) if isinstance(row, dict)],
             "thermal_degradation_event_rows": [dict(row) for row in list(degrade_event_rows_all or []) if isinstance(row, dict)],
+            "thermal_degradation_record_rows": degradation_record_rows,
             "proof_hashes_per_tick": list(per_tick_proof_hashes),
             "graph_ids": list(graph_ids),
         },
