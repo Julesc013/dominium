@@ -63,6 +63,20 @@
       },
       {
         "schema_version": "1.0.0",
+        "model_id": "model.therm_ignite_stub",
+        "model_type_id": "model_type.therm_ignite_stub",
+        "status": "active",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_combust_stub",
+        "model_type_id": "model_type.therm_combust_stub",
+        "status": "active",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "model_id": "model.therm_conductance_stub",
         "model_type_id": "model_type.therm_conductance_stub",
         "status": "stub",

@@ -1312,6 +1312,229 @@ def _evaluate_therm_radiator_exchange_model(
     return outputs
 
 
+def _evaluate_therm_ignite_stub_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+    temperature = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    ignition_threshold = int(
+        _binding_param_int(
+            binding=binding,
+            key="ignition_threshold",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="combustion.ignition_threshold",
+                default_value=42315,
+            ),
+        )
+    )
+    spread_threshold = int(
+        _binding_param_int(
+            binding=binding,
+            key="spread_threshold",
+            default_value=max(0, ignition_threshold - 1500),
+        )
+    )
+    combustible = bool(params.get("combustible", True))
+    oxygen_available = bool(params.get("oxygen_available", True))
+    fire_active = bool(params.get("fire_active", False))
+    ignition_triggered = bool(combustible and oxygen_available and (not fire_active) and (temperature >= ignition_threshold))
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind in {"derived_quantity", "compliance_signal"}:
+            if output_id.endswith("spread_threshold"):
+                value = int(spread_threshold)
+            elif output_id.endswith("ignition_threshold"):
+                value = int(ignition_threshold)
+            else:
+                value = int(1 if ignition_triggered else 0)
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": int(value),
+                        "temperature": int(temperature),
+                        "ignition_threshold": int(ignition_threshold),
+                        "spread_threshold": int(spread_threshold),
+                        "combustible": bool(combustible),
+                        "oxygen_available": bool(oxygen_available),
+                        "fire_active": bool(fire_active),
+                        "ignition_triggered": bool(ignition_triggered),
+                    },
+                )
+            )
+        elif output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "hazard_type_id": output_id,
+                        "delta": int(1 if ignition_triggered else 0),
+                    },
+                )
+            )
+    return outputs
+
+
+def _evaluate_therm_combust_stub_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+    temperature = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    fire_active = bool(params.get("fire_active", False))
+    fuel_remaining = int(max(0, _binding_param_int(binding=binding, key="fuel_remaining", default_value=0)))
+    heat_release_rate = int(max(0, _binding_param_int(binding=binding, key="heat_release_rate", default_value=0)))
+    fuel_consumption_rate = int(max(1, _binding_param_int(binding=binding, key="fuel_consumption_rate", default_value=1)))
+    pollutant_emission_rate = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="pollutant_emission_rate",
+                default_value=max(1, heat_release_rate // 4) if heat_release_rate > 0 else 0,
+            ),
+        )
+    )
+
+    combustion_active = bool(fire_active and fuel_remaining > 0 and heat_release_rate > 0)
+    fuel_consumed = int(min(fuel_remaining, fuel_consumption_rate)) if combustion_active else 0
+    heat_emission = int(heat_release_rate if (combustion_active and fuel_consumed > 0) else 0)
+    pollutant_emission = int(pollutant_emission_rate if combustion_active else 0)
+    fuel_after = int(max(0, fuel_remaining - fuel_consumed))
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        output_id_lower = output_id.lower()
+        if output_kind == "flow_adjustment":
+            quantity_bundle_id = str(_as_map(output_ref.get("extensions")).get("quantity_bundle_id", "")).strip()
+            component_quantity_id = str(
+                _as_map(output_ref.get("extensions")).get("component_quantity_id", output_id)
+            ).strip() or output_id
+            delta = int(heat_emission if "heat" in output_id_lower else pollutant_emission)
+            payload = {
+                "quantity_id": output_id,
+                "component_quantity_id": component_quantity_id,
+                "delta": int(delta),
+            }
+            if quantity_bundle_id:
+                payload["quantity_bundle_id"] = quantity_bundle_id
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload=payload,
+                )
+            )
+        elif output_kind == "derived_quantity":
+            value = int(1 if combustion_active else 0)
+            if "pollut" in output_id_lower:
+                value = int(pollutant_emission)
+            elif "fuel_consumed" in output_id_lower:
+                value = int(fuel_consumed)
+            elif "fuel_remaining" in output_id_lower:
+                value = int(fuel_after)
+            elif "heat" in output_id_lower:
+                value = int(heat_emission)
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": int(value),
+                        "temperature": int(temperature),
+                        "fire_active": bool(fire_active),
+                        "combustion_active": bool(combustion_active),
+                        "fuel_remaining_before": int(fuel_remaining),
+                        "fuel_consumed": int(fuel_consumed),
+                        "fuel_remaining_after": int(fuel_after),
+                        "heat_emission": int(heat_emission),
+                        "pollutant_emission": int(pollutant_emission),
+                    },
+                )
+            )
+        elif output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "hazard_type_id": output_id,
+                        "delta": int(1 if combustion_active else 0),
+                    },
+                )
+            )
+        elif output_kind == "effect":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"effect_type_id": output_id, "magnitude_permille": int(heat_emission % 1000)},
+                )
+            )
+    return outputs
+
+
 def _evaluate_known_model_outputs(
     *,
     model_row: Mapping[str, object],
@@ -1403,6 +1626,20 @@ def _evaluate_known_model_outputs(
         return _evaluate_therm_radiator_exchange_model(
             model_row=model_row,
             binding=binding,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_ignite_stub":
+        return _evaluate_therm_ignite_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.therm_combust_stub":
+        return _evaluate_therm_combust_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
             output_signature=output_signature,
         )
     return None
