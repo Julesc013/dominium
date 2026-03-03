@@ -28,9 +28,37 @@
       },
       {
         "schema_version": "1.0.0",
+        "model_id": "model.elec_pf_correction",
+        "schema_ref": "dominium.schema.models.constitutive_model@1.0.0",
+        "description": "Electrical power-factor correction constitutive model.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_transformer_stub",
+        "schema_ref": "dominium.schema.models.constitutive_model@1.0.0",
+        "description": "Electrical transformer ratio/loss constitutive model stub.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_storage_battery",
+        "schema_ref": "dominium.schema.models.constitutive_model@1.0.0",
+        "description": "Electrical storage battery constitutive model.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "model_id": "model.elec_line_loss_stub",
         "schema_ref": "dominium.schema.models.constitutive_model@1.0.0",
         "description": "Electrical line loss constitutive model placeholder.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_device_loss",
+        "schema_ref": "dominium.schema.models.constitutive_model@1.0.0",
+        "description": "Electrical device loss-to-heat constitutive model.",
         "extensions": {}
       }
     ],

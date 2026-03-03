@@ -12,7 +12,7 @@
         "description": "ELEC phasor constitutive model baseline stub.",
         "supported_tiers": ["macro", "meso", "micro"],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power_apparent", "selector": "target.channel", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.apparent_stub", "selector": "target.channel", "extensions": {}},
           {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.power_factor_nominal", "selector": null, "extensions": {}}
         ],
         "output_signature": [
@@ -24,6 +24,157 @@
         "uses_rng_stream": false,
         "rng_stream_name": null,
         "deterministic_fingerprint": "1c3d0dcce28152e50e6f9698b8dd55f8523f89f3f7f6cb7ea8ea4f614f38e4cf",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_load_resistive_stub",
+        "model_type_id": "model_type.elec_load_phasor_stub",
+        "description": "Deterministic resistive load model for active/reactive/apparent demand.",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.elec.node_demand_active", "selector": "target.node", "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "9f85e7f9a11fbf329cb709eddf4c4eefb75a72b17e6fd40b2d90b0102f4fc173",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_load_motor_stub",
+        "model_type_id": "model_type.elec_load_phasor_stub",
+        "description": "Deterministic motor/inductive load model with PF-derived reactive demand.",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.elec.node_demand_active", "selector": "target.node", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.pf_target_permille", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.power_factor", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "f4f9f30ce8e5d286e78d737eb2f79b692ce3745f59a86837d2d8c88ad08fd1f1",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_pf_correction",
+        "model_type_id": "model_type.elec_pf_correction",
+        "description": "Deterministic PF correction model (capacitor-bank style Q compensation).",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.node", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.reactive_stub", "selector": "target.node", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.pf_target_permille", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.pf_adjusted_q", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "9ce2d0d7f57f9ba029f279c70ddf9e84ce40f72d2af4379d15ad4c89c66e22fd",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_transformer_stub",
+        "model_type_id": "model_type.elec_transformer_stub",
+        "description": "Deterministic transformer ratio/loss placeholder model.",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.edge", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.reactive_stub", "selector": "target.edge", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.apparent_stub", "selector": "target.edge", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.transformer_ratio", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}}
+        ],
+        "cost_units": 2,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "b4c539c0e9ea8e9b4635dbf7b4bd21b07f3bf4fe269b67d7dfe95bd5b67c8e78",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_storage_battery",
+        "model_type_id": "model_type.elec_storage_battery",
+        "description": "Deterministic battery storage model with SoC and internal resistance proxy.",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.elec.storage_state_of_charge", "selector": "target.node", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.node", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.storage_internal_resistance_proxy", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "hazard_increment", "output_id": "hazard.elec.storage_degradation", "extensions": {}}
+        ],
+        "cost_units": 2,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "eb526f33c0ca8d2f3d4f37e2ec285f89b41fc78f1422840704bd8bd24e4d371f",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_device_loss",
+        "model_type_id": "model_type.elec_device_loss",
+        "description": "Deterministic device loss model mapping electrical losses to heat outputs.",
+        "supported_tiers": ["meso"],
+        "input_signature": [
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.edge", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.apparent_stub", "selector": "target.edge", "extensions": {}},
+          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.loss_coeff", "selector": null, "extensions": {}}
+        ],
+        "output_signature": [
+          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
+          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}},
+          {"schema_version": "1.0.0", "output_kind": "effect", "output_id": "effect.temperature_increase_local", "extensions": {}}
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "49fca32b52a54b6b5ba8ad8846a66c07bb5cb4479a0148d3ff17f67e5810f23d",
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
