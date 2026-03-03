@@ -1,6 +1,6 @@
 SCHEMA: core/flow_transfer_event.schema
 schema_id: dominium.schema.core.flow_transfer_event
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -18,7 +18,11 @@ record flow_transfer_event
     - ledger_delta_refs: list<string>
     - deterministic_fingerprint: hash
     - extensions: map
+  optional:
+    - transferred_components: map<quantity_id,fixed_point>
+    - lost_components: map<quantity_id,fixed_point>
 
 INVARIANTS:
 - Transfer event IDs/fingerprints are canonical and replay-stable.
 - Lost amount is explicit; no silent drop is allowed for conserved channels.
+- Component transfer/loss maps are canonicalized by sorted quantity_id key.

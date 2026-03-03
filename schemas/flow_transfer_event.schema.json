@@ -1,10 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Flow Transfer Event Schema",
-  "version": "1.0.0",
-  "description": "Deterministic FlowSystem transfer event payload.",
+  "version": "1.1.0",
+  "description": "Deterministic FlowSystem transfer event payload with optional per-component maps.",
   "x-doc-ref": [
-    "docs/architecture/FLOWSYSTEM_STANDARD.md"
+    "docs/architecture/FLOWSYSTEM_STANDARD.md",
+    "docs/architecture/QUANTITY_BUNDLES.md"
   ],
   "type": "object",
   "required": [
@@ -22,7 +23,10 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "1.0.0"
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ]
     },
     "event_id": {
       "type": "string",
@@ -43,6 +47,20 @@
     "lost_amount": {
       "type": "integer",
       "minimum": 0
+    },
+    "transferred_components": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "lost_components": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
     },
     "ledger_delta_refs": {
       "type": "array",
@@ -73,6 +91,30 @@
         "ledger.delta.credit.a1"
       ],
       "deterministic_fingerprint": "6f701752ec79ad7e5fe3f4ce822299f30a3599b5bc7fc91a7a9f5fb7df4095f4",
+      "extensions": {}
+    },
+    {
+      "schema_version": "1.1.0",
+      "event_id": "flow.event.bundle.a1",
+      "tick": 43,
+      "channel_id": "flow.channel.bundle.a1",
+      "transferred_amount": 1800,
+      "lost_amount": 200,
+      "transferred_components": {
+        "quantity.power.active": 900,
+        "quantity.power.reactive": 700,
+        "quantity.power.apparent": 200
+      },
+      "lost_components": {
+        "quantity.power.active": 100,
+        "quantity.power.reactive": 100
+      },
+      "ledger_delta_refs": [
+        "ledger.delta.debit.b1",
+        "ledger.delta.credit.b1",
+        "ledger.delta.loss.b1"
+      ],
+      "deterministic_fingerprint": "7786fbc2db13ea4c8b7ff501ab31b9b4720cd29c2b2f434a8f2f59cdb5a1ea84",
       "extensions": {}
     }
   ]

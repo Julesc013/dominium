@@ -497,6 +497,13 @@
         "1.0.0"
       ]
     },
+    "component_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "compartment_flow_policy_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1261,10 +1268,17 @@
       ]
     },
     "flow_channel": {
-      "current_version": "1.0.0",
-      "migrations": {},
+      "current_version": "1.1.0",
+      "migrations": {
+        "1.0.0->1.1.0": {
+          "migration_id": "migration.flow_channel.1_0_0_to_1_1_0",
+          "status": "stub",
+          "notes": "Additive QuantityBundle upgrade; legacy quantity_id channels remain valid."
+        }
+      },
       "supported_versions": [
-        "1.0.0"
+        "1.0.0",
+        "1.1.0"
       ]
     },
     "flow_solver_policy": {
@@ -1275,10 +1289,17 @@
       ]
     },
     "flow_transfer_event": {
-      "current_version": "1.0.0",
-      "migrations": {},
+      "current_version": "1.1.0",
+      "migrations": {
+        "1.0.0->1.1.0": {
+          "migration_id": "migration.flow_transfer_event.1_0_0_to_1_1_0",
+          "status": "stub",
+          "notes": "Additive per-component transfer/loss maps for bundle channels."
+        }
+      },
       "supported_versions": [
-        "1.0.0"
+        "1.0.0",
+        "1.1.0"
       ]
     },
     "formalization_event": {
@@ -2339,6 +2360,13 @@
       ]
     },
     "quantity": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "quantity_bundle": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
