@@ -470,6 +470,76 @@
           "structure"
         ],
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.connect_wire",
+        "display_name": "Connect Wire",
+        "produces": {
+          "process_id": "process.elec.connect_wire",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "edge",
+          "node",
+          "structure"
+        ],
+        "extensions": {
+          "elec0_stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.flip_breaker",
+        "display_name": "Flip Breaker",
+        "produces": {
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "node",
+          "structure"
+        ],
+        "extensions": {
+          "elec0_stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.lockout_tagout",
+        "display_name": "Lockout Tagout",
+        "produces": {
+          "process_id": "process.elec.lockout_tagout",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "node",
+          "structure"
+        ],
+        "extensions": {
+          "elec0_stub": true
+        }
       }
     ],
     "extensions": {}
