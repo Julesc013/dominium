@@ -564,6 +564,9 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.meter.dosimeter",
         "ch.diegetic.meter.wind_indicator",
         "ch.diegetic.meter.visibility_indicator",
+        "ch.diegetic.elec.test_lamp",
+        "ch.diegetic.elec.breaker_panel",
+        "ch.diegetic.elec.ground_fault",
     ]
 
 
@@ -787,6 +790,12 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.vehicle.smoke_alarm": dict(instruments.get("instrument.vehicle.smoke_alarm") or {})}
     if channel_id == "ch.diegetic.vehicle.flood_alarm":
         return {"instrument.vehicle.flood_alarm": dict(instruments.get("instrument.vehicle.flood_alarm") or {})}
+    if channel_id == "ch.diegetic.elec.test_lamp":
+        return {"instrument.elec.test_lamp": dict(instruments.get("instrument.elec.test_lamp") or {})}
+    if channel_id == "ch.diegetic.elec.breaker_panel":
+        return {"instrument.elec.breaker_panel": dict(instruments.get("instrument.elec.breaker_panel") or {})}
+    if channel_id == "ch.diegetic.elec.ground_fault":
+        return {"instrument.elec.ground_fault_indicator": dict(instruments.get("instrument.elec.ground_fault_indicator") or {})}
     truth_overlay = dict(perceived_model.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -866,6 +875,9 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.meter.dosimeter": "ch.diegetic.meter.dosimeter",
         "instrument.meter.wind_indicator": "ch.diegetic.meter.wind_indicator",
         "instrument.meter.visibility_indicator": "ch.diegetic.meter.visibility_indicator",
+        "instrument.elec.test_lamp": "ch.diegetic.elec.test_lamp",
+        "instrument.elec.breaker_panel": "ch.diegetic.elec.breaker_panel",
+        "instrument.elec.ground_fault_indicator": "ch.diegetic.elec.ground_fault",
     }
     for instrument_id, channel_spec in sorted(instrument_channels.items()):
         allowed_channels = (
