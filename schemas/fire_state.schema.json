@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fire State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic THERM-4 fire state row.",
+  "x-doc-ref": [
+    "docs/thermal/FIRE_AND_RUNAWAY_MODEL.md",
+    "docs/audit/FIRE_RUNAWAY_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_id",
+    "active",
+    "fuel_remaining",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "fuel_remaining": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "target_id": "node.therm.source",
+      "active": true,
+      "fuel_remaining": 800,
+      "last_update_tick": 44,
+      "deterministic_fingerprint": "42041af050f5e4c2cdcb9e4ff6f6810df3de06e41fb3815600b6628eb20ec4bc",
+      "extensions": {
+        "material_id": "material.wood_basic"
+      }
+    }
+  ]
+}
