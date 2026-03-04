@@ -7,6 +7,7 @@ Scope: PHYS-0 proof/replay expectation contract for physics exceptions.
 ## 1) Artifact Family Classification
 
 `exception_event` is a canonical META-INFO artifact of family `RECORD`.
+`entropy_event` and `entropy_reset_event` are canonical META-INFO artifacts of family `RECORD`.
 
 Classification rationale:
 
@@ -26,6 +27,22 @@ Minimum expectation key for v1.0.0 extensions:
 
 - `extensions.physics_exception_event_hash_chain`
 
+PHYS-3 adds deterministic energy witnesses:
+
+- `energy_ledger_hash_chain`
+- `boundary_flux_hash_chain`
+
+When `energy_ledger_entry` or `boundary_flux_event` rows are present in the authoritative window,
+proof bundles must carry both chains.
+
+PHYS-4 adds deterministic entropy witnesses:
+
+- `entropy_hash_chain`
+- `entropy_reset_events_hash_chain`
+
+When entropy contribution/reset rows are present in the authoritative window,
+proof bundles must carry both entropy chains.
+
 ## 3) Replay/Reenactment Expectation
 
 Reenactment windows must reproduce exception behavior deterministically:
@@ -35,6 +52,36 @@ Reenactment windows must reproduce exception behavior deterministically:
 - identical deterministic fingerprints for the same authoritative window
 
 Any mismatch is replay drift and must be treated as a determinism failure.
+
+For PHYS-3 energy accounting, reenactment windows must also reproduce:
+
+- identical ordered `energy_ledger_entries`
+- identical ordered `boundary_flux_events`
+- identical `energy_ledger_hash_chain`
+- identical `boundary_flux_hash_chain`
+
+Verification helpers:
+
+- `tools/physics/tool_verify_energy_conservation`
+- `tools/physics/tool_replay_energy_window`
+
+For PHYS-4 entropy accounting, reenactment windows must also reproduce:
+
+- identical ordered `entropy_event_rows`
+- identical ordered `entropy_reset_events`
+- identical `entropy_hash_chain`
+- identical `entropy_reset_events_hash_chain`
+
+For momentum replay consistency (PHYS-1 substrate), reenactment windows must reproduce:
+
+- identical ordered `momentum_states`
+- identical ordered `impulse_application_rows`
+- identical `momentum_hash_chain`
+- identical `impulse_event_hash_chain`
+
+Verification helper:
+
+- `tools/physics/tool_replay_momentum_window`
 
 ## 4) Non-Goals (PHYS-0)
 
