@@ -43,6 +43,7 @@ def _status_from_findings(findings: List[Dict[str, object]]) -> str:
 STRICT_PROMOTED_ANALYZERS = {
     "E179_INLINE_RESPONSE_CURVE_SMELL": "fail",
     "E208_DIRECT_VELOCITY_WRITE_SMELL": "fail",
+    "E212_DIRECT_ENERGY_WRITE_SMELL": "fail",
     "E214_INLINE_DEGRADATION_SMELL": "fail",
     "E215_ENTROPY_BYPASS_SMELL": "fail",
     "E216_MISSING_TIER_CONTRACT_SMELL": "fail",
