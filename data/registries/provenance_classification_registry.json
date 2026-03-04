@@ -311,6 +311,46 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.chem_process_run_start",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.chem_process_run_tick",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.chem_process_run_end",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.batch_quality",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.relief_event",
         "classification": "canonical",
         "compaction_allowed": false,

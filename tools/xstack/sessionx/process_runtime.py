@@ -26018,6 +26018,7 @@ def execute_intent(
                     ),
                     "artifact_family_id": "RECORD",
                     "extensions": {
+                        "artifact_type_id": "artifact.record.chem_process_run_start",
                         "event_id": str(start_event.get("event_id", "")).strip(),
                         "event_type": "incident.chem_process_run_start",
                         "run_id": run_id,
@@ -26464,6 +26465,7 @@ def execute_intent(
                         ),
                         "artifact_family_id": "RECORD",
                         "extensions": {
+                            "artifact_type_id": "artifact.record.chem_process_run_tick",
                             "event_id": str(row.get("event_id", "")).strip(),
                             "event_type": "incident.chem_process_run_tick",
                             "run_id": str(row.get("run_id", "")).strip(),
@@ -26599,6 +26601,7 @@ def execute_intent(
                     ),
                     "artifact_family_id": "RECORD",
                     "extensions": {
+                        "artifact_type_id": "artifact.record.chem_process_run_end",
                         "event_id": str(end_event.get("event_id", "")).strip(),
                         "event_type": "incident.chem_process_run_end",
                         "run_id": run_id,

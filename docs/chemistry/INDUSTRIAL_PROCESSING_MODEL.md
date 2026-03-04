@@ -70,6 +70,12 @@ Each output batch produced by processing must include traceability metadata:
 
 This enables future QA, recall, and compliance gameplay without reconstructive heuristics.
 
+Provenance classification policy for CHEM-2:
+
+- process-run lifecycle events are canonical (`process_run_start`, `process_run_tick`, `process_run_end`),
+- batch quality is canonical because it affects downstream gameplay acceptance and QA gating,
+- compaction may summarize derived inspection overlays only, never canonical process-run or quality truth rows.
+
 ## 7) Tier Contract
 
 CHEM processing tiers:
