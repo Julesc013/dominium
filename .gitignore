@@ -343,3 +343,6 @@ docs/audit/perf/profile_trace.sample.json
 docs/audit/perf/profile_trace.sample.md
 **/*.trace
 **/*.log
+/run_meta/
+/tmp_intent_marker_files.txt
+/.vscode/settings.json
