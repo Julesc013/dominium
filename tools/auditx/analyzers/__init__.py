@@ -264,6 +264,9 @@ from analyzers import e235_direct_domain_time_write_smell
 from analyzers import e236_implicit_float_usage_smell
 from analyzers import e237_missing_tolerance_smell
 from analyzers import e238_direct_division_without_round_smell
+from analyzers import e239_canonical_artifact_compaction_smell
+from analyzers import e240_unclassified_artifact_smell
+from analyzers import e241_missing_compaction_marker_smell
 
 
 ANALYZERS = (
@@ -531,6 +534,9 @@ ANALYZERS = (
     e236_implicit_float_usage_smell,
     e237_missing_tolerance_smell,
     e238_direct_division_without_round_smell,
+    e239_canonical_artifact_compaction_smell,
+    e240_unclassified_artifact_smell,
+    e241_missing_compaction_marker_smell,
 )
 
 

@@ -408,6 +408,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-WALLCLOCK-TIME",
     "INV-NO-FUTURE-RECEIPTS",
     "INV-DETERMINISTIC-SUBSTEP-POLICY",
+    "INV-CANONICAL-EVENT-NOT-DISCARDED",
+    "INV-DERIVED-ONLY-COMPACTABLE",
+    "INV-COMPACTION-MARKER-REQUIRED",
     "INV-WORKTREE-HYGIENE",
 )
 
@@ -691,6 +694,9 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E236_IMPLICIT_FLOAT_USAGE_SMELL": "INV-NO-IMPLICIT-FLOAT",
     "E237_MISSING_TOLERANCE_SMELL": "INV-QUANTITY-TOLERANCE-DECLARED",
     "E238_DIRECT_DIVISION_WITHOUT_ROUND_SMELL": "INV-DETERMINISTIC-ROUND-ONLY",
+    "E239_CANONICAL_ARTIFACT_COMPACTION_SMELL": "INV-CANONICAL-EVENT-NOT-DISCARDED",
+    "E240_UNCLASSIFIED_ARTIFACT_SMELL": "INV-DERIVED-ONLY-COMPACTABLE",
+    "E241_MISSING_COMPACTION_MARKER_SMELL": "INV-COMPACTION-MARKER-REQUIRED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -2577,6 +2583,178 @@ def _append_derived_provenance_invariant_findings(
                     rule_id="INV-NO-HAND_EDITED-DERIVED",
                 )
             )
+
+
+def _append_provenance_compaction_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    registry_rel = "data/registries/provenance_classification_registry.json"
+    schema_rel = "schemas/control_proof_bundle.schema.json"
+    engine_rel = "src/meta/provenance/compaction_engine.py"
+    tool_rel = "tools/meta/tool_verify_replay_from_anchor.py"
+
+    registry_payload, registry_error = _load_json_object(repo_root, registry_rel)
+    if registry_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet="",
+                message="provenance classification registry must exist and be valid JSON",
+                rule_id="INV-DERIVED-ONLY-COMPACTABLE",
+            )
+        )
+        return
+    record = dict(registry_payload.get("record") or {})
+    rows = list(record.get("provenance_classifications") or registry_payload.get("provenance_classifications") or [])
+    if not rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet="record.provenance_classifications",
+                message="provenance classification registry must declare provenance_classifications rows",
+                rule_id="INV-DERIVED-ONLY-COMPACTABLE",
+            )
+        )
+        return
+
+    by_type: Dict[str, dict] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        artifact_type_id = str(row.get("artifact_type_id", "")).strip()
+        if not artifact_type_id:
+            continue
+        classification = str(row.get("classification", "")).strip().lower()
+        compaction_allowed = bool(row.get("compaction_allowed", False))
+        if classification not in {"canonical", "derived"}:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet=artifact_type_id,
+                    message="classification must be canonical|derived",
+                    rule_id="INV-DERIVED-ONLY-COMPACTABLE",
+                )
+            )
+        if classification == "canonical" and compaction_allowed:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet=artifact_type_id,
+                    message="canonical artifacts must not be compactable",
+                    rule_id="INV-CANONICAL-EVENT-NOT-DISCARDED",
+                )
+            )
+        by_type[artifact_type_id] = dict(row)
+
+    required_canonical_types = (
+        "artifact.energy_ledger_entry",
+        "artifact.boundary_flux_event",
+        "artifact.time_adjust_event",
+        "artifact.exception_event",
+        "artifact.compaction_marker",
+    )
+    for artifact_type_id in required_canonical_types:
+        row = dict(by_type.get(artifact_type_id) or {})
+        if str(row.get("classification", "")).strip().lower() != "canonical":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet=artifact_type_id,
+                    message="required canonical artifact classification is missing",
+                    rule_id="INV-CANONICAL-EVENT-NOT-DISCARDED",
+                )
+            )
+    required_derived_types = (
+        "artifact.explain",
+        "artifact.inspection_snapshot",
+        "artifact.model_evaluation_result",
+    )
+    for artifact_type_id in required_derived_types:
+        row = dict(by_type.get(artifact_type_id) or {})
+        if str(row.get("classification", "")).strip().lower() != "derived" or not bool(row.get("compaction_allowed", False)):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet=artifact_type_id,
+                    message="required derived compactable artifact classification is missing",
+                    rule_id="INV-DERIVED-ONLY-COMPACTABLE",
+                )
+            )
+
+    engine_text = _file_text(repo_root, engine_rel)
+    if "def compact_provenance_window(" not in engine_text or "build_compaction_marker(" not in engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet="compact_provenance_window",
+                message="provenance compaction must execute through canonical compaction engine with marker emission",
+                rule_id="INV-COMPACTION-MARKER-REQUIRED",
+            )
+        )
+
+    if not os.path.isfile(os.path.join(repo_root, tool_rel.replace("/", os.sep))):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=tool_rel,
+                line_number=1,
+                snippet="",
+                message="replay-from-anchor verification tool must be present",
+                rule_id="INV-COMPACTION-MARKER-REQUIRED",
+            )
+        )
+
+    schema_payload, schema_error = _load_json_object(repo_root, schema_rel)
+    if schema_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=schema_rel,
+                line_number=1,
+                snippet="",
+                message="control proof bundle schema must be valid JSON",
+                rule_id="INV-COMPACTION-MARKER-REQUIRED",
+            )
+        )
+    else:
+        required = set(
+            str(item).strip()
+            for item in list(schema_payload.get("required") or [])
+            if str(item).strip()
+        )
+        for field in (
+            "compaction_marker_hash_chain",
+            "compaction_pre_anchor_hash",
+            "compaction_post_anchor_hash",
+        ):
+            if field not in required:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=schema_rel,
+                        line_number=1,
+                        snippet=field,
+                        message="control proof bundle must carry compaction witness field '{}'".format(field),
+                        rule_id="INV-COMPACTION-MARKER-REQUIRED",
+                    )
+                )
 
 
 def _append_auditx_invariant_findings(
@@ -17834,6 +18012,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_derived_provenance_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_provenance_compaction_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
