@@ -1,0 +1,104 @@
+{
+  "schema_id": "dominium.registry.explain_contract_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.explain_contract_registry",
+    "registry_version": "1.0.0",
+    "explain_contracts": [
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.elec.trip",
+        "event_kind_id": "elec.trip",
+        "explain_artifact_type_id": "artifact.explain.elec_trip",
+        "required_inputs": [
+          "artifact.decision",
+          "artifact.record",
+          "section.elec.fault_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.breaker_panel",
+          "hint.reduce.load",
+          "hint.reset.breaker"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.therm.overheat",
+        "event_kind_id": "therm.overheat",
+        "explain_artifact_type_id": "artifact.explain.therm_overheat",
+        "required_inputs": [
+          "artifact.record",
+          "section.thermal.summary",
+          "section.phys.entropy_effects"
+        ],
+        "remediation_hint_keys": [
+          "hint.increase.cooling",
+          "hint.reduce.heat_input",
+          "hint.inspect.thermal_path"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.mob.derailment",
+        "event_kind_id": "mob.derailment",
+        "explain_artifact_type_id": "artifact.explain.mob_derailment",
+        "required_inputs": [
+          "artifact.decision",
+          "artifact.record",
+          "section.mob.network_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.speed",
+          "hint.service.track",
+          "hint.recheck.routing"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.sig.delivery_loss",
+        "event_kind_id": "sig.delivery_loss",
+        "explain_artifact_type_id": "artifact.explain.sig_delivery_loss",
+        "required_inputs": [
+          "artifact.communication",
+          "artifact.record",
+          "section.inbox.acceptance_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.retry.channel",
+          "hint.verify.route_policy",
+          "hint.increase.signal_quality"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.mech.fracture",
+        "event_kind_id": "mech.fracture",
+        "explain_artifact_type_id": "artifact.explain.mech_fracture",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.decision",
+          "section.structural.summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.load",
+          "hint.reinforce.structure",
+          "hint.perform.maintenance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "notes": "Baseline explain contract declarations for existing substrate failures and hazards."
+    }
+  }
+}
+
