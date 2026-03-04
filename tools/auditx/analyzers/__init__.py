@@ -267,6 +267,8 @@ from analyzers import e238_direct_division_without_round_smell
 from analyzers import e239_canonical_artifact_compaction_smell
 from analyzers import e240_unclassified_artifact_smell
 from analyzers import e241_missing_compaction_marker_smell
+from analyzers import e242_inline_fuel_burn_smell
+from analyzers import e243_unregistered_combustion_smell
 
 
 ANALYZERS = (
@@ -537,6 +539,8 @@ ANALYZERS = (
     e239_canonical_artifact_compaction_smell,
     e240_unclassified_artifact_smell,
     e241_missing_compaction_marker_smell,
+    e242_inline_fuel_burn_smell,
+    e243_unregistered_combustion_smell,
 )
 
 

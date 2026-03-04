@@ -119,3 +119,16 @@ Control proof bundles include these chains for tick windows where combustion row
 Replay verification tool:
 
 - `tools/chem/tool_replay_combustion_window` (plus `.py`/`.cmd`)
+
+## 11) Enforcement Hooks
+
+RepoX strict blockers:
+
+- `INV-COMBUSTION-THROUGH-REACTION-ENGINE`
+- `INV-ENERGY-TRANSFORM-REGISTERED`
+- `INV-NO-DIRECT-FUEL-DECREMENT`
+
+AuditX strict analyzers:
+
+- `E242_INLINE_FUEL_BURN_SMELL`
+- `E243_UNREGISTERED_COMBUSTION_SMELL`

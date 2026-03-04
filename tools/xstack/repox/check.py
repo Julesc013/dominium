@@ -384,6 +384,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-MOMENTUM-STATE-DECLARED",
     "INV-ENERGY-TRANSFORM-REGISTERED",
     "INV-NO-DIRECT-ENERGY-MUTATION",
+    "INV-COMBUSTION-THROUGH-REACTION-ENGINE",
+    "INV-NO-DIRECT-FUEL-DECREMENT",
     "INV-QUANTITY-TOLERANCE-DECLARED",
     "INV-DETERMINISTIC-ROUND-ONLY",
     "INV-NO-IMPLICIT-FLOAT",
@@ -16767,6 +16769,163 @@ def _append_energy_ledger_invariant_findings(
             break
 
 
+def _append_chem_combustion_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    engine_rule_id = "INV-COMBUSTION-THROUGH-REACTION-ENGINE"
+    fuel_rule_id = "INV-NO-DIRECT-FUEL-DECREMENT"
+    reaction_registry_rel = "data/registries/reaction_profile_registry.json"
+    energy_registry_rel = "data/registries/energy_transformation_registry.json"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+
+    reaction_payload, reaction_error = _load_json_object(repo_root, reaction_registry_rel)
+    reaction_rows = list((dict(reaction_payload.get("record") or {})).get("reaction_profiles") or [])
+    reaction_ids = set(
+        str(row.get("reaction_id", "")).strip()
+        for row in reaction_rows
+        if isinstance(row, dict) and str(row.get("reaction_id", "")).strip()
+    )
+    if reaction_error or not reaction_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=reaction_registry_rel,
+                line_number=1,
+                snippet="record.reaction_profiles",
+                message="reaction profile registry must exist and declare combustion reaction rows",
+                rule_id=engine_rule_id,
+            )
+        )
+    else:
+        required_reactions = (
+            "reaction.combustion_fuel_basic",
+            "reaction.combustion_rich_mixture_stub",
+            "reaction.explosive_stub",
+        )
+        for reaction_id in required_reactions:
+            if reaction_id in reaction_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=reaction_registry_rel,
+                    line_number=1,
+                    snippet=reaction_id,
+                    message="required combustion reaction profile id is missing",
+                    rule_id=engine_rule_id,
+                )
+            )
+
+    energy_payload, energy_error = _load_json_object(repo_root, energy_registry_rel)
+    transform_rows = list((dict(energy_payload.get("record") or {})).get("energy_transformations") or [])
+    transform_ids = set(
+        str(row.get("transformation_id", "")).strip()
+        for row in transform_rows
+        if isinstance(row, dict) and str(row.get("transformation_id", "")).strip()
+    )
+    if energy_error or not transform_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=energy_registry_rel,
+                line_number=1,
+                snippet="record.energy_transformations",
+                message="energy transformation registry must exist for combustion transform checks",
+                rule_id=engine_rule_id,
+            )
+        )
+    else:
+        for transform_id in ("transform.chemical_to_thermal", "transform.chemical_to_electrical"):
+            if transform_id in transform_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=energy_registry_rel,
+                    line_number=1,
+                    snippet=transform_id,
+                    message="combustion pathway requires registered chemical transformation id",
+                    rule_id=engine_rule_id,
+                )
+            )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    required_runtime_tokens = (
+        'elif process_id == "process.fire_tick":',
+        "_load_reaction_profile_registry(",
+        "_select_combustion_reaction_id(",
+        "_record_energy_transformation_in_state(",
+        "transform.chemical_to_thermal",
+        "combustion_event_rows",
+        "combustion_emission_rows",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="combustion runtime path is missing a required reaction/ledger integration token",
+                rule_id=engine_rule_id,
+            )
+        )
+
+    direct_fuel_patterns = (
+        re.compile(r"\bfuel_(?:remaining|mass|level|amount)\b\s*-\s*=", re.IGNORECASE),
+        re.compile(
+            r"\bfuel_(?:remaining|mass|level|amount)\b\s*=\s*[^#\n]*(?:fuel_(?:remaining|mass|level|amount)|fuel_before)\s*-\s*",
+            re.IGNORECASE,
+        ),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_fuel_files = {
+        runtime_rel,
+        "src/thermal/network/thermal_network_engine.py",
+        "src/models/model_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_fuel_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in direct_fuel_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct fuel decrement detected outside canonical combustion/model handlers",
+                    rule_id=fuel_rule_id,
+                )
+            )
+            break
+
+
 def _append_entropy_policy_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -17952,6 +18111,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_energy_ledger_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_chem_combustion_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
