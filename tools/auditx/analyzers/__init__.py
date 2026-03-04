@@ -261,6 +261,9 @@ from analyzers import e232_direct_time_write_smell
 from analyzers import e233_implicit_civil_time_smell
 from analyzers import e234_implicit_clock_sync_smell
 from analyzers import e235_direct_domain_time_write_smell
+from analyzers import e236_implicit_float_usage_smell
+from analyzers import e237_missing_tolerance_smell
+from analyzers import e238_direct_division_without_round_smell
 
 
 ANALYZERS = (
@@ -525,6 +528,9 @@ ANALYZERS = (
     e233_implicit_civil_time_smell,
     e234_implicit_clock_sync_smell,
     e235_direct_domain_time_write_smell,
+    e236_implicit_float_usage_smell,
+    e237_missing_tolerance_smell,
+    e238_direct_division_without_round_smell,
 )
 
 

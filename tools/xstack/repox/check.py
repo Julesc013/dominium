@@ -384,6 +384,10 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-MOMENTUM-STATE-DECLARED",
     "INV-ENERGY-TRANSFORM-REGISTERED",
     "INV-NO-DIRECT-ENERGY-MUTATION",
+    "INV-QUANTITY-TOLERANCE-DECLARED",
+    "INV-DETERMINISTIC-ROUND-ONLY",
+    "INV-NO-IMPLICIT-FLOAT",
+    "INV-NO-IMPLICIT-OVERFLOW",
     "INV-ENTROPY-UPDATE-THROUGH-ENGINE",
     "INV-NO-SILENT-EFFICIENCY-DROP",
     "INV-FLUID-USES-BUNDLE",
@@ -684,6 +688,9 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E233_IMPLICIT_CIVIL_TIME_SMELL": "INV-TIME-MAPPING-MODEL-ONLY",
     "E234_IMPLICIT_CLOCK_SYNC_SMELL": "INV-TIME-ADJUST-LOGGED",
     "E235_DIRECT_DOMAIN_TIME_WRITE_SMELL": "INV-NO-CANONICAL-TICK-DRIFT",
+    "E236_IMPLICIT_FLOAT_USAGE_SMELL": "INV-NO-IMPLICIT-FLOAT",
+    "E237_MISSING_TOLERANCE_SMELL": "INV-QUANTITY-TOLERANCE-DECLARED",
+    "E238_DIRECT_DIVISION_WITHOUT_ROUND_SMELL": "INV-DETERMINISTIC-ROUND-ONLY",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -16792,6 +16799,176 @@ def _append_entropy_policy_invariant_findings(
         )
 
 
+def _append_numeric_tolerance_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    tolerance_rule_id = "INV-QUANTITY-TOLERANCE-DECLARED"
+    rounding_rule_id = "INV-DETERMINISTIC-ROUND-ONLY"
+    float_rule_id = "INV-NO-IMPLICIT-FLOAT"
+    overflow_rule_id = "INV-NO-IMPLICIT-OVERFLOW"
+
+    quantity_registry_rel = "data/registries/quantity_registry.json"
+    tolerance_registry_rel = "data/registries/quantity_tolerance_registry.json"
+    numeric_helper_rel = "src/meta/numeric.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+
+    quantity_payload, quantity_error = _load_json_object(repo_root, quantity_registry_rel)
+    tolerance_payload, tolerance_error = _load_json_object(repo_root, tolerance_registry_rel)
+    quantity_rows = list((dict(quantity_payload.get("record") or {})).get("quantities") or [])
+    tolerance_rows = list((dict(tolerance_payload.get("record") or {})).get("quantity_tolerances") or [])
+    if not tolerance_rows:
+        tolerance_rows = list(tolerance_payload.get("quantity_tolerances") or [])
+
+    quantity_ids = sorted(
+        str(row.get("quantity_id", "")).strip()
+        for row in quantity_rows
+        if isinstance(row, dict) and str(row.get("quantity_id", "")).strip()
+    )
+    tolerance_ids = sorted(
+        str(row.get("quantity_id", "")).strip()
+        for row in tolerance_rows
+        if isinstance(row, dict) and str(row.get("quantity_id", "")).strip()
+    )
+    tolerance_id_set = set(tolerance_ids)
+
+    if quantity_error or not quantity_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=quantity_registry_rel,
+                line_number=1,
+                snippet="record.quantities",
+                message="quantity registry is missing or empty; cannot enforce quantity tolerance declarations",
+                rule_id=tolerance_rule_id,
+            )
+        )
+    if tolerance_error or not tolerance_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=tolerance_registry_rel,
+                line_number=1,
+                snippet="record.quantity_tolerances",
+                message="quantity tolerance registry is missing or empty",
+                rule_id=tolerance_rule_id,
+            )
+        )
+    if quantity_ids and tolerance_ids:
+        missing_tolerance_ids = sorted(quantity_id for quantity_id in quantity_ids if quantity_id not in tolerance_id_set)
+        if missing_tolerance_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=tolerance_registry_rel,
+                    line_number=1,
+                    snippet=",".join(missing_tolerance_ids[:8]),
+                    message="quantity tolerance declarations are missing for registered quantities (count={})".format(
+                        len(missing_tolerance_ids)
+                    ),
+                    rule_id=tolerance_rule_id,
+                )
+            )
+
+    helper_text = _file_text(repo_root, numeric_helper_rel)
+    for token in ("deterministic_divide(", "deterministic_mul_div(", "deterministic_round("):
+        if token in helper_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=numeric_helper_rel,
+                line_number=1,
+                snippet=token,
+                message="deterministic rounding helper token is missing",
+                rule_id=rounding_rule_id,
+            )
+        )
+    for token in ("apply_overflow_policy(", "normalize_overflow_policy(", "VALID_OVERFLOW_POLICIES"):
+        if token in helper_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=numeric_helper_rel,
+                line_number=1,
+                snippet=token,
+                message="overflow policy helper token is missing",
+                rule_id=overflow_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in ("_apply_quantity_overflow_policy(", "overflow_policy_for_quantity("):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="authoritative runtime must route quantity overflow through policy helper",
+                rule_id=overflow_rule_id,
+            )
+        )
+
+    critical_numeric_files = (
+        "src/time/time_mapping_engine.py",
+        "src/physics/momentum_engine.py",
+        "src/mobility/micro/free_motion_solver.py",
+    )
+    arithmetic_division_pattern = re.compile(r"\b[A-Za-z0-9_)\]]+\s+/\s+[A-Za-z0-9_(\[]+")
+    for rel_path in critical_numeric_files:
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if "deterministic_divide(" in snippet or "deterministic_mul_div(" in snippet:
+                continue
+            if not arithmetic_division_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct arithmetic division detected in deterministic numeric path; route through deterministic helpers",
+                    rule_id=rounding_rule_id,
+                )
+            )
+            break
+
+    float_constructor_pattern = re.compile(r"\bfloat\s*\(", re.IGNORECASE)
+    for rel_path in (
+        "src/time/time_mapping_engine.py",
+        "src/physics/momentum_engine.py",
+        "src/physics/energy/energy_ledger_engine.py",
+        "src/mobility/micro/free_motion_solver.py",
+        "src/meta/numeric.py",
+    ):
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not float_constructor_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="implicit float conversion detected in deterministic numeric substrate path",
+                    rule_id=float_rule_id,
+                )
+            )
+            break
+
+
 def _append_constitutive_model_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -17607,6 +17784,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_unregistered_quantity_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_numeric_tolerance_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
