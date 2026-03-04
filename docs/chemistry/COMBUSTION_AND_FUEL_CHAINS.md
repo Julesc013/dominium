@@ -106,3 +106,16 @@ Forbidden:
 - mandatory POLL simulation
 - full generator simulation redesign
 - solver-level thermodynamic expansion
+
+## 10) Proof and Replay Hooks
+
+Combustion truth surfaces must expose deterministic chains:
+
+- `combustion_hash_chain`
+- `emission_hash_chain`
+- `impulse_hash_chain` (when explosive profiles emit impulse hooks)
+
+Control proof bundles include these chains for tick windows where combustion rows are present.
+Replay verification tool:
+
+- `tools/chem/tool_replay_combustion_window` (plus `.py`/`.cmd`)

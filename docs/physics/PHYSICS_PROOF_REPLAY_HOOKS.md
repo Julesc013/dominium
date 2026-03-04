@@ -83,6 +83,19 @@ Verification helper:
 
 - `tools/physics/tool_replay_momentum_window`
 
+For CHEM-1 combustion windows, reenactment windows must also reproduce:
+
+- identical ordered `combustion_event_rows`
+- identical ordered `combustion_emission_rows`
+- identical ordered `combustion_impulse_rows`
+- identical `combustion_hash_chain`
+- identical `emission_hash_chain`
+- identical `impulse_hash_chain`
+
+Verification helper:
+
+- `tools/chem/tool_replay_combustion_window`
+
 ## 4) Non-Goals (PHYS-0)
 
 - no runtime proof-bundle schema field expansion in this phase

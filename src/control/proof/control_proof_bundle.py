@@ -440,6 +440,27 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    combustion_hash_chain = _mobility_surface_hash(
+        key="combustion_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    emission_hash_chain = _mobility_surface_hash(
+        key="emission_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    impulse_hash_chain = _mobility_surface_hash(
+        key="impulse_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     quantity_tolerance_registry_hash = _mobility_surface_hash(
         key="quantity_tolerance_registry_hash",
         surface=mobility_proof_surface,
@@ -603,6 +624,9 @@ def build_control_proof_bundle_from_markers(
         "impulse_event_hash_chain": str(impulse_event_hash_chain),
         "energy_ledger_hash_chain": str(energy_ledger_hash_chain),
         "boundary_flux_hash_chain": str(boundary_flux_hash_chain),
+        "combustion_hash_chain": str(combustion_hash_chain),
+        "emission_hash_chain": str(emission_hash_chain),
+        "impulse_hash_chain": str(impulse_hash_chain),
         "quantity_tolerance_registry_hash": str(quantity_tolerance_registry_hash),
         "rounding_mode_policy_hash": str(rounding_mode_policy_hash),
         "entropy_hash_chain": str(entropy_hash_chain),
@@ -676,6 +700,9 @@ def build_control_proof_bundle_from_markers(
                     "impulse_event_hash_chain": str(payload.get("impulse_event_hash_chain", "")),
                     "energy_ledger_hash_chain": str(payload.get("energy_ledger_hash_chain", "")),
                     "boundary_flux_hash_chain": str(payload.get("boundary_flux_hash_chain", "")),
+                    "combustion_hash_chain": str(payload.get("combustion_hash_chain", "")),
+                    "emission_hash_chain": str(payload.get("emission_hash_chain", "")),
+                    "impulse_hash_chain": str(payload.get("impulse_hash_chain", "")),
                     "quantity_tolerance_registry_hash": str(payload.get("quantity_tolerance_registry_hash", "")),
                     "rounding_mode_policy_hash": str(payload.get("rounding_mode_policy_hash", "")),
                     "entropy_hash_chain": str(payload.get("entropy_hash_chain", "")),
