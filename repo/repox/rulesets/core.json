@@ -767,6 +767,41 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-CHEM-BUDGETED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/chem",
+        "tools/chem",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-chem-budgeted",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CHEM-DEGRADE-LOGGED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/chem",
+        "tools/chem",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-chem-degrade-logged",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-ALL-REACTIONS-LEDGERED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/chem",
+        "tools/chem",
+        "tools/xstack/sessionx/process_runtime.py",
+        "data/regression/chem_full_baseline.json",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-all-reactions-ledgered",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-FIELD-TYPE-REGISTERED",
       "severity": "FAIL",
       "scope_paths": [

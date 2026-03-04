@@ -271,6 +271,8 @@ from analyzers import e242_inline_fuel_burn_smell
 from analyzers import e243_unregistered_combustion_smell
 from analyzers import e244_inline_yield_logic_smell
 from analyzers import e245_recipe_bypass_smell
+from analyzers import e248_silent_reaction_smell
+from analyzers import e249_unbudgeted_reaction_loop_smell
 
 
 ANALYZERS = (
@@ -545,6 +547,8 @@ ANALYZERS = (
     e243_unregistered_combustion_smell,
     e244_inline_yield_logic_smell,
     e245_recipe_bypass_smell,
+    e248_silent_reaction_smell,
+    e249_unbudgeted_reaction_loop_smell,
 )
 
 

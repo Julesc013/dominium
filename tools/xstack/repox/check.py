@@ -392,6 +392,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-DEGRADATION-MODEL-ONLY",
     "INV-NO-ADHOC-PIPE-RESTRICTION",
     "INV-COUPLING-CONTRACT-DECLARED",
+    "INV-CHEM-BUDGETED",
+    "INV-CHEM-DEGRADE-LOGGED",
+    "INV-ALL-REACTIONS-LEDGERED",
     "INV-QUANTITY-TOLERANCE-DECLARED",
     "INV-DETERMINISTIC-ROUND-ONLY",
     "INV-NO-IMPLICIT-FLOAT",
@@ -17435,6 +17438,197 @@ def _append_chem_degradation_invariant_findings(
             )
 
 
+def _append_chem_envelope_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    budget_rule_id = "INV-CHEM-BUDGETED"
+    degrade_rule_id = "INV-CHEM-DEGRADE-LOGGED"
+    ledger_rule_id = "INV-ALL-REACTIONS-LEDGERED"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    scenario_tool_rel = "tools/chem/tool_generate_chem_stress.py"
+    stress_tool_rel = "tools/chem/tool_run_chem_stress.py"
+    replay_tool_rel = "tools/chem/tool_replay_chem_window.py"
+    verify_mass_rel = "tools/chem/tool_verify_mass_conservation.py"
+    verify_energy_rel = "tools/chem/tool_verify_energy_conservation.py"
+    verify_entropy_rel = "tools/chem/tool_verify_entropy_monotonicity.py"
+    regression_rel = "data/regression/chem_full_baseline.json"
+
+    for rel_path in (
+        scenario_tool_rel,
+        stress_tool_rel,
+        replay_tool_rel,
+        verify_mass_rel,
+        verify_energy_rel,
+        verify_entropy_rel,
+    ):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="CHEM-4 envelope requires deterministic scenario/run/replay and conservation verification tools",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    stress_text = _file_text(repo_root, stress_tool_rel)
+    replay_text = _file_text(repo_root, replay_tool_rel)
+    runtime_text = _file_text(repo_root, runtime_rel)
+
+    for token in (
+        "run_chem_stress_scenario(",
+        "max_reaction_evaluations_per_tick",
+        "max_cost_units_per_tick",
+        "max_model_cost_units_per_tick",
+        "max_emission_events_per_tick",
+        "bounded_evaluation",
+    ):
+        if token in stress_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="CHEM stress harness must expose deterministic reaction/cost/model/emission budget controls",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    for token in (
+        "degrade.chem.tick_bucket",
+        "degrade.chem.reaction_to_c0",
+        "degrade.chem.defer_noncritical_yield",
+        "degrade.chem.eval_cap",
+        "degradation_event_rows",
+        "decision_log_rows",
+    ):
+        if token in stress_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="CHEM deterministic degradation pathway must be explicit and logged",
+                rule_id=degrade_rule_id,
+            )
+        )
+
+    if "degradation_order_deterministic" not in stress_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet="degradation_order_deterministic",
+                message="CHEM stress harness must assert deterministic degradation ordering",
+                rule_id=degrade_rule_id,
+            )
+        )
+
+    for token in (
+        "_record_energy_transformation_in_state(",
+        "event.chem.process_run.tick.",
+        "chem_process_run_events",
+        "chem_process_emission_rows",
+        "energy_ledger_hash_chain",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="CHEM runtime must log reaction ticks/emissions and route energy changes through ledger helpers",
+                rule_id=ledger_rule_id,
+            )
+        )
+
+    for token in (
+        "reaction_hash_chain",
+        "energy_ledger_hash_chain",
+        "emission_hash_chain",
+        "degradation_hash_chain",
+        "proof_hash_summary",
+    ):
+        if (token in stress_text) or (token in replay_text):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="CHEM proof/replay envelope must include reaction/ledger/emission/degradation hash chains",
+                rule_id=ledger_rule_id,
+            )
+        )
+
+    regression_payload, regression_err = _load_json_object(repo_root, regression_rel)
+    if regression_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=regression_rel,
+                message="CHEM regression lock is required for stress/proof envelope updates",
+                rule_id=ledger_rule_id,
+            )
+        )
+        return
+
+    required_fields = (
+        "baseline_id",
+        "schema_version",
+        "description",
+        "fixed_seed_scenario",
+        "pattern_hashes",
+        "proof_hashes",
+        "update_policy",
+        "deterministic_fingerprint",
+    )
+    for token in required_fields:
+        if token in regression_payload:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=token,
+                message="CHEM regression lock missing required baseline field",
+                rule_id=ledger_rule_id,
+            )
+        )
+
+    update_policy = dict(regression_payload.get("update_policy") or {})
+    if str(update_policy.get("required_commit_tag", "")).strip() != "CHEM-REGRESSION-UPDATE":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="required_commit_tag",
+                message="CHEM regression lock updates must require CHEM-REGRESSION-UPDATE tag",
+                rule_id=ledger_rule_id,
+            )
+        )
+
+
 def _append_entropy_policy_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -18635,6 +18829,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_chem_degradation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_chem_envelope_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

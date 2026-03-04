@@ -177,6 +177,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-FLUID-BUDGETED`
 - `INV-FLUID-DEGRADE-LOGGED`
 - `INV-ALL-FAILURES-LOGGED`
+- `INV-CHEM-BUDGETED`
+- `INV-CHEM-DEGRADE-LOGGED`
+- `INV-ALL-REACTIONS-LEDGERED`
 
 ## Key Rule Notes
 
@@ -571,3 +574,21 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - STRICT/FULL fail when FLUID containment failures are not represented through explicit relief/leak/burst artifacts and safety pattern events.
 - Requires proof/replay hash-chain surfaces for `fluid_flow`, `relief`, `leak`, and `burst`.
 - Requires a committed FLUID regression lock (`data/regression/fluid_full_baseline.json`) gated by `FLUID-REGRESSION-UPDATE`.
+
+### INV-CHEM-BUDGETED
+
+- STRICT/FULL fail when CHEM stress/solve surfaces do not expose deterministic per-tick budget controls.
+- Requires explicit caps for reaction evaluations, total cost, model cost, and emission-event production.
+- Prevents unbounded CHEM reaction graph evaluation under large-factory MMO-scale load.
+
+### INV-CHEM-DEGRADE-LOGGED
+
+- STRICT/FULL fail when CHEM degradation pathways omit deterministic degrade reason codes or decision-log artifacts.
+- Required degradation chain is tick-bucket -> reaction downgrade to C0 -> deferred non-critical yield detail -> evaluation cap.
+- Ensures budget-pressure behavior is auditable, replay-stable, and deterministic.
+
+### INV-ALL-REACTIONS-LEDGERED
+
+- STRICT/FULL fail when CHEM reaction mutations are not paired with explicit energy-ledger artifacts and proof hash-chain surfaces.
+- Requires canonical reaction/emission/degradation proof chains and replay-window verification coverage.
+- Requires a committed CHEM regression lock (`data/regression/chem_full_baseline.json`) gated by `CHEM-REGRESSION-UPDATE`.
