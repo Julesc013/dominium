@@ -505,6 +505,19 @@
         "meso",
         "micro"
       ]
+    },
+    {
+      "series_id": "TOL",
+      "affordance_ids": [
+        "measurement_verification",
+        "time_synchronization",
+        "matter_transformation"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
     }
   ]
 }
