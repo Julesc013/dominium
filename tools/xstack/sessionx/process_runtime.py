@@ -25281,6 +25281,20 @@ def execute_intent(
                 [dict(row) for row in species_pool_by_key.values() if isinstance(row, Mapping)],
                 key=lambda row: (str(row.get("target_id", "")), str(row.get("material_id", ""))),
             )
+            state["pollutant_species_pool_rows"] = sorted(
+                [
+                    dict(row)
+                    for row in list(state.get("chem_species_pool_rows") or [])
+                    if isinstance(row, Mapping)
+                    and str(row.get("material_id", "")).strip().startswith("material.pollutant_")
+                ],
+                key=lambda row: (str(row.get("target_id", "")), str(row.get("material_id", ""))),
+            )
+            state["chem_emission_pool_rows"] = [
+                dict(row)
+                for row in list(state.get("combustion_emission_rows") or [])
+                if isinstance(row, Mapping)
+            ]
             _ensure_thermal_fire_states(state)
             _ensure_thermal_fire_events(state)
             _ensure_combustion_event_rows(state)

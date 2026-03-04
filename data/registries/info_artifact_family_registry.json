@@ -134,6 +134,16 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.combustion",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.combustion_emission",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.transform",
         "info_family_id": "RECORD"
       },
