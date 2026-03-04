@@ -158,7 +158,15 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-LOSS-MAPPED-TO-HEAT`
 - `INV-ACTION-MUST-HAVE-FAMILY`
 - `INV-INFO-ARTIFACT-MUST-HAVE-FAMILY`
+- `INV-TIER-CONTRACT-REQUIRED`
+- `INV-COUPLING-CONTRACT-REQUIRED`
+- `INV-EXPLAIN-CONTRACT-REQUIRED`
+- `INV-NO-UNDECLARED-COUPLING`
 - `INV-LOSS-MUST-DECLARE-TARGET`
+- `INV-ENERGY-TRANSFORM-REGISTERED`
+- `INV-NO-DIRECT-ENERGY-MUTATION`
+- `INV-ENTROPY-UPDATE-THROUGH-ENGINE`
+- `INV-NO-SILENT-EFFICIENCY-DROP`
 - `INV-NO-ADHOC-SAFETY-LOGIC`
 
 ## Key Rule Notes
@@ -443,10 +451,58 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - STRICT/FULL fail when action-template produced artifacts are not mapped to canonical META-INFO families.
 - Mapping source: `data/registries/info_artifact_family_registry.json`.
 
+### INV-TIER-CONTRACT-REQUIRED
+
+- STRICT/FULL fail when mandatory tier contracts are missing for baseline governed domains.
+- Registry source: `data/registries/tier_contract_registry.json`.
+- Enforces explicit tier support, deterministic downgrade order, and shard-safety declarations.
+
+### INV-COUPLING-CONTRACT-REQUIRED
+
+- STRICT/FULL fail when required baseline cross-domain coupling declarations are missing.
+- Registry source: `data/registries/coupling_contract_registry.json`.
+- Couplings must declare class, from/to domains, and mechanism type/ID.
+
+### INV-EXPLAIN-CONTRACT-REQUIRED
+
+- STRICT/FULL fail when hazard/failure explainability declarations are missing.
+- Registry source: `data/registries/explain_contract_registry.json`.
+- Explain contracts must declare event-kind mapping, artifact type, and required causal inputs.
+
+### INV-NO-UNDECLARED-COUPLING
+
+- STRICT/FULL fail when baseline coupling mechanisms are used without declared coupling contracts.
+- STRICT/FULL fail when direct cross-domain coupling writes are detected outside model/process pathways.
+- Prevents hidden coupling drift and keeps topology + proof impacts auditable.
+
 ### INV-LOSS-MUST-DECLARE-TARGET
 
 - STRICT/FULL fail when loss pathways are not explicitly mapped to heat-loss quantity or temperature-effect targets.
 - Prevents silent energy disappearance in cross-domain loss accounting.
+
+### INV-ENERGY-TRANSFORM-REGISTERED
+
+- STRICT/FULL fail when authoritative energy conversions do not reference `data/registries/energy_transformation_registry.json`.
+- Requires PHYS-3 runtime pathways to route conversion writes through deterministic ledger transformation helpers.
+- Missing required baseline transforms (`kinetic_to_thermal`, `electrical_to_thermal`, `chemical_to_thermal`, `potential_to_kinetic`, `external_irradiance`) is blocking.
+
+### INV-NO-DIRECT-ENERGY-MUTATION
+
+- STRICT/FULL fail when domain/runtime sources directly mutate `quantity.energy_*` channels outside energy-ledger helpers.
+- Enforces process-only mutation for canonical energy totals and prevents silent energy creation/destruction.
+- Allowed mutation surfaces are limited to PHYS-3 ledger engine/runtime orchestration codepaths.
+
+### INV-ENTROPY-UPDATE-THROUGH-ENGINE
+
+- STRICT/FULL fail when entropy state/event mutation bypasses PHYS-4 entropy runtime helper pathways.
+- Requires entropy updates to route through deterministic engine functions (`record_entropy_contribution`, `apply_entropy_reset`) and associated artifact/hash-chain updates.
+- Prevents ad hoc direct writes to `entropy_state_rows` and entropy event streams.
+
+### INV-NO-SILENT-EFFICIENCY-DROP
+
+- STRICT/FULL fail when machine/efficiency degradation is introduced without entropy-policy or model-mediated linkage.
+- Maintenance degradation pathways must derive from entropy effect evaluation or explicit model outputs, not inline hidden multipliers.
+- Enforces auditable degradation provenance for PHYS-4 irreversibility hooks.
 
 ### INV-NO-ADHOC-SAFETY-LOGIC
 

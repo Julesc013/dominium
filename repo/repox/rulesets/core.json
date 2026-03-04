@@ -389,6 +389,97 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-DIRECT-VELOCITY-MUTATION",
+      "severity": "FAIL",
+      "scope_paths": ["src/mobility", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-direct-velocity-mutation",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FORCE-THROUGH-PROCESS",
+      "severity": "FAIL",
+      "scope_paths": ["tools/xstack/sessionx/process_runtime.py", "src/models/model_engine.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-force-through-process",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-MOMENTUM-STATE-DECLARED",
+      "severity": "FAIL",
+      "scope_paths": ["schema/physics", "schemas/momentum_state.schema.json", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-momentum-state-declared",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-ENERGY-TRANSFORM-REGISTERED",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/energy_transformation_registry.json", "src/physics/energy", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-energy-transform-registered",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-DIRECT-ENERGY-MUTATION",
+      "severity": "FAIL",
+      "scope_paths": ["src/electric", "src/thermal", "src/mobility", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-direct-energy-mutation",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-ENTROPY-UPDATE-THROUGH-ENGINE",
+      "severity": "FAIL",
+      "scope_paths": ["src/physics/entropy", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-entropy-update-through-engine",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-SILENT-EFFICIENCY-DROP",
+      "severity": "FAIL",
+      "scope_paths": ["tools/xstack/sessionx/process_runtime.py", "src/models", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-silent-efficiency-drop",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FIELD-TYPE-REGISTERED",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/field_type_registry.json", "src/fields", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-field-type-registered",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FIELD-MUTATION-THROUGH-PROCESS",
+      "severity": "FAIL",
+      "scope_paths": ["src/fields", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-field-mutation-through-process",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TIER-CONTRACT-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/tier_contract_registry.json", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tier-contract-required",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-COUPLING-CONTRACT-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/coupling_contract_registry.json", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-coupling-contract-required",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-EXPLAIN-CONTRACT-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/explain_contract_registry.json", "src/meta/explain", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-explain-contract-required",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-UNDECLARED-COUPLING",
+      "severity": "FAIL",
+      "scope_paths": ["data/registries/coupling_contract_registry.json", "src/electric", "src/thermal", "src/signals", "src/models", "tools/xstack/repox/check.py"],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-undeclared-coupling",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-ADHOC-SAFETY-LOGIC",
       "severity": "FAIL",
       "scope_paths": ["src/safety", "data/registries/safety_pattern_registry.json", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
