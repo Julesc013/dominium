@@ -53,7 +53,14 @@ def _run_once() -> dict:
     out = process_signal_aggregation_tick(
         current_tick=100,
         aggregation_policy_registry=policy_registry,
-        schedule_rows=[{"schedule_id": "schedule.signal.agg.daily_summary", "next_due_tick": 100, "interval_ticks": 1440}],
+        schedule_rows=[
+            {
+                "schedule_id": "schedule.signal.agg.daily_summary",
+                "temporal_domain_id": "time.canonical_tick",
+                "next_due_tick": 100,
+                "interval_ticks": 1440,
+            }
+        ],
         info_artifact_rows=info_artifacts,
         signal_channel_rows=channel_rows,
         signal_message_envelope_rows=[],

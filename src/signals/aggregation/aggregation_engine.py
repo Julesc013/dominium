@@ -26,6 +26,11 @@ def _sorted_tokens(values: object) -> List[str]:
     return sorted(set(str(item).strip() for item in values if str(item).strip()))
 
 
+def _normalize_temporal_domain_id(value: object) -> str:
+    token = str(value or "").strip()
+    return token or "time.canonical_tick"
+
+
 def _with_fingerprint(row: Mapping[str, object]) -> dict:
     payload = dict(row or {})
     payload["deterministic_fingerprint"] = ""
@@ -68,6 +73,7 @@ def normalize_schedule_rows(rows: object) -> List[dict]:
             continue
         out[schedule_id] = {
             "schedule_id": schedule_id,
+            "temporal_domain_id": _normalize_temporal_domain_id(row.get("temporal_domain_id")),
             "next_due_tick": int(max(0, _as_int(row.get("next_due_tick", 0), 0))),
             "interval_ticks": int(max(1, _as_int(row.get("interval_ticks", 1), 1))),
             "extensions": _as_map(row.get("extensions")),

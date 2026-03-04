@@ -166,6 +166,7 @@ def _schedule_rows_by_id(rows: object) -> Dict[str, dict]:
             continue
         out[schedule_id] = {
             "schedule_id": schedule_id,
+            "temporal_domain_id": str(row.get("temporal_domain_id", "")).strip() or "time.canonical_tick",
             "next_due_tick": int(max(0, _as_int(row.get("next_due_tick", 0), 0))),
             "interval_ticks": int(max(1, _as_int(row.get("interval_ticks", 1), 1))),
             "extensions": _as_map(row.get("extensions")),
@@ -236,7 +237,14 @@ def _run_scenario(
             }
         ]
     }
-    aggregation_schedule_rows = [{"schedule_id": "schedule.sig7.agg", "next_due_tick": 0, "interval_ticks": 6}]
+    aggregation_schedule_rows = [
+        {
+            "schedule_id": "schedule.sig7.agg",
+            "temporal_domain_id": "time.canonical_tick",
+            "next_due_tick": 0,
+            "interval_ticks": 6,
+        }
+    ]
 
     for tick in range(0, int(tick_horizon)):
         for rot in rotation_rows:

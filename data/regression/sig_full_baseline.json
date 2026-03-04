@@ -1,0 +1,52 @@
+{
+  "baseline_id": "sig.full.baseline.v1",
+  "composite_sig_hash_anchor": "b1b35443c7b7c19d28c4844ff63729cd58d136b5ea0e6082da9464e55660f7ca",
+  "description": "SIG-7 deterministic final hardening baseline for stress/proof/replay envelope.",
+  "extensions": {
+    "assertions": {
+      "budget_applied": true,
+      "deterministic_ordering": true,
+      "no_silent_drop": false,
+      "trust_updates_logged": true
+    },
+    "tooling": {
+      "generator_tool": "tools/signals/tool_generate_sig_stress_scenario.py",
+      "replay_tool": "tools/signals/tool_replay_sig_window.py",
+      "stress_tool": "tools/signals/tool_run_sig_stress.py"
+    }
+  },
+  "fixed_seed_scenario": {
+    "budget_envelope_id": "sig.envelope.rank_strict",
+    "replay_report_path": "build/signals/sig_replay_window.baseline.json",
+    "scenario_id": "scenario.sig.stress.c54e0945b1c4",
+    "scenario_path": "build/signals/sig_stress_scenario.baseline.json",
+    "scenario_seed": 7007,
+    "stress_report_path": "build/signals/sig_stress_report.baseline.json",
+    "tick_count": 64
+  },
+  "pattern_hashes": {
+    "aggregation_output_pattern_hash": "027b56c6d45154974960da3570915847e53364080674171e7d4b85dce40c0b0b",
+    "queue_depth_pattern_hash": "5bc9a26df8885c92ff58b604ec544441b16f580daea0e8ddc4659701c1b00488",
+    "throughput_pattern_hash": "f35fa8c6617041687c96436abfdaaf30dec42f1b23fab31455f5f2215b6325ee",
+    "trust_update_pattern_hash": "d45daa391bbe396564c3e1ea0d1078e2b4c1c7f4c09f3c9abb968757e2aef673"
+  },
+  "proof_hashes": {
+    "jamming_event_hash_chain": "a440b7c0f3023266cb94811ef3ef9d6585a3868f828ec8b7539cee18c8c9f628",
+    "message_delivery_event_hash_chain": "63b8b9cd62622334d9d44930211aaa6d1006cde3038a643630ac7a712032f54b",
+    "proof_bundle_hash": "ca5dcce081a5a7beaad9877171a7bdd66d974e1039f4c7ebb46f929714b4e98e",
+    "receipt_hash_chain": "911c18a6c84f57cd4b7c50ff6def391ebbd9f717c992d7dc0370a9fe9652262f",
+    "signal_network_hash": "cf925b04ec8d7802e391c9499c9bde02ea85bfc7eb54246cf40cadfef1ea0a6a",
+    "trust_update_hash_chain": "bc37eee0afbd20c74346ce7655da2a553184f986ff0057382f464790fd3c3119"
+  },
+  "report_fingerprints": {
+    "replay_window_chain_hash": "abfb1c3f958f61eafe7d4ea3e9864f0172aa38e027c9aaa769b927789403d273",
+    "replay_window_fingerprint": "4cec6d7f2d7070de60f3dcd620331a88975ec83e54dd47eed7f0d1022e89d552",
+    "stress_report_fingerprint": "0a5780e03bf1bcfce71703e05937cb6da0feaabc99b8758087ceb982caf59b88",
+    "stress_result_fingerprint": "f91725b3bf8ec4f9e5e80dba8077bd89d4aedb4bdeac1b3d1626693a5b6a5034"
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic SIG stress+replay rerun and explicit SIG-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "SIG-REGRESSION-UPDATE"
+  }
+}
