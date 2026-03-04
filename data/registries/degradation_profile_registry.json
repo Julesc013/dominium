@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.degradation_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.degradation_profile_registry",
+    "registry_version": "1.0.0",
+    "degradation_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "profile.pipe_steel_basic",
+        "degradation_kind_id": "degr.corrosion",
+        "rate_model_id": "model.chem_corrosion_rate.default",
+        "thresholds": {
+          "warn_level_permille": 350,
+          "leak_threshold_permille": 700,
+          "critical_permille": 900
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "target_domain": "FLUID",
+          "source": "CHEM3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "profile.heat_exchanger_basic",
+        "degradation_kind_id": "degr.fouling",
+        "rate_model_id": "model.chem_fouling_rate.default",
+        "thresholds": {
+          "warn_level_permille": 300,
+          "efficiency_drop_permille": 500,
+          "critical_permille": 850
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "target_domain": "THERM",
+          "source": "CHEM3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "profile.tank_basic",
+        "degradation_kind_id": "degr.scaling",
+        "rate_model_id": "model.chem_scaling_rate.default",
+        "thresholds": {
+          "warn_level_permille": 250,
+          "flow_restriction_permille": 550,
+          "critical_permille": 900
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "target_domain": "FLUID",
+          "source": "CHEM3-2"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

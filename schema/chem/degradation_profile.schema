@@ -1,0 +1,26 @@
+SCHEMA: chem/degradation_profile.schema
+schema_id: dominium.schema.chem.degradation_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic CHEM-3 degradation policy profiles by target/material class.
+- Bind degradation kind to constitutive rate models and deterministic thresholds.
+
+NON-SEMANTICS:
+- This schema does not execute degradation logic.
+- Process/runtime layers evaluate model outputs and apply hazards/effects.
+
+REQUIRED SHAPE:
+record degradation_profile
+  required:
+    - profile_id: id
+    - degradation_kind_id: enum(corrosion|fouling|scaling)
+    - rate_model_id: id
+    - thresholds: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `rate_model_id` must reference a registered constitutive model id.
+- `thresholds` must contain deterministic threshold keys required by owning process profile.

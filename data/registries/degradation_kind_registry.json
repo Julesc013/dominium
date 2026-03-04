@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.registry.degradation_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.degradation_kind_registry",
+    "registry_version": "1.0.0",
+    "degradation_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "degradation_kind_id": "degr.corrosion",
+        "description": "Chemical/material corrosion progression.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "degradation_kind_id": "degr.fouling",
+        "description": "Fouling/deposit accumulation affecting transfer efficiency.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "degradation_kind_id": "degr.scaling",
+        "description": "Scaling buildup restricting flow channels.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM3-2"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
