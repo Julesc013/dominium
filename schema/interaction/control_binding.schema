@@ -1,0 +1,20 @@
+SCHEMA: interaction/control_binding.schema
+schema_id: dominium.schema.interaction.pose_control_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic control grants exposed by occupied PoseSlots.
+
+REQUIRED SHAPE:
+record control_binding
+  required:
+    - schema_version: semver
+    - control_binding_id: id
+    - grants_process_ids: list[id]
+    - grants_surface_ids: list[id]
+    - extensions: map
+
+INVARIANTS:
+- Binding grants are metadata and never mutate truth directly.
+- Control grants are exposed deterministically to affordance generation hooks.

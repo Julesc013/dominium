@@ -1,0 +1,37 @@
+{
+  "schema_id": "dominium.registry.pose_control_binding_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.pose_control_binding_registry",
+    "registry_version": "1.0.0",
+    "control_bindings": [
+      {
+        "schema_version": "1.0.0",
+        "control_binding_id": "binding.driver_basic",
+        "grants_process_ids": [
+          "process.machine_operate",
+          "process.tool_use_prepare",
+          "process.task_create"
+        ],
+        "grants_surface_ids": [],
+        "extensions": {
+          "role": "driver"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "control_binding_id": "binding.turret_basic",
+        "grants_process_ids": [
+          "process.machine_operate",
+          "process.tool_use_prepare",
+          "process.task_create"
+        ],
+        "grants_surface_ids": [],
+        "extensions": {
+          "role": "turret_operator"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

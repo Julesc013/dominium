@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.mount_tag_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.mount_tag_registry",
+    "registry_version": "1.0.0",
+    "mount_tags": [
+      {
+        "schema_version": "1.0.0",
+        "mount_tag_id": "mount.rail_coupler",
+        "description": "Rail coupler interface.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "mount_tag_id": "mount.docking_port",
+        "description": "Docking port interface for large assemblies/vehicles.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "mount_tag_id": "mount.turret_base",
+        "description": "Turret/base module attachment interface.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "mount_tag_id": "mount.trailer_hitch",
+        "description": "Trailer hitch interface.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
