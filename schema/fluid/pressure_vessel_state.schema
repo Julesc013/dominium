@@ -1,0 +1,17 @@
+SCHEMA: fluid/pressure_vessel_state.schema
+schema_id: dominium.schema.fluid.pressure_vessel_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic state snapshot for FLUID pressure-vessel nodes.
+
+REQUIRED SHAPE:
+record pressure_vessel_state
+  required:
+    - schema_version: semver
+    - node_id: id
+    - current_head: number
+    - last_update_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fluid Network Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FLUID network tier/cost/degradation policy declaration.",
+  "x-doc-ref": [
+    "docs/fluid/FLUID_CONSTITUTION.md",
+    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "tier_mode",
+    "degradation_order",
+    "cost_model_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tier_mode": {
+      "type": "string",
+      "enum": [
+        "F0",
+        "F1"
+      ]
+    },
+    "degradation_order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "F0",
+          "F1"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "cost_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "fluid.policy.default",
+      "tier_mode": "F1",
+      "degradation_order": [
+        "F1",
+        "F0"
+      ],
+      "cost_model_id": "cost.fluid.network_default",
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}

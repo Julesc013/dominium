@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fluid Node Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FLUID-1 FluidNetworkGraph node payload.",
+  "x-doc-ref": [
+    "docs/fluid/FLUID_CONSTITUTION.md",
+    "docs/audit/FLUID_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_kind",
+    "fluid_profile_id",
+    "model_bindings",
+    "safety_instances",
+    "state_ref",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_kind": {
+      "type": "string",
+      "enum": [
+        "tank",
+        "junction",
+        "pump",
+        "valve",
+        "pressure_vessel"
+      ]
+    },
+    "fluid_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_bindings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "safety_instances": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "state_ref": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_kind": "pump",
+      "fluid_profile_id": "fluid.water",
+      "spec_id": "spec.fluid.pump.basic",
+      "model_bindings": [
+        "model.fluid_pump_curve_stub"
+      ],
+      "safety_instances": [
+        "instance.safety.relief_pressure.pump.alpha"
+      ],
+      "state_ref": {
+        "pump_speed_permille": 1000,
+        "base_head": 80
+      },
+      "deterministic_fingerprint": "ed56e9f7ee4f273e7c0f9d4ecf8d91c34f1ca6bb6f3c86809a0199a68f4e4ec3",
+      "extensions": {}
+    }
+  ]
+}
+

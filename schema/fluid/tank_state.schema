@@ -1,0 +1,23 @@
+SCHEMA: fluid/tank_state.schema
+schema_id: dominium.schema.fluid.tank_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic FLUID-1 tank/reservoir state row for infrastructure mass bookkeeping.
+
+REQUIRED SHAPE:
+record tank_state
+  required:
+    - schema_version: semver
+    - node_id: id
+    - stored_mass: number
+    - max_mass: number
+    - last_update_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Stored mass is non-negative and capped by max_mass.
+- Mass transfer updates must be deterministic and process-authored.
+

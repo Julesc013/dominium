@@ -1,0 +1,47 @@
+{
+  "schema_id": "dominium.registry.fluid_failure_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.fluid_failure_policy_registry",
+    "registry_version": "1.0.0",
+    "fluid_failure_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "fluid_failure.relief_first",
+        "relief_preferred": true,
+        "burst_requires_threshold": true,
+        "max_failure_events_per_tick": 64,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Prefer relief where possible, burst only above burst threshold."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "fluid_failure.strict_burst",
+        "relief_preferred": false,
+        "burst_requires_threshold": true,
+        "max_failure_events_per_tick": 64,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Strict containment: burst events fire at configured burst threshold."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "fluid_failure.rank_strict",
+        "relief_preferred": true,
+        "burst_requires_threshold": true,
+        "max_failure_events_per_tick": 48,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "strict": true,
+          "description": "Ranked-safe cap with deterministic bounded failure cascade."
+        }
+      }
+    ],
+    "extensions": {
+      "source": "FLUID2-2"
+    }
+  }
+}

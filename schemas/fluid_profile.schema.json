@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fluid Profile Schema",
+  "version": "1.0.0",
+  "description": "Canonical FLUID profile declaration for infrastructure-scale liquid/gas network behavior.",
+  "x-doc-ref": [
+    "docs/fluid/FLUID_CONSTITUTION.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "fluid_profile_id",
+    "compressible",
+    "density",
+    "viscosity_proxy",
+    "vapor_pressure_proxy",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "fluid_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "compressible": {
+      "type": "boolean"
+    },
+    "density": {
+      "type": "number",
+      "minimum": 0
+    },
+    "viscosity_proxy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "vapor_pressure_proxy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "fluid_profile_id": "fluid.water",
+      "compressible": false,
+      "density": 1000,
+      "viscosity_proxy": 1,
+      "vapor_pressure_proxy": 2,
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}
