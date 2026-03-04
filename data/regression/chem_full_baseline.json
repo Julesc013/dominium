@@ -1,0 +1,87 @@
+{
+  "baseline_id": "chem.full.baseline.v1",
+  "composite_chem_hash_anchor": "8b215e35ce813df9d396f7d082c47e57ff3f776e1c52cb6dbac3919ae92ed417",
+  "description": "CHEM-4 deterministic final hardening baseline for stress, deterministic degradation, conservation proofs, replay, and regression lock.",
+  "deterministic_fingerprint": "56ee3e92addf273be2ac849bfc58a5b2d06fe3c4e665721fa9a82a64813dbda3",
+  "extensions": {
+    "assertions": {
+      "cost_window_match": true,
+      "degradation_window_match": true,
+      "emission_window_match": true,
+      "energy_conservation_within_tolerance": true,
+      "energy_window_match": true,
+      "entropy_monotonicity": true,
+      "full_proof_summary_match": true,
+      "mass_conservation_within_tolerance": true,
+      "proof_window_match": true,
+      "reaction_window_match": true,
+      "replay_complete": true,
+      "stress_complete": true
+    },
+    "combustion_snapshot": {
+      "emission_total_mass": 14,
+      "entropy_increment_total": 2,
+      "max_cost_units_observed": 10,
+      "total_reactions_evaluated": 7
+    },
+    "corrosion_snapshot": {
+      "degradation_event_hash_chain": "f9377017912d8d55810f12425b289ced923791c164ff7af5527200de393f43ab",
+      "degradation_hash_chain": "2354458efdddec69c5e5b3c7a7f177107a56e6a91e16b4090ac786891d2fb9e3",
+      "level_value": 3,
+      "target_id": "edge.fluid.corrosion.baseline"
+    },
+    "degrade_snapshot": {
+      "degradation_row_count": 240,
+      "emission_total_mass": 0,
+      "max_cost_units_observed": 16,
+      "total_reactions_evaluated": 21
+    },
+    "processing_yield_snapshot": {
+      "emission_total_mass": 9,
+      "entropy_increment_total": 5,
+      "max_cost_units_observed": 10,
+      "total_reactions_evaluated": 6
+    },
+    "report_fingerprints": {
+      "combustion_report_fingerprint": "6d451a9204d3c6317609b7e6aecc7649d67825d67234f8ad0221de9f8abc3f9d",
+      "combustion_scenario_fingerprint": "2016dd0840db9ccaf5ed24aa0fbe1fb5b643a223d243e2c54f1c05d079a48a27",
+      "corrosion_state_fingerprint": "b81823ea21ab6447a4b4c1bf4e36928acf154e7402b9b8a0fac306bed3b5b857",
+      "degrade_report_fingerprint": "056a0c18804475c0b90644d93d0443d13a5e96cad2c0d28d6da2e66ff0845559",
+      "degrade_scenario_fingerprint": "0b60ed8465a4d1d172e29188da8936f0b215c0a088ded1f2b81f7cf511b678fe",
+      "processing_report_fingerprint": "f8694f96e1a4bb09837d3370862049b06a970e7248bde470fdc1855b8afcbc26",
+      "processing_scenario_fingerprint": "a575f1be6e5d5182fdcf500c4f334cf1aaf2246f77e6b17881d9af35ffc9c3a2",
+      "replay_report_fingerprint": "85b1f72018213e05735ca348de17191d2e26158b5c4a18c07b3f0427a95f2f3a"
+    }
+  },
+  "fixed_seed_scenario": {
+    "budget_envelope_id": "chem.envelope.standard",
+    "replay_report_path": "build/chem/chem4_replay_window_report.json",
+    "scenario_id": "scenario.chem.stress.9371cec28922",
+    "scenario_path": "build/chem/chem4_combustion_scenario.json",
+    "scenario_seed": 9121,
+    "stress_report_path": "build/chem/chem4_combustion_report.json",
+    "tick_count": 36
+  },
+  "pattern_hashes": {
+    "combustion_reaction_pattern_hash": "ee938cab114c8c812325d10e3d41dc9e38e3e1fbd0796c3474b1658bc577af65",
+    "degrade_event_pattern_hash": "8f9eacc52ba487474fde6d01541a12ca5c10bb873bfe85e9ef077d9e3af4b2f9",
+    "energy_residual_pattern_hash": "4c6c0759d93050613fec357dc97a8827924f86f4fad2cd0af08e65a6948a617d",
+    "entropy_increment_pattern_hash": "75c08a83f0e098d5bd6da7baa8a7e87984dcedb4f3d3e3021eefb2a4d51970de",
+    "mass_residual_pattern_hash": "653284994587dfd4e1d403a8d6a145d16bdb95eb668cbb0f50bba773489b71ed",
+    "processing_yield_pattern_hash": "bb1b21e41a066fc07079f4288f6353a8f6ff15139df72a3cf8ad47765db4d57d"
+  },
+  "proof_hashes": {
+    "combustion_reaction_hash_chain": "2c2b9d6fa1b2b4af9565b60deb4d3374dc150e246a9fbba3395bc35d713557bc",
+    "degradation_hash_chain": "22d151fcea8685f93fc1eab30908d8e5f8852d53950730e8d7a7718d76e7b61b",
+    "emission_hash_chain": "258cecaf9df4874b0f0b30d6a959eb2cc77b3b938bd7ca3f4df1368edc282915",
+    "energy_ledger_hash_chain": "74f99b01a77fb91a0e693f3f6a5e3f38878ab803c979a0b38bd0ea0d41c80cf1",
+    "processing_reaction_hash_chain": "d4de65ae82aafcacaf6c1ddd6e39f26d7802550c0d2e118610c5d75ee4193705",
+    "replay_expected_window_proof_chain": "86e325107dd0383bbd8d235f15b9e7a1bd5c9c941d15f790751a20e65fb9a36f",
+    "replay_observed_window_proof_chain": "86e325107dd0383bbd8d235f15b9e7a1bd5c9c941d15f790751a20e65fb9a36f"
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic CHEM stress + replay reruns and explicit CHEM-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "CHEM-REGRESSION-UPDATE"
+  }
+}
