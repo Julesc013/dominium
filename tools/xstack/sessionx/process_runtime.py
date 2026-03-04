@@ -109,6 +109,14 @@ from src.materials.commitments.commitment_engine import (
     strictness_requires_commitment,
 )
 from src.materials import create_material_batch
+from src.chem import (
+    batch_quality_rows_by_batch_id,
+    build_batch_quality_row,
+    build_process_run_state,
+    normalize_batch_quality_rows,
+    normalize_process_run_state_rows,
+    process_run_rows_by_id,
+)
 from src.materials.provenance.event_stream_index import (
     build_event_stream_index,
     normalize_event_stream_index_row,
@@ -697,6 +705,9 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.machine_operate": "entitlement.tool.operating",
     "process.machine_pull_from_node": "entitlement.tool.operating",
     "process.machine_push_to_node": "entitlement.tool.operating",
+    "process.process_run_start": "entitlement.tool.operating",
+    "process.process_run_tick": "entitlement.tool.operating",
+    "process.process_run_end": "entitlement.tool.operating",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -870,6 +881,9 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.machine_operate": "operator",
     "process.machine_pull_from_node": "operator",
     "process.machine_push_to_node": "operator",
+    "process.process_run_start": "operator",
+    "process.process_run_tick": "operator",
+    "process.process_run_end": "operator",
 }
 PROCESS_ID_ALIASES = {
     "process.perform_maintenance": "process.maintenance_perform",
@@ -973,6 +987,9 @@ CONTROL_PROCESS_IDS = {
     "process.apply_impulse",
     "process.hazard_increment",
     "process.flow_adjust",
+    "process.process_run_start",
+    "process.process_run_tick",
+    "process.process_run_end",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -5039,6 +5056,271 @@ def _reaction_profiles_by_id(registry_payload: Mapping[str, object] | None) -> D
             "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
         }
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _load_reaction_rate_model_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "reaction_rate_model_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/reaction_rate_model_registry.json",
+        default_payload={"record": {"reaction_rate_models": []}},
+    )
+
+
+def _reaction_rate_models_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("reaction_rate_models")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("reaction_rate_models")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("rate_model_id", ""))):
+        rate_model_id = str(row.get("rate_model_id", "")).strip()
+        if not rate_model_id:
+            continue
+        out[rate_model_id] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _load_yield_model_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "yield_model_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/yield_model_registry.json",
+        default_payload={"record": {"yield_models": []}},
+    )
+
+
+def _yield_models_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("yield_models")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("yield_models")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("yield_model_id", ""))):
+        yield_model_id = str(row.get("yield_model_id", "")).strip()
+        if not yield_model_id:
+            continue
+        out[yield_model_id] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _chem_rate_permille(
+    *,
+    rate_model_id: str,
+    temperature_value: int,
+    pressure_head: int,
+    catalyst_present: bool,
+    run_progress: int,
+) -> int:
+    model_id = str(rate_model_id or "").strip()
+    progress_value = int(max(0, min(1000, _as_int(run_progress, 0))))
+    if progress_value >= 1000:
+        return 0
+    base = 260
+    if model_id == "model.chem_rate_pressure_temp_stub":
+        temp_center = 640
+        temp_band = 180
+        base += max(0, 180 - (abs(int(temperature_value) - temp_center) * 120) // max(1, temp_band))
+        base += max(0, min(120, int(max(0, _as_int(pressure_head, 0)) // 4)))
+    elif model_id == "model.chem_rate_catalyst_stub":
+        base += 140 if bool(catalyst_present) else 20
+        base += max(0, 80 - (abs(int(temperature_value) - 620) // 3))
+    elif model_id == "model.chem_rate_temp_dependent_stub":
+        base += max(0, 120 - (abs(int(temperature_value) - 620) // 2))
+    else:
+        base += 60
+    if progress_value > 850:
+        base = int(max(20, base // 2))
+    if base > 420:
+        base = 420
+    if base < 25:
+        base = 25
+    return int(base)
+
+
+def _evaluate_chem_yield_outputs(
+    *,
+    policy_context: dict | None,
+    current_tick: int,
+    run_id: str,
+    equipment_id: str,
+    reaction_id: str,
+    yield_model_id: str,
+    temperature_value: int,
+    pressure_head: int,
+    entropy_value: int,
+    catalyst_present: bool,
+    spec_score_permille: int,
+    input_contamination_tags: List[str],
+    equipment_wear_permille: int,
+) -> dict:
+    model_type_registry, model_cache_policy_registry, constitutive_model_registry = _load_model_registries(
+        policy_context=policy_context
+    )
+    model_type_map = model_type_rows_by_id(model_type_registry)
+    cache_policy_map = cache_policy_rows_by_id(model_cache_policy_registry)
+    model_rows_map = constitutive_model_rows_by_id(constitutive_model_registry)
+    yield_model_id_resolved = str(yield_model_id or "").strip() or "model.chem_yield_factor.default"
+    contamination_model_id = "model.chem_contamination_risk.default"
+    if yield_model_id_resolved not in model_rows_map:
+        for candidate_id in sorted(model_rows_map.keys()):
+            if str(candidate_id).strip().startswith("model.chem_yield_factor"):
+                yield_model_id_resolved = candidate_id
+                break
+    if contamination_model_id not in model_rows_map:
+        for candidate_id in sorted(model_rows_map.keys()):
+            if str(candidate_id).strip().startswith("model.chem_contamination_risk"):
+                contamination_model_id = candidate_id
+                break
+    candidate_model_rows = [
+        dict(model_rows_map.get(yield_model_id_resolved) or {}),
+        dict(model_rows_map.get(contamination_model_id) or {}),
+    ]
+    candidate_model_rows = [
+        dict(row)
+        for row in candidate_model_rows
+        if isinstance(row, Mapping) and str(row.get("model_id", "")).strip()
+    ]
+    if not candidate_model_rows:
+        return {
+            "yield_factor_permille": 750,
+            "defect_flags": ["out_of_spec"],
+            "quality_grade": "grade.C",
+            "contamination_tags": _sorted_tokens(list(input_contamination_tags or [])),
+            "hazard_delta": 0,
+            "yield_model_id": str(yield_model_id_resolved),
+            "model_output_rows": [],
+            "model_evaluation_rows": [],
+        }
+    binding_rows = [
+        {
+            "schema_version": "1.0.0",
+            "binding_id": "binding.chem.yield.{}".format(
+                canonical_sha256({"run_id": str(run_id), "reaction_id": str(reaction_id), "equipment_id": str(equipment_id)})[:16]
+            ),
+            "model_id": str(yield_model_id_resolved),
+            "target_kind": "custom",
+            "target_id": str(run_id),
+            "tier": "meso",
+            "enabled": True,
+            "parameters": {
+                "temperature": int(temperature_value),
+                "pressure_head": int(pressure_head),
+                "entropy_value": int(entropy_value),
+                "catalyst_present": bool(catalyst_present),
+                "spec_score_permille": int(max(0, min(1000, _as_int(spec_score_permille, 1000)))),
+            },
+            "extensions": {
+                "equipment_id": str(equipment_id),
+                "reaction_id": str(reaction_id),
+                "yield_model_id": str(yield_model_id_resolved),
+            },
+        },
+        {
+            "schema_version": "1.0.0",
+            "binding_id": "binding.chem.contamination.{}".format(
+                canonical_sha256({"run_id": str(run_id), "equipment_id": str(equipment_id)})[:16]
+            ),
+            "model_id": str(contamination_model_id),
+            "target_kind": "custom",
+            "target_id": str(run_id),
+            "tier": "meso",
+            "enabled": True,
+            "parameters": {
+                "equipment_wear_permille": int(max(0, _as_int(equipment_wear_permille, 0))),
+                "entropy_value": int(max(0, _as_int(entropy_value, 0))),
+                "input_contamination_tags": _sorted_tokens(list(input_contamination_tags or [])),
+            },
+            "extensions": {
+                "equipment_id": str(equipment_id),
+                "reaction_id": str(reaction_id),
+            },
+        },
+    ]
+
+    def _resolve_input(binding_row: Mapping[str, object], input_row: Mapping[str, object]):
+        del binding_row
+        input_id = str(input_row.get("input_id", "")).strip()
+        if input_id == "field.temperature":
+            return int(temperature_value)
+        if input_id == "quantity.pressure_head":
+            return int(pressure_head)
+        if input_id == "quantity.entropy_index":
+            return int(entropy_value)
+        if input_id == "derived.chem.catalyst_present":
+            return bool(catalyst_present)
+        if input_id == "compliance.spec_score_permille":
+            return int(max(0, min(1000, _as_int(spec_score_permille, 1000))))
+        if input_id == "derived.chem.equipment_wear_permille":
+            return int(max(0, _as_int(equipment_wear_permille, 0)))
+        if input_id == "derived.chem.input_contamination_tags":
+            return _sorted_tokens(list(input_contamination_tags or []))
+        return 0
+
+    evaluation = evaluate_model_bindings(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        model_rows=candidate_model_rows,
+        binding_rows=binding_rows,
+        cache_rows=[],
+        model_type_rows=model_type_map,
+        cache_policy_rows=cache_policy_map,
+        input_resolver_fn=_resolve_input,
+        max_cost_units=int(max(4, _as_int((dict(policy_context or {})).get("chem_model_max_cost_units_per_tick", 16), 16))),
+        far_target_ids=[],
+        far_tick_stride=1,
+    )
+    output_rows = [
+        dict(row)
+        for row in list(evaluation.get("output_actions") or [])
+        if isinstance(row, Mapping)
+    ]
+    model_eval_rows = [
+        dict(row)
+        for row in list(evaluation.get("evaluation_results") or [])
+        if isinstance(row, Mapping)
+    ]
+    yield_factor_permille = 750
+    defect_flags: List[str] = []
+    quality_grade = "grade.C"
+    contamination_tags = _sorted_tokens(list(input_contamination_tags or []))
+    hazard_delta = 0
+    for row in sorted(output_rows, key=lambda item: (str(item.get("binding_id", "")), str(item.get("output_id", "")))):
+        output_id = str(row.get("output_id", "")).strip()
+        payload = dict(row.get("payload") or {}) if isinstance(row.get("payload"), Mapping) else {}
+        if output_id.endswith("yield_factor_permille"):
+            yield_factor_permille = int(max(0, min(1000, _as_int(payload.get("value", payload.get("yield_factor_permille", 750)), 750))))
+            defect_flags = _sorted_tokens(list(payload.get("defect_flags") or defect_flags))
+            quality_grade = str(payload.get("quality_grade", quality_grade)).strip() or quality_grade
+        elif output_id.endswith("defect_flags"):
+            defect_flags = _sorted_tokens(list(payload.get("value") or payload.get("defect_flags") or defect_flags))
+        elif output_id.endswith("quality_grade"):
+            quality_grade = str(payload.get("value", payload.get("quality_grade", quality_grade))).strip() or quality_grade
+        elif output_id.endswith("contamination_tags"):
+            contamination_tags = _sorted_tokens(list(payload.get("value") or payload.get("contamination_tags") or contamination_tags))
+        elif str(row.get("output_kind", "")).strip() == "hazard_increment":
+            hazard_delta = int(max(0, _as_int(payload.get("delta", 0), 0)))
+    if not quality_grade:
+        quality_grade = "grade.C"
+    if yield_factor_permille <= 0:
+        yield_factor_permille = 1
+    return {
+        "yield_factor_permille": int(max(0, min(1000, yield_factor_permille))),
+        "defect_flags": _sorted_tokens(list(defect_flags or [])),
+        "quality_grade": str(quality_grade),
+        "contamination_tags": _sorted_tokens(list(contamination_tags or [])),
+        "hazard_delta": int(max(0, hazard_delta)),
+        "yield_model_id": str(yield_model_id_resolved),
+        "model_output_rows": output_rows,
+        "model_evaluation_rows": model_eval_rows,
+    }
 
 
 def _select_combustion_reaction_id(
@@ -9566,6 +9848,84 @@ def _ensure_material_batches(state: dict) -> List[dict]:
         )
     state["material_batches"] = [dict(row) for row in normalized]
     return [dict(row) for row in normalized]
+
+
+def _ensure_process_run_state_rows(state: dict) -> List[dict]:
+    rows = state.get("chem_process_run_state_rows")
+    if not isinstance(rows, list):
+        rows = state.get("process_run_state_rows")
+    normalized = normalize_process_run_state_rows(rows)
+    state["chem_process_run_state_rows"] = [dict(row) for row in normalized]
+    state["process_run_state_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_batch_quality_rows(state: dict) -> List[dict]:
+    rows = state.get("batch_quality_rows")
+    normalized = normalize_batch_quality_rows(rows)
+    state["batch_quality_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_chem_process_hash_chains(state: dict) -> None:
+    run_rows = _ensure_process_run_state_rows(state)
+    quality_rows = _ensure_batch_quality_rows(state)
+    yield_rows = [
+        dict(row)
+        for row in list(state.get("chem_yield_model_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    state["process_run_hash_chain"] = canonical_sha256(
+        [
+            {
+                "run_id": str(row.get("run_id", "")).strip(),
+                "reaction_id": str(row.get("reaction_id", "")).strip(),
+                "equipment_id": str(row.get("equipment_id", "")).strip(),
+                "start_tick": int(max(0, _as_int(row.get("start_tick", 0), 0))),
+                "end_tick": (None if row.get("end_tick") is None else int(max(0, _as_int(row.get("end_tick", 0), 0)))),
+                "progress": int(max(0, _as_int(row.get("progress", 0), 0))),
+                "status": str((dict(row.get("extensions") or {})).get("status", "")).strip() or "active",
+                "output_batch_ids": _sorted_tokens(list(row.get("output_batch_ids") or [])),
+            }
+            for row in sorted(
+                [dict(item) for item in run_rows if isinstance(item, Mapping)],
+                key=lambda item: str(item.get("run_id", "")),
+            )
+        ]
+    )
+    state["batch_quality_hash_chain"] = canonical_sha256(
+        [
+            {
+                "batch_id": str(row.get("batch_id", "")).strip(),
+                "quality_grade": str(row.get("quality_grade", "")).strip(),
+                "yield_factor": int(max(0, _as_int(row.get("yield_factor", 0), 0))),
+                "defect_flags": _sorted_tokens(list(row.get("defect_flags") or [])),
+                "contamination_tags": _sorted_tokens(list(row.get("contamination_tags") or [])),
+            }
+            for row in sorted(
+                [dict(item) for item in quality_rows if isinstance(item, Mapping)],
+                key=lambda item: str(item.get("batch_id", "")),
+            )
+        ]
+    )
+    state["yield_model_hash_chain"] = canonical_sha256(
+        [
+            {
+                "run_id": str(row.get("run_id", "")).strip(),
+                "model_id": str(row.get("yield_model_id", "")).strip(),
+                "yield_factor_permille": int(max(0, _as_int(row.get("yield_factor_permille", 0), 0))),
+                "temperature": int(_as_int(row.get("temperature", 0), 0)),
+                "pressure_head": int(_as_int(row.get("pressure_head", 0), 0)),
+                "entropy_value": int(max(0, _as_int(row.get("entropy_value", 0), 0))),
+                "defect_flags": _sorted_tokens(list(row.get("defect_flags") or [])),
+                "contamination_tags": _sorted_tokens(list(row.get("contamination_tags") or [])),
+            }
+            for row in sorted(
+                [dict(item) for item in yield_rows if isinstance(item, Mapping)],
+                key=lambda item: (str(item.get("run_id", "")), str(item.get("yield_model_id", ""))),
+            )
+        ]
+    )
 
 
 def _ensure_thermal_phase_events(state: dict) -> List[dict]:
@@ -18199,6 +18559,8 @@ def execute_intent(
     distribution_aggregates = _ensure_distribution_aggregates(state)
     materialization_reenactment_descriptors = _ensure_materialization_reenactment_descriptors(state)
     material_batches = _ensure_material_batches(state)
+    chem_process_run_state_rows = _ensure_process_run_state_rows(state)
+    batch_quality_rows = _ensure_batch_quality_rows(state)
     thermal_phase_events = _ensure_thermal_phase_events(state)
     thermal_cure_events = _ensure_thermal_cure_events(state)
     thermal_fire_states = _ensure_thermal_fire_states(state)
@@ -18283,12 +18645,15 @@ def execute_intent(
     del entropy_event_rows
     del entropy_reset_events
     del entropy_effect_rows
+    del chem_process_run_state_rows
+    del batch_quality_rows
     _refresh_momentum_hash_chains(state)
     _refresh_energy_ledger_hash_chains(state)
     _refresh_numeric_policy_hashes(state, policy_context)
     _refresh_entropy_hash_chains(state)
     _refresh_field_hash_chains(state)
     _refresh_time_hash_chains(state)
+    _refresh_chem_process_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -25524,6 +25889,733 @@ def execute_intent(
             "target_id": target_id,
             "fuel_before": int(fuel_before),
             "fuel_after": int(fuel_after),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.process_run_start":
+        reaction_id = str(inputs.get("reaction_id", "")).strip()
+        equipment_id = str(inputs.get("equipment_id", "")).strip()
+        if (not reaction_id) or (not equipment_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.process_run_start requires reaction_id and equipment_id",
+                "Provide deterministic reaction_id and equipment_id for CHEM process runs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        reaction_profile_registry = _load_reaction_profile_registry(policy_context=policy_context)
+        reaction_profiles_by_id = _reaction_profiles_by_id(reaction_profile_registry)
+        if reaction_id not in reaction_profiles_by_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "reaction_id is not registered in reaction_profile_registry",
+                "Register the reaction profile before starting a process run.",
+                {"reaction_id": reaction_id},
+                "$.intent.inputs.reaction_id",
+            )
+        input_batch_ids = _sorted_tokens(list(inputs.get("input_batch_ids") or []))
+        run_id = str(inputs.get("run_id", "")).strip()
+        if not run_id:
+            run_id = "run.chem.{}".format(
+                canonical_sha256(
+                    {
+                        "reaction_id": reaction_id,
+                        "equipment_id": equipment_id,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "input_batch_ids": list(input_batch_ids),
+                        "intent_id": str(intent_id),
+                    }
+                )[:16]
+            )
+        run_rows_by_id = process_run_rows_by_id(_ensure_process_run_state_rows(state))
+        if run_id in run_rows_by_id:
+            existing_ext = dict(dict(run_rows_by_id.get(run_id) or {}).get("extensions") or {})
+            existing_status = str(existing_ext.get("status", "active")).strip() or "active"
+            if existing_status in {"active", "running"}:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process run is already active",
+                    "Use a unique run_id or end the existing run before starting.",
+                    {"run_id": run_id},
+                    "$.intent.inputs.run_id",
+                )
+        reaction_ext = dict(
+            (dict(reaction_profiles_by_id.get(reaction_id) or {}).get("extensions") or {})
+        ) if isinstance((dict(reaction_profiles_by_id.get(reaction_id) or {}).get("extensions")), Mapping) else {}
+        run_ext = dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {}
+        run_ext["status"] = "active"
+        run_ext["yield_model_id"] = str(
+            inputs.get("yield_model_id", run_ext.get("yield_model_id", reaction_ext.get("yield_model_id", "yield.basic_windowed")))
+        ).strip() or "yield.basic_windowed"
+        run_ext["rate_model_id"] = str(
+            inputs.get("rate_model_id", run_ext.get("rate_model_id", dict(reaction_profiles_by_id.get(reaction_id) or {}).get("rate_model_id", "")))
+        ).strip() or "model.chem_rate_linear_stub"
+        run_ext["process_type"] = str(reaction_ext.get("process_type", "")).strip() or None
+        run_ext["source_intent_id"] = str(intent_id)
+        run_row = build_process_run_state(
+            run_id=run_id,
+            reaction_id=reaction_id,
+            equipment_id=equipment_id,
+            input_batch_ids=list(input_batch_ids),
+            output_batch_ids=[],
+            start_tick=int(max(0, _as_int(inputs.get("start_tick", current_tick), int(current_tick)))),
+            end_tick=None,
+            progress=int(max(0, min(1000, _as_int(inputs.get("progress", 0), 0)))),
+            status="active",
+            deterministic_fingerprint="",
+            extensions=run_ext,
+        )
+        if not run_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.process_run_start could not build process_run_state row",
+                "Check run_id/reaction_id/equipment_id and process run payload fields.",
+                {"run_id": run_id},
+                "$.intent.inputs",
+            )
+        run_rows_by_id[run_id] = dict(run_row)
+        state["chem_process_run_state_rows"] = [dict(run_rows_by_id[key]) for key in sorted(run_rows_by_id.keys())]
+        state["process_run_state_rows"] = [dict(row) for row in list(state.get("chem_process_run_state_rows") or []) if isinstance(row, Mapping)]
+        process_event_rows = [
+            dict(row)
+            for row in list(state.get("chem_process_run_events") or [])
+            if isinstance(row, Mapping)
+        ]
+        start_event = {
+            "schema_version": "1.0.0",
+            "event_id": "event.chem.process_run.start.{}".format(
+                canonical_sha256(
+                    {
+                        "run_id": run_id,
+                        "reaction_id": reaction_id,
+                        "equipment_id": equipment_id,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    }
+                )[:16]
+            ),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "run_id": run_id,
+            "event_kind": "process_run_start",
+            "reaction_id": reaction_id,
+            "equipment_id": equipment_id,
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "input_batch_ids": list(input_batch_ids),
+                "source_process_id": process_id,
+            },
+        }
+        start_event["deterministic_fingerprint"] = canonical_sha256(dict(start_event, deterministic_fingerprint=""))
+        process_event_rows.append(start_event)
+        state["chem_process_run_events"] = sorted(
+            [dict(row) for row in process_event_rows if isinstance(row, Mapping)],
+            key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+        )
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": "artifact.record.chem.process_run.start.{}".format(
+                        canonical_sha256({"event_id": str(start_event.get("event_id", ""))})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "event_id": str(start_event.get("event_id", "")).strip(),
+                        "event_type": "incident.chem_process_run_start",
+                        "run_id": run_id,
+                        "reaction_id": reaction_id,
+                        "equipment_id": equipment_id,
+                    },
+                }
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+        _ensure_process_run_state_rows(state)
+        _refresh_chem_process_hash_chains(state)
+        result_metadata = {
+            "run_id": run_id,
+            "reaction_id": reaction_id,
+            "equipment_id": equipment_id,
+            "input_batch_ids": list(input_batch_ids),
+            "process_run_hash_chain": str(state.get("process_run_hash_chain", "")).strip(),
+            "batch_quality_hash_chain": str(state.get("batch_quality_hash_chain", "")).strip(),
+            "yield_model_hash_chain": str(state.get("yield_model_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.process_run_tick":
+        reaction_profile_registry = _load_reaction_profile_registry(policy_context=policy_context)
+        reaction_profiles_by_id = _reaction_profiles_by_id(reaction_profile_registry)
+        _reaction_rate_models_by_id(_load_reaction_rate_model_registry(policy_context=policy_context))
+        _yield_models_by_id(_load_yield_model_registry(policy_context=policy_context))
+
+        run_rows_by_id = process_run_rows_by_id(_ensure_process_run_state_rows(state))
+        if not run_rows_by_id:
+            result_metadata = {
+                "processed_run_ids": [],
+                "deferred_run_ids": [],
+                "note": "no_process_runs",
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            explicit_run_id = str(inputs.get("run_id", "")).strip()
+            target_run_ids = []
+            if explicit_run_id:
+                target_run_ids.append(explicit_run_id)
+            for row in list(inputs.get("run_ids") or []):
+                token = str(row or "").strip()
+                if token:
+                    target_run_ids.append(token)
+            if not target_run_ids:
+                target_run_ids = [
+                    run_id
+                    for run_id, row in sorted(run_rows_by_id.items(), key=lambda item: str(item[0]))
+                    if str((dict(dict(row).get("extensions") or {})).get("status", "active")).strip() in {"active", "running", ""}
+                ]
+            target_run_ids = _sorted_tokens(target_run_ids)
+            max_runs_per_tick = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_process_run_evaluations_per_tick",
+                            (dict(policy_context or {})).get("chem_max_process_run_evaluations_per_tick", 128),
+                        ),
+                        128,
+                    ),
+                )
+            )
+            deferred_run_ids = list(target_run_ids[max_runs_per_tick:])
+            target_run_ids = list(target_run_ids[:max_runs_per_tick])
+            batch_rows_by_id = dict(
+                (
+                    str(row.get("batch_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(_ensure_material_batches(state) or [])
+                if isinstance(row, Mapping) and str(row.get("batch_id", "")).strip()
+            )
+            batch_quality_map = batch_quality_rows_by_batch_id(_ensure_batch_quality_rows(state))
+            entropy_rows_by_target = entropy_state_rows_by_target_id(_ensure_entropy_state_rows(state))
+            quantity_tolerance_registry = _quantity_tolerance_registry_payload(policy_context=policy_context)
+            species_pool_by_key = dict(
+                (
+                    "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("material_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(_ensure_chem_species_pool_rows(state) or [])
+                if isinstance(row, Mapping)
+                and str(row.get("target_id", "")).strip()
+                and str(row.get("material_id", "")).strip()
+            )
+            process_event_rows = [
+                dict(row)
+                for row in list(state.get("chem_process_run_events") or [])
+                if isinstance(row, Mapping)
+            ]
+            yield_rows = [
+                dict(row)
+                for row in list(state.get("chem_yield_model_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            emission_rows = [
+                dict(row)
+                for row in list(state.get("chem_process_emission_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            processed_run_ids: List[str] = []
+            output_batch_ids: List[str] = []
+            for run_id in target_run_ids:
+                run_row = dict(run_rows_by_id.get(run_id) or {})
+                if not run_row:
+                    continue
+                run_ext = dict(run_row.get("extensions") or {}) if isinstance(run_row.get("extensions"), Mapping) else {}
+                status = str(run_ext.get("status", "active")).strip() or "active"
+                if status not in {"active", "running"}:
+                    continue
+                reaction_id = str(run_row.get("reaction_id", "")).strip()
+                equipment_id = str(run_row.get("equipment_id", "")).strip()
+                reaction_row = dict(reaction_profiles_by_id.get(reaction_id) or {})
+                if not reaction_row:
+                    continue
+                reaction_ext = dict(reaction_row.get("extensions") or {}) if isinstance(reaction_row.get("extensions"), Mapping) else {}
+                input_species = dict(reaction_row.get("input_species") or {}) if isinstance(reaction_row.get("input_species"), Mapping) else {}
+                output_species = dict(reaction_row.get("output_species") or {}) if isinstance(reaction_row.get("output_species"), Mapping) else {}
+                emission_species = dict(reaction_row.get("emission_species") or {}) if isinstance(reaction_row.get("emission_species"), Mapping) else {}
+                input_batch_ids = _sorted_tokens(list(run_row.get("input_batch_ids") or []))
+                if not input_batch_ids:
+                    continue
+                progress_before = int(max(0, min(1000, _as_int(run_row.get("progress", 0), 0))))
+                temperature_value = int(_as_int(inputs.get("temperature", run_ext.get("temperature", 620)), 620))
+                pressure_head = int(max(0, _as_int(inputs.get("pressure_head", run_ext.get("pressure_head", 100)), 100)))
+                entropy_value = int(
+                    max(
+                        0,
+                        _as_int(
+                            inputs.get(
+                                "entropy_value",
+                                run_ext.get("entropy_value", dict(entropy_rows_by_target.get(equipment_id) or {}).get("entropy_value", 0)),
+                            ),
+                            0,
+                        ),
+                    )
+                )
+                catalyst_present = bool(inputs.get("catalyst_present", run_ext.get("catalyst_present", False)))
+                spec_score_permille = int(max(0, min(1000, _as_int(inputs.get("spec_score_permille", run_ext.get("spec_score_permille", 1000)), 1000))))
+                equipment_wear_permille = int(max(0, _as_int(inputs.get("equipment_wear_permille", run_ext.get("equipment_wear_permille", 0)), 0)))
+                rate_model_id = str(run_ext.get("rate_model_id", reaction_row.get("rate_model_id", "model.chem_rate_linear_stub"))).strip()
+                if not rate_model_id:
+                    rate_model_id = "model.chem_rate_linear_stub"
+                rate_permille = _chem_rate_permille(
+                    rate_model_id=rate_model_id,
+                    temperature_value=int(temperature_value),
+                    pressure_head=int(pressure_head),
+                    catalyst_present=bool(catalyst_present),
+                    run_progress=int(progress_before),
+                )
+                progress_after = int(max(0, min(1000, progress_before + rate_permille)))
+                progress_delta = int(max(0, progress_after - progress_before))
+                available_units = None
+                contamination_tags: List[str] = []
+                for species_id, coeff in sorted(input_species.items(), key=lambda item: str(item[0])):
+                    species_token = str(species_id).strip()
+                    coeff_value = int(max(1, _as_int(coeff, 1)))
+                    total_mass = 0
+                    for batch_id in input_batch_ids:
+                        batch_row = dict(batch_rows_by_id.get(batch_id) or {})
+                        if str(batch_row.get("material_id", "")).strip() != species_token:
+                            continue
+                        total_mass += int(max(0, _as_int(batch_row.get("quantity_mass_raw", 0), 0)))
+                        contamination_tags.extend(_sorted_tokens(list(dict(batch_quality_map.get(batch_id) or {}).get("contamination_tags") or [])))
+                    units = int(total_mass // max(1, coeff_value))
+                    if available_units is None:
+                        available_units = units
+                    else:
+                        available_units = min(int(available_units), int(units))
+                available_units = int(max(0, int(available_units or 0)))
+                base_units = int(
+                    max(
+                        0,
+                        deterministic_round(
+                            quantity_id="quantity.mass",
+                            numerator=int(max(0, available_units * progress_delta)),
+                            denominator=1000,
+                            quantity_tolerance_registry=quantity_tolerance_registry,
+                            default_mode="truncate",
+                        ),
+                    )
+                )
+                if progress_delta > 0 and available_units > 0 and base_units <= 0:
+                    base_units = 1
+                if base_units > available_units:
+                    base_units = int(available_units)
+                yield_model_policy = str(run_ext.get("yield_model_id", reaction_ext.get("yield_model_id", "yield.basic_windowed"))).strip()
+                yield_model_lookup = {
+                    "yield.basic_windowed": "model.chem_yield_factor.default",
+                    "yield.entropy_penalty": "model.chem_yield_factor.default",
+                    "yield.catalyst_boost": "model.chem_yield_factor.default",
+                }
+                yield_eval = _evaluate_chem_yield_outputs(
+                    policy_context=policy_context,
+                    current_tick=int(current_tick),
+                    run_id=run_id,
+                    equipment_id=equipment_id,
+                    reaction_id=reaction_id,
+                    yield_model_id=yield_model_lookup.get(yield_model_policy, yield_model_policy),
+                    temperature_value=int(temperature_value),
+                    pressure_head=int(pressure_head),
+                    entropy_value=int(entropy_value),
+                    catalyst_present=bool(catalyst_present),
+                    spec_score_permille=int(spec_score_permille),
+                    input_contamination_tags=_sorted_tokens(contamination_tags),
+                    equipment_wear_permille=int(equipment_wear_permille),
+                )
+                yield_factor = int(max(0, min(1000, _as_int(yield_eval.get("yield_factor_permille", 750), 750))))
+                effective_units = int(
+                    max(
+                        0,
+                        deterministic_round(
+                            quantity_id="quantity.mass",
+                            numerator=int(max(0, base_units * yield_factor)),
+                            denominator=1000,
+                            quantity_tolerance_registry=quantity_tolerance_registry,
+                            default_mode="truncate",
+                        ),
+                    )
+                )
+                if effective_units > base_units:
+                    effective_units = int(base_units)
+                if effective_units > 0:
+                    for species_id, coeff in sorted(input_species.items(), key=lambda item: str(item[0])):
+                        species_token = str(species_id).strip()
+                        coeff_value = int(max(1, _as_int(coeff, 1)))
+                        remaining = int(max(0, effective_units * coeff_value))
+                        for batch_id in sorted(input_batch_ids):
+                            if remaining <= 0:
+                                break
+                            batch_row = dict(batch_rows_by_id.get(batch_id) or {})
+                            if str(batch_row.get("material_id", "")).strip() != species_token:
+                                continue
+                            available = int(max(0, _as_int(batch_row.get("quantity_mass_raw", 0), 0)))
+                            take = int(min(available, remaining))
+                            if take <= 0:
+                                continue
+                            batch_row["quantity_mass_raw"] = int(max(0, available - take))
+                            batch_rows_by_id[batch_id] = dict(batch_row)
+                            remaining = int(max(0, remaining - take))
+                defect_flags = _sorted_tokens(list(yield_eval.get("defect_flags") or []))
+                quality_grade = str(yield_eval.get("quality_grade", "grade.C")).strip() or "grade.C"
+                contamination_tags = _sorted_tokens(list(yield_eval.get("contamination_tags") or []))
+                new_outputs: List[str] = []
+                for species_id, coeff in sorted(output_species.items(), key=lambda item: str(item[0])):
+                    species_token = str(species_id).strip()
+                    coeff_value = int(max(1, _as_int(coeff, 1)))
+                    mass_out = int(max(0, effective_units * coeff_value))
+                    if mass_out <= 0:
+                        continue
+                    try:
+                        batch_row = create_material_batch(
+                            material_id=species_token,
+                            quantity_mass_raw=int(mass_out),
+                            origin_process_id=process_id,
+                            origin_tick=int(max(0, _as_int(current_tick, 0))),
+                            parent_batch_ids=list(input_batch_ids),
+                            quality_distribution={"yield_factor_permille": int(yield_factor), "quality_grade": str(quality_grade)},
+                        )
+                    except Exception:
+                        continue
+                    batch_ext = dict(batch_row.get("extensions") or {})
+                    batch_ext["reaction_id"] = reaction_id
+                    batch_ext["run_id"] = run_id
+                    batch_ext["equipment_id"] = equipment_id
+                    batch_ext["input_batch_ids"] = list(input_batch_ids)
+                    batch_ext["defect_flags"] = list(defect_flags)
+                    batch_ext["contamination_tags"] = list(contamination_tags)
+                    batch_row["extensions"] = batch_ext
+                    batch_id = str(batch_row.get("batch_id", "")).strip()
+                    if not batch_id:
+                        continue
+                    batch_rows_by_id[batch_id] = dict(batch_row)
+                    new_outputs.append(batch_id)
+                    batch_quality_row = build_batch_quality_row(
+                        batch_id=batch_id,
+                        quality_grade=str(quality_grade),
+                        defect_flags=list(defect_flags),
+                        contamination_tags=list(contamination_tags),
+                        yield_factor=int(yield_factor),
+                        extensions={
+                            "run_id": run_id,
+                            "reaction_id": reaction_id,
+                            "equipment_id": equipment_id,
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                        },
+                    )
+                    if batch_quality_row:
+                        batch_quality_map[batch_id] = dict(batch_quality_row)
+                for species_id, coeff in sorted(emission_species.items(), key=lambda item: str(item[0])):
+                    species_token = str(species_id).strip()
+                    coeff_value = int(max(1, _as_int(coeff, 1)))
+                    emission_mass = int(max(0, effective_units * coeff_value))
+                    if emission_mass <= 0:
+                        continue
+                    pool_key = "{}::{}".format(equipment_id or run_id, species_token)
+                    pool_row = dict(species_pool_by_key.get(pool_key) or {})
+                    pool_row["schema_version"] = "1.0.0"
+                    pool_row["target_id"] = equipment_id or run_id
+                    pool_row["material_id"] = species_token
+                    pool_row["mass_value"] = int(max(0, _as_int(pool_row.get("mass_value", 0), 0) + emission_mass))
+                    pool_row["last_update_tick"] = int(max(0, _as_int(current_tick, 0)))
+                    pool_row["deterministic_fingerprint"] = ""
+                    pool_ext = dict(pool_row.get("extensions") or {}) if isinstance(pool_row.get("extensions"), Mapping) else {}
+                    pool_ext["pollutant_tag"] = str(pool_ext.get("pollutant_tag", "")).strip() or ("pollutant.coarse" if "pollutant" in species_token else None)
+                    pool_ext["source_process_id"] = process_id
+                    pool_ext["run_id"] = run_id
+                    pool_row["extensions"] = pool_ext
+                    species_pool_by_key[pool_key] = pool_row
+                    emission_row = {
+                        "schema_version": "1.0.0",
+                        "event_id": "event.chem.process_emission.{}".format(
+                            canonical_sha256({"run_id": run_id, "material_id": species_token, "tick": int(max(0, _as_int(current_tick, 0)))})[:16]
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "run_id": run_id,
+                        "reaction_id": reaction_id,
+                        "target_id": equipment_id or run_id,
+                        "material_id": species_token,
+                        "mass_value": int(emission_mass),
+                        "deterministic_fingerprint": "",
+                        "extensions": {"source_process_id": process_id, "equipment_id": equipment_id or None},
+                    }
+                    emission_row["deterministic_fingerprint"] = canonical_sha256(dict(emission_row, deterministic_fingerprint=""))
+                    emission_rows.append(emission_row)
+                chemical_energy_per_unit = int(max(0, _as_int(inputs.get("chemical_energy_per_unit", reaction_ext.get("chemical_energy_per_unit", 25)), 25)))
+                if effective_units > 0 and chemical_energy_per_unit > 0:
+                    chemical_energy_in = int(effective_units * chemical_energy_per_unit)
+                    _record_energy_transformation_in_state(
+                        state,
+                        policy_context=policy_context,
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        transformation_id=str(reaction_row.get("energy_transformation_id", "transform.chemical_to_thermal")).strip() or "transform.chemical_to_thermal",
+                        source_id=run_id,
+                        input_values={"quantity.energy_chemical": int(chemical_energy_in)},
+                        output_values={"quantity.energy_thermal": int(chemical_energy_in), "quantity.heat_loss": int(chemical_energy_in)},
+                        extensions={"run_id": run_id, "reaction_id": reaction_id, "equipment_id": equipment_id},
+                    )
+                updated_outputs = _sorted_tokens(list(run_row.get("output_batch_ids") or []) + list(new_outputs))
+                run_ext["status"] = "complete" if progress_after >= 1000 else "active"
+                run_ext["last_processed_tick"] = int(max(0, _as_int(current_tick, 0)))
+                run_ext["last_yield_factor_permille"] = int(yield_factor)
+                run_ext["last_quality_grade"] = str(quality_grade)
+                run_ext["yield_model_id"] = str(yield_model_policy)
+                run_ext["rate_model_id"] = str(rate_model_id)
+                run_rows_by_id[run_id] = build_process_run_state(
+                    run_id=run_id,
+                    reaction_id=reaction_id,
+                    equipment_id=equipment_id,
+                    input_batch_ids=list(input_batch_ids),
+                    output_batch_ids=list(updated_outputs),
+                    start_tick=int(max(0, _as_int(run_row.get("start_tick", current_tick), int(current_tick)))),
+                    end_tick=(int(max(0, _as_int(current_tick, 0))) if progress_after >= 1000 else None),
+                    progress=int(progress_after),
+                    status=str(run_ext.get("status", "active")).strip() or "active",
+                    deterministic_fingerprint="",
+                    extensions=run_ext,
+                )
+                process_event = {
+                    "schema_version": "1.0.0",
+                    "event_id": "event.chem.process_run.tick.{}".format(
+                        canonical_sha256({"run_id": run_id, "tick": int(max(0, _as_int(current_tick, 0))), "progress_after": int(progress_after)})[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "run_id": run_id,
+                    "event_kind": "process_run_tick",
+                    "reaction_id": reaction_id,
+                    "equipment_id": equipment_id,
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "base_units": int(base_units),
+                        "effective_units": int(effective_units),
+                        "yield_factor_permille": int(yield_factor),
+                        "quality_grade": str(quality_grade),
+                        "defect_flags": list(defect_flags),
+                        "contamination_tags": list(contamination_tags),
+                        "source_process_id": process_id,
+                    },
+                }
+                process_event["deterministic_fingerprint"] = canonical_sha256(dict(process_event, deterministic_fingerprint=""))
+                process_event_rows.append(process_event)
+                yield_rows.append(
+                    {
+                        "schema_version": "1.0.0",
+                        "run_id": run_id,
+                        "yield_model_id": str(yield_eval.get("yield_model_id", yield_model_policy)).strip() or str(yield_model_policy),
+                        "temperature": int(temperature_value),
+                        "pressure_head": int(pressure_head),
+                        "entropy_value": int(entropy_value),
+                        "yield_factor_permille": int(yield_factor),
+                        "defect_flags": list(defect_flags),
+                        "contamination_tags": list(contamination_tags),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "deterministic_fingerprint": "",
+                    }
+                )
+                processed_run_ids.append(run_id)
+                output_batch_ids.extend(new_outputs)
+            state["chem_process_run_state_rows"] = [dict(run_rows_by_id[key]) for key in sorted(run_rows_by_id.keys())]
+            state["process_run_state_rows"] = [dict(row) for row in list(state.get("chem_process_run_state_rows") or []) if isinstance(row, Mapping)]
+            state["material_batches"] = [dict(batch_rows_by_id[key]) for key in sorted(batch_rows_by_id.keys())]
+            state["batch_quality_rows"] = [dict(batch_quality_map[key]) for key in sorted(batch_quality_map.keys())]
+            state["chem_species_pool_rows"] = sorted(
+                [dict(row) for row in species_pool_by_key.values() if isinstance(row, Mapping)],
+                key=lambda row: (str(row.get("target_id", "")), str(row.get("material_id", ""))),
+            )
+            state["pollutant_species_pool_rows"] = sorted(
+                [
+                    dict(row)
+                    for row in list(state.get("chem_species_pool_rows") or [])
+                    if isinstance(row, Mapping) and str(row.get("material_id", "")).strip().startswith("material.pollutant_")
+                ],
+                key=lambda row: (str(row.get("target_id", "")), str(row.get("material_id", ""))),
+            )
+            state["chem_process_emission_rows"] = sorted(
+                [dict(row) for row in emission_rows if isinstance(row, Mapping)],
+                key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+            )
+            for row in yield_rows:
+                if not str(row.get("deterministic_fingerprint", "")).strip():
+                    row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+            state["chem_yield_model_rows"] = sorted(
+                [dict(row) for row in yield_rows if isinstance(row, Mapping)],
+                key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("run_id", "")), str(row.get("yield_model_id", ""))),
+            )
+            state["chem_process_run_events"] = sorted(
+                [dict(row) for row in process_event_rows if isinstance(row, Mapping)],
+                key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+            )
+            _ensure_material_batches(state)
+            _ensure_process_run_state_rows(state)
+            _ensure_batch_quality_rows(state)
+            _ensure_chem_species_pool_rows(state)
+            info_artifact_rows = normalize_info_artifact_rows(
+                list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                + [
+                    {
+                        "artifact_id": "artifact.record.chem.process_run.tick.{}".format(
+                            canonical_sha256({"event_id": str(row.get("event_id", ""))})[:16]
+                        ),
+                        "artifact_family_id": "RECORD",
+                        "extensions": {
+                            "event_id": str(row.get("event_id", "")).strip(),
+                            "event_type": "incident.chem_process_run_tick",
+                            "run_id": str(row.get("run_id", "")).strip(),
+                            "reaction_id": str(row.get("reaction_id", "")).strip(),
+                        },
+                    }
+                    for row in list(state.get("chem_process_run_events") or [])
+                    if isinstance(row, Mapping)
+                    and str(row.get("event_kind", "")).strip() == "process_run_tick"
+                    and int(max(0, _as_int(row.get("tick", 0), 0))) == int(max(0, _as_int(current_tick, 0)))
+                ]
+            )
+            state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+            state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+            _refresh_chem_process_hash_chains(state)
+            if deferred_run_ids:
+                decision_rows = [dict(row) for row in list(state.get("control_decision_log") or []) if isinstance(row, Mapping)]
+                decision_row = {
+                    "decision_id": "decision.chem.process_run.degrade.{}".format(
+                        canonical_sha256({"tick": int(max(0, _as_int(current_tick, 0))), "deferred_run_ids": list(_sorted_tokens(deferred_run_ids))})[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "reason_code": "degrade.chem.process_run_budget",
+                    "details": {
+                        "max_process_run_evaluations_per_tick": int(max_runs_per_tick),
+                        "deferred_run_ids": list(_sorted_tokens(deferred_run_ids)),
+                        "mode": "C0_stub",
+                    },
+                    "deterministic_fingerprint": "",
+                }
+                decision_row["deterministic_fingerprint"] = canonical_sha256(dict(decision_row, deterministic_fingerprint=""))
+                decision_rows.append(decision_row)
+                state["control_decision_log"] = sorted(
+                    [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+                    key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("decision_id", ""))),
+                )
+            result_metadata = {
+                "processed_run_ids": list(_sorted_tokens(processed_run_ids)),
+                "deferred_run_ids": list(_sorted_tokens(deferred_run_ids)),
+                "output_batch_ids": list(_sorted_tokens(output_batch_ids)),
+                "process_run_hash_chain": str(state.get("process_run_hash_chain", "")).strip(),
+                "batch_quality_hash_chain": str(state.get("batch_quality_hash_chain", "")).strip(),
+                "yield_model_hash_chain": str(state.get("yield_model_hash_chain", "")).strip(),
+                "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.process_run_end":
+        run_id = str(inputs.get("run_id", "")).strip()
+        if not run_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.process_run_end requires run_id",
+                "Provide deterministic run_id for CHEM process run closure.",
+                {"process_id": process_id},
+                "$.intent.inputs.run_id",
+            )
+        run_rows_by_id = process_run_rows_by_id(_ensure_process_run_state_rows(state))
+        run_row = dict(run_rows_by_id.get(run_id) or {})
+        if not run_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process run not found for process.process_run_end",
+                "Provide a valid run_id present in process_run_state rows.",
+                {"run_id": run_id},
+                "$.intent.inputs.run_id",
+            )
+        run_ext = dict(run_row.get("extensions") or {}) if isinstance(run_row.get("extensions"), Mapping) else {}
+        run_ext["status"] = str(inputs.get("status", run_ext.get("status", "complete"))).strip() or "complete"
+        run_ext["end_reason_code"] = str(inputs.get("reason_code", "")).strip() or "chem.process_run.end"
+        run_ext["end_intent_id"] = str(intent_id)
+        progress_before = int(max(0, min(1000, _as_int(run_row.get("progress", 0), 0))))
+        progress_after = int(max(0, min(1000, _as_int(inputs.get("progress", progress_before), progress_before))))
+        if str(run_ext.get("status", "")).strip() in {"complete", "ended"} and progress_after < 1000:
+            progress_after = 1000
+        updated_row = build_process_run_state(
+            run_id=run_id,
+            reaction_id=str(run_row.get("reaction_id", "")).strip(),
+            equipment_id=str(run_row.get("equipment_id", "")).strip(),
+            input_batch_ids=list(run_row.get("input_batch_ids") or []),
+            output_batch_ids=list(run_row.get("output_batch_ids") or []),
+            start_tick=int(max(0, _as_int(run_row.get("start_tick", current_tick), int(current_tick)))),
+            end_tick=int(max(0, _as_int(current_tick, 0))),
+            progress=int(progress_after),
+            status=str(run_ext.get("status", "complete")).strip() or "complete",
+            deterministic_fingerprint="",
+            extensions=run_ext,
+        )
+        run_rows_by_id[run_id] = dict(updated_row)
+        state["chem_process_run_state_rows"] = [dict(run_rows_by_id[key]) for key in sorted(run_rows_by_id.keys())]
+        state["process_run_state_rows"] = [dict(row) for row in list(state.get("chem_process_run_state_rows") or []) if isinstance(row, Mapping)]
+        process_event_rows = [
+            dict(row)
+            for row in list(state.get("chem_process_run_events") or [])
+            if isinstance(row, Mapping)
+        ]
+        end_event = {
+            "schema_version": "1.0.0",
+            "event_id": "event.chem.process_run.end.{}".format(
+                canonical_sha256(
+                    {
+                        "run_id": run_id,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "status": str(run_ext.get("status", "")),
+                    }
+                )[:16]
+            ),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "run_id": run_id,
+            "event_kind": "process_run_end",
+            "reaction_id": str(updated_row.get("reaction_id", "")).strip(),
+            "equipment_id": str(updated_row.get("equipment_id", "")).strip(),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "status": str(run_ext.get("status", "complete")).strip() or "complete",
+                "source_process_id": process_id,
+                "reason_code": str(run_ext.get("end_reason_code", "chem.process_run.end")).strip(),
+            },
+        }
+        end_event["deterministic_fingerprint"] = canonical_sha256(dict(end_event, deterministic_fingerprint=""))
+        process_event_rows.append(end_event)
+        state["chem_process_run_events"] = sorted(
+            [dict(row) for row in process_event_rows if isinstance(row, Mapping)],
+            key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+        )
+        _ensure_process_run_state_rows(state)
+        _refresh_chem_process_hash_chains(state)
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": "artifact.record.chem.process_run.end.{}".format(
+                        canonical_sha256({"event_id": str(end_event.get("event_id", ""))})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "event_id": str(end_event.get("event_id", "")).strip(),
+                        "event_type": "incident.chem_process_run_end",
+                        "run_id": run_id,
+                        "status": str(run_ext.get("status", "complete")).strip() or "complete",
+                    },
+                }
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+        result_metadata = {
+            "run_id": run_id,
+            "status": str(run_ext.get("status", "complete")).strip() or "complete",
+            "progress": int(progress_after),
+            "process_run_hash_chain": str(state.get("process_run_hash_chain", "")).strip(),
+            "batch_quality_hash_chain": str(state.get("batch_quality_hash_chain", "")).strip(),
+            "yield_model_hash_chain": str(state.get("yield_model_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.material_transform_phase":
