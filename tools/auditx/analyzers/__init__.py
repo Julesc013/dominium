@@ -233,6 +233,17 @@ from analyzers import e204_silent_therm_degrade_smell
 from analyzers import e205_energy_bypass_smell
 from analyzers import e206_momentum_bypass_smell
 from analyzers import e207_magic_silent_violation_smell
+from analyzers import e208_direct_velocity_write_smell
+from analyzers import e209_inline_acceleration_smell
+from analyzers import e210_direct_field_write_smell
+from analyzers import e211_unregistered_field_smell
+from analyzers import e212_direct_energy_write_smell
+from analyzers import e213_missing_ledger_entry_smell
+from analyzers import e214_inline_degradation_smell
+from analyzers import e215_entropy_bypass_smell
+from analyzers import e216_missing_tier_contract_smell
+from analyzers import e217_undeclared_coupling_smell
+from analyzers import e218_missing_explain_contract_smell
 
 
 ANALYZERS = (
@@ -469,6 +480,17 @@ ANALYZERS = (
     e205_energy_bypass_smell,
     e206_momentum_bypass_smell,
     e207_magic_silent_violation_smell,
+    e208_direct_velocity_write_smell,
+    e209_inline_acceleration_smell,
+    e210_direct_field_write_smell,
+    e211_unregistered_field_smell,
+    e212_direct_energy_write_smell,
+    e213_missing_ledger_entry_smell,
+    e214_inline_degradation_smell,
+    e215_entropy_bypass_smell,
+    e216_missing_tier_contract_smell,
+    e217_undeclared_coupling_smell,
+    e218_missing_explain_contract_smell,
 )
 
 

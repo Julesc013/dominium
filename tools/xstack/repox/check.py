@@ -294,6 +294,9 @@ BOUNDARY_ALIAS_RULES = {
     "INV-PHYS-PROFILE-DECLARED": {
         "INV-PHYSICS-PROFILE-IN-IDENTITY",
     },
+    "INV-FIELD-MUTATION-THROUGH-PROCESS": {
+        "INV-FIELD-MUTATION-PROCESS-ONLY",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -331,6 +334,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-STRUCTURAL-FAILURE-THROUGH-MECH",
     "INV-NO-ADHOC-WEATHER-FLAGS",
     "INV-FIELD-QUERIES-ONLY",
+    "INV-FIELD-TYPE-REGISTERED",
+    "INV-FIELD-MUTATION-THROUGH-PROCESS",
     "INV-NO-ADHOC-SAFETY-LOGIC",
     "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
     "INV-PHYS-PROFILE-DECLARED",
@@ -338,12 +343,23 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-LOSS-MAPPED-TO-HEAT",
     "INV-LOSS-MUST-DECLARE-TARGET",
     "INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
+    "INV-TIER-CONTRACT-REQUIRED",
+    "INV-COUPLING-CONTRACT-REQUIRED",
+    "INV-EXPLAIN-CONTRACT-REQUIRED",
+    "INV-NO-UNDECLARED-COUPLING",
     "INV-REALISM-DETAIL-MUST-BE-MODEL",
     "INV-NO-VEHICLE-SPECIALCASE",
     "INV-VEHICLES-AS-ASSEMBLIES",
     "INV-SPEC-COMPATIBILITY-REQUIRED",
     "INV-TRAVEL-THROUGH-COMMITMENTS",
     "INV-NO-SILENT-POSITION-UPDATES",
+    "INV-NO-DIRECT-VELOCITY-MUTATION",
+    "INV-FORCE-THROUGH-PROCESS",
+    "INV-MOMENTUM-STATE-DECLARED",
+    "INV-ENERGY-TRANSFORM-REGISTERED",
+    "INV-NO-DIRECT-ENERGY-MUTATION",
+    "INV-ENTROPY-UPDATE-THROUGH-ENGINE",
+    "INV-NO-SILENT-EFFICIENCY-DROP",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -10769,6 +10785,266 @@ def _append_info_grammar_invariant_findings(
             )
 
 
+def _append_meta_contract_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    tier_rule_id = "INV-TIER-CONTRACT-REQUIRED"
+    coupling_rule_id = "INV-COUPLING-CONTRACT-REQUIRED"
+    explain_rule_id = "INV-EXPLAIN-CONTRACT-REQUIRED"
+    undeclared_rule_id = "INV-NO-UNDECLARED-COUPLING"
+
+    tier_rel = "data/registries/tier_contract_registry.json"
+    coupling_rel = "data/registries/coupling_contract_registry.json"
+    explain_rel = "data/registries/explain_contract_registry.json"
+
+    tier_payload, tier_err = _load_json_object(repo_root, tier_rel)
+    coupling_payload, coupling_err = _load_json_object(repo_root, coupling_rel)
+    explain_payload, explain_err = _load_json_object(repo_root, explain_rel)
+
+    tier_rows = list(tier_payload.get("tier_contracts") or [])
+    if not tier_rows:
+        tier_rows = list((dict(tier_payload.get("record") or {})).get("tier_contracts") or [])
+    if tier_err or (not tier_rows):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=tier_rel,
+                line_number=1,
+                snippet="tier_contracts",
+                message="tier contract registry is missing/invalid or empty",
+                rule_id=tier_rule_id,
+            )
+        )
+    else:
+        required_subsystems = {"ELEC", "THERM", "MOB", "SIG", "PHYS"}
+        declared_subsystems = set()
+        for row in tier_rows:
+            if not isinstance(row, dict):
+                continue
+            subsystem_id = str(row.get("subsystem_id", "")).strip().upper()
+            if subsystem_id:
+                declared_subsystems.add(subsystem_id)
+            if not str(row.get("contract_id", "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=tier_rel,
+                        line_number=1,
+                        snippet="contract_id",
+                        message="tier contract rows must declare contract_id",
+                        rule_id=tier_rule_id,
+                    )
+                )
+                break
+        for subsystem_id in sorted(required_subsystems - declared_subsystems):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=tier_rel,
+                    line_number=1,
+                    snippet=subsystem_id,
+                    message="required subsystem tier contract is missing",
+                    rule_id=tier_rule_id,
+                )
+            )
+
+    coupling_rows = list(coupling_payload.get("coupling_contracts") or [])
+    if not coupling_rows:
+        coupling_rows = list((dict(coupling_payload.get("record") or {})).get("coupling_contracts") or [])
+    if coupling_err or (not coupling_rows):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=coupling_rel,
+                line_number=1,
+                snippet="coupling_contracts",
+                message="coupling contract registry is missing/invalid or empty",
+                rule_id=coupling_rule_id,
+            )
+        )
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=coupling_rel,
+                line_number=1,
+                snippet="coupling_contracts",
+                message="cannot verify undeclared coupling when coupling registry is unavailable",
+                rule_id=undeclared_rule_id,
+            )
+        )
+    else:
+        declared_contracts = set()
+        declared_mechanisms = set()
+        for row in coupling_rows:
+            if not isinstance(row, dict):
+                continue
+            contract_key = (
+                str(row.get("coupling_class_id", "")).strip(),
+                str(row.get("from_domain_id", "")).strip().upper(),
+                str(row.get("to_domain_id", "")).strip().upper(),
+                str(row.get("mechanism", "")).strip(),
+            )
+            if all(contract_key):
+                declared_contracts.add(contract_key)
+            mechanism_id = str(row.get("mechanism_id", "")).strip()
+            if mechanism_id:
+                declared_mechanisms.add(mechanism_id)
+
+        required_contracts = (
+            ("energy_coupling", "ELEC", "THERM", "energy_transform"),
+            ("energy_coupling", "FIELD", "THERM", "constitutive_model"),
+            ("force_coupling", "THERM", "MECH", "constitutive_model"),
+            ("info_coupling", "SIG", "SIG", "signal_policy"),
+        )
+        for contract in required_contracts:
+            if contract in declared_contracts:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=coupling_rel,
+                    line_number=1,
+                    snippet="{}:{}->{} ({})".format(contract[0], contract[1], contract[2], contract[3]),
+                    message="required baseline coupling contract is missing",
+                    rule_id=coupling_rule_id,
+                )
+            )
+
+        for mechanism_id in (
+            "transform.electrical_to_thermal",
+            "model.phys_irradiance_heating_stub",
+            "model.mech.fatigue.default",
+            "belief.default",
+        ):
+            if mechanism_id in declared_mechanisms:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=coupling_rel,
+                    line_number=1,
+                    snippet=mechanism_id,
+                    message="coupling mechanism is referenced by baseline domain coupling but not declared",
+                    rule_id=undeclared_rule_id,
+                )
+            )
+
+        direct_coupling_patterns = (
+            re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+            re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+            re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+            re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+        )
+        scan_prefixes = ("src/electric/", "src/thermal/", "src/signals/", "src/mobility/")
+        skip_prefixes = (
+            "docs/",
+            "schema/",
+            "schemas/",
+            "tools/auditx/analyzers/",
+            "tools/xstack/testx/tests/",
+        )
+        allowed_files = {
+            "src/models/model_engine.py",
+            "tools/xstack/sessionx/process_runtime.py",
+            "tools/xstack/repox/check.py",
+        }
+        for rel_path in _scan_files(repo_root):
+            rel_norm = _norm(rel_path)
+            if not rel_norm.endswith(".py"):
+                continue
+            if not any(rel_norm.startswith(prefix) for prefix in scan_prefixes):
+                continue
+            if rel_norm.startswith(skip_prefixes):
+                continue
+            if rel_norm in allowed_files:
+                continue
+            for line_no, line in _iter_lines(repo_root, rel_norm):
+                snippet = str(line).strip()
+                if (not snippet) or snippet.startswith("#"):
+                    continue
+                if not any(pattern.search(snippet) for pattern in direct_coupling_patterns):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="potential direct cross-domain coupling mutation detected outside declared contract/model pathways",
+                        rule_id=undeclared_rule_id,
+                    )
+                )
+                break
+
+    explain_rows = list(explain_payload.get("explain_contracts") or [])
+    if not explain_rows:
+        explain_rows = list((dict(explain_payload.get("record") or {})).get("explain_contracts") or [])
+    if explain_err or (not explain_rows):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_rel,
+                line_number=1,
+                snippet="explain_contracts",
+                message="explain contract registry is missing/invalid or empty",
+                rule_id=explain_rule_id,
+            )
+        )
+    else:
+        required_event_ids = {
+            "elec.trip",
+            "therm.overheat",
+            "mob.derailment",
+            "sig.delivery_loss",
+            "mech.fracture",
+        }
+        declared_event_ids = set()
+        for row in explain_rows:
+            if not isinstance(row, dict):
+                continue
+            event_kind_id = str(row.get("event_kind_id", "")).strip()
+            if event_kind_id:
+                declared_event_ids.add(event_kind_id)
+            if not str(row.get("explain_artifact_type_id", "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=explain_rel,
+                        line_number=1,
+                        snippet=event_kind_id or "explain_artifact_type_id",
+                        message="explain contract rows must declare explain_artifact_type_id",
+                        rule_id=explain_rule_id,
+                    )
+                )
+                break
+            if not list(row.get("required_inputs") or []):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=explain_rel,
+                        line_number=1,
+                        snippet=event_kind_id or "required_inputs",
+                        message="explain contract rows should declare required_inputs for deterministic explain generation",
+                        rule_id=explain_rule_id,
+                    )
+                )
+                break
+        for event_kind_id in sorted(required_event_ids - declared_event_ids):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=explain_rel,
+                    line_number=1,
+                    snippet=event_kind_id,
+                    message="required baseline explain contract is missing",
+                    rule_id=explain_rule_id,
+                )
+            )
+
+
 def _append_affordance_matrix_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -12381,12 +12657,185 @@ def _append_field_invariant_findings(
                 break
 
 
+def _append_field_generalization_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    field_registry_rel = "data/registries/field_type_registry.json"
+    field_registry_payload, field_registry_error = _load_json_object(repo_root, field_registry_rel)
+    field_rows = list((dict(field_registry_payload.get("record") or {})).get("field_types") or []) if not field_registry_error else []
+    registered_field_ids = set()
+    for row in list(field_rows or []):
+        if not isinstance(row, dict):
+            continue
+        for token in (
+            str(row.get("field_type_id", "")).strip(),
+            str(row.get("field_id", "")).strip(),
+        ):
+            if token:
+                registered_field_ids.add(token)
+
+    if field_registry_error or not registered_field_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=field_registry_rel,
+                line_number=1,
+                snippet="field_types",
+                message="field type registry is missing or empty; cannot enforce field registration invariants",
+                rule_id="INV-FIELD-TYPE-REGISTERED",
+            )
+        )
+    else:
+        token_pattern = re.compile(r"\bfield\.[A-Za-z0-9_.-]+\b")
+        scan_paths = (
+            "src/fields/",
+            "src/models/model_engine.py",
+            "tools/xstack/sessionx/process_runtime.py",
+            "data/registries/field_type_registry.json",
+            "data/registries/constitutive_model_registry.json",
+        )
+        skip_files = {
+            "tools/xstack/repox/check.py",
+        }
+        allowed_non_field_tokens = {
+            "field.static",
+            "field.static_default",
+            "field.scheduled",
+            "field.scheduled_linear",
+            "field.profile_defined",
+            "field.flow_linked",
+            "field.hazard_linked",
+            "field.update_policy_guard",
+            "field.free_motion.influence",
+        }
+        field_id_context_markers = (
+            "field_id",
+            "field_type_id",
+            "input_id",
+            "get_field_value(",
+            "field_type_rows",
+        )
+        for rel_path in _scan_files(repo_root):
+            rel_norm = _norm(rel_path)
+            if not any(rel_norm == token or rel_norm.startswith(token) for token in scan_paths):
+                continue
+            if rel_norm in skip_files:
+                continue
+            if not rel_norm.endswith((".py", ".json", ".schema", ".schema.json", ".md", ".txt")):
+                continue
+            for line_no, line in _iter_lines(repo_root, rel_norm):
+                snippet = str(line).strip()
+                if (not snippet) or snippet.startswith("#"):
+                    continue
+                if "refusal.field." in snippet.lower():
+                    continue
+                if not any(marker in snippet.lower() for marker in field_id_context_markers):
+                    continue
+                unknown_tokens: List[str] = []
+                for token in token_pattern.findall(snippet):
+                    candidate = str(token).strip().rstrip(".,:;")
+                    lowered = candidate.lower()
+                    if lowered.endswith(".json") or lowered.endswith(".schema") or lowered.endswith(".schema.json"):
+                        continue
+                    if candidate in allowed_non_field_tokens:
+                        continue
+                    if candidate in registered_field_ids:
+                        continue
+                    unknown_tokens.append(candidate)
+                if not unknown_tokens:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="field identifier is not registered in data/registries/field_type_registry.json: {}".format(
+                            ",".join(sorted(set(unknown_tokens)))
+                        ),
+                        rule_id="INV-FIELD-TYPE-REGISTERED",
+                    )
+                )
+                break
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    required_runtime_tokens = (
+        'elif process_id == "process.field_update":',
+        "_apply_field_updates(",
+        "_persist_field_state(",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="field mutation must route through process.field_update and deterministic field persistence hooks",
+                rule_id="INV-FIELD-MUTATION-THROUGH-PROCESS",
+            )
+        )
+
+    direct_field_write_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']field_layers[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']field_cells[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']field_sample_rows[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    mutation_scan_prefixes = (
+        "src/",
+        "tools/xstack/sessionx/",
+    )
+    mutation_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    mutation_allowed_files = {
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/fields/field_engine.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(mutation_scan_prefixes):
+            continue
+        if rel_norm.startswith(mutation_skip_prefixes):
+            continue
+        if rel_norm in mutation_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in direct_field_write_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct field-state mutation is forbidden outside process.field_update/field engine pathways",
+                    rule_id="INV-FIELD-MUTATION-THROUGH-PROCESS",
+                )
+            )
+            break
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
     profile: str,
 ) -> None:
-    del profile
     severity = "warn"
 
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
@@ -13474,7 +13923,6 @@ def _append_electric_invariant_findings(
     repo_root: str,
     profile: str,
 ) -> None:
-    del profile
     severity = "warn"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
@@ -13782,6 +14230,130 @@ def _append_electric_invariant_findings(
                         snippet=snippet[:140],
                         message="LOTO lock state mutation detected outside deterministic process/state-machine handlers",
                         rule_id="INV-LOTO-STATE_MACHINE-ONLY",
+                    )
+                )
+                break
+
+    strict_severity = _strict_only_severity(profile)
+    if 'elif process_id == "process.apply_force":' not in runtime_text:
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet='elif process_id == "process.apply_force":',
+                message="force application must route through deterministic process.apply_force handler",
+                rule_id="INV-FORCE-THROUGH-PROCESS",
+            )
+        )
+    if 'elif process_id == "process.apply_impulse":' not in runtime_text:
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet='elif process_id == "process.apply_impulse":',
+                message="impulse application must route through deterministic process.apply_impulse handler",
+                rule_id="INV-FORCE-THROUGH-PROCESS",
+            )
+        )
+    if (
+        "_ensure_momentum_state_rows(state)" not in runtime_text
+        or "state[\"momentum_states\"]" not in runtime_text
+    ):
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet="momentum_states",
+                message="runtime must declare and normalize momentum_state truth rows before motion integration",
+                rule_id="INV-MOMENTUM-STATE-DECLARED",
+            )
+        )
+    momentum_schema_paths = (
+        "schema/physics/momentum_state.schema",
+        "schemas/momentum_state.schema.json",
+    )
+    for rel_path in momentum_schema_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="momentum_state",
+                message="momentum_state schema must be present and registered for PHYS-1 process payload contracts",
+                rule_id="INV-MOMENTUM-STATE-DECLARED",
+            )
+        )
+
+    direct_velocity_patterns = (
+        re.compile(r"\bvelocity_mm_per_tick\b\s*=", re.IGNORECASE),
+        re.compile(r"\bvelocity\b\s*=\s*[^#\n]*(?:accel|acceleration|force|impulse)", re.IGNORECASE),
+    )
+    inline_accel_patterns = (
+        re.compile(
+            r"\bvelocity(?:_mm_per_tick)?\b\s*=\s*[^#\n]*(?:\+|-)\s*[^#\n]*(?:accel|acceleration)(?:_[a-z]+)?",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"\bvelocity(?:_mm_per_tick)?\b\s*=\s*[^#\n]*(?:accel|acceleration)[^#\n]*(?:\*|//|/)\s*",
+            re.IGNORECASE,
+        ),
+    )
+    velocity_scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    velocity_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    velocity_allowed_files = {
+        runtime_rel,
+        "src/mobility/micro/free_motion_solver.py",
+        "src/mobility/micro/constrained_motion_solver.py",
+        "src/physics/momentum_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(velocity_scan_prefixes):
+            continue
+        if rel_norm.startswith(velocity_skip_prefixes):
+            continue
+        if rel_norm in velocity_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if any(pattern.search(snippet) for pattern in direct_velocity_patterns):
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="velocity writes must be derived from momentum in process/solver pathways, not ad-hoc assignments",
+                        rule_id="INV-NO-DIRECT-VELOCITY-MUTATION",
+                    )
+                )
+                break
+            if any(pattern.search(snippet) for pattern in inline_accel_patterns):
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="inline acceleration-to-velocity updates are forbidden outside momentum substrate integration paths",
+                        rule_id="INV-NO-DIRECT-VELOCITY-MUTATION",
                     )
                 )
                 break
@@ -14400,6 +14972,400 @@ def _append_loss_target_invariant_findings(
                 )
             )
             break
+
+
+def _append_energy_ledger_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    transform_rule_id = "INV-ENERGY-TRANSFORM-REGISTERED"
+    mutation_rule_id = "INV-NO-DIRECT-ENERGY-MUTATION"
+    registry_rel = "data/registries/energy_transformation_registry.json"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    engine_rel = "src/physics/energy/energy_ledger_engine.py"
+
+    payload, payload_error = _load_json_object(repo_root, registry_rel)
+    rows = list(payload.get("energy_transformations") or [])
+    if not rows:
+        rows = list((dict(payload.get("record") or {})).get("energy_transformations") or [])
+    registered_transforms = set(
+        str(row.get("transformation_id", "")).strip()
+        for row in list(rows or [])
+        if isinstance(row, dict) and str(row.get("transformation_id", "")).strip()
+    )
+    if payload_error or not registered_transforms:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet="energy_transformations",
+                message="energy transformation registry is missing or empty; PHYS-3 transform routing cannot be enforced",
+                rule_id=transform_rule_id,
+            )
+        )
+    else:
+        required_transform_ids = (
+            "transform.kinetic_to_thermal",
+            "transform.electrical_to_thermal",
+            "transform.chemical_to_thermal",
+            "transform.potential_to_kinetic",
+            "transform.external_irradiance",
+        )
+        for transform_id in required_transform_ids:
+            if transform_id in registered_transforms:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet=transform_id,
+                    message="required PHYS-3 energy transformation id is missing",
+                    rule_id=transform_rule_id,
+                )
+            )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    required_runtime_tokens = (
+        "_record_energy_transformation_in_state(",
+        "_record_boundary_flux_event_in_state(",
+        "energy_ledger_hash_chain",
+        "boundary_flux_hash_chain",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="energy ledger runtime integration token is missing",
+                rule_id=transform_rule_id,
+            )
+        )
+
+    engine_text = _file_text(repo_root, engine_rel)
+    engine_required_tokens = (
+        "record_energy_transformation(",
+        "evaluate_energy_balance(",
+        "build_energy_ledger_entry(",
+        "build_boundary_flux_event(",
+    )
+    for token in engine_required_tokens:
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message="energy ledger engine helper token is missing",
+                rule_id=transform_rule_id,
+            )
+        )
+
+    transform_literal_pattern = re.compile(
+        r"transformation_id\s*=\s*[\"'](transform\.[A-Za-z0-9_.-]+)[\"']",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            match = transform_literal_pattern.search(snippet)
+            if not match:
+                continue
+            transform_id = str(match.group(1) or "").strip()
+            if (not transform_id) or transform_id in registered_transforms:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="energy transformation id is not registered: {}".format(transform_id),
+                    rule_id=transform_rule_id,
+                )
+            )
+            break
+
+    direct_energy_write_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']energy_quantity_totals[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\[\s*[\"']quantity\.energy_[A-Za-z0-9_]+[\"']\s*\]\s*[+\-*/]?=", re.IGNORECASE),
+    )
+    mutation_scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    mutation_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    mutation_allowed_files = {
+        runtime_rel,
+        engine_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(mutation_scan_prefixes):
+            continue
+        if rel_norm.startswith(mutation_skip_prefixes):
+            continue
+        if rel_norm in mutation_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in direct_energy_write_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct energy mutation detected outside PHYS-3 energy ledger runtime pathways",
+                    rule_id=mutation_rule_id,
+                )
+            )
+            break
+
+
+def _append_entropy_policy_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    update_rule_id = "INV-ENTROPY-UPDATE-THROUGH-ENGINE"
+    efficiency_rule_id = "INV-NO-SILENT-EFFICIENCY-DROP"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    engine_rel = "src/physics/entropy/entropy_engine.py"
+    contribution_registry_rel = "data/registries/entropy_contribution_registry.json"
+    effect_registry_rel = "data/registries/entropy_effect_policy_registry.json"
+
+    contribution_payload, contribution_error = _load_json_object(repo_root, contribution_registry_rel)
+    contribution_rows = list(contribution_payload.get("entropy_contributions") or [])
+    if not contribution_rows:
+        contribution_rows = list((dict(contribution_payload.get("record") or {})).get("entropy_contributions") or [])
+    contribution_ids = set(
+        str(row.get("contribution_id", "")).strip()
+        for row in list(contribution_rows or [])
+        if isinstance(row, dict) and str(row.get("contribution_id", "")).strip()
+    )
+    if contribution_error or not contribution_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=contribution_registry_rel,
+                line_number=1,
+                snippet="entropy_contributions",
+                message="entropy contribution registry is missing or empty",
+                rule_id=update_rule_id,
+            )
+        )
+    else:
+        required_contribution_ids = {
+            "entropy.from_friction",
+            "entropy.from_combustion",
+            "entropy.from_plastic_deformation",
+            "entropy.from_phase_change_stub",
+        }
+        for contribution_id in sorted(required_contribution_ids):
+            if contribution_id in contribution_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=contribution_registry_rel,
+                    line_number=1,
+                    snippet=contribution_id,
+                    message="required PHYS-4 entropy contribution id is missing",
+                    rule_id=update_rule_id,
+                )
+            )
+
+    effect_payload, effect_error = _load_json_object(repo_root, effect_registry_rel)
+    effect_rows = list(effect_payload.get("entropy_effect_policies") or [])
+    if not effect_rows:
+        effect_rows = list((dict(effect_payload.get("record") or {})).get("entropy_effect_policies") or [])
+    effect_ids = set(
+        str(row.get("policy_id", "")).strip()
+        for row in list(effect_rows or [])
+        if isinstance(row, dict) and str(row.get("policy_id", "")).strip()
+    )
+    if effect_error or not effect_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=effect_registry_rel,
+                line_number=1,
+                snippet="entropy_effect_policies",
+                message="entropy effect policy registry is missing or empty",
+                rule_id=update_rule_id,
+            )
+        )
+    else:
+        required_effect_ids = {
+            "entropy_effect.basic_linear",
+            "entropy_effect.none",
+            "entropy_effect.strict",
+        }
+        for policy_id in sorted(required_effect_ids):
+            if policy_id in effect_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=effect_registry_rel,
+                    line_number=1,
+                    snippet=policy_id,
+                    message="required PHYS-4 entropy effect policy id is missing",
+                    rule_id=update_rule_id,
+                )
+            )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    runtime_required_tokens = (
+        "_record_entropy_contribution_in_state(",
+        "_apply_entropy_reset_in_state(",
+        "entropy_hash_chain",
+        "entropy_reset_events_hash_chain",
+        "evaluate_entropy_effects(",
+        "process.decay_tick",
+    )
+    for token in runtime_required_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="entropy runtime integration token is missing",
+                rule_id=update_rule_id,
+            )
+        )
+
+    engine_text = _file_text(repo_root, engine_rel)
+    engine_required_tokens = (
+        "record_entropy_contribution(",
+        "apply_entropy_reset(",
+        "evaluate_entropy_effects(",
+    )
+    for token in engine_required_tokens:
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message="entropy engine helper token is missing",
+                rule_id=update_rule_id,
+            )
+        )
+
+    direct_entropy_write_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']entropy_state_rows[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']entropy_event_rows[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']entropy_reset_events[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        runtime_rel,
+        "src/physics/entropy/entropy_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in direct_entropy_write_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="entropy mutation detected outside PHYS-4 entropy runtime pathways",
+                    rule_id=update_rule_id,
+                )
+            )
+            break
+
+    silent_drop_tokens = ("backlog_penalty", "wear_penalty")
+    for token in silent_drop_tokens:
+        if token not in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="inline maintenance degradation token indicates entropy policy bypass",
+                rule_id=efficiency_rule_id,
+            )
+        )
+    if "maintenance_degradation" in runtime_text and "evaluate_entropy_effects(" not in runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet="evaluate_entropy_effects(",
+                message="maintenance degradation effects must be entropy-policy evaluated",
+                rule_id=efficiency_rule_id,
+            )
+        )
 
 
 def _append_constitutive_model_invariant_findings(
@@ -15101,6 +16067,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         repo_root=repo_root,
         profile=token,
     )
+    _append_meta_contract_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
     _append_affordance_matrix_invariant_findings(
         findings=findings,
         repo_root=repo_root,
@@ -15161,6 +16132,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         repo_root=repo_root,
         profile=token,
     )
+    _append_field_generalization_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
     _append_mobility_invariant_findings(
         findings=findings,
         repo_root=repo_root,
@@ -15177,6 +16153,16 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_loss_target_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_energy_ledger_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_entropy_policy_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
