@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List, Mapping
 
+from src.meta.numeric import deterministic_mul_div
 from src.models import constitutive_model_rows_by_id, evaluate_time_mapping_model, model_type_rows_by_id
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -15,15 +16,42 @@ def _as_int(value: object, default_value: int = 0) -> int:
         return int(default_value)
 
 
-def _as_float(value: object, default_value: float = 0.0) -> float:
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return float(default_value)
-
-
 def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
+def _as_rate_permille(value: object, default_value: int = 1000) -> int:
+    if isinstance(value, bool):
+        return int(max(0, int(default_value)))
+    if isinstance(value, int):
+        return int(max(0, int(value) * 1000))
+    token = str(value or "").strip()
+    if not token:
+        return int(max(0, int(default_value)))
+    sign = 1
+    if token.startswith("-"):
+        sign = -1
+        token = token[1:]
+    elif token.startswith("+"):
+        token = token[1:]
+    if not token:
+        return int(max(0, int(default_value)))
+    if "." not in token:
+        try:
+            whole = int(token)
+        except ValueError:
+            return int(max(0, int(default_value)))
+        return int(max(0, sign * whole * 1000))
+    head, tail = token.split(".", 1)
+    if not head:
+        head = "0"
+    if (not head.isdigit()) or (tail and not tail.isdigit()):
+        return int(max(0, int(default_value)))
+    whole = int(head)
+    frac_digits = tail[:6] if tail else ""
+    frac_milli = int((frac_digits + "000")[:3]) if frac_digits else 0
+    permille = int(sign * (whole * 1000 + frac_milli))
+    return int(max(0, permille))
 
 
 def _canon(value: object):
@@ -101,10 +129,12 @@ def normalize_drift_policy_rows(rows: object) -> List[dict]:
         drift_policy_id = str(row.get("drift_policy_id", "")).strip()
         if not drift_policy_id:
             continue
+        base_rate_multiplier_permille = _as_rate_permille(row.get("base_rate_multiplier", 1), 1000)
         payload = {
             "schema_version": "1.0.0",
             "drift_policy_id": drift_policy_id,
-            "base_rate_multiplier": float(max(0.0, _as_float(row.get("base_rate_multiplier", 1.0), 1.0))),
+            "base_rate_multiplier": str(row.get("base_rate_multiplier", "1")).strip() or "1",
+            "base_rate_multiplier_permille": int(base_rate_multiplier_permille),
             "deterministic_rng_stream": str(row.get("deterministic_rng_stream", "")).strip(),
             "max_skew_allowed": int(max(0, _as_int(row.get("max_skew_allowed", 0), 0))),
             "deterministic_fingerprint": "",
@@ -413,8 +443,21 @@ def _apply_drift_policy(
             "jitter": 0,
         }
 
-    base_multiplier = float(max(0.0, _as_float(policy.get("base_rate_multiplier", 1.0), 1.0)))
-    effective_delta = int(max(0, int(round(float(base_delta_int) * float(base_multiplier)))))
+    base_multiplier_permille = _as_rate_permille(
+        policy.get("base_rate_multiplier_permille", policy.get("base_rate_multiplier", 1)),
+        1000,
+    )
+    effective_delta = int(
+        max(
+            0,
+            deterministic_mul_div(
+                int(base_delta_int),
+                int(base_multiplier_permille),
+                1000,
+                rounding_mode="round_half_to_even",
+            ),
+        )
+    )
 
     rng_stream = str(policy.get("deterministic_rng_stream", "")).strip()
     jitter = 0
@@ -442,7 +485,7 @@ def _apply_drift_policy(
         "drift_applied": True,
         "base_delta": int(base_delta_int),
         "effective_delta": int(effective_delta),
-        "base_rate_multiplier": float(base_multiplier),
+        "base_rate_multiplier_permille": int(base_multiplier_permille),
         "deterministic_rng_stream": rng_stream,
         "max_skew_allowed": int(max_skew_allowed),
         "jitter": int(jitter),

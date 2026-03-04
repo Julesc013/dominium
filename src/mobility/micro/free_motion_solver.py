@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence, Tuple
 
+from src.meta.numeric import deterministic_divide
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -48,14 +49,6 @@ def _vector3_int(value: object, default_value: Mapping[str, object] | None = Non
         "y": int(_as_int(payload.get("y", fallback.get("y", 0)), fallback.get("y", 0))),
         "z": int(_as_int(payload.get("z", fallback.get("z", 0)), fallback.get("z", 0))),
     }
-
-
-def _div_toward_zero(value: int, divisor: int) -> int:
-    den = int(max(1, _as_int(divisor, 1)))
-    num = int(_as_int(value, 0))
-    if num < 0:
-        return -int(abs(num) // den)
-    return int(num // den)
 
 
 def _normalize_corridor_mode(value: object) -> str:
@@ -492,9 +485,9 @@ def step_free_motion(
         "z": int(momentum_p0["z"]) + int(accel["z"]) * int(dt) * int(mass),
     }
     v1 = {
-        "x": int(_div_toward_zero(int(momentum_p1["x"]), int(mass))),
-        "y": int(_div_toward_zero(int(momentum_p1["y"]), int(mass))),
-        "z": int(_div_toward_zero(int(momentum_p1["z"]), int(mass))),
+        "x": int(deterministic_divide(int(momentum_p1["x"]), int(mass), rounding_mode="truncate")),
+        "y": int(deterministic_divide(int(momentum_p1["y"]), int(mass), rounding_mode="truncate")),
+        "z": int(deterministic_divide(int(momentum_p1["z"]), int(mass), rounding_mode="truncate")),
     }
     speed_cap = _speed_cap_mm_per_tick(policy_row=policy, field_values=fields, effect_modifiers=effects)
     for axis in ("x", "y", "z"):

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.meta.numeric import deterministic_divide, rounding_mode_for_quantity
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -36,14 +37,6 @@ def _vector3_int(value: object, default_value: Mapping[str, object] | None = Non
         "y": int(_as_int(payload.get("y", fallback.get("y", 0)), fallback.get("y", 0))),
         "z": int(_as_int(payload.get("z", fallback.get("z", 0)), fallback.get("z", 0))),
     }
-
-
-def _div_toward_zero(value: int, divisor: int) -> int:
-    den = int(max(1, _as_int(divisor, 1)))
-    num = int(_as_int(value, 0))
-    if num < 0:
-        return -int(abs(num) // den)
-    return int(num // den)
 
 
 def build_momentum_state(
@@ -276,14 +269,23 @@ def apply_impulse_to_momentum_state(
     }
 
 
-def velocity_from_momentum_state(momentum_state_row: Mapping[str, object]) -> dict:
+def velocity_from_momentum_state(
+    momentum_state_row: Mapping[str, object],
+    *,
+    quantity_tolerance_registry: Mapping[str, object] | None = None,
+) -> dict:
     row = dict(momentum_state_row or {})
     momentum_linear = _vector3_int(row.get("momentum_linear"), {"x": 0, "y": 0, "z": 0})
     mass_value = int(max(1, _as_int(row.get("mass_value", 1), 1)))
+    rounding_mode = rounding_mode_for_quantity(
+        quantity_id="quantity.momentum_linear",
+        quantity_tolerance_registry=quantity_tolerance_registry,
+        default_mode="truncate",
+    )
     return {
-        "x": int(_div_toward_zero(int(momentum_linear["x"]), mass_value)),
-        "y": int(_div_toward_zero(int(momentum_linear["y"]), mass_value)),
-        "z": int(_div_toward_zero(int(momentum_linear["z"]), mass_value)),
+        "x": int(deterministic_divide(int(momentum_linear["x"]), mass_value, rounding_mode=rounding_mode)),
+        "y": int(deterministic_divide(int(momentum_linear["y"]), mass_value, rounding_mode=rounding_mode)),
+        "z": int(deterministic_divide(int(momentum_linear["z"]), mass_value, rounding_mode=rounding_mode)),
     }
 
 
