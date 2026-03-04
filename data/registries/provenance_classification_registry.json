@@ -1,0 +1,123 @@
+{
+  "schema_id": "dominium.registry.provenance_classification_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.provenance_classification_registry",
+    "registry_version": "1.0.0",
+    "provenance_classifications": [
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.energy_ledger_entry",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "d64e067af6fbce5f470a91f3435de2c08fcd6eed54af7583a69ae9259f6be2b2",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.boundary_flux_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "539970f13dc60bf663f4786712a4de23898e2b16771091d41976af8ebd1b1027",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.time_adjust_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "d853f69512f39f8f8794f4ecf4946a74951e7d6366dec864ea0ca2f35365853a",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fault_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "f23f087f8f738538f0602d3227f8f4376edc5d1b1d4aa90fc4ee6a9754f0f537",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.exception_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "7c0ac89a662d9f26a5ff8c310f523121159100fbef834a1e1fe94a426a542ff4",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.leak_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "e58eb8be2ddf3143b126d5f8e99aa9be397c6aa22bb2a59d6078b06abb0533f7",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.burst_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "6ed0d4a390f0c90ff9cd6e642f8187e5d3f4473a95f840df53da7ad6ff5537ab",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.relief_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "c0da3c5982e49b9d0e4d6658a603a677ad2dcb5ca9b9ee0bf3659556002a2de9",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.branch_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "62fa2d7f8f4f01695e8ad11f5f2dad1b42f0d663769412413a9d3f05309adf90",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.compaction_marker",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "5de7d9918fdd292f3fd4f3f5bf3d73dc03f63958458afed31ff43f7f463220f5",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "15e4d9da2eb4fa0be2332883e49e1a29ec77e7b55f19d779510294c5f8165167",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain_artifact",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "65f64fb4dbd42edaf75452e1adf31bc054b5f9ddbc65f2dcf3f164df5c77f257",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.inspection_snapshot",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "6f4d4e17928ab03f2a3fa9e02e08555a4d5dc3d779587e79ad4bc3f5034f3ffb",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.model_evaluation_result",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "e88f43af0e6c974296fba9b3374cbf4a99f333b6680d2f19142f8d6d17dc17cc",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

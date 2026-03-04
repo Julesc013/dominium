@@ -3569,6 +3569,20 @@
       "supported_versions": [
         "1.0.0"
       ]
+    },
+    "compaction_marker": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "provenance_classification": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
     }
   }
 }

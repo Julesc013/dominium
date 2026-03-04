@@ -1,0 +1,26 @@
+SCHEMA: meta/compaction_marker.schema
+schema_id: dominium.schema.meta.compaction_marker
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical deterministic compaction marker rows for provenance compaction windows.
+- Preserve replay anchors for pre/post compaction proof validation.
+
+REQUIRED SHAPE:
+record compaction_marker
+  required:
+    - schema_version: semver
+    - marker_id: id
+    - shard_id: id
+    - start_tick: u64
+    - end_tick: u64
+    - pre_compaction_hash: sha256
+    - post_compaction_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- end_tick must be >= start_tick.
+- marker rows are canonical RECORD evidence and must not be silently dropped.
+- deterministic_fingerprint must be derived from canonical payload fields.

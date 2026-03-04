@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Provenance Classification Schema",
+  "version": "1.0.0",
+  "description": "Deterministic canonical/derived artifact compaction classification contract.",
+  "x-doc-ref": [
+    "docs/meta/PROVENANCE_AND_COMPACTION_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "artifact_type_id",
+    "classification",
+    "compaction_allowed",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "artifact_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classification": {
+      "type": "string",
+      "enum": [
+        "canonical",
+        "derived"
+      ]
+    },
+    "compaction_allowed": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "classification": {
+            "const": "canonical"
+          }
+        },
+        "required": [
+          "classification"
+        ]
+      },
+      "then": {
+        "properties": {
+          "compaction_allowed": {
+            "const": false
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "artifact_type_id": "artifact.energy_ledger_entry",
+      "classification": "canonical",
+      "compaction_allowed": false,
+      "deterministic_fingerprint": "d64e067af6fbce5f470a91f3435de2c08fcd6eed54af7583a69ae9259f6be2b2",
+      "extensions": {}
+    }
+  ]
+}
