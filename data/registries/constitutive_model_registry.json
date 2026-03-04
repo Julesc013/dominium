@@ -1589,6 +1589,140 @@
         "extensions": {
           "source": "FLUID2"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.chem_yield_factor.default",
+        "model_type_id": "model_type.chem_yield_factor",
+        "description": "CHEM-2 deterministic yield/defect model driven by process conditions.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.pressure_head",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "quantity.entropy_index",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.chem.catalyst_present",
+            "selector": "target.equipment",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "compliance_signal",
+            "input_id": "compliance.spec_score_permille",
+            "selector": "target.equipment",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.chem.yield_factor_permille",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.chem.defect_flags",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.chem.quality_grade",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "CHEM2-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.chem_contamination_risk.default",
+        "model_type_id": "model_type.chem_contamination_risk",
+        "description": "CHEM-2 deterministic contamination/fouling model.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.chem.equipment_wear_permille",
+            "selector": "target.equipment",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "quantity.entropy_index",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.chem.input_contamination_tags",
+            "selector": "target.batch",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.chem.contamination_tags",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.chem.equipment_fouling",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "CHEM2-4"
+        }
       }
     ],
     "extensions": {}

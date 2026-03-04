@@ -1675,6 +1675,259 @@ def _evaluate_therm_combust_stub_model(
     return outputs
 
 
+def _evaluate_chem_yield_factor_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+
+    temperature_value = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    pressure_head = int(
+        _binding_param_int(
+            binding=binding,
+            key="pressure_head",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="quantity.pressure_head",
+                default_value=0,
+            ),
+        )
+    )
+    entropy_value = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="entropy_value",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.entropy_index",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    catalyst_raw = params.get("catalyst_present", _resolved_input_any(resolved_inputs=resolved_inputs, input_id="derived.chem.catalyst_present"))
+    catalyst_present = bool(catalyst_raw) and str(catalyst_raw).strip().lower() not in {"0", "false", "no", "none"}
+    spec_score_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="spec_score_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="compliance.spec_score_permille",
+                        default_value=1000,
+                    ),
+                ),
+            ),
+        )
+    )
+
+    nominal_temp = int(_as_int(params.get("nominal_temperature", 620), 620))
+    temp_band = int(max(1, _as_int(params.get("temperature_band", 140), 140)))
+    pressure_nominal = int(max(0, _as_int(params.get("pressure_head_nominal", 250), 250)))
+    pressure_band = int(max(1, _as_int(params.get("pressure_head_band", 200), 200)))
+    entropy_scale = int(max(1, _as_int(params.get("entropy_scale", 150), 150)))
+    compliance_scale = int(max(1, _as_int(params.get("compliance_scale", 2), 2)))
+    catalyst_bonus = int(max(0, _as_int(params.get("catalyst_bonus_permille", 90), 90)))
+    base_yield = int(max(150, min(1000, _as_int(params.get("base_yield_permille", 880), 880))))
+    min_yield = int(max(50, min(1000, _as_int(params.get("min_yield_permille", 180), 180))))
+
+    temp_penalty = int((abs(int(temperature_value) - int(nominal_temp)) * 100) // int(temp_band))
+    pressure_penalty = int((abs(int(pressure_head) - int(pressure_nominal)) * 60) // int(pressure_band))
+    entropy_penalty = int(int(entropy_value) // int(entropy_scale))
+    compliance_penalty = int(max(0, 1000 - int(spec_score_permille)) // int(compliance_scale))
+    yield_factor_permille = int(base_yield - temp_penalty - pressure_penalty - entropy_penalty - compliance_penalty)
+    if catalyst_present:
+        yield_factor_permille += int(catalyst_bonus)
+    if yield_factor_permille < min_yield:
+        yield_factor_permille = int(min_yield)
+    if yield_factor_permille > 1000:
+        yield_factor_permille = 1000
+
+    defect_flags: List[str] = []
+    if temperature_value < (nominal_temp - temp_band):
+        defect_flags.append("underprocessed")
+    if temperature_value > (nominal_temp + temp_band):
+        defect_flags.append("overprocessed")
+    if entropy_value > int(max(0, _as_int(params.get("contamination_entropy_threshold", 900), 900))):
+        defect_flags.append("contamination_present")
+    if spec_score_permille < int(max(0, _as_int(params.get("out_of_spec_threshold", 760), 760))):
+        defect_flags.append("out_of_spec")
+    defect_flags = sorted(set(_sorted_tokens(defect_flags)))
+
+    quality_grade = "grade.C"
+    if yield_factor_permille >= 900 and not defect_flags:
+        quality_grade = "grade.A"
+    elif yield_factor_permille >= 760 and "out_of_spec" not in defect_flags:
+        quality_grade = "grade.B"
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind != "derived_quantity":
+            continue
+        if output_id.endswith("yield_factor_permille") or output_id.endswith("yield_factor"):
+            payload_value: object = int(yield_factor_permille)
+        elif output_id.endswith("defect_flags"):
+            payload_value = list(defect_flags)
+        elif output_id.endswith("quality_grade"):
+            payload_value = str(quality_grade)
+        else:
+            payload_value = int(yield_factor_permille)
+        outputs.append(
+            _build_output_row(
+                model_id=model_id,
+                binding_id=binding_id,
+                target_id=target_id,
+                output_kind=output_kind,
+                output_id=output_id,
+                payload={
+                    "quantity_id": output_id,
+                    "value": _canon(payload_value),
+                    "yield_factor_permille": int(yield_factor_permille),
+                    "defect_flags": list(defect_flags),
+                    "quality_grade": str(quality_grade),
+                    "temperature": int(temperature_value),
+                    "pressure_head": int(pressure_head),
+                    "entropy_value": int(entropy_value),
+                    "catalyst_present": bool(catalyst_present),
+                    "spec_score_permille": int(spec_score_permille),
+                },
+            )
+        )
+    return outputs
+
+
+def _evaluate_chem_contamination_risk_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+
+    wear_permille = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="equipment_wear_permille",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="derived.chem.equipment_wear_permille",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    entropy_value = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="entropy_value",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.entropy_index",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    input_tags_raw = params.get(
+        "input_contamination_tags",
+        _resolved_input_any(resolved_inputs=resolved_inputs, input_id="derived.chem.input_contamination_tags"),
+    )
+    input_tags = _sorted_tokens(list(input_tags_raw or []))
+
+    wear_threshold = int(max(0, _as_int(params.get("wear_threshold_permille", 500), 500)))
+    entropy_threshold = int(max(0, _as_int(params.get("entropy_threshold", 900), 900)))
+    risk_scale = int(max(1, _as_int(params.get("risk_scale", 220), 220)))
+
+    contamination_tags = list(input_tags)
+    risk_value = int(max(0, (int(wear_permille) - int(wear_threshold)) + (int(entropy_value) // int(max(1, risk_scale)))))
+    if wear_permille >= wear_threshold:
+        contamination_tags.append("contamination.equipment_wear")
+    if entropy_value >= entropy_threshold:
+        contamination_tags.append("contamination.entropy_buildup")
+    contamination_tags = sorted(set(_sorted_tokens(contamination_tags)))
+
+    hazard_delta = int(
+        max(
+            0,
+            min(
+                25,
+                int(risk_value // int(max(1, _as_int(params.get("hazard_delta_scale", 200), 200)))),
+            ),
+        )
+    )
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "derived_quantity":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": list(contamination_tags),
+                        "contamination_tags": list(contamination_tags),
+                        "risk_value": int(risk_value),
+                        "equipment_wear_permille": int(wear_permille),
+                        "entropy_value": int(entropy_value),
+                    },
+                )
+            )
+        elif output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "hazard_type_id": output_id,
+                        "delta": int(hazard_delta),
+                        "risk_value": int(risk_value),
+                    },
+                )
+            )
+    return outputs
+
+
 def _evaluate_phys_gravity_stub_model(
     *,
     model_row: Mapping[str, object],
@@ -2118,6 +2371,20 @@ def _evaluate_known_model_outputs(
         )
     if model_type_id == "model_type.therm_combust_stub":
         return _evaluate_therm_combust_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.chem_yield_factor":
+        return _evaluate_chem_yield_factor_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.chem_contamination_risk":
+        return _evaluate_chem_contamination_risk_model(
             model_row=model_row,
             binding=binding,
             resolved_inputs=resolved_inputs,
