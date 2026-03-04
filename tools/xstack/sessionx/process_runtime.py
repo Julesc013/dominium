@@ -423,12 +423,16 @@ from src.mechanics import (
     summarize_stress_for_target,
 )
 from src.fields import (
+    build_field_cell,
+    build_field_layer,
+    build_field_sample,
     field_modifier_snapshot,
     field_type_rows_by_id,
     field_update_policy_rows_by_id,
     get_field_value,
     normalize_field_cell_rows,
     normalize_field_layer_rows,
+    normalize_field_sample_rows,
     update_field_layers,
 )
 from src.signals import (
@@ -470,6 +474,37 @@ from src.models import (
     model_type_rows_by_id,
     normalize_model_binding_rows,
     normalize_model_evaluation_result_rows,
+)
+from src.physics import (
+    apply_entropy_reset,
+    apply_force_to_momentum_state,
+    apply_impulse_to_momentum_state,
+    build_boundary_flux_event,
+    build_entropy_effect_policy,
+    build_energy_ledger_entry,
+    energy_transformation_rows_by_id,
+    entropy_effect_policy_rows_by_id,
+    entropy_state_rows_by_target_id,
+    evaluate_energy_balance,
+    evaluate_entropy_effects,
+    normalize_entropy_event_rows,
+    normalize_entropy_reset_event_rows,
+    normalize_entropy_state_rows,
+    build_exception_event,
+    build_force_application,
+    build_impulse_application,
+    build_momentum_state,
+    kinetic_energy_from_momentum_state,
+    normalize_boundary_flux_event_rows,
+    normalize_energy_ledger_entry_rows,
+    momentum_state_rows_by_assembly_id,
+    normalize_exception_event_rows,
+    normalize_force_application_rows,
+    normalize_impulse_application_rows,
+    normalize_momentum_state_rows,
+    record_energy_transformation,
+    record_entropy_contribution,
+    velocity_from_momentum_state,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -626,8 +661,11 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.end_fire": "entitlement.control.admin",
     "process.mechanics_tick": "session.boot",
     "process.field_tick": "session.boot",
+    "process.field_update": "session.boot",
     "process.safety_tick": "session.boot",
     "process.model_evaluate_tick": "session.boot",
+    "process.apply_force": "session.boot",
+    "process.apply_impulse": "session.boot",
     "process.hazard_increment": "entitlement.control.admin",
     "process.flow_adjust": "entitlement.control.admin",
     "process.pose_enter": "entitlement.tool.operating",
@@ -795,8 +833,11 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.end_fire": "operator",
     "process.mechanics_tick": "observer",
     "process.field_tick": "observer",
+    "process.field_update": "observer",
     "process.safety_tick": "observer",
     "process.model_evaluate_tick": "observer",
+    "process.apply_force": "observer",
+    "process.apply_impulse": "observer",
     "process.hazard_increment": "operator",
     "process.flow_adjust": "operator",
     "process.pose_enter": "operator",
@@ -813,6 +854,9 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.machine_operate": "operator",
     "process.machine_pull_from_node": "operator",
     "process.machine_push_to_node": "operator",
+}
+PROCESS_ID_ALIASES = {
+    "process.perform_maintenance": "process.maintenance_perform",
 }
 PRIVILEGE_RANK = {
     "observer": 0,
@@ -908,6 +952,9 @@ CONTROL_PROCESS_IDS = {
     "process.end_fire",
     "process.safety_tick",
     "process.model_evaluate_tick",
+    "process.field_update",
+    "process.apply_force",
+    "process.apply_impulse",
     "process.hazard_increment",
     "process.flow_adjust",
 }
@@ -990,6 +1037,7 @@ MECHANICS_PROCESS_IDS = {
 }
 FIELD_PROCESS_IDS = {
     "process.field_tick",
+    "process.field_update",
 }
 SAFETY_PROCESS_IDS = {
     "process.safety_tick",
@@ -1564,6 +1612,193 @@ def _persist_field_state(
     _ensure_field_layers(state)
     _ensure_field_cells(state)
     _ensure_field_modifier_rows(state)
+
+
+_FIELD_POLICY_LEGACY_TO_CANONICAL = {
+    "field.static": "field.static_default",
+    "field.scheduled": "field.scheduled_linear",
+}
+
+
+def _canonical_field_policy_id(value: object) -> str:
+    token = str(value or "").strip()
+    if not token:
+        return "field.static_default"
+    return str(_FIELD_POLICY_LEGACY_TO_CANONICAL.get(token, token)).strip() or "field.static_default"
+
+
+def _field_policy_allows_process_update(policy_row: Mapping[str, object] | None) -> bool:
+    row = dict(policy_row or {})
+    ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+    if "allow_process_field_update" in ext:
+        return bool(ext.get("allow_process_field_update"))
+    canonical_policy_id = _canonical_field_policy_id(row.get("policy_id") or row.get("update_policy_id"))
+    return canonical_policy_id == "field.profile_defined"
+
+
+def _apply_field_updates(
+    *,
+    current_tick: int,
+    field_layers: object,
+    field_cells: object,
+    field_type_registry: Mapping[str, object] | None,
+    field_update_policy_registry: Mapping[str, object] | None,
+    requested_updates: object,
+    source_process_id: str,
+) -> dict:
+    tick = int(max(0, _as_int(current_tick, 0)))
+    normalized_layers = normalize_field_layer_rows(field_layers)
+    field_type_rows = field_type_rows_by_id(field_type_registry)
+    field_policy_rows = field_update_policy_rows_by_id(field_update_policy_registry)
+    normalized_cells = normalize_field_cell_rows(
+        field_cells,
+        field_layer_rows=normalized_layers,
+        field_type_registry=field_type_registry,
+    )
+    layer_by_field_id = dict(
+        (str(row.get("field_id", "")).strip(), dict(row))
+        for row in list(normalized_layers or [])
+        if isinstance(row, Mapping) and str(row.get("field_id", "")).strip()
+    )
+    cell_by_key = dict(
+        (
+            "{}::{}".format(str(row.get("field_id", "")).strip(), str(row.get("cell_id", "")).strip()),
+            dict(row),
+        )
+        for row in list(normalized_cells or [])
+        if isinstance(row, Mapping)
+        and str(row.get("field_id", "")).strip()
+        and str(row.get("cell_id", "")).strip()
+    )
+    if not isinstance(requested_updates, list):
+        requested_updates = []
+    requested_rows = sorted(
+        (dict(row) for row in list(requested_updates or []) if isinstance(row, Mapping)),
+        key=lambda row: (
+            str(row.get("field_id", "")).strip(),
+            str(row.get("spatial_node_id", "")).strip() or str(row.get("cell_id", "")).strip(),
+        ),
+    )
+
+    applied_rows: List[dict] = []
+    skipped_rows: List[dict] = []
+    sample_rows: List[dict] = []
+    touched_field_ids = set()
+    for update_row in requested_rows:
+        field_id = str(update_row.get("field_id", "")).strip()
+        spatial_node_id = str(update_row.get("spatial_node_id", "")).strip() or str(update_row.get("cell_id", "")).strip()
+        if (not field_id) or (not spatial_node_id):
+            skipped_rows.append(
+                {
+                    "field_id": field_id,
+                    "spatial_node_id": spatial_node_id,
+                    "reason": "invalid_update_row",
+                }
+            )
+            continue
+
+        layer_row = dict(layer_by_field_id.get(field_id) or {})
+        if not layer_row:
+            field_type_id = str(update_row.get("field_type_id", "")).strip() or field_id
+            field_type_row = dict(field_type_rows.get(field_type_id) or field_type_rows.get(field_id) or {})
+            if not field_type_row:
+                skipped_rows.append(
+                    {
+                        "field_id": field_id,
+                        "spatial_node_id": spatial_node_id,
+                        "reason": "unregistered_field_type",
+                    }
+                )
+                continue
+            layer_row = build_field_layer(
+                field_id=field_id,
+                field_type_id=str(field_type_row.get("field_type_id", "")).strip() or field_id,
+                spatial_scope_id=str(update_row.get("spatial_scope_id", "")).strip() or "spatial.global",
+                resolution_level=str(update_row.get("resolution_level", "macro")).strip() or "macro",
+                update_policy_id=str(field_type_row.get("update_policy_id", "")).strip() or "field.profile_defined",
+                extensions={"source_process_id": str(source_process_id or "").strip()},
+            )
+            layer_by_field_id[field_id] = dict(layer_row)
+
+        policy_id = str(layer_row.get("update_policy_id", "")).strip() or "field.static_default"
+        canonical_policy_id = _canonical_field_policy_id(policy_id)
+        policy_row = dict(
+            field_policy_rows.get(policy_id)
+            or field_policy_rows.get(canonical_policy_id)
+            or {}
+        )
+        if not _field_policy_allows_process_update(policy_row):
+            skipped_rows.append(
+                {
+                    "field_id": field_id,
+                    "spatial_node_id": spatial_node_id,
+                    "reason": "policy_forbids_process_update",
+                    "update_policy_id": policy_id,
+                }
+            )
+            continue
+
+        field_type_id = str(layer_row.get("field_type_id", "")).strip()
+        field_type_row = dict(field_type_rows.get(field_type_id) or field_type_rows.get(field_id) or {})
+        value_kind = str(field_type_row.get("value_kind", "scalar")).strip() or "scalar"
+        key = "{}::{}".format(field_id, spatial_node_id)
+        existing_cell = dict(cell_by_key.get(key) or {})
+        value_payload = update_row.get("sampled_value")
+        if value_payload is None:
+            value_payload = update_row.get("value")
+        updated_row = build_field_cell(
+            field_id=field_id,
+            cell_id=spatial_node_id,
+            value=value_payload,
+            value_kind=value_kind,
+            last_updated_tick=tick,
+            extensions={
+                **(dict(existing_cell.get("extensions") or {}) if isinstance(existing_cell.get("extensions"), Mapping) else {}),
+                "source_process_id": str(source_process_id or "").strip(),
+            },
+        )
+        cell_by_key[key] = dict(updated_row)
+        sample_rows.append(
+            build_field_sample(
+                field_id=field_id,
+                spatial_node_id=spatial_node_id,
+                tick=tick,
+                sampled_value=updated_row.get("value"),
+                has_cell=True,
+                sampled_cell_id=spatial_node_id,
+                extensions={"source_process_id": str(source_process_id or "").strip()},
+            )
+        )
+        applied_rows.append(
+            {
+                "field_id": field_id,
+                "spatial_node_id": spatial_node_id,
+                "update_policy_id": policy_id,
+            }
+        )
+        touched_field_ids.add(field_id)
+
+    normalized_layers_out = normalize_field_layer_rows([dict(layer_by_field_id[key]) for key in sorted(layer_by_field_id.keys())])
+    normalized_cells_out = normalize_field_cell_rows(
+        [dict(cell_by_key[key]) for key in sorted(cell_by_key.keys())],
+        field_layer_rows=normalized_layers_out,
+        field_type_registry=field_type_registry,
+    )
+    normalized_samples = normalize_field_sample_rows(sample_rows)
+    result = {
+        "field_layer_rows": normalized_layers_out,
+        "field_cell_rows": normalized_cells_out,
+        "field_sample_rows": normalized_samples,
+        "applied_updates": list(applied_rows),
+        "skipped_updates": list(skipped_rows),
+        "updated_field_ids": sorted(set(str(token).strip() for token in touched_field_ids if str(token).strip())),
+        "cost_units_used": int(max(0, len(applied_rows))),
+        "degraded": bool(len(skipped_rows) > 0),
+        "degrade_reason": "degrade.field.update_policy_guard" if skipped_rows else None,
+        "deterministic_fingerprint": "",
+    }
+    result["deterministic_fingerprint"] = canonical_sha256(dict(result, deterministic_fingerprint=""))
+    return result
 
 
 def _ensure_spec_binding_rows(state: dict) -> List[dict]:
@@ -2423,6 +2658,94 @@ def _ensure_free_motion_state_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows if isinstance(row, dict)]
 
 
+def _ensure_momentum_state_rows(state: dict) -> List[dict]:
+    rows = normalize_momentum_state_rows(state.get("momentum_states"))
+    state["momentum_states"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_force_application_rows(state: dict) -> List[dict]:
+    rows = normalize_force_application_rows(state.get("force_application_rows"))
+    state["force_application_rows"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_impulse_application_rows(state: dict) -> List[dict]:
+    rows = normalize_impulse_application_rows(state.get("impulse_application_rows"))
+    state["impulse_application_rows"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_exception_event_rows(state: dict) -> List[dict]:
+    rows = normalize_exception_event_rows(state.get("exception_events"))
+    state["exception_events"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_energy_ledger_entry_rows(state: dict) -> List[dict]:
+    rows = normalize_energy_ledger_entry_rows(state.get("energy_ledger_entries"))
+    state["energy_ledger_entries"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_boundary_flux_event_rows(state: dict) -> List[dict]:
+    rows = normalize_boundary_flux_event_rows(state.get("boundary_flux_events"))
+    state["boundary_flux_events"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_entropy_state_rows(state: dict) -> List[dict]:
+    rows = normalize_entropy_state_rows(state.get("entropy_state_rows"))
+    state["entropy_state_rows"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_entropy_event_rows(state: dict) -> List[dict]:
+    rows = normalize_entropy_event_rows(state.get("entropy_event_rows"))
+    state["entropy_event_rows"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_entropy_reset_event_rows(state: dict) -> List[dict]:
+    rows = normalize_entropy_reset_event_rows(state.get("entropy_reset_events"))
+    state["entropy_reset_events"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_entropy_effect_rows(state: dict) -> List[dict]:
+    rows = state.get("entropy_effect_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("target_id", ""))):
+        target_id = str(row.get("target_id", "")).strip()
+        if not target_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "target_id": target_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "policy_id": str(row.get("policy_id", "")).strip() or "entropy_effect.basic_linear",
+            "source_process_id": str(row.get("source_process_id", "")).strip() or None,
+            "source_transformation_id": str(row.get("source_transformation_id", "")).strip() or None,
+            "entropy_value": int(max(0, _as_int(row.get("entropy_value", 0), 0))),
+            "efficiency_multiplier_permille": int(max(0, _as_int(row.get("efficiency_multiplier_permille", 1000), 1000))),
+            "hazard_multiplier_permille": int(max(0, _as_int(row.get("hazard_multiplier_permille", 1000), 1000))),
+            "maintenance_interval_modifier_permille": int(
+                max(0, _as_int(row.get("maintenance_interval_modifier_permille", 1000), 1000))
+            ),
+            "degraded": bool(row.get("degraded", False)),
+            "warnings": _sorted_tokens(list(row.get("warnings") or [])),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[target_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["entropy_effect_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
 def _ensure_coupling_constraint_rows(state: dict) -> List[dict]:
     rows = normalize_coupling_constraint_rows(state.get("coupling_constraints"))
     state["coupling_constraints"] = [dict(row) for row in rows if isinstance(row, dict)]
@@ -2542,6 +2865,1099 @@ def _persist_mobility_free_state(
 ) -> None:
     state["free_motion_states"] = [dict(row) for row in list(free_motion_states or []) if isinstance(row, Mapping)]
     _ensure_free_motion_state_rows(state)
+
+
+def _physics_profile_rows(policy_context: dict | None) -> List[dict]:
+    registry = dict(_policy_payload(policy_context, "physics_profile_registry") or {})
+    if not registry:
+        registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/physics_profile_registry.json",
+            default_payload={"record": {"physics_profiles": []}},
+        )
+    rows = list(registry.get("physics_profiles") or [])
+    if not isinstance(rows, list):
+        rows = list((dict(registry.get("record") or {})).get("physics_profiles") or [])
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _physics_profile_row(policy_context: dict | None) -> dict:
+    profile_id = str((dict(policy_context or {})).get("physics_profile_id", "")).strip()
+    if not profile_id:
+        return {}
+    for row in sorted(_physics_profile_rows(policy_context), key=lambda item: str(item.get("physics_profile_id", ""))):
+        if str(row.get("physics_profile_id", "")).strip() == profile_id:
+            return dict(row)
+    return {}
+
+
+def _physics_profile_enforces_momentum(policy_context: dict | None) -> bool:
+    profile_row = _physics_profile_row(policy_context)
+    return "momentum" in set(_sorted_tokens(list(profile_row.get("invariants_enforced") or [])))
+
+
+def _physics_profile_gravity_enabled(policy_context: dict | None) -> bool:
+    profile_row = _physics_profile_row(policy_context)
+    ext = dict(profile_row.get("extensions") or {})
+    if "gravity_enabled" in ext:
+        return bool(ext.get("gravity_enabled"))
+    profile_id = str(profile_row.get("physics_profile_id", "")).strip()
+    return profile_id in {"phys.realistic.default", "phys.realistic.rank_strict"}
+
+
+def _physics_profile_enforces_energy(policy_context: dict | None) -> bool:
+    profile_row = _physics_profile_row(policy_context)
+    return "energy" in set(_sorted_tokens(list(profile_row.get("invariants_enforced") or [])))
+
+
+def _energy_transformation_registry_rows(policy_context: dict | None) -> List[dict]:
+    payload = _policy_payload(policy_context, "energy_transformation_registry")
+    if not payload:
+        payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/energy_transformation_registry.json",
+            default_payload={"energy_transformations": []},
+        )
+    rows = list(payload.get("energy_transformations") or [])
+    if not rows:
+        rows = list((dict(payload.get("record") or {})).get("energy_transformations") or [])
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _entropy_contribution_registry_rows(policy_context: dict | None) -> List[dict]:
+    payload = _policy_payload(policy_context, "entropy_contribution_registry")
+    if not payload:
+        payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/entropy_contribution_registry.json",
+            default_payload={"record": {"entropy_contributions": []}},
+        )
+    rows = list(payload.get("entropy_contributions") or [])
+    if not isinstance(rows, list) or not rows:
+        rows = list((dict(payload.get("record") or {})).get("entropy_contributions") or [])
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _entropy_effect_policy_registry_rows(policy_context: dict | None) -> List[dict]:
+    payload = _policy_payload(policy_context, "entropy_effect_policy_registry")
+    if not payload:
+        payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/entropy_effect_policy_registry.json",
+            default_payload={"record": {"entropy_effect_policies": []}},
+        )
+    rows = list(payload.get("entropy_effect_policies") or [])
+    if not isinstance(rows, list) or not rows:
+        rows = list((dict(payload.get("record") or {})).get("entropy_effect_policies") or [])
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _physics_profile_entropy_tracking_enabled(policy_context: dict | None) -> bool:
+    profile_row = _physics_profile_row(policy_context)
+    ext = dict(profile_row.get("extensions") or {}) if isinstance(profile_row.get("extensions"), Mapping) else {}
+    if "entropy_tracking" in ext:
+        return bool(ext.get("entropy_tracking"))
+    profile_id = str(profile_row.get("physics_profile_id", "")).strip()
+    return profile_id not in {"", "phys.lab.exotic"}
+
+
+def _physics_profile_entropy_effect_policy_id(policy_context: dict | None) -> str:
+    profile_row = _physics_profile_row(policy_context)
+    ext = dict(profile_row.get("extensions") or {}) if isinstance(profile_row.get("extensions"), Mapping) else {}
+    token = str(ext.get("entropy_effect_policy_id", "")).strip()
+    if token:
+        return token
+    profile_id = str(profile_row.get("physics_profile_id", "")).strip()
+    if profile_id == "phys.realistic.rank_strict":
+        return "entropy_effect.strict"
+    if profile_id == "phys.lab.exotic":
+        return "entropy_effect.none"
+    return "entropy_effect.basic_linear"
+
+
+def _physics_profile_entropy_requires_efficiency(policy_context: dict | None) -> bool:
+    profile_row = _physics_profile_row(policy_context)
+    ext = dict(profile_row.get("extensions") or {}) if isinstance(profile_row.get("extensions"), Mapping) else {}
+    if "entropy_requires_efficiency_influence" in ext:
+        return bool(ext.get("entropy_requires_efficiency_influence"))
+    profile_id = str(profile_row.get("physics_profile_id", "")).strip()
+    return profile_id == "phys.realistic.rank_strict"
+
+
+def _physics_profile_entropy_reset_fraction(policy_context: dict | None) -> Tuple[int, int]:
+    profile_row = _physics_profile_row(policy_context)
+    ext = dict(profile_row.get("extensions") or {}) if isinstance(profile_row.get("extensions"), Mapping) else {}
+    numerator = int(max(0, _as_int(ext.get("entropy_reset_fraction_numerator", 1), 1)))
+    denominator = int(max(1, _as_int(ext.get("entropy_reset_fraction_denominator", 2), 2)))
+    return (numerator, denominator)
+
+
+def _energy_quantity_totals(state: dict) -> dict:
+    totals = dict(state.get("energy_quantity_totals") or {})
+    normalized = dict(
+        (str(key).strip(), int(_as_int(value, 0)))
+        for key, value in sorted(totals.items(), key=lambda item: str(item[0]))
+        if str(key).strip().startswith("quantity.")
+    )
+    state["energy_quantity_totals"] = normalized
+    return normalized
+
+
+def _append_energy_ledger_entry_artifact(state: dict, entry_row: Mapping[str, object]) -> None:
+    row = dict(entry_row or {})
+    entry_id = str(row.get("entry_id", "")).strip()
+    if not entry_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.energy_ledger_entry.{}".format(entry_id),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.energy_ledger_entry",
+            "energy_ledger_entry": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_boundary_flux_event_artifact(state: dict, flux_row: Mapping[str, object]) -> None:
+    row = dict(flux_row or {})
+    flux_id = str(row.get("flux_id", "")).strip()
+    if not flux_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.boundary_flux_event.{}".format(flux_id),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.boundary_flux_event",
+            "boundary_flux_event": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_entropy_event_artifact(state: dict, event_row: Mapping[str, object]) -> None:
+    row = dict(event_row or {})
+    event_id = str(row.get("event_id", "")).strip()
+    if not event_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.entropy_event.{}".format(event_id),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.entropy_event",
+            "entropy_event": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_entropy_reset_event_artifact(state: dict, event_row: Mapping[str, object]) -> None:
+    row = dict(event_row or {})
+    event_id = str(row.get("event_id", "")).strip()
+    if not event_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.entropy_reset_event.{}".format(event_id),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.entropy_reset_event",
+            "entropy_reset_event": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _build_entropy_effect_snapshot_row(
+    *,
+    target_id: str,
+    tick: int,
+    source_process_id: str,
+    source_transformation_id: str,
+    effect_payload: Mapping[str, object],
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    token = str(target_id or "").strip()
+    if not token:
+        return {}
+    effect = dict(effect_payload or {})
+    payload = {
+        "schema_version": "1.0.0",
+        "target_id": token,
+        "tick": int(max(0, _as_int(tick, 0))),
+        "policy_id": str(effect.get("policy_id", "")).strip() or "entropy_effect.basic_linear",
+        "source_process_id": str(source_process_id or "").strip() or "process.unknown",
+        "source_transformation_id": str(source_transformation_id or "").strip() or None,
+        "entropy_value": int(max(0, _as_int(effect.get("entropy_value", 0), 0))),
+        "efficiency_multiplier_permille": int(max(0, _as_int(effect.get("efficiency_multiplier_permille", 1000), 1000))),
+        "hazard_multiplier_permille": int(max(0, _as_int(effect.get("hazard_multiplier_permille", 1000), 1000))),
+        "maintenance_interval_modifier_permille": int(
+            max(0, _as_int(effect.get("maintenance_interval_modifier_permille", 1000), 1000))
+        ),
+        "degraded": bool(effect.get("degraded", False)),
+        "warnings": _sorted_tokens(list(effect.get("warnings") or [])),
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _upsert_entropy_effect_snapshot(state: dict, row: Mapping[str, object]) -> None:
+    payload = dict(row or {})
+    target_id = str(payload.get("target_id", "")).strip()
+    if not target_id:
+        return
+    rows = [dict(item) for item in list(state.get("entropy_effect_rows") or []) if isinstance(item, Mapping)]
+    by_target = dict(
+        (str(item.get("target_id", "")).strip(), dict(item))
+        for item in rows
+        if str(item.get("target_id", "")).strip()
+    )
+    by_target[target_id] = dict(payload)
+    state["entropy_effect_rows"] = [
+        dict(by_target[key])
+        for key in sorted(by_target.keys())
+    ]
+    _ensure_entropy_effect_rows(state)
+
+
+def _selected_entropy_effect_policy_row(policy_context: dict | None) -> dict:
+    rows = entropy_effect_policy_rows_by_id(_entropy_effect_policy_registry_rows(policy_context))
+    policy_id = _physics_profile_entropy_effect_policy_id(policy_context)
+    selected = dict(rows.get(policy_id) or {})
+    if selected:
+        return selected
+    if rows:
+        return dict(rows[sorted(rows.keys())[0]])
+    return build_entropy_effect_policy(
+        policy_id=policy_id or "entropy_effect.basic_linear",
+        efficiency_degradation_curve_id="curve.entropy.efficiency.default",
+        hazard_multiplier_curve_id="curve.entropy.hazard.default",
+        maintenance_interval_modifier_id="curve.entropy.maintenance.default",
+        extensions={
+            "entropy_unit_scale": 1000,
+            "efficiency_loss_per_unit": 1,
+            "efficiency_floor_permille": 600,
+            "hazard_gain_per_unit": 1,
+            "hazard_multiplier_cap_permille": 3000,
+            "maintenance_interval_loss_per_unit": 1,
+            "maintenance_interval_floor_permille": 300,
+        },
+    )
+
+
+def _evaluate_entropy_effect_for_target(
+    state: dict,
+    *,
+    policy_context: dict | None,
+    target_id: str,
+    tick: int,
+    source_process_id: str,
+    source_transformation_id: str,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    target_token = str(target_id or "").strip()
+    if not target_token:
+        return {}
+    state_rows = entropy_state_rows_by_target_id(_ensure_entropy_state_rows(state))
+    state_row = dict(state_rows.get(target_token) or {})
+    if not state_row:
+        return {}
+    policy_row = _selected_entropy_effect_policy_row(policy_context)
+    if not policy_row:
+        return {}
+    evaluated = evaluate_entropy_effects(
+        entropy_state_row=state_row,
+        effect_policy_row=policy_row,
+    )
+    snapshot_row = _build_entropy_effect_snapshot_row(
+        target_id=target_token,
+        tick=int(max(0, _as_int(tick, 0))),
+        source_process_id=str(source_process_id),
+        source_transformation_id=str(source_transformation_id),
+        effect_payload=evaluated,
+        extensions=dict(extensions or {}),
+    )
+    if not snapshot_row:
+        return {}
+    _upsert_entropy_effect_snapshot(state, snapshot_row)
+    return snapshot_row
+
+
+def _refresh_entropy_hash_chains(state: dict) -> None:
+    entropy_rows = _ensure_entropy_event_rows(state)
+    reset_rows = _ensure_entropy_reset_event_rows(state)
+    state["entropy_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "source_transformation_id": str(row.get("source_transformation_id", "")).strip(),
+                "entropy_delta": int(max(0, _as_int(row.get("entropy_delta", 0), 0))),
+                "entropy_value_after": int(max(0, _as_int(row.get("entropy_value_after", 0), 0))),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in sorted(
+                [dict(item) for item in list(entropy_rows or []) if isinstance(item, Mapping)],
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("target_id", "")),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    reset_hash_chain = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "entropy_before": int(max(0, _as_int(row.get("entropy_before", 0), 0))),
+                "entropy_after": int(max(0, _as_int(row.get("entropy_after", 0), 0))),
+                "reset_delta": int(max(0, _as_int(row.get("reset_delta", 0), 0))),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in sorted(
+                [dict(item) for item in list(reset_rows or []) if isinstance(item, Mapping)],
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("target_id", "")),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["entropy_reset_events_hash_chain"] = str(reset_hash_chain)
+    state["entropy_reset_hash_chain"] = str(reset_hash_chain)
+
+
+def _record_entropy_contribution_in_state(
+    state: dict,
+    *,
+    policy_context: dict | None,
+    process_id: str,
+    tick: int,
+    source_transformation_id: str,
+    target_id: str,
+    context_values: Mapping[str, object] | None = None,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    if not _physics_profile_entropy_tracking_enabled(policy_context):
+        _refresh_entropy_hash_chains(state)
+        return {
+            "result": "skipped",
+            "reason_code": "entropy.profile_tracking_disabled",
+            "target_id": str(target_id or "").strip(),
+        }
+
+    recorded = record_entropy_contribution(
+        entropy_state_rows=_ensure_entropy_state_rows(state),
+        contribution_rows=_entropy_contribution_registry_rows(policy_context),
+        source_transformation_id=str(source_transformation_id or "").strip(),
+        target_id=str(target_id or "").strip(),
+        tick=int(max(0, _as_int(tick, 0))),
+        context_values=dict(context_values or {}),
+        extensions={
+            "source_process_id": str(process_id or "").strip(),
+            **(dict(extensions or {}) if isinstance(extensions, Mapping) else {}),
+        },
+    )
+    result_token = str(recorded.get("result", "")).strip()
+    if result_token == "complete":
+        state["entropy_state_rows"] = [
+            dict(row)
+            for row in list(recorded.get("entropy_state_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        entropy_event = dict(recorded.get("entropy_event") or {})
+        if entropy_event:
+            event_rows = normalize_entropy_event_rows(
+                list(state.get("entropy_event_rows") or [])
+                + [entropy_event]
+            )
+            state["entropy_event_rows"] = [dict(row) for row in event_rows if isinstance(row, Mapping)]
+            _append_entropy_event_artifact(state, entropy_event)
+        effect_row = _evaluate_entropy_effect_for_target(
+            state,
+            policy_context=policy_context,
+            target_id=str(target_id or "").strip(),
+            tick=int(max(0, _as_int(tick, 0))),
+            source_process_id=str(process_id or "").strip(),
+            source_transformation_id=str(source_transformation_id or "").strip(),
+            extensions=dict(extensions or {}),
+        )
+        _refresh_entropy_hash_chains(state)
+        return {
+            **dict(recorded),
+            "entropy_effect": dict(effect_row) if effect_row else {},
+        }
+    if result_token == "skipped":
+        effect_row = _evaluate_entropy_effect_for_target(
+            state,
+            policy_context=policy_context,
+            target_id=str(target_id or "").strip(),
+            tick=int(max(0, _as_int(tick, 0))),
+            source_process_id=str(process_id or "").strip(),
+            source_transformation_id=str(source_transformation_id or "").strip(),
+            extensions=dict(extensions or {}),
+        )
+        _refresh_entropy_hash_chains(state)
+        return {
+            **dict(recorded),
+            "entropy_effect": dict(effect_row) if effect_row else {},
+        }
+    _refresh_entropy_hash_chains(state)
+    return dict(recorded)
+
+
+def _apply_entropy_reset_in_state(
+    state: dict,
+    *,
+    policy_context: dict | None,
+    process_id: str,
+    tick: int,
+    target_id: str,
+    reason_code: str,
+    reset_value: int | None = None,
+    reset_fraction_numerator: int | None = None,
+    reset_fraction_denominator: int | None = None,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    if not _physics_profile_entropy_tracking_enabled(policy_context):
+        _refresh_entropy_hash_chains(state)
+        return {
+            "result": "skipped",
+            "reason_code": "entropy.profile_tracking_disabled",
+            "target_id": str(target_id or "").strip(),
+        }
+    profile_fraction = _physics_profile_entropy_reset_fraction(policy_context)
+    numerator = (
+        int(max(0, _as_int(reset_fraction_numerator, profile_fraction[0])))
+        if reset_fraction_numerator is not None
+        else int(profile_fraction[0])
+    )
+    denominator = (
+        int(max(1, _as_int(reset_fraction_denominator, profile_fraction[1])))
+        if reset_fraction_denominator is not None
+        else int(profile_fraction[1])
+    )
+    reset_result = apply_entropy_reset(
+        entropy_state_rows=_ensure_entropy_state_rows(state),
+        target_id=str(target_id or "").strip(),
+        tick=int(max(0, _as_int(tick, 0))),
+        reason_code=str(reason_code or "").strip() or "maintenance.perform",
+        reset_value=(None if reset_value is None else int(max(0, _as_int(reset_value, 0)))),
+        reset_fraction_numerator=int(numerator),
+        reset_fraction_denominator=int(denominator),
+        extensions={
+            "source_process_id": str(process_id or "").strip(),
+            **(dict(extensions or {}) if isinstance(extensions, Mapping) else {}),
+        },
+    )
+    if str(reset_result.get("result", "")).strip() != "complete":
+        _refresh_entropy_hash_chains(state)
+        return dict(reset_result)
+
+    state["entropy_state_rows"] = [
+        dict(row)
+        for row in list(reset_result.get("entropy_state_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    reset_event = dict(reset_result.get("entropy_reset_event") or {})
+    if reset_event:
+        reset_rows = normalize_entropy_reset_event_rows(
+            list(state.get("entropy_reset_events") or [])
+            + [reset_event]
+        )
+        state["entropy_reset_events"] = [dict(row) for row in reset_rows if isinstance(row, Mapping)]
+        _append_entropy_reset_event_artifact(state, reset_event)
+    effect_row = _evaluate_entropy_effect_for_target(
+        state,
+        policy_context=policy_context,
+        target_id=str(target_id or "").strip(),
+        tick=int(max(0, _as_int(tick, 0))),
+        source_process_id=str(process_id or "").strip(),
+        source_transformation_id="entropy.reset.maintenance",
+        extensions=dict(extensions or {}),
+    )
+    _refresh_entropy_hash_chains(state)
+    return {
+        **dict(reset_result),
+        "entropy_effect": dict(effect_row) if effect_row else {},
+    }
+
+
+def _refresh_energy_ledger_hash_chains(state: dict) -> None:
+    ledger_rows = _ensure_energy_ledger_entry_rows(state)
+    flux_rows = _ensure_boundary_flux_event_rows(state)
+    state["energy_ledger_hash_chain"] = canonical_sha256(
+        [
+            {
+                "entry_id": str(row.get("entry_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "transformation_id": str(row.get("transformation_id", "")).strip(),
+                "source_id": str(row.get("source_id", "")).strip(),
+                "energy_total_delta": int(_as_int(row.get("energy_total_delta", 0), 0)),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in sorted(
+                [dict(item) for item in list(ledger_rows or []) if isinstance(item, Mapping)],
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("transformation_id", "")),
+                    str(item.get("source_id", "")),
+                    str(item.get("entry_id", "")),
+                ),
+            )
+        ]
+    )
+    state["boundary_flux_hash_chain"] = canonical_sha256(
+        [
+            {
+                "flux_id": str(row.get("flux_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "quantity_id": str(row.get("quantity_id", "")).strip(),
+                "value": int(_as_int(row.get("value", 0), 0)),
+                "direction": str(row.get("direction", "in")).strip().lower(),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in sorted(
+                [dict(item) for item in list(flux_rows or []) if isinstance(item, Mapping)],
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("flux_id", "")),
+                ),
+            )
+        ]
+    )
+
+
+def _record_energy_transformation_in_state(
+    state: dict,
+    *,
+    policy_context: dict | None,
+    process_id: str,
+    tick: int,
+    transformation_id: str,
+    source_id: str,
+    input_values: Mapping[str, object] | None,
+    output_values: Mapping[str, object] | None,
+    extensions: Mapping[str, object] | None = None,
+    tolerance: int = 0,
+) -> dict:
+    transformation_rows = _energy_transformation_registry_rows(policy_context)
+    enforce_energy = _physics_profile_enforces_energy(policy_context)
+    recorded = record_energy_transformation(
+        transformation_rows=transformation_rows,
+        transformation_id=str(transformation_id or "").strip(),
+        tick=int(max(0, _as_int(tick, 0))),
+        source_id=str(source_id or "").strip() or str(process_id or "").strip() or "source.unknown",
+        input_values=dict(input_values or {}),
+        output_values=dict(output_values or {}),
+        enforce_conservation=bool(enforce_energy),
+        tolerance=int(max(0, _as_int(tolerance, 0))),
+        extensions=dict(extensions or {}),
+    )
+    result = str(recorded.get("result", "")).strip()
+    if result == "complete":
+        entry_row = dict(recorded.get("entry") or {})
+        if not entry_row:
+            return {
+                "result": "refused",
+                "reason_code": "refusal.energy.ledger_entry_invalid",
+                "transformation_id": str(transformation_id or "").strip(),
+            }
+        ledger_rows = normalize_energy_ledger_entry_rows(
+            list(state.get("energy_ledger_entries") or [])
+            + [entry_row]
+        )
+        state["energy_ledger_entries"] = [dict(row) for row in ledger_rows]
+        _append_energy_ledger_entry_artifact(state, entry_row)
+        totals = _energy_quantity_totals(state)
+        in_values = dict(entry_row.get("input_values") or {})
+        out_values = dict(entry_row.get("output_values") or {})
+        for quantity_id, value in sorted(in_values.items(), key=lambda item: str(item[0])):
+            token = str(quantity_id).strip()
+            totals[token] = int(_as_int(totals.get(token, 0), 0) - _as_int(value, 0))
+        for quantity_id, value in sorted(out_values.items(), key=lambda item: str(item[0])):
+            token = str(quantity_id).strip()
+            totals[token] = int(_as_int(totals.get(token, 0), 0) + _as_int(value, 0))
+        transformation_row = dict(recorded.get("transformation") or {})
+        if not bool(transformation_row.get("boundary_allowed", False)):
+            totals["quantity.energy_total"] = int(
+                _as_int(totals.get("quantity.energy_total", 0), 0)
+                + _as_int(entry_row.get("energy_total_delta", 0), 0)
+            )
+        state["energy_quantity_totals"] = dict(
+            (str(key), int(_as_int(value, 0)))
+            for key, value in sorted(totals.items(), key=lambda item: str(item[0]))
+        )
+        input_basis = int(
+            sum(
+                abs(_as_int(value, 0))
+                for _key, value in sorted((dict(entry_row.get("input_values") or {})).items(), key=lambda item: str(item[0]))
+                if str(_key).strip().startswith("quantity.")
+            )
+        )
+        output_basis = int(
+            sum(
+                abs(_as_int(value, 0))
+                for _key, value in sorted((dict(entry_row.get("output_values") or {})).items(), key=lambda item: str(item[0]))
+                if str(_key).strip().startswith("quantity.")
+            )
+        )
+        entropy_result = _record_entropy_contribution_in_state(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(max(0, _as_int(tick, 0))),
+            source_transformation_id=str(transformation_id or "").strip(),
+            target_id=str(source_id or "").strip() or str(process_id or "").strip() or "target.unknown",
+            context_values={
+                "basis_value": int(
+                    max(
+                        0,
+                        max(
+                            int(input_basis),
+                            int(output_basis),
+                            abs(_as_int(entry_row.get("energy_total_delta", 0), 0)),
+                        ),
+                    )
+                ),
+            },
+            extensions={
+                "source_id": str(source_id or "").strip() or None,
+                "source_process_id": str(process_id or "").strip(),
+                "transformation_id": str(transformation_id or "").strip(),
+                **(dict(extensions or {}) if isinstance(extensions, Mapping) else {}),
+            },
+        )
+        _refresh_energy_ledger_hash_chains(state)
+        return {
+            "result": "complete",
+            "entry": entry_row,
+            "entropy": dict(entropy_result),
+        }
+
+    if result in {"refused", "violation"}:
+        reason_code = str(recorded.get("reason_code", "physics.energy.ledger_refused")).strip() or "physics.energy.ledger_refused"
+        affected = {
+            "quantity.energy_total": int(_as_int(recorded.get("energy_total_delta", 0), 0)),
+        }
+        if int(_as_int(affected.get("quantity.energy_total", 0), 0)) != 0:
+            _append_physics_exception_event(
+                state,
+                exception_kind="conservation_violation",
+                affected_quantities=affected,
+                reason_code=reason_code,
+                process_id=str(process_id or "").strip() or "process.energy_ledger",
+                tick=int(max(0, _as_int(tick, 0))),
+                extensions={
+                    "transformation_id": str(transformation_id or "").strip(),
+                    "source_id": str(source_id or "").strip(),
+                },
+            )
+        _refresh_energy_ledger_hash_chains(state)
+        return {
+            "result": result,
+            "reason_code": reason_code,
+            "transformation_id": str(transformation_id or "").strip(),
+            "source_id": str(source_id or "").strip(),
+        }
+
+    _refresh_energy_ledger_hash_chains(state)
+    return {
+        "result": "refused",
+        "reason_code": "refusal.energy.unknown_result",
+        "transformation_id": str(transformation_id or "").strip(),
+    }
+
+
+def _record_boundary_flux_event_in_state(
+    state: dict,
+    *,
+    tick: int,
+    quantity_id: str,
+    value: int,
+    direction: str,
+    reason_code: str,
+    process_id: str,
+    source_id: str,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    quantity_token = str(quantity_id or "").strip() or "quantity.energy_total"
+    direction_token = str(direction or "in").strip().lower()
+    if direction_token not in {"in", "out"}:
+        direction_token = "in"
+    amount = int(max(0, abs(_as_int(value, 0))))
+    if amount <= 0:
+        return {"result": "complete", "skipped": "zero_flux"}
+    flux_id = "flux.energy.{}".format(
+        canonical_sha256(
+            {
+                "tick": int(max(0, _as_int(tick, 0))),
+                "quantity_id": quantity_token,
+                "direction": direction_token,
+                "value": int(amount),
+                "reason_code": str(reason_code or "").strip(),
+                "source_id": str(source_id or "").strip(),
+            }
+        )[:16]
+    )
+    flux_row = build_boundary_flux_event(
+        flux_id=flux_id,
+        tick=int(max(0, _as_int(tick, 0))),
+        quantity_id=quantity_token,
+        value=int(amount),
+        direction=direction_token,
+        reason_code=str(reason_code or "").strip() or "boundary.energy_flux",
+        extensions={
+            **(dict(extensions or {}) if isinstance(extensions, Mapping) else {}),
+            "originating_process_id": str(process_id or "").strip(),
+            "source_id": str(source_id or "").strip(),
+        },
+    )
+    if not flux_row:
+        return {"result": "refused", "reason_code": "refusal.energy.boundary_flux_invalid"}
+    flux_rows = normalize_boundary_flux_event_rows(
+        list(state.get("boundary_flux_events") or [])
+        + [flux_row]
+    )
+    state["boundary_flux_events"] = [dict(row) for row in flux_rows]
+    _append_boundary_flux_event_artifact(state, flux_row)
+    totals = _energy_quantity_totals(state)
+    signed_value = int(amount if direction_token == "in" else -amount)
+    totals["quantity.energy_total"] = int(_as_int(totals.get("quantity.energy_total", 0), 0) + signed_value)
+    state["energy_quantity_totals"] = dict(
+        (str(key), int(_as_int(value, 0)))
+        for key, value in sorted(totals.items(), key=lambda item: str(item[0]))
+    )
+    _refresh_energy_ledger_hash_chains(state)
+    return {"result": "complete", "boundary_flux_event": flux_row}
+
+
+def _record_kinetic_energy_delta(
+    state: dict,
+    *,
+    policy_context: dict | None,
+    process_id: str,
+    tick: int,
+    source_id: str,
+    previous_kinetic: int,
+    updated_kinetic: int,
+    application_id: str | None = None,
+    external_boundary: bool = False,
+    boundary_reason_code: str | None = None,
+) -> dict:
+    previous_value = int(max(0, _as_int(previous_kinetic, 0)))
+    updated_value = int(max(0, _as_int(updated_kinetic, 0)))
+    delta = int(updated_value - previous_value)
+    if delta == 0:
+        return {"result": "complete", "delta": 0}
+
+    source_token = str(source_id or "").strip() or "source.energy.kinetic"
+    if delta > 0:
+        positive = int(delta)
+        if bool(external_boundary):
+            transform_result = _record_energy_transformation_in_state(
+                state,
+                policy_context=policy_context,
+                process_id=process_id,
+                tick=int(max(0, _as_int(tick, 0))),
+                transformation_id="transform.impulse_to_kinetic",
+                source_id=source_token,
+                input_values={},
+                output_values={"quantity.energy_kinetic": int(positive)},
+                extensions={
+                    "source_process_id": str(process_id),
+                    "source_application_id": (str(application_id).strip() or None) if application_id is not None else None,
+                },
+            )
+            flux_result = _record_boundary_flux_event_in_state(
+                state,
+                tick=int(max(0, _as_int(tick, 0))),
+                quantity_id="quantity.energy_total",
+                value=int(positive),
+                direction="in",
+                reason_code=str(boundary_reason_code or "boundary.external_impulse"),
+                process_id=str(process_id),
+                source_id=source_token,
+                extensions={
+                    "source_application_id": (str(application_id).strip() or None) if application_id is not None else None,
+                },
+            )
+            return {
+                "result": str(transform_result.get("result", "")) or "complete",
+                "delta": int(delta),
+                "transformation": dict(transform_result),
+                "boundary_flux": dict(flux_result),
+            }
+        transform_result = _record_energy_transformation_in_state(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(max(0, _as_int(tick, 0))),
+            transformation_id="transform.potential_to_kinetic",
+            source_id=source_token,
+            input_values={"quantity.energy_potential": int(positive)},
+            output_values={"quantity.energy_kinetic": int(positive)},
+            extensions={
+                "source_process_id": str(process_id),
+                "source_application_id": (str(application_id).strip() or None) if application_id is not None else None,
+            },
+        )
+        return {
+            "result": str(transform_result.get("result", "")) or "complete",
+            "delta": int(delta),
+            "transformation": dict(transform_result),
+        }
+
+    dissipated = int(abs(delta))
+    transform_result = _record_energy_transformation_in_state(
+        state,
+        policy_context=policy_context,
+        process_id=process_id,
+        tick=int(max(0, _as_int(tick, 0))),
+        transformation_id="transform.kinetic_to_thermal",
+        source_id=source_token,
+        input_values={"quantity.energy_kinetic": int(dissipated)},
+        output_values={
+            "quantity.energy_thermal": int(dissipated),
+            "quantity.heat_loss": int(dissipated),
+        },
+        extensions={
+            "source_process_id": str(process_id),
+            "source_application_id": (str(application_id).strip() or None) if application_id is not None else None,
+        },
+    )
+    return {
+        "result": str(transform_result.get("result", "")) or "complete",
+        "delta": int(delta),
+        "transformation": dict(transform_result),
+    }
+
+
+def _mass_value_for_assembly(
+    *,
+    body_row: Mapping[str, object] | None,
+    existing_momentum_row: Mapping[str, object] | None = None,
+    explicit_mass_value: object = None,
+) -> int:
+    body = dict(body_row or {})
+    momentum_row = dict(existing_momentum_row or {})
+    candidates = [
+        explicit_mass_value,
+        momentum_row.get("mass_value"),
+        body.get("mass_value"),
+        (dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}).get("mass_value"),
+        (dict(body.get("shape_parameters") or {}) if isinstance(body.get("shape_parameters"), Mapping) else {}).get("mass_value"),
+    ]
+    for candidate in candidates:
+        value = int(_as_int(candidate, 0))
+        if value > 0:
+            return value
+    return 1
+
+
+def _append_kinetic_energy_observation(
+    state: dict,
+    *,
+    momentum_state_row: Mapping[str, object],
+    tick: int,
+    source_process_id: str,
+    source_application_id: str | None = None,
+) -> None:
+    row = dict(momentum_state_row or {})
+    assembly_id = str(row.get("assembly_id", "")).strip()
+    if not assembly_id:
+        return
+    kinetic = int(kinetic_energy_from_momentum_state(row))
+    observation_id = "artifact.observation.phys.kinetic.{}".format(
+        canonical_sha256(
+            {
+                "tick": int(max(0, _as_int(tick, 0))),
+                "assembly_id": assembly_id,
+                "momentum_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                "source_process_id": str(source_process_id),
+                "source_application_id": str(source_application_id or ""),
+            }
+        )[:16]
+    )
+    observation_row = {
+        "artifact_id": observation_id,
+        "artifact_family_id": "OBSERVATION",
+        "extensions": {
+            "artifact_type_id": "artifact.measurement",
+            "quantity_id": "quantity.energy_kinetic",
+            "assembly_id": assembly_id,
+            "value": int(kinetic),
+            "tick": int(max(0, _as_int(tick, 0))),
+            "source_process_id": str(source_process_id),
+            "source_application_id": (str(source_application_id).strip() or None) if source_application_id is not None else None,
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        + [observation_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_structural_overload_hazard(
+    state: dict,
+    *,
+    target_assembly_id: str,
+    delta_momentum_linear: Mapping[str, object] | None,
+    delta_momentum_angular: object = 0,
+    tick: int,
+    process_id: str,
+    application_id: str | None = None,
+    overload_threshold: int = 5000,
+) -> int:
+    target_id = str(target_assembly_id or "").strip()
+    if not target_id:
+        return 0
+    delta_linear = dict(delta_momentum_linear or {})
+    impulse_magnitude = int(
+        abs(_as_int(delta_linear.get("x", 0), 0))
+        + abs(_as_int(delta_linear.get("y", 0), 0))
+        + abs(_as_int(delta_linear.get("z", 0), 0))
+        + abs(_as_int(delta_momentum_angular, 0))
+    )
+    if impulse_magnitude <= 0:
+        return 0
+    hazard_rows = _ensure_model_hazard_rows(state)
+    hazard_rows_by_id = dict(
+        (
+            "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+            dict(row),
+        )
+        for row in list(hazard_rows or [])
+        if isinstance(row, Mapping)
+        and str(row.get("target_id", "")).strip()
+        and str(row.get("hazard_type_id", "")).strip()
+    )
+    row_id = "{}::{}".format(target_id, "hazard.structural_overload")
+    existing = dict(hazard_rows_by_id.get(row_id) or {})
+    updated = {
+        "schema_version": "1.0.0",
+        "target_id": target_id,
+        "hazard_type_id": "hazard.structural_overload",
+        "accumulated_value": int(max(0, _as_int(existing.get("accumulated_value", 0), 0) + impulse_magnitude)),
+        "last_update_tick": int(max(0, _as_int(tick, 0))),
+        "deterministic_fingerprint": "",
+        "extensions": {
+            **(dict(existing.get("extensions") or {}) if isinstance(existing.get("extensions"), Mapping) else {}),
+            "source_process_id": str(process_id or "").strip(),
+            "source_application_id": (str(application_id or "").strip() or None),
+            "coupling_model_id": "model.phys.impulse_structural_stub",
+            "last_impulse_magnitude": int(impulse_magnitude),
+        },
+    }
+    updated["deterministic_fingerprint"] = canonical_sha256(dict(updated, deterministic_fingerprint=""))
+    hazard_rows_by_id[row_id] = updated
+    state["model_hazard_rows"] = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
+    if impulse_magnitude >= int(max(1, _as_int(overload_threshold, 5000))):
+        _append_safety_hook_event(
+            state,
+            pattern_id="safety.structural_overload",
+            pattern_type="protection",
+            target_ids=[target_id],
+            tick=int(max(0, _as_int(tick, 0))),
+            process_id=str(process_id or "").strip(),
+            details={
+                "hook": "phys_force_momentum",
+                "hazard_type_id": "hazard.structural_overload",
+                "impulse_magnitude": int(impulse_magnitude),
+                "source_application_id": (str(application_id or "").strip() or None),
+            },
+        )
+    return int(impulse_magnitude)
+
+
+def _append_physics_exception_event(
+    state: dict,
+    *,
+    exception_kind: str,
+    affected_quantities: Mapping[str, object],
+    reason_code: str,
+    process_id: str,
+    tick: int,
+    extensions: Mapping[str, object] | None = None,
+) -> None:
+    exception_id = "exc.physics.{}".format(
+        canonical_sha256(
+            {
+                "tick": int(max(0, _as_int(tick, 0))),
+                "exception_kind": str(exception_kind),
+                "affected_quantities": dict(affected_quantities or {}),
+                "reason_code": str(reason_code),
+                "process_id": str(process_id),
+            }
+        )[:16]
+    )
+    event_row = build_exception_event(
+        exception_id=exception_id,
+        tick=int(max(0, _as_int(tick, 0))),
+        exception_kind=str(exception_kind).strip() or "custom",
+        affected_quantities=dict(affected_quantities or {}),
+        reason_code=str(reason_code).strip() or "physics.exception",
+        originating_process_id=str(process_id),
+        extensions=dict(extensions or {}),
+    )
+    if not event_row:
+        return
+    exception_rows = normalize_exception_event_rows(
+        list(state.get("exception_events") or [])
+        + [event_row]
+    )
+    state["exception_events"] = [dict(item) for item in exception_rows]
+    artifact_row = {
+        "artifact_id": "artifact.exception_event.{}".format(str(event_row.get("exception_id", "")).strip()),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.exception_event",
+            "exception_event": dict(event_row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _refresh_momentum_hash_chains(state: dict) -> None:
+    momentum_rows = normalize_momentum_state_rows(state.get("momentum_states") or [])
+    impulse_rows = normalize_impulse_application_rows(state.get("impulse_application_rows") or [])
+    state["momentum_hash_chain"] = canonical_sha256([dict(row) for row in momentum_rows])
+    state["impulse_event_hash_chain"] = canonical_sha256([dict(row) for row in impulse_rows])
 
 
 def _persist_mobility_network_state(
@@ -15581,6 +16997,7 @@ def execute_intent(
             {"field": "process_id"},
             "$.intent.process_id",
         )
+    process_id = str(PROCESS_ID_ALIASES.get(process_id, process_id)).strip()
     if not isinstance(inputs, dict):
         return refusal(
             "PROCESS_INPUT_INVALID",
@@ -15783,6 +17200,26 @@ def execute_intent(
     model_runtime_state = _ensure_model_runtime_state(state)
     model_hazard_rows = _ensure_model_hazard_rows(state)
     model_flow_adjustment_rows = _ensure_model_flow_adjustment_rows(state)
+    momentum_states = _ensure_momentum_state_rows(state)
+    force_application_rows = _ensure_force_application_rows(state)
+    impulse_application_rows = _ensure_impulse_application_rows(state)
+    exception_events = _ensure_exception_event_rows(state)
+    energy_ledger_entries = _ensure_energy_ledger_entry_rows(state)
+    boundary_flux_events = _ensure_boundary_flux_event_rows(state)
+    entropy_state_rows = _ensure_entropy_state_rows(state)
+    entropy_event_rows = _ensure_entropy_event_rows(state)
+    entropy_reset_events = _ensure_entropy_reset_event_rows(state)
+    entropy_effect_rows = _ensure_entropy_effect_rows(state)
+    del exception_events
+    del energy_ledger_entries
+    del boundary_flux_events
+    del entropy_state_rows
+    del entropy_event_rows
+    del entropy_reset_events
+    del entropy_effect_rows
+    _refresh_momentum_hash_chains(state)
+    _refresh_energy_ledger_hash_chains(state)
+    _refresh_entropy_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -22248,6 +23685,24 @@ def execute_intent(
                             "source_process_id": process_id,
                         }
                     )
+                    _record_energy_transformation_in_state(
+                        state,
+                        policy_context=policy_context,
+                        process_id=process_id,
+                        tick=int(max(0, _as_int(current_tick, 0))),
+                        transformation_id="transform.chemical_to_thermal",
+                        source_id=str(target_id),
+                        input_values={"quantity.energy_chemical": int(heat_emission)},
+                        output_values={
+                            "quantity.energy_thermal": int(heat_emission),
+                            "quantity.heat_loss": int(heat_emission),
+                        },
+                        extensions={
+                            "source_model_id": "model.therm_combust_stub",
+                            "material_id": material_id,
+                            "event_id": str(fire_event.get("event_id", "")).strip(),
+                        },
+                    )
                 if pollutant_emission > 0:
                     pollutant_rows_existing.append(
                         {
@@ -22355,6 +23810,8 @@ def execute_intent(
                         ]
                     )
                 ),
+                "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+                "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.end_fire":
@@ -22670,6 +24127,25 @@ def execute_intent(
         )
         state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
         state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+        phase_entropy_basis = int(max(0, _as_int(updated_batch.get("quantity_mass_raw", 0), 0)))
+        if phase_entropy_basis <= 0:
+            phase_entropy_basis = 1
+        phase_entropy_result = _record_entropy_contribution_in_state(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(current_tick),
+            source_transformation_id="transform.phase_change_stub",
+            target_id=resolved_batch_id,
+            context_values={"basis_value": int(phase_entropy_basis)},
+            extensions={
+                "batch_id": resolved_batch_id,
+                "material_id": str(updated_batch.get("material_id", "")).strip() or None,
+                "from_phase": str(from_phase),
+                "to_phase": str(to_phase),
+                "phase_event_id": str(phase_event.get("event_id", "")).strip(),
+            },
+        )
 
         if str(to_phase).strip().lower() in {"gas", "steam", "vapor"} and str(inputs.get("sealed_volume_id", "")).strip():
             hazard_type_id = "hazard.overpressure"
@@ -22720,6 +24196,8 @@ def execute_intent(
             "to_phase": str(to_phase),
             "phase_event_id": str(phase_event.get("event_id", "")).strip(),
             "stock_transformed": bool(transformed_stock),
+            "phase_entropy_result": dict(phase_entropy_result),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.cure_state_tick":
@@ -24079,6 +25557,39 @@ def execute_intent(
         state["elec_edge_status_rows"] = [dict(row) for row in list(elec_edge_status_rows or []) if isinstance(row, Mapping)]
         state["elec_node_status_rows"] = [dict(row) for row in list(elec_node_status_rows or []) if isinstance(row, Mapping)]
         state["power_network_graphs"] = [dict(row) for row in list(graph_candidates or []) if isinstance(row, Mapping)]
+        for edge_row in sorted(
+            [dict(row) for row in list(elec_edge_status_rows or []) if isinstance(row, Mapping)],
+            key=lambda row: (
+                str(row.get("graph_id", "")).strip(),
+                str(row.get("edge_id", "")).strip(),
+            ),
+        ):
+            heat_loss_value = int(max(0, _as_int(edge_row.get("heat_loss_stub", 0), 0)))
+            if heat_loss_value <= 0:
+                continue
+            graph_token = str(edge_row.get("graph_id", "")).strip()
+            edge_token = str(edge_row.get("edge_id", "")).strip()
+            source_id = "{}::{}".format(graph_token, edge_token) if graph_token and edge_token else edge_token
+            if not source_id:
+                continue
+            _record_energy_transformation_in_state(
+                state,
+                policy_context=policy_context,
+                process_id=process_id,
+                tick=int(current_tick),
+                transformation_id="transform.electrical_to_thermal",
+                source_id=str(source_id),
+                input_values={"quantity.energy_electrical": int(heat_loss_value)},
+                output_values={
+                    "quantity.energy_thermal": int(heat_loss_value),
+                    "quantity.heat_loss": int(heat_loss_value),
+                },
+                extensions={
+                    "source_process_id": process_id,
+                    "graph_id": graph_token or None,
+                    "edge_id": edge_token or None,
+                },
+            )
 
         max_fault_evals = int(
             max(
@@ -25180,6 +26691,8 @@ def execute_intent(
             "cascade_iteration_limit_reached": bool(cascade_iteration_limit_reached),
             "boundary_transfer_count": int(len(list(elec_boundary_transfer_artifacts or []))),
             "boundary_transfer_hash_chain": str(boundary_transfer_hash_chain),
+            "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+            "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.effect_apply":
@@ -31545,6 +33058,378 @@ def execute_intent(
             ),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.apply_force":
+        target_assembly_id = str(inputs.get("target_assembly_id", "")).strip()
+        if not target_assembly_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.apply_force requires target_assembly_id",
+                "Provide deterministic target_assembly_id for momentum mutation.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_assembly_id",
+            )
+        app_id = str(inputs.get("application_id", "")).strip()
+        if not app_id:
+            app_id = "force.{}".format(
+                canonical_sha256(
+                    {
+                        "target_assembly_id": target_assembly_id,
+                        "tick": int(current_tick),
+                        "force_vector": dict(inputs.get("force_vector") or {}),
+                        "duration_ticks": int(max(1, _as_int(inputs.get("duration_ticks", 1), 1))),
+                        "intent_id": str(intent_id),
+                    }
+                )[:16]
+            )
+        force_row = build_force_application(
+            application_id=app_id,
+            target_assembly_id=target_assembly_id,
+            force_vector=(dict(inputs.get("force_vector") or {}) if isinstance(inputs.get("force_vector"), Mapping) else {}),
+            duration_ticks=int(max(1, _as_int(inputs.get("duration_ticks", 1), 1))),
+            torque=(None if inputs.get("torque") is None else int(_as_int(inputs.get("torque", 0), 0))),
+            originating_process_id=process_id,
+            extensions=(dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {}),
+        )
+        if not force_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.apply_force received invalid application payload",
+                "Provide force_vector, duration_ticks, and identifiers compatible with force_application schema.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+
+        momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+        body_rows_by_id = dict(
+            (
+                str(row.get("assembly_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(bodies or [])
+            if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+        )
+        existing_momentum_row = dict(momentum_rows_by_assembly.get(target_assembly_id) or {})
+        body_row = dict(body_rows_by_id.get(target_assembly_id) or {})
+        mass_value = _mass_value_for_assembly(
+            body_row=body_row,
+            existing_momentum_row=existing_momentum_row,
+            explicit_mass_value=inputs.get("mass_value"),
+        )
+        if not existing_momentum_row:
+            existing_momentum_row = build_momentum_state(
+                assembly_id=target_assembly_id,
+                mass_value=int(mass_value),
+                momentum_linear={
+                    "x": int(_as_int((dict(body_row.get("velocity_mm_per_tick") or {})).get("x", 0), 0)) * int(mass_value),
+                    "y": int(_as_int((dict(body_row.get("velocity_mm_per_tick") or {})).get("y", 0), 0)) * int(mass_value),
+                    "z": int(_as_int((dict(body_row.get("velocity_mm_per_tick") or {})).get("z", 0), 0)) * int(mass_value),
+                },
+                momentum_angular=0,
+                last_update_tick=int(current_tick),
+                extensions={},
+            )
+        previous_kinetic = int(kinetic_energy_from_momentum_state(existing_momentum_row))
+        applied = apply_force_to_momentum_state(
+            momentum_state_row=existing_momentum_row,
+            force_application_row=force_row,
+            tick=int(current_tick),
+        )
+        updated_momentum_row = dict(applied.get("momentum_state") or {})
+        if not updated_momentum_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.apply_force could not produce updated momentum row",
+                "Ensure target assembly id and force payload are valid.",
+                {"target_assembly_id": target_assembly_id},
+                "$.intent.inputs",
+            )
+        momentum_rows_by_assembly[target_assembly_id] = dict(updated_momentum_row)
+        momentum_states = normalize_momentum_state_rows(
+            [dict(momentum_rows_by_assembly[key]) for key in sorted(momentum_rows_by_assembly.keys())]
+        )
+        force_application_rows = normalize_force_application_rows(
+            list(force_application_rows or [])
+            + [force_row]
+        )
+        state["momentum_states"] = [dict(row) for row in list(momentum_states or []) if isinstance(row, Mapping)]
+        state["force_application_rows"] = [dict(row) for row in list(force_application_rows or []) if isinstance(row, Mapping)]
+        _ensure_momentum_state_rows(state)
+        _ensure_force_application_rows(state)
+        external_logged = bool(inputs.get("external_force_logged", True))
+        _append_kinetic_energy_observation(
+            state,
+            momentum_state_row=updated_momentum_row,
+            tick=int(current_tick),
+            source_process_id=process_id,
+            source_application_id=str(force_row.get("application_id", "")).strip() or None,
+        )
+        _record_kinetic_energy_delta(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(current_tick),
+            source_id=str(target_assembly_id),
+            previous_kinetic=int(previous_kinetic),
+            updated_kinetic=int(kinetic_energy_from_momentum_state(updated_momentum_row)),
+            application_id=str(force_row.get("application_id", "")).strip() or None,
+            external_boundary=bool(external_logged),
+            boundary_reason_code="boundary.external_force",
+        )
+        structural_impulse_magnitude = _append_structural_overload_hazard(
+            state,
+            target_assembly_id=target_assembly_id,
+            delta_momentum_linear=(dict(applied.get("delta_momentum_linear") or {})),
+            delta_momentum_angular=applied.get("delta_momentum_angular", 0),
+            tick=int(current_tick),
+            process_id=process_id,
+            application_id=str(force_row.get("application_id", "")).strip() or None,
+            overload_threshold=int(max(1, _as_int(inputs.get("structural_overload_threshold", 5000), 5000))),
+        )
+        if _physics_profile_enforces_momentum(policy_context):
+            if external_logged:
+                external_rows = [
+                    dict(row)
+                    for row in list(state.get("momentum_external_impulse_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+                external_rows.append(
+                    {
+                        "schema_version": "1.0.0",
+                        "event_id": "momentum.external.{}".format(str(force_row.get("application_id", "")).strip()),
+                        "tick": int(current_tick),
+                        "assembly_id": target_assembly_id,
+                        "process_id": process_id,
+                        "application_id": str(force_row.get("application_id", "")).strip(),
+                        "delta_linear": dict(applied.get("delta_momentum_linear") or {}),
+                        "delta_angular": int(_as_int(applied.get("delta_momentum_angular", 0), 0)),
+                    }
+                )
+                state["momentum_external_impulse_rows"] = sorted(
+                    external_rows,
+                    key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+                )
+            else:
+                delta_linear = dict(applied.get("delta_momentum_linear") or {})
+                magnitude = int(
+                    abs(_as_int(delta_linear.get("x", 0), 0))
+                    + abs(_as_int(delta_linear.get("y", 0), 0))
+                    + abs(_as_int(delta_linear.get("z", 0), 0))
+                )
+                if magnitude > 0:
+                    _append_physics_exception_event(
+                        state,
+                        exception_kind="conservation_violation",
+                        affected_quantities={
+                            "quantity.momentum_linear": int(magnitude),
+                        },
+                        reason_code="physics.momentum.unlogged_external_force",
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        extensions={
+                            "assembly_id": target_assembly_id,
+                            "application_id": str(force_row.get("application_id", "")).strip(),
+                        },
+                    )
+        _refresh_momentum_hash_chains(state)
+        result_metadata = {
+            "application_id": str(force_row.get("application_id", "")).strip(),
+            "target_assembly_id": target_assembly_id,
+            "delta_momentum_linear": dict(applied.get("delta_momentum_linear") or {}),
+            "delta_momentum_angular": int(_as_int(applied.get("delta_momentum_angular", 0), 0)),
+            "structural_impulse_magnitude": int(structural_impulse_magnitude),
+            "momentum_hash_chain": str(state.get("momentum_hash_chain", "")).strip(),
+            "impulse_event_hash_chain": str(state.get("impulse_event_hash_chain", "")).strip(),
+            "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+            "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
+            "entropy_reset_events_hash_chain": str(state.get("entropy_reset_events_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.apply_impulse":
+        target_assembly_id = str(inputs.get("target_assembly_id", "")).strip()
+        if not target_assembly_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.apply_impulse requires target_assembly_id",
+                "Provide deterministic target_assembly_id for momentum mutation.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_assembly_id",
+            )
+        app_id = str(inputs.get("application_id", "")).strip()
+        if not app_id:
+            app_id = "impulse.{}".format(
+                canonical_sha256(
+                    {
+                        "target_assembly_id": target_assembly_id,
+                        "tick": int(current_tick),
+                        "impulse_vector": dict(inputs.get("impulse_vector") or {}),
+                        "intent_id": str(intent_id),
+                    }
+                )[:16]
+            )
+        impulse_row = build_impulse_application(
+            application_id=app_id,
+            target_assembly_id=target_assembly_id,
+            impulse_vector=(dict(inputs.get("impulse_vector") or {}) if isinstance(inputs.get("impulse_vector"), Mapping) else {}),
+            torque_impulse=(None if inputs.get("torque_impulse") is None else int(_as_int(inputs.get("torque_impulse", 0), 0))),
+            originating_process_id=process_id,
+            extensions=(dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {}),
+        )
+        if not impulse_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.apply_impulse received invalid application payload",
+                "Provide impulse_vector and identifiers compatible with impulse_application schema.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+
+        momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+        body_rows_by_id = dict(
+            (
+                str(row.get("assembly_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(bodies or [])
+            if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+        )
+        existing_momentum_row = dict(momentum_rows_by_assembly.get(target_assembly_id) or {})
+        body_row = dict(body_rows_by_id.get(target_assembly_id) or {})
+        mass_value = _mass_value_for_assembly(
+            body_row=body_row,
+            existing_momentum_row=existing_momentum_row,
+            explicit_mass_value=inputs.get("mass_value"),
+        )
+        if not existing_momentum_row:
+            existing_momentum_row = build_momentum_state(
+                assembly_id=target_assembly_id,
+                mass_value=int(mass_value),
+                momentum_linear={
+                    "x": int(_as_int((dict(body_row.get("velocity_mm_per_tick") or {})).get("x", 0), 0)) * int(mass_value),
+                    "y": int(_as_int((dict(body_row.get("velocity_mm_per_tick") or {})).get("y", 0), 0)) * int(mass_value),
+                    "z": int(_as_int((dict(body_row.get("velocity_mm_per_tick") or {})).get("z", 0), 0)) * int(mass_value),
+                },
+                momentum_angular=0,
+                last_update_tick=int(current_tick),
+                extensions={},
+            )
+        previous_kinetic = int(kinetic_energy_from_momentum_state(existing_momentum_row))
+        applied = apply_impulse_to_momentum_state(
+            momentum_state_row=existing_momentum_row,
+            impulse_application_row=impulse_row,
+            tick=int(current_tick),
+        )
+        updated_momentum_row = dict(applied.get("momentum_state") or {})
+        if not updated_momentum_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.apply_impulse could not produce updated momentum row",
+                "Ensure target assembly id and impulse payload are valid.",
+                {"target_assembly_id": target_assembly_id},
+                "$.intent.inputs",
+            )
+        momentum_rows_by_assembly[target_assembly_id] = dict(updated_momentum_row)
+        momentum_states = normalize_momentum_state_rows(
+            [dict(momentum_rows_by_assembly[key]) for key in sorted(momentum_rows_by_assembly.keys())]
+        )
+        impulse_application_rows = normalize_impulse_application_rows(
+            list(impulse_application_rows or [])
+            + [impulse_row]
+        )
+        state["momentum_states"] = [dict(row) for row in list(momentum_states or []) if isinstance(row, Mapping)]
+        state["impulse_application_rows"] = [dict(row) for row in list(impulse_application_rows or []) if isinstance(row, Mapping)]
+        _ensure_momentum_state_rows(state)
+        _ensure_impulse_application_rows(state)
+        external_logged = bool(inputs.get("external_impulse_logged", True))
+        _append_kinetic_energy_observation(
+            state,
+            momentum_state_row=updated_momentum_row,
+            tick=int(current_tick),
+            source_process_id=process_id,
+            source_application_id=str(impulse_row.get("application_id", "")).strip() or None,
+        )
+        _record_kinetic_energy_delta(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(current_tick),
+            source_id=str(target_assembly_id),
+            previous_kinetic=int(previous_kinetic),
+            updated_kinetic=int(kinetic_energy_from_momentum_state(updated_momentum_row)),
+            application_id=str(impulse_row.get("application_id", "")).strip() or None,
+            external_boundary=bool(external_logged),
+            boundary_reason_code="boundary.external_impulse",
+        )
+        structural_impulse_magnitude = _append_structural_overload_hazard(
+            state,
+            target_assembly_id=target_assembly_id,
+            delta_momentum_linear=(dict(applied.get("delta_momentum_linear") or {})),
+            delta_momentum_angular=applied.get("delta_momentum_angular", 0),
+            tick=int(current_tick),
+            process_id=process_id,
+            application_id=str(impulse_row.get("application_id", "")).strip() or None,
+            overload_threshold=int(max(1, _as_int(inputs.get("structural_overload_threshold", 5000), 5000))),
+        )
+        if _physics_profile_enforces_momentum(policy_context):
+            if external_logged:
+                external_rows = [
+                    dict(row)
+                    for row in list(state.get("momentum_external_impulse_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+                external_rows.append(
+                    {
+                        "schema_version": "1.0.0",
+                        "event_id": "momentum.external.{}".format(str(impulse_row.get("application_id", "")).strip()),
+                        "tick": int(current_tick),
+                        "assembly_id": target_assembly_id,
+                        "process_id": process_id,
+                        "application_id": str(impulse_row.get("application_id", "")).strip(),
+                        "delta_linear": dict(applied.get("delta_momentum_linear") or {}),
+                        "delta_angular": int(_as_int(applied.get("delta_momentum_angular", 0), 0)),
+                    }
+                )
+                state["momentum_external_impulse_rows"] = sorted(
+                    external_rows,
+                    key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+                )
+            else:
+                delta_linear = dict(applied.get("delta_momentum_linear") or {})
+                magnitude = int(
+                    abs(_as_int(delta_linear.get("x", 0), 0))
+                    + abs(_as_int(delta_linear.get("y", 0), 0))
+                    + abs(_as_int(delta_linear.get("z", 0), 0))
+                )
+                if magnitude > 0:
+                    _append_physics_exception_event(
+                        state,
+                        exception_kind="conservation_violation",
+                        affected_quantities={
+                            "quantity.momentum_linear": int(magnitude),
+                        },
+                        reason_code="physics.momentum.unlogged_external_impulse",
+                        process_id=process_id,
+                        tick=int(current_tick),
+                        extensions={
+                            "assembly_id": target_assembly_id,
+                            "application_id": str(impulse_row.get("application_id", "")).strip(),
+                        },
+                    )
+        _refresh_momentum_hash_chains(state)
+        result_metadata = {
+            "application_id": str(impulse_row.get("application_id", "")).strip(),
+            "target_assembly_id": target_assembly_id,
+            "delta_momentum_linear": dict(applied.get("delta_momentum_linear") or {}),
+            "delta_momentum_angular": int(_as_int(applied.get("delta_momentum_angular", 0), 0)),
+            "structural_impulse_magnitude": int(structural_impulse_magnitude),
+            "momentum_hash_chain": str(state.get("momentum_hash_chain", "")).strip(),
+            "impulse_event_hash_chain": str(state.get("impulse_event_hash_chain", "")).strip(),
+            "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+            "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
+            "entropy_reset_events_hash_chain": str(state.get("entropy_reset_events_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_free_tick":
         requested_subject_ids = _sorted_tokens(list(inputs.get("subject_ids") or []))
         roi_subject_ids = _sorted_tokens(list(inputs.get("roi_subject_ids") or []))
@@ -31743,6 +33628,7 @@ def execute_intent(
         instrument_rows: Dict[str, dict] = {}
         decision_rows: List[dict] = []
         incident_rows: List[dict] = []
+        momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
         processed_count = 0
         for subject_id in processed_subject_ids:
             free_row = dict(free_rows_by_subject.get(subject_id) or {})
@@ -31861,6 +33747,25 @@ def execute_intent(
                     _as_int((dict(effect_map_rows.get("visibility_permille") or {})).get("value", 1000), 1000)
                 ),
             }
+            existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
+            mass_value = _mass_value_for_assembly(
+                body_row=body_row,
+                existing_momentum_row=existing_momentum_row,
+                explicit_mass_value=None,
+            )
+            if not existing_momentum_row:
+                existing_momentum_row = build_momentum_state(
+                    assembly_id=body_id,
+                    mass_value=int(mass_value),
+                    momentum_linear={
+                        "x": int(_as_int((dict(free_row.get("velocity") or {})).get("x", 0), 0)) * int(mass_value),
+                        "y": int(_as_int((dict(free_row.get("velocity") or {})).get("y", 0), 0)) * int(mass_value),
+                        "z": int(_as_int((dict(free_row.get("velocity") or {})).get("z", 0), 0)) * int(mass_value),
+                    },
+                    momentum_angular=0,
+                    last_update_tick=int(current_tick),
+                    extensions={},
+                )
             try:
                 stepped = step_free_motion(
                     free_motion_row=free_row,
@@ -31875,6 +33780,9 @@ def execute_intent(
                     volume_geometry_row=(volume_geometry_row if volume_geometry_row else None),
                     dt_ticks=int(dt_ticks),
                     current_tick=int(current_tick),
+                    mass_value=int(mass_value),
+                    momentum_linear=dict(existing_momentum_row.get("momentum_linear") or {}),
+                    momentum_angular=existing_momentum_row.get("momentum_angular", 0),
                 )
             except FreeMotionError as exc:
                 return refusal(
@@ -32065,6 +33973,73 @@ def execute_intent(
                 for row in list(bodies or [])
                 if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
             )
+            resolved_body_row = dict(body_rows_by_id.get(body_id) or {})
+            resolved_velocity = _vector3_int(
+                resolved_body_row.get("velocity_mm_per_tick"),
+                "velocity_mm_per_tick",
+            ) or _vector3_int(next_free_row.get("velocity"), "velocity")
+            next_free_row = build_free_motion_state(
+                subject_id=str(next_free_row.get("subject_id", "")).strip() or None,
+                vehicle_id=(
+                    None
+                    if next_free_row.get("vehicle_id") is None
+                    else str(next_free_row.get("vehicle_id", "")).strip() or None
+                ),
+                agent_id=(
+                    None
+                    if next_free_row.get("agent_id") is None
+                    else str(next_free_row.get("agent_id", "")).strip() or None
+                ),
+                body_id=str(next_free_row.get("body_id", "")).strip(),
+                velocity=dict(resolved_velocity),
+                acceleration=_vector3_int(next_free_row.get("acceleration"), "acceleration"),
+                corridor_geometry_id=(
+                    None
+                    if next_free_row.get("corridor_geometry_id") is None
+                    else str(next_free_row.get("corridor_geometry_id", "")).strip() or None
+                ),
+                volume_geometry_id=(
+                    None
+                    if next_free_row.get("volume_geometry_id") is None
+                    else str(next_free_row.get("volume_geometry_id", "")).strip() or None
+                ),
+                last_update_tick=int(current_tick),
+                extensions=dict(next_free_row.get("extensions") or {}),
+            )
+            updated_momentum_row = build_momentum_state(
+                assembly_id=body_id,
+                mass_value=int(mass_value),
+                momentum_linear={
+                    "x": int(_as_int(resolved_velocity.get("x", 0), 0)) * int(mass_value),
+                    "y": int(_as_int(resolved_velocity.get("y", 0), 0)) * int(mass_value),
+                    "z": int(_as_int(resolved_velocity.get("z", 0), 0)) * int(mass_value),
+                },
+                momentum_angular=stepped.get("momentum_angular", existing_momentum_row.get("momentum_angular", 0)),
+                last_update_tick=int(current_tick),
+                extensions=dict(existing_momentum_row.get("extensions") or {}),
+            )
+            if updated_momentum_row:
+                previous_kinetic = int(kinetic_energy_from_momentum_state(existing_momentum_row))
+                momentum_rows_by_assembly[body_id] = dict(updated_momentum_row)
+                _append_kinetic_energy_observation(
+                    state,
+                    momentum_state_row=updated_momentum_row,
+                    tick=int(current_tick),
+                    source_process_id=process_id,
+                    source_application_id=None,
+                )
+                _record_kinetic_energy_delta(
+                    state,
+                    policy_context=policy_context,
+                    process_id=process_id,
+                    tick=int(current_tick),
+                    source_id=str(body_id),
+                    previous_kinetic=int(previous_kinetic),
+                    updated_kinetic=int(kinetic_energy_from_momentum_state(updated_momentum_row)),
+                    application_id=None,
+                    external_boundary=False,
+                    boundary_reason_code=None,
+                )
 
             free_rows_by_subject[subject_id] = dict(next_free_row)
             processed_count += 1
@@ -32310,6 +34285,12 @@ def execute_intent(
         state["body_assemblies"] = [dict(row) for row in list(bodies or []) if isinstance(row, Mapping)]
         _ensure_body_assemblies(state)
         _persist_mobility_free_state(state, free_motion_states=free_motion_states)
+        momentum_states = normalize_momentum_state_rows(
+            [dict(momentum_rows_by_assembly[key]) for key in sorted(momentum_rows_by_assembly.keys())]
+        )
+        state["momentum_states"] = [dict(row) for row in list(momentum_states or []) if isinstance(row, Mapping)]
+        _ensure_momentum_state_rows(state)
+        _refresh_momentum_hash_chains(state)
         _persist_vehicle_state(
             state,
             vehicles=vehicles,
@@ -32383,6 +34364,10 @@ def execute_intent(
             "roi_subject_ids": list(roi_subject_ids),
             "reenactment_event_ids": list(reenactment_event_ids),
             "lockstep_anchor": str(lockstep_anchor),
+            "momentum_hash_chain": str(state.get("momentum_hash_chain", "")).strip(),
+            "impulse_event_hash_chain": str(state.get("impulse_event_hash_chain", "")).strip(),
+            "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+            "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.vehicle_register_from_structure":
@@ -34428,11 +36413,27 @@ def execute_intent(
             structural_edges=structural_edges,
             mechanics_provenance_events=mechanics_provenance_events,
         )
+        drill_entropy_result = _record_entropy_contribution_in_state(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(current_tick),
+            source_transformation_id="transform.plastic_deformation_stub",
+            target_id=structural_node_id,
+            context_values={"basis_value": int(max(1, int(plastic_increment)))},
+            extensions={
+                "structural_node_id": structural_node_id,
+                "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+                "source": "mechanics.drill_hole",
+            },
+        )
         result_metadata = {
             "structural_node_id": structural_node_id,
             "previous_integrity_permille": int(previous_integrity),
             "next_integrity_permille": int(next_integrity),
             "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+            "drill_entropy_result": dict(drill_entropy_result),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mechanics_fracture":
@@ -34741,11 +36742,37 @@ def execute_intent(
             process_id=process_id,
             details={"source": "mechanics.fracture", "portal_seal_updated": bool(portal_seal_updated)},
         )
+        fracture_entropy_basis = int(
+            max(
+                1,
+                max(
+                    0,
+                    _as_int(edge_row.get("applied_load", 0), 0),
+                )
+                + max(0, _as_int(edge_row.get("stress_ratio_permille", 0), 0)),
+            )
+        )
+        fracture_entropy_result = _record_entropy_contribution_in_state(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(current_tick),
+            source_transformation_id="transform.plastic_deformation_stub",
+            target_id=structural_edge_id,
+            context_values={"basis_value": int(fracture_entropy_basis)},
+            extensions={
+                "structural_edge_id": structural_edge_id,
+                "fracture_event_id": str(provenance_row.get("event_id", "")).strip(),
+                "source": "mechanics.fracture",
+            },
+        )
         result_metadata = {
             "structural_edge_id": structural_edge_id,
             "fracture_event_id": str(provenance_row.get("event_id", "")).strip(),
             "portal_seal_updated": bool(portal_seal_updated),
             "spawn_debris": bool(inputs.get("spawn_debris", False)),
+            "fracture_entropy_result": dict(fracture_entropy_result),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.spec_apply_to_target":
@@ -35867,14 +37894,17 @@ def execute_intent(
             entropy_delta = max(
                 0,
                 _as_int(
-                    (dict(provenance_row.get("ledger_deltas") or {})).get("quantity.entropy_metric", 0),
+                    (dict(provenance_row.get("ledger_deltas") or {})).get(
+                        "quantity.entropy_index",
+                        (dict(provenance_row.get("ledger_deltas") or {})).get("quantity.entropy_metric", 0),
+                    ),
                     0,
                 ),
             )
             if entropy_delta > 0:
                 _ledger_emit_exception(
                     policy_context=policy_context,
-                    quantity_id="quantity.entropy_metric",
+                    quantity_id="quantity.entropy_index",
                     delta=int(entropy_delta),
                     exception_type_id="exception.boundary_flux",
                     domain_id=CONSERVATION_DEFAULT_DOMAIN_ID,
@@ -35891,6 +37921,19 @@ def execute_intent(
             if isinstance(row, dict) and not _is_auto_maintenance_effect(row)
         ]
         auto_maintenance_effect_rows: List[dict] = []
+        entropy_effect_rows_emitted: List[dict] = []
+        entropy_contribution_events = 0
+        hazard_rows_by_id = dict(
+            (
+                "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                dict(row),
+            )
+            for row in list(model_hazard_rows or [])
+            if isinstance(row, Mapping)
+            and str(row.get("target_id", "")).strip()
+            and str(row.get("hazard_type_id", "")).strip()
+        )
+        entropy_requires_efficiency = _physics_profile_entropy_requires_efficiency(policy_context)
         for asset_row in sorted(
             (row for row in list(asset_health_states or []) if isinstance(row, dict)),
             key=lambda row: str(row.get("asset_id", "")),
@@ -35906,9 +37949,48 @@ def execute_intent(
                 for value in list((dict(asset_row.get("accumulated_wear") or {})).values())
             ]
             wear_peak = max(wear_values) if wear_values else 0
-            backlog_penalty = min(700, int(maintenance_backlog) * 25)
-            wear_penalty = min(200, int(wear_peak) // 5000)
-            machine_output_permille = max(100, 1000 - min(900, int(backlog_penalty + wear_penalty)))
+            entropy_basis_value = int(
+                max(
+                    0,
+                    int(max(0, maintenance_backlog) * 1000)
+                    + int(max(0, wear_peak) // 5),
+                )
+            )
+            entropy_record = _record_entropy_contribution_in_state(
+                state,
+                policy_context=policy_context,
+                process_id=process_id,
+                tick=int(current_tick),
+                source_transformation_id="transform.plastic_deformation_stub",
+                target_id=asset_id,
+                context_values={"basis_value": int(entropy_basis_value)},
+                extensions={
+                    "asset_id": asset_id,
+                    "maintenance_backlog": int(maintenance_backlog),
+                    "wear_peak": int(wear_peak),
+                    "source": "maintenance.decay_tick",
+                },
+            )
+            entropy_result_token = str(entropy_record.get("result", "")).strip()
+            if entropy_result_token == "complete":
+                entropy_contribution_events += 1
+            entropy_effect_row = dict(entropy_record.get("entropy_effect") or {})
+            if entropy_effect_row:
+                entropy_effect_rows_emitted.append(dict(entropy_effect_row))
+            machine_output_permille = int(
+                max(
+                    100,
+                    min(
+                        1000,
+                        _as_int(
+                            entropy_effect_row.get("efficiency_multiplier_permille", 1000),
+                            1000,
+                        ),
+                    ),
+                )
+            )
+            if entropy_requires_efficiency and entropy_basis_value > 0 and machine_output_permille >= 1000:
+                machine_output_permille = 999
             asset_ext = dict(asset_row.get("extensions") or {})
             target_ids = _sorted_tokens(
                 [
@@ -35934,15 +38016,66 @@ def execute_intent(
                             "asset_id": asset_id,
                             "maintenance_backlog": int(maintenance_backlog),
                             "wear_peak": int(wear_peak),
+                            "entropy_target_id": asset_id,
+                            "entropy_value": int(max(0, _as_int(entropy_effect_row.get("entropy_value", 0), 0))),
+                            "entropy_policy_id": str(entropy_effect_row.get("policy_id", "")).strip() or None,
                         },
                     )
                 )
+            hazard_multiplier_permille = int(
+                max(
+                    1000,
+                    _as_int(entropy_effect_row.get("hazard_multiplier_permille", 1000), 1000),
+                )
+            )
+            if hazard_multiplier_permille > 1000:
+                hazard_key = "{}::{}".format(asset_id, "hazard.maintenance.entropy")
+                existing_hazard = dict(hazard_rows_by_id.get(hazard_key) or {})
+                updated_hazard = {
+                    "schema_version": "1.0.0",
+                    "target_id": asset_id,
+                    "hazard_type_id": "hazard.maintenance.entropy",
+                    "accumulated_value": int(
+                        max(
+                            0,
+                            _as_int(existing_hazard.get("accumulated_value", 0), 0)
+                            + max(1, (int(hazard_multiplier_permille) - 1000) // 100),
+                        )
+                    ),
+                    "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        **(
+                            dict(existing_hazard.get("extensions") or {})
+                            if isinstance(existing_hazard.get("extensions"), Mapping)
+                            else {}
+                        ),
+                        "source_process_id": process_id,
+                        "asset_id": asset_id,
+                        "hazard_multiplier_permille": int(hazard_multiplier_permille),
+                    },
+                }
+                updated_hazard["deterministic_fingerprint"] = canonical_sha256(
+                    dict(updated_hazard, deterministic_fingerprint="")
+                )
+                hazard_rows_by_id[hazard_key] = updated_hazard
         effect_rows = normalize_effect_rows(existing_effect_rows + auto_maintenance_effect_rows)
         _persist_effect_state(
             state,
             effect_rows=effect_rows,
             provenance_events=effect_provenance_events,
         )
+        if hazard_rows_by_id:
+            model_hazard_rows = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
+            _persist_model_state(
+                state,
+                model_bindings=model_bindings,
+                model_evaluation_results=model_evaluation_results,
+                model_cache_rows=model_cache_rows,
+                model_runtime_state=model_runtime_state,
+                model_hazard_rows=model_hazard_rows,
+                model_flow_adjustment_rows=model_flow_adjustment_rows,
+            )
         maintenance_runtime_state["next_event_sequence"] = max(
             0,
             _as_int(
@@ -35967,6 +38100,9 @@ def execute_intent(
             "new_failure_count": len(new_failure_rows),
             "total_failure_count": len(failure_events),
             "machine_degraded_effect_count": len(auto_maintenance_effect_rows),
+            "entropy_contribution_events": int(entropy_contribution_events),
+            "entropy_effect_count": int(len(entropy_effect_rows_emitted)),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.maintenance_schedule":
@@ -36237,6 +38373,33 @@ def execute_intent(
         )
         maintenance_runtime_state["last_maintenance_tick"] = int(max(0, int(current_tick)))
         maintenance_runtime_state["last_budget_outcome"] = "complete"
+        entropy_reset_result = _apply_entropy_reset_in_state(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(current_tick),
+            target_id=asset_id,
+            reason_code="maintenance.perform",
+            reset_value=(
+                None
+                if inputs.get("entropy_reset_value") is None
+                else int(max(0, _as_int(inputs.get("entropy_reset_value", 0), 0)))
+            ),
+            reset_fraction_numerator=(
+                None
+                if inputs.get("reset_fraction_numerator") is None
+                else int(max(0, _as_int(inputs.get("reset_fraction_numerator", 1), 1)))
+            ),
+            reset_fraction_denominator=(
+                None
+                if inputs.get("reset_fraction_denominator") is None
+                else int(max(1, _as_int(inputs.get("reset_fraction_denominator", 2), 2)))
+            ),
+            extensions={
+                "asset_id": asset_id,
+                "intent_id": str(intent_id),
+            },
+        )
         _persist_maintenance_state(
             state,
             asset_health_states=asset_health_states,
@@ -36251,6 +38414,9 @@ def execute_intent(
             "backlog_after": int(maintained.get("backlog_after", 0)),
             "logistics_node_id": logistics_node_id,
             "required_materials": dict(required_materials),
+            "entropy_reset_result": dict(entropy_reset_result),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
+            "entropy_reset_events_hash_chain": str(state.get("entropy_reset_events_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.model_evaluate_tick":
@@ -36276,6 +38442,131 @@ def execute_intent(
             for row in incoming_bindings:
                 merged_rows = _upsert_row_by_id(merged_rows, "binding_id", row)
             model_bindings = normalize_model_binding_rows(merged_rows)
+
+        gravity_model_id = ""
+        for candidate in ("model.phys_gravity_force", "model.phys.gravity_stub"):
+            if candidate in constitutive_models_map:
+                gravity_model_id = candidate
+                break
+        if _physics_profile_gravity_enabled(policy_context) and gravity_model_id:
+            gravity_target_ids = _sorted_tokens(list(inputs.get("gravity_target_ids") or []))
+            if not gravity_target_ids:
+                gravity_target_ids = _sorted_tokens(
+                    [
+                        str(row.get("body_id", "")).strip()
+                        for row in list(free_motion_states or [])
+                        if isinstance(row, Mapping) and str(row.get("body_id", "")).strip()
+                    ]
+                )
+            if not gravity_target_ids:
+                gravity_target_ids = _sorted_tokens(
+                    [
+                        str(row.get("assembly_id", "")).strip()
+                        for row in list(bodies or [])
+                        if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+                    ]
+                )
+            if gravity_target_ids:
+                body_rows_by_id = dict(
+                    (
+                        str(row.get("assembly_id", "")).strip(),
+                        dict(row),
+                    )
+                    for row in list(bodies or [])
+                    if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+                )
+                existing_momentum_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+                merged_rows = list(model_bindings or [])
+                for assembly_id in list(gravity_target_ids):
+                    body_row = dict(body_rows_by_id.get(assembly_id) or {})
+                    existing_momentum_row = dict(existing_momentum_by_assembly.get(assembly_id) or {})
+                    mass_value = _mass_value_for_assembly(
+                        body_row=body_row,
+                        existing_momentum_row=existing_momentum_row,
+                        explicit_mass_value=None,
+                    )
+                    binding_id = "binding.phys.gravity.{}".format(
+                        canonical_sha256({"model_id": gravity_model_id, "target_id": assembly_id})[:16]
+                    )
+                    gravity_binding = {
+                        "schema_version": "1.0.0",
+                        "binding_id": binding_id,
+                        "model_id": gravity_model_id,
+                        "target_kind": "custom",
+                        "target_id": assembly_id,
+                        "tier": "micro",
+                        "parameters": {
+                            "phys.mass_value": int(max(1, mass_value)),
+                            "duration_ticks": int(max(1, _as_int(inputs.get("gravity_duration_ticks", 1), 1))),
+                        },
+                        "enabled": True,
+                        "extensions": {
+                            "source": "phys.gravity.auto_bind",
+                        },
+                    }
+                    merged_rows = _upsert_row_by_id(merged_rows, "binding_id", gravity_binding)
+                model_bindings = normalize_model_binding_rows(merged_rows)
+        irradiance_model_id = (
+            "model.phys_irradiance_heating_stub"
+            if "model.phys_irradiance_heating_stub" in constitutive_models_map
+            else ""
+        )
+        if irradiance_model_id:
+            irradiance_target_ids = _sorted_tokens(list(inputs.get("irradiance_target_ids") or []))
+            thermal_node_rows = [
+                dict(row)
+                for row in list(state.get("thermal_node_status_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("target_id", "")).strip()
+            ]
+            if not irradiance_target_ids and thermal_node_rows:
+                irradiance_target_ids = _sorted_tokens(
+                    [
+                        str(row.get("target_id", "")).strip()
+                        for row in list(thermal_node_rows)
+                        if bool(
+                            (
+                                dict(row.get("extensions") or {})
+                                if isinstance(row.get("extensions"), Mapping)
+                                else {}
+                            ).get("is_exterior", False)
+                            or (
+                                dict(row.get("extensions") or {})
+                                if isinstance(row.get("extensions"), Mapping)
+                                else {}
+                            ).get("exterior", False)
+                            or (
+                                dict(row.get("extensions") or {})
+                                if isinstance(row.get("extensions"), Mapping)
+                                else {}
+                            ).get("is_outdoor", False)
+                        )
+                    ]
+                )
+            if not irradiance_target_ids and thermal_node_rows:
+                irradiance_target_ids = _sorted_tokens(
+                    [str(row.get("target_id", "")).strip() for row in list(thermal_node_rows)]
+                )
+            if irradiance_target_ids:
+                merged_rows = list(model_bindings or [])
+                for target_id in list(irradiance_target_ids):
+                    binding_id = "binding.phys.irradiance.{}".format(
+                        canonical_sha256({"model_id": irradiance_model_id, "target_id": target_id})[:16]
+                    )
+                    irradiance_binding = {
+                        "schema_version": "1.0.0",
+                        "binding_id": binding_id,
+                        "model_id": irradiance_model_id,
+                        "target_kind": "custom",
+                        "target_id": target_id,
+                        "tier": "meso",
+                        "parameters": {},
+                        "enabled": True,
+                        "extensions": {
+                            "source": "phys.irradiance.auto_bind",
+                        },
+                    }
+                    merged_rows = _upsert_row_by_id(merged_rows, "binding_id", irradiance_binding)
+                model_bindings = normalize_model_binding_rows(merged_rows)
 
         filter_model_ids = set(_sorted_tokens(list(inputs.get("model_ids") or [])))
         active_bindings = [
@@ -36323,6 +38614,12 @@ def execute_intent(
                 key="field_type_registry",
                 registry_rel_path="data/registries/field_type_registry.json",
                 entry_key="field_types",
+            )
+            field_update_policy_registry = _field_registry_payload(
+                policy_context=policy_context,
+                key="field_update_policy_registry",
+                registry_rel_path="data/registries/field_update_policy_registry.json",
+                entry_key="policies",
             )
             normalized_field_layers = normalize_field_layer_rows(field_layers)
             normalized_field_cells = normalize_field_cell_rows(
@@ -36470,7 +38767,11 @@ def execute_intent(
                     machine_row = dict(state_machine_by_id.get(input_id) or state_machine_by_id.get(token_target_id) or {})
                     return str(machine_row.get("state_id", "")).strip() or "unknown"
                 if input_kind == "spec_param":
-                    spec_binding_row = latest_spec_binding_for_target(token_target_id, spec_bindings)
+                    spec_binding_row = latest_spec_binding_for_target(
+                        binding_rows=spec_bindings,
+                        target_kind=str(binding_row.get("target_kind", "custom")).strip() or "custom",
+                        target_id=token_target_id,
+                    )
                     spec_ext = dict(spec_binding_row.get("extensions") or {}) if isinstance(spec_binding_row, Mapping) else {}
                     spec_params = dict(spec_ext.get("spec_params") or {}) if isinstance(spec_ext.get("spec_params"), Mapping) else {}
                     if input_id in spec_params:
@@ -36569,6 +38870,9 @@ def execute_intent(
                 if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
             )
             output_process_events: List[dict] = []
+            model_field_update_applied: List[dict] = []
+            model_field_update_skipped: List[dict] = []
+            model_field_sample_rows: List[dict] = []
             for action in sorted(
                 (dict(row) for row in list(evaluation.get("output_actions") or []) if isinstance(row, Mapping)),
                 key=lambda row: (
@@ -36582,6 +38886,196 @@ def execute_intent(
                 output_id = str(action.get("output_id", "")).strip()
                 target_id = str(action.get("target_id", "")).strip()
                 payload = dict(action.get("payload") or {}) if isinstance(action.get("payload"), Mapping) else {}
+                if output_kind == "derived_quantity" and output_id == "process.apply_force":
+                    force_application_id = str(payload.get("application_id", "")).strip()
+                    if not force_application_id:
+                        force_application_id = "force.model.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(current_tick),
+                                    "model_id": str(action.get("model_id", "")).strip(),
+                                    "binding_id": str(action.get("binding_id", "")).strip(),
+                                    "target_id": target_id,
+                                    "payload": dict(payload),
+                                }
+                            )[:16]
+                        )
+                    force_row = build_force_application(
+                        application_id=force_application_id,
+                        target_assembly_id=target_id,
+                        force_vector=dict(payload.get("force_vector") or {}),
+                        duration_ticks=int(max(1, _as_int(payload.get("duration_ticks", 1), 1))),
+                        torque=(None if payload.get("torque") is None else int(_as_int(payload.get("torque", 0), 0))),
+                        originating_process_id="process.model_evaluate_tick",
+                        extensions={
+                            "source_model_id": str(action.get("model_id", "")).strip(),
+                            "source_binding_id": str(action.get("binding_id", "")).strip(),
+                        },
+                    )
+                    if force_row:
+                        momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+                        existing_momentum_row = dict(momentum_rows_by_assembly.get(target_id) or {})
+                        body_row = _find_body(body_rows=bodies, body_id=target_id)
+                        mass_value = _mass_value_for_assembly(
+                            body_row=dict(body_row or {}),
+                            existing_momentum_row=existing_momentum_row,
+                            explicit_mass_value=payload.get("mass_value"),
+                        )
+                        if not existing_momentum_row:
+                            existing_momentum_row = build_momentum_state(
+                                assembly_id=target_id,
+                                mass_value=int(mass_value),
+                                momentum_linear={
+                                    "x": int(_as_int((dict((body_row or {}).get("velocity_mm_per_tick") or {})).get("x", 0), 0)) * int(mass_value),
+                                    "y": int(_as_int((dict((body_row or {}).get("velocity_mm_per_tick") or {})).get("y", 0), 0)) * int(mass_value),
+                                    "z": int(_as_int((dict((body_row or {}).get("velocity_mm_per_tick") or {})).get("z", 0), 0)) * int(mass_value),
+                                },
+                                momentum_angular=0,
+                                last_update_tick=int(current_tick),
+                                extensions={},
+                            )
+                        previous_kinetic = int(kinetic_energy_from_momentum_state(existing_momentum_row))
+                        applied = apply_force_to_momentum_state(
+                            momentum_state_row=existing_momentum_row,
+                            force_application_row=force_row,
+                            tick=int(current_tick),
+                        )
+                        updated_momentum_row = dict(applied.get("momentum_state") or {})
+                        if updated_momentum_row:
+                            momentum_rows_by_assembly[target_id] = dict(updated_momentum_row)
+                            momentum_states = normalize_momentum_state_rows(
+                                [dict(momentum_rows_by_assembly[key]) for key in sorted(momentum_rows_by_assembly.keys())]
+                            )
+                            force_application_rows = normalize_force_application_rows(
+                                list(force_application_rows or [])
+                                + [force_row]
+                            )
+                            state["momentum_states"] = [dict(row) for row in list(momentum_states or []) if isinstance(row, Mapping)]
+                            state["force_application_rows"] = [
+                                dict(row)
+                                for row in list(force_application_rows or [])
+                                if isinstance(row, Mapping)
+                            ]
+                            _ensure_momentum_state_rows(state)
+                            _ensure_force_application_rows(state)
+                            _append_kinetic_energy_observation(
+                                state,
+                                momentum_state_row=updated_momentum_row,
+                                tick=int(current_tick),
+                                source_process_id="process.model_evaluate_tick",
+                                source_application_id=str(force_row.get("application_id", "")).strip() or None,
+                            )
+                            _record_kinetic_energy_delta(
+                                state,
+                                policy_context=policy_context,
+                                process_id="process.model_evaluate_tick",
+                                tick=int(current_tick),
+                                source_id=str(target_id),
+                                previous_kinetic=int(previous_kinetic),
+                                updated_kinetic=int(kinetic_energy_from_momentum_state(updated_momentum_row)),
+                                application_id=str(force_row.get("application_id", "")).strip() or None,
+                                external_boundary=False,
+                                boundary_reason_code=None,
+                            )
+                            if _physics_profile_enforces_momentum(policy_context):
+                                external_rows = [
+                                    dict(row)
+                                    for row in list(state.get("momentum_external_impulse_rows") or [])
+                                    if isinstance(row, Mapping)
+                                ]
+                                external_rows.append(
+                                    {
+                                        "schema_version": "1.0.0",
+                                        "event_id": "momentum.external.{}".format(
+                                            str(force_row.get("application_id", "")).strip()
+                                        ),
+                                        "tick": int(current_tick),
+                                        "assembly_id": target_id,
+                                        "process_id": "process.model_evaluate_tick",
+                                        "application_id": str(force_row.get("application_id", "")).strip(),
+                                        "delta_linear": dict(applied.get("delta_momentum_linear") or {}),
+                                        "delta_angular": int(_as_int(applied.get("delta_momentum_angular", 0), 0)),
+                                    }
+                                )
+                                state["momentum_external_impulse_rows"] = sorted(
+                                    external_rows,
+                                    key=lambda row: (
+                                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                                        str(row.get("event_id", "")),
+                                    ),
+                                )
+                            _refresh_momentum_hash_chains(state)
+                            output_process_events.append(
+                                {
+                                    "process_id": "process.apply_force",
+                                    "target_id": target_id,
+                                    "output_id": output_id,
+                                    "status": "applied",
+                                }
+                            )
+                            continue
+                    output_process_events.append(
+                        {
+                            "process_id": "process.apply_force",
+                            "target_id": target_id,
+                            "output_id": output_id,
+                            "status": "skipped_invalid_payload",
+                        }
+                    )
+                    continue
+                if output_kind == "derived_quantity" and output_id == "process.field_update":
+                    update_rows = []
+                    if isinstance(payload.get("field_updates"), list):
+                        update_rows = [dict(row) for row in list(payload.get("field_updates") or []) if isinstance(row, Mapping)]
+                    if not update_rows:
+                        candidate_row = {
+                            "field_id": str(payload.get("field_id", "")).strip() or str(payload.get("field_type_id", "")).strip(),
+                            "field_type_id": str(payload.get("field_type_id", "")).strip(),
+                            "spatial_node_id": str(payload.get("spatial_node_id", "")).strip() or str(payload.get("cell_id", "")).strip(),
+                            "sampled_value": payload.get("sampled_value", payload.get("value")),
+                            "spatial_scope_id": str(payload.get("spatial_scope_id", "")).strip() or "spatial.global",
+                            "resolution_level": str(payload.get("resolution_level", "macro")).strip() or "macro",
+                        }
+                        update_rows = [candidate_row]
+                    field_update_result = _apply_field_updates(
+                        current_tick=int(current_tick),
+                        field_layers=normalized_field_layers,
+                        field_cells=normalized_field_cells,
+                        field_type_registry=field_type_registry,
+                        field_update_policy_registry=field_update_policy_registry,
+                        requested_updates=update_rows,
+                        source_process_id="process.model_evaluate_tick",
+                    )
+                    normalized_field_layers = normalize_field_layer_rows(field_update_result.get("field_layer_rows"))
+                    normalized_field_cells = normalize_field_cell_rows(
+                        field_update_result.get("field_cell_rows"),
+                        field_layer_rows=normalized_field_layers,
+                        field_type_registry=field_type_registry,
+                    )
+                    model_field_update_applied.extend(
+                        [dict(row) for row in list(field_update_result.get("applied_updates") or []) if isinstance(row, Mapping)]
+                    )
+                    model_field_update_skipped.extend(
+                        [dict(row) for row in list(field_update_result.get("skipped_updates") or []) if isinstance(row, Mapping)]
+                    )
+                    model_field_sample_rows.extend(
+                        [dict(row) for row in list(field_update_result.get("field_sample_rows") or []) if isinstance(row, Mapping)]
+                    )
+                    output_process_events.append(
+                        {
+                            "process_id": "process.field_update",
+                            "target_id": target_id,
+                            "output_id": output_id,
+                            "status": (
+                                "applied"
+                                if list(field_update_result.get("applied_updates") or [])
+                                else "skipped_invalid_payload"
+                            ),
+                            "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),
+                            "skipped_update_count": int(len(list(field_update_result.get("skipped_updates") or []))),
+                        }
+                    )
+                    continue
                 if output_kind == "effect":
                     effect_row = build_effect(
                         effect_id="",
@@ -36733,6 +39227,21 @@ def execute_intent(
             )
             state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
             state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+            if model_field_update_applied or model_field_update_skipped or model_field_sample_rows:
+                _persist_field_state(
+                    state,
+                    field_layers=normalized_field_layers,
+                    field_cells=normalized_field_cells,
+                    field_modifier_rows=[
+                        dict(row)
+                        for row in list(state.get("field_modifier_rows") or [])
+                        if isinstance(row, Mapping)
+                    ],
+                )
+                state["field_sample_rows"] = normalize_field_sample_rows(
+                    list(state.get("field_sample_rows") or [])
+                    + [dict(row) for row in list(model_field_sample_rows or []) if isinstance(row, Mapping)]
+                )
 
             model_runtime_state = dict(model_runtime_state or {})
             model_runtime_state["last_tick"] = int(current_tick)
@@ -36763,6 +39272,18 @@ def execute_intent(
                 "observation_count": int(len(observation_rows)),
                 "evaluation_result_count": int(len(list(evaluation.get("evaluation_results") or []))),
                 "cache_entry_count": int(len(model_cache_rows)),
+                "field_update_applied_count": int(len(model_field_update_applied)),
+                "field_update_skipped_count": int(len(model_field_update_skipped)),
+                "field_sample_count": int(len(model_field_sample_rows)),
+                "updated_field_ids": sorted(
+                    set(
+                        str(row.get("field_id", "")).strip()
+                        for row in list(model_field_update_applied)
+                        if isinstance(row, Mapping) and str(row.get("field_id", "")).strip()
+                    )
+                ),
+                "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+                "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.safety_tick":
@@ -36929,6 +39450,77 @@ def execute_intent(
             "cost_units": int(max(0, _as_int(evaluation.get("cost_units", 0), 0))),
             "event_count": int(len(new_events)),
             "max_instance_updates_per_tick": int(max_instance_updates),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.field_update":
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        field_update_policy_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_update_policy_registry",
+            registry_rel_path="data/registries/field_update_policy_registry.json",
+            entry_key="policies",
+        )
+        incoming_layers = inputs.get("field_layers")
+        incoming_cells = inputs.get("field_cells")
+        if isinstance(incoming_layers, list):
+            field_layers = normalize_field_layer_rows(incoming_layers)
+        else:
+            field_layers = normalize_field_layer_rows(field_layers)
+        if isinstance(incoming_cells, list):
+            field_cells = normalize_field_cell_rows(
+                incoming_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+            )
+        else:
+            field_cells = normalize_field_cell_rows(
+                field_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+            )
+        field_update_result = _apply_field_updates(
+            current_tick=int(current_tick),
+            field_layers=field_layers,
+            field_cells=field_cells,
+            field_type_registry=field_type_registry,
+            field_update_policy_registry=field_update_policy_registry,
+            requested_updates=list(inputs.get("field_updates") or []),
+            source_process_id=process_id,
+        )
+        field_layers = normalize_field_layer_rows(field_update_result.get("field_layer_rows"))
+        field_cells = normalize_field_cell_rows(
+            field_update_result.get("field_cell_rows"),
+            field_layer_rows=field_layers,
+            field_type_registry=field_type_registry,
+        )
+        _persist_field_state(
+            state,
+            field_layers=field_layers,
+            field_cells=field_cells,
+            field_modifier_rows=[dict(row) for row in list(state.get("field_modifier_rows") or []) if isinstance(row, Mapping)],
+        )
+        state["field_sample_rows"] = normalize_field_sample_rows(
+            list(state.get("field_sample_rows") or [])
+            + [dict(row) for row in list(field_update_result.get("field_sample_rows") or []) if isinstance(row, Mapping)]
+        )
+        result_metadata = {
+            "updated_field_ids": list(field_update_result.get("updated_field_ids") or []),
+            "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),
+            "skipped_update_count": int(len(list(field_update_result.get("skipped_updates") or []))),
+            "skipped_updates": [dict(row) for row in list(field_update_result.get("skipped_updates") or []) if isinstance(row, Mapping)],
+            "cost_units_used": int(_as_int(field_update_result.get("cost_units_used", 0), 0)),
+            "degraded": bool(field_update_result.get("degraded", False)),
+            "degrade_reason": (
+                None
+                if field_update_result.get("degrade_reason") is None
+                else str(field_update_result.get("degrade_reason", "")).strip() or None
+            ),
+            "deterministic_fingerprint": str(field_update_result.get("deterministic_fingerprint", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.field_tick":

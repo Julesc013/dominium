@@ -1,0 +1,142 @@
+{
+  "schema_id": "dominium.registry.energy_transformation_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.energy_transformation_registry",
+    "registry_version": "1.0.0",
+    "energy_transformations": [
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.kinetic_to_thermal",
+        "input_quantities": {
+          "quantity.energy_kinetic": 1
+        },
+        "output_quantities": {
+          "quantity.energy_thermal": 1,
+          "quantity.heat_loss": 1
+        },
+        "boundary_allowed": false,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "friction"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.electrical_to_thermal",
+        "input_quantities": {
+          "quantity.energy_electrical": 1
+        },
+        "output_quantities": {
+          "quantity.energy_thermal": 1,
+          "quantity.heat_loss": 1
+        },
+        "boundary_allowed": false,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "loss"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.chemical_to_thermal",
+        "input_quantities": {
+          "quantity.energy_chemical": 1
+        },
+        "output_quantities": {
+          "quantity.energy_thermal": 1,
+          "quantity.heat_loss": 1
+        },
+        "boundary_allowed": false,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "combustion_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.potential_to_kinetic",
+        "input_quantities": {
+          "quantity.energy_potential": 1
+        },
+        "output_quantities": {
+          "quantity.energy_kinetic": 1
+        },
+        "boundary_allowed": false,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "gravity_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.phase_change_stub",
+        "input_quantities": {
+          "quantity.energy_thermal": 1
+        },
+        "output_quantities": {
+          "quantity.energy_thermal": 1
+        },
+        "boundary_allowed": false,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "phase_change_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.plastic_deformation_stub",
+        "input_quantities": {
+          "quantity.energy_kinetic": 1
+        },
+        "output_quantities": {
+          "quantity.energy_thermal": 1,
+          "quantity.heat_loss": 1
+        },
+        "boundary_allowed": false,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "plastic_deformation_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.external_irradiance",
+        "input_quantities": {},
+        "output_quantities": {
+          "quantity.energy_thermal": 1,
+          "quantity.energy_total": 1
+        },
+        "boundary_allowed": true,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "boundary_flux"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "transformation_id": "transform.impulse_to_kinetic",
+        "input_quantities": {},
+        "output_quantities": {
+          "quantity.energy_kinetic": 1
+        },
+        "boundary_allowed": true,
+        "requires_profile_flag": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "reason": "external_impulse"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "PHYS3-2"
+    }
+  }
+}
