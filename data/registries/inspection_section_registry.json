@@ -1057,6 +1057,45 @@
           "min_fidelity": "micro",
           "cost_units": 4
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.chem.degradation_summary",
+        "title": "Chemical Degradation Summary",
+        "data": {
+          "data_kind": "chem_degradation_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.fluid.restriction_summary",
+        "title": "Fluid Restriction Summary",
+        "data": {
+          "data_kind": "fluid_restriction_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.thermal.fouling_summary",
+        "title": "Thermal Fouling Summary",
+        "data": {
+          "data_kind": "thermal_fouling_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
       }
     ],
     "extensions": {}

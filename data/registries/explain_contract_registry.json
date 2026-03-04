@@ -512,6 +512,86 @@
         "extensions": {
           "source": "CHEM2-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.corrosion",
+        "event_kind_id": "chem.corrosion",
+        "explain_artifact_type_id": "artifact.explain.chem_corrosion",
+        "required_inputs": [
+          "artifact.record",
+          "section.chem.degradation_summary",
+          "section.fluid.restriction_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.apply.coating",
+          "hint.flush.pipe",
+          "hint.replace.section"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM3-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.fouling",
+        "event_kind_id": "chem.fouling",
+        "explain_artifact_type_id": "artifact.explain.chem_fouling",
+        "required_inputs": [
+          "artifact.record",
+          "section.chem.degradation_summary",
+          "section.thermal.fouling_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.clean.heat_exchanger",
+          "hint.flush.pipe",
+          "hint.perform.maintenance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM3-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.scaling",
+        "event_kind_id": "chem.scaling",
+        "explain_artifact_type_id": "artifact.explain.chem_scaling",
+        "required_inputs": [
+          "artifact.record",
+          "section.chem.degradation_summary",
+          "section.fluid.restriction_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.flush.pipe",
+          "hint.reduce.hardness",
+          "hint.schedule.maintenance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM3-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.leak_due_to_corrosion",
+        "event_kind_id": "fluid.leak_due_to_corrosion",
+        "explain_artifact_type_id": "artifact.explain.fluid_leak_due_to_corrosion",
+        "required_inputs": [
+          "artifact.record",
+          "section.fluid.restriction_summary",
+          "section.chem.degradation_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.isolate.section",
+          "hint.apply.coating",
+          "hint.replace.section"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM3-8"
+        }
       }
     ],
     "extensions": {
