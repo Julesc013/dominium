@@ -1,0 +1,320 @@
+{
+  "schema_id": "dominium.registry.quantity_tolerance_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.quantity_tolerance_registry",
+    "registry_version": "1.0.0",
+    "quantity_tolerances": [
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.capacity_per_tick",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "d4a6631c437d91b7839c4dd647175f57afb0790175fb258c4c36230467f24979",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.charge_total",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "3a4454abd86295dca29168a78f746c3435a2c6496a99c7d9e7009b307b9f6da5",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "9886f7bb91c7503626b42da967a18847fb03a27dc6eb3704ab1ce022e62d49c9",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_chemical",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "c25b722efdcc1f5ca1c9a3f29540f2fc4f00acce8023a0b0e0c5b087309118d1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_electrical",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "257e227b6d0f8128b5c6cc597a52e17354ef72554b46ebdcb975d1d9ce739e7f",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_kinetic",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "a27627bb5d0306edf0c8c651d80059903070016d8a374468936c1d0b47048d3f",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_potential",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "89062a558adc3251d685363919823ed7bf4d896cc899394b6b381faa57efad19",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_thermal",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "ffd13817fb128e305a9098e8a62c9889943b78c2b95cc71ec97faeb2674586c5",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.energy_total",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "df6627f8fc3632d4fd2b66cde982b5b703939bc37ca6602f06fe3099bcd1754d",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.entropy_index",
+        "base_resolution": 1,
+        "tolerance_abs": 2,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "aa5b08a550a5d11dffe93f84e51362334688fe8893161d89938eee2f41980ecd",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.entropy_metric",
+        "base_resolution": 1,
+        "tolerance_abs": 2,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "aecbdf30c04ecb4237008a7b5492f925f103bc3931e657de4544252dcce1acb1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.force",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "905ce511c41d753003055265f7551301ebe4ac27c6cfc223b6134a9e0fb55395",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.heat_loss",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "bce24250ea808ea09b35659ee052a1872223d952054199d2f2f13158c87d999b",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.ledger_balance",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "8d22ae2ae9deaf2c7d217f7a01885425aa6feb0be3c0bc29604d00427875b7c1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "8fdccb4f656a60d42b4b1f39aa9a1e9a8e688ca29cb328a3c2387b1626c39907",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass_energy_total",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "66ee84e72b5ea8755306c76b40e521b115f83916e5e6911b09a236f242db7bfc",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass_flow",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "c73b31fc4ce5fbb8966b82b7706ebc6f736b47daba4e39e3d2119cfbe14a8634",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.momentum_angular",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "779432089354ed0ee1d43b4c83418133859ab5c601d072e853adee9ecd6ce68c",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.momentum_linear",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "541a536db286e2c9aaf920800b0ed5887139cf54117fc8e5477d5ade6d2ef952",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.active_stub",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "f9c25e681d5315d5722d0bafc3890aa4f19afa5bf9e7513a8c2a3d4c7d86addd",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.apparent_stub",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "4dffb4b03d2e6209795c8a716ea5cfba86a7592d9d49396555c89322f72abb16",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.power.reactive_stub",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "5a2904db35289fc264daac2e1b7aec2ee0d94f9d86b41ef1ecc34570c2999b1a",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.pressure_head",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "8fd9dcec8e5b5ee2922d020b9a0b0371c0c9a030de97b0c56739f8ceaf751268",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.radiation_dose",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "6cbd911e23230b3f268a1a2c588f261b53ad1b0f3fa6153d1ad2381fef73336b",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.energy_store_stub",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "b8beed4f081ef5ad66beef46928bb102ad5bfca93facc81195f18a1f5ffcea23",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.heat_flow_stub",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "22fb04cb8d92b10d6d29f042fa23e9d2640257c9b4d3ad646752543d247a889c",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.thermal.heat_loss_stub",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "2e1bc6ea94df767647ec0e8fcb02e83f56531892fbdbc06ee25f6f50bd15ff17",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.torque",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "3cc1bdfc495e62dbb9cb5cc23990adef7a78aa13fad826db952c832f1ba81206",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+

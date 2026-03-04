@@ -1,0 +1,260 @@
+{
+  "schema_id": "dominium.registry.model_residual_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.model_residual_policy_registry",
+    "registry_version": "1.0.0",
+    "model_residual_policies": [
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_device_loss",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "8f0a18835d4bf0484e36aa2de9d5f88fc1f55f0d761cf461f08cda280def9d7a",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_load_motor_stub",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "86d95fa0cebcf68ef8aeb93d98e311a5bd7bced5ba31ad27d821014eb0e07787",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_load_resistive_stub",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "45394665e70e5bf1ec66bce6b24e6208bb94f24c670623ff72ca7fba2c595266",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_pf_correction",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "0aaabc75b3f94666e9a1f6caa77d1b6e3a5bf7bc276cd641ecf64b317c215411",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_storage_battery",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "ef4b996453e68ebe0abc13f1b8b5dd4a8fee76fef3daa5fcbfa136eea6f56746",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec_transformer_stub",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "832ebf81cb88b1ae2d76a7af505d453c865fd02ef80750867d5f98054af61fd7",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.elec.load.phasor.default",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "8ef11777b61a753b9e64234778e9708b0e95ff26c4aba7011814d3dc18053aec",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.fluid_leak_rate_stub",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "ac3abdd7721529dc530ae280e10fdb70d6d08874f59e97625170c10f6ddd7701",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.fluid_pump_curve_stub",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "67db31fe811670c262185bb77d64610a0a9b4d1b0cc74825f1c63f2c45418134",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.fluid.pump_curve.default",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "c68e285055b0ccad970baf225e7d0177194707450055f95bd6e2fd0792feb7ca",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.mech.fatigue.default",
+        "max_expected_residual": 2,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "9098c4fcf1bd7f4a0d7ebfa08065d3053219fc286eebeb2b249edc55552ba9ef",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_gravity_force",
+        "max_expected_residual": 2,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "5999eddf2d2c80e1e2ceda7a4a5c9eb82840f4329cad9e804e7251e6e06aa823",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_irradiance_heating_stub",
+        "max_expected_residual": 2,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "34c0b67340f94fbf4030b7f9f06cb93bfb23ee27196a71044bb1d32d4dafe90a",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_magnetic_stub",
+        "max_expected_residual": 2,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "81e1f87335e4595ef7a33171dd56961a865a2a984180f9660111c9a6ee66c514",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_radiation_damage_stub",
+        "max_expected_residual": 2,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "df59753be167de88a92682f36bb097dbbed077386557ee9e481c1d23a472061f",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys.gravity_stub",
+        "max_expected_residual": 2,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "8dd056de1be2096ab5b4cdb7390b13571be0db55b23f8892e976c3cc907236a1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.signal.attenuation.default",
+        "max_expected_residual": 2,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "95544eb42d4fd268be2779a8facd9619eeba0cc418803fd317656261422046a7",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_ambient_exchange",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "b2843373fa2f65fcf33ac1c2c9cffc846e273f28188bb3184ab1bf93a9933b7a",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_combust_stub",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "e8b0793ff9aff96c22fe851100d306bb2ff07a3a7b3daf6ec4f15d95f15208e7",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_conductance",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "8ecac1c60ae98192ddf722896e68be69b9cfc0ec8a5a667fd7a545e5d3add681",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_cure_progress",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "97bfd0700c834180658bd07bcd53d4667e53e9724cd9563d39e4bf750b6734db",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_heat_capacity",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "87f86949c09275dba3d4f34c226bffaac776eba1fe3e800c317f159783f7d5de",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_ignite_stub",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "a557e08da75e9a5d80ef838a891d1a29b5ed1706510d69e53a6fbc3c29645dac",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_insulation_modifier",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "478c9f79c9b4c1c3ac67e96df7ee3a7a99178bba2c84caf7bfcf20e473cf5269",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_loss_to_temp",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "14859726a4c2b035f750e615a1c682f8ca53265eb4608a19bf041efcf2c520e4",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_phase_transition",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "7be1dd6ac39d572d9ac400a18894c92d14aae9404174792a793c95a6ea779563",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm_radiator_exchange",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "87d440feaefec1a6d099110f97c68ce75d4ce5359a9494899bafd8f50b3abc1e",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.therm.conductance.default",
+        "max_expected_residual": 4,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "72453ce0393bdeeff4abfb2106ef407ea0091b9dab4a211af52bb817791c8e5d",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.time.civil_calendar_stub",
+        "max_expected_residual": 1,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "19636485e67aacc941f680fe9e99faa17b30ccbe98d369d32b661fe603447880",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.time.proper_default_stub",
+        "max_expected_residual": 1,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "1cc892d5236a9d922be951cb96975d163f054d61ee0fb5e59256c999ca7a40b4",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.time.warp_session_stub",
+        "max_expected_residual": 1,
+        "residual_action": "log_only",
+        "deterministic_fingerprint": "a45ef761f6e3ec22c77dbce52963ed455b08ac086f4cb53fae8183cd5c2ae7b6",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}
+
