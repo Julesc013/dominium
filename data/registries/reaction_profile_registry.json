@@ -1,0 +1,86 @@
+{
+  "schema_id": "dominium.registry.reaction_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.reaction_profile_registry",
+    "registry_version": "1.0.0",
+    "reaction_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.combustion_fuel_basic",
+        "input_species": {
+          "material.fuel_basic": 1,
+          "material.oxidizer_air_stub": 3
+        },
+        "output_species": {
+          "material.exhaust_gas_stub": 3,
+          "material.residue_stub": 1
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {
+          "material.pollutant_coarse_stub": 1
+        },
+        "rate_model_id": "model.therm_combust_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "combustion_profile_id": "material.wood_basic",
+          "efficiency_model_id": "model.chem_combust_efficiency_stub",
+          "mixture_ratio_mode": "stoich_stub",
+          "source": "CHEM1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.combustion_rich_mixture_stub",
+        "input_species": {
+          "material.fuel_basic": 2,
+          "material.oxidizer_air_stub": 2
+        },
+        "output_species": {
+          "material.exhaust_gas_stub": 2,
+          "material.residue_stub": 2
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {
+          "material.pollutant_coarse_stub": 2
+        },
+        "rate_model_id": "model.therm_combust_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "combustion_profile_id": "material.fuel_oil_stub",
+          "efficiency_model_id": "model.chem_combust_efficiency_stub",
+          "mixture_ratio_mode": "rich_stub",
+          "source": "CHEM1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.explosive_stub",
+        "input_species": {
+          "material.volatile_fuel_stub": 1,
+          "material.oxidizer_air_stub": 1
+        },
+        "output_species": {
+          "material.exhaust_gas_stub": 1,
+          "material.residue_stub": 1
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {
+          "material.pollutant_coarse_stub": 2
+        },
+        "rate_model_id": "model.therm_combust_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "combustion_profile_id": "material.fuel_oil_stub",
+          "efficiency_model_id": "model.chem_combust_efficiency_stub",
+          "explosive_profile": true,
+          "impulse_energy_ratio_permille": 300,
+          "source": "CHEM1-2"
+        }
+      }
+    ],
+    "extensions": {
+      "notes": "CHEM1 combustion/fuel chain reaction profile baseline."
+    }
+  }
+}
