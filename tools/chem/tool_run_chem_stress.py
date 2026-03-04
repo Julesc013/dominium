@@ -265,6 +265,15 @@ def run_chem_stress_scenario(
                         "details": {"dynamic_tick_stride": int(dynamic_tick_stride)},
                     }
                 )
+                degradation_event_rows.append(
+                    {
+                        "tick": int(tick),
+                        "run_id": str(run_id),
+                        "event_kind": "degrade.chem.tick_bucket",
+                        "binding_id": str(binding_id),
+                        "step_order": 1,
+                    }
+                )
                 continue
 
             if tick_reactions >= reaction_cap:
@@ -277,6 +286,15 @@ def run_chem_stress_scenario(
                         "reason_code": "degrade.chem.eval_cap",
                         "step_order": 4,
                         "details": {"max_reaction_evaluations_per_tick": int(reaction_cap)},
+                    }
+                )
+                degradation_event_rows.append(
+                    {
+                        "tick": int(tick),
+                        "run_id": str(run_id),
+                        "event_kind": "degrade.chem.eval_cap",
+                        "binding_id": str(binding_id),
+                        "step_order": 4,
                     }
                 )
                 continue
@@ -327,6 +345,7 @@ def run_chem_stress_scenario(
                             "run_id": str(run_id),
                             "event_kind": "degrade.chem.reaction_to_c0",
                             "binding_id": str(binding_id),
+                            "step_order": 2,
                         }
                     )
                 if (tick_cost_units + run_cost) > cost_cap:
@@ -338,6 +357,15 @@ def run_chem_stress_scenario(
                             "reason_code": "degrade.chem.eval_cap",
                             "step_order": 4,
                             "details": {"max_cost_units_per_tick": int(cost_cap)},
+                        }
+                    )
+                    degradation_event_rows.append(
+                        {
+                            "tick": int(tick),
+                            "run_id": str(run_id),
+                            "event_kind": "degrade.chem.eval_cap",
+                            "binding_id": str(binding_id),
+                            "step_order": 4,
                         }
                     )
                     continue
@@ -360,6 +388,7 @@ def run_chem_stress_scenario(
                         "run_id": str(run_id),
                         "event_kind": "degrade.chem.defer_noncritical_yield",
                         "binding_id": str(binding_id),
+                        "step_order": 3,
                     }
                 )
                 model_cost = 0
@@ -448,6 +477,15 @@ def run_chem_stress_scenario(
                             "reason_code": "degrade.chem.eval_cap",
                             "step_order": 4,
                             "details": {"max_emission_events_per_tick": int(emission_cap)},
+                        }
+                    )
+                    degradation_event_rows.append(
+                        {
+                            "tick": int(tick),
+                            "run_id": str(run_id),
+                            "event_kind": "degrade.chem.eval_cap",
+                            "binding_id": str(binding_id),
+                            "step_order": 4,
                         }
                     )
                     # Deterministic aggregation when cap is exceeded.
@@ -614,6 +652,18 @@ def run_chem_stress_scenario(
     no_silent_mass_changes = bool(mass_summary.get("max_abs", 0) <= max_residual_abs)
     no_silent_energy_changes = bool(energy_summary.get("max_abs", 0) <= max_residual_abs)
     all_outputs_logged = bool(len(ledger_rows) >= len(reaction_event_rows))
+    degradation_rows_sorted = sorted(
+        (dict(row) for row in degradation_event_rows if isinstance(row, Mapping)),
+        key=lambda row: (
+            int(_as_int(row.get("tick", 0), 0)),
+            str(row.get("run_id", "")),
+            int(_as_int(row.get("step_order", 99), 99)),
+            str(row.get("event_kind", "")),
+        ),
+    )
+    degradation_order_deterministic = degradation_rows_sorted == [
+        dict(row) for row in list(degradation_event_rows or []) if isinstance(row, Mapping)
+    ]
 
     reaction_hash_chain = _chain(
         reaction_event_rows,
@@ -697,13 +747,14 @@ def run_chem_stress_scenario(
             "all_outputs_logged": bool(all_outputs_logged),
             "degradation_order_deterministic": bool(
                 list(scenario_row.get("degradation_policy_order") or _DEGRADE_ORDER) == list(_DEGRADE_ORDER)
+                and bool(degradation_order_deterministic)
             ),
         },
         "extensions": {
             "reaction_event_rows": [dict(row) for row in sorted(reaction_event_rows, key=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("event_id", ""))))],
             "energy_ledger_rows": [dict(row) for row in sorted(ledger_rows, key=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("entry_id", ""))))],
             "emission_event_rows": [dict(row) for row in sorted(emission_event_rows, key=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("event_id", ""))))],
-            "degradation_event_rows": [dict(row) for row in sorted(degradation_event_rows, key=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("event_kind", "")), str(row.get("run_id", ""))))],
+            "degradation_event_rows": [dict(row) for row in list(degradation_rows_sorted)],
             "decision_log_rows": [dict(row) for row in sorted(decision_log_rows, key=lambda row: (int(_as_int(row.get("tick", 0), 0)), int(_as_int(row.get("step_order", 99), 99)), str(row.get("run_id", "")), str(row.get("reason_code", ""))))],
             "proof_hashes_per_tick": list(per_tick_hashes),
             "final_species_pool_rows": list(final_pool_rows),
