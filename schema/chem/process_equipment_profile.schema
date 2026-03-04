@@ -1,0 +1,26 @@
+SCHEMA: chem/process_equipment_profile.schema
+schema_id: dominium.schema.chem.process_equipment_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic CHEM-2 process equipment capability envelopes.
+- Bind reaction support and catalyst slots to explicit equipment/spec identifiers.
+
+NON-SEMANTICS:
+- This schema does not execute process runs.
+- Runtime/process layers enforce reaction execution and safety/compliance behavior.
+
+REQUIRED SHAPE:
+record process_equipment_profile
+  required:
+    - equipment_id: id
+    - spec_id: id
+    - supported_reaction_ids: list[id]
+    - catalyst_slots: optional(list[id])
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `supported_reaction_ids` must reference registered reaction profiles.
+- Catalyst capacity is declarative and deterministic for equivalent profile rows.

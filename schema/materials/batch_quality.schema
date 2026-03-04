@@ -1,0 +1,27 @@
+SCHEMA: materials/batch_quality.schema
+schema_id: dominium.schema.materials.batch_quality
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare CHEM-2 batch quality truth rows used by downstream gameplay and QA surfaces.
+- Standardize deterministic defect/contamination/yield metadata for produced batches.
+
+NON-SEMANTICS:
+- This schema does not compute quality outcomes.
+- Yield/defect generation is model-driven by constitutive model evaluation in process runtime.
+
+REQUIRED SHAPE:
+record batch_quality
+  required:
+    - batch_id: id
+    - quality_grade: enum
+    - defect_flags: list[id]
+    - contamination_tags: list[id]
+    - yield_factor: fixed_point_nonnegative
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `batch_id` must map to an existing material batch row.
+- `defect_flags` and `contamination_tags` are deterministic for equivalent model inputs.
