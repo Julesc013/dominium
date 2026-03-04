@@ -105,6 +105,51 @@ SUITE_TO_TEST_IDS = {
         "test_fidelity_downgrade_micro_to_meso",
         "test_cost_envelope_never_exceeded",
     ),
+    "suite.domain.elec": (
+        "test_power_flow_deterministic",
+        "test_loss_to_heat_applied",
+        "test_overtemp_trip",
+    ),
+    "suite.domain.therm": (
+        "test_conduction_deterministic",
+        "test_heat_capacity_updates",
+        "test_overheat_when_no_cooling",
+    ),
+    "suite.domain.mob": (
+        "test_free_motion_deterministic",
+        "test_velocity_derived_from_momentum",
+        "test_impulse_updates_momentum_deterministic",
+    ),
+    "suite.domain.sig": (
+        "test_message_delivery_deterministic",
+        "test_trust_update_deterministic",
+        "test_receipt_created_only_on_delivery",
+    ),
+    "suite.domain.phys": (
+        "test_energy_conservation_enforced",
+        "test_entropy_increment_deterministic",
+        "test_field_sampling_deterministic",
+    ),
+    "suite.domain.field": (
+        "test_field_sampling_deterministic",
+        "test_field_update_policy_respected",
+        "test_gravity_force_model_applies",
+    ),
+    "suite.domain.mech": (
+        "test_fracture_trigger",
+        "test_stress_ratio_calculation",
+        "test_plastic_strain_accumulates",
+    ),
+}
+
+DOMAIN_TO_SUITE_IDS = {
+    "ELEC": "suite.domain.elec",
+    "THERM": "suite.domain.therm",
+    "MOB": "suite.domain.mob",
+    "SIG": "suite.domain.sig",
+    "PHYS": "suite.domain.phys",
+    "FIELD": "suite.domain.field",
+    "MECH": "suite.domain.mech",
 }
 
 
@@ -244,6 +289,51 @@ def _migration_checks_for_path(path: str) -> Set[str]:
     return out
 
 
+def _meta_contract_suites_for_path(repo_root: str, path: str) -> Set[str]:
+    out: Set[str] = set()
+    rel = _norm(path)
+    abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+    payload = _read_json(abs_path)
+    record = dict(payload.get("record") or {}) if isinstance(payload, dict) else {}
+
+    if rel == "data/registries/tier_contract_registry.json":
+        rows = list(record.get("tier_contracts") or payload.get("tier_contracts") or [])
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            subsystem_id = str(row.get("subsystem_id", "")).strip().upper()
+            suite_id = DOMAIN_TO_SUITE_IDS.get(subsystem_id, "")
+            if suite_id:
+                out.add(suite_id)
+        return out
+
+    if rel == "data/registries/coupling_contract_registry.json":
+        rows = list(record.get("coupling_contracts") or payload.get("coupling_contracts") or [])
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            for key in ("from_domain_id", "to_domain_id"):
+                domain_id = str(row.get(key, "")).strip().upper()
+                suite_id = DOMAIN_TO_SUITE_IDS.get(domain_id, "")
+                if suite_id:
+                    out.add(suite_id)
+        return out
+
+    if rel == "data/registries/explain_contract_registry.json":
+        rows = list(record.get("explain_contracts") or payload.get("explain_contracts") or [])
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            event_kind_id = str(row.get("event_kind_id", "")).strip().lower()
+            domain_id = str(event_kind_id.split(".", 1)[0] if event_kind_id else "").strip().upper()
+            suite_id = DOMAIN_TO_SUITE_IDS.get(domain_id, "")
+            if suite_id:
+                out.add(suite_id)
+        return out
+
+    return out
+
+
 def _subsystems_for_paths(paths: Iterable[str], topology_payload: dict) -> List[str]:
     declarations = _topology_declarations(topology_payload)
     module_map = dict(declarations.get("module") or {})
@@ -337,8 +427,16 @@ def compute_semantic_impact(
     for rel in changed:
         suites = _suite_required_for_path(rel)
         required_test_suites.update(suites)
+        required_test_suites.update(_meta_contract_suites_for_path(repo_root, rel))
         required_docs_updates.update(_docs_required_for_path(rel))
         required_migration_checks.update(_migration_checks_for_path(rel))
+        if rel in {
+            "data/registries/tier_contract_registry.json",
+            "data/registries/coupling_contract_registry.json",
+            "data/registries/explain_contract_registry.json",
+        }:
+            required_docs_updates.add("docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md")
+            required_migration_checks.add("check.meta_contract_registry_consistency")
         if rel.startswith(SCHEMA_ROOT_PREFIXES):
             strict_required = True
             if topology_ok and rel not in declared_schema_paths:

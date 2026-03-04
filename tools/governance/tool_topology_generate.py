@@ -44,6 +44,17 @@ CONTROL_DEPENDENCY_TOKENS = (
     "build_control_resolution(",
 )
 
+DOMAIN_TO_MODULE_NODE_ID = {
+    "ELEC": "module:src/electric",
+    "THERM": "module:src/thermal",
+    "MOB": "module:src/mobility",
+    "SIG": "module:src/signals",
+    "PHYS": "module:src/physics",
+    "FIELD": "module:src/fields",
+    "MECH": "module:src/mechanics",
+    "CTRL": "module:src/control",
+}
+
 
 def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
@@ -487,6 +498,69 @@ def generate_topology_map(
                     )
                 )
                 edges.append(_edge(edge_kind="depends_on", from_node_id=node_id, to_node_id="registry:{}".format(registry_name)))
+
+    # META-CONTRACT topology nodes/edges.
+    existing_node_ids = set(str(node.get("node_id", "")) for node in nodes if isinstance(node, dict))
+    meta_contract_specs = (
+        ("tier_contract_registry", "tier_contracts", "tier", "subsystem_id"),
+        ("coupling_contract_registry", "coupling_contracts", "coupling", ""),
+        ("explain_contract_registry", "explain_contracts", "explain", ""),
+    )
+    for registry_name, rows_key, contract_kind, owner_field in meta_contract_specs:
+        rel_path = registry_names.get(registry_name, "")
+        if not rel_path:
+            continue
+        payload = _read_json(os.path.join(repo_root, rel_path.replace("/", os.sep)))
+        rows = list((dict(payload.get("record") or {})).get(rows_key) or payload.get(rows_key) or [])
+        registry_node_id = "registry:{}".format(registry_name)
+        for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("contract_id", ""))):
+            contract_id = str(row.get("contract_id", "")).strip()
+            if not contract_id:
+                continue
+            node_id = "contract_set:{}".format(contract_id)
+            owner_subsystem = str(row.get(owner_field, "")).strip().lower() if owner_field else "governance"
+            nodes.append(
+                _node(
+                    node_id=node_id,
+                    node_kind="contract_set",
+                    path=rel_path,
+                    tags=["contract_set", "meta_contract", contract_kind],
+                    owner_subsystem=owner_subsystem or "governance",
+                    extensions={"contract_kind": contract_kind},
+                )
+            )
+            edges.append(_edge(edge_kind="depends_on", from_node_id=node_id, to_node_id=registry_node_id))
+
+            if contract_kind == "tier":
+                subsystem_id = str(row.get("subsystem_id", "")).strip().upper()
+                module_node_id = DOMAIN_TO_MODULE_NODE_ID.get(subsystem_id, "")
+                if module_node_id and module_node_id in existing_node_ids:
+                    edges.append(_edge(edge_kind="enforces", from_node_id=node_id, to_node_id=module_node_id))
+            elif contract_kind == "coupling":
+                from_domain_id = str(row.get("from_domain_id", "")).strip().upper()
+                to_domain_id = str(row.get("to_domain_id", "")).strip().upper()
+                from_module_node_id = DOMAIN_TO_MODULE_NODE_ID.get(from_domain_id, "")
+                to_module_node_id = DOMAIN_TO_MODULE_NODE_ID.get(to_domain_id, "")
+                if from_module_node_id and from_module_node_id in existing_node_ids:
+                    edges.append(_edge(edge_kind="enforces", from_node_id=node_id, to_node_id=from_module_node_id))
+                if to_module_node_id and to_module_node_id in existing_node_ids:
+                    edges.append(_edge(edge_kind="enforces", from_node_id=node_id, to_node_id=to_module_node_id))
+                mechanism_id = str(row.get("mechanism_id", "")).strip()
+                if mechanism_id:
+                    edges.append(
+                        _edge(
+                            edge_kind="consumes",
+                            from_node_id=node_id,
+                            to_node_id=registry_node_id,
+                            extensions={"mechanism_id": mechanism_id},
+                        )
+                    )
+            elif contract_kind == "explain":
+                event_kind_id = str(row.get("event_kind_id", "")).strip().lower()
+                domain_prefix = str(event_kind_id.split(".", 1)[0] if event_kind_id else "").strip().upper()
+                module_node_id = DOMAIN_TO_MODULE_NODE_ID.get(domain_prefix, "")
+                if module_node_id and module_node_id in existing_node_ids:
+                    edges.append(_edge(edge_kind="enforces", from_node_id=node_id, to_node_id=module_node_id))
 
     # Topology artifact ownership nodes/edges.
     topology_contract_node = _node(
