@@ -72,8 +72,8 @@ Run:
 ## Gate Results (Current Repository Baseline)
 - RepoX STRICT:
   - Command: `python tools/xstack/repox/check.py --repo-root . --profile STRICT`
-  - Result: `refusal` due `INV-WORKTREE-HYGIENE` while in-flight files were uncommitted.
-  - CHEM-specific refusal findings: none.
+  - Result: `pass` (17 warn findings; 0 fail/refusal).
+  - Note: in-flight runs previously refused on `INV-WORKTREE-HYGIENE`; final committed baseline is clean.
 - AuditX STRICT:
   - Command: `python tools/xstack/auditx/check.py --repo-root . --profile STRICT`
   - Result: `fail`
