@@ -20,6 +20,7 @@ def run(repo_root: str):
         "schema_version": "1.0.0",
         "schedule_id": "schedule.test.interval.alias",
         "target_id": "target.test",
+        "temporal_domain_id": "time.canonical_tick",
         "start_tick": 0,
         "recurrence_rule": {"rule_type": "interval", "interval_ticks": 4, "extensions": {}},
         "next_due_tick": 0,
@@ -43,4 +44,3 @@ def run(repo_root: str):
         return {"status": "fail", "message": "schedule recurrence deterministic hash diverged"}
 
     return {"status": "pass", "message": "Schedule recurrence deterministic behavior passed"}
-

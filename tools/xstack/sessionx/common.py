@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from datetime import datetime
 from typing import Dict, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
@@ -44,7 +43,7 @@ def write_canonical_json(path: str, payload: Dict[str, object]) -> None:
 
 
 def now_utc_iso() -> str:
-    return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    return str(DEFAULT_TIMESTAMP_UTC)
 
 
 def identity_hash_for_payload(payload: Dict[str, object]) -> str:

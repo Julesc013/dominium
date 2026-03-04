@@ -45,6 +45,7 @@ def law_profile(allowed_processes: list[str]) -> dict:
     privileges = dict(law.get("process_privilege_requirements") or {})
     admin_processes = (
         "process.itinerary_create",
+        "process.mobility_reserve_edge",
         "process.travel_schedule_set",
         "process.travel_start",
     )

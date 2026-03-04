@@ -219,6 +219,8 @@ def policy_context(
     quantity_ids = set(str(row.get("quantity_id", "")).strip() for row in quantity_types)
     if "quantity.entropy_metric" not in quantity_ids:
         quantity_types.append({"quantity_id": "quantity.entropy_metric", "dimension_id": "dim.energy"})
+    if "quantity.entropy_index" not in quantity_ids:
+        quantity_types.append({"quantity_id": "quantity.entropy_index", "dimension_id": "dim.entropy"})
     policy["quantity_type_registry"] = {"quantity_types": quantity_types}
     quantities = [
         dict(row)
@@ -228,5 +230,7 @@ def policy_context(
     quantity_ids = set(str(row.get("quantity_id", "")).strip() for row in quantities)
     if "quantity.entropy_metric" not in quantity_ids:
         quantities.append({"quantity_id": "quantity.entropy_metric", "dimension_id": "dim.energy"})
+    if "quantity.entropy_index" not in quantity_ids:
+        quantities.append({"quantity_id": "quantity.entropy_index", "dimension_id": "dim.entropy"})
     policy["quantity_registry"] = {"quantities": quantities}
     return policy

@@ -581,6 +581,31 @@ def _emit_control_proof_bundle(
             "trip_explanation_hash_chain": str(
                 elec_surface.get("trip_explanation_hash_chain", universe_state.get("trip_explanation_hash_chain", ""))
             ).strip(),
+            "momentum_hash_chain": str(universe_state.get("momentum_hash_chain", "")).strip(),
+            "impulse_event_hash_chain": str(universe_state.get("impulse_event_hash_chain", "")).strip(),
+            "energy_ledger_hash_chain": str(universe_state.get("energy_ledger_hash_chain", "")).strip(),
+            "boundary_flux_hash_chain": str(universe_state.get("boundary_flux_hash_chain", "")).strip(),
+            "entropy_hash_chain": str(universe_state.get("entropy_hash_chain", "")).strip(),
+            "entropy_reset_events_hash_chain": str(
+                universe_state.get("entropy_reset_events_hash_chain", universe_state.get("entropy_reset_hash_chain", ""))
+            ).strip(),
+            "fluid_flow_hash_chain": str(universe_state.get("fluid_flow_hash_chain", "")).strip(),
+            "leak_hash_chain": str(universe_state.get("leak_hash_chain", "")).strip(),
+            "burst_hash_chain": str(universe_state.get("burst_hash_chain", "")).strip(),
+            "relief_event_hash_chain": str(universe_state.get("relief_event_hash_chain", "")).strip(),
+            "field_update_hash_chain": str(universe_state.get("field_update_hash_chain", "")).strip(),
+            "field_sample_hash_chain": str(universe_state.get("field_sample_hash_chain", "")).strip(),
+            "boundary_field_exchange_hash_chain": str(
+                universe_state.get("boundary_field_exchange_hash_chain", "")
+            ).strip(),
+            "time_mapping_hash_chain": str(universe_state.get("time_mapping_hash_chain", "")).strip(),
+            "schedule_domain_evaluation_hash": str(
+                universe_state.get("schedule_domain_evaluation_hash", "")
+            ).strip(),
+            "time_adjust_event_hash_chain": str(
+                universe_state.get("time_adjust_event_hash_chain", "")
+            ).strip(),
+            "drift_policy_id": str(universe_state.get("drift_policy_id", "drift.none")).strip() or "drift.none",
         }
     )
     bundle = build_control_proof_bundle_from_markers(

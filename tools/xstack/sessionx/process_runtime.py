@@ -43,6 +43,7 @@ from src.core.schedule.schedule_engine import (
     REFUSAL_CORE_SCHEDULE_INVALID,
     ScheduleError,
     normalize_schedule,
+    normalize_schedule_time_binding_rows,
     tick_schedules,
 )
 from src.core.state.state_machine_engine import (
@@ -187,6 +188,16 @@ from src.time.time_engine import (
     policy_allows_pause as time_policy_allows_pause,
     policy_allows_rate_change as time_policy_allows_rate_change,
     policy_rate_bounds as time_policy_rate_bounds,
+)
+from src.time import (
+    build_time_adjust_event,
+    evaluate_time_mappings,
+    normalize_drift_policy_rows,
+    normalize_proper_time_state_rows,
+    normalize_sync_policy_rows,
+    normalize_time_adjust_event_rows,
+    normalize_time_mapping_cache_rows,
+    normalize_time_stamp_artifact_rows,
 )
 from src.control.ir.control_ir_programs import (
     build_ai_controller_stub_ir,
@@ -554,6 +565,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.time_set_rate": "entitlement.time_control",
     "process.time_pause": "entitlement.time_control",
     "process.time_resume": "entitlement.time_control",
+    "process.time_adjust": "entitlement.time_control",
     "process.time_branch_from_checkpoint": "entitlement.control.admin",
     "process.inspect_generate_snapshot": "entitlement.inspect",
     "process.region_management_tick": "session.boot",
@@ -726,6 +738,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.time_set_rate": "operator",
     "process.time_pause": "operator",
     "process.time_resume": "operator",
+    "process.time_adjust": "operator",
     "process.time_branch_from_checkpoint": "operator",
     "process.inspect_generate_snapshot": "observer",
     "process.region_management_tick": "observer",
@@ -1612,6 +1625,7 @@ def _persist_field_state(
     _ensure_field_layers(state)
     _ensure_field_cells(state)
     _ensure_field_modifier_rows(state)
+    _refresh_field_hash_chains(state)
 
 
 _FIELD_POLICY_LEGACY_TO_CANONICAL = {
@@ -2157,6 +2171,88 @@ def _ensure_travel_schedule_rows(state: dict) -> List[dict]:
         out[schedule_id] = dict(normalized)
     state["travel_schedules"] = [dict(out[key]) for key in sorted(out.keys())]
     return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _ensure_schedule_time_binding_rows(state: dict) -> List[dict]:
+    rows = normalize_schedule_time_binding_rows(state.get("schedule_time_bindings"))
+    state["schedule_time_bindings"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_time_mapping_cache_rows(state: dict) -> List[dict]:
+    rows = normalize_time_mapping_cache_rows(state.get("time_mapping_cache_rows"))
+    state["time_mapping_cache_rows"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_time_stamp_artifact_rows(state: dict) -> List[dict]:
+    rows = normalize_time_stamp_artifact_rows(
+        state.get("time_stamp_artifacts") or state.get("time_stamp_rows") or []
+    )
+    state["time_stamp_artifacts"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    state["time_stamp_rows"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_proper_time_state_rows(state: dict) -> List[dict]:
+    rows = normalize_proper_time_state_rows(state.get("proper_time_states"))
+    state["proper_time_states"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_schedule_domain_evaluation_rows(state: dict) -> List[dict]:
+    rows = state.get("schedule_domain_evaluations")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("temporal_domain_id", "")),
+            str(item.get("schedule_id", "")),
+        ),
+    ):
+        schedule_id = str(row.get("schedule_id", "")).strip()
+        temporal_domain_id = str(row.get("temporal_domain_id", "")).strip() or "time.canonical_tick"
+        tick = int(max(0, _as_int(row.get("tick", 0), 0)))
+        if not schedule_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "schedule_id": schedule_id,
+            "target_id": str(row.get("target_id", "")).strip(),
+            "temporal_domain_id": temporal_domain_id,
+            "tick": int(tick),
+            "domain_time_value": int(_as_int(row.get("domain_time_value", -1), -1)),
+            "target_time_value": int(max(0, _as_int(row.get("target_time_value", 0), 0))),
+            "due": bool(row.get("due", False)),
+            "evaluation_policy_id": str(row.get("evaluation_policy_id", "")).strip() or "schedule.eval.gte_target",
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        key = "{}::{}::{}".format(int(tick), temporal_domain_id, schedule_id)
+        out[key] = payload
+    normalized = [
+        dict(out[key])
+        for key in sorted(
+            out.keys(),
+            key=lambda token: (
+                int(_as_int((token.split("::", 2) + ["0", "0", "0"])[0], 0)),
+                str((token.split("::", 2) + ["", "", ""])[1]),
+                str((token.split("::", 2) + ["", "", ""])[2]),
+            ),
+        )
+    ]
+    state["schedule_domain_evaluations"] = normalized
+    return [dict(row) for row in normalized]
+
+
+def _ensure_time_adjust_event_rows(state: dict) -> List[dict]:
+    rows = normalize_time_adjust_event_rows(state.get("time_adjust_events"))
+    state["time_adjust_events"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
 
 
 def _ensure_travel_commitment_rows(state: dict) -> List[dict]:
@@ -3087,6 +3183,210 @@ def _append_entropy_reset_event_artifact(state: dict, event_row: Mapping[str, ob
     state["knowledge_artifacts"] = [dict(item) for item in info_rows]
 
 
+def _ensure_field_update_event_rows(state: dict) -> List[dict]:
+    rows = state.get("field_update_events")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("source_process_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        source_process_id = str(row.get("source_process_id", "")).strip() or "process.unknown"
+        tick = int(max(0, _as_int(row.get("tick", 0), 0)))
+        update_kind = str(row.get("update_kind", "")).strip() or "field_update"
+        updated_field_ids = _sorted_tokens(list(row.get("updated_field_ids") or []))
+        applied_update_count = int(max(0, _as_int(row.get("applied_update_count", 0), 0)))
+        skipped_update_count = int(max(0, _as_int(row.get("skipped_update_count", 0), 0)))
+        field_sample_count = int(max(0, _as_int(row.get("field_sample_count", 0), 0)))
+        boundary_field_exchange_count = int(max(0, _as_int(row.get("boundary_field_exchange_count", 0), 0)))
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            event_id = "event.field_update.{}".format(
+                canonical_sha256(
+                    {
+                        "source_process_id": str(source_process_id),
+                        "tick": int(tick),
+                        "update_kind": str(update_kind),
+                        "updated_field_ids": list(updated_field_ids),
+                        "applied_update_count": int(applied_update_count),
+                        "skipped_update_count": int(skipped_update_count),
+                        "field_sample_count": int(field_sample_count),
+                        "boundary_field_exchange_count": int(boundary_field_exchange_count),
+                    }
+                )[:16]
+            )
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(tick),
+            "source_process_id": str(source_process_id),
+            "update_kind": str(update_kind),
+            "updated_field_ids": list(updated_field_ids),
+            "applied_update_count": int(applied_update_count),
+            "skipped_update_count": int(skipped_update_count),
+            "field_sample_count": int(field_sample_count),
+            "boundary_field_exchange_count": int(boundary_field_exchange_count),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["field_update_events"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _append_field_update_event_artifact(state: dict, event_row: Mapping[str, object]) -> None:
+    row = dict(event_row or {})
+    event_id = str(row.get("event_id", "")).strip()
+    if not event_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.field_update_event.{}".format(event_id),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.field_update_event",
+            "field_update_event": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_field_update_event(
+    state: dict,
+    *,
+    source_process_id: str,
+    tick: int,
+    update_kind: str,
+    updated_field_ids: List[str],
+    applied_update_count: int,
+    skipped_update_count: int,
+    field_sample_count: int = 0,
+    boundary_field_exchange_count: int = 0,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    existing_rows = _ensure_field_update_event_rows(state)
+    seq = int(len(existing_rows))
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": "event.field_update.{}".format(
+            canonical_sha256(
+                {
+                    "source_process_id": str(source_process_id or "").strip() or "process.unknown",
+                    "tick": int(max(0, _as_int(tick, 0))),
+                    "update_kind": str(update_kind or "").strip() or "field_update",
+                    "updated_field_ids": _sorted_tokens(list(updated_field_ids or [])),
+                    "applied_update_count": int(max(0, _as_int(applied_update_count, 0))),
+                    "skipped_update_count": int(max(0, _as_int(skipped_update_count, 0))),
+                    "field_sample_count": int(max(0, _as_int(field_sample_count, 0))),
+                    "boundary_field_exchange_count": int(max(0, _as_int(boundary_field_exchange_count, 0))),
+                    "seq": int(seq),
+                }
+            )[:16]
+        ),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "source_process_id": str(source_process_id or "").strip() or "process.unknown",
+        "update_kind": str(update_kind or "").strip() or "field_update",
+        "updated_field_ids": _sorted_tokens(list(updated_field_ids or [])),
+        "applied_update_count": int(max(0, _as_int(applied_update_count, 0))),
+        "skipped_update_count": int(max(0, _as_int(skipped_update_count, 0))),
+        "field_sample_count": int(max(0, _as_int(field_sample_count, 0))),
+        "boundary_field_exchange_count": int(max(0, _as_int(boundary_field_exchange_count, 0))),
+        "deterministic_fingerprint": "",
+        "extensions": dict(extensions or {}) if isinstance(extensions, Mapping) else {},
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    merged = list(existing_rows) + [payload]
+    state["field_update_events"] = [dict(row) for row in merged]
+    normalized_rows = _ensure_field_update_event_rows(state)
+    emitted_row = dict(normalized_rows[-1]) if normalized_rows else dict(payload)
+    _append_field_update_event_artifact(state, emitted_row)
+    return emitted_row
+
+
+def _refresh_field_hash_chains(state: dict) -> None:
+    field_update_rows = _ensure_field_update_event_rows(state)
+    field_sample_rows = normalize_field_sample_rows(state.get("field_sample_rows") or [])
+    state["field_sample_rows"] = [dict(row) for row in field_sample_rows]
+    boundary_rows: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in list(state.get("portal_flow_params") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("portal_id", "")),
+    ):
+        portal_id = str(row.get("portal_id", "")).strip()
+        if not portal_id:
+            continue
+        boundary = dict((dict(row.get("extensions") or {})).get("field_boundary") or {})
+        if not boundary:
+            continue
+        wind_vector = dict(boundary.get("wind_vector") or {})
+        boundary_rows.append(
+            {
+                "portal_id": portal_id,
+                "temperature": int(_as_int(boundary.get("temperature", 0), 0)),
+                "moisture": int(max(0, _as_int(boundary.get("moisture", 0), 0))),
+                "visibility": int(max(0, _as_int(boundary.get("visibility", 0), 0))),
+                "wind_vector": {
+                    "x": int(_as_int(wind_vector.get("x", 0), 0)),
+                    "y": int(_as_int(wind_vector.get("y", 0), 0)),
+                    "z": int(_as_int(wind_vector.get("z", 0), 0)),
+                },
+                "wind_magnitude": int(max(0, _as_int(boundary.get("wind_magnitude", 0), 0))),
+                "wind_boost_air_conductance": int(max(0, _as_int(boundary.get("wind_boost_air_conductance", 0), 0))),
+                "ram_air_boost_air_conductance": int(max(0, _as_int(boundary.get("ram_air_boost_air_conductance", 0), 0))),
+                "source_tick": int(max(0, _as_int(boundary.get("source_tick", 0), 0))),
+                "source_process_id": str(boundary.get("source_process_id", "")).strip() or None,
+                "deterministic_fingerprint": canonical_sha256(
+                    {
+                        "portal_id": portal_id,
+                        "boundary": dict(boundary),
+                    }
+                ),
+            }
+        )
+    state["field_update_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "source_process_id": str(row.get("source_process_id", "")).strip(),
+                "update_kind": str(row.get("update_kind", "")).strip(),
+                "updated_field_ids": _sorted_tokens(list(row.get("updated_field_ids") or [])),
+                "applied_update_count": int(max(0, _as_int(row.get("applied_update_count", 0), 0))),
+                "skipped_update_count": int(max(0, _as_int(row.get("skipped_update_count", 0), 0))),
+                "field_sample_count": int(max(0, _as_int(row.get("field_sample_count", 0), 0))),
+                "boundary_field_exchange_count": int(max(0, _as_int(row.get("boundary_field_exchange_count", 0), 0))),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in field_update_rows
+        ]
+    )
+    state["field_sample_hash_chain"] = canonical_sha256(
+        [
+            {
+                "field_id": str(row.get("field_id", "")).strip(),
+                "spatial_node_id": str(row.get("spatial_node_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "sampled_value": row.get("sampled_value"),
+                "has_cell": bool(row.get("has_cell", False)),
+                "sampled_cell_id": str(row.get("sampled_cell_id", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in field_sample_rows
+        ]
+    )
+    state["boundary_field_exchange_hash_chain"] = canonical_sha256(list(boundary_rows))
+
+
 def _build_entropy_effect_snapshot_row(
     *,
     target_id: str,
@@ -3960,6 +4260,119 @@ def _refresh_momentum_hash_chains(state: dict) -> None:
     state["impulse_event_hash_chain"] = canonical_sha256([dict(row) for row in impulse_rows])
 
 
+def _refresh_time_hash_chains(state: dict) -> None:
+    mapping_rows = _ensure_time_mapping_cache_rows(state)
+    stamp_rows = _ensure_time_stamp_artifact_rows(state)
+    proper_rows = _ensure_proper_time_state_rows(state)
+    schedule_domain_rows = _ensure_schedule_domain_evaluation_rows(state)
+    adjust_rows = _ensure_time_adjust_event_rows(state)
+    state["time_mapping_hash_chain"] = canonical_sha256(
+        [
+            {
+                "mapping_id": str(row.get("mapping_id", "")).strip(),
+                "temporal_domain_id": str(row.get("temporal_domain_id", "")).strip(),
+                "scope_id": str(row.get("scope_id", "")).strip(),
+                "canonical_tick": int(max(0, _as_int(row.get("canonical_tick", 0), 0))),
+                "domain_time_value": int(_as_int(row.get("domain_time_value", 0), 0)),
+                "delta_domain_time": int(_as_int(row.get("delta_domain_time", 0), 0)),
+                "model_id": str(row.get("model_id", "")).strip(),
+                "drift_policy_id": str(row.get("drift_policy_id", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in list(mapping_rows or [])
+        ]
+    )
+    state["schedule_domain_evaluation_hash"] = canonical_sha256(
+        [
+            {
+                "schedule_id": str(row.get("schedule_id", "")).strip(),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "temporal_domain_id": str(row.get("temporal_domain_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "domain_time_value": int(_as_int(row.get("domain_time_value", 0), 0)),
+                "target_time_value": int(max(0, _as_int(row.get("target_time_value", 0), 0))),
+                "due": bool(row.get("due", False)),
+                "evaluation_policy_id": str(row.get("evaluation_policy_id", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in list(schedule_domain_rows or [])
+        ]
+    )
+    state["time_stamp_hash_chain"] = canonical_sha256(
+        [
+            {
+                "stamp_id": str(row.get("stamp_id", "")).strip(),
+                "temporal_domain_id": str(row.get("temporal_domain_id", "")).strip(),
+                "canonical_tick": int(max(0, _as_int(row.get("canonical_tick", 0), 0))),
+                "domain_time_value": int(_as_int(row.get("domain_time_value", 0), 0)),
+                "issuer_subject_id": str(row.get("issuer_subject_id", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in list(stamp_rows or [])
+        ]
+    )
+    state["proper_time_hash_chain"] = canonical_sha256(
+        [
+            {
+                "target_id": str(row.get("target_id", "")).strip(),
+                "accumulated_proper_time": int(max(0, _as_int(row.get("accumulated_proper_time", 0), 0))),
+                "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in list(proper_rows or [])
+        ]
+    )
+    state["time_adjust_event_hash_chain"] = canonical_sha256(
+        [
+            {
+                "adjust_id": str(row.get("adjust_id", "")).strip(),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "temporal_domain_id": str(row.get("temporal_domain_id", "")).strip(),
+                "canonical_tick": int(max(0, _as_int(row.get("canonical_tick", 0), 0))),
+                "previous_domain_time": int(_as_int(row.get("previous_domain_time", 0), 0)),
+                "new_domain_time": int(_as_int(row.get("new_domain_time", 0), 0)),
+                "adjustment_delta": int(_as_int(row.get("adjustment_delta", 0), 0)),
+                "originating_receipt_id": str(row.get("originating_receipt_id", "")).strip(),
+                "sync_policy_id": str(row.get("sync_policy_id", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            }
+            for row in list(adjust_rows or [])
+        ]
+    )
+
+
+def _merge_schedule_domain_evaluations(state: dict, rows: object) -> List[dict]:
+    existing = [dict(row) for row in list(state.get("schedule_domain_evaluations") or []) if isinstance(row, Mapping)]
+    incoming = [dict(row) for row in list(rows or []) if isinstance(row, Mapping)]
+    state["schedule_domain_evaluations"] = existing + incoming
+    normalized = _ensure_schedule_domain_evaluation_rows(state)
+    _refresh_time_hash_chains(state)
+    return [dict(row) for row in normalized]
+
+
+def _resolve_schedule_domain_time(
+    domain_value_index: Mapping[str, object],
+    temporal_domain_id: str,
+    target_id: str,
+    current_tick: int,
+) -> int:
+    temporal_domain_token = str(temporal_domain_id or "").strip() or "time.canonical_tick"
+    target_token = str(target_id or "").strip()
+    key = "{}::{}".format(temporal_domain_token, target_token)
+    if key in domain_value_index:
+        return int(_as_int(domain_value_index.get(key, current_tick), current_tick))
+    for fallback_key in (
+        "{}::{}".format(temporal_domain_token, "session.default"),
+        "{}::{}".format(temporal_domain_token, "global"),
+        "time.canonical_tick::{}".format(target_token),
+        "time.canonical_tick::session.default",
+        "time.canonical_tick::global",
+    ):
+        if fallback_key in domain_value_index:
+            return int(_as_int(domain_value_index.get(fallback_key, current_tick), current_tick))
+    return int(max(0, _as_int(current_tick, 0)))
+
+
 def _persist_mobility_network_state(
     state: dict,
     *,
@@ -4171,6 +4584,224 @@ def _load_model_registries(*, policy_context: dict | None) -> Tuple[dict, dict, 
             default_payload={"record": {"models": []}},
         )
     return dict(model_type_registry), dict(model_cache_policy_registry), dict(constitutive_model_registry)
+
+
+def _load_temporal_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict, dict]:
+    temporal_domain_registry = dict(_policy_payload(policy_context, "temporal_domain_registry") or {})
+    if not temporal_domain_registry:
+        temporal_domain_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/temporal_domain_registry.json",
+            default_payload={"record": {"temporal_domains": []}},
+        )
+    time_mapping_registry = dict(_policy_payload(policy_context, "time_mapping_registry") or {})
+    if not time_mapping_registry:
+        time_mapping_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/time_mapping_registry.json",
+            default_payload={"record": {"time_mappings": []}},
+        )
+    drift_policy_registry = dict(_policy_payload(policy_context, "drift_policy_registry") or {})
+    if not drift_policy_registry:
+        drift_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/drift_policy_registry.json",
+            default_payload={"record": {"drift_policies": []}},
+        )
+    sync_policy_registry = dict(_policy_payload(policy_context, "sync_policy_registry") or {})
+    if not sync_policy_registry:
+        sync_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/sync_policy_registry.json",
+            default_payload={"record": {"sync_policies": []}},
+        )
+    return (
+        dict(temporal_domain_registry),
+        dict(time_mapping_registry),
+        dict(drift_policy_registry),
+        dict(sync_policy_registry),
+    )
+
+
+def _sync_policy_rows_by_id(*, state: dict, policy_context: dict | None) -> Dict[str, dict]:
+    rows = normalize_sync_policy_rows(state.get("sync_policy_rows"))
+    if not rows:
+        _temporal_domain_registry, _time_mapping_registry, _drift_policy_registry, sync_policy_registry = _load_temporal_registries(
+            policy_context=policy_context
+        )
+        rows = normalize_sync_policy_rows(
+            list(((sync_policy_registry.get("record") or {}).get("sync_policies") or [])
+                 or sync_policy_registry.get("sync_policies")
+                 or [])
+        )
+        state["sync_policy_rows"] = [dict(row) for row in list(rows or []) if isinstance(row, Mapping)]
+    return dict(
+        (str(row.get("sync_policy_id", "")).strip(), dict(row))
+        for row in list(rows or [])
+        if str(row.get("sync_policy_id", "")).strip()
+    )
+
+
+def _evaluate_time_mappings_for_tick(
+    *,
+    state: dict,
+    current_tick: int,
+    policy_context: dict | None,
+    schedule_rows: List[dict],
+    momentum_states: List[dict],
+) -> dict:
+    temporal_domain_registry, time_mapping_registry, drift_policy_registry, sync_policy_registry = _load_temporal_registries(
+        policy_context=policy_context
+    )
+    model_type_registry, _model_cache_policy_registry, constitutive_model_registry = _load_model_registries(
+        policy_context=policy_context
+    )
+    model_type_rows = model_type_rows_by_id(model_type_registry)
+    model_rows = list(constitutive_model_rows_by_id(constitutive_model_registry).values())
+    mapping_rows = list(((time_mapping_registry.get("record") or {}).get("time_mappings") or [])
+                        or time_mapping_registry.get("time_mappings")
+                        or [])
+    drift_policy_rows = normalize_drift_policy_rows(
+        list(((drift_policy_registry.get("record") or {}).get("drift_policies") or [])
+             or drift_policy_registry.get("drift_policies")
+             or [])
+    )
+    sync_policy_rows = normalize_sync_policy_rows(
+        list(((sync_policy_registry.get("record") or {}).get("sync_policies") or [])
+             or sync_policy_registry.get("sync_policies")
+             or [])
+    )
+    state["sync_policy_rows"] = [dict(row) for row in list(sync_policy_rows or []) if isinstance(row, Mapping)]
+    state["drift_policy_rows"] = [dict(row) for row in list(drift_policy_rows or []) if isinstance(row, Mapping)]
+    temporal_rows = list(((temporal_domain_registry.get("record") or {}).get("temporal_domains") or [])
+                         or temporal_domain_registry.get("temporal_domains")
+                         or [])
+
+    non_canonical_schedule_rows = [
+        dict(row)
+        for row in list(schedule_rows or [])
+        if isinstance(row, Mapping)
+        and str(row.get("schedule_id", "")).strip()
+        and str(row.get("temporal_domain_id", "time.canonical_tick")).strip() != "time.canonical_tick"
+    ]
+    schedule_targets = _sorted_tokens([str(row.get("target_id", "")).strip() for row in non_canonical_schedule_rows])
+    momentum_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+    assembly_scope_ids = _sorted_tokens(list(momentum_by_assembly.keys()) + list(schedule_targets))
+
+    field_type_registry = _field_registry_payload(
+        policy_context=policy_context,
+        key="field_type_registry",
+        registry_rel_path="data/registries/field_type_registry.json",
+        entry_key="field_types",
+    )
+    normalized_field_layers = normalize_field_layer_rows(state.get("field_layers") or [])
+    normalized_field_cells = normalize_field_cell_rows(
+        state.get("field_cells") or [],
+        field_layer_rows=normalized_field_layers,
+        field_type_registry=field_type_registry,
+    )
+    session_scope_id = str((dict(policy_context or {})).get("session_id", "")).strip() or "session.default"
+    session_warp_factor = int(max(0, _as_int((dict(policy_context or {})).get("session_warp_factor", 1000), 1000)))
+
+    def _time_input_resolver(mapping_row: Mapping[str, object], scope_id: str) -> dict:
+        target_id = str(scope_id or "").strip()
+        momentum_row = dict(momentum_by_assembly.get(target_id) or {})
+        velocity = velocity_from_momentum_state(momentum_row) if momentum_row else {"x": 0, "y": 0, "z": 0}
+        position = _target_spatial_position(state, target_id) if target_id else {}
+        gravity_sample = get_field_value(
+            spatial_position=dict(position or {}),
+            field_id="field.gravity_vector",
+            field_layer_rows=normalized_field_layers,
+            field_cell_rows=normalized_field_cells,
+            field_type_registry=field_type_registry,
+        )
+        gravity_value = gravity_sample.get("vector")
+        if not isinstance(gravity_value, Mapping):
+            gravity_value = gravity_sample.get("value")
+        gravity_vector = dict(gravity_value) if isinstance(gravity_value, Mapping) else {"x": 0, "y": 0, "z": 0}
+        return {
+            "canonical_tick": int(max(0, _as_int(current_tick, 0))),
+            "field.gravity_vector": {
+                "x": int(_as_int(gravity_vector.get("x", 0), 0)),
+                "y": int(_as_int(gravity_vector.get("y", 0), 0)),
+                "z": int(_as_int(gravity_vector.get("z", 0), 0)),
+            },
+            "velocity": {
+                "x": int(_as_int(velocity.get("x", 0), 0)),
+                "y": int(_as_int(velocity.get("y", 0), 0)),
+                "z": int(_as_int(velocity.get("z", 0), 0)),
+            },
+            "session_warp_factor": int(session_warp_factor),
+            "scope_id": target_id,
+            "mapping_id": str(mapping_row.get("mapping_id", "")).strip(),
+        }
+
+    evaluation = evaluate_time_mappings(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        time_mapping_rows=mapping_rows,
+        temporal_domain_rows=temporal_rows,
+        model_rows=model_rows,
+        model_type_rows=model_type_rows,
+        drift_policy_rows=drift_policy_rows,
+        existing_cache_rows=state.get("time_mapping_cache_rows") or [],
+        existing_time_stamp_rows=state.get("time_stamp_artifacts") or [],
+        existing_proper_time_rows=state.get("proper_time_states") or [],
+        scope_rows_by_selector={
+            "global": ["global"],
+            "per_session": [session_scope_id],
+            "per_assembly": list(assembly_scope_ids),
+            "per_spatial": list(schedule_targets),
+        },
+        input_resolver_fn=_time_input_resolver,
+        session_id=session_scope_id,
+        issuer_subject_id="system.time_mapping_engine",
+        max_cost_units=int(max(1, _as_int((dict(policy_context or {})).get("time_mapping_max_cost_units_per_tick", 256), 256))),
+    )
+    state["time_mapping_cache_rows"] = [dict(row) for row in list(evaluation.get("cache_rows") or []) if isinstance(row, Mapping)]
+    state["time_stamp_artifacts"] = [dict(row) for row in list(evaluation.get("time_stamp_rows") or []) if isinstance(row, Mapping)]
+    state["time_stamp_rows"] = [dict(row) for row in list(evaluation.get("time_stamp_rows") or []) if isinstance(row, Mapping)]
+    state["proper_time_states"] = [dict(row) for row in list(evaluation.get("proper_time_rows") or []) if isinstance(row, Mapping)]
+    active_drift_policy_ids = [
+        str(item).strip()
+        for item in list(evaluation.get("active_drift_policy_ids") or [])
+        if str(item).strip()
+    ]
+    state["active_drift_policy_ids"] = sorted(set(active_drift_policy_ids))
+    state["drift_policy_id"] = (
+        str(state["active_drift_policy_ids"][0])
+        if len(state["active_drift_policy_ids"]) == 1
+        else "drift.profile_defined"
+        if state["active_drift_policy_ids"]
+        else "drift.none"
+    )
+    _refresh_time_hash_chains(state)
+
+    domain_index = dict((evaluation.get("domain_value_index") or {}))
+    for row in list(non_canonical_schedule_rows):
+        schedule_id = str(row.get("schedule_id", "")).strip()
+        target_id = str(row.get("target_id", "")).strip()
+        temporal_domain_id = str(row.get("temporal_domain_id", "time.canonical_tick")).strip() or "time.canonical_tick"
+        key = "{}::{}".format(temporal_domain_id, target_id)
+        if key in domain_index:
+            continue
+        for fallback in (
+            "{}::{}".format(temporal_domain_id, session_scope_id),
+            "{}::global".format(temporal_domain_id),
+            "time.canonical_tick::{}".format(target_id),
+            "time.canonical_tick::{}".format(session_scope_id),
+            "time.canonical_tick::global",
+        ):
+            if fallback in domain_index:
+                domain_index[key] = int(_as_int(domain_index.get(fallback, current_tick), current_tick))
+                break
+        if key not in domain_index:
+            domain_index[key] = int(max(0, _as_int(current_tick, 0)))
+        if schedule_id:
+            domain_index["{}::{}".format(temporal_domain_id, schedule_id)] = int(domain_index[key])
+    return {
+        "domain_value_index": dict((str(key), int(_as_int(domain_index[key], 0))) for key in sorted(domain_index.keys())),
+        "mapping_evaluation": dict(evaluation),
+    }
 
 
 def _load_maintenance_policy_registry(*, policy_context: dict | None) -> dict:
@@ -17175,6 +17806,7 @@ def execute_intent(
     mobility_route_results = _ensure_mobility_route_result_rows(state)
     itineraries = _ensure_itinerary_rows(state)
     travel_schedules = _ensure_travel_schedule_rows(state)
+    schedule_time_bindings = _ensure_schedule_time_binding_rows(state)
     travel_commitments = _ensure_travel_commitment_rows(state)
     travel_events = _ensure_travel_event_rows(state)
     edge_occupancies = _ensure_edge_occupancy_rows(state)
@@ -17210,6 +17842,11 @@ def execute_intent(
     entropy_event_rows = _ensure_entropy_event_rows(state)
     entropy_reset_events = _ensure_entropy_reset_event_rows(state)
     entropy_effect_rows = _ensure_entropy_effect_rows(state)
+    _ensure_time_mapping_cache_rows(state)
+    _ensure_time_stamp_artifact_rows(state)
+    _ensure_proper_time_state_rows(state)
+    _ensure_schedule_domain_evaluation_rows(state)
+    _ensure_time_adjust_event_rows(state)
     del exception_events
     del energy_ledger_entries
     del boundary_flux_events
@@ -17220,6 +17857,7 @@ def execute_intent(
     _refresh_momentum_hash_chains(state)
     _refresh_energy_ledger_hash_chains(state)
     _refresh_entropy_hash_chains(state)
+    _refresh_field_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -17267,6 +17905,28 @@ def execute_intent(
     mechanics_provenance_events = _ensure_mechanics_provenance_events(state)
     _ensure_collision_state(state)
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
+    schedule_rows_for_time_eval: List[dict] = []
+    for _schedule_rows in (
+        list(travel_schedules or []),
+        list(mobility_maintenance_schedules or []),
+        list(mobility_signal_maintenance_schedules or []),
+    ):
+        for _row in _schedule_rows:
+            if not isinstance(_row, Mapping):
+                continue
+            schedule_rows_for_time_eval.append(dict(_row))
+    time_mapping_eval = _evaluate_time_mappings_for_tick(
+        state=state,
+        current_tick=int(current_tick),
+        policy_context=policy_context,
+        schedule_rows=schedule_rows_for_time_eval,
+        momentum_states=momentum_states,
+    )
+    domain_value_index = dict(time_mapping_eval.get("domain_value_index") or {})
+    if "time.canonical_tick::global" not in domain_value_index:
+        domain_value_index["time.canonical_tick::global"] = int(current_tick)
+    if "time.canonical_tick::session.default" not in domain_value_index:
+        domain_value_index["time.canonical_tick::session.default"] = int(current_tick)
     effect_rows = prune_expired_effect_rows(
         effect_rows=effect_rows,
         current_tick=int(current_tick),
@@ -28811,7 +29471,20 @@ def execute_intent(
         ticked = tick_schedules(
             schedule_rows=schedule_rows,
             current_tick=int(current_tick),
+            schedule_time_binding_rows=schedule_time_bindings,
+            resolve_domain_time_fn=lambda temporal_domain_id, target_id, tick: _resolve_schedule_domain_time(
+                domain_value_index=domain_value_index,
+                temporal_domain_id=str(temporal_domain_id),
+                target_id=str(target_id),
+                current_tick=int(tick),
+            ),
         )
+        schedule_time_bindings = [
+            dict(row) for row in list(ticked.get("schedule_time_bindings") or []) if isinstance(row, Mapping)
+        ]
+        state["schedule_time_bindings"] = [dict(row) for row in list(schedule_time_bindings or []) if isinstance(row, Mapping)]
+        schedule_time_bindings = _ensure_schedule_time_binding_rows(state)
+        _merge_schedule_domain_evaluations(state, ticked.get("domain_evaluations") or [])
         schedule_rows = [dict(row) for row in list(ticked.get("schedules") or []) if isinstance(row, Mapping)]
         due_rows = [
             dict(row)
@@ -29710,6 +30383,8 @@ def execute_intent(
             "schema_version": "1.0.0",
             "schedule_id": schedule_id,
             "target_id": vehicle_id,
+            "temporal_domain_id": str(inputs.get("temporal_domain_id", "time.canonical_tick")).strip()
+            or "time.canonical_tick",
             "start_tick": int(start_tick),
             "recurrence_rule": dict(recurrence_rule),
             "next_due_tick": int(max(0, _as_int(inputs.get("next_due_tick", start_tick), start_tick))),
@@ -29732,6 +30407,48 @@ def execute_intent(
                 dict(getattr(exc, "details", {}) or {}),
                 "$.intent.inputs",
             )
+        binding_rows_by_schedule_id = dict(
+            (
+                str(row.get("schedule_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(schedule_time_bindings or [])
+            if isinstance(row, Mapping) and str(row.get("schedule_id", "")).strip()
+        )
+        binding_rows = normalize_schedule_time_binding_rows(
+            [
+                {
+                    "schema_version": "1.0.0",
+                    "schedule_id": schedule_id,
+                    "temporal_domain_id": str(schedule_row.get("temporal_domain_id", "time.canonical_tick")).strip()
+                    or "time.canonical_tick",
+                    "target_time_value": int(
+                        max(
+                            0,
+                            _as_int(
+                                inputs.get("target_time_value", schedule_row.get("next_due_tick", start_tick)),
+                                schedule_row.get("next_due_tick", start_tick),
+                            ),
+                        )
+                    ),
+                    "evaluation_policy_id": str(inputs.get("evaluation_policy_id", "schedule.eval.gte_target")).strip()
+                    or "schedule.eval.gte_target",
+                    "extensions": {
+                        "schedule_kind": str((dict(schedule_row.get("extensions") or {})).get("schedule_kind", "")).strip()
+                        or "mobility.timetable",
+                        "source_process_id": process_id,
+                    },
+                }
+            ]
+        )
+        if binding_rows:
+            binding_rows_by_schedule_id[schedule_id] = dict(binding_rows[0])
+        schedule_time_bindings = [
+            dict(binding_rows_by_schedule_id[key])
+            for key in sorted(binding_rows_by_schedule_id.keys())
+        ]
+        state["schedule_time_bindings"] = [dict(row) for row in list(schedule_time_bindings or []) if isinstance(row, Mapping)]
+        schedule_time_bindings = _ensure_schedule_time_binding_rows(state)
         travel_schedules = _upsert_row_by_id(travel_schedules, "schedule_id", schedule_row)
         travel_schedules = _ensure_travel_schedule_rows({"travel_schedules": travel_schedules})
         state["travel_schedules"] = [dict(row) for row in list(travel_schedules or []) if isinstance(row, Mapping)]
@@ -29740,6 +30457,7 @@ def execute_intent(
             "vehicle_id": vehicle_id,
             "itinerary_id": itinerary_id,
             "schedule": dict(schedule_row),
+            "schedule_time_binding": dict((dict(binding_rows_by_schedule_id.get(schedule_id) or {}))),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.travel_start":
@@ -29959,7 +30677,20 @@ def execute_intent(
             current_tick=int(current_tick),
             max_schedules=int(max_schedule_updates),
             cost_units_per_schedule=1,
+            schedule_time_binding_rows=schedule_time_bindings,
+            resolve_domain_time_fn=lambda temporal_domain_id, target_id, tick: _resolve_schedule_domain_time(
+                domain_value_index=domain_value_index,
+                temporal_domain_id=str(temporal_domain_id),
+                target_id=str(target_id),
+                current_tick=int(tick),
+            ),
         )
+        schedule_time_bindings = [
+            dict(row) for row in list(schedule_tick.get("schedule_time_bindings") or []) if isinstance(row, Mapping)
+        ]
+        state["schedule_time_bindings"] = [dict(row) for row in list(schedule_time_bindings or []) if isinstance(row, Mapping)]
+        schedule_time_bindings = _ensure_schedule_time_binding_rows(state)
+        _merge_schedule_domain_evaluations(state, schedule_tick.get("domain_evaluations") or [])
         travel_schedules = _ensure_travel_schedule_rows(
             {"travel_schedules": list(schedule_tick.get("schedules") or [])}
         )
@@ -31341,6 +32072,7 @@ def execute_intent(
                     {
                         "schedule_id": schedule_id,
                         "target_id": edge_id,
+                        "temporal_domain_id": "time.canonical_tick",
                         "start_tick": int(current_tick),
                         "next_due_tick": int(current_tick),
                         "recurrence_rule": {
@@ -31374,6 +32106,7 @@ def execute_intent(
                 {
                     "schedule_id": schedule_id,
                     "target_id": vehicle_id,
+                    "temporal_domain_id": "time.canonical_tick",
                     "start_tick": int(current_tick),
                     "next_due_tick": int(current_tick),
                     "recurrence_rule": {
@@ -31404,6 +32137,7 @@ def execute_intent(
                 {
                     "schedule_id": schedule_id,
                     "target_id": signal_id,
+                    "temporal_domain_id": "time.canonical_tick",
                     "start_tick": int(current_tick),
                     "next_due_tick": int(current_tick),
                     "recurrence_rule": {
@@ -31433,7 +32167,20 @@ def execute_intent(
                 )
             ),
             cost_units_per_schedule=1,
+            schedule_time_binding_rows=schedule_time_bindings,
+            resolve_domain_time_fn=lambda temporal_domain_id, target_id, tick: _resolve_schedule_domain_time(
+                domain_value_index=domain_value_index,
+                temporal_domain_id=str(temporal_domain_id),
+                target_id=str(target_id),
+                current_tick=int(tick),
+            ),
         )
+        schedule_time_bindings = [
+            dict(row) for row in list(schedule_tick.get("schedule_time_bindings") or []) if isinstance(row, Mapping)
+        ]
+        state["schedule_time_bindings"] = [dict(row) for row in list(schedule_time_bindings or []) if isinstance(row, Mapping)]
+        schedule_time_bindings = _ensure_schedule_time_binding_rows(state)
+        _merge_schedule_domain_evaluations(state, schedule_tick.get("domain_evaluations") or [])
         mobility_maintenance_schedules = _ensure_mobility_maintenance_schedule_rows(
             {"mobility_maintenance_schedules": list(schedule_tick.get("schedules") or [])}
         )
@@ -39242,6 +39989,27 @@ def execute_intent(
                     list(state.get("field_sample_rows") or [])
                     + [dict(row) for row in list(model_field_sample_rows or []) if isinstance(row, Mapping)]
                 )
+                _append_field_update_event(
+                    state,
+                    source_process_id="process.model_evaluate_tick",
+                    tick=int(current_tick),
+                    update_kind="model_output",
+                    updated_field_ids=sorted(
+                        set(
+                            str(row.get("field_id", "")).strip()
+                            for row in list(model_field_update_applied or [])
+                            if isinstance(row, Mapping) and str(row.get("field_id", "")).strip()
+                        )
+                    ),
+                    applied_update_count=int(len(model_field_update_applied)),
+                    skipped_update_count=int(len(model_field_update_skipped)),
+                    field_sample_count=int(len(model_field_sample_rows)),
+                    boundary_field_exchange_count=0,
+                    extensions={
+                        "source_process_id": "process.model_evaluate_tick",
+                    },
+                )
+                _refresh_field_hash_chains(state)
 
             model_runtime_state = dict(model_runtime_state or {})
             model_runtime_state["last_tick"] = int(current_tick)
@@ -39282,6 +40050,9 @@ def execute_intent(
                         if isinstance(row, Mapping) and str(row.get("field_id", "")).strip()
                     )
                 ),
+                "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+                "field_sample_hash_chain": str(state.get("field_sample_hash_chain", "")).strip(),
+                "boundary_field_exchange_hash_chain": str(state.get("boundary_field_exchange_hash_chain", "")).strip(),
                 "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
                 "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
             }
@@ -39508,6 +40279,21 @@ def execute_intent(
             list(state.get("field_sample_rows") or [])
             + [dict(row) for row in list(field_update_result.get("field_sample_rows") or []) if isinstance(row, Mapping)]
         )
+        _append_field_update_event(
+            state,
+            source_process_id=process_id,
+            tick=int(current_tick),
+            update_kind="process_update",
+            updated_field_ids=list(field_update_result.get("updated_field_ids") or []),
+            applied_update_count=int(len(list(field_update_result.get("applied_updates") or []))),
+            skipped_update_count=int(len(list(field_update_result.get("skipped_updates") or []))),
+            field_sample_count=int(len(list(field_update_result.get("field_sample_rows") or []))),
+            boundary_field_exchange_count=0,
+            extensions={
+                "source_process_id": process_id,
+            },
+        )
+        _refresh_field_hash_chains(state)
         result_metadata = {
             "updated_field_ids": list(field_update_result.get("updated_field_ids") or []),
             "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),
@@ -39521,6 +40307,9 @@ def execute_intent(
                 else str(field_update_result.get("degrade_reason", "")).strip() or None
             ),
             "deterministic_fingerprint": str(field_update_result.get("deterministic_fingerprint", "")).strip(),
+            "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+            "field_sample_hash_chain": str(state.get("field_sample_hash_chain", "")).strip(),
+            "boundary_field_exchange_hash_chain": str(state.get("boundary_field_exchange_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.field_tick":
@@ -39828,6 +40617,26 @@ def execute_intent(
             field_cells=field_cells,
             field_modifier_rows=field_modifier_rows,
         )
+        _append_field_update_event(
+            state,
+            source_process_id=process_id,
+            tick=int(current_tick),
+            update_kind="scheduled_tick",
+            updated_field_ids=list(field_update.get("evaluated_field_ids") or []),
+            applied_update_count=int(len(list(field_update.get("evaluated_field_ids") or []))),
+            skipped_update_count=int(len(list(field_update.get("skipped_field_ids") or []))),
+            field_sample_count=0,
+            boundary_field_exchange_count=0,
+            extensions={
+                "degraded": bool(field_update.get("degraded", False)),
+                "degrade_reason": (
+                    None
+                    if field_update.get("degrade_reason") is None
+                    else str(field_update.get("degrade_reason", "")).strip() or None
+                ),
+            },
+        )
+        _refresh_field_hash_chains(state)
         result_metadata = {
             "evaluated_field_ids": list(field_update.get("evaluated_field_ids") or []),
             "skipped_field_ids": list(field_update.get("skipped_field_ids") or []),
@@ -39841,6 +40650,9 @@ def execute_intent(
                 else str(field_update.get("degrade_reason", "")).strip() or None
             ),
             "deterministic_fingerprint": str(field_update.get("deterministic_fingerprint", "")).strip(),
+            "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+            "field_sample_hash_chain": str(state.get("field_sample_hash_chain", "")).strip(),
+            "boundary_field_exchange_hash_chain": str(state.get("boundary_field_exchange_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.compartment_flow_tick":
@@ -39874,6 +40686,7 @@ def execute_intent(
                 "$.intent.inputs.graph_id",
             )
         if not selected_graph:
+            _refresh_field_hash_chains(state)
             result_metadata = {
                 "graph_id": "",
                 "policy_id": policy_id,
@@ -39886,6 +40699,9 @@ def execute_intent(
                 "cost_units": 0,
                 "budget_outcome": "complete",
                 "flow_transfer_event_count": 0,
+                "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+                "field_sample_hash_chain": str(state.get("field_sample_hash_chain", "")).strip(),
+                "boundary_field_exchange_hash_chain": str(state.get("boundary_field_exchange_hash_chain", "")).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
         else:
@@ -39948,6 +40764,7 @@ def execute_intent(
                 for row in list(interior_portal_rows or [])
                 if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
             )
+            boundary_field_sample_cache: Dict[str, dict] = {}
             for portal_id in sorted(
                 set(str(item).strip() for item in list(selected_graph.get("portals") or []) if str(item).strip())
             ):
@@ -39982,6 +40799,9 @@ def execute_intent(
                     field_layer_rows=normalized_field_layers,
                     field_cell_rows=normalized_field_cells,
                     field_type_registry=field_type_registry,
+                    tick=int(current_tick),
+                    spatial_node_id=portal_id,
+                    sample_cache=boundary_field_sample_cache,
                 )
                 moisture_sample = get_field_value(
                     spatial_position=sample_position,
@@ -39989,6 +40809,9 @@ def execute_intent(
                     field_layer_rows=normalized_field_layers,
                     field_cell_rows=normalized_field_cells,
                     field_type_registry=field_type_registry,
+                    tick=int(current_tick),
+                    spatial_node_id=portal_id,
+                    sample_cache=boundary_field_sample_cache,
                 )
                 wind_sample = get_field_value(
                     spatial_position=sample_position,
@@ -39996,6 +40819,9 @@ def execute_intent(
                     field_layer_rows=normalized_field_layers,
                     field_cell_rows=normalized_field_cells,
                     field_type_registry=field_type_registry,
+                    tick=int(current_tick),
+                    spatial_node_id=portal_id,
+                    sample_cache=boundary_field_sample_cache,
                 )
                 visibility_sample = get_field_value(
                     spatial_position=sample_position,
@@ -40003,6 +40829,9 @@ def execute_intent(
                     field_layer_rows=normalized_field_layers,
                     field_cell_rows=normalized_field_cells,
                     field_type_registry=field_type_registry,
+                    tick=int(current_tick),
+                    spatial_node_id=portal_id,
+                    sample_cache=boundary_field_sample_cache,
                 )
 
                 boundary_temperature = int(_as_int(temperature_sample.get("value", 20), 20))
@@ -40075,6 +40904,44 @@ def execute_intent(
                 for key in sorted(portal_param_by_id.keys())
             ]
             state["portal_flow_params"] = [dict(row) for row in list(portal_flow_params or []) if isinstance(row, dict)]
+            boundary_field_sample_rows = normalize_field_sample_rows(
+                [
+                    dict(row)
+                    for row in list(boundary_field_sample_cache.values())
+                    if isinstance(row, Mapping)
+                ]
+            )
+            if boundary_field_sample_rows:
+                state["field_sample_rows"] = normalize_field_sample_rows(
+                    list(state.get("field_sample_rows") or [])
+                    + [dict(row) for row in list(boundary_field_sample_rows or []) if isinstance(row, Mapping)]
+                )
+            boundary_portal_count = int(
+                len([token for token in list(selected_graph.get("portals") or []) if str(token).strip()])
+            )
+            if boundary_portal_count or boundary_field_sample_rows:
+                _append_field_update_event(
+                    state,
+                    source_process_id=process_id,
+                    tick=int(current_tick),
+                    update_kind="boundary_exchange",
+                    updated_field_ids=sorted(
+                        set(
+                            str(row.get("field_id", "")).strip()
+                            for row in list(boundary_field_sample_rows or [])
+                            if isinstance(row, Mapping) and str(row.get("field_id", "")).strip()
+                        )
+                    ),
+                    applied_update_count=0,
+                    skipped_update_count=0,
+                    field_sample_count=int(len(boundary_field_sample_rows)),
+                    boundary_field_exchange_count=int(boundary_portal_count),
+                    extensions={
+                        "graph_id": str(selected_graph.get("graph_id", "")).strip(),
+                        "source_process_id": process_id,
+                    },
+                )
+            _refresh_field_hash_chains(state)
             try:
                 ticked = tick_compartment_flows(
                     interior_graph_row=selected_graph,
@@ -40777,6 +41644,9 @@ def execute_intent(
                     "portal_glyph_count": int(len(list(portal_indicator_rows or []))),
                     "warning_glyph_count": int(len([row for row in list(alarms or []) if isinstance(row, Mapping) and str(row.get("overall", "")).strip() in {"warn", "danger"}])),
                 },
+                "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+                "field_sample_hash_chain": str(state.get("field_sample_hash_chain", "")).strip(),
+                "boundary_field_exchange_hash_chain": str(state.get("boundary_field_exchange_hash_chain", "")).strip(),
             }
             state["vehicle_interior_runtime_state"] = {
                 "schema_version": "1.0.0",
@@ -43390,6 +44260,252 @@ def execute_intent(
             )
         control = _ensure_time_control(state)
         control["paused"] = False
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.time_adjust":
+        temporal_domain_id = str(inputs.get("temporal_domain_id", "time.canonical_tick")).strip() or "time.canonical_tick"
+        target_id = str(inputs.get("target_id", "") or inputs.get("scope_id", "") or "session.default").strip() or "session.default"
+        stamp_artifact = dict(inputs.get("time_stamp_artifact") or {}) if isinstance(inputs.get("time_stamp_artifact"), Mapping) else {}
+        local_domain_time = int(
+            _as_int(
+                inputs.get(
+                    "local_domain_time",
+                    _resolve_schedule_domain_time(
+                        domain_value_index=domain_value_index,
+                        temporal_domain_id=temporal_domain_id,
+                        target_id=target_id,
+                        current_tick=int(current_tick),
+                    ),
+                ),
+                int(current_tick),
+            )
+        )
+        remote_domain_time = int(
+            _as_int(
+                inputs.get(
+                    "remote_domain_time",
+                    stamp_artifact.get("domain_time_value", local_domain_time),
+                ),
+                local_domain_time,
+            )
+        )
+        originating_receipt_id = str(
+            inputs.get("originating_receipt_id", "")
+            or inputs.get("receipt_id", "")
+            or stamp_artifact.get("stamp_id", "")
+        ).strip()
+        if not originating_receipt_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.time_adjust requires originating_receipt_id or time_stamp_artifact.stamp_id",
+                "Provide a deterministic receipt/stamp reference for synchronization events.",
+                {"process_id": process_id},
+                "$.intent.inputs.originating_receipt_id",
+            )
+        sync_policy_id = str(
+            inputs.get("sync_policy_id", "")
+            or (dict(policy_context or {})).get("sync_policy_id", "")
+            or "sync.none"
+        ).strip()
+        sync_policy_row = dict((_sync_policy_rows_by_id(state=state, policy_context=policy_context)).get(sync_policy_id) or {})
+        if not sync_policy_row:
+            return refusal(
+                "refusal.time.sync_policy_missing",
+                "sync policy '{}' is not registered".format(sync_policy_id),
+                "Use a sync_policy_id present in sync_policy_registry.",
+                {"sync_policy_id": sync_policy_id},
+                "$.intent.inputs.sync_policy_id",
+            )
+
+        adjustment_strategy = str(sync_policy_row.get("adjustment_strategy", "observe")).strip().lower() or "observe"
+        policy_max_adjust_per_tick = int(max(0, _as_int(sync_policy_row.get("max_adjust_per_tick", 0), 0)))
+        requested_max_adjust_per_tick = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get("max_adjust_per_tick", policy_max_adjust_per_tick),
+                    policy_max_adjust_per_tick,
+                ),
+            )
+        )
+        if policy_max_adjust_per_tick > 0:
+            max_adjust_per_tick = int(min(policy_max_adjust_per_tick, requested_max_adjust_per_tick))
+        else:
+            max_adjust_per_tick = int(policy_max_adjust_per_tick)
+        max_skew_allowed = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get(
+                        "max_skew_allowed",
+                        (dict(sync_policy_row.get("extensions") or {})).get("max_skew_allowed", max_adjust_per_tick),
+                    ),
+                    max_adjust_per_tick,
+                ),
+            )
+        )
+        skew = int(remote_domain_time - local_domain_time)
+        adjustment_delta = 0
+        rejected = False
+        refusal_reason_code = ""
+        if adjustment_strategy == "adjust":
+            bounded = int(skew)
+            if max_adjust_per_tick > 0:
+                bounded = int(max(0 - max_adjust_per_tick, min(max_adjust_per_tick, bounded)))
+            else:
+                bounded = 0
+            adjustment_delta = int(bounded)
+        elif adjustment_strategy == "reject":
+            if int(abs(skew)) > int(max_skew_allowed):
+                rejected = True
+                refusal_reason_code = "refusal.time.sync_skew_exceeds_policy"
+                adjustment_delta = 0
+        else:
+            adjustment_delta = 0
+
+        new_domain_time = int(local_domain_time + adjustment_delta)
+        mapping_rows = _ensure_time_mapping_cache_rows(state)
+        candidate_rows = [
+            dict(row)
+            for row in list(mapping_rows or [])
+            if str(row.get("temporal_domain_id", "")).strip() == temporal_domain_id
+            and str(row.get("scope_id", "")).strip() in {target_id, "session.default", "global"}
+        ]
+        candidate_rows = sorted(
+            candidate_rows,
+            key=lambda row: (
+                int(max(0, _as_int(row.get("canonical_tick", 0), 0))),
+                1 if str(row.get("scope_id", "")).strip() == target_id else 0,
+            ),
+            reverse=True,
+        )
+        if (not rejected) and candidate_rows:
+            candidate = dict(candidate_rows[0])
+            candidate["domain_time_value"] = int(new_domain_time)
+            candidate["delta_domain_time"] = int(_as_int(candidate.get("delta_domain_time", 0), 0) + adjustment_delta)
+            candidate_extensions = dict(candidate.get("extensions") or {}) if isinstance(candidate.get("extensions"), Mapping) else {}
+            candidate_extensions["time_adjust"] = {
+                "originating_receipt_id": originating_receipt_id,
+                "sync_policy_id": sync_policy_id,
+                "skew": int(skew),
+                "adjustment_delta": int(adjustment_delta),
+                "canonical_tick": int(current_tick),
+            }
+            candidate["extensions"] = candidate_extensions
+            mapping_key = "{}::{}::{}".format(
+                str(candidate.get("mapping_id", "")).strip(),
+                str(candidate.get("scope_id", "")).strip(),
+                int(max(0, _as_int(candidate.get("canonical_tick", 0), 0))),
+            )
+            mapping_by_key = dict(
+                (
+                    "{}::{}::{}".format(
+                        str(row.get("mapping_id", "")).strip(),
+                        str(row.get("scope_id", "")).strip(),
+                        int(max(0, _as_int(row.get("canonical_tick", 0), 0))),
+                    ),
+                    dict(row),
+                )
+                for row in list(mapping_rows or [])
+                if isinstance(row, Mapping)
+            )
+            mapping_by_key[mapping_key] = dict(candidate)
+            state["time_mapping_cache_rows"] = [dict(mapping_by_key[key]) for key in sorted(mapping_by_key.keys())]
+            _ensure_time_mapping_cache_rows(state)
+
+        if (not rejected) and temporal_domain_id == "time.proper":
+            proper_rows = _ensure_proper_time_state_rows(state)
+            proper_by_target = dict(
+                (str(row.get("target_id", "")).strip(), dict(row))
+                for row in list(proper_rows or [])
+                if str(row.get("target_id", "")).strip()
+            )
+            proper_row = dict(proper_by_target.get(target_id) or {})
+            proper_row["target_id"] = target_id
+            proper_row["accumulated_proper_time"] = int(max(0, new_domain_time))
+            proper_row["last_update_tick"] = int(max(0, _as_int(current_tick, 0)))
+            proper_row["extensions"] = dict(proper_row.get("extensions") or {}) if isinstance(proper_row.get("extensions"), Mapping) else {}
+            proper_row["extensions"]["sync_policy_id"] = sync_policy_id
+            proper_by_target[target_id] = proper_row
+            state["proper_time_states"] = [dict(proper_by_target[key]) for key in sorted(proper_by_target.keys())]
+            _ensure_proper_time_state_rows(state)
+
+        adjust_id = "adjust.time.{}".format(
+            canonical_sha256(
+                {
+                    "target_id": target_id,
+                    "temporal_domain_id": temporal_domain_id,
+                    "tick": int(current_tick),
+                    "originating_receipt_id": originating_receipt_id,
+                    "sync_policy_id": sync_policy_id,
+                    "local_domain_time": int(local_domain_time),
+                    "remote_domain_time": int(remote_domain_time),
+                    "adjustment_delta": int(adjustment_delta),
+                    "rejected": bool(rejected),
+                }
+            )[:16]
+        )
+        adjust_event = build_time_adjust_event(
+            adjust_id=adjust_id,
+            target_id=target_id,
+            previous_domain_time=int(local_domain_time),
+            new_domain_time=int(new_domain_time),
+            adjustment_delta=int(adjustment_delta),
+            originating_receipt_id=originating_receipt_id,
+            sync_policy_id=sync_policy_id,
+            temporal_domain_id=temporal_domain_id,
+            canonical_tick=int(current_tick),
+            extensions={
+                "adjustment_strategy": adjustment_strategy,
+                "skew": int(skew),
+                "max_adjust_per_tick": int(max_adjust_per_tick),
+                "max_skew_allowed": int(max_skew_allowed),
+                "rejected": bool(rejected),
+                "refusal_reason_code": refusal_reason_code,
+            },
+        )
+        state["time_adjust_events"] = [
+            dict(row)
+            for row in list(_ensure_time_adjust_event_rows(state) or [])
+            if isinstance(row, Mapping)
+        ] + ([dict(adjust_event)] if adjust_event else [])
+        _ensure_time_adjust_event_rows(state)
+
+        if adjust_event:
+            info_rows = normalize_info_artifact_rows(
+                list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                + [
+                    {
+                        "artifact_id": "artifact.time_adjust_event.{}".format(adjust_id),
+                        "artifact_family_id": "RECORD",
+                        "extensions": {
+                            "artifact_type_id": "artifact.time_adjust_event",
+                            "time_adjust_event": dict(adjust_event),
+                        },
+                    }
+                ]
+            )
+            state["info_artifact_rows"] = [dict(item) for item in list(info_rows or []) if isinstance(item, Mapping)]
+            state["knowledge_artifacts"] = [dict(item) for item in list(info_rows or []) if isinstance(item, Mapping)]
+
+        _refresh_time_hash_chains(state)
+        time_adjust_metadata = {
+            "adjust_id": adjust_id,
+            "target_id": target_id,
+            "temporal_domain_id": temporal_domain_id,
+            "sync_policy_id": sync_policy_id,
+            "adjustment_strategy": adjustment_strategy,
+            "local_domain_time": int(local_domain_time),
+            "remote_domain_time": int(remote_domain_time),
+            "skew": int(skew),
+            "adjustment_delta": int(adjustment_delta),
+            "new_domain_time": int(new_domain_time),
+            "rejected": bool(rejected),
+            "reason_code": refusal_reason_code,
+        }
+        result_metadata = {
+            "metadata": dict(time_adjust_metadata),
+            **dict(time_adjust_metadata),
+        }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.time_branch_from_checkpoint":
         parent_checkpoint_id = str(inputs.get("parent_checkpoint_id", "")).strip()

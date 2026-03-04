@@ -46,6 +46,23 @@ record control_proof_bundle
     - receipt_hash_chain: sha256
     - trust_update_hash_chain: sha256
     - jamming_event_hash_chain: sha256
+    - momentum_hash_chain: sha256
+    - impulse_event_hash_chain: sha256
+    - energy_ledger_hash_chain: sha256
+    - boundary_flux_hash_chain: sha256
+    - entropy_hash_chain: sha256
+    - entropy_reset_events_hash_chain: sha256
+    - fluid_flow_hash_chain: sha256
+    - leak_hash_chain: sha256
+    - burst_hash_chain: sha256
+    - relief_event_hash_chain: sha256
+    - field_update_hash_chain: sha256
+    - field_sample_hash_chain: sha256
+    - boundary_field_exchange_hash_chain: sha256
+    - time_mapping_hash_chain: sha256
+    - schedule_domain_evaluation_hash: sha256
+    - time_adjust_event_hash_chain: sha256
+    - drift_policy_id: id
     - deterministic_fingerprint: sha256
     - extensions: map
 
@@ -54,5 +71,10 @@ INVARIANTS:
 - Mobility proof hashes must be derived deterministically from authoritative mobility event/state surfaces.
 - Bundle generation must be tick-driven and wall-clock independent.
 - Physics exception artifacts (`exception_event`) are INFO `RECORD` and must be included as deterministic witness coverage when present in tick range.
+- Entropy artifacts (`entropy_event`, `entropy_reset_event`) are INFO `RECORD` and must be included as deterministic witness coverage when present in tick range.
+- FLUID flow/containment artifacts (`fluid_flow`, `burst_event`, `leak_event`, `relief_event`) must be represented by deterministic hash-chain fields when present.
+- FIELD mutation/sampling artifacts (`field_update_event`, `field_sample`, `boundary_field_exchange`) must be represented by deterministic hash-chain fields when present.
+- TEMP mapping/schedule artifacts (`time_mapping`, `schedule_domain_evaluation`) must be represented by deterministic hash-chain fields when present.
+- TEMP synchronization artifacts (`time_adjust_event`) must be represented by deterministic hash-chain fields when present.
 - Replay windows must reproduce exception-event ordering and deterministic fingerprints for equivalent inputs.
 - Extensions remain open-map for forward-compatible domain augmentation.

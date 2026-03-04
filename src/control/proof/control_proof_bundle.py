@@ -412,6 +412,119 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    momentum_hash_chain = _mobility_surface_hash(
+        key="momentum_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    impulse_event_hash_chain = _mobility_surface_hash(
+        key="impulse_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    energy_ledger_hash_chain = _mobility_surface_hash(
+        key="energy_ledger_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    boundary_flux_hash_chain = _mobility_surface_hash(
+        key="boundary_flux_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    entropy_hash_chain = _mobility_surface_hash(
+        key="entropy_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    entropy_reset_events_hash_chain = _mobility_surface_hash(
+        key="entropy_reset_events_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    fluid_flow_hash_chain = _mobility_surface_hash(
+        key="fluid_flow_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    leak_hash_chain = _mobility_surface_hash(
+        key="leak_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    burst_hash_chain = _mobility_surface_hash(
+        key="burst_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    relief_event_hash_chain = _mobility_surface_hash(
+        key="relief_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    field_update_hash_chain = _mobility_surface_hash(
+        key="field_update_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    field_sample_hash_chain = _mobility_surface_hash(
+        key="field_sample_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    boundary_field_exchange_hash_chain = _mobility_surface_hash(
+        key="boundary_field_exchange_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    time_mapping_hash_chain = _mobility_surface_hash(
+        key="time_mapping_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    schedule_domain_evaluation_hash = _mobility_surface_hash(
+        key="schedule_domain_evaluation_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    time_adjust_event_hash_chain = _mobility_surface_hash(
+        key="time_adjust_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    drift_policy_id = str((dict(mobility_proof_surface or {})).get("drift_policy_id", "drift.none")).strip() or "drift.none"
 
     payload = {
         "schema_version": "1.0.0",
@@ -451,6 +564,23 @@ def build_control_proof_bundle_from_markers(
         "receipt_hash_chain": str(receipt_hash_chain),
         "trust_update_hash_chain": str(trust_update_hash_chain),
         "jamming_event_hash_chain": str(jamming_event_hash_chain),
+        "momentum_hash_chain": str(momentum_hash_chain),
+        "impulse_event_hash_chain": str(impulse_event_hash_chain),
+        "energy_ledger_hash_chain": str(energy_ledger_hash_chain),
+        "boundary_flux_hash_chain": str(boundary_flux_hash_chain),
+        "entropy_hash_chain": str(entropy_hash_chain),
+        "entropy_reset_events_hash_chain": str(entropy_reset_events_hash_chain),
+        "fluid_flow_hash_chain": str(fluid_flow_hash_chain),
+        "leak_hash_chain": str(leak_hash_chain),
+        "burst_hash_chain": str(burst_hash_chain),
+        "relief_event_hash_chain": str(relief_event_hash_chain),
+        "field_update_hash_chain": str(field_update_hash_chain),
+        "field_sample_hash_chain": str(field_sample_hash_chain),
+        "boundary_field_exchange_hash_chain": str(boundary_field_exchange_hash_chain),
+        "time_mapping_hash_chain": str(time_mapping_hash_chain),
+        "schedule_domain_evaluation_hash": str(schedule_domain_evaluation_hash),
+        "time_adjust_event_hash_chain": str(time_adjust_event_hash_chain),
+        "drift_policy_id": str(drift_policy_id),
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
     }
@@ -502,6 +632,23 @@ def build_control_proof_bundle_from_markers(
                     "receipt_hash_chain": str(payload.get("receipt_hash_chain", "")),
                     "trust_update_hash_chain": str(payload.get("trust_update_hash_chain", "")),
                     "jamming_event_hash_chain": str(payload.get("jamming_event_hash_chain", "")),
+                    "momentum_hash_chain": str(payload.get("momentum_hash_chain", "")),
+                    "impulse_event_hash_chain": str(payload.get("impulse_event_hash_chain", "")),
+                    "energy_ledger_hash_chain": str(payload.get("energy_ledger_hash_chain", "")),
+                    "boundary_flux_hash_chain": str(payload.get("boundary_flux_hash_chain", "")),
+                    "entropy_hash_chain": str(payload.get("entropy_hash_chain", "")),
+                    "entropy_reset_events_hash_chain": str(payload.get("entropy_reset_events_hash_chain", "")),
+                    "fluid_flow_hash_chain": str(payload.get("fluid_flow_hash_chain", "")),
+                    "leak_hash_chain": str(payload.get("leak_hash_chain", "")),
+                    "burst_hash_chain": str(payload.get("burst_hash_chain", "")),
+                    "relief_event_hash_chain": str(payload.get("relief_event_hash_chain", "")),
+                    "field_update_hash_chain": str(payload.get("field_update_hash_chain", "")),
+                    "field_sample_hash_chain": str(payload.get("field_sample_hash_chain", "")),
+                    "boundary_field_exchange_hash_chain": str(payload.get("boundary_field_exchange_hash_chain", "")),
+                    "time_mapping_hash_chain": str(payload.get("time_mapping_hash_chain", "")),
+                    "schedule_domain_evaluation_hash": str(payload.get("schedule_domain_evaluation_hash", "")),
+                    "time_adjust_event_hash_chain": str(payload.get("time_adjust_event_hash_chain", "")),
+                    "drift_policy_id": str(payload.get("drift_policy_id", "")),
                 }
             )[:16]
         )
