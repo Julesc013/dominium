@@ -10932,13 +10932,37 @@ def _append_meta_contract_invariant_findings(
                 )
             )
 
-        direct_coupling_patterns = (
-            re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-            re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-            re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
-            re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
-        )
-        scan_prefixes = ("src/electric/", "src/thermal/", "src/signals/", "src/mobility/")
+        direct_coupling_patterns_by_prefix = {
+            "src/electric/": (
+                re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+            ),
+            "src/thermal/": (
+                re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+            ),
+            "src/signals/": (
+                re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+            ),
+            "src/mobility/": (
+                re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+            ),
+        }
+        scan_prefixes = tuple(direct_coupling_patterns_by_prefix.keys())
         skip_prefixes = (
             "docs/",
             "schema/",
@@ -10961,11 +10985,18 @@ def _append_meta_contract_invariant_findings(
                 continue
             if rel_norm in allowed_files:
                 continue
+            active_patterns = ()
+            for prefix, patterns in direct_coupling_patterns_by_prefix.items():
+                if rel_norm.startswith(prefix):
+                    active_patterns = patterns
+                    break
+            if not active_patterns:
+                continue
             for line_no, line in _iter_lines(repo_root, rel_norm):
                 snippet = str(line).strip()
                 if (not snippet) or snippet.startswith("#"):
                     continue
-                if not any(pattern.search(snippet) for pattern in direct_coupling_patterns):
+                if not any(pattern.search(snippet) for pattern in active_patterns):
                     continue
                 findings.append(
                     _finding(

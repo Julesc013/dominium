@@ -17,18 +17,42 @@ _REQUIRED_CONTRACTS = (
     ("force_coupling", "THERM", "MECH", "constitutive_model"),
     ("info_coupling", "SIG", "SIG", "signal_policy"),
 )
-_DIRECT_COUPLING_PATTERNS = (
-    re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-    re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-    re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
-    re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
-)
+_CROSS_DOMAIN_PATTERNS_BY_PREFIX = {
+    "src/electric/": (
+        re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+    ),
+    "src/thermal/": (
+        re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+    ),
+    "src/signals/": (
+        re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+    ),
+    "src/mobility/": (
+        re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+    ),
+}
 _ALLOWED_FILES = {
     "src/models/model_engine.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/repox/check.py",
 }
-_SCAN_PREFIXES = ("src/electric/", "src/thermal/", "src/signals/", "src/mobility/")
+_SCAN_PREFIXES = tuple(_CROSS_DOMAIN_PATTERNS_BY_PREFIX.keys())
 
 
 def _norm(path: str) -> str:
@@ -148,11 +172,18 @@ def run(graph, repo_root, changed_files=None):
                 text = _read_text(repo_root, rel_path)
                 if not text:
                     continue
+                active_patterns = ()
+                for prefix, patterns in _CROSS_DOMAIN_PATTERNS_BY_PREFIX.items():
+                    if rel_path.startswith(prefix):
+                        active_patterns = patterns
+                        break
+                if not active_patterns:
+                    continue
                 for line_no, line in enumerate(text.splitlines(), start=1):
                     snippet = str(line).strip()
                     if (not snippet) or snippet.startswith("#"):
                         continue
-                    if not any(pattern.search(snippet) for pattern in _DIRECT_COUPLING_PATTERNS):
+                    if not any(pattern.search(snippet) for pattern in active_patterns):
                         continue
                     findings.append(
                         make_finding(
@@ -178,4 +209,3 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
-
