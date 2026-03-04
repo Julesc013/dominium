@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Topology Edge Schema",
+  "version": "1.0.0",
+  "description": "Deterministic topology edge record for governance map artifacts.",
+  "x-doc-ref": [
+    "docs/architecture/SYSTEM_TOPOLOGY_MAP.md"
+  ],
+  "type": "object",
+  "required": [
+    "edge_id",
+    "from_node_id",
+    "to_node_id",
+    "edge_kind",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edge_kind": {
+      "type": "string",
+      "enum": [
+        "depends_on",
+        "produces",
+        "consumes",
+        "validates",
+        "enforces",
+        "migrates"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "edge_id": "edge.depends_on.schema_to_json",
+      "from_node_id": "schema:schema/governance/topology_map.schema",
+      "to_node_id": "schema:schemas/topology_map.schema.json",
+      "edge_kind": "depends_on",
+      "extensions": {}
+    }
+  ]
+}

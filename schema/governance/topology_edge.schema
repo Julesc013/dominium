@@ -1,0 +1,19 @@
+SCHEMA: governance/topology_edge.schema
+schema_id: dominium.schema.governance.topology_edge
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical edge record for topology graph artifacts.
+
+REQUIRED SHAPE:
+record topology_edge
+  required:
+    - edge_id: id
+    - from_node_id: id
+    - to_node_id: id
+    - edge_kind: enum(depends_on|produces|consumes|validates|enforces|migrates)
+    - extensions: map
+
+INVARIANTS:
+- Edge identifiers and ordering must be deterministic.

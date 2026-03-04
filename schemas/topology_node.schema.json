@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Topology Node Schema",
+  "version": "1.0.0",
+  "description": "Deterministic topology node record for governance map artifacts.",
+  "x-doc-ref": [
+    "docs/architecture/SYSTEM_TOPOLOGY_MAP.md"
+  ],
+  "type": "object",
+  "required": [
+    "node_id",
+    "node_kind",
+    "path",
+    "version",
+    "tags",
+    "owner_subsystem",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_kind": {
+      "type": "string",
+      "enum": [
+        "module",
+        "schema",
+        "registry",
+        "tool",
+        "process_family",
+        "contract_set",
+        "policy_set"
+      ]
+    },
+    "path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owner_subsystem": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "node_id": "schema:schema/governance/topology_map.schema",
+      "node_kind": "schema",
+      "path": "schema/governance/topology_map.schema",
+      "version": "1.0.0",
+      "tags": [
+        "governance"
+      ],
+      "owner_subsystem": "governance",
+      "extensions": {}
+    }
+  ]
+}

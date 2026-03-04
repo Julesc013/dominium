@@ -1,0 +1,23 @@
+SCHEMA: governance/topology_map.schema
+schema_id: dominium.schema.governance.topology_map
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic derived topology map artifact for architecture governance and semantic impact analysis.
+
+REQUIRED SHAPE:
+record topology_map
+  required:
+    - topology_id: id
+    - generated_tick: u64
+    - repository_hash: text
+    - nodes: list[topology_node]
+    - edges: list[topology_edge]
+    - summary: map
+    - deterministic_fingerprint: hash64
+    - extensions: map
+
+INVARIANTS:
+- Topology map is derived-only and not consumed by production runtime.
+- Serialization and ordering must be deterministic.

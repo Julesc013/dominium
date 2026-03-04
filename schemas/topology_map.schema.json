@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Topology Map Schema",
+  "version": "1.0.0",
+  "description": "Deterministic system topology map artifact for architecture governance.",
+  "x-doc-ref": [
+    "docs/architecture/SYSTEM_TOPOLOGY_MAP.md",
+    "docs/architecture/RETRO_CONSISTENCY_AUDIT_FRAMEWORK.md"
+  ],
+  "type": "object",
+  "required": [
+    "topology_id",
+    "generated_tick",
+    "repository_hash",
+    "nodes",
+    "edges",
+    "summary",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "topology_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "repository_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "topology_node.schema.json"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "topology_edge.schema.json"
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "node_count",
+        "edge_count",
+        "node_kind_counts",
+        "edge_kind_counts"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "node_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edge_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "node_kind_counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "edge_kind_counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "topology_id": "dominium.audit.topology_map",
+      "generated_tick": 0,
+      "repository_hash": "HEAD:0000000000000000000000000000000000000000",
+      "nodes": [],
+      "edges": [],
+      "summary": {
+        "node_count": 0,
+        "edge_count": 0,
+        "node_kind_counts": {},
+        "edge_kind_counts": {}
+      },
+      "deterministic_fingerprint": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84",
+      "extensions": {}
+    }
+  ]
+}

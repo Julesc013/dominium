@@ -1,0 +1,21 @@
+SCHEMA: governance/topology_node.schema
+schema_id: dominium.schema.governance.topology_node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical node record for topology graph artifacts.
+
+REQUIRED SHAPE:
+record topology_node
+  required:
+    - node_id: id
+    - node_kind: enum(module|schema|registry|tool|process_family|contract_set|policy_set)
+    - path: optional_text
+    - version: optional_text
+    - tags: list[id]
+    - owner_subsystem: optional_id
+    - extensions: map
+
+INVARIANTS:
+- Node identifiers must be stable across equivalent repository states.
