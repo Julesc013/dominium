@@ -59,6 +59,56 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.energy_ledger_entry",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.boundary_flux_event",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.entropy_event",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.entropy_reset_event",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.elec_trip",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.therm_overheat",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.mob_derailment",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.sig_delivery_loss",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.mech_fracture",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.maintenance",
         "info_family_id": "RECORD"
       },

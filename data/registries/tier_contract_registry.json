@@ -1,0 +1,138 @@
+{
+  "schema_id": "dominium.registry.tier_contract_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.tier_contract_registry",
+    "registry_version": "1.0.0",
+    "tier_contracts": [
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.elec.default",
+        "subsystem_id": "ELEC",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.elec.network_default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "inspection_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-CONTRACT0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.therm.default",
+        "subsystem_id": "THERM",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.therm.network_default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "thermal_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-CONTRACT0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.mob.default",
+        "subsystem_id": "MOB",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.mobility.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "movement_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-CONTRACT0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.sig.default",
+        "subsystem_id": "SIG",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": false
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-CONTRACT0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.phys.default",
+        "subsystem_id": "PHYS",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.physics.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "physics_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-CONTRACT0-3"
+        }
+      }
+    ],
+    "extensions": {
+      "notes": "Mandatory tier contracts for baseline substrate domains."
+    }
+  }
+}
+

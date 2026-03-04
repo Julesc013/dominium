@@ -1,0 +1,67 @@
+{
+  "schema_id": "dominium.registry.coupling_contract_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.coupling_contract_registry",
+    "registry_version": "1.0.0",
+    "coupling_contracts": [
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.elec.loss_to_therm.heat",
+        "coupling_class_id": "energy_coupling",
+        "from_domain_id": "ELEC",
+        "to_domain_id": "THERM",
+        "mechanism": "energy_transform",
+        "mechanism_id": "transform.electrical_to_thermal",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Electrical losses are routed through canonical PHYS-3 transform into thermal ledger channels."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.field.irradiance_to_therm.heating",
+        "coupling_class_id": "energy_coupling",
+        "from_domain_id": "FIELD",
+        "to_domain_id": "THERM",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.phys_irradiance_heating_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "FIELD irradiance contributes deterministic heat input via constitutive model output."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.therm.temperature_to_mech.strength",
+        "coupling_class_id": "force_coupling",
+        "from_domain_id": "THERM",
+        "to_domain_id": "MECH",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.mech.fatigue.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Temperature-influenced structural response remains model-mediated.",
+          "note": "Current baseline uses fatigue model as strength/degradation proxy."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.sig.trust_to_acceptance",
+        "coupling_class_id": "info_coupling",
+        "from_domain_id": "SIG",
+        "to_domain_id": "SIG",
+        "mechanism": "signal_policy",
+        "mechanism_id": "belief.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Signal receipt acceptance is policy-mediated through trust/belief thresholds."
+        }
+      }
+    ],
+    "extensions": {
+      "notes": "META-CONTRACT0 baseline declared couplings."
+    }
+  }
+}
+
