@@ -151,3 +151,16 @@ The verifier checks:
 - deterministic yield stability for equivalent input contexts,
 - process-run ledger linkage to `transform.chemical_to_thermal`,
 - batch mass and quality sanity constraints.
+
+## 13) Enforcement Baseline
+
+RepoX hard-gate invariants for CHEM-2:
+
+- `INV-NO-RECIPE-HACKS-FOR-CHEM`
+- `INV-YIELD-MUST-BE-MODEL`
+- `INV-BATCH-QUALITY-DECLARED`
+
+AuditX smell analyzers (STRICT -> fail via XStack wrapper):
+
+- `InlineYieldLogicSmell` (`E244_INLINE_YIELD_LOGIC_SMELL`)
+- `RecipeBypassSmell` (`E245_RECIPE_BYPASS_SMELL`)

@@ -269,6 +269,8 @@ from analyzers import e240_unclassified_artifact_smell
 from analyzers import e241_missing_compaction_marker_smell
 from analyzers import e242_inline_fuel_burn_smell
 from analyzers import e243_unregistered_combustion_smell
+from analyzers import e244_inline_yield_logic_smell
+from analyzers import e245_recipe_bypass_smell
 
 
 ANALYZERS = (
@@ -541,6 +543,8 @@ ANALYZERS = (
     e241_missing_compaction_marker_smell,
     e242_inline_fuel_burn_smell,
     e243_unregistered_combustion_smell,
+    e244_inline_yield_logic_smell,
+    e245_recipe_bypass_smell,
 )
 
 

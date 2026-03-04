@@ -386,6 +386,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DIRECT-ENERGY-MUTATION",
     "INV-COMBUSTION-THROUGH-REACTION-ENGINE",
     "INV-NO-DIRECT-FUEL-DECREMENT",
+    "INV-NO-RECIPE-HACKS-FOR-CHEM",
+    "INV-YIELD-MUST-BE-MODEL",
+    "INV-BATCH-QUALITY-DECLARED",
     "INV-QUANTITY-TOLERANCE-DECLARED",
     "INV-DETERMINISTIC-ROUND-ONLY",
     "INV-NO-IMPLICIT-FLOAT",
@@ -16926,6 +16929,289 @@ def _append_chem_combustion_invariant_findings(
             break
 
 
+def _append_chem_processing_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    recipe_rule_id = "INV-NO-RECIPE-HACKS-FOR-CHEM"
+    yield_rule_id = "INV-YIELD-MUST-BE-MODEL"
+    quality_rule_id = "INV-BATCH-QUALITY-DECLARED"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    reaction_registry_rel = "data/registries/reaction_profile_registry.json"
+    yield_registry_rel = "data/registries/yield_model_registry.json"
+    quality_schema_rel = "schema/materials/batch_quality.schema"
+    provenance_registry_rel = "data/registries/provenance_classification_registry.json"
+
+    reaction_payload, reaction_error = _load_json_object(repo_root, reaction_registry_rel)
+    reaction_rows = list((dict(reaction_payload.get("record") or {})).get("reaction_profiles") or [])
+    reaction_rows_by_id = dict(
+        (
+            str(row.get("reaction_id", "")).strip(),
+            dict(row),
+        )
+        for row in reaction_rows
+        if isinstance(row, dict) and str(row.get("reaction_id", "")).strip()
+    )
+    required_reaction_ids = (
+        "reaction.smelting_stub",
+        "reaction.refining_stub",
+        "reaction.polymerization_stub",
+        "reaction.distillation_stub",
+        "reaction.cracking_stub",
+    )
+    if reaction_error or not reaction_rows_by_id:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=reaction_registry_rel,
+                line_number=1,
+                snippet="record.reaction_profiles",
+                message="reaction profile registry must exist with CHEM-2 industrial processing reaction rows",
+                rule_id=recipe_rule_id,
+            )
+        )
+    else:
+        for reaction_id in required_reaction_ids:
+            row = dict(reaction_rows_by_id.get(reaction_id) or {})
+            if not row:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=reaction_registry_rel,
+                        line_number=1,
+                        snippet=reaction_id,
+                        message="required CHEM-2 processing reaction profile id is missing",
+                        rule_id=recipe_rule_id,
+                    )
+                )
+                continue
+            ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+            if not str(ext.get("yield_model_id", "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=reaction_registry_rel,
+                        line_number=1,
+                        snippet=reaction_id,
+                        message="processing reaction profile is missing extensions.yield_model_id",
+                        rule_id=yield_rule_id,
+                    )
+                )
+            if not str(row.get("rate_model_id", "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=reaction_registry_rel,
+                        line_number=1,
+                        snippet=reaction_id,
+                        message="processing reaction profile is missing rate_model_id",
+                        rule_id=yield_rule_id,
+                    )
+                )
+
+    yield_payload, yield_error = _load_json_object(repo_root, yield_registry_rel)
+    yield_rows = list((dict(yield_payload.get("record") or {})).get("yield_models") or [])
+    yield_ids = set(
+        str(row.get("yield_model_id", "")).strip()
+        for row in yield_rows
+        if isinstance(row, dict) and str(row.get("yield_model_id", "")).strip()
+    )
+    required_yield_ids = {
+        "yield.basic_windowed",
+        "yield.entropy_penalty",
+        "yield.catalyst_boost",
+    }
+    if yield_error or not yield_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=yield_registry_rel,
+                line_number=1,
+                snippet="record.yield_models",
+                message="yield model registry must exist for CHEM-2 model-driven yield discipline",
+                rule_id=yield_rule_id,
+            )
+        )
+    else:
+        for yield_id in sorted(required_yield_ids):
+            if yield_id in yield_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=yield_registry_rel,
+                    line_number=1,
+                    snippet=yield_id,
+                    message="required CHEM-2 yield model id is missing",
+                    rule_id=yield_rule_id,
+                )
+            )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    required_runtime_tokens = (
+        'elif process_id == "process.process_run_start":',
+        'elif process_id == "process.process_run_tick":',
+        'elif process_id == "process.process_run_end":',
+        "_load_yield_model_registry(",
+        "_evaluate_chem_yield_outputs(",
+        "build_batch_quality_row(",
+        "batch_quality_rows",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="CHEM-2 process runtime is missing required processing/yield integration token",
+                rule_id=yield_rule_id if "yield" in token else quality_rule_id,
+            )
+        )
+
+    quality_schema_text = _file_text(repo_root, quality_schema_rel)
+    required_quality_schema_tokens = (
+        "SCHEMA: materials/batch_quality.schema",
+        "batch_id",
+        "quality_grade",
+        "defect_flags",
+        "contamination_tags",
+        "yield_factor",
+    )
+    for token in required_quality_schema_tokens:
+        if token in quality_schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=quality_schema_rel,
+                line_number=1,
+                snippet=token,
+                message="batch_quality schema must declare canonical CHEM-2 quality fields",
+                rule_id=quality_rule_id,
+            )
+        )
+
+    provenance_payload, provenance_error = _load_json_object(repo_root, provenance_registry_rel)
+    provenance_rows = list((dict(provenance_payload.get("record") or {})).get("provenance_classifications") or [])
+    provenance_by_artifact = dict(
+        (
+            str(row.get("artifact_type_id", "")).strip(),
+            dict(row),
+        )
+        for row in provenance_rows
+        if isinstance(row, dict) and str(row.get("artifact_type_id", "")).strip()
+    )
+    batch_quality_row = dict(provenance_by_artifact.get("artifact.batch_quality") or {})
+    if provenance_error or not batch_quality_row:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=provenance_registry_rel,
+                line_number=1,
+                snippet="artifact.batch_quality",
+                message="artifact.batch_quality provenance classification is required",
+                rule_id=quality_rule_id,
+            )
+        )
+    else:
+        if str(batch_quality_row.get("classification", "")).strip().lower() != "canonical":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=provenance_registry_rel,
+                    line_number=1,
+                    snippet="artifact.batch_quality",
+                    message="artifact.batch_quality must be classified canonical",
+                    rule_id=quality_rule_id,
+                )
+            )
+        if bool(batch_quality_row.get("compaction_allowed", True)):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=provenance_registry_rel,
+                    line_number=1,
+                    snippet="artifact.batch_quality",
+                    message="artifact.batch_quality compaction_allowed must be false",
+                    rule_id=quality_rule_id,
+                )
+            )
+
+    recipe_patterns = (
+        re.compile(r"\brecipe(?:_id|_table|_lookup|_rule|_rules)?\b", re.IGNORECASE),
+        re.compile(r"\bcrafting_recipe\b", re.IGNORECASE),
+        re.compile(r"\bad_hoc_recipe\b", re.IGNORECASE),
+    )
+    yield_patterns = (
+        re.compile(r"\byield_factor(?:_permille)?\b\s*=", re.IGNORECASE),
+        re.compile(r"\bdefect_flags\b\s*=", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_recipe_files = {
+        "tools/xstack/repox/check.py",
+    }
+    allowed_yield_files = {
+        runtime_rel,
+        "src/models/model_engine.py",
+        "src/chem/process_run_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if not (
+            rel_norm.startswith("src/chem/")
+            or rel_norm == runtime_rel
+            or rel_norm.startswith("tools/xstack/sessionx/chem_")
+        ):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if (rel_norm not in allowed_recipe_files) and any(pattern.search(snippet) for pattern in recipe_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="recipe-style processing token detected; CHEM processing must remain reaction-profile based",
+                        rule_id=recipe_rule_id,
+                    )
+                )
+                break
+            if (rel_norm not in allowed_yield_files) and any(pattern.search(snippet) for pattern in yield_patterns):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="inline yield/defect mutation detected outside model/runtime-owned CHEM pathways",
+                        rule_id=yield_rule_id,
+                    )
+                )
+                break
+
+
 def _append_entropy_policy_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -18116,6 +18402,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_chem_combustion_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_chem_processing_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
