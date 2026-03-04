@@ -1928,6 +1928,355 @@ def _evaluate_chem_contamination_risk_model(
     return outputs
 
 
+def _evaluate_chem_corrosion_rate_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+
+    temperature_value = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    moisture_value = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="moisture",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="field.moisture",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    radiation_value = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="radiation_intensity",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="field.radiation_intensity",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    entropy_value = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="entropy_value",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.entropy_index",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    fluid_tags = _sorted_tokens(
+        list(
+            params.get(
+                "fluid_composition_tags",
+                _resolved_input_any(
+                    resolved_inputs=resolved_inputs,
+                    input_id="derived.chem.fluid_composition_tags",
+                ),
+            )
+            or []
+        )
+    )
+    coating_factor_permille = int(max(0, min(1000, _as_int(params.get("coating_factor_permille", 1000), 1000))))
+    temp_scale = int(max(1, _as_int(params.get("temp_scale", 1400), 1400)))
+    moisture_scale = int(max(1, _as_int(params.get("moisture_scale", 100), 100)))
+    radiation_scale = int(max(1, _as_int(params.get("radiation_scale", 250), 250)))
+    entropy_scale = int(max(1, _as_int(params.get("entropy_scale", 180), 180)))
+    base_rate = int(max(0, _as_int(params.get("base_rate", 6), 6)))
+    hazard_scale = int(max(1, _as_int(params.get("hazard_scale", 20), 20)))
+    corrosive_bonus = int(max(0, _as_int(params.get("corrosive_tag_bonus", 25), 25)))
+
+    tag_bonus = 0
+    for tag in fluid_tags:
+        token = str(tag).lower()
+        if ("acid" in token) or ("corrosive" in token) or ("salt" in token):
+            tag_bonus = int(tag_bonus + corrosive_bonus)
+    rate_value = int(
+        base_rate
+        + (max(0, temperature_value - 27315) // temp_scale)
+        + (moisture_value // moisture_scale)
+        + (radiation_value // radiation_scale)
+        + (entropy_value // entropy_scale)
+        + tag_bonus
+    )
+    rate_value = int((int(rate_value) * int(coating_factor_permille)) // 1000)
+    if rate_value < 0:
+        rate_value = 0
+    hazard_delta = int(min(25, max(0, (int(rate_value) // int(hazard_scale)) + (1 if rate_value > 0 else 0))))
+    strength_reduction_permille = int(min(900, max(0, int(rate_value) * 2)))
+    insulation_risk_permille = int(min(1000, max(0, int(rate_value) * 3)))
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "hazard_type_id": output_id,
+                        "delta": int(hazard_delta),
+                        "rate_value": int(rate_value),
+                    },
+                )
+            )
+        elif output_kind == "effect":
+            if output_id == "effect.strength_reduction":
+                magnitude = int(strength_reduction_permille)
+            elif output_id == "effect.insulation_breakdown_risk":
+                magnitude = int(insulation_risk_permille)
+            else:
+                magnitude = int(min(1000, max(0, int(rate_value))))
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "effect_type_id": output_id,
+                        "magnitude_permille": int(magnitude),
+                        "rate_value": int(rate_value),
+                    },
+                )
+            )
+    return outputs
+
+
+def _evaluate_chem_fouling_rate_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+
+    mass_flow = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="mass_flow",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.mass_flow",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    temperature_value = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    contaminant_tags = _sorted_tokens(
+        list(
+            params.get(
+                "contaminant_tags",
+                _resolved_input_any(
+                    resolved_inputs=resolved_inputs,
+                    input_id="derived.chem.contaminant_tags",
+                ),
+            )
+            or []
+        )
+    )
+
+    base_rate = int(max(0, _as_int(params.get("base_rate", 4), 4)))
+    flow_scale = int(max(1, _as_int(params.get("flow_scale", 100), 100)))
+    temp_scale = int(max(1, _as_int(params.get("temp_scale", 1600), 1600)))
+    tag_bonus = int(max(0, _as_int(params.get("tag_bonus", 18), 18)))
+    hazard_scale = int(max(1, _as_int(params.get("hazard_scale", 18), 18)))
+
+    contamination_bonus = int(len(contaminant_tags) * tag_bonus)
+    rate_value = int(base_rate + (mass_flow // flow_scale) + (max(0, temperature_value - 27315) // temp_scale) + contamination_bonus)
+    if rate_value < 0:
+        rate_value = 0
+    hazard_delta = int(min(25, max(0, (int(rate_value) // int(hazard_scale)) + (1 if rate_value > 0 else 0))))
+    conductance_reduction = int(min(900, max(0, int(rate_value) * 2)))
+    pipe_loss_increase = int(min(900, max(0, int(rate_value) * 2)))
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "hazard_type_id": output_id,
+                        "delta": int(hazard_delta),
+                        "rate_value": int(rate_value),
+                    },
+                )
+            )
+        elif output_kind == "effect":
+            if output_id == "effect.conductance_reduction":
+                magnitude = int(conductance_reduction)
+            elif output_id == "effect.pipe_loss_increase":
+                magnitude = int(pipe_loss_increase)
+            else:
+                magnitude = int(min(1000, max(0, int(rate_value))))
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "effect_type_id": output_id,
+                        "magnitude_permille": int(magnitude),
+                        "rate_value": int(rate_value),
+                    },
+                )
+            )
+    return outputs
+
+
+def _evaluate_chem_scaling_rate_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+
+    mass_flow = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="mass_flow",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.mass_flow",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    temperature_value = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    hardness_raw = params.get(
+        "hardness_tag",
+        _resolved_input_any(resolved_inputs=resolved_inputs, input_id="derived.chem.hardness_tag"),
+    )
+    hardness_token = str(hardness_raw or "").strip().lower()
+
+    base_rate = int(max(0, _as_int(params.get("base_rate", 5), 5)))
+    flow_scale = int(max(1, _as_int(params.get("flow_scale", 120), 120)))
+    temp_scale = int(max(1, _as_int(params.get("temp_scale", 1700), 1700)))
+    hardness_bonus = int(max(0, _as_int(params.get("hardness_bonus", 20), 20)))
+    hazard_scale = int(max(1, _as_int(params.get("hazard_scale", 16), 16)))
+
+    hardness_value = int(hardness_bonus if ("hard" in hardness_token or "scale" in hardness_token) else 0)
+    rate_value = int(base_rate + (mass_flow // flow_scale) + (max(0, temperature_value - 27315) // temp_scale) + hardness_value)
+    if rate_value < 0:
+        rate_value = 0
+    hazard_delta = int(min(25, max(0, (int(rate_value) // int(hazard_scale)) + (1 if rate_value > 0 else 0))))
+    capacity_reduction_permille = int(min(950, max(0, int(rate_value) * 3)))
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "hazard_type_id": output_id,
+                        "delta": int(hazard_delta),
+                        "rate_value": int(rate_value),
+                    },
+                )
+            )
+        elif output_kind == "effect":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "effect_type_id": output_id,
+                        "magnitude_permille": int(capacity_reduction_permille),
+                        "rate_value": int(rate_value),
+                    },
+                )
+            )
+    return outputs
+
+
 def _evaluate_phys_gravity_stub_model(
     *,
     model_row: Mapping[str, object],
@@ -2385,6 +2734,27 @@ def _evaluate_known_model_outputs(
         )
     if model_type_id == "model_type.chem_contamination_risk":
         return _evaluate_chem_contamination_risk_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.chem_corrosion_rate":
+        return _evaluate_chem_corrosion_rate_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.chem_fouling_rate":
+        return _evaluate_chem_fouling_rate_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.chem_scaling_rate":
+        return _evaluate_chem_scaling_rate_model(
             model_row=model_row,
             binding=binding,
             resolved_inputs=resolved_inputs,

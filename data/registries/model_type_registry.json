@@ -211,6 +211,33 @@
         "extensions": {
           "source": "CHEM2-4"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.chem_corrosion_rate",
+        "description": "CHEM-3 deterministic corrosion-rate constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {
+          "source": "CHEM3-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.chem_fouling_rate",
+        "description": "CHEM-3 deterministic fouling-rate constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {
+          "source": "CHEM3-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.chem_scaling_rate",
+        "description": "CHEM-3 deterministic scaling-rate constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {
+          "source": "CHEM3-3"
+        }
       }
     ],
     "extensions": {}

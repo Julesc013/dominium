@@ -1723,6 +1723,203 @@
         "extensions": {
           "source": "CHEM2-4"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.chem_corrosion_rate.default",
+        "model_type_id": "model_type.chem_corrosion_rate",
+        "description": "CHEM-3 deterministic corrosion rate model driven by thermal/field/fluid entropy inputs.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.moisture",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.radiation_intensity",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.chem.fluid_composition_tags",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "quantity.entropy_index",
+            "selector": "target.node",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.corrosion_level",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.strength_reduction",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.insulation_breakdown_risk",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "CHEM3-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.chem_fouling_rate.default",
+        "model_type_id": "model_type.chem_fouling_rate",
+        "description": "CHEM-3 deterministic fouling rate model for flow and heat-exchange degradation.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.mass_flow",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.chem.contaminant_tags",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.fouling_level",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.conductance_reduction",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.pipe_loss_increase",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "CHEM3-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.chem_scaling_rate.default",
+        "model_type_id": "model_type.chem_scaling_rate",
+        "description": "CHEM-3 deterministic scaling rate model for restriction and overpressure precursor behavior.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.chem.hardness_tag",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.mass_flow",
+            "selector": "target.channel",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.scaling_level",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.pipe_capacity_reduction",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "CHEM3-3"
+        }
       }
     ],
     "extensions": {}
