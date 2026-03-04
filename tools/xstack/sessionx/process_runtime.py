@@ -111,8 +111,12 @@ from src.materials.commitments.commitment_engine import (
 from src.materials import create_material_batch
 from src.chem import (
     batch_quality_rows_by_batch_id,
+    build_degradation_state,
     build_batch_quality_row,
     build_process_run_state,
+    degradation_profile_rows_by_id,
+    evaluate_degradation_tick,
+    normalize_degradation_state_rows,
     normalize_batch_quality_rows,
     normalize_process_run_state_rows,
     process_run_rows_by_id,
@@ -708,6 +712,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.process_run_start": "entitlement.tool.operating",
     "process.process_run_tick": "entitlement.tool.operating",
     "process.process_run_end": "entitlement.tool.operating",
+    "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_move": "observer",
@@ -884,6 +889,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.process_run_start": "operator",
     "process.process_run_tick": "operator",
     "process.process_run_end": "operator",
+    "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
     "process.perform_maintenance": "process.maintenance_perform",
@@ -990,6 +996,7 @@ CONTROL_PROCESS_IDS = {
     "process.process_run_start",
     "process.process_run_tick",
     "process.process_run_end",
+    "process.degradation_tick",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -1034,6 +1041,7 @@ MAINTENANCE_PROCESS_IDS = {
     "process.inspect_vehicle",
     "process.service_vehicle",
     "process.cure_state_tick",
+    "process.degradation_tick",
 }
 INTERIOR_PROCESS_IDS = {
     "process.compartment_flow_tick",
@@ -5110,6 +5118,17 @@ def _yield_models_by_id(registry_payload: Mapping[str, object] | None) -> Dict[s
             continue
         out[yield_model_id] = dict(row)
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _load_degradation_profile_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "degradation_profile_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/degradation_profile_registry.json",
+        default_payload={"record": {"degradation_profiles": []}},
+    )
 
 
 def _chem_rate_permille(
@@ -9923,6 +9942,164 @@ def _refresh_chem_process_hash_chains(state: dict) -> None:
             for row in sorted(
                 [dict(item) for item in yield_rows if isinstance(item, Mapping)],
                 key=lambda item: (str(item.get("run_id", "")), str(item.get("yield_model_id", ""))),
+            )
+        ]
+    )
+
+
+def _ensure_chem_degradation_state_rows(state: dict) -> List[dict]:
+    rows = state.get("chem_degradation_state_rows")
+    if not isinstance(rows, list):
+        rows = state.get("degradation_state_rows")
+    normalized = normalize_degradation_state_rows(rows)
+    state["chem_degradation_state_rows"] = [dict(row) for row in normalized]
+    state["degradation_state_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_chem_degradation_event_rows(state: dict) -> List[dict]:
+    rows = state.get("chem_degradation_event_rows")
+    if not isinstance(rows, list):
+        rows = state.get("degradation_event_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (int(max(0, _as_int(item.get("tick", 0), 0))), str(item.get("event_id", ""))),
+    ):
+        target_id = str(row.get("target_id", "")).strip()
+        kind_id = str(row.get("degradation_kind_id", "")).strip()
+        if (not target_id) or (kind_id not in {"corrosion", "fouling", "scaling"}):
+            continue
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            event_id = "event.chem.degradation.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "target_id": target_id,
+                        "degradation_kind_id": kind_id,
+                        "delta": int(max(0, _as_int(row.get("delta", 0), 0))),
+                    }
+                )[:16]
+            )
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "target_id": target_id,
+            "degradation_kind_id": kind_id,
+            "hazard_type_id": str(row.get("hazard_type_id", "")).strip() or None,
+            "effect_type_id": str(row.get("effect_type_id", "")).strip() or None,
+            "level_before": int(max(0, _as_int(row.get("level_before", 0), 0))),
+            "level_after": int(max(0, _as_int(row.get("level_after", row.get("level_before", 0)), 0))),
+            "delta": int(max(0, _as_int(row.get("delta", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["chem_degradation_event_rows"] = [dict(row) for row in normalized]
+    state["degradation_event_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_chem_maintenance_action_rows(state: dict) -> List[dict]:
+    rows = state.get("chem_maintenance_action_rows")
+    if not isinstance(rows, list):
+        rows = state.get("maintenance_action_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (int(max(0, _as_int(item.get("tick", 0), 0))), str(item.get("event_id", ""))),
+    ):
+        target_id = str(row.get("target_id", "")).strip()
+        action_kind_id = str(row.get("action_kind_id", "")).strip()
+        if not target_id or not action_kind_id:
+            continue
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            event_id = "event.chem.maintenance.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "target_id": target_id,
+                        "action_kind_id": action_kind_id,
+                    }
+                )[:16]
+            )
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "target_id": target_id,
+            "action_kind_id": action_kind_id,
+            "degradation_kind_id": str(row.get("degradation_kind_id", "")).strip() or None,
+            "reduction_delta": int(max(0, _as_int(row.get("reduction_delta", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["chem_maintenance_action_rows"] = [dict(row) for row in normalized]
+    state["maintenance_action_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_chem_degradation_hash_chains(state: dict) -> None:
+    degradation_states = _ensure_chem_degradation_state_rows(state)
+    degradation_events = _ensure_chem_degradation_event_rows(state)
+    maintenance_actions = _ensure_chem_maintenance_action_rows(state)
+    state["degradation_hash_chain"] = canonical_sha256(
+        [
+            {
+                "target_id": str(row.get("target_id", "")).strip(),
+                "degradation_kind_id": str(row.get("degradation_kind_id", "")).strip(),
+                "level_value": int(max(0, _as_int(row.get("level_value", 0), 0))),
+                "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            }
+            for row in sorted(
+                [dict(item) for item in degradation_states if isinstance(item, Mapping)],
+                key=lambda item: (
+                    str(item.get("target_id", "")),
+                    str(item.get("degradation_kind_id", "")),
+                ),
+            )
+        ]
+    )
+    state["degradation_event_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "degradation_kind_id": str(row.get("degradation_kind_id", "")).strip(),
+                "delta": int(max(0, _as_int(row.get("delta", 0), 0))),
+            }
+            for row in sorted(
+                [dict(item) for item in degradation_events if isinstance(item, Mapping)],
+                key=lambda item: (int(max(0, _as_int(item.get("tick", 0), 0))), str(item.get("event_id", ""))),
+            )
+        ]
+    )
+    state["maintenance_action_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "action_kind_id": str(row.get("action_kind_id", "")).strip(),
+                "degradation_kind_id": str(row.get("degradation_kind_id", "")).strip(),
+                "reduction_delta": int(max(0, _as_int(row.get("reduction_delta", 0), 0))),
+            }
+            for row in sorted(
+                [dict(item) for item in maintenance_actions if isinstance(item, Mapping)],
+                key=lambda item: (int(max(0, _as_int(item.get("tick", 0), 0))), str(item.get("event_id", ""))),
             )
         ]
     )
@@ -18561,6 +18738,9 @@ def execute_intent(
     material_batches = _ensure_material_batches(state)
     chem_process_run_state_rows = _ensure_process_run_state_rows(state)
     batch_quality_rows = _ensure_batch_quality_rows(state)
+    chem_degradation_state_rows = _ensure_chem_degradation_state_rows(state)
+    chem_degradation_event_rows = _ensure_chem_degradation_event_rows(state)
+    chem_maintenance_action_rows = _ensure_chem_maintenance_action_rows(state)
     thermal_phase_events = _ensure_thermal_phase_events(state)
     thermal_cure_events = _ensure_thermal_cure_events(state)
     thermal_fire_states = _ensure_thermal_fire_states(state)
@@ -18647,6 +18827,9 @@ def execute_intent(
     del entropy_effect_rows
     del chem_process_run_state_rows
     del batch_quality_rows
+    del chem_degradation_state_rows
+    del chem_degradation_event_rows
+    del chem_maintenance_action_rows
     _refresh_momentum_hash_chains(state)
     _refresh_energy_ledger_hash_chains(state)
     _refresh_numeric_policy_hashes(state, policy_context)
@@ -18654,6 +18837,7 @@ def execute_intent(
     _refresh_field_hash_chains(state)
     _refresh_time_hash_chains(state)
     _refresh_chem_process_hash_chains(state)
+    _refresh_chem_degradation_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -26621,6 +26805,259 @@ def execute_intent(
             "yield_model_hash_chain": str(state.get("yield_model_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.degradation_tick":
+        degradation_profile_registry = _load_degradation_profile_registry(policy_context=policy_context)
+        profiles_by_id = degradation_profile_rows_by_id(degradation_profile_registry)
+        if not profiles_by_id:
+            result_metadata = {
+                "processed_target_ids": [],
+                "deferred_target_ids": [],
+                "note": "no_degradation_profiles",
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            target_rows: List[dict] = []
+            for row in list(inputs.get("targets") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                target_id = str(row.get("target_id", "")).strip()
+                profile_id = str(row.get("profile_id", "")).strip()
+                if (not target_id) or (profile_id not in profiles_by_id):
+                    continue
+                target_rows.append(dict(row))
+            explicit_target_id = str(inputs.get("target_id", "")).strip()
+            explicit_profile_id = str(inputs.get("profile_id", "")).strip()
+            if explicit_target_id and explicit_profile_id in profiles_by_id:
+                target_rows.append(
+                    {
+                        "target_id": explicit_target_id,
+                        "profile_id": explicit_profile_id,
+                        "target_kind": str(inputs.get("target_kind", "custom")).strip() or "custom",
+                        "tier": str(inputs.get("tier", "meso")).strip() or "meso",
+                        "parameters": dict(inputs.get("parameters") or {}) if isinstance(inputs.get("parameters"), Mapping) else {},
+                        "extensions": dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {},
+                    }
+                )
+            if not target_rows:
+                for row in list(_ensure_chem_degradation_state_rows(state) or []):
+                    if not isinstance(row, Mapping):
+                        continue
+                    target_id = str(row.get("target_id", "")).strip()
+                    kind_id = str(row.get("degradation_kind_id", "")).strip()
+                    if not target_id or kind_id not in {"corrosion", "fouling", "scaling"}:
+                        continue
+                    ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+                    profile_id = str(ext.get("profile_id", "")).strip()
+                    if (not profile_id) or profile_id not in profiles_by_id:
+                        if kind_id == "corrosion":
+                            profile_id = "profile.pipe_steel_basic"
+                        elif kind_id == "fouling":
+                            profile_id = "profile.heat_exchanger_basic"
+                        else:
+                            profile_id = "profile.pipe_steel_basic"
+                    if profile_id not in profiles_by_id:
+                        continue
+                    target_rows.append(
+                        {
+                            "target_id": target_id,
+                            "profile_id": profile_id,
+                            "target_kind": "custom",
+                            "tier": "meso",
+                            "parameters": {},
+                            "extensions": {"source": "state_fallback"},
+                        }
+                    )
+            dedup_targets: Dict[str, dict] = {}
+            for row in sorted(
+                (dict(item) for item in target_rows if isinstance(item, Mapping)),
+                key=lambda item: (str(item.get("target_id", "")), str(item.get("profile_id", ""))),
+            ):
+                key = "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("profile_id", "")).strip())
+                if key.strip(":"):
+                    dedup_targets[key] = row
+            target_rows = [dict(dedup_targets[key]) for key in sorted(dedup_targets.keys())]
+
+            model_type_registry, model_cache_policy_registry, constitutive_model_registry = _load_model_registries(
+                policy_context=policy_context
+            )
+            max_targets = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_target_updates_per_tick",
+                            (dict(policy_context or {})).get("chem_max_degradation_targets_per_tick", 256),
+                        ),
+                        256,
+                    ),
+                )
+            )
+            max_model_cost_units = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_model_cost_units",
+                            (dict(policy_context or {})).get("chem_max_degradation_model_cost_units", 512),
+                        ),
+                        512,
+                    ),
+                )
+            )
+            previous_effect_ids = set(
+                str(row.get("effect_id", "")).strip()
+                for row in list(effect_rows or [])
+                if isinstance(row, Mapping) and str(row.get("effect_id", "")).strip()
+            )
+            degradation_eval = evaluate_degradation_tick(
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+                degradation_target_rows=target_rows,
+                degradation_state_rows=_ensure_chem_degradation_state_rows(state),
+                degradation_profile_registry=degradation_profile_registry,
+                model_type_registry=model_type_registry,
+                model_cache_policy_registry=model_cache_policy_registry,
+                constitutive_model_registry=constitutive_model_registry,
+                model_cache_rows=model_cache_rows,
+                hazard_rows=model_hazard_rows,
+                effect_rows=effect_rows,
+                max_target_updates_per_tick=int(max_targets),
+                max_cost_units=int(max_model_cost_units),
+            )
+            state["chem_degradation_state_rows"] = [
+                dict(row)
+                for row in list(degradation_eval.get("degradation_state_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            state["degradation_state_rows"] = [dict(row) for row in list(state.get("chem_degradation_state_rows") or []) if isinstance(row, Mapping)]
+            state["chem_degradation_event_rows"] = sorted(
+                list(_ensure_chem_degradation_event_rows(state))
+                + [
+                    dict(row)
+                    for row in list(degradation_eval.get("degradation_event_rows") or [])
+                    if isinstance(row, Mapping)
+                ],
+                key=lambda row: (
+                    int(max(0, _as_int(row.get("tick", 0), 0))),
+                    str(row.get("event_id", "")),
+                ),
+            )
+            state["degradation_event_rows"] = [dict(row) for row in list(state.get("chem_degradation_event_rows") or []) if isinstance(row, Mapping)]
+            _ensure_chem_degradation_event_rows(state)
+
+            model_hazard_rows = [
+                dict(row)
+                for row in list(degradation_eval.get("hazard_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            model_cache_rows = [
+                dict(row)
+                for row in list(degradation_eval.get("cache_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            model_evaluation_results = normalize_model_evaluation_result_rows(
+                list(model_evaluation_results or [])
+                + [
+                    dict(row)
+                    for row in list(degradation_eval.get("evaluation_results") or [])
+                    if isinstance(row, Mapping)
+                ]
+            )
+            effect_rows = normalize_effect_rows(
+                [
+                    dict(row)
+                    for row in list(degradation_eval.get("effect_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+            )
+            for row in list(effect_rows or []):
+                if not isinstance(row, Mapping):
+                    continue
+                effect_id = str(row.get("effect_id", "")).strip()
+                if (not effect_id) or effect_id in previous_effect_ids:
+                    continue
+                effect_provenance_events.append(
+                    _effect_provenance_row(
+                        event_type="effect_applied",
+                        tick=int(max(0, _as_int(current_tick, 0))),
+                        intent_id=intent_id,
+                        process_id=process_id,
+                        target_id=str(row.get("target_id", "")).strip(),
+                        effect_id=effect_id,
+                        effect_type_id=str(row.get("effect_type_id", "")).strip(),
+                        extensions={"source": "process.degradation_tick"},
+                    )
+                )
+            _persist_model_state(
+                state,
+                model_bindings=model_bindings,
+                model_evaluation_results=model_evaluation_results,
+                model_cache_rows=model_cache_rows,
+                model_runtime_state=model_runtime_state,
+                model_hazard_rows=model_hazard_rows,
+                model_flow_adjustment_rows=model_flow_adjustment_rows,
+            )
+            _persist_effect_state(
+                state,
+                effect_rows=effect_rows,
+                provenance_events=effect_provenance_events,
+            )
+
+            decision_rows = [dict(row) for row in list(state.get("control_decision_log") or []) if isinstance(row, Mapping)]
+            decision_rows.extend(
+                [
+                    dict(row)
+                    for row in list(degradation_eval.get("decision_log_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+            )
+            if decision_rows:
+                state["control_decision_log"] = sorted(
+                    decision_rows,
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("decision_id", "")),
+                    ),
+                )
+
+            new_events = [
+                dict(row)
+                for row in list(degradation_eval.get("degradation_event_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            info_artifact_rows = normalize_info_artifact_rows(
+                list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                + [
+                    {
+                        "artifact_id": "artifact.record.chem.degradation.{}".format(
+                            canonical_sha256({"event_id": str(row.get("event_id", ""))})[:16]
+                        ),
+                        "artifact_family_id": "RECORD",
+                        "extensions": {
+                            "artifact_type_id": "artifact.record.chem_degradation",
+                            "event_id": str(row.get("event_id", "")).strip(),
+                            "event_type": "incident.chem_degradation",
+                            "target_id": str(row.get("target_id", "")).strip(),
+                            "degradation_kind_id": str(row.get("degradation_kind_id", "")).strip(),
+                        },
+                    }
+                    for row in new_events
+                ]
+            )
+            state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+            state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+            _ensure_chem_degradation_state_rows(state)
+            _refresh_chem_degradation_hash_chains(state)
+            result_metadata = {
+                "processed_target_ids": list(_sorted_tokens(degradation_eval.get("processed_target_ids"))),
+                "deferred_target_ids": list(_sorted_tokens(degradation_eval.get("deferred_target_ids"))),
+                "degradation_event_count": int(len(new_events)),
+                "cost_units": int(max(0, _as_int(degradation_eval.get("cost_units", 0), 0))),
+                "budget_outcome": str(degradation_eval.get("budget_outcome", "complete")).strip() or "complete",
+                "degradation_hash_chain": str(state.get("degradation_hash_chain", "")).strip(),
+                "degradation_event_hash_chain": str(state.get("degradation_event_hash_chain", "")).strip(),
+                "maintenance_action_hash_chain": str(state.get("maintenance_action_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.material_transform_phase":
         batch_id = str(inputs.get("batch_id", "")).strip()
         material_stock_id = str(inputs.get("material_stock_id", "")).strip()
