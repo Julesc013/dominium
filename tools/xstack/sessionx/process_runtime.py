@@ -472,6 +472,7 @@ from src.safety import (
     REFUSAL_SAFETY_INSTANCE_INVALID,
     REFUSAL_SAFETY_PATTERN_INVALID,
     SafetyEngineError,
+    build_safety_event,
     evaluate_safety_instances,
     normalize_safety_event_rows,
     normalize_safety_instance_rows,
@@ -24962,7 +24963,7 @@ def execute_intent(
                         source_id=str(target_id),
                         input_values={"quantity.energy_chemical": int(remaining_chemical_for_thermal)},
                         output_values={
-                            "quantity.energy_thermal": int(heat_emission),
+                            "quantity.energy_thermal": int(remaining_chemical_for_thermal),
                             "quantity.heat_loss": int(irreversibility_loss),
                         },
                         extensions={
