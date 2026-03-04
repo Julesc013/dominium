@@ -85,7 +85,6 @@ def _hash_chains(payload: Mapping[str, object]) -> Dict[str, str]:
     yield_rows = sorted(
         _yield_rows(payload),
         key=lambda row: (
-            int(max(0, _as_int(row.get("tick", 0), 0))),
             str(row.get("run_id", "")),
             str(row.get("yield_model_id", "")),
         ),
@@ -97,8 +96,17 @@ def _hash_chains(payload: Mapping[str, object]) -> Dict[str, str]:
                     "run_id": str(row.get("run_id", "")).strip(),
                     "reaction_id": str(row.get("reaction_id", "")).strip(),
                     "equipment_id": str(row.get("equipment_id", "")).strip(),
+                    "start_tick": int(max(0, _as_int(row.get("start_tick", 0), 0))),
+                    "end_tick": (None if row.get("end_tick") is None else int(max(0, _as_int(row.get("end_tick", 0), 0)))),
                     "progress": int(max(0, _as_int(row.get("progress", 0), 0))),
                     "status": str((dict(row.get("extensions") or {})).get("status", "")).strip() or "active",
+                    "output_batch_ids": sorted(
+                        set(
+                            str(token).strip()
+                            for token in list(row.get("output_batch_ids") or [])
+                            if str(token).strip()
+                        )
+                    ),
                 }
                 for row in run_rows
             ]
@@ -121,12 +129,25 @@ def _hash_chains(payload: Mapping[str, object]) -> Dict[str, str]:
             [
                 {
                     "run_id": str(row.get("run_id", "")).strip(),
-                    "yield_model_id": str(row.get("yield_model_id", "")).strip(),
-                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "model_id": str(row.get("yield_model_id", "")).strip(),
                     "yield_factor_permille": int(max(0, _as_int(row.get("yield_factor_permille", 0), 0))),
                     "temperature": int(_as_int(row.get("temperature", 0), 0)),
-                    "pressure_head": int(max(0, _as_int(row.get("pressure_head", 0), 0))),
+                    "pressure_head": int(_as_int(row.get("pressure_head", 0), 0)),
                     "entropy_value": int(max(0, _as_int(row.get("entropy_value", 0), 0))),
+                    "defect_flags": sorted(
+                        set(
+                            str(token).strip()
+                            for token in list(row.get("defect_flags") or [])
+                            if str(token).strip()
+                        )
+                    ),
+                    "contamination_tags": sorted(
+                        set(
+                            str(token).strip()
+                            for token in list(row.get("contamination_tags") or [])
+                            if str(token).strip()
+                        )
+                    ),
                 }
                 for row in yield_rows
             ]

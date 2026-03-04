@@ -4,29 +4,29 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:898957c6ff1d51c9584107608b295683453b35d1`
+- repository_hash: `HEAD:e9ac4c70ae014966b7226f7a8185cbf946cd5d78`
 - generated_tick: `0`
-- deterministic_fingerprint: `86c35d6bb2f2ae27f7d69121e828950bf83229cf3d02982c8156b193ae01e373`
+- deterministic_fingerprint: `57843bce8ceb9906b3c1801de63506d3edcc075e645ab3f4feb743a50054e4c1`
 
 ## Counts
-- node_count: 3229
-- edge_count: 289553
+- node_count: 3249
+- edge_count: 294592
 
 ## Node Kinds
-- contract_set: 43
-- module: 80
+- contract_set: 46
+- module: 81
 - policy_set: 216
-- process_family: 227
-- registry: 244
-- schema: 1030
-- tool: 1389
+- process_family: 230
+- registry: 246
+- schema: 1033
+- tool: 1397
 
 ## Edge Kinds
-- consumes: 3060
-- depends_on: 1642
-- enforces: 74367
+- consumes: 3079
+- depends_on: 1654
+- enforces: 75752
 - produces: 1
-- validates: 210483
+- validates: 214106
 
 ## Major Runtime Modules
 - `module:client`
@@ -74,6 +74,7 @@ Version: 1.0.0
 - `module:setup/packages`
 - `module:setup/tui`
 - `module:src`
+- `module:src/chem`
 - `module:src/client`
 - `module:src/control`
 - `module:src/control/control_plane_engine.py`
@@ -92,7 +93,6 @@ Version: 1.0.0
 - `module:src/inspection`
 - `module:src/interaction`
 - `module:src/interior`
-- `module:src/logistics`
 
 ## Control Subsystem Nodes
 - `module:src/control/control_plane_engine.py`

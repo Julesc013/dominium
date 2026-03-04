@@ -35,11 +35,7 @@ def run(repo_root: str):
 
     first_state = dict(first.get("state") or {})
     second_state = dict(second.get("state") or {})
-    first_payload = dict(first_state)
-    first_payload["process_run_hash_chain"] = ""
-    first_payload["batch_quality_hash_chain"] = ""
-    first_payload["yield_model_hash_chain"] = ""
-    report = verify_process_run_window(state_payload=first_payload, expected_payload=second_state)
+    report = verify_process_run_window(state_payload=first_state, expected_payload=second_state)
     if str(report.get("result", "")).strip() != "complete":
         return {"status": "fail", "message": "process-run replay verifier reported violations: {}".format(report.get("violations", []))}
 
