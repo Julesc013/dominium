@@ -1,7 +1,7 @@
 # Real-World Affordance Matrix
 
 Status: CANONICAL
-Last Updated: 2026-03-03
+Last Updated: 2026-03-04
 Scope: COMPLETENESS-1 governance substrate for affordance coverage.
 
 ## 1) Purpose
@@ -266,12 +266,25 @@ PHYS-0 domain declaration:
 
 - `PHYS` explicitly maps to:
   - `motion_force_transmission` (canonical momentum/force/torque substrate contract)
+  - `environment_living_systems` (generalized field substrate coupling: gravity/radiation/magnetic stub/irradiance)
   - `measurement_verification` (exception/proof/ledger observability)
   - `time_synchronization` (deterministic replay/proof window equivalence)
 - physics tier declaration:
   - macro (`P0`) conservation-ledger and invariant accounting
   - meso (`P1`) constitutive coupling and network/field bridge policy
   - micro (`P2`) ROI-only force/impulse integration contract (future PHYS-1+)
+
+FLUID-0 domain declaration:
+
+- `FLUID` explicitly maps to:
+  - `containment_interfaces` (pipes/hoses/valves/pressure-vessel interfaces)
+  - `environment_living_systems` (liquid/gas mass-flow substrate and infrastructure-scale leak pathways)
+  - `safety_protection` (relief/burst/LOTO pressure protection patterns)
+  - `measurement_verification` (gauge-mediated pressure/head observations)
+- fluid tier declaration:
+  - macro (`F0`) mass bookkeeping baseline
+  - meso (`F1`) network pressure/head proxy policy layer
+  - micro (`F2`) ROI CFD reserved (future optional)
 
 ## 4) Non-Goals
 

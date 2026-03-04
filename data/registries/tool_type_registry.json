@@ -158,6 +158,202 @@
           "ch.diegetic.tool.torque"
         ],
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.test_lamp.basic",
+        "description": "Electrical test lamp with coarse energized readout channel.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port",
+          "surface.handle"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.elec.test_lamp",
+          "ch.diegetic.elec.energized"
+        ],
+        "extensions": {
+          "elec4_tool": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.multimeter.basic",
+        "description": "Electrical multimeter with quantized voltage and continuity-oriented readout channels.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port",
+          "surface.handle"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.elec.voltage",
+          "ch.diegetic.elec.energized"
+        ],
+        "extensions": {
+          "elec4_tool": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.clamp_meter.basic",
+        "description": "Clamp meter exposing deterministic current proxy channel.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port",
+          "surface.handle"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.elec.current_proxy"
+        ],
+        "extensions": {
+          "elec4_tool": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.pf_meter.basic",
+        "description": "Power-factor meter exposing deterministic quantized PF channel.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port",
+          "surface.handle"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.elec.pf"
+        ],
+        "extensions": {
+          "elec4_tool": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.insulation_tester.stub",
+        "description": "Stub insulation tester channel for future electrical safety diagnostics.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.elec.trip_warning"
+        ],
+        "extensions": {
+          "runtime_status": "stub",
+          "elec4_tool": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.thermometer.basic",
+        "description": "Thermal thermometer with coarse deterministic ambient temperature readout.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port",
+          "surface.handle"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.meter.thermometer"
+        ],
+        "extensions": {
+          "therm0_tool": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.ir_thermometer.stub",
+        "description": "Stub IR thermometer with deterministic quantized surface temperature readout.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port",
+          "surface.handle",
+          "surface.seam"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.meter.thermometer"
+        ],
+        "extensions": {
+          "runtime_status": "stub",
+          "therm0_tool": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_type_id": "tool.thermal_alarm.stub",
+        "description": "Stub thermal alarm test tool for overtemperature warning channel checks.",
+        "default_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "allowed_process_ids": [
+          "process.tool_use_prepare",
+          "process.tool_readout_tick",
+          "process.instrument_tick"
+        ],
+        "provides_instrument_channels": [
+          "ch.diegetic.interior.alarm"
+        ],
+        "extensions": {
+          "runtime_status": "stub",
+          "therm0_tool": true
+        }
       }
     ],
     "extensions": {}
