@@ -517,7 +517,7 @@ from src.physics import (
     record_entropy_contribution,
     velocity_from_momentum_state,
 )
-from src.meta.numeric import apply_overflow_policy, overflow_policy_for_quantity
+from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
 from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -5002,6 +5002,92 @@ def _combustion_profiles_by_material_id(registry_payload: Mapping[str, object] |
             "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
         }
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _load_reaction_profile_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "reaction_profile_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/reaction_profile_registry.json",
+        default_payload={"record": {"reaction_profiles": []}},
+    )
+
+
+def _reaction_profiles_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("reaction_profiles")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("reaction_profiles")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("reaction_id", ""))):
+        reaction_id = str(row.get("reaction_id", "")).strip()
+        if not reaction_id:
+            continue
+        out[reaction_id] = {
+            "schema_version": "1.0.0",
+            "reaction_id": reaction_id,
+            "input_species": dict(row.get("input_species") or {}) if isinstance(row.get("input_species"), Mapping) else {},
+            "output_species": dict(row.get("output_species") or {}) if isinstance(row.get("output_species"), Mapping) else {},
+            "energy_transformation_id": str(row.get("energy_transformation_id", "")).strip() or "transform.chemical_to_thermal",
+            "emission_species": dict(row.get("emission_species") or {}) if isinstance(row.get("emission_species"), Mapping) else {},
+            "rate_model_id": str(row.get("rate_model_id", "")).strip() or "model.therm_combust_stub",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _select_combustion_reaction_id(
+    *,
+    material_id: str,
+    explicit_reaction_id: str,
+    rich_mixture: bool,
+    explosive_profile: bool,
+    reaction_profiles_by_id: Mapping[str, object] | None,
+) -> str:
+    reaction_rows = dict(reaction_profiles_by_id or {})
+    explicit = str(explicit_reaction_id or "").strip()
+    if explicit and explicit in reaction_rows:
+        return explicit
+    if bool(explosive_profile) and ("reaction.explosive_stub" in reaction_rows):
+        return "reaction.explosive_stub"
+    if bool(rich_mixture) and ("reaction.combustion_rich_mixture_stub" in reaction_rows):
+        return "reaction.combustion_rich_mixture_stub"
+    if str(material_id).strip() in {"material.fuel_oil_stub", "material.volatile_fuel_stub"}:
+        if "reaction.combustion_rich_mixture_stub" in reaction_rows:
+            return "reaction.combustion_rich_mixture_stub"
+    if "reaction.combustion_fuel_basic" in reaction_rows:
+        return "reaction.combustion_fuel_basic"
+    if reaction_rows:
+        return sorted(reaction_rows.keys())[0]
+    return "reaction.combustion_fuel_basic"
+
+
+def _combustion_efficiency_permille(
+    *,
+    temperature_value: int,
+    entropy_value: int,
+    mixture_ratio_permille: int,
+    profile_ext: Mapping[str, object] | None,
+) -> int:
+    ext = dict(profile_ext or {})
+    base_eff = int(max(100, min(1000, _as_int(ext.get("base_efficiency_permille", 920), 920))))
+    min_eff = int(max(50, min(base_eff, _as_int(ext.get("min_efficiency_permille", 250), 250))))
+    optimal_temp = int(_as_int(ext.get("optimal_temperature", 520), 520))
+    temp_band = int(max(1, _as_int(ext.get("temperature_band", 120), 120)))
+    temp_delta = abs(int(_as_int(temperature_value, 0)) - int(optimal_temp))
+    temp_penalty = int((temp_delta * 80) // max(1, temp_band))
+    entropy_penalty = int(max(0, _as_int(entropy_value, 0)) // int(max(1, _as_int(ext.get("entropy_scale", 120), 120))))
+    mix_penalty = int(abs(int(_as_int(mixture_ratio_permille, 1000)) - 1000) // int(max(1, _as_int(ext.get("mixture_penalty_scale", 20), 20))))
+    eff = int(base_eff - temp_penalty - entropy_penalty - mix_penalty)
+    if eff < min_eff:
+        eff = int(min_eff)
+    if eff > 1000:
+        eff = 1000
+    return int(eff)
 
 
 def _material_phase_profiles_by_material_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
@@ -9681,6 +9767,203 @@ def _update_fire_hash_chains(state: dict) -> None:
                     for item in list(safety_rows or [])
                     if str(item.get("pattern_id", "")).strip() == "safety.thermal_runaway"
                 ),
+                key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))),
+            )
+        ]
+    )
+    _refresh_combustion_hash_chains(state)
+
+
+def _ensure_combustion_event_rows(state: dict) -> List[dict]:
+    rows = state.get("combustion_event_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("event_id", ""))):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            event_id = "event.combustion.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "target_id": str(row.get("target_id", "")).strip(),
+                        "reaction_id": str(row.get("reaction_id", "")).strip(),
+                    }
+                )[:16]
+            )
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "target_id": str(row.get("target_id", "")).strip(),
+            "reaction_id": str(row.get("reaction_id", "")).strip() or "reaction.combustion_fuel_basic",
+            "fuel_consumed": int(max(0, _as_int(row.get("fuel_consumed", 0), 0))),
+            "oxidizer_consumed": int(max(0, _as_int(row.get("oxidizer_consumed", 0), 0))),
+            "chemical_energy_in": int(max(0, _as_int(row.get("chemical_energy_in", 0), 0))),
+            "thermal_energy_out": int(max(0, _as_int(row.get("thermal_energy_out", 0), 0))),
+            "electrical_energy_out": int(max(0, _as_int(row.get("electrical_energy_out", 0), 0))),
+            "irreversibility_loss": int(max(0, _as_int(row.get("irreversibility_loss", 0), 0))),
+            "efficiency_permille": int(max(0, min(1000, _as_int(row.get("efficiency_permille", 0), 0)))),
+            "pollutant_emission": int(max(0, _as_int(row.get("pollutant_emission", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["combustion_event_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_combustion_emission_rows(state: dict) -> List[dict]:
+    rows = state.get("combustion_emission_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("event_id", ""))):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            event_id = "event.combustion.emission.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "target_id": str(row.get("target_id", "")).strip(),
+                        "material_id": str(row.get("material_id", "")).strip(),
+                        "mass_value": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+                    }
+                )[:16]
+            )
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "target_id": str(row.get("target_id", "")).strip(),
+            "material_id": str(row.get("material_id", "")).strip() or "material.pollutant_coarse_stub",
+            "mass_value": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+            "source_reaction_id": str(row.get("source_reaction_id", "")).strip() or "reaction.combustion_fuel_basic",
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["combustion_emission_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_combustion_impulse_rows(state: dict) -> List[dict]:
+    rows = state.get("combustion_impulse_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("event_id", ""))):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            event_id = "event.combustion.impulse.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "target_id": str(row.get("target_id", "")).strip(),
+                        "impulse_magnitude": int(max(0, _as_int(row.get("impulse_magnitude", 0), 0))),
+                    }
+                )[:16]
+            )
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "target_id": str(row.get("target_id", "")).strip(),
+            "target_assembly_id": str(row.get("target_assembly_id", "")).strip() or None,
+            "impulse_magnitude": int(max(0, _as_int(row.get("impulse_magnitude", 0), 0))),
+            "reaction_id": str(row.get("reaction_id", "")).strip() or "reaction.explosive_stub",
+            "process_id": str(row.get("process_id", "")).strip() or "process.apply_impulse",
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[event_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["combustion_impulse_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_chem_species_pool_rows(state: dict) -> List[dict]:
+    rows = state.get("chem_species_pool_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (str(item.get("target_id", "")), str(item.get("material_id", ""))),
+    ):
+        target_id = str(row.get("target_id", "")).strip()
+        material_id = str(row.get("material_id", "")).strip()
+        if (not target_id) or (not material_id):
+            continue
+        key = "{}::{}".format(target_id, material_id)
+        payload = {
+            "schema_version": "1.0.0",
+            "target_id": target_id,
+            "material_id": material_id,
+            "mass_value": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+            "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[key] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["chem_species_pool_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_combustion_hash_chains(state: dict) -> None:
+    combustion_rows = _ensure_combustion_event_rows(state)
+    emission_rows = _ensure_combustion_emission_rows(state)
+    impulse_rows = _ensure_combustion_impulse_rows(state)
+    state["combustion_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "reaction_id": str(row.get("reaction_id", "")).strip(),
+                "chemical_energy_in": int(max(0, _as_int(row.get("chemical_energy_in", 0), 0))),
+                "thermal_energy_out": int(max(0, _as_int(row.get("thermal_energy_out", 0), 0))),
+                "efficiency_permille": int(max(0, _as_int(row.get("efficiency_permille", 0), 0))),
+            }
+            for row in sorted(
+                [dict(item) for item in list(combustion_rows or []) if isinstance(item, Mapping)],
+                key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))),
+            )
+        ]
+    )
+    state["emission_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "material_id": str(row.get("material_id", "")).strip(),
+                "mass_value": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+            }
+            for row in sorted(
+                [dict(item) for item in list(emission_rows or []) if isinstance(item, Mapping)],
+                key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))),
+            )
+        ]
+    )
+    state["impulse_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "target_assembly_id": str(row.get("target_assembly_id", "")).strip(),
+                "impulse_magnitude": int(max(0, _as_int(row.get("impulse_magnitude", 0), 0))),
+            }
+            for row in sorted(
+                [dict(item) for item in list(impulse_rows or []) if isinstance(item, Mapping)],
                 key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))),
             )
         ]
@@ -24407,6 +24690,58 @@ def execute_intent(
                 and str(row.get("target_id", "")).strip()
                 and str(row.get("hazard_type_id", "")).strip()
             )
+            reaction_profile_registry = _load_reaction_profile_registry(policy_context=policy_context)
+            reaction_profiles_by_id = _reaction_profiles_by_id(reaction_profile_registry)
+            thermal_node_status_by_id = dict(
+                (
+                    str(row.get("node_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(state.get("thermal_node_status_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("node_id", "")).strip()
+            )
+            entropy_state_by_target = entropy_state_rows_by_target_id(_ensure_entropy_state_rows(state))
+            combustion_event_rows_existing = [
+                dict(row)
+                for row in _ensure_combustion_event_rows(state)
+                if isinstance(row, Mapping)
+            ]
+            combustion_emission_rows_existing = [
+                dict(row)
+                for row in _ensure_combustion_emission_rows(state)
+                if isinstance(row, Mapping)
+            ]
+            combustion_impulse_rows_existing = [
+                dict(row)
+                for row in _ensure_combustion_impulse_rows(state)
+                if isinstance(row, Mapping)
+            ]
+            chem_species_pool_rows = _ensure_chem_species_pool_rows(state)
+            species_pool_by_key = dict(
+                (
+                    "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("material_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(chem_species_pool_rows or [])
+                if isinstance(row, Mapping)
+                and str(row.get("target_id", "")).strip()
+                and str(row.get("material_id", "")).strip()
+            )
+            quantity_tolerance_registry = _quantity_tolerance_registry_payload(policy_context=policy_context)
+            max_combustion_eval_per_tick = int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get(
+                            "max_combustion_evaluations_per_tick",
+                            (dict(policy_context or {})).get("combustion_max_evaluations_per_tick", 256),
+                        ),
+                        256,
+                    ),
+                )
+            )
+            deferred_target_ids = list(target_ids[max_combustion_eval_per_tick:])
+            target_ids = list(target_ids[:max_combustion_eval_per_tick])
             processed_target_ids: List[str] = []
             emitted_events: List[dict] = []
             for target_id in target_ids:
@@ -24421,6 +24756,15 @@ def execute_intent(
                 ).strip()
                 profile_row = dict(combustion_profiles.get(material_id) or combustion_profiles.get("material.wood_basic") or {})
                 profile_ext = dict(profile_row.get("extensions") or {}) if isinstance(profile_row.get("extensions"), Mapping) else {}
+                reaction_id = _select_combustion_reaction_id(
+                    material_id=material_id,
+                    explicit_reaction_id=str(inputs.get("reaction_id", "")).strip(),
+                    rich_mixture=bool(inputs.get("rich_mixture", False)),
+                    explosive_profile=bool(profile_ext.get("explosive_profile", False) or inputs.get("explosive_profile", False)),
+                    reaction_profiles_by_id=reaction_profiles_by_id,
+                )
+                reaction_row = dict(reaction_profiles_by_id.get(reaction_id) or {})
+                reaction_ext = dict(reaction_row.get("extensions") or {}) if isinstance(reaction_row.get("extensions"), Mapping) else {}
                 fuel_before = int(max(0, _as_int(fire_row.get("fuel_remaining", 0), 0)))
                 fuel_consumption_rate = int(
                     max(
@@ -24440,6 +24784,25 @@ def execute_intent(
                         ),
                     )
                 )
+                generator_target_id = str(
+                    inputs.get("generator_target_assembly_id", "")
+                    or fire_ext.get("generator_target_assembly_id", "")
+                    or profile_ext.get("generator_target_assembly_id", "")
+                ).strip()
+                generator_share_permille = int(
+                    max(
+                        0,
+                        min(
+                            1000,
+                            _as_int(
+                                inputs.get("generator_share_permille", profile_ext.get("generator_share_permille", 0)),
+                                _as_int(profile_ext.get("generator_share_permille", 0), 0),
+                            ),
+                        ),
+                    )
+                )
+                if not generator_target_id:
+                    generator_share_permille = 0
                 pollutant_rate = int(
                     max(
                         0,
@@ -24450,8 +24813,106 @@ def execute_intent(
                     )
                 )
                 fuel_consumed = int(min(fuel_before, fuel_consumption_rate)) if fuel_before > 0 else 0
-                heat_emission = int(heat_release_rate if fuel_consumed > 0 else 0)
-                pollutant_emission = int(pollutant_rate if fuel_consumed > 0 else 0)
+                chemical_energy_in = int(heat_release_rate if fuel_consumed > 0 else 0)
+                electrical_energy_out = int(
+                    deterministic_round(
+                        quantity_id="quantity.energy_electrical",
+                        numerator=int(max(0, chemical_energy_in * generator_share_permille)),
+                        denominator=1000,
+                        quantity_tolerance_registry=quantity_tolerance_registry,
+                    )
+                )
+                if electrical_energy_out > chemical_energy_in:
+                    electrical_energy_out = int(chemical_energy_in)
+                remaining_chemical_for_thermal = int(max(0, chemical_energy_in - electrical_energy_out))
+                node_row = dict(thermal_node_status_by_id.get(target_id) or {})
+                node_ext = dict(node_row.get("extensions") or {}) if isinstance(node_row.get("extensions"), Mapping) else {}
+                temperature_value = int(
+                    _as_int(
+                        inputs.get(
+                            "temperature",
+                            node_row.get(
+                                "temperature",
+                                node_ext.get("temperature", node_ext.get("temperature_centi_kelvin", 0)),
+                            ),
+                        ),
+                        0,
+                    )
+                )
+                entropy_row = dict(entropy_state_by_target.get(target_id) or {})
+                entropy_value = int(max(0, _as_int(entropy_row.get("entropy_value", 0), 0)))
+                mixture_ratio_permille = int(
+                    max(
+                        0,
+                        min(
+                            2000,
+                            _as_int(
+                                inputs.get("mixture_ratio_permille", profile_ext.get("mixture_ratio_permille", 1000)),
+                                _as_int(profile_ext.get("mixture_ratio_permille", 1000), 1000),
+                            ),
+                        ),
+                    )
+                )
+                efficiency_permille = int(
+                    _combustion_efficiency_permille(
+                        temperature_value=int(temperature_value),
+                        entropy_value=int(entropy_value),
+                        mixture_ratio_permille=int(mixture_ratio_permille),
+                        profile_ext=profile_ext,
+                    )
+                )
+                thermal_energy_out = int(
+                    deterministic_round(
+                        quantity_id="quantity.energy_thermal",
+                        numerator=int(max(0, remaining_chemical_for_thermal * efficiency_permille)),
+                        denominator=1000,
+                        quantity_tolerance_registry=quantity_tolerance_registry,
+                    )
+                )
+                if thermal_energy_out > remaining_chemical_for_thermal:
+                    thermal_energy_out = int(remaining_chemical_for_thermal)
+                irreversibility_loss = int(max(0, remaining_chemical_for_thermal - thermal_energy_out))
+                heat_emission = int(thermal_energy_out)
+                pollutant_emission = int(
+                    pollutant_rate
+                    + max(
+                        0,
+                        deterministic_round(
+                            quantity_id="quantity.mass",
+                            numerator=int(max(0, irreversibility_loss)),
+                            denominator=200,
+                            quantity_tolerance_registry=quantity_tolerance_registry,
+                            default_mode="truncate",
+                        ),
+                    )
+                ) if fuel_consumed > 0 else 0
+                input_species = dict(reaction_row.get("input_species") or {}) if isinstance(reaction_row.get("input_species"), Mapping) else {}
+                output_species = dict(reaction_row.get("output_species") or {}) if isinstance(reaction_row.get("output_species"), Mapping) else {}
+                fuel_species_id = str(
+                    inputs.get("fuel_species_id", "")
+                    or reaction_ext.get("fuel_species_id", "")
+                    or material_id
+                    or "material.fuel_basic"
+                ).strip() or "material.fuel_basic"
+                oxidizer_species_id = str(
+                    inputs.get("oxidizer_species_id", "")
+                    or reaction_ext.get("oxidizer_species_id", "")
+                    or "material.oxidizer_air_stub"
+                ).strip() or "material.oxidizer_air_stub"
+                fuel_coeff = int(max(1, _as_int(input_species.get(fuel_species_id, input_species.get("material.fuel_basic", 1)), 1)))
+                oxidizer_coeff = int(max(0, _as_int(input_species.get(oxidizer_species_id, input_species.get("material.oxidizer_air_stub", 1)), 1)))
+                oxidizer_consumed = int(
+                    max(
+                        0,
+                        deterministic_round(
+                            quantity_id="quantity.mass",
+                            numerator=int(max(0, fuel_consumed * oxidizer_coeff)),
+                            denominator=int(max(1, fuel_coeff)),
+                            quantity_tolerance_registry=quantity_tolerance_registry,
+                            default_mode="truncate",
+                        ),
+                    )
+                )
                 fuel_after = int(max(0, fuel_before - fuel_consumed))
                 fire_row["fuel_remaining"] = int(fuel_after)
                 fire_row["active"] = bool(fuel_after > 0)
@@ -24483,7 +24944,7 @@ def execute_intent(
                 )
                 fire_event["deterministic_fingerprint"] = canonical_sha256(dict(fire_event, deterministic_fingerprint=""))
                 emitted_events.append(fire_event)
-                if heat_emission > 0:
+                if heat_emission > 0 or irreversibility_loss > 0:
                     heat_rows_existing.append(
                         {
                             "target_id": target_id,
@@ -24499,15 +24960,52 @@ def execute_intent(
                         tick=int(max(0, _as_int(current_tick, 0))),
                         transformation_id="transform.chemical_to_thermal",
                         source_id=str(target_id),
-                        input_values={"quantity.energy_chemical": int(heat_emission)},
+                        input_values={"quantity.energy_chemical": int(remaining_chemical_for_thermal)},
                         output_values={
                             "quantity.energy_thermal": int(heat_emission),
-                            "quantity.heat_loss": int(heat_emission),
+                            "quantity.heat_loss": int(irreversibility_loss),
                         },
                         extensions={
                             "source_model_id": "model.therm_combust_stub",
                             "material_id": material_id,
+                            "reaction_id": reaction_id,
+                            "rate_model_id": str(reaction_row.get("rate_model_id", "")).strip() or "model.therm_combust_stub",
+                            "efficiency_permille": int(efficiency_permille),
                             "event_id": str(fire_event.get("event_id", "")).strip(),
+                        },
+                    )
+                    if irreversibility_loss > 0:
+                        _record_entropy_contribution_in_state(
+                            state,
+                            policy_context=policy_context,
+                            process_id=process_id,
+                            tick=int(max(0, _as_int(current_tick, 0))),
+                            source_transformation_id="transform.chemical_to_thermal",
+                            target_id=str(target_id),
+                            context_values={"basis_value": int(irreversibility_loss)},
+                            extensions={
+                                "source_model_id": "model.therm_combust_stub",
+                                "reaction_id": reaction_id,
+                                "event_id": str(fire_event.get("event_id", "")).strip(),
+                                "reason_code": "entropy.combustion_inefficiency",
+                            },
+                        )
+                if electrical_energy_out > 0 and generator_target_id:
+                    _record_energy_transformation_in_state(
+                        state,
+                        policy_context=policy_context,
+                        process_id=process_id,
+                        tick=int(max(0, _as_int(current_tick, 0))),
+                        transformation_id="transform.chemical_to_electrical",
+                        source_id=str(generator_target_id),
+                        input_values={"quantity.energy_chemical": int(electrical_energy_out)},
+                        output_values={"quantity.energy_electrical": int(electrical_energy_out)},
+                        extensions={
+                            "source_model_id": "model.therm_combust_stub",
+                            "material_id": material_id,
+                            "reaction_id": reaction_id,
+                            "event_id": str(fire_event.get("event_id", "")).strip(),
+                            "generator_target_assembly_id": str(generator_target_id),
                         },
                     )
                 if pollutant_emission > 0:
@@ -24519,6 +25017,203 @@ def execute_intent(
                             "source_process_id": process_id,
                         }
                     )
+                    combustion_emission_rows_existing.append(
+                        {
+                            "schema_version": "1.0.0",
+                            "event_id": "event.combustion.emission.{}".format(
+                                canonical_sha256(
+                                    {
+                                        "tick": int(max(0, _as_int(current_tick, 0))),
+                                        "target_id": target_id,
+                                        "reaction_id": reaction_id,
+                                        "pollutant_emission": int(pollutant_emission),
+                                    }
+                                )[:16]
+                            ),
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                            "target_id": target_id,
+                            "material_id": "material.pollutant_coarse_stub",
+                            "mass_value": int(pollutant_emission),
+                            "source_reaction_id": reaction_id,
+                            "extensions": {
+                                "event_id": str(fire_event.get("event_id", "")).strip(),
+                                "source_process_id": process_id,
+                            },
+                        }
+                    )
+                combustion_event_rows_existing.append(
+                    {
+                        "schema_version": "1.0.0",
+                        "event_id": "event.combustion.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(max(0, _as_int(current_tick, 0))),
+                                    "target_id": target_id,
+                                    "reaction_id": reaction_id,
+                                }
+                            )[:16]
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "target_id": target_id,
+                        "reaction_id": reaction_id,
+                        "fuel_consumed": int(fuel_consumed),
+                        "oxidizer_consumed": int(oxidizer_consumed),
+                        "chemical_energy_in": int(chemical_energy_in),
+                        "thermal_energy_out": int(heat_emission),
+                        "electrical_energy_out": int(electrical_energy_out),
+                        "irreversibility_loss": int(irreversibility_loss),
+                        "efficiency_permille": int(efficiency_permille),
+                        "pollutant_emission": int(max(0, pollutant_emission)),
+                        "extensions": {
+                            "material_id": material_id,
+                            "rate_model_id": str(reaction_row.get("rate_model_id", "")).strip() or "model.therm_combust_stub",
+                            "event_id": str(fire_event.get("event_id", "")).strip(),
+                            "generator_target_assembly_id": str(generator_target_id) or None,
+                        },
+                    }
+                )
+                for species_id, coeff in sorted(input_species.items(), key=lambda item: str(item[0])):
+                    species_token = str(species_id).strip()
+                    if not species_token:
+                        continue
+                    coeff_value = int(max(0, _as_int(coeff, 0)))
+                    if coeff_value <= 0:
+                        continue
+                    if species_token == fuel_species_id:
+                        mass_delta = int(fuel_consumed)
+                    elif species_token == oxidizer_species_id:
+                        mass_delta = int(oxidizer_consumed)
+                    else:
+                        mass_delta = int(
+                            max(
+                                0,
+                                deterministic_round(
+                                    quantity_id="quantity.mass",
+                                    numerator=int(max(0, fuel_consumed * coeff_value)),
+                                    denominator=int(max(1, fuel_coeff)),
+                                    quantity_tolerance_registry=quantity_tolerance_registry,
+                                    default_mode="truncate",
+                                ),
+                            )
+                        )
+                    if mass_delta <= 0:
+                        continue
+                    pool_key = "{}::{}".format(target_id, species_token)
+                    existing_pool = dict(species_pool_by_key.get(pool_key) or {})
+                    updated_mass = int(max(0, _as_int(existing_pool.get("mass_value", 0), 0) - mass_delta))
+                    species_pool_by_key[pool_key] = {
+                        "schema_version": "1.0.0",
+                        "target_id": target_id,
+                        "material_id": species_token,
+                        "mass_value": int(updated_mass),
+                        "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                        "deterministic_fingerprint": "",
+                        "extensions": dict(existing_pool.get("extensions") or {}) if isinstance(existing_pool.get("extensions"), Mapping) else {},
+                    }
+                for species_id, coeff in sorted(output_species.items(), key=lambda item: str(item[0])):
+                    species_token = str(species_id).strip()
+                    if not species_token:
+                        continue
+                    coeff_value = int(max(0, _as_int(coeff, 0)))
+                    if coeff_value <= 0:
+                        continue
+                    mass_delta = int(
+                        max(
+                            0,
+                            deterministic_round(
+                                quantity_id="quantity.mass",
+                                numerator=int(max(0, fuel_consumed * coeff_value)),
+                                denominator=int(max(1, fuel_coeff)),
+                                quantity_tolerance_registry=quantity_tolerance_registry,
+                                default_mode="truncate",
+                            ),
+                        )
+                    )
+                    if mass_delta <= 0:
+                        continue
+                    pool_key = "{}::{}".format(target_id, species_token)
+                    existing_pool = dict(species_pool_by_key.get(pool_key) or {})
+                    updated_mass = int(max(0, _as_int(existing_pool.get("mass_value", 0), 0) + mass_delta))
+                    species_pool_by_key[pool_key] = {
+                        "schema_version": "1.0.0",
+                        "target_id": target_id,
+                        "material_id": species_token,
+                        "mass_value": int(updated_mass),
+                        "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                        "deterministic_fingerprint": "",
+                        "extensions": dict(existing_pool.get("extensions") or {}) if isinstance(existing_pool.get("extensions"), Mapping) else {},
+                    }
+                if pollutant_emission > 0:
+                    pollutant_key = "{}::{}".format(target_id, "material.pollutant_coarse_stub")
+                    pollutant_pool = dict(species_pool_by_key.get(pollutant_key) or {})
+                    pollutant_mass = int(max(0, _as_int(pollutant_pool.get("mass_value", 0), 0) + pollutant_emission))
+                    pollutant_ext = dict(pollutant_pool.get("extensions") or {}) if isinstance(pollutant_pool.get("extensions"), Mapping) else {}
+                    pollutant_ext["pollutant_tag"] = "pollutant.coarse"
+                    species_pool_by_key[pollutant_key] = {
+                        "schema_version": "1.0.0",
+                        "target_id": target_id,
+                        "material_id": "material.pollutant_coarse_stub",
+                        "mass_value": int(pollutant_mass),
+                        "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                        "deterministic_fingerprint": "",
+                        "extensions": pollutant_ext,
+                    }
+                if bool(reaction_id == "reaction.explosive_stub" or reaction_ext.get("explosive_profile", False)) and fuel_consumed > 0:
+                    impulse_ratio_permille = int(
+                        max(
+                            0,
+                            min(
+                                1000,
+                                _as_int(
+                                    inputs.get("impulse_energy_ratio_permille", reaction_ext.get("impulse_energy_ratio_permille", 300)),
+                                    _as_int(reaction_ext.get("impulse_energy_ratio_permille", 300), 300),
+                                ),
+                            ),
+                        )
+                    )
+                    impulse_magnitude = int(
+                        max(
+                            0,
+                            deterministic_round(
+                                quantity_id="quantity.momentum_linear",
+                                numerator=int(max(0, chemical_energy_in * impulse_ratio_permille)),
+                                denominator=1000,
+                                quantity_tolerance_registry=quantity_tolerance_registry,
+                                default_mode="truncate",
+                            ),
+                        )
+                    )
+                    if impulse_magnitude > 0:
+                        combustion_impulse_rows_existing.append(
+                            {
+                                "schema_version": "1.0.0",
+                                "event_id": "event.combustion.impulse.{}".format(
+                                    canonical_sha256(
+                                        {
+                                            "tick": int(max(0, _as_int(current_tick, 0))),
+                                            "target_id": target_id,
+                                            "reaction_id": reaction_id,
+                                            "impulse_magnitude": int(impulse_magnitude),
+                                        }
+                                    )[:16]
+                                ),
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "target_id": target_id,
+                                "target_assembly_id": str(
+                                    inputs.get("explosion_target_assembly_id", "")
+                                    or fire_ext.get("assembly_id", "")
+                                    or fire_ext.get("target_assembly_id", "")
+                                ).strip()
+                                or None,
+                                "impulse_magnitude": int(impulse_magnitude),
+                                "reaction_id": reaction_id,
+                                "process_id": "process.apply_impulse",
+                                "extensions": {
+                                    "event_id": str(fire_event.get("event_id", "")).strip(),
+                                    "source_process_id": process_id,
+                                },
+                            }
+                        )
                 if fuel_consumed > 0:
                     row_id = "{}::{}".format(target_id, "hazard.fire.basic")
                     existing_hazard = dict(hazard_rows_by_id.get(row_id) or {})
@@ -24570,9 +25265,64 @@ def execute_intent(
                 [dict(row) for row in pollutant_rows_existing if isinstance(row, Mapping)],
                 key=lambda row: (str(row.get("target_id", "")), int(_as_int(row.get("tick", 0), 0))),
             )
+            state["combustion_event_rows"] = sorted(
+                [dict(row) for row in combustion_event_rows_existing if isinstance(row, Mapping)],
+                key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+            )
+            state["combustion_emission_rows"] = sorted(
+                [dict(row) for row in combustion_emission_rows_existing if isinstance(row, Mapping)],
+                key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+            )
+            state["combustion_impulse_rows"] = sorted(
+                [dict(row) for row in combustion_impulse_rows_existing if isinstance(row, Mapping)],
+                key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+            )
+            state["chem_species_pool_rows"] = sorted(
+                [dict(row) for row in species_pool_by_key.values() if isinstance(row, Mapping)],
+                key=lambda row: (str(row.get("target_id", "")), str(row.get("material_id", ""))),
+            )
             _ensure_thermal_fire_states(state)
             _ensure_thermal_fire_events(state)
+            _ensure_combustion_event_rows(state)
+            _ensure_combustion_emission_rows(state)
+            _ensure_combustion_impulse_rows(state)
+            _ensure_chem_species_pool_rows(state)
             safety_events = _ensure_safety_event_rows(state)
+            if deferred_target_ids:
+                decision_rows = [
+                    dict(row)
+                    for row in list(state.get("control_decision_log") or [])
+                    if isinstance(row, Mapping)
+                ]
+                decision_row = {
+                    "decision_id": "decision.combustion.degrade.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "deferred_target_ids": list(_sorted_tokens(deferred_target_ids)),
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "reason_code": "degrade.chem.combustion_budget",
+                    "details": {
+                        "max_combustion_evaluations_per_tick": int(max_combustion_eval_per_tick),
+                        "deferred_target_ids": list(_sorted_tokens(deferred_target_ids)),
+                        "mode": "C0_stub",
+                    },
+                    "deterministic_fingerprint": "",
+                }
+                decision_row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(decision_row, deterministic_fingerprint="")
+                )
+                decision_rows.append(decision_row)
+                state["control_decision_log"] = sorted(
+                    [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("decision_id", "")),
+                    ),
+                )
             _update_fire_hash_chains(state)
             model_hazard_rows = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
             _persist_model_state(
@@ -24602,6 +25352,45 @@ def execute_intent(
                     for row in list(emitted_events or [])
                     if isinstance(row, Mapping)
                 ]
+                + [
+                    {
+                        "artifact_id": "artifact.record.combustion.{}".format(
+                            canonical_sha256({"event_id": str(row.get("event_id", "")), "kind": "combustion"})[:16]
+                        ),
+                        "artifact_family_id": "RECORD",
+                        "extensions": {
+                            "event_id": str(row.get("event_id", "")).strip(),
+                            "artifact_type_id": "artifact.record.combustion",
+                            "event_type": "incident.combustion",
+                            "target_id": str(row.get("target_id", "")).strip(),
+                            "reaction_id": str(row.get("reaction_id", "")).strip(),
+                            "chemical_energy_in": int(max(0, _as_int(row.get("chemical_energy_in", 0), 0))),
+                            "thermal_energy_out": int(max(0, _as_int(row.get("thermal_energy_out", 0), 0))),
+                            "electrical_energy_out": int(max(0, _as_int(row.get("electrical_energy_out", 0), 0))),
+                            "efficiency_permille": int(max(0, _as_int(row.get("efficiency_permille", 0), 0))),
+                        },
+                    }
+                    for row in list(state.get("combustion_event_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+                + [
+                    {
+                        "artifact_id": "artifact.record.combustion.emission.{}".format(
+                            canonical_sha256({"event_id": str(row.get("event_id", "")), "kind": "emission"})[:16]
+                        ),
+                        "artifact_family_id": "RECORD",
+                        "extensions": {
+                            "event_id": str(row.get("event_id", "")).strip(),
+                            "artifact_type_id": "artifact.record.combustion_emission",
+                            "event_type": "incident.combustion_emission",
+                            "target_id": str(row.get("target_id", "")).strip(),
+                            "material_id": str(row.get("material_id", "")).strip(),
+                            "mass_value": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+                        },
+                    }
+                    for row in list(state.get("combustion_emission_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
             )
             state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
             state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
@@ -24619,6 +25408,12 @@ def execute_intent(
                 ),
                 "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
                 "boundary_flux_hash_chain": str(state.get("boundary_flux_hash_chain", "")).strip(),
+                "combustion_hash_chain": str(state.get("combustion_hash_chain", "")).strip(),
+                "emission_hash_chain": str(state.get("emission_hash_chain", "")).strip(),
+                "impulse_hash_chain": str(state.get("impulse_hash_chain", "")).strip(),
+                "deferred_target_ids": list(_sorted_tokens(deferred_target_ids)),
+                "combustion_event_count": int(len(list(state.get("combustion_event_rows") or []))),
+                "combustion_emission_count": int(len(list(state.get("combustion_emission_rows") or []))),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.end_fire":
