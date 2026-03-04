@@ -389,6 +389,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-RECIPE-HACKS-FOR-CHEM",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
+    "INV-DEGRADATION-MODEL-ONLY",
+    "INV-NO-ADHOC-PIPE-RESTRICTION",
+    "INV-COUPLING-CONTRACT-DECLARED",
     "INV-QUANTITY-TOLERANCE-DECLARED",
     "INV-DETERMINISTIC-ROUND-ONLY",
     "INV-NO-IMPLICIT-FLOAT",
@@ -17212,6 +17215,226 @@ def _append_chem_processing_invariant_findings(
                 break
 
 
+def _append_chem_degradation_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    model_rule_id = "INV-DEGRADATION-MODEL-ONLY"
+    pipe_rule_id = "INV-NO-ADHOC-PIPE-RESTRICTION"
+    coupling_rule_id = "INV-COUPLING-CONTRACT-DECLARED"
+
+    degradation_profile_registry_rel = "data/registries/degradation_profile_registry.json"
+    coupling_registry_rel = "data/registries/coupling_contract_registry.json"
+    degradation_engine_rel = "src/chem/degradation/degradation_engine.py"
+    fluid_engine_rel = "src/fluid/network/fluid_network_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+
+    profile_payload, profile_error = _load_json_object(repo_root, degradation_profile_registry_rel)
+    profile_rows = list((dict(profile_payload.get("record") or {})).get("degradation_profiles") or [])
+    profile_rows_by_id = dict(
+        (
+            str(row.get("profile_id", "")).strip(),
+            dict(row),
+        )
+        for row in profile_rows
+        if isinstance(row, dict) and str(row.get("profile_id", "")).strip()
+    )
+    required_profile_ids = (
+        "profile.pipe_steel_basic",
+        "profile.heat_exchanger_basic",
+        "profile.tank_basic",
+    )
+    if profile_error or not profile_rows_by_id:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=degradation_profile_registry_rel,
+                line_number=1,
+                snippet="record.degradation_profiles",
+                message="degradation profile registry must exist with CHEM-3 deterministic profile rows",
+                rule_id=model_rule_id,
+            )
+        )
+    else:
+        for profile_id in required_profile_ids:
+            row = dict(profile_rows_by_id.get(profile_id) or {})
+            if not row:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=degradation_profile_registry_rel,
+                        line_number=1,
+                        snippet=profile_id,
+                        message="required CHEM-3 degradation profile id is missing",
+                        rule_id=model_rule_id,
+                    )
+                )
+                continue
+            if not str(row.get("rate_model_id", "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=degradation_profile_registry_rel,
+                        line_number=1,
+                        snippet=profile_id,
+                        message="degradation profile must declare rate_model_id for model-only evaluation",
+                        rule_id=model_rule_id,
+                    )
+                )
+
+    degradation_engine_text = _file_text(repo_root, degradation_engine_rel)
+    required_engine_tokens = (
+        "evaluate_model_bindings(",
+        'output_kind == "hazard_increment"',
+        "_KIND_TO_EFFECT_OUTPUT_IDS",
+        "build_effect(",
+    )
+    for token in required_engine_tokens:
+        if token in degradation_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=degradation_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="degradation engine is missing required model/effect integration token",
+                rule_id=model_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    required_runtime_tokens = (
+        'elif process_id == "process.degradation_tick":',
+        "evaluate_degradation_tick(",
+        "_refresh_chem_degradation_hash_chains(",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="runtime degradation path is missing required deterministic integration token",
+                rule_id=model_rule_id,
+            )
+        )
+
+    fluid_engine_text = _file_text(repo_root, fluid_engine_rel)
+    required_fluid_tokens = (
+        "pipe_capacity_reduction_permille",
+        "pipe_loss_increase_permille",
+    )
+    for token in required_fluid_tokens:
+        if token in fluid_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=fluid_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="fluid network engine must apply CHEM degradation effects through registered modifiers",
+                rule_id=pipe_rule_id,
+            )
+        )
+
+    ad_hoc_pipe_patterns = (
+        re.compile(r"\bpipe_capacity_reduction_permille\b\s*=", re.IGNORECASE),
+        re.compile(r"\bpipe_loss_increase_permille\b\s*=", re.IGNORECASE),
+        re.compile(r"\bcapacity_reduction_permille\b\s*=", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_pipe_files = {
+        degradation_engine_rel,
+        fluid_engine_rel,
+        runtime_rel,
+        "src/control/effects.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_pipe_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in ad_hoc_pipe_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="ad hoc pipe restriction modifier detected outside canonical fluid/degradation runtime paths",
+                    rule_id=pipe_rule_id,
+                )
+            )
+            break
+
+    coupling_payload, coupling_error = _load_json_object(repo_root, coupling_registry_rel)
+    coupling_rows = list((dict(coupling_payload.get("record") or {})).get("coupling_contracts") or [])
+    coupling_rows_by_id = dict(
+        (
+            str(row.get("contract_id", "")).strip(),
+            dict(row),
+        )
+        for row in coupling_rows
+        if isinstance(row, dict) and str(row.get("contract_id", "")).strip()
+    )
+    required_coupling_contract_ids = (
+        "coupling.chem.degradation_to_fluid.restriction",
+        "coupling.chem.degradation_to_therm.conductance",
+        "coupling.chem.degradation_to_mech.strength",
+        "coupling.chem.degradation_to_elec.insulation",
+    )
+    if coupling_error or not coupling_rows_by_id:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=coupling_registry_rel,
+                line_number=1,
+                snippet="record.coupling_contracts",
+                message="coupling contract registry must exist for CHEM-3 degradation cross-domain coupling declarations",
+                rule_id=coupling_rule_id,
+            )
+        )
+    else:
+        for contract_id in required_coupling_contract_ids:
+            if contract_id in coupling_rows_by_id:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=coupling_registry_rel,
+                    line_number=1,
+                    snippet=contract_id,
+                    message="required CHEM-3 degradation coupling contract id is missing",
+                    rule_id=coupling_rule_id,
+                )
+            )
+
+
 def _append_entropy_policy_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -18407,6 +18630,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_chem_processing_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_chem_degradation_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
