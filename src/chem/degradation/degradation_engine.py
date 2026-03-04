@@ -57,6 +57,13 @@ def _sorted_tokens(values: object) -> List[str]:
     return sorted(out)
 
 
+def _normalize_kind_id(value: object) -> str:
+    token = str(value or "").strip().lower()
+    if token.startswith("degr."):
+        token = str(token.split(".", 1)[1]).strip().lower()
+    return token
+
+
 def _canon(value: object):
     if isinstance(value, Mapping):
         return dict((str(key), _canon(value[key])) for key in sorted(value.keys(), key=lambda token: str(token)))
@@ -77,7 +84,7 @@ def build_degradation_state(
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     target_token = str(target_id or "").strip()
-    kind_token = str(degradation_kind_id or "").strip()
+    kind_token = _normalize_kind_id(degradation_kind_id)
     if not target_token or kind_token not in _VALID_KINDS:
         return {}
     payload = {
@@ -138,7 +145,7 @@ def degradation_profile_rows_by_id(registry_payload: Mapping[str, object] | None
         key=lambda item: str(item.get("profile_id", "")),
     ):
         profile_id = str(row.get("profile_id", "")).strip()
-        kind_id = str(row.get("degradation_kind_id", "")).strip()
+        kind_id = _normalize_kind_id(row.get("degradation_kind_id", ""))
         rate_model_id = str(row.get("rate_model_id", "")).strip()
         if (not profile_id) or (kind_id not in _VALID_KINDS) or (not rate_model_id):
             continue

@@ -27024,6 +27024,332 @@ def execute_intent(
                 for row in list(degradation_eval.get("degradation_event_rows") or [])
                 if isinstance(row, Mapping)
             ]
+            profile_id_by_target_kind: Dict[str, str] = {}
+            for target_row in list(target_rows or []):
+                if not isinstance(target_row, Mapping):
+                    continue
+                target_id = str(target_row.get("target_id", "")).strip()
+                profile_id = str(target_row.get("profile_id", "")).strip()
+                profile_row = dict(profiles_by_id.get(profile_id) or {})
+                kind_id = str(profile_row.get("degradation_kind_id", "")).strip()
+                if target_id and profile_id and kind_id:
+                    profile_id_by_target_kind["{}::{}".format(target_id, kind_id)] = profile_id
+            for state_row in list(state.get("chem_degradation_state_rows") or []):
+                if not isinstance(state_row, Mapping):
+                    continue
+                target_id = str(state_row.get("target_id", "")).strip()
+                kind_id = str(state_row.get("degradation_kind_id", "")).strip()
+                profile_id = str((dict(state_row.get("extensions") or {}) if isinstance(state_row.get("extensions"), Mapping) else {}).get("profile_id", "")).strip()
+                if target_id and kind_id and profile_id:
+                    profile_id_by_target_kind["{}::{}".format(target_id, kind_id)] = profile_id
+
+            threshold_events: List[dict] = []
+            threshold_decision_rows: List[dict] = []
+            threshold_safety_events: List[dict] = []
+            hazard_rows_by_key = dict(
+                (
+                    "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+                    dict(row),
+                )
+                for row in list(model_hazard_rows or [])
+                if isinstance(row, Mapping)
+                and str(row.get("target_id", "")).strip()
+                and str(row.get("hazard_type_id", "")).strip()
+            )
+            for event_row in sorted(
+                (dict(row) for row in list(new_events or []) if isinstance(row, Mapping)),
+                key=lambda row: (
+                    str(row.get("target_id", "")),
+                    str(row.get("degradation_kind_id", "")),
+                    str(row.get("event_id", "")),
+                ),
+            ):
+                target_id = str(event_row.get("target_id", "")).strip()
+                kind_id = str(event_row.get("degradation_kind_id", "")).strip()
+                if (not target_id) or (kind_id not in {"corrosion", "fouling", "scaling"}):
+                    continue
+                level_before = int(max(0, _as_int(event_row.get("level_before", 0), 0)))
+                level_after = int(max(0, _as_int(event_row.get("level_after", 0), 0)))
+                profile_id = str(profile_id_by_target_kind.get("{}::{}".format(target_id, kind_id), "")).strip()
+                profile_row = dict(profiles_by_id.get(profile_id) or {})
+                thresholds = dict(profile_row.get("thresholds") or {}) if isinstance(profile_row.get("thresholds"), Mapping) else {}
+                tick_value = int(max(0, _as_int(current_tick, 0)))
+
+                if kind_id == "corrosion":
+                    leak_threshold = int(
+                        max(
+                            1,
+                            _as_int(
+                                thresholds.get(
+                                    "leak_threshold_permille",
+                                    thresholds.get("leak_threshold", 700),
+                                ),
+                                700,
+                            ),
+                        )
+                    )
+                    crossed = bool(level_before < leak_threshold <= level_after)
+                    if not crossed:
+                        continue
+                    threshold_event = {
+                        "schema_version": "1.0.0",
+                        "event_id": "event.chem.degradation.threshold.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(tick_value),
+                                    "target_id": target_id,
+                                    "degradation_kind_id": kind_id,
+                                    "event_kind_id": "event.chem.corrosion_leak_threshold",
+                                    "threshold": int(leak_threshold),
+                                }
+                            )[:16]
+                        ),
+                        "tick": int(tick_value),
+                        "target_id": target_id,
+                        "degradation_kind_id": kind_id,
+                        "event_kind_id": "event.chem.corrosion_leak_threshold",
+                        "threshold_value": int(leak_threshold),
+                        "level_before": int(level_before),
+                        "level_after": int(level_after),
+                        "deterministic_fingerprint": "",
+                        "extensions": {
+                            "profile_id": profile_id or None,
+                            "source_process_id": process_id,
+                        },
+                    }
+                    threshold_event["deterministic_fingerprint"] = canonical_sha256(
+                        dict(threshold_event, deterministic_fingerprint="")
+                    )
+                    threshold_events.append(threshold_event)
+
+                    hazard_key = "{}::{}".format(target_id, "hazard.fluid.leak")
+                    existing_hazard = dict(hazard_rows_by_key.get(hazard_key) or {})
+                    leak_delta = int(max(1, (max(0, level_after - leak_threshold) // 100) + 1))
+                    hazard_row = {
+                        "schema_version": "1.0.0",
+                        "target_id": target_id,
+                        "hazard_type_id": "hazard.fluid.leak",
+                        "accumulated_value": int(
+                            max(0, _as_int(existing_hazard.get("accumulated_value", 0), 0) + leak_delta)
+                        ),
+                        "last_update_tick": int(tick_value),
+                        "deterministic_fingerprint": "",
+                        "extensions": {
+                            **(dict(existing_hazard.get("extensions") or {}) if isinstance(existing_hazard.get("extensions"), Mapping) else {}),
+                            "source_process_id": process_id,
+                            "source_event_id": str(threshold_event.get("event_id", "")).strip(),
+                            "recommended_process_id": "process.start_leak",
+                        },
+                    }
+                    hazard_row["deterministic_fingerprint"] = canonical_sha256(
+                        dict(hazard_row, deterministic_fingerprint="")
+                    )
+                    hazard_rows_by_key[hazard_key] = hazard_row
+                    threshold_decision_rows.append(
+                        {
+                            "decision_id": "decision.chem.degradation.threshold.{}".format(
+                                canonical_sha256(
+                                    {
+                                        "tick": int(tick_value),
+                                        "target_id": target_id,
+                                        "kind": kind_id,
+                                        "threshold": int(leak_threshold),
+                                    }
+                                )[:16]
+                            ),
+                            "tick": int(tick_value),
+                            "reason_code": "event.chem.corrosion_leak_threshold",
+                            "details": {
+                                "target_id": target_id,
+                                "degradation_kind_id": kind_id,
+                                "threshold_value": int(leak_threshold),
+                                "level_before": int(level_before),
+                                "level_after": int(level_after),
+                                "recommended_process_id": "process.start_leak",
+                            },
+                            "deterministic_fingerprint": "",
+                        }
+                    )
+                    threshold_safety_events.append(
+                        build_safety_event(
+                            event_id="",
+                            tick=int(tick_value),
+                            instance_id="instance.safety.fail_safe_shutdown.{}".format(target_id),
+                            pattern_id="safety.fail_safe_shutdown",
+                            pattern_type="failsafe",
+                            status="triggered",
+                            target_ids=[target_id],
+                            action_count=1,
+                            details={
+                                "target_id": target_id,
+                                "degradation_kind_id": kind_id,
+                                "threshold_value": int(leak_threshold),
+                                "recommended_action": "process.elec_apply_loto",
+                            },
+                            extensions={"source_process_id": process_id},
+                        )
+                    )
+                elif kind_id == "fouling":
+                    critical_threshold = int(
+                        max(
+                            1,
+                            _as_int(
+                                thresholds.get("critical_permille", thresholds.get("critical_threshold", 850)),
+                                850,
+                            ),
+                        )
+                    )
+                    crossed = bool(level_before < critical_threshold <= level_after)
+                    if not crossed:
+                        continue
+                    threshold_decision_rows.append(
+                        {
+                            "decision_id": "decision.chem.degradation.fouling.{}".format(
+                                canonical_sha256(
+                                    {
+                                        "tick": int(tick_value),
+                                        "target_id": target_id,
+                                        "critical_threshold": int(critical_threshold),
+                                    }
+                                )[:16]
+                            ),
+                            "tick": int(tick_value),
+                            "reason_code": "event.chem.fouling_critical_threshold",
+                            "details": {
+                                "target_id": target_id,
+                                "degradation_kind_id": kind_id,
+                                "threshold_value": int(critical_threshold),
+                                "level_before": int(level_before),
+                                "level_after": int(level_after),
+                                "recommended_action": "process.elec_apply_loto",
+                            },
+                            "deterministic_fingerprint": "",
+                        }
+                    )
+                    threshold_safety_events.append(
+                        build_safety_event(
+                            event_id="",
+                            tick=int(tick_value),
+                            instance_id="instance.safety.fail_safe_shutdown.fouling.{}".format(target_id),
+                            pattern_id="safety.fail_safe_shutdown",
+                            pattern_type="failsafe",
+                            status="triggered",
+                            target_ids=[target_id],
+                            action_count=1,
+                            details={
+                                "target_id": target_id,
+                                "degradation_kind_id": kind_id,
+                                "threshold_value": int(critical_threshold),
+                                "recommended_action": "process.elec_apply_loto",
+                            },
+                            extensions={"source_process_id": process_id},
+                        )
+                    )
+                elif kind_id == "scaling":
+                    restriction_threshold = int(
+                        max(
+                            1,
+                            _as_int(
+                                thresholds.get(
+                                    "flow_restriction_permille",
+                                    thresholds.get("critical_permille", 550),
+                                ),
+                                550,
+                            ),
+                        )
+                    )
+                    crossed = bool(level_before < restriction_threshold <= level_after)
+                    if not crossed:
+                        continue
+                    threshold_decision_rows.append(
+                        {
+                            "decision_id": "decision.chem.degradation.scaling.{}".format(
+                                canonical_sha256(
+                                    {
+                                        "tick": int(tick_value),
+                                        "target_id": target_id,
+                                        "restriction_threshold": int(restriction_threshold),
+                                    }
+                                )[:16]
+                            ),
+                            "tick": int(tick_value),
+                            "reason_code": "event.chem.scaling_flow_restriction_threshold",
+                            "details": {
+                                "target_id": target_id,
+                                "degradation_kind_id": kind_id,
+                                "threshold_value": int(restriction_threshold),
+                                "level_before": int(level_before),
+                                "level_after": int(level_after),
+                                "recommended_action": "safety.relief_pressure",
+                            },
+                            "deterministic_fingerprint": "",
+                        }
+                    )
+                    threshold_safety_events.append(
+                        build_safety_event(
+                            event_id="",
+                            tick=int(tick_value),
+                            instance_id="instance.safety.pressure_relief.scaling.{}".format(target_id),
+                            pattern_id="safety.relief_pressure",
+                            pattern_type="relief",
+                            status="triggered",
+                            target_ids=[target_id],
+                            action_count=1,
+                            details={
+                                "target_id": target_id,
+                                "degradation_kind_id": kind_id,
+                                "threshold_value": int(restriction_threshold),
+                                "recommended_action": "process.fluid.network_tick",
+                                "loto_recommended": True,
+                            },
+                            extensions={"source_process_id": process_id},
+                        )
+                    )
+
+            if threshold_decision_rows:
+                for row in threshold_decision_rows:
+                    row["deterministic_fingerprint"] = canonical_sha256(
+                        dict(row, deterministic_fingerprint="")
+                    )
+                state["control_decision_log"] = sorted(
+                    [dict(row) for row in list(state.get("control_decision_log") or []) if isinstance(row, Mapping)]
+                    + [dict(row) for row in list(threshold_decision_rows or []) if isinstance(row, Mapping)],
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("decision_id", "")),
+                    ),
+                )
+            if threshold_safety_events:
+                state["safety_events"] = normalize_safety_event_rows(
+                    list(_ensure_safety_event_rows(state))
+                    + [dict(row) for row in list(threshold_safety_events or []) if isinstance(row, Mapping)]
+                )
+                _ensure_safety_runtime_state(state)
+            if threshold_events:
+                state["chem_degradation_event_rows"] = sorted(
+                    [dict(row) for row in list(state.get("chem_degradation_event_rows") or []) if isinstance(row, Mapping)]
+                    + [dict(row) for row in list(threshold_events or []) if isinstance(row, Mapping)],
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("event_id", "")),
+                    ),
+                )
+                state["degradation_event_rows"] = [
+                    dict(row) for row in list(state.get("chem_degradation_event_rows") or []) if isinstance(row, Mapping)
+                ]
+                new_events = sorted(
+                    [dict(row) for row in list(new_events or []) if isinstance(row, Mapping)]
+                    + [dict(row) for row in list(threshold_events or []) if isinstance(row, Mapping)],
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("event_id", "")),
+                    ),
+                )
+            if hazard_rows_by_key:
+                model_hazard_rows = [
+                    dict(hazard_rows_by_key[key])
+                    for key in sorted(hazard_rows_by_key.keys())
+                ]
             info_artifact_rows = normalize_info_artifact_rows(
                 list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
                 + [
