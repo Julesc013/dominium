@@ -50,6 +50,9 @@
     "combustion_hash_chain",
     "emission_hash_chain",
     "impulse_hash_chain",
+    "process_run_hash_chain",
+    "batch_quality_hash_chain",
+    "yield_model_hash_chain",
     "quantity_tolerance_registry_hash",
     "rounding_mode_policy_hash",
     "entropy_hash_chain",
@@ -251,6 +254,18 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "impulse_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "process_run_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "batch_quality_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "yield_model_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },

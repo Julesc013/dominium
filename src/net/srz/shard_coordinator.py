@@ -699,6 +699,9 @@ def _emit_control_proof_bundle(
             "combustion_hash_chain": str(global_state.get("combustion_hash_chain", "")).strip(),
             "emission_hash_chain": str(global_state.get("emission_hash_chain", "")).strip(),
             "impulse_hash_chain": str(global_state.get("impulse_hash_chain", "")).strip(),
+            "process_run_hash_chain": str(global_state.get("process_run_hash_chain", "")).strip(),
+            "batch_quality_hash_chain": str(global_state.get("batch_quality_hash_chain", "")).strip(),
+            "yield_model_hash_chain": str(global_state.get("yield_model_hash_chain", "")).strip(),
             "entropy_hash_chain": str(global_state.get("entropy_hash_chain", "")).strip(),
             "entropy_reset_events_hash_chain": str(
                 global_state.get("entropy_reset_events_hash_chain", global_state.get("entropy_reset_hash_chain", ""))

@@ -130,3 +130,24 @@ Diegetic presentation guidance:
 
 - show an out-of-spec warning marker for affected output batches,
 - show contamination marker when contamination tags are present.
+
+## 12) Proof and Replay Hooks
+
+CHEM-2 process-run truth integrates deterministic proof surfaces:
+
+- `process_run_hash_chain`
+- `batch_quality_hash_chain`
+- `yield_model_hash_chain`
+
+Control proof bundles must carry these chains when CHEM process-run rows are present in the tick window.
+
+Replay verification tool:
+
+- `python tools/chem/tool_replay_process_run.py --state-path <state.json> --expected-state-path <baseline.json>`
+
+The verifier checks:
+
+- recorded vs replayed process-run/quality/yield hash chains,
+- deterministic yield stability for equivalent input contexts,
+- process-run ledger linkage to `transform.chemical_to_thermal`,
+- batch mass and quality sanity constraints.
