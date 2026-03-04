@@ -486,6 +486,51 @@
             "policy_id"
           ]
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "safety.burst_disk",
+        "pattern_type": "relief",
+        "schema_ref": "dominium.schema.safety.safety_pattern@1.0.0",
+        "extensions": {
+          "description": "Deterministic burst-disk safety actuation on severe overpressure.",
+          "triggering_conditions": [
+            {
+              "predicate_id": "pred.pressure_critical",
+              "operator": "gt",
+              "left_operand": "flow.pressure_kpa",
+              "right_operand": 0
+            }
+          ],
+          "enforced_actions": [
+            {
+              "action_id": "act.burst_disk_release",
+              "action_type": "apply_effect",
+              "process_id": "process.effect_apply",
+              "target_ref": "pressure_vessel",
+              "parameters": {
+                "effect_type_id": "effect.pressure_relief"
+              }
+            }
+          ],
+          "required_substrates": [
+            "HazardModel",
+            "Effect"
+          ],
+          "hazards": [
+            "hazard.overpressure",
+            "hazard.fluid.burst"
+          ],
+          "effects": [
+            "effect.pressure_relief",
+            "effect.warning.breaker_tripped"
+          ],
+          "logging_requirements": [
+            "threshold_value",
+            "observed_value",
+            "burst_disk_state"
+          ]
+        }
       }
     ],
     "extensions": {}
