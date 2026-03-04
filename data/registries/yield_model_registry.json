@@ -1,0 +1,38 @@
+{
+  "schema_id": "dominium.registry.yield_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.yield_model_registry",
+    "registry_version": "1.0.0",
+    "yield_models": [
+      {
+        "schema_version": "1.0.0",
+        "yield_model_id": "yield.basic_windowed",
+        "description": "Deterministic windowed yield model around nominal process conditions.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "yield_model_id": "yield.entropy_penalty",
+        "description": "Deterministic yield model with entropy-linked efficiency penalties.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "yield_model_id": "yield.catalyst_boost",
+        "description": "Deterministic yield model with catalyst uplift under compliant conditions.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-3"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

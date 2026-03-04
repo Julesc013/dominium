@@ -1,0 +1,55 @@
+{
+  "schema_id": "dominium.registry.reaction_rate_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.reaction_rate_model_registry",
+    "registry_version": "1.0.0",
+    "reaction_rate_models": [
+      {
+        "schema_version": "1.0.0",
+        "rate_model_id": "model.chem_rate_linear_stub",
+        "description": "Linear deterministic baseline rate model alias.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "rate_model_id": "model.chem_rate_temp_dependent_stub",
+        "description": "Temperature-biased deterministic baseline rate model alias.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "rate_model_id": "model.chem_rate_pressure_temp_stub",
+        "description": "Deterministic processing rate model with temperature and pressure proxies.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "inputs": [
+            "temperature",
+            "pressure_head"
+          ],
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "rate_model_id": "model.chem_rate_catalyst_stub",
+        "description": "Deterministic processing rate model with catalyst-modified throughput.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "inputs": [
+            "temperature",
+            "catalyst_present"
+          ],
+          "source": "CHEM2-3"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

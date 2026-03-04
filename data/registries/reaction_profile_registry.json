@@ -77,10 +77,116 @@
           "impulse_energy_ratio_permille": 300,
           "source": "CHEM1-2"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.smelting_stub",
+        "input_species": {
+          "material.ore_stub": 10,
+          "material.reductant_stub": 3
+        },
+        "output_species": {
+          "material.metal_ingot_stub": 7,
+          "material.slag_stub": 6
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {
+          "material.pollutant_coarse_stub": 1
+        },
+        "rate_model_id": "model.chem_rate_pressure_temp_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "process_type": "smelting",
+          "yield_model_id": "yield.basic_windowed",
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.refining_stub",
+        "input_species": {
+          "material.crude_stub": 10
+        },
+        "output_species": {
+          "material.fuel_refined_stub": 6,
+          "material.residue_stub": 3
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {
+          "material.pollutant_coarse_stub": 1
+        },
+        "rate_model_id": "model.chem_rate_pressure_temp_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "process_type": "refining",
+          "yield_model_id": "yield.entropy_penalty",
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.polymerization_stub",
+        "input_species": {
+          "material.monomer_stub": 5
+        },
+        "output_species": {
+          "material.polymer_stub": 4
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {},
+        "rate_model_id": "model.chem_rate_catalyst_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "process_type": "polymerization",
+          "yield_model_id": "yield.catalyst_boost",
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.distillation_stub",
+        "input_species": {
+          "material.mixture_stub": 8
+        },
+        "output_species": {
+          "material.fraction_light_stub": 3,
+          "material.fraction_heavy_stub": 4
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {},
+        "rate_model_id": "model.chem_rate_pressure_temp_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "process_type": "distillation",
+          "yield_model_id": "yield.basic_windowed",
+          "source": "CHEM2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reaction_id": "reaction.cracking_stub",
+        "input_species": {
+          "material.heavy_hydrocarbon_stub": 6
+        },
+        "output_species": {
+          "material.light_hydrocarbon_stub": 4,
+          "material.residue_stub": 1
+        },
+        "energy_transformation_id": "transform.chemical_to_thermal",
+        "emission_species": {
+          "material.pollutant_coarse_stub": 1
+        },
+        "rate_model_id": "model.chem_rate_catalyst_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "process_type": "cracking",
+          "yield_model_id": "yield.catalyst_boost",
+          "source": "CHEM2-3"
+        }
       }
     ],
     "extensions": {
-      "notes": "CHEM1 combustion/fuel chain reaction profile baseline."
+      "notes": "CHEM1 combustion/fuel chain + CHEM2 industrial processing reaction profile baseline."
     }
   }
 }
