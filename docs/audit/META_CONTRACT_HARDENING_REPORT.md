@@ -122,17 +122,22 @@ Topology regeneration:
 - Result: PASS
 - Notes: `selected_tests=5`
 
-4) Strict build orchestration
+4) TestX STRICT (full suite)
+- Command: `python -c "from tools.xstack.testx.runner import run_testx_suite; ..."` (invoked via `run_testx_suite(profile='STRICT', cache_enabled=True)`)
+- Result: FAIL
+- Notes: `selected_tests=678`, `fail_count=145`, `refusal_count=0` (pre-existing suite failures outside META-CONTRACT-1 hard-gate scope)
+
+5) Strict build orchestration
 - Command: `python scripts/dev/gate.py strict`
 - Result: FAIL
 - Notes: exited in `repox_runner` under `STRICT_DEEP`; failure class `STRUCTURAL` with pre-existing repo-wide structural/doc/ruleset drift in changed tree.
 
-5) RepoX FAST profile behavior check
+6) RepoX FAST profile behavior check
 - Command: `python tools/xstack/repox/check.py --profile FAST`
 - Result: PASS
 - Notes: contract hard-gate invariants remain warn-only in FAST path.
 
-6) AuditX FAST profile behavior check
+7) AuditX FAST profile behavior check
 - Command: `python tools/xstack/auditx/check.py --profile FAST`
 - Result: PASS
 - Notes: `promoted_blockers=0`; findings remained warn-only in FAST path.
