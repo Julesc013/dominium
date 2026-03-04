@@ -1,6 +1,32 @@
 """Interaction semantic helpers."""
 
 from .action_surface_engine import resolve_action_surfaces
+from .mount import (
+    MountError,
+    REFUSAL_MOUNT_ALREADY_ATTACHED,
+    REFUSAL_MOUNT_FORBIDDEN_BY_LAW,
+    REFUSAL_MOUNT_INCOMPATIBLE,
+    attach_mount_points,
+    detach_mount_point,
+    mount_point_rows_by_id,
+    normalize_mount_point_row,
+    normalize_mount_point_rows,
+)
+from .pose import (
+    PoseError,
+    REFUSAL_POSE_FORBIDDEN_BY_LAW,
+    REFUSAL_POSE_INVALID_POSTURE,
+    REFUSAL_POSE_NO_ACCESS_PATH,
+    REFUSAL_POSE_NOT_OCCUPANT,
+    REFUSAL_POSE_OCCUPIED,
+    control_binding_rows_by_id,
+    enter_pose_slot,
+    exit_pose_slot,
+    grants_for_subject,
+    normalize_pose_slot_row,
+    normalize_pose_slot_rows,
+    pose_slot_rows_by_id,
+)
 from .task.task_engine import (
     REFUSAL_TASK_BUDGET_EXCEEDED,
     REFUSAL_TASK_FORBIDDEN_BY_LAW,
@@ -19,6 +45,28 @@ from .task.task_engine import (
 
 __all__ = [
     "resolve_action_surfaces",
+    "PoseError",
+    "REFUSAL_POSE_OCCUPIED",
+    "REFUSAL_POSE_NO_ACCESS_PATH",
+    "REFUSAL_POSE_FORBIDDEN_BY_LAW",
+    "REFUSAL_POSE_INVALID_POSTURE",
+    "REFUSAL_POSE_NOT_OCCUPANT",
+    "normalize_pose_slot_row",
+    "normalize_pose_slot_rows",
+    "pose_slot_rows_by_id",
+    "control_binding_rows_by_id",
+    "enter_pose_slot",
+    "exit_pose_slot",
+    "grants_for_subject",
+    "MountError",
+    "REFUSAL_MOUNT_INCOMPATIBLE",
+    "REFUSAL_MOUNT_ALREADY_ATTACHED",
+    "REFUSAL_MOUNT_FORBIDDEN_BY_LAW",
+    "normalize_mount_point_row",
+    "normalize_mount_point_rows",
+    "mount_point_rows_by_id",
+    "attach_mount_points",
+    "detach_mount_point",
     "TaskError",
     "REFUSAL_TASK_TOOL_REQUIRED",
     "REFUSAL_TASK_FORBIDDEN_BY_LAW",

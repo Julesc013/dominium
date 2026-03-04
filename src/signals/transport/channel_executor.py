@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List, Mapping, Tuple
 
+from src.fields import build_field_sample
+
 
 LARGE_CAPACITY_PER_TICK = 1_000_000_000
 FIELD_TAG_MODIFIER_PERMILLE = {
@@ -121,6 +123,57 @@ def _sample_value_permille(sample_row: Mapping[str, object], keys: List[str]) ->
     return 0
 
 
+def _field_sample_cache_key(*, field_id: str, spatial_node_id: str, tick: int) -> str:
+    return "{}::{}::{}".format(
+        str(field_id).strip(),
+        str(spatial_node_id).strip(),
+        int(max(0, _as_int(tick, 0))),
+    )
+
+
+def _field_sample_keys(field_id: str) -> List[str]:
+    token = str(field_id).strip()
+    if token == "field.visibility":
+        return ["field.visibility", "visibility_permille", "visibility"]
+    if token == "field.radiation":
+        return ["field.radiation", "radiation_permille", "radiation"]
+    if token == "field.wind":
+        return ["field.wind", "wind_permille", "wind"]
+    return [token]
+
+
+def _sample_field_permille(
+    *,
+    tick: int,
+    node_id: str,
+    field_id: str,
+    row: Mapping[str, object],
+    field_sample_cache: Dict[str, dict],
+) -> int:
+    cache_key = _field_sample_cache_key(
+        field_id=str(field_id).strip(),
+        spatial_node_id=str(node_id).strip(),
+        tick=int(tick),
+    )
+    cached = _as_map(field_sample_cache.get(cache_key))
+    if (
+        str(cached.get("field_id", "")).strip() == str(field_id).strip()
+        and str(cached.get("spatial_node_id", "")).strip() == str(node_id).strip()
+    ):
+        return _clamp_permille(cached.get("sampled_value", 0), 0)
+    sampled = _sample_value_permille(row, _field_sample_keys(field_id))
+    field_sample_cache[cache_key] = build_field_sample(
+        field_id=str(field_id).strip(),
+        spatial_node_id=str(node_id).strip(),
+        tick=int(max(0, _as_int(tick, 0))),
+        sampled_value=int(sampled),
+        has_cell=True,
+        sampled_cell_id=str(node_id).strip(),
+        extensions={"source": "signals.transport.channel_executor"},
+    )
+    return int(sampled)
+
+
 def _node_field_modifiers(
     *,
     tick: int,
@@ -133,44 +186,41 @@ def _node_field_modifiers(
     radiation = 0
     wind = 0
     for node_id in [str(item).strip() for item in list(path_node_ids or []) if str(item).strip()]:
-        cache_key = "{}::{}".format(int(max(0, _as_int(tick, 0))), node_id)
-        cached = dict(field_sample_cache.get(cache_key) or {})
-        if not cached:
-            raw = samples.get(node_id)
-            row = _as_map(raw)
-            # Allow direct scalar shorthand for visibility-only samples.
-            if not row and raw is not None:
-                row = {"field.visibility": _clamp_permille(raw, 0)}
-            cached = {
-                "visibility": _sample_value_permille(
-                    row,
-                    [
-                        "field.visibility",
-                        "visibility_permille",
-                        "visibility",
-                    ],
-                ),
-                "radiation": _sample_value_permille(
-                    row,
-                    [
-                        "field.radiation",
-                        "radiation_permille",
-                        "radiation",
-                    ],
-                ),
-                "wind": _sample_value_permille(
-                    row,
-                    [
-                        "field.wind",
-                        "wind_permille",
-                        "wind",
-                    ],
-                ),
-            }
-            field_sample_cache[cache_key] = dict(cached)
-        visibility = max(visibility, _clamp_permille(cached.get("visibility", 0), 0))
-        radiation = max(radiation, _clamp_permille(cached.get("radiation", 0), 0))
-        wind = max(wind, _clamp_permille(cached.get("wind", 0), 0))
+        raw = samples.get(node_id)
+        row = _as_map(raw)
+        # Allow direct scalar shorthand for visibility-only samples.
+        if not row and raw is not None:
+            row = {"field.visibility": _clamp_permille(raw, 0)}
+        visibility = max(
+            int(visibility),
+            _sample_field_permille(
+                tick=int(tick),
+                node_id=node_id,
+                field_id="field.visibility",
+                row=row,
+                field_sample_cache=field_sample_cache,
+            ),
+        )
+        radiation = max(
+            int(radiation),
+            _sample_field_permille(
+                tick=int(tick),
+                node_id=node_id,
+                field_id="field.radiation",
+                row=row,
+                field_sample_cache=field_sample_cache,
+            ),
+        )
+        wind = max(
+            int(wind),
+            _sample_field_permille(
+                tick=int(tick),
+                node_id=node_id,
+                field_id="field.wind",
+                row=row,
+                field_sample_cache=field_sample_cache,
+            ),
+        )
     return {
         "field_visibility_modifier_permille": int(visibility),
         "field_radiation_modifier_permille": int(radiation),

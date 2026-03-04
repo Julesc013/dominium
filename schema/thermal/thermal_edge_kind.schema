@@ -1,0 +1,22 @@
+SCHEMA: thermal/thermal_edge_kind.schema
+schema_id: dominium.schema.thermal.thermal_edge_kind
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Registry-driven edge-kind row for THERM thermal transfer topology declarations.
+
+REQUIRED SHAPE:
+record thermal_edge_kind
+  required:
+    - schema_version: semver
+    - edge_kind_id: id
+    - description: string
+    - tags: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Thermal edge semantics are data-defined and deterministic.
+- Edge kind behavior is policy/model-driven, not bespoke solver branches.
+

@@ -1,0 +1,222 @@
+{
+  "artifact_class": "CANONICAL",
+  "candidate_count": 20,
+  "candidates": [
+    {
+      "evidence_paths": [
+        "docs/audit/auditx/FINDINGS.json"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.98,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "data/registries/interaction_action_registry.json",
+        "run_meta/auditx_field1_final/FINDINGS.json",
+        "run_meta/auditx_spec1_final/FINDINGS.json",
+        "run_meta/auditx_spec1_phase6/FINDINGS.json",
+        "run_meta/control_decisions/1.control.decision.7e81f11da2186965d56e8423.json",
+        "run_meta/control_decisions/10.control.decision.6d8cad004b5c75e1b51b3902.json",
+        "run_meta/control_decisions/12.json",
+        "run_meta/control_decisions/2.json",
+        "run_meta/control_decisions/4.json",
+        "run_meta/control_decisions/5.json",
+        "run_meta/control_decisions/6.json",
+        "run_meta/control_decisions/8.json",
+        "run_meta/control_decisions/9.json"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.95,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "run_meta/auditx_field1_final/FINDINGS.json",
+        "run_meta/auditx_spec1_final/FINDINGS.json",
+        "run_meta/auditx_spec1_phase6/FINDINGS.json"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.9,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/control/control_plane_engine.py",
+        "src/inspection/inspection_engine.py",
+        "src/materials/materialization/materialization_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.9,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/client/interaction/interaction_dispatch.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.675,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/xstack/repox/check.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.675,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "docs/audit/TOPOLOGY_MAP.json",
+        "src/control/control_plane_engine.py",
+        "src/inspection/inspection_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.66,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/core/schedule/schedule_engine.py",
+        "src/materials/maintenance/decay_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.66,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/client/interaction/inspection_overlays.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/client/interaction/inspection_overlays.py",
+        "src/core/state/state_machine_engine.py",
+        "src/machines/port_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/fields/field_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/sessionx/ui_host.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/mechanics/structural_graph_engine.py",
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/client/interaction/inspection_overlays.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.63,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/control/ir/control_ir_multiplayer.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.63,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.63,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "client/core/client_command_bridge.c"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.615,
+      "rule_type": "TEST_REGRESSION",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/xstack/sessionx/observation.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        ".xstack_cache/auditx/RUN_META.json",
+        ".xstack_cache/performx/RUN_META.json",
+        ".xstack_cache/repox/REPOX_PROFILE.json",
+        ".xstack_cache/repox/proof_manifest.json",
+        ".xstack_cache/securex/RUN_META.json",
+        ".xstack_cache/testx/TESTX_RUN_META.json",
+        ".xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md",
+        "dist/pkg/winnt/x86_64/index/pkg_index.json",
+        "docs/audit/perf/profile_trace.sample.json",
+        "docs/audit/system/LEDGER_SNAPSHOT.md",
+        "docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.57,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "derived.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/auditx/analyzers/e105_legacy_reference_smell.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.525,
+      "rule_type": "TEST_REGRESSION",
+      "suggested_ruleset": "core.json"
+    }
+  ],
+  "schema_id": "dominium.auditx.promotion_candidates",
+  "schema_version": "1.0.0"
+}

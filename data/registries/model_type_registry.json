@@ -35,6 +35,13 @@
       },
       {
         "schema_version": "1.0.0",
+        "model_type_id": "model_type.fluid_leak_rate_stub",
+        "description": "Fluid leak-rate constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "model_type_id": "model_type.therm_conductance_stub",
         "description": "Thermal conductance constitutive model stub.",
         "parameter_schema_id": "dominium.schema.models.model_binding.v1",
@@ -135,6 +142,55 @@
         "schema_version": "1.0.0",
         "model_type_id": "model_type.elec_device_loss",
         "description": "Electrical device loss-to-heat constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.phys_radiation_damage_stub",
+        "description": "Physics radiation hazard coupling constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.phys_irradiance_heating_stub",
+        "description": "Physics irradiance-to-thermal coupling constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.phys_magnetic_stub",
+        "description": "Physics magnetic field coupling placeholder model type.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.phys_gravity_stub",
+        "description": "Physics gravity force constitutive model stub.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.time_mapping_proper_default_stub",
+        "description": "TEMP-1 proper-time mapping model driven by gravity/velocity inputs.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.time_mapping_civil_calendar_stub",
+        "description": "TEMP-1 civil-time calendar mapping model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.time_mapping_warp_session_stub",
+        "description": "TEMP-1 session warp-time mapping model.",
         "parameter_schema_id": "dominium.schema.models.model_binding.v1",
         "extensions": {}
       }

@@ -1,0 +1,22 @@
+SCHEMA: physics/entropy_effect_policy.schema
+schema_id: dominium.schema.physics.entropy_effect_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic policy rows for entropy-driven efficiency/hazard/maintenance modifiers.
+- Provide explicit profile-selectable degradation behavior.
+
+NON-SEMANTICS:
+- This schema does not directly mutate authoritative state.
+- Runtime must consume it through deterministic entropy-effect evaluation.
+
+REQUIRED SHAPE:
+record entropy_effect_policy
+  required:
+    - policy_id: id
+    - efficiency_degradation_curve_id: id
+    - hazard_multiplier_curve_id: id
+    - maintenance_interval_modifier_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map

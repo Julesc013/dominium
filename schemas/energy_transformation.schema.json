@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Energy Transformation Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-3 deterministic energy transformation registry row.",
+  "x-doc-ref": [
+    "docs/physics/ENERGY_LEDGER_AND_TRANSFORMATIONS.md",
+    "docs/physics/PHYSICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "transformation_id",
+    "input_quantities",
+    "output_quantities",
+    "boundary_allowed",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "transformation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_quantities": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^quantity\\.[a-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "number"
+        ]
+      }
+    },
+    "output_quantities": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^quantity\\.[a-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "number"
+        ]
+      }
+    },
+    "boundary_allowed": {
+      "type": "boolean"
+    },
+    "requires_profile_flag": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "transformation_id": "transform.kinetic_to_thermal",
+      "input_quantities": {
+        "quantity.energy_kinetic": 1
+      },
+      "output_quantities": {
+        "quantity.energy_thermal": 1,
+        "quantity.heat_loss": 1
+      },
+      "boundary_allowed": false,
+      "requires_profile_flag": null,
+      "deterministic_fingerprint": "3d8b5b7058aa18ec8ea0b0daf0b0ee0bbd4a2ce1eecf0fd7e2f8af9bc34c18db",
+      "extensions": {}
+    }
+  ]
+}

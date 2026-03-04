@@ -1,0 +1,21 @@
+SCHEMA: time/proper_time_state.schema
+schema_id: dominium.schema.time.proper_time_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Persist deterministic accumulated proper-time values for assembly/spatial/session targets when TEMP-1 mappings are enabled.
+
+REQUIRED SHAPE:
+record proper_time_state
+  required:
+    - schema_version: semver
+    - target_id: id
+    - accumulated_proper_time: quantity
+    - last_update_tick: u64
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Proper-time accumulation is derived from canonical tick mappings and never mutates canonical tick order.
+- Rows are deterministic for equivalent mapping inputs and scope ids.

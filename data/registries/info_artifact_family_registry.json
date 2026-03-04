@@ -59,6 +59,11 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.time_stamp",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.energy_ledger_entry",
         "info_family_id": "RECORD"
       },
@@ -130,6 +135,41 @@
       {
         "schema_version": "1.0.0",
         "artifact_type_id": "artifact.transform",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fluid.pressure_reading",
+        "info_family_id": "OBSERVATION"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fluid.relief_incident",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fluid.burst_incident",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_leak",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_overpressure",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_cavitation",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_burst",
         "info_family_id": "RECORD"
       }
     ],

@@ -21,6 +21,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.dev.impact_graph import build_graph_and_write, compute_impacted_sets, detect_changed_files
+from tools.governance.tool_semantic_impact import compute_semantic_impact
 
 
 TESTS_ROOT_REL = "tools/xstack/testx/tests"
@@ -156,6 +157,10 @@ def resolve_subset_selection(
             "changed_files": [],
             "impact_graph_hash": "",
             "impact_graph_path": "",
+            "required_test_suites": [],
+            "required_test_ids": [],
+            "semantic_impact_fingerprint": "",
+            "semantic_uncertainty_reasons": [],
         }
     if token in ("STRICT", "FULL"):
         return {
@@ -166,6 +171,10 @@ def resolve_subset_selection(
             "changed_files": [],
             "impact_graph_hash": "",
             "impact_graph_path": "",
+            "required_test_suites": [],
+            "required_test_ids": [],
+            "semantic_impact_fingerprint": "",
+            "semantic_uncertainty_reasons": [],
         }
 
     changed_result = detect_changed_files(repo_root=repo_root, base_ref="origin/main")
@@ -178,6 +187,10 @@ def resolve_subset_selection(
             "changed_files": [],
             "impact_graph_hash": "",
             "impact_graph_path": "",
+            "required_test_suites": [],
+            "required_test_ids": [],
+            "semantic_impact_fingerprint": "",
+            "semantic_uncertainty_reasons": [],
         }
     changed_files = list(changed_result.get("changed_files") or [])
     try:
@@ -195,6 +208,10 @@ def resolve_subset_selection(
             "changed_files": changed_files,
             "impact_graph_hash": "",
             "impact_graph_path": "",
+            "required_test_suites": [],
+            "required_test_ids": [],
+            "semantic_impact_fingerprint": "",
+            "semantic_uncertainty_reasons": [],
         }
     payload = dict(graph_result.get("payload") or {})
     impacted = compute_impacted_sets(graph_payload=payload, changed_files=changed_files)
@@ -209,6 +226,10 @@ def resolve_subset_selection(
             "changed_files": changed_files,
             "impact_graph_hash": str(graph_result.get("graph_hash", "")),
             "impact_graph_path": str(graph_result.get("graph_path", "")),
+            "required_test_suites": [],
+            "required_test_ids": [],
+            "semantic_impact_fingerprint": "",
+            "semantic_uncertainty_reasons": [],
         }
     if not subset_ids:
         return {
@@ -219,15 +240,68 @@ def resolve_subset_selection(
             "changed_files": changed_files,
             "impact_graph_hash": str(graph_result.get("graph_hash", "")),
             "impact_graph_path": str(graph_result.get("graph_path", "")),
+            "required_test_suites": [],
+            "required_test_ids": [],
+            "semantic_impact_fingerprint": "",
+            "semantic_uncertainty_reasons": [],
         }
+
+    topology_path = os.path.join(repo_root, "docs", "audit", "TOPOLOGY_MAP.json")
+    topology_payload, topology_error = _read_json(topology_path)
+    if topology_error:
+        topology_payload = {}
+    semantic_result = compute_semantic_impact(
+        repo_root=repo_root,
+        changed_files=changed_files,
+        topology_map_payload=topology_payload,
+    )
+    semantic_required_test_ids = sorted(set(str(item).strip() for item in (semantic_result.get("required_test_ids") or []) if str(item).strip()))
+    semantic_required_suites = sorted(set(str(item).strip() for item in (semantic_result.get("required_test_suites") or []) if str(item).strip()))
+    semantic_uncertainty_reasons = sorted(set(str(item).strip() for item in (semantic_result.get("uncertainty_reasons") or []) if str(item).strip()))
+    semantic_requires_strict = bool(semantic_result.get("requires_strict_fallback", False))
+
+    if semantic_requires_strict and semantic_uncertainty_reasons:
+        return {
+            "mode": "fallback_full",
+            "run_all": True,
+            "subset_ids": [],
+            "fallback_reason": "semantic_impact_uncertain",
+            "changed_files": changed_files,
+            "impact_graph_hash": str(graph_result.get("graph_hash", "")),
+            "impact_graph_path": str(graph_result.get("graph_path", "")),
+            "required_test_suites": semantic_required_suites,
+            "required_test_ids": semantic_required_test_ids,
+            "semantic_impact_fingerprint": str(semantic_result.get("deterministic_fingerprint", "")),
+            "semantic_uncertainty_reasons": semantic_uncertainty_reasons,
+        }
+    if semantic_requires_strict:
+        return {
+            "mode": "fallback_full",
+            "run_all": True,
+            "subset_ids": [],
+            "fallback_reason": "semantic_requires_strict_profile",
+            "changed_files": changed_files,
+            "impact_graph_hash": str(graph_result.get("graph_hash", "")),
+            "impact_graph_path": str(graph_result.get("graph_path", "")),
+            "required_test_suites": semantic_required_suites,
+            "required_test_ids": semantic_required_test_ids,
+            "semantic_impact_fingerprint": str(semantic_result.get("deterministic_fingerprint", "")),
+            "semantic_uncertainty_reasons": semantic_uncertainty_reasons,
+        }
+
+    subset_ids = sorted(set(subset_ids) | set(semantic_required_test_ids))
     return {
         "mode": "impact_graph",
         "run_all": False,
-        "subset_ids": sorted(set(subset_ids)),
+        "subset_ids": subset_ids,
         "fallback_reason": "",
         "changed_files": changed_files,
         "impact_graph_hash": str(graph_result.get("graph_hash", "")),
         "impact_graph_path": str(graph_result.get("graph_path", "")),
+        "required_test_suites": semantic_required_suites,
+        "required_test_ids": semantic_required_test_ids,
+        "semantic_impact_fingerprint": str(semantic_result.get("deterministic_fingerprint", "")),
+        "semantic_uncertainty_reasons": semantic_uncertainty_reasons,
     }
 
 
@@ -456,6 +530,10 @@ def run_testx_suite(
                 "fallback_reason": str(subset_plan.get("fallback_reason", "")),
                 "impact_graph_hash": str(subset_plan.get("impact_graph_hash", "")),
                 "impact_graph_path": str(subset_plan.get("impact_graph_path", "")),
+                "required_test_suites": list(subset_plan.get("required_test_suites") or []),
+                "required_test_ids": list(subset_plan.get("required_test_ids") or []),
+                "semantic_impact_fingerprint": str(subset_plan.get("semantic_impact_fingerprint", "")),
+                "semantic_uncertainty_reasons": list(subset_plan.get("semantic_uncertainty_reasons") or []),
             },
         }
 
@@ -570,6 +648,10 @@ def run_testx_suite(
             "fallback_reason": str(subset_plan.get("fallback_reason", "")),
             "impact_graph_hash": str(subset_plan.get("impact_graph_hash", "")),
             "impact_graph_path": str(subset_plan.get("impact_graph_path", "")),
+            "required_test_suites": list(subset_plan.get("required_test_suites") or []),
+            "required_test_ids": list(subset_plan.get("required_test_ids") or []),
+            "semantic_impact_fingerprint": str(subset_plan.get("semantic_impact_fingerprint", "")),
+            "semantic_uncertainty_reasons": list(subset_plan.get("semantic_uncertainty_reasons") or []),
         },
     }
 

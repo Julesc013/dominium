@@ -288,6 +288,14 @@ def _network_graph_overlay_payload(
     signal_delivery_data = dict(signal_delivery_section.get("data") or {})
     signal_quality_section = dict(sections.get("section.signal.quality_summary") or {})
     signal_quality_data = dict(signal_quality_section.get("data") or {})
+    elec_local_panel_section = dict(sections.get("section.elec.local_panel_state") or {})
+    elec_local_panel_data = dict(elec_local_panel_section.get("data") or {})
+    elec_device_states_section = dict(sections.get("section.elec.device_states") or {})
+    elec_device_states_data = dict(elec_device_states_section.get("data") or {})
+    elec_pf_section = dict(sections.get("section.elec.pf_summary") or {})
+    elec_pf_data = dict(elec_pf_section.get("data") or {})
+    elec_loss_heat_section = dict(sections.get("section.elec.loss_heat_summary") or {})
+    elec_loss_heat_data = dict(elec_loss_heat_section.get("data") or {})
     elec_fault_section = dict(sections.get("section.elec.fault_summary") or {})
     elec_fault_data = dict(elec_fault_section.get("data") or {})
     elec_protection_section = dict(sections.get("section.elec.protection_device_states") or {})
@@ -1003,6 +1011,15 @@ def _network_graph_overlay_payload(
     elec_compliance_state = str(elec_compliance_data.get("compliance_state", "")).strip() or None
     if elec_compliance_state:
         summary = "{} elec_compliance={}".format(summary, elec_compliance_state)
+    elec_panel_status = str(elec_local_panel_data.get("panel_status", "")).strip() or None
+    if elec_panel_status:
+        summary = "{} elec_panel={}".format(summary, elec_panel_status)
+    elec_pf_permille = int(max(0, _to_int(elec_pf_data.get("aggregate_pf_permille", 0), 0)))
+    if elec_pf_permille > 0:
+        summary = "{} elec_pf={}".format(summary, int(elec_pf_permille))
+    elec_heat_loss_total = int(max(0, _to_int(elec_loss_heat_data.get("heat_loss_total_stub", 0), 0)))
+    if elec_heat_loss_total > 0:
+        summary = "{} elec_heat_loss={}".format(summary, int(elec_heat_loss_total))
     return {
         "mode": "networkgraph_overlay",
         "summary": summary,
@@ -1026,6 +1043,12 @@ def _network_graph_overlay_payload(
             "elec_fault_edge_count": int(elec_fault_edge_count),
             "elec_trip_edge_count": int(elec_trip_edge_count),
             "elec_ground_fault_edge_count": int(elec_ground_fault_edge_count),
+            "elec_panel_status": elec_panel_status,
+            "elec_panel_energized": bool(elec_local_panel_data.get("energized", False)),
+            "elec_panel_tripped_count": int(max(0, _to_int(elec_local_panel_data.get("tripped_count", 0), 0))),
+            "elec_device_state_count": int(max(0, _to_int(elec_device_states_data.get("device_count", 0), 0))),
+            "elec_pf_permille": int(elec_pf_permille),
+            "elec_heat_loss_total_stub": int(elec_heat_loss_total),
             "tripped_edge_ids": sorted(tripped_edge_ids),
             "ground_fault_edge_ids": sorted(ground_fault_edge_ids),
             "congested_edge_ids": sorted(

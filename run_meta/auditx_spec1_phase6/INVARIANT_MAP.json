@@ -1,0 +1,757 @@
+{
+  "artifact_class": "CANONICAL",
+  "invariants": {
+    "INV-CANON-INDEX": {
+      "finding_count": 674,
+      "recommended_actions": {
+        "DOC_FIX": 674
+      },
+      "sample_findings": [
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0001",
+          "location": "docs/CODE_CHANGE_JUSTIFICATION.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0002",
+          "location": "docs/FAQ.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0003",
+          "location": "docs/MODDER_GUIDE.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0004",
+          "location": "docs/STATUS_NOW.md"
+        },
+        {
+          "category": "canon_drift",
+          "finding_id": "A3_CANON_DRIFT:0005",
+          "location": "docs/WHAT_PLAYERS_CAN_DO.md"
+        }
+      ],
+      "severities": {
+        "WARN": 674
+      }
+    },
+    "INV-CAPABILITY-SCOPE": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "ADD_TEST": 5
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0001",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0002",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0003",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0004",
+          "location": "libs/appcore/command/command_registry.c"
+        },
+        {
+          "category": "semantic.capability_drift",
+          "finding_id": "A3_CAPABILITY_DRIFT:0005",
+          "location": "libs/appcore/command/command_registry.c"
+        }
+      ],
+      "severities": {
+        "WARN": 5
+      }
+    },
+    "INV-COMMAND-CAPABILITY-DECLARED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "capability_bypass_smell",
+          "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
+          "location": "client/core/client_command_bridge.c"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-DECISION-LOG-MANDATORY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E131_SILENT_DOWNGRADE_SMELL:0001",
+          "location": "src/inspection/inspection_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-DERIVED-ARTIFACT-CONTRACT": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.derived_artifact_contract",
+          "finding_id": "A4_DERIVED_ARTIFACT_CONTRACT:0001",
+          "location": "docs/audit/auditx/FINDINGS.json"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-DERIVED-ARTIFACT-FRESHNESS": {
+      "finding_count": 11,
+      "recommended_actions": {
+        "ADD_RULE": 11
+      },
+      "sample_findings": [
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0001",
+          "location": ".xstack_cache/auditx/RUN_META.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0002",
+          "location": ".xstack_cache/performx/RUN_META.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0003",
+          "location": ".xstack_cache/repox/REPOX_PROFILE.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0004",
+          "location": ".xstack_cache/repox/proof_manifest.json"
+        },
+        {
+          "category": "derived_freshness",
+          "finding_id": "A8_DERIVED_FRESHNESS_SMELL:0005",
+          "location": ".xstack_cache/securex/RUN_META.json"
+        }
+      ],
+      "severities": {
+        "RISK": 11
+      }
+    },
+    "INV-EPISTEMIC-POLICY-REQUIRED": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "net.precision_leak_smell",
+          "finding_id": "E8_PRECISION_LEAK_SMELL:0001",
+          "location": "data/registries/epistemic_policy_registry.json"
+        },
+        {
+          "category": "net.precision_leak_smell",
+          "finding_id": "E8_PRECISION_LEAK_SMELL:0002",
+          "location": "data/registries/epistemic_policy_registry.json"
+        }
+      ],
+      "severities": {
+        "WARN": 2
+      }
+    },
+    "INV-INSPECTION-BUDGETED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "materials.unbounded_inspection_smell",
+          "finding_id": "E73_UNBOUNDED_INSPECTION_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-INTERACTION-INTENTS-ONLY": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "interaction.interaction_bypass_smell",
+          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0001",
+          "location": "src/client/interaction/interaction_dispatch.py"
+        },
+        {
+          "category": "interaction.interaction_bypass_smell",
+          "finding_id": "E52_INTERACTION_BYPASS_SMELL:0002",
+          "location": "src/client/interaction/interaction_dispatch.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_TEST": 2
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "tools/auditx/analyzers/e105_legacy_reference_smell.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-NO-ADHOC-STATE-FLAGS": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.adhoc_state_flag_smell",
+          "finding_id": "E93_ADHOC_STATE_FLAG_SMELL:0001",
+          "location": "src/client/interaction/inspection_overlays.py"
+        },
+        {
+          "category": "architecture.adhoc_state_flag_smell",
+          "finding_id": "E93_ADHOC_STATE_FLAG_SMELL:0002",
+          "location": "src/machines/port_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-NO-DIRECT-CAMERA-TOGGLE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "control.camera_bypass_smell",
+          "finding_id": "E124_CAMERA_BYPASS_SMELL:0001",
+          "location": "src/net/srz/shard_coordinator.py"
+        }
+      ],
+      "severities": {
+        "WARN": 1
+      }
+    },
+    "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "ADD_RULE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0002",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0003",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0004",
+          "location": "tools/xstack/sessionx/observation.py"
+        },
+        {
+          "category": "epistemics.hidden_state_leak_smell",
+          "finding_id": "E29_HIDDEN_STATE_LEAK_SMELL:0005",
+          "location": "tools/xstack/sessionx/observation.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-NO-DOMAIN-DOWNGRADE-LOGIC": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 1,
+        "REWRITE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0001",
+          "location": "src/inspection/inspection_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0002",
+          "location": "src/materials/materialization/materialization_engine.py"
+        },
+        {
+          "category": "architecture.silent_downgrade_smell",
+          "finding_id": "E131_SILENT_DOWNGRADE_SMELL:0001",
+          "location": "src/inspection/inspection_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1,
+        "VIOLATION": 2
+      }
+    },
+    "INV-NO-DUPLICATE-SCHEDULERS": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.adhoc_scheduler_smell",
+          "finding_id": "E85_ADHOC_SCHEDULER_SMELL:0001",
+          "location": "src/materials/maintenance/decay_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-NO-HARDCODED-STRUCTURES": {
+      "finding_count": 12,
+      "recommended_actions": {
+        "REWRITE": 12
+      },
+      "sample_findings": [
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
+          "location": "data/registries/interaction_action_registry.json"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
+          "location": "data/registries/interaction_action_registry.json"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
+          "location": "data/registries/interaction_action_registry.json"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
+          "location": "run_meta/control_decisions/1.control.decision.7e81f11da2186965d56e8423.json"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
+          "location": "run_meta/control_decisions/10.control.decision.6d8cad004b5c75e1b51b3902.json"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 12
+      }
+    },
+    "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.ir_nondeterminism_smell",
+          "finding_id": "E117_IR_NONDETERMINISM_SMELL:0001",
+          "location": "src/control/ir/control_ir_multiplayer.py"
+        },
+        {
+          "category": "architecture.ir_nondeterminism_smell",
+          "finding_id": "E117_IR_NONDETERMINISM_SMELL:0002",
+          "location": "src/control/ir/control_ir_multiplayer.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-NO-TRUTH-LEAK-VIA-INSPECTION": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "materials.inspection_leak_smell",
+          "finding_id": "E72_INSPECTION_LEAK_SMELL:0001",
+          "location": "src/client/interaction/inspection_overlays.py"
+        },
+        {
+          "category": "materials.inspection_leak_smell",
+          "finding_id": "E72_INSPECTION_LEAK_SMELL:0002",
+          "location": "src/client/interaction/inspection_overlays.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-NO-TRUTH-OVER-NET": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "ADD_RULE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0002",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0003",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0004",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "net.truth_over_net_smell",
+          "finding_id": "E2_TRUTH_OVER_NET_SMELL:0005",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-NO-UNDECLARED-REGISTRY": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_registry_smell",
+          "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0001",
+          "location": "data/registries/compliance_check_registry.json"
+        },
+        {
+          "category": "architecture.undeclared_registry_smell",
+          "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0002",
+          "location": "data/registries/spec_type_registry.json"
+        },
+        {
+          "category": "architecture.undeclared_registry_smell",
+          "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0003",
+          "location": "data/registries/tolerance_policy_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
+    "INV-NO-UNDECLARED-SCHEMA": {
+      "finding_count": 13,
+      "recommended_actions": {
+        "ADD_RULE": 13
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
+          "location": "schema/specs/compliance_check.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
+          "location": "schema/specs/compliance_result.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
+          "location": "schema/specs/spec_sheet.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0004",
+          "location": "schema/specs/spec_type.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0005",
+          "location": "schema/specs/tolerance_policy.schema"
+        }
+      ],
+      "severities": {
+        "RISK": 13
+      }
+    },
+    "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "performance.performance_nondeterminism_smell",
+          "finding_id": "E48_PERFORMANCE_NONDETERMINISM_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO_SILENT_MACRO_CHANGE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "materials.reenactment_leak_smell",
+          "finding_id": "E71_REENACTMENT_LEAK_SMELL:0001",
+          "location": "src/client/interaction/inspection_overlays.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-SCHEMA-SHADOWING-CONTROL": {
+      "finding_count": 120,
+      "recommended_actions": {
+        "ADD_TEST": 120
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0001",
+          "location": "data/packs/org.dominium.base.body.earth_macro/content/domains.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0002",
+          "location": "data/packs/org.dominium.base.body.earth_macro/content/fields.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0003",
+          "location": "data/packs/org.dominium.base.body.earth_macro/content/topology_nodes.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0004",
+          "location": "data/packs/org.dominium.base.body.earth_macro/pack_manifest.json"
+        },
+        {
+          "category": "semantic.schema_shadowing",
+          "finding_id": "A2_SCHEMA_SHADOWING:0005",
+          "location": "data/packs/org.dominium.base.rules/content/capabilities.json"
+        }
+      ],
+      "severities": {
+        "WARN": 120
+      }
+    },
+    "INV-TOPOLOGY-MAP-PRESENT": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0001",
+          "location": "src/specs"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-UI-ENTITLEMENT-GATING": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "capability_bypass_smell",
+          "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
+          "location": "client/core/client_command_bridge.c"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-WORKSPACE-ISOLATION": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "semantic.workspace_contamination",
+          "finding_id": "A7_WORKSPACE_CONTAMINATION:0001",
+          "location": "scripts/ci/check_repox_rules.py"
+        }
+      ],
+      "severities": {
+        "WARN": 1
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 15,
+      "recommended_actions": {
+        "RETIRE": 15
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "src/interaction/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "src/interaction/mount/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "src/interaction/pose/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "tools/auditx/analyzers/__init__.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "tools/auditx/analyzers/e100_interior_info_leak_smell.py"
+        }
+      ],
+      "severities": {
+        "WARN": 15
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 60,
+      "recommended_actions": {
+        "ADD_RULE": 39,
+        "ADD_TEST": 21
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "src/interaction/pose/pose_engine.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0002",
+          "location": "src/interaction/pose/pose_engine.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0003",
+          "location": "src/interaction/pose/pose_engine.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0004",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0005",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 39,
+        "WARN": 21
+      }
+    }
+  },
+  "schema_id": "dominium.auditx.invariant_map",
+  "schema_version": "1.0.0"
+}

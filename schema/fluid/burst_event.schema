@@ -1,0 +1,17 @@
+SCHEMA: fluid/burst_event.schema
+schema_id: dominium.schema.fluid.burst_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic RECORD artifact for FLUID catastrophic containment failure.
+
+REQUIRED SHAPE:
+record burst_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - target_id: id
+    - overpressure_value: number
+    - deterministic_fingerprint: sha256
+    - extensions: map

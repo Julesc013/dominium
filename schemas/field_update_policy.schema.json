@@ -2,10 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Field Update Policy Schema",
   "version": "1.0.0",
-  "description": "Deterministic FIELD-1 field update policy declaration.",
+  "description": "Deterministic FIELD update policy declaration with PHYS-2 tier/function metadata.",
   "x-doc-ref": [
     "docs/fields/FIELD_LAYER_MODEL.md",
-    "docs/audit/FIELD_LAYER_BASELINE.md"
+    "docs/audit/FIELD_LAYER_BASELINE.md",
+    "docs/physics/FIELD_GENERALIZATION.md"
   ],
   "type": "object",
   "required": [
@@ -24,16 +25,36 @@
       "type": "string",
       "minLength": 1
     },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "description": {
       "type": "string"
     },
+    "tier": {
+      "type": "string",
+      "enum": ["F0", "F1", "F2"]
+    },
     "schedule_id": {
+      "type": ["string", "null"]
+    },
+    "update_schedule_id": {
       "type": ["string", "null"]
     },
     "flow_channel_ref": {
       "type": ["string", "null"]
     },
     "hazard_ref": {
+      "type": ["string", "null"]
+    },
+    "deterministic_function_id": {
+      "type": "string"
+    },
+    "uses_rng_stream": {
+      "type": "boolean"
+    },
+    "rng_stream_name": {
       "type": ["string", "null"]
     },
     "extensions": {
@@ -44,11 +65,17 @@
   "examples": [
     {
       "schema_version": "1.0.0",
-      "update_policy_id": "field.scheduled",
+      "update_policy_id": "field.scheduled_linear",
+      "policy_id": "field.scheduled_linear",
       "description": "Update field via deterministic schedule ticks.",
+      "tier": "F1",
       "schedule_id": "schedule.field.hourly",
+      "update_schedule_id": "schedule.field.hourly",
       "flow_channel_ref": null,
       "hazard_ref": null,
+      "deterministic_function_id": "deterministic.field.linear_delta",
+      "uses_rng_stream": false,
+      "rng_stream_name": null,
       "extensions": {}
     }
   ]

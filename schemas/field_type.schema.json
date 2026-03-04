@@ -2,10 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Field Type Schema",
   "version": "1.0.0",
-  "description": "Deterministic FIELD-1 field type declaration.",
+  "description": "Deterministic FIELD field type declaration with PHYS-2 dimensional metadata.",
   "x-doc-ref": [
     "docs/fields/FIELD_LAYER_MODEL.md",
-    "docs/audit/FIELD_LAYER_BASELINE.md"
+    "docs/audit/FIELD_LAYER_BASELINE.md",
+    "docs/physics/FIELD_GENERALIZATION.md"
   ],
   "type": "object",
   "required": [
@@ -25,12 +26,51 @@
       "type": "string",
       "minLength": 1
     },
+    "field_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "description": {
       "type": "string"
     },
     "value_kind": {
       "type": "string",
       "enum": ["scalar", "vector"]
+    },
+    "dimension_vector": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "default_value": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    "update_policy_id": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "extensions": {
       "type": "object",
@@ -40,9 +80,21 @@
   "examples": [
     {
       "schema_version": "1.0.0",
+      "field_id": "field.temperature",
       "field_type_id": "field.temperature",
       "description": "Ambient temperature field.",
       "value_kind": "scalar",
+      "dimension_vector": {
+        "M": 0,
+        "L": 0,
+        "T": 0,
+        "Q": 0,
+        "THETA": 1,
+        "I": 0
+      },
+      "default_value": 20,
+      "update_policy_id": "field.static_default",
+      "deterministic_fingerprint": "cd6077f1de7fcbe27bf73eb9d39c92f2c9fd16eb2e89978689a08f1437f73b8d",
       "extensions": {}
     }
   ]

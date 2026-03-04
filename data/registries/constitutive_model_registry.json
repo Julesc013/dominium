@@ -10,14 +10,40 @@
         "model_id": "model.elec.load.phasor.default",
         "model_type_id": "model_type.elec_load_phasor_stub",
         "description": "ELEC phasor constitutive model baseline stub.",
-        "supported_tiers": ["macro", "meso", "micro"],
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.apparent_stub", "selector": "target.channel", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.power_factor_nominal", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.apparent_stub",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.power_factor_nominal",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.power_factor", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "compliance_signal", "output_id": "compliance.power_factor_window", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.elec.power_factor",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "compliance_signal",
+            "output_id": "compliance.power_factor_window",
+            "extensions": {}
+          }
         ],
         "cost_units": 2,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -33,14 +59,46 @@
         "model_id": "model.elec_load_resistive_stub",
         "model_type_id": "model_type.elec_load_phasor_stub",
         "description": "Deterministic resistive load model for active/reactive/apparent demand.",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.elec.node_demand_active", "selector": "target.node", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.elec.node_demand_active",
+            "selector": "target.node",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.active_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.active_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.reactive_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.reactive_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.apparent_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.apparent_stub"
+            }
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -56,16 +114,59 @@
         "model_id": "model.elec_load_motor_stub",
         "model_type_id": "model_type.elec_load_phasor_stub",
         "description": "Deterministic motor/inductive load model with PF-derived reactive demand.",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.elec.node_demand_active", "selector": "target.node", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.pf_target_permille", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.elec.node_demand_active",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.elec.pf_target_permille",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.power_factor", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.active_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.active_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.reactive_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.reactive_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.apparent_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.apparent_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.elec.power_factor",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -81,15 +182,48 @@
         "model_id": "model.elec_pf_correction",
         "model_type_id": "model_type.elec_pf_correction",
         "description": "Deterministic PF correction model (capacitor-bank style Q compensation).",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.node", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.reactive_stub", "selector": "target.node", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.pf_target_permille", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.active_stub",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.reactive_stub",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.elec.pf_target_permille",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.elec.pf_adjusted_q", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.reactive_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.reactive_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.elec.pf_adjusted_q",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -105,18 +239,73 @@
         "model_id": "model.elec_transformer_stub",
         "model_type_id": "model_type.elec_transformer_stub",
         "description": "Deterministic transformer ratio/loss placeholder model.",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.edge", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.reactive_stub", "selector": "target.edge", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.apparent_stub", "selector": "target.edge", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.transformer_ratio", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.active_stub",
+            "selector": "target.edge",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.reactive_stub",
+            "selector": "target.edge",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.apparent_stub",
+            "selector": "target.edge",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.elec.transformer_ratio",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.active_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.active_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.reactive_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.reactive_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.apparent_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.apparent_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "quantity.thermal.heat_loss_stub",
+            "extensions": {}
+          }
         ],
         "cost_units": 2,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -132,18 +321,72 @@
         "model_id": "model.elec_storage_battery",
         "model_type_id": "model_type.elec_storage_battery",
         "description": "Deterministic battery storage model with SoC and internal resistance proxy.",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.elec.storage_state_of_charge", "selector": "target.node", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.node", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.storage_internal_resistance_proxy", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.elec.storage_state_of_charge",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.active_stub",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.elec.storage_internal_resistance_proxy",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.reactive_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.reactive_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.apparent_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.apparent_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "hazard_increment", "output_id": "hazard.elec.storage_degradation", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.active_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.active_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.reactive_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.reactive_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.apparent_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.apparent_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "quantity.thermal.heat_loss_stub",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.elec.storage_degradation",
+            "extensions": {}
+          }
         ],
         "cost_units": 2,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -159,16 +402,54 @@
         "model_id": "model.elec_device_loss",
         "model_type_id": "model_type.elec_device_loss",
         "description": "Deterministic device loss model mapping electrical losses to heat outputs.",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.active_stub", "selector": "target.edge", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.power.apparent_stub", "selector": "target.edge", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.elec.loss_coeff", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.active_stub",
+            "selector": "target.edge",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.power.apparent_stub",
+            "selector": "target.edge",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.elec.loss_coeff",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.power.active_stub", "extensions": {"quantity_bundle_id": "bundle.power_phasor", "component_quantity_id": "quantity.power.active_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "effect", "output_id": "effect.temperature_increase_local", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.power.active_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.power_phasor",
+              "component_quantity_id": "quantity.power.active_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "quantity.thermal.heat_loss_stub",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.temperature_increase_local",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -184,14 +465,40 @@
         "model_id": "model.signal.attenuation.default",
         "model_type_id": "model_type.signal_attenuation_stub",
         "description": "Signal attenuation constitutive model baseline stub.",
-        "supported_tiers": ["macro", "meso", "micro"],
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.visibility", "selector": "target.position", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.radiation", "selector": "target.position", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.visibility",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.radiation",
+            "selector": "target.position",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.signal.loss_modifier", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "effect", "output_id": "effect.visibility_reduction", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.signal.loss_modifier",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.visibility_reduction",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -207,14 +514,40 @@
         "model_id": "model.mech.fatigue.default",
         "model_type_id": "model_type.mech_fatigue_rate_stub",
         "description": "Mechanical fatigue constitutive model baseline stub.",
-        "supported_tiers": ["macro", "meso", "micro"],
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "hazard", "input_id": "hazard.track_wear", "selector": "target.id", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "hazard",
+            "input_id": "hazard.track_wear",
+            "selector": "target.id",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.position",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "hazard_increment", "output_id": "hazard.track_wear", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.mech.fatigue_ratio", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.track_wear",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.mech.fatigue_ratio",
+            "extensions": {}
+          }
         ],
         "cost_units": 2,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -230,14 +563,39 @@
         "model_id": "model.fluid.pump_curve.default",
         "model_type_id": "model_type.fluid_pump_curve_stub",
         "description": "Fluid pump curve constitutive model baseline stub.",
-        "supported_tiers": ["macro", "meso"],
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.pressure", "selector": "target.channel", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "state_machine", "input_id": "state_machine.pump_mode", "selector": "target.id", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.pressure_head",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "state_machine",
+            "input_id": "state_machine.pump_mode",
+            "selector": "target.id",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "flow.adjust.pressure_delta", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.fluid.operating_point", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "flow.adjust.pressure_head_delta",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.fluid.operating_point",
+            "extensions": {}
+          }
         ],
         "cost_units": 2,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -253,14 +611,40 @@
         "model_id": "model.therm.conductance.default",
         "model_type_id": "model_type.therm_conductance_stub",
         "description": "Thermal conductance constitutive model baseline stub.",
-        "supported_tiers": ["macro", "meso", "micro"],
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "material_property", "input_id": "mat.thermal_conductivity", "selector": "target.material", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "material_property",
+            "input_id": "mat.thermal_conductivity",
+            "selector": "target.material",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.heat_flux", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "effect", "output_id": "effect.temperature_shift", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.heat_flux",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.temperature_shift",
+            "extensions": {}
+          }
         ],
         "cost_units": 2,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -276,13 +660,32 @@
         "model_id": "model.therm_heat_capacity",
         "model_type_id": "model_type.therm_heat_capacity",
         "description": "THERM-1 heat-capacity mapping model (E->T proxy).",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "quantity.thermal.energy_store_stub", "selector": "target.node", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.therm.heat_capacity", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "quantity.thermal.energy_store_stub",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.therm.heat_capacity",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.temperature", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.temperature",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -298,14 +701,41 @@
         "model_id": "model.therm_conductance",
         "model_type_id": "model_type.therm_conductance",
         "description": "THERM-1 deterministic graph conduction model.",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.therm.temperature", "selector": "target.edge", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.therm.conductance", "selector": null, "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.therm.temperature",
+            "selector": "target.edge",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.therm.conductance",
+            "selector": null,
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.heat_transfer", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.thermal.heat_flow_stub", "extensions": {"quantity_bundle_id": "bundle.thermal_basic", "component_quantity_id": "quantity.thermal.heat_flow_stub"}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.heat_transfer",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.thermal.heat_flow_stub",
+            "extensions": {
+              "quantity_bundle_id": "bundle.thermal_basic",
+              "component_quantity_id": "quantity.thermal.heat_flow_stub"
+            }
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -321,13 +751,33 @@
         "model_id": "model.therm_loss_to_temp",
         "model_type_id": "model_type.therm_loss_to_temp",
         "description": "THERM-1 loss-to-temperature mapping model.",
-        "supported_tiers": ["meso"],
+        "supported_tiers": [
+          "meso"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "flow_quantity", "input_id": "quantity.thermal.heat_loss_stub", "selector": "target.node", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.thermal.heat_loss_stub",
+            "selector": "target.node",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "flow_adjustment", "output_id": "quantity.thermal.energy_store_stub", "extensions": {"component_quantity_id": "quantity.thermal.energy_store_stub"}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "quantity.thermal.heat_loss_stub", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.thermal.energy_store_stub",
+            "extensions": {
+              "component_quantity_id": "quantity.thermal.energy_store_stub"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "quantity.thermal.heat_loss_stub",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -343,13 +793,34 @@
         "model_id": "model.therm_phase_transition",
         "model_type_id": "model_type.therm_phase_transition",
         "description": "THERM-2 deterministic temperature-threshold phase transition trigger model.",
-        "supported_tiers": ["macro", "meso", "micro"],
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "material_property", "input_id": "phase_profile.thresholds", "selector": "target.material", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "material_property",
+            "input_id": "phase_profile.thresholds",
+            "selector": "target.material",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.phase_transition_trigger", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.phase_transition_trigger",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -365,15 +836,45 @@
         "model_id": "model.therm_cure_progress",
         "model_type_id": "model_type.therm_cure_progress",
         "description": "THERM-2 deterministic curing progress and defect hazard model.",
-        "supported_tiers": ["meso", "micro"],
+        "supported_tiers": [
+          "meso",
+          "micro"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "field", "input_id": "field.temperature", "selector": "target.position", "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.therm.cure_progress", "selector": "target.id", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.therm.cure_progress",
+            "selector": "target.id",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.cure_progress_delta_permille", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.cure_defect_delta", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "hazard_increment", "output_id": "hazard.cure_defect.basic", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.cure_progress_delta_permille",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.cure_defect_delta",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.cure_defect.basic",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -389,14 +890,39 @@
         "model_id": "model.therm_insulation_modifier",
         "model_type_id": "model_type.therm_insulation_modifier",
         "description": "THERM-2 deterministic insulation conductance modifier model.",
-        "supported_tiers": ["meso", "micro"],
+        "supported_tiers": [
+          "meso",
+          "micro"
+        ],
         "input_signature": [
-          {"schema_version": "1.0.0", "input_kind": "spec_param", "input_id": "spec.thermal_insulation.factor_permille", "selector": null, "extensions": {}},
-          {"schema_version": "1.0.0", "input_kind": "derived", "input_id": "derived.therm.base_conductance", "selector": "target.edge", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.thermal_insulation.factor_permille",
+            "selector": null,
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.therm.base_conductance",
+            "selector": "target.edge",
+            "extensions": {}
+          }
         ],
         "output_signature": [
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.insulation_factor_permille", "extensions": {}},
-          {"schema_version": "1.0.0", "output_kind": "derived_quantity", "output_id": "derived.therm.effective_conductance", "extensions": {}}
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.insulation_factor_permille",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.therm.effective_conductance",
+            "extensions": {}
+          }
         ],
         "cost_units": 1,
         "cache_policy_id": "cache.by_inputs_hash",
@@ -623,6 +1149,446 @@
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_gravity_force",
+        "model_type_id": "model_type.phys_gravity_stub",
+        "description": "PHYS-2 canonical gravity force model emitting process.apply_force payloads from field.gravity_vector.",
+        "supported_tiers": [
+          "micro"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.gravity_vector",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "phys.mass_value",
+            "selector": null,
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "process.apply_force",
+            "extensions": {
+              "quantity_id": "quantity.force"
+            }
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "bb39b7b730146e6c80d3f74a4ac080af4c0d6d738dc4bd287f057ca00f95f3f9",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "gravity_stub": true,
+          "canonical_id": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_radiation_damage_stub",
+        "model_type_id": "model_type.phys_radiation_damage_stub",
+        "description": "PHYS-2 deterministic radiation hazard coupling stub.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.radiation_intensity",
+            "selector": "target.position",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.radiation.exposure_stub",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "d81ddd70bbd9c1027c8f5b68f86ec656fbe687f0202f4f49f1110f144f626f67",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "field_stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_irradiance_heating_stub",
+        "model_type_id": "model_type.phys_irradiance_heating_stub",
+        "description": "PHYS-2 deterministic irradiance-to-thermal effect stub.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.irradiance",
+            "selector": "target.position",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "effect",
+            "output_id": "effect.temperature_increase_local",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "97fd33707fae03e44f156f4e47f2ff57d65eb9656fe8a4efd37d52781f46761e",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "field_stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys_magnetic_stub",
+        "model_type_id": "model_type.phys_magnetic_stub",
+        "description": "PHYS-2 magnetic coupling placeholder model (no authoritative side effects).",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.magnetic_flux_stub",
+            "selector": "target.position",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.phys.magnetic_stub",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "26955f10acac4a89fc2f44f2620db8de00f6e852af25634ca36af6f4db6bbf40",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "field_stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.phys.gravity_stub",
+        "model_type_id": "model_type.phys_gravity_stub",
+        "description": "Legacy PHYS-1 gravity model alias retained for compatibility.",
+        "supported_tiers": [
+          "micro"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.gravity.vector",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "phys.mass_value",
+            "selector": null,
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "process.apply_force",
+            "extensions": {
+              "quantity_id": "quantity.force"
+            }
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "8b7345a957f4e9a1cf52ddcf1d6e35d8ff4f14fb1c9abef0d27be8f17af5dfaf",
+        "version_introduced": "1.0.0",
+        "deprecated": true,
+        "extensions": {
+          "gravity_stub": true,
+          "alias_of": "model.phys_gravity_force"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.time.proper_default_stub",
+        "model_type_id": "model_type.time_mapping_proper_default_stub",
+        "description": "TEMP-1 deterministic proper-time mapping model driven by canonical tick, gravity, and velocity.",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "canonical_tick",
+            "selector": null,
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.gravity_vector",
+            "selector": "target.position",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "velocity",
+            "selector": "target.assembly",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.time.proper_delta",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "TEMP1-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.time.civil_calendar_stub",
+        "model_type_id": "model_type.time_mapping_civil_calendar_stub",
+        "description": "TEMP-1 deterministic civil-time mapping model from canonical tick.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "canonical_tick",
+            "selector": null,
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.time.civil_value",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "TEMP1-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.time.warp_session_stub",
+        "model_type_id": "model_type.time_mapping_warp_session_stub",
+        "description": "TEMP-1 deterministic warp-time mapping model bound to session warp policy.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "canonical_tick",
+            "selector": null,
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "session_warp_factor",
+            "selector": "target.session",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.time.warp_value",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "TEMP1-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.fluid_pump_curve_stub",
+        "model_type_id": "model_type.fluid_pump_curve_stub",
+        "description": "FLUID deterministic pump curve stub alias for constitution registries.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.pressure_head",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "state_machine",
+            "input_id": "state_machine.pump_mode",
+            "selector": "target.id",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "flow_adjustment",
+            "output_id": "quantity.mass_flow",
+            "extensions": {
+              "quantity_bundle_id": "bundle.fluid_basic",
+              "component_quantity_id": "quantity.mass_flow"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.fluid.operating_point",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "alias_of": "model.fluid.pump_curve.default"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.fluid_leak_rate_stub",
+        "model_type_id": "model_type.fluid_leak_rate_stub",
+        "description": "FLUID deterministic leak-rate model stub for containment failures.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.pressure_head",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "spec_param",
+            "input_id": "spec.leak_coefficient",
+            "selector": "target.edge",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.fluid.leak_rate",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "hazard_increment",
+            "output_id": "hazard.fluid.leak",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "FLUID2"
+        }
       }
     ],
     "extensions": {}

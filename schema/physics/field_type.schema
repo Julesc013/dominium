@@ -1,0 +1,27 @@
+SCHEMA: physics/field_type.schema
+schema_id: dominium.schema.physics.field_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical PHYS field type descriptors for deterministic field-layer registration.
+- Make field dimensions, defaults, and update-policy bindings explicit and auditable.
+
+NON-SEMANTICS:
+- This schema does not run field solves.
+- It does not authorize direct state mutation.
+
+REQUIRED SHAPE:
+record field_type
+  required:
+    - field_id: id
+    - dimension_vector: map(base_dimension -> exponent)
+    - default_value: scalar|vector
+    - update_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Every authoritative field id must be registry-declared.
+- Dimension vectors must be explicit.
+- Field update behavior must route through declared update policies and process pathways.

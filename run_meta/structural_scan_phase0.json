@@ -1,0 +1,991 @@
+{
+  "cross_domain_ref_count": 8,
+  "cross_domain_refs": [
+    {
+      "dep": "mobility",
+      "file": "src/net/policies/policy_server_authoritative.py",
+      "owner": "net"
+    },
+    {
+      "dep": "mobility",
+      "file": "src/net/srz/shard_coordinator.py",
+      "owner": "net"
+    },
+    {
+      "dep": "fields",
+      "file": "src/thermal/network/thermal_network_engine.py",
+      "owner": "thermal"
+    },
+    {
+      "dep": "electric",
+      "file": "tools/xstack/sessionx/process_runtime.py",
+      "owner": "sessionx"
+    },
+    {
+      "dep": "fields",
+      "file": "tools/xstack/sessionx/process_runtime.py",
+      "owner": "sessionx"
+    },
+    {
+      "dep": "mechanics",
+      "file": "tools/xstack/sessionx/process_runtime.py",
+      "owner": "sessionx"
+    },
+    {
+      "dep": "mobility",
+      "file": "tools/xstack/sessionx/process_runtime.py",
+      "owner": "sessionx"
+    },
+    {
+      "dep": "signals",
+      "file": "tools/xstack/sessionx/process_runtime.py",
+      "owner": "sessionx"
+    }
+  ],
+  "direct_process_call_count": 184,
+  "direct_process_call_sites": [
+    {
+      "file": "src/client/interaction/interaction_dispatch.py",
+      "line": 779,
+      "snippet": "execution = runtime_execute_intent("
+    },
+    {
+      "file": "tools/auditx/analyzers/e104_direct_intent_bypass_smell.py",
+      "line": 59,
+      "snippet": "has_execute_call = (\"execute_intent(\" in text) and (\"def execute_intent(\" not in text)"
+    },
+    {
+      "file": "tools/auditx/analyzers/e52_interaction_bypass_smell.py",
+      "line": 84,
+      "snippet": "\"execute_intent(\","
+    },
+    {
+      "file": "tools/electric/tool_run_elec_stress.py",
+      "line": 217,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/repox/check.py",
+      "line": 3585,
+      "snippet": "\"run_process(\","
+    },
+    {
+      "file": "tools/xstack/sessionx/process_runtime.py",
+      "line": 15548,
+      "snippet": "def execute_intent("
+    },
+    {
+      "file": "tools/xstack/sessionx/scheduler.py",
+      "line": 558,
+      "snippet": "executed = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/lod_invariance_testlib.py",
+      "line": 309,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/net_mp9_testlib.py",
+      "line": 155,
+      "snippet": "executed = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_accept_candidate_creates_commitments.py",
+      "line": 31,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_boundary_field_exchange_deterministic.py",
+      "line": 38,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_breach_creates_leak_hazard.py",
+      "line": 29,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_breaker_toggle_requires_control_intent.py",
+      "line": 27,
+      "snippet": "\"    run_process('process.elec.flip_breaker', {'device_id': device_id})\","
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_breaker_trip_deterministic.py",
+      "line": 19,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_breaker_trip_disconnects_flow.py",
+      "line": 48,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_breaker_trip_on_overload.py",
+      "line": 31,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_degrade_geometry_metrics.py",
+      "line": 61,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_degrade_order_deterministic.py",
+      "line": 41,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_degrade_signal_processing_deterministic.py",
+      "line": 18,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_degrade_wear_updates.py",
+      "line": 37,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_downgrade_logged.py",
+      "line": 26,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_downgrade_to_meso_logged.py",
+      "line": 30,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_exceeded_triggers_degrade_not_lag.py",
+      "line": 54,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_fallback_to_E0.py",
+      "line": 31,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_parallelism_reduction_deterministic.py",
+      "line": 45,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_budget_partial_expansion_deterministic.py",
+      "line": 43,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_cache_reuse_same_anchor.py",
+      "line": 50,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_capability_inspection_redaction.py",
+      "line": 141,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_capsule_aabb_collision_deterministic.py",
+      "line": 103,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_capsule_capsule_collision_deterministic.py",
+      "line": 104,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_cohort_expand_deterministic_ids.py",
+      "line": 25,
+      "snippet": "create = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_collapse_preserves_mass.py",
+      "line": 38,
+      "snippet": "expanded = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_collision_resolution_integration.py",
+      "line": 29,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_commitment_required_under_C1.py",
+      "line": 65,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_compliance_result_deterministic.py",
+      "line": 92,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_conservation_ledger_transfer_balanced.py",
+      "line": 50,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_construction_visualization_render_model_hash_stable.py",
+      "line": 41,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_contract_violation_refusal.py",
+      "line": 147,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_control_binding_exposed.py",
+      "line": 85,
+      "snippet": "entered = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_control_intent_required_in_ui.py",
+      "line": 39,
+      "snippet": "\"result = run_process(\\\"process.camera_set_view_mode\\\")\\n\""
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_corridor_clamp_deterministic.py",
+      "line": 35,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_cost_accounting_deterministic.py",
+      "line": 64,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_coupling_consist_order_deterministic.py",
+      "line": 27,
+      "snippet": "attach = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_cross_shard_cohort_refusal.py",
+      "line": 48,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_cross_shard_order_behavior.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_cure_progress_deterministic.py",
+      "line": 67,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_deadman_timeout.py",
+      "line": 51,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_decay_deterministic.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_degrade_micro_to_meso_under_budget.py",
+      "line": 42,
+      "snippet": "expanded = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_delay_event_logged.py",
+      "line": 68,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_derailment_threshold_trigger.py",
+      "line": 34,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_deterministic_ordering_of_instances.py",
+      "line": 40,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_diegetic_tool_readouts_redacted.py",
+      "line": 53,
+      "snippet": "tick_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_earth_tile_roi_selection_determinism.py",
+      "line": 144,
+      "snippet": "executed = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_elec5_cascade_bounded.py",
+      "line": 35,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_elec5_degradation_logged.py",
+      "line": 38,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_elec5_proof_hash_chain_stable.py",
+      "line": 35,
+      "snippet": "tick_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_elec5_shard_boundary_rules.py",
+      "line": 100,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_elec_inspection_snapshot_cached.py",
+      "line": 55,
+      "snippet": "tick_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_epistemic_gating_of_reenactment_detail.py",
+      "line": 48,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_epistemic_no_info_gain_from_expand.py",
+      "line": 137,
+      "snippet": "expanded = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_epistemic_no_leak_outside_roi.py",
+      "line": 41,
+      "snippet": "expanded = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_epistemic_quantization_of_failure_risk.py",
+      "line": 60,
+      "snippet": "diegetic_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_epistemic_redaction_applied.py",
+      "line": 47,
+      "snippet": "expanded = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_epistemic_redaction_field_values.py",
+      "line": 93,
+      "snippet": "diegetic = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_event_stream_index_deterministic.py",
+      "line": 37,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_events_always_required_under_C0.py",
+      "line": 32,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_expand_collapse_expand_stability.py",
+      "line": 59,
+      "snippet": "first_expand = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_fail_safe_defaults.py",
+      "line": 41,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_failure_trigger_threshold_deterministic.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_fault_detection_deterministic.py",
+      "line": 19,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_formalization_accept_creates_geometry.py",
+      "line": 31,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_free_motion_deterministic.py",
+      "line": 26,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_friction_affects_accel.py",
+      "line": 25,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_friction_effect_on_traction.py",
+      "line": 134,
+      "snippet": "field_tick = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_geometry_create_deterministic.py",
+      "line": 63,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_history_query_deterministic.py",
+      "line": 52,
+      "snippet": "inspected_asset = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_inference_does_not_mutate_truth.py",
+      "line": 38,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_inspection_cache_reuse.py",
+      "line": 97,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_inspection_invalidation_on_state_change.py",
+      "line": 99,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_inspection_snapshot_cached.py",
+      "line": 50,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_inspection_snapshot_deterministic.py",
+      "line": 50,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_inspection_snapshot_stable.py",
+      "line": 36,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_instrument_redaction.py",
+      "line": 37,
+      "snippet": "flow = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_insufficient_material_refusal.py",
+      "line": 44,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_interest_region_selection_determinism.py",
+      "line": 147,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_interlock_prevents_conflict.py",
+      "line": 34,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_itinerary_deterministic.py",
+      "line": 23,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_junction_switch_state_handoff.py",
+      "line": 30,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_loss_fraction_deterministic.py",
+      "line": 37,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_loto_prevents_reclose.py",
+      "line": 39,
+      "snippet": "tick_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_machine_operate_consumes_and_produces_batches.py",
+      "line": 52,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_macro_travel_spec_noncompliance_refusal.py",
+      "line": 26,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_maintenance_reduces_backlog_deterministic.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_manifest_create_deterministic.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_manifest_tick_delivery_deterministic.py",
+      "line": 35,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_manual_placement_via_plan.py",
+      "line": 38,
+      "snippet": "created = process_runtime.execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_material_acceptance_rules.py",
+      "line": 36,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_material_consumption_balanced.py",
+      "line": 45,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_materialize_deterministic_ids.py",
+      "line": 32,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_meta_override_logged.py",
+      "line": 98,
+      "snippet": "out = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_micro_solver_deterministic.py",
+      "line": 27,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_micro_solver_respects_stop.py",
+      "line": 34,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_migration_equivalence_mat6.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_migration_equivalence_temp_flags.py",
+      "line": 74,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_mobility_transition_micro_to_meso_no_lost_events.py",
+      "line": 64,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_mobility_transition_roi_entry_exit_deterministic.py",
+      "line": 27,
+      "snippet": "entry_tick = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_model_reads_bundle_components.py",
+      "line": 136,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_mount_attach_deterministic.py",
+      "line": 77,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_move_refuse_ownership_violation.py",
+      "line": 120,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_move_refuse_unembodied.py",
+      "line": 100,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_movement_collision_blocking.py",
+      "line": 142,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_mp_task_authoritative_validation.py",
+      "line": 45,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_multiplayer_inspection_fairness.py",
+      "line": 48,
+      "snippet": "one = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_negative_invariants_smoke.py",
+      "line": 34,
+      "snippet": "\"result = run_process('process.camera_teleport')\\n\","
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_network_create_deterministic.py",
+      "line": 123,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_no_motion_sim_side_effects.py",
+      "line": 144,
+      "snippet": "register_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_no_penetration_invariant.py",
+      "line": 121,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_no_spec_packs_null_boot_ok.py",
+      "line": 79,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_node_integration_balanced.py",
+      "line": 37,
+      "snippet": "pull_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_occupancy_deterministic.py",
+      "line": 26,
+      "snippet": "itinerary = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_order_create_deterministic.py",
+      "line": 18,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_order_executor_stub_refusals_deterministic.py",
+      "line": 22,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_order_queue_ordering_deterministic.py",
+      "line": 29,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_output_processes_emitted.py",
+      "line": 124,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_phase_transform_emits_provenance.py",
+      "line": 66,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_plan_creation_deterministic.py",
+      "line": 52,
+      "snippet": "executed = process_runtime.execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_plan_does_not_mutate_truth.py",
+      "line": 53,
+      "snippet": "executed = process_runtime.execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_plan_execute_creates_commitments_only.py",
+      "line": 38,
+      "snippet": "created = process_runtime.execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_plan_replay_deterministic.py",
+      "line": 30,
+      "snippet": "create_result = process_runtime.execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_port_connection_deterministic.py",
+      "line": 35,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_port_insert_extract_deterministic.py",
+      "line": 30,
+      "snippet": "insert_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_pose_access_path_required.py",
+      "line": 105,
+      "snippet": "out = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_pose_access_requires_portal_path.py",
+      "line": 57,
+      "snippet": "blocked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_pose_exclusivity.py",
+      "line": 77,
+      "snippet": "out = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_project_create_deterministic.py",
+      "line": 36,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_promote_network_creates_graph_nodes.py",
+      "line": 47,
+      "snippet": "infer = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_proof_hashes_include_faults.py",
+      "line": 32,
+      "snippet": "tick_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_provenance_events_deterministic.py",
+      "line": 40,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_ranked_restricts_admin_panels.py",
+      "line": 22,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_reenactment_budget_degrades.py",
+      "line": 40,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_reenactment_deterministic_hash.py",
+      "line": 43,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_reenactment_event_stream_index_deterministic.py",
+      "line": 28,
+      "snippet": "itinerary = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_reenactment_seed_reproducible.py",
+      "line": 33,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_refusal_codes_correct.py",
+      "line": 33,
+      "snippet": "full_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_reservation_conflict.py",
+      "line": 26,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_revert_restores_raw_state.py",
+      "line": 61,
+      "snippet": "infer = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_roi_triggers_deterministic_refinement.py",
+      "line": 43,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_role_assignment_entitlement_gating.py",
+      "line": 20,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_route_reservation_conflict_deterministic.py",
+      "line": 23,
+      "snippet": "create = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_routing_deterministic_tie_break.py",
+      "line": 66,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_safety_event_logged.py",
+      "line": 34,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_schedule_departures_deterministic.py",
+      "line": 32,
+      "snippet": "itinerary = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_service_resets_wear.py",
+      "line": 47,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_signal_aspect_deterministic.py",
+      "line": 29,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_spec_apply_deterministic.py",
+      "line": 67,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_spec_compatibility_refusal.py",
+      "line": 199,
+      "snippet": "register_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_spec_compliance_check_deterministic.py",
+      "line": 83,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_spec_noncompliance_refusal.py",
+      "line": 91,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_spec_refusal.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_speed_cap_effect_applied.py",
+      "line": 29,
+      "snippet": "ticked = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_step_scheduling_deterministic.py",
+      "line": 40,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_switch_lock_refusal.py",
+      "line": 71,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_switch_state_changes_route_availability.py",
+      "line": 143,
+      "snippet": "create = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_task_budget_degrade_deterministic.py",
+      "line": 32,
+      "snippet": "return execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_task_commitment_created_when_required.py",
+      "line": 69,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_task_completion_triggers_process_intent.py",
+      "line": 44,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_task_pause_resume_deterministic.py",
+      "line": 38,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_task_progress_deterministic.py",
+      "line": 32,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_temperature_modifies_stress.py",
+      "line": 121,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_time_warp_large_dt_stable.py",
+      "line": 30,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_tool_bind_deterministic.py",
+      "line": 66,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_tool_readout_deterministic.py",
+      "line": 81,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_travel_tick_progress_deterministic.py",
+      "line": 28,
+      "snippet": "itinerary = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_trip_explanation_deterministic.py",
+      "line": 38,
+      "snippet": "tick_result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_truncation_deterministic.py",
+      "line": 31,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_vehicle_interior_moves_with_vehicle.py",
+      "line": 45,
+      "snippet": "hook = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_vehicle_ports_pose_interior_refs_valid.py",
+      "line": 132,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_vehicle_register_deterministic.py",
+      "line": 138,
+      "snippet": "first = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_visual_overlay_render_model_hash_stable.py",
+      "line": 37,
+      "snippet": "created = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_wear_accumulation_deterministic.py",
+      "line": 27,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_wear_influences_derail_threshold.py",
+      "line": 44,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_weld_increases_strength.py",
+      "line": 32,
+      "snippet": "result = execute_intent("
+    },
+    {
+      "file": "tools/xstack/testx/tests/test_wind_drift_effect.py",
+      "line": 27,
+      "snippet": "ticked = execute_intent("
+    }
+  ],
+  "state_mutation_count": 4,
+  "state_mutation_sites": [
+    {
+      "file": "src/platform/platform_audio.py",
+      "line": 31,
+      "snippet": "state[\"submitted_frames\"] = next_frames"
+    },
+    {
+      "file": "src/platform/platform_window.py",
+      "line": 98,
+      "snippet": "state[\"width\"] = int(max(1, _to_int(width, _to_int(state.get(\"width\", 1), 1))))"
+    },
+    {
+      "file": "src/time/time_engine.py",
+      "line": 104,
+      "snippet": "state[\"simulation_time\"] = payload"
+    },
+    {
+      "file": "tools/xstack/sessionx/process_runtime.py",
+      "line": 1354,
+      "snippet": "state[\"instrument_assemblies\"] = normalized"
+    }
+  ]
+}

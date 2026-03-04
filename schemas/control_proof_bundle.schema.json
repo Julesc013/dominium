@@ -43,6 +43,23 @@
     "receipt_hash_chain",
     "trust_update_hash_chain",
     "jamming_event_hash_chain",
+    "momentum_hash_chain",
+    "impulse_event_hash_chain",
+    "energy_ledger_hash_chain",
+    "boundary_flux_hash_chain",
+    "entropy_hash_chain",
+    "entropy_reset_events_hash_chain",
+    "fluid_flow_hash_chain",
+    "leak_hash_chain",
+    "burst_hash_chain",
+    "relief_event_hash_chain",
+    "field_update_hash_chain",
+    "field_sample_hash_chain",
+    "boundary_field_exchange_hash_chain",
+    "time_mapping_hash_chain",
+    "schedule_domain_evaluation_hash",
+    "time_adjust_event_hash_chain",
+    "drift_policy_id",
     "deterministic_fingerprint",
     "extensions"
   ],
@@ -201,6 +218,74 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "momentum_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "impulse_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "energy_ledger_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "boundary_flux_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "entropy_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "entropy_reset_events_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "fluid_flow_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "leak_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "burst_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "relief_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "field_update_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "field_sample_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "boundary_field_exchange_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "time_mapping_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "schedule_domain_evaluation_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "time_adjust_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "drift_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "deterministic_fingerprint": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -251,6 +336,23 @@
       "receipt_hash_chain": "8aef2f52c9e946bd2f2f8f4f25f15f5f8dd355c991d95af39a8cb6f31da2a0ca",
       "trust_update_hash_chain": "2b706f6ed53ec288b4d59f87f3f2f79d8ff2b2cce6cf4de6a6f31cb31e9db0d3",
       "jamming_event_hash_chain": "6d9b503f90c57f9727bcbf0c9d4f5bdb99f172d043c9a5512caecfa23a7ebd66",
+      "momentum_hash_chain": "9c5f6b8e12f4787af77a2112e8eb53553d6679f36846cbd27f43d9da9d6488ed",
+      "impulse_event_hash_chain": "f22d717474ef298d150f1975ef0b568e3521deba8638f8af621f6d9f0fdbc970",
+      "energy_ledger_hash_chain": "9f5fdbf5694475bfb20997e7c07072691f95d6a7d5e9fb5f25fd8b676c4136bb",
+      "boundary_flux_hash_chain": "2f4ed67a851976a9e4283448b4f7caebc674e5d2745b0aa4728e8c4d702f3eb7",
+      "entropy_hash_chain": "62efe2b86f9990ce48884f6f68284aa29fdb4098ba6e24520dad79b2f783f0f2",
+      "entropy_reset_events_hash_chain": "c9821dcf2627f4c0db8188e9f882d2f72ceb2eb342f4216a6f58ff9f6b7753f0",
+      "fluid_flow_hash_chain": "100ea57da7df6d4f6a1f2a9c9779fbcfe4abc17d5892f4f91515f2cc6a42f026",
+      "leak_hash_chain": "31f4bcfc013cf8e53e594766d84f5eaec9af958d391794b38aa5fbde612fe5d6",
+      "burst_hash_chain": "8cab85e5ac764860bf300bc72a7b8d5f0c81a217e1f202f7bd4371738ce76adf",
+      "relief_event_hash_chain": "efae9da198f6a54f7fa11f5fcb57fca937177f799560ecff181b4f5f26dc4fce",
+      "field_update_hash_chain": "e45084ecf9e5fc57b310532f6c0057a6144a828f0ea8e66ee3395007e4eb3f2d",
+      "field_sample_hash_chain": "65f5d2cb563422f22499a9ab0a9a5f0ff0f2cbfdb98f8f2ce8c8be58f9b27e78",
+      "boundary_field_exchange_hash_chain": "3fca75c248f0f8eeb39a9585b7a95cfb2d4a8dc3c122899f30103ff6632ab91f",
+      "time_mapping_hash_chain": "d1d56a559eae5ca376b680ab70b7f7d12307f7872bbf93ec2b75f67491552f22",
+      "schedule_domain_evaluation_hash": "ef1f9dccf7b13ef662ec40ec16fe82ccbd1d4e0cbcb56d516cc3434ac9ca87cc",
+      "time_adjust_event_hash_chain": "7f58c3ef67f30b95d0b8b030e53aa3dcdf413b79f4238f303f3fbf02de7080cb",
+      "drift_policy_id": "drift.none",
       "deterministic_fingerprint": "f1fcbca386d927f736ebfef0643ebf821d13d8da38f8e3f1360ab2164ec22e6a",
       "extensions": {
         "network_policy_id": "policy.net.server_authoritative",

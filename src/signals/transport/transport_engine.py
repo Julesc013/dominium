@@ -1419,9 +1419,10 @@ def _attenuation_loss_permille(
     queue_ext = _as_map(_as_map(queue_row).get("extensions"))
     path_edge_ids = [str(item).strip() for item in list(queue_ext.get("path_edge_ids") or []) if str(item).strip()]
     tag_loss_modifier_permille = _clamp_permille(queue_ext.get("tag_loss_modifier_permille", 0), 0)
-    field_visibility_modifier_permille = _clamp_permille(queue_ext.get("field_visibility_modifier_permille", 0), 0)
-    field_radiation_modifier_permille = _clamp_permille(queue_ext.get("field_radiation_modifier_permille", 0), 0)
-    field_wind_modifier_permille = _clamp_permille(queue_ext.get("field_wind_modifier_permille", 0), 0)
+    # Field-derived modifiers are sampled upstream and passed through queue extensions.
+    sampled_visibility_mod_ppm = _clamp_permille(queue_ext.get("field_visibility_modifier_permille", 0), 0)
+    sampled_radiation_mod_ppm = _clamp_permille(queue_ext.get("field_radiation_modifier_permille", 0), 0)
+    sampled_wind_mod_ppm = _clamp_permille(queue_ext.get("field_wind_modifier_permille", 0), 0)
     field_loss_modifier_permille = _clamp_permille(queue_ext.get("field_loss_modifier_permille", 0), 0)
     jamming_modifier_permille = _clamp_permille(queue_ext.get("jamming_modifier_permille", 0), 0)
 
@@ -1469,9 +1470,9 @@ def _attenuation_loss_permille(
     )
 
     distance_component = int(max(0, distance_loss_permille * len(path_edge_ids)))
-    weighted_visibility = int(max(0, (field_visibility_modifier_permille * field_visibility_weight_permille) // 1000))
-    weighted_radiation = int(max(0, (field_radiation_modifier_permille * field_radiation_weight_permille) // 1000))
-    weighted_wind = int(max(0, (field_wind_modifier_permille * field_wind_weight_permille) // 1000))
+    weighted_visibility = int(max(0, (sampled_visibility_mod_ppm * field_visibility_weight_permille) // 1000))
+    weighted_radiation = int(max(0, (sampled_radiation_mod_ppm * field_radiation_weight_permille) // 1000))
+    weighted_wind = int(max(0, (sampled_wind_mod_ppm * field_wind_weight_permille) // 1000))
     fallback_field = int(max(0, field_loss_modifier_permille if (weighted_visibility + weighted_radiation + weighted_wind) == 0 else 0))
 
     loss_permille = int(

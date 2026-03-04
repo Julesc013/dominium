@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fluid Edge Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FLUID-1 FluidNetworkGraph edge payload.",
+  "x-doc-ref": [
+    "docs/fluid/FLUID_CONSTITUTION.md",
+    "docs/audit/FLUID_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_kind",
+    "length",
+    "diameter_proxy",
+    "roughness_proxy",
+    "capacity_rating",
+    "model_bindings",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_kind": {
+      "type": "string",
+      "enum": [
+        "pipe",
+        "hose",
+        "channel"
+      ]
+    },
+    "length": {
+      "type": "number",
+      "minimum": 0
+    },
+    "diameter_proxy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "roughness_proxy": {
+      "type": "number",
+      "minimum": 0
+    },
+    "capacity_rating": {
+      "type": "number",
+      "minimum": 0
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_bindings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_kind": "pipe",
+      "length": 120,
+      "diameter_proxy": 8,
+      "roughness_proxy": 3,
+      "capacity_rating": 600,
+      "spec_id": "spec.pipe.rating_A",
+      "model_bindings": [
+        "model.fluid_pipe_loss_stub"
+      ],
+      "deterministic_fingerprint": "b8df7829421e2f8bc627ac7a75f5d9ea2b0b6f36397a7c3d44be6a3ac24fba31",
+      "extensions": {}
+    }
+  ]
+}
+

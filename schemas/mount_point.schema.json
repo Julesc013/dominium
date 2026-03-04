@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mount Point Schema",
+  "version": "1.0.0",
+  "description": "Deterministic POSE-1 mount interface contract.",
+  "x-doc-ref": [
+    "docs/interaction/POSE_AND_MOUNT_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mount_point_id",
+    "parent_assembly_id",
+    "mount_tags",
+    "alignment_constraints",
+    "state_machine_id",
+    "connected_to_mount_point_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "mount_point_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_assembly_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mount_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alignment_constraints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "state_machine_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "connected_to_mount_point_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "mount_point_id": "mount.point.dock.alpha",
+      "parent_assembly_id": "assembly.station.alpha",
+      "mount_tags": [
+        "mount.docking_port"
+      ],
+      "alignment_constraints": {
+        "profile": "dock.standard"
+      },
+      "state_machine_id": "state.mount.dock.alpha",
+      "connected_to_mount_point_id": null,
+      "extensions": {}
+    }
+  ]
+}

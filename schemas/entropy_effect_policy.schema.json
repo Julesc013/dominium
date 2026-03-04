@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Entropy Effect Policy Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-4 deterministic policy row for entropy-driven degradation effects.",
+  "x-doc-ref": [
+    "docs/physics/ENTROPY_POLICY.md",
+    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "efficiency_degradation_curve_id",
+    "hazard_multiplier_curve_id",
+    "maintenance_interval_modifier_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "efficiency_degradation_curve_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hazard_multiplier_curve_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "maintenance_interval_modifier_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "entropy_effect.basic_linear",
+      "efficiency_degradation_curve_id": "curve.entropy.efficiency.default",
+      "hazard_multiplier_curve_id": "curve.entropy.hazard.default",
+      "maintenance_interval_modifier_id": "curve.entropy.maintenance.default",
+      "deterministic_fingerprint": "f70f81bd97830e8d2f23df12695fe23fc76f8a6f54d17f23e5bb357a11372de1",
+      "extensions": {
+        "entropy_unit_scale": 1000
+      }
+    }
+  ]
+}

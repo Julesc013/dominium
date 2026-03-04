@@ -226,6 +226,7 @@ def generate_sig_stress_scenario(
         bulletin_schedule_rows.append(
             {
                 "schedule_id": schedule_id,
+                "temporal_domain_id": "time.canonical_tick",
                 "next_due_tick": int(first_tick),
                 "interval_ticks": int(cadence),
                 "extensions": {"priority": "normal"},
@@ -369,4 +370,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

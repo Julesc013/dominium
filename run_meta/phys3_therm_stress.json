@@ -1,0 +1,2810 @@
+{
+  "assertions": {
+    "bounded_evaluation": true,
+    "deterministic_ordering": true,
+    "no_silent_downgrades": true,
+    "no_unlogged_heat_inputs": true
+  },
+  "budget_envelope_id": "therm.envelope.standard",
+  "deterministic_fingerprint": "c89fe98668d950658db65e5cab29630ab0fd5d67334b3074ae8b7fbeb6d9328a",
+  "extensions": {
+    "control_decision_log": [],
+    "graph_ids": [
+      "graph.therm.stress.001.2ee0d22b",
+      "graph.therm.stress.002.1fc10e5f",
+      "graph.therm.stress.003.94a4ec36",
+      "graph.therm.stress.004.0ad67e32"
+    ],
+    "proof_hashes_per_tick": [
+      "549edfadbced31483388c816f26d684a87c010da57195dea4346890b3c49d166",
+      "590428eb064055abcbaef5728ea529c9fa07d87e9ed6ad0e557b5a70b2694357",
+      "da1cd4b19ce8441a1a9638b241766877c2958b5273e41c77f8bf24bcca56f47a",
+      "00a3ebe809673d4f25e82d3d59e087010027a02d3ce7dd2a83b51329300a99d9",
+      "f3ee9462b14e0fe3bb50db37563e99fdd979bada367481b9cac2b89a61ce15b5",
+      "99a4ca55f0f60c3bef7fb229ca1811bc434df728661d7fec3ba2edaddda74582",
+      "4ee6c9795078b2e8dc121eccf7d80e606504594e49e2cf1d9a37b207e37e1c61",
+      "523f66a9c5b8f1e3777a9013c66c178379c52c0eccab0093cc3e6522f9ddce79",
+      "87290d2c77f30624359eaf4d246eb9574a993cb980e64c541aab24eed79f8f46",
+      "c0345e417eb5a46e79c5cd5300ffd96a7c63d88a568d38993baf4ba151473c2e",
+      "828b1131344ae2a494cd635136a7ca1b6a1493f724e247f1d03ed45393b350ce",
+      "2889fa6758ec9d73c5d2e79c0dd8cd32315e4b49379a4d9be6fd293d3fd1ea66",
+      "f66650d44786351661edf266aecca4ccc1d8506ff80acdb045e56cd2f8fd45d3",
+      "dba49761c4b221bdee69861626e2cb0fab5434a3262bee0022c2b628c67007ba",
+      "974f5e478e6db7a9424847631d07b8cdd6add3f36c613d9bed93fbf7d9e99aea",
+      "f09fc6aba880a186d186f093ac156142d77bdfcda58be82ae5c72dc99749ec01",
+      "0462e26df5ef614e9ddab1af3e232b496a9d85104aed3dfe8962e2d907b0f209",
+      "c2a03312a21b8197ecda068d2794dba9494eab0086cffca908eac839b8e8cec9",
+      "79cdea531050fadcca3a22674da648e06a83a4ffe68267eeb45cdd0798879d4a",
+      "246aaa00df57b9d6180a21731bcc23e824fff3ace633cd422a436d38d17df185"
+    ],
+    "thermal_degradation_event_rows": [],
+    "thermal_degradation_record_rows": [],
+    "thermal_heat_input_log_rows": [
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 108,
+        "node_id": "node.therm.g001.n0037",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.009",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 538,
+        "node_id": "node.therm.g001.n0046",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.007",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 591,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.008",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 199,
+        "node_id": "node.therm.g003.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.005",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 325,
+        "node_id": "node.therm.g004.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.002",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 642,
+        "node_id": "node.therm.g004.n0028",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.005",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 0
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 391,
+        "node_id": "node.therm.g001.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.003",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 250,
+        "node_id": "node.therm.g002.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.005",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 659,
+        "node_id": "node.therm.g003.n0013",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.004",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 508,
+        "node_id": "node.therm.g003.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.003",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 103,
+        "node_id": "node.therm.g003.n0034",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.006",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 491,
+        "node_id": "node.therm.g004.n0003",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.007",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 1
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 398,
+        "node_id": "node.therm.g001.n0039",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.008",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 91,
+        "node_id": "node.therm.g002.n0042",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.009",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 605,
+        "node_id": "node.therm.g004.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.006",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 2
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 108,
+        "node_id": "node.therm.g001.n0037",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.009",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 538,
+        "node_id": "node.therm.g001.n0046",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.007",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 577,
+        "node_id": "node.therm.g002.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.003",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 524,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.009",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 634,
+        "node_id": "node.therm.g004.n0006",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.009",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 637,
+        "node_id": "node.therm.g004.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.004",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 571,
+        "node_id": "node.therm.g004.n0051",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.003",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 337,
+        "node_id": "node.therm.g004.n0052",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.001",
+        "tick": 3
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 670,
+        "node_id": "node.therm.g001.n0008",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.010",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 592,
+        "node_id": "node.therm.g001.n0010",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.005",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 391,
+        "node_id": "node.therm.g001.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.003",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 639,
+        "node_id": "node.therm.g002.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.008",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 199,
+        "node_id": "node.therm.g003.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.005",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 325,
+        "node_id": "node.therm.g004.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.002",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 4
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 103,
+        "node_id": "node.therm.g003.n0034",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.006",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 591,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.008",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 491,
+        "node_id": "node.therm.g004.n0003",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.007",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 546,
+        "node_id": "node.therm.g004.n0058",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.008",
+        "tick": 5
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 108,
+        "node_id": "node.therm.g001.n0037",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.009",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 538,
+        "node_id": "node.therm.g001.n0046",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.007",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 659,
+        "node_id": "node.therm.g003.n0013",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.004",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 508,
+        "node_id": "node.therm.g003.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.003",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 6
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 391,
+        "node_id": "node.therm.g001.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.003",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 250,
+        "node_id": "node.therm.g002.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.005",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 91,
+        "node_id": "node.therm.g002.n0042",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.009",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 577,
+        "node_id": "node.therm.g002.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.003",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 642,
+        "node_id": "node.therm.g004.n0028",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.005",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 571,
+        "node_id": "node.therm.g004.n0051",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.003",
+        "tick": 7
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 524,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.009",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 199,
+        "node_id": "node.therm.g003.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.005",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 325,
+        "node_id": "node.therm.g004.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.002",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 605,
+        "node_id": "node.therm.g004.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.006",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 337,
+        "node_id": "node.therm.g004.n0052",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.001",
+        "tick": 8
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 108,
+        "node_id": "node.therm.g001.n0037",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.009",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 398,
+        "node_id": "node.therm.g001.n0039",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.008",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 538,
+        "node_id": "node.therm.g001.n0046",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.007",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 103,
+        "node_id": "node.therm.g003.n0034",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.006",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 491,
+        "node_id": "node.therm.g004.n0003",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.007",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 634,
+        "node_id": "node.therm.g004.n0006",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.009",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 9
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 391,
+        "node_id": "node.therm.g001.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.003",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 591,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.008",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 637,
+        "node_id": "node.therm.g004.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.004",
+        "tick": 10
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 670,
+        "node_id": "node.therm.g001.n0008",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.010",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 592,
+        "node_id": "node.therm.g001.n0010",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.005",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 639,
+        "node_id": "node.therm.g002.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.008",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 577,
+        "node_id": "node.therm.g002.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.003",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 659,
+        "node_id": "node.therm.g003.n0013",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.004",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 508,
+        "node_id": "node.therm.g003.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.003",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 571,
+        "node_id": "node.therm.g004.n0051",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.003",
+        "tick": 11
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 108,
+        "node_id": "node.therm.g001.n0037",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.009",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 538,
+        "node_id": "node.therm.g001.n0046",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.007",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 91,
+        "node_id": "node.therm.g002.n0042",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.009",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 199,
+        "node_id": "node.therm.g003.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.005",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 325,
+        "node_id": "node.therm.g004.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.002",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 546,
+        "node_id": "node.therm.g004.n0058",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.008",
+        "tick": 12
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 391,
+        "node_id": "node.therm.g001.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.003",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 250,
+        "node_id": "node.therm.g002.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.005",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 103,
+        "node_id": "node.therm.g003.n0034",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.006",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 524,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.009",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 491,
+        "node_id": "node.therm.g004.n0003",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.007",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 337,
+        "node_id": "node.therm.g004.n0052",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.001",
+        "tick": 13
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 605,
+        "node_id": "node.therm.g004.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.006",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 642,
+        "node_id": "node.therm.g004.n0028",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.005",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 14
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 108,
+        "node_id": "node.therm.g001.n0037",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.009",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 538,
+        "node_id": "node.therm.g001.n0046",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.007",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 577,
+        "node_id": "node.therm.g002.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.003",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 591,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.008",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 634,
+        "node_id": "node.therm.g004.n0006",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.009",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 571,
+        "node_id": "node.therm.g004.n0051",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.003",
+        "tick": 15
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 398,
+        "node_id": "node.therm.g001.n0039",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.008",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 391,
+        "node_id": "node.therm.g001.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.003",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 659,
+        "node_id": "node.therm.g003.n0013",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.004",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 508,
+        "node_id": "node.therm.g003.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.003",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 199,
+        "node_id": "node.therm.g003.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.005",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 325,
+        "node_id": "node.therm.g004.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.002",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 16
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 91,
+        "node_id": "node.therm.g002.n0042",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.009",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 103,
+        "node_id": "node.therm.g003.n0034",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.006",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 491,
+        "node_id": "node.therm.g004.n0003",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.007",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 637,
+        "node_id": "node.therm.g004.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.004",
+        "tick": 17
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 670,
+        "node_id": "node.therm.g001.n0008",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.010",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 592,
+        "node_id": "node.therm.g001.n0010",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.005",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 108,
+        "node_id": "node.therm.g001.n0037",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.009",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 538,
+        "node_id": "node.therm.g001.n0046",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.007",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 639,
+        "node_id": "node.therm.g002.n0004",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.008",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 636,
+        "node_id": "node.therm.g002.n0018",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.010",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 469,
+        "node_id": "node.therm.g003.n0048",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.001",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 524,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.009",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 337,
+        "node_id": "node.therm.g004.n0052",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.001",
+        "tick": 18
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 583,
+        "node_id": "node.therm.g001.n0001",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.006",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 726,
+        "node_id": "node.therm.g001.n0020",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.001",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 163,
+        "node_id": "node.therm.g001.n0029",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.002",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 272,
+        "node_id": "node.therm.g001.n0054",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.004",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.001.2ee0d22b",
+        "heat_input": 391,
+        "node_id": "node.therm.g001.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.001.003",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 250,
+        "node_id": "node.therm.g002.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.005",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 120,
+        "node_id": "node.therm.g002.n0022",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.006",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 509,
+        "node_id": "node.therm.g002.n0040",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.007",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 350,
+        "node_id": "node.therm.g002.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.002",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 577,
+        "node_id": "node.therm.g002.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.003",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 103,
+        "node_id": "node.therm.g002.n0057",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.004",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.002.1fc10e5f",
+        "heat_input": 559,
+        "node_id": "node.therm.g002.n0059",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.002.001",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 190,
+        "node_id": "node.therm.g003.n0019",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.002",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 679,
+        "node_id": "node.therm.g003.n0035",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.010",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.003.94a4ec36",
+        "heat_input": 191,
+        "node_id": "node.therm.g003.n0056",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.003.007",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 559,
+        "node_id": "node.therm.g004.n0044",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.010",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 571,
+        "node_id": "node.therm.g004.n0051",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.003",
+        "tick": 19
+      },
+      {
+        "graph_id": "graph.therm.stress.004.0ad67e32",
+        "heat_input": 546,
+        "node_id": "node.therm.g004.n0058",
+        "source_domain_id": "ELEC",
+        "source_id": "heat.source.004.008",
+        "tick": 19
+      }
+    ]
+  },
+  "metrics": {
+    "average_cache_hit_ratio_permille": 0,
+    "cache_hit_ratios_permille_per_tick": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cost_units_per_tick": [
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727,
+      2727
+    ],
+    "degradation_policy_order": [
+      "degrade.therm.tick_bucket",
+      "degrade.therm.t0_budget",
+      "degrade.therm.defer_noncritical_models",
+      "degrade.therm.fire_spread_cap"
+    ],
+    "downgraded_network_counts_per_tick": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "fire_event_counts_per_tick": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "max_temperature_observed": 121,
+    "max_temperature_per_tick": [
+      121,
+      109,
+      102,
+      96,
+      92,
+      87,
+      82,
+      79,
+      76,
+      73,
+      70,
+      69,
+      68,
+      67,
+      66,
+      65,
+      64,
+      65,
+      67,
+      68
+    ],
+    "overtemp_trip_counts_per_tick": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "proof_hash_summary": {
+      "degradation_event_hash_chain": "0000000000000000000000000000000000000000000000000000000000000000",
+      "fire_cascade_hash_chain": "0000000000000000000000000000000000000000000000000000000000000000",
+      "heat_input_hash_chain": "294e719f3528f02d4e89e994d5b2b2795283645a762689e319eaf773b0b81527",
+      "overtemp_trip_hash_chain": "0000000000000000000000000000000000000000000000000000000000000000",
+      "proof_hash_summary": "eeb56fd40db28cec11ee86de7ca972b4ff9e238a297ce439b0a7a51116d64d46",
+      "thermal_network_state_hash_chain": "58261316e8326e627d7c070fed6d1b32d4c045f98a9acd11f4edd411004137aa"
+    },
+    "total_downgraded_networks": 0,
+    "total_fire_events": 0,
+    "total_overtemp_trips": 0
+  },
+  "result": "complete",
+  "scenario_id": "scenario.therm.stress.ade7cae1397d",
+  "schema_version": "1.0.0",
+  "tick_count": 20
+}

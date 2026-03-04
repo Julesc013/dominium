@@ -12,6 +12,7 @@
     "schema_version",
     "schedule_id",
     "target_id",
+    "temporal_domain_id",
     "start_tick",
     "recurrence_rule",
     "next_due_tick",
@@ -30,6 +31,10 @@
       "minLength": 1
     },
     "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "temporal_domain_id": {
       "type": "string",
       "minLength": 1
     },
@@ -88,6 +93,7 @@
       "schema_version": "1.0.0",
       "schedule_id": "schedule.maintenance.alpha",
       "target_id": "assembly.structure.alpha",
+      "temporal_domain_id": "time.canonical_tick",
       "start_tick": 100,
       "recurrence_rule": {
         "rule_type": "interval",

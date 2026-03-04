@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Entropy State Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-4 deterministic entropy state row.",
+  "x-doc-ref": [
+    "docs/physics/ENTROPY_POLICY.md",
+    "docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_id",
+    "entropy_value",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entropy_value": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "target_id": "asset.gen.main.01",
+      "entropy_value": 4200,
+      "last_update_tick": 128,
+      "deterministic_fingerprint": "518c35cf8055db2f4afad9973bf0f7f8b1c6f9d4bd7c0100c8445bc5b48e74a6",
+      "extensions": {}
+    }
+  ]
+}

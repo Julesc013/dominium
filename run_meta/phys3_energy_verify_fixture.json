@@ -1,0 +1,38 @@
+{
+  "boundary_flux_events": [
+    {
+      "deterministic_fingerprint": "603b695dc5049e4361d7c9be775003eb652bfb065cc58dee3a21bdfcd4eb3c00",
+      "direction": "in",
+      "extensions": {
+        "originating_process_id": "process.apply_impulse",
+        "source_application_id": "impulse.tool.verify.energy",
+        "source_id": "body.vehicle.mob.free.alpha"
+      },
+      "flux_id": "flux.energy.e9a296fea48b2b66",
+      "quantity_id": "quantity.energy_total",
+      "reason_code": "boundary.external_impulse",
+      "schema_version": "1.0.0",
+      "tick": 0,
+      "value": 281250
+    }
+  ],
+  "energy_ledger_entries": [
+    {
+      "deterministic_fingerprint": "b5eb08a2d82d6e9678beeb324467f1c58e267e92e23a223d8e3de7d0aacddfaa",
+      "energy_total_delta": 281250,
+      "entry_id": "ledger.energy.94ff96718e326ded",
+      "extensions": {
+        "source_application_id": "impulse.tool.verify.energy",
+        "source_process_id": "process.apply_impulse"
+      },
+      "input_values": {},
+      "output_values": {
+        "quantity.energy_kinetic": 281250
+      },
+      "schema_version": "1.0.0",
+      "source_id": "body.vehicle.mob.free.alpha",
+      "tick": 0,
+      "transformation_id": "transform.impulse_to_kinetic"
+    }
+  ]
+}

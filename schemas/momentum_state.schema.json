@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Momentum State Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-1 momentum state row for deterministic ROI force/motion integration.",
+  "x-doc-ref": [
+    "docs/physics/PHYSICS_CONSTITUTION.md",
+    "docs/audit/FORCE_MOMENTUM_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "assembly_id",
+    "mass_value",
+    "momentum_linear",
+    "momentum_angular",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "assembly_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mass_value": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "momentum_linear": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "z": {
+          "type": "integer"
+        }
+      }
+    },
+    "momentum_angular": {
+      "type": [
+        "integer",
+        "object"
+      ]
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "body.mob.free.alpha",
+      "mass_value": 1200,
+      "momentum_linear": {
+        "x": 2400,
+        "y": -1200,
+        "z": 0
+      },
+      "momentum_angular": 0,
+      "last_update_tick": 42,
+      "deterministic_fingerprint": "0fd8960f678ce9f478a68c0f3f35fe6f85e1ee9336bc66f62ca182f5878f3509",
+      "extensions": {}
+    }
+  ]
+}

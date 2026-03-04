@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Energy Ledger Entry Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-3 deterministic energy ledger entry payload.",
+  "x-doc-ref": [
+    "docs/physics/ENERGY_LEDGER_AND_TRANSFORMATIONS.md",
+    "docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entry_id",
+    "tick",
+    "transformation_id",
+    "source_id",
+    "input_values",
+    "output_values",
+    "energy_total_delta",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "entry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "transformation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_values": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^quantity\\.[a-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "number"
+        ]
+      }
+    },
+    "output_values": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^quantity\\.[a-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "number"
+        ]
+      }
+    },
+    "energy_total_delta": {
+      "type": [
+        "integer",
+        "number"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "entry_id": "ledger.energy.000001",
+      "tick": 100,
+      "transformation_id": "transform.electrical_to_thermal",
+      "source_id": "edge.elec.main",
+      "input_values": {
+        "quantity.energy_electrical": 250
+      },
+      "output_values": {
+        "quantity.energy_thermal": 250,
+        "quantity.heat_loss": 250
+      },
+      "energy_total_delta": 0,
+      "deterministic_fingerprint": "8d2f05ae9be0f7d1f8cecb4cc7dbf7d386fb23a9891f5ea6ac20f1be7c20c7fb",
+      "extensions": {}
+    }
+  ]
+}

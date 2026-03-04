@@ -1,0 +1,23 @@
+SCHEMA: thermal/thermal_edge_payload.schema
+schema_id: dominium.schema.thermal.thermal_edge_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for THERM-1 ThermalNetworkGraph edges.
+
+REQUIRED SHAPE:
+record thermal_edge_payload
+  required:
+    - schema_version: semver
+    - edge_kind: enum(conduction_link|insulated_link|radiator_link)
+    - conductance_value: int
+    - model_bindings: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Edge transfer behavior is model-driven and deterministic.
+- Thermal conduction parameters are explicit and replay-safe.

@@ -145,7 +145,21 @@ All safety logic must map to one of the following pattern types.
   - profile id
   - resulting cap values
 
-## 4) Safety Pattern Contract
+## 4) Thermal Pattern Hooks (THERM-0 Prep)
+
+Registered thermal templates extend canonical types and do not add new safety families:
+
+- `safety.overtemp_trip` (FAIL-SAFE DEFAULT)
+  - trigger: overtemperature hazard threshold crossed
+  - enforced action: deterministic shutdown/trip effect on target subsystem
+  - logging: target id, observed temperature, threshold, policy id
+
+- `safety.thermal_runaway` (GRACEFUL DEGRADATION hook)
+  - trigger: runaway-risk predicate enters configured band
+  - enforced action: warning + deterministic degradation effect
+  - logging: target id, runaway risk metric, policy id
+
+## 5) Safety Pattern Contract
 
 Each safety pattern template must declare:
 
@@ -164,7 +178,7 @@ Each safety instance must declare:
 - creation tick
 - deterministic fingerprint
 
-## 5) Determinism, Budget, and Replay
+## 6) Determinism, Budget, and Replay
 
 - Evaluation order is stable by `instance_id`.
 - No wall-clock dependency is permitted.
@@ -174,13 +188,13 @@ Each safety instance must declare:
   - deferred instances are explicit and logged
 - Every trigger and enforced action emits a deterministic safety event record for replay/proof.
 
-## 6) Governance Rules
+## 7) Governance Rules
 
 - Protective logic in runtime code must be represented by registered safety patterns.
 - Complex domain behavior must compose patterns; it must not create new hardcoded safety families.
 - Domain docs may provide examples, but semantics must remain SPL-driven.
 
-## 7) Non-Goals
+## 8) Non-Goals
 
 - no domain-specific solver implementations
 - no semantic changes to mobility/signals/mechanics process behavior

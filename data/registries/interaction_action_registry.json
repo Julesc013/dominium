@@ -852,6 +852,186 @@
         "extensions": {}
       },
       {
+        "action_id": "interaction.elec.open_panel",
+        "process_id": "process.portal_open",
+        "display_name": "Open Electrical Panel",
+        "target_kinds": [
+          "installed_structure",
+          "machine"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.panel_open",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.diegetic.elec.energized"
+        ],
+        "extensions": {
+          "elec4_surface": "panel.open"
+        }
+      },
+      {
+        "action_id": "interaction.elec.close_panel",
+        "process_id": "process.portal_close",
+        "display_name": "Close Electrical Panel",
+        "target_kinds": [
+          "installed_structure",
+          "machine"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.panel_close",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.diegetic.elec.energized"
+        ],
+        "extensions": {
+          "elec4_surface": "panel.close"
+        }
+      },
+      {
+        "action_id": "interaction.elec.toggle_breaker",
+        "process_id": "process.elec.flip_breaker",
+        "display_name": "Toggle Breaker",
+        "target_kinds": [
+          "graph",
+          "machine",
+          "network_edge"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.breaker_toggle",
+          "confirm": true
+        },
+        "required_lens_channels": [
+          "ch.diegetic.elec.breaker_panel"
+        ],
+        "extensions": {
+          "elec4_surface": "breaker.toggle"
+        }
+      },
+      {
+        "action_id": "interaction.elec.apply_loto",
+        "process_id": "process.elec_apply_loto",
+        "display_name": "Apply LOTO",
+        "target_kinds": [
+          "graph",
+          "machine",
+          "network_edge"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.loto_apply",
+          "confirm": true
+        },
+        "required_lens_channels": [
+          "ch.diegetic.elec.trip_warning"
+        ],
+        "extensions": {
+          "elec4_surface": "loto.apply"
+        }
+      },
+      {
+        "action_id": "interaction.elec.remove_loto",
+        "process_id": "process.elec_remove_loto",
+        "display_name": "Remove LOTO",
+        "target_kinds": [
+          "graph",
+          "machine",
+          "network_edge"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.loto_remove",
+          "confirm": true
+        },
+        "required_lens_channels": [
+          "ch.diegetic.elec.trip_warning"
+        ],
+        "extensions": {
+          "elec4_surface": "loto.remove"
+        }
+      },
+      {
+        "action_id": "interaction.elec.explain_trip",
+        "process_id": "process.elec.explain_trip",
+        "display_name": "Explain Trip",
+        "target_kinds": [
+          "graph",
+          "machine",
+          "network_edge"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.explain_trip",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.diegetic.elec.trip_warning"
+        ],
+        "extensions": {
+          "elec4_tool": "explain_trip"
+        }
+      },
+      {
+        "action_id": "interaction.elec.replay_outage",
+        "process_id": "process.reenactment_generate",
+        "display_name": "Replay Outage",
+        "target_kinds": [
+          "graph",
+          "reenactment_request"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.replay_outage",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.core.process_log"
+        ],
+        "extensions": {
+          "elec4_replay": "macro_meso"
+        }
+      },
+      {
+        "action_id": "interaction.elec.replay_trip_cascade",
+        "process_id": "process.reenactment_play",
+        "display_name": "Replay Trip Cascade",
+        "target_kinds": [
+          "graph",
+          "reenactment_request"
+        ],
+        "parameter_schema_id": null,
+        "preview_mode": "cheap",
+        "default_ui_hints": {
+          "group": "electric",
+          "icon": "glyph.elec.replay_trip",
+          "confirm": false
+        },
+        "required_lens_channels": [
+          "ch.core.process_log"
+        ],
+        "extensions": {
+          "elec4_replay": "macro_meso_micro"
+        }
+      },
+      {
         "action_id": "interaction.communicate",
         "process_id": "process.instrument_radio_send_text",
         "display_name": "Communicate",

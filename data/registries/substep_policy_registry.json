@@ -1,0 +1,53 @@
+{
+  "schema_id": "dominium.registry.substep_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.substep_policy_registry",
+    "registry_version": "1.0.0",
+    "substep_policies": [
+      {
+        "schema_version": "1.0.0",
+        "substep_policy_id": "substep.none",
+        "description": "No substepping; canonical tick advancement only.",
+        "mode": "none",
+        "substep_count": 1,
+        "allow_adaptive": false,
+        "deterministic": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "substep_policy_id": "substep.fixed_4",
+        "description": "Deterministic fixed 4 substeps per tick bucket.",
+        "mode": "fixed",
+        "substep_count": 4,
+        "allow_adaptive": false,
+        "deterministic": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "substep_policy_id": "substep.fixed_8",
+        "description": "Deterministic fixed 8 substeps per tick bucket.",
+        "mode": "fixed",
+        "substep_count": 8,
+        "allow_adaptive": false,
+        "deterministic": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "substep_policy_id": "substep.closed_form_only",
+        "description": "Closed-form deterministic update path only.",
+        "mode": "closed_form_only",
+        "substep_count": 1,
+        "allow_adaptive": false,
+        "deterministic": true,
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "TEMP0-4"
+    }
+  }
+}

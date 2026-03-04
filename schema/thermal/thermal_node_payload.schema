@@ -1,0 +1,25 @@
+SCHEMA: thermal/thermal_node_payload.schema
+schema_id: dominium.schema.thermal.thermal_node_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for THERM-1 ThermalNetworkGraph nodes.
+
+REQUIRED SHAPE:
+record thermal_node_payload
+  required:
+    - schema_version: semver
+    - node_kind: enum(thermal_mass|source|sink|radiator|heat_exchanger_stub)
+    - heat_capacity_value: int
+    - current_thermal_energy: int
+    - model_bindings: list[id]
+    - safety_instances: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Thermal node response remains model-driven via constitutive model bindings.
+- Thermal energy mutation is process/model-authored and deterministic.

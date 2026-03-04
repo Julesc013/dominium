@@ -1,0 +1,55 @@
+{
+  "schema_id": "dominium.registry.temporal_domain_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.temporal_domain_registry",
+    "registry_version": "1.0.0",
+    "temporal_domains": [
+      {
+        "schema_version": "1.0.0",
+        "temporal_domain_id": "time.canonical_tick",
+        "description": "Authoritative canonical integer tick domain.",
+        "scope_kind": "global",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "temporal_domain_id": "time.proper",
+        "description": "Derived proper-time domain per assembly/spatial model binding.",
+        "scope_kind": "per_assembly",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "temporal_domain_id": "time.civil",
+        "description": "Institutional/civil calendar interpretation domain.",
+        "scope_kind": "per_session",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "calendar_kind": "gregorian_stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "temporal_domain_id": "time.warp",
+        "description": "Session warp interpretation domain derived from canonical batching policy.",
+        "scope_kind": "per_session",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "temporal_domain_id": "time.replay",
+        "description": "Reenactment/replay interpretation domain derived from canonical logs.",
+        "scope_kind": "per_session",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "TEMP0-2"
+    }
+  }
+}

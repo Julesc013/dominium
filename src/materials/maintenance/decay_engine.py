@@ -400,6 +400,7 @@ def schedule_maintenance_commitments(
                     "schema_version": "1.0.0",
                     "schedule_id": schedule_id,
                     "target_id": asset_key,
+                    "temporal_domain_id": "time.canonical_tick",
                     "start_tick": int(start_tick),
                     "recurrence_rule": {
                         "rule_type": "interval",

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Boundary Flux Event Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-3 deterministic boundary energy flux event payload.",
+  "x-doc-ref": [
+    "docs/physics/ENERGY_LEDGER_AND_TRANSFORMATIONS.md",
+    "docs/physics/PHYSICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "flux_id",
+    "tick",
+    "quantity_id",
+    "value",
+    "direction",
+    "reason_code",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "flux_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "quantity_id": {
+      "type": "string",
+      "pattern": "^quantity\\.[a-z0-9_.-]+$"
+    },
+    "value": {
+      "type": [
+        "integer",
+        "number"
+      ]
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "in",
+        "out"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "flux_id": "flux.energy.000001",
+      "tick": 100,
+      "quantity_id": "quantity.energy_total",
+      "value": 180,
+      "direction": "in",
+      "reason_code": "boundary.irradiance",
+      "deterministic_fingerprint": "1b7b3dbb1357441a22c8f97cbecf520dfec3615f67e4f1e38d00766f5e2e1280",
+      "extensions": {}
+    }
+  ]
+}

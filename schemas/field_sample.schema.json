@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Field Sample Schema",
+  "version": "1.0.0",
+  "description": "Deterministic PHYS-2 field sample row keyed by (field_id, spatial_node_id, tick).",
+  "x-doc-ref": [
+    "docs/physics/FIELD_GENERALIZATION.md",
+    "docs/physics/FIELD_SHARD_RULES.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "field_id",
+    "spatial_node_id",
+    "tick",
+    "sampled_value",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "field_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spatial_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sampled_value": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    "has_cell": {
+      "type": "boolean"
+    },
+    "sampled_cell_id": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "field_id": "field.gravity_vector",
+      "spatial_node_id": "cell.0.0.0",
+      "tick": 128,
+      "sampled_value": {
+        "x": 0,
+        "y": -9,
+        "z": 0
+      },
+      "has_cell": true,
+      "sampled_cell_id": "cell.0.0.0",
+      "deterministic_fingerprint": "3a06c68ebfa37a6710cf6f304e16aa7fd9876a4ce418fca0d9ce5de5647f16cd",
+      "extensions": {}
+    }
+  ]
+}

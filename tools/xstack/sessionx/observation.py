@@ -567,6 +567,11 @@ def _default_lens_channels(lens_type: str) -> List[str]:
         "ch.diegetic.elec.test_lamp",
         "ch.diegetic.elec.breaker_panel",
         "ch.diegetic.elec.ground_fault",
+        "ch.diegetic.elec.energized",
+        "ch.diegetic.elec.voltage",
+        "ch.diegetic.elec.current_proxy",
+        "ch.diegetic.elec.pf",
+        "ch.diegetic.elec.trip_warning",
     ]
 
 
@@ -796,6 +801,16 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.elec.breaker_panel": dict(instruments.get("instrument.elec.breaker_panel") or {})}
     if channel_id == "ch.diegetic.elec.ground_fault":
         return {"instrument.elec.ground_fault_indicator": dict(instruments.get("instrument.elec.ground_fault_indicator") or {})}
+    if channel_id == "ch.diegetic.elec.energized":
+        return {"instrument.elec.energized_indicator": dict(instruments.get("instrument.elec.energized_indicator") or {})}
+    if channel_id == "ch.diegetic.elec.voltage":
+        return {"instrument.elec.voltage_meter": dict(instruments.get("instrument.elec.voltage_meter") or {})}
+    if channel_id == "ch.diegetic.elec.current_proxy":
+        return {"instrument.elec.current_proxy_meter": dict(instruments.get("instrument.elec.current_proxy_meter") or {})}
+    if channel_id == "ch.diegetic.elec.pf":
+        return {"instrument.elec.pf_meter": dict(instruments.get("instrument.elec.pf_meter") or {})}
+    if channel_id == "ch.diegetic.elec.trip_warning":
+        return {"instrument.elec.trip_warning": dict(instruments.get("instrument.elec.trip_warning") or {})}
     truth_overlay = dict(perceived_model.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -878,6 +893,11 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.elec.test_lamp": "ch.diegetic.elec.test_lamp",
         "instrument.elec.breaker_panel": "ch.diegetic.elec.breaker_panel",
         "instrument.elec.ground_fault_indicator": "ch.diegetic.elec.ground_fault",
+        "instrument.elec.energized_indicator": "ch.diegetic.elec.energized",
+        "instrument.elec.voltage_meter": "ch.diegetic.elec.voltage",
+        "instrument.elec.current_proxy_meter": "ch.diegetic.elec.current_proxy",
+        "instrument.elec.pf_meter": "ch.diegetic.elec.pf",
+        "instrument.elec.trip_warning": "ch.diegetic.elec.trip_warning",
     }
     for instrument_id, channel_spec in sorted(instrument_channels.items()):
         allowed_channels = (
@@ -1017,6 +1037,14 @@ def _instrument_channel_view(truth: dict, simulation_tick: int) -> dict:
         "instrument.meter.dosimeter": {},
         "instrument.meter.wind_indicator": {},
         "instrument.meter.visibility_indicator": {},
+        "instrument.elec.test_lamp": {},
+        "instrument.elec.breaker_panel": {},
+        "instrument.elec.ground_fault_indicator": {},
+        "instrument.elec.energized_indicator": {},
+        "instrument.elec.voltage_meter": {},
+        "instrument.elec.current_proxy_meter": {},
+        "instrument.elec.pf_meter": {},
+        "instrument.elec.trip_warning": {},
     }
     for row in sorted((item for item in rows if isinstance(item, dict)), key=lambda item: str(item.get("assembly_id", ""))):
         assembly_id = str(row.get("assembly_id", "")).strip()

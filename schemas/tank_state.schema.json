@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tank State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FLUID-1 tank/reservoir state payload.",
+  "x-doc-ref": [
+    "docs/fluid/FLUID_CONSTITUTION.md",
+    "docs/audit/FLUID_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_id",
+    "stored_mass",
+    "max_mass",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stored_mass": {
+      "type": "number",
+      "minimum": 0
+    },
+    "max_mass": {
+      "type": "number",
+      "minimum": 0
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_id": "node.fluid.tank.alpha",
+      "stored_mass": 1800,
+      "max_mass": 2400,
+      "last_update_tick": 10,
+      "deterministic_fingerprint": "e04a3f13ab85029469fcb13e9dd6df53fa30b0f7bc0c616a2ea9f5c01587d3df",
+      "extensions": {}
+    }
+  ]
+}
+

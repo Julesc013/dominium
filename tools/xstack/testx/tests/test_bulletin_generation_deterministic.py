@@ -49,6 +49,7 @@ def _run_once() -> dict:
         {
             "schema_version": "1.0.0",
             "schedule_id": "schedule.bulletin.daily.metro",
+            "temporal_domain_id": "time.canonical_tick",
             "next_due_tick": 500,
             "interval_ticks": 1440,
             "extensions": {},
@@ -110,4 +111,3 @@ def run(repo_root: str):
     if not queues:
         return {"status": "fail", "message": "bulletin report should be dispatched through signal queue"}
     return {"status": "pass", "message": "institution bulletin generation deterministic"}
-

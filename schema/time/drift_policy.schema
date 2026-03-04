@@ -1,0 +1,23 @@
+SCHEMA: time/drift_policy.schema
+schema_id: dominium.schema.time.drift_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic drift policy parameters for time-domain mappings.
+
+REQUIRED SHAPE:
+record drift_policy
+  required:
+    - schema_version: semver
+    - drift_policy_id: id
+    - base_rate_multiplier: scalar
+    - deterministic_rng_stream: id|null
+    - max_skew_allowed: quantity
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Drift policy never mutates canonical tick ordering.
+- RNG stream use is optional and must be deterministic when declared.
+- max_skew_allowed bounds drift-induced divergence per policy.

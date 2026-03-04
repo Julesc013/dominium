@@ -1,0 +1,59 @@
+{
+  "schema_id": "dominium.registry.thermal_edge_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.thermal_edge_kind_registry",
+    "registry_version": "1.0.0",
+    "thermal_edge_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "thermal.edge.conduction_link",
+        "description": "Primary conductive thermal transfer edge.",
+        "tags": [
+          "thermal",
+          "conductive",
+          "link"
+        ],
+        "deterministic_fingerprint": "f872d1ad36966a3e2f81a950a9ab4a042e6c885005034f95c85757ce627995d5",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "thermal.edge.insulated_link",
+        "description": "Insulated thermal link with reduced conductance.",
+        "tags": [
+          "thermal",
+          "insulated",
+          "link"
+        ],
+        "deterministic_fingerprint": "31be3780f68f8e2ef3bd4f58dbad2c2036a6e8ec9ef4e8fbfe4f5867d0a98bd8",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "thermal.edge.radiator_link",
+        "description": "Radiator thermal link for enhanced ambient dissipation.",
+        "tags": [
+          "thermal",
+          "radiator",
+          "link"
+        ],
+        "deterministic_fingerprint": "37da5e5171ddc0d15cc6d083b89f3907eb03553f873ba862a9b04f2fca9b2da8",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "thermal.edge.conductive_stub",
+        "description": "Legacy stub conductive thermal transfer edge.",
+        "tags": [
+          "thermal",
+          "legacy",
+          "conductive"
+        ],
+        "deterministic_fingerprint": "1eb1944900ad6d76b4b9e708858fef623341f092388f0bcf3d600c5258b63a0a",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

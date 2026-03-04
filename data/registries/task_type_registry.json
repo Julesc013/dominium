@@ -154,6 +154,114 @@
         "completion_process_id": "process.weld_joint",
         "progress_model_id": "progress.heavy_work_default",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.elec.panel.open",
+        "description": "Deterministic electrical panel opening task.",
+        "default_progress_units_total": 4194304,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "completion_process_id": "process.portal_open",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "elec4_surface": "panel.open"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.elec.panel.close",
+        "description": "Deterministic electrical panel closing task.",
+        "default_progress_units_total": 4194304,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "completion_process_id": "process.portal_close",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "elec4_surface": "panel.close"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.elec.loto.apply",
+        "description": "Deterministic electrical lockout/tagout apply task.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "completion_process_id": "process.elec_apply_loto",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "elec4_surface": "loto.apply"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.elec.loto.remove",
+        "description": "Deterministic electrical lockout/tagout remove task.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.handle"
+        ],
+        "completion_process_id": "process.elec_remove_loto",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "elec4_surface": "loto.remove"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.elec.connector.plug",
+        "description": "Deterministic electrical connector plug task.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "completion_process_id": "process.port_connect",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "elec4_surface": "connector.plug"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.elec.connector.unplug",
+        "description": "Deterministic electrical connector unplug task.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "completion_process_id": "process.port_disconnect",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "elec4_surface": "connector.unplug"
+        }
       }
     ],
     "extensions": {}

@@ -1,0 +1,23 @@
+SCHEMA: physics/momentum_state.schema
+schema_id: dominium.schema.physics.momentum_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic PHYS-1 momentum state rows for ROI assemblies.
+- Provide canonical mass + linear/angular momentum substrate inputs for motion integration.
+
+NON-SEMANTICS:
+- This schema does not execute integration.
+- Mutation must occur through process.apply_force/process.apply_impulse/process.mobility_free_tick.
+
+REQUIRED SHAPE:
+record momentum_state
+  required:
+    - assembly_id: id
+    - mass_value: fixed_point_positive
+    - momentum_linear: vector3_fixed_point
+    - momentum_angular: scalar_or_vector_stub
+    - last_update_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map

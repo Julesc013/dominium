@@ -1,0 +1,24 @@
+SCHEMA: physics/boundary_flux_event.schema
+schema_id: dominium.schema.physics.boundary_flux_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical deterministic PHYS-3 boundary energy flux events.
+- Make external energy inputs/outputs explicit for conservation accounting.
+
+NON-SEMANTICS:
+- This schema does not permit bypassing conservation contracts.
+- Boundary legality remains profile/law/process governed.
+
+REQUIRED SHAPE:
+record boundary_flux_event
+  required:
+    - flux_id: id
+    - tick: u64
+    - quantity_id: id
+    - value: fixed_point
+    - direction: enum(in|out)
+    - reason_code: id
+    - deterministic_fingerprint: sha256
+    - extensions: map

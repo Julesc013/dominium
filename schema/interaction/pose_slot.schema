@@ -1,0 +1,26 @@
+SCHEMA: interaction/pose_slot.schema
+schema_id: dominium.schema.interaction.pose_slot
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic posture occupancy slots for assemblies/interiors.
+
+REQUIRED SHAPE:
+record pose_slot
+  required:
+    - schema_version: semver
+    - pose_slot_id: id
+    - parent_assembly_id: id
+    - interior_volume_id: id
+    - allowed_postures: list[id]
+    - allowed_body_tags: list[id]
+    - requires_access_path: bool
+    - control_binding_id: optional_id
+    - exclusivity: enum(single|multiple)
+    - current_occupant_id: optional_id
+    - extensions: map
+
+INVARIANTS:
+- Pose slot occupancy changes occur through deterministic processes only.
+- `requires_access_path=true` demands interior-path validation before occupancy.

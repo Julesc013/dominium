@@ -60,6 +60,7 @@ def _run_once() -> dict:
                 "schedule_id": "schedule.mob.travel.alpha",
                 "vehicle_id": "vehicle.mob.travel.alpha",
                 "itinerary_id": itinerary_id,
+                "temporal_domain_id": "time.canonical_tick",
                 "start_tick": 0,
                 "active": True,
                 "recurrence_rule": {"rule_type": "none", "interval_ticks": 0, "trigger_process_id": "process.travel_start"},
@@ -108,4 +109,3 @@ def run(repo_root: str):
     if not first_events:
         return {"status": "fail", "message": "schedule tick did not produce depart event"}
     return {"status": "pass", "message": "timetable departures deterministic and event-sourced"}
-

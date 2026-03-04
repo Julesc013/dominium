@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pose Slot Schema",
+  "version": "1.0.0",
+  "description": "Deterministic POSE-1 posture slot contract.",
+  "x-doc-ref": [
+    "docs/interaction/POSE_AND_MOUNT_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pose_slot_id",
+    "parent_assembly_id",
+    "interior_volume_id",
+    "allowed_postures",
+    "allowed_body_tags",
+    "requires_access_path",
+    "control_binding_id",
+    "exclusivity",
+    "current_occupant_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "pose_slot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_assembly_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "interior_volume_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_postures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_body_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requires_access_path": {
+      "type": "boolean"
+    },
+    "control_binding_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "exclusivity": {
+      "type": "string",
+      "enum": [
+        "single",
+        "multiple"
+      ]
+    },
+    "current_occupant_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "pose_slot_id": "pose.slot.driver.alpha",
+      "parent_assembly_id": "machine.locomotive.alpha",
+      "interior_volume_id": "volume.cabin.driver",
+      "allowed_postures": [
+        "posture.sit"
+      ],
+      "allowed_body_tags": [],
+      "requires_access_path": true,
+      "control_binding_id": "binding.driver_basic",
+      "exclusivity": "single",
+      "current_occupant_id": null,
+      "extensions": {}
+    }
+  ]
+}

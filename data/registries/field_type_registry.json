@@ -8,46 +8,247 @@
       {
         "schema_version": "1.0.0",
         "field_type_id": "field.temperature",
+        "field_id": "field.temperature",
         "description": "Ambient temperature scalar field.",
         "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 1,
+          "I": 0
+        },
+        "default_value": 20,
+        "update_policy_id": "field.static_default",
+        "deterministic_fingerprint": "",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "field_type_id": "field.moisture",
+        "field_id": "field.moisture",
         "description": "Moisture/saturation scalar field.",
         "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.static_default",
+        "deterministic_fingerprint": "",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "field_type_id": "field.friction",
+        "field_id": "field.friction",
         "description": "Surface friction coefficient scalar field.",
         "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 1000,
+        "update_policy_id": "field.static_default",
+        "deterministic_fingerprint": "",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "field_type_id": "field.radiation",
-        "description": "Radiation dose-rate scalar field.",
+        "field_id": "field.radiation",
+        "description": "Legacy radiation field alias. Prefer field.radiation_intensity.",
         "value_kind": "scalar",
-        "extensions": {}
+        "dimension_vector": {
+          "M": 1,
+          "L": 0,
+          "T": -3,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "deprecated": true,
+          "alias_of": "field.radiation_intensity"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.radiation_intensity",
+        "field_id": "field.radiation_intensity",
+        "description": "Canonical radiation intensity scalar field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 1,
+          "L": 0,
+          "T": -3,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "physics_domain": true
+        }
       },
       {
         "schema_version": "1.0.0",
         "field_type_id": "field.visibility",
+        "field_id": "field.visibility",
         "description": "Visibility attenuation scalar field.",
         "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 1000,
+        "update_policy_id": "field.static_default",
+        "deterministic_fingerprint": "",
         "extensions": {}
       },
       {
         "schema_version": "1.0.0",
         "field_type_id": "field.wind",
+        "field_id": "field.wind",
         "description": "Coarse wind vector field.",
         "value_kind": "vector",
+        "dimension_vector": {
+          "M": 0,
+          "L": 1,
+          "T": -1,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "update_policy_id": "field.static_default",
+        "deterministic_fingerprint": "",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.gravity.vector",
+        "field_id": "field.gravity.vector",
+        "description": "Legacy gravity vector field alias. Prefer field.gravity_vector.",
+        "value_kind": "vector",
+        "dimension_vector": {
+          "M": 0,
+          "L": 1,
+          "T": -2,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": {
+          "x": 0,
+          "y": -9,
+          "z": 0
+        },
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "physics_domain": true,
+          "deprecated": true,
+          "alias_of": "field.gravity_vector"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.gravity_vector",
+        "field_id": "field.gravity_vector",
+        "description": "Canonical gravity vector field.",
+        "value_kind": "vector",
+        "dimension_vector": {
+          "M": 0,
+          "L": 1,
+          "T": -2,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": {
+          "x": 0,
+          "y": -9,
+          "z": 0
+        },
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "physics_domain": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.magnetic_flux_stub",
+        "field_id": "field.magnetic_flux_stub",
+        "description": "Canonical magnetic flux stub field (reserved behavior).",
+        "value_kind": "vector",
+        "dimension_vector": {
+          "M": 1,
+          "L": 0,
+          "T": -1,
+          "Q": -1,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "physics_domain": true,
+          "stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.irradiance",
+        "field_id": "field.irradiance",
+        "description": "Canonical irradiance scalar field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 1,
+          "L": 0,
+          "T": -3,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "physics_domain": true
+        }
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "canonical_profile": "PHYS2"
+    }
   }
 }

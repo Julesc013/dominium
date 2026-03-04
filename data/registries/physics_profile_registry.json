@@ -21,7 +21,14 @@
         ],
         "loss_to_heat_policy_id": "loss_to_heat.required",
         "determinism_policy_id": "rng.policy.named_streams",
-        "extensions": {}
+        "extensions": {
+          "gravity_enabled": true,
+          "entropy_tracking": true,
+          "entropy_effect_policy_id": "entropy_effect.basic_linear",
+          "entropy_requires_efficiency_influence": false,
+          "entropy_reset_fraction_numerator": 1,
+          "entropy_reset_fraction_denominator": 2
+        }
       },
       {
         "schema_version": "1.0.0",
@@ -39,7 +46,13 @@
         "loss_to_heat_policy_id": "loss_to_heat.required",
         "determinism_policy_id": "rng.policy.named_streams",
         "extensions": {
-          "ranked": true
+          "ranked": true,
+          "gravity_enabled": true,
+          "entropy_tracking": true,
+          "entropy_effect_policy_id": "entropy_effect.strict",
+          "entropy_requires_efficiency_influence": true,
+          "entropy_reset_fraction_numerator": 2,
+          "entropy_reset_fraction_denominator": 3
         }
       },
       {
@@ -62,7 +75,13 @@
         "loss_to_heat_policy_id": "loss_to_heat.optional",
         "determinism_policy_id": "rng.policy.named_streams",
         "extensions": {
-          "requires_exception_artifacts": true
+          "requires_exception_artifacts": true,
+          "gravity_enabled": false,
+          "entropy_tracking": true,
+          "entropy_effect_policy_id": "entropy_effect.basic_linear",
+          "entropy_requires_efficiency_influence": false,
+          "entropy_reset_fraction_numerator": 1,
+          "entropy_reset_fraction_denominator": 2
         }
       },
       {
@@ -85,7 +104,13 @@
         "loss_to_heat_policy_id": "loss_to_heat.disabled",
         "determinism_policy_id": "rng.policy.named_streams",
         "extensions": {
-          "lab_only": true
+          "lab_only": true,
+          "gravity_enabled": false,
+          "entropy_tracking": false,
+          "entropy_effect_policy_id": "entropy_effect.none",
+          "entropy_requires_efficiency_influence": false,
+          "entropy_reset_fraction_numerator": 1,
+          "entropy_reset_fraction_denominator": 1
         }
       }
     ],

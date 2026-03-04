@@ -252,6 +252,15 @@ from analyzers import e223_unbudgeted_fluid_solve_smell
 from analyzers import e224_silent_leak_smell
 from analyzers import e225_infinite_leak_loop_smell
 from analyzers import e226_cost_model_missing_smell
+from analyzers import e227_inline_field_modifier_smell
+from analyzers import e228_cross_shard_field_access_smell
+from analyzers import e229_wallclock_use_smell
+from analyzers import e230_future_receipt_reference_smell
+from analyzers import e231_undeclared_temporal_domain_smell
+from analyzers import e232_direct_time_write_smell
+from analyzers import e233_implicit_civil_time_smell
+from analyzers import e234_implicit_clock_sync_smell
+from analyzers import e235_direct_domain_time_write_smell
 
 
 ANALYZERS = (
@@ -507,6 +516,15 @@ ANALYZERS = (
     e224_silent_leak_smell,
     e225_infinite_leak_loop_smell,
     e226_cost_model_missing_smell,
+    e227_inline_field_modifier_smell,
+    e228_cross_shard_field_access_smell,
+    e229_wallclock_use_smell,
+    e230_future_receipt_reference_smell,
+    e231_undeclared_temporal_domain_smell,
+    e232_direct_time_write_smell,
+    e233_implicit_civil_time_smell,
+    e234_implicit_clock_sync_smell,
+    e235_direct_domain_time_write_smell,
 )
 
 

@@ -487,8 +487,7 @@
           "capability.has_power_network"
         ],
         "target_kinds": [
-          "edge",
-          "node",
+          "graph",
           "structure"
         ],
         "extensions": {
@@ -511,7 +510,7 @@
           "capability.has_power_network"
         ],
         "target_kinds": [
-          "node",
+          "graph",
           "structure"
         ],
         "extensions": {
@@ -534,11 +533,445 @@
           "capability.has_power_network"
         ],
         "target_kinds": [
-          "node",
+          "graph",
           "structure"
         ],
         "extensions": {
           "elec0_stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.panel.open",
+        "display_name": "Open Panel",
+        "produces": {
+          "process_id": "process.portal_open",
+          "task_type_id": "task.elec.panel.open",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "elec4_surface": "panel.open"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.panel.close",
+        "display_name": "Close Panel",
+        "produces": {
+          "process_id": "process.portal_close",
+          "task_type_id": "task.elec.panel.close",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "elec4_surface": "panel.close"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.breaker.toggle",
+        "display_name": "Toggle Breaker",
+        "produces": {
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "elec4_surface": "breaker.toggle"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.breaker.reset",
+        "display_name": "Reset Breaker",
+        "produces": {
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "elec4_surface": "breaker.reset"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.isolator.open",
+        "display_name": "Open Isolator",
+        "produces": {
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure"
+        ],
+        "extensions": {
+          "elec4_surface": "isolator.open"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.isolator.close",
+        "display_name": "Close Isolator",
+        "produces": {
+          "process_id": "process.elec.flip_breaker",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure"
+        ],
+        "extensions": {
+          "elec4_surface": "isolator.close"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.loto.apply",
+        "display_name": "Apply LOTO",
+        "produces": {
+          "process_id": "process.elec_apply_loto",
+          "task_type_id": "task.elec.loto.apply",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure"
+        ],
+        "extensions": {
+          "elec4_surface": "loto.apply"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.loto.remove",
+        "display_name": "Remove LOTO",
+        "produces": {
+          "process_id": "process.elec_remove_loto",
+          "task_type_id": "task.elec.loto.remove",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure"
+        ],
+        "extensions": {
+          "elec4_surface": "loto.remove"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.connector.plug",
+        "display_name": "Plug Connector",
+        "produces": {
+          "process_id": "process.port_connect",
+          "task_type_id": "task.elec.connector.plug",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure"
+        ],
+        "extensions": {
+          "elec4_surface": "connector.plug"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.connector.unplug",
+        "display_name": "Unplug Connector",
+        "produces": {
+          "process_id": "process.port_disconnect",
+          "task_type_id": "task.elec.connector.unplug",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "surface",
+          "structure"
+        ],
+        "extensions": {
+          "elec4_surface": "connector.unplug"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.elec.explain_trip",
+        "display_name": "Explain Trip",
+        "produces": {
+          "process_id": "process.elec.explain_trip",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.inspect"
+        ],
+        "required_capabilities": [
+          "capability.has_power_network"
+        ],
+        "target_kinds": [
+          "graph",
+          "structure"
+        ],
+        "extensions": {
+          "elec4_surface": "trip.explain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.therm.insulate",
+        "display_name": "Insulate Thermal Path",
+        "produces": {
+          "process_id": "process.maintenance_perform",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "therm0_surface": "insulate"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.therm.cool",
+        "display_name": "Apply Cooling",
+        "produces": {
+          "process_id": "process.effect_apply",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "therm0_surface": "cool"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.therm.vent_heat",
+        "display_name": "Vent Heat",
+        "produces": {
+          "process_id": "process.effect_apply",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "therm0_surface": "vent_heat"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.therm.measure_temperature",
+        "display_name": "Measure Temperature",
+        "produces": {
+          "process_id": "process.tool_readout_tick",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.inspect"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "therm0_surface": "measure_temperature"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.fluid.connect_hose_pipe",
+        "display_name": "Connect Hose/Pipe",
+        "produces": {
+          "process_id": "process.port_connect",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "fluid0_surface": "connect_hose_pipe"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.fluid.open_valve",
+        "display_name": "Open Valve",
+        "produces": {
+          "process_id": "process.portal_open",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "fluid0_surface": "open_valve"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.fluid.bleed_pressure",
+        "display_name": "Bleed Pressure",
+        "produces": {
+          "process_id": "process.vent_activate",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.tool.operating"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "fluid0_surface": "bleed_pressure"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "action_id": "action.fluid.isolate_section",
+        "display_name": "Isolate Section",
+        "produces": {
+          "process_id": "process.portal_lock",
+          "task_type_id": "",
+          "plan_intent_type": ""
+        },
+        "required_entitlements": [
+          "entitlement.control.admin"
+        ],
+        "required_capabilities": [],
+        "target_kinds": [
+          "surface",
+          "structure",
+          "graph"
+        ],
+        "extensions": {
+          "fluid0_surface": "isolate_section",
+          "maintenance_isolation": true
         }
       }
     ],

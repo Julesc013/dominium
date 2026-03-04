@@ -248,6 +248,24 @@
         "default_unit_id": "unit.currency_unit",
         "conservation_applicable": true,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass_flow",
+        "dimension_id": "dim.mass_flow",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.kg_per_s",
+        "conservation_applicable": false,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.pressure_head",
+        "dimension_id": "dim.pressure",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.Pa",
+        "conservation_applicable": false,
+        "extensions": {}
       }
     ],
     "extensions": {}

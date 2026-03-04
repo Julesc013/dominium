@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thermal Edge Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic THERM-1 ThermalNetworkGraph edge payload.",
+  "x-doc-ref": [
+    "docs/thermal/THERMAL_CONSTITUTION.md",
+    "docs/audit/THERMAL_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_kind",
+    "conductance_value",
+    "model_bindings",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_kind": {
+      "type": "string",
+      "enum": [
+        "conduction_link",
+        "insulated_link",
+        "radiator_link"
+      ]
+    },
+    "conductance_value": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_bindings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_kind": "conduction_link",
+      "conductance_value": 75,
+      "spec_id": "spec.therm.link.basic",
+      "model_bindings": [
+        "binding.therm.conductance.edge_A_B"
+      ],
+      "deterministic_fingerprint": "4f7a67bf15d65e92ba5ea711bc513ca82ca3644954de9abef6b98f17753cdacc",
+      "extensions": {}
+    }
+  ]
+}

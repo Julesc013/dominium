@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Burst Event Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FLUID burst event artifact.",
+  "x-doc-ref": [
+    "docs/fluid/CONTAINMENT_AND_FAILURE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "target_id",
+    "overpressure_value",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "overpressure_value": {
+      "type": "integer"
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "event_id": "burst.node.vessel.alpha.420",
+      "target_id": "node.vessel.alpha",
+      "overpressure_value": 3200,
+      "deterministic_fingerprint": "5f0ad18d0b9cd9ee2e8fd2ad370f908d504f2184a2e7f07494d18dcb744af8ac",
+      "extensions": {
+        "reason_code": "overpressure_threshold_exceeded"
+      }
+    }
+  ]
+}

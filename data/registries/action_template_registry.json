@@ -2,7 +2,7 @@
   "record": {
     "extensions": {
       "generated_by": "meta_action0_registry_builder",
-      "template_count": 205
+      "template_count": 213
     },
     "registry_id": "dominium.registry.action_template_registry",
     "registry_version": "1.0.0",
@@ -5139,6 +5139,266 @@
           "tool_tag.welding"
         ],
         "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "action.therm.insulate",
+        "affected_substrates": [
+          "Field",
+          "Mechanics",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "f1457d376c47def6d13f0909477f393f380f42fb5ce594797709c8df35af63cb",
+        "extensions": {
+          "action_id": "action.therm.insulate",
+          "process_id": "process.maintenance_perform",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.seam"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.therm_conductance_stub"
+        ]
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "action.therm.cool",
+        "affected_substrates": [
+          "Field",
+          "Flow",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "a1e02f43f5c8a60750a252bb207f5b9be147536f3e1f871c9ddbcddbd8f50925",
+        "extensions": {
+          "action_id": "action.therm.cool",
+          "process_id": "process.effect_apply",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance",
+          "artifact.decision"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.therm_heat_capacity_stub"
+        ]
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "action.therm.vent_heat",
+        "affected_substrates": [
+          "Field",
+          "Flow",
+          "Interior"
+        ],
+        "deterministic_fingerprint": "63b9f1f5f593c61231fe2642123bd537bb3778d52947703266bfd0bd499350ca",
+        "extensions": {
+          "action_id": "action.therm.vent_heat",
+          "process_id": "process.effect_apply",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.handle",
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.therm_loss_to_temp_stub"
+        ]
+      },
+      {
+        "action_family_id": "action_family.sense_measure",
+        "action_template_id": "action.therm.measure_temperature",
+        "affected_substrates": [
+          "Field",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "70f76c8a56d68d1947a802185f5ef54d13ceb2c928f7f2f71e2e2cdc390679ff",
+        "extensions": {
+          "action_id": "action.therm.measure_temperature",
+          "process_id": "process.tool_readout_tick",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.measurement"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.therm_loss_to_temp_stub"
+        ]
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "action.fluid.connect_hose_pipe",
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "action_id": "action.fluid.connect_hose_pipe",
+          "process_id": "process.port_connect",
+          "plan_intent_type": "",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.fluid_pump_curve_stub"
+        ]
+      },
+      {
+        "action_family_id": "action_family.store_contain",
+        "action_template_id": "action.fluid.open_valve",
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "action_id": "action.fluid.open_valve",
+          "process_id": "process.portal_open",
+          "plan_intent_type": "",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.containment",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.handle",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.fluid_valve_curve_stub"
+        ]
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "action.fluid.bleed_pressure",
+        "affected_substrates": [
+          "Flow",
+          "Field",
+          "Interior"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "action_id": "action.fluid.bleed_pressure",
+          "process_id": "process.vent_activate",
+          "plan_intent_type": "",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.record",
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [
+          "hazard.fluid.cavitation_stub"
+        ],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.handle",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": [
+          "model.fluid_pipe_loss_stub"
+        ]
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "action.fluid.isolate_section",
+        "affected_substrates": [
+          "Flow",
+          "Network",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "action_id": "action.fluid.isolate_section",
+          "process_id": "process.portal_lock",
+          "plan_intent_type": "",
+          "task_type_id": "",
+          "template_kind": "control_action"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance",
+          "artifact.record"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.handle",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0",
+        "uses_constitutive_model_ids": []
       }
     ]
   },

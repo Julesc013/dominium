@@ -7,41 +7,130 @@
     "policies": [
       {
         "schema_version": "1.0.0",
-        "update_policy_id": "field.static",
-        "description": "Static field values; no automatic update during field ticks.",
+        "policy_id": "field.static_default",
+        "update_policy_id": "field.static_default",
+        "description": "F0 static field values; no automatic updates during field ticks.",
+        "tier": "F0",
+        "update_schedule_id": null,
         "schedule_id": null,
         "flow_channel_ref": null,
         "hazard_ref": null,
-        "extensions": {}
+        "deterministic_function_id": "deterministic.identity",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "allow_process_field_update": false
+        }
       },
       {
         "schema_version": "1.0.0",
-        "update_policy_id": "field.scheduled",
-        "description": "Deterministic scheduled updates from tick schedule inputs.",
+        "policy_id": "field.scheduled_linear",
+        "update_policy_id": "field.scheduled_linear",
+        "description": "F1 deterministic scheduled field updates from explicit schedule deltas.",
+        "tier": "F1",
+        "update_schedule_id": "schedule.field.default",
         "schedule_id": "schedule.field.default",
         "flow_channel_ref": null,
         "hazard_ref": null,
-        "extensions": {}
+        "deterministic_function_id": "deterministic.field.linear_delta",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "allow_process_field_update": false
+        }
       },
       {
         "schema_version": "1.0.0",
+        "policy_id": "field.profile_defined",
+        "update_policy_id": "field.profile_defined",
+        "description": "Profile-defined field update policy for boundary/model driven updates.",
+        "tier": "F0",
+        "update_schedule_id": null,
+        "schedule_id": null,
+        "flow_channel_ref": null,
+        "hazard_ref": null,
+        "deterministic_function_id": "deterministic.field.profile_defined",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "allow_process_field_update": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "field.flow_linked",
         "update_policy_id": "field.flow_linked",
-        "description": "Field updates derived from FlowSystem channels.",
+        "description": "F1 deterministic updates derived from FlowSystem channels.",
+        "tier": "F1",
+        "update_schedule_id": null,
         "schedule_id": null,
         "flow_channel_ref": "flow.channel.default",
         "hazard_ref": null,
-        "extensions": {}
+        "deterministic_function_id": "deterministic.field.flow_source",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "allow_process_field_update": false
+        }
       },
       {
         "schema_version": "1.0.0",
+        "policy_id": "field.hazard_linked",
         "update_policy_id": "field.hazard_linked",
-        "description": "Field updates derived from HazardModel states.",
+        "description": "F1 deterministic updates derived from HazardModel state.",
+        "tier": "F1",
+        "update_schedule_id": null,
         "schedule_id": null,
         "flow_channel_ref": null,
         "hazard_ref": "hazard.default",
-        "extensions": {}
+        "deterministic_function_id": "deterministic.field.hazard_source",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "allow_process_field_update": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "field.static",
+        "update_policy_id": "field.static",
+        "description": "Legacy alias of field.static_default.",
+        "tier": "F0",
+        "update_schedule_id": null,
+        "schedule_id": null,
+        "flow_channel_ref": null,
+        "hazard_ref": null,
+        "deterministic_function_id": "deterministic.identity",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "deprecated": true,
+          "alias_for": "field.static_default",
+          "allow_process_field_update": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "field.scheduled",
+        "update_policy_id": "field.scheduled",
+        "description": "Legacy alias of field.scheduled_linear.",
+        "tier": "F1",
+        "update_schedule_id": "schedule.field.default",
+        "schedule_id": "schedule.field.default",
+        "flow_channel_ref": null,
+        "hazard_ref": null,
+        "deterministic_function_id": "deterministic.field.linear_delta",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "deprecated": true,
+          "alias_for": "field.scheduled_linear",
+          "allow_process_field_update": false
+        }
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "canonical_profile": "PHYS2"
+    }
   }
 }

@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.posture_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.posture_registry",
+    "registry_version": "1.0.0",
+    "postures": [
+      {
+        "schema_version": "1.0.0",
+        "posture_id": "posture.sit",
+        "description": "Seated posture for chairs, driver stations, and benches.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "posture_id": "posture.stand",
+        "description": "Standing posture for operating panels and stations.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "posture_id": "posture.crouch",
+        "description": "Crouched posture for tight interior spaces.",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "posture_id": "posture.lie",
+        "description": "Lying posture for bunks, medbeds, or prone mounts.",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

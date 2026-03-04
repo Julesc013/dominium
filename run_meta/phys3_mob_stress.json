@@ -1,0 +1,452 @@
+{
+  "report": {
+    "assertions": {
+      "deterministic_ordering": true,
+      "no_envelope_overflow": true,
+      "no_silent_mutation": true,
+      "no_starvation_ranked": true
+    },
+    "dense_vehicles": 160,
+    "deterministic_fingerprint": "c30f8e459d5b4451fcda4d03acac521129623d8d67086cb314ddde50006bb8b9",
+    "metrics": {
+      "mismatch_count": 0,
+      "proof_bundle_hash": "b10d1a687b673e4faa776c9a5dd4f446bfc4fd2c631887e8d4781253eadb7917",
+      "scenario_count": 6
+    },
+    "mismatches": [],
+    "scenario_reports": [
+      {
+        "assertions": {
+          "deterministic_ordering": true,
+          "no_envelope_overflow": true,
+          "no_silent_mutation": true,
+          "no_starvation_ranked": true
+        },
+        "deterministic_fingerprint": "37a12e88bf87cdf08ebf240f5519b1129bb0f08e5ce2f357d21411ab877485d7",
+        "edge_count": 96,
+        "extensions": {
+          "fairness_starved_ids": [],
+          "micro_starved_ids": [
+            "vehicle.scenario_01_dense_rail.0000",
+            "vehicle.scenario_01_dense_rail.0001",
+            "vehicle.scenario_01_dense_rail.0002",
+            "vehicle.scenario_01_dense_rail.0103",
+            "vehicle.scenario_01_dense_rail.0104",
+            "vehicle.scenario_01_dense_rail.0105",
+            "vehicle.scenario_01_dense_rail.0106",
+            "vehicle.scenario_01_dense_rail.0107",
+            "vehicle.scenario_01_dense_rail.0108",
+            "vehicle.scenario_01_dense_rail.0109",
+            "vehicle.scenario_01_dense_rail.0110",
+            "vehicle.scenario_01_dense_rail.0111",
+            "vehicle.scenario_01_dense_rail.0112",
+            "vehicle.scenario_01_dense_rail.0113",
+            "vehicle.scenario_01_dense_rail.0114",
+            "vehicle.scenario_01_dense_rail.0115",
+            "vehicle.scenario_01_dense_rail.0116",
+            "vehicle.scenario_01_dense_rail.0117",
+            "vehicle.scenario_01_dense_rail.0118",
+            "vehicle.scenario_01_dense_rail.0119",
+            "vehicle.scenario_01_dense_rail.0120",
+            "vehicle.scenario_01_dense_rail.0121",
+            "vehicle.scenario_01_dense_rail.0122",
+            "vehicle.scenario_01_dense_rail.0123",
+            "vehicle.scenario_01_dense_rail.0124",
+            "vehicle.scenario_01_dense_rail.0125",
+            "vehicle.scenario_01_dense_rail.0126",
+            "vehicle.scenario_01_dense_rail.0127",
+            "vehicle.scenario_01_dense_rail.0128",
+            "vehicle.scenario_01_dense_rail.0129",
+            "vehicle.scenario_01_dense_rail.0130",
+            "vehicle.scenario_01_dense_rail.0131",
+            "vehicle.scenario_01_dense_rail.0132",
+            "vehicle.scenario_01_dense_rail.0133",
+            "vehicle.scenario_01_dense_rail.0134",
+            "vehicle.scenario_01_dense_rail.0135",
+            "vehicle.scenario_01_dense_rail.0136",
+            "vehicle.scenario_01_dense_rail.0137",
+            "vehicle.scenario_01_dense_rail.0138",
+            "vehicle.scenario_01_dense_rail.0139",
+            "vehicle.scenario_01_dense_rail.0140",
+            "vehicle.scenario_01_dense_rail.0141",
+            "vehicle.scenario_01_dense_rail.0142",
+            "vehicle.scenario_01_dense_rail.0143",
+            "vehicle.scenario_01_dense_rail.0144",
+            "vehicle.scenario_01_dense_rail.0145",
+            "vehicle.scenario_01_dense_rail.0146",
+            "vehicle.scenario_01_dense_rail.0147",
+            "vehicle.scenario_01_dense_rail.0148",
+            "vehicle.scenario_01_dense_rail.0149",
+            "vehicle.scenario_01_dense_rail.0150",
+            "vehicle.scenario_01_dense_rail.0151",
+            "vehicle.scenario_01_dense_rail.0152",
+            "vehicle.scenario_01_dense_rail.0153",
+            "vehicle.scenario_01_dense_rail.0154",
+            "vehicle.scenario_01_dense_rail.0155",
+            "vehicle.scenario_01_dense_rail.0156",
+            "vehicle.scenario_01_dense_rail.0157",
+            "vehicle.scenario_01_dense_rail.0158",
+            "vehicle.scenario_01_dense_rail.0159"
+          ],
+          "mixed_fidelity": false,
+          "requested_micro_vehicle_count": 160,
+          "strict_fair": true,
+          "travel_event_count": 3200,
+          "with_failures": false
+        },
+        "metrics": {
+          "cost_units_per_tick": [
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432,
+            432
+          ],
+          "decision_log_stability": "1fecc26344ac96db0f36c255542e9cd61eb0e3be6ae6ba9b39004aba6acff2a5",
+          "downgrade_count": 960,
+          "event_stream_hash": "3d5a2a04ee3e9be23873b691cb7359ba93ee94acd82ac4b7c235e89c3d28d1eb",
+          "incident_frequency": {},
+          "motion_state_hash": "a6cc775dec4b2d18e3b7dfb05f961b4b1e0415e0701497ebff00d0f508cc4834",
+          "occupancy_hash": "998db3d82e47ed0eccd8d7398e9c356fba631085be28309e4409b60f0f1e79a3",
+          "proof_bundle_hash": "2991977c55cc5dc0e1b57a70a06280f80e9e1cca87a2841f62d55677b247092e"
+        },
+        "proof_surfaces": {
+          "congestion_hash": "09ec468446ab934db6fd7c8da8374df9cee9001243acf0bef4e364c9ab30b39b",
+          "derailment_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "mobility_event_hash": "3d5a2a04ee3e9be23873b691cb7359ba93ee94acd82ac4b7c235e89c3d28d1eb",
+          "signal_state_hash": "a668963d8b607ca512f61118ec08eebf9d11b5313693cf1f3b118141fb81c87c"
+        },
+        "scenario_id": "scenario.01.dense_rail",
+        "ticks": 20,
+        "title": "Dense rail network with hundreds of trains",
+        "vehicle_count": 160
+      },
+      {
+        "assertions": {
+          "deterministic_ordering": true,
+          "no_envelope_overflow": true,
+          "no_silent_mutation": true,
+          "no_starvation_ranked": true
+        },
+        "deterministic_fingerprint": "8feaa92a31d79f9b3706782e4e000b4019ea065cff96e42c45e92eb5256aac37",
+        "edge_count": 128,
+        "extensions": {
+          "fairness_starved_ids": [],
+          "micro_starved_ids": [],
+          "mixed_fidelity": true,
+          "requested_micro_vehicle_count": 96,
+          "strict_fair": true,
+          "travel_event_count": 1920,
+          "with_failures": false
+        },
+        "metrics": {
+          "cost_units_per_tick": [
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248,
+            248
+          ],
+          "decision_log_stability": "4605c297e04c5c056827413ed62155a2e482a13a8cb0b6f4cbfe40fed42c42ed",
+          "downgrade_count": 160,
+          "event_stream_hash": "a564dc4a783841cda2410a6761165753704c9179e5c14ccb422519ecaf5cd7b1",
+          "incident_frequency": {},
+          "motion_state_hash": "0a81e99353c00ad09692eca2a662126e7974c3d1fd2dfb18e348b96d2c3ea7eb",
+          "occupancy_hash": "c5a075173a981a4efffad9d43224e0828a080075534374814f4199027b178ad0",
+          "proof_bundle_hash": "d15a15920093f97ce690693ea1ffdae814180b117717919049354c8d641cd73c"
+        },
+        "proof_surfaces": {
+          "congestion_hash": "e97bd3be6cce87ba9c7be6feed38d9d1d68a6e276acd30ae57185123a62508e5",
+          "derailment_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "mobility_event_hash": "a564dc4a783841cda2410a6761165753704c9179e5c14ccb422519ecaf5cd7b1",
+          "signal_state_hash": "0ad0a663578a9bae6a2d325147e3d60991504d117731ccb764b2008ffc18d68a"
+        },
+        "scenario_id": "scenario.02.mixed_modal",
+        "ticks": 20,
+        "title": "Mixed rail + road + air corridors",
+        "vehicle_count": 96
+      },
+      {
+        "assertions": {
+          "deterministic_ordering": true,
+          "no_envelope_overflow": true,
+          "no_silent_mutation": true,
+          "no_starvation_ranked": true
+        },
+        "deterministic_fingerprint": "153d01dbf8df324538fa03909c6cb16ce0a16680d1be005358030ebea10d7a8a",
+        "edge_count": 80,
+        "extensions": {
+          "fairness_starved_ids": [],
+          "micro_starved_ids": [],
+          "mixed_fidelity": true,
+          "requested_micro_vehicle_count": 64,
+          "strict_fair": true,
+          "travel_event_count": 1280,
+          "with_failures": false
+        },
+        "metrics": {
+          "cost_units_per_tick": [
+            165,
+            165,
+            166,
+            165,
+            165,
+            166,
+            165,
+            165,
+            166,
+            165,
+            165,
+            166,
+            165,
+            165,
+            166,
+            165,
+            165,
+            166,
+            165,
+            165
+          ],
+          "decision_log_stability": "67750f789bacdbd96094a96962219a0e3763420a753f8b3ae5586b95f12b8b3a",
+          "downgrade_count": 106,
+          "event_stream_hash": "e42c876fe0f1c5b2a1ea649be4a727c6b9ade1cea67ce52b49fedf1c24c3c299",
+          "incident_frequency": {},
+          "motion_state_hash": "e3782cc9d037fbe97aae4664cd4f6de99c5b8e2bee1a581301bc0c112e83cbb7",
+          "occupancy_hash": "314f1e15c12989bda700f9c53643174aad7e0c0d56a34186cfc3afab9275c082",
+          "proof_bundle_hash": "2b77a893523a5739659eb6afa116d716ae6ce0f429ab78561fc717ca278a0d8a"
+        },
+        "proof_surfaces": {
+          "congestion_hash": "f49754bf3cc89d9425a7b5465532964f1c83ecad6fefd672ab4f6b42699ad1e0",
+          "derailment_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "mobility_event_hash": "e42c876fe0f1c5b2a1ea649be4a727c6b9ade1cea67ce52b49fedf1c24c3c299",
+          "signal_state_hash": "05dea2b5f1690aaec2a3d577e699328d6b0ca372e930f2977680db4767a4a92e"
+        },
+        "scenario_id": "scenario.03.multi_roi",
+        "ticks": 20,
+        "title": "Multiple players scattered in different ROIs",
+        "vehicle_count": 64
+      },
+      {
+        "assertions": {
+          "deterministic_ordering": true,
+          "no_envelope_overflow": true,
+          "no_silent_mutation": true,
+          "no_starvation_ranked": true
+        },
+        "deterministic_fingerprint": "87f7b8a6daf4c3f09a19a079059bc4a65ebb6a67b5f263d93cbb2a9d910860d2",
+        "edge_count": 48,
+        "extensions": {
+          "fairness_starved_ids": [],
+          "micro_starved_ids": [],
+          "mixed_fidelity": true,
+          "requested_micro_vehicle_count": 80,
+          "strict_fair": true,
+          "travel_event_count": 1600,
+          "with_failures": false
+        },
+        "metrics": {
+          "cost_units_per_tick": [
+            206,
+            207,
+            207,
+            206,
+            207,
+            207,
+            206,
+            207,
+            207,
+            206,
+            207,
+            207,
+            206,
+            207,
+            207,
+            206,
+            207,
+            207,
+            206,
+            207
+          ],
+          "decision_log_stability": "81d837f293ac519ccdcc0628eacc9d16feef7f3c98b4cd5101caa15f38bd6029",
+          "downgrade_count": 133,
+          "event_stream_hash": "4e87f073b2c518b350c0f1beea66bb1fb3820360ae6184d79d5d84601d1b0daf",
+          "incident_frequency": {},
+          "motion_state_hash": "8a0a86eef041c403f4b5670be6c0cd037db62da8b149e1f1b4de769dd85ce24c",
+          "occupancy_hash": "d6b6457a4eb9d5a036c6518e8f4910e3bb0a9838dcbe3f0f6a7a07eadd0f1a0a",
+          "proof_bundle_hash": "1fe0da8de205f66946acf299fc7e7e1aa8aeee071deff3ac5be5586025cf2f0f"
+        },
+        "proof_surfaces": {
+          "congestion_hash": "86d4165bf1e4bfa6c36c3dc7d4a26e42c8993bad1b90dac40d3b26f352544dea",
+          "derailment_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "mobility_event_hash": "4e87f073b2c518b350c0f1beea66bb1fb3820360ae6184d79d5d84601d1b0daf",
+          "signal_state_hash": "26b080ad5f1e3f401ac0fba168b384626942d895220605f67b4e29627610e7ec"
+        },
+        "scenario_id": "scenario.04.hub_congestion",
+        "ticks": 20,
+        "title": "High congestion at hubs",
+        "vehicle_count": 80
+      },
+      {
+        "assertions": {
+          "deterministic_ordering": true,
+          "no_envelope_overflow": true,
+          "no_silent_mutation": true,
+          "no_starvation_ranked": true
+        },
+        "deterministic_fingerprint": "1d8ea2dc78b644a5ef5554cec676b88f0fe8509eb79080ad2c95aacf5c35556d",
+        "edge_count": 64,
+        "extensions": {
+          "fairness_starved_ids": [],
+          "micro_starved_ids": [],
+          "mixed_fidelity": true,
+          "requested_micro_vehicle_count": 80,
+          "strict_fair": true,
+          "travel_event_count": 1620,
+          "with_failures": true
+        },
+        "metrics": {
+          "cost_units_per_tick": [
+            204,
+            205,
+            205,
+            204,
+            205,
+            205,
+            204,
+            205,
+            205,
+            204,
+            205,
+            205,
+            204,
+            205,
+            205,
+            204,
+            205,
+            205,
+            204,
+            205
+          ],
+          "decision_log_stability": "2b1505b3b5908fa7ba40dcd5ba3781c442eb00b63c5a6de1b66c667a455c985d",
+          "downgrade_count": 173,
+          "event_stream_hash": "57354e5df8f2f1c744a347764dd993faa3dc3f33b3246ea4d449a449ad7cbc35",
+          "incident_frequency": {
+            "incident.breakdown.engine": 7,
+            "incident.derailment.track_wear": 6,
+            "incident.signal_violation": 7
+          },
+          "motion_state_hash": "a7c47e56d36114050b483253e2d31a0478cd9069898b8dd9a58115a92469af81",
+          "occupancy_hash": "5c3dfe5ecc1b3a6e49a4a10671b261ab55d0330a161b4f623b2efe9bc4820e8b",
+          "proof_bundle_hash": "30132a751650b0cf1241021029127dc92ec83199ca437636b97e24de9848efa2"
+        },
+        "proof_surfaces": {
+          "congestion_hash": "f2e5cca4ba3a5b1d695e0a5139ec99b12c076f7f70a2d9b3fd57e55e33e99d31",
+          "derailment_hash": "e3fc84ad412c4050191a53e5ecfa8c7f8978ac9d01897c6a3c13af47794e474c",
+          "mobility_event_hash": "57354e5df8f2f1c744a347764dd993faa3dc3f33b3246ea4d449a449ad7cbc35",
+          "signal_state_hash": "ce65bdbe662d56be56169498c7233147a77b47f9fe102de7bc84a5f0a771229c"
+        },
+        "scenario_id": "scenario.05.signal_maintenance_failures",
+        "ticks": 20,
+        "title": "Signal failures and maintenance events under load",
+        "vehicle_count": 80
+      },
+      {
+        "assertions": {
+          "deterministic_ordering": true,
+          "no_envelope_overflow": true,
+          "no_silent_mutation": true,
+          "no_starvation_ranked": true
+        },
+        "deterministic_fingerprint": "43e927e12521ab5b81aa4862db03b8e8c8a2e8ade80d245e723f3d87f5383c1c",
+        "edge_count": 88,
+        "extensions": {
+          "fairness_starved_ids": [],
+          "micro_starved_ids": [],
+          "mixed_fidelity": true,
+          "requested_micro_vehicle_count": 96,
+          "strict_fair": true,
+          "travel_event_count": 1940,
+          "with_failures": true
+        },
+        "metrics": {
+          "cost_units_per_tick": [
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246,
+            246
+          ],
+          "decision_log_stability": "83bb6b3f3352f46933350b76de1a71ddbaafcb3d44883ad9320fa14e9f3f9eeb",
+          "downgrade_count": 200,
+          "event_stream_hash": "13ab5202ddcda115ee368430e3dcf7030feaad1de6bebf4ad447f8f2d5b0390b",
+          "incident_frequency": {
+            "incident.breakdown.engine": 7,
+            "incident.derailment.track_wear": 6,
+            "incident.signal_violation": 7
+          },
+          "motion_state_hash": "295c367673b56e742f29326425062ac27db23ca08efbd89f6ff11a9f88290161",
+          "occupancy_hash": "14f3138ba850bd3432a2c55571dd4525a94391848d77fccf1f7cebeb91d96991",
+          "proof_bundle_hash": "47530919a4394a514dc9fdd29c916c0877802382d1ab96608d138326a96b8a59"
+        },
+        "proof_surfaces": {
+          "congestion_hash": "0ee2d514e05760b6ceed94a1f2cbaae91d4d54ce6220f967b8c6328cbad539fd",
+          "derailment_hash": "0bab261b0eb4f5c1c4d0a22db6e9965bdb0d9100070391631d22ce35887ab3db",
+          "mobility_event_hash": "13ab5202ddcda115ee368430e3dcf7030feaad1de6bebf4ad447f8f2d5b0390b",
+          "signal_state_hash": "3b5414af1f053aebfe3d311b15ca501d021f92b871678b624910eea046245b30"
+        },
+        "scenario_id": "scenario.06.mixed_fidelity_requests",
+        "ticks": 20,
+        "title": "Mixed fidelity requests",
+        "vehicle_count": 96
+      }
+    ],
+    "schema_version": "1.0.0",
+    "ticks": 20
+  },
+  "result": "complete"
+}

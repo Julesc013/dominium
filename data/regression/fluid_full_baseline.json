@@ -1,0 +1,77 @@
+{
+  "baseline_id": "fluid.full.baseline.v1",
+  "composite_fluid_hash_anchor": "ae01864cc74146820ed86666b45965337f5ea732fabc07cef4ab4ef80d29c32a",
+  "description": "FLUID-3 deterministic hardening baseline for stress, deterministic degradation, proof/replay, and regression lock.",
+  "deterministic_fingerprint": "6c51a5a536316db122e48a7465bbc32c51275ceefdb3d5546beefb181af0e823",
+  "extensions": {
+    "assertions": {
+      "degradation_window_match": true,
+      "event_window_match": true,
+      "full_proof_summary_match": true,
+      "head_window_match": true,
+      "proof_window_match": true,
+      "replay_complete": true,
+      "stress_complete": true
+    },
+    "burst_leak_cascade_snapshot": {
+      "max_head_observed": 755,
+      "total_active_leak_count": 57,
+      "total_burst_events": 144,
+      "total_relief_events": 43
+    },
+    "downgrade_snapshot": {
+      "degradation_row_count": 150,
+      "total_downgraded_networks": 60
+    },
+    "normal_flow_snapshot": {
+      "max_head_observed": 903,
+      "total_burst_events": 77,
+      "total_relief_events": 38
+    },
+    "overpressure_relief_snapshot": {
+      "max_head_observed": 456,
+      "total_burst_events": 0,
+      "total_relief_events": 45
+    },
+    "report_fingerprints": {
+      "burst_report_fingerprint": "56c7f218a6e08ca42d323bcfbd78a4f23c895574d6e1549c0603a6b5f6766a95",
+      "downgrade_report_fingerprint": "4c83d22704690956bcc6676c5076bf7b2b8b3ca0c06ccc0d4c9b406872604273",
+      "main_replay_fingerprint": "0fb896699e2afed577853c6d570c0bf28dc1a1b42e294c32687092c972e59ee5",
+      "main_report_fingerprint": "c497ade7ac8f1e21f9c7f241b5cbb39c96d1343844256b4b30196ed34969b5ce",
+      "main_scenario_fingerprint": "0fb8ba61ac5fa88537202d9eea0fad95c356c5f093dac6cf6105f2938c73735d",
+      "relief_report_fingerprint": "5dbe2e0bba7e6f556003de099fd3550ea396cb562e5e59201e3ed97fb1c4497d"
+    }
+  },
+  "fixed_seed_scenario": {
+    "budget_envelope_id": "fluid.envelope.standard",
+    "replay_report_path": "build/fluid/fluid3_replay_window_report.json",
+    "scenario_id": "scenario.fluid.stress.17e08f516423",
+    "scenario_path": "build/fluid/fluid3_stress_scenario.json",
+    "scenario_seed": 9801,
+    "stress_report_path": "build/fluid/fluid3_stress_report.json",
+    "tick_count": 36
+  },
+  "pattern_hashes": {
+    "active_leak_pattern_hash": "d9bac4672bcc2e9681c13133ae61ae29c9f1a5b103c1a514d0e3c70aa6911b0c",
+    "burst_pattern_hash": "3f6f3e95362dad0619df20c9cfcaa54f4a2d7f078ec40e10dfe0b93f8846cb88",
+    "cache_hit_pattern_hash": "208fb33dee63dcc8993abaec57cfb5828ae928d8a1d2c9d1d911e4c3c1278045",
+    "cost_units_pattern_hash": "f763149bf3f45eef6a82b23c597f3a2f71ea0cb981baeb82deb51a736491d06a",
+    "downgrade_pattern_hash": "208fb33dee63dcc8993abaec57cfb5828ae928d8a1d2c9d1d911e4c3c1278045",
+    "max_head_pattern_hash": "62552a8e96b62c9096a2d53fea22b3d314238f35b610efed30afdffd30883ce8",
+    "relief_pattern_hash": "930c4a734c8ca1249ec3274be40ba9ea19664f4bb69c73d51b651ad2c367429b"
+  },
+  "proof_hashes": {
+    "burst_hash_chain": "97ad4bf0e13ef33a82f18eaa668f9833aa22c13d79797a440a7d199657a73645",
+    "fluid_flow_hash_chain": "88a0d8418661b9cc2246f01e70f7b472c1c78216dac2ea877d7f2f97359940e2",
+    "leak_hash_chain": "54dff02663bb67d25d73cee223798dad313138324f6c8fd9924b0478a23fee70",
+    "proof_tick_hash_chain": "92409721db7d829fd1a08a1f82823613242ab2b19408ec5bc97569d8b066e2d5",
+    "relief_event_hash_chain": "83f570f1a501b219b20c7a054a83fcb7d852e19b914e402bb445bd3abda1fd17",
+    "replay_expected_window_proof_chain": "dcd52646019b42f0e7d09892a58425ffb17ddc3b18cfe473c9121be6c3d338bb",
+    "replay_observed_window_proof_chain": "dcd52646019b42f0e7d09892a58425ffb17ddc3b18cfe473c9121be6c3d338bb"
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic FLUID stress+replay reruns and explicit FLUID-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "FLUID-REGRESSION-UPDATE"
+  }
+}

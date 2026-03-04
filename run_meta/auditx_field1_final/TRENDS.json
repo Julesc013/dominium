@@ -1,0 +1,80 @@
+{
+  "artifact_class": "CANONICAL",
+  "category_frequency": {
+    "architecture.adhoc_scheduler_smell": 1,
+    "architecture.adhoc_state_flag_smell": 2,
+    "architecture.inline_strength_check_smell": 1,
+    "architecture.ir_nondeterminism_smell": 2,
+    "architecture.silent_downgrade_smell": 3,
+    "architecture.weather_hack_smell": 1,
+    "canon_drift": 675,
+    "capability_bypass_smell": 1,
+    "civilisation.nondeterministic_cohort_mapping_smell": 1,
+    "control.camera_bypass_smell": 1,
+    "derived_freshness": 11,
+    "epistemics.hidden_state_leak_smell": 6,
+    "interaction.interaction_bypass_smell": 2,
+    "legacy_contamination": 1,
+    "materials.hardcoded_blueprint_smell": 153,
+    "materials.inspection_leak_smell": 1,
+    "materials.reenactment_leak_smell": 1,
+    "materials.unbounded_inspection_smell": 1,
+    "mode_flag_smell": 3,
+    "net.precision_leak_smell": 2,
+    "net.truth_over_net_smell": 6,
+    "performance.performance_nondeterminism_smell": 1,
+    "schema_usage": 57,
+    "semantic.capability_drift": 5,
+    "semantic.derived_artifact_contract": 1,
+    "semantic.schema_shadowing": 120,
+    "semantic.workspace_contamination": 1
+  },
+  "delta_over_time": {
+    "category_frequency": {
+      "architecture.adhoc_scheduler_smell": 1,
+      "architecture.adhoc_state_flag_smell": 2,
+      "architecture.inline_strength_check_smell": 1,
+      "architecture.ir_nondeterminism_smell": 2,
+      "architecture.silent_downgrade_smell": 3,
+      "architecture.weather_hack_smell": 1,
+      "canon_drift": 675,
+      "capability_bypass_smell": 1,
+      "civilisation.nondeterministic_cohort_mapping_smell": 1,
+      "control.camera_bypass_smell": 1,
+      "derived_freshness": 11,
+      "epistemics.hidden_state_leak_smell": 6,
+      "interaction.interaction_bypass_smell": 2,
+      "legacy_contamination": 1,
+      "materials.hardcoded_blueprint_smell": 153,
+      "materials.inspection_leak_smell": 1,
+      "materials.reenactment_leak_smell": 1,
+      "materials.unbounded_inspection_smell": 1,
+      "mode_flag_smell": 3,
+      "net.precision_leak_smell": 2,
+      "net.truth_over_net_smell": 6,
+      "performance.performance_nondeterminism_smell": 1,
+      "schema_usage": 57,
+      "semantic.capability_drift": 5,
+      "semantic.derived_artifact_contract": 1,
+      "semantic.schema_shadowing": 120,
+      "semantic.workspace_contamination": 1
+    },
+    "severity_distribution": {
+      "RISK": 75,
+      "VIOLATION": 159,
+      "WARN": 826
+    }
+  },
+  "findings_hash": "a2a44298b03fc8fda1af82a463318c45984887a55f255ca0dd857bf8acf638db",
+  "history_reference": {
+    "previous_distinct_hash": ""
+  },
+  "schema_id": "dominium.auditx.trends",
+  "schema_version": "1.0.0",
+  "severity_distribution": {
+    "RISK": 75,
+    "VIOLATION": 159,
+    "WARN": 826
+  },
+  "total_findings": 1060
+}

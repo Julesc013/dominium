@@ -1,0 +1,40 @@
+{
+  "schema_id": "dominium.registry.sync_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.sync_policy_registry",
+    "registry_version": "1.0.0",
+    "sync_policies": [
+      {
+        "schema_version": "1.0.0",
+        "sync_policy_id": "sync.none",
+        "description": "No synchronization correction; observe local mapping only.",
+        "adjustment_strategy": "observe",
+        "max_adjust_per_tick": 0,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "sync_policy_id": "sync.adjust_on_receipt",
+        "description": "Apply bounded correction on time-stamp receipt.",
+        "adjustment_strategy": "adjust",
+        "max_adjust_per_tick": 5,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "sync_policy_id": "sync.strict_reject",
+        "description": "Reject synchronization when skew exceeds policy bound.",
+        "adjustment_strategy": "reject",
+        "max_adjust_per_tick": 0,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "TEMP2-2"
+    }
+  }
+}

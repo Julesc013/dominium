@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thermal Node Payload Schema",
+  "version": "1.0.0",
+  "description": "Deterministic THERM-1 ThermalNetworkGraph node payload.",
+  "x-doc-ref": [
+    "docs/thermal/THERMAL_CONSTITUTION.md",
+    "docs/audit/THERMAL_NETWORK_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_kind",
+    "heat_capacity_value",
+    "current_thermal_energy",
+    "model_bindings",
+    "safety_instances",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_kind": {
+      "type": "string",
+      "enum": [
+        "thermal_mass",
+        "source",
+        "sink",
+        "radiator",
+        "heat_exchanger_stub"
+      ]
+    },
+    "heat_capacity_value": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "current_thermal_energy": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "spec_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_bindings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "safety_instances": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_kind": "thermal_mass",
+      "heat_capacity_value": 500,
+      "current_thermal_energy": 1200,
+      "spec_id": "spec.therm.mass.basic",
+      "model_bindings": [
+        "binding.therm.heat_capacity.node_A"
+      ],
+      "safety_instances": [
+        "instance.safety.overtemp.node_A"
+      ],
+      "deterministic_fingerprint": "4df4f3f63fdc8ea72ef8f48cb8a0817aaf6f0f85b44af7fa767ef0ec17b86459",
+      "extensions": {}
+    }
+  ]
+}

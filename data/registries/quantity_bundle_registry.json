@@ -21,10 +21,10 @@
         "schema_version": "1.0.0",
         "bundle_id": "bundle.fluid_basic",
         "quantity_ids": [
-          "quantity.fluid.mass_flow_stub",
-          "quantity.fluid.pressure_stub"
+          "quantity.mass_flow",
+          "quantity.pressure_head"
         ],
-        "description": "Fluid placeholder bundle (mass_flow, pressure_stub).",
+        "description": "Fluid canonical bundle (mass_flow, pressure_head).",
         "deterministic_fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
         "extensions": {}
       },

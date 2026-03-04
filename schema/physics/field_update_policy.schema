@@ -1,0 +1,28 @@
+SCHEMA: physics/field_update_policy.schema
+schema_id: dominium.schema.physics.field_update_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic PHYS field update policies across F0/F1/F2 tiers.
+- Make update cadence/function and RNG usage explicit.
+
+NON-SEMANTICS:
+- This schema does not authorize direct field mutation.
+- It does not imply PDE/continuous solver behavior.
+
+REQUIRED SHAPE:
+record field_update_policy
+  required:
+    - policy_id: id
+    - tier: enum(F0|F1|F2)
+    - update_schedule_id: id|null
+    - deterministic_function_id: id
+    - uses_rng_stream: bool
+    - rng_stream_name: id|null
+    - extensions: map
+
+INVARIANTS:
+- Policy evaluation order must be deterministic.
+- RNG usage is legal only when declared and named.
+- Field writes must occur through process pathways.

@@ -202,6 +202,17 @@
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "unit_id": "unit.kg_per_s",
+        "dimension_id": "dim.mass_flow",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "kg/s",
+        "description": "Canonical kilograms-per-second unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
       }
     ],
     "extensions": {}

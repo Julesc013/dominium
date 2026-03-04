@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thermal Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic THERM policy row controlling tier, update cadence, and degrade semantics.",
+  "x-doc-ref": [
+    "docs/thermal/THERMAL_CONSTITUTION.md",
+    "docs/audit/THERMAL_CONSTITUTION_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "tier_selection",
+    "update_frequency",
+    "degrade_rules",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tier_selection": {
+      "type": "object",
+      "required": [
+        "default_tier",
+        "allow_t1",
+        "allow_t2"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "default_tier": {
+          "type": "string",
+          "enum": [
+            "t0",
+            "t1",
+            "t2"
+          ]
+        },
+        "allow_t1": {
+          "type": "boolean"
+        },
+        "allow_t2": {
+          "type": "boolean"
+        }
+      }
+    },
+    "update_frequency": {
+      "type": "object",
+      "required": [
+        "t0_ticks",
+        "t1_ticks",
+        "t2_ticks"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "t0_ticks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "t1_ticks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "t2_ticks": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "degrade_rules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "therm.policy.default",
+      "tier_selection": {
+        "default_tier": "t0",
+        "allow_t1": true,
+        "allow_t2": false
+      },
+      "update_frequency": {
+        "t0_ticks": 1,
+        "t1_ticks": 2,
+        "t2_ticks": 4
+      },
+      "degrade_rules": [
+        "reduce_update_frequency",
+        "fallback_to_t0"
+      ],
+      "deterministic_fingerprint": "be754f63a0f829fce95f20f5ac8ca3b58d4015e7e7af1a784ca84d2c43b37d89",
+      "extensions": {}
+    }
+  ]
+}
+
