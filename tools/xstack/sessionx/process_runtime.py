@@ -596,6 +596,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.maintenance_schedule": "entitlement.control.admin",
     "process.inspection_perform": "entitlement.control.admin",
     "process.maintenance_perform": "entitlement.control.admin",
+    "process.clean_heat_exchanger": "entitlement.control.admin",
+    "process.flush_pipe": "entitlement.control.admin",
+    "process.apply_coating": "entitlement.control.admin",
+    "process.replace_section": "entitlement.control.admin",
     "process.compartment_flow_tick": "session.boot",
     "process.portal_open": "entitlement.tool.operating",
     "process.portal_close": "entitlement.tool.operating",
@@ -773,6 +777,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.maintenance_schedule": "operator",
     "process.inspection_perform": "operator",
     "process.maintenance_perform": "operator",
+    "process.clean_heat_exchanger": "operator",
+    "process.flush_pipe": "operator",
+    "process.apply_coating": "operator",
+    "process.replace_section": "operator",
     "process.compartment_flow_tick": "observer",
     "process.portal_open": "operator",
     "process.portal_close": "operator",
@@ -1035,6 +1043,10 @@ MAINTENANCE_PROCESS_IDS = {
     "process.maintenance_schedule",
     "process.inspection_perform",
     "process.maintenance_perform",
+    "process.clean_heat_exchanger",
+    "process.flush_pipe",
+    "process.apply_coating",
+    "process.replace_section",
     "process.mobility_wear_tick",
     "process.inspect_track",
     "process.service_track",
@@ -42026,6 +42038,196 @@ def execute_intent(
             "backlog_after": int(maintained.get("backlog_after", 0)),
             "logistics_node_id": logistics_node_id,
             "required_materials": dict(required_materials),
+            "entropy_reset_result": dict(entropy_reset_result),
+            "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
+            "entropy_reset_events_hash_chain": str(state.get("entropy_reset_events_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id in {
+        "process.clean_heat_exchanger",
+        "process.flush_pipe",
+        "process.apply_coating",
+        "process.replace_section",
+    }:
+        if law_profile.get("allow_maintenance") is False:
+            return refusal(
+                REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
+                "active law profile forbids maintenance execution",
+                "Enable maintenance in law profile or use a policy that allows maintenance processes.",
+                {"law_profile_id": str(law_profile.get("law_profile_id", ""))},
+                "$.law_profile.allow_maintenance",
+            )
+        target_id = str(inputs.get("target_id", "")).strip() or str(inputs.get("asset_id", "")).strip()
+        if not target_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "{} requires target_id or asset_id".format(process_id),
+                "Provide deterministic target_id for degradation-state maintenance action.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_id",
+            )
+
+        action_defaults = {
+            "process.clean_heat_exchanger": {"kinds": {"fouling"}, "reset_permille": 500, "reason_code": "maintenance.clean_heat_exchanger"},
+            "process.flush_pipe": {"kinds": {"scaling"}, "reset_permille": 450, "reason_code": "maintenance.flush_pipe"},
+            "process.apply_coating": {"kinds": {"corrosion"}, "reset_permille": 350, "reason_code": "maintenance.apply_coating"},
+            "process.replace_section": {"kinds": {"corrosion", "fouling", "scaling"}, "reset_permille": 900, "reason_code": "maintenance.replace_section"},
+        }
+        action_cfg = dict(action_defaults.get(process_id) or {})
+        allowed_kinds = set(action_cfg.get("kinds") or set())
+        reset_permille = int(
+            max(
+                0,
+                min(
+                    1000,
+                    _as_int(
+                        inputs.get("reset_permille", action_cfg.get("reset_permille", 500)),
+                        int(action_cfg.get("reset_permille", 500)),
+                    ),
+                ),
+            )
+        )
+        reason_code = str(inputs.get("reason_code", action_cfg.get("reason_code", "maintenance.degradation_reset"))).strip() or "maintenance.degradation_reset"
+
+        degradation_rows = [dict(row) for row in list(_ensure_chem_degradation_state_rows(state) or []) if isinstance(row, Mapping)]
+        updated_rows: List[dict] = []
+        reset_events: List[dict] = []
+        reset_count = 0
+        for row in sorted(
+            (dict(item) for item in degradation_rows if isinstance(item, Mapping)),
+            key=lambda item: (str(item.get("target_id", "")), str(item.get("degradation_kind_id", ""))),
+        ):
+            row_target_id = str(row.get("target_id", "")).strip()
+            kind_id = str(row.get("degradation_kind_id", "")).strip()
+            if row_target_id != target_id or kind_id not in allowed_kinds:
+                updated_rows.append(dict(row))
+                continue
+            before_level = int(max(0, min(1000, _as_int(row.get("level_value", 0), 0))))
+            reduction = int((int(before_level) * int(reset_permille)) // 1000)
+            if reduction <= 0 and before_level > 0 and reset_permille > 0:
+                reduction = 1
+            after_level = int(max(0, before_level - reduction))
+            updated_rows.append(
+                build_degradation_state(
+                    target_id=row_target_id,
+                    degradation_kind_id=kind_id,
+                    level_value=int(after_level),
+                    last_update_tick=int(max(0, _as_int(current_tick, 0))),
+                    extensions={
+                        **(dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}),
+                        "last_maintenance_process_id": process_id,
+                        "last_maintenance_tick": int(max(0, _as_int(current_tick, 0))),
+                    },
+                )
+            )
+            if after_level != before_level:
+                reset_count += 1
+                event_row = {
+                    "schema_version": "1.0.0",
+                    "event_id": "event.chem.degradation.reset.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "target_id": row_target_id,
+                                "degradation_kind_id": kind_id,
+                                "process_id": process_id,
+                                "before": int(before_level),
+                                "after": int(after_level),
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "target_id": row_target_id,
+                    "degradation_kind_id": kind_id,
+                    "event_kind_id": "event.chem.degradation_reset",
+                    "level_before": int(before_level),
+                    "level_after": int(after_level),
+                    "delta": int(before_level - after_level),
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "reason_code": reason_code,
+                    },
+                }
+                event_row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(event_row, deterministic_fingerprint="")
+                )
+                reset_events.append(event_row)
+
+        normalized_rows = normalize_degradation_state_rows(updated_rows)
+        state["chem_degradation_state_rows"] = [dict(row) for row in normalized_rows]
+        state["degradation_state_rows"] = [dict(row) for row in normalized_rows]
+        existing_events = [dict(row) for row in list(_ensure_chem_degradation_event_rows(state) or []) if isinstance(row, Mapping)]
+        state["chem_degradation_event_rows"] = sorted(
+            existing_events + [dict(row) for row in list(reset_events or []) if isinstance(row, Mapping)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("event_id", "")),
+            ),
+        )
+        state["degradation_event_rows"] = [dict(row) for row in list(state.get("chem_degradation_event_rows") or []) if isinstance(row, Mapping)]
+        _ensure_chem_degradation_event_rows(state)
+        _refresh_chem_degradation_hash_chains(state)
+
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": "artifact.record.chem.degradation.reset.{}".format(
+                        canonical_sha256({"event_id": str(row.get("event_id", ""))})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.chem_degradation_reset",
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "event_type": "incident.chem_degradation_reset",
+                        "target_id": str(row.get("target_id", "")).strip(),
+                        "degradation_kind_id": str(row.get("degradation_kind_id", "")).strip(),
+                    },
+                }
+                for row in list(reset_events or [])
+                if isinstance(row, Mapping)
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+        entropy_reset_result = _apply_entropy_reset_in_state(
+            state,
+            policy_context=policy_context,
+            process_id=process_id,
+            tick=int(max(0, _as_int(current_tick, 0))),
+            target_id=target_id,
+            reason_code=str(reason_code),
+            reset_value=(
+                None
+                if inputs.get("entropy_reset_value") is None
+                else int(max(0, _as_int(inputs.get("entropy_reset_value", 0), 0)))
+            ),
+            reset_fraction_numerator=(
+                None
+                if inputs.get("reset_fraction_numerator") is None
+                else int(max(0, _as_int(inputs.get("reset_fraction_numerator", 1), 1)))
+            ),
+            reset_fraction_denominator=(
+                None
+                if inputs.get("reset_fraction_denominator") is None
+                else int(max(1, _as_int(inputs.get("reset_fraction_denominator", 2), 2)))
+            ),
+            extensions={
+                "target_id": target_id,
+                "intent_id": str(intent_id),
+                "maintenance_action_process_id": process_id,
+            },
+        )
+        result_metadata = {
+            "target_id": target_id,
+            "reset_count": int(reset_count),
+            "reset_permille": int(reset_permille),
+            "reason_code": str(reason_code),
+            "degradation_hash_chain": str(state.get("degradation_hash_chain", "")).strip(),
+            "degradation_event_hash_chain": str(state.get("degradation_event_hash_chain", "")).strip(),
+            "maintenance_action_hash_chain": str(state.get("maintenance_action_hash_chain", "")).strip(),
             "entropy_reset_result": dict(entropy_reset_result),
             "entropy_hash_chain": str(state.get("entropy_hash_chain", "")).strip(),
             "entropy_reset_events_hash_chain": str(state.get("entropy_reset_events_hash_chain", "")).strip(),

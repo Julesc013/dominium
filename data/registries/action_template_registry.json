@@ -5142,6 +5142,121 @@
       },
       {
         "action_family_id": "action_family.maintain",
+        "action_template_id": "task.clean_heat_exchanger",
+        "affected_substrates": [
+          "Flow",
+          "Field",
+          "Mechanics",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "4c0b376272cf12a7e538860cf389795336090a41742996a547a0b825b36b412b",
+        "extensions": {
+          "completion_process_id": "process.clean_heat_exchanger",
+          "task_type_id": "task.clean_heat_exchanger",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "task.flush_pipe",
+        "affected_substrates": [
+          "Flow",
+          "Mechanics",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "ffc02f2683b0acb49ff205f36bb78b79b6840817a4a7ddffc2c754781aa19ab4",
+        "extensions": {
+          "completion_process_id": "process.flush_pipe",
+          "task_type_id": "task.flush_pipe",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "task.apply_coating",
+        "affected_substrates": [
+          "Mechanics",
+          "Flow",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "622775c719d431226291aff82acc67c287fa9b915c3aa9a7b2ed3a2305ca8a23",
+        "extensions": {
+          "completion_process_id": "process.apply_coating",
+          "task_type_id": "task.apply_coating",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.seam"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.maintain",
+        "action_template_id": "task.replace_section",
+        "affected_substrates": [
+          "Mechanics",
+          "Flow",
+          "Field",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "7695a8a633fe2230b5536a89faa44fe3a951a48c1e432319c0bb99b1d1ab7fa0",
+        "extensions": {
+          "completion_process_id": "process.replace_section",
+          "task_type_id": "task.replace_section",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.maintenance"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.seam",
+          "surface.fastener"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.maintain",
         "action_template_id": "action.therm.insulate",
         "affected_substrates": [
           "Field",

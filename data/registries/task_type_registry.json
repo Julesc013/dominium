@@ -262,6 +262,79 @@
         "extensions": {
           "elec4_surface": "connector.unplug"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.clean_heat_exchanger",
+        "description": "Deterministic cleaning task that reduces fouling degradation.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "completion_process_id": "process.clean_heat_exchanger",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "chem3_maintenance_kind": "fouling"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.flush_pipe",
+        "description": "Deterministic flushing task that reduces scaling degradation.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "completion_process_id": "process.flush_pipe",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "chem3_maintenance_kind": "scaling"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.apply_coating",
+        "description": "Deterministic coating task that reduces corrosion degradation.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.seam"
+        ],
+        "completion_process_id": "process.apply_coating",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "chem3_maintenance_kind": "corrosion"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.replace_section",
+        "description": "Deterministic replacement task that broadly resets degradation states.",
+        "default_progress_units_total": 8388608,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.seam",
+          "surface.fastener"
+        ],
+        "completion_process_id": "process.replace_section",
+        "progress_model_id": "progress.heavy_work_default",
+        "extensions": {
+          "chem3_maintenance_kind": "all"
+        }
       }
     ],
     "extensions": {}
