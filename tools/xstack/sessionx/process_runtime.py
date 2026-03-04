@@ -29259,6 +29259,56 @@ def execute_intent(
             for row in list(state.get("elec_fault_hazard_rows") or [])
             if isinstance(row, Mapping)
         )
+        corrosion_risk_effect_rows = sorted(
+            (
+                dict(row)
+                for row in list(effect_rows or [])
+                if isinstance(row, Mapping)
+                and str(row.get("effect_type_id", "")).strip()
+                == "effect.insulation_breakdown_risk"
+            ),
+            key=lambda row: (
+                str(row.get("target_id", "")),
+                int(max(0, _as_int(row.get("applied_tick", 0), 0))),
+                str(row.get("effect_id", "")),
+            ),
+        )
+        for effect_row in corrosion_risk_effect_rows:
+            target_id = str(effect_row.get("target_id", "")).strip()
+            if not target_id:
+                continue
+            magnitude = dict(effect_row.get("magnitude") or {})
+            risk_permille = int(
+                max(
+                    0,
+                    _as_int(
+                        magnitude.get(
+                            "insulation_breakdown_risk_permille",
+                            magnitude.get("magnitude_permille", magnitude.get("value", 0)),
+                        ),
+                        0,
+                    ),
+                )
+            )
+            if risk_permille <= 0:
+                continue
+            delta = int(max(1, risk_permille // 100))
+            hazard_key = "{}::{}".format(target_id, "hazard.elec.insulation_breakdown")
+            existing = dict(hazard_rows_by_key.get(hazard_key) or {})
+            hazard_rows_by_key[hazard_key] = {
+                "target_id": target_id,
+                "hazard_type_id": "hazard.elec.insulation_breakdown",
+                "delta": int(max(0, _as_int(existing.get("delta", 0), 0) + delta)),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "extensions": {
+                    **dict(existing.get("extensions") or {}),
+                    "source_process_id": process_id,
+                    "source_intent_id": str(intent_id),
+                    "source_effect_id": str(effect_row.get("effect_id", "")).strip() or None,
+                    "source_effect_type_id": "effect.insulation_breakdown_risk",
+                    "risk_permille": int(risk_permille),
+                },
+            }
         thermal_hook_effects = []
         for fault_row in sorted(active_fault_rows, key=lambda row: (str(row.get("target_id", "")), str(row.get("fault_kind_id", "")))):
             target_id = str(fault_row.get("target_id", "")).strip()

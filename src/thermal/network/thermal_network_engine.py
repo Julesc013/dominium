@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
+from src.control.effects import get_effective_modifier
 from src.core.flow import normalize_flow_channel
 from src.core.graph.network_graph_engine import normalize_network_graph
 from src.fields.field_engine import build_field_cell
@@ -1356,6 +1357,9 @@ def solve_thermal_network_t1(
     ambient_eval_stride: int = 1,
     overtemp_threshold_default: int = 120,
     safety_pattern_id: str = "safety.overtemp_trip",
+    effect_rows: object = None,
+    effect_type_registry: Mapping[str, object] | None = None,
+    stacking_policy_registry: Mapping[str, object] | None = None,
 ) -> dict:
     graph = normalize_network_graph(graph_row)
     graph_id = str(graph.get("graph_id", "")).strip()
@@ -1576,12 +1580,52 @@ def solve_thermal_network_t1(
     )
 
     conduction_bindings: List[dict] = []
+    conductance_reduction_by_edge_id: Dict[str, int] = {}
     for edge_id in sorted(edge_payloads_by_id.keys()):
         edge_payload = dict(edge_payloads_by_id.get(edge_id) or {})
         endpoint = dict(edge_endpoint_by_id.get(edge_id) or {})
         from_node_id = str(endpoint.get("from_node_id", "")).strip()
         to_node_id = str(endpoint.get("to_node_id", "")).strip()
-        edge_payload["conductance_value"] = int(max(0, _as_int(effective_conductance_by_edge_id.get(edge_id, edge_payload.get("conductance_value", 0)), 0)))
+        conductance_value = int(
+            max(
+                0,
+                _as_int(
+                    effective_conductance_by_edge_id.get(
+                        edge_id,
+                        edge_payload.get("conductance_value", 0),
+                    ),
+                    0,
+                ),
+            )
+        )
+        conductance_reduction_row = {"present": False, "value": 0}
+        if effect_type_registry is not None:
+            conductance_reduction_row = get_effective_modifier(
+                target_id=edge_id,
+                key="conductance_reduction_permille",
+                effect_rows=effect_rows,
+                current_tick=int(current_tick),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            if (not bool(conductance_reduction_row.get("present", False))) and graph_id:
+                conductance_reduction_row = get_effective_modifier(
+                    target_id=graph_id,
+                    key="conductance_reduction_permille",
+                    effect_rows=effect_rows,
+                    current_tick=int(current_tick),
+                    effect_type_registry=effect_type_registry,
+                    stacking_policy_registry=stacking_policy_registry,
+                )
+        conductance_reduction = int(
+            max(0, min(1000, _as_int(conductance_reduction_row.get("value", 0), 0)))
+        )
+        conductance_value = int(
+            (int(conductance_value) * int(max(0, 1000 - conductance_reduction))) // 1000
+        )
+        edge_payload["conductance_value"] = int(max(0, conductance_value))
+        effective_conductance_by_edge_id[edge_id] = int(max(0, conductance_value))
+        conductance_reduction_by_edge_id[edge_id] = int(conductance_reduction)
         conduction_bindings.append(
             _model_binding_row_for_conductance_edge(
                 edge_id=edge_id,
@@ -2067,6 +2111,9 @@ def solve_thermal_network_t1(
                 "base_conductance_value": int(base_conductance),
                 "effective_conductance_value": int(effective_conductance),
                 "insulation_factor_permille": int(insulation_factor),
+                "conductance_reduction_permille": int(
+                    max(0, _as_int(conductance_reduction_by_edge_id.get(edge_id, 0), 0))
+                ),
                 "tier": "T1",
             }
         )

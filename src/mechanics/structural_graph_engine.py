@@ -392,6 +392,40 @@ def evaluate_structural_graphs(
             if bool(effect_modifier.get("present", False)):
                 modifier_permille = int(max(1, _as_int(effect_modifier.get("value", 1000), 1000)))
                 effective_max_load = int((int(effective_max_load) * int(modifier_permille)) // 1000)
+            strength_reduction_row = get_effective_modifier(
+                target_id=edge_id,
+                key="strength_reduction_permille",
+                effect_rows=effect_rows,
+                current_tick=tick,
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            if (not bool(strength_reduction_row.get("present", False))) and graph_id:
+                strength_reduction_row = get_effective_modifier(
+                    target_id=graph_id,
+                    key="strength_reduction_permille",
+                    effect_rows=effect_rows,
+                    current_tick=tick,
+                    effect_type_registry=effect_type_registry,
+                    stacking_policy_registry=stacking_policy_registry,
+                )
+            if (not bool(strength_reduction_row.get("present", False))) and assembly_id:
+                strength_reduction_row = get_effective_modifier(
+                    target_id=assembly_id,
+                    key="strength_reduction_permille",
+                    effect_rows=effect_rows,
+                    current_tick=tick,
+                    effect_type_registry=effect_type_registry,
+                    stacking_policy_registry=stacking_policy_registry,
+                )
+            strength_reduction_permille = int(
+                max(0, min(1000, _as_int(strength_reduction_row.get("value", 0), 0)))
+            )
+            if strength_reduction_permille > 0:
+                effective_max_load = int(
+                    (int(effective_max_load) * int(max(0, 1000 - strength_reduction_permille)))
+                    // 1000
+                )
 
             stress_ratio_permille = _ratio_permille(computed_load, effective_max_load)
             derailment_risk_permille = int(
@@ -423,6 +457,7 @@ def evaluate_structural_graphs(
                 if bool(effect_modifier.get("present", False))
                 else None
             )
+            updated_ext["strength_reduction_permille"] = int(strength_reduction_permille)
             updated_ext["track_alignment_error_permille"] = int(max(0, alignment_error_permille))
             updated_ext["derailment_risk_permille"] = int(max(0, derailment_risk_permille))
             updated_ext["connection_supports_rotation"] = bool(

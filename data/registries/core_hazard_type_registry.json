@@ -14,8 +14,22 @@
       },
       {
         "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.corrosion_level",
+        "description": "CHEM-3 corrosion accumulation hazard level.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "hazard_type_id": "hazard.fatigue.basic",
         "description": "Baseline fatigue hazard model family.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.fouling_level",
+        "description": "CHEM-3 fouling accumulation hazard level.",
         "trigger_mode": "threshold",
         "extensions": {}
       },
@@ -65,6 +79,13 @@
         "schema_version": "1.0.0",
         "hazard_type_id": "hazard.thermal_runaway_risk",
         "description": "Thermal runaway risk hazard family used by safety pattern escalation policies.",
+        "trigger_mode": "threshold",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "hazard_type_id": "hazard.scaling_level",
+        "description": "CHEM-3 scaling accumulation hazard level.",
         "trigger_mode": "threshold",
         "extensions": {}
       },

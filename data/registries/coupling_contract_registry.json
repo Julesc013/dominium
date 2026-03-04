@@ -128,6 +128,58 @@
         "extensions": {
           "description": "FLUID pressure load contributes to MECH hazards via constitutive model."
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.chem.degradation_to_fluid.restriction",
+        "coupling_class_id": "force_coupling",
+        "from_domain_id": "CHEM",
+        "to_domain_id": "FLUID",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.chem_scaling_rate.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "CHEM scaling/fouling degradation modifies FLUID edge capacity/loss through emitted effects."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.chem.degradation_to_therm.conductance",
+        "coupling_class_id": "energy_coupling",
+        "from_domain_id": "CHEM",
+        "to_domain_id": "THERM",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.chem_fouling_rate.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "CHEM fouling degradation reduces THERM effective conductance through effect outputs."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.chem.degradation_to_mech.strength",
+        "coupling_class_id": "force_coupling",
+        "from_domain_id": "CHEM",
+        "to_domain_id": "MECH",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.chem_corrosion_rate.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "CHEM corrosion degradation reduces MECH effective strength through effect outputs."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.chem.degradation_to_elec.insulation",
+        "coupling_class_id": "safety_coupling",
+        "from_domain_id": "CHEM",
+        "to_domain_id": "ELEC",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.chem_corrosion_rate.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "CHEM corrosion/moisture degradation increases ELEC insulation-breakdown hazard through effect outputs."
+        }
       }
     ],
     "extensions": {

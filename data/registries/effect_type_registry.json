@@ -36,6 +36,36 @@
       },
       {
         "schema_version": "1.0.0",
+        "effect_type_id": "effect.pipe_capacity_reduction",
+        "description": "Reduces fluid channel edge capacity due to scaling/deposition.",
+        "applies_to": [
+          "edge",
+          "channel",
+          "pipe"
+        ],
+        "modifies": [
+          "pipe_capacity_reduction_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.pipe_loss_increase",
+        "description": "Increases fluid edge loss due to fouling/deposition.",
+        "applies_to": [
+          "edge",
+          "channel",
+          "pipe"
+        ],
+        "modifies": [
+          "pipe_loss_increase_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "effect_type_id": "effect.pressure_hazard_warning",
         "description": "Interior hazard warning signal for pressure-risk conditions.",
         "applies_to": [
@@ -60,6 +90,21 @@
         ],
         "modifies": [
           "max_speed_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.conductance_reduction",
+        "description": "Reduces thermal edge conductance due to fouling.",
+        "applies_to": [
+          "edge",
+          "heat_exchanger_stub",
+          "channel"
+        ],
+        "modifies": [
+          "conductance_reduction_permille"
         ],
         "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
         "extensions": {}
@@ -93,6 +138,36 @@
           "tool_efficiency_permille"
         ],
         "default_visibility_policy_id": "effect.visibility.admin_numeric",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.strength_reduction",
+        "description": "Reduces structural edge effective strength due to corrosion.",
+        "applies_to": [
+          "edge",
+          "structure",
+          "assembly"
+        ],
+        "modifies": [
+          "strength_reduction_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "effect_type_id": "effect.insulation_breakdown_risk",
+        "description": "Increases electrical insulation-breakdown risk due to corrosion/moisture exposure.",
+        "applies_to": [
+          "edge",
+          "channel",
+          "assembly"
+        ],
+        "modifies": [
+          "insulation_breakdown_risk_permille"
+        ],
+        "default_visibility_policy_id": "effect.visibility.diegetic_alarm",
         "extensions": {}
       },
       {

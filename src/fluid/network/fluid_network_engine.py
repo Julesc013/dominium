@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.control.effects import get_effective_modifier
 from src.core.flow import flow_transfer, normalize_flow_channel, normalize_flow_transfer_event
 from src.core.graph.network_graph_engine import normalize_network_graph
 from src.meta.explain import generate_explain_artifact
@@ -1587,6 +1588,9 @@ def solve_fluid_network_f1(
     downgrade_subgraph_remainder: int = 0,
     defer_noncritical_model_type_ids: object = None,
     max_leak_evaluations_per_tick: int = 0,
+    effect_rows: object = None,
+    effect_type_registry: Mapping[str, object] | None = None,
+    stacking_policy_registry: Mapping[str, object] | None = None,
 ) -> dict:
     graph = normalize_network_graph(graph_row)
     graph_id = str(graph.get("graph_id", "")).strip()
@@ -1781,12 +1785,58 @@ def solve_fluid_network_f1(
         if (not edge_id) or (not from_node_id) or (not to_node_id):
             continue
         edge_payload = dict(edge_payloads_by_id.get(edge_id) or {})
-        capacity = int(max(0, _as_int(edge_payload.get("capacity_rating", 0), 0)))
+        base_capacity = int(max(0, _as_int(edge_payload.get("capacity_rating", 0), 0)))
+        capacity_reduction_row = {"present": False, "value": 0}
+        pipe_loss_increase_row = {"present": False, "value": 0}
+        if effect_type_registry is not None:
+            capacity_reduction_row = get_effective_modifier(
+                target_id=edge_id,
+                key="pipe_capacity_reduction_permille",
+                effect_rows=effect_rows,
+                current_tick=int(tick_value),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            if (not bool(capacity_reduction_row.get("present", False))) and graph_id:
+                capacity_reduction_row = get_effective_modifier(
+                    target_id=graph_id,
+                    key="pipe_capacity_reduction_permille",
+                    effect_rows=effect_rows,
+                    current_tick=int(tick_value),
+                    effect_type_registry=effect_type_registry,
+                    stacking_policy_registry=stacking_policy_registry,
+                )
+            pipe_loss_increase_row = get_effective_modifier(
+                target_id=edge_id,
+                key="pipe_loss_increase_permille",
+                effect_rows=effect_rows,
+                current_tick=int(tick_value),
+                effect_type_registry=effect_type_registry,
+                stacking_policy_registry=stacking_policy_registry,
+            )
+            if (not bool(pipe_loss_increase_row.get("present", False))) and graph_id:
+                pipe_loss_increase_row = get_effective_modifier(
+                    target_id=graph_id,
+                    key="pipe_loss_increase_permille",
+                    effect_rows=effect_rows,
+                    current_tick=int(tick_value),
+                    effect_type_registry=effect_type_registry,
+                    stacking_policy_registry=stacking_policy_registry,
+                )
+        capacity_reduction_permille = int(
+            _clamp(_as_int(capacity_reduction_row.get("value", 0), 0), 0, 1000)
+        )
+        pipe_loss_increase_permille = int(
+            _clamp(_as_int(pipe_loss_increase_row.get("value", 0), 0), 0, 1000)
+        )
+        capacity = int((int(base_capacity) * int(max(0, 1000 - capacity_reduction_permille))) // 1000)
         upstream_head = int(max(0, _as_int(node_head_by_id.get(from_node_id, 0), 0)))
         downstream_head = int(max(0, _as_int(node_head_by_id.get(to_node_id, 0), 0)))
         pump_gain = int(max(0, _as_int(pump_gain_by_edge.get(edge_id, 0), 0)))
-        head_loss = int(max(0, _as_int(head_loss_by_edge.get(edge_id, 0), 0)))
-        heat_loss = int(max(0, _as_int(heat_loss_by_edge.get(edge_id, head_loss), head_loss)))
+        head_loss_base = int(max(0, _as_int(head_loss_by_edge.get(edge_id, 0), 0)))
+        head_loss = int((int(head_loss_base) * int(1000 + pipe_loss_increase_permille)) // 1000)
+        heat_loss_base = int(max(0, _as_int(heat_loss_by_edge.get(edge_id, head_loss_base), head_loss_base)))
+        heat_loss = int((int(heat_loss_base) * int(1000 + pipe_loss_increase_permille)) // 1000)
         valve_limit = int(_clamp(_as_int(valve_limit_by_edge.get(edge_id, 1000), 1000), 0, 1000))
         flow_delta = int(_as_int(flow_delta_by_edge.get(edge_id, 0), 0))
         source_tank = dict(tank_state_by_node_id.get(from_node_id) or {})
@@ -1866,7 +1916,12 @@ def solve_fluid_network_f1(
                 "upstream_head": int(upstream_head),
                 "downstream_head": int(downstream_head),
                 "pump_gain": int(pump_gain),
+                "capacity_rating_base": int(base_capacity),
+                "capacity_effective": int(capacity),
+                "pipe_capacity_reduction_permille": int(capacity_reduction_permille),
+                "head_loss_base": int(head_loss_base),
                 "head_loss": int(head_loss),
+                "pipe_loss_increase_permille": int(pipe_loss_increase_permille),
                 "heat_loss_stub": int(heat_loss),
                 "valve_limit_permille": int(valve_limit),
                 "cavitation_risk_permille": int(cavitation_risk),
