@@ -716,6 +716,15 @@ def _emit_control_proof_bundle(
             "time_adjust_event_hash_chain": str(
                 global_state.get("time_adjust_event_hash_chain", "")
             ).strip(),
+            "compaction_marker_hash_chain": str(
+                global_state.get("compaction_marker_hash_chain", "")
+            ).strip(),
+            "compaction_pre_anchor_hash": str(
+                global_state.get("compaction_pre_anchor_hash", "")
+            ).strip(),
+            "compaction_post_anchor_hash": str(
+                global_state.get("compaction_post_anchor_hash", "")
+            ).strip(),
             "drift_policy_id": str(global_state.get("drift_policy_id", "drift.none")).strip() or "drift.none",
         }
     )

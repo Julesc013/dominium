@@ -518,6 +518,7 @@ from src.physics import (
     velocity_from_momentum_state,
 )
 from src.meta.numeric import apply_overflow_policy, overflow_policy_for_quantity
+from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -4441,6 +4442,38 @@ def _refresh_time_hash_chains(state: dict) -> None:
             for row in list(adjust_rows or [])
         ]
     )
+    _refresh_provenance_compaction_hashes(state)
+
+
+def _refresh_provenance_compaction_hashes(state: dict) -> None:
+    marker_rows = normalize_compaction_marker_rows(state.get("compaction_markers"))
+    state["compaction_markers"] = [dict(row) for row in marker_rows]
+    state["compaction_marker_hash_chain"] = canonical_sha256(
+        [
+            {
+                "marker_id": str(row.get("marker_id", "")).strip(),
+                "shard_id": str(row.get("shard_id", "")).strip(),
+                "start_tick": int(max(0, _as_int(row.get("start_tick", 0), 0))),
+                "end_tick": int(max(0, _as_int(row.get("end_tick", 0), 0))),
+                "pre_compaction_hash": str(row.get("pre_compaction_hash", "")).strip().lower(),
+                "post_compaction_hash": str(row.get("post_compaction_hash", "")).strip().lower(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip().lower(),
+            }
+            for row in list(marker_rows or [])
+        ]
+    )
+    if marker_rows:
+        latest_marker = dict(marker_rows[-1])
+        state["compaction_pre_anchor_hash"] = str(
+            latest_marker.get("pre_compaction_hash", "")
+        ).strip().lower()
+        state["compaction_post_anchor_hash"] = str(
+            latest_marker.get("post_compaction_hash", "")
+        ).strip().lower()
+        return
+    empty_hash = canonical_sha256([])
+    state["compaction_pre_anchor_hash"] = str(empty_hash)
+    state["compaction_post_anchor_hash"] = str(empty_hash)
 
 
 def _merge_schedule_domain_evaluations(state: dict, rows: object) -> List[dict]:
@@ -17971,6 +18004,7 @@ def execute_intent(
     _refresh_numeric_policy_hashes(state, policy_context)
     _refresh_entropy_hash_chains(state)
     _refresh_field_hash_chains(state)
+    _refresh_time_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):

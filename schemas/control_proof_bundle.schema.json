@@ -61,6 +61,9 @@
     "time_mapping_hash_chain",
     "schedule_domain_evaluation_hash",
     "time_adjust_event_hash_chain",
+    "compaction_marker_hash_chain",
+    "compaction_pre_anchor_hash",
+    "compaction_post_anchor_hash",
     "drift_policy_id",
     "deterministic_fingerprint",
     "extensions"
@@ -292,6 +295,18 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "compaction_marker_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compaction_pre_anchor_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compaction_post_anchor_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "drift_policy_id": {
       "type": "string",
       "minLength": 1
@@ -364,6 +379,9 @@
       "time_mapping_hash_chain": "d1d56a559eae5ca376b680ab70b7f7d12307f7872bbf93ec2b75f67491552f22",
       "schedule_domain_evaluation_hash": "ef1f9dccf7b13ef662ec40ec16fe82ccbd1d4e0cbcb56d516cc3434ac9ca87cc",
       "time_adjust_event_hash_chain": "7f58c3ef67f30b95d0b8b030e53aa3dcdf413b79f4238f303f3fbf02de7080cb",
+      "compaction_marker_hash_chain": "5738f2638c15e68f14211bcb3fd8ca562f22993ca7f4d56aefb0daec37639513",
+      "compaction_pre_anchor_hash": "c120038f775f6ef22104a0a9f7dc74d8f5e4a4a5de9d2e5d37e8019d659f9952",
+      "compaction_post_anchor_hash": "c120038f775f6ef22104a0a9f7dc74d8f5e4a4a5de9d2e5d37e8019d659f9952",
       "drift_policy_id": "drift.none",
       "deterministic_fingerprint": "f1fcbca386d927f736ebfef0643ebf821d13d8da38f8e3f1360ab2164ec22e6a",
       "extensions": {

@@ -538,6 +538,27 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    compaction_marker_hash_chain = _mobility_surface_hash(
+        key="compaction_marker_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    compaction_pre_anchor_hash = _mobility_surface_hash(
+        key="compaction_pre_anchor_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    compaction_post_anchor_hash = _mobility_surface_hash(
+        key="compaction_post_anchor_hash",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     drift_policy_id = str((dict(mobility_proof_surface or {})).get("drift_policy_id", "drift.none")).strip() or "drift.none"
 
     payload = {
@@ -596,6 +617,9 @@ def build_control_proof_bundle_from_markers(
         "time_mapping_hash_chain": str(time_mapping_hash_chain),
         "schedule_domain_evaluation_hash": str(schedule_domain_evaluation_hash),
         "time_adjust_event_hash_chain": str(time_adjust_event_hash_chain),
+        "compaction_marker_hash_chain": str(compaction_marker_hash_chain),
+        "compaction_pre_anchor_hash": str(compaction_pre_anchor_hash),
+        "compaction_post_anchor_hash": str(compaction_post_anchor_hash),
         "drift_policy_id": str(drift_policy_id),
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
@@ -666,6 +690,9 @@ def build_control_proof_bundle_from_markers(
                     "time_mapping_hash_chain": str(payload.get("time_mapping_hash_chain", "")),
                     "schedule_domain_evaluation_hash": str(payload.get("schedule_domain_evaluation_hash", "")),
                     "time_adjust_event_hash_chain": str(payload.get("time_adjust_event_hash_chain", "")),
+                    "compaction_marker_hash_chain": str(payload.get("compaction_marker_hash_chain", "")),
+                    "compaction_pre_anchor_hash": str(payload.get("compaction_pre_anchor_hash", "")),
+                    "compaction_post_anchor_hash": str(payload.get("compaction_post_anchor_hash", "")),
                     "drift_policy_id": str(payload.get("drift_policy_id", "")),
                 }
             )[:16]
