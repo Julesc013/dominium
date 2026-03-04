@@ -686,6 +686,8 @@ def _emit_control_proof_bundle(
             "degradation_event_hash_chain": str(
                 elec_surface.get("degradation_event_hash_chain", global_state.get("degradation_event_hash_chain", ""))
             ).strip(),
+            "degradation_hash_chain": str(global_state.get("degradation_hash_chain", "")).strip(),
+            "maintenance_action_hash_chain": str(global_state.get("maintenance_action_hash_chain", "")).strip(),
             "trip_event_hash_chain": str(
                 elec_surface.get("trip_event_hash_chain", global_state.get("trip_event_hash_chain", ""))
             ).strip(),

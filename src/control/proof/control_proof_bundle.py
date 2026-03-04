@@ -293,6 +293,20 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    degradation_hash_chain = _mobility_surface_hash(
+        key="degradation_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    maintenance_action_hash_chain = _mobility_surface_hash(
+        key="maintenance_action_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     trip_event_hash_chain = _mobility_surface_hash(
         key="trip_event_hash_chain",
         surface=mobility_proof_surface,
@@ -624,6 +638,8 @@ def build_control_proof_bundle_from_markers(
         "fault_state_hash_chain": str(fault_state_hash_chain),
         "protection_state_hash_chain": str(protection_state_hash_chain),
         "degradation_event_hash_chain": str(degradation_event_hash_chain),
+        "degradation_hash_chain": str(degradation_hash_chain),
+        "maintenance_action_hash_chain": str(maintenance_action_hash_chain),
         "trip_event_hash_chain": str(trip_event_hash_chain),
         "trip_explanation_hash_chain": str(trip_explanation_hash_chain),
         "thermal_network_hash": str(thermal_network_hash),
@@ -703,6 +719,8 @@ def build_control_proof_bundle_from_markers(
                     "fault_state_hash_chain": str(payload.get("fault_state_hash_chain", "")),
                     "protection_state_hash_chain": str(payload.get("protection_state_hash_chain", "")),
                     "degradation_event_hash_chain": str(payload.get("degradation_event_hash_chain", "")),
+                    "degradation_hash_chain": str(payload.get("degradation_hash_chain", "")),
+                    "maintenance_action_hash_chain": str(payload.get("maintenance_action_hash_chain", "")),
                     "trip_event_hash_chain": str(payload.get("trip_event_hash_chain", "")),
                     "trip_explanation_hash_chain": str(payload.get("trip_explanation_hash_chain", "")),
                     "thermal_network_hash": str(payload.get("thermal_network_hash", "")),

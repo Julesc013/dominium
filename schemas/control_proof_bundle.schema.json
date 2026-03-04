@@ -26,6 +26,8 @@
     "fault_state_hash_chain",
     "protection_state_hash_chain",
     "degradation_event_hash_chain",
+    "degradation_hash_chain",
+    "maintenance_action_hash_chain",
     "trip_event_hash_chain",
     "trip_explanation_hash_chain",
     "thermal_network_hash",
@@ -348,6 +350,14 @@
     "extensions": {
       "type": "object",
       "additionalProperties": true
+    },
+    "degradation_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "maintenance_action_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
     }
   },
   "examples": [

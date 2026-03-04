@@ -29,6 +29,8 @@ record control_proof_bundle
     - fault_state_hash_chain: sha256
     - protection_state_hash_chain: sha256
     - degradation_event_hash_chain: sha256
+    - degradation_hash_chain: sha256
+    - maintenance_action_hash_chain: sha256
     - trip_event_hash_chain: sha256
     - trip_explanation_hash_chain: sha256
     - thermal_network_hash: sha256
@@ -83,6 +85,7 @@ INVARIANTS:
 - Entropy artifacts (`entropy_event`, `entropy_reset_event`) are INFO `RECORD` and must be included as deterministic witness coverage when present in tick range.
 - Combustion artifacts (`combustion_event`, `combustion_emission`, `combustion_impulse`) are INFO `RECORD` and must be included as deterministic hash-chain witnesses when present.
 - CHEM process-run artifacts (`chem_process_run_start`, `chem_process_run_tick`, `chem_process_run_end`, `batch_quality`) must be represented by deterministic hash-chain fields when present.
+- CHEM degradation artifacts (`chem_degradation_state`, `chem_degradation_event`, `chem_maintenance_action`) must be represented by deterministic hash-chain fields when present.
 - FLUID flow/containment artifacts (`fluid_flow`, `burst_event`, `leak_event`, `relief_event`) must be represented by deterministic hash-chain fields when present.
 - FIELD mutation/sampling artifacts (`field_update_event`, `field_sample`, `boundary_field_exchange`) must be represented by deterministic hash-chain fields when present.
 - TEMP mapping/schedule artifacts (`time_mapping`, `schedule_domain_evaluation`) must be represented by deterministic hash-chain fields when present.
