@@ -1,0 +1,25 @@
+SCHEMA: physics/field_sample.schema
+schema_id: dominium.schema.physics.field_sample
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic PHYS field sample rows for replay/proof-hashable sampling.
+
+NON-SEMANTICS:
+- This schema does not mutate field state.
+- Sampling rows are derived from authoritative field state per tick.
+
+REQUIRED SHAPE:
+record field_sample
+  required:
+    - field_id: id
+    - spatial_node_id: id
+    - tick: u64
+    - sampled_value: scalar|vector
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Samples must be deterministic for identical inputs.
+- Sample identity key is `(field_id, spatial_node_id, tick)`.

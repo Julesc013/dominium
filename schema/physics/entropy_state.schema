@@ -1,0 +1,21 @@
+SCHEMA: physics/entropy_state.schema
+schema_id: dominium.schema.physics.entropy_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic PHYS-4 entropy state rows for assemblies/networks/batches.
+- Provide canonical irreversibility tracking substrate for model-driven degradation hooks.
+
+NON-SEMANTICS:
+- This schema does not execute entropy accumulation logic.
+- Mutation must occur through deterministic process/runtime entropy engine paths.
+
+REQUIRED SHAPE:
+record entropy_state
+  required:
+    - target_id: id
+    - entropy_value: fixed_point_nonnegative
+    - last_update_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map

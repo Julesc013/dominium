@@ -50,6 +50,14 @@ def _vector3_int(value: object, default_value: Mapping[str, object] | None = Non
     }
 
 
+def _div_toward_zero(value: int, divisor: int) -> int:
+    den = int(max(1, _as_int(divisor, 1)))
+    num = int(_as_int(value, 0))
+    if num < 0:
+        return -int(abs(num) // den)
+    return int(num // den)
+
+
 def _normalize_corridor_mode(value: object) -> str:
     token = str(value or "").strip()
     if token in _VALID_CORRIDOR_ENFORCEMENT_MODES:
@@ -434,6 +442,9 @@ def step_free_motion(
     volume_geometry_row: Mapping[str, object] | None,
     dt_ticks: int,
     current_tick: int,
+    mass_value: int = 1,
+    momentum_linear: Mapping[str, object] | None = None,
+    momentum_angular: object = 0,
 ) -> dict:
     row = dict(free_motion_row or {})
     body = dict(body_row or {})
@@ -465,21 +476,36 @@ def step_free_motion(
         "y": int(traction_accel["y"]) + int(drift_accel["y"]),
         "z": int(traction_accel["z"]) + int(drift_accel["z"]),
     }
-    v0 = _vector3_int(row.get("velocity"), _vector3_int(body.get("velocity_mm_per_tick")))
+    mass = int(max(1, _as_int(mass_value, 1)))
+    if isinstance(momentum_linear, Mapping):
+        momentum_p0 = _vector3_int(momentum_linear)
+    else:
+        v0 = _vector3_int(row.get("velocity"), _vector3_int(body.get("velocity_mm_per_tick")))
+        momentum_p0 = {
+            "x": int(v0["x"]) * int(mass),
+            "y": int(v0["y"]) * int(mass),
+            "z": int(v0["z"]) * int(mass),
+        }
+    momentum_p1 = {
+        "x": int(momentum_p0["x"]) + int(accel["x"]) * int(dt) * int(mass),
+        "y": int(momentum_p0["y"]) + int(accel["y"]) * int(dt) * int(mass),
+        "z": int(momentum_p0["z"]) + int(accel["z"]) * int(dt) * int(mass),
+    }
     v1 = {
-        "x": int(v0["x"]) + int(accel["x"]) * int(dt),
-        "y": int(v0["y"]) + int(accel["y"]) * int(dt),
-        "z": int(v0["z"]) + int(accel["z"]) * int(dt),
+        "x": int(_div_toward_zero(int(momentum_p1["x"]), int(mass))),
+        "y": int(_div_toward_zero(int(momentum_p1["y"]), int(mass))),
+        "z": int(_div_toward_zero(int(momentum_p1["z"]), int(mass))),
     }
     speed_cap = _speed_cap_mm_per_tick(policy_row=policy, field_values=fields, effect_modifiers=effects)
     for axis in ("x", "y", "z"):
         v1[axis] = int(max(-int(speed_cap), min(int(speed_cap), int(v1[axis]))))
+        momentum_p1[axis] = int(v1[axis]) * int(mass)
 
-    p0 = _vector3_int(body.get("transform_mm"))
-    p1 = {
-        "x": int(p0["x"]) + int(v1["x"]) * int(dt),
-        "y": int(p0["y"]) + int(v1["y"]) * int(dt),
-        "z": int(p0["z"]) + int(v1["z"]) * int(dt),
+    position_p0 = _vector3_int(body.get("transform_mm"))
+    position_p1 = {
+        "x": int(position_p0["x"]) + int(v1["x"]) * int(dt),
+        "y": int(position_p0["y"]) + int(v1["y"]) * int(dt),
+        "z": int(position_p0["z"]) + int(v1["z"]) * int(dt),
     }
     enforcement_mode = _normalize_corridor_mode(
         _as_map(policy).get(
@@ -491,29 +517,31 @@ def step_free_motion(
     volume_status = "none"
     if isinstance(corridor_geometry_row, Mapping):
         corridor_bounds = _geometry_bounds_mm(corridor_geometry_row)
-        outside = _point_outside_bounds(p1, corridor_bounds, ("x", "y"))
+        outside = _point_outside_bounds(position_p1, corridor_bounds, ("x", "y"))
         if outside:
             if enforcement_mode == "clamp":
-                p1 = _clamp_point_to_bounds(p1, corridor_bounds, ("x", "y"))
+                position_p1 = _clamp_point_to_bounds(position_p1, corridor_bounds, ("x", "y"))
                 corridor_status = "clamped"
             elif enforcement_mode == "refuse":
-                p1 = dict(p0)
+                position_p1 = dict(position_p0)
                 v1 = {"x": 0, "y": 0, "z": 0}
                 accel = {"x": 0, "y": 0, "z": 0}
+                momentum_p1 = {"x": 0, "y": 0, "z": 0}
                 corridor_status = "refused"
             else:
                 corridor_status = "warned"
     if isinstance(volume_geometry_row, Mapping):
         volume_bounds = _geometry_bounds_mm(volume_geometry_row)
-        outside = _point_outside_bounds(p1, volume_bounds, ("x", "y", "z"))
+        outside = _point_outside_bounds(position_p1, volume_bounds, ("x", "y", "z"))
         if outside:
             if enforcement_mode == "clamp":
-                p1 = _clamp_point_to_bounds(p1, volume_bounds, ("x", "y", "z"))
+                position_p1 = _clamp_point_to_bounds(position_p1, volume_bounds, ("x", "y", "z"))
                 volume_status = "clamped"
             elif enforcement_mode == "refuse":
-                p1 = dict(p0)
+                position_p1 = dict(position_p0)
                 v1 = {"x": 0, "y": 0, "z": 0}
                 accel = {"x": 0, "y": 0, "z": 0}
+                momentum_p1 = {"x": 0, "y": 0, "z": 0}
                 volume_status = "refused"
             else:
                 volume_status = "warned"
@@ -536,12 +564,17 @@ def step_free_motion(
     )
     return {
         "free_motion_state": dict(next_row),
-        "candidate_transform_mm": dict(p1),
+        "candidate_transform_mm": dict(position_p1),
+        "momentum_linear": dict(momentum_p1),
+        "momentum_angular": int(_as_int(momentum_angular, 0)),
+        "mass_value": int(mass),
         "telemetry": {
             "speed_cap_mm_per_tick": int(speed_cap),
             "friction_permille": int(friction_permille),
             "traction_accel": dict(traction_accel),
             "drift_accel": dict(drift_accel),
+            "momentum_linear": dict(momentum_p1),
+            "mass_value": int(mass),
             "corridor_status": corridor_status,
             "volume_status": volume_status,
             "corridor_enforcement_mode": enforcement_mode,

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Entropy Contribution Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-4 deterministic mapping row from source transformation to entropy increment formula.",
+  "x-doc-ref": [
+    "docs/physics/ENTROPY_POLICY.md",
+    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contribution_id",
+    "source_transformation_id",
+    "entropy_increment_formula_id",
+    "parameters",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contribution_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_transformation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entropy_increment_formula_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "contribution_id": "entropy.from_friction",
+      "source_transformation_id": "transform.electrical_to_thermal",
+      "entropy_increment_formula_id": "formula.entropy.linear",
+      "parameters": {
+        "numerator": 1,
+        "denominator": 200,
+        "min_increment": 1
+      },
+      "deterministic_fingerprint": "1f2412ace2bb8f52d6d57148de32f27433112dd52da4ad2606f4abbe6f5d9a53",
+      "extensions": {}
+    }
+  ]
+}

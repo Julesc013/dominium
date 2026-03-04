@@ -395,6 +395,146 @@ def _binding_param_int(*, binding: Mapping[str, object], key: str, default_value
     return int(_as_int(params.get(key), default_value))
 
 
+def _resolved_input_vector3(
+    *,
+    resolved_inputs: List[dict],
+    input_id: str,
+) -> dict:
+    token = str(input_id or "").strip()
+    for row in list(resolved_inputs or []):
+        if str(row.get("input_id", "")).strip() != token:
+            continue
+        value = row.get("value")
+        payload = _as_map(value)
+        return {
+            "x": int(_as_int(payload.get("x", 0), 0)),
+            "y": int(_as_int(payload.get("y", 0), 0)),
+            "z": int(_as_int(payload.get("z", 0), 0)),
+        }
+    return {"x": 0, "y": 0, "z": 0}
+
+
+def _resolved_input_any(
+    *,
+    resolved_inputs: List[dict],
+    input_id: str,
+) -> object:
+    token = str(input_id or "").strip()
+    for row in list(resolved_inputs or []):
+        if str(row.get("input_id", "")).strip() != token:
+            continue
+        return row.get("value")
+    return None
+
+
+def evaluate_time_mapping_model(
+    *,
+    model_row: Mapping[str, object],
+    canonical_tick: int,
+    scope_id: str,
+    parameters: Mapping[str, object] | None = None,
+    input_values: Mapping[str, object] | None = None,
+    previous_domain_time: int = 0,
+) -> dict:
+    """Evaluate TEMP-1 time mapping model deterministically."""
+
+    payload = dict(model_row or {})
+    params = _as_map(parameters)
+    inputs = _as_map(input_values)
+    model_type_id = str(payload.get("model_type_id", "")).strip()
+    model_id = str(payload.get("model_id", "")).strip()
+    tick = int(max(0, _as_int(canonical_tick, 0)))
+    scope_token = str(scope_id or "").strip() or "global"
+    prev_value = int(_as_int(previous_domain_time, 0))
+
+    if model_type_id == "model_type.time_mapping_proper_default_stub":
+        gravity_value = _as_map(inputs.get("field.gravity_vector") or inputs.get("gravity_vector") or {})
+        velocity_value = _as_map(inputs.get("velocity") or inputs.get("momentum_velocity") or {})
+        gravity_mag = int(
+            abs(_as_int(gravity_value.get("x", 0), 0))
+            + abs(_as_int(gravity_value.get("y", 0), 0))
+            + abs(_as_int(gravity_value.get("z", 0), 0))
+        )
+        speed_mag = int(
+            abs(_as_int(velocity_value.get("x", 0), 0))
+            + abs(_as_int(velocity_value.get("y", 0), 0))
+            + abs(_as_int(velocity_value.get("z", 0), 0))
+        )
+        base_delta = int(max(0, _as_int(params.get("base_delta_per_tick", 1000), 1000)))
+        dilation_coefficient = int(max(0, _as_int(params.get("dilation_coefficient", 0), 0)))
+        penalty = int((int(dilation_coefficient) * int(speed_mag + gravity_mag)) // 1_000_000)
+        delta = int(max(0, int(base_delta) - int(penalty)))
+        domain_value = int(prev_value + delta)
+        out = {
+            "model_id": model_id,
+            "model_type_id": model_type_id,
+            "canonical_tick": int(tick),
+            "scope_id": scope_token,
+            "domain_time_value": int(domain_value),
+            "delta_domain_time": int(delta),
+            "components": {
+                "gravity_magnitude": int(gravity_mag),
+                "speed_magnitude": int(speed_mag),
+                "base_delta_per_tick": int(base_delta),
+                "dilation_coefficient": int(dilation_coefficient),
+                "dilation_penalty": int(penalty),
+            },
+            "deterministic_fingerprint": "",
+        }
+        out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+        return out
+
+    if model_type_id == "model_type.time_mapping_civil_calendar_stub":
+        tick_to_seconds_ratio = int(max(0, _as_int(params.get("tick_to_seconds_ratio", 1), 1)))
+        calendar_offset = int(_as_int(params.get("calendar_offset", 0), 0))
+        domain_value = int(calendar_offset + int(tick) * int(tick_to_seconds_ratio))
+        out = {
+            "model_id": model_id,
+            "model_type_id": model_type_id,
+            "canonical_tick": int(tick),
+            "scope_id": scope_token,
+            "domain_time_value": int(domain_value),
+            "delta_domain_time": int(tick_to_seconds_ratio),
+            "components": {
+                "tick_to_seconds_ratio": int(tick_to_seconds_ratio),
+                "calendar_offset": int(calendar_offset),
+            },
+            "deterministic_fingerprint": "",
+        }
+        out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+        return out
+
+    if model_type_id == "model_type.time_mapping_warp_session_stub":
+        session_warp_factor = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get("session_warp_factor", params.get("session_warp_factor", 1000)),
+                    1000,
+                ),
+            )
+        )
+        offset_ticks = int(_as_int(params.get("offset_ticks", 0), 0))
+        domain_value = int(offset_ticks + (int(tick) * int(session_warp_factor) // 1000))
+        out = {
+            "model_id": model_id,
+            "model_type_id": model_type_id,
+            "canonical_tick": int(tick),
+            "scope_id": scope_token,
+            "domain_time_value": int(domain_value),
+            "delta_domain_time": int(domain_value - int(prev_value)),
+            "components": {
+                "session_warp_factor": int(session_warp_factor),
+                "offset_ticks": int(offset_ticks),
+            },
+            "deterministic_fingerprint": "",
+        }
+        out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+        return out
+
+    return {}
+
+
 def _build_output_row(
     *,
     model_id: str,
@@ -1535,6 +1675,347 @@ def _evaluate_therm_combust_stub_model(
     return outputs
 
 
+def _evaluate_phys_gravity_stub_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+    gravity_vector = _as_map(params.get("gravity_vector"))
+    for row in list(resolved_inputs or []):
+        if not isinstance(row, Mapping):
+            continue
+        input_id = str(row.get("input_id", "")).strip()
+        if input_id not in {"field.gravity.vector", "field.gravity_vector"}:
+            continue
+        candidate = _as_map(row.get("value"))
+        if candidate:
+            gravity_vector = candidate
+            break
+    gravity = {
+        "x": int(_as_int(gravity_vector.get("x", 0), 0)),
+        "y": int(_as_int(gravity_vector.get("y", -10), -10)),
+        "z": int(_as_int(gravity_vector.get("z", 0), 0)),
+    }
+    mass_value = int(
+        max(
+            1,
+            _binding_param_int(
+                binding=binding,
+                key="phys.mass_value",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="phys.mass_value",
+                    default_value=max(
+                        1,
+                        _resolved_input_int(
+                            resolved_inputs=resolved_inputs,
+                            input_id="quantity.mass",
+                            default_value=1,
+                        ),
+                    ),
+                ),
+            ),
+        )
+    )
+    duration_ticks = int(max(1, _binding_param_int(binding=binding, key="duration_ticks", default_value=1)))
+    torque = int(_binding_param_int(binding=binding, key="torque", default_value=0))
+    force_vector = {
+        "x": int(mass_value) * int(gravity["x"]),
+        "y": int(mass_value) * int(gravity["y"]),
+        "z": int(mass_value) * int(gravity["z"]),
+    }
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "derived_quantity" and output_id == "process.apply_force":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": "quantity.force",
+                        "mass_value": int(mass_value),
+                        "gravity_vector": dict(gravity),
+                        "force_vector": dict(force_vector),
+                        "duration_ticks": int(duration_ticks),
+                        "torque": int(torque),
+                    },
+                )
+            )
+        elif output_kind in {"derived_quantity", "compliance_signal"}:
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": int(
+                            abs(int(force_vector["x"]))
+                            + abs(int(force_vector["y"]))
+                            + abs(int(force_vector["z"]))
+                        ),
+                        "mass_value": int(mass_value),
+                    },
+                )
+            )
+    return outputs
+
+
+def _evaluate_phys_radiation_damage_stub_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    radiation_intensity = int(
+        max(
+            0,
+            _resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.radiation_intensity",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="field.radiation",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    exposure_divisor = int(max(1, _binding_param_int(binding=binding, key="radiation_delta_divisor", default_value=100)))
+    hazard_delta = int(max(0, radiation_intensity // exposure_divisor))
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "hazard_increment":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"hazard_type_id": output_id, "delta": int(hazard_delta)},
+                )
+            )
+        elif output_kind == "effect":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "effect_type_id": output_id,
+                        "magnitude_permille": int(max(0, min(1000, radiation_intensity))),
+                    },
+                )
+            )
+        else:
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": int(radiation_intensity),
+                    },
+                )
+            )
+    return outputs
+
+
+def _evaluate_phys_irradiance_heating_stub_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    irradiance = int(
+        max(
+            0,
+            _resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.irradiance",
+                default_value=0,
+            ),
+        )
+    )
+    scale_permille = int(max(0, _binding_param_int(binding=binding, key="irradiance_to_heat_permille", default_value=100)))
+    heat_input = int(max(0, (irradiance * scale_permille) // 1000))
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "effect":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "effect_type_id": output_id,
+                        "magnitude_permille": int(max(0, min(1000, heat_input))),
+                        "heat_input": int(heat_input),
+                    },
+                )
+            )
+        else:
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "quantity_id": output_id,
+                        "value": int(heat_input),
+                        "irradiance": int(irradiance),
+                    },
+                )
+            )
+    return outputs
+
+
+def _evaluate_phys_magnetic_stub_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    magnetic_value: Mapping[str, object] = {}
+    for row in list(resolved_inputs or []):
+        if str(row.get("input_id", "")).strip() != "field.magnetic_flux_stub":
+            continue
+        candidate = row.get("value")
+        if isinstance(candidate, Mapping):
+            magnetic_value = candidate
+            break
+    magnitude = int(
+        abs(_as_int(magnetic_value.get("x", 0), 0))
+        + abs(_as_int(magnetic_value.get("y", 0), 0))
+        + abs(_as_int(magnetic_value.get("z", 0), 0))
+    )
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind == "compliance_signal":
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={
+                        "signal_id": output_id,
+                        "grade": "pass",
+                        "score_permille": int(max(0, min(1000, magnitude))),
+                    },
+                )
+            )
+        else:
+            outputs.append(
+                _build_output_row(
+                    model_id=model_id,
+                    binding_id=binding_id,
+                    target_id=target_id,
+                    output_kind=output_kind,
+                    output_id=output_id,
+                    payload={"quantity_id": output_id, "value": int(magnitude)},
+                )
+            )
+    return outputs
+
+
+def _evaluate_time_mapping_model_outputs(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+    canonical_tick = int(_as_int(_resolved_input_any(resolved_inputs=resolved_inputs, input_id="canonical_tick"), 0))
+    previous_domain_time = int(_as_int(params.get("previous_domain_time", 0), 0))
+    input_values = {
+        "field.gravity_vector": _resolved_input_vector3(resolved_inputs=resolved_inputs, input_id="field.gravity_vector"),
+        "velocity": _resolved_input_vector3(resolved_inputs=resolved_inputs, input_id="velocity"),
+    }
+    session_warp = _resolved_input_any(resolved_inputs=resolved_inputs, input_id="session_warp_factor")
+    if session_warp is not None:
+        input_values["session_warp_factor"] = session_warp
+
+    evaluation = evaluate_time_mapping_model(
+        model_row=model_row,
+        canonical_tick=int(canonical_tick),
+        scope_id=target_id,
+        parameters=params,
+        input_values=input_values,
+        previous_domain_time=int(previous_domain_time),
+    )
+    domain_time_value = int(_as_int(evaluation.get("domain_time_value", 0), 0))
+    delta_domain_time = int(_as_int(evaluation.get("delta_domain_time", 0), 0))
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        outputs.append(
+            _build_output_row(
+                model_id=model_id,
+                binding_id=binding_id,
+                target_id=target_id,
+                output_kind=output_kind,
+                output_id=output_id,
+                payload={
+                    "quantity_id": output_id,
+                    "domain_time_value": int(domain_time_value),
+                    "delta_domain_time": int(delta_domain_time),
+                    "canonical_tick": int(canonical_tick),
+                    "model_eval_fingerprint": str(evaluation.get("deterministic_fingerprint", "")).strip(),
+                },
+            )
+        )
+    return outputs
+
+
 def _evaluate_known_model_outputs(
     *,
     model_row: Mapping[str, object],
@@ -1637,6 +2118,45 @@ def _evaluate_known_model_outputs(
         )
     if model_type_id == "model_type.therm_combust_stub":
         return _evaluate_therm_combust_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.phys_gravity_stub":
+        return _evaluate_phys_gravity_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.phys_radiation_damage_stub":
+        return _evaluate_phys_radiation_damage_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.phys_irradiance_heating_stub":
+        return _evaluate_phys_irradiance_heating_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.phys_magnetic_stub":
+        return _evaluate_phys_magnetic_stub_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id in {
+        "model_type.time_mapping_proper_default_stub",
+        "model_type.time_mapping_civil_calendar_stub",
+        "model_type.time_mapping_warp_session_stub",
+    }:
+        return _evaluate_time_mapping_model_outputs(
             model_row=model_row,
             binding=binding,
             resolved_inputs=resolved_inputs,
@@ -1914,6 +2434,7 @@ __all__ = [
     "cache_policy_rows_by_id",
     "constitutive_model_rows_by_id",
     "evaluate_model_bindings",
+    "evaluate_time_mapping_model",
     "model_type_rows_by_id",
     "normalize_constitutive_model_rows",
     "normalize_input_ref",

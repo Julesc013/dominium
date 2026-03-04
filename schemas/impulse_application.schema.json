@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Impulse Application Schema",
+  "version": "1.0.0",
+  "description": "Canonical PHYS-1 process payload for deterministic impulse-to-momentum mutation.",
+  "x-doc-ref": [
+    "docs/physics/PHYSICS_CONSTITUTION.md",
+    "docs/audit/FORCE_MOMENTUM_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "application_id",
+    "target_assembly_id",
+    "impulse_vector",
+    "originating_process_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "application_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_assembly_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "impulse_vector": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "z": {
+          "type": "integer"
+        }
+      }
+    },
+    "torque_impulse": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "originating_process_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "application_id": "impulse.alpha.0001",
+      "target_assembly_id": "body.mob.free.alpha",
+      "impulse_vector": {
+        "x": 6000,
+        "y": 0,
+        "z": 0
+      },
+      "torque_impulse": 0,
+      "originating_process_id": "process.apply_impulse",
+      "deterministic_fingerprint": "043cc06db7ff4147f2cc55903af63e9c1856314f0dbc54976e198d3768862f58",
+      "extensions": {}
+    }
+  ]
+}

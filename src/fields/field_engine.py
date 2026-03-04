@@ -9,6 +9,13 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 _VALID_RESOLUTION_LEVELS = {"macro", "meso", "micro"}
 _VALID_FIELD_VALUE_KINDS = {"scalar", "vector"}
+_VALID_FIELD_TIERS = {"F0", "F1", "F2"}
+_LEGACY_POLICY_TO_CANONICAL = {
+    "field.static": "field.static_default",
+    "field.scheduled": "field.scheduled_linear",
+}
+_CANONICAL_POLICY_TO_LEGACY = dict((value, key) for key, value in _LEGACY_POLICY_TO_CANONICAL.items())
+_DEFAULT_FIELD_DIMENSION_VECTOR = {"M": 0, "L": 0, "T": 0, "Q": 0, "THETA": 0, "I": 0}
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -20,6 +27,17 @@ def _as_int(value: object, default_value: int = 0) -> int:
 
 def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
+def _as_bool(value: object, default_value: bool = False) -> bool:
+    if isinstance(value, bool):
+        return value
+    token = str(value or "").strip().lower()
+    if token in {"1", "true", "yes", "on"}:
+        return True
+    if token in {"0", "false", "no", "off"}:
+        return False
+    return bool(default_value)
 
 
 def _sorted_unique_strings(values: object) -> List[str]:
@@ -50,6 +68,33 @@ def _normalize_value_kind(value: object) -> str:
     if token in _VALID_FIELD_VALUE_KINDS:
         return token
     return "scalar"
+
+
+def _normalize_field_tier(value: object) -> str:
+    token = str(value or "").strip().upper()
+    if token in _VALID_FIELD_TIERS:
+        return token
+    return "F0"
+
+
+def _canonical_update_policy_id(value: object) -> str:
+    token = str(value or "").strip()
+    if not token:
+        return "field.static_default"
+    return str(_LEGACY_POLICY_TO_CANONICAL.get(token, token)).strip() or "field.static_default"
+
+
+def _normalize_dimension_vector(value: object) -> dict:
+    payload = _as_map(value)
+    merged = dict(_DEFAULT_FIELD_DIMENSION_VECTOR)
+    for axis in list(_DEFAULT_FIELD_DIMENSION_VECTOR.keys()):
+        merged[axis] = int(_as_int(payload.get(axis, merged[axis]), merged[axis]))
+    # Preserve any custom declared dimensions while staying deterministic.
+    for key in sorted(str(token).strip() for token in payload.keys() if str(token).strip()):
+        if key in merged:
+            continue
+        merged[key] = int(_as_int(payload.get(key, 0), 0))
+    return merged
 
 
 def _vector3(value: object) -> dict:
@@ -86,17 +131,38 @@ def field_type_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict
     if not isinstance(rows, list):
         rows = []
     out: Dict[str, dict] = {}
-    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("field_type_id", ""))):
-        field_type_id = str(row.get("field_type_id", "")).strip()
-        if not field_type_id:
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("field_id", "")).strip() or str(item.get("field_type_id", "")).strip(),
+            str(item.get("field_type_id", "")).strip(),
+        ),
+    ):
+        field_id = str(row.get("field_id", "")).strip() or str(row.get("field_type_id", "")).strip()
+        if not field_id:
             continue
-        out[field_type_id] = {
+        update_policy_id = str(row.get("update_policy_id", "")).strip()
+        if not update_policy_id:
+            update_policy_id = (
+                str((dict(row.get("extensions") or {})).get("update_policy_id", "")).strip()
+                or "field.static_default"
+            )
+        normalized_row = {
             "schema_version": "1.0.0",
-            "field_type_id": field_type_id,
+            "field_id": field_id,
+            "field_type_id": str(row.get("field_type_id", "")).strip() or field_id,
             "description": str(row.get("description", "")).strip(),
             "value_kind": _normalize_value_kind(row.get("value_kind")),
+            "dimension_vector": _normalize_dimension_vector(row.get("dimension_vector")),
+            "default_value": _canon(row.get("default_value")),
+            "update_policy_id": _canonical_update_policy_id(update_policy_id),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
             "extensions": _canon(_as_map(row.get("extensions"))),
         }
+        out[field_id] = normalized_row
+        field_type_id = str(normalized_row.get("field_type_id", "")).strip()
+        if field_type_id and field_type_id not in out:
+            out[field_type_id] = dict(normalized_row)
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
@@ -108,21 +174,49 @@ def field_update_policy_rows_by_id(registry_payload: Mapping[str, object] | None
     if not isinstance(rows, list):
         rows = []
     out: Dict[str, dict] = {}
-    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("update_policy_id", ""))):
-        update_policy_id = str(row.get("update_policy_id", "")).strip()
-        if not update_policy_id:
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("policy_id", "")).strip() or str(item.get("update_policy_id", "")).strip(),
+            str(item.get("update_policy_id", "")).strip(),
+        ),
+    ):
+        policy_id = str(row.get("policy_id", "")).strip() or str(row.get("update_policy_id", "")).strip()
+        if not policy_id:
             continue
-        out[update_policy_id] = {
+        canonical_policy_id = _canonical_update_policy_id(policy_id)
+        deterministic_function_id = str(row.get("deterministic_function_id", "")).strip()
+        if not deterministic_function_id:
+            deterministic_function_id = (
+                str((dict(row.get("extensions") or {})).get("deterministic_function_id", "")).strip()
+                or "deterministic.identity"
+            )
+        normalized_row = {
             "schema_version": "1.0.0",
-            "update_policy_id": update_policy_id,
+            "update_policy_id": policy_id,
+            "policy_id": canonical_policy_id,
             "description": str(row.get("description", "")).strip(),
             "schedule_id": None if row.get("schedule_id") is None else str(row.get("schedule_id", "")).strip() or None,
+            "update_schedule_id": None
+            if row.get("update_schedule_id") is None
+            else str(row.get("update_schedule_id", "")).strip() or None,
             "flow_channel_ref": None
             if row.get("flow_channel_ref") is None
             else str(row.get("flow_channel_ref", "")).strip() or None,
             "hazard_ref": None if row.get("hazard_ref") is None else str(row.get("hazard_ref", "")).strip() or None,
+            "tier": _normalize_field_tier(row.get("tier")),
+            "deterministic_function_id": deterministic_function_id,
+            "uses_rng_stream": bool(_as_bool(row.get("uses_rng_stream", False), False)),
+            "rng_stream_name": None
+            if row.get("rng_stream_name") in {None, ""}
+            else str(row.get("rng_stream_name", "")).strip() or None,
             "extensions": _canon(_as_map(row.get("extensions"))),
         }
+        out[policy_id] = normalized_row
+        out[canonical_policy_id] = dict(normalized_row, update_policy_id=canonical_policy_id, policy_id=canonical_policy_id)
+        legacy_alias = _CANONICAL_POLICY_TO_LEGACY.get(canonical_policy_id)
+        if legacy_alias:
+            out[legacy_alias] = dict(normalized_row, update_policy_id=legacy_alias, policy_id=canonical_policy_id)
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
@@ -135,13 +229,14 @@ def build_field_layer(
     update_policy_id: str,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
+    normalized_policy_id = str(update_policy_id).strip() or "field.static_default"
     payload = {
         "schema_version": "1.0.0",
         "field_id": str(field_id).strip(),
         "field_type_id": str(field_type_id).strip(),
         "spatial_scope_id": str(spatial_scope_id).strip(),
         "resolution_level": _normalize_resolution_level(resolution_level),
-        "update_policy_id": str(update_policy_id).strip() or "field.static",
+        "update_policy_id": normalized_policy_id,
         "deterministic_fingerprint": "",
         "extensions": _canon(dict(extensions or {})),
     }
@@ -163,7 +258,12 @@ def normalize_field_layer_rows(rows: object) -> List[dict]:
             field_type_id=field_type_id,
             spatial_scope_id=spatial_scope_id,
             resolution_level=str(row.get("resolution_level", "macro")).strip(),
-            update_policy_id=str(row.get("update_policy_id", "field.static")).strip(),
+            update_policy_id=str(
+                row.get(
+                    "update_policy_id",
+                    row.get("policy_id", "field.static_default"),
+                )
+            ).strip(),
             extensions=_as_map(row.get("extensions")),
         )
     return [dict(out[key]) for key in sorted(out.keys())]
@@ -258,9 +358,10 @@ def _default_value_for_field(
 ):
     layer_row = dict(layer_by_field_id.get(field_id) or {})
     layer_ext = _as_map(layer_row.get("extensions"))
-    default_value = layer_ext.get("default_value")
     field_type_id = str(layer_row.get("field_type_id", "")).strip()
-    value_kind = _normalize_value_kind((dict(field_type_rows.get(field_type_id) or {})).get("value_kind"))
+    field_type_row = dict(field_type_rows.get(field_type_id) or {})
+    default_value = layer_ext.get("default_value", field_type_row.get("default_value"))
+    value_kind = _normalize_value_kind(field_type_row.get("value_kind"))
     return _normalize_cell_value(default_value, value_kind=value_kind)
 
 
@@ -271,6 +372,9 @@ def get_field_value(
     field_layer_rows: object,
     field_cell_rows: object,
     field_type_registry: Mapping[str, object] | None = None,
+    tick: int | None = None,
+    spatial_node_id: str | None = None,
+    sample_cache: Mapping[str, object] | None = None,
 ) -> dict:
     field_token = str(field_id).strip()
     layers = normalize_field_layer_rows(field_layer_rows)
@@ -278,17 +382,41 @@ def get_field_value(
     field_type_rows = field_type_rows_by_id(field_type_registry)
     layer_row = dict(layer_by_field_id.get(field_token) or {})
     if not layer_row:
+        field_type_row = dict(field_type_rows.get(field_token) or {})
+        value_kind = _normalize_value_kind(field_type_row.get("value_kind"))
+        default_value = _normalize_cell_value(field_type_row.get("default_value"), value_kind=value_kind)
+        if default_value in (None, {}):
+            default_value = 0
         out = {
             "field_id": field_token,
             "present": False,
             "sampled_cell_id": "",
-            "value": 0,
+            "value": _canon(default_value),
             "query_cost_units": 1,
             "deterministic_fingerprint": "",
         }
         out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
         return out
     sampled_cell_id = _field_cell_id_for_position(layer_row=layer_row, spatial_position=spatial_position)
+    node_token = str(spatial_node_id or sampled_cell_id).strip() or sampled_cell_id
+    tick_value = None if tick is None else int(max(0, _as_int(tick, 0)))
+    sample_key = None
+    if tick_value is not None:
+        sample_key = "{}::{}::{}".format(field_token, node_token, int(tick_value))
+        if isinstance(sample_cache, Mapping):
+            cached_row = dict(sample_cache.get(sample_key) or {})  # type: ignore[index]
+            if cached_row:
+                out = {
+                    "field_id": field_token,
+                    "present": True,
+                    "sampled_cell_id": sampled_cell_id,
+                    "value": _canon(cached_row.get("sampled_value")),
+                    "has_cell": bool(cached_row.get("has_cell", True)),
+                    "query_cost_units": 1,
+                    "deterministic_fingerprint": "",
+                }
+                out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+                return out
     normalized_cells = normalize_field_cell_rows(
         field_cell_rows,
         field_layer_rows=layers,
@@ -322,7 +450,76 @@ def get_field_value(
         "deterministic_fingerprint": "",
     }
     out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+    if (tick_value is not None) and sample_key and isinstance(sample_cache, dict):
+        sample_cache[sample_key] = build_field_sample(
+            field_id=field_token,
+            spatial_node_id=node_token,
+            tick=int(tick_value),
+            sampled_value=out.get("value"),
+            has_cell=bool(out.get("has_cell", False)),
+            sampled_cell_id=str(out.get("sampled_cell_id", "")).strip(),
+            extensions={},
+        )
     return out
+
+
+def build_field_sample(
+    *,
+    field_id: str,
+    spatial_node_id: str,
+    tick: int,
+    sampled_value: object,
+    has_cell: bool = False,
+    sampled_cell_id: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "field_id": str(field_id).strip(),
+        "spatial_node_id": str(spatial_node_id).strip(),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "sampled_value": _canon(sampled_value),
+        "has_cell": bool(has_cell),
+        "sampled_cell_id": str(sampled_cell_id).strip(),
+        "deterministic_fingerprint": "",
+        "extensions": _canon(_as_map(extensions)),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_field_sample_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("field_id", "")),
+            str(item.get("spatial_node_id", "")),
+            _as_int(item.get("tick", 0), 0),
+        ),
+    ):
+        field_id = str(row.get("field_id", "")).strip()
+        spatial_node_id = str(row.get("spatial_node_id", "")).strip()
+        if (not field_id) or (not spatial_node_id):
+            continue
+        sample_row = build_field_sample(
+            field_id=field_id,
+            spatial_node_id=spatial_node_id,
+            tick=_as_int(row.get("tick", 0), 0),
+            sampled_value=row.get("sampled_value"),
+            has_cell=bool(row.get("has_cell", False)),
+            sampled_cell_id=str(row.get("sampled_cell_id", "")).strip(),
+            extensions=_as_map(row.get("extensions")),
+        )
+        key = "{}::{}::{}".format(
+            str(sample_row.get("field_id", "")).strip(),
+            str(sample_row.get("spatial_node_id", "")).strip(),
+            int(_as_int(sample_row.get("tick", 0), 0)),
+        )
+        out[key] = sample_row
+    return [dict(out[key]) for key in sorted(out.keys())]
 
 
 def _candidate_cell_ids_for_field(
@@ -433,18 +630,23 @@ def update_field_layers(
         policy_id = str(layer_row.get("update_policy_id", "field.static")).strip() or "field.static"
         policy_row = dict(policy_rows.get(policy_id) or {})
         policy_mode = "static"
-        if policy_id == "field.scheduled":
+        canonical_policy_id = _canonical_update_policy_id(policy_id)
+        if canonical_policy_id == "field.scheduled_linear":
             policy_mode = "scheduled"
         elif policy_id == "field.flow_linked":
             policy_mode = "flow_linked"
         elif policy_id == "field.hazard_linked":
             policy_mode = "hazard_linked"
-        elif str(policy_row.get("schedule_id", "")).strip():
+        elif str(policy_row.get("update_schedule_id", "")).strip() or str(policy_row.get("schedule_id", "")).strip():
             policy_mode = "scheduled"
         elif str(policy_row.get("flow_channel_ref", "")).strip():
             policy_mode = "flow_linked"
         elif str(policy_row.get("hazard_ref", "")).strip():
             policy_mode = "hazard_linked"
+        elif canonical_policy_id == "field.profile_defined":
+            profile_mode = str((dict(policy_row.get("extensions") or {})).get("profile_mode", "")).strip().lower()
+            if profile_mode in {"scheduled", "flow_linked", "hazard_linked"}:
+                policy_mode = profile_mode
         if policy_mode == "static":
             continue
 
@@ -752,11 +954,13 @@ def field_modifier_snapshot(
 __all__ = [
     "build_field_cell",
     "build_field_layer",
+    "build_field_sample",
     "field_modifier_snapshot",
     "field_type_rows_by_id",
     "field_update_policy_rows_by_id",
     "get_field_value",
     "normalize_field_cell_rows",
     "normalize_field_layer_rows",
+    "normalize_field_sample_rows",
     "update_field_layers",
 ]

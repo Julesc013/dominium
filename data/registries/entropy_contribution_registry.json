@@ -1,0 +1,73 @@
+{
+  "schema_id": "dominium.registry.entropy_contribution_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.entropy_contribution_registry",
+    "registry_version": "1.0.0",
+    "entropy_contributions": [
+      {
+        "schema_version": "1.0.0",
+        "contribution_id": "entropy.from_friction",
+        "source_transformation_id": "transform.electrical_to_thermal",
+        "entropy_increment_formula_id": "formula.entropy.linear",
+        "parameters": {
+          "numerator": 1,
+          "denominator": 200,
+          "min_increment": 1
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "friction"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contribution_id": "entropy.from_combustion",
+        "source_transformation_id": "transform.chemical_to_thermal",
+        "entropy_increment_formula_id": "formula.entropy.linear",
+        "parameters": {
+          "numerator": 1,
+          "denominator": 150,
+          "min_increment": 1
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "combustion"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contribution_id": "entropy.from_plastic_deformation",
+        "source_transformation_id": "transform.plastic_deformation_stub",
+        "entropy_increment_formula_id": "formula.entropy.linear",
+        "parameters": {
+          "numerator": 1,
+          "denominator": 250,
+          "min_increment": 1
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "deformation"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contribution_id": "entropy.from_phase_change_stub",
+        "source_transformation_id": "transform.phase_change_stub",
+        "entropy_increment_formula_id": "formula.entropy.linear",
+        "parameters": {
+          "numerator": 1,
+          "denominator": 300,
+          "min_increment": 1
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "phase_change"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "PHYS4-2"
+    }
+  }
+}

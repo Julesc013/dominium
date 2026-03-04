@@ -1,0 +1,41 @@
+"""PHYS-4 entropy policy helpers."""
+
+from .entropy_engine import (
+    apply_entropy_reset,
+    build_entropy_contribution,
+    build_entropy_effect_policy,
+    build_entropy_event,
+    build_entropy_reset_event,
+    build_entropy_state,
+    compute_entropy_increment,
+    entropy_contribution_rows_by_source_transformation_id,
+    entropy_effect_policy_rows_by_id,
+    entropy_state_rows_by_target_id,
+    evaluate_entropy_effects,
+    normalize_entropy_contribution_rows,
+    normalize_entropy_effect_policy_rows,
+    normalize_entropy_event_rows,
+    normalize_entropy_reset_event_rows,
+    normalize_entropy_state_rows,
+    record_entropy_contribution,
+)
+
+__all__ = [
+    "apply_entropy_reset",
+    "build_entropy_contribution",
+    "build_entropy_effect_policy",
+    "build_entropy_event",
+    "build_entropy_reset_event",
+    "build_entropy_state",
+    "compute_entropy_increment",
+    "entropy_contribution_rows_by_source_transformation_id",
+    "entropy_effect_policy_rows_by_id",
+    "entropy_state_rows_by_target_id",
+    "evaluate_entropy_effects",
+    "normalize_entropy_contribution_rows",
+    "normalize_entropy_effect_policy_rows",
+    "normalize_entropy_event_rows",
+    "normalize_entropy_reset_event_rows",
+    "normalize_entropy_state_rows",
+    "record_entropy_contribution",
+]

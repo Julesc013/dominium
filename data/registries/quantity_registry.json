@@ -220,6 +220,22 @@
         "numeric_type": "fixed_point",
         "units_id": "unit.entropy.stub",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.mass_flow",
+        "description": "Canonical fluid mass-flow quantity channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.kg_per_s",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.pressure_head",
+        "description": "Canonical fluid pressure/head proxy channel.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.Pa",
+        "extensions": {}
       }
     ],
     "extensions": {}
