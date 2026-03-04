@@ -9,8 +9,8 @@ Superseded By: none
 ## Summary
 
 - Total findings: 1325
-- Severities: RISK=430, VIOLATION=18, WARN=877
-- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=295, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=3, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.inline_cure_smell=1, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_protection_smell=10, architecture.inline_response_curve_smell=7, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=3, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=2, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=718, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, security.boundary_io=29, security.privilege_bypass=9, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Severities: RISK=428, VIOLATION=18, WARN=879
+- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=295, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.inline_cure_smell=1, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_protection_smell=10, architecture.inline_response_curve_smell=7, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=3, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=2, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=719, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, schema_usage=1, security.boundary_io=29, security.privilege_bypass=9, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
@@ -93,13 +93,7 @@ Superseded By: none
 - `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
   - Bridge is missing required capability/entitlement guard markers.
   - Missing markers: refuse.profile_not_selected
-- `E113_DEPRECATED_USAGE_SMELL:0001` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/out/fast/latest/steps/09_auditx_scan.findings.json)
-  - schema/deprecation/deprecation_entry.schema
-  - reference to deprecated/quarantined/removed identifier
-- `E113_DEPRECATED_USAGE_SMELL:0002` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/out/strict/latest/steps/09_auditx_scan.findings.json)
-  - schema/deprecation/deprecation_entry.schema
-  - reference to deprecated/quarantined/removed identifier
-- `E113_DEPRECATED_USAGE_SMELL:0003` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/repox/check.py)
+- `E113_DEPRECATED_USAGE_SMELL:0001` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/repox/check.py)
   - data/registries/deprecation_registry.json
   - reference to deprecated/quarantined/removed identifier
 - `E117_IR_NONDETERMINISM_SMELL:0001` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
@@ -363,3 +357,9 @@ Superseded By: none
 - `E176_AFFORDANCE_GAP_SMELL:0044` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
   - action template touches substrate missing from RWAM
   - action.interaction.execute_process
+- `E176_AFFORDANCE_GAP_SMELL:0045` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
+  - action template touches substrate missing from RWAM
+  - action.mobility.inspect_route
+- `E176_AFFORDANCE_GAP_SMELL:0046` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
+  - action template touches substrate missing from RWAM
+  - action.mobility.inspect_route

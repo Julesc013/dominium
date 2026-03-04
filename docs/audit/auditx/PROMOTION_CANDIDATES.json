@@ -47,8 +47,6 @@
     {
       "evidence_paths": [
         "data/governance/deprecations.json",
-        "tools/xstack/out/fast/latest/steps/09_auditx_scan.findings.json",
-        "tools/xstack/out/strict/latest/steps/09_auditx_scan.findings.json",
         "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",

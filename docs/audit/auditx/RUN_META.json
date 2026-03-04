@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": true,
+  "changed_only": false,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-03-04T18:10:51Z",
-  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
+  "generated_utc": "2026-03-04T19:54:23Z",
+  "graph_hash": "83984fb23b5c70abc0e4e8104b94ee014dc9dd8eaa85fd782b85a21d76e02d1b",
   "last_reviewed": "2026-03-04",
   "output_format": "both",
   "platform": "windows",
@@ -191,7 +191,12 @@
     "E236_IMPLICIT_FLOAT_USAGE_SMELL",
     "E237_MISSING_TOLERANCE_SMELL",
     "E238_DIRECT_DIVISION_WITHOUT_ROUND_SMELL",
+    "E239_CANONICAL_ARTIFACT_COMPACTION_SMELL",
     "E23_MEMORY_NONDETERMINISM_SMELL",
+    "E240_UNCLASSIFIED_ARTIFACT_SMELL",
+    "E241_MISSING_COMPACTION_MARKER_SMELL",
+    "E242_INLINE_FUEL_BURN_SMELL",
+    "E243_UNREGISTERED_COMBUSTION_SMELL",
     "E24_INSTRUMENT_TRUTH_LEAK_SMELL",
     "E25_OMNISCIENT_MAP_SMELL",
     "E26_DIEGETIC_BYPASS_SMELL",
@@ -278,5 +283,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-3f697f95adfb4f20"
+  "workspace_id": "ws-c1eccd175ea8c8a7"
 }

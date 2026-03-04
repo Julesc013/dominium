@@ -106,9 +106,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 718,
+      "finding_count": 719,
       "recommended_actions": {
-        "DOC_FIX": 718
+        "DOC_FIX": 719
       },
       "sample_findings": [
         {
@@ -138,7 +138,7 @@
         }
       ],
       "severities": {
-        "WARN": 718
+        "WARN": 719
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -1099,29 +1099,19 @@
       }
     },
     "INV-NO-NEW-USE-OF-DEPRECATED": {
-      "finding_count": 3,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 1
       },
       "sample_findings": [
         {
           "category": "architecture.deprecated_usage_smell",
           "finding_id": "E113_DEPRECATED_USAGE_SMELL:0001",
-          "location": "tools/xstack/out/fast/latest/steps/09_auditx_scan.findings.json"
-        },
-        {
-          "category": "architecture.deprecated_usage_smell",
-          "finding_id": "E113_DEPRECATED_USAGE_SMELL:0002",
-          "location": "tools/xstack/out/strict/latest/steps/09_auditx_scan.findings.json"
-        },
-        {
-          "category": "architecture.deprecated_usage_smell",
-          "finding_id": "E113_DEPRECATED_USAGE_SMELL:0003",
           "location": "tools/xstack/repox/check.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 1
       }
     },
     "INV-NO-SILENT-VIOLATIONS": {
@@ -1612,6 +1602,22 @@
           "category": "semantic.workspace_contamination",
           "finding_id": "A7_WORKSPACE_CONTAMINATION:0001",
           "location": "scripts/ci/check_repox_rules.py"
+        }
+      ],
+      "severities": {
+        "WARN": 1
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "dominium.registry.provenance_classification_registry"
         }
       ],
       "severities": {

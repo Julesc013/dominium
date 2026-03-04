@@ -6,6 +6,7 @@
       ],
       "id": "matter_transformation",
       "series_implemented": [
+        "CHEM",
         "MAT",
         "MECH",
         "SPEC",
@@ -275,6 +276,20 @@
       ],
       "series_id": "ACT",
       "tiers": [
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "matter_transformation",
+        "measurement_verification",
+        "environment_living_systems",
+        "safety_protection"
+      ],
+      "series_id": "CHEM",
+      "tiers": [
+        "macro",
         "meso",
         "micro"
       ]

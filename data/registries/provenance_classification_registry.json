@@ -111,6 +111,22 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.combustion",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.explosion",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.fluid_burst",
         "classification": "derived",
         "compaction_allowed": true,
@@ -171,6 +187,14 @@
         "classification": "derived",
         "compaction_allowed": true,
         "deterministic_fingerprint": "c4ebdfaf7c728777526cdd539c3070b3fe05d7e0860885131f27c8797e3e7ebe",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.low_efficiency",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
         "extensions": {}
       },
       {
@@ -267,6 +291,22 @@
         "classification": "canonical",
         "compaction_allowed": false,
         "deterministic_fingerprint": "843cd5131264ccb357651cdc028df7d1f98906ca3d6fc581384732cf8cd1dcb9",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.combustion",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.combustion_emission",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
         "extensions": {}
       },
       {

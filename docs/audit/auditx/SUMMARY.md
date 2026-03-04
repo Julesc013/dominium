@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- RISK: 430
+- RISK: 428
 - VIOLATION: 18
-- WARN: 877
+- WARN: 879
 
 ## Counts By Category
 
@@ -21,7 +21,7 @@ Superseded By: none
 - architecture.adhoc_valve_smell: 3
 - architecture.affordance_gap_smell: 295
 - architecture.broadcast_bypass_smell: 4
-- architecture.deprecated_usage_smell: 3
+- architecture.deprecated_usage_smell: 1
 - architecture.derailment_bypass_smell: 1
 - architecture.direct_message_smell: 5
 - architecture.direct_position_mutation_smell: 1
@@ -55,7 +55,7 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 718
+- canon_drift: 719
 - capability_bypass_smell: 1
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - control.camera_bypass_smell: 1
@@ -69,6 +69,7 @@ Superseded By: none
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - performance.performance_nondeterminism_smell: 1
+- schema_usage: 1
 - security.boundary_io: 29
 - security.privilege_bypass: 9
 - semantic.capability_drift: 5

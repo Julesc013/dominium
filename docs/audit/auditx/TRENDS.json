@@ -8,7 +8,7 @@
     "architecture.adhoc_valve_smell": 3,
     "architecture.affordance_gap_smell": 295,
     "architecture.broadcast_bypass_smell": 4,
-    "architecture.deprecated_usage_smell": 3,
+    "architecture.deprecated_usage_smell": 1,
     "architecture.derailment_bypass_smell": 1,
     "architecture.direct_message_smell": 5,
     "architecture.direct_position_mutation_smell": 1,
@@ -42,7 +42,7 @@
     "architecture.vehicle_interior_special_case_smell": 1,
     "architecture.weather_hack_smell": 1,
     "authority.fault_bypass_smell": 3,
-    "canon_drift": 718,
+    "canon_drift": 719,
     "capability_bypass_smell": 1,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
     "control.camera_bypass_smell": 1,
@@ -56,6 +56,7 @@
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
     "performance.performance_nondeterminism_smell": 1,
+    "schema_usage": 1,
     "security.boundary_io": 29,
     "security.privilege_bypass": 9,
     "semantic.capability_drift": 5,
@@ -100,6 +101,7 @@
       "architecture.substrate_bypass_smell": 0,
       "architecture.thermal_bypass_smell": 0,
       "architecture.unbounded_spread_smell": 0,
+      "architecture.unclassified_artifact_smell": -1,
       "architecture.unlogged_refusal_smell": 0,
       "architecture.unlogged_trip_smell": 0,
       "architecture.unlogged_trust_change_smell": 0,
@@ -120,13 +122,13 @@
       "materials.inspection_leak_smell": 0,
       "materials.reenactment_leak_smell": 0,
       "materials.unbounded_inspection_smell": 0,
-      "mode_flag_smell": -64,
+      "mode_flag_smell": -10,
       "net.precision_leak_smell": 0,
       "net.truth_over_net_smell": 0,
       "ownership_boundary": -9,
       "performance.performance_nondeterminism_smell": 0,
       "reachability": -80,
-      "schema_usage": -160,
+      "schema_usage": -159,
       "security.boundary_io": 0,
       "security.privilege_bypass": 0,
       "semantic.capability_drift": 0,
@@ -138,21 +140,21 @@
     },
     "severity_distribution": {
       "INFO": -223,
-      "RISK": -189,
-      "VIOLATION": -83,
-      "WARN": -329
+      "RISK": -190,
+      "VIOLATION": -29,
+      "WARN": -328
     }
   },
-  "findings_hash": "c9e243c289f224ce8e3710c48ed77cc21d863c8be2e986e022d87e0a2b42d037",
+  "findings_hash": "6ae20aed36977f606dd36be7ab447f34d53fcdce15a9b9daa9c9ff5d1f7d4cc6",
   "history_reference": {
-    "previous_distinct_hash": "aa454e3b32a52088006098a78d4f7e06b9170b7913c81135e21b90f51fba5290"
+    "previous_distinct_hash": "69813d79ce3854b02bd59b2bb6a8fb2076dca2a334cc69fc8d9ff0d489b22588"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "RISK": 430,
+    "RISK": 428,
     "VIOLATION": 18,
-    "WARN": 877
+    "WARN": 879
   },
   "total_findings": 1325
 }

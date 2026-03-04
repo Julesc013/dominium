@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "changed_only": true,
+  "changed_only": false,
   "finding_count": 1325,
   "findings": [
     {
@@ -759,64 +759,10 @@
       "confidence": 0.9,
       "created_utc": "1970-01-01T00:00:00Z",
       "evidence": [
-        "schema/deprecation/deprecation_entry.schema",
-        "reference to deprecated/quarantined/removed identifier"
-      ],
-      "finding_id": "E113_DEPRECATED_USAGE_SMELL:0001",
-      "fingerprint": "89c8e4fdbdfcb46e1f34670292f26dd34eb426ebcd2e1dc4258894eb878e38fe",
-      "location": {
-        "file_path": "tools/xstack/out/fast/latest/steps/09_auditx_scan.findings.json",
-        "line_start": 1
-      },
-      "recommended_action": "REWRITE",
-      "related_invariants": [
-        "INV-NO-NEW-USE-OF-DEPRECATED"
-      ],
-      "related_paths": [
-        "data/governance/deprecations.json",
-        "tools/xstack/out/fast/latest/steps/09_auditx_scan.findings.json"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E113_DEPRECATED_USAGE_SMELL",
-      "category": "architecture.deprecated_usage_smell",
-      "confidence": 0.9,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema/deprecation/deprecation_entry.schema",
-        "reference to deprecated/quarantined/removed identifier"
-      ],
-      "finding_id": "E113_DEPRECATED_USAGE_SMELL:0002",
-      "fingerprint": "86f4458ca51407c0a58d991de6c481d24d506334223d032bf0ea1d4e090331b4",
-      "location": {
-        "file_path": "tools/xstack/out/strict/latest/steps/09_auditx_scan.findings.json",
-        "line_start": 1
-      },
-      "recommended_action": "REWRITE",
-      "related_invariants": [
-        "INV-NO-NEW-USE-OF-DEPRECATED"
-      ],
-      "related_paths": [
-        "data/governance/deprecations.json",
-        "tools/xstack/out/strict/latest/steps/09_auditx_scan.findings.json"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E113_DEPRECATED_USAGE_SMELL",
-      "category": "architecture.deprecated_usage_smell",
-      "confidence": 0.9,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
         "data/registries/deprecation_registry.json",
         "reference to deprecated/quarantined/removed identifier"
       ],
-      "finding_id": "E113_DEPRECATED_USAGE_SMELL:0003",
+      "finding_id": "E113_DEPRECATED_USAGE_SMELL:0001",
       "fingerprint": "7a99bccca1d8a4f32c3121aa6db59de92298efe37e2017f1cb00fd536a9f16f3",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
@@ -952,10 +898,10 @@
         "max_load=0 if bool(inputs.get(\"zero_max_load_on_fracture\", True)) else int(max(0, _as_int(edge_row.get(\"max_load\", 0), 0))),"
       ],
       "finding_id": "E138_INLINE_STRENGTH_CHECK_SMELL:0001",
-      "fingerprint": "95b4bff5ab3ccf8dc0cd2e2ac4f12f14a201b5b947ecdd8e51da7e9694c494da",
+      "fingerprint": "920b4fbc5e44dcff20653639de59d875ac7fcfa59c5ae9cf36fa43b0e19dae31",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 37340
+        "line_start": 38184
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -1095,10 +1041,10 @@
         "derail_risk_band = \"high\" if int(derail_risk_permille) >= 1000 else (\"medium\" if int(derail_risk_permille) >= 700 else \"low\")"
       ],
       "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
-      "fingerprint": "dbcd40439f26e32d9bf5cd935f14cea896d20a876483211191ce7a64f1f30dd9",
+      "fingerprint": "f9cfdc500d3dc02bc28322ef7c85f35fbf7a60671d7b41f83bd72530517cbc63",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 33480
+        "line_start": 34324
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -1180,10 +1126,10 @@
         "\"recommended_speed_cap_permille\": int(max(0, _as_int(mechanics_summary.get(\"recommended_speed_cap_permille\", 1000), 1000))),"
       ],
       "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0002",
-      "fingerprint": "838ef7dd314cf63f38eea30eb58aa3d029f68bb94b46580d59e4a277cc26dc78",
+      "fingerprint": "7d1bc024a0d4978d3e7e3bfc7b6dc59a15e6ae5cdf624ce37debb49a7608a275",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 37891
+        "line_start": 38735
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -1899,10 +1845,10 @@
         "int(max(0, _as_int(ext.get(\"field_loss_modifier_permille\", 0), 0)))"
       ],
       "finding_id": "E170_ADHOC_LOSS_SMELL:0001",
-      "fingerprint": "ffb86c5e2daeb494485f5484d88838e91b225b8a0e26771f38d03637c848cc4f",
+      "fingerprint": "ac4744cb0d5a30084c1ff487453f09beca85c067ee792d266f23bfead4d0695b",
       "location": {
         "file_path": "src/inspection/inspection_engine.py",
-        "line_start": 1818
+        "line_start": 1846
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -1926,10 +1872,10 @@
         "elif state_token == \"corrupted\":"
       ],
       "finding_id": "E171_SILENT_CORRUPTION_SMELL:0001",
-      "fingerprint": "893ea831286e0c9cb806793029e456db7f0f300ecae6cd841ee781db2110bf93",
+      "fingerprint": "c158feedbc742358a49a1bebe40b0588272dc1fa74dbec0c35a636d88f196b0b",
       "location": {
         "file_path": "src/inspection/inspection_engine.py",
-        "line_start": 1747
+        "line_start": 1775
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -1953,10 +1899,10 @@
         "trust_weight = float(row.get(\"trust_weight\", 1.0))"
       ],
       "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0001",
-      "fingerprint": "806efaa308dd20e556c38426faa961cd0e372c42c7aaf845c8c46d62f3c77adf",
+      "fingerprint": "45d70d9405164076f6045f803580c89770f0b7a77597f9816b18d97090ab5aaa",
       "location": {
         "file_path": "src/inspection/inspection_engine.py",
-        "line_start": 2721
+        "line_start": 2884
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -2007,10 +1953,10 @@
         "rows = state.get(\"travel_schedules\")"
       ],
       "finding_id": "E174_DIRECT_SCHEDULE_MUTATION_SMELL:0001",
-      "fingerprint": "132a2f1e99fbfb4acded5af212037570ab7a16852679f184cb2fbeef6fca2d7a",
+      "fingerprint": "18a4958437ccd1278a690927f24e96c441a9124dda903c7ad66311bb4b0c9ba4",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 2160
+        "line_start": 2162
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -10946,10 +10892,10 @@
         "\"ground_fault_count\": int(_as_int(by_kind.get(\"fault.ground_fault\", 0), 0)),"
       ],
       "finding_id": "E188_FAULT_BYPASS_SMELL:0003",
-      "fingerprint": "a9c0cfbce15c925cafca1987fb52cc3ce2c1fa96cf1dc4cf9eb4d04bfd3a8992",
+      "fingerprint": "6cdfb06530da7d0567eb101a059de7c0e41ad91634cee35023e35eea61bd0c8d",
       "location": {
         "file_path": "src/inspection/inspection_engine.py",
-        "line_start": 2078
+        "line_start": 2106
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -11354,10 +11300,10 @@
         "if isinstance(item, dict) and str(item.get(\"hazard_type_id\", \"\")).strip() == \"hazard.overheat\""
       ],
       "finding_id": "E196_THERMAL_BYPASS_SMELL:0001",
-      "fingerprint": "e04691dae7a56263c2cc84b879ac8a8360ce871b3e54192cc9cdb7f417338a05",
+      "fingerprint": "1244aae7ce46182c120dd530a2a31bc47356907f16cdc666f3664c43ea44d94e",
       "location": {
         "file_path": "src/inspection/inspection_engine.py",
-        "line_start": 2277
+        "line_start": 2305
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -11410,10 +11356,10 @@
         "phase_tag = str((dict(batch.get(\"extensions\") or {})).get(\"phase_tag\", \"\")).strip() or \"unknown\""
       ],
       "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0002",
-      "fingerprint": "4fa312fdc66ca52fabbe3ff664f31c35b492636106b0df9456666383c4885ae6",
+      "fingerprint": "f317136da4c6ca42ae5a94d8820a18a07b8b43be5c6cf41512624ddde8462047",
       "location": {
         "file_path": "src/inspection/inspection_engine.py",
-        "line_start": 2322
+        "line_start": 2350
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -11575,10 +11521,10 @@
         "defer_noncritical_models = bool(degradation_eval.get(\"defer_noncritical_models\", False))"
       ],
       "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0003",
-      "fingerprint": "05f78f927796dc3758e03376857e4406563bd22cfe13b755700d520833180da3",
+      "fingerprint": "9bcf93bc41274a3bb7713e2f7bb405807afcce2581411055a0a9c6fa10e716db",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 26227
+        "line_start": 27071
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -12005,10 +11951,10 @@
         "r\"(truthmodel|truth_model).*(serialize|json|packet|socket|network|replication|delta|snapshot)\""
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0001",
-      "fingerprint": "2d33410edec036dc8df32ba769e5442014c3225cfdeacbd13e1031976c51edef",
+      "fingerprint": "7d2c672c8cb88127ad7c27ec1ac014c11ffe9ebbbacb0c00d5cdfe5f24fa32ba",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1683
+        "line_start": 1691
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12031,10 +11977,10 @@
         "r\"(serialize|json|packet|socket|network|replication|delta|snapshot).*(truthmodel|truth_model)\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0002",
-      "fingerprint": "b04f34db22df3c4887fa8a92252a38a17ddcc48fd3e516a313be1e1e6682f44b",
+      "fingerprint": "e85daf50e1a864843d6cebe324a32b8091af9b170784b47ac33b0e917ed98949",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1685
+        "line_start": 1693
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12057,10 +12003,10 @@
         "message=\"TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0003",
-      "fingerprint": "b711aaa184033ed7a12cbb06cb27e6eb68bcf1eb04caeec25666e88c2066252e",
+      "fingerprint": "a6d02c6db2bba418d7b480805689ec14b7fbc2d1866393123f7d9d31dc8848f5",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1705
+        "line_start": 1713
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12083,10 +12029,10 @@
         "message=\"network payload path must remain PerceivedModel-only and avoid TruthModel serialization\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0004",
-      "fingerprint": "718aae8eeff2780ab71734c2bc42db62aed020df53fa7414da32921b21782d9f",
+      "fingerprint": "b6b9664484fcdad38b1a8c104e3c01e8b56e637ef6dc64ac42c0df76566aeb53",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1715
+        "line_start": 1723
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12109,10 +12055,10 @@
         "r\"(send|socket|packet|transport|wire|payload_ref).*(truth_model|truthmodel|universe_state)\""
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0005",
-      "fingerprint": "a88437d7de01f40cf1a6ebaa89a6c066af6b04003546444b310b70d838ac7fc5",
+      "fingerprint": "5f046a372742fd9baae0b9366c8410e4e24aa669fc9f4633f979e10a550ca631",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1865
+        "line_start": 1873
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12135,10 +12081,10 @@
         "r\"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0006",
-      "fingerprint": "6a8f7cf0e06cd731e1ef1938b9ee604ab5d66f38783aec4089c6895077775536",
+      "fingerprint": "e63a880a59b09db49ae1fca04ed6a77b2030032da3f05a5d42b8390dac636763",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1867
+        "line_start": 1875
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -24521,6 +24467,31 @@
         "Consider linking invariant IDs or tests for this behavior."
       ],
       "finding_id": "A3_CANON_DRIFT:0366",
+      "fingerprint": "d09baebf5c78cd5936e8033d7c2620d118559b3d506ab7916f5376a78ce1900a",
+      "location": {
+        "file_path": "docs/meta/PROVENANCE_AND_COMPACTION_CONSTITUTION.md"
+      },
+      "recommended_action": "DOC_FIX",
+      "related_invariants": [
+        "INV-CANON-INDEX"
+      ],
+      "related_paths": [
+        "docs/meta/PROVENANCE_AND_COMPACTION_CONSTITUTION.md"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A3_CANON_DRIFT",
+      "category": "canon_drift",
+      "confidence": 0.65,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Normative language detected but no explicit enforcement anchor found.",
+        "Consider linking invariant IDs or tests for this behavior."
+      ],
+      "finding_id": "A3_CANON_DRIFT:0367",
       "fingerprint": "6f77802a6a108c612b852d4c7e8ad2353d1ae04e68888816c4cd26ba71457fb3",
       "location": {
         "file_path": "docs/meta/REAL_WORLD_AFFORDANCE_MATRIX.md"
@@ -24545,7 +24516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0367",
+      "finding_id": "A3_CANON_DRIFT:0368",
       "fingerprint": "4a2bee9c92985428d3ce2e579b2f306800ee1012b8d918c89eea747effc69f82",
       "location": {
         "file_path": "docs/mobility/GUIDE_GEOMETRY.md"
@@ -24570,7 +24541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0368",
+      "finding_id": "A3_CANON_DRIFT:0369",
       "fingerprint": "b9cb95e77e5fde720487dc10652aa850fe8fc8ba6dbd70849e81a37f36be5a80",
       "location": {
         "file_path": "docs/mobility/MACRO_TRAVEL_MODEL.md"
@@ -24595,7 +24566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0369",
+      "finding_id": "A3_CANON_DRIFT:0370",
       "fingerprint": "78f3bd428a81b77280774f3633c90bd7fe5ede88a01ebbff3e0d307fc0f510b7",
       "location": {
         "file_path": "docs/mobility/MAINTENANCE_AND_WEAR.md"
@@ -24620,7 +24591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0370",
+      "finding_id": "A3_CANON_DRIFT:0371",
       "fingerprint": "3a5ede1968116b52d94eeec28447e3501b000159099b7cc7f46ba21b62913a05",
       "location": {
         "file_path": "docs/mobility/MESO_TRAFFIC_MODEL.md"
@@ -24645,7 +24616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0371",
+      "finding_id": "A3_CANON_DRIFT:0372",
       "fingerprint": "d8e58c0f56d4fafb80e1fd8e2aac0f74b9cb313c076d40494af8332b0be45478",
       "location": {
         "file_path": "docs/mobility/MICRO_CONSTRAINED_MOTION.md"
@@ -24670,7 +24641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0372",
+      "finding_id": "A3_CANON_DRIFT:0373",
       "fingerprint": "315945115a56e4ada8af65e28d368e603d651b8e3598eec739136169f9f398f4",
       "location": {
         "file_path": "docs/mobility/MICRO_FREE_MOTION.md"
@@ -24695,7 +24666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0373",
+      "finding_id": "A3_CANON_DRIFT:0374",
       "fingerprint": "c23bc6c862c7240d5d6f5362fbda64d7f1b65406b73f0383cca42480dcead184",
       "location": {
         "file_path": "docs/mobility/MOBILITY_CONSTITUTION.md"
@@ -24720,7 +24691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0374",
+      "finding_id": "A3_CANON_DRIFT:0375",
       "fingerprint": "dfc0f1f7bfac8cac0da53b2f61de31d0011f3d0e292163b861a4d3f5cf69933d",
       "location": {
         "file_path": "docs/mobility/MOBILITY_NETWORKGRAPH.md"
@@ -24745,7 +24716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0375",
+      "finding_id": "A3_CANON_DRIFT:0376",
       "fingerprint": "81ffd84a300d92a218fee6f001b3396565b40f8683a16401be081f28fc7c38ac",
       "location": {
         "file_path": "docs/mobility/SIGNALING_AND_INTERLOCKING.md"
@@ -24770,7 +24741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0376",
+      "finding_id": "A3_CANON_DRIFT:0377",
       "fingerprint": "f2f841e9e4fb935046b3694043c602e855982d11c0818fd031a5a3280ed814c8",
       "location": {
         "file_path": "docs/mobility/VEHICLE_INTERIORS.md"
@@ -24795,7 +24766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0377",
+      "finding_id": "A3_CANON_DRIFT:0378",
       "fingerprint": "ef499126110d5b9008efefebca1e05dbdb177f8eb8fde7e4a37c7ec47a20c05e",
       "location": {
         "file_path": "docs/mobility/VEHICLE_MODEL.md"
@@ -24820,7 +24791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0378",
+      "finding_id": "A3_CANON_DRIFT:0379",
       "fingerprint": "cbf1c1992f0059d59115cd499992e58eb7693806648c4191ee10a56f0fa69edc",
       "location": {
         "file_path": "docs/modding/FABRICATION_AUTHORING_GUIDE.md"
@@ -24845,7 +24816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0379",
+      "finding_id": "A3_CANON_DRIFT:0380",
       "fingerprint": "acdd36295b961ba8ef288d39c64eb3727e7cfb6177b346a320e832cb68d77142",
       "location": {
         "file_path": "docs/modding/FORBIDDEN_MOD_PATTERNS.md"
@@ -24870,7 +24841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0380",
+      "finding_id": "A3_CANON_DRIFT:0381",
       "fingerprint": "b952bcf47290c174c665d288f9915d99ca7d227af8d53c3fdba0b42fc504fd59",
       "location": {
         "file_path": "docs/modding/LOCALIZATION_PACKS.md"
@@ -24895,7 +24866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0381",
+      "finding_id": "A3_CANON_DRIFT:0382",
       "fingerprint": "aff437a1060a18f4d37b582a2e2e7aba76e87622051c5acccea18f99c224a221",
       "location": {
         "file_path": "docs/modding/MOD_AUTHORING_OVERVIEW.md"
@@ -24920,7 +24891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0382",
+      "finding_id": "A3_CANON_DRIFT:0383",
       "fingerprint": "5282cec1fc9f967d950e14711c22e8f97aad017e71af69ebdb07035d57014aaf",
       "location": {
         "file_path": "docs/modding/MOD_COMPATIBILITY_CHECKLIST.md"
@@ -24945,7 +24916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0383",
+      "finding_id": "A3_CANON_DRIFT:0384",
       "fingerprint": "5043c824970bd923b6d5d3d6db13e8e7576ceb53aa3e37efd238986e9edd9c9d",
       "location": {
         "file_path": "docs/modding/MOD_ECOSYSTEM.md"
@@ -24970,7 +24941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0384",
+      "finding_id": "A3_CANON_DRIFT:0385",
       "fingerprint": "569b7d2d0203c2f28dabcaa5761ea8b948c555d310f69736aa45083d2fc0d8c5",
       "location": {
         "file_path": "docs/modding/SAFE_MOD_PATTERNS.md"
@@ -24995,7 +24966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0385",
+      "finding_id": "A3_CANON_DRIFT:0386",
       "fingerprint": "a0751c0d09009314b83efb77e34a6a9ef0efbcfff019fd93a981172b5e722bcc",
       "location": {
         "file_path": "docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md"
@@ -25020,7 +24991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0386",
+      "finding_id": "A3_CANON_DRIFT:0387",
       "fingerprint": "b49911ddfc5dd27c14e826c62669c922c0ee65ccb026b1fb1aa942bd7868e251",
       "location": {
         "file_path": "docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md"
@@ -25045,7 +25016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0387",
+      "finding_id": "A3_CANON_DRIFT:0388",
       "fingerprint": "2be020ca436d92a484fb4772389dff25a94bfd6f67729b6cf94b62b4d1eedcc8",
       "location": {
         "file_path": "docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md"
@@ -25070,7 +25041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0388",
+      "finding_id": "A3_CANON_DRIFT:0389",
       "fingerprint": "9f1a8fcb193aaa64f789e466bec495ce2dc16f7faa36f3077619fa88d83278a2",
       "location": {
         "file_path": "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md"
@@ -25095,7 +25066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0389",
+      "finding_id": "A3_CANON_DRIFT:0390",
       "fingerprint": "b799d31c49487c29757fcd365ea94f9eedfb3f487f49fb2d928049054794f3d8",
       "location": {
         "file_path": "docs/net/ESPORTS_PROOF_ARTIFACTS.md"
@@ -25120,7 +25091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0390",
+      "finding_id": "A3_CANON_DRIFT:0391",
       "fingerprint": "5b8864c39cce54a9a97083ea0b119a924ca11c3a3385d213c16c419836528ae5",
       "location": {
         "file_path": "docs/net/HANDSHAKE_AND_COMPATIBILITY.md"
@@ -25145,7 +25116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0391",
+      "finding_id": "A3_CANON_DRIFT:0392",
       "fingerprint": "111e4d2c52edd5bd70fb2f28ee3e9bb52ab18dd7dfc18f8add3d73cffacb0f04",
       "location": {
         "file_path": "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md"
@@ -25170,7 +25141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0392",
+      "finding_id": "A3_CANON_DRIFT:0393",
       "fingerprint": "c949e55df7b5eee45c0f0efba976b6c9a384fa9267d41a09218ada7ed2021223",
       "location": {
         "file_path": "docs/net/RANKED_SERVER_GOVERNANCE.md"
@@ -25195,7 +25166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0393",
+      "finding_id": "A3_CANON_DRIFT:0394",
       "fingerprint": "8ceb58a3e1486a52166feaf9549dd4228078111606caddb54bf15a2bc2f4732f",
       "location": {
         "file_path": "docs/net/REPLICATION_POLICIES.md"
@@ -25220,7 +25191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0394",
+      "finding_id": "A3_CANON_DRIFT:0395",
       "fingerprint": "550a23591e07cb8a0b2ee6f4cdce7f85394a7f21431210b18ca4913c9e579e37",
       "location": {
         "file_path": "docs/net/SRZ_HYBRID_POLICY.md"
@@ -25245,7 +25216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0395",
+      "finding_id": "A3_CANON_DRIFT:0396",
       "fingerprint": "fa927dbd3c692a50031c1b4d61a722b6d900051ec0d642e637df1adc8a31ebd4",
       "location": {
         "file_path": "docs/ops/FAILURE_SCENARIOS.md"
@@ -25270,7 +25241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0396",
+      "finding_id": "A3_CANON_DRIFT:0397",
       "fingerprint": "39064dd7919ceb0b72de29f4f6df5aa3cdb0c8a5a4249ae1e358beffaccbe49a",
       "location": {
         "file_path": "docs/ops/MMO_RUNBOOK.md"
@@ -25295,7 +25266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0397",
+      "finding_id": "A3_CANON_DRIFT:0398",
       "fingerprint": "3cc2530983adb2ac74161fc30100d814b770a12c2166d76f47f709fb8acfc0d5",
       "location": {
         "file_path": "docs/ops/MMO_SCALING_PLAYBOOK.md"
@@ -25320,7 +25291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0398",
+      "finding_id": "A3_CANON_DRIFT:0399",
       "fingerprint": "c013db8c2a2688043ad4712211d9070e645d10324e3296b13c8d89d8b6c10f6c",
       "location": {
         "file_path": "docs/ops/SERVER_SCOPE.md"
@@ -25345,7 +25316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0399",
+      "finding_id": "A3_CANON_DRIFT:0400",
       "fingerprint": "a1014848e87f04d64e1df997ca416fc613cc04b0e4c631f5c708ea1911955c85",
       "location": {
         "file_path": "docs/pack_format/PACK_MANIFEST.md"
@@ -25370,7 +25341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0400",
+      "finding_id": "A3_CANON_DRIFT:0401",
       "fingerprint": "65dc3dffa88f76d4cf6196c416ab1f291c894bbea2304e904f7ebf20a8bec000",
       "location": {
         "file_path": "docs/physical/CONSTRUCTION_MODEL.md"
@@ -25395,7 +25366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0401",
+      "finding_id": "A3_CANON_DRIFT:0402",
       "fingerprint": "cd829f85d73e089661b369e1634c56f8c1d725b27ee6b7dffd3cad97bef3e110",
       "location": {
         "file_path": "docs/physical/FAILURE_AND_MAINTENANCE.md"
@@ -25420,7 +25391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0402",
+      "finding_id": "A3_CANON_DRIFT:0403",
       "fingerprint": "fa58d198c9d2e88ac6ad13ec5b1481458b4f29f915ef62e7508a30f1c3e48ec4",
       "location": {
         "file_path": "docs/physical/NETWORKS_AND_INFRASTRUCTURE.md"
@@ -25445,7 +25416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0403",
+      "finding_id": "A3_CANON_DRIFT:0404",
       "fingerprint": "c6bc0309b2b3f413099a0a3c0162cdc46ce3b097411f2f47285daf24b28c7b9d",
       "location": {
         "file_path": "docs/physical/PARTS_AND_ASSEMBLIES.md"
@@ -25470,7 +25441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0404",
+      "finding_id": "A3_CANON_DRIFT:0405",
       "fingerprint": "8f8a280fd929cb211875818e31e5a664e276d7da89bec8f8a51b27b36262f7e6",
       "location": {
         "file_path": "docs/physical/TERRAIN_MODEL.md"
@@ -25495,7 +25466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0405",
+      "finding_id": "A3_CANON_DRIFT:0406",
       "fingerprint": "611bc42f8d040cd43f814c9bd94038c518400e57b7a09e56f11ea6edd0908365",
       "location": {
         "file_path": "docs/physics/ENERGY_LEDGER_AND_TRANSFORMATIONS.md"
@@ -25520,7 +25491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0406",
+      "finding_id": "A3_CANON_DRIFT:0407",
       "fingerprint": "0eab3d87ea07ea7d379d5168514410edcff64715ffe36808e4902b353b4257e7",
       "location": {
         "file_path": "docs/physics/ENTROPY_POLICY.md"
@@ -25545,7 +25516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0407",
+      "finding_id": "A3_CANON_DRIFT:0408",
       "fingerprint": "6c4e598aa6033aa05f343dc61e1d283e5336b220508b334bf87223c4bceee70f",
       "location": {
         "file_path": "docs/physics/FIELD_GENERALIZATION.md"
@@ -25570,7 +25541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0408",
+      "finding_id": "A3_CANON_DRIFT:0409",
       "fingerprint": "b86c792489e919641dd2ad357e3edc4399ba29344f65f9db4852adec10882528",
       "location": {
         "file_path": "docs/physics/FIELD_SHARD_RULES.md"
@@ -25595,7 +25566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0409",
+      "finding_id": "A3_CANON_DRIFT:0410",
       "fingerprint": "98d48a4a3fb5324d3efec2826996a1f6aeac68301dba79e69adf6a1a59521f24",
       "location": {
         "file_path": "docs/physics/PHYSICS_CONSTITUTION.md"
@@ -25620,7 +25591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0410",
+      "finding_id": "A3_CANON_DRIFT:0411",
       "fingerprint": "03469d719d84aad532539413e5991ea6fedd225a4d4507d33551ef9f12c3f64c",
       "location": {
         "file_path": "docs/physics/PHYSICS_PROOF_REPLAY_HOOKS.md"
@@ -25645,7 +25616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0411",
+      "finding_id": "A3_CANON_DRIFT:0412",
       "fingerprint": "31cf9d344bd4212820eaeecf990960e632fba5699b95ec85528426d01d8b6967",
       "location": {
         "file_path": "docs/platform/LIFECYCLE_AND_SIGNALS.md"
@@ -25670,7 +25641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0412",
+      "finding_id": "A3_CANON_DRIFT:0413",
       "fingerprint": "3d01155617efdd1f0fc2b0eab26373dda87b21a7751acb216c06584198899f22",
       "location": {
         "file_path": "docs/platform/PLATFORM_RUNTIME.md"
@@ -25695,7 +25666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0413",
+      "finding_id": "A3_CANON_DRIFT:0414",
       "fingerprint": "943fa16ce1c537ddc1f2f4e76f0c60a20088185713b2595f83799c69522c5f13",
       "location": {
         "file_path": "docs/player/PLAYER_AS_AGENT.md"
@@ -25720,7 +25691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0414",
+      "finding_id": "A3_CANON_DRIFT:0415",
       "fingerprint": "442d0aecd07e68657766795fbf40b7db00426160b5374adfa0be72a3836147f6",
       "location": {
         "file_path": "docs/player/PLAYER_AUTHORITY.md"
@@ -25745,7 +25716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0415",
+      "finding_id": "A3_CANON_DRIFT:0416",
       "fingerprint": "0dd51169e3f8e72d0cd30c2d268a082569ac8a4e03c0d9b7efb76756e6054adb",
       "location": {
         "file_path": "docs/player/PLAYER_FAILURE.md"
@@ -25770,7 +25741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0416",
+      "finding_id": "A3_CANON_DRIFT:0417",
       "fingerprint": "97d2b8d6ca79de454426994611bc16fbcaafe634adf26ba5d10c6bd9be35e7c0",
       "location": {
         "file_path": "docs/player/PLAYER_INTENT_MODEL.md"
@@ -25795,7 +25766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0417",
+      "finding_id": "A3_CANON_DRIFT:0418",
       "fingerprint": "a2e11bcbfd01d7ec391c89aaee2325663cbf75c90b8cad4e815bbbbcec5b2357",
       "location": {
         "file_path": "docs/player/PLAYER_NON_GOALS.md"
@@ -25820,7 +25791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0418",
+      "finding_id": "A3_CANON_DRIFT:0419",
       "fingerprint": "7ba554511a66165a0f65a4dd6f87ce24cb0b58090d21038ccf96838007c7839f",
       "location": {
         "file_path": "docs/policies/COMPATIBILITY_PROMISES.md"
@@ -25845,7 +25816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0419",
+      "finding_id": "A3_CANON_DRIFT:0420",
       "fingerprint": "c8659776e112fc9172c6b92978aa8ac9f9b130d0bd792841b5c3bc533181c54f",
       "location": {
         "file_path": "docs/policies/COMPAT_TERMS.md"
@@ -25870,7 +25841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0420",
+      "finding_id": "A3_CANON_DRIFT:0421",
       "fingerprint": "8a53ad21ab75b6138c702cc191fdc9984f760be85e07ead5dae480e242d2bd73",
       "location": {
         "file_path": "docs/policies/DEPRECATION_POLICY.md"
@@ -25895,7 +25866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0421",
+      "finding_id": "A3_CANON_DRIFT:0422",
       "fingerprint": "aabc9e40ad3afca1eb83ba88b7fe44f41cf0e46ca69591abf285af67fbe1556e",
       "location": {
         "file_path": "docs/policies/DETERMINISM_ENFORCEMENT.md"
@@ -25920,7 +25891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0422",
+      "finding_id": "A3_CANON_DRIFT:0423",
       "fingerprint": "56a2467dc9ecd7f32a5ffce451367c7f77250b7aabe1b9b63eead17ec9ca57ce",
       "location": {
         "file_path": "docs/policies/DETERMINISM_GATES.md"
@@ -25945,7 +25916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0423",
+      "finding_id": "A3_CANON_DRIFT:0424",
       "fingerprint": "b1ab0e90c98919a05c80b58920ddea2c7d48fd794fef02061b65695866b62b0f",
       "location": {
         "file_path": "docs/policies/DETERMINISTIC_MATH.md"
@@ -25970,7 +25941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0424",
+      "finding_id": "A3_CANON_DRIFT:0425",
       "fingerprint": "5d0fffc7f00548e9deea0fe426406a7801afb1291185461b805096065bd396b3",
       "location": {
         "file_path": "docs/policies/DETERMINISTIC_RNG.md"
@@ -25995,7 +25966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0425",
+      "finding_id": "A3_CANON_DRIFT:0426",
       "fingerprint": "811ac784aaf8652233ff26c3e88fdd2809f72f9c2c4fc5b6d6d6076e4847b17c",
       "location": {
         "file_path": "docs/policies/FEATURE_EPOCH_POLICY.md"
@@ -26020,7 +25991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0426",
+      "finding_id": "A3_CANON_DRIFT:0427",
       "fingerprint": "5cdc00d1f92d091b68e9a424595e53930668c1ec48babf15282fcd7ec78efe7e",
       "location": {
         "file_path": "docs/policies/IDE_CONTRIBUTION_RULES.md"
@@ -26045,7 +26016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0427",
+      "finding_id": "A3_CANON_DRIFT:0428",
       "fingerprint": "0c7ee4dd6c30c0e47c18ca6e504aa20a6c4d73d6914c972b79e2529443033518",
       "location": {
         "file_path": "docs/policies/LANGUAGE_POLICY.md"
@@ -26070,7 +26041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0428",
+      "finding_id": "A3_CANON_DRIFT:0429",
       "fingerprint": "a94acfb9de68d6bd9381167a4d2b77aedbcbda4d81da7c5518269378c74baab4",
       "location": {
         "file_path": "docs/policies/LONG_TERM_SUPPORT_POLICY.md"
@@ -26095,7 +26066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0429",
+      "finding_id": "A3_CANON_DRIFT:0430",
       "fingerprint": "cea1cc7474bccf654ac0c9ba1df719e517d0b138aa315a6cc8236520c4641569",
       "location": {
         "file_path": "docs/policies/PERFORMANCE_ENFORCEMENT.md"
@@ -26120,7 +26091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0430",
+      "finding_id": "A3_CANON_DRIFT:0431",
       "fingerprint": "7cc8590fe77771d29ec438ee919e5379d77ae4d77f5ea85f918779ab28c66173",
       "location": {
         "file_path": "docs/realities/FALSE_SCIENCE.md"
@@ -26145,7 +26116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0431",
+      "finding_id": "A3_CANON_DRIFT:0432",
       "fingerprint": "32be5768dbf355c2f12b4945e98b4fc813bf510df881057984f0cf9584f2c6b6",
       "location": {
         "file_path": "docs/realities/MAGIC_IS_DATA.md"
@@ -26170,7 +26141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0432",
+      "finding_id": "A3_CANON_DRIFT:0433",
       "fingerprint": "350194325af5035c112ff00f39e169215662ad4c650ac9fe613c7a20383dbc27",
       "location": {
         "file_path": "docs/realities/REALITY_DOMAINS.md"
@@ -26195,7 +26166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0433",
+      "finding_id": "A3_CANON_DRIFT:0434",
       "fingerprint": "fadf477e2530023148ac1a553538be38f8a2a4591f600ffab1c3a2601c0ddac8",
       "location": {
         "file_path": "docs/reality/CONSERVATION_AND_EXCEPTIONS.md"
@@ -26220,7 +26191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0434",
+      "finding_id": "A3_CANON_DRIFT:0435",
       "fingerprint": "39b57c0086b258d83aeb0fcf89c18b32fbde4d5dd24fefd15a275a843a2334f0",
       "location": {
         "file_path": "docs/reality/PERFORMANCE_CONSTITUTION.md"
@@ -26245,7 +26216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0435",
+      "finding_id": "A3_CANON_DRIFT:0436",
       "fingerprint": "c63ca6594af0f33f9e1ed92c279eadf658b2edb037c19971dab4298644269ab6",
       "location": {
         "file_path": "docs/reality/TIER_TAXONOMY_AND_TRANSITIONS.md"
@@ -26270,7 +26241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0436",
+      "finding_id": "A3_CANON_DRIFT:0437",
       "fingerprint": "9de4fd5e326a61cf0351bcf0a0a7ed965aaa96b9e0cf71d45b9a94f755173f54",
       "location": {
         "file_path": "docs/reality/TIME_CONSTITUTION.md"
@@ -26295,7 +26266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0437",
+      "finding_id": "A3_CANON_DRIFT:0438",
       "fingerprint": "00870db081291a7b72dbee7dc874238cff7e664a8825def397129b0a16d039b7",
       "location": {
         "file_path": "docs/reality/UNIVERSE_PHYSICS_PROFILE.md"
@@ -26320,7 +26291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0438",
+      "finding_id": "A3_CANON_DRIFT:0439",
       "fingerprint": "c5ada7fb869aea1c8fa8beee4074f722e208531d2be62c79978e71048f3b8bc5",
       "location": {
         "file_path": "docs/render/PLATFORM_AND_BACKENDS.md"
@@ -26345,7 +26316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0439",
+      "finding_id": "A3_CANON_DRIFT:0440",
       "fingerprint": "fda50d5738a5ecdf7272eec9e00e69e36d13300e70580dacefa5f6850203492c",
       "location": {
         "file_path": "docs/render/PROCEDURAL_RENDERING_DEFAULTS.md"
@@ -26370,7 +26341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0440",
+      "finding_id": "A3_CANON_DRIFT:0441",
       "fingerprint": "0085b94ce9881c38e0ed6e8d9cc683adec2a50df2e31753564454c429b8456ce",
       "location": {
         "file_path": "docs/render/RENDERMODEL_CONTRACT.md"
@@ -26395,7 +26366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0441",
+      "finding_id": "A3_CANON_DRIFT:0442",
       "fingerprint": "94f7fb86140b1d27b7f5dcd7b82eda63625decbd677f9749e3e4b5037fc44ed8",
       "location": {
         "file_path": "docs/render/SOFTWARE_RENDERER.md"
@@ -26420,7 +26391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0442",
+      "finding_id": "A3_CANON_DRIFT:0443",
       "fingerprint": "a611d6c13c8d29da86f6bc96d553b4f1657d22d883996d30ec71fe5a712237cb",
       "location": {
         "file_path": "docs/roadmap/SLICE_VS_COVERAGE.md"
@@ -26445,7 +26416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0443",
+      "finding_id": "A3_CANON_DRIFT:0444",
       "fingerprint": "0cab39e95bdc650be0ee1057ff1ad6d3ea21f51abbc65844c5b3418bf774505d",
       "location": {
         "file_path": "docs/roadmap/WORLD_CREATION_FLOW.md"
@@ -26470,7 +26441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0444",
+      "finding_id": "A3_CANON_DRIFT:0445",
       "fingerprint": "ef86420438d4c89f2402b3345f83715a67dac66e753695ad450ffaefe2a06fa8",
       "location": {
         "file_path": "docs/safety/SAFETY_PATTERN_LIBRARY.md"
@@ -26495,7 +26466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0445",
+      "finding_id": "A3_CANON_DRIFT:0446",
       "fingerprint": "73e66fef82a02cbdb86b334954d99a443bd30105ad735e60d579bd9588877544",
       "location": {
         "file_path": "docs/scale/DOMAIN_REGISTRY.md"
@@ -26520,7 +26491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0446",
+      "finding_id": "A3_CANON_DRIFT:0447",
       "fingerprint": "13c3eed49b4de9ecd9d409ccf279e08b278982c037f299d40fad6752aa624168",
       "location": {
         "file_path": "docs/scale/SOLVER_DOMAIN_BINDINGS.md"
@@ -26545,7 +26516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0447",
+      "finding_id": "A3_CANON_DRIFT:0448",
       "fingerprint": "e483e972bcdba7b579f89eced7f0395155353aeca9463c1b6bf9e44be1b71aa0",
       "location": {
         "file_path": "docs/schema/FORWARD_COMPATIBILITY.md"
@@ -26570,7 +26541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0448",
+      "finding_id": "A3_CANON_DRIFT:0449",
       "fingerprint": "8f902abfc0e662c3c47f92eeec58238dc083d2e7aae70bd4eeb3ecefcbe8390e",
       "location": {
         "file_path": "docs/schema/SCHEMA_INDEX.md"
@@ -26595,7 +26566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0449",
+      "finding_id": "A3_CANON_DRIFT:0450",
       "fingerprint": "b91be12029d82f47cab6ff0f2ae2b074c97738a120a7ccf8a35fbc653252c107",
       "location": {
         "file_path": "docs/security/SECUREX_TRUST_MODEL.md"
@@ -26620,7 +26591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0450",
+      "finding_id": "A3_CANON_DRIFT:0451",
       "fingerprint": "71700ef1b378e4641e78936f3fee9307f1875611fbab99aa36f16842a714bbd0",
       "location": {
         "file_path": "docs/server/SERVER_SETTINGS.md"
@@ -26645,7 +26616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0451",
+      "finding_id": "A3_CANON_DRIFT:0452",
       "fingerprint": "3fb6eca1b6a2c0b59bcea40d0abb2f118f098460cd583bd55418798a03ea7131",
       "location": {
         "file_path": "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"
@@ -26670,7 +26641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0452",
+      "finding_id": "A3_CANON_DRIFT:0453",
       "fingerprint": "bd464d23fb9ddcaffca4132a4c20b65ebc8f2f88a6a1403ccac3564d5d0dc8c0",
       "location": {
         "file_path": "docs/signals/INSTITUTIONAL_COMMS_MODEL.md"
@@ -26695,7 +26666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0453",
+      "finding_id": "A3_CANON_DRIFT:0454",
       "fingerprint": "8c8e83c964156e92fee5bb1cda4d9f407685f38e052d72012cd15d037ff8d01c",
       "location": {
         "file_path": "docs/signals/MESSAGE_SEMANTICS.md"
@@ -26720,7 +26691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0454",
+      "finding_id": "A3_CANON_DRIFT:0455",
       "fingerprint": "5c26a7e3a5320a93b47ec3f0aa42f9e64c38a6c728843c3f7d18051ad0e98de5",
       "location": {
         "file_path": "docs/signals/SIGNALS_CONSTITUTION.md"
@@ -26745,7 +26716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0455",
+      "finding_id": "A3_CANON_DRIFT:0456",
       "fingerprint": "08dbf488ea0c0c9388cdfd7d2c8949df5307eba3ba7d41d58616f26bd49a1b12",
       "location": {
         "file_path": "docs/signals/SIGNAL_NETWORKGRAPH.md"
@@ -26770,7 +26741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0456",
+      "finding_id": "A3_CANON_DRIFT:0457",
       "fingerprint": "879d0827ca93479651b0db1d9cb79b73fd2b818affbcbdda1445c5f8a8074714",
       "location": {
         "file_path": "docs/signals/SIGNAL_QUALITY_MODEL.md"
@@ -26795,7 +26766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0457",
+      "finding_id": "A3_CANON_DRIFT:0458",
       "fingerprint": "1cc0e148ba937e4717279be2bbef9991465057ec79d8b730be6d6a1c7a7c0922",
       "location": {
         "file_path": "docs/signals/TRUST_AND_BELIEF_MODEL.md"
@@ -26820,7 +26791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0458",
+      "finding_id": "A3_CANON_DRIFT:0459",
       "fingerprint": "c2002c76bdd76bb8bb4714c1311faced4bf0984fdea6e5a467ec5c0125cc69f9",
       "location": {
         "file_path": "docs/specs/CIV1_CITIES_INFRA.md"
@@ -26845,7 +26816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0459",
+      "finding_id": "A3_CANON_DRIFT:0460",
       "fingerprint": "5b99db0b6153688bbe856d1e50a71d6313e8f9224df38be3447e6485e4643472",
       "location": {
         "file_path": "docs/specs/CIV2_GOVERNANCE.md"
@@ -26870,7 +26841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0460",
+      "finding_id": "A3_CANON_DRIFT:0461",
       "fingerprint": "69b7767817dd8b57c569d8a645b72439a168e99db63c769017f6966eccfda14e",
       "location": {
         "file_path": "docs/specs/CIV3_KNOWLEDGE_TECH.md"
@@ -26895,7 +26866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0461",
+      "finding_id": "A3_CANON_DRIFT:0462",
       "fingerprint": "c55ab6d576ae56af4a5330cc404489cc3945ec4fb2d6d0e4b7e48a0b58e75614",
       "location": {
         "file_path": "docs/specs/CIV4_SCALE_AND_LOGISTICS.md"
@@ -26920,7 +26891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0462",
+      "finding_id": "A3_CANON_DRIFT:0463",
       "fingerprint": "d6755b3251184ffe875472fad6dea22e60e58448d8a2546fde5168f24557d9e4",
       "location": {
         "file_path": "docs/specs/CONTRACTS.md"
@@ -26945,7 +26916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0463",
+      "finding_id": "A3_CANON_DRIFT:0464",
       "fingerprint": "eb18c5f68b8d668c9a0e0ebd4e0b1694764aafd3e9d61131d23b93591df841b9",
       "location": {
         "file_path": "docs/specs/DATA_FORMATS.md"
@@ -26970,7 +26941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0464",
+      "finding_id": "A3_CANON_DRIFT:0465",
       "fingerprint": "1743dec0de182696a6a9e755107e3380dfa953b17f35b0373cd7628c12e6398c",
       "location": {
         "file_path": "docs/specs/FIDELITY_DEGRADATION.md"
@@ -26995,7 +26966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0465",
+      "finding_id": "A3_CANON_DRIFT:0466",
       "fingerprint": "20c79c1b04b13184c294751934a97f368b367ec0f238ed0d9e157427c47bb2f9",
       "location": {
         "file_path": "docs/specs/FIDELITY_PROJECTION_IMPLEMENTATION.md"
@@ -27020,7 +26991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0466",
+      "finding_id": "A3_CANON_DRIFT:0467",
       "fingerprint": "f4734a7ea147020ea464524eb15da39e4d1edee60a85928611442447b5a02f30",
       "location": {
         "file_path": "docs/specs/FORMAT_INSTALL_MANIFEST.md"
@@ -27045,7 +27016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0467",
+      "finding_id": "A3_CANON_DRIFT:0468",
       "fingerprint": "d8a7a0cd31b20c4e302e5b623aeb1ae69efb11d2e13cdbc79a0c596828aae70c",
       "location": {
         "file_path": "docs/specs/LIFE_BIRTH_PIPELINE.md"
@@ -27070,7 +27041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0468",
+      "finding_id": "A3_CANON_DRIFT:0469",
       "fingerprint": "2f9af93f7ef6526ef313047757b0d9be4b400a1982a2dac6c57956d86b68ec2b",
       "location": {
         "file_path": "docs/specs/LIFE_DEATH_PIPELINE.md"
@@ -27095,7 +27066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0469",
+      "finding_id": "A3_CANON_DRIFT:0470",
       "fingerprint": "9f59f33adafe2f68fb5debeca9ccd94f58aac3fb26ba927ec914757c33e2adea",
       "location": {
         "file_path": "docs/specs/SPECSHEET_CONSTITUTION.md"
@@ -27120,7 +27091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0470",
+      "finding_id": "A3_CANON_DRIFT:0471",
       "fingerprint": "64b6c438f53a60a18b4a220b48aa4fe6596fa40b166019f67a6e6a45f41d23b9",
       "location": {
         "file_path": "docs/specs/SPEC_ABI_TEMPLATES.md"
@@ -27145,7 +27116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0471",
+      "finding_id": "A3_CANON_DRIFT:0472",
       "fingerprint": "c93daca65f5cbec393302ffdd9c9e97b8eda14baa84b7ab86e63c415e9fd79d0",
       "location": {
         "file_path": "docs/specs/SPEC_ACTIONS.md"
@@ -27170,7 +27141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0472",
+      "finding_id": "A3_CANON_DRIFT:0473",
       "fingerprint": "e08a15e1e0ae79fc6420d4de3dc0bcec8b34dcaf49ce14394c4ebc8dc64f50c7",
       "location": {
         "file_path": "docs/specs/SPEC_ACTORS.md"
@@ -27195,7 +27166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0473",
+      "finding_id": "A3_CANON_DRIFT:0474",
       "fingerprint": "1a63559da0a34063a0bb968d61fd3aa2058eb1760647400630d1e6d54e988474",
       "location": {
         "file_path": "docs/specs/SPEC_AGENT.md"
@@ -27220,7 +27191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0474",
+      "finding_id": "A3_CANON_DRIFT:0475",
       "fingerprint": "fc244afee02b983fbf7fd03eaa9194c76807283c94b61814cb258dc8046c4441",
       "location": {
         "file_path": "docs/specs/SPEC_AGGREGATES.md"
@@ -27245,7 +27216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0475",
+      "finding_id": "A3_CANON_DRIFT:0476",
       "fingerprint": "00f92a231110aa832ffd74de4cc0839430c110376462b11a3a39f56659ac4f36",
       "location": {
         "file_path": "docs/specs/SPEC_AI_DECISION_TRACES.md"
@@ -27270,7 +27241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0476",
+      "finding_id": "A3_CANON_DRIFT:0477",
       "fingerprint": "c8f4bafb58311c60565026b01c53f6e512eb2f8b481cfab7491ef68f96c9c35b",
       "location": {
         "file_path": "docs/specs/SPEC_AI_DETERMINISM.md"
@@ -27295,7 +27266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0477",
+      "finding_id": "A3_CANON_DRIFT:0478",
       "fingerprint": "8b9c1d3a56894681d0a07e042f587495bdad6b38f5bab3620ce7e8ed87981235",
       "location": {
         "file_path": "docs/specs/SPEC_ARTIFACT_STORE.md"
@@ -27320,7 +27291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0478",
+      "finding_id": "A3_CANON_DRIFT:0479",
       "fingerprint": "72e0e016b3aa82c4eabce98ad351a1fe8539eed91b2768e73d2b381df237b60b",
       "location": {
         "file_path": "docs/specs/SPEC_ATMOSPHERE.md"
@@ -27345,7 +27316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0479",
+      "finding_id": "A3_CANON_DRIFT:0480",
       "fingerprint": "5dd1cedb21aedd1e5ee7097e341a2711d9920360c3a492fcd661837cc0508eae",
       "location": {
         "file_path": "docs/specs/SPEC_BIOMES.md"
@@ -27370,7 +27341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0480",
+      "finding_id": "A3_CANON_DRIFT:0481",
       "fingerprint": "a8736639f76041a230f1caba56e3bfc98a425dd284ab0015357633be5038d8c9",
       "location": {
         "file_path": "docs/specs/SPEC_BLUEPRINTS.md"
@@ -27395,7 +27366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0481",
+      "finding_id": "A3_CANON_DRIFT:0482",
       "fingerprint": "4d2fd27702539af736b34f0ef387ec293fc6d09c00c7407a0fb206ed6a492dde",
       "location": {
         "file_path": "docs/specs/SPEC_BUILD.md"
@@ -27420,7 +27391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0482",
+      "finding_id": "A3_CANON_DRIFT:0483",
       "fingerprint": "a77b0b10983fbad6e059b99e415f4c5e1e789e5bf24e1b9843916f9e137cdc0c",
       "location": {
         "file_path": "docs/specs/SPEC_CALENDARS.md"
@@ -27445,7 +27416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0483",
+      "finding_id": "A3_CANON_DRIFT:0484",
       "fingerprint": "e363b02ef26afdad1a88f7f46e525d5149ac1d73c42f7f0aa980795ca15cd20f",
       "location": {
         "file_path": "docs/specs/SPEC_CAPABILITIES.md"
@@ -27470,7 +27441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0484",
+      "finding_id": "A3_CANON_DRIFT:0485",
       "fingerprint": "e29a095fb031c2a0e6e9e65ec4fa796f2578f6a84c821eb57c93c4b886623f90",
       "location": {
         "file_path": "docs/specs/SPEC_CAPABILITY_REGISTRY.md"
@@ -27495,7 +27466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0485",
+      "finding_id": "A3_CANON_DRIFT:0486",
       "fingerprint": "23e78cb6a4c32b195dbafcc31f7fe29685c3fb0b7303469734935634080a129f",
       "location": {
         "file_path": "docs/specs/SPEC_CLIMATE_WEATHER.md"
@@ -27520,7 +27491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0486",
+      "finding_id": "A3_CANON_DRIFT:0487",
       "fingerprint": "343c2b6b4162630f960f160193798f848eb1478768c526e136fc736d425bdae2",
       "location": {
         "file_path": "docs/specs/SPEC_CONSTRUCTIONS_V0.md"
@@ -27545,7 +27516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0487",
+      "finding_id": "A3_CANON_DRIFT:0488",
       "fingerprint": "a8832b68408c1734ca75069c96b61c28accd9dcec62aaf3178dc65548c3b8d5d",
       "location": {
         "file_path": "docs/specs/SPEC_CONTAINER_TLV.md"
@@ -27570,7 +27541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0488",
+      "finding_id": "A3_CANON_DRIFT:0489",
       "fingerprint": "98ffdb471704b95ee024de590ba0c1a2ab0dbc3d7e5798f7380190b956a5ba30",
       "location": {
         "file_path": "docs/specs/SPEC_CONTENT.md"
@@ -27595,7 +27566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0489",
+      "finding_id": "A3_CANON_DRIFT:0490",
       "fingerprint": "ef9835565cc0831259733899c2a8e1535e09413ef4651015f091eea5ceb88272",
       "location": {
         "file_path": "docs/specs/SPEC_CORE.md"
@@ -27620,7 +27591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0490",
+      "finding_id": "A3_CANON_DRIFT:0491",
       "fingerprint": "5f448ea9e76ddd5aede6f81bdc4f69da3f16d328910ecd8dab552fc55c4f2e8e",
       "location": {
         "file_path": "docs/specs/SPEC_CORE_DATA.md"
@@ -27645,7 +27616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0491",
+      "finding_id": "A3_CANON_DRIFT:0492",
       "fingerprint": "dad76783f0150afc788195e1a4d4620b04bf1e9432a7fa3fc5dc9dfd751af790",
       "location": {
         "file_path": "docs/specs/SPEC_CORE_DATA_PIPELINE.md"
@@ -27670,7 +27641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0492",
+      "finding_id": "A3_CANON_DRIFT:0493",
       "fingerprint": "b340a392baeeb78ad2c6cf2a331c3517c78ca068044426df9c6ca88799026342",
       "location": {
         "file_path": "docs/specs/SPEC_CORE_DATA_VALIDATION.md"
@@ -27695,7 +27666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0493",
+      "finding_id": "A3_CANON_DRIFT:0494",
       "fingerprint": "e192962eb6447e98a02d5b4fdc50671e00d586781bf0d271c4ea0069b70bc7b6",
       "location": {
         "file_path": "docs/specs/SPEC_COSMO_CORE_DATA.md"
@@ -27720,7 +27691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0494",
+      "finding_id": "A3_CANON_DRIFT:0495",
       "fingerprint": "f4215f151735966d7a951d13795c17617ce4df7396fc9a3393370fd5ebc790b7",
       "location": {
         "file_path": "docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md"
@@ -27745,7 +27716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0495",
+      "finding_id": "A3_CANON_DRIFT:0496",
       "fingerprint": "5c95d60900b3d657f4db89ae6393ede45f257adaf32f012b733f23896bb18408",
       "location": {
         "file_path": "docs/specs/SPEC_COSMO_LANE.md"
@@ -27770,7 +27741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0496",
+      "finding_id": "A3_CANON_DRIFT:0497",
       "fingerprint": "5a3e785d73bfb832883b1c0a18a4b8f280b3d413d5e0531f8c2b59c22e0b6d04",
       "location": {
         "file_path": "docs/specs/SPEC_DEBUG_UI.md"
@@ -27795,7 +27766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0497",
+      "finding_id": "A3_CANON_DRIFT:0498",
       "fingerprint": "501e37f62e87eac7be828ab934b6e501cee3e4cbe886bc32e69594ba315a9dec",
       "location": {
         "file_path": "docs/specs/SPEC_DETERMINISM.md"
@@ -27820,7 +27791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0498",
+      "finding_id": "A3_CANON_DRIFT:0499",
       "fingerprint": "60f5fb4486022fbb69964054d2c5c6d35e8b8dc16018844abdbf11f3ac005a65",
       "location": {
         "file_path": "docs/specs/SPEC_DOMAINS_FRAMES_PROP.md"
@@ -27845,7 +27816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0499",
+      "finding_id": "A3_CANON_DRIFT:0500",
       "fingerprint": "8f125b5b5717f98f7b521fc8eec486cf436cc9c7a05f8bd4dc88b49c06c62fbb",
       "location": {
         "file_path": "docs/specs/SPEC_DOMINIUM_LAYER.md"
@@ -27870,7 +27841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0500",
+      "finding_id": "A3_CANON_DRIFT:0501",
       "fingerprint": "1391486d58f2f44b5b3d970fe8147fde07b3a6fb9290f3ab5f54a456b492acd3",
       "location": {
         "file_path": "docs/specs/SPEC_DOMINIUM_RULES.md"
@@ -27895,7 +27866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0501",
+      "finding_id": "A3_CANON_DRIFT:0502",
       "fingerprint": "bf1a7944ed7fb5cfd5751e4023067487336a88518024b2163620624d58c9976e",
       "location": {
         "file_path": "docs/specs/SPEC_DOMINO_AUDIO_UI_INPUT.md"
@@ -27920,7 +27891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0502",
+      "finding_id": "A3_CANON_DRIFT:0503",
       "fingerprint": "a4345ed600d2cd7d2e8ad08ecbc3e3b3b36157fe3491f4120c5929ec32a0ebd0",
       "location": {
         "file_path": "docs/specs/SPEC_DOMINO_MOD.md"
@@ -27945,7 +27916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0503",
+      "finding_id": "A3_CANON_DRIFT:0504",
       "fingerprint": "90a5a0e7a4e72d63401925b2569477ba804de38590f5efc5918c448090e7e078",
       "location": {
         "file_path": "docs/specs/SPEC_DOMINO_SIM.md"
@@ -27970,7 +27941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0504",
+      "finding_id": "A3_CANON_DRIFT:0505",
       "fingerprint": "4a09548a1309a574bfe96006ade6cb60cc33115ff8c7c2ccce6abb6edcd852b2",
       "location": {
         "file_path": "docs/specs/SPEC_DOMINO_SUBSYSTEMS.md"
@@ -27995,7 +27966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0505",
+      "finding_id": "A3_CANON_DRIFT:0506",
       "fingerprint": "51209559668db5b52cae46d1c3af02e5f4fc998693fa797bf71a3c84167d48ff",
       "location": {
         "file_path": "docs/specs/SPEC_DOMINO_SYS.md"
@@ -28020,7 +27991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0506",
+      "finding_id": "A3_CANON_DRIFT:0507",
       "fingerprint": "fa868f2ae5535bd58a51584cea696a6f125af838da5768e6e648ebf8049e55e3",
       "location": {
         "file_path": "docs/specs/SPEC_ECONOMY.md"
@@ -28045,7 +28016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0507",
+      "finding_id": "A3_CANON_DRIFT:0508",
       "fingerprint": "fca7ee103757cfeb346a34b19ea3b3124cea4e26cfa7d5e384b1f9bc517c8762",
       "location": {
         "file_path": "docs/specs/SPEC_EDITOR_GUI.md"
@@ -28070,7 +28041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0508",
+      "finding_id": "A3_CANON_DRIFT:0509",
       "fingerprint": "e6827e04c175283b02397ef3a1abe88dcd80753a564740aab3ba1a08fb5d4bb0",
       "location": {
         "file_path": "docs/specs/SPEC_ENERGY.md"
@@ -28095,7 +28066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0509",
+      "finding_id": "A3_CANON_DRIFT:0510",
       "fingerprint": "ca462a0b899015aa68103df3a4275f8bc1d94029d551eef31e9a777c4f35c96b",
       "location": {
         "file_path": "docs/specs/SPEC_ENV.md"
@@ -28120,7 +28091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0510",
+      "finding_id": "A3_CANON_DRIFT:0511",
       "fingerprint": "176e7a5ca3ae94046a3a25f8509565fb8684b26d5ae74b5c4e4a377984428119",
       "location": {
         "file_path": "docs/specs/SPEC_FACADES_BACKENDS.md"
@@ -28145,7 +28116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0511",
+      "finding_id": "A3_CANON_DRIFT:0512",
       "fingerprint": "9d8d0c0e8bea8093ba2d7137449b0154bd951dd93e7c832ee735797ddbc62dff",
       "location": {
         "file_path": "docs/specs/SPEC_FACTIONS.md"
@@ -28170,7 +28141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0512",
+      "finding_id": "A3_CANON_DRIFT:0513",
       "fingerprint": "de3912129c336e18b23788d8a5b783719617246e9b73bffc0a326aea2e259430",
       "location": {
         "file_path": "docs/specs/SPEC_FEATURE_EPOCH.md"
@@ -28195,7 +28166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0513",
+      "finding_id": "A3_CANON_DRIFT:0514",
       "fingerprint": "d7bb0a9f9400b5066fde9e34849d4ae54041a873526cdff5d10c1320f22adf42",
       "location": {
         "file_path": "docs/specs/SPEC_FIDELITY_DEGRADATION.md"
@@ -28220,7 +28191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0514",
+      "finding_id": "A3_CANON_DRIFT:0515",
       "fingerprint": "7349379d3fee51374ad3b200b2835e419eb10d76c1ca1643ca3349d5639c16b0",
       "location": {
         "file_path": "docs/specs/SPEC_FIELDS.md"
@@ -28245,7 +28216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0515",
+      "finding_id": "A3_CANON_DRIFT:0516",
       "fingerprint": "fe1bbaa69624cc795bb807cbb9462b659277fe1d859d4769305b53a4e844a0d0",
       "location": {
         "file_path": "docs/specs/SPEC_FIELDS_EVENTS.md"
@@ -28270,7 +28241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0516",
+      "finding_id": "A3_CANON_DRIFT:0517",
       "fingerprint": "48d2a161fb274fe2abda4769d295165be6d5f97f1e380719f9553de5340e990a",
       "location": {
         "file_path": "docs/specs/SPEC_FS_CONTRACT.md"
@@ -28295,7 +28266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0517",
+      "finding_id": "A3_CANON_DRIFT:0518",
       "fingerprint": "ee0a59bc8717b2249e6cffa04f6b92d8b7891772d04886c9edf6e6440860b13d",
       "location": {
         "file_path": "docs/specs/SPEC_GAME_CONTENT_API.md"
@@ -28320,7 +28291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0518",
+      "finding_id": "A3_CANON_DRIFT:0519",
       "fingerprint": "618d088f5f477f0f2d0ebfe834e1e246b00d2081680aba29abbc11574a8f7c50",
       "location": {
         "file_path": "docs/specs/SPEC_GAME_PRODUCT.md"
@@ -28345,7 +28316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0519",
+      "finding_id": "A3_CANON_DRIFT:0520",
       "fingerprint": "de57aecc7d1a4cb2dfb604cc4b70b949711f3959e8f8bbe6b76da9b047b1a47a",
       "location": {
         "file_path": "docs/specs/SPEC_GRAPH_TOOLKIT.md"
@@ -28370,7 +28341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0520",
+      "finding_id": "A3_CANON_DRIFT:0521",
       "fingerprint": "ecb1a929b75061250913ed481ab9586da2ee683933519c80d5ac21cd98deca02",
       "location": {
         "file_path": "docs/specs/SPEC_HYDROLOGY.md"
@@ -28395,7 +28366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0521",
+      "finding_id": "A3_CANON_DRIFT:0522",
       "fingerprint": "d3e10be8012bc0886cae53716667ba163af51a12536a97a5899724830288a799",
       "location": {
         "file_path": "docs/specs/SPEC_IDENTITY.md"
@@ -28420,7 +28391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0522",
+      "finding_id": "A3_CANON_DRIFT:0523",
       "fingerprint": "7b3cffdaea57d4eaa0e5c86aab003c8ea2927ddbae62fa5496c14c2dfa5ad7a7",
       "location": {
         "file_path": "docs/specs/SPEC_INDEX.md"
@@ -28445,7 +28416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0523",
+      "finding_id": "A3_CANON_DRIFT:0524",
       "fingerprint": "853b0a0c4b43b94e7a984640c377a0980466975fc3e7e94dd3f9b020445336b4",
       "location": {
         "file_path": "docs/specs/SPEC_INPUT.md"
@@ -28470,7 +28441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0524",
+      "finding_id": "A3_CANON_DRIFT:0525",
       "fingerprint": "7eb329636723563dae94745c131af9425a672464e271a5853d8a3237b1bde7ac",
       "location": {
         "file_path": "docs/specs/SPEC_INSTANCE_LAYOUT.md"
@@ -28495,7 +28466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0525",
+      "finding_id": "A3_CANON_DRIFT:0526",
       "fingerprint": "27d43c548345707ee8eed71168f50e08bf5064d93c10924f29740b11616a1eae",
       "location": {
         "file_path": "docs/specs/SPEC_JOBS.md"
@@ -28520,7 +28491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0526",
+      "finding_id": "A3_CANON_DRIFT:0527",
       "fingerprint": "f64e86735eb70f6d1501532b13302a22531b3c72a82899fd34baa492d03c3c2f",
       "location": {
         "file_path": "docs/specs/SPEC_JOB_AI.md"
@@ -28545,7 +28516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0527",
+      "finding_id": "A3_CANON_DRIFT:0528",
       "fingerprint": "efc593a607d03b67a6b485451447f7ecb84dc513a5edbd5f2cf078aff1df89f9",
       "location": {
         "file_path": "docs/specs/SPEC_KNOWLEDGE.md"
@@ -28570,7 +28541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0528",
+      "finding_id": "A3_CANON_DRIFT:0529",
       "fingerprint": "71cf87cbaf74c43a3ad43df902eb87bf3c41e97034e6b6124c2a153bbbccc874",
       "location": {
         "file_path": "docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md"
@@ -28595,7 +28566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0529",
+      "finding_id": "A3_CANON_DRIFT:0530",
       "fingerprint": "f70000413ed49ce93c28e4ca600e0f75e42d4e4e67f84117215c82981ef94b67",
       "location": {
         "file_path": "docs/specs/SPEC_LANES_AND_BUBBLES.md"
@@ -28620,7 +28591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0530",
+      "finding_id": "A3_CANON_DRIFT:0531",
       "fingerprint": "3ca7930be4262ab3a76538f3f12033d40162b34febdbcb3b4620bcbbee696807",
       "location": {
         "file_path": "docs/specs/SPEC_LANGUAGE_BASELINES.md"
@@ -28645,7 +28616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0531",
+      "finding_id": "A3_CANON_DRIFT:0532",
       "fingerprint": "2b8164ecc596ad22f6b27b8cf64214153794c239500dde28a07cdc0de4cf626f",
       "location": {
         "file_path": "docs/specs/SPEC_LOD.md"
@@ -28670,7 +28641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0532",
+      "finding_id": "A3_CANON_DRIFT:0533",
       "fingerprint": "b70d8c8968a2a2d2a5d95218f7fe0109e70c6d1ca21828b69747d87b046709c9",
       "location": {
         "file_path": "docs/specs/SPEC_LOGICAL_TRAVEL.md"
@@ -28695,7 +28666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0533",
+      "finding_id": "A3_CANON_DRIFT:0534",
       "fingerprint": "23e7af9b6d2817f014b7c09e439f0e15753285342910dd4e695408ec26033ad6",
       "location": {
         "file_path": "docs/specs/SPEC_MACHINES.md"
@@ -28720,7 +28691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0534",
+      "finding_id": "A3_CANON_DRIFT:0535",
       "fingerprint": "8b7b83890095cbe9ac1e7dbbfde3cf701cac6e4bb72210153c4715f48d5e9c7f",
       "location": {
         "file_path": "docs/specs/SPEC_MATTER.md"
@@ -28745,7 +28716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0535",
+      "finding_id": "A3_CANON_DRIFT:0536",
       "fingerprint": "96e58589fa1a5d27d3abd6d5b1a9d1e5d7239dfcb727a2b23cb8b85f5e5bf50c",
       "location": {
         "file_path": "docs/specs/SPEC_MECHANICS_PROFILES.md"
@@ -28770,7 +28741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0536",
+      "finding_id": "A3_CANON_DRIFT:0537",
       "fingerprint": "6f12cdd59f153c78c1d3f77e126ccd7a0391ba14307e724e2d876bae24efaa4f",
       "location": {
         "file_path": "docs/specs/SPEC_MEDIA_FRAMEWORK.md"
@@ -28795,7 +28766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0537",
+      "finding_id": "A3_CANON_DRIFT:0538",
       "fingerprint": "1c234d0ed3a6ab8c8408ad3f7187d243fc7c8f741204c1a6b3dd8ba977c49b47",
       "location": {
         "file_path": "docs/specs/SPEC_MIGRATIONS.md"
@@ -28820,7 +28791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0538",
+      "finding_id": "A3_CANON_DRIFT:0539",
       "fingerprint": "55127f9d096260739706c95fff5ff3583656858c5e4968e90ea82e26343280f0",
       "location": {
         "file_path": "docs/specs/SPEC_MODELS.md"
@@ -28845,7 +28816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0539",
+      "finding_id": "A3_CANON_DRIFT:0540",
       "fingerprint": "3d5d4424c2a58bd0f4ba298b870fdae56a674dd6a8db660210118b79cfc7259b",
       "location": {
         "file_path": "docs/specs/SPEC_NET.md"
@@ -28870,7 +28841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0540",
+      "finding_id": "A3_CANON_DRIFT:0541",
       "fingerprint": "d20a20019057067ec7839bf78ff6c2a04c9297b7a12e24d2b65d1032444ad452",
       "location": {
         "file_path": "docs/specs/SPEC_NETCODE.md"
@@ -28895,7 +28866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0541",
+      "finding_id": "A3_CANON_DRIFT:0542",
       "fingerprint": "22655600be777a59de0816b2058331446f99311e41125936d1a801eb0f212bcf",
       "location": {
         "file_path": "docs/specs/SPEC_NETWORKS.md"
@@ -28920,7 +28891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0542",
+      "finding_id": "A3_CANON_DRIFT:0543",
       "fingerprint": "f2aa8425066261dd5ed00f30af3ea2329cefcc3943a76c512ef7c3723742af9c",
       "location": {
         "file_path": "docs/specs/SPEC_NET_HANDSHAKE.md"
@@ -28945,7 +28916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0543",
+      "finding_id": "A3_CANON_DRIFT:0544",
       "fingerprint": "2201deee5d85485eae871923ffdc5f54141a00d9e86810e2b424c3649e174a1a",
       "location": {
         "file_path": "docs/specs/SPEC_NUMERIC.md"
@@ -28970,7 +28941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0544",
+      "finding_id": "A3_CANON_DRIFT:0545",
       "fingerprint": "38245ada64418c0b463392a4637987ca10c07fc534059a9f0f1f5b527ca41611",
       "location": {
         "file_path": "docs/specs/SPEC_ORBITS.md"
@@ -28995,7 +28966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0545",
+      "finding_id": "A3_CANON_DRIFT:0546",
       "fingerprint": "589f1bb3c0d3ac5ea162394390c4b93f68f935e90f2ee4e4bb96bedd3632d564",
       "location": {
         "file_path": "docs/specs/SPEC_ORBITS_TIMEWARP.md"
@@ -29020,7 +28991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0546",
+      "finding_id": "A3_CANON_DRIFT:0547",
       "fingerprint": "2ba50754d5c51da810b43d4a9a3149858ae85992186912aa8d4822dfa97abab5",
       "location": {
         "file_path": "docs/specs/SPEC_PACKAGES.md"
@@ -29045,7 +29016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0547",
+      "finding_id": "A3_CANON_DRIFT:0548",
       "fingerprint": "66781827a9bf5398351bf25ed0de94eeb1b51e617e0b90f17ecfc73edbe3d2db",
       "location": {
         "file_path": "docs/specs/SPEC_PACKETS.md"
@@ -29070,7 +29041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0548",
+      "finding_id": "A3_CANON_DRIFT:0549",
       "fingerprint": "6d32df81b37795d2af7c1000f54e1f5295343af1639a0849dd440ed442044f02",
       "location": {
         "file_path": "docs/specs/SPEC_PERF_BUDGETS.md"
@@ -29095,7 +29066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0549",
+      "finding_id": "A3_CANON_DRIFT:0550",
       "fingerprint": "4e4ba96acbedd4bd6159f2e22f9585c508a47c3c93fade1bf161122518a8c9db",
       "location": {
         "file_path": "docs/specs/SPEC_POSE_AND_ANCHORS.md"
@@ -29120,7 +29091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0550",
+      "finding_id": "A3_CANON_DRIFT:0551",
       "fingerprint": "dd37c027707bf1aae6e0323f385caa7839ba2f3db226aa91be0da4588755d9d1",
       "location": {
         "file_path": "docs/specs/SPEC_PROFILING.md"
@@ -29145,7 +29116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0551",
+      "finding_id": "A3_CANON_DRIFT:0552",
       "fingerprint": "d75f85218a491a24ed9f21ce5fb51503527ca2e11096ef07908520f42b674ca7",
       "location": {
         "file_path": "docs/specs/SPEC_QOS_ASSISTANCE.md"
@@ -29170,7 +29141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0552",
+      "finding_id": "A3_CANON_DRIFT:0553",
       "fingerprint": "2b9f2770fe30b756d005fec808f8020b817167687f8b1a1c9eb4d2aba7eacbd2",
       "location": {
         "file_path": "docs/specs/SPEC_RECIPES.md"
@@ -29195,7 +29166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0553",
+      "finding_id": "A3_CANON_DRIFT:0554",
       "fingerprint": "00241de2a5ab9aa5381d2ff4120448ded9563e7e4602663acb6470d1bedbcf79",
       "location": {
         "file_path": "docs/specs/SPEC_REENTRY_THERMAL.md"
@@ -29220,7 +29191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0554",
+      "finding_id": "A3_CANON_DRIFT:0555",
       "fingerprint": "d34e2e83fb4bad5e79a5160e0cdfe334902263d937c72e00437ce73ef290fa49",
       "location": {
         "file_path": "docs/specs/SPEC_REFERENCE_FRAMES.md"
@@ -29245,7 +29216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0555",
+      "finding_id": "A3_CANON_DRIFT:0556",
       "fingerprint": "8c61fa61c4148adc4190f6e91ea6dc9742ae4cdf7e3aa176c11df8e660ec0ed5",
       "location": {
         "file_path": "docs/specs/SPEC_RENDER_CAPS.md"
@@ -29270,7 +29241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0556",
+      "finding_id": "A3_CANON_DRIFT:0557",
       "fingerprint": "da22c941df624e3a2f283b567cd1664ae7000c2fef9ae8bdca5321db00bcbc71",
       "location": {
         "file_path": "docs/specs/SPEC_RENDER_FEATURES.md"
@@ -29295,7 +29266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0557",
+      "finding_id": "A3_CANON_DRIFT:0558",
       "fingerprint": "f4f0dcf95eaee5b249ab58a67501653ab009fbc0e82c637c6a553a9a6e123943",
       "location": {
         "file_path": "docs/specs/SPEC_RENDER_GRAPH.md"
@@ -29320,7 +29291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0558",
+      "finding_id": "A3_CANON_DRIFT:0559",
       "fingerprint": "7592bc5504f1e9fd4de8e67fa559c4fb12ffffd6ddbe7d521d4225a9de91b7e9",
       "location": {
         "file_path": "docs/specs/SPEC_REPLAY.md"
@@ -29345,7 +29316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0559",
+      "finding_id": "A3_CANON_DRIFT:0560",
       "fingerprint": "687e2e2b7b85aedcfa3dd3edac65759e6d860ac49af160ade59152db308f3950",
       "location": {
         "file_path": "docs/specs/SPEC_RES.md"
@@ -29370,7 +29341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0560",
+      "finding_id": "A3_CANON_DRIFT:0561",
       "fingerprint": "fb21a1f5ebca2f95b6cb2c3e8fded9cb775e17601787613e03fd8f8a5dba4ace",
       "location": {
         "file_path": "docs/specs/SPEC_RESEARCH.md"
@@ -29395,7 +29366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0561",
+      "finding_id": "A3_CANON_DRIFT:0562",
       "fingerprint": "f5fa8977814b37088570649051437ca1a9c2be73457a1a3aaf7d45bf9b17e95f",
       "location": {
         "file_path": "docs/specs/SPEC_SESSIONS.md"
@@ -29420,7 +29391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0562",
+      "finding_id": "A3_CANON_DRIFT:0563",
       "fingerprint": "28fd52df98e5b485f7da4c07c9befd64562185fd4f08967e29a492e3e8bcb3b3",
       "location": {
         "file_path": "docs/specs/SPEC_SETUP_CLI.md"
@@ -29445,7 +29416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0563",
+      "finding_id": "A3_CANON_DRIFT:0564",
       "fingerprint": "5c44d96aee885017c2870b63344d9470c7efbe8ae2e785d97da705b5b729b270",
       "location": {
         "file_path": "docs/specs/SPEC_SETUP_CORE.md"
@@ -29470,7 +29441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0564",
+      "finding_id": "A3_CANON_DRIFT:0565",
       "fingerprint": "19cbad5f6dfcaa6fa1a792e146337b7e7f27d27d9a98c71b3c28928f708b2d4a",
       "location": {
         "file_path": "docs/specs/SPEC_SHADER_IR.md"
@@ -29495,7 +29466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0565",
+      "finding_id": "A3_CANON_DRIFT:0566",
       "fingerprint": "7d8ba009b545067e2129b5274798e5715e776fd961241f31325b8c69ff08fc36",
       "location": {
         "file_path": "docs/specs/SPEC_SIM.md"
@@ -29520,7 +29491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0566",
+      "finding_id": "A3_CANON_DRIFT:0567",
       "fingerprint": "6a99f99767250f6d525d2e71bf5d1643ad05cdf88466811519e41e1df48ae1ee",
       "location": {
         "file_path": "docs/specs/SPEC_SIM_SCHEDULER.md"
@@ -29545,7 +29516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0567",
+      "finding_id": "A3_CANON_DRIFT:0568",
       "fingerprint": "95b9b51fadb618aa18f60a0ec275aa1add3d8caefdf84ea32131ee76bb706a60",
       "location": {
         "file_path": "docs/specs/SPEC_SPACETIME.md"
@@ -29570,7 +29541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0568",
+      "finding_id": "A3_CANON_DRIFT:0569",
       "fingerprint": "635df5b4859ebc9b306ed82dc8f4c62caedb6de458016b32d2b2d7c366d23100",
       "location": {
         "file_path": "docs/specs/SPEC_SPACE_GRAPH.md"
@@ -29595,7 +29566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0569",
+      "finding_id": "A3_CANON_DRIFT:0570",
       "fingerprint": "03772bbb488b1d98286d369944f57cfaa3612dd9110026f52a3c1eb6b783bc01",
       "location": {
         "file_path": "docs/specs/SPEC_STREAMING_BUDGETS.md"
@@ -29620,7 +29591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0570",
+      "finding_id": "A3_CANON_DRIFT:0571",
       "fingerprint": "598cbac3537360a64cc0a4f785e19d2dd9c2b27c1351840ac985f7e9d7acd097",
       "location": {
         "file_path": "docs/specs/SPEC_STRUCT.md"
@@ -29645,7 +29616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0571",
+      "finding_id": "A3_CANON_DRIFT:0572",
       "fingerprint": "dbed24236409d6dc7fd0c5b51dce65b4fe16b28f4f8d29d107272d06cb487eda",
       "location": {
         "file_path": "docs/specs/SPEC_SURFACE_STREAMING.md"
@@ -29670,7 +29641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0572",
+      "finding_id": "A3_CANON_DRIFT:0573",
       "fingerprint": "04e717c7e61325a421bae7fe6f89ee0b57b11d868d18bb36eaa5831c7b87c939",
       "location": {
         "file_path": "docs/specs/SPEC_SURFACE_TOPOLOGY.md"
@@ -29695,7 +29666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0573",
+      "finding_id": "A3_CANON_DRIFT:0574",
       "fingerprint": "20750500466eca467864db66f72e1f901ab5e9cec436179ccf246eff67935d2c",
       "location": {
         "file_path": "docs/specs/SPEC_SYSTEMS_BODIES.md"
@@ -29720,7 +29691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0574",
+      "finding_id": "A3_CANON_DRIFT:0575",
       "fingerprint": "8def51a8caba42e478632a309f6fbf90c9b7a9422114bbb79f9bb4d39b9074bc",
       "location": {
         "file_path": "docs/specs/SPEC_SYSTEM_LOGISTICS.md"
@@ -29745,7 +29716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0575",
+      "finding_id": "A3_CANON_DRIFT:0576",
       "fingerprint": "7d7db8af9ba13e74d2f82834c313b73393d290ec32c7f4dcab4ff416082adf7e",
       "location": {
         "file_path": "docs/specs/SPEC_TIERS.md"
@@ -29770,7 +29741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0576",
+      "finding_id": "A3_CANON_DRIFT:0577",
       "fingerprint": "645472f56ff6c136ecebcac9a496843c7d3871671a7e91653cb1b5d3e8ef3f74",
       "location": {
         "file_path": "docs/specs/SPEC_TIME_KNOWLEDGE.md"
@@ -29795,7 +29766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0577",
+      "finding_id": "A3_CANON_DRIFT:0578",
       "fingerprint": "523462a24d9c7a8edb0390f2df701285c8ef69567903c703a3dbdc2da69d58f7",
       "location": {
         "file_path": "docs/specs/SPEC_TIME_WARP.md"
@@ -29820,7 +29791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0578",
+      "finding_id": "A3_CANON_DRIFT:0579",
       "fingerprint": "2a6b19ea38d97617c81aec2b01192ba33e58385adee66c68ec00cc97eceddc72",
       "location": {
         "file_path": "docs/specs/SPEC_TOOLS_AS_INSTANCES.md"
@@ -29845,7 +29816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0579",
+      "finding_id": "A3_CANON_DRIFT:0580",
       "fingerprint": "ee38443a2694a7ca5c4f45d4d60232441f4b75159327eec753a972c6474c6469",
       "location": {
         "file_path": "docs/specs/SPEC_TOOLS_CORE.md"
@@ -29870,7 +29841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0580",
+      "finding_id": "A3_CANON_DRIFT:0581",
       "fingerprint": "3b9a527e3c88ff01ba13a48338eaed4129e0bef2880c48f145d3be4135710a6a",
       "location": {
         "file_path": "docs/specs/SPEC_TOOL_IO.md"
@@ -29895,7 +29866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0581",
+      "finding_id": "A3_CANON_DRIFT:0582",
       "fingerprint": "3b7d10742783ebb4fabc4436647dd62f44ded7ba16705797ec311caaafe15bc5",
       "location": {
         "file_path": "docs/specs/SPEC_TRANS.md"
@@ -29920,7 +29891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0582",
+      "finding_id": "A3_CANON_DRIFT:0583",
       "fingerprint": "f855985bb88ec34ecd2640cdbed65667219ceb83d0ab95a0216f20c8a8f7e14c",
       "location": {
         "file_path": "docs/specs/SPEC_TRANSPORT_NETWORKS.md"
@@ -29945,7 +29916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0583",
+      "finding_id": "A3_CANON_DRIFT:0584",
       "fingerprint": "c21c949cd307000f6615fc477a23f027f02bb84ba80f416a52ee65bf14284a65",
       "location": {
         "file_path": "docs/specs/SPEC_TRANS_STRUCT_DECOR.md"
@@ -29970,7 +29941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0584",
+      "finding_id": "A3_CANON_DRIFT:0585",
       "fingerprint": "72745413bf25dc0b151620be15dbaad858a912030cbfd08310a87ff3436890a9",
       "location": {
         "file_path": "docs/specs/SPEC_UI_CAPABILITIES.md"
@@ -29995,7 +29966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0585",
+      "finding_id": "A3_CANON_DRIFT:0586",
       "fingerprint": "1fece3cde69782fd4dbacc08cec7b827d6e57103044a8ea6b73c12243692c5cc",
       "location": {
         "file_path": "docs/specs/SPEC_UI_WIDGETS.md"
@@ -30020,7 +29991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0586",
+      "finding_id": "A3_CANON_DRIFT:0587",
       "fingerprint": "4f0844409ba1a1776fe2474935e788d4f0efe940f707116f3bf4beb700769c8a",
       "location": {
         "file_path": "docs/specs/SPEC_UNIVERSE_BUNDLE.md"
@@ -30045,7 +30016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0587",
+      "finding_id": "A3_CANON_DRIFT:0588",
       "fingerprint": "4cdae68d7343ca8afbeca7673e32c42dd81d9a90a33bf13e9d697897f2ffc4a2",
       "location": {
         "file_path": "docs/specs/SPEC_UNIVERSE_MODEL.md"
@@ -30070,7 +30041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0588",
+      "finding_id": "A3_CANON_DRIFT:0589",
       "fingerprint": "1c19a87240a10bcccb0d8ee8ef757296cdea3e033e83dd1204812bfb6a5df14b",
       "location": {
         "file_path": "docs/specs/SPEC_VALIDATION.md"
@@ -30095,7 +30066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0589",
+      "finding_id": "A3_CANON_DRIFT:0590",
       "fingerprint": "e14d537240a6f559feb0cb6263282f5afed1f57b4a114a013bffb7b68408f650",
       "location": {
         "file_path": "docs/specs/SPEC_VEHICLE.md"
@@ -30120,7 +30091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0590",
+      "finding_id": "A3_CANON_DRIFT:0591",
       "fingerprint": "65f653d75a12a57119d365de77cea60d313de76026fc4da242c42f1a075d06f3",
       "location": {
         "file_path": "docs/specs/SPEC_VEHICLES.md"
@@ -30145,7 +30116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0591",
+      "finding_id": "A3_CANON_DRIFT:0592",
       "fingerprint": "11b2ba3c1c573043649c8506deb7899f85ab4334eb8541e24ac493fe3343f164",
       "location": {
         "file_path": "docs/specs/SPEC_VIEW_UI.md"
@@ -30170,7 +30141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0592",
+      "finding_id": "A3_CANON_DRIFT:0593",
       "fingerprint": "528a6e6deb743391feca51f0a005fa15052042bbe436ed7d16f20dae3a82fbdd",
       "location": {
         "file_path": "docs/specs/SPEC_VM.md"
@@ -30195,7 +30166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0593",
+      "finding_id": "A3_CANON_DRIFT:0594",
       "fingerprint": "e2096fc54bad314d191db429930bd2ea09bceb6e355724e0e8c13fcf3180fea2",
       "location": {
         "file_path": "docs/specs/SPEC_WEATHER_CLIMATE_HOOKS.md"
@@ -30220,7 +30191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0594",
+      "finding_id": "A3_CANON_DRIFT:0595",
       "fingerprint": "88ba1157fa8c7e4bc7055c2b11eb2d79f0de004b02434e5ddf0a3e4cbd2533a5",
       "location": {
         "file_path": "docs/specs/SPEC_WORLD_COORDS.md"
@@ -30245,7 +30216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0595",
+      "finding_id": "A3_CANON_DRIFT:0596",
       "fingerprint": "8377b6b3780a7b87ecfbc7e4ac86b15ecfa13468feab35bc8b89e28583168b75",
       "location": {
         "file_path": "docs/specs/SPEC_ZONES.md"
@@ -30270,7 +30241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0596",
+      "finding_id": "A3_CANON_DRIFT:0597",
       "fingerprint": "a5e2fe0efd84133b1f337e4f32c180c0475910051ab3ce24666ff4590ea8ed39",
       "location": {
         "file_path": "docs/specs/STREAMING_BUDGETS.md"
@@ -30295,7 +30266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0597",
+      "finding_id": "A3_CANON_DRIFT:0598",
       "fingerprint": "672637ce8d60200beb99750407af6097a4700257d1003604366d708974af5638",
       "location": {
         "file_path": "docs/specs/UI_EPISTEMIC_BOUNDARY.md"
@@ -30320,7 +30291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0598",
+      "finding_id": "A3_CANON_DRIFT:0599",
       "fingerprint": "af9a1295fded11d974e6a8898eb1735511b4537ba0be3ce61f0ba92d7222f12b",
       "location": {
         "file_path": "docs/specs/core/CAPABILITIES_AND_SOLVER.md"
@@ -30345,7 +30316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0599",
+      "finding_id": "A3_CANON_DRIFT:0600",
       "fingerprint": "a56fad16f7853354bf49e7678bf257a81a05c5c10c785cc64b4dcb23f4c77809",
       "location": {
         "file_path": "docs/specs/core/CORE_LIBRARIES.md"
@@ -30370,7 +30341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0600",
+      "finding_id": "A3_CANON_DRIFT:0601",
       "fingerprint": "06e992e899cb9fcdd3d213dc3ae21a41fc7be17f8639058d2727c08e9409a22c",
       "location": {
         "file_path": "docs/specs/core/INSTALLED_STATE_CONTRACT.md"
@@ -30395,7 +30366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0601",
+      "finding_id": "A3_CANON_DRIFT:0602",
       "fingerprint": "6abc244427ec242ecbca0f39a253a7bc8024fdc587b750a2720f4c1312b0fe74",
       "location": {
         "file_path": "docs/specs/core/LOGGING_EVENTS.md"
@@ -30420,7 +30391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0602",
+      "finding_id": "A3_CANON_DRIFT:0603",
       "fingerprint": "006a6860edecbbb630c34df43fe7ab0018a9400446333753baa7df0159b7b0c8",
       "location": {
         "file_path": "docs/specs/launcher/ARTIFACT_STORE.md"
@@ -30445,7 +30416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0603",
+      "finding_id": "A3_CANON_DRIFT:0604",
       "fingerprint": "fc100db0c11fdca661b6f04be3340e489aa6371b2a25ad08a8c2e0efb13358d0",
       "location": {
         "file_path": "docs/specs/launcher/BUILD_AND_PACKAGING.md"
@@ -30470,7 +30441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0604",
+      "finding_id": "A3_CANON_DRIFT:0605",
       "fingerprint": "7d25606d5ebd1f113a3c719198f7c2ea67d747d58835bc62e73b2e0bf7ea31c5",
       "location": {
         "file_path": "docs/specs/launcher/DIAGNOSTICS_AND_SUPPORT.md"
@@ -30495,7 +30466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0605",
+      "finding_id": "A3_CANON_DRIFT:0606",
       "fingerprint": "2d9af9af8ccc90101c6deecec605dd783f0c8f5d97dc8c23c980e473712331e8",
       "location": {
         "file_path": "docs/specs/launcher/ECOSYSTEM_INTEGRATION.md"
@@ -30520,7 +30491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0606",
+      "finding_id": "A3_CANON_DRIFT:0607",
       "fingerprint": "17bc240745da39f68276e39a103358018cfc29fcaa3a66303523ed357684490c",
       "location": {
         "file_path": "docs/specs/launcher/INSTANCE_MODEL.md"
@@ -30545,7 +30516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0607",
+      "finding_id": "A3_CANON_DRIFT:0608",
       "fingerprint": "32ee91ee348d7b23b6602af122b332fe3e359fb04239430178f26f2c731d28be",
       "location": {
         "file_path": "docs/specs/launcher/LAUNCHER_SETUP_OVERVIEW.md"
@@ -30570,7 +30541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0608",
+      "finding_id": "A3_CANON_DRIFT:0609",
       "fingerprint": "ba50f61014951ced7bc97383da8cabd17eba12217ff273dd131edd247015ce37",
       "location": {
         "file_path": "docs/specs/launcher/PACK_SYSTEM.md"
@@ -30595,7 +30566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0609",
+      "finding_id": "A3_CANON_DRIFT:0610",
       "fingerprint": "0d845f7473afc0635ae40829b2710c4152653a5f4ff4fade99efce77c14620de",
       "location": {
         "file_path": "docs/specs/launcher/RECOVERY_AND_SAFE_MODE.md"
@@ -30620,7 +30591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0610",
+      "finding_id": "A3_CANON_DRIFT:0611",
       "fingerprint": "32d5c3ba9c348d165a9d9648f51fb0e803428b77ee637095cb566e1a441c115a",
       "location": {
         "file_path": "docs/specs/launcher/SECURITY_AND_TRUST.md"
@@ -30645,7 +30616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0611",
+      "finding_id": "A3_CANON_DRIFT:0612",
       "fingerprint": "8fe11962e51f02fb777799e7da739d290585653e5320179748605ce62cb4cec9",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER.md"
@@ -30670,7 +30641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0612",
+      "finding_id": "A3_CANON_DRIFT:0613",
       "fingerprint": "172be90a51ca5cc10b9b4623a628be7b81f5d57df670d6a6ec55e5126bea1af0",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_CLI.md"
@@ -30695,7 +30666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0613",
+      "finding_id": "A3_CANON_DRIFT:0614",
       "fingerprint": "f54d2941032757cdb3c1bf4280b714f755d2f69cfcbbb574f70137a969ef8148",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_CORE.md"
@@ -30720,7 +30691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0614",
+      "finding_id": "A3_CANON_DRIFT:0615",
       "fingerprint": "25f9522cbc3fe21507520b7c447cda56812f7b0155b6b07844fbc5ed3bd8cb38",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_EXT.md"
@@ -30745,7 +30716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0615",
+      "finding_id": "A3_CANON_DRIFT:0616",
       "fingerprint": "193d2445b57e44676d7ce3656857ac2dffae164887e42e61cf27d2f4ac32e19f",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_GUI.md"
@@ -30770,7 +30741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0616",
+      "finding_id": "A3_CANON_DRIFT:0617",
       "fingerprint": "280e605bcebdef22ab91d4c98b37fe1305454d16028147edd4ccfb265cf6b4d4",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_NET.md"
@@ -30795,7 +30766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0617",
+      "finding_id": "A3_CANON_DRIFT:0618",
       "fingerprint": "aaa2b0e641a00a15268411db2ecf82400817f3264103b76e5f0534f4cafc5af1",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_PACKS.md"
@@ -30820,7 +30791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0618",
+      "finding_id": "A3_CANON_DRIFT:0619",
       "fingerprint": "122b6e36ab561a4ecda1d7e4a798882909cd5d961e3e299e3b60b5a44e569a18",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_PRELAUNCH_CONFIG.md"
@@ -30845,7 +30816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0619",
+      "finding_id": "A3_CANON_DRIFT:0620",
       "fingerprint": "7745cd04c2cbe2ea6a4030f07f064b8b899dd3cecabec8cfa8ca9829eeeed3de",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_PROFILES.md"
@@ -30870,7 +30841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0620",
+      "finding_id": "A3_CANON_DRIFT:0621",
       "fingerprint": "27811552056cefa32c27af1e48bc2d6cf45048e5276d56bd4b1e8516cde9cbad",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_PROTOCOL.md"
@@ -30895,7 +30866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0621",
+      "finding_id": "A3_CANON_DRIFT:0622",
       "fingerprint": "c2405ad4d61047eedac1f5259b6a2fcc3db7b540ce0804e95d87adaa149a9033",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCHER_TUI.md"
@@ -30920,7 +30891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0622",
+      "finding_id": "A3_CANON_DRIFT:0623",
       "fingerprint": "90cbb2c0729689e359323f7fb9a80117ee41d248704ed9bb67d7dedebfe823bd",
       "location": {
         "file_path": "docs/specs/launcher/SPEC_LAUNCH_HANDSHAKE_GAME.md"
@@ -30945,7 +30916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0623",
+      "finding_id": "A3_CANON_DRIFT:0624",
       "fingerprint": "2c0d54fd465924a8c7fe01e58ddff992d535797d3ea5dfb1f992d87e70ca30c6",
       "location": {
         "file_path": "docs/specs/launcher/UI_SYSTEM.md"
@@ -30970,7 +30941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0624",
+      "finding_id": "A3_CANON_DRIFT:0625",
       "fingerprint": "3bb0d98e1a1596a864e878cb27bf7f2bf964d16958a4584e712192c3e9c49e13",
       "location": {
         "file_path": "docs/specs/setup/ADAPTERS.md"
@@ -30995,7 +30966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0625",
+      "finding_id": "A3_CANON_DRIFT:0626",
       "fingerprint": "96506cd0da75e1ee7d5b919f0f8c99519e64ae6abcf5942574f4283472513d22",
       "location": {
         "file_path": "docs/specs/setup/ARCHIVAL_AND_HANDOFF.md"
@@ -31020,7 +30991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0626",
+      "finding_id": "A3_CANON_DRIFT:0627",
       "fingerprint": "7cfeb06f911425c48b65c5e79f6b0f7dc2ccfba5041275b3171d5b36ea549e7f",
       "location": {
         "file_path": "docs/specs/setup/CLI_JSON_SCHEMAS.md"
@@ -31045,7 +31016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0627",
+      "finding_id": "A3_CANON_DRIFT:0628",
       "fingerprint": "fb9215459197efb02f0dbd7f12bc7d7d796f6ee4ec5079444047b3141b767e13",
       "location": {
         "file_path": "docs/specs/setup/CLI_REFERENCE.md"
@@ -31070,7 +31041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0628",
+      "finding_id": "A3_CANON_DRIFT:0629",
       "fingerprint": "a52a8fccb5901d500842e58527d33149a44b2e2924722af8b4b8c4388d2cafa8",
       "location": {
         "file_path": "docs/specs/setup/FRONTEND_CONTRACT.md"
@@ -31095,7 +31066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0629",
+      "finding_id": "A3_CANON_DRIFT:0630",
       "fingerprint": "4fc5179a345e20a4a255413de46ae6f097af2c48d86c602fd920df50d23c01d5",
       "location": {
         "file_path": "docs/specs/setup/INVARIANTS.md"
@@ -31120,7 +31091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0630",
+      "finding_id": "A3_CANON_DRIFT:0631",
       "fingerprint": "4ef3ffabfc8b19d7509617c9069610052aa0fb6b7e671c44de3580522ca164fd",
       "location": {
         "file_path": "docs/specs/setup/OWNERSHIP_MODEL.md"
@@ -31145,7 +31116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0631",
+      "finding_id": "A3_CANON_DRIFT:0632",
       "fingerprint": "965056881cde2b5185124f8966ec0ec837515f7427114d589061ad68015de2f4",
       "location": {
         "file_path": "docs/specs/setup/PACKAGING_DEFAULTS.md"
@@ -31170,7 +31141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0632",
+      "finding_id": "A3_CANON_DRIFT:0633",
       "fingerprint": "3ab410781d614caa1dca85fb11782f997cb9aadb02ef0ca5c17dafb95bfeb200",
       "location": {
         "file_path": "docs/specs/setup/PLANNING_RULES.md"
@@ -31195,7 +31166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0633",
+      "finding_id": "A3_CANON_DRIFT:0634",
       "fingerprint": "9f1d044f1b80c65e4dda46e5d50fe439b32e29c4f8d35f48fc7cae0b855c54b7",
       "location": {
         "file_path": "docs/specs/setup/README.md"
@@ -31220,7 +31191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0634",
+      "finding_id": "A3_CANON_DRIFT:0635",
       "fingerprint": "9e7a0b79fb7dd0b675e09dee369ac3d0b76f8bad17ad9a1a781c7282a4a4e2d4",
       "location": {
         "file_path": "docs/specs/setup/RECOVERY_PLAYBOOK.md"
@@ -31245,7 +31216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0635",
+      "finding_id": "A3_CANON_DRIFT:0636",
       "fingerprint": "5458033000c56a55bcb51c356ed6e97b0e1535b10fa64a33033305fd851b6dee",
       "location": {
         "file_path": "docs/specs/setup/SCHEMA_FREEZE_V1.md"
@@ -31270,7 +31241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0636",
+      "finding_id": "A3_CANON_DRIFT:0637",
       "fingerprint": "c94955d831134326a9fd2e1de483aacdb71302f5d3eda75aa4bbb25e2296b1b0",
       "location": {
         "file_path": "docs/specs/setup/SECURITY_MODEL.md"
@@ -31295,7 +31266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0637",
+      "finding_id": "A3_CANON_DRIFT:0638",
       "fingerprint": "4dfbde591eef1078deec3115a22b6a7f48d883ffa263488d9f2d21ca61fe1569",
       "location": {
         "file_path": "docs/specs/setup/SETUP_LINUX.md"
@@ -31320,7 +31291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0638",
+      "finding_id": "A3_CANON_DRIFT:0639",
       "fingerprint": "55aeaa12afe29c3936a6067b868b95e982bfc858afe779066be373e851caa8ca",
       "location": {
         "file_path": "docs/specs/setup/SETUP_MACOS.md"
@@ -31345,7 +31316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0639",
+      "finding_id": "A3_CANON_DRIFT:0640",
       "fingerprint": "2d678156b437edf4c3dea77a5202f0a336169cf26a20af236cd5f4da35df4295",
       "location": {
         "file_path": "docs/specs/setup/SETUP_RETRO.md"
@@ -31370,7 +31341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0640",
+      "finding_id": "A3_CANON_DRIFT:0641",
       "fingerprint": "66b16e377808b7e63eee3c433e4ae879d8d7cab7ec197a4fc65f0489196f1ed8",
       "location": {
         "file_path": "docs/specs/setup/SETUP_WINDOWS.md"
@@ -31395,7 +31366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0641",
+      "finding_id": "A3_CANON_DRIFT:0642",
       "fingerprint": "a2c3d068b004784fb1f7857a4bc58e4ff5903f2a77ca5d2d6845bb583bdae522",
       "location": {
         "file_path": "docs/specs/setup/SPLAT_REGISTRY.md"
@@ -31420,7 +31391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0642",
+      "finding_id": "A3_CANON_DRIFT:0643",
       "fingerprint": "dd112b173495e3a3a78fac23f0e760f21583e49332aaac98d7078840390cf2ab",
       "location": {
         "file_path": "docs/specs/setup/SPLAT_SELECTION_RULES.md"
@@ -31445,7 +31416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0643",
+      "finding_id": "A3_CANON_DRIFT:0644",
       "fingerprint": "304f9af85a5d5489b75d49cb2812cbe088a8487af6f468a019e2e5e739c3f66b",
       "location": {
         "file_path": "docs/specs/setup/STATE_EVOLUTION.md"
@@ -31470,7 +31441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0644",
+      "finding_id": "A3_CANON_DRIFT:0645",
       "fingerprint": "ca7be691b65ce9d9d7e7ac2f3f759b025be5147015e68f566f34d29ac82c6122",
       "location": {
         "file_path": "docs/specs/setup/TLV_INSTALL_REQUEST.md"
@@ -31495,7 +31466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0645",
+      "finding_id": "A3_CANON_DRIFT:0646",
       "fingerprint": "3a27487025ced06806779b4a6c4601513fae9c46e1c708e5c66a3f93c89f88e2",
       "location": {
         "file_path": "docs/specs/setup/TLV_JOB_JOURNAL.md"
@@ -31520,7 +31491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0646",
+      "finding_id": "A3_CANON_DRIFT:0647",
       "fingerprint": "1f372fed938c00f092df3fd2293fbe02e3a1580e12baefd2cb8d28615df16d1a",
       "location": {
         "file_path": "docs/specs/setup/TLV_TXN_JOURNAL.md"
@@ -31545,7 +31516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0647",
+      "finding_id": "A3_CANON_DRIFT:0648",
       "fingerprint": "6411a157ec1e21d58f71cba994f331c6603930ce36307023bab70a495bdb7b04",
       "location": {
         "file_path": "docs/specs/setup/TRANSACTIONS.md"
@@ -31570,7 +31541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0648",
+      "finding_id": "A3_CANON_DRIFT:0649",
       "fingerprint": "17cc8b2622f5b136f6123500793bcdd7a9a1b27848234f750d8748b360131c4c",
       "location": {
         "file_path": "docs/specs/setup/UI_CONTRACT_MAPPING.md"
@@ -31595,7 +31566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0649",
+      "finding_id": "A3_CANON_DRIFT:0650",
       "fingerprint": "2b811163152eefb8930a756de8a658008d710eb052d285eab217fc5438c372e8",
       "location": {
         "file_path": "docs/specs/setup/WINDOWS_MSI_WRAPPER.md"
@@ -31620,7 +31591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0650",
+      "finding_id": "A3_CANON_DRIFT:0651",
       "fingerprint": "df303c34e18aa95fc66e8295bd1ac4afd61715994809f5a72fba724c46d4320d",
       "location": {
         "file_path": "docs/thermal/FIRE_AND_RUNAWAY_MODEL.md"
@@ -31645,7 +31616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0651",
+      "finding_id": "A3_CANON_DRIFT:0652",
       "fingerprint": "c9dc683e9005b507e58080fa44709255937076ae8f5f9a24afceb7787b78f0db",
       "location": {
         "file_path": "docs/thermal/PHASE_CHANGE_AND_CURING.md"
@@ -31670,7 +31641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0652",
+      "finding_id": "A3_CANON_DRIFT:0653",
       "fingerprint": "4da2d90830dc20a0af19598a9273775f8dd6887a6e18698781fc757db12f0bdc",
       "location": {
         "file_path": "docs/thermal/THERMAL_CONSTITUTION.md"
@@ -31695,7 +31666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0653",
+      "finding_id": "A3_CANON_DRIFT:0654",
       "fingerprint": "dd1c9888588427441e43e14d7eeeb35bdd163c00dd74222a3b0368a0fdaf67db",
       "location": {
         "file_path": "docs/time/BRANCHING_TIMELINES.md"
@@ -31720,7 +31691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0654",
+      "finding_id": "A3_CANON_DRIFT:0655",
       "fingerprint": "601feabfc815d0381dedb8e82ef2fbe12963b673e0f04d1299583be23a3b2a54",
       "location": {
         "file_path": "docs/time/SHARD_TIME_ALIGNMENT.md"
@@ -31745,7 +31716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0655",
+      "finding_id": "A3_CANON_DRIFT:0656",
       "fingerprint": "9ae40fb08330370cd5f1407f50b0651f325bc96652a0ff94a5fb4012be9e24dd",
       "location": {
         "file_path": "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
@@ -31770,7 +31741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0656",
+      "finding_id": "A3_CANON_DRIFT:0657",
       "fingerprint": "cb0429570fcfae7c66a04cb556909b7c3cf442b2c0e77a7f1b6aa35fdefb7219",
       "location": {
         "file_path": "docs/tools/AGENT_INSPECTOR.md"
@@ -31795,7 +31766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0657",
+      "finding_id": "A3_CANON_DRIFT:0658",
       "fingerprint": "01f50cfe91bf34b0b52e5b21cf583f9c7b8ef0b7384cc201e6a15f2b98d67b02",
       "location": {
         "file_path": "docs/tools/CACHE_POLICY.md"
@@ -31820,7 +31791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0658",
+      "finding_id": "A3_CANON_DRIFT:0659",
       "fingerprint": "06a49aefa54e98d1a4ca6386b663a8aea71778fe05b3c64bbfa75b0fed94fc41",
       "location": {
         "file_path": "docs/tools/DETERMINISM_TOOLS.md"
@@ -31845,7 +31816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0659",
+      "finding_id": "A3_CANON_DRIFT:0660",
       "fingerprint": "869f905a0040c69562ac08ee26a252fcac128a1b6371e6661d1a77c5db1417c5",
       "location": {
         "file_path": "docs/tools/HISTORY_VIEWER.md"
@@ -31870,7 +31841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0660",
+      "finding_id": "A3_CANON_DRIFT:0661",
       "fingerprint": "6bbc1886cc33644aaa42bea90d8ef2cd5487132770af15f2b692591b24cd4832",
       "location": {
         "file_path": "docs/tools/REFINEMENT_RUNNER.md"
@@ -31895,7 +31866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0661",
+      "finding_id": "A3_CANON_DRIFT:0662",
       "fingerprint": "f6d63857f527b1eb8f9b24aa1ae6622466ed1edd1e4f2aa3c2cdb00aa661f46c",
       "location": {
         "file_path": "docs/tools/REPLAY_SYSTEM.md"
@@ -31920,7 +31891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0662",
+      "finding_id": "A3_CANON_DRIFT:0663",
       "fingerprint": "44d06db6932e3b611c094c547fc0711d58db6a5084066eaa189ac6e0e7187d79",
       "location": {
         "file_path": "docs/tools/TOOLING_OVERVIEW.md"
@@ -31945,7 +31916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0663",
+      "finding_id": "A3_CANON_DRIFT:0664",
       "fingerprint": "2def671982116a61dfe3309d8d146de9f685908dcc0f5840197fb096b67bcb39",
       "location": {
         "file_path": "docs/tools/TOOLS_SETTINGS.md"
@@ -31970,7 +31941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0664",
+      "finding_id": "A3_CANON_DRIFT:0665",
       "fingerprint": "50c8cc55ad17ac3ce5ac90645129bd4af0c9c206e71d991a6d9409fe76a90029",
       "location": {
         "file_path": "docs/tools/TOOL_UI_GUIDELINES.md"
@@ -31995,7 +31966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0665",
+      "finding_id": "A3_CANON_DRIFT:0666",
       "fingerprint": "a05e3b4fce7672d2e738291c9cde2f348c77d9959ba8c4f90e03da2b351ee430",
       "location": {
         "file_path": "docs/tools/VALIDATION.md"
@@ -32020,7 +31991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0666",
+      "finding_id": "A3_CANON_DRIFT:0667",
       "fingerprint": "4e11407cb763bca9260cdd0c594d974065dcbf5908fabc1d8a63cd458d3c4707",
       "location": {
         "file_path": "docs/tools/WORLDGEN_TOOLING.md"
@@ -32045,7 +32016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0667",
+      "finding_id": "A3_CANON_DRIFT:0668",
       "fingerprint": "c504f92d47f2c93318ec45af581960a3a8c9b58e04dae707b6c7109f9dbbc542",
       "location": {
         "file_path": "docs/tools/WORLD_INSPECTOR.md"
@@ -32070,7 +32041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0668",
+      "finding_id": "A3_CANON_DRIFT:0669",
       "fingerprint": "fb8391b0b8261b71e80e50a37bc19294b6562ebeee2df0dbbe04095f20f765e0",
       "location": {
         "file_path": "docs/ui/CLIENT_OUT_OF_GAME_SCOPE.md"
@@ -32095,7 +32066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0669",
+      "finding_id": "A3_CANON_DRIFT:0670",
       "fingerprint": "bbaa8324ebc89ed8f8f9abc3d5248c5b8c1744703f4758bf3753ac1a5d33fc91",
       "location": {
         "file_path": "docs/ui/CLI_CANON.md"
@@ -32120,7 +32091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0670",
+      "finding_id": "A3_CANON_DRIFT:0671",
       "fingerprint": "cbcdacaee0f9fd88921d2b085419cc855f249e3ab2ab83afa1973b3674fbaebd",
       "location": {
         "file_path": "docs/ui/CONSOLE_AND_DEBUG.md"
@@ -32145,7 +32116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0671",
+      "finding_id": "A3_CANON_DRIFT:0672",
       "fingerprint": "35d0c8531185948337aefc7e98065c4b8e817fc34548afa20b9248eff1a6c8b1",
       "location": {
         "file_path": "docs/ui/DEBUG_AND_INSPECT.md"
@@ -32170,7 +32141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0672",
+      "finding_id": "A3_CANON_DRIFT:0673",
       "fingerprint": "aab97a7caa4a724b69dbb6d265b546fa83b97e226c38dd34776251141a663020",
       "location": {
         "file_path": "docs/ui/FREECAM_MODES.md"
@@ -32195,7 +32166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0673",
+      "finding_id": "A3_CANON_DRIFT:0674",
       "fingerprint": "ab986ac7c2f6dea1ca75ee2d3079766b8c77d7a524423edf509878ea2d1239ca",
       "location": {
         "file_path": "docs/ui/HUD_COMPOSITION.md"
@@ -32220,7 +32191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0674",
+      "finding_id": "A3_CANON_DRIFT:0675",
       "fingerprint": "1562cb6f925bc23ca49ff3a8ac5e79a8cadd8ebdbf9652b66d749b9ac1e8c5c2",
       "location": {
         "file_path": "docs/ui/LAUNCHER_WALKTHROUGH.md"
@@ -32245,7 +32216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0675",
+      "finding_id": "A3_CANON_DRIFT:0676",
       "fingerprint": "b476435d78497686b1f1f15b18d5043e95e9525343745c1766678a64cc15a930",
       "location": {
         "file_path": "docs/ui/LOCALIZATION_MODEL.md"
@@ -32270,7 +32241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0676",
+      "finding_id": "A3_CANON_DRIFT:0677",
       "fingerprint": "a32cce1be212243f33bc386f5a3c69f6f46761515553fda46e85ddd66f870da1",
       "location": {
         "file_path": "docs/ui/ONBOARDING_GUIDE.md"
@@ -32295,7 +32266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0677",
+      "finding_id": "A3_CANON_DRIFT:0678",
       "fingerprint": "606b0fe6278462c4e57238a5baac00199ccebcf257c076f830ea2b8bfb43e10f",
       "location": {
         "file_path": "docs/ui/PRODUCT_SHELL_OVERVIEW.md"
@@ -32320,7 +32291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0678",
+      "finding_id": "A3_CANON_DRIFT:0679",
       "fingerprint": "5c637afbfc1c7becaf8961cd02f7944e3c83ffa2e9531b9184f3a5e1d3c9f427",
       "location": {
         "file_path": "docs/ui/RENDERING_EPISTEMICS.md"
@@ -32345,7 +32316,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0679",
+      "finding_id": "A3_CANON_DRIFT:0680",
       "fingerprint": "08b08498af98f4fe71a208ddb6b4bb4ea7db23b3f97c8d18a988575e6f89e167",
       "location": {
         "file_path": "docs/ui/SETTINGS_GUIDE.md"
@@ -32370,7 +32341,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0680",
+      "finding_id": "A3_CANON_DRIFT:0681",
       "fingerprint": "33583c98ae436af24632d2bc59fb61231246eabe56ca18377aa76b267e2f2e5c",
       "location": {
         "file_path": "docs/ui/SHARING_UX.md"
@@ -32395,7 +32366,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0681",
+      "finding_id": "A3_CANON_DRIFT:0682",
       "fingerprint": "ff503599da7ab1b2e152af80b1a8c164bbc00c3aaeecee208dbb423ef3c9b8dc",
       "location": {
         "file_path": "docs/ui/UI_FORBIDDEN_BEHAVIORS.md"
@@ -32420,7 +32391,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0682",
+      "finding_id": "A3_CANON_DRIFT:0683",
       "fingerprint": "ea1bdb455a4429fd0b68f5130145d1c683c94774087ecfffcfd73d97227b8cd5",
       "location": {
         "file_path": "docs/ui/UI_IR_SCHEMA_AND_LAYOUTS.md"
@@ -32445,7 +32416,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0683",
+      "finding_id": "A3_CANON_DRIFT:0684",
       "fingerprint": "fa46547eed70b038920d157c6bff2caa0a25100996f987d7b52928382fb1757f",
       "location": {
         "file_path": "docs/ui/UI_MODDING_AND_THEMES.md"
@@ -32470,7 +32441,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0684",
+      "finding_id": "A3_CANON_DRIFT:0685",
       "fingerprint": "72930b604c47f2d948bb11e7a302df0aea4f0fe4213aec9ac7557389983d39d5",
       "location": {
         "file_path": "docs/ui/UI_PHILOSOPHY.md"
@@ -32495,7 +32466,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0685",
+      "finding_id": "A3_CANON_DRIFT:0686",
       "fingerprint": "4760a1490b9d73a48689bb96e4699f829d66afb48ea36ebf5ce336bd44aa7385",
       "location": {
         "file_path": "docs/ui/UI_SYSTEM_DOCTRINE.md"
@@ -32520,7 +32491,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0686",
+      "finding_id": "A3_CANON_DRIFT:0687",
       "fingerprint": "b507d2ff09742b987f9baa76bb0fdf900c81dcce3242f54a553abd79d67c1caf",
       "location": {
         "file_path": "docs/ui/UX_RULES.md"
@@ -32545,7 +32516,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0687",
+      "finding_id": "A3_CANON_DRIFT:0688",
       "fingerprint": "5269c195f6068560fe05a609ca4aeb2c4bbb6c7e56a301bad19ccf19aa9e2c1f",
       "location": {
         "file_path": "docs/ui/WORLD_CREATION_FLOW.md"
@@ -32570,7 +32541,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0688",
+      "finding_id": "A3_CANON_DRIFT:0689",
       "fingerprint": "c4fc29262d58155a4d3393acb9c6ebf72b6bbd2972599cfba01ae64765ba59fb",
       "location": {
         "file_path": "docs/ui/WORLD_CREATION_UI.md"
@@ -32595,7 +32566,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0689",
+      "finding_id": "A3_CANON_DRIFT:0690",
       "fingerprint": "8ac03b6460415e7dd704d1d807cc94d1111c4910b6a36a9df610c456a6057852",
       "location": {
         "file_path": "docs/ui/ZERO_ASSET_GUI.md"
@@ -32620,7 +32591,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0690",
+      "finding_id": "A3_CANON_DRIFT:0691",
       "fingerprint": "3e9a8c634427c65a93e929b816f7ce047b3f0fd23d385a3aab3b4c20c885ec89",
       "location": {
         "file_path": "docs/visualization/OBSERVATION_MODEL.md"
@@ -32645,7 +32616,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0691",
+      "finding_id": "A3_CANON_DRIFT:0692",
       "fingerprint": "bbac629d2e0bb979f3e986ff4ad759d18adf37ffecc3adcd14bb966649c50b2d",
       "location": {
         "file_path": "docs/visualization/VISUALIZATION_CONTRACT.md"
@@ -32670,7 +32641,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0692",
+      "finding_id": "A3_CANON_DRIFT:0693",
       "fingerprint": "fa0e923e5fba817bfeb41a661e6c3d8362daa158d9931a50ddc669a7c7073a83",
       "location": {
         "file_path": "docs/worldgen/BUILDING_AND_DESTRUCTION_BASELINE.md"
@@ -32695,7 +32666,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0693",
+      "finding_id": "A3_CANON_DRIFT:0694",
       "fingerprint": "0b0e8bdb7fe52e0a8950455575a19bd4a60321850f0b8bfc6a5f203c058277f4",
       "location": {
         "file_path": "docs/worldgen/CRAFTING_BASELINE.md"
@@ -32720,7 +32691,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0694",
+      "finding_id": "A3_CANON_DRIFT:0695",
       "fingerprint": "181bc05a0d1196e93c2620ad344ae6185f7defa1e41c55e6c3b8fae7d6108962",
       "location": {
         "file_path": "docs/worldgen/EDUCATION_AND_LEARNING_BASELINE.md"
@@ -32745,7 +32716,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0695",
+      "finding_id": "A3_CANON_DRIFT:0696",
       "fingerprint": "c128305e515faead327ad129720d5a1f1c735f3b9dab634033061ec8abe26e61",
       "location": {
         "file_path": "docs/worldgen/ENERGY_BASELINE.md"
@@ -32770,7 +32741,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0696",
+      "finding_id": "A3_CANON_DRIFT:0697",
       "fingerprint": "2ed2aa2bdc0beb48e3acff0b3ba6e34fa9081f7a9ca40bfc66a1f3f706c693d6",
       "location": {
         "file_path": "docs/worldgen/FLUIDS_AND_CONTAINMENT_BASELINE.md"
@@ -32795,7 +32766,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0697",
+      "finding_id": "A3_CANON_DRIFT:0698",
       "fingerprint": "03588656d943d45097db3bafae3391ef8cbb6935e29c95d052f04c2b04ca7d6d",
       "location": {
         "file_path": "docs/worldgen/GEOLOGY_STORAGE.md"
@@ -32820,7 +32791,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0698",
+      "finding_id": "A3_CANON_DRIFT:0699",
       "fingerprint": "604b0ff50c24ee97cb34f230136ca111d303094b90e4bd082e3a4ce396e145f5",
       "location": {
         "file_path": "docs/worldgen/HAZARDS_AND_SAFETY_BASELINE.md"
@@ -32845,7 +32816,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0699",
+      "finding_id": "A3_CANON_DRIFT:0700",
       "fingerprint": "7f15d874d14d3052ef24c09825942634dfcd19742113b9ae28bb2a5ea1766d88",
       "location": {
         "file_path": "docs/worldgen/HEAT_AND_FAILURE_BASELINE.md"
@@ -32870,7 +32841,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0700",
+      "finding_id": "A3_CANON_DRIFT:0701",
       "fingerprint": "f8fa015073ce8e95848163f20f9aa4cb06f8530f987c90ed6bdb130e5b8f1217",
       "location": {
         "file_path": "docs/worldgen/INSURANCE_AND_ACCOUNTABILITY_BASELINE.md"
@@ -32895,7 +32866,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0701",
+      "finding_id": "A3_CANON_DRIFT:0702",
       "fingerprint": "b670c23d7d091091871a724f0e6cad6dcc07db5f558a3a6d1dbed8a6c4dcf571",
       "location": {
         "file_path": "docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md"
@@ -32920,7 +32891,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0702",
+      "finding_id": "A3_CANON_DRIFT:0703",
       "fingerprint": "a6cbea53922f9a0ba6ab15a8631acb5b8418320b8743b56a184fcbba0ef11a70",
       "location": {
         "file_path": "docs/worldgen/MICRO_DETAIL_GUARANTEE.md"
@@ -32945,7 +32916,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0703",
+      "finding_id": "A3_CANON_DRIFT:0704",
       "fingerprint": "ba746b45e51030e802bccf3071377e166cf4f9ac8d264ef9f80c949e835647f7",
       "location": {
         "file_path": "docs/worldgen/MODEL_REGISTRY.md"
@@ -32970,7 +32941,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0704",
+      "finding_id": "A3_CANON_DRIFT:0705",
       "fingerprint": "8dc5e255197ad5f8060fc4298b177edcc6a6a564fbcea1ea58eea6cb44bce230",
       "location": {
         "file_path": "docs/worldgen/NETWORKS_AND_DATA_BASELINE.md"
@@ -32995,7 +32966,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0705",
+      "finding_id": "A3_CANON_DRIFT:0706",
       "fingerprint": "0b3c66a1f255788bf6880542bbde97b81739282077b11a4ff0461fd64a58e8fa",
       "location": {
         "file_path": "docs/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md"
@@ -33020,7 +32991,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0706",
+      "finding_id": "A3_CANON_DRIFT:0707",
       "fingerprint": "5a3bdfc42d2c01ad3d39880ba9e80d6e42c2d37d5545b1b30b30af7f0e5daed5",
       "location": {
         "file_path": "docs/worldgen/REALISM_IS_CONTENT.md"
@@ -33045,7 +33016,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0707",
+      "finding_id": "A3_CANON_DRIFT:0708",
       "fingerprint": "94793a6752b42c058d3b18ff0574dfc4a4c21ddab31729489fc7b0a4af82426a",
       "location": {
         "file_path": "docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md"
@@ -33070,7 +33041,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0708",
+      "finding_id": "A3_CANON_DRIFT:0709",
       "fingerprint": "71e47fc372dc08e8d5144f28668db240340807a79a4d330ac6601975279aaccf",
       "location": {
         "file_path": "docs/worldgen/REFINEMENT_CONTRACT.md"
@@ -33095,7 +33066,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0709",
+      "finding_id": "A3_CANON_DRIFT:0710",
       "fingerprint": "de97034505266b394c3e661aac0f8040fa188c607a9c2d574604899c7c5fefd8",
       "location": {
         "file_path": "docs/worldgen/REFINEMENT_LATTICE.md"
@@ -33120,7 +33091,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0710",
+      "finding_id": "A3_CANON_DRIFT:0711",
       "fingerprint": "be571fa180e3dc06f52710037d3349010d5f66397fdc2b910c1eb5b7d5152572",
       "location": {
         "file_path": "docs/worldgen/STANDARDS_AND_TOOLCHAINS_BASELINE.md"
@@ -33145,7 +33116,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0711",
+      "finding_id": "A3_CANON_DRIFT:0712",
       "fingerprint": "022c27003e97f944c4b877c798b158e8f5a78d29170e924b5f64c0673c323743",
       "location": {
         "file_path": "docs/worldgen/TEMPLATE_REGISTRY.md"
@@ -33170,7 +33141,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0712",
+      "finding_id": "A3_CANON_DRIFT:0713",
       "fingerprint": "10dec4d35d2d535eeee14eaac1db00ec3b351d36099c0a22a9ea9e84f6cf8d11",
       "location": {
         "file_path": "docs/worldgen/TRAVEL_AND_TRANSPORT_BASELINE.md"
@@ -33195,7 +33166,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0713",
+      "finding_id": "A3_CANON_DRIFT:0714",
       "fingerprint": "9befce08aa6dc87651229a1829b3289ae350ef2370feb2b5955f791780904450",
       "location": {
         "file_path": "docs/worldgen/TRUST_AND_REPUTATION_BASELINE.md"
@@ -33220,7 +33191,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0714",
+      "finding_id": "A3_CANON_DRIFT:0715",
       "fingerprint": "38f39dda3d0a32694b00c88fac1466f647de90a77514d38602422f52cf8494d5",
       "location": {
         "file_path": "docs/worldgen/WEATHER_BASELINE.md"
@@ -33245,7 +33216,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0715",
+      "finding_id": "A3_CANON_DRIFT:0716",
       "fingerprint": "2ad1d20b0c898e6932c31c907fb3f72f4f5159687ac1033646e78381e2a0c4be",
       "location": {
         "file_path": "docs/worldgen/WORLDGEN_CONSTRAINTS.md"
@@ -33270,7 +33241,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0716",
+      "finding_id": "A3_CANON_DRIFT:0717",
       "fingerprint": "8c8ca924f580b4d700af1a27a8c9c8e9f982ea07fd91a22f24ac9a3c0da81367",
       "location": {
         "file_path": "docs/worldgen/WORLDGEN_OVERVIEW.md"
@@ -33295,7 +33266,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0717",
+      "finding_id": "A3_CANON_DRIFT:0718",
       "fingerprint": "ac43b3075bee15b04cbdfb60c2b4396e2fc4df6989d2cbedfdb764dc1c9bdb9c",
       "location": {
         "file_path": "docs/worldgen/WORLDGEN_PIPELINE.md"
@@ -33320,7 +33291,7 @@
         "Normative language detected but no explicit enforcement anchor found.",
         "Consider linking invariant IDs or tests for this behavior."
       ],
-      "finding_id": "A3_CANON_DRIFT:0718",
+      "finding_id": "A3_CANON_DRIFT:0719",
       "fingerprint": "847cc1420d9afe8ab2638a18b57099a36db742e56b0f439c09aa1ba74bb6af5b",
       "location": {
         "file_path": "docs/worldgen/WORLDGEN_PREVIEW_AND_OPTIMIZATION.md"
@@ -33461,6 +33432,31 @@
       "related_paths": [
         "libs/appcore/command/command_registry.c",
         "tests/testx/CAPABILITY_MATRIX.yaml"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.75,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Schema appears unreferenced by non-schema files in graph scan.",
+        "May indicate stale, orphaned, or not-yet-integrated schema."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0001",
+      "fingerprint": "a0e067a95679e4553d71097a5d7ffd2a55ef6c468f27e9c7722090ecbebb1ad9",
+      "location": {
+        "file_path": "dominium.registry.provenance_classification_registry"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "dominium.registry.provenance_classification_registry"
       ],
       "severity": "WARN",
       "status": "OPEN",
@@ -34197,10 +34193,10 @@
         "if process_id in (\"process.control_bind_camera\", \"process.camera_bind_target\", \"process.camera_set_view_mode\"):"
       ],
       "finding_id": "E124_CAMERA_BYPASS_SMELL:0001",
-      "fingerprint": "575af760e6dfb21847c7e607f75f695387809ef8d9ee85244327f510b3ff5a75",
+      "fingerprint": "7bc174109dab4a8cd3d66e78c65b2d7925eea9a6ed076dfd91ec4e489a85a0d6",
       "location": {
         "file_path": "src/net/srz/shard_coordinator.py",
-        "line_start": 1813
+        "line_start": 1825
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -34290,7 +34286,7 @@
       "suggested_classification": "TODO-BLOCKED"
     }
   ],
-  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
+  "graph_hash": "83984fb23b5c70abc0e4e8104b94ee014dc9dd8eaa85fd782b85a21d76e02d1b",
   "result": "scan_complete",
   "schema_id": "dominium.auditx.findings",
   "schema_version": "1.0.0"
