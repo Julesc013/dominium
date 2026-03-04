@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Tuple
 
+from src.meta.numeric import quantity_tolerance_rows_by_id
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -150,6 +151,9 @@ def _new_runtime(policy_context: dict, shard_id: str) -> dict:
     quantity_ids = _quantity_ids(policy_context)
     quantity_dimensions = _quantity_dimensions(policy_context)
     exception_types = _exception_type_ids(policy_context)
+    quantity_tolerances = quantity_tolerance_rows_by_id(
+        dict((policy_context or {}).get("quantity_tolerance_registry") or {})
+    )
     allowed_profile_exception_types = _sorted_tokens((profile or {}).get("allowed_exception_types") or [])
 
     modes: Dict[str, dict] = {}
@@ -158,12 +162,14 @@ def _new_runtime(policy_context: dict, shard_id: str) -> dict:
         mode = str(row.get("mode", MODE_IGNORE)).strip()
         if mode not in _VALID_MODES:
             mode = MODE_IGNORE
-        modes[quantity_id] = {
+        payload = {
             "mode": mode,
-            "tolerance": int(_as_int(row.get("tolerance", 0), 0)),
             "allowed_exception_types": _sorted_tokens(list(row.get("allowed_exception_types") or [])),
             "notes": str(row.get("notes", "")).strip(),
         }
+        if "tolerance" in row:
+            payload["tolerance"] = int(_as_int(row.get("tolerance", 0), 0))
+        modes[quantity_id] = payload
 
     return {
         "schema_version": "1.0.0",
@@ -174,6 +180,7 @@ def _new_runtime(policy_context: dict, shard_id: str) -> dict:
         "known_quantity_ids": list(quantity_ids),
         "quantity_dimensions": dict(quantity_dimensions),
         "known_exception_type_ids": list(exception_types),
+        "quantity_tolerances": dict(quantity_tolerances),
         "allowed_profile_exception_types": list(allowed_profile_exception_types),
         "quantity_modes": modes,
         "previous_ledger_hash": "",
@@ -413,17 +420,24 @@ def _entry_payload(
 
 def _mode_for_quantity(runtime: dict, quantity_id: str) -> dict:
     rows = dict(runtime.get("quantity_modes") or {})
+    tolerance_rows = dict(runtime.get("quantity_tolerances") or {})
+    tolerance_row = dict(tolerance_rows.get(str(quantity_id).strip()) or {})
+    fallback_tolerance = int(max(0, _as_int(tolerance_row.get("tolerance_abs", 0), 0)))
     row = rows.get(str(quantity_id))
     if isinstance(row, dict):
         mode = str(row.get("mode", MODE_IGNORE)).strip()
         if mode not in _VALID_MODES:
             mode = MODE_IGNORE
+        if "tolerance" in row:
+            tolerance_value = int(max(0, _as_int(row.get("tolerance", 0), 0)))
+        else:
+            tolerance_value = int(fallback_tolerance)
         return {
             "mode": mode,
-            "tolerance": int(_as_int(row.get("tolerance", 0), 0)),
+            "tolerance": int(tolerance_value),
             "allowed_exception_types": _sorted_tokens(list(row.get("allowed_exception_types") or [])),
         }
-    return {"mode": MODE_IGNORE, "tolerance": 0, "allowed_exception_types": []}
+    return {"mode": MODE_IGNORE, "tolerance": int(fallback_tolerance), "allowed_exception_types": []}
 
 
 def _quantity_refusal(
@@ -640,10 +654,23 @@ def finalize_process_accounting(
     quantities_to_evaluate.update(str(token).strip() for token in pending_unaccounted_deltas.keys() if str(token).strip())
 
     refusal_payload = {}
+    residual_exceeded_rows = []
     for quantity_id in sorted(quantities_to_evaluate):
         net_delta = int(_as_int(pending_total_deltas.get(quantity_id, 0), 0))
         logged_delta = int(_as_int(logged_by_quantity.get(quantity_id, 0), 0))
         unaccounted_delta = int(_as_int(pending_unaccounted_deltas.get(quantity_id, 0), 0))
+        mode_row = _mode_for_quantity(runtime, quantity_id=quantity_id)
+        mode = str(mode_row.get("mode", MODE_IGNORE))
+        tolerance = int(_as_int(mode_row.get("tolerance", 0), 0))
+        if mode != MODE_IGNORE and abs(int(net_delta)) > abs(int(tolerance)):
+            residual_exceeded_rows.append(
+                {
+                    "quantity_id": str(quantity_id),
+                    "net_delta": int(net_delta),
+                    "tolerance_abs": int(abs(int(tolerance))),
+                    "residual_abs": int(abs(int(net_delta))),
+                }
+            )
         evaluation = _evaluate_quantity(
             runtime=runtime,
             quantity_id=quantity_id,
@@ -683,6 +710,10 @@ def finalize_process_accounting(
                     key=lambda item: item[0],
                 )
             ],
+            "residual_exceeded": sorted(
+                (dict(row) for row in residual_exceeded_rows if isinstance(row, dict)),
+                key=lambda item: str(item.get("quantity_id", "")),
+            ),
         },
     }
     ledger["ledger_hash"] = canonical_sha256(_ledger_hash_payload(ledger))

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.meta.numeric import tolerance_abs_for_quantity
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -249,6 +250,7 @@ def record_energy_transformation(
     output_values: Mapping[str, object] | None,
     enforce_conservation: bool,
     tolerance: int = 0,
+    quantity_tolerance_registry: Mapping[str, object] | None = None,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     transform_token = str(transformation_id or "").strip()
@@ -265,6 +267,14 @@ def record_energy_transformation(
         }
     balance = evaluate_energy_balance(input_values=input_values, output_values=output_values)
     allowed_delta = int(max(0, _as_int(tolerance, 0)))
+    if allowed_delta <= 0:
+        allowed_delta = int(
+            tolerance_abs_for_quantity(
+                quantity_id="quantity.energy_total",
+                quantity_tolerance_registry=quantity_tolerance_registry,
+                default_value=0,
+            )
+        )
     delta = int(_as_int(balance.get("energy_total_delta", 0), 0))
     boundary_allowed = bool(transformation_row.get("boundary_allowed", False))
     if bool(enforce_conservation) and (not boundary_allowed) and abs(delta) > allowed_delta:
@@ -274,6 +284,7 @@ def record_energy_transformation(
             "transformation_id": transform_token,
             "source_id": source_token,
             "energy_total_delta": int(delta),
+            "tolerance_abs": int(allowed_delta),
             "input_total": int(_as_int(balance.get("input_total", 0), 0)),
             "output_total": int(_as_int(balance.get("output_total", 0), 0)),
         }
@@ -310,6 +321,7 @@ def record_energy_transformation(
         "entry": entry,
         "transformation": transformation_row,
         "balance": dict(balance),
+        "tolerance_abs": int(allowed_delta),
     }
 
 
