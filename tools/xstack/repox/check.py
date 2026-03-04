@@ -250,6 +250,7 @@ RENDER_SNAPSHOT_DERIVED_FILES = (
 
 INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "data/registries/intent_dispatch_whitelist.json"
 DEPRECATIONS_REGISTRY_REL = "data/governance/deprecations.json"
+WORKTREE_LEFTOVERS_REL = "docs/audit/WORKTREE_LEFTOVERS.md"
 DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
     "src/net/**",
     "src/control/**",
@@ -297,6 +298,27 @@ BOUNDARY_ALIAS_RULES = {
     "INV-FIELD-MUTATION-THROUGH-PROCESS": {
         "INV-FIELD-MUTATION-PROCESS-ONLY",
     },
+    "INV-FIELD-MUTATION-PROCESS-ONLY": {
+        "INV-FIELD-MUTATION-THROUGH-PROCESS",
+    },
+    "INV-NO-WALLCLOCK-TIME": {
+        "INV-NO-WALLCLOCK-IN-TIME-ENGINE",
+        "INV-NO-WALLCLOCK-IN-TRANSITION",
+        "INV-NO-WALLCLOCK-IN-PERFORMANCE",
+        "INV-NO-WALLCLOCK-IN-MOTION",
+    },
+    "INV-NO-WALLCLOCK-IN-TIME-ENGINE": {
+        "INV-NO-WALLCLOCK-TIME",
+    },
+    "INV-NO-WALLCLOCK-IN-TRANSITION": {
+        "INV-NO-WALLCLOCK-TIME",
+    },
+    "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
+        "INV-NO-WALLCLOCK-TIME",
+    },
+    "INV-NO-WALLCLOCK-IN-MOTION": {
+        "INV-NO-WALLCLOCK-TIME",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -336,6 +358,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FIELD-QUERIES-ONLY",
     "INV-FIELD-TYPE-REGISTERED",
     "INV-FIELD-MUTATION-THROUGH-PROCESS",
+    "INV-FIELD-MUTATION-PROCESS-ONLY",
+    "INV-FIELD-SAMPLE-API-ONLY",
+    "INV-NO-CROSS-SHARD-FIELD-DIRECT",
     "INV-NO-ADHOC-SAFETY-LOGIC",
     "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
     "INV-PHYS-PROFILE-DECLARED",
@@ -369,6 +394,17 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FLUID-BUDGETED",
     "INV-FLUID-DEGRADE-LOGGED",
     "INV-ALL-FAILURES-LOGGED",
+    "INV-SCHEDULE-DOMAIN-DECLARED",
+    "INV-TIME-MAPPING-MODEL-ONLY",
+    "INV-NO-CANONICAL-TICK-MUTATION",
+    "INV-SCHEDULE-DOMAIN-RESOLUTION-DETERMINISTIC",
+    "INV-NO-CANONICAL-TICK-DRIFT",
+    "INV-TIME-ADJUST-LOGGED",
+    "INV-NO-WALLCLOCK-DEPENDENCE",
+    "INV-NO-WALLCLOCK-TIME",
+    "INV-NO-FUTURE-RECEIPTS",
+    "INV-DETERMINISTIC-SUBSTEP-POLICY",
+    "INV-WORKTREE-HYGIENE",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -641,6 +677,13 @@ AUDITX_HIGH_RISK_THRESHOLD = 15
 AUDITX_HARD_FAIL_CONFIDENCE = 0.8
 AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E129_CONTROL_PLANE_BYPASS_SMELL": "INV-CONTROL-PLANE-ONLY-DISPATCH",
+    "E229_WALLCLOCK_USE_SMELL": "INV-NO-WALLCLOCK-TIME",
+    "E230_FUTURE_RECEIPT_REFERENCE_SMELL": "INV-NO-FUTURE-RECEIPTS",
+    "E231_UNDECLARED_TEMPORAL_DOMAIN_SMELL": "INV-SCHEDULE-DOMAIN-DECLARED",
+    "E232_DIRECT_TIME_WRITE_SMELL": "INV-NO-CANONICAL-TICK-MUTATION",
+    "E233_IMPLICIT_CIVIL_TIME_SMELL": "INV-TIME-MAPPING-MODEL-ONLY",
+    "E234_IMPLICIT_CLOCK_SYNC_SMELL": "INV-TIME-ADJUST-LOGGED",
+    "E235_DIRECT_DOMAIN_TIME_WRITE_SMELL": "INV-NO-CANONICAL-TICK-DRIFT",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -8178,6 +8221,85 @@ def _collect_changed_paths(repo_root: str) -> List[str]:
     return sorted(set(out))
 
 
+def _load_worktree_leftover_allowlist(repo_root: str) -> Tuple[Dict[str, str], str]:
+    abs_path = os.path.join(repo_root, WORKTREE_LEFTOVERS_REL.replace("/", os.sep))
+    if not os.path.isfile(abs_path):
+        return {}, "missing allowlist file"
+    out: Dict[str, str] = {}
+    try:
+        lines = open(abs_path, "r", encoding="utf-8", errors="ignore").read().splitlines()
+    except OSError as exc:
+        return {}, str(exc)
+    for line in lines:
+        token = str(line).strip()
+        if (not token) or token.startswith("#"):
+            continue
+        # Supported notations:
+        # - `path`: reason
+        # path|reason
+        raw = token
+        if raw.startswith("-"):
+            raw = raw[1:].strip()
+        if "|" in raw:
+            path_token, reason_token = raw.split("|", 1)
+        elif ":" in raw:
+            path_token, reason_token = raw.split(":", 1)
+        else:
+            path_token, reason_token = raw, ""
+        path_norm = _norm(str(path_token).strip().strip("`"))
+        reason = str(reason_token).strip()
+        if not path_norm:
+            continue
+        out[path_norm] = reason
+    return out, ""
+
+
+def _append_worktree_hygiene_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    changed_paths = _collect_changed_paths(repo_root)
+    if not changed_paths:
+        return
+
+    allowlist, load_error = _load_worktree_leftover_allowlist(repo_root)
+    undocumented = [
+        rel_path
+        for rel_path in list(changed_paths or [])
+        if _norm(rel_path) not in allowlist
+    ]
+    if load_error and undocumented:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=WORKTREE_LEFTOVERS_REL,
+                line_number=1,
+                snippet="",
+                message="worktree hygiene requires documenting intentional leftovers in {}".format(WORKTREE_LEFTOVERS_REL),
+                rule_id="INV-WORKTREE-HYGIENE",
+            )
+        )
+        return
+    if not undocumented:
+        return
+    preview = ", ".join(sorted(undocumented)[:10])
+    findings.append(
+        _finding(
+            severity=severity,
+            file_path=WORKTREE_LEFTOVERS_REL,
+            line_number=1,
+            snippet=preview[:140],
+            message="{} uncommitted path(s) are neither committed/gitignored nor documented in {}".format(
+                len(undocumented),
+                WORKTREE_LEFTOVERS_REL,
+            ),
+            rule_id="INV-WORKTREE-HYGIENE",
+        )
+    )
+
+
 def _file_text(repo_root: str, rel_path: str) -> str:
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
@@ -9224,9 +9346,588 @@ def _append_time_constitution_invariant_findings(
                         line_number=line_no,
                         snippet=str(line).strip()[:140],
                         message="runtime must not enable retroactive mutation; branch lineage only",
-                        rule_id="INV-TIME_BRANCH_IS_LINEAGE",
+                    rule_id="INV-TIME_BRANCH_IS_LINEAGE",
+                )
+            )
+
+    strict_severity = _strict_only_severity(profile)
+
+    schedule_schema_rel = "schemas/schedule.schema.json"
+    schedule_schema_payload, schedule_schema_error = _load_json_object(repo_root, schedule_schema_rel)
+    if schedule_schema_error:
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=schedule_schema_rel,
+                line_number=1,
+                snippet="",
+                message="schedule schema missing/invalid; temporal domain declaration cannot be enforced",
+                rule_id="INV-SCHEDULE-DOMAIN-DECLARED",
+            )
+        )
+    else:
+        properties = schedule_schema_payload.get("properties")
+        temporal_property = dict(properties.get("temporal_domain_id") or {}) if isinstance(properties, dict) else {}
+        if not temporal_property:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=schedule_schema_rel,
+                    line_number=1,
+                    snippet="temporal_domain_id",
+                    message="schedule schema must expose temporal_domain_id",
+                    rule_id="INV-SCHEDULE-DOMAIN-DECLARED",
+                )
+            )
+
+    schedule_domain_required_tokens = {
+        "schema/core/schedule.schema": (
+            "temporal_domain_id",
+        ),
+        "src/core/schedule/schedule_engine.py": (
+            "_normalize_temporal_domain_id(",
+            "time.canonical_tick",
+            "\"temporal_domain_id\": temporal_domain_id",
+        ),
+        "src/signals/aggregation/aggregation_engine.py": (
+            "temporal_domain_id",
+            "time.canonical_tick",
+        ),
+    }
+    for rel_path, tokens in schedule_domain_required_tokens.items():
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="required temporal-domain schedule integration surface is missing",
+                    rule_id="INV-SCHEDULE-DOMAIN-DECLARED",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="schedule temporal-domain declaration token is missing",
+                    rule_id="INV-SCHEDULE-DOMAIN-DECLARED",
+                )
+            )
+
+    time_mapping_registry_rel = "data/registries/time_mapping_registry.json"
+    constitutive_model_registry_rel = "data/registries/constitutive_model_registry.json"
+    model_type_registry_rel = "data/registries/model_type_registry.json"
+    allowed_time_mapping_model_type_ids = {
+        "model_type.time_mapping_proper_default_stub",
+        "model_type.time_mapping_civil_calendar_stub",
+        "model_type.time_mapping_warp_session_stub",
+    }
+    time_mapping_payload, time_mapping_error = _load_json_object(repo_root, time_mapping_registry_rel)
+    constitutive_model_payload, constitutive_model_error = _load_json_object(repo_root, constitutive_model_registry_rel)
+    model_type_payload, model_type_error = _load_json_object(repo_root, model_type_registry_rel)
+    if time_mapping_error or constitutive_model_error or model_type_error:
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=time_mapping_registry_rel,
+                line_number=1,
+                snippet="time_mappings",
+                message="time mapping model-only enforcement requires valid mapping/model registries",
+                rule_id="INV-TIME-MAPPING-MODEL-ONLY",
+            )
+        )
+    else:
+        mapping_rows = list(
+            ((time_mapping_payload.get("record") or {}).get("time_mappings") or [])
+            or time_mapping_payload.get("time_mappings")
+            or []
+        )
+        model_rows = list(
+            ((constitutive_model_payload.get("record") or {}).get("models") or [])
+            or constitutive_model_payload.get("models")
+            or []
+        )
+        model_type_rows = list(
+            ((model_type_payload.get("record") or {}).get("model_types") or [])
+            or model_type_payload.get("model_types")
+            or []
+        )
+        model_rows_by_id = dict(
+            (
+                str(row.get("model_id", "")).strip(),
+                dict(row),
+            )
+            for row in model_rows
+            if isinstance(row, dict) and str(row.get("model_id", "")).strip()
+        )
+        model_type_rows_by_id = dict(
+            (
+                str(row.get("model_type_id", "")).strip(),
+                dict(row),
+            )
+            for row in model_type_rows
+            if isinstance(row, dict) and str(row.get("model_type_id", "")).strip()
+        )
+        if not mapping_rows:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=time_mapping_registry_rel,
+                    line_number=1,
+                    snippet="time_mappings",
+                    message="time mapping registry must define mappings",
+                    rule_id="INV-TIME-MAPPING-MODEL-ONLY",
+                )
+            )
+        for row in mapping_rows:
+            if not isinstance(row, dict):
+                continue
+            mapping_id = str(row.get("mapping_id", "")).strip()
+            model_id = str(row.get("model_id", "")).strip()
+            if (not mapping_id) or (not model_id):
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=time_mapping_registry_rel,
+                        line_number=1,
+                        snippet=mapping_id or "mapping_id",
+                        message="time mappings must declare mapping_id and model_id",
+                        rule_id="INV-TIME-MAPPING-MODEL-ONLY",
                     )
                 )
+                continue
+            model_row = dict(model_rows_by_id.get(model_id) or {})
+            if not model_row:
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=time_mapping_registry_rel,
+                        line_number=1,
+                        snippet=model_id,
+                        message="time mapping references undeclared constitutive model",
+                        rule_id="INV-TIME-MAPPING-MODEL-ONLY",
+                    )
+                )
+                continue
+            model_type_id = str(model_row.get("model_type_id", "")).strip()
+            if model_type_id not in allowed_time_mapping_model_type_ids:
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=constitutive_model_registry_rel,
+                        line_number=1,
+                        snippet="{} -> {}".format(model_id, model_type_id),
+                        message="time mappings must bind only to TEMP-1 time-mapping model types",
+                        rule_id="INV-TIME-MAPPING-MODEL-ONLY",
+                    )
+                )
+            if bool(model_row.get("uses_rng_stream", False)):
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=constitutive_model_registry_rel,
+                        line_number=1,
+                        snippet=model_id,
+                        message="time mapping models must be deterministic and not use RNG streams",
+                        rule_id="INV-TIME-MAPPING-MODEL-ONLY",
+                    )
+                )
+            if model_type_rows_by_id and model_type_id not in model_type_rows_by_id:
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=model_type_registry_rel,
+                        line_number=1,
+                        snippet=model_type_id or model_id,
+                        message="time mapping model type must be declared in model_type_registry",
+                        rule_id="INV-TIME-MAPPING-MODEL-ONLY",
+                    )
+                )
+
+    deterministic_schedule_required_tokens = {
+        "src/core/schedule/schedule_engine.py": (
+            "resolve_domain_time_fn",
+            "domain_evaluations",
+            "due_events_sorted = sorted(",
+            "schedule_domain_evaluation_hash",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "_evaluate_time_mappings_for_tick(",
+            "schedule_time_binding_rows=schedule_time_bindings",
+            "resolve_domain_time_fn=lambda temporal_domain_id, target_id, tick:",
+            "_merge_schedule_domain_evaluations(",
+            "schedule_domain_evaluation_hash",
+        ),
+    }
+    for rel_path, tokens in deterministic_schedule_required_tokens.items():
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="deterministic schedule-domain resolution surface is missing",
+                    rule_id="INV-SCHEDULE-DOMAIN-RESOLUTION-DETERMINISTIC",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="deterministic schedule-domain resolution token is missing",
+                    rule_id="INV-SCHEDULE-DOMAIN-RESOLUTION-DETERMINISTIC",
+                )
+            )
+
+    drift_required_tokens = {
+        "src/time/time_mapping_engine.py": (
+            "drift_policy_id",
+            "_apply_drift_policy(",
+            "active_drift_policy_ids",
+        ),
+        "data/registries/drift_policy_registry.json": (
+            "drift.none",
+            "drift.linear_small",
+            "drift.profile_defined",
+        ),
+    }
+    for rel_path, tokens in drift_required_tokens.items():
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="drift discipline surface is missing",
+                    rule_id="INV-NO-CANONICAL-TICK-DRIFT",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="drift discipline token is missing",
+                    rule_id="INV-NO-CANONICAL-TICK-DRIFT",
+                )
+            )
+
+    time_adjust_required_tokens = {
+        "tools/xstack/sessionx/process_runtime.py": (
+            "process.time_adjust",
+            "build_time_adjust_event(",
+            "time_adjust_events",
+            "time_adjust_event_hash_chain",
+        ),
+        "src/control/proof/control_proof_bundle.py": (
+            "time_adjust_event_hash_chain",
+            "drift_policy_id",
+        ),
+        "data/registries/sync_policy_registry.json": (
+            "sync.none",
+            "sync.adjust_on_receipt",
+            "sync.strict_reject",
+        ),
+    }
+    for rel_path, tokens in time_adjust_required_tokens.items():
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="time-adjust logging surface is missing",
+                    rule_id="INV-TIME-ADJUST-LOGGED",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="time-adjust logging token is missing",
+                    rule_id="INV-TIME-ADJUST-LOGGED",
+                )
+            )
+
+    canonical_tick_mutation_patterns = (
+        re.compile(r"\b(?:sim|simulation_time)\s*\[\s*['\"]tick['\"]\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*['\"]simulation_time['\"]\s*\]\s*\[\s*['\"]tick['\"]\s*\]\s*=", re.IGNORECASE),
+    )
+    canonical_tick_mutation_scan_prefixes = (
+        "src/",
+        "tools/xstack/sessionx/",
+    )
+    canonical_tick_mutation_excluded_prefixes = (
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+    )
+    canonical_tick_mutation_allowed_paths = {
+        "src/time/time_engine.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(canonical_tick_mutation_scan_prefixes):
+            continue
+        if rel_norm.startswith(canonical_tick_mutation_excluded_prefixes):
+            continue
+        if rel_norm in canonical_tick_mutation_allowed_paths:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in canonical_tick_mutation_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="canonical tick mutation must go through src/time/time_engine.advance_time only",
+                    rule_id="INV-NO-CANONICAL-TICK-MUTATION",
+                )
+            )
+            break
+
+    wallclock_runtime_scan_prefixes = (
+        "src/time/",
+        "src/reality/transitions/",
+        "src/performance/",
+        "src/mobility/",
+        "tools/xstack/sessionx/",
+    )
+    wallclock_runtime_excluded = (
+        "tools/xstack/testx/tests/",
+        "tools/auditx/analyzers/",
+    )
+    wallclock_runtime_pattern = re.compile(
+        r"\b(?:time\.time|time\.perf_counter|time\.monotonic|datetime\.now|datetime\.utcnow|time\.sleep)\s*\(",
+        re.IGNORECASE,
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(wallclock_runtime_scan_prefixes):
+            continue
+        if rel_norm.startswith(wallclock_runtime_excluded):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not wallclock_runtime_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="authoritative temporal/runtime paths must not use wall-clock APIs",
+                    rule_id="INV-NO-WALLCLOCK-TIME",
+                )
+            )
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="authoritative temporal/runtime paths must not use wall-clock APIs",
+                    rule_id="INV-NO-WALLCLOCK-DEPENDENCE",
+                )
+            )
+            break
+
+    future_receipt_patterns = (
+        re.compile(r"acquired_tick[^\n]*>[^\n]*(?:current_tick|tick)"),
+        re.compile(r"received_tick[^\n]*>[^\n]*(?:current_tick|tick)"),
+    )
+    future_receipt_scan_prefixes = (
+        "src/",
+        "tools/xstack/sessionx/",
+    )
+    future_receipt_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(future_receipt_scan_prefixes):
+            continue
+        if rel_norm.startswith(future_receipt_skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            lowered = snippet.lower()
+            if "acquired_tick" not in lowered and "received_tick" not in lowered:
+                continue
+            if not any(pattern.search(snippet) for pattern in future_receipt_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="events/decisions must not reference future receipt ticks",
+                    rule_id="INV-NO-FUTURE-RECEIPTS",
+                )
+            )
+            break
+
+    substep_registry_rel = "data/registries/substep_policy_registry.json"
+    substep_registry_payload, substep_registry_error = _load_json_object(repo_root, substep_registry_rel)
+    required_substep_ids = {
+        "substep.none",
+        "substep.fixed_4",
+        "substep.fixed_8",
+        "substep.closed_form_only",
+    }
+    if substep_registry_error:
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=substep_registry_rel,
+                line_number=1,
+                snippet="",
+                message="substep policy registry missing/invalid",
+                rule_id="INV-DETERMINISTIC-SUBSTEP-POLICY",
+            )
+        )
+    else:
+        rows = list(((substep_registry_payload.get("record") or {}).get("substep_policies") or []))
+        if not rows:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=substep_registry_rel,
+                    line_number=1,
+                    snippet="substep_policies",
+                    message="substep policy registry must define substep_policies rows",
+                    rule_id="INV-DETERMINISTIC-SUBSTEP-POLICY",
+                )
+            )
+        declared_ids = set()
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            policy_id = str(row.get("substep_policy_id", "")).strip()
+            if not policy_id:
+                continue
+            declared_ids.add(policy_id)
+            if bool(row.get("allow_adaptive", False)):
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=substep_registry_rel,
+                        line_number=1,
+                        snippet=policy_id,
+                        message="adaptive substep policy is forbidden for authoritative temporal execution",
+                        rule_id="INV-DETERMINISTIC-SUBSTEP-POLICY",
+                    )
+                )
+            if not bool(row.get("deterministic", False)):
+                findings.append(
+                    _finding(
+                        severity=strict_severity,
+                        file_path=substep_registry_rel,
+                        line_number=1,
+                        snippet=policy_id,
+                        message="substep policy must explicitly declare deterministic=true",
+                        rule_id="INV-DETERMINISTIC-SUBSTEP-POLICY",
+                    )
+                )
+        missing_substep_ids = sorted(required_substep_ids - declared_ids)
+        for policy_id in missing_substep_ids:
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=substep_registry_rel,
+                    line_number=1,
+                    snippet=policy_id,
+                    message="required deterministic substep policy id is missing",
+                    rule_id="INV-DETERMINISTIC-SUBSTEP-POLICY",
+                )
+            )
+
+    adaptive_forbidden_patterns = (
+        re.compile(r"\badaptive_(?:step|substep)\b", re.IGNORECASE),
+        re.compile(r"\berror_tolerance\b", re.IGNORECASE),
+        re.compile(r"\bmax_error\b", re.IGNORECASE),
+    )
+    adaptive_scan_prefixes = (
+        "src/time/",
+        "src/interior/",
+        "tools/xstack/sessionx/",
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(adaptive_scan_prefixes):
+            continue
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in adaptive_forbidden_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=strict_severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="adaptive error-driven substepping is forbidden",
+                    rule_id="INV-DETERMINISTIC-SUBSTEP-POLICY",
+                )
+            )
+            break
 
 
 def _append_tier_transition_invariant_findings(
@@ -12878,7 +13579,7 @@ def _append_field_generalization_invariant_findings(
                 line_number=1,
                 snippet=token,
                 message="field mutation must route through process.field_update and deterministic field persistence hooks",
-                rule_id="INV-FIELD-MUTATION-THROUGH-PROCESS",
+                rule_id="INV-FIELD-MUTATION-PROCESS-ONLY",
             )
         )
 
@@ -12925,7 +13626,143 @@ def _append_field_generalization_invariant_findings(
                     line_number=line_no,
                     snippet=snippet[:140],
                     message="direct field-state mutation is forbidden outside process.field_update/field engine pathways",
-                    rule_id="INV-FIELD-MUTATION-THROUGH-PROCESS",
+                    rule_id="INV-FIELD-MUTATION-PROCESS-ONLY",
+                )
+            )
+            break
+
+    sample_api_files = {
+        "src/fields/field_engine.py": (
+            "def get_field_value(",
+            "def build_field_sample(",
+            "def normalize_field_sample_rows(",
+        ),
+        "tools/xstack/sessionx/process_runtime.py": (
+            "get_field_value(",
+            "normalize_field_sample_rows(",
+            "build_field_sample(",
+        ),
+        "src/signals/transport/channel_executor.py": (
+            "build_field_sample(",
+            "_field_sample_cache_key(",
+            "_sample_field_permille(",
+        ),
+    }
+    for rel_path, tokens in sorted(sample_api_files.items()):
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="field sample API required file is missing",
+                    rule_id="INV-FIELD-SAMPLE-API-ONLY",
+                )
+            )
+            continue
+        for token in tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="field reads/samples must route through standardized field sample API helpers",
+                    rule_id="INV-FIELD-SAMPLE-API-ONLY",
+                )
+            )
+
+    direct_field_read_patterns = (
+        re.compile(r"\bstate\.get\(\s*[\"']field_layers[\"']\s*\)", re.IGNORECASE),
+        re.compile(r"\bstate\.get\(\s*[\"']field_cells[\"']\s*\)", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']field_layers[\"']\s*\]", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']field_cells[\"']\s*\]", re.IGNORECASE),
+    )
+    sample_scan_prefixes = (
+        "src/",
+        "tools/xstack/sessionx/",
+    )
+    sample_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    sample_allowed_files = {
+        "src/fields/field_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/inspection/inspection_engine.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(sample_scan_prefixes):
+            continue
+        if rel_norm.startswith(sample_skip_prefixes):
+            continue
+        if rel_norm in sample_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in direct_field_read_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="field reads must use standardized sample APIs instead of direct field layer/cell access",
+                    rule_id="INV-FIELD-SAMPLE-API-ONLY",
+                )
+            )
+            break
+
+    cross_shard_field_patterns = (
+        re.compile(
+            r"(field_(?:layers|cells|sample_rows)|field_boundary).*(target_shard_id|source_shard_id|active_shard_id|owner_shard_id|shard_id)",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"(target_shard_id|source_shard_id|active_shard_id|owner_shard_id|shard_id).*(field_(?:layers|cells|sample_rows)|field_boundary)",
+            re.IGNORECASE,
+        ),
+    )
+    cross_shard_allowed_files = {
+        "tools/xstack/sessionx/process_runtime.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/", "tools/xstack/sessionx/")):
+            continue
+        if rel_norm.startswith(sample_skip_prefixes):
+            continue
+        if rel_norm in cross_shard_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in cross_shard_field_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct cross-shard field access is forbidden; use boundary field exchange artifacts",
+                    rule_id="INV-NO-CROSS-SHARD-FIELD-DIRECT",
                 )
             )
             break
@@ -16838,6 +17675,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_status_now_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_worktree_hygiene_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
