@@ -517,6 +517,7 @@ from src.physics import (
     record_entropy_contribution,
     velocity_from_momentum_state,
 )
+from src.meta.numeric import apply_overflow_policy, overflow_policy_for_quantity
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -3020,6 +3021,17 @@ def _energy_transformation_registry_rows(policy_context: dict | None) -> List[di
     return [dict(row) for row in rows if isinstance(row, Mapping)]
 
 
+def _quantity_tolerance_registry_payload(policy_context: dict | None) -> dict:
+    payload = _policy_payload(policy_context, "quantity_tolerance_registry")
+    if not payload:
+        payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/quantity_tolerance_registry.json",
+            default_payload={"record": {"quantity_tolerances": []}},
+        )
+    return dict(payload)
+
+
 def _entropy_contribution_registry_rows(policy_context: dict | None) -> List[dict]:
     payload = _policy_payload(policy_context, "entropy_contribution_registry")
     if not payload:
@@ -3097,6 +3109,26 @@ def _energy_quantity_totals(state: dict) -> dict:
     )
     state["energy_quantity_totals"] = normalized
     return normalized
+
+
+def _apply_quantity_overflow_policy(
+    *,
+    quantity_id: str,
+    value: int,
+    quantity_tolerance_registry: Mapping[str, object] | None,
+) -> int:
+    overflow_policy = overflow_policy_for_quantity(
+        quantity_id=str(quantity_id).strip(),
+        quantity_tolerance_registry=quantity_tolerance_registry,
+        default_policy="fail",
+    )
+    bounded_value, _overflowed = apply_overflow_policy(
+        int(_as_int(value, 0)),
+        min_value=-(2**63),
+        max_value=(2**63 - 1),
+        overflow_policy=overflow_policy,
+    )
+    return int(bounded_value)
 
 
 def _append_energy_ledger_entry_artifact(state: dict, entry_row: Mapping[str, object]) -> None:
@@ -3771,6 +3803,7 @@ def _record_energy_transformation_in_state(
 ) -> dict:
     transformation_rows = _energy_transformation_registry_rows(policy_context)
     enforce_energy = _physics_profile_enforces_energy(policy_context)
+    quantity_tolerance_registry = _quantity_tolerance_registry_payload(policy_context)
     recorded = record_energy_transformation(
         transformation_rows=transformation_rows,
         transformation_id=str(transformation_id or "").strip(),
@@ -3780,6 +3813,7 @@ def _record_energy_transformation_in_state(
         output_values=dict(output_values or {}),
         enforce_conservation=bool(enforce_energy),
         tolerance=int(max(0, _as_int(tolerance, 0))),
+        quantity_tolerance_registry=quantity_tolerance_registry,
         extensions=dict(extensions or {}),
     )
     result = str(recorded.get("result", "")).strip()
@@ -3802,18 +3836,39 @@ def _record_energy_transformation_in_state(
         out_values = dict(entry_row.get("output_values") or {})
         for quantity_id, value in sorted(in_values.items(), key=lambda item: str(item[0])):
             token = str(quantity_id).strip()
-            totals[token] = int(_as_int(totals.get(token, 0), 0) - _as_int(value, 0))
+            next_value = int(_as_int(totals.get(token, 0), 0) - _as_int(value, 0))
+            totals[token] = _apply_quantity_overflow_policy(
+                quantity_id=token,
+                value=next_value,
+                quantity_tolerance_registry=quantity_tolerance_registry,
+            )
         for quantity_id, value in sorted(out_values.items(), key=lambda item: str(item[0])):
             token = str(quantity_id).strip()
-            totals[token] = int(_as_int(totals.get(token, 0), 0) + _as_int(value, 0))
+            next_value = int(_as_int(totals.get(token, 0), 0) + _as_int(value, 0))
+            totals[token] = _apply_quantity_overflow_policy(
+                quantity_id=token,
+                value=next_value,
+                quantity_tolerance_registry=quantity_tolerance_registry,
+            )
         transformation_row = dict(recorded.get("transformation") or {})
         if not bool(transformation_row.get("boundary_allowed", False)):
-            totals["quantity.energy_total"] = int(
-                _as_int(totals.get("quantity.energy_total", 0), 0)
-                + _as_int(entry_row.get("energy_total_delta", 0), 0)
+            totals["quantity.energy_total"] = _apply_quantity_overflow_policy(
+                quantity_id="quantity.energy_total",
+                value=int(
+                    _as_int(totals.get("quantity.energy_total", 0), 0)
+                    + _as_int(entry_row.get("energy_total_delta", 0), 0)
+                ),
+                quantity_tolerance_registry=quantity_tolerance_registry,
             )
         state["energy_quantity_totals"] = dict(
-            (str(key), int(_as_int(value, 0)))
+            (
+                str(key),
+                _apply_quantity_overflow_policy(
+                    quantity_id=str(key),
+                    value=int(_as_int(value, 0)),
+                    quantity_tolerance_registry=quantity_tolerance_registry,
+                ),
+            )
             for key, value in sorted(totals.items(), key=lambda item: str(item[0]))
         )
         input_basis = int(
@@ -3900,6 +3955,7 @@ def _record_energy_transformation_in_state(
 def _record_boundary_flux_event_in_state(
     state: dict,
     *,
+    policy_context: dict | None = None,
     tick: int,
     quantity_id: str,
     value: int,
@@ -3950,10 +4006,22 @@ def _record_boundary_flux_event_in_state(
     state["boundary_flux_events"] = [dict(row) for row in flux_rows]
     _append_boundary_flux_event_artifact(state, flux_row)
     totals = _energy_quantity_totals(state)
+    quantity_tolerance_registry = _quantity_tolerance_registry_payload(policy_context=policy_context)
     signed_value = int(amount if direction_token == "in" else -amount)
-    totals["quantity.energy_total"] = int(_as_int(totals.get("quantity.energy_total", 0), 0) + signed_value)
+    totals["quantity.energy_total"] = _apply_quantity_overflow_policy(
+        quantity_id="quantity.energy_total",
+        value=int(_as_int(totals.get("quantity.energy_total", 0), 0) + signed_value),
+        quantity_tolerance_registry=quantity_tolerance_registry,
+    )
     state["energy_quantity_totals"] = dict(
-        (str(key), int(_as_int(value, 0)))
+        (
+            str(key),
+            _apply_quantity_overflow_policy(
+                quantity_id=str(key),
+                value=int(_as_int(value, 0)),
+                quantity_tolerance_registry=quantity_tolerance_registry,
+            ),
+        )
         for key, value in sorted(totals.items(), key=lambda item: str(item[0]))
     )
     _refresh_energy_ledger_hash_chains(state)
@@ -3999,6 +4067,7 @@ def _record_kinetic_energy_delta(
             )
             flux_result = _record_boundary_flux_event_in_state(
                 state,
+                policy_context=policy_context,
                 tick=int(max(0, _as_int(tick, 0))),
                 quantity_id="quantity.energy_total",
                 value=int(positive),
@@ -4700,13 +4769,21 @@ def _evaluate_time_mappings_for_tick(
         field_layer_rows=normalized_field_layers,
         field_type_registry=field_type_registry,
     )
+    quantity_tolerance_registry = _quantity_tolerance_registry_payload(policy_context)
     session_scope_id = str((dict(policy_context or {})).get("session_id", "")).strip() or "session.default"
     session_warp_factor = int(max(0, _as_int((dict(policy_context or {})).get("session_warp_factor", 1000), 1000)))
 
     def _time_input_resolver(mapping_row: Mapping[str, object], scope_id: str) -> dict:
         target_id = str(scope_id or "").strip()
         momentum_row = dict(momentum_by_assembly.get(target_id) or {})
-        velocity = velocity_from_momentum_state(momentum_row) if momentum_row else {"x": 0, "y": 0, "z": 0}
+        velocity = (
+            velocity_from_momentum_state(
+                momentum_row,
+                quantity_tolerance_registry=quantity_tolerance_registry,
+            )
+            if momentum_row
+            else {"x": 0, "y": 0, "z": 0}
+        )
         position = _target_spatial_position(state, target_id) if target_id else {}
         gravity_sample = get_field_value(
             spatial_position=dict(position or {}),
@@ -12771,6 +12848,8 @@ def _log_process(state: dict, process_id: str, intent_id: str, authority_origin:
 def _begin_conservation_process(policy_context: dict | None, process_id: str) -> None:
     if not isinstance(policy_context, dict):
         return
+    if not isinstance(policy_context.get("quantity_tolerance_registry"), dict):
+        policy_context["quantity_tolerance_registry"] = _quantity_tolerance_registry_payload(policy_context)
     begin_process_accounting(policy_context=policy_context, process_id=str(process_id))
 
 
