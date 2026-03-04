@@ -1,0 +1,29 @@
+SCHEMA: meta/coupling_contract.schema
+schema_id: dominium.schema.meta.coupling_contract
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare mandatory cross-domain coupling contracts.
+- Bind each coupling to a legal substrate mechanism (model/transform/field/signal policy).
+
+NON-SEMANTICS:
+- This schema does not execute coupling behavior.
+- Runtime mutation paths remain process-only.
+
+REQUIRED SHAPE:
+record coupling_contract
+  required:
+    - contract_id: id
+    - coupling_class_id: enum{energy_coupling,force_coupling,info_coupling,pollution_coupling,safety_coupling,compliance_coupling}
+    - from_domain_id: id
+    - to_domain_id: id
+    - mechanism: enum{constitutive_model,energy_transform,field_policy,signal_policy}
+    - mechanism_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Direct cross-domain mutation is forbidden.
+- Coupling must reference a registered legal mechanism id.
+

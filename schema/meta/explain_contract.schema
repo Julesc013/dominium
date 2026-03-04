@@ -1,0 +1,28 @@
+SCHEMA: meta/explain_contract.schema
+schema_id: dominium.schema.meta.explain_contract
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare mandatory explainability requirements per hazard/failure/refusal event kind.
+- Ensure deterministic cause/remediation evidence availability.
+
+NON-SEMANTICS:
+- This schema does not generate explain artifacts.
+- Explain output is derived-only and must not mutate authoritative truth.
+
+REQUIRED SHAPE:
+record explain_contract
+  required:
+    - contract_id: id
+    - event_kind_id: id
+    - explain_artifact_type_id: id
+    - required_inputs: list<id>
+    - remediation_hint_keys: list<id>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Event kinds that can produce hazard/failure/refusal must declare explain contract coverage.
+- Required inputs and remediation keys are bounded and deterministic.
+
