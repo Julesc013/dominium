@@ -12587,6 +12587,7 @@ def _append_capability_enforcement_invariant_findings(
     control_plane_rel = "src/control/control_plane_engine.py"
     plan_engine_rel = "src/control/planning/plan_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    power_engine_rel = "src/electric/power_network_engine.py"
 
     capability_registry_text = _file_text(repo_root, capability_registry_rel)
     capability_engine_text = _file_text(repo_root, capability_engine_rel)
@@ -12658,6 +12659,7 @@ def _append_capability_enforcement_invariant_findings(
         )
 
     runtime_text = _file_text(repo_root, runtime_rel)
+    power_engine_text = _file_text(repo_root, power_engine_rel)
     for token in ("capability.has_pose_slots", "capability.has_ports"):
         if token in runtime_text:
             continue

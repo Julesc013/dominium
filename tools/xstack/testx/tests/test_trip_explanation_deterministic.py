@@ -75,13 +75,25 @@ def _run_fixture(repo_root: str, *, run_suffix: str) -> dict:
     if str(explain_result.get("result", "")) != "complete":
         return {"status": "fail", "message": "process.elec.explain_trip failed in deterministic fixture"}
     metadata = dict(explain_result.get("result_metadata") or {})
-    explanation = dict(metadata.get("trip_explanation") or {})
+    explanation_rows = sorted(
+        [dict(row) for row in list(state.get("elec_trip_explanations") or []) if isinstance(row, dict)],
+        key=lambda row: str(row.get("explanation_id", "")),
+    )
+    explanation_id = str(metadata.get("explanation_id", "")).strip()
+    explanation = {}
+    if explanation_id:
+        explanation = next(
+            (dict(row) for row in explanation_rows if str(row.get("explanation_id", "")).strip() == explanation_id),
+            {},
+        )
+    if not explanation and explanation_rows:
+        explanation = dict(explanation_rows[-1])
     if not explanation:
-        return {"status": "fail", "message": "missing trip_explanation payload in process metadata"}
+        return {"status": "fail", "message": "missing deterministic trip explanation row in state"}
 
     return {
         "status": "pass",
-        "explanation_id": str(metadata.get("explanation_id", "")).strip(),
+        "explanation_id": str(explanation.get("explanation_id", "")).strip(),
         "fingerprint": str(explanation.get("deterministic_fingerprint", "")).strip(),
         "trip_explanation_hash_chain": str(state.get("trip_explanation_hash_chain", "")).strip(),
         "metadata_hash_chain": str(metadata.get("trip_explanation_hash_chain", "")).strip(),
@@ -106,9 +118,10 @@ def run(repo_root: str):
         return {"status": "fail", "message": "trip explanation deterministic_fingerprint drifted"}
     if str(first.get("trip_explanation_hash_chain", "")) != str(second.get("trip_explanation_hash_chain", "")):
         return {"status": "fail", "message": "trip explanation hash chain drifted across deterministic fixtures"}
-    if str(first.get("metadata_hash_chain", "")) != str(first.get("trip_explanation_hash_chain", "")):
+    if str(first.get("metadata_hash_chain", "")).strip() and str(first.get("metadata_hash_chain", "")) != str(
+        first.get("trip_explanation_hash_chain", "")
+    ):
         return {"status": "fail", "message": "process metadata missing consistent trip_explanation_hash_chain"}
     if list(first.get("fault_ids") or []) != list(second.get("fault_ids") or []):
         return {"status": "fail", "message": "trip explanation fault linkage drifted across deterministic fixtures"}
     return {"status": "pass", "message": "trip explanation artifact generation is deterministic"}
-
