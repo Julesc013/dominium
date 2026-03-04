@@ -1008,6 +1008,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.chem.process_runs",
+        "title": "Chemical Process Runs",
+        "data": {
+          "data_kind": "chem_process_runs"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.batch.quality_summary",
+        "title": "Batch Quality Summary",
+        "data": {
+          "data_kind": "batch_quality_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.chem.yield_factors",
+        "title": "Chemical Yield Factors",
+        "data": {
+          "data_kind": "chem_yield_factors"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.micro_parts_summary",
         "title": "Micro Parts Summary",
         "data": {

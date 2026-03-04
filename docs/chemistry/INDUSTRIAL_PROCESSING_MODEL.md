@@ -111,3 +111,22 @@ Direct cross-domain mutation is forbidden.
 - full kinetics/equilibrium solvers,
 - molecule simulation,
 - mandatory POLL runtime solver in CHEM-2 baseline.
+
+## 11) Explain and Inspection Surfaces
+
+CHEM-2 inspection sections:
+
+- `section.chem.process_runs`
+- `section.batch.quality_summary`
+- `section.chem.yield_factors`
+
+CHEM-2 explain contracts:
+
+- `explain.low_yield`
+- `explain.contamination`
+- `explain.out_of_spec_batch`
+
+Diegetic presentation guidance:
+
+- show an out-of-spec warning marker for affected output batches,
+- show contamination marker when contamination tags are present.

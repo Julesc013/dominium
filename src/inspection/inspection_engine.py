@@ -55,6 +55,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.chem.energy_output",
         "section.chem.emissions",
         "section.chem.efficiency",
+        "section.chem.process_runs",
+        "section.batch.quality_summary",
+        "section.chem.yield_factors",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -80,6 +83,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.chem.energy_output",
         "section.chem.emissions",
         "section.chem.efficiency",
+        "section.chem.process_runs",
+        "section.batch.quality_summary",
+        "section.chem.yield_factors",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -113,6 +119,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.chem.energy_output",
         "section.chem.emissions",
         "section.chem.efficiency",
+        "section.chem.process_runs",
+        "section.batch.quality_summary",
+        "section.chem.yield_factors",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -172,6 +181,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.chem.energy_output",
         "section.chem.emissions",
         "section.chem.efficiency",
+        "section.chem.process_runs",
+        "section.batch.quality_summary",
+        "section.chem.yield_factors",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -223,6 +235,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.chem.energy_output",
         "section.chem.emissions",
         "section.chem.efficiency",
+        "section.chem.process_runs",
+        "section.batch.quality_summary",
+        "section.chem.yield_factors",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -274,6 +289,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.chem.energy_output",
         "section.chem.emissions",
         "section.chem.efficiency",
+        "section.chem.process_runs",
+        "section.batch.quality_summary",
+        "section.chem.yield_factors",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -461,6 +479,9 @@ _DEFAULT_SECTION_ROWS = {
     "section.chem.energy_output": {"title": "Combustion Energy Output", "extensions": {"cost_units": 1}},
     "section.chem.emissions": {"title": "Combustion Emissions", "extensions": {"cost_units": 1}},
     "section.chem.efficiency": {"title": "Combustion Efficiency", "extensions": {"cost_units": 1}},
+    "section.chem.process_runs": {"title": "Chemical Process Runs", "extensions": {"cost_units": 2}},
+    "section.batch.quality_summary": {"title": "Batch Quality Summary", "extensions": {"cost_units": 2}},
+    "section.chem.yield_factors": {"title": "Chemical Yield Factors", "extensions": {"cost_units": 2}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
     "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
     "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
@@ -2813,6 +2834,116 @@ def _build_section_data(
                     "irreversibility_loss": int(max(0, _as_int(row.get("irreversibility_loss", 0), 0))),
                 }
                 for row in sorted(combustion_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.chem.process_runs":
+        run_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("chem_process_run_state_rows") or (dict(state or {})).get("process_run_state_rows") or [])
+            if isinstance(item, dict)
+        ]
+        active_count = 0
+        completed_count = 0
+        status_counts: Dict[str, int] = {}
+        for row in run_rows:
+            ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}
+            status = str(ext.get("status", "active")).strip() or "active"
+            status_counts[status] = _as_int(status_counts.get(status, 0), 0) + 1
+            if status in {"active", "running"}:
+                active_count += 1
+            if status in {"complete", "ended"}:
+                completed_count += 1
+        payload = {
+            "run_count": int(len(run_rows)),
+            "active_run_count": int(active_count),
+            "completed_run_count": int(completed_count),
+            "status_counts": dict((key, int(status_counts[key])) for key in sorted(status_counts.keys())),
+            "process_run_hash_chain": str((dict(state or {})).get("process_run_hash_chain", "")).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "run_id": str(row.get("run_id", "")).strip() or None,
+                    "reaction_id": str(row.get("reaction_id", "")).strip() or None,
+                    "equipment_id": str(row.get("equipment_id", "")).strip() or None,
+                    "progress": int(max(0, _as_int(row.get("progress", 0), 0))),
+                    "start_tick": int(max(0, _as_int(row.get("start_tick", 0), 0))),
+                    "end_tick": (None if row.get("end_tick") is None else int(max(0, _as_int(row.get("end_tick", 0), 0)))),
+                    "status": str((dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), dict) else {}).get("status", "active")).strip() or "active",
+                    "output_batch_count": int(len(list(row.get("output_batch_ids") or []))),
+                }
+                for row in sorted(run_rows, key=lambda item: str(item.get("run_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.batch.quality_summary":
+        quality_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("batch_quality_rows") or [])
+            if isinstance(item, dict)
+        ]
+        grade_counts: Dict[str, int] = {}
+        defect_counts: Dict[str, int] = {}
+        contamination_counts: Dict[str, int] = {}
+        for row in quality_rows:
+            grade = str(row.get("quality_grade", "grade.C")).strip() or "grade.C"
+            grade_counts[grade] = _as_int(grade_counts.get(grade, 0), 0) + 1
+            for token in _sorted_unique_strings(row.get("defect_flags")):
+                defect_counts[token] = _as_int(defect_counts.get(token, 0), 0) + 1
+            for token in _sorted_unique_strings(row.get("contamination_tags")):
+                contamination_counts[token] = _as_int(contamination_counts.get(token, 0), 0) + 1
+        payload = {
+            "batch_quality_count": int(len(quality_rows)),
+            "grade_counts": dict((key, int(grade_counts[key])) for key in sorted(grade_counts.keys())),
+            "defect_counts": dict((key, int(defect_counts[key])) for key in sorted(defect_counts.keys())),
+            "contamination_counts": dict((key, int(contamination_counts[key])) for key in sorted(contamination_counts.keys())),
+            "batch_quality_hash_chain": str((dict(state or {})).get("batch_quality_hash_chain", "")).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "batch_id": str(row.get("batch_id", "")).strip() or None,
+                    "quality_grade": str(row.get("quality_grade", "grade.C")).strip() or "grade.C",
+                    "yield_factor": int(max(0, _as_int(row.get("yield_factor", 0), 0))),
+                    "defect_flags": _sorted_unique_strings(row.get("defect_flags")),
+                    "contamination_tags": _sorted_unique_strings(row.get("contamination_tags")),
+                }
+                for row in sorted(quality_rows, key=lambda item: str(item.get("batch_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.chem.yield_factors":
+        yield_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("chem_yield_model_rows") or [])
+            if isinstance(item, dict)
+        ]
+        values = [int(max(0, min(1000, _as_int(row.get("yield_factor_permille", 0), 0)))) for row in yield_rows]
+        payload = {
+            "yield_sample_count": int(len(values)),
+            "yield_avg_permille": int(sum(values) // len(values)) if values else 0,
+            "yield_min_permille": int(min(values)) if values else 0,
+            "yield_max_permille": int(max(values)) if values else 0,
+            "yield_model_hash_chain": str((dict(state or {})).get("yield_model_hash_chain", "")).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "run_id": str(row.get("run_id", "")).strip() or None,
+                    "yield_model_id": str(row.get("yield_model_id", "")).strip() or None,
+                    "yield_factor_permille": int(max(0, min(1000, _as_int(row.get("yield_factor_permille", 0), 0)))),
+                    "temperature": int(_as_int(row.get("temperature", 0), 0)),
+                    "pressure_head": int(max(0, _as_int(row.get("pressure_head", 0), 0))),
+                    "entropy_value": int(max(0, _as_int(row.get("entropy_value", 0), 0))),
+                    "defect_flags": _sorted_unique_strings(row.get("defect_flags")),
+                    "contamination_tags": _sorted_unique_strings(row.get("contamination_tags")),
+                }
+                for row in sorted(
+                    yield_rows,
+                    key=lambda item: (
+                        int(_as_int(item.get("tick", 0), 0)),
+                        str(item.get("run_id", "")),
+                        str(item.get("yield_model_id", "")),
+                    ),
+                )[:256]
             ]
         return payload
     if section_id == "section.signal.inbox_summary":

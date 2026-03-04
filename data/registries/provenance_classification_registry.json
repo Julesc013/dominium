@@ -199,6 +199,36 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.low_yield",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.contamination",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.out_of_spec_batch",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain_artifact",
         "classification": "derived",
         "compaction_allowed": true,

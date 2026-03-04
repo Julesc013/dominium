@@ -196,6 +196,21 @@
         "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.low_efficiency",
         "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.low_yield",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.contamination",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.out_of_spec_batch",
+        "info_family_id": "RECORD"
       }
     ],
     "extensions": {

@@ -452,6 +452,66 @@
         "extensions": {
           "source": "CHEM1-6"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.low_yield",
+        "event_kind_id": "chem.low_yield",
+        "explain_artifact_type_id": "artifact.explain.low_yield",
+        "required_inputs": [
+          "artifact.record",
+          "section.chem.yield_factors",
+          "section.chem.process_runs"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.process_window",
+          "hint.adjust.catalyst",
+          "hint.recheck.input_quality"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.contamination",
+        "event_kind_id": "chem.contamination",
+        "explain_artifact_type_id": "artifact.explain.contamination",
+        "required_inputs": [
+          "artifact.record",
+          "section.batch.quality_summary",
+          "section.chem.process_runs"
+        ],
+        "remediation_hint_keys": [
+          "hint.service.equipment",
+          "hint.isolate.feedstock",
+          "hint.clean.process_line"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.out_of_spec_batch",
+        "event_kind_id": "chem.out_of_spec_batch",
+        "explain_artifact_type_id": "artifact.explain.out_of_spec_batch",
+        "required_inputs": [
+          "artifact.record",
+          "section.batch.quality_summary",
+          "section.spec_compliance_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reject.batch",
+          "hint.reprocess.batch",
+          "hint.review.spec_constraints"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM2-7"
+        }
       }
     ],
     "extensions": {
