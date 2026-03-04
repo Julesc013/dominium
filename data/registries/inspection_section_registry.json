@@ -436,6 +436,84 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.phys.entropy_summary",
+        "title": "Physics Entropy Summary",
+        "data": {
+          "data_kind": "phys_entropy_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.phys.entropy_effects",
+        "title": "Physics Entropy Effects",
+        "data": {
+          "data_kind": "phys_entropy_effects"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.field.summary",
+        "title": "Field Summary",
+        "data": {
+          "data_kind": "field_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.field.gravity",
+        "title": "Field Gravity",
+        "data": {
+          "data_kind": "field_gravity"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.field.radiation",
+        "title": "Field Radiation",
+        "data": {
+          "data_kind": "field_radiation"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.field.irradiance",
+        "title": "Field Irradiance",
+        "data": {
+          "data_kind": "field_irradiance"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.institution.bulletins",
         "title": "Institution Bulletins",
         "data": {

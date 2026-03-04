@@ -478,6 +478,127 @@
         "extensions": {}
       },
       {
+        "instrument_type_id": "instr.elec.energized_indicator",
+        "description": "Diegetic energized-state indicator for electrical workspaces.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.energized"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "elec4_channel": true
+        }
+      },
+      {
+        "instrument_type_id": "instr.elec.voltage_meter",
+        "description": "Quantized electrical voltage meter channel for technician workflows.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.voltage"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "elec4_channel": true
+        }
+      },
+      {
+        "instrument_type_id": "instr.elec.current_proxy_meter",
+        "description": "Quantized current proxy channel for clamp-meter workflows.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.current_proxy"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "elec4_channel": true
+        }
+      },
+      {
+        "instrument_type_id": "instr.elec.pf_meter",
+        "description": "Quantized PF meter channel exposing deterministic P/S proxy.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.pf"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "elec4_channel": true
+        }
+      },
+      {
+        "instrument_type_id": "instr.elec.trip_warning",
+        "description": "Electrical trip warning alarm channel for diegetic/technician UX.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.elec.trip_warning"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "elec4_channel": true
+        }
+      },
+      {
+        "instrument_type_id": "instr.thermometer.basic",
+        "description": "Diegetic coarse ambient thermometer channel for THERM workflows.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.meter.thermometer"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "therm0_channel": true
+        }
+      },
+      {
+        "instrument_type_id": "instr.ir_thermometer.stub",
+        "description": "Stub surface-temperature infrared thermometer channel for THERM prep.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.meter.thermometer"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "stub",
+          "therm0_channel": true
+        }
+      },
+      {
+        "instrument_type_id": "instr.thermal_alarm",
+        "description": "Diegetic overtemperature warning channel hook for THERM safety prep.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.interior.alarm"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "therm0_channel": true
+        }
+      },
+      {
         "instrument_type_id": "instr.rangefinder",
         "description": "Rangefinder stub for future domain sensor channels.",
         "required_channels_in": [

@@ -47,6 +47,10 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.material_stocks",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.field.summary",
+        "section.field.gravity",
+        "section.field.radiation",
+        "section.field.irradiance",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -64,6 +68,10 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.batches_summary",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.field.summary",
+        "section.field.gravity",
+        "section.field.radiation",
+        "section.field.irradiance",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -89,6 +97,10 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.batches_summary",
         "section.flow_summary",
         "section.flow_utilization",
+        "section.field.summary",
+        "section.field.gravity",
+        "section.field.radiation",
+        "section.field.irradiance",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -119,6 +131,14 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.network_summary",
         "section.signal.quality_summary",
         "section.models.summary",
+        "section.phys.momentum_summary",
+        "section.phys.kinetic_energy",
+        "section.phys.entropy_summary",
+        "section.phys.entropy_effects",
+        "section.field.summary",
+        "section.field.gravity",
+        "section.field.radiation",
+        "section.field.irradiance",
         "section.safety.instances",
         "section.safety.events",
         "section.elec.local_panel_state",
@@ -156,6 +176,14 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
         "section.models.summary",
+        "section.phys.momentum_summary",
+        "section.phys.kinetic_energy",
+        "section.phys.entropy_summary",
+        "section.phys.entropy_effects",
+        "section.field.summary",
+        "section.field.gravity",
+        "section.field.radiation",
+        "section.field.irradiance",
         "section.safety.instances",
         "section.safety.events",
         "section.elec.local_panel_state",
@@ -195,6 +223,14 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.signal.sent_messages",
         "section.signal.aggregation_status",
         "section.models.summary",
+        "section.phys.momentum_summary",
+        "section.phys.kinetic_energy",
+        "section.phys.entropy_summary",
+        "section.phys.entropy_effects",
+        "section.field.summary",
+        "section.field.gravity",
+        "section.field.radiation",
+        "section.field.irradiance",
         "section.safety.instances",
         "section.safety.events",
         "section.elec.local_panel_state",
@@ -370,6 +406,14 @@ _DEFAULT_SECTION_ROWS = {
     "section.signal.sent_messages": {"title": "Signal Sent Messages", "extensions": {"cost_units": 2}},
     "section.signal.aggregation_status": {"title": "Signal Aggregation Status", "extensions": {"cost_units": 2}},
     "section.models.summary": {"title": "Constitutive Model Summary", "extensions": {"cost_units": 2}},
+    "section.phys.momentum_summary": {"title": "Physics Momentum Summary", "extensions": {"cost_units": 1}},
+    "section.phys.kinetic_energy": {"title": "Physics Kinetic Energy", "extensions": {"cost_units": 1}},
+    "section.phys.entropy_summary": {"title": "Physics Entropy Summary", "extensions": {"cost_units": 1}},
+    "section.phys.entropy_effects": {"title": "Physics Entropy Effects", "extensions": {"cost_units": 1}},
+    "section.field.summary": {"title": "Field Summary", "extensions": {"cost_units": 1}},
+    "section.field.gravity": {"title": "Field Gravity", "extensions": {"cost_units": 1}},
+    "section.field.radiation": {"title": "Field Radiation", "extensions": {"cost_units": 1}},
+    "section.field.irradiance": {"title": "Field Irradiance", "extensions": {"cost_units": 1}},
     "section.safety.instances": {"title": "Safety Instances", "extensions": {"cost_units": 1}},
     "section.safety.events": {"title": "Safety Events", "extensions": {"cost_units": 2}},
     "section.elec.local_panel_state": {"title": "Electrical Local Panel State", "extensions": {"cost_units": 1}},
@@ -2913,6 +2957,290 @@ def _build_section_data(
                     results,
                     key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("result_id", ""))),
                 )[-128:]
+            ]
+        return payload
+    if section_id == "section.phys.momentum_summary":
+        momentum_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("momentum_states") or [])
+            if isinstance(item, dict)
+        ]
+        force_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("force_application_rows") or [])
+            if isinstance(item, dict)
+        ]
+        impulse_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("impulse_application_rows") or [])
+            if isinstance(item, dict)
+        ]
+        total_mass = 0
+        total_momentum_l1 = 0
+        nonzero_count = 0
+        for row in momentum_rows:
+            linear = dict(row.get("momentum_linear") or {})
+            px = int(_as_int(linear.get("x", 0), 0))
+            py = int(_as_int(linear.get("y", 0), 0))
+            pz = int(_as_int(linear.get("z", 0), 0))
+            total_mass += int(max(1, _as_int(row.get("mass_value", 1), 1)))
+            total_momentum_l1 += int(abs(px) + abs(py) + abs(pz))
+            if (px != 0) or (py != 0) or (pz != 0):
+                nonzero_count += 1
+        payload = {
+            "momentum_state_count": int(len(momentum_rows)),
+            "nonzero_momentum_count": int(nonzero_count),
+            "total_mass_value": int(total_mass),
+            "total_momentum_l1": int(total_momentum_l1),
+            "force_application_count": int(len(force_rows)),
+            "impulse_application_count": int(len(impulse_rows)),
+            "momentum_hash_chain": str((dict(state or {})).get("momentum_hash_chain", "")).strip() or None,
+            "impulse_event_hash_chain": str((dict(state or {})).get("impulse_event_hash_chain", "")).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "assembly_id": str(row.get("assembly_id", "")).strip(),
+                    "mass_value": int(max(1, _as_int(row.get("mass_value", 1), 1))),
+                    "momentum_linear": {
+                        "x": int(_as_int((dict(row.get("momentum_linear") or {})).get("x", 0), 0)),
+                        "y": int(_as_int((dict(row.get("momentum_linear") or {})).get("y", 0), 0)),
+                        "z": int(_as_int((dict(row.get("momentum_linear") or {})).get("z", 0), 0)),
+                    },
+                    "momentum_angular": row.get("momentum_angular", 0),
+                    "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+                }
+                for row in sorted(momentum_rows, key=lambda item: str(item.get("assembly_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.phys.kinetic_energy":
+        artifact_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("info_artifact_rows") or (dict(state or {})).get("knowledge_artifacts") or [])
+            if isinstance(item, dict)
+        ]
+        kinetic_rows = []
+        for row in artifact_rows:
+            ext = dict(row.get("extensions") or {})
+            if str(ext.get("quantity_id", "")).strip() != "quantity.energy_kinetic":
+                continue
+            kinetic_rows.append(
+                {
+                    "artifact_id": str(row.get("artifact_id", "")).strip(),
+                    "assembly_id": str(ext.get("assembly_id", "")).strip() or None,
+                    "value": int(max(0, _as_int(ext.get("value", 0), 0))),
+                    "tick": int(max(0, _as_int(ext.get("tick", 0), 0))),
+                    "source_process_id": str(ext.get("source_process_id", "")).strip() or None,
+                    "source_application_id": str(ext.get("source_application_id", "")).strip() or None,
+                }
+            )
+        kinetic_rows = sorted(
+            kinetic_rows,
+            key=lambda item: (int(max(0, _as_int(item.get("tick", 0), 0))), str(item.get("artifact_id", ""))),
+        )
+        total_energy = int(sum(int(max(0, _as_int(row.get("value", 0), 0))) for row in kinetic_rows))
+        payload = {
+            "observation_count": int(len(kinetic_rows)),
+            "total_kinetic_energy": int(total_energy),
+            "latest_tick": int(max([0] + [int(max(0, _as_int(row.get("tick", 0), 0))) for row in kinetic_rows])),
+            "status": ("present" if kinetic_rows else "none"),
+        }
+        if allow_hidden_state:
+            payload["rows"] = list(kinetic_rows[-256:])
+        return payload
+    if section_id == "section.phys.entropy_summary":
+        entropy_state_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("entropy_state_rows") or [])
+            if isinstance(item, dict)
+        ]
+        entropy_event_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("entropy_event_rows") or [])
+            if isinstance(item, dict)
+        ]
+        entropy_reset_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("entropy_reset_events") or [])
+            if isinstance(item, dict)
+        ]
+        entropy_values = [int(max(0, _as_int(row.get("entropy_value", 0), 0))) for row in entropy_state_rows]
+        payload = {
+            "target_count": int(len(entropy_state_rows)),
+            "event_count": int(len(entropy_event_rows)),
+            "reset_event_count": int(len(entropy_reset_rows)),
+            "total_entropy_value": int(sum(entropy_values)),
+            "max_entropy_value": int(max([0] + entropy_values)),
+            "entropy_hash_chain": str((dict(state or {})).get("entropy_hash_chain", "")).strip() or None,
+            "entropy_reset_events_hash_chain": str(
+                (dict(state or {})).get(
+                    "entropy_reset_events_hash_chain",
+                    (dict(state or {})).get("entropy_reset_hash_chain", ""),
+                )
+            ).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "target_id": str(row.get("target_id", "")).strip(),
+                    "entropy_value": int(max(0, _as_int(row.get("entropy_value", 0), 0))),
+                    "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+                }
+                for row in sorted(entropy_state_rows, key=lambda item: str(item.get("target_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.phys.entropy_effects":
+        effect_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("entropy_effect_rows") or [])
+            if isinstance(item, dict)
+        ]
+        degraded_count = 0
+        min_eff = 1000
+        max_hazard = 1000
+        policy_counts: Dict[str, int] = {}
+        for row in effect_rows:
+            eff = int(max(0, _as_int(row.get("efficiency_multiplier_permille", 1000), 1000)))
+            hazard = int(max(0, _as_int(row.get("hazard_multiplier_permille", 1000), 1000)))
+            if bool(row.get("degraded", False)) or eff < 1000:
+                degraded_count += 1
+            if eff < min_eff:
+                min_eff = eff
+            if hazard > max_hazard:
+                max_hazard = hazard
+            policy_id = str(row.get("policy_id", "")).strip() or "entropy_effect.basic_linear"
+            policy_counts[policy_id] = _as_int(policy_counts.get(policy_id, 0), 0) + 1
+        payload = {
+            "effect_target_count": int(len(effect_rows)),
+            "degraded_target_count": int(degraded_count),
+            "min_efficiency_multiplier_permille": int(min_eff if effect_rows else 1000),
+            "max_hazard_multiplier_permille": int(max_hazard if effect_rows else 1000),
+            "policy_counts": dict((key, int(policy_counts[key])) for key in sorted(policy_counts.keys())),
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "target_id": str(row.get("target_id", "")).strip(),
+                    "policy_id": str(row.get("policy_id", "")).strip() or None,
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "entropy_value": int(max(0, _as_int(row.get("entropy_value", 0), 0))),
+                    "efficiency_multiplier_permille": int(max(0, _as_int(row.get("efficiency_multiplier_permille", 1000), 1000))),
+                    "hazard_multiplier_permille": int(max(0, _as_int(row.get("hazard_multiplier_permille", 1000), 1000))),
+                    "maintenance_interval_modifier_permille": int(
+                        max(0, _as_int(row.get("maintenance_interval_modifier_permille", 1000), 1000))
+                    ),
+                    "degraded": bool(row.get("degraded", False)),
+                }
+                for row in sorted(effect_rows, key=lambda item: str(item.get("target_id", "")))[:256]
+            ]
+        return payload
+    if section_id == "section.field.summary":
+        field_layers = [
+            dict(item)
+            for item in list((dict(state or {})).get("field_layers") or [])
+            if isinstance(item, dict)
+        ]
+        field_cells = [
+            dict(item)
+            for item in list((dict(state or {})).get("field_cells") or [])
+            if isinstance(item, dict)
+        ]
+        sample_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("field_sample_rows") or [])
+            if isinstance(item, dict)
+        ]
+        policy_counts: Dict[str, int] = {}
+        field_ids = set()
+        for row in field_layers:
+            field_id = str(row.get("field_id", "")).strip()
+            if field_id:
+                field_ids.add(field_id)
+            policy_id = str(row.get("update_policy_id", "")).strip() or "field.static_default"
+            policy_counts[policy_id] = _as_int(policy_counts.get(policy_id, 0), 0) + 1
+        payload = {
+            "field_layer_count": int(len(field_layers)),
+            "field_cell_count": int(len(field_cells)),
+            "field_sample_count": int(len(sample_rows)),
+            "field_ids": sorted(field_ids),
+            "update_policy_counts": dict((key, int(policy_counts[key])) for key in sorted(policy_counts.keys())),
+        }
+        if allow_hidden_state:
+            payload["layers"] = [
+                {
+                    "field_id": str(row.get("field_id", "")).strip(),
+                    "field_type_id": str(row.get("field_type_id", "")).strip() or None,
+                    "update_policy_id": str(row.get("update_policy_id", "")).strip() or "field.static_default",
+                    "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip() or None,
+                    "resolution_level": str(row.get("resolution_level", "")).strip() or None,
+                }
+                for row in sorted(field_layers, key=lambda item: str(item.get("field_id", "")))[:256]
+            ]
+        return payload
+    if section_id in {"section.field.gravity", "section.field.radiation", "section.field.irradiance"}:
+        target_field_ids = {
+            "section.field.gravity": {"field.gravity_vector", "field.gravity.vector"},
+            "section.field.radiation": {"field.radiation_intensity", "field.radiation"},
+            "section.field.irradiance": {"field.irradiance"},
+        }.get(section_id, set())
+        field_cells = [
+            dict(item)
+            for item in list((dict(state or {})).get("field_cells") or [])
+            if isinstance(item, dict) and str(item.get("field_id", "")).strip() in target_field_ids
+        ]
+        sample_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("field_sample_rows") or [])
+            if isinstance(item, dict) and str(item.get("field_id", "")).strip() in target_field_ids
+        ]
+        latest_tick = int(
+            max(
+                [0]
+                + [int(max(0, _as_int(row.get("tick", 0), 0))) for row in sample_rows]
+                + [int(max(0, _as_int(row.get("last_updated_tick", 0), 0))) for row in field_cells]
+            )
+        )
+        payload = {
+            "field_ids": sorted(target_field_ids),
+            "field_cell_count": int(len(field_cells)),
+            "field_sample_count": int(len(sample_rows)),
+            "latest_tick": int(latest_tick),
+        }
+        if section_id == "section.field.gravity":
+            latest_sample = {}
+            if sample_rows:
+                latest_row = sorted(
+                    sample_rows,
+                    key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("field_id", "")), str(item.get("spatial_node_id", ""))),
+                )[-1]
+                latest_value = dict(latest_row.get("sampled_value") or {}) if isinstance(latest_row.get("sampled_value"), dict) else {}
+                latest_sample = {
+                    "x": int(_as_int(latest_value.get("x", 0), 0)),
+                    "y": int(_as_int(latest_value.get("y", 0), 0)),
+                    "z": int(_as_int(latest_value.get("z", 0), 0)),
+                }
+            payload["latest_vector"] = latest_sample or None
+        else:
+            latest_scalar = 0
+            if sample_rows:
+                latest_row = sorted(
+                    sample_rows,
+                    key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("field_id", "")), str(item.get("spatial_node_id", ""))),
+                )[-1]
+                latest_scalar = int(_as_int(latest_row.get("sampled_value", 0), 0))
+            payload["latest_scalar"] = int(latest_scalar)
+        if allow_hidden_state:
+            payload["recent_samples"] = [
+                {
+                    "field_id": str(row.get("field_id", "")).strip(),
+                    "spatial_node_id": str(row.get("spatial_node_id", "")).strip() or None,
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "sampled_value": row.get("sampled_value"),
+                }
+                for row in sorted(
+                    sample_rows,
+                    key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("field_id", "")), str(item.get("spatial_node_id", ""))),
+                )[-256:]
             ]
         return payload
     if section_id == "section.safety.instances":
