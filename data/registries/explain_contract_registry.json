@@ -392,6 +392,66 @@
         "extensions": {
           "source": "FLUID0-4"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.combustion",
+        "event_kind_id": "chem.combustion",
+        "explain_artifact_type_id": "artifact.explain.combustion",
+        "required_inputs": [
+          "artifact.record",
+          "section.chem.energy_output",
+          "section.chem.efficiency"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.reaction_rate",
+          "hint.adjust.mixture",
+          "hint.verify.oxidizer_supply"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM1-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.explosion",
+        "event_kind_id": "chem.explosion",
+        "explain_artifact_type_id": "artifact.explain.explosion",
+        "required_inputs": [
+          "artifact.record",
+          "section.chem.energy_output",
+          "section.phys.momentum_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.isolate.fuel_source",
+          "hint.reduce.ignition_risk",
+          "hint.enforce.safety_distance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM1-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.low_efficiency",
+        "event_kind_id": "chem.low_efficiency",
+        "explain_artifact_type_id": "artifact.explain.low_efficiency",
+        "required_inputs": [
+          "artifact.record",
+          "section.chem.efficiency",
+          "section.phys.entropy_effects"
+        ],
+        "remediation_hint_keys": [
+          "hint.perform.maintenance",
+          "hint.adjust.mixture",
+          "hint.reduce.entropy_load"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "CHEM1-6"
+        }
       }
     ],
     "extensions": {

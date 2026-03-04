@@ -300,6 +300,39 @@ def _event_specific_cause_keys(
             )
         )
 
+    if event_kind.startswith("chem."):
+        out.extend(
+            _event_cause_tokens(
+                rows=model_result_rows,
+                cause_prefix="chem_model",
+                key_candidates=(
+                    "reaction_id",
+                    "rate_model_id",
+                    "efficiency_permille",
+                    "mixture_ratio_permille",
+                    "temperature",
+                    "entropy_value",
+                ),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=hazard_rows,
+                cause_prefix="chem_hazard",
+                key_candidates=("hazard_type_id", "overheat", "fire_state", "pollutant_emission"),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=compliance_rows,
+                cause_prefix="chem_ledger",
+                key_candidates=("transformation_id", "entry_id", "energy_total_delta"),
+                max_items=bound,
+            )
+        )
+
     if event_kind.startswith("mob."):
         out.extend(
             _event_cause_tokens(

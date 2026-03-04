@@ -181,6 +181,21 @@
         "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.fluid_burst",
         "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.combustion",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.explosion",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.low_efficiency",
+        "info_family_id": "RECORD"
       }
     ],
     "extensions": {

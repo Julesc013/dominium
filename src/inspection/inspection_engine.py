@@ -51,6 +51,10 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.chem.fuel_levels",
+        "section.chem.energy_output",
+        "section.chem.emissions",
+        "section.chem.efficiency",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -72,6 +76,10 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.chem.fuel_levels",
+        "section.chem.energy_output",
+        "section.chem.emissions",
+        "section.chem.efficiency",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -101,6 +109,10 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.chem.fuel_levels",
+        "section.chem.energy_output",
+        "section.chem.emissions",
+        "section.chem.efficiency",
         "section.interior.connectivity_summary",
         "section.interior.portal_state_table",
         "section.interior.pressure_summary",
@@ -156,6 +168,10 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.radiator_efficiency",
         "section.thermal.fire_states",
         "section.thermal.runaway_events",
+        "section.chem.fuel_levels",
+        "section.chem.energy_output",
+        "section.chem.emissions",
+        "section.chem.efficiency",
     ],
     "meso": [
         "section.capabilities_summary",
@@ -203,6 +219,10 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.radiator_efficiency",
         "section.thermal.fire_states",
         "section.thermal.runaway_events",
+        "section.chem.fuel_levels",
+        "section.chem.energy_output",
+        "section.chem.emissions",
+        "section.chem.efficiency",
     ],
     "micro": [
         "section.capabilities_summary",
@@ -250,6 +270,10 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.thermal.radiator_efficiency",
         "section.thermal.fire_states",
         "section.thermal.runaway_events",
+        "section.chem.fuel_levels",
+        "section.chem.energy_output",
+        "section.chem.emissions",
+        "section.chem.efficiency",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_POSE = {
@@ -433,6 +457,10 @@ _DEFAULT_SECTION_ROWS = {
     "section.thermal.radiator_efficiency": {"title": "Thermal Radiator Efficiency", "extensions": {"cost_units": 2}},
     "section.thermal.fire_states": {"title": "Thermal Fire States", "extensions": {"cost_units": 2}},
     "section.thermal.runaway_events": {"title": "Thermal Runaway Events", "extensions": {"cost_units": 2}},
+    "section.chem.fuel_levels": {"title": "Combustion Fuel Levels", "extensions": {"cost_units": 1}},
+    "section.chem.energy_output": {"title": "Combustion Energy Output", "extensions": {"cost_units": 1}},
+    "section.chem.emissions": {"title": "Combustion Emissions", "extensions": {"cost_units": 1}},
+    "section.chem.efficiency": {"title": "Combustion Efficiency", "extensions": {"cost_units": 1}},
     "section.institution.bulletins": {"title": "Institution Bulletins", "extensions": {"cost_units": 2}},
     "section.institution.dispatch_state": {"title": "Institution Dispatch State", "extensions": {"cost_units": 2}},
     "section.institution.compliance_reports": {"title": "Institution Compliance Reports", "extensions": {"cost_units": 2}},
@@ -2650,6 +2678,141 @@ def _build_section_data(
                     "pollutant_emission": int(max(0, _as_int(row.get("pollutant_emission", 0), 0))),
                 }
                 for row in sorted(fire_event_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.chem.fuel_levels":
+        fire_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("thermal_fire_state_rows") or (dict(state or {})).get("fire_state_rows") or [])
+            if isinstance(item, dict)
+        ]
+        species_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("chem_species_pool_rows") or [])
+            if isinstance(item, dict)
+        ]
+        fuel_rows = [
+            row
+            for row in species_rows
+            if str(row.get("material_id", "")).strip().startswith("material.fuel")
+            or str(row.get("material_id", "")).strip().endswith("_fuel_stub")
+        ]
+        total_fuel_remaining = int(sum(max(0, _as_int(row.get("fuel_remaining", 0), 0)) for row in fire_rows))
+        pool_fuel_mass = int(sum(max(0, _as_int(row.get("mass_value", 0), 0)) for row in fuel_rows))
+        payload = {
+            "active_fire_count": int(len([row for row in fire_rows if bool(row.get("active", False))])),
+            "fire_fuel_remaining_total": int(total_fuel_remaining),
+            "species_pool_fuel_mass_total": int(pool_fuel_mass),
+            "species_pool_fuel_entry_count": int(len(fuel_rows)),
+        }
+        if allow_hidden_state:
+            payload["fire_states"] = [
+                {
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "fuel_remaining": int(max(0, _as_int(row.get("fuel_remaining", 0), 0))),
+                    "active": bool(row.get("active", False)),
+                }
+                for row in sorted(fire_rows, key=lambda item: str(item.get("target_id", "")))[:256]
+            ]
+            payload["species_pool_rows"] = [
+                {
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "material_id": str(row.get("material_id", "")).strip() or None,
+                    "mass_value": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+                }
+                for row in sorted(fuel_rows, key=lambda item: (str(item.get("target_id", "")), str(item.get("material_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.chem.energy_output":
+        combustion_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("combustion_event_rows") or [])
+            if isinstance(item, dict)
+        ]
+        total_chemical = int(sum(max(0, _as_int(row.get("chemical_energy_in", 0), 0)) for row in combustion_rows))
+        total_thermal = int(sum(max(0, _as_int(row.get("thermal_energy_out", 0), 0)) for row in combustion_rows))
+        total_electrical = int(sum(max(0, _as_int(row.get("electrical_energy_out", 0), 0)) for row in combustion_rows))
+        total_irreversibility = int(sum(max(0, _as_int(row.get("irreversibility_loss", 0), 0)) for row in combustion_rows))
+        payload = {
+            "combustion_event_count": int(len(combustion_rows)),
+            "total_chemical_energy_in": int(total_chemical),
+            "total_thermal_energy_out": int(total_thermal),
+            "total_electrical_energy_out": int(total_electrical),
+            "total_irreversibility_loss": int(total_irreversibility),
+            "combustion_hash_chain": str((dict(state or {})).get("combustion_hash_chain", "")).strip() or None,
+            "energy_ledger_hash_chain": str((dict(state or {})).get("energy_ledger_hash_chain", "")).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "reaction_id": str(row.get("reaction_id", "")).strip() or None,
+                    "chemical_energy_in": int(max(0, _as_int(row.get("chemical_energy_in", 0), 0))),
+                    "thermal_energy_out": int(max(0, _as_int(row.get("thermal_energy_out", 0), 0))),
+                    "electrical_energy_out": int(max(0, _as_int(row.get("electrical_energy_out", 0), 0))),
+                }
+                for row in sorted(combustion_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.chem.emissions":
+        emission_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("combustion_emission_rows") or (dict(state or {})).get("chem_emission_pool_rows") or [])
+            if isinstance(item, dict)
+        ]
+        by_material: Dict[str, int] = {}
+        for row in emission_rows:
+            material_id = str(row.get("material_id", "")).strip() or "material.pollutant_coarse_stub"
+            by_material[material_id] = _as_int(by_material.get(material_id, 0), 0) + int(max(0, _as_int(row.get("mass_value", 0), 0)))
+        payload = {
+            "emission_event_count": int(len(emission_rows)),
+            "total_emission_mass": int(sum(int(value) for value in by_material.values())),
+            "material_totals": dict((key, int(by_material[key])) for key in sorted(by_material.keys())),
+            "emission_hash_chain": str((dict(state or {})).get("emission_hash_chain", "")).strip() or None,
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "material_id": str(row.get("material_id", "")).strip() or None,
+                    "mass_value": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+                    "source_reaction_id": str(row.get("source_reaction_id", "")).strip() or None,
+                }
+                for row in sorted(emission_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
+            ]
+        return payload
+    if section_id == "section.chem.efficiency":
+        combustion_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("combustion_event_rows") or [])
+            if isinstance(item, dict)
+        ]
+        eff_values = [int(max(0, min(1000, _as_int(row.get("efficiency_permille", 0), 0)))) for row in combustion_rows]
+        low_eff_threshold = int(max(0, _as_int(request.get("low_eff_threshold_permille", 700), 700)))
+        low_eff_count = int(len([value for value in eff_values if value > 0 and value < low_eff_threshold]))
+        payload = {
+            "efficiency_sample_count": int(len(eff_values)),
+            "avg_efficiency_permille": int(sum(eff_values) // len(eff_values)) if eff_values else 0,
+            "min_efficiency_permille": int(min(eff_values)) if eff_values else 0,
+            "max_efficiency_permille": int(max(eff_values)) if eff_values else 0,
+            "low_efficiency_event_count": int(low_eff_count),
+            "low_efficiency_threshold_permille": int(low_eff_threshold),
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "target_id": str(row.get("target_id", "")).strip() or None,
+                    "reaction_id": str(row.get("reaction_id", "")).strip() or None,
+                    "efficiency_permille": int(max(0, min(1000, _as_int(row.get("efficiency_permille", 0), 0)))),
+                    "irreversibility_loss": int(max(0, _as_int(row.get("irreversibility_loss", 0), 0))),
+                }
+                for row in sorted(combustion_rows, key=lambda item: (int(_as_int(item.get("tick", 0), 0)), str(item.get("event_id", ""))))[:256]
             ]
         return payload
     if section_id == "section.signal.inbox_summary":

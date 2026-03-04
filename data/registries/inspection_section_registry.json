@@ -956,6 +956,58 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.chem.fuel_levels",
+        "title": "Combustion Fuel Levels",
+        "data": {
+          "data_kind": "chem_fuel_levels"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.chem.energy_output",
+        "title": "Combustion Energy Output",
+        "data": {
+          "data_kind": "chem_energy_output"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.chem.emissions",
+        "title": "Combustion Emissions",
+        "data": {
+          "data_kind": "chem_emissions"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.chem.efficiency",
+        "title": "Combustion Efficiency",
+        "data": {
+          "data_kind": "chem_efficiency"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.micro_parts_summary",
         "title": "Micro Parts Summary",
         "data": {
