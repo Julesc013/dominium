@@ -14,7 +14,12 @@ _REQUIRED_CONTRACTS = {
     ("energy_coupling", "ELEC", "THERM", "energy_transform"),
     ("energy_coupling", "FIELD", "THERM", "constitutive_model"),
     ("force_coupling", "THERM", "MECH", "constitutive_model"),
+    ("force_coupling", "FIELD", "MOB", "field_policy"),
     ("info_coupling", "SIG", "SIG", "signal_policy"),
+    ("force_coupling", "PHYS", "MOB", "constitutive_model"),
+    ("energy_coupling", "FLUID", "THERM", "constitutive_model"),
+    ("safety_coupling", "FLUID", "INT", "constitutive_model"),
+    ("force_coupling", "FLUID", "MECH", "constitutive_model"),
 }
 
 
@@ -55,4 +60,3 @@ def run(repo_root: str):
         tokens = ["{}:{}->{} ({})".format(*row) for row in missing]
         return {"status": "fail", "message": "missing baseline coupling declarations: {}".format(",".join(tokens))}
     return {"status": "pass", "message": "baseline coupling contracts present"}
-

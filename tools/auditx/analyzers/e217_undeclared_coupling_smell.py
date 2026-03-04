@@ -15,7 +15,12 @@ _REQUIRED_CONTRACTS = (
     ("energy_coupling", "ELEC", "THERM", "energy_transform"),
     ("energy_coupling", "FIELD", "THERM", "constitutive_model"),
     ("force_coupling", "THERM", "MECH", "constitutive_model"),
+    ("force_coupling", "FIELD", "MOB", "field_policy"),
     ("info_coupling", "SIG", "SIG", "signal_policy"),
+    ("force_coupling", "PHYS", "MOB", "constitutive_model"),
+    ("energy_coupling", "FLUID", "THERM", "constitutive_model"),
+    ("safety_coupling", "FLUID", "INT", "constitutive_model"),
+    ("force_coupling", "FLUID", "MECH", "constitutive_model"),
 )
 _CROSS_DOMAIN_PATTERNS_BY_PREFIX = {
     "src/electric/": (
@@ -44,6 +49,14 @@ _CROSS_DOMAIN_PATTERNS_BY_PREFIX = {
         re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+    ),
+    "src/fluid/": (
+        re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bint_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']int_", re.IGNORECASE),
         re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
     ),
 }
@@ -118,15 +131,15 @@ def run(graph, repo_root, changed_files=None):
             make_finding(
                 analyzer_id=ANALYZER_ID,
                 category="architecture.undeclared_coupling_smell",
-                severity="RISK",
-                confidence=0.9,
+                severity="VIOLATION",
+                confidence=0.95,
                 file_path=_COUPLING_REGISTRY_REL,
                 line=1,
                 evidence=[
                     "required baseline coupling contract missing",
                     "{}:{}->{} ({})".format(contract[0], contract[1], contract[2], contract[3]),
                 ],
-                suggested_classification="NEEDS_REVIEW",
+                suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-COUPLING-CONTRACT-REQUIRED", "INV-NO-UNDECLARED-COUPLING"],
                 related_paths=[_COUPLING_REGISTRY_REL],
@@ -137,7 +150,12 @@ def run(graph, repo_root, changed_files=None):
         "transform.electrical_to_thermal",
         "model.phys_irradiance_heating_stub",
         "model.mech.fatigue.default",
+        "field.profile_defined",
         "belief.default",
+        "model.phys_gravity_force",
+        "model.fluid_heat_exchanger_stub",
+        "model.fluid_leak_flood_stub",
+        "model.fluid_pressure_load_stub",
     ):
         if mechanism_id in declared_mechanisms:
             continue
@@ -145,12 +163,12 @@ def run(graph, repo_root, changed_files=None):
             make_finding(
                 analyzer_id=ANALYZER_ID,
                 category="architecture.undeclared_coupling_smell",
-                severity="RISK",
-                confidence=0.87,
+                severity="VIOLATION",
+                confidence=0.92,
                 file_path=_COUPLING_REGISTRY_REL,
                 line=1,
                 evidence=["baseline coupling mechanism missing", mechanism_id],
-                suggested_classification="NEEDS_REVIEW",
+                suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-NO-UNDECLARED-COUPLING"],
                 related_paths=[_COUPLING_REGISTRY_REL],

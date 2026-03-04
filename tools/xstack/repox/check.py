@@ -344,6 +344,7 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-LOSS-MUST-DECLARE-TARGET",
     "INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
     "INV-TIER-CONTRACT-REQUIRED",
+    "INV-COST-MODEL-REQUIRED",
     "INV-COUPLING-CONTRACT-REQUIRED",
     "INV-EXPLAIN-CONTRACT-REQUIRED",
     "INV-NO-UNDECLARED-COUPLING",
@@ -360,6 +361,14 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DIRECT-ENERGY-MUTATION",
     "INV-ENTROPY-UPDATE-THROUGH-ENGINE",
     "INV-NO-SILENT-EFFICIENCY-DROP",
+    "INV-FLUID-USES-BUNDLE",
+    "INV-FLUID-SAFETY-THROUGH-PATTERNS",
+    "INV-NO-ADHOC-PRESSURE-LOGIC",
+    "INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS",
+    "INV-NO-DIRECT-MASS-MUTATION",
+    "INV-FLUID-BUDGETED",
+    "INV-FLUID-DEGRADE-LOGGED",
+    "INV-ALL-FAILURES-LOGGED",
 )
 
 PLATFORM_ABSTRACTION_FILES = (
@@ -10792,6 +10801,7 @@ def _append_meta_contract_invariant_findings(
 ) -> None:
     severity = _strict_only_severity(profile)
     tier_rule_id = "INV-TIER-CONTRACT-REQUIRED"
+    cost_rule_id = "INV-COST-MODEL-REQUIRED"
     coupling_rule_id = "INV-COUPLING-CONTRACT-REQUIRED"
     explain_rule_id = "INV-EXPLAIN-CONTRACT-REQUIRED"
     undeclared_rule_id = "INV-NO-UNDECLARED-COUPLING"
@@ -10819,7 +10829,7 @@ def _append_meta_contract_invariant_findings(
             )
         )
     else:
-        required_subsystems = {"ELEC", "THERM", "MOB", "SIG", "PHYS"}
+        required_subsystems = {"ELEC", "THERM", "MOB", "SIG", "PHYS", "FLUID"}
         declared_subsystems = set()
         for row in tier_rows:
             if not isinstance(row, dict):
@@ -10839,6 +10849,31 @@ def _append_meta_contract_invariant_findings(
                     )
                 )
                 break
+            if not str(row.get("cost_model_id", "")).strip():
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=tier_rel,
+                        line_number=1,
+                        snippet=subsystem_id or "cost_model_id",
+                        message="tier contract rows must declare cost_model_id for deterministic budget arbitration",
+                        rule_id=cost_rule_id,
+                    )
+                )
+                break
+            supported_tiers = [str(token).strip() for token in list(row.get("supported_tiers") or []) if str(token).strip()]
+            micro_requirements = dict(row.get("micro_roi_requirements") or {}) if isinstance(row.get("micro_roi_requirements"), dict) else {}
+            if "micro" in supported_tiers and (not micro_requirements):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=tier_rel,
+                        line_number=1,
+                        snippet=subsystem_id or "micro_roi_requirements",
+                        message="micro-capable tier contracts should declare micro_roi_requirements",
+                        rule_id=tier_rule_id,
+                    )
+                )
         for subsystem_id in sorted(required_subsystems - declared_subsystems):
             findings.append(
                 _finding(
@@ -10897,7 +10932,12 @@ def _append_meta_contract_invariant_findings(
             ("energy_coupling", "ELEC", "THERM", "energy_transform"),
             ("energy_coupling", "FIELD", "THERM", "constitutive_model"),
             ("force_coupling", "THERM", "MECH", "constitutive_model"),
+            ("force_coupling", "FIELD", "MOB", "field_policy"),
             ("info_coupling", "SIG", "SIG", "signal_policy"),
+            ("force_coupling", "PHYS", "MOB", "constitutive_model"),
+            ("energy_coupling", "FLUID", "THERM", "constitutive_model"),
+            ("safety_coupling", "FLUID", "INT", "constitutive_model"),
+            ("force_coupling", "FLUID", "MECH", "constitutive_model"),
         )
         for contract in required_contracts:
             if contract in declared_contracts:
@@ -10917,7 +10957,12 @@ def _append_meta_contract_invariant_findings(
             "transform.electrical_to_thermal",
             "model.phys_irradiance_heating_stub",
             "model.mech.fatigue.default",
+            "field.profile_defined",
             "belief.default",
+            "model.phys_gravity_force",
+            "model.fluid_heat_exchanger_stub",
+            "model.fluid_leak_flood_stub",
+            "model.fluid_pressure_load_stub",
         ):
             if mechanism_id in declared_mechanisms:
                 continue
@@ -10959,6 +11004,14 @@ def _append_meta_contract_invariant_findings(
                 re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+            ),
+            "src/fluid/": (
+                re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bint_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']int_", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
             ),
         }
@@ -11027,10 +11080,26 @@ def _append_meta_contract_invariant_findings(
     else:
         required_event_ids = {
             "elec.trip",
+            "elec.fault",
             "therm.overheat",
+            "therm.fire",
+            "therm.runaway",
             "mob.derailment",
+            "mob.collision",
+            "mob.signal_violation",
             "sig.delivery_loss",
+            "sig.jamming",
+            "sig.decrypt_denied",
+            "sig.trust_update",
             "mech.fracture",
+            "phys.exception_event",
+            "phys.energy_violation",
+            "phys.momentum_violation",
+            "fluid.leak",
+            "fluid.relief",
+            "fluid.overpressure",
+            "fluid.cavitation",
+            "fluid.burst",
         }
         declared_event_ids = set()
         for row in explain_rows:
@@ -14845,6 +14914,491 @@ def _append_thermal_invariant_findings(
             break
 
 
+def _append_fluid_constitution_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    bundle_rule_id = "INV-FLUID-USES-BUNDLE"
+    safety_rule_id = "INV-FLUID-SAFETY-THROUGH-PATTERNS"
+    pressure_rule_id = "INV-NO-ADHOC-PRESSURE-LOGIC"
+
+    bundle_rel = "data/registries/quantity_bundle_registry.json"
+    quantity_rel = "data/registries/quantity_registry.json"
+    bundle_payload, bundle_err = _load_json_object(repo_root, bundle_rel)
+    quantity_payload, quantity_err = _load_json_object(repo_root, quantity_rel)
+
+    bundle_rows = list((dict(bundle_payload.get("record") or {})).get("quantity_bundles") or [])
+    fluid_bundle_row = next(
+        (
+            row
+            for row in bundle_rows
+            if isinstance(row, dict) and str(row.get("bundle_id", "")).strip() == "bundle.fluid_basic"
+        ),
+        {},
+    )
+    if bundle_err or not fluid_bundle_row:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=bundle_rel,
+                line_number=1,
+                snippet="bundle.fluid_basic",
+                message="FLUID substrate requires canonical quantity bundle declaration",
+                rule_id=bundle_rule_id,
+            )
+        )
+    else:
+        quantity_ids = [str(token).strip() for token in list(fluid_bundle_row.get("quantity_ids") or []) if str(token).strip()]
+        for quantity_id in ("quantity.mass_flow", "quantity.pressure_head"):
+            if quantity_id in quantity_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=bundle_rel,
+                    line_number=1,
+                    snippet=quantity_id,
+                    message="bundle.fluid_basic must include canonical FLUID quantities",
+                    rule_id=bundle_rule_id,
+                )
+            )
+
+    quantity_rows = list((dict(quantity_payload.get("record") or {})).get("quantities") or []) if not quantity_err else []
+    declared_quantities = set(
+        str(row.get("quantity_id", "")).strip()
+        for row in quantity_rows
+        if isinstance(row, dict) and str(row.get("quantity_id", "")).strip()
+    )
+    for quantity_id in ("quantity.mass_flow", "quantity.pressure_head"):
+        if quantity_id in declared_quantities:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=quantity_rel,
+                line_number=1,
+                snippet=quantity_id,
+                message="canonical FLUID quantity id is missing from quantity_registry",
+                rule_id=bundle_rule_id,
+            )
+        )
+
+    safety_rel = "data/registries/safety_pattern_registry.json"
+    safety_payload, safety_err = _load_json_object(repo_root, safety_rel)
+    safety_rows = list((dict(safety_payload.get("record") or {})).get("safety_patterns") or [])
+    declared_patterns = set(
+        str(row.get("pattern_id", "")).strip()
+        for row in safety_rows
+        if isinstance(row, dict) and str(row.get("pattern_id", "")).strip()
+    )
+    required_patterns = ("safety.relief_pressure", "safety.burst_disk", "safety.fail_safe_stop", "safety.loto_basic")
+    if safety_err or not declared_patterns:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=safety_rel,
+                line_number=1,
+                snippet="safety_patterns",
+                message="safety pattern registry missing/invalid; FLUID protection pattern coverage cannot be verified",
+                rule_id=safety_rule_id,
+            )
+        )
+    else:
+        for pattern_id in required_patterns:
+            if pattern_id in declared_patterns:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=safety_rel,
+                    line_number=1,
+                    snippet=pattern_id,
+                    message="required FLUID safety pattern is missing",
+                    rule_id=safety_rule_id,
+                )
+            )
+
+    pressure_patterns = (
+        re.compile(r"\bpressure_(?:kpa|pa|head|ratio|delta)\b\s*=", re.IGNORECASE),
+        re.compile(r"\bcalculate_pressure\b", re.IGNORECASE),
+        re.compile(r"\bsolve_pressure\b", re.IGNORECASE),
+        re.compile(r"\bvalve_position\b\s*=\s*", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/fluid/", "src/interior/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        "src/interior/compartment_flow_engine.py",
+        "src/interior/compartment_flow_builder.py",
+        "src/models/model_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not any(rel_norm.startswith(prefix) for prefix in scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in pressure_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="pressure/valve logic must be model-driven and process-mediated; ad-hoc writes are forbidden",
+                    rule_id=pressure_rule_id,
+                )
+            )
+            break
+
+
+def _append_fluid_containment_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    failure_rule_id = "INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS"
+    mass_rule_id = "INV-NO-DIRECT-MASS-MUTATION"
+
+    required_paths = (
+        "schema/fluid/pressure_vessel_state.schema",
+        "schema/fluid/leak_state.schema",
+        "schema/fluid/burst_event.schema",
+        "schemas/pressure_vessel_state.schema.json",
+        "schemas/leak_state.schema.json",
+        "schemas/burst_event.schema.json",
+        "data/registries/fluid_failure_policy_registry.json",
+    )
+    for rel_path in required_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="FLUID-2 containment contract file is missing",
+                rule_id=failure_rule_id,
+            )
+        )
+
+    safety_rel = "data/registries/safety_pattern_registry.json"
+    safety_payload, safety_err = _load_json_object(repo_root, safety_rel)
+    safety_rows = list((dict(safety_payload.get("record") or {})).get("safety_patterns") or [])
+    safety_ids = set(
+        str(row.get("pattern_id", "")).strip()
+        for row in safety_rows
+        if isinstance(row, dict) and str(row.get("pattern_id", "")).strip()
+    )
+    for pattern_id in ("safety.relief_pressure", "safety.burst_disk"):
+        if (not safety_err) and pattern_id in safety_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=safety_rel,
+                line_number=1,
+                snippet=pattern_id,
+                message="FLUID containment requires registered safety pattern coverage for relief and burst",
+                rule_id=failure_rule_id,
+            )
+        )
+
+    burst_patterns = (
+        re.compile(r"\bburst_threshold\b\s*=", re.IGNORECASE),
+        re.compile(r"\bhazard\.fluid\.burst\b", re.IGNORECASE),
+        re.compile(r"\bprocess\.burst_event\b", re.IGNORECASE),
+    )
+    mass_write_patterns = (
+        re.compile(r"\bstored_mass\b\s*=", re.IGNORECASE),
+        re.compile(r"\bwater_volume\b\s*=", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/fluid/", "src/interior/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_failure_files = {
+        "src/fluid/network/fluid_network_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py",
+    }
+    allowed_mass_files = {
+        "src/fluid/network/fluid_network_engine.py",
+        "src/interior/compartment_flow_engine.py",
+        "src/interior/compartment_flow_builder.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not any(rel_norm.startswith(prefix) for prefix in scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm not in allowed_failure_files:
+            for line_no, line in _iter_lines(repo_root, rel_norm):
+                snippet = str(line).strip()
+                if (not snippet) or snippet.startswith("#"):
+                    continue
+                if not any(pattern.search(snippet) for pattern in burst_patterns):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="FLUID burst/leak failure logic must remain in safety/process pathways",
+                        rule_id=failure_rule_id,
+                    )
+                )
+                break
+        if rel_norm not in allowed_mass_files:
+            for line_no, line in _iter_lines(repo_root, rel_norm):
+                snippet = str(line).strip()
+                if (not snippet) or snippet.startswith("#"):
+                    continue
+                if not any(pattern.search(snippet) for pattern in mass_write_patterns):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                    message="direct fluid/interior mass writes are forbidden outside canonical process/runtime files",
+                    rule_id=mass_rule_id,
+                )
+            )
+            break
+
+
+def _append_fluid_envelope_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    budget_rule_id = "INV-FLUID-BUDGETED"
+    degrade_rule_id = "INV-FLUID-DEGRADE-LOGGED"
+    failures_rule_id = "INV-ALL-FAILURES-LOGGED"
+
+    engine_rel = "src/fluid/network/fluid_network_engine.py"
+    stress_tool_rel = "tools/fluid/tool_run_fluid_stress.py"
+    replay_tool_rel = "tools/fluid/tool_replay_fluid_window.py"
+    scenario_tool_rel = "tools/fluid/tool_generate_fluid_stress.py"
+    regression_rel = "data/regression/fluid_full_baseline.json"
+
+    for rel_path in (scenario_tool_rel, stress_tool_rel, replay_tool_rel):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="FLUID-3 stress envelope requires deterministic scenario/run/replay toolchain files",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    engine_text = _file_text(repo_root, engine_rel)
+    stress_text = _file_text(repo_root, stress_tool_rel)
+    replay_text = _file_text(repo_root, replay_tool_rel)
+
+    required_budget_tokens = (
+        "solve_tick_stride",
+        "downgrade_subgraph_modulo",
+        "max_leak_evaluations_per_tick",
+        "degrade.fluid.tick_bucket",
+        "degrade.fluid.subgraph_f0_budget",
+    )
+    for token in required_budget_tokens:
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message="FLUID solver must expose deterministic budget/degrade controls",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    for token in (
+        "run_fluid_stress_scenario(",
+        "max_cost_units_per_tick",
+        "max_model_cost_units_per_network",
+        "max_processed_edges_per_network",
+        "max_failure_events_per_tick",
+    ):
+        if token in stress_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="FLUID stress harness must enforce explicit per-tick budget and bounded evaluation inputs",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    for token in (
+        "degrade.fluid.tick_bucket",
+        "degrade.fluid.subgraph_f0_budget",
+        "degrade.fluid.defer_noncritical_models",
+        "degrade.fluid.leak_eval_cap",
+        "degradation_event_rows_all",
+        "fluid_degradation_event_rows",
+    ):
+        if (token in engine_text) or (token in stress_text):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="FLUID degradation pathways must be explicit and logged with deterministic ordering",
+                rule_id=degrade_rule_id,
+            )
+        )
+
+    if "all_failures_logged" not in stress_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet="all_failures_logged",
+                message="FLUID stress harness must assert and report failure logging completeness",
+                rule_id=failures_rule_id,
+            )
+        )
+
+    for token in (
+        "relief_event_rows",
+        "leak_event_rows",
+        "burst_event_rows",
+        "safety.relief_pressure",
+        "safety.burst_disk",
+    ):
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message="FLUID containment failures must emit explicit relief/leak/burst records and safety events",
+                rule_id=failures_rule_id,
+            )
+        )
+
+    for token in (
+        "proof_hash_summary",
+        "fluid_flow_hash_chain",
+        "leak_hash_chain",
+        "burst_hash_chain",
+        "relief_event_hash_chain",
+    ):
+        if (token in stress_text) or (token in replay_text):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="FLUID proof/replay envelope must include deterministic flow/failure hash chains",
+                rule_id=failures_rule_id,
+            )
+        )
+
+    regression_payload, regression_err = _load_json_object(repo_root, regression_rel)
+    if regression_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=regression_rel,
+                message="FLUID regression lock is required for stress/proof envelope updates",
+                rule_id=failures_rule_id,
+            )
+        )
+        return
+    required_fields = (
+        "baseline_id",
+        "schema_version",
+        "description",
+        "fixed_seed_scenario",
+        "pattern_hashes",
+        "proof_hashes",
+        "update_policy",
+        "deterministic_fingerprint",
+    )
+    for token in required_fields:
+        if token in regression_payload:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=token,
+                message="FLUID regression lock missing required baseline field",
+                rule_id=failures_rule_id,
+            )
+        )
+    update_policy = dict(regression_payload.get("update_policy") or {})
+    if str(update_policy.get("required_commit_tag", "")).strip() != "FLUID-REGRESSION-UPDATE":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="required_commit_tag",
+                message="FLUID regression lock updates must require FLUID-REGRESSION-UPDATE tag",
+                rule_id=failures_rule_id,
+            )
+        )
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -16174,6 +16728,21 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_thermal_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_fluid_constitution_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_fluid_containment_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_fluid_envelope_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
