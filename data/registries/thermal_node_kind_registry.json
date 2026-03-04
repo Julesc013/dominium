@@ -1,0 +1,66 @@
+{
+  "schema_id": "dominium.registry.thermal_node_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.thermal_node_kind_registry",
+    "registry_version": "1.0.0",
+    "thermal_node_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "thermal.node.thermal_mass",
+        "description": "Thermal mass node with heat capacity and local energy store.",
+        "tags": [
+          "thermal",
+          "mass"
+        ],
+        "deterministic_fingerprint": "a9011fbb97d5761f987b9893d0512ddd5e4fa2c8d8b8c37e2961f4cd743fc42f",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "thermal.node.source",
+        "description": "Thermal source node (heater, combustion, electrical dissipation sink).",
+        "tags": [
+          "thermal",
+          "source"
+        ],
+        "deterministic_fingerprint": "c8dfb6008279c4c2184fdb2d1ddf06dd341f27e23f68d6eea2572e95f80e9a07",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "thermal.node.sink",
+        "description": "Thermal sink node (ambient exchange or cooling sink).",
+        "tags": [
+          "thermal",
+          "sink"
+        ],
+        "deterministic_fingerprint": "14f56512bcf2f8d2f5421184c70d53f0a45cd9fc2844f1c30312c5921a8b10e6",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "thermal.node.radiator",
+        "description": "Radiator node with enhanced environmental heat exchange.",
+        "tags": [
+          "thermal",
+          "radiator"
+        ],
+        "deterministic_fingerprint": "d7c5f6a7ea5a6ab40a7f4d8f8dfac52e0c8aa84386e29e18e3069074f44fd535",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "thermal.node.heat_exchanger_stub",
+        "description": "Heat-exchanger junction stub for THERM-2 coupling.",
+        "tags": [
+          "thermal",
+          "exchange"
+        ],
+        "deterministic_fingerprint": "65d78bc05ee5e450c8ab2b278d001a87ad18847f40d84b7d5bd2f78aef8cbde5",
+        "extensions": {}
+      }
+    ],
+    "extensions": {}
+  }
+}

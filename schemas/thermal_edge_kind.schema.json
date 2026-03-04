@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Thermal Edge Kind Schema",
+  "version": "1.0.0",
+  "description": "Registry-driven THERM thermal edge-kind row.",
+  "x-doc-ref": [
+    "docs/thermal/THERMAL_CONSTITUTION.md",
+    "docs/audit/THERMAL_CONSTITUTION_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_kind_id",
+    "description",
+    "tags",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_kind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_kind_id": "thermal.edge.conductive_stub",
+      "description": "Stub conductive thermal edge.",
+      "tags": [
+        "thermal",
+        "conductive"
+      ],
+      "deterministic_fingerprint": "88ee8ef0d3cdb488f8dd5938f3f17018e3edcf5b04cdac2711247c70a44070ca",
+      "extensions": {}
+    }
+  ]
+}
+

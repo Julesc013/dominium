@@ -1,0 +1,78 @@
+{
+  "schema_id": "dominium.registry.thermal_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.thermal_policy_registry",
+    "registry_version": "1.0.0",
+    "thermal_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "therm.policy.default",
+        "schema_ref": "dominium.schema.thermal.thermal_policy@1.0.0",
+        "extensions": {
+          "tier_selection": {
+            "default_tier": "t0",
+            "allow_t1": true,
+            "allow_t2": false
+          },
+          "update_frequency": {
+            "t0_ticks": 1,
+            "t1_ticks": 2,
+            "t2_ticks": 8
+          },
+          "degrade_rules": [
+            "reduce_update_frequency",
+            "fallback_to_t0",
+            "defer_noncritical_model_outputs"
+          ],
+          "deterministic_fingerprint": "140baf0abfa5a306f610f4dd6156bc1f263f6d79f76688cdf56d37e9022cda67"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "therm.policy.rank_strict",
+        "schema_ref": "dominium.schema.thermal.thermal_policy@1.0.0",
+        "extensions": {
+          "tier_selection": {
+            "default_tier": "t0",
+            "allow_t1": true,
+            "allow_t2": false
+          },
+          "update_frequency": {
+            "t0_ticks": 1,
+            "t1_ticks": 1,
+            "t2_ticks": 8
+          },
+          "degrade_rules": [
+            "reduce_update_frequency",
+            "fallback_to_t0"
+          ],
+          "deterministic_fingerprint": "6b8f7d225d3f2a3aa9b507f3de0702bd1a17ab7499a745bc081413086198ecf7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "therm.policy.none",
+        "schema_ref": "dominium.schema.thermal.thermal_policy@1.0.0",
+        "extensions": {
+          "tier_selection": {
+            "default_tier": "t0",
+            "allow_t1": false,
+            "allow_t2": false
+          },
+          "update_frequency": {
+            "t0_ticks": 2147483647,
+            "t1_ticks": 2147483647,
+            "t2_ticks": 2147483647
+          },
+          "degrade_rules": [
+            "no_op"
+          ],
+          "deterministic_fingerprint": "0232fa25438e49d95257768fb8ddde5d36c16ab4de5d4f4d67c3c04f9c4be7ea"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
+
