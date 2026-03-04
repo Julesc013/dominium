@@ -7,66 +7,10 @@
     "provenance_classifications": [
       {
         "schema_version": "1.0.0",
-        "artifact_type_id": "artifact.energy_ledger_entry",
-        "classification": "canonical",
-        "compaction_allowed": false,
-        "deterministic_fingerprint": "d64e067af6fbce5f470a91f3435de2c08fcd6eed54af7583a69ae9259f6be2b2",
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.boundary_flux_event",
         "classification": "canonical",
         "compaction_allowed": false,
-        "deterministic_fingerprint": "539970f13dc60bf663f4786712a4de23898e2b16771091d41976af8ebd1b1027",
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "artifact_type_id": "artifact.time_adjust_event",
-        "classification": "canonical",
-        "compaction_allowed": false,
-        "deterministic_fingerprint": "d853f69512f39f8f8794f4ecf4946a74951e7d6366dec864ea0ca2f35365853a",
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "artifact_type_id": "artifact.fault_event",
-        "classification": "canonical",
-        "compaction_allowed": false,
-        "deterministic_fingerprint": "f23f087f8f738538f0602d3227f8f4376edc5d1b1d4aa90fc4ee6a9754f0f537",
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "artifact_type_id": "artifact.exception_event",
-        "classification": "canonical",
-        "compaction_allowed": false,
-        "deterministic_fingerprint": "7c0ac89a662d9f26a5ff8c310f523121159100fbef834a1e1fe94a426a542ff4",
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "artifact_type_id": "artifact.leak_event",
-        "classification": "canonical",
-        "compaction_allowed": false,
-        "deterministic_fingerprint": "e58eb8be2ddf3143b126d5f8e99aa9be397c6aa22bb2a59d6078b06abb0533f7",
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "artifact_type_id": "artifact.burst_event",
-        "classification": "canonical",
-        "compaction_allowed": false,
-        "deterministic_fingerprint": "6ed0d4a390f0c90ff9cd6e642f8187e5d3f4473a95f840df53da7ad6ff5537ab",
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
-        "artifact_type_id": "artifact.relief_event",
-        "classification": "canonical",
-        "compaction_allowed": false,
-        "deterministic_fingerprint": "c0da3c5982e49b9d0e4d6658a603a677ad2dcb5ca9b9ee0bf3659556002a2de9",
+        "deterministic_fingerprint": "c357b69341498fee02c3e4594ba397d973a0a7aa4f168a8ef75d1df9cd71ce56",
         "extensions": {}
       },
       {
@@ -74,7 +18,23 @@
         "artifact_type_id": "artifact.branch_event",
         "classification": "canonical",
         "compaction_allowed": false,
-        "deterministic_fingerprint": "62fa2d7f8f4f01695e8ad11f5f2dad1b42f0d663769412413a9d3f05309adf90",
+        "deterministic_fingerprint": "c3678371e41f7d3a78c9a55142f99a83a5ec235237b96606d67717cd0e528483",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.burst_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "27cf64a171712046584e7535e8e5266187259f43f28809d9bd1b4c655c74998f",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.communication",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "a528d97ffc8da825e5bb1051612052473ae4e7170d7132192160e5e92c8687f4",
         "extensions": {}
       },
       {
@@ -82,7 +42,55 @@
         "artifact_type_id": "artifact.compaction_marker",
         "classification": "canonical",
         "compaction_allowed": false,
-        "deterministic_fingerprint": "5de7d9918fdd292f3fd4f3f5bf3d73dc03f63958458afed31ff43f7f463220f5",
+        "deterministic_fingerprint": "bceaf62941c08e03aeaf3417e56543e5d5269ce98555a02ae822617561411c04",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.containment",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "cb64b11a846cef89259edb7d704c89861ac198522e072bb3a8337ed8c0d4b7bf",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.decision",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "8bb3b74317808499a67120b45892131416e4a13114d13de1e31eb799ffa2c905",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.energy_ledger_entry",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "04e15965e87532bade41e44d2ac05928d261c99d54b427abf3e0bf09ebaa772e",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.entropy_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "bea057bf1366dd6ccd99579778e15218122ad061ca81265e47884412f033ec46",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.entropy_reset_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "446ac8a2eeb8d986dab2de2c5bff11693230c2700b535ae3c50300fcc47aa1ad",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.exception_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "1898c1b45e774f11103e2a4335c0cf2c886189320cfe8b547ff2ab55e61c6198",
         "extensions": {}
       },
       {
@@ -90,7 +98,79 @@
         "artifact_type_id": "artifact.explain",
         "classification": "derived",
         "compaction_allowed": true,
-        "deterministic_fingerprint": "15e4d9da2eb4fa0be2332883e49e1a29ec77e7b55f19d779510294c5f8165167",
+        "deterministic_fingerprint": "04f7ad1c03e17e4edb919ad528801fecb5a7b73500efcab9755d3bc6f10afd14",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.elec_trip",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "1c38c5678bc7c114571e995d07a28437910050894f75f0539851d9eea94fc0ee",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_burst",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "cbffc0c3406360d52858e2b41846aed2a47cf64c5790141a8a5d18f4f6eac523",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_cavitation",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "16daf40f795b9b73fa070a18c81657912c3a83b8d0a6df55f9850b9af96e996c",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_leak",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "8ba9545f26e39d18095eba626319afbe0873379e84c1c7c6c0e3a8b963bc8e01",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.fluid_overpressure",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "c181dd01cc34d4107ac24e2e239eee74980407f09990f85e63593f29d89f563a",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.mech_fracture",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "43f7f8fd2a6861edd5e52a7355dc159f0a048e608fa017e0c8bc36ac10bed8f4",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.mob_derailment",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "07a1e058e86c956e8bb62f0a43617696a6b85219922318ce2a70b9aab7d832bd",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.sig_delivery_loss",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "5de283ea36deb8dc623a08ff5f14db5c697e28ff756c528c4cef91237fe1ffcd",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.therm_overheat",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "c4ebdfaf7c728777526cdd539c3070b3fe05d7e0860885131f27c8797e3e7ebe",
         "extensions": {}
       },
       {
@@ -98,7 +178,39 @@
         "artifact_type_id": "artifact.explain_artifact",
         "classification": "derived",
         "compaction_allowed": true,
-        "deterministic_fingerprint": "65f64fb4dbd42edaf75452e1adf31bc054b5f9ddbc65f2dcf3f164df5c77f257",
+        "deterministic_fingerprint": "00efa7273eebf222df94be54aef624c7102a30f2e6c3007dbe61fcf13de933ef",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fault_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "0742d78b092c5cb77c574d4c488b0ed672da30605e7e7ce9db6e4600ae3cb191",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fluid.burst_incident",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "f61148f71a4b95e9137a24393a138f25d465da1352b42cad80b480f14c69a9d6",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fluid.pressure_reading",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "3489a4e4c7e28bf210eeee070e95ef7ab9bfaa0754e625bc3e2851ba67829b70",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.fluid.relief_incident",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "cf0eabdf72baa75ee359a43d25066bcba08db039c97a6341fb866839f1de990d",
         "extensions": {}
       },
       {
@@ -106,7 +218,31 @@
         "artifact_type_id": "artifact.inspection_snapshot",
         "classification": "derived",
         "compaction_allowed": true,
-        "deterministic_fingerprint": "6f4d4e17928ab03f2a3fa9e02e08555a4d5dc3d779587e79ad4bc3f5034f3ffb",
+        "deterministic_fingerprint": "630a8bfdd6c6218afef2d6744c6549ee4e58d8038dff196cd00a75e20514615b",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.leak_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "6dab1aa42e90bb83193453a33f3016394c92ad2638b6a66acbeccce77accc909",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.maintenance",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "b405beeb5994fbde571decc6dc6a67850622b4ebd0474a2e2202afa17c8311d1",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.measurement",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "dc9b6bbd00d0efc1fb359f6ee253992b14dc6e7ee3c35513a5c6aa32566d556e",
         "extensions": {}
       },
       {
@@ -114,7 +250,55 @@
         "artifact_type_id": "artifact.model_evaluation_result",
         "classification": "derived",
         "compaction_allowed": true,
-        "deterministic_fingerprint": "e88f43af0e6c974296fba9b3374cbf4a99f333b6680d2f19142f8d6d17dc17cc",
+        "deterministic_fingerprint": "68211aa68568eb541ad2fc64f1fb95f3bbede7ed41b975a4ab216541ca462dc0",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.motion",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "5034fe01555c2fcc5bbee0a4c60bd3fa7e0ab1a7054ecf343bdf31e97482241e",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "843cd5131264ccb357651cdc028df7d1f98906ca3d6fc581384732cf8cd1dcb9",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.relief_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "e5bd139fe3f542ff4610a125dd55eb14cd4769fbd9544338337bd54c113cb347",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.time_adjust_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "bada0aab6ef7849eaba6e7ddec3c35284c0e92efd96c1a4f78905abed2ee318a",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.time_stamp",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "44fa1607c7ee8feead91903cfa26afaeaab382b6f2748c15b2e4ecb135068c00",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.transform",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "eb00c5cec20776337d69f2aaf018a0a11b79366f58f51f36c2b450d29d616220",
         "extensions": {}
       }
     ],

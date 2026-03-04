@@ -518,6 +518,20 @@
         "meso",
         "micro"
       ]
+    },
+    {
+      "series_id": "PROV",
+      "affordance_ids": [
+        "measurement_verification",
+        "time_synchronization",
+        "institutions_contracts",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
     }
   ]
 }
