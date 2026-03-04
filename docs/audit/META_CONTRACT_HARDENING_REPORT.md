@@ -127,6 +127,16 @@ Topology regeneration:
 - Result: FAIL
 - Notes: exited in `repox_runner` under `STRICT_DEEP`; failure class `STRUCTURAL` with pre-existing repo-wide structural/doc/ruleset drift in changed tree.
 
+5) RepoX FAST profile behavior check
+- Command: `python tools/xstack/repox/check.py --profile FAST`
+- Result: PASS
+- Notes: contract hard-gate invariants remain warn-only in FAST path.
+
+6) AuditX FAST profile behavior check
+- Command: `python tools/xstack/auditx/check.py --profile FAST`
+- Result: PASS
+- Notes: `promoted_blockers=0`; findings remained warn-only in FAST path.
+
 ## Readiness Checklist (Phase A2: Energy/Momentum Sweep)
 - [x] Domain coverage backfilled for Tier/Coupling/Explain contracts
 - [x] RepoX strict hard-gate rule IDs in place for contract governance
