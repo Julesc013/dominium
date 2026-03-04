@@ -113,7 +113,7 @@ Command:
 
 Result:
 
-- `refusal` due `INV-WORKTREE-HYGIENE` while generated audit/topology artifacts are uncommitted.
+- `pass` (`status=pass`, findings are warn-only in current repository baseline).
 - No CHEM-4-specific strict fail was introduced.
 
 ### AuditX STRICT
@@ -179,4 +179,4 @@ CHEM subsystem is hardened for POLL integration on:
 - emissions and reaction provenance chains
 - regression lock for long-horizon stability
 
-Open global blockers are outside scoped CHEM-4 deltas (RepoX worktree hygiene during in-flight artifact generation and pre-existing promoted AuditX `E179` findings).
+Open global blockers are outside scoped CHEM-4 deltas (pre-existing promoted AuditX `E179` findings).
