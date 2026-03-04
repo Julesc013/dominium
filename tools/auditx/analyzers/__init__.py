@@ -244,6 +244,14 @@ from analyzers import e215_entropy_bypass_smell
 from analyzers import e216_missing_tier_contract_smell
 from analyzers import e217_undeclared_coupling_smell
 from analyzers import e218_missing_explain_contract_smell
+from analyzers import e219_inline_pressure_smell
+from analyzers import e220_adhoc_valve_smell
+from analyzers import e221_inline_burst_logic_smell
+from analyzers import e222_direct_interior_mass_write_smell
+from analyzers import e223_unbudgeted_fluid_solve_smell
+from analyzers import e224_silent_leak_smell
+from analyzers import e225_infinite_leak_loop_smell
+from analyzers import e226_cost_model_missing_smell
 
 
 ANALYZERS = (
@@ -491,6 +499,14 @@ ANALYZERS = (
     e216_missing_tier_contract_smell,
     e217_undeclared_coupling_smell,
     e218_missing_explain_contract_smell,
+    e219_inline_pressure_smell,
+    e220_adhoc_valve_smell,
+    e221_inline_burst_logic_smell,
+    e222_direct_interior_mass_write_smell,
+    e223_unbudgeted_fluid_solve_smell,
+    e224_silent_leak_smell,
+    e225_infinite_leak_loop_smell,
+    e226_cost_model_missing_smell,
 )
 
 

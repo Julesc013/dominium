@@ -25,6 +25,24 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.elec.fault",
+        "event_kind_id": "elec.fault",
+        "explain_artifact_type_id": "artifact.explain.elec_fault",
+        "required_inputs": [
+          "artifact.decision",
+          "artifact.record",
+          "section.elec.fault_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.isolate.faulted_branch",
+          "hint.inspect.protection_chain",
+          "hint.verify.spec_rating"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.therm.overheat",
         "event_kind_id": "therm.overheat",
         "explain_artifact_type_id": "artifact.explain.therm_overheat",
@@ -37,6 +55,42 @@
           "hint.increase.cooling",
           "hint.reduce.heat_input",
           "hint.inspect.thermal_path"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.therm.fire",
+        "event_kind_id": "therm.fire",
+        "explain_artifact_type_id": "artifact.explain.therm_fire",
+        "required_inputs": [
+          "artifact.record",
+          "section.thermal.summary",
+          "section.thermal.fire_watch"
+        ],
+        "remediation_hint_keys": [
+          "hint.activate.suppression",
+          "hint.cut.fuel_source",
+          "hint.isolate.compartment"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.therm.runaway",
+        "event_kind_id": "therm.runaway",
+        "explain_artifact_type_id": "artifact.explain.therm_runaway",
+        "required_inputs": [
+          "artifact.record",
+          "section.thermal.summary",
+          "section.phys.entropy_effects"
+        ],
+        "remediation_hint_keys": [
+          "hint.emergency.cooling",
+          "hint.reduce.reaction_rate",
+          "hint.perform.shutdown"
         ],
         "deterministic_fingerprint": "",
         "extensions": {}
@@ -61,6 +115,42 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.mob.collision",
+        "event_kind_id": "mob.collision",
+        "explain_artifact_type_id": "artifact.explain.mob_collision",
+        "required_inputs": [
+          "artifact.decision",
+          "artifact.record",
+          "section.mob.network_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.speed",
+          "hint.recheck.signal_aspects",
+          "hint.clear.path_conflict"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.mob.signal_violation",
+        "event_kind_id": "mob.signal_violation",
+        "explain_artifact_type_id": "artifact.explain.mob_signal_violation",
+        "required_inputs": [
+          "artifact.decision",
+          "artifact.record",
+          "section.signal.route_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.enforce.interlocking",
+          "hint.audit.authority_grant",
+          "hint.reissue.route_clearance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.sig.delivery_loss",
         "event_kind_id": "sig.delivery_loss",
         "explain_artifact_type_id": "artifact.explain.sig_delivery_loss",
@@ -73,6 +163,60 @@
           "hint.retry.channel",
           "hint.verify.route_policy",
           "hint.increase.signal_quality"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.sig.jamming",
+        "event_kind_id": "sig.jamming",
+        "explain_artifact_type_id": "artifact.explain.sig_jamming",
+        "required_inputs": [
+          "artifact.communication",
+          "artifact.record",
+          "section.signal.channel_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.change.channel",
+          "hint.raise.signal_power",
+          "hint.relay.around_jam"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.sig.decrypt_denied",
+        "event_kind_id": "sig.decrypt_denied",
+        "explain_artifact_type_id": "artifact.explain.sig_decrypt_denied",
+        "required_inputs": [
+          "artifact.communication",
+          "artifact.record",
+          "section.inbox.acceptance_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.key_material",
+          "hint.retry.authorized_channel",
+          "hint.request.rekey"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.sig.trust_update",
+        "event_kind_id": "sig.trust_update",
+        "explain_artifact_type_id": "artifact.explain.sig_trust_update",
+        "required_inputs": [
+          "artifact.decision",
+          "artifact.record",
+          "section.trust.edges_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.provenance",
+          "hint.require.multi_source_confirmation",
+          "hint.audit.belief_policy"
         ],
         "deterministic_fingerprint": "",
         "extensions": {}
@@ -94,6 +238,160 @@
         ],
         "deterministic_fingerprint": "",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.fluid.leak",
+        "event_kind_id": "fluid.leak",
+        "explain_artifact_type_id": "artifact.explain.fluid_leak",
+        "required_inputs": [
+          "artifact.record",
+          "section.field.summary",
+          "section.interior.compartments"
+        ],
+        "remediation_hint_keys": [
+          "hint.close.valve",
+          "hint.isolate.section",
+          "hint.perform.maintenance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "FLUID0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.fluid.overpressure",
+        "event_kind_id": "fluid.overpressure",
+        "explain_artifact_type_id": "artifact.explain.fluid_overpressure",
+        "required_inputs": [
+          "artifact.record",
+          "section.field.summary",
+          "section.structural.summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.bleed.pressure",
+          "hint.enable.relief",
+          "hint.reduce.pump_speed"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "FLUID0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.fluid.relief",
+        "event_kind_id": "fluid.relief",
+        "explain_artifact_type_id": "artifact.explain.fluid_relief",
+        "required_inputs": [
+          "artifact.record",
+          "section.fluid.node_pressures",
+          "section.fluid.network_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.relief_setpoint",
+          "hint.reduce.pump_speed",
+          "hint.inspect.downstream_blockage"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-CONTRACT1-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.fluid.cavitation",
+        "event_kind_id": "fluid.cavitation",
+        "explain_artifact_type_id": "artifact.explain.fluid_cavitation",
+        "required_inputs": [
+          "artifact.record",
+          "section.field.summary",
+          "section.phys.entropy_effects"
+        ],
+        "remediation_hint_keys": [
+          "hint.raise.inlet_pressure",
+          "hint.reduce.flow_rate",
+          "hint.service.pump"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "FLUID0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.phys.exception_event",
+        "event_kind_id": "phys.exception_event",
+        "explain_artifact_type_id": "artifact.explain.phys_exception_event",
+        "required_inputs": [
+          "artifact.record",
+          "section.phys.momentum_summary",
+          "section.phys.kinetic_energy"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.physics_profile",
+          "hint.review.exception_reason",
+          "hint.verify.external_flux"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.phys.energy_violation",
+        "event_kind_id": "phys.energy_violation",
+        "explain_artifact_type_id": "artifact.explain.phys_energy_violation",
+        "required_inputs": [
+          "artifact.record",
+          "section.phys.kinetic_energy",
+          "section.field.summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.energy_transform",
+          "hint.review.boundary_flux",
+          "hint.check.ledger_tolerance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.phys.momentum_violation",
+        "event_kind_id": "phys.momentum_violation",
+        "explain_artifact_type_id": "artifact.explain.phys_momentum_violation",
+        "required_inputs": [
+          "artifact.record",
+          "section.phys.momentum_summary",
+          "section.field.gravity"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.external_impulse",
+          "hint.review.force_chain",
+          "hint.check.integration_order"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.fluid.burst",
+        "event_kind_id": "fluid.burst",
+        "explain_artifact_type_id": "artifact.explain.fluid_burst",
+        "required_inputs": [
+          "artifact.record",
+          "section.structural.summary",
+          "section.field.summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.shutdown.pump",
+          "hint.isolate.section",
+          "hint.replace.vessel"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "FLUID0-4"
+        }
       }
     ],
     "extensions": {
@@ -101,4 +399,3 @@
     }
   }
 }
-

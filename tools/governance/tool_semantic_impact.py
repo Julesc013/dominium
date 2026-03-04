@@ -59,6 +59,22 @@ EPISTEMIC_PREFIXES = (
 )
 
 SUITE_TO_TEST_IDS = {
+    "suite.contract.registry_hard_gate": (
+        "test_all_domains_have_tier_contract",
+        "test_all_couplings_declared",
+        "test_all_explain_contracts_present",
+        "test_contract_schema_valid",
+    ),
+    "suite.contract.explain_engine": (
+        "test_explain_artifact_deterministic",
+        "test_explain_redaction_policy",
+        "test_explain_artifact_generation_smoke",
+    ),
+    "suite.contract.tier_envelope": (
+        "test_cost_envelope_never_exceeded",
+        "test_T1_to_T0_downgrade_logged",
+        "test_fluid_degradation_order_deterministic",
+    ),
     "suite.compatx.strict": (
         "testx.compatx.schema_validate",
         "testx.lockfile.validate",
@@ -140,6 +156,11 @@ SUITE_TO_TEST_IDS = {
         "test_stress_ratio_calculation",
         "test_plastic_strain_accumulates",
     ),
+    "suite.domain.fluid": (
+        "test_fluid_profiles_registry_valid",
+        "test_fluid_null_boot_ok",
+        "test_fluid_contracts_present",
+    ),
 }
 
 DOMAIN_TO_SUITE_IDS = {
@@ -150,6 +171,7 @@ DOMAIN_TO_SUITE_IDS = {
     "PHYS": "suite.domain.phys",
     "FIELD": "suite.domain.field",
     "MECH": "suite.domain.mech",
+    "FLUID": "suite.domain.fluid",
 }
 
 
@@ -297,6 +319,8 @@ def _meta_contract_suites_for_path(repo_root: str, path: str) -> Set[str]:
     record = dict(payload.get("record") or {}) if isinstance(payload, dict) else {}
 
     if rel == "data/registries/tier_contract_registry.json":
+        out.add("suite.contract.registry_hard_gate")
+        out.add("suite.contract.tier_envelope")
         rows = list(record.get("tier_contracts") or payload.get("tier_contracts") or [])
         for row in rows:
             if not isinstance(row, dict):
@@ -308,6 +332,7 @@ def _meta_contract_suites_for_path(repo_root: str, path: str) -> Set[str]:
         return out
 
     if rel == "data/registries/coupling_contract_registry.json":
+        out.add("suite.contract.registry_hard_gate")
         rows = list(record.get("coupling_contracts") or payload.get("coupling_contracts") or [])
         for row in rows:
             if not isinstance(row, dict):
@@ -320,6 +345,8 @@ def _meta_contract_suites_for_path(repo_root: str, path: str) -> Set[str]:
         return out
 
     if rel == "data/registries/explain_contract_registry.json":
+        out.add("suite.contract.registry_hard_gate")
+        out.add("suite.contract.explain_engine")
         rows = list(record.get("explain_contracts") or payload.get("explain_contracts") or [])
         for row in rows:
             if not isinstance(row, dict):

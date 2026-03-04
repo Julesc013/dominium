@@ -175,6 +175,188 @@ def _artifact_refs_from_rows(rows: object, *, artifact_kind: str, max_items: int
     return _stable_unique(out, max_items=max_items)
 
 
+def _sorted_mapping_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: List[dict] = []
+    for row in rows:
+        if isinstance(row, Mapping):
+            out.append(dict(row))
+    return sorted(
+        out,
+        key=lambda item: (
+            str(item.get("event_id", "")),
+            str(item.get("decision_id", "")),
+            str(item.get("result_id", "")),
+            canonical_sha256(_canon(item)),
+        ),
+    )
+
+
+def _event_cause_tokens(
+    *,
+    rows: object,
+    cause_prefix: str,
+    key_candidates: Iterable[str],
+    max_items: int,
+) -> List[str]:
+    bound = int(max(1, _as_int(max_items, _DEFAULT_BOUND)))
+    out: List[str] = []
+    for row in _sorted_mapping_rows(rows):
+        for key in key_candidates:
+            value = str(row.get(str(key), "")).strip()
+            if not value:
+                continue
+            token_hash = canonical_sha256(
+                {
+                    "cause_prefix": str(cause_prefix),
+                    "key": str(key),
+                    "value": str(value),
+                }
+            )[:8]
+            out.append("cause.{}.{}.{}".format(str(cause_prefix), str(key), str(token_hash)))
+            if len(out) >= bound:
+                return _stable_unique(out, max_items=bound)
+    return _stable_unique(out, max_items=bound)
+
+
+def _event_specific_cause_keys(
+    *,
+    event_kind_id: str,
+    decision_log_rows: object,
+    safety_event_rows: object,
+    hazard_rows: object,
+    compliance_rows: object,
+    model_result_rows: object,
+    max_items: int,
+) -> List[str]:
+    event_kind = str(event_kind_id or "").strip().lower()
+    bound = int(max(1, _as_int(max_items, _DEFAULT_BOUND)))
+    out: List[str] = []
+
+    if event_kind.startswith("elec."):
+        out.extend(
+            _event_cause_tokens(
+                rows=safety_event_rows,
+                cause_prefix="elec_safety",
+                key_candidates=(
+                    "fault_state",
+                    "fault_code",
+                    "trip_reason",
+                    "safety_pattern_id",
+                    "protection_pattern_id",
+                ),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=hazard_rows,
+                cause_prefix="elec_fault",
+                key_candidates=("fault_state", "fault_code", "overload_ratio", "hazard_id"),
+                max_items=bound,
+            )
+        )
+
+    if event_kind.startswith("therm."):
+        out.extend(
+            _event_cause_tokens(
+                rows=hazard_rows,
+                cause_prefix="therm_hazard",
+                key_candidates=("temperature", "temperature_c", "overtemp", "fire_state", "heat_loss"),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=model_result_rows,
+                cause_prefix="therm_model",
+                key_candidates=("heat_loss", "heat_input", "phase_state", "runaway_index"),
+                max_items=bound,
+            )
+        )
+
+    if event_kind.startswith("fluid."):
+        out.extend(
+            _event_cause_tokens(
+                rows=safety_event_rows,
+                cause_prefix="fluid_safety",
+                key_candidates=(
+                    "pressure_head",
+                    "current_head",
+                    "relief_threshold",
+                    "burst_threshold",
+                    "spec_id",
+                ),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=hazard_rows,
+                cause_prefix="fluid_hazard",
+                key_candidates=("pressure_head", "leak_rate", "cavitation_risk", "target_id"),
+                max_items=bound,
+            )
+        )
+
+    if event_kind.startswith("mob."):
+        out.extend(
+            _event_cause_tokens(
+                rows=hazard_rows,
+                cause_prefix="mob_hazard",
+                key_candidates=("speed", "speed_mm_per_tick", "curvature", "wear", "signal_violation"),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=model_result_rows,
+                cause_prefix="mob_model",
+                key_candidates=("traction", "friction", "derailment_risk", "brake_state"),
+                max_items=bound,
+            )
+        )
+
+    if event_kind.startswith("sig."):
+        out.extend(
+            _event_cause_tokens(
+                rows=decision_log_rows,
+                cause_prefix="sig_decision",
+                key_candidates=("belief_policy_id", "policy_id", "accepted", "reason_code"),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=model_result_rows,
+                cause_prefix="sig_model",
+                key_candidates=("attenuation", "loss_modifier", "jamming", "decrypt_denied"),
+                max_items=bound,
+            )
+        )
+
+    if event_kind.startswith("phys."):
+        out.extend(
+            _event_cause_tokens(
+                rows=safety_event_rows,
+                cause_prefix="phys_exception",
+                key_candidates=("exception_kind", "reason_code", "quantity_id", "value"),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=compliance_rows,
+                cause_prefix="phys_ledger",
+                key_candidates=("transformation_id", "entry_id", "energy_total_delta", "momentum_delta"),
+                max_items=bound,
+            )
+        )
+
+    return _stable_unique(out, max_items=bound)
+
+
 def generate_explain_artifact(
     *,
     event_id: str,
@@ -210,6 +392,17 @@ def generate_explain_artifact(
     derived_causes.extend(_cause_keys_from_rows(hazard_rows, row_kind="hazard", max_items=bound))
     derived_causes.extend(_cause_keys_from_rows(compliance_rows, row_kind="compliance", max_items=bound))
     derived_causes.extend(_cause_keys_from_rows(model_result_rows, row_kind="model", max_items=bound))
+    derived_causes.extend(
+        _event_specific_cause_keys(
+            event_kind_id=event_kind_token,
+            decision_log_rows=decision_log_rows,
+            safety_event_rows=safety_event_rows,
+            hazard_rows=hazard_rows,
+            compliance_rows=compliance_rows,
+            model_result_rows=model_result_rows,
+            max_items=bound,
+        )
+    )
     derived_causes.extend(_stable_unique(list(cause_chain_keys or []), max_items=bound))
     cause_chain = _stable_unique(derived_causes, max_items=bound)
 
@@ -383,4 +576,3 @@ __all__ = [
     "normalize_explain_artifact_rows",
     "redact_explain_artifact",
 ]
-

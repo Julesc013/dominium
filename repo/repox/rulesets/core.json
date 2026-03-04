@@ -5,147 +5,214 @@
     {
       "rule_id": "INV-REPOX-STRUCTURE",
       "severity": "FAIL",
-      "scope_paths": ["."],
+      "scope_paths": [
+        "."
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-structure",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-LOCKLIST-FROZEN",
       "severity": "FAIL",
-      "scope_paths": ["docs/architecture", "docs/archive"],
+      "scope_paths": [
+        "docs/architecture",
+        "docs/archive"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-locklist-frozen",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-CANON-STATE",
       "severity": "FAIL",
-      "scope_paths": ["repo/canon_state.json", "docs/architecture"],
+      "scope_paths": [
+        "repo/canon_state.json",
+        "docs/architecture"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-state",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-CANON-INDEX",
       "severity": "FAIL",
-      "scope_paths": ["docs/architecture/CANON_INDEX.md", "docs"],
+      "scope_paths": [
+        "docs/architecture/CANON_INDEX.md",
+        "docs"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-index",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-CANON-NO-SUPERSEDED",
       "severity": "FAIL",
-      "scope_paths": ["docs"],
+      "scope_paths": [
+        "docs"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-no-superseded",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-CANON-NO-HIST-REF",
       "severity": "FAIL",
-      "scope_paths": ["docs"],
+      "scope_paths": [
+        "docs"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-no-hist-ref",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-CANON-CODE-REF",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game", "client", "server", "tools", "scripts"],
+      "scope_paths": [
+        "engine",
+        "game",
+        "client",
+        "server",
+        "tools",
+        "scripts"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-canon-code-ref",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-DOC-STATUS-HEADER",
       "severity": "FAIL",
-      "scope_paths": ["docs"],
+      "scope_paths": [
+        "docs"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-doc-status-header",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-AUDITX-PROMOTION-POLICY-PRESENT",
       "severity": "FAIL",
-      "scope_paths": ["docs/governance/AUDITX_PROMOTION_POLICY.md", "scripts/ci/check_repox_rules.py"],
+      "scope_paths": [
+        "docs/governance/AUDITX_PROMOTION_POLICY.md",
+        "scripts/ci/check_repox_rules.py"
+      ],
       "documentation": "docs/governance/AUDITX_PROMOTION_POLICY.md",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-REPO-HEALTH-SNAPSHOT-FINALIZATION",
       "severity": "FAIL",
-      "scope_paths": ["docs/audit/system/GOVERNANCE_FINAL_REPORT.md", "docs/audit/system/REPO_HEALTH_SNAPSHOT.json", "tools/xstack/core/repo_health.py"],
+      "scope_paths": [
+        "docs/audit/system/GOVERNANCE_FINAL_REPORT.md",
+        "docs/audit/system/REPO_HEALTH_SNAPSHOT.json",
+        "tools/xstack/core/repo_health.py"
+      ],
       "documentation": "docs/governance/GATE_THROUGHPUT_POLICY.md#repo-health-snapshot",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-ONTOLOGY-IMMUTABLE",
       "severity": "FAIL",
-      "scope_paths": ["docs/governance/GOVERNANCE_ARCHITECTURE.md", "docs/architecture", "repo/canon_state.json", "scripts/ci/check_repox_rules.py"],
+      "scope_paths": [
+        "docs/governance/GOVERNANCE_ARCHITECTURE.md",
+        "docs/architecture",
+        "repo/canon_state.json",
+        "scripts/ci/check_repox_rules.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-ontology-immutable",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-DET-NO-ANON-RNG",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game"],
+      "scope_paths": [
+        "engine",
+        "game"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-det-no-anon-rng",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-DET-NO-WALLCLOCK",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game"],
+      "scope_paths": [
+        "engine",
+        "game"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-det-no-wallclock",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-FP-AUTH-BAN",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game"],
+      "scope_paths": [
+        "engine",
+        "game"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-fp-auth-ban",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-HARDCODED-CONTENT",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game"],
+      "scope_paths": [
+        "engine",
+        "game"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-hardcoded-content",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-ENUM-NO-OTHER",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game"],
+      "scope_paths": [
+        "engine",
+        "game"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-enum-no-other",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-RAW-PATHS",
       "severity": "FAIL",
-      "scope_paths": ["schema", "data", "tests/fixtures"],
+      "scope_paths": [
+        "schema",
+        "data",
+        "tests/fixtures"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-raw-paths",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-COMPAT-MATRIX-VALID",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/compat_matrix.schema", "data/registries/compat_matrix.json"],
+      "scope_paths": [
+        "schema/governance/compat_matrix.schema",
+        "data/registries/compat_matrix.json"
+      ],
       "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-COMPAT-MIGRATIONS-VALID",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/migration_spec.schema", "data/registries/migrations.json"],
+      "scope_paths": [
+        "schema/governance/migration_spec.schema",
+        "data/registries/migrations.json"
+      ],
       "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-SCHEMA-VERSION-POLICY",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/schema_version_policy.schema", "data/registries/schema_version_policy.json"],
+      "scope_paths": [
+        "schema/governance/schema_version_policy.schema",
+        "data/registries/schema_version_policy.json"
+      ],
       "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
       "severity": "WARN",
-      "scope_paths": ["schema", "data/registries/schema_version_policy.json"],
+      "scope_paths": [
+        "schema",
+        "data/registries/schema_version_policy.json"
+      ],
       "documentation": "docs/governance/COMPATX_MODEL.md#compatibility-philosophy",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2099-01-01"
@@ -153,126 +220,196 @@
     {
       "rule_id": "INV-PROCESS-REGISTRY",
       "severity": "FAIL",
-      "scope_paths": ["data/registries", "data/packs", "tests/contract"],
+      "scope_paths": [
+        "data/registries",
+        "data/packs",
+        "tests/contract"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-registry",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-PROCESS-RUNTIME-ID",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game", "client", "server"],
+      "scope_paths": [
+        "engine",
+        "game",
+        "client",
+        "server"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-runtime-id",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-PROCESS-GUARD-RUNTIME",
       "severity": "FAIL",
-      "scope_paths": ["engine/include/domino/core/process_guard.h", "engine/modules/core/process_guard.c", "engine/tests/process_guard_tests.c", "tests/invariant/process_only_mutation_tests.py"],
+      "scope_paths": [
+        "engine/include/domino/core/process_guard.h",
+        "engine/modules/core/process_guard.c",
+        "engine/tests/process_guard_tests.c",
+        "tests/invariant/process_only_mutation_tests.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-guard-runtime",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-PROCESS-REGISTRY-IMMUTABLE",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/process_registry.json"],
+      "scope_paths": [
+        "data/registries/process_registry.json"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-process-registry-immutable",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-REPORT-CANON",
       "severity": "FAIL",
-      "scope_paths": ["scripts/ci/compliance_report.py"],
+      "scope_paths": [
+        "scripts/ci/compliance_report.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-report-canon",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-REPOX-RULESET-MISSING",
       "severity": "FAIL",
-      "scope_paths": ["repo/repox/rulesets"],
+      "scope_paths": [
+        "repo/repox/rulesets"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-ruleset-missing",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-REPOX-EXEMPTION-POLICY",
       "severity": "FAIL",
-      "scope_paths": ["repo/repox/repox_exemptions.json", "scripts/ci/check_repox_rules.py"],
+      "scope_paths": [
+        "repo/repox/repox_exemptions.json",
+        "scripts/ci/check_repox_rules.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-repox-exemption-policy",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-IDENTITY-FINGERPRINT",
       "severity": "FAIL",
-      "scope_paths": ["docs/audit/identity_fingerprint.json", "scripts/ci/check_repox_rules.py"],
+      "scope_paths": [
+        "docs/audit/identity_fingerprint.json",
+        "scripts/ci/check_repox_rules.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-IDENTITY-CHANGE-EXPLANATION",
       "severity": "FAIL",
-      "scope_paths": ["docs/audit/identity_fingerprint_explanation.md", "scripts/ci/check_repox_rules.py"],
+      "scope_paths": [
+        "docs/audit/identity_fingerprint_explanation.md",
+        "scripts/ci/check_repox_rules.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-identity-fingerprint",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-FAILURE-CLASS-COVERAGE",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/failure_classes.schema", "data/registries/failure_classes.json", "tests"],
+      "scope_paths": [
+        "schema/governance/failure_classes.schema",
+        "data/registries/failure_classes.json",
+        "tests"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-failure-class-coverage",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-SETTINGS-OWNERSHIP",
       "severity": "FAIL",
-      "scope_paths": ["client", "launcher", "setup", "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"],
+      "scope_paths": [
+        "client",
+        "launcher",
+        "setup",
+        "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"
+      ],
       "documentation": "docs/settings/SETTINGS_OWNERSHIP_MODEL.md#forbidden-overlaps",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-ENGINE-SETTINGS",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game", "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"],
+      "scope_paths": [
+        "engine",
+        "game",
+        "docs/settings/SETTINGS_OWNERSHIP_MODEL.md"
+      ],
       "documentation": "docs/settings/SETTINGS_OWNERSHIP_MODEL.md#ownership",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-HARDCODED-MODE-BRANCH",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game", "client", "server", "launcher", "setup", "tools", "libs", "scripts"],
+      "scope_paths": [
+        "engine",
+        "game",
+        "client",
+        "server",
+        "launcher",
+        "setup",
+        "tools",
+        "libs",
+        "scripts"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-hardcoded-mode-branch",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-AUTHORITY-CONTEXT-REQUIRED",
       "severity": "FAIL",
-      "scope_paths": ["schema/session/session_spec.schema", "schema/authority/authority_context.schema"],
+      "scope_paths": [
+        "schema/session/session_spec.schema",
+        "schema/authority/authority_context.schema"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-context-required",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-SURVIVAL-NO-NONDIEGETIC-LENSES",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/law_profiles.json", "data/registries/lenses.json", "schema/lens/lens.schema"],
+      "scope_paths": [
+        "data/registries/law_profiles.json",
+        "data/registries/lenses.json",
+        "schema/lens/lens.schema"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-survival-no-nondiegetic-lenses",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-SURVIVAL-DIEGETIC-CONTRACT",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/law_profiles.json", "client/core/client_command_bridge.c", "schema/lens/lens.schema"],
+      "scope_paths": [
+        "data/registries/law_profiles.json",
+        "client/core/client_command_bridge.c",
+        "schema/lens/lens.schema"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-survival-diegetic-contract",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-GLOSSARY-TERM-CANON",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/glossary.schema", "data/registries/glossary.json", "docs/architecture", "docs/governance"],
+      "scope_paths": [
+        "schema/governance/glossary.schema",
+        "data/registries/glossary.json",
+        "docs/architecture",
+        "docs/governance"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-glossary-term-canon",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "WARN-GLOSSARY-TERM-CANON",
       "severity": "WARN",
-      "scope_paths": ["docs"],
+      "scope_paths": [
+        "docs"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#warn-glossary-term-canon",
       "exemption_policy": "allow_with_expiry",
       "ratchet_after": "2099-01-01"
@@ -280,35 +417,61 @@
     {
       "rule_id": "INV-UNIVERSE_IDENTITY_IMMUTABLE",
       "severity": "FAIL",
-      "scope_paths": ["schema/universe/universe_identity.schema", "schema/universe/universe_state.schema", "engine", "game", "client", "server", "launcher", "setup"],
+      "scope_paths": [
+        "schema/universe/universe_identity.schema",
+        "schema/universe/universe_state.schema",
+        "engine",
+        "game",
+        "client",
+        "server",
+        "launcher",
+        "setup"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-universe-identity-immutable",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS",
       "severity": "FAIL",
-      "scope_paths": ["schema/authority/authority_context.schema", "client/core/client_command_bridge.c", "server/authority/dom_server_authority.h", "server/authority/dom_server_authority.cpp"],
+      "scope_paths": [
+        "schema/authority/authority_context.schema",
+        "client/core/client_command_bridge.c",
+        "server/authority/dom_server_authority.h",
+        "server/authority/dom_server_authority.cpp"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-context-required-for-intents",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-SESSION_SPEC_REQUIRED_FOR_RUN",
       "severity": "FAIL",
-      "scope_paths": ["schema/session/session_spec.schema", "data/registries/session_defaults.json", "client/core/client_command_bridge.c", "client/core/client_commands_registry.c"],
+      "scope_paths": [
+        "schema/session/session_spec.schema",
+        "data/registries/session_defaults.json",
+        "client/core/client_command_bridge.c",
+        "client/core/client_commands_registry.c"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-session-spec-required-for-run",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/law_profiles.json", "data/registries/experience_profiles.json", "data/registries/parameter_bundles.json"],
+      "scope_paths": [
+        "data/registries/law_profiles.json",
+        "data/registries/experience_profiles.json",
+        "data/registries/parameter_bundles.json"
+      ],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#modes-as-profiles-invariants",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-UI-ENTITLEMENT-GATING",
       "severity": "FAIL",
-      "scope_paths": ["client/core/client_commands_registry.c", "client/core/client_command_bridge.c"],
+      "scope_paths": [
+        "client/core/client_commands_registry.c",
+        "client/core/client_command_bridge.c"
+      ],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#entitlement-gating",
       "exemption_policy": "deny"
     },
@@ -328,182 +491,410 @@
     {
       "rule_id": "INV-DEFAULTS-OPTIONAL",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/bundle_profiles.json"],
+      "scope_paths": [
+        "data/registries/bundle_profiles.json"
+      ],
       "documentation": "docs/governance/MODE_GOVERNANCE_POLICY.md#optional-default-bundles",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-REALISM-DETAIL-MUST-BE-MODEL",
       "severity": "FAIL",
-      "scope_paths": ["src", "docs/meta", "data/registries/deprecation_registry.json", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src",
+        "docs/meta",
+        "data/registries/deprecation_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-realism-detail-must-be-model",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL",
       "severity": "FAIL",
-      "scope_paths": ["src/electric", "src/thermal", "src/fluid", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/electric",
+        "src/thermal",
+        "src/fluid",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-cross-domain-mutation-must-be-model",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-PHYS-PROFILE-DECLARED",
       "severity": "FAIL",
-      "scope_paths": ["schema/session/session_spec.schema", "schemas/session_spec.schema.json", "tools/xstack/sessionx/creator.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "schema/session/session_spec.schema",
+        "schemas/session_spec.schema.json",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-phys-profile-declared",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-UNREGISTERED-QUANTITY-FORBIDDEN",
       "severity": "FAIL",
-      "scope_paths": ["src", "tools/xstack/sessionx", "data/registries/quantity_registry.json", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src",
+        "tools/xstack/sessionx",
+        "data/registries/quantity_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-unregistered-quantity-forbidden",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-LOSS-MAPPED-TO-HEAT",
       "severity": "FAIL",
-      "scope_paths": ["src/electric", "src/thermal", "data/registries/loss_to_heat_policy_registry.json", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/electric",
+        "src/thermal",
+        "data/registries/loss_to_heat_policy_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-loss-mapped-to-heat",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-ACTION-MUST-HAVE-FAMILY",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/action_template_registry.json", "data/registries/action_family_registry.json", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/action_template_registry.json",
+        "data/registries/action_family_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-action-must-have-family",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-INFO-ARTIFACT-MUST-HAVE-FAMILY",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/action_template_registry.json", "data/registries/info_artifact_family_registry.json", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/action_template_registry.json",
+        "data/registries/info_artifact_family_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-info-artifact-must-have-family",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-LOSS-MUST-DECLARE-TARGET",
       "severity": "FAIL",
-      "scope_paths": ["src/electric", "src/thermal", "docs/thermal/LOSS_TO_HEAT_CONVENTION.md", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/electric",
+        "src/thermal",
+        "docs/thermal/LOSS_TO_HEAT_CONVENTION.md",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-loss-must-declare-target",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-DIRECT-VELOCITY-MUTATION",
       "severity": "FAIL",
-      "scope_paths": ["src/mobility", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/mobility",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-direct-velocity-mutation",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-FORCE-THROUGH-PROCESS",
       "severity": "FAIL",
-      "scope_paths": ["tools/xstack/sessionx/process_runtime.py", "src/models/model_engine.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/models/model_engine.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-force-through-process",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-MOMENTUM-STATE-DECLARED",
       "severity": "FAIL",
-      "scope_paths": ["schema/physics", "schemas/momentum_state.schema.json", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "schema/physics",
+        "schemas/momentum_state.schema.json",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-momentum-state-declared",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-ENERGY-TRANSFORM-REGISTERED",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/energy_transformation_registry.json", "src/physics/energy", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/energy_transformation_registry.json",
+        "src/physics/energy",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-energy-transform-registered",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-DIRECT-ENERGY-MUTATION",
       "severity": "FAIL",
-      "scope_paths": ["src/electric", "src/thermal", "src/mobility", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/electric",
+        "src/thermal",
+        "src/mobility",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-direct-energy-mutation",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-ENTROPY-UPDATE-THROUGH-ENGINE",
       "severity": "FAIL",
-      "scope_paths": ["src/physics/entropy", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/physics/entropy",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-entropy-update-through-engine",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-SILENT-EFFICIENCY-DROP",
       "severity": "FAIL",
-      "scope_paths": ["tools/xstack/sessionx/process_runtime.py", "src/models", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/models",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-silent-efficiency-drop",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FLUID-USES-BUNDLE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/quantity_bundle_registry.json",
+        "data/registries/quantity_registry.json",
+        "src/fluid",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-fluid-uses-bundle",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FLUID-SAFETY-THROUGH-PATTERNS",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/safety_pattern_registry.json",
+        "src/fluid",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-fluid-safety-through-patterns",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-ADHOC-PRESSURE-LOGIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/fluid",
+        "src/interior",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-adhoc-pressure-logic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/fluid",
+        "src/safety",
+        "data/registries/safety_pattern_registry.json",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-fluid-failure-through-safety-or-process",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-DIRECT-MASS-MUTATION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/fluid",
+        "src/interior",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-direct-mass-mutation",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FLUID-BUDGETED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/fluid",
+        "tools/fluid",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-fluid-budgeted",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-FLUID-DEGRADE-LOGGED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/fluid",
+        "tools/fluid",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-fluid-degrade-logged",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-ALL-FAILURES-LOGGED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/fluid",
+        "tools/fluid",
+        "data/regression/fluid_full_baseline.json",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-all-failures-logged",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-FIELD-TYPE-REGISTERED",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/field_type_registry.json", "src/fields", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/field_type_registry.json",
+        "src/fields",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-field-type-registered",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-FIELD-MUTATION-THROUGH-PROCESS",
       "severity": "FAIL",
-      "scope_paths": ["src/fields", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/fields",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-field-mutation-through-process",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-TIER-CONTRACT-REQUIRED",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/tier_contract_registry.json", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/tier_contract_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-tier-contract-required",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-COST-MODEL-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/tier_contract_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-cost-model-required",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-COUPLING-CONTRACT-REQUIRED",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/coupling_contract_registry.json", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/coupling_contract_registry.json",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-coupling-contract-required",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-EXPLAIN-CONTRACT-REQUIRED",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/explain_contract_registry.json", "src/meta/explain", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/explain_contract_registry.json",
+        "src/meta/explain",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-explain-contract-required",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-UNDECLARED-COUPLING",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/coupling_contract_registry.json", "src/electric", "src/thermal", "src/signals", "src/models", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "data/registries/coupling_contract_registry.json",
+        "src/electric",
+        "src/thermal",
+        "src/signals",
+        "src/models",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-undeclared-coupling",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-ADHOC-SAFETY-LOGIC",
       "severity": "FAIL",
-      "scope_paths": ["src/safety", "data/registries/safety_pattern_registry.json", "tools/xstack/sessionx/process_runtime.py", "tools/xstack/repox/check.py"],
+      "scope_paths": [
+        "src/safety",
+        "data/registries/safety_pattern_registry.json",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/repox/check.py"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-adhoc-safety-logic",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-ROOT-MODULE-SHIM",
       "severity": "FAIL",
-      "scope_paths": ["CMakeLists.txt", "*/CMakeLists.txt", "libs", "engine", "game", "client", "server", "launcher", "setup", "tools", "app"],
+      "scope_paths": [
+        "CMakeLists.txt",
+        "*/CMakeLists.txt",
+        "libs",
+        "engine",
+        "game",
+        "client",
+        "server",
+        "launcher",
+        "setup",
+        "tools",
+        "app"
+      ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-root-module-shim",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-NO-TRACKED-WRITES-DURING-GATE",
       "severity": "FAIL",
-      "scope_paths": ["scripts/dev/gate.py", ".xstack_cache/gate/TOUCHED_FILES_MANIFEST.json"],
+      "scope_paths": [
+        "scripts/dev/gate.py",
+        ".xstack_cache/gate/TOUCHED_FILES_MANIFEST.json"
+      ],
       "documentation": "docs/governance/XSTACK_TRACK_IGNORE_POLICY.md#command-write-behavior",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-RUNTIME-NO-XSTACK-IMPORTS",
       "severity": "FAIL",
-      "scope_paths": ["engine", "game", "client", "server", "CMakeLists.txt"],
+      "scope_paths": [
+        "engine",
+        "game",
+        "client",
+        "server",
+        "CMakeLists.txt"
+      ],
       "documentation": "docs/governance/XSTACK_PORTABILITY.md#runtime-decoupling-contract",
       "exemption_policy": "deny"
     }

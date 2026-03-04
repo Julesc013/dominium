@@ -159,6 +159,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-ACTION-MUST-HAVE-FAMILY`
 - `INV-INFO-ARTIFACT-MUST-HAVE-FAMILY`
 - `INV-TIER-CONTRACT-REQUIRED`
+- `INV-COST-MODEL-REQUIRED`
 - `INV-COUPLING-CONTRACT-REQUIRED`
 - `INV-EXPLAIN-CONTRACT-REQUIRED`
 - `INV-NO-UNDECLARED-COUPLING`
@@ -168,6 +169,14 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-ENTROPY-UPDATE-THROUGH-ENGINE`
 - `INV-NO-SILENT-EFFICIENCY-DROP`
 - `INV-NO-ADHOC-SAFETY-LOGIC`
+- `INV-FLUID-USES-BUNDLE`
+- `INV-FLUID-SAFETY-THROUGH-PATTERNS`
+- `INV-NO-ADHOC-PRESSURE-LOGIC`
+- `INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS`
+- `INV-NO-DIRECT-MASS-MUTATION`
+- `INV-FLUID-BUDGETED`
+- `INV-FLUID-DEGRADE-LOGGED`
+- `INV-ALL-FAILURES-LOGGED`
 
 ## Key Rule Notes
 
@@ -457,6 +466,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Registry source: `data/registries/tier_contract_registry.json`.
 - Enforces explicit tier support, deterministic downgrade order, and shard-safety declarations.
 
+### INV-COST-MODEL-REQUIRED
+
+- STRICT/FULL fail when tier contracts omit `cost_model_id`.
+- Registry source: `data/registries/tier_contract_registry.json`.
+- Enforces deterministic budget arbitration binding for each governed subsystem/process family.
+
 ### INV-COUPLING-CONTRACT-REQUIRED
 
 - STRICT/FULL fail when required baseline cross-domain coupling declarations are missing.
@@ -508,3 +523,51 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - STRICT/FULL fail when protection logic bypasses SafetyPattern evaluation.
 - Covers breaker/overtemp/LOTO patterns and requires process-mediated safety execution.
+
+### INV-FLUID-USES-BUNDLE
+
+- STRICT/FULL fail when `bundle.fluid_basic` is missing or does not bind `quantity.mass_flow` and `quantity.pressure_head`.
+- STRICT/FULL fail when canonical FLUID quantity IDs are absent from quantity registries.
+- Keeps FLUID substrate declarations aligned to QuantityBundle governance.
+
+### INV-FLUID-SAFETY-THROUGH-PATTERNS
+
+- STRICT/FULL fail when required FLUID safety patterns are missing from SafetyPattern registry.
+- Required baseline patterns include relief, burst-disk, fail-safe stop, and LOTO coverage.
+- Prevents FLUID protection behavior from drifting into ad-hoc domain-local branching.
+
+### INV-NO-ADHOC-PRESSURE-LOGIC
+
+- STRICT/FULL fail when pressure/head/valve write logic appears outside allowed model/process pathways.
+- Interior compartment pressure bookkeeping remains INT-owned and allowed in canonical interior flow engine files.
+- Enforces FLUID pressure behavior through constitutive models, FlowSystem, and process-mediated mutation only.
+
+### INV-FLUID-FAILURE-THROUGH-SAFETY-OR-PROCESS
+
+- STRICT/FULL fail when FLUID containment-failure pathways bypass safety patterns or deterministic process helpers.
+- Burst/leak/relief handling must route through `process.burst_event`, `process.start_leak`, `process.leak_tick`, and SAFETY pattern events.
+- Prevents hidden catastrophic branching and preserves auditable failure provenance.
+
+### INV-NO-DIRECT-MASS-MUTATION
+
+- STRICT/FULL fail when FLUID/INT mass-state writes appear outside approved process/runtime mutation boundaries.
+- Direct writes to tank/interior mass channels are forbidden unless performed by canonical engines/process runtime.
+- Enforces process-only mutation for containment failures and leak coupling.
+
+### INV-FLUID-BUDGETED
+
+- STRICT/FULL fail when FLUID stress/solve surfaces do not expose deterministic budget controls.
+- Requires explicit bounded inputs for edge processing, model cost, failure limits, and per-tick envelope pressure behavior.
+- Prevents unbounded FLUID network solves under large-network load.
+
+### INV-FLUID-DEGRADE-LOGGED
+
+- STRICT/FULL fail when FLUID degradation pathways are missing deterministic reason codes or emitted decision-log rows.
+- Required degradation chain is tick-bucket -> subgraph F0 -> deferred non-critical model bindings -> leak evaluation cap.
+- Ensures budget pressure behavior is auditable and replay-stable.
+
+### INV-ALL-FAILURES-LOGGED
+
+- STRICT/FULL fail when FLUID containment failures are not represented through explicit relief/leak/burst artifacts and safety pattern events.
+- Requires proof/replay hash-chain surfaces for `fluid_flow`, `relief`, `leak`, and `burst`.
+- Requires a committed FLUID regression lock (`data/regression/fluid_full_baseline.json`) gated by `FLUID-REGRESSION-UPDATE`.

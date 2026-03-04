@@ -2,7 +2,7 @@
 
 Status: CANONICAL
 Last Updated: 2026-03-04
-Scope: META-CONTRACT-0 mandatory declarations for tier discipline, cross-domain coupling, and explainability.
+Scope: META-CONTRACT-0/1 mandatory declarations and hard-gate enforcement for tier discipline, cross-domain coupling, and explainability.
 
 ## 1) Purpose
 
@@ -112,6 +112,7 @@ AuditX emits targeted smells for:
 - missing tier contract
 - undeclared coupling
 - missing explain contract
+- missing cost model declaration
 
 TestX validates:
 
@@ -119,10 +120,29 @@ TestX validates:
 - deterministic explain artifact generation and redaction
 - schema/registry integrity
 
+STRICT hard-gate invariants:
+
+- `INV-TIER-CONTRACT-REQUIRED`
+- `INV-COST-MODEL-REQUIRED`
+- `INV-COUPLING-CONTRACT-REQUIRED`
+- `INV-EXPLAIN-CONTRACT-REQUIRED`
+- `INV-NO-UNDECLARED-COUPLING`
+
+Current baseline domain coverage:
+
+- ELEC
+- THERM
+- MOB
+- SIG
+- PHYS
+- FLUID
+
 Topology/semantic-impact integration must include:
 
 - tier/coupling/explain contract nodes
 - coupling contract change -> affected domain suite escalation
+- tier contract change -> performance envelope test escalation
+- explain contract change -> explain engine test escalation
 
 ## 7) Non-Goals
 
@@ -130,4 +150,3 @@ Topology/semantic-impact integration must include:
 - This contract does not change simulation semantics.
 - This contract does not authorize nondeterministic or wall-clock behavior.
 - This contract does not relax process-only mutation.
-

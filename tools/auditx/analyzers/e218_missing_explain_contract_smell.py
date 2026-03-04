@@ -12,10 +12,25 @@ ANALYZER_ID = "E218_MISSING_EXPLAIN_CONTRACT_SMELL"
 _EXPLAIN_REGISTRY_REL = "data/registries/explain_contract_registry.json"
 _REQUIRED_EVENT_KINDS = (
     "elec.trip",
+    "elec.fault",
     "therm.overheat",
+    "therm.fire",
+    "therm.runaway",
     "mob.derailment",
+    "mob.collision",
+    "mob.signal_violation",
     "sig.delivery_loss",
+    "sig.jamming",
+    "sig.decrypt_denied",
+    "sig.trust_update",
     "mech.fracture",
+    "fluid.relief",
+    "fluid.leak",
+    "fluid.burst",
+    "fluid.cavitation",
+    "phys.exception_event",
+    "phys.energy_violation",
+    "phys.momentum_violation",
 )
 
 
@@ -62,12 +77,12 @@ def run(graph, repo_root, changed_files=None):
                 make_finding(
                     analyzer_id=ANALYZER_ID,
                     category="architecture.missing_explain_contract_smell",
-                    severity="RISK",
-                    confidence=0.86,
+                    severity="VIOLATION",
+                    confidence=0.92,
                     file_path=_EXPLAIN_REGISTRY_REL,
                     line=1,
                     evidence=["explain contract missing explain_artifact_type_id", event_kind_id or "<unknown>"],
-                    suggested_classification="NEEDS_REVIEW",
+                    suggested_classification="INVALID",
                     recommended_action="ADD_RULE",
                     related_invariants=["INV-EXPLAIN-CONTRACT-REQUIRED"],
                     related_paths=[_EXPLAIN_REGISTRY_REL],
@@ -79,12 +94,12 @@ def run(graph, repo_root, changed_files=None):
                 make_finding(
                     analyzer_id=ANALYZER_ID,
                     category="architecture.missing_explain_contract_smell",
-                    severity="RISK",
-                    confidence=0.82,
+                    severity="VIOLATION",
+                    confidence=0.88,
                     file_path=_EXPLAIN_REGISTRY_REL,
                     line=1,
                     evidence=["explain contract missing required_inputs", event_kind_id or "<unknown>"],
-                    suggested_classification="NEEDS_REVIEW",
+                    suggested_classification="INVALID",
                     recommended_action="ADD_RULE",
                     related_invariants=["INV-EXPLAIN-CONTRACT-REQUIRED"],
                     related_paths=[_EXPLAIN_REGISTRY_REL],
@@ -97,12 +112,12 @@ def run(graph, repo_root, changed_files=None):
             make_finding(
                 analyzer_id=ANALYZER_ID,
                 category="architecture.missing_explain_contract_smell",
-                severity="RISK",
-                confidence=0.9,
+                severity="VIOLATION",
+                confidence=0.95,
                 file_path=_EXPLAIN_REGISTRY_REL,
                 line=1,
                 evidence=["missing explain contract for event_kind_id '{}'".format(event_kind_id)],
-                suggested_classification="NEEDS_REVIEW",
+                suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-EXPLAIN-CONTRACT-REQUIRED"],
                 related_paths=[_EXPLAIN_REGISTRY_REL],
@@ -113,4 +128,3 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
-

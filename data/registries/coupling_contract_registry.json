@@ -57,6 +57,77 @@
         "extensions": {
           "description": "Signal receipt acceptance is policy-mediated through trust/belief thresholds."
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.field.friction_to_mob.traction",
+        "coupling_class_id": "force_coupling",
+        "from_domain_id": "FIELD",
+        "to_domain_id": "MOB",
+        "mechanism": "field_policy",
+        "mechanism_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "FIELD friction sampling influences MOB traction outcomes through declared field policy pathways.",
+          "effect_id": "effect.mobility.traction_modifier"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.phys.gravity_to_mob.force",
+        "coupling_class_id": "force_coupling",
+        "from_domain_id": "PHYS",
+        "to_domain_id": "MOB",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.phys_gravity_force",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "PHYS gravity model emits deterministic force application consumed by MOB ROI integration.",
+          "process_id": "process.apply_force"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.fluid.heat_to_therm.exchange",
+        "coupling_class_id": "energy_coupling",
+        "from_domain_id": "FLUID",
+        "to_domain_id": "THERM",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.fluid_heat_exchanger_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "FLUID heat exchange influences THERM via constitutive model binding."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.fluid.leak_to_int.flood",
+        "coupling_class_id": "safety_coupling",
+        "from_domain_id": "FLUID",
+        "to_domain_id": "INT",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.fluid_leak_flood_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "FLUID leak/flood transfer into INT volumes is model-mediated.",
+          "process_ids": [
+            "process.start_leak",
+            "process.leak_tick"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.fluid.pressure_to_mech.load",
+        "coupling_class_id": "force_coupling",
+        "from_domain_id": "FLUID",
+        "to_domain_id": "MECH",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.fluid_pressure_load_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "FLUID pressure load contributes to MECH hazards via constitutive model."
+        }
       }
     ],
     "extensions": {
@@ -64,4 +135,3 @@
     }
   }
 }
-
