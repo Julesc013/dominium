@@ -1,0 +1,22 @@
+SCHEMA: deprecation/deprecation_entry.schema
+schema_id: dominium.schema.deprecation.entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic declaration of deprecated schema/API identifiers and approved replacements.
+
+REQUIRED SHAPE:
+record deprecation_entry
+  required:
+    - schema_version: semver
+    - deprecated_id: id
+    - replacement_id: id
+    - reason: text
+    - removal_target_version: semver
+    - status: enum(active|removed)
+    - extensions: map
+
+INVARIANTS:
+- Deprecated identifiers must declare explicit replacement and removal target.
+- Deprecation declarations are tooling/compatibility artifacts, not runtime behavior toggles.
