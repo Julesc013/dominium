@@ -47,6 +47,8 @@
     "impulse_event_hash_chain",
     "energy_ledger_hash_chain",
     "boundary_flux_hash_chain",
+    "quantity_tolerance_registry_hash",
+    "rounding_mode_policy_hash",
     "entropy_hash_chain",
     "entropy_reset_events_hash_chain",
     "fluid_flow_hash_chain",
@@ -234,6 +236,14 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "quantity_tolerance_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "rounding_mode_policy_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "entropy_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -340,6 +350,8 @@
       "impulse_event_hash_chain": "f22d717474ef298d150f1975ef0b568e3521deba8638f8af621f6d9f0fdbc970",
       "energy_ledger_hash_chain": "9f5fdbf5694475bfb20997e7c07072691f95d6a7d5e9fb5f25fd8b676c4136bb",
       "boundary_flux_hash_chain": "2f4ed67a851976a9e4283448b4f7caebc674e5d2745b0aa4728e8c4d702f3eb7",
+      "quantity_tolerance_registry_hash": "22d5e9fcb3a6ca4d495a4c57d38689ef4eebcbd2ec35c0a5647d5f8d84f9081c",
+      "rounding_mode_policy_hash": "9a102afe7f46a6f7ee8d5b8b9699d81f7605ae6c8e2d6f25ee74fd0f2ecde678",
       "entropy_hash_chain": "62efe2b86f9990ce48884f6f68284aa29fdb4098ba6e24520dad79b2f783f0f2",
       "entropy_reset_events_hash_chain": "c9821dcf2627f4c0db8188e9f882d2f72ceb2eb342f4216a6f58ff9f6b7753f0",
       "fluid_flow_hash_chain": "100ea57da7df6d4f6a1f2a9c9779fbcfe4abc17d5892f4f91515f2cc6a42f026",

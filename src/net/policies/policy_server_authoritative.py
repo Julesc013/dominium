@@ -585,6 +585,8 @@ def _emit_control_proof_bundle(
             "impulse_event_hash_chain": str(universe_state.get("impulse_event_hash_chain", "")).strip(),
             "energy_ledger_hash_chain": str(universe_state.get("energy_ledger_hash_chain", "")).strip(),
             "boundary_flux_hash_chain": str(universe_state.get("boundary_flux_hash_chain", "")).strip(),
+            "quantity_tolerance_registry_hash": str(universe_state.get("quantity_tolerance_registry_hash", "")).strip(),
+            "rounding_mode_policy_hash": str(universe_state.get("rounding_mode_policy_hash", "")).strip(),
             "entropy_hash_chain": str(universe_state.get("entropy_hash_chain", "")).strip(),
             "entropy_reset_events_hash_chain": str(
                 universe_state.get("entropy_reset_events_hash_chain", universe_state.get("entropy_reset_hash_chain", ""))

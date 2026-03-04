@@ -3788,6 +3788,37 @@ def _refresh_energy_ledger_hash_chains(state: dict) -> None:
     )
 
 
+def _refresh_numeric_policy_hashes(state: dict, policy_context: dict | None) -> None:
+    tolerance_payload = _quantity_tolerance_registry_payload(policy_context)
+    tolerance_rows = list((dict(tolerance_payload.get("record") or {})).get("quantity_tolerances") or [])
+    if not tolerance_rows:
+        tolerance_rows = list(tolerance_payload.get("quantity_tolerances") or [])
+    normalized_rows = sorted(
+        (
+            {
+                "quantity_id": str(row.get("quantity_id", "")).strip(),
+                "base_resolution": int(max(1, _as_int(row.get("base_resolution", 1), 1))),
+                "tolerance_abs": int(max(0, _as_int(row.get("tolerance_abs", 0), 0))),
+                "rounding_mode": str(row.get("rounding_mode", "round_half_to_even")).strip() or "round_half_to_even",
+                "overflow_policy": str(row.get("overflow_policy", "fail")).strip() or "fail",
+            }
+            for row in list(tolerance_rows or [])
+            if isinstance(row, Mapping) and str(row.get("quantity_id", "")).strip()
+        ),
+        key=lambda item: str(item.get("quantity_id", "")),
+    )
+    state["quantity_tolerance_registry_hash"] = canonical_sha256(list(normalized_rows))
+    state["rounding_mode_policy_hash"] = canonical_sha256(
+        [
+            {
+                "quantity_id": str(row.get("quantity_id", "")).strip(),
+                "rounding_mode": str(row.get("rounding_mode", "round_half_to_even")).strip() or "round_half_to_even",
+            }
+            for row in normalized_rows
+        ]
+    )
+
+
 def _record_energy_transformation_in_state(
     state: dict,
     *,
@@ -3804,6 +3835,7 @@ def _record_energy_transformation_in_state(
     transformation_rows = _energy_transformation_registry_rows(policy_context)
     enforce_energy = _physics_profile_enforces_energy(policy_context)
     quantity_tolerance_registry = _quantity_tolerance_registry_payload(policy_context)
+    _refresh_numeric_policy_hashes(state, policy_context)
     recorded = record_energy_transformation(
         transformation_rows=transformation_rows,
         transformation_id=str(transformation_id or "").strip(),
@@ -3966,6 +3998,7 @@ def _record_boundary_flux_event_in_state(
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     quantity_token = str(quantity_id or "").strip() or "quantity.energy_total"
+    _refresh_numeric_policy_hashes(state, policy_context)
     direction_token = str(direction or "in").strip().lower()
     if direction_token not in {"in", "out"}:
         direction_token = "in"
@@ -17935,6 +17968,7 @@ def execute_intent(
     del entropy_effect_rows
     _refresh_momentum_hash_chains(state)
     _refresh_energy_ledger_hash_chains(state)
+    _refresh_numeric_policy_hashes(state, policy_context)
     _refresh_entropy_hash_chains(state)
     _refresh_field_hash_chains(state)
     elec_flow_channels = []
