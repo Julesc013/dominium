@@ -81,3 +81,13 @@
 - Numeric policy is now explicit, registry-driven, hashable, and enforceable in strict governance lanes.
 - Residual and overflow behavior are no longer implicit in core energy/momentum/time substrate paths.
 - Substrate is ready for provenance-level numeric trace requirements in `PROV-0`.
+
+## Gate Snapshot (2026-03-05)
+- `RepoX STRICT`: `pass` (warnings only; no refusal/fail findings).
+- `AuditX STRICT`: `fail` (pre-existing strict-promoted `E179_INLINE_RESPONSE_CURVE_SMELL` findings outside TOL touch set).
+- `TestX STRICT`: `fail` (large pre-existing baseline failures unrelated to TOL delta; TOL-specific tests pass).
+- Numeric stability stress harness:
+  - `python tools/meta/tool_verify_numeric_stability.py --window-ticks 8192 --drift-scale 64`
+  - Result: `complete` with deterministic replay match.
+- Strict build gate:
+  - `python tools/ci/validate_all.py --strict` returned refusal because executable is missing in local environment (`validate_all executable not found`).

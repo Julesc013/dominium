@@ -1,10 +1,10 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "incremental",
-  "changed_only": false,
+  "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-03-04T16:59:31Z",
-  "graph_hash": "19ef76ce4705fb3e9eeb264f4288100d9194113e9a73828fedad42f922f275eb",
+  "generated_utc": "2026-03-04T18:10:51Z",
+  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
   "last_reviewed": "2026-03-04",
   "output_format": "both",
   "platform": "windows",
@@ -188,6 +188,9 @@
     "E233_IMPLICIT_CIVIL_TIME_SMELL",
     "E234_IMPLICIT_CLOCK_SYNC_SMELL",
     "E235_DIRECT_DOMAIN_TIME_WRITE_SMELL",
+    "E236_IMPLICIT_FLOAT_USAGE_SMELL",
+    "E237_MISSING_TOLERANCE_SMELL",
+    "E238_DIRECT_DIVISION_WITHOUT_ROUND_SMELL",
     "E23_MEMORY_NONDETERMINISM_SMELL",
     "E24_INSTRUMENT_TRUTH_LEAK_SMELL",
     "E25_OMNISCIENT_MAP_SMELL",
@@ -275,5 +278,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-13d8151593caa982"
+  "workspace_id": "ws-3f697f95adfb4f20"
 }
