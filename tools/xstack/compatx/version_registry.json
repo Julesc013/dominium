@@ -861,6 +861,13 @@
         "1.0.0"
       ]
     },
+    "coupling_contract": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "coupling_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1176,6 +1183,48 @@
         "1.0.0"
       ]
     },
+    "energy_ledger_entry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "energy_transformation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "boundary_flux_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "entropy_contribution": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "entropy_effect_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "entropy_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "exception_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1184,6 +1233,20 @@
       ]
     },
     "execute_plan_intent": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "explain_artifact": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "explain_contract": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1275,6 +1338,13 @@
       ]
     },
     "field_layer": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "field_sample": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -2366,6 +2436,27 @@
         "1.0.0"
       ]
     },
+    "momentum_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "force_application": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "impulse_application": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "profile_trace": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2962,6 +3053,13 @@
       ]
     },
     "territory": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "tier_contract": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
