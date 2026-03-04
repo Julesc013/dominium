@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.registry.time_mapping_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.time_mapping_registry",
+    "registry_version": "1.0.0",
+    "time_mappings": [
+      {
+        "schema_version": "1.0.0",
+        "mapping_id": "mapping.proper_default_stub",
+        "from_domain_id": "time.canonical_tick",
+        "to_domain_id": "time.proper",
+        "model_id": "model.time.proper_default_stub",
+        "scope_selector": "per_assembly",
+        "drift_policy_id": "drift.none",
+        "parameters": {
+          "base_delta_per_tick": 1000,
+          "dilation_coefficient": 0
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "mapping_id": "mapping.civil_calendar_stub",
+        "from_domain_id": "time.canonical_tick",
+        "to_domain_id": "time.civil",
+        "model_id": "model.time.civil_calendar_stub",
+        "scope_selector": "global",
+        "drift_policy_id": "drift.none",
+        "parameters": {
+          "tick_to_seconds_ratio": 1,
+          "calendar_offset": 0
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "mapping_id": "mapping.warp_session_stub",
+        "from_domain_id": "time.canonical_tick",
+        "to_domain_id": "time.warp",
+        "model_id": "model.time.warp_session_stub",
+        "scope_selector": "per_session",
+        "drift_policy_id": "drift.none",
+        "parameters": {
+          "session_warp_factor": 1000,
+          "offset_ticks": 0
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "TEMP0-2"
+    }
+  }
+}

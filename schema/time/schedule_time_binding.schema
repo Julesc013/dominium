@@ -1,0 +1,22 @@
+SCHEMA: time/schedule_time_binding.schema
+schema_id: dominium.schema.time.schedule_time_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Bind schedule declarations to explicit temporal domains.
+
+REQUIRED SHAPE:
+record schedule_time_binding
+  required:
+    - schema_version: semver
+    - schedule_id: id
+    - temporal_domain_id: id
+    - target_time_value: quantity
+    - evaluation_policy_id: id
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Schedule execution remains canonical-tick ordered.
+- Temporal-domain targets are interpreted by deterministic policy.

@@ -1,0 +1,23 @@
+SCHEMA: time/time_stamp_artifact.schema
+schema_id: dominium.schema.time.time_stamp_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic temporal stamp artifacts for synchronization and proofs.
+
+REQUIRED SHAPE:
+record time_stamp_artifact
+  required:
+    - schema_version: semver
+    - stamp_id: id
+    - temporal_domain_id: id
+    - canonical_tick: u64
+    - domain_time_value: any
+    - issuer_subject_id: id
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- time_stamp_artifact is INFO family RECORD.
+- Stamp artifacts are derived/issued records and do not mutate truth.

@@ -1,0 +1,60 @@
+{
+  "schema_id": "dominium.registry.branch_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.branch_policy_registry",
+    "registry_version": "1.0.0",
+    "branch_policies": [
+      {
+        "schema_version": "1.0.0",
+        "branch_policy_id": "branch.disabled",
+        "description": "Branching disabled in this context.",
+        "allow_branching": false,
+        "allowed_contexts": [],
+        "requires_authority": true,
+        "proof_required": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "branch_policy_id": "branch.allowed_private",
+        "description": "Private sessions may branch with explicit authority and proofs.",
+        "allow_branching": true,
+        "allowed_contexts": [
+          "private"
+        ],
+        "requires_authority": true,
+        "proof_required": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "branch_policy_id": "branch.allowed_lab",
+        "description": "Lab/sandbox sessions may branch for deterministic experiments.",
+        "allow_branching": true,
+        "allowed_contexts": [
+          "lab",
+          "sandbox"
+        ],
+        "requires_authority": true,
+        "proof_required": true,
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "branch_policy_id": "branch.forbidden_ranked",
+        "description": "Ranked policy forbids branching.",
+        "allow_branching": false,
+        "allowed_contexts": [
+          "ranked"
+        ],
+        "requires_authority": true,
+        "proof_required": true,
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "TEMP0-5"
+    }
+  }
+}

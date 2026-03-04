@@ -12,6 +12,7 @@ record schedule
     - schema_version: semver
     - schedule_id: id
     - target_id: id
+    - temporal_domain_id: id
     - start_tick: u64
     - recurrence_rule: map
     - next_due_tick: u64
@@ -23,3 +24,4 @@ INVARIANTS:
 - Recurrence expansion and next-due computation are deterministic from schedule state.
 - Cancellation behavior is policy-declared and explicit.
 - Inactive schedules must not emit due events.
+- Temporal domain declaration is explicit; canonical default is time.canonical_tick.

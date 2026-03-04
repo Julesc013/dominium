@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Temporal Domain Schema",
+  "version": "1.0.0",
+  "description": "Deterministic TEMP-0 temporal domain declaration row.",
+  "x-doc-ref": [
+    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "temporal_domain_id",
+    "description",
+    "scope_kind",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "temporal_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope_kind": {
+      "type": "string",
+      "enum": [
+        "global",
+        "per_spatial",
+        "per_assembly",
+        "per_session"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "temporal_domain_id": "time.canonical_tick",
+      "description": "Canonical authoritative tick domain.",
+      "scope_kind": "global",
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}

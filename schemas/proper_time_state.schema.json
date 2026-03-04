@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Proper Time State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic TEMP-1 accumulated proper-time state row.",
+  "x-doc-ref": [
+    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_id",
+    "accumulated_proper_time",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accumulated_proper_time": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "target_id": "assembly.example",
+      "accumulated_proper_time": 4000,
+      "last_update_tick": 4,
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}

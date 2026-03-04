@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.registry.drift_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.drift_policy_registry",
+    "registry_version": "1.0.0",
+    "drift_policies": [
+      {
+        "schema_version": "1.0.0",
+        "drift_policy_id": "drift.none",
+        "description": "No drift; domain time rate equals model output rate.",
+        "base_rate_multiplier": 1.0,
+        "deterministic_rng_stream": null,
+        "max_skew_allowed": 0,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "drift_policy_id": "drift.linear_small",
+        "description": "Small deterministic linear drift for lab/instrument sync exercises.",
+        "base_rate_multiplier": 1.0005,
+        "deterministic_rng_stream": null,
+        "max_skew_allowed": 2,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "drift_policy_id": "drift.profile_defined",
+        "description": "Profile-controlled drift policy; deterministic stream optional.",
+        "base_rate_multiplier": 1.0,
+        "deterministic_rng_stream": "rng.time.drift.profile_defined",
+        "max_skew_allowed": 5,
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "TEMP2-2"
+    }
+  }
+}

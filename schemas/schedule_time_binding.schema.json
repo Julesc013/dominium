@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Schedule Time Binding Schema",
+  "version": "1.0.0",
+  "description": "Deterministic TEMP-0 schedule binding row for temporal-domain-aware execution.",
+  "x-doc-ref": [
+    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "schedule_id",
+    "temporal_domain_id",
+    "target_time_value",
+    "evaluation_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "schedule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "temporal_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_time_value": {
+      "type": [
+        "integer",
+        "string",
+        "object"
+      ]
+    },
+    "evaluation_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "schedule_id": "schedule.maintenance.alpha",
+      "temporal_domain_id": "time.canonical_tick",
+      "target_time_value": 150,
+      "evaluation_policy_id": "schedule.eval.gte_target",
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}

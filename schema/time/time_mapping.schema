@@ -1,0 +1,27 @@
+SCHEMA: time/time_mapping.schema
+schema_id: dominium.schema.time.time_mapping
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic mappings from canonical tick time into derived temporal domains.
+
+REQUIRED SHAPE:
+record time_mapping
+  required:
+    - schema_version: semver
+    - mapping_id: id
+    - from_domain_id: id
+    - to_domain_id: id
+    - model_id: id
+    - scope_selector: enum(global|per_spatial|per_assembly|per_session)
+    - drift_policy_id: id (optional)
+    - parameters: map
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- from_domain_id must resolve to time.canonical_tick.
+- drift_policy_id, when present, must reference drift_policy_registry.
+- Mapping evaluation is deterministic and cacheable.
+- Mapping does not reorder canonical tick execution.

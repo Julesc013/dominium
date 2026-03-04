@@ -1,0 +1,22 @@
+SCHEMA: time/sync_policy.schema
+schema_id: dominium.schema.time.sync_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic synchronization correction behavior for domain-time alignment.
+
+REQUIRED SHAPE:
+record sync_policy
+  required:
+    - schema_version: semver
+    - sync_policy_id: id
+    - adjustment_strategy: enum(observe|adjust|reject)
+    - max_adjust_per_tick: quantity
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Synchronization policy never mutates canonical tick.
+- adjust strategy applies bounded correction only.
+- reject strategy records deterministic refusal artifacts when skew exceeds policy limits.
