@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 50,
+  "candidate_count": 53,
   "candidates": [
     {
       "evidence_paths": [
@@ -329,6 +329,16 @@
     },
     {
       "evidence_paths": [
+        "tools/chem/tool_run_chem_stress.py",
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.645,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
         "tools/xstack/sessionx/process_runtime.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
@@ -432,9 +442,46 @@
     },
     {
       "evidence_paths": [
+        "docs/electric/ELECTRICAL_CONSTITUTION.md",
+        "src/electric/power_network_engine.py",
+        "src/fluid/network/fluid_network_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.615,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
         "docs/thermal/LOSS_TO_HEAT_CONVENTION.md",
         "src/core/flow/flow_engine.py",
         "src/signals/transport/transport_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.615,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/chem/degradation/degradation_engine.py",
+        "src/electric/power_network_engine.py",
+        "src/fluid/network/fluid_network_engine.py",
+        "src/models/model_engine.py",
+        "src/thermal/network/thermal_network_engine.py",
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.615,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/chem/process_run_engine.py",
+        "src/materials/materialization/materialization_engine.py",
+        "src/models/model_engine.py",
+        "tools/xstack/sessionx/process_runtime.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.615,
@@ -474,32 +521,8 @@
     },
     {
       "evidence_paths": [
-        "src/electric/power_network_engine.py",
-        "src/fluid/network/fluid_network_engine.py",
-        "src/models/model_engine.py",
-        "src/thermal/network/thermal_network_engine.py",
-        "tools/xstack/sessionx/process_runtime.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.615,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
         "src/inspection/inspection_engine.py",
         "src/signals/transport/transport_engine.py"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.615,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "src/materials/materialization/materialization_engine.py",
-        "src/models/model_engine.py",
-        "tools/xstack/sessionx/process_runtime.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.615,
@@ -531,6 +554,18 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.5925,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/chem/process_run_engine.py",
+        "tools/chem/tool_replay_combustion_window.py",
+        "tools/chem/tool_replay_process_run.py",
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.57,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },

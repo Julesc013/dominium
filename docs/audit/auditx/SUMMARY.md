@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- RISK: 428
+- RISK: 449
 - VIOLATION: 18
-- WARN: 879
+- WARN: 880
 
 ## Counts By Category
 
@@ -19,7 +19,7 @@ Superseded By: none
 - architecture.adhoc_speed_limit_smell: 2
 - architecture.adhoc_state_flag_smell: 2
 - architecture.adhoc_valve_smell: 3
-- architecture.affordance_gap_smell: 295
+- architecture.affordance_gap_smell: 309
 - architecture.broadcast_bypass_smell: 4
 - architecture.deprecated_usage_smell: 1
 - architecture.derailment_bypass_smell: 1
@@ -27,9 +27,10 @@ Superseded By: none
 - architecture.direct_position_mutation_smell: 1
 - architecture.direct_schedule_mutation_smell: 1
 - architecture.heat_loss_bypass_smell: 2
-- architecture.inline_cure_smell: 1
+- architecture.inline_cure_smell: 2
 - architecture.inline_friction_smell: 2
 - architecture.inline_phase_change_smell: 3
+- architecture.inline_power_loss_smell: 1
 - architecture.inline_protection_smell: 10
 - architecture.inline_response_curve_smell: 7
 - architecture.inline_strength_check_smell: 1
@@ -39,7 +40,7 @@ Superseded By: none
 - architecture.missing_failsafe_smell: 1
 - architecture.missing_ledger_entry_smell: 4
 - architecture.mobility_special_case_smell: 2
-- architecture.model_bypass_smell: 3
+- architecture.model_bypass_smell: 4
 - architecture.nondeterministic_queue_order_smell: 1
 - architecture.silent_corruption_smell: 1
 - architecture.silent_degrade_smell: 10
@@ -55,7 +56,7 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 719
+- canon_drift: 721
 - capability_bypass_smell: 1
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - control.camera_bypass_smell: 1
@@ -69,7 +70,8 @@ Superseded By: none
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - performance.performance_nondeterminism_smell: 1
-- schema_usage: 1
+- performance.unbudgeted_reaction_loop_smell: 1
+- reliability.silent_reaction_smell: 3
 - security.boundary_io: 29
 - security.privilege_bypass: 9
 - semantic.capability_drift: 5

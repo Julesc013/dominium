@@ -38,9 +38,9 @@
       }
     },
     "INV-AFFORDANCE-DECLARED": {
-      "finding_count": 295,
+      "finding_count": 309,
       "recommended_actions": {
-        "REWRITE": 295
+        "REWRITE": 309
       },
       "sample_findings": [
         {
@@ -70,7 +70,7 @@
         }
       ],
       "severities": {
-        "RISK": 295
+        "RISK": 309
       }
     },
     "INV-ALL-ELEC-ACTIONS-THROUGH-CONTROL": {
@@ -87,6 +87,32 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-ALL-REACTIONS-LEDGERED": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "REWRITE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "reliability.silent_reaction_smell",
+          "finding_id": "E248_SILENT_REACTION_SMELL:0001",
+          "location": "src/chem/process_run_engine.py"
+        },
+        {
+          "category": "reliability.silent_reaction_smell",
+          "finding_id": "E248_SILENT_REACTION_SMELL:0002",
+          "location": "tools/chem/tool_replay_combustion_window.py"
+        },
+        {
+          "category": "reliability.silent_reaction_smell",
+          "finding_id": "E248_SILENT_REACTION_SMELL:0003",
+          "location": "tools/chem/tool_replay_process_run.py"
+        }
+      ],
+      "severities": {
+        "RISK": 3
       }
     },
     "INV-BODY-MUTATION-PROCESS-ONLY": {
@@ -106,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 719,
+      "finding_count": 721,
       "recommended_actions": {
-        "DOC_FIX": 719
+        "DOC_FIX": 721
       },
       "sample_findings": [
         {
@@ -138,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 719
+        "WARN": 721
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -175,6 +201,38 @@
       ],
       "severities": {
         "WARN": 5
+      }
+    },
+    "INV-CHEM-BUDGETED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "performance.unbudgeted_reaction_loop_smell",
+          "finding_id": "E249_UNBUDGETED_REACTION_LOOP_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-CHEM-DEGRADE-LOGGED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "performance.unbudgeted_reaction_loop_smell",
+          "finding_id": "E249_UNBUDGETED_REACTION_LOOP_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
       }
     },
     "INV-COMMAND-CAPABILITY-DECLARED": {
@@ -656,29 +714,34 @@
       }
     },
     "INV-MODEL-OUTPUTS-PROCESS-ONLY": {
-      "finding_count": 3,
+      "finding_count": 4,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 4
       },
       "sample_findings": [
         {
           "category": "architecture.model_bypass_smell",
           "finding_id": "E180_MODEL_BYPASS_SMELL:0001",
-          "location": "src/electric/power_network_engine.py"
+          "location": "src/chem/degradation/degradation_engine.py"
         },
         {
           "category": "architecture.model_bypass_smell",
           "finding_id": "E180_MODEL_BYPASS_SMELL:0002",
-          "location": "src/fluid/network/fluid_network_engine.py"
+          "location": "src/electric/power_network_engine.py"
         },
         {
           "category": "architecture.model_bypass_smell",
           "finding_id": "E180_MODEL_BYPASS_SMELL:0003",
+          "location": "src/fluid/network/fluid_network_engine.py"
+        },
+        {
+          "category": "architecture.model_bypass_smell",
+          "finding_id": "E180_MODEL_BYPASS_SMELL:0004",
           "location": "src/thermal/network/thermal_network_engine.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 4
       }
     },
     "INV-NO-ADHOC-BURN-LOGIC": {
@@ -714,19 +777,24 @@
       }
     },
     "INV-NO-ADHOC-CURE-LOGIC": {
-      "finding_count": 1,
+      "finding_count": 2,
       "recommended_actions": {
-        "REWRITE": 1
+        "REWRITE": 2
       },
       "sample_findings": [
         {
           "category": "architecture.inline_cure_smell",
           "finding_id": "E198_INLINE_CURE_SMELL:0001",
+          "location": "src/chem/process_run_engine.py"
+        },
+        {
+          "category": "architecture.inline_cure_smell",
+          "finding_id": "E198_INLINE_CURE_SMELL:0002",
           "location": "src/materials/materialization/materialization_engine.py"
         }
       ],
       "severities": {
-        "RISK": 1
+        "RISK": 2
       }
     },
     "INV-NO-ADHOC-FAULT-TRIP": {
@@ -1297,6 +1365,22 @@
         "RISK": 2
       }
     },
+    "INV-POWER-FLOW-THROUGH-BUNDLE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.inline_power_loss_smell",
+          "finding_id": "E185_INLINE_POWER_LOSS_SMELL:0001",
+          "location": "src/fluid/network/fluid_network_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-REALISM-DETAIL-MUST-BE-MODEL": {
       "finding_count": 7,
       "recommended_actions": {
@@ -1602,22 +1686,6 @@
           "category": "semantic.workspace_contamination",
           "finding_id": "A7_WORKSPACE_CONTAMINATION:0001",
           "location": "scripts/ci/check_repox_rules.py"
-        }
-      ],
-      "severities": {
-        "WARN": 1
-      }
-    },
-    "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_TEST": 1
-      },
-      "sample_findings": [
-        {
-          "category": "schema_usage",
-          "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "dominium.registry.provenance_classification_registry"
         }
       ],
       "severities": {

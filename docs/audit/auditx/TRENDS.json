@@ -6,7 +6,7 @@
     "architecture.adhoc_speed_limit_smell": 2,
     "architecture.adhoc_state_flag_smell": 2,
     "architecture.adhoc_valve_smell": 3,
-    "architecture.affordance_gap_smell": 295,
+    "architecture.affordance_gap_smell": 309,
     "architecture.broadcast_bypass_smell": 4,
     "architecture.deprecated_usage_smell": 1,
     "architecture.derailment_bypass_smell": 1,
@@ -14,9 +14,10 @@
     "architecture.direct_position_mutation_smell": 1,
     "architecture.direct_schedule_mutation_smell": 1,
     "architecture.heat_loss_bypass_smell": 2,
-    "architecture.inline_cure_smell": 1,
+    "architecture.inline_cure_smell": 2,
     "architecture.inline_friction_smell": 2,
     "architecture.inline_phase_change_smell": 3,
+    "architecture.inline_power_loss_smell": 1,
     "architecture.inline_protection_smell": 10,
     "architecture.inline_response_curve_smell": 7,
     "architecture.inline_strength_check_smell": 1,
@@ -26,7 +27,7 @@
     "architecture.missing_failsafe_smell": 1,
     "architecture.missing_ledger_entry_smell": 4,
     "architecture.mobility_special_case_smell": 2,
-    "architecture.model_bypass_smell": 3,
+    "architecture.model_bypass_smell": 4,
     "architecture.nondeterministic_queue_order_smell": 1,
     "architecture.silent_corruption_smell": 1,
     "architecture.silent_degrade_smell": 10,
@@ -42,7 +43,7 @@
     "architecture.vehicle_interior_special_case_smell": 1,
     "architecture.weather_hack_smell": 1,
     "authority.fault_bypass_smell": 3,
-    "canon_drift": 719,
+    "canon_drift": 721,
     "capability_bypass_smell": 1,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
     "control.camera_bypass_smell": 1,
@@ -56,7 +57,8 @@
     "net.precision_leak_smell": 2,
     "net.truth_over_net_smell": 6,
     "performance.performance_nondeterminism_smell": 1,
-    "schema_usage": 1,
+    "performance.unbudgeted_reaction_loop_smell": 1,
+    "reliability.silent_reaction_smell": 3,
     "security.boundary_io": 29,
     "security.privilege_bypass": 9,
     "semantic.capability_drift": 5,
@@ -82,6 +84,7 @@
       "architecture.inline_cure_smell": 0,
       "architecture.inline_friction_smell": 0,
       "architecture.inline_phase_change_smell": 0,
+      "architecture.inline_power_loss_smell": 0,
       "architecture.inline_protection_smell": 0,
       "architecture.inline_response_curve_smell": 0,
       "architecture.inline_strength_check_smell": 0,
@@ -101,7 +104,6 @@
       "architecture.substrate_bypass_smell": 0,
       "architecture.thermal_bypass_smell": 0,
       "architecture.unbounded_spread_smell": 0,
-      "architecture.unclassified_artifact_smell": -1,
       "architecture.unlogged_refusal_smell": 0,
       "architecture.unlogged_trip_smell": 0,
       "architecture.unlogged_trust_change_smell": 0,
@@ -122,13 +124,15 @@
       "materials.inspection_leak_smell": 0,
       "materials.reenactment_leak_smell": 0,
       "materials.unbounded_inspection_smell": 0,
-      "mode_flag_smell": -10,
+      "mode_flag_smell": -19,
       "net.precision_leak_smell": 0,
       "net.truth_over_net_smell": 0,
       "ownership_boundary": -9,
       "performance.performance_nondeterminism_smell": 0,
+      "performance.unbudgeted_reaction_loop_smell": 0,
       "reachability": -80,
-      "schema_usage": -159,
+      "reliability.silent_reaction_smell": 0,
+      "schema_usage": -160,
       "security.boundary_io": 0,
       "security.privilege_bypass": 0,
       "semantic.capability_drift": 0,
@@ -140,21 +144,21 @@
     },
     "severity_distribution": {
       "INFO": -223,
-      "RISK": -190,
-      "VIOLATION": -29,
-      "WARN": -328
+      "RISK": -189,
+      "VIOLATION": -38,
+      "WARN": -329
     }
   },
-  "findings_hash": "6ae20aed36977f606dd36be7ab447f34d53fcdce15a9b9daa9c9ff5d1f7d4cc6",
+  "findings_hash": "0af563384b9676e74febcd7628fe6857c8c84edd2d756e1cbd1c1f815062e014",
   "history_reference": {
-    "previous_distinct_hash": "69813d79ce3854b02bd59b2bb6a8fb2076dca2a334cc69fc8d9ff0d489b22588"
+    "previous_distinct_hash": "ca3ab106e2424c961593d6f0a8596f0091a78b681fca076827103ccd77b4b40d"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
-    "RISK": 428,
+    "RISK": 449,
     "VIOLATION": 18,
-    "WARN": 879
+    "WARN": 880
   },
-  "total_findings": 1325
+  "total_findings": 1347
 }

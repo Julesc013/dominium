@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": false,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-03-04T19:54:23Z",
-  "graph_hash": "83984fb23b5c70abc0e4e8104b94ee014dc9dd8eaa85fd782b85a21d76e02d1b",
+  "generated_utc": "2026-03-04T23:50:55Z",
+  "graph_hash": "3bda22ec707a0b3a3f3790fd98f8c7dec2622da925d0692d46dc602f12236d9a",
   "last_reviewed": "2026-03-04",
   "output_format": "both",
   "platform": "windows",
@@ -197,6 +197,10 @@
     "E241_MISSING_COMPACTION_MARKER_SMELL",
     "E242_INLINE_FUEL_BURN_SMELL",
     "E243_UNREGISTERED_COMBUSTION_SMELL",
+    "E244_INLINE_YIELD_LOGIC_SMELL",
+    "E245_RECIPE_BYPASS_SMELL",
+    "E248_SILENT_REACTION_SMELL",
+    "E249_UNBUDGETED_REACTION_LOOP_SMELL",
     "E24_INSTRUMENT_TRUTH_LEAK_SMELL",
     "E25_OMNISCIENT_MAP_SMELL",
     "E26_DIEGETIC_BYPASS_SMELL",
@@ -283,5 +287,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-c1eccd175ea8c8a7"
+  "workspace_id": "ws-912d32a1cdd174b7"
 }
