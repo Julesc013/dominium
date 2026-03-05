@@ -1,0 +1,56 @@
+{
+  "schema_id": "dominium.registry.exposure_threshold_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.exposure_threshold_registry",
+    "registry_version": "1.0.0",
+    "exposure_thresholds": [
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.smoke_particulate",
+        "warning_threshold": 240,
+        "critical_threshold": 600,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.co2_stub",
+        "warning_threshold": 1200,
+        "critical_threshold": 2400,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL2-2",
+          "stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.toxic_gas_stub",
+        "warning_threshold": 90,
+        "critical_threshold": 180,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL2-2",
+          "stub": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.oil_spill_stub",
+        "warning_threshold": 150,
+        "critical_threshold": 320,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL2-2",
+          "stub": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "POLL2-2"
+    }
+  }
+}

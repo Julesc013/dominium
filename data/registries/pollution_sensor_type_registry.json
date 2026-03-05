@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.registry.pollution_sensor_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.pollution_sensor_type_registry",
+    "registry_version": "1.0.0",
+    "sensor_types": [
+      {
+        "schema_version": "1.0.0",
+        "sensor_type_id": "sensor.air_quality_basic",
+        "description": "Basic diegetic air-quality sampler for local pollution concentration readings.",
+        "supported_mediums": [
+          "air"
+        ],
+        "supported_pollutants": [
+          "pollutant.smoke_particulate",
+          "pollutant.co2_stub",
+          "pollutant.toxic_gas_stub"
+        ],
+        "requires_calibration": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL2-2",
+          "task_type_id": "task.measure_pollution"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "sensor_type_id": "sensor.water_quality_basic",
+        "description": "Basic diegetic water-quality sampler for local waterborne contamination readings.",
+        "supported_mediums": [
+          "water",
+          "soil"
+        ],
+        "supported_pollutants": [
+          "pollutant.oil_spill_stub"
+        ],
+        "requires_calibration": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL2-2",
+          "task_type_id": "task.measure_pollution"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "POLL2-2"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+SCHEMA: pollution/compliance_report.schema
+schema_id: dominium.schema.pollution.compliance_report
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define institutional pollution compliance REPORT artifact payload for POLL-2.
+- Bind observed statistics to threshold status for SIG transmission.
+
+NON-SEMANTICS:
+- No enforcement penalties or economy outcomes.
+- No legal adjudication workflow.
+
+REQUIRED SHAPE:
+record compliance_report
+  required:
+    - report_id: id
+    - region_id: id
+    - pollutant_id: id
+    - observed_statistic: enum(avg|max)
+    - threshold: int
+    - status: enum(ok|warning|violation)
+    - tick_range: map
+    - deterministic_fingerprint: text
+    - extensions: map
+
+CLASSIFICATION:
+- INFO family REPORT artifact payload.
