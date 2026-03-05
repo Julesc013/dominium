@@ -28113,6 +28113,78 @@ def execute_intent(
                     for row in list(state.get("pollution_subject_rows") or [])
                     if isinstance(row, Mapping)
                 ]
+            if not subject_rows:
+                subject_rows = [
+                    {
+                        "subject_id": str(row.get("subject_id", row.get("entity_id", ""))).strip(),
+                        "spatial_scope_id": str(
+                            row.get(
+                                "spatial_scope_id",
+                                row.get("cell_id", row.get("location_cell_id", "")),
+                            )
+                        ).strip(),
+                        "exposure_factor_permille": int(
+                            max(
+                                0,
+                                _as_int(
+                                    row.get(
+                                        "exposure_factor_permille",
+                                        dict(row.get("extensions") or {}).get(
+                                            "exposure_factor_permille", 1000
+                                        ),
+                                    ),
+                                    1000,
+                                ),
+                            )
+                        ),
+                        "extensions": (
+                            dict(row.get("extensions") or {})
+                            if isinstance(row.get("extensions"), Mapping)
+                            else {}
+                        ),
+                    }
+                    for row in list(state.get("subject_rows") or [])
+                    if isinstance(row, Mapping)
+                    and str(row.get("subject_id", row.get("entity_id", ""))).strip()
+                    and str(
+                        row.get(
+                            "spatial_scope_id",
+                            row.get("cell_id", row.get("location_cell_id", "")),
+                        )
+                    ).strip()
+                ]
+            normalized_subject_rows = sorted(
+                [
+                    {
+                        "subject_id": str(row.get("subject_id", "")).strip(),
+                        "spatial_scope_id": str(
+                            row.get("spatial_scope_id", row.get("cell_id", ""))
+                        ).strip(),
+                        "exposure_factor_permille": int(
+                            max(
+                                0,
+                                _as_int(
+                                    row.get("exposure_factor_permille", 1000),
+                                    1000,
+                                ),
+                            )
+                        ),
+                        "extensions": (
+                            dict(row.get("extensions") or {})
+                            if isinstance(row.get("extensions"), Mapping)
+                            else {}
+                        ),
+                    }
+                    for row in subject_rows
+                    if isinstance(row, Mapping)
+                    and str(row.get("subject_id", "")).strip()
+                    and str(row.get("spatial_scope_id", row.get("cell_id", ""))).strip()
+                ],
+                key=lambda item: (str(item.get("subject_id", "")), str(item.get("spatial_scope_id", ""))),
+            )
+            if normalized_subject_rows:
+                state["pollution_subject_rows"] = [dict(row) for row in normalized_subject_rows]
+            subject_rows = [dict(row) for row in normalized_subject_rows]
             exposure_factor_permille = int(
                 max(
                     0,
@@ -28150,6 +28222,46 @@ def execute_intent(
                 )
             ]
             _ensure_pollution_exposure_increment_rows(state)
+            state["pollution_hazard_hook_rows"] = [
+                {
+                    "schema_version": "1.0.0",
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "subject_id": str(row.get("subject_id", "")).strip(),
+                    "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                    "accumulated_exposure": int(
+                        max(0, _as_int(row.get("accumulated_exposure", 0), 0))
+                    ),
+                    "hazard_hook_id": "hazard.health_risk_stub",
+                    "deterministic_fingerprint": str(
+                        row.get(
+                            "deterministic_fingerprint",
+                            canonical_sha256(
+                                {
+                                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                                    "subject_id": str(row.get("subject_id", "")).strip(),
+                                    "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                                    "accumulated_exposure": int(
+                                        max(
+                                            0,
+                                            _as_int(row.get("accumulated_exposure", 0), 0),
+                                        )
+                                    ),
+                                }
+                            ),
+                        )
+                    ).strip(),
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "source_increment_hash": str(
+                            row.get("deterministic_fingerprint", "")
+                        ).strip(),
+                    },
+                }
+                for row in list(exposure_eval.get("exposure_increment_rows") or [])
+                if isinstance(row, Mapping)
+                and str(row.get("subject_id", "")).strip()
+                and str(row.get("pollutant_id", "")).strip()
+            ]
             _refresh_pollution_hash_chains(state)
 
             explain_contract_by_event_kind = _explain_contract_rows_by_event_kind(
@@ -28260,6 +28372,7 @@ def execute_intent(
                 "dispersion_step_count": int(len(list(dispersion_eval.get("dispersion_step_rows") or []))),
                 "deposition_count": int(len(list(dispersion_eval.get("deposition_rows") or []))),
                 "exposure_increment_count": int(len(list(exposure_eval.get("exposure_increment_rows") or []))),
+                "hazard_hook_id": "hazard.health_risk_stub",
                 "updated_field_ids": list(field_update_result.get("updated_field_ids") or []),
                 "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),
                 "skipped_update_count": int(len(list(field_update_result.get("skipped_updates") or []))),
