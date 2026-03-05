@@ -24,6 +24,14 @@ from src.system.system_expand_engine import (
     SystemExpandError,
     expand_system_graph,
 )
+from src.system.system_validation_engine import (
+    REFUSAL_SYSTEM_INVALID_INTERFACE,
+    REFUSAL_SYSTEM_INVALID_MACRO_MODEL_SET,
+    REFUSAL_SYSTEM_INVARIANT_VIOLATION,
+    validate_boundary_invariants,
+    validate_interface_signature,
+    validate_macro_model_set,
+)
 
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
@@ -46,4 +54,10 @@ __all__ = [
     "REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH",
     "SystemExpandError",
     "expand_system_graph",
+    "REFUSAL_SYSTEM_INVALID_INTERFACE",
+    "REFUSAL_SYSTEM_INVARIANT_VIOLATION",
+    "REFUSAL_SYSTEM_INVALID_MACRO_MODEL_SET",
+    "validate_interface_signature",
+    "validate_boundary_invariants",
+    "validate_macro_model_set",
 ]
