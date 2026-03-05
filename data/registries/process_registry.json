@@ -4840,6 +4840,120 @@
     },
     {
       "affected_assemblies": [
+        "assembly.system.root"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical SYS-6 deterministic health aggregation tick; aggregates bounded hazard/entropy signals into system health state rows and logs deterministic degrade decisions.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "budgeted-degrade-logged"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.system_health_tick)",
+        "source": "SYS6-3",
+        "tier": "macro"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "System Health Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "system_rows",
+          "ref_id": "dominium.state.system_rows",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "system_health_state",
+          "ref_id": "dominium.schema.system.system_health_state@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "health_decision_log",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.system_health_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.system.capsule_placeholder"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical SYS-6 reliability evaluation tick; evaluates macro reliability profiles against system health state, emits warning/failure outputs, forced-expand requests, and deterministic safe fallback actions.",
+      "determinism_notes": [
+        "deterministic-order",
+        "profile-gated-rng",
+        "process-only-mutation",
+        "budgeted-degrade-logged"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.system_reliability_tick)",
+        "source": "SYS6-4",
+        "tier": "macro"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "System Reliability Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "system_health_state",
+          "ref_id": "dominium.schema.system.system_health_state@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "reliability_profile_registry",
+          "ref_id": "dominium.registry.reliability_profile_registry",
+          "ref_type": "registry"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "failure_event",
+          "ref_id": "dominium.schema.system.failure_event@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "forced_expand_event",
+          "ref_id": "dominium.schema.system.forced_expand_event@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "reliability_report_artifact",
+          "ref_id": "dominium.info.REPORT",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.system_reliability_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [
+        "rng.system.reliability.default"
+      ],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
         "assembly.system.template_root",
         "assembly.system.capsule_placeholder"
       ],
