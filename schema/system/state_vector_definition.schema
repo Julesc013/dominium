@@ -1,0 +1,24 @@
+SCHEMA: system/state_vector_definition.schema
+schema_id: dominium.schema.system.state_vector_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare explicit output-affecting owner state fields for systems/processes/compiled models.
+- Bind deterministic field declaration to versioned state-vector governance.
+
+NON-SEMANTICS:
+- No execution semantics or mutation rights.
+
+REQUIRED SHAPE:
+record state_vector_definition
+  required:
+    - owner_id: id
+    - version: text
+    - state_fields: list
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `state_fields` ordering must be deterministic under canonical normalization.
+- Empty `state_fields` is valid only for zero-memory owners.

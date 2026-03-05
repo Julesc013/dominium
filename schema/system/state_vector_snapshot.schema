@@ -1,0 +1,24 @@
+SCHEMA: system/state_vector_snapshot.schema
+schema_id: dominium.schema.system.state_vector_snapshot
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Persist deterministic serialized owner state snapshots used by collapse/expand and compiled runtime replay.
+
+NON-SEMANTICS:
+- No authority to mutate truth directly.
+
+REQUIRED SHAPE:
+record state_vector_snapshot
+  required:
+    - owner_id: id
+    - version: text
+    - serialized_state: map
+    - tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Snapshot serialization must be deterministic for equivalent owner state input.
+- Snapshot hashes are provenance-anchor eligible.

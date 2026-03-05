@@ -3612,6 +3612,20 @@
         "1.0.0"
       ]
     },
+    "state_vector_definition": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "state_vector_snapshot": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "provenance_classification": {
       "current_version": "1.0.0",
       "migrations": {},

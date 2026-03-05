@@ -1,0 +1,92 @@
+{
+  "schema_id": "dominium.registry.state_vector_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.state_vector_registry",
+    "registry_version": "1.0.0",
+    "state_vector_definitions": [
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "system.macro_capsule_default",
+        "version": "1.0.0",
+        "state_fields": [
+          {
+            "field_id": "captured_tick",
+            "path": "captured_tick",
+            "field_kind": "u64"
+          },
+          {
+            "field_id": "assembly_rows",
+            "path": "assembly_rows",
+            "field_kind": "list"
+          },
+          {
+            "field_id": "root_assembly_id",
+            "path": "root_assembly_id",
+            "field_kind": "id"
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "STATEVEC0-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "process.process_capsule_default",
+        "version": "1.0.0",
+        "state_fields": [
+          {
+            "field_id": "run_id",
+            "path": "run_id",
+            "field_kind": "id"
+          },
+          {
+            "field_id": "progress",
+            "path": "progress",
+            "field_kind": "fixed_point"
+          },
+          {
+            "field_id": "status",
+            "path": "status",
+            "field_kind": "text"
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "STATEVEC0-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "compiled.compiled_model_default",
+        "version": "1.0.0",
+        "state_fields": [
+          {
+            "field_id": "execution_count",
+            "path": "execution_count",
+            "field_kind": "u64"
+          },
+          {
+            "field_id": "last_input_hash",
+            "path": "last_input_hash",
+            "field_kind": "sha256"
+          },
+          {
+            "field_id": "last_output_hash",
+            "path": "last_output_hash",
+            "field_kind": "sha256"
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "STATEVEC0-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "STATEVEC0-2",
+      "null_boot_safe": true
+    }
+  }
+}
