@@ -15378,6 +15378,13 @@ def _refresh_system_certification_hash_chains(state: dict) -> None:
             )
         ]
     )
+    state["certification_hash_chain"] = canonical_sha256(
+        {
+            "system_certification_result_hash_chain": str(state.get("system_certification_result_hash_chain", "")).strip(),
+            "system_certificate_artifact_hash_chain": str(state.get("system_certificate_artifact_hash_chain", "")).strip(),
+            "system_certificate_revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
+        }
+    )
     state["certification_result_hash_chain"] = str(state.get("system_certification_result_hash_chain", "")).strip()
     state["certificate_artifact_hash_chain"] = str(state.get("system_certificate_artifact_hash_chain", "")).strip()
     state["revocation_hash_chain"] = str(state.get("system_certificate_revocation_hash_chain", "")).strip()
@@ -31194,6 +31201,7 @@ def execute_intent(
                 ],
             }
         )
+        state["system_collapse_expand_hash_chain"] = str(state.get("collapse_expand_event_hash_chain", "")).strip()
 
         info_artifact_rows = [
             dict(row)
