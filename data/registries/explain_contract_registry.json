@@ -692,6 +692,66 @@
         "extensions": {
           "source": "POLL2-6"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_forced_expand",
+        "event_kind_id": "system.forced_expand",
+        "explain_artifact_type_id": "artifact.explain.system_forced_expand",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.boundary_summary",
+          "section.system.macro_output_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.reduce.boundary_load",
+          "hint.review.macro_model_set"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_safety_shutdown",
+        "event_kind_id": "system.safety_shutdown",
+        "explain_artifact_type_id": "artifact.explain.system_safety_shutdown",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.boundary_summary",
+          "section.system.safety_status"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.reset.safety_pattern",
+          "hint.reduce.boundary_load"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_output_degradation",
+        "event_kind_id": "system.output_degradation",
+        "explain_artifact_type_id": "artifact.explain.system_output_degradation",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.macro_output_summary",
+          "section.system.boundary_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.raise.ctrl.fidelity_request",
+          "hint.reduce.boundary_load"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-4"
+        }
       }
     ],
     "extensions": {
