@@ -622,6 +622,28 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    pollution_field_hash_chain = _mobility_surface_hash(
+        key="pollution_field_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    surface_payload = dict(mobility_proof_surface or {})
+    deposition_hash_chain = _hash64(
+        str(
+            surface_payload.get(
+                "deposition_hash_chain",
+                surface_payload.get("pollution_deposition_hash_chain", ""),
+            )
+        ).strip(),
+        {
+            "key": "deposition_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
     drift_policy_id = str((dict(mobility_proof_surface or {})).get("drift_policy_id", "drift.none")).strip() or "drift.none"
 
     payload = {
@@ -692,6 +714,8 @@ def build_control_proof_bundle_from_markers(
         "compaction_marker_hash_chain": str(compaction_marker_hash_chain),
         "compaction_pre_anchor_hash": str(compaction_pre_anchor_hash),
         "compaction_post_anchor_hash": str(compaction_post_anchor_hash),
+        "pollution_field_hash_chain": str(pollution_field_hash_chain),
+        "deposition_hash_chain": str(deposition_hash_chain),
         "drift_policy_id": str(drift_policy_id),
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
@@ -774,6 +798,8 @@ def build_control_proof_bundle_from_markers(
                     "compaction_marker_hash_chain": str(payload.get("compaction_marker_hash_chain", "")),
                     "compaction_pre_anchor_hash": str(payload.get("compaction_pre_anchor_hash", "")),
                     "compaction_post_anchor_hash": str(payload.get("compaction_post_anchor_hash", "")),
+                    "pollution_field_hash_chain": str(payload.get("pollution_field_hash_chain", "")),
+                    "deposition_hash_chain": str(payload.get("deposition_hash_chain", "")),
                     "drift_policy_id": str(payload.get("drift_policy_id", "")),
                 }
             )[:16]

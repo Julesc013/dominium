@@ -339,6 +339,14 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "pollution_field_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deposition_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "drift_policy_id": {
       "type": "string",
       "minLength": 1
@@ -422,6 +430,8 @@
       "compaction_marker_hash_chain": "5738f2638c15e68f14211bcb3fd8ca562f22993ca7f4d56aefb0daec37639513",
       "compaction_pre_anchor_hash": "c120038f775f6ef22104a0a9f7dc74d8f5e4a4a5de9d2e5d37e8019d659f9952",
       "compaction_post_anchor_hash": "c120038f775f6ef22104a0a9f7dc74d8f5e4a4a5de9d2e5d37e8019d659f9952",
+      "pollution_field_hash_chain": "d4aa500f6e7158ec6bf0526c9f6d0c87641cf179b237f54fe3ad10f9f16fb9b3",
+      "deposition_hash_chain": "f7553cb41e98d52fe53fb256d0dc6f7b622922d2ede477d6f54f165448f4816f",
       "drift_policy_id": "drift.none",
       "deterministic_fingerprint": "f1fcbca386d927f736ebfef0643ebf821d13d8da38f8e3f1360ab2164ec22e6a",
       "extensions": {

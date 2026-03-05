@@ -717,6 +717,15 @@ def _emit_control_proof_bundle(
             "boundary_field_exchange_hash_chain": str(
                 global_state.get("boundary_field_exchange_hash_chain", "")
             ).strip(),
+            "pollution_field_hash_chain": str(
+                global_state.get("pollution_field_hash_chain", "")
+            ).strip(),
+            "deposition_hash_chain": str(
+                global_state.get(
+                    "pollution_deposition_hash_chain",
+                    global_state.get("deposition_hash_chain", ""),
+                )
+            ).strip(),
             "time_mapping_hash_chain": str(global_state.get("time_mapping_hash_chain", "")).strip(),
             "schedule_domain_evaluation_hash": str(
                 global_state.get("schedule_domain_evaluation_hash", "")
