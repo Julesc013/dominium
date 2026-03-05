@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-04
+Last Reviewed: 2026-03-05
 Supersedes: none
 Superseded By: none
 
@@ -8,9 +8,10 @@ Superseded By: none
 
 ## Counts By Severity
 
-- RISK: 449
-- VIOLATION: 18
-- WARN: 880
+- INFO: 223
+- RISK: 631
+- VIOLATION: 64
+- WARN: 1209
 
 ## Counts By Category
 
@@ -32,7 +33,6 @@ Superseded By: none
 - architecture.inline_phase_change_smell: 3
 - architecture.inline_power_loss_smell: 1
 - architecture.inline_protection_smell: 10
-- architecture.inline_response_curve_smell: 7
 - architecture.inline_strength_check_smell: 1
 - architecture.ir_nondeterminism_smell: 2
 - architecture.magic_silent_violation_smell: 2
@@ -58,23 +58,32 @@ Superseded By: none
 - authority.fault_bypass_smell: 3
 - canon_drift: 721
 - capability_bypass_smell: 1
+- capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 11
+- derived_freshness: 131
 - epistemics.hidden_state_leak_smell: 6
 - interaction.interaction_bypass_smell: 2
+- legacy_contamination: 11
+- materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
+- mode_flag_smell: 27
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
+- ownership_boundary: 9
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
+- reachability: 80
 - reliability.silent_reaction_smell: 3
+- schema_usage: 160
 - security.boundary_io: 29
 - security.privilege_bypass: 9
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
+- terminology_misuse: 1
+- ui_parity: 220

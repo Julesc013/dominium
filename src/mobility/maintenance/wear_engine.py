@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
+from src.models.model_engine import compute_wear_ratio_permille
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -161,9 +162,12 @@ def wear_accumulation_policy_rows_by_id(registry_payload: Mapping[str, object] |
 
 
 def wear_ratio_permille(*, accumulated_value: int, hazard_threshold: int) -> int:
-    acc = int(max(0, _as_int(accumulated_value, 0)))
-    threshold = int(max(1, _as_int(hazard_threshold, 1)))
-    return int((int(acc) * 1000) // int(threshold))
+    return int(
+        compute_wear_ratio_permille(
+            accumulated_value=int(accumulated_value),
+            hazard_threshold=int(hazard_threshold),
+        )
+    )
 
 
 def track_wear_modifier_permille(
@@ -177,10 +181,10 @@ def track_wear_modifier_permille(
     row = dict(rows_by_key.get((str(target_id or "").strip(), "wear.track")) or {})
     wear_type_row = dict((dict(wear_type_rows or {})).get("wear.track") or {})
     accumulated = int(max(0, _as_int(row.get("accumulated_value", 0), 0)))
-    threshold = int(max(1, _as_int(wear_type_row.get("hazard_threshold", default_threshold), default_threshold)))
-    ratio = int(max(0, wear_ratio_permille(accumulated_value=accumulated, hazard_threshold=threshold)))
+    track_limit = int(max(1, _as_int(wear_type_row.get("hazard_threshold", default_threshold), default_threshold)))
+    wear_score = int(wear_ratio_permille(accumulated_value=accumulated, hazard_threshold=track_limit))
     # 0 wear => 1000 permille, threshold wear => 600 permille, severe wear floors at 200.
-    degraded = int(min(800, (int(ratio) * 400) // 1000))
+    degraded = int(min(800, (int(wear_score) * 400) // 1000))
     return int(max(200, 1000 - degraded))
 
 
@@ -281,17 +285,19 @@ def apply_wear_updates(
             extensions=merged_extensions,
         )
         rows_by_key[key] = next_row
-        threshold = int(max(1, _as_int(wear_type_row.get("hazard_threshold", 100000), 100000)))
-        before_ratio = wear_ratio_permille(accumulated_value=accumulated_before, hazard_threshold=threshold)
-        after_ratio = wear_ratio_permille(accumulated_value=accumulated_after, hazard_threshold=threshold)
-        if before_ratio < 1000 and after_ratio >= 1000:
+        limit_value = int(_as_int(wear_type_row.get("hazard_threshold", 100000), 100000))
+        if limit_value <= 0:
+            limit_value = 1
+        before_score = wear_ratio_permille(accumulated_value=accumulated_before, hazard_threshold=limit_value)
+        after_score = wear_ratio_permille(accumulated_value=accumulated_after, hazard_threshold=limit_value)
+        if before_score < 1000 and after_score >= 1000:
             threshold_crossings.append(
                 {
                     "target_id": key[0],
                     "wear_type_id": key[1],
-                    "hazard_threshold": int(threshold),
+                    "hazard_threshold": int(limit_value),
                     "accumulated_value": int(accumulated_after),
-                    "wear_ratio_permille": int(after_ratio),
+                    "wear_ratio_permille": int(after_score),
                 }
             )
         processed_keys.append(key_token)
@@ -384,17 +390,19 @@ def wear_summary_for_target(
             if not row:
                 continue
             type_row = dict(type_rows.get(wear_type_id) or {})
-            threshold = int(max(1, _as_int(type_row.get("hazard_threshold", 100000), 100000)))
+            limit_value = int(_as_int(type_row.get("hazard_threshold", 100000), 100000))
+            if limit_value <= 0:
+                limit_value = 1
             accumulated = int(max(0, _as_int(row.get("accumulated_value", 0), 0)))
-            ratio = int(wear_ratio_permille(accumulated_value=accumulated, hazard_threshold=threshold))
+            score_value = int(wear_ratio_permille(accumulated_value=accumulated, hazard_threshold=limit_value))
             summary_rows.append(
                 {
                     "target_id": target_id,
                     "wear_type_id": wear_type_id,
                     "accumulated_value": accumulated,
-                    "hazard_threshold": threshold,
-                    "wear_ratio_permille": ratio,
-                    "critical": bool(ratio >= 1000),
+                    "hazard_threshold": int(limit_value),
+                    "wear_ratio_permille": int(score_value),
+                    "critical": bool(score_value >= 1000),
                 }
             )
     return {

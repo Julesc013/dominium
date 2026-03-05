@@ -3063,19 +3063,170 @@ def evaluate_model_bindings(
     }
 
 
+def evaluate_field_modifier_curve(
+    *,
+    temperature: int,
+    moisture: int,
+    friction: int,
+    wind_vector: Mapping[str, object] | None,
+) -> dict:
+    temp_value = int(_as_int(temperature, 0))
+    moisture_value = int(_as_int(moisture, 0))
+    friction_value = int(_as_int(friction, 1000))
+    wind_row = _as_map(wind_vector)
+    wind_x = int(_as_int(wind_row.get("x", 0), 0))
+    wind_y = int(_as_int(wind_row.get("y", 0), 0))
+    wind_z = int(_as_int(wind_row.get("z", 0), 0))
+
+    icing_active = bool(temp_value <= 0 and moisture_value >= 650)
+    traction_value = int(max(100, min(1200, friction_value - max(0, moisture_value) // 4)))
+    if icing_active:
+        traction_value = int(min(traction_value, 700))
+
+    wind_magnitude = int(abs(wind_x) + abs(wind_y) + abs(wind_z))
+    wind_drift_value = int(min(1000, max(0, wind_magnitude // 3)))
+
+    stress_capacity_value = 1000
+    if temp_value <= -20:
+        stress_capacity_value = 920
+    elif temp_value >= 70:
+        stress_capacity_value = 880
+    corrosion_risk_value = int(min(1000, max(0, moisture_value)))
+
+    out = {
+        "icing_active": bool(icing_active),
+        "traction_permille": int(max(0, traction_value)),
+        "wind_drift_permille": int(max(0, wind_drift_value)),
+        "stress_capacity_permille": int(max(0, stress_capacity_value)),
+        "corrosion_risk_permille": int(max(0, corrosion_risk_value)),
+    }
+    out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+    return out
+
+
+def aggregate_structural_edge_metrics(*, edge_rows: object) -> dict:
+    rows = [dict(item) for item in list(edge_rows or []) if isinstance(item, Mapping)]
+    max_stress_value = 0
+    total_stress_value = 0
+    near_fracture_count = 0
+    failed_count = 0
+    min_effective_max_load = None
+    max_alignment_error_value = 0
+    max_derailment_risk_value = 0
+    for row in rows:
+        stress_value = int(max(0, _as_int(row.get("stress_ratio_permille", 0), 0)))
+        max_stress_value = max(max_stress_value, stress_value)
+        total_stress_value += int(stress_value)
+        if stress_value >= 900:
+            near_fracture_count += 1
+        failure_state = str(row.get("failure_state", "")).strip().lower()
+        if failure_state == "failed":
+            failed_count += 1
+        effective_max = int(max(0, _as_int(row.get("effective_max_load", row.get("max_load", 0)), 0)))
+        if min_effective_max_load is None:
+            min_effective_max_load = effective_max
+        else:
+            min_effective_max_load = min(int(min_effective_max_load), int(effective_max))
+        ext = _as_map(row.get("extensions"))
+        max_alignment_error_value = max(max_alignment_error_value, int(max(0, _as_int(ext.get("track_alignment_error_permille", 0), 0))))
+        max_derailment_risk_value = max(max_derailment_risk_value, int(max(0, _as_int(ext.get("derailment_risk_permille", 0), 0))))
+
+    out = {
+        "edge_count": int(len(rows)),
+        "max_stress_ratio_permille": int(max_stress_value),
+        "total_stress_ratio_permille": int(total_stress_value),
+        "near_fracture_edge_count": int(near_fracture_count),
+        "failed_edge_count": int(failed_count),
+        "min_effective_max_load": int(max(0, _as_int(min_effective_max_load, 0))),
+        "max_alignment_error_permille": int(max(0, max_alignment_error_value)),
+        "max_derailment_risk_permille": int(max(0, max_derailment_risk_value)),
+    }
+    out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+    return out
+
+
+def compute_wear_ratio_permille(*, accumulated_value: int, hazard_threshold: int) -> int:
+    accumulated = int(max(0, _as_int(accumulated_value, 0)))
+    threshold_value = int(max(1, _as_int(hazard_threshold, 1)))
+    return int((accumulated * 1000) // threshold_value)
+
+
+def compute_lateral_accel_units(*, velocity_mm_per_tick: int, radius_mm: int) -> int:
+    speed = int(abs(_as_int(velocity_mm_per_tick, 0)))
+    radius = int(max(1, _as_int(radius_mm, 1)))
+    return int((speed * speed) // radius)
+
+
+def compute_derailment_threshold_units(
+    *,
+    base_threshold: int,
+    track_wear_permille: int,
+    friction_permille: int,
+    maintenance_permille: int,
+) -> int:
+    base_value = int(max(1, _as_int(base_threshold, 1)))
+    wear_value = int(max(100, min(1200, _as_int(track_wear_permille, 1000))))
+    friction_value = int(max(100, min(1200, _as_int(friction_permille, 1000))))
+    maintenance_value = int(max(100, min(1200, _as_int(maintenance_permille, 1000))))
+    product = int(base_value) * int(wear_value) * int(friction_value) * int(maintenance_value)
+    return int(max(1, product // 1_000_000_000))
+
+
+def compute_congestion_ratio_permille(*, current_occupancy: int, capacity_units: int) -> int:
+    current_value = int(max(0, _as_int(current_occupancy, 0)))
+    capacity_value = int(max(1, _as_int(capacity_units, 1)))
+    return int((current_value * 1000) // capacity_value)
+
+
+def compute_congestion_multiplier_permille(*, congestion_ratio_permille: int, k_permille: int) -> int:
+    ratio_value = int(max(0, _as_int(congestion_ratio_permille, 0)))
+    if ratio_value <= 1000:
+        return 1000
+    over_value = int(ratio_value - 1000)
+    gain_value = int(max(0, _as_int(k_permille, 0)))
+    return int(1000 + ((over_value * gain_value) // 1000))
+
+
+def resolve_speed_multiplier_permille(*, speed_eval_row: Mapping[str, object] | None, default_value: int = 1000) -> int:
+    row = _as_map(speed_eval_row)
+    fallback = int(max(1, _as_int(default_value, 1000)))
+    return int(max(1, _as_int(row.get("multiplier_permille", fallback), fallback)))
+
+
+def evaluate_receipt_acceptance_curve(*, trust_weight: float, acceptance_threshold: float) -> dict:
+    threshold_value = float(max(0.0, min(1.0, float(acceptance_threshold))))
+    trust_value = float(max(0.0, min(1.0, float(trust_weight))))
+    out = {
+        "accepted": bool(trust_value >= threshold_value),
+        "acceptance_threshold": float(threshold_value),
+        "trust_weight": float(trust_value),
+    }
+    out["deterministic_fingerprint"] = canonical_sha256(dict(out, deterministic_fingerprint=""))
+    return out
+
+
 __all__ = [
     "REFUSAL_MODEL_BINDING_INVALID",
     "REFUSAL_MODEL_CACHE_POLICY_INVALID",
     "REFUSAL_MODEL_INVALID",
     "ModelEngineError",
     "cache_policy_rows_by_id",
+    "compute_congestion_multiplier_permille",
+    "compute_congestion_ratio_permille",
+    "compute_derailment_threshold_units",
+    "compute_lateral_accel_units",
+    "compute_wear_ratio_permille",
     "constitutive_model_rows_by_id",
+    "evaluate_field_modifier_curve",
     "evaluate_model_bindings",
+    "evaluate_receipt_acceptance_curve",
     "evaluate_time_mapping_model",
+    "aggregate_structural_edge_metrics",
     "model_type_rows_by_id",
     "normalize_constitutive_model_rows",
     "normalize_input_ref",
     "normalize_model_binding_rows",
     "normalize_model_evaluation_result_rows",
     "normalize_output_ref",
+    "resolve_speed_multiplier_permille",
 ]

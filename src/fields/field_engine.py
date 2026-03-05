@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence
 
+from src.models.model_engine import evaluate_field_modifier_curve
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -912,18 +913,17 @@ def field_modifier_snapshot(
             field_type_registry=field_type_registry,
         )
 
-        icing_active = bool(int(temperature) <= 0 and int(moisture) >= 650)
-        traction_permille = int(max(100, min(1200, int(friction) - int(max(0, moisture)) // 4)))
-        if icing_active:
-            traction_permille = min(traction_permille, 700)
-        wind_magnitude = int(abs(int(wind.get("x", 0))) + abs(int(wind.get("y", 0))) + abs(int(wind.get("z", 0))))
-        wind_drift_permille = int(min(1000, max(0, wind_magnitude // 3)))
-        stress_capacity_permille = 1000
-        if int(temperature) <= -20:
-            stress_capacity_permille = 920
-        elif int(temperature) >= 70:
-            stress_capacity_permille = 880
-        corrosion_risk_permille = int(min(1000, max(0, int(moisture))))
+        modifier_curve = evaluate_field_modifier_curve(
+            temperature=int(temperature),
+            moisture=int(moisture),
+            friction=int(friction),
+            wind_vector=wind,
+        )
+        icing_active = bool(modifier_curve.get("icing_active", False))
+        traction_permille = int(_as_int(modifier_curve.get("traction_permille", 1000), 1000))
+        wind_drift_permille = int(_as_int(modifier_curve.get("wind_drift_permille", 0), 0))
+        stress_capacity_permille = int(_as_int(modifier_curve.get("stress_capacity_permille", 1000), 1000))
+        corrosion_risk_permille = int(_as_int(modifier_curve.get("corrosion_risk_permille", 0), 0))
 
         payload = {
             "target_id": target_id,

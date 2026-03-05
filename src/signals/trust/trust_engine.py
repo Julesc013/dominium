@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.models.model_engine import evaluate_receipt_acceptance_curve
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -343,13 +344,14 @@ def evaluate_receipt_acceptance(
     belief_policy_row: Mapping[str, object] | None,
 ) -> dict:
     policy = dict(belief_policy_row or {})
-    threshold = float(_clamp_weight(policy.get("acceptance_threshold", 0.5), 0.5))
-    weight = float(_clamp_weight(trust_weight, 0.5))
-    accepted = bool(weight >= threshold)
+    acceptance_eval = evaluate_receipt_acceptance_curve(
+        trust_weight=float(_clamp_weight(trust_weight, 0.5)),
+        acceptance_threshold=float(_clamp_weight(policy.get("acceptance_threshold", 0.5), 0.5)),
+    )
     return {
-        "accepted": accepted,
-        "acceptance_threshold": threshold,
-        "trust_weight": weight,
+        "accepted": bool(acceptance_eval.get("accepted", False)),
+        "acceptance_threshold": float(acceptance_eval.get("acceptance_threshold", 0.5)),
+        "trust_weight": float(acceptance_eval.get("trust_weight", 0.5)),
     }
 
 

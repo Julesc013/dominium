@@ -5,6 +5,12 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from src.core.graph.network_graph_engine import normalize_network_graph
+from src.models.model_engine import (
+    compute_congestion_multiplier_permille as model_compute_congestion_multiplier_permille,
+)
+from src.models.model_engine import (
+    compute_congestion_ratio_permille as model_compute_congestion_ratio_permille,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -112,9 +118,12 @@ def resolve_edge_capacity_units(*, edge_row: Mapping[str, object], default_capac
 
 
 def compute_congestion_ratio_permille(*, current_occupancy: int, capacity_units: int) -> int:
-    current = int(max(0, _as_int(current_occupancy, 0)))
-    capacity = int(max(1, _as_int(capacity_units, 1)))
-    return int((int(current) * 1000) // int(capacity))
+    return int(
+        model_compute_congestion_ratio_permille(
+            current_occupancy=int(current_occupancy),
+            capacity_units=int(capacity_units),
+        )
+    )
 
 
 def congestion_multiplier_permille(
@@ -122,12 +131,13 @@ def congestion_multiplier_permille(
     congestion_ratio_permille: int,
     congestion_policy_row: Mapping[str, object] | None,
 ) -> int:
-    ratio = int(max(0, _as_int(congestion_ratio_permille, 0)))
-    if ratio <= 1000:
-        return 1000
-    over = int(ratio - 1000)
     k_permille = _policy_k_permille(dict(congestion_policy_row or {}))
-    return int(1000 + ((int(over) * int(k_permille)) // 1000))
+    return int(
+        model_compute_congestion_multiplier_permille(
+            congestion_ratio_permille=int(congestion_ratio_permille),
+            k_permille=int(k_permille),
+        )
+    )
 
 
 def apply_congestion_to_speed(

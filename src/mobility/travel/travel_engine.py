@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
+from src.models.model_engine import resolve_speed_multiplier_permille
 from src.mobility.travel.itinerary_engine import normalize_itinerary_rows
 from src.mobility.traffic import (
     apply_congestion_to_speed,
@@ -618,7 +619,7 @@ def tick_macro_travel(
             congestion_ratio_permille=int(congestion_ratio_permille),
             congestion_policy_row=congestion_policy,
         )
-        multiplier_permille = int(max(1, _as_int(speed_eval.get("multiplier_permille", 1000), 1000)))
+        multiplier_permille = int(resolve_speed_multiplier_permille(speed_eval_row=speed_eval, default_value=1000))
         edge_eta_ticks = int(max(1, (int(base_edge_eta_ticks) * int(multiplier_permille) + 999) // 1000))
         congestion_delay_ticks = int(max(0, int(edge_eta_ticks) - int(base_edge_eta_ticks)))
         logged_edge_index = int(_as_int(macro.get("congestion_logged_edge_index", -1), -1))

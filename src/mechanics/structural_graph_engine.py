@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from src.control.effects import get_effective_modifier
+from src.models.model_engine import aggregate_structural_edge_metrics
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -574,32 +575,16 @@ def summarize_stress_for_target(
             if edge_row:
                 matching_edges.append(edge_row)
 
-    max_ratio = 0
-    total_ratio = 0
-    near_fracture = 0
-    failed_count = 0
-    min_effective_max_load = None
-    max_alignment_error = 0
-    max_derailment_risk = 0
-    for row in matching_edges:
-        ratio = int(max(0, _as_int(row.get("stress_ratio_permille", 0), 0)))
-        max_ratio = max(max_ratio, ratio)
-        total_ratio += int(ratio)
-        if ratio >= 900:
-            near_fracture += 1
-        if _failure_state(row.get("failure_state")) == "failed":
-            failed_count += 1
-        effective_max = int(max(0, _as_int(row.get("effective_max_load", row.get("max_load", 0)), 0)))
-        if min_effective_max_load is None:
-            min_effective_max_load = effective_max
-        else:
-            min_effective_max_load = min(int(min_effective_max_load), int(effective_max))
-        ext = _as_map(row.get("extensions"))
-        max_alignment_error = max(max_alignment_error, int(max(0, _as_int(ext.get("track_alignment_error_permille", 0), 0))))
-        max_derailment_risk = max(max_derailment_risk, int(max(0, _as_int(ext.get("derailment_risk_permille", 0), 0))))
-
-    edge_count = int(len(matching_edges))
-    average_ratio = int((int(total_ratio) // int(edge_count))) if edge_count > 0 else 0
+    aggregate = aggregate_structural_edge_metrics(edge_rows=matching_edges)
+    edge_count = int(max(0, _as_int(aggregate.get("edge_count", len(matching_edges)), len(matching_edges))))
+    max_stress_ratio = int(max(0, _as_int(aggregate.get("max_stress_ratio_permille", 0), 0)))
+    total_stress_ratio = int(max(0, _as_int(aggregate.get("total_stress_ratio_permille", 0), 0)))
+    near_fracture = int(max(0, _as_int(aggregate.get("near_fracture_edge_count", 0), 0)))
+    failed_count = int(max(0, _as_int(aggregate.get("failed_edge_count", 0), 0)))
+    min_effective_max_load = int(max(0, _as_int(aggregate.get("min_effective_max_load", 0), 0)))
+    max_alignment_error = int(max(0, _as_int(aggregate.get("max_alignment_error_permille", 0), 0)))
+    max_derailment_risk = int(max(0, _as_int(aggregate.get("max_derailment_risk_permille", 0), 0)))
+    average_ratio = int((int(total_stress_ratio) // int(edge_count))) if edge_count > 0 else 0
     recommended_speed_cap_permille = 1000
     if edge_count > 0:
         recommended_speed_cap_permille = int(
@@ -607,7 +592,7 @@ def summarize_stress_for_target(
                 200,
                 min(
                     1000,
-                    1000 - max(0, int(max_ratio) - 700) - int(max_alignment_error // 2),
+                    1000 - max(0, int(max_stress_ratio) - 700) - int(max_alignment_error // 2),
                 ),
             )
         )
@@ -616,11 +601,11 @@ def summarize_stress_for_target(
         "target_id": token,
         "matching_graph_ids": sorted(candidate_graph_ids),
         "edge_count": edge_count,
-        "max_stress_ratio_permille": int(max_ratio),
+        "max_stress_ratio_permille": int(max_stress_ratio),
         "average_stress_ratio_permille": int(max(0, average_ratio)),
         "near_fracture_edge_count": int(near_fracture),
         "failed_edge_count": int(failed_count),
-        "min_effective_max_load": int(max(0, _as_int(min_effective_max_load, 0),)),
+        "min_effective_max_load": int(min_effective_max_load),
         "max_alignment_error_permille": int(max(0, max_alignment_error)),
         "derailment_risk_permille": int(max(0, max_derailment_risk)),
         "recommended_speed_cap_permille": int(max(0, recommended_speed_cap_permille)),

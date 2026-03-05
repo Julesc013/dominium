@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 from typing import Dict, List, Mapping
 
+from src.models.model_engine import compute_derailment_threshold_units, compute_lateral_accel_units
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -293,9 +294,12 @@ def resolve_derailment_policy(*, registry_payload: Mapping[str, object] | None, 
 
 
 def lateral_accel_units(*, velocity_mm_per_tick: int, radius_mm: int) -> int:
-    speed = int(abs(_as_int(velocity_mm_per_tick, 0)))
-    radius = int(max(1, _as_int(radius_mm, 1)))
-    return int((speed * speed) // radius)
+    return int(
+        compute_lateral_accel_units(
+            velocity_mm_per_tick=int(velocity_mm_per_tick),
+            radius_mm=int(radius_mm),
+        )
+    )
 
 
 def derailment_threshold_units(
@@ -305,12 +309,14 @@ def derailment_threshold_units(
     friction_permille: int,
     maintenance_permille: int,
 ) -> int:
-    base = int(max(1, _as_int(base_threshold, 1)))
-    wear = int(max(100, min(1200, _as_int(track_wear_permille, 1000))))
-    friction = int(max(100, min(1200, _as_int(friction_permille, 1000))))
-    maintenance = int(max(100, min(1200, _as_int(maintenance_permille, 1000))))
-    product = int(base) * int(wear) * int(friction) * int(maintenance)
-    return int(max(1, product // 1_000_000_000))
+    return int(
+        compute_derailment_threshold_units(
+            base_threshold=int(base_threshold),
+            track_wear_permille=int(track_wear_permille),
+            friction_permille=int(friction_permille),
+            maintenance_permille=int(maintenance_permille),
+        )
+    )
 
 
 def evaluate_derailment(
