@@ -48,9 +48,9 @@ def run(graph, repo_root, changed_files=None):
 
     macro_set_schema_text = _read_text(repo_root, macro_set_schema_rel)
     for token in (
-        '"macro_model_set_id"',
-        '"model_bindings"',
-        '"error_bound_policy_id"',
+        "macro_model_set_id:",
+        "model_bindings:",
+        "error_bound_policy_id:",
     ):
         if token in macro_set_schema_text:
             continue
@@ -71,7 +71,7 @@ def run(graph, repo_root, changed_files=None):
         )
 
     macro_capsule_schema_text = _read_text(repo_root, macro_capsule_schema_rel)
-    for token in ('"macro_model_set_id"', '"model_error_bounds_ref"'):
+    for token in ("macro_model_set_id:", "model_error_bounds_ref:"):
         if token in macro_capsule_schema_text:
             continue
         findings.append(

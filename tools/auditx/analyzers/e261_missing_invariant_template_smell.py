@@ -47,10 +47,10 @@ def run(graph, repo_root, changed_files=None):
 
     schema_text = _read_text(repo_root, schema_rel)
     for token in (
-        '"invariant_kind"',
-        '"tolerance_policy_id"',
-        '"boundary_flux_allowed"',
-        '"ledger_transform_required"',
+        "invariant_kind:",
+        "tolerance_policy_id:",
+        "boundary_flux_allowed:",
+        "ledger_transform_required:",
     ):
         if token in schema_text:
             continue

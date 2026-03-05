@@ -1,14 +1,14 @@
 {
   "artifact_class": "RUN_META",
   "cache_mode": "full_reuse",
-  "changed_only": true,
-  "generated_utc": "2026-03-05T01:18:22Z",
-  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
+  "changed_only": false,
+  "generated_utc": "2026-03-05T11:24:07Z",
+  "graph_hash": "c8d9912f7af9e0a36f8432d113c62028dce355405f3fcec9945076c76f338d46",
   "last_reviewed": "2026-03-05",
   "output_format": "both",
   "platform": "windows",
   "python_version": "3.11.9",
   "result": "scan_complete",
   "status": "DERIVED",
-  "workspace_id": "ws-305085697a359476"
+  "workspace_id": "ws-96bc3d398a7a129a"
 }

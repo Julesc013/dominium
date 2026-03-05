@@ -38,16 +38,16 @@ def run(graph, repo_root, changed_files=None):
 
     schema_text = _read_text(repo_root, schema_rel)
     for token in (
-        '"port_id"',
-        '"port_type_id"',
-        '"direction"',
-        '"allowed_bundle_ids"',
-        '"spec_limit_refs"',
-        '"signal_descriptors"',
-        '"channel_type_id"',
-        '"capacity"',
-        '"delay"',
-        '"access_policy_id"',
+        "port_id:",
+        "port_type_id:",
+        "direction:",
+        "allowed_bundle_ids:",
+        "spec_limit_refs:",
+        "signal_descriptors:",
+        "channel_type_id:",
+        "capacity:",
+        "delay:",
+        "access_policy_id:",
     ):
         if token in schema_text:
             continue

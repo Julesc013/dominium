@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 52,
+  "candidate_count": 55,
   "candidates": [
     {
       "evidence_paths": [
@@ -35,13 +35,11 @@
     },
     {
       "evidence_paths": [
-        "tools/auditx/analyzers/c1_security_boundary.py",
-        "tools/securex/core/boundary_validator.py",
-        "tools/securex/securex.py"
+        "tools/xstack/repox/check.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
-      "rule_type": "TEST_REGRESSION",
+      "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
     {
@@ -205,8 +203,10 @@
         "src/net/anti_cheat/anti_cheat_engine.py",
         "src/net/policies/policy_server_authoritative.py",
         "src/net/srz/shard_coordinator.py",
+        "src/pollution/exposure_engine.py",
         "src/reality/ledger/ledger_engine.py",
         "src/safety/safety_engine.py",
+        "src/system/system_collapse_engine.py",
         "tools/xstack/sessionx/observation.py",
         "tools/xstack/sessionx/process_runtime.py"
       ],
@@ -217,8 +217,28 @@
     },
     {
       "evidence_paths": [
+        "src/core/graph/network_graph_engine.py",
+        "src/pollution/dispersion_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6525,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
         "src/mobility/geometry/geometry_engine.py",
         "src/specs/spec_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6525,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/reality/transitions/transition_controller.py",
+        "tools/xstack/sessionx/process_runtime.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.6525,
@@ -283,7 +303,8 @@
       "evidence_paths": [
         "src/inspection/inspection_engine.py",
         "src/signals/transport/transport_engine.py",
-        "src/signals/trust/trust_engine.py"
+        "src/signals/trust/trust_engine.py",
+        "tools/xstack/sessionx/process_runtime.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.645,
@@ -451,6 +472,7 @@
         "src/electric/power_network_engine.py",
         "src/fluid/network/fluid_network_engine.py",
         "src/models/model_engine.py",
+        "src/system/system_validation_engine.py",
         "src/thermal/network/thermal_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py"
       ],
@@ -578,6 +600,15 @@
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.5625,
       "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/xstack/repox/check.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.525,
+      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     }
   ],

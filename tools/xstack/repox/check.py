@@ -17442,16 +17442,16 @@ def _append_system_validation_invariant_findings(
 
     interface_schema_text = _file_text(repo_root, interface_schema_rel)
     for token in (
-        '"port_id"',
-        '"port_type_id"',
-        '"direction"',
-        '"allowed_bundle_ids"',
-        '"spec_limit_refs"',
-        '"signal_descriptors"',
-        '"channel_type_id"',
-        '"capacity"',
-        '"delay"',
-        '"access_policy_id"',
+        "port_id:",
+        "port_type_id:",
+        "direction:",
+        "allowed_bundle_ids:",
+        "spec_limit_refs:",
+        "signal_descriptors:",
+        "channel_type_id:",
+        "capacity:",
+        "delay:",
+        "access_policy_id:",
     ):
         if token in interface_schema_text:
             continue
@@ -17468,10 +17468,10 @@ def _append_system_validation_invariant_findings(
 
     invariant_schema_text = _file_text(repo_root, invariant_schema_rel)
     for token in (
-        '"invariant_kind"',
-        '"tolerance_policy_id"',
-        '"boundary_flux_allowed"',
-        '"ledger_transform_required"',
+        "invariant_kind:",
+        "tolerance_policy_id:",
+        "boundary_flux_allowed:",
+        "ledger_transform_required:",
     ):
         if token in invariant_schema_text:
             continue
@@ -17487,7 +17487,7 @@ def _append_system_validation_invariant_findings(
         )
 
     macro_capsule_text = _file_text(repo_root, macro_capsule_schema_rel)
-    for token in ('"macro_model_set_id"', '"model_error_bounds_ref"'):
+    for token in ("macro_model_set_id:", "model_error_bounds_ref:"):
         if token in macro_capsule_text:
             continue
         findings.append(

@@ -8,33 +8,18 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1340
-- Severities: RISK=442, VIOLATION=18, WARN=880
-- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=309, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.inline_cure_smell=2, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=10, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=4, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=2, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=721, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reliability.silent_reaction_smell=3, security.boundary_io=29, security.privilege_bypass=9, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 1325
+- Severities: RISK=456, VIOLATION=10, WARN=859
+- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=311, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.implicit_system_collapse_smell=1, architecture.inline_cure_smell=2, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=12, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=5, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=3, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=726, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, legacy_contamination=1, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=3, reliability.silent_reaction_smell=3, schema_usage=5, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
 - `A4_DERIVED_ARTIFACT_CONTRACT:0001` VIOLATION `A4_DERIVED_ARTIFACT_CONTRACT` `semantic.derived_artifact_contract` (docs/audit/auditx/FINDINGS.json)
   - Canonical artifact contains forbidden run-meta fields.
   - Sample keys: findings[0].created_utc, findings[1].created_utc, findings[2].created_utc, findings[3].created_utc, findings[4].created_utc
-- `C1:0001` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
-  - bypass_law_profile
-- `C1:0002` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
-  - disable_epistemic_guard
-- `C1:0003` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
-  - override_authority_state
-- `C1:0004` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
-  - bypass_law_profile
-- `C1:0005` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
-  - disable_epistemic_guard
-- `C1:0006` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
-  - override_authority_state
-- `C1:0007` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
-  - bypass_law_profile
-- `C1:0008` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
-  - disable_epistemic_guard
-- `C1:0009` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
-  - override_authority_state
+- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
 - `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
   - domain downgrade path missing negotiation downgrade surface
 - `E118_SILENT_DOWNGRADE_SMELL:0002` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/materials/materialization/materialization_engine.py)
@@ -57,6 +42,24 @@ Superseded By: none
 - `E132_MISSING_DECISION_LOG_SMELL:0003` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (src/control/control_plane_engine.py)
   - refusal path not tied to decision-log emission
   - return {"result": "refused", "refusal": refusal_payload}
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pose_slots
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: mount_points
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pose_mount_provenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pollution_exposure_state_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pollution_health_risk_event_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A7_LEGACY_CONTAMINATION:0001` RISK `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/xstack/repox/check.py)
+  - Canonical file contains direct legacy path token.
+  - Potential legacy coupling not captured by include/import graph.
 - `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
   - Derived artifact listed in registry is missing on disk.
   - artifact_id=artifact.auditx.run_meta
@@ -135,6 +138,9 @@ Superseded By: none
 - `E144_ADHOC_SPEED_LIMIT_SMELL:0002` RISK `E144_ADHOC_SPEED_LIMIT_SMELL` `architecture.adhoc_speed_limit_smell` (tools/xstack/sessionx/process_runtime.py)
   - ad-hoc speed limit logic detected
   - "recommended_speed_cap_permille": int(max(0, _as_int(mechanics_summary.get("recommended_speed_cap_permille", 1000), 1000))),
+- `E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001` RISK `E147_MOBILITY_GRAPH_DUPLICATION_SMELL` `architecture.mobility_graph_duplication_smell` (src/pollution/dispersion_engine.py)
+  - potential ad-hoc mobility graph duplication detected
+  - neighbor_map = dict(neighbor_map_by_cell or {})
 - `E154_DERAILMENT_BYPASS_SMELL:0001` RISK `E154_DERAILMENT_BYPASS_SMELL` `architecture.derailment_bypass_smell` (src/mobility/travel/reenactment.py)
   - derailment signaling/state mutation outside process.mob_derail path
   - if str(row.get("kind", "")).strip() == "incident_stub" and reason_code.startswith("incident.derailment."):
@@ -222,6 +228,9 @@ Superseded By: none
 - `E173_UNLOGGED_TRUST_CHANGE_SMELL:0002` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/signals/transport/transport_engine.py)
   - possible trust mutation path outside logged trust engine process
   - trust_weight=float(row.get("trust_weight", 1.0)),
+- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0003` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (tools/xstack/sessionx/process_runtime.py)
+  - possible trust mutation path outside logged trust engine process
+  - trust_weight=1.0,
 - `E174_DIRECT_SCHEDULE_MUTATION_SMELL:0001` RISK `E174_DIRECT_SCHEDULE_MUTATION_SMELL` `architecture.direct_schedule_mutation_smell` (tools/xstack/sessionx/process_runtime.py)
   - possible direct travel schedule mutation outside dispatch control path
   - rows = state.get("travel_schedules")

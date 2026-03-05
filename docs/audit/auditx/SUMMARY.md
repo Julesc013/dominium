@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- RISK: 442
-- VIOLATION: 18
-- WARN: 880
+- RISK: 456
+- VIOLATION: 10
+- WARN: 859
 
 ## Counts By Category
 
@@ -19,7 +19,7 @@ Superseded By: none
 - architecture.adhoc_speed_limit_smell: 2
 - architecture.adhoc_state_flag_smell: 2
 - architecture.adhoc_valve_smell: 3
-- architecture.affordance_gap_smell: 309
+- architecture.affordance_gap_smell: 311
 - architecture.broadcast_bypass_smell: 4
 - architecture.deprecated_usage_smell: 1
 - architecture.derailment_bypass_smell: 1
@@ -27,19 +27,21 @@ Superseded By: none
 - architecture.direct_position_mutation_smell: 1
 - architecture.direct_schedule_mutation_smell: 1
 - architecture.heat_loss_bypass_smell: 2
+- architecture.implicit_system_collapse_smell: 1
 - architecture.inline_cure_smell: 2
 - architecture.inline_friction_smell: 2
 - architecture.inline_phase_change_smell: 3
 - architecture.inline_power_loss_smell: 1
-- architecture.inline_protection_smell: 10
+- architecture.inline_protection_smell: 12
 - architecture.inline_strength_check_smell: 1
 - architecture.ir_nondeterminism_smell: 2
 - architecture.magic_silent_violation_smell: 2
 - architecture.missing_decision_log_smell: 3
 - architecture.missing_failsafe_smell: 1
 - architecture.missing_ledger_entry_smell: 4
+- architecture.mobility_graph_duplication_smell: 1
 - architecture.mobility_special_case_smell: 2
-- architecture.model_bypass_smell: 4
+- architecture.model_bypass_smell: 5
 - architecture.nondeterministic_queue_order_smell: 1
 - architecture.silent_corruption_smell: 1
 - architecture.silent_degrade_smell: 10
@@ -51,11 +53,11 @@ Superseded By: none
 - architecture.unbounded_spread_smell: 1
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
-- architecture.unlogged_trust_change_smell: 2
+- architecture.unlogged_trust_change_smell: 3
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 721
+- canon_drift: 726
 - capability_bypass_smell: 1
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - control.camera_bypass_smell: 1
@@ -63,16 +65,18 @@ Superseded By: none
 - derived_freshness: 11
 - epistemics.hidden_state_leak_smell: 6
 - interaction.interaction_bypass_smell: 2
+- legacy_contamination: 1
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
+- mode_flag_smell: 1
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
+- reachability: 3
 - reliability.silent_reaction_smell: 3
-- security.boundary_io: 29
-- security.privilege_bypass: 9
+- schema_usage: 5
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120

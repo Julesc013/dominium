@@ -38,9 +38,9 @@
       }
     },
     "INV-AFFORDANCE-DECLARED": {
-      "finding_count": 309,
+      "finding_count": 311,
       "recommended_actions": {
-        "REWRITE": 309
+        "REWRITE": 311
       },
       "sample_findings": [
         {
@@ -70,7 +70,7 @@
         }
       ],
       "severities": {
-        "RISK": 309
+        "RISK": 311
       }
     },
     "INV-ALL-ELEC-ACTIONS-THROUGH-CONTROL": {
@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 721,
+      "finding_count": 726,
       "recommended_actions": {
-        "DOC_FIX": 721
+        "DOC_FIX": 726
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 721
+        "WARN": 726
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -229,6 +229,22 @@
           "category": "performance.unbudgeted_reaction_loop_smell",
           "finding_id": "E249_UNBUDGETED_REACTION_LOOP_SMELL:0001",
           "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-COLLAPSE-ONLY-VIA-PROCESS": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.implicit_system_collapse_smell",
+          "finding_id": "E258_IMPLICIT_SYSTEM_COLLAPSE_SMELL:0001",
+          "location": "src/reality/transitions/transition_controller.py"
         }
       ],
       "severities": {
@@ -592,6 +608,22 @@
         "RISK": 1
       }
     },
+    "INV-LEGACY-CODE-QUARANTINED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_TEST": 1
+      },
+      "sample_findings": [
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-LOSS-MAPPED-TO-HEAT": {
       "finding_count": 2,
       "recommended_actions": {
@@ -639,6 +671,22 @@
           "category": "architecture.derailment_bypass_smell",
           "finding_id": "E154_DERAILMENT_BYPASS_SMELL:0001",
           "location": "src/mobility/travel/reenactment.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-MOB-NETWORK-USES-NETWORKGRAPH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.mobility_graph_duplication_smell",
+          "finding_id": "E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001",
+          "location": "src/pollution/dispersion_engine.py"
         }
       ],
       "severities": {
@@ -713,10 +761,26 @@
         "RISK": 2
       }
     },
-    "INV-MODEL-OUTPUTS-PROCESS-ONLY": {
-      "finding_count": 4,
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 4
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
+    "INV-MODEL-OUTPUTS-PROCESS-ONLY": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "REWRITE": 5
       },
       "sample_findings": [
         {
@@ -737,11 +801,16 @@
         {
           "category": "architecture.model_bypass_smell",
           "finding_id": "E180_MODEL_BYPASS_SMELL:0004",
+          "location": "src/system/system_validation_engine.py"
+        },
+        {
+          "category": "architecture.model_bypass_smell",
+          "finding_id": "E180_MODEL_BYPASS_SMELL:0005",
           "location": "src/thermal/network/thermal_network_engine.py"
         }
       ],
       "severities": {
-        "RISK": 4
+        "RISK": 5
       }
     },
     "INV-NO-ADHOC-BURN-LOGIC": {
@@ -870,11 +939,27 @@
         "RISK": 3
       }
     },
+    "INV-NO-ADHOC-ROUTING": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.mobility_graph_duplication_smell",
+          "finding_id": "E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001",
+          "location": "src/pollution/dispersion_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-NO-ADHOC-SAFETY-LOGIC": {
-      "finding_count": 11,
+      "finding_count": 13,
       "recommended_actions": {
         "ADD_RULE": 1,
-        "REWRITE": 10
+        "REWRITE": 12
       },
       "sample_findings": [
         {
@@ -904,7 +989,7 @@
         }
       ],
       "severities": {
-        "RISK": 11
+        "RISK": 13
       }
     },
     "INV-NO-ADHOC-STATE-FLAGS": {
@@ -1143,6 +1228,22 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR": {
@@ -1417,78 +1518,6 @@
         "WARN": 120
       }
     },
-    "INV-SECUREX-PRIVILEGE-MODEL": {
-      "finding_count": 9,
-      "recommended_actions": {
-        "ADD_TEST": 9
-      },
-      "sample_findings": [
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0001",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0002",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0003",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0004",
-          "location": "tools/securex/core/boundary_validator.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0005",
-          "location": "tools/securex/core/boundary_validator.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 9
-      }
-    },
-    "INV-SECUREX-TRUST-POLICY-VALID": {
-      "finding_count": 29,
-      "recommended_actions": {
-        "ADD_RULE": 29
-      },
-      "sample_findings": [
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0010",
-          "location": "client/app/main_client.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0011",
-          "location": "client/core/client_command_bridge.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0012",
-          "location": "client/core/client_state_machine.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0013",
-          "location": "client/core/client_state_machine.h"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0014",
-          "location": "client/core/session_artifacts.c"
-        }
-      ],
-      "severities": {
-        "WARN": 29
-      }
-    },
     "INV-SIGNAL-TRANSPORT-ONLY": {
       "finding_count": 5,
       "recommended_actions": {
@@ -1584,9 +1613,9 @@
       }
     },
     "INV-VERIFICATION-PROCESS-ONLY": {
-      "finding_count": 2,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 2
+        "REWRITE": 3
       },
       "sample_findings": [
         {
@@ -1598,10 +1627,15 @@
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0002",
           "location": "src/signals/transport/transport_engine.py"
+        },
+        {
+          "category": "architecture.unlogged_trust_change_smell",
+          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0003",
+          "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 2
+        "RISK": 3
       }
     },
     "INV-WORKSPACE-ISOLATION": {
@@ -1618,6 +1652,68 @@
       ],
       "severities": {
         "WARN": 1
+      }
+    },
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "RETIRE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "tools/auditx/analyzers/e260_missing_interface_descriptor_smell.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "tools/auditx/analyzers/e261_missing_invariant_template_smell.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "tools/auditx/analyzers/e262_macro_model_signature_mismatch_smell.py"
+        }
+      ],
+      "severities": {
+        "WARN": 3
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 5,
+      "recommended_actions": {
+        "ADD_RULE": 5
+      },
+      "sample_findings": [
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0001",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0002",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0003",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0004",
+          "location": "tools/xstack/repox/check.py"
+        },
+        {
+          "category": "schema_usage",
+          "finding_id": "A4_SCHEMA_USAGE:0005",
+          "location": "tools/xstack/repox/check.py"
+        }
+      ],
+      "severities": {
+        "RISK": 5
       }
     }
   },
