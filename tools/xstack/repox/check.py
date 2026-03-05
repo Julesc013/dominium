@@ -428,6 +428,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-HIDDEN-SYSTEM-STATE",
     "INV-SYSTEM-BOUNDARY-INVARIANTS-DECLARED",
     "INV-COLLAPSE-ONLY-VIA-PROCESS",
+    "INV-SYSTEM-INTERFACE-SIGNATURE-REQUIRED",
+    "INV-SYSTEM-INVARIANTS-REQUIRED",
+    "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -736,6 +739,9 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E255_OMNISCIENT_POLLUTION_UI_LEAK_SMELL": "INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE",
     "E256_UNBUDGETED_DISPERSION_SMELL": "INV-POLL-BUDGETED",
     "E257_SILENT_EXPOSURE_SMELL": "INV-POLL-DEGRADE-LOGGED",
+    "E260_MISSING_INTERFACE_DESCRIPTOR_SMELL": "INV-SYSTEM-INTERFACE-SIGNATURE-REQUIRED",
+    "E261_MISSING_INVARIANT_TEMPLATE_SMELL": "INV-SYSTEM-INVARIANTS-REQUIRED",
+    "E262_MACRO_MODEL_SIGNATURE_MISMATCH_SMELL": "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -17381,6 +17387,303 @@ def _append_system_composition_invariant_findings(
             break
 
 
+def _append_system_validation_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    interface_rule_id = "INV-SYSTEM-INTERFACE-SIGNATURE-REQUIRED"
+    invariant_rule_id = "INV-SYSTEM-INVARIANTS-REQUIRED"
+    macro_rule_id = "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE"
+
+    interface_schema_rel = "schema/system/interface_signature.schema"
+    invariant_schema_rel = "schema/system/boundary_invariant.schema"
+    macro_capsule_schema_rel = "schema/system/macro_capsule.schema"
+    macro_model_set_schema_rel = "schema/system/macro_model_set.schema"
+    validation_engine_rel = "src/system/system_validation_engine.py"
+    collapse_engine_rel = "src/system/system_collapse_engine.py"
+    expand_engine_rel = "src/system/system_expand_engine.py"
+    interface_registry_rel = "data/registries/interface_signature_template_registry.json"
+    invariant_registry_rel = "data/registries/boundary_invariant_template_registry.json"
+    macro_registry_rel = "data/registries/macro_model_set_registry.json"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+
+    required_paths = (
+        interface_schema_rel,
+        invariant_schema_rel,
+        macro_capsule_schema_rel,
+        macro_model_set_schema_rel,
+        validation_engine_rel,
+        collapse_engine_rel,
+        expand_engine_rel,
+        interface_registry_rel,
+        invariant_registry_rel,
+        macro_registry_rel,
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        rule_id = interface_rule_id
+        if rel_path in {invariant_schema_rel, invariant_registry_rel}:
+            rule_id = invariant_rule_id
+        elif rel_path in {macro_capsule_schema_rel, macro_model_set_schema_rel, macro_registry_rel}:
+            rule_id = macro_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-1 validation baseline artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    interface_schema_text = _file_text(repo_root, interface_schema_rel)
+    for token in (
+        '"port_id"',
+        '"port_type_id"',
+        '"direction"',
+        '"allowed_bundle_ids"',
+        '"spec_limit_refs"',
+        '"signal_descriptors"',
+        '"channel_type_id"',
+        '"capacity"',
+        '"delay"',
+        '"access_policy_id"',
+    ):
+        if token in interface_schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=interface_schema_rel,
+                line_number=1,
+                snippet=token,
+                message="interface signature schema is missing required SYS-1 descriptor field",
+                rule_id=interface_rule_id,
+            )
+        )
+
+    invariant_schema_text = _file_text(repo_root, invariant_schema_rel)
+    for token in (
+        '"invariant_kind"',
+        '"tolerance_policy_id"',
+        '"boundary_flux_allowed"',
+        '"ledger_transform_required"',
+    ):
+        if token in invariant_schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=invariant_schema_rel,
+                line_number=1,
+                snippet=token,
+                message="boundary invariant schema is missing required SYS-1 field",
+                rule_id=invariant_rule_id,
+            )
+        )
+
+    macro_capsule_text = _file_text(repo_root, macro_capsule_schema_rel)
+    for token in ('"macro_model_set_id"', '"model_error_bounds_ref"'):
+        if token in macro_capsule_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=macro_capsule_schema_rel,
+                line_number=1,
+                snippet=token,
+                message="macro capsule schema must declare macro model set identity and error bounds reference",
+                rule_id=macro_rule_id,
+            )
+        )
+
+    validation_engine_text = _file_text(repo_root, validation_engine_rel)
+    for token in (
+        "def validate_interface_signature(",
+        "interface.spec_compliance_ref.registered",
+        "def validate_boundary_invariants(",
+        "invariant.template.present",
+        "invariant.required_safety_pattern.present",
+        "def validate_macro_model_set(",
+        "macro.binding.input_port.match",
+        "macro.binding.output_port.match",
+    ):
+        if token in validation_engine_text:
+            continue
+        rule_id = interface_rule_id
+        if token.startswith("def validate_boundary") or token.startswith("invariant."):
+            rule_id = invariant_rule_id
+        if token.startswith("def validate_macro") or token.startswith("macro."):
+            rule_id = macro_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=validation_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="system validation engine is missing required SYS-1 validation token",
+                rule_id=rule_id,
+            )
+        )
+
+    collapse_text = _file_text(repo_root, collapse_engine_rel)
+    for token in (
+        "validate_interface_signature(",
+        "validate_boundary_invariants(",
+        "REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE",
+        "REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION",
+    ):
+        if token in collapse_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=collapse_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="collapse engine must enforce interface and invariant validation refusals",
+                rule_id=invariant_rule_id if "INVARIANT" in token else interface_rule_id,
+            )
+        )
+
+    expand_text = _file_text(repo_root, expand_engine_rel)
+    for token in (
+        "validate_interface_signature(",
+        "validate_boundary_invariants(",
+        "REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE",
+        "REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION",
+    ):
+        if token in expand_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=expand_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="expand engine must enforce interface and invariant validation refusals",
+                rule_id=invariant_rule_id if "INVARIANT" in token else interface_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in (
+        "REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE",
+        "REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION",
+        "REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE",
+        "REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="process runtime must preserve SYS-1 validation refusal codes",
+                rule_id=invariant_rule_id if "INVARIANT" in token else interface_rule_id,
+            )
+        )
+
+    interface_registry_payload, interface_registry_err = _load_json_object(repo_root, interface_registry_rel)
+    interface_rows = list((dict(interface_registry_payload.get("record") or {})).get("interface_signature_templates") or [])
+    interface_template_ids = set(
+        str(row.get("interface_signature_template_id", "")).strip()
+        for row in interface_rows
+        if isinstance(row, dict) and str(row.get("interface_signature_template_id", "")).strip()
+    )
+    required_interface_template_ids = {
+        "interface.engine_basic",
+        "interface.generator_basic",
+        "interface.pump_basic",
+        "interface.heat_exchanger_basic",
+        "interface.vehicle_propulsion_basic",
+    }
+    if interface_registry_err or not interface_template_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=interface_registry_rel,
+                line_number=1,
+                snippet="record.interface_signature_templates",
+                message="interface signature template registry is missing or invalid",
+                rule_id=interface_rule_id,
+            )
+        )
+    else:
+        for template_id in sorted(required_interface_template_ids):
+            if template_id in interface_template_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=interface_registry_rel,
+                    line_number=1,
+                    snippet=template_id,
+                    message="required interface signature template is missing",
+                    rule_id=interface_rule_id,
+                )
+            )
+
+    invariant_registry_payload, invariant_registry_err = _load_json_object(repo_root, invariant_registry_rel)
+    invariant_templates = list((dict(invariant_registry_payload.get("record") or {})).get("boundary_invariant_templates") or [])
+    invariant_template_ids = set(
+        str(row.get("boundary_invariant_template_id", "")).strip()
+        for row in invariant_templates
+        if isinstance(row, dict) and str(row.get("boundary_invariant_template_id", "")).strip()
+    )
+    required_invariant_template_ids = {
+        "inv.mass_energy_basic",
+        "inv.energy_pollution_basic",
+        "inv.momentum_basic",
+        "inv.safety_failsafe_required",
+    }
+    if invariant_registry_err or not invariant_template_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=invariant_registry_rel,
+                line_number=1,
+                snippet="record.boundary_invariant_templates",
+                message="boundary invariant template registry is missing or invalid",
+                rule_id=invariant_rule_id,
+            )
+        )
+    else:
+        for template_id in sorted(required_invariant_template_ids):
+            if template_id in invariant_template_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=invariant_registry_rel,
+                    line_number=1,
+                    snippet=template_id,
+                    message="required boundary invariant template is missing",
+                    rule_id=invariant_rule_id,
+                )
+            )
+
+    macro_registry_payload, macro_registry_err = _load_json_object(repo_root, macro_registry_rel)
+    macro_sets = (dict(macro_registry_payload.get("record") or {})).get("macro_model_sets")
+    if macro_registry_err or (not isinstance(macro_sets, list)):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=macro_registry_rel,
+                line_number=1,
+                snippet="record.macro_model_sets",
+                message="macro model set registry must declare a deterministic macro_model_sets list (empty allowed)",
+                rule_id=macro_rule_id,
+            )
+        )
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -19761,6 +20064,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_composition_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_validation_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
