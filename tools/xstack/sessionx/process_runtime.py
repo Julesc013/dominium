@@ -32156,14 +32156,23 @@ def execute_intent(
                 }
             )
 
+        fallback_actions_by_system = dict(
+            (
+                str(row.get("system_id", "")).strip(),
+                _sorted_tokens(list(row.get("safe_fallback_actions") or [])),
+            )
+            for row in list(state.get("system_reliability_safe_fallback_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("system_id", "")).strip()
+        )
         reliability_effect_rows = []
         for capsule_id, adjustment_row in sorted(reliability_adjustments_by_capsule.items(), key=lambda item: str(item[0])):
             if not bool(dict(adjustment_row).get("safe_fallback", False)):
                 continue
+            system_id = str(dict(adjustment_row).get("system_id", "")).strip()
             reliability_effect_rows.append(
                 {
                     "capsule_id": str(capsule_id),
-                    "target_id": str(dict(adjustment_row).get("system_id", "")).strip() or str(capsule_id),
+                    "target_id": system_id or str(capsule_id),
                     "effect_type_id": "effect.system.safety_shutdown",
                     "output_id": "safety.shutdown",
                     "value": 1,
@@ -32171,6 +32180,7 @@ def execute_intent(
                         "source_process_id": "process.system_macro_tick",
                         "reliability_adjustment": True,
                         "safe_fallback": True,
+                        "safe_fallback_actions": list(fallback_actions_by_system.get(system_id) or []),
                     },
                 }
             )
