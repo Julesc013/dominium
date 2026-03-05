@@ -446,6 +446,34 @@
         "extensions": {
           "source": "GLOBAL-REVIEW-1"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.poll.default",
+        "subsystem_id": "POLL",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "deterministic_degradation_order": [
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.physics.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": false,
+          "reserved_tier": "P2"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0-3",
+          "tier_aliases": [
+            "P0",
+            "P1"
+          ],
+          "notes": "P2 reserved"
+        }
       }
     ],
     "extensions": {

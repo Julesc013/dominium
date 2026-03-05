@@ -180,6 +180,73 @@
         "extensions": {
           "description": "CHEM corrosion/moisture degradation increases ELEC insulation-breakdown hazard through effect outputs."
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.chem.emission_to_poll.source",
+        "coupling_class_id": "pollution_coupling",
+        "from_domain_id": "CHEM",
+        "to_domain_id": "POLL",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.poll_emit_from_reaction_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "CHEM reaction/process emissions are normalized into canonical pollution source events."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.therm.fire_to_poll.source",
+        "coupling_class_id": "pollution_coupling",
+        "from_domain_id": "THERM",
+        "to_domain_id": "POLL",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.poll_emit_from_fire_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "THERM combustion/fire emissions are normalized into canonical pollution source events."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.fluid.contaminant_to_poll.transport",
+        "coupling_class_id": "pollution_coupling",
+        "from_domain_id": "FLUID",
+        "to_domain_id": "POLL",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.poll_contaminant_carry_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "FLUID leak/flow contaminants are carried into POLL transport accounting (POLL-0 stub)."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.poll.concentration_to_field.visibility",
+        "coupling_class_id": "pollution_coupling",
+        "from_domain_id": "POLL",
+        "to_domain_id": "FIELD",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.poll_visibility_from_concentration_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Visibility reduction must be model-derived from pollutant concentration pathways, never direct ad hoc field writes.",
+          "optional": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.poll.reporting_to_sig.institutional",
+        "coupling_class_id": "pollution_coupling",
+        "from_domain_id": "POLL",
+        "to_domain_id": "SIG",
+        "mechanism": "signal_policy",
+        "mechanism_id": "policy.sig.pollution_reporting_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Institutional pollution reporting handoff to SIG domain.",
+          "status": "reserved_for_later"
+        }
       }
     ],
     "extensions": {

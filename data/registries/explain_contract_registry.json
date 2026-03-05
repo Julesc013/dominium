@@ -592,6 +592,46 @@
         "extensions": {
           "source": "CHEM3-8"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.pollution_spike",
+        "event_kind_id": "pollution.spike",
+        "explain_artifact_type_id": "artifact.explain.pollution_spike",
+        "required_inputs": [
+          "artifact.record",
+          "section.pollution.source_chain",
+          "section.pollution.policy_trace"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.emission_source",
+          "hint.apply.containment",
+          "hint.review.pollution_policy"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.exposure_threshold",
+        "event_kind_id": "pollution.exposure_threshold",
+        "explain_artifact_type_id": "artifact.explain.exposure_threshold",
+        "required_inputs": [
+          "artifact.record",
+          "section.pollution.exposure_summary",
+          "section.pollution.source_chain"
+        ],
+        "remediation_hint_keys": [
+          "hint.relocate.subject",
+          "hint.use.protective_gear",
+          "hint.reduce.local_emission"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0-3"
+        }
       }
     ],
     "extensions": {
