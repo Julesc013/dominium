@@ -183,8 +183,11 @@ def _degradation_signal_summary(state: Mapping[str, object], *, denied_expand_co
         result = str(row.get("result", "")).strip().lower()
         ext = _as_map(row.get("extensions"))
         denied_by = str(ext.get("denied_by", "")).strip().lower()
+        transition_kind = str(ext.get("transition_kind", "")).strip().lower()
         priority_class = str(ext.get("priority_class", "")).strip().lower()
-        if ("tier_budget_denied" in reason_code) and (denied_by == "budget.expand_cap"):
+        if ("tier_budget_denied" in reason_code) and (
+            denied_by == "budget.expand_cap" or transition_kind == "expand"
+        ):
             expand_cap_events += 1
         if result in {"deferred", "degraded"}:
             deferred_events += 1
@@ -202,8 +205,12 @@ def _degradation_signal_summary(state: Mapping[str, object], *, denied_expand_co
     flags = {
         "degrade.system.expand_cap": bool(expand_cap_events > 0 or (not under_pressure)),
         "degrade.system.defer_noncritical_expand": bool(deferred_events > 0 or (not under_pressure)),
-        "degrade.system.force_macro_failsafe_on_expand_denied": bool(forced_failsafe_events > 0 or (not under_pressure)),
-        "degrade.system.inspect_refusal_when_expand_denied": bool(inspection_refusals > 0 or (not under_pressure)),
+        "degrade.system.force_macro_failsafe_on_expand_denied": bool(
+            forced_failsafe_events > 0 or (not under_pressure) or int(max(0, denied_expand_count)) > 0
+        ),
+        "degrade.system.inspect_refusal_when_expand_denied": bool(
+            inspection_refusals > 0 or (not under_pressure) or int(max(0, denied_expand_count)) > 0
+        ),
         "degrade.system.keep_invariant_checks_mandatory": bool(invariant_failure_count == 0),
     }
     observed_order = [

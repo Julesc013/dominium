@@ -31177,6 +31177,30 @@ def execute_intent(
                 if isinstance(row, Mapping)
             ]
         )
+        collapse_rows = sorted(
+            (
+                dict(item)
+                for item in list(state.get("system_collapse_event_rows") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (
+                int(max(0, _as_int(item.get("tick", 0), 0))),
+                str(item.get("system_id", "")),
+                str(item.get("event_id", "")),
+            ),
+        )
+        expand_rows = sorted(
+            (
+                dict(item)
+                for item in list(state.get("system_expand_event_rows") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (
+                int(max(0, _as_int(item.get("tick", 0), 0))),
+                str(item.get("system_id", "")),
+                str(item.get("event_id", "")),
+            ),
+        )
         state["collapse_expand_event_hash_chain"] = canonical_sha256(
             {
                 "collapse_events": [
@@ -31186,8 +31210,7 @@ def execute_intent(
                         "capsule_id": str(row.get("capsule_id", "")).strip(),
                         "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
                     }
-                    for row in list(state.get("system_collapse_event_rows") or [])
-                    if isinstance(row, Mapping)
+                    for row in collapse_rows
                 ],
                 "expand_events": [
                     {
@@ -31196,8 +31219,7 @@ def execute_intent(
                         "capsule_id": str(row.get("capsule_id", "")).strip(),
                         "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
                     }
-                    for row in list(state.get("system_expand_event_rows") or [])
-                    if isinstance(row, Mapping)
+                    for row in expand_rows
                 ],
             }
         )
