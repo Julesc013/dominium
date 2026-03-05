@@ -617,6 +617,11 @@ from src.system import (
     normalize_system_failure_event_rows,
     reliability_profile_rows_by_id,
     evaluate_system_reliability_tick,
+    REFUSAL_SYSTEM_EXPLAIN_INVALID,
+    REFUSAL_SYSTEM_EXPLAIN_SYSTEM_UNKNOWN,
+    normalize_system_explain_request_rows,
+    normalize_system_explain_artifact_rows,
+    evaluate_system_explain_request,
 )
 from src.meta.explain import (
     generate_explain_artifact,
@@ -819,6 +824,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.system_macro_tick": "session.boot",
     "process.system_health_tick": "session.boot",
     "process.system_reliability_tick": "session.boot",
+    "process.system_generate_explain": "entitlement.inspect",
     "process.template_instantiate": "entitlement.control.admin",
     "process.degradation_tick": "session.boot",
 }
@@ -1012,6 +1018,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.system_macro_tick": "observer",
     "process.system_health_tick": "observer",
     "process.system_reliability_tick": "observer",
+    "process.system_generate_explain": "observer",
     "process.template_instantiate": "operator",
     "process.degradation_tick": "observer",
 }
@@ -15566,6 +15573,122 @@ def _refresh_system_reliability_hash_chains(state: dict) -> None:
     state["failure_event_hash_chain"] = str(state.get("system_failure_event_hash_chain", "")).strip()
 
 
+def _ensure_system_explain_request_rows(state: dict) -> List[dict]:
+    rows = state.get("system_explain_request_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_system_explain_request_rows(rows)
+    state["system_explain_request_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_system_explain_artifact_rows(state: dict) -> List[dict]:
+    rows = state.get("system_explain_artifact_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_system_explain_artifact_rows(rows)
+    state["system_explain_artifact_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_system_explain_cache_rows(state: dict) -> List[dict]:
+    rows = state.get("system_explain_cache_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = sorted(
+        [
+            {
+                "cache_key": str(dict(item).get("cache_key", "")).strip(),
+                "system_id": str(dict(item).get("system_id", "")).strip(),
+                "event_id": (
+                    None
+                    if dict(item).get("event_id") is None
+                    else str(dict(item).get("event_id", "")).strip() or None
+                ),
+                "truth_hash_anchor": str(dict(item).get("truth_hash_anchor", "")).strip(),
+                "requester_policy_id": str(dict(item).get("requester_policy_id", "")).strip(),
+                "artifact": (
+                    dict(dict(item).get("artifact") or {})
+                    if isinstance(dict(item).get("artifact"), Mapping)
+                    else {}
+                ),
+            }
+            for item in rows
+            if isinstance(item, Mapping) and str(dict(item).get("cache_key", "")).strip()
+        ],
+        key=lambda item: (
+            str(item.get("cache_key", "")),
+            str(item.get("system_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    )
+    state["system_explain_cache_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_system_forensics_hash_chains(state: dict) -> None:
+    artifact_rows = _ensure_system_explain_artifact_rows(state)
+    cache_rows = _ensure_system_explain_cache_rows(state)
+    _ensure_system_explain_request_rows(state)
+    state["system_explain_hash_chain"] = canonical_sha256(
+        [
+            {
+                "explain_id": str(row.get("explain_id", "")).strip(),
+                "system_id": str(row.get("system_id", "")).strip(),
+                "explain_level": str(row.get("explain_level", "")).strip(),
+                "primary_cause": str(row.get("primary_cause", "")).strip(),
+                "epistemic_redaction_level": str(row.get("epistemic_redaction_level", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(artifact_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("system_id", "")),
+                    str(item.get("explain_level", "")),
+                    str(item.get("explain_id", "")),
+                ),
+            )
+        ]
+    )
+    state["system_explain_cache_hash_chain"] = canonical_sha256(
+        [
+            {
+                "cache_key": str(row.get("cache_key", "")).strip(),
+                "system_id": str(row.get("system_id", "")).strip(),
+                "event_id": str(row.get("event_id", "")).strip(),
+                "truth_hash_anchor": str(row.get("truth_hash_anchor", "")).strip(),
+                "requester_policy_id": str(row.get("requester_policy_id", "")).strip(),
+                "artifact_id": str(dict(dict(row).get("artifact") or {}).get("explain_id", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(cache_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("cache_key", "")),
+                    str(item.get("system_id", "")),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+
+
+def _requester_epistemic_policy_id(
+    *,
+    requester_subject_id: str,
+    requester_policy_id: str,
+    authority_context: Mapping[str, object] | None,
+) -> str:
+    declared = str(requester_policy_id or "").strip()
+    if declared:
+        return declared
+    privilege = str(dict(authority_context or {}).get("privilege_level", "")).strip().lower()
+    requester = str(requester_subject_id or "").strip().lower()
+    if ("admin" in privilege) or ("admin" in requester):
+        return "policy.epistemic.admin"
+    if ("inspector" in privilege) or ("inspect" in privilege) or ("inspector" in requester):
+        return "policy.epistemic.inspector"
+    return "policy.epistemic.diegetic"
+
+
 def _revoke_system_certifications(
     *,
     state: dict,
@@ -20477,6 +20600,9 @@ def execute_intent(
     system_failure_event_rows = _ensure_system_failure_event_rows(state)
     system_reliability_warning_rows = _ensure_system_reliability_warning_rows(state)
     system_reliability_rng_rows = _ensure_system_reliability_rng_outcome_rows(state)
+    system_explain_request_rows = _ensure_system_explain_request_rows(state)
+    system_explain_artifact_rows = _ensure_system_explain_artifact_rows(state)
+    system_explain_cache_rows = _ensure_system_explain_cache_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     _ensure_time_mapping_cache_rows(state)
     _ensure_time_stamp_artifact_rows(state)
@@ -20504,6 +20630,9 @@ def execute_intent(
     del system_failure_event_rows
     del system_reliability_warning_rows
     del system_reliability_rng_rows
+    del system_explain_request_rows
+    del system_explain_artifact_rows
+    del system_explain_cache_rows
     del chem_process_run_state_rows
     del batch_quality_rows
     del chem_degradation_state_rows
@@ -20520,6 +20649,7 @@ def execute_intent(
     _refresh_pollution_hash_chains(state)
     _refresh_system_certification_hash_chains(state)
     _refresh_system_reliability_hash_chains(state)
+    _refresh_system_forensics_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -33219,6 +33349,192 @@ def execute_intent(
             "stochastic_rng_hash_chain": str(state.get("system_reliability_rng_hash_chain", "")).strip(),
             "generated_explain_ids": _sorted_tokens(generated_explain_ids),
             "deterministic_fingerprint": str(reliability_eval.get("deterministic_fingerprint", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_generate_explain":
+        request_payload = dict(inputs.get("system_explain_request") or {}) if isinstance(inputs.get("system_explain_request"), Mapping) else {}
+        if not request_payload:
+            request_payload = {
+                "request_id": str(inputs.get("request_id", "")).strip(),
+                "system_id": str(inputs.get("system_id", "")).strip(),
+                "event_id": (None if inputs.get("event_id") is None else str(inputs.get("event_id", "")).strip()),
+                "explain_level": str(inputs.get("explain_level", "L1")).strip().upper() or "L1",
+                "requester_subject_id": str(inputs.get("requester_subject_id", "")).strip(),
+                "extensions": {
+                    "event_kind_id": str(inputs.get("event_kind_id", "")).strip() or None,
+                },
+            }
+        if not str(request_payload.get("request_id", "")).strip():
+            request_payload["request_id"] = "request.system.explain.{}".format(
+                canonical_sha256(
+                    {
+                        "system_id": str(request_payload.get("system_id", "")).strip(),
+                        "event_id": str(request_payload.get("event_id", "")).strip(),
+                        "explain_level": str(request_payload.get("explain_level", "")).strip().upper() or "L1",
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    }
+                )[:16]
+            )
+        if not str(request_payload.get("requester_subject_id", "")).strip():
+            request_payload["requester_subject_id"] = str(
+                dict(authority_context or {}).get("requester_subject_id", "")
+            ).strip() or str(dict(authority_context or {}).get("subject_id", "")).strip() or "subject.system"
+        if not str(request_payload.get("system_id", "")).strip():
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.system_generate_explain requires system_id",
+                "Provide a deterministic system_id to generate a system-level explain artifact.",
+                {"process_id": process_id},
+                "$.intent.inputs.system_id",
+            )
+        requester_policy_id = _requester_epistemic_policy_id(
+            requester_subject_id=str(request_payload.get("requester_subject_id", "")).strip(),
+            requester_policy_id=str(inputs.get("requester_policy_id", "")).strip(),
+            authority_context=authority_context,
+        )
+        truth_hash_anchor = str(inputs.get("truth_hash_anchor", "")).strip() or (
+            str(state.get("system_failure_event_hash_chain", "")).strip()
+            or str(state.get("system_forced_expand_event_hash_chain", "")).strip()
+            or str(state.get("system_certificate_revocation_hash_chain", "")).strip()
+            or str(state.get("system_macro_output_record_hash_chain", "")).strip()
+            or str(state.get("system_health_hash_chain", "")).strip()
+        )
+        domain_fault_rows = []
+        for key in (
+            "fault_states",
+            "thermal_fire_events",
+            "pollution_health_risk_event_rows",
+            "pollution_compliance_report_rows",
+        ):
+            domain_fault_rows.extend(
+                dict(row)
+                for row in list(state.get(key) or [])
+                if isinstance(row, Mapping)
+            )
+        explain_eval = evaluate_system_explain_request(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            system_explain_request=request_payload,
+            system_rows=state.get("system_rows") or [],
+            system_macro_capsule_rows=state.get("system_macro_capsule_rows") or [],
+            system_failure_event_rows=state.get("system_failure_event_rows") or [],
+            system_forced_expand_event_rows=state.get("system_forced_expand_event_rows") or [],
+            system_certificate_revocation_rows=state.get("system_certificate_revocation_rows") or [],
+            system_certification_result_rows=state.get("system_certification_result_rows") or [],
+            safety_event_rows=state.get("safety_events") or [],
+            energy_ledger_entry_rows=state.get("energy_ledger_entries") or [],
+            model_hazard_rows=state.get("model_hazard_rows") or [],
+            spec_compliance_result_rows=state.get("spec_compliance_results") or [],
+            system_macro_output_record_rows=state.get("system_macro_output_record_rows") or [],
+            system_macro_runtime_state_rows=state.get("system_macro_runtime_state_rows") or [],
+            domain_fault_rows=domain_fault_rows,
+            existing_cache_rows=state.get("system_explain_cache_rows") or [],
+            truth_hash_anchor=truth_hash_anchor,
+            requester_policy_id=requester_policy_id,
+            max_cause_entries=int(max(1, _as_int(inputs.get("max_cause_entries", 16), 16))),
+        )
+        if str(explain_eval.get("result", "")).strip() != "complete":
+            reason_code = str(explain_eval.get("reason_code", "")).strip()
+            if reason_code == REFUSAL_SYSTEM_EXPLAIN_SYSTEM_UNKNOWN:
+                return refusal(
+                    REFUSAL_SYSTEM_EXPLAIN_SYSTEM_UNKNOWN,
+                    "system not found for process.system_generate_explain",
+                    "Provide a valid system_id present in system_rows.",
+                    {"system_id": str(request_payload.get("system_id", "")).strip()},
+                    "$.intent.inputs.system_id",
+                )
+            return refusal(
+                REFUSAL_SYSTEM_EXPLAIN_INVALID,
+                "invalid system explain request for process.system_generate_explain",
+                "Provide request_id, system_id, requester_subject_id, and explain_level in {L1,L2,L3}.",
+                {"request_payload": dict(request_payload)},
+                "$.intent.inputs.system_explain_request",
+            )
+
+        system_request_rows = [
+            dict(row)
+            for row in list(state.get("system_explain_request_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        system_request_rows.append(
+            {
+                "request_id": str(request_payload.get("request_id", "")).strip(),
+                "system_id": str(request_payload.get("system_id", "")).strip(),
+                "event_id": (
+                    None
+                    if request_payload.get("event_id") is None
+                    else str(request_payload.get("event_id", "")).strip() or None
+                ),
+                "explain_level": str(request_payload.get("explain_level", "L1")).strip().upper() or "L1",
+                "requester_subject_id": str(request_payload.get("requester_subject_id", "")).strip(),
+                "deterministic_fingerprint": str(
+                    request_payload.get("deterministic_fingerprint", "")
+                ).strip(),
+                "extensions": dict(request_payload.get("extensions") or {})
+                if isinstance(request_payload.get("extensions"), Mapping)
+                else {},
+            }
+        )
+        state["system_explain_request_rows"] = normalize_system_explain_request_rows(system_request_rows)
+        state["system_explain_cache_rows"] = _ensure_system_explain_cache_rows(
+            {"system_explain_cache_rows": list(explain_eval.get("cache_rows") or [])}
+        )
+
+        artifact_row = dict(explain_eval.get("artifact_row") or {})
+        explain_rows = [
+            dict(row)
+            for row in list(state.get("system_explain_artifact_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        if artifact_row:
+            explain_rows.append(dict(artifact_row))
+        state["system_explain_artifact_rows"] = normalize_system_explain_artifact_rows(explain_rows)
+        _refresh_system_forensics_hash_chains(state)
+
+        info_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        explain_id = str(artifact_row.get("explain_id", "")).strip()
+        if explain_id:
+            info_rows.append(
+                {
+                    "artifact_id": "artifact.report.system_forensics_explain.{}".format(
+                        canonical_sha256({"explain_id": explain_id})[:16]
+                    ),
+                    "artifact_family_id": "REPORT",
+                    "extensions": {
+                        "artifact_type_id": "artifact.report.system_forensics_explain",
+                        "explain_id": explain_id,
+                        "system_id": str(artifact_row.get("system_id", "")).strip(),
+                        "explain_level": str(artifact_row.get("explain_level", "")).strip(),
+                        "epistemic_redaction_level": str(
+                            artifact_row.get("epistemic_redaction_level", "")
+                        ).strip(),
+                        "truth_hash_anchor": str(
+                            dict(artifact_row.get("extensions") or {}).get("truth_hash_anchor", "")
+                        ).strip(),
+                    },
+                }
+            )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_rows)
+        state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+        result_metadata = {
+            "request_id": str(request_payload.get("request_id", "")).strip(),
+            "system_id": str(request_payload.get("system_id", "")).strip(),
+            "event_id": (
+                None
+                if request_payload.get("event_id") is None
+                else str(request_payload.get("event_id", "")).strip() or None
+            ),
+            "requester_policy_id": requester_policy_id,
+            "cache_hit": bool(explain_eval.get("cache_hit", False)),
+            "explain_id": str(artifact_row.get("explain_id", "")).strip(),
+            "epistemic_redaction_level": str(artifact_row.get("epistemic_redaction_level", "")).strip(),
+            "system_explain_hash_chain": str(state.get("system_explain_hash_chain", "")).strip(),
+            "system_explain_cache_hash_chain": str(state.get("system_explain_cache_hash_chain", "")).strip(),
+            "deterministic_fingerprint": str(explain_eval.get("deterministic_fingerprint", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

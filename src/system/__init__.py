@@ -95,6 +95,17 @@ from src.system.reliability import (
     reliability_profile_rows_by_id,
     system_health_rows_by_system,
 )
+from src.system.forensics import (
+    REFUSAL_SYSTEM_EXPLAIN_INVALID,
+    REFUSAL_SYSTEM_EXPLAIN_SYSTEM_UNKNOWN,
+    build_cause_entry_row,
+    normalize_cause_entry_rows,
+    build_system_explain_request_row,
+    normalize_system_explain_request_rows,
+    build_system_explain_artifact_row,
+    normalize_system_explain_artifact_rows,
+    evaluate_system_explain_request,
+)
 
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
@@ -176,4 +187,13 @@ __all__ = [
     "normalize_system_failure_event_rows",
     "reliability_profile_rows_by_id",
     "evaluate_system_reliability_tick",
+    "REFUSAL_SYSTEM_EXPLAIN_INVALID",
+    "REFUSAL_SYSTEM_EXPLAIN_SYSTEM_UNKNOWN",
+    "build_cause_entry_row",
+    "normalize_cause_entry_rows",
+    "build_system_explain_request_row",
+    "normalize_system_explain_request_rows",
+    "build_system_explain_artifact_row",
+    "normalize_system_explain_artifact_rows",
+    "evaluate_system_explain_request",
 ]
