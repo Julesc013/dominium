@@ -30262,7 +30262,7 @@ def execute_intent(
                 "fault_kind_id": fault_kind_id,
                 "effect_type_id": "effect.temperature_increase_local",
                 "hazard_type_id": "hazard.elec.insulation_breakdown",
-                "pollutant_type_id": "pollutant.smoke_stub",
+                "pollutant_type_id": "pollutant.smoke_particulate",
                 "severity": int(severity),
                 "tick": int(max(0, _as_int(current_tick, 0))),
                 "extensions": {

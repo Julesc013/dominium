@@ -408,6 +408,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DIRECT-MASS-MUTATION",
     "INV-FLUID-BUDGETED",
     "INV-FLUID-DEGRADE-LOGGED",
+    "INV-POLLUTION-EMIT-THROUGH-PROCESS",
+    "INV-NO-DIRECT-POLLUTION-FIELD-WRITES",
+    "INV-POLLUTANT-TYPE-REGISTERED",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -708,6 +711,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E239_CANONICAL_ARTIFACT_COMPACTION_SMELL": "INV-CANONICAL-EVENT-NOT-DISCARDED",
     "E240_UNCLASSIFIED_ARTIFACT_SMELL": "INV-DERIVED-ONLY-COMPACTABLE",
     "E241_MISSING_COMPACTION_MARKER_SMELL": "INV-COMPACTION-MARKER-REQUIRED",
+    "E250_DIRECT_SMOKE_VISUAL_HACK_SMELL": "INV-NO-DIRECT-POLLUTION-FIELD-WRITES",
+    "E251_UNREGISTERED_POLLUTANT_SMELL": "INV-POLLUTANT-TYPE-REGISTERED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -16429,9 +16434,251 @@ def _append_fluid_envelope_invariant_findings(
                 line_number=1,
                 snippet="required_commit_tag",
                 message="FLUID regression lock updates must require FLUID-REGRESSION-UPDATE tag",
-                rule_id=failures_rule_id,
+                    rule_id=failures_rule_id,
+                )
+            )
+
+
+def _append_pollution_constitution_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    process_rule_id = "INV-POLLUTION-EMIT-THROUGH-PROCESS"
+    field_rule_id = "INV-NO-DIRECT-POLLUTION-FIELD-WRITES"
+    registry_rule_id = "INV-POLLUTANT-TYPE-REGISTERED"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_registry_rel = "data/registries/process_registry.json"
+    pollutant_registry_rel = "data/registries/pollutant_type_registry.json"
+
+    required_paths = (
+        "docs/pollution/POLLUTION_CONSTITUTION.md",
+        "schema/pollution/pollutant_type.schema",
+        "schema/pollution/pollution_source_event.schema",
+        "schema/pollution/pollution_field_policy.schema",
+        "schema/pollution/exposure_state.schema",
+        "src/pollution/pollution_engine.py",
+    )
+    for rel_path in required_paths:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="POLL constitution required file is missing",
+                rule_id=process_rule_id,
             )
         )
+
+    process_payload, process_err = _load_json_object(repo_root, process_registry_rel)
+    process_rows = list(process_payload.get("records") or [])
+    if not process_rows:
+        process_rows = list((dict(process_payload.get("record") or {})).get("records") or [])
+    declared_process_ids = set(
+        str(row.get("process_id", "")).strip()
+        for row in process_rows
+        if isinstance(row, dict) and str(row.get("process_id", "")).strip()
+    )
+    if process_err or "process.pollution_emit" not in declared_process_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet="process.pollution_emit",
+                message="pollution emission must be declared as canonical process entry",
+                rule_id=process_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in (
+        'elif process_id == "process.pollution_emit":',
+        "build_pollution_source_event(",
+        "pollutant_id not in pollutant_types_by_id",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="pollution emission path must stay process-mediated with registered pollutant validation",
+                rule_id=process_rule_id,
+            )
+        )
+
+    source_write_patterns = (
+        re.compile(r"\bpollution_source_event_rows\b\s*=", re.IGNORECASE),
+        re.compile(r"\bpollution_source_event_rows\b\.append\s*\(", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_source_write_files = {
+        runtime_rel,
+        "src/pollution/pollution_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_source_write_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in source_write_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="pollution source mutation detected outside canonical process/engine pathways",
+                    rule_id=process_rule_id,
+                )
+            )
+            break
+
+    pollution_field_patterns = (
+        re.compile(r"field\.pollution\.[a-z0-9_]+", re.IGNORECASE),
+        re.compile(r"pollution_.*concentration", re.IGNORECASE),
+    )
+    allowed_field_write_files = {
+        runtime_rel,
+        "src/pollution/pollution_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_field_write_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in pollution_field_patterns):
+                continue
+            if "=" not in snippet and ":" not in snippet:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct pollution concentration field writes are forbidden outside process/model pathways",
+                    rule_id=field_rule_id,
+                )
+            )
+            break
+
+    pollutant_payload, pollutant_err = _load_json_object(repo_root, pollutant_registry_rel)
+    pollutant_rows = list((dict(pollutant_payload.get("record") or {})).get("pollutant_types") or [])
+    declared_pollutants = set(
+        str(row.get("pollutant_id", "")).strip().lower()
+        for row in pollutant_rows
+        if isinstance(row, dict) and str(row.get("pollutant_id", "")).strip()
+    )
+    required_pollutants = (
+        "pollutant.smoke_particulate",
+        "pollutant.co2_stub",
+        "pollutant.toxic_gas_stub",
+        "pollutant.oil_spill_stub",
+    )
+    if pollutant_err or not declared_pollutants:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=pollutant_registry_rel,
+                line_number=1,
+                snippet="record.pollutant_types",
+                message="pollutant_type_registry must exist with declared pollutant ids",
+                rule_id=registry_rule_id,
+            )
+        )
+    else:
+        for pollutant_id in required_pollutants:
+            if pollutant_id.lower() in declared_pollutants:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=pollutant_registry_rel,
+                    line_number=1,
+                    snippet=pollutant_id,
+                    message="required baseline pollutant id is missing from pollutant_type_registry",
+                    rule_id=registry_rule_id,
+                )
+            )
+
+    pollutant_literal_pattern = re.compile(r"pollutant\.[a-z0-9_]+", re.IGNORECASE)
+    ignored_tokens = {
+        "pollutant.coarse",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if ("pollutant_id" not in snippet) and ("pollutant_type_id" not in snippet):
+                continue
+            literals = [str(token).strip().lower() for token in pollutant_literal_pattern.findall(snippet)]
+            if not literals:
+                continue
+            for token in literals:
+                if token in ignored_tokens:
+                    continue
+                if token in declared_pollutants:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="pollutant id literal is not declared in pollutant_type_registry",
+                        rule_id=registry_rule_id,
+                    )
+                )
+                break
+            else:
+                continue
+            break
 
 
 def _append_cross_domain_mutation_invariant_findings(
@@ -18799,6 +19046,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_fluid_envelope_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_pollution_constitution_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
