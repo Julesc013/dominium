@@ -577,13 +577,26 @@ from src.system import (
     REFUSAL_SYSTEM_TIER_CONTRACT_MISSING,
     REFUSAL_SYSTEM_TIER_INVALID,
     REFUSAL_SYSTEM_TIER_UNSUPPORTED,
+    REFUSAL_TEMPLATE_FORBIDDEN_MODE,
+    REFUSAL_TEMPLATE_MISSING_DOMAIN,
+    REFUSAL_TEMPLATE_SPEC_NONCOMPLIANT,
+    SystemTemplateCompileError,
+    build_interface_signature_row,
+    build_system_macro_capsule_row,
+    build_system_state_vector_row,
+    compile_system_template,
     SystemCollapseError,
     SystemExpandError,
+    normalize_interface_signature_rows,
     evaluate_system_roi_tick,
     evaluate_macro_capsules_tick,
     normalize_forced_expand_event_rows,
     normalize_macro_output_record_rows,
     normalize_macro_runtime_state_rows,
+    normalize_system_macro_capsule_rows,
+    normalize_system_rows,
+    normalize_system_state_vector_rows,
+    normalize_system_template_rows,
     collapse_system_graph,
     expand_system_graph,
 )
@@ -785,6 +798,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.system_expand": "session.boot",
     "process.system_roi_tick": "session.boot",
     "process.system_macro_tick": "session.boot",
+    "process.template_instantiate": "entitlement.control.admin",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -974,6 +988,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.system_expand": "observer",
     "process.system_roi_tick": "observer",
     "process.system_macro_tick": "observer",
+    "process.template_instantiate": "operator",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -1013,6 +1028,7 @@ CONTROL_PROCESS_IDS = {
     "process.plan_create",
     "process.plan_update_incremental",
     "process.plan_execute",
+    "process.template_instantiate",
     "process.effect_apply",
     "process.effect_remove",
     "process.spec_apply_to_target",
@@ -15070,6 +15086,152 @@ def _spec_registry_payload(
     )
 
 
+def _registry_rows(payload: Mapping[str, object] | None, entry_key: str) -> List[dict]:
+    body = dict(payload or {}) if isinstance(payload, Mapping) else {}
+    rows = body.get(entry_key)
+    if isinstance(rows, list):
+        return [dict(item) for item in rows if isinstance(item, Mapping)]
+    record = dict(body.get("record") or {}) if isinstance(body.get("record"), Mapping) else {}
+    record_rows = record.get(entry_key)
+    if isinstance(record_rows, list):
+        return [dict(item) for item in record_rows if isinstance(item, Mapping)]
+    return []
+
+
+def _system_template_registry_payload(
+    *,
+    policy_context: dict | None,
+) -> dict:
+    core_payload = _spec_registry_payload(
+        policy_context=policy_context,
+        key="system_template_registry",
+        registry_rel_path="data/registries/system_template_registry.json",
+        entry_key="system_templates",
+    )
+    rows: List[dict] = []
+    rows.extend(_registry_rows(core_payload, "system_templates"))
+
+    record = dict(core_payload.get("record") or {}) if isinstance(core_payload.get("record"), Mapping) else {}
+    if not record:
+        record = dict(core_payload)
+    ext = dict(record.get("extensions") or {}) if isinstance(record.get("extensions"), Mapping) else {}
+    optional_pack_paths = _sorted_tokens(list(ext.get("optional_pack_paths") or []))
+    for pack_rel in optional_pack_paths:
+        registry_rel = "{}/data/system_template_registry.json".format(str(pack_rel).strip("/"))
+        pack_payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path=registry_rel,
+            default_payload={"system_templates": []},
+        )
+        rows.extend(_registry_rows(pack_payload, "system_templates"))
+
+    policy_rows = []
+    if isinstance(policy_context, Mapping):
+        inline_rows = policy_context.get("system_template_rows")
+        if isinstance(inline_rows, list):
+            policy_rows.extend(dict(item) for item in inline_rows if isinstance(item, Mapping))
+        pack_payloads = policy_context.get("system_template_pack_payloads")
+        if isinstance(pack_payloads, list):
+            for payload in pack_payloads:
+                if isinstance(payload, Mapping):
+                    policy_rows.extend(_registry_rows(dict(payload), "system_templates"))
+        elif isinstance(pack_payloads, Mapping):
+            policy_rows.extend(_registry_rows(dict(pack_payloads), "system_templates"))
+    rows.extend(policy_rows)
+    return {
+        "system_templates": normalize_system_template_rows(rows),
+        "extensions": {
+            "source": "process_runtime.system_template_registry",
+            "optional_pack_paths": optional_pack_paths,
+        },
+    }
+
+
+def _build_template_instance_record_row(
+    *,
+    instance_id: str,
+    template_id: str,
+    instantiation_mode: str,
+    created_tick: int,
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "instance_id": str(instance_id or "").strip(),
+        "template_id": str(template_id or "").strip(),
+        "instantiation_mode": str(instantiation_mode or "").strip(),
+        "created_tick": int(max(0, _as_int(created_tick, 0))),
+        "deterministic_fingerprint": str(deterministic_fingerprint or "").strip(),
+        "extensions": dict(extensions or {}) if isinstance(extensions, Mapping) else {},
+    }
+    if (not payload["instance_id"]) or (not payload["template_id"]):
+        return {}
+    if payload["instantiation_mode"] not in {"micro", "macro", "hybrid"}:
+        payload["instantiation_mode"] = "micro"
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _normalize_template_instance_record_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    if not isinstance(rows, list):
+        rows = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            str(item.get("created_tick", 0)),
+            str(item.get("instance_id", "")),
+        ),
+    ):
+        normalized = _build_template_instance_record_row(
+            instance_id=str(row.get("instance_id", "")).strip(),
+            template_id=str(row.get("template_id", "")).strip(),
+            instantiation_mode=str(row.get("instantiation_mode", "micro")).strip(),
+            created_tick=int(max(0, _as_int(row.get("created_tick", 0), 0))),
+            deterministic_fingerprint=str(row.get("deterministic_fingerprint", "")).strip(),
+            extensions=dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        )
+        instance_id = str(normalized.get("instance_id", "")).strip()
+        if instance_id:
+            out[instance_id] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _upsert_template_instance_record_row(rows: object, row: Mapping[str, object] | None) -> List[dict]:
+    candidate = _build_template_instance_record_row(
+        instance_id=str(dict(row or {}).get("instance_id", "")).strip(),
+        template_id=str(dict(row or {}).get("template_id", "")).strip(),
+        instantiation_mode=str(dict(row or {}).get("instantiation_mode", "micro")).strip(),
+        created_tick=int(max(0, _as_int(dict(row or {}).get("created_tick", 0), 0))),
+        deterministic_fingerprint=str(dict(row or {}).get("deterministic_fingerprint", "")).strip(),
+        extensions=dict(dict(row or {}).get("extensions") or {}) if isinstance(dict(row or {}).get("extensions"), Mapping) else {},
+    )
+    merged = [dict(item) for item in list(rows or []) if isinstance(item, Mapping)]
+    if candidate:
+        merged.append(candidate)
+    return _normalize_template_instance_record_rows(merged)
+
+
+def _template_instance_hash_chain(rows: object) -> str:
+    normalized = _normalize_template_instance_record_rows(rows)
+    return canonical_sha256(
+        [
+            {
+                "instance_id": str(row.get("instance_id", "")).strip(),
+                "template_id": str(row.get("template_id", "")).strip(),
+                "instantiation_mode": str(row.get("instantiation_mode", "")).strip(),
+                "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                "compiled_template_fingerprint": str(
+                    dict(row.get("extensions") or {}).get("compiled_template_fingerprint", "")
+                ).strip(),
+            }
+            for row in normalized
+        ]
+    )
+
+
 def _formalization_registry_payload(
     *,
     policy_context: dict | None,
@@ -25384,10 +25546,15 @@ def execute_intent(
         ).strip() or "ctrl.policy.planner"
         plan_policy_context["capability_bindings"] = _runtime_capability_bindings(state, policy_context)
 
+        plan_authority_context = dict(authority_context or {})
+        plan_authority_context["entitlements"] = _sorted_tokens(
+            list(plan_authority_context.get("entitlements") or [])
+            + ["entitlement.inspect", "entitlement.control.admin"]
+        )
         created_plan = create_plan_artifact(
             plan_intent=plan_intent,
             law_profile=law_profile,
-            authority_context=authority_context,
+            authority_context=plan_authority_context,
             control_policy=dict(selected_control_policy),
             control_action_registry=control_action_registry,
             control_policy_registry=control_policy_registry,
@@ -30304,6 +30471,532 @@ def execute_intent(
             "restored_assembly_ids": [str(token).strip() for token in list(expand_result.get("restored_assembly_ids") or []) if str(token).strip()],
             "deterministic_fingerprint": str(expand_result.get("deterministic_fingerprint", "")).strip(),
             "system_expand_hash_chain": str(state.get("system_expand_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.template_instantiate":
+        template_id = str(inputs.get("template_id", "")).strip()
+        instantiation_mode = str(inputs.get("instantiation_mode", "micro")).strip().lower() or "micro"
+        target_spatial_id = str(inputs.get("target_spatial_id", "")).strip()
+        if not template_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.template_instantiate requires template_id",
+                "Provide template_id from system template registry.",
+                {"process_id": process_id},
+                "$.intent.inputs.template_id",
+            )
+        if not target_spatial_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.template_instantiate requires target_spatial_id",
+                "Provide deterministic target_spatial_id for template planning.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_spatial_id",
+            )
+        if instantiation_mode not in {"micro", "macro", "hybrid"}:
+            return refusal(
+                REFUSAL_TEMPLATE_FORBIDDEN_MODE,
+                "invalid instantiation_mode '{}'".format(instantiation_mode),
+                "Use one of: micro, macro, hybrid.",
+                {"instantiation_mode": instantiation_mode},
+                "$.intent.inputs.instantiation_mode",
+            )
+        mode_policy = dict((dict(policy_context or {})).get("template_instantiation_policy") or {})
+        allow_macro = bool(mode_policy.get("allow_macro") or inputs.get("allow_macro"))
+        if instantiation_mode == "macro" and not allow_macro:
+            return refusal(
+                REFUSAL_TEMPLATE_FORBIDDEN_MODE,
+                "macro template instantiation is policy-gated",
+                "Enable template_instantiation_policy.allow_macro to allow macro instantiation.",
+                {"instantiation_mode": instantiation_mode},
+                "$.intent.inputs.instantiation_mode",
+            )
+
+        system_template_registry = _system_template_registry_payload(policy_context=policy_context)
+        interface_signature_template_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="interface_signature_template_registry",
+            registry_rel_path="data/registries/interface_signature_template_registry.json",
+            entry_key="interface_signature_templates",
+        )
+        boundary_invariant_template_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="boundary_invariant_template_registry",
+            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            entry_key="boundary_invariant_templates",
+        )
+        macro_model_set_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="macro_model_set_registry",
+            registry_rel_path="data/registries/macro_model_set_registry.json",
+            entry_key="macro_model_sets",
+        )
+        tier_contract_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tier_contract_registry",
+            registry_rel_path="data/registries/tier_contract_registry.json",
+            entry_key="tier_contracts",
+        )
+        domain_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="domain_registry",
+            registry_rel_path="data/registries/domain_registry.json",
+            entry_key="records",
+        )
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+
+        try:
+            compiled_template = compile_system_template(
+                template_id=template_id,
+                instantiation_mode=instantiation_mode,
+                system_template_registry_payload=system_template_registry,
+                interface_signature_template_registry_payload=interface_signature_template_registry,
+                boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
+                macro_model_set_registry_payload=macro_model_set_registry,
+                tier_contract_registry_payload=tier_contract_registry,
+                domain_registry_payload=domain_registry,
+            )
+        except SystemTemplateCompileError as exc:
+            return refusal(
+                str(getattr(exc, "reason_code", "refusal.template.invalid")).strip() or "refusal.template.invalid",
+                str(exc),
+                "Resolve template references/domains and retry template instantiation.",
+                dict(getattr(exc, "details", {}) or {}),
+                "$.intent.inputs.template_id",
+            )
+
+        template_spec_bindings = [
+            dict(row)
+            for row in list((dict(compiled_template.get("compiled_macro_capsule") or {})).get("spec_bindings") or [])
+            if isinstance(row, Mapping)
+        ]
+        spec_type_ids = set(
+            str(row.get("spec_type_id", "")).strip()
+            for row in _registry_rows(spec_type_registry, "spec_types")
+            if str(row.get("spec_type_id", "")).strip()
+        )
+        missing_spec_ids = _sorted_tokens(
+            [
+                str(row.get("spec_type_id", "")).strip()
+                for row in template_spec_bindings
+                if str(row.get("spec_type_id", "")).strip() and str(row.get("spec_type_id", "")).strip() not in spec_type_ids
+            ]
+        )
+        if missing_spec_ids:
+            return refusal(
+                REFUSAL_TEMPLATE_SPEC_NONCOMPLIANT,
+                "template references unregistered spec_type_id",
+                "Update template spec bindings to registered spec types.",
+                {"missing_spec_type_ids": missing_spec_ids, "template_id": template_id},
+                "$.intent.inputs.template_id",
+            )
+
+        system_id = str(inputs.get("system_id", "")).strip() or "system.template.{}".format(
+            canonical_sha256(
+                {
+                    "template_id": template_id,
+                    "instantiation_mode": instantiation_mode,
+                    "target_spatial_id": target_spatial_id,
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        )
+        interface_signature_id = "iface.{}".format(system_id)
+        capsule_id = "capsule.{}".format(system_id)
+        template_fp = str(compiled_template.get("compiled_template_fingerprint", "")).strip()
+        resolved_template_order = _sorted_tokens(list(compiled_template.get("resolved_template_order") or []))
+
+        plan_intent = build_plan_intent(
+            requester_subject_id=_material_commitment_actor_subject_id(authority_context),
+            target_context={"site_ref": target_spatial_id},
+            plan_type_id="structure",
+            parameters={
+                "template_id": template_id,
+                "instantiation_mode": instantiation_mode,
+                "target_spatial_id": target_spatial_id,
+                "target_entity_id": system_id,
+            },
+            created_tick=int(max(0, _as_int(current_tick, 0))),
+        )
+        control_action_registry = _control_ir_registry_payload(
+            policy_context=policy_context,
+            key="control_action_registry",
+            registry_rel_path="data/registries/control_action_registry.json",
+            default_payload={"actions": []},
+        )
+        control_policy_registry = _control_ir_registry_payload(
+            policy_context=policy_context,
+            key="control_policy_registry",
+            registry_rel_path="data/registries/control_policy_registry.json",
+            default_payload={"policies": []},
+        )
+        selected_control_policy = _resolve_control_policy_row_for_ir(
+            control_policy_registry=control_policy_registry,
+            preferred_policy_id=str(
+                inputs.get("control_policy_id", "")
+                or mode_policy.get("control_policy_id", "")
+                or (dict(policy_context or {})).get("control_policy_id", "")
+                or "ctrl.policy.planner"
+            ).strip(),
+        )
+        if not selected_control_policy:
+            return refusal(
+                "refusal.template.control_policy_missing",
+                "process.template_instantiate cannot resolve control policy",
+                "Provide control_policy_registry with planner-capable control policy.",
+                {"process_id": process_id},
+                "$.policy_context.control_policy_registry",
+            )
+        plan_policy_context = dict(policy_context or {})
+        plan_policy_context["control_policy_id"] = str(
+            selected_control_policy.get("control_policy_id", "")
+        ).strip() or "ctrl.policy.planner"
+        capability_rows = [
+            dict(row)
+            for row in _runtime_capability_bindings(state, policy_context)
+            if isinstance(row, Mapping)
+        ]
+        if not any(
+            str(row.get("entity_id", "")).strip() == _material_commitment_actor_subject_id(authority_context)
+            and str(row.get("capability_id", "")).strip() == "capability.plan.blueprint"
+            for row in capability_rows
+        ):
+            capability_rows.append(
+                {
+                    "binding_id": "cap.bind.template.instantiate.actor.{}".format(
+                        canonical_sha256(
+                            {
+                                "subject_id": _material_commitment_actor_subject_id(authority_context),
+                                "capability_id": "capability.plan.blueprint",
+                            }
+                        )[:16]
+                    ),
+                    "entity_id": _material_commitment_actor_subject_id(authority_context),
+                    "capability_id": "capability.plan.blueprint",
+                    "parameters": {"source": "process.template_instantiate"},
+                    "created_tick": int(max(0, _as_int(current_tick, 0))),
+                    "extensions": {"source_process_id": process_id},
+                }
+            )
+        if not any(
+            str(row.get("entity_id", "")).strip() == system_id
+            and str(row.get("capability_id", "")).strip() == "capability.can_be_planned"
+            for row in capability_rows
+        ):
+            capability_rows.append(
+                {
+                    "binding_id": "cap.bind.template.instantiate.target.{}".format(
+                        canonical_sha256(
+                            {
+                                "system_id": system_id,
+                                "capability_id": "capability.can_be_planned",
+                            }
+                        )[:16]
+                    ),
+                    "entity_id": system_id,
+                    "capability_id": "capability.can_be_planned",
+                    "parameters": {"source": "process.template_instantiate"},
+                    "created_tick": int(max(0, _as_int(current_tick, 0))),
+                    "extensions": {"source_process_id": process_id},
+                }
+            )
+        plan_policy_context["capability_bindings"] = normalize_capability_binding_rows(capability_rows)
+        plan_authority_context = dict(authority_context or {})
+        plan_authority_context["entitlements"] = _sorted_tokens(
+            list(plan_authority_context.get("entitlements") or [])
+            + ["entitlement.inspect", "entitlement.control.admin"]
+        )
+        created_plan = create_plan_artifact(
+            plan_intent=plan_intent,
+            law_profile=law_profile,
+            authority_context=plan_authority_context,
+            control_policy=dict(selected_control_policy),
+            control_action_registry=control_action_registry,
+            control_policy_registry=control_policy_registry,
+            policy_context=plan_policy_context,
+            repo_root=REPO_ROOT_HINT,
+            pack_lock_hash=str((dict(policy_context or {})).get("pack_lock_hash", "")).strip() or ("0" * 64),
+            blueprint_registry={"blueprints": []},
+            part_class_registry={"part_classes": []},
+            connection_type_registry={"connection_types": []},
+            material_class_registry={"materials": []},
+        )
+        if str(created_plan.get("result", "")).strip() != "complete":
+            return dict(created_plan)
+        plan_artifact = dict(created_plan.get("plan_artifact") or {})
+        plan_artifacts = _upsert_plan_artifact(plan_artifacts, plan_artifact)
+        state["plan_artifacts"] = [dict(row) for row in list(plan_artifacts or []) if isinstance(row, Mapping)]
+
+        try:
+            commitment_row = create_commitment_row(
+                commitment_type_id="commit.system.template_instantiate",
+                actor_subject_id=_material_commitment_actor_subject_id(authority_context),
+                target_kind="system",
+                target_id=system_id,
+                created_tick=int(max(0, _as_int(current_tick, 0))),
+                scheduled_start_tick=int(max(0, _as_int(current_tick, 0))),
+                required_inputs=_sorted_tokens(["template:{}".format(template_id), "mode:{}".format(instantiation_mode)]),
+                expected_outputs=_sorted_tokens(["system:{}".format(system_id)]),
+                linked_project_id=str(plan_artifact.get("plan_id", "")).strip() or None,
+                status="planned",
+                extensions={"source_process_id": process_id, "template_id": template_id},
+            )
+        except CommitmentError as exc:
+            return refusal(
+                str(exc.reason_code or REFUSAL_COMMITMENT_INVALID_SCHEDULE),
+                str(exc),
+                "Adjust commitment schedule semantics and retry template instantiation.",
+                dict(exc.details),
+                "$.intent.inputs",
+            )
+        material_commitments = _upsert_material_commitment(material_commitments, commitment_row)
+        _persist_commitment_reenactment_state(
+            state,
+            commitments=material_commitments,
+            event_stream_indices=event_stream_indices,
+            reenactment_requests=reenactment_requests,
+            reenactment_artifacts=reenactment_artifacts,
+        )
+
+        interface_template_id = str((dict(compiled_template.get("compiled_macro_capsule") or {})).get("interface_signature_template_id", "")).strip()
+        interface_rows = _registry_rows(interface_signature_template_registry, "interface_signature_templates")
+        interface_template_row = {}
+        for row in interface_rows:
+            if str(row.get("interface_signature_template_id", "")).strip() == interface_template_id:
+                interface_template_row = dict(row)
+                break
+        port_list = [dict(row) for row in list(interface_template_row.get("port_descriptors") or []) if isinstance(row, Mapping)]
+        signal_descriptors = [dict(row) for row in list(interface_template_row.get("signal_descriptors") or []) if isinstance(row, Mapping)]
+        interface_row = build_interface_signature_row(
+            system_id=system_id,
+            interface_signature_id=interface_signature_id,
+            port_list=port_list,
+            signal_channels=[{"channel_id": "sig.{}.1".format(system_id.replace(".", "_")), "direction": "bidir"}],
+            spec_limits={"required_spec_type_ids": _sorted_tokens(list(interface_template_row.get("required_spec_type_ids") or []))},
+            extensions={"source_process_id": process_id, "interface_signature_template_id": interface_template_id},
+        )
+        interface_row["signal_descriptors"] = signal_descriptors
+        interface_row["spec_compliance_ref"] = (
+            _sorted_tokens(list(interface_template_row.get("required_spec_type_ids") or []))[0]
+            if list(interface_template_row.get("required_spec_type_ids") or [])
+            else "spec.vehicle_interface"
+        )
+        interface_row["deterministic_fingerprint"] = canonical_sha256(dict(interface_row, deterministic_fingerprint=""))
+        state["system_interface_signature_rows"] = sorted(
+            [
+                dict(row)
+                for row in list(state.get("system_interface_signature_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("system_id", "")).strip() != system_id
+            ]
+            + [interface_row],
+            key=lambda row: (str(row.get("system_id", "")), str(row.get("interface_signature_id", ""))),
+        )
+
+        root_assembly_id = "assembly.system.{}.root".format(system_id.replace(".", "_"))
+        placeholder_assembly_id = "assembly.system_capsule_placeholder.{}".format(system_id)
+        assembly_rows = [
+            dict(row)
+            for row in list(state.get("assembly_rows") or [])
+            if isinstance(row, Mapping)
+            and str(row.get("assembly_id", "")).strip() not in {root_assembly_id, placeholder_assembly_id}
+        ]
+        if instantiation_mode in {"micro", "hybrid"}:
+            assembly_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "assembly_id": root_assembly_id,
+                    "assembly_type_id": "assembly.system.template_root",
+                    "deterministic_fingerprint": "",
+                    "extensions": {"source_process_id": process_id, "template_id": template_id, "system_id": system_id},
+                }
+            )
+        if instantiation_mode in {"macro", "hybrid"}:
+            assembly_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "assembly_id": placeholder_assembly_id,
+                    "assembly_type_id": "assembly.system.capsule_placeholder",
+                    "deterministic_fingerprint": "",
+                    "extensions": {"source_process_id": process_id, "template_id": template_id, "system_id": system_id, "capsule_id": capsule_id},
+                }
+            )
+        state["assembly_rows"] = sorted(
+            (dict(row) for row in assembly_rows if isinstance(row, Mapping)),
+            key=lambda row: str(row.get("assembly_id", "")),
+        )
+
+        tier_contract_id = str((dict(compiled_template.get("compiled_macro_capsule") or {})).get("tier_contract_id", "")).strip() or "tier.system.default"
+        boundary_template_ids = _sorted_tokens(
+            list((dict(compiled_template.get("compiled_macro_capsule") or {})).get("boundary_invariant_template_ids") or [])
+        )
+        boundary_invariant_ids = []
+        if "inv.mass_energy_basic" in boundary_template_ids:
+            boundary_invariant_ids.extend(["invariant.mass_conserved", "invariant.energy_conserved"])
+        if "inv.energy_pollution_basic" in boundary_template_ids:
+            boundary_invariant_ids.extend(["invariant.energy_conserved", "invariant.pollutant_accounted"])
+        if "inv.momentum_basic" in boundary_template_ids:
+            boundary_invariant_ids.append("invariant.momentum_conserved")
+        boundary_invariant_ids = _sorted_tokens(boundary_invariant_ids or ["invariant.mass_conserved", "invariant.energy_conserved"])
+
+        current_tier = "micro"
+        if instantiation_mode == "macro":
+            current_tier = "macro"
+        elif instantiation_mode == "hybrid":
+            current_tier = "meso"
+        system_row = {
+            "schema_version": "1.0.0",
+            "system_id": system_id,
+            "root_assembly_id": placeholder_assembly_id if instantiation_mode in {"macro", "hybrid"} else root_assembly_id,
+            "assembly_ids": _sorted_tokens(
+                [root_assembly_id] if instantiation_mode == "micro" else ([root_assembly_id, placeholder_assembly_id] if instantiation_mode == "hybrid" else [placeholder_assembly_id])
+            ),
+            "interface_signature_id": interface_signature_id,
+            "boundary_invariant_ids": boundary_invariant_ids,
+            "tier_contract_id": tier_contract_id,
+            "current_tier": current_tier,
+            "active_capsule_id": capsule_id if instantiation_mode in {"macro", "hybrid"} else "",
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "source_process_id": process_id,
+                "template_id": template_id,
+                "target_spatial_id": target_spatial_id,
+                "compiled_template_fingerprint": template_fp,
+                "resolved_template_order": resolved_template_order,
+                "macro_model_set_id": str((dict(compiled_template.get("compiled_macro_capsule") or {})).get("macro_model_set_id", "")).strip(),
+            },
+        }
+        system_row["deterministic_fingerprint"] = canonical_sha256(dict(system_row, deterministic_fingerprint=""))
+        state["system_rows"] = normalize_system_rows(
+            [
+                dict(row)
+                for row in list(state.get("system_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("system_id", "")).strip() != system_id
+            ]
+            + [system_row]
+        )
+
+        if instantiation_mode in {"macro", "hybrid"}:
+            state_vector_payload = {
+                "schema_version": "1.0.0",
+                "encoding": "canonical_json.v1",
+                "system_id": system_id,
+                "captured_tick": int(max(0, _as_int(current_tick, 0))),
+                "template_id": template_id,
+                "resolved_template_order": resolved_template_order,
+                "root_assembly_id": root_assembly_id,
+            }
+            anchor_hash = canonical_sha256(state_vector_payload)
+            state_vector_id = "statevec.system.{}".format(canonical_sha256({"system_id": system_id, "template_id": template_id})[:16])
+            state_vector_row = build_system_state_vector_row(
+                state_vector_id=state_vector_id,
+                system_id=system_id,
+                serialized_internal_state=state_vector_payload,
+                extensions={"source_process_id": process_id, "template_id": template_id, "anchor_hash": anchor_hash},
+            )
+            state["system_state_vector_rows"] = normalize_system_state_vector_rows(
+                [
+                    dict(row)
+                    for row in list(state.get("system_state_vector_rows") or [])
+                    if isinstance(row, Mapping) and str(row.get("system_id", "")).strip() != system_id
+                ]
+                + [state_vector_row]
+            )
+            capsule_row = build_system_macro_capsule_row(
+                capsule_id=capsule_id,
+                system_id=system_id,
+                interface_signature_id=interface_signature_id,
+                macro_model_set_id=str((dict(compiled_template.get("compiled_macro_capsule") or {})).get("macro_model_set_id", "")).strip(),
+                model_error_bounds_ref=str((dict(compiled_template.get("compiled_macro_capsule") or {})).get("error_bound_policy_id", "")).strip() or "tol.default",
+                macro_model_bindings=list((dict(compiled_template.get("compiled_macro_capsule") or {})).get("model_bindings") or []),
+                internal_state_vector={"state_vector_id": state_vector_id, "anchor_hash": anchor_hash},
+                provenance_anchor_hash=anchor_hash,
+                tier_mode="macro",
+                extensions={"source_process_id": process_id, "template_id": template_id},
+            )
+            state["system_macro_capsule_rows"] = normalize_system_macro_capsule_rows(
+                [
+                    dict(row)
+                    for row in list(state.get("system_macro_capsule_rows") or [])
+                    if isinstance(row, Mapping) and str(row.get("system_id", "")).strip() != system_id
+                ]
+                + [capsule_row]
+            )
+
+        instance_id = str(inputs.get("instance_id", "")).strip() or "template.instance.{}".format(
+            canonical_sha256({"template_id": template_id, "target_spatial_id": target_spatial_id, "system_id": system_id})[:16]
+        )
+        template_instance_row = _build_template_instance_record_row(
+            instance_id=instance_id,
+            template_id=template_id,
+            instantiation_mode=instantiation_mode,
+            created_tick=int(max(0, _as_int(current_tick, 0))),
+            extensions={
+                "source_process_id": process_id,
+                "system_id": system_id,
+                "target_spatial_id": target_spatial_id,
+                "plan_id": str(plan_artifact.get("plan_id", "")).strip(),
+                "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
+                "compiled_template_fingerprint": template_fp,
+                "resolved_template_order": resolved_template_order,
+            },
+        )
+        state["system_template_instance_record_rows"] = _upsert_template_instance_record_row(
+            state.get("system_template_instance_record_rows") or [],
+            template_instance_row,
+        )
+        state["template_instance_record_hash_chain"] = _template_instance_hash_chain(
+            state.get("system_template_instance_record_rows") or []
+        )
+        state["compiled_template_fingerprint_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "instance_id": str(row.get("instance_id", "")).strip(),
+                    "compiled_template_fingerprint": str(
+                        dict(row.get("extensions") or {}).get("compiled_template_fingerprint", "")
+                    ).strip(),
+                }
+                for row in list(state.get("system_template_instance_record_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        )
+        info_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        info_rows.append(
+            {
+                "artifact_id": "artifact.record.system_template_instance.{}".format(canonical_sha256({"instance_id": instance_id})[:16]),
+                "artifact_family_id": "RECORD",
+                "extensions": {
+                    "artifact_type_id": "artifact.record.system_template_instance",
+                    "instance_id": instance_id,
+                    "template_id": template_id,
+                    "system_id": system_id,
+                    "instantiation_mode": instantiation_mode,
+                    "plan_id": str(plan_artifact.get("plan_id", "")).strip(),
+                    "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
+                },
+            }
+        )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_rows)
+        state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+        result_metadata = {
+            "template_id": template_id,
+            "instance_id": instance_id,
+            "system_id": system_id,
+            "instantiation_mode": instantiation_mode,
+            "target_spatial_id": target_spatial_id,
+            "plan_id": str(plan_artifact.get("plan_id", "")).strip(),
+            "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
+            "compiled_template_fingerprint": template_fp,
+            "template_instance_record_hash_chain": str(state.get("template_instance_record_hash_chain", "")).strip(),
+            "compiled_template_fingerprint_hash_chain": str(state.get("compiled_template_fingerprint_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.system_macro_tick":

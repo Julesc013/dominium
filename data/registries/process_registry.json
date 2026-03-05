@@ -4771,6 +4771,81 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.system.template_root",
+        "assembly.system.capsule_placeholder"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical SYS-4 template instantiation process; compiles registered system templates deterministically, emits planning/commitment artifacts through CTRL/MAT pathways, and creates micro/macro/hybrid system entries without prefab bypass.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "pack-driven-optional"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.template_instantiate)",
+        "source": "SYS4-4",
+        "tier": "micro_macro_hybrid"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.template.invalid",
+        "refusal.template.not_found",
+        "refusal.template.missing_reference",
+        "refusal.template.missing_domain",
+        "refusal.template.forbidden_mode",
+        "refusal.template.spec_noncompliant"
+      ],
+      "human_name": "Template Instantiate",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "template_id",
+          "ref_id": "dominium.schema.system.system_template@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "instantiation_mode",
+          "ref_id": "dominium.schema.system.template_instance_record@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "target_spatial_id",
+          "ref_id": "dominium.schema.field.field_cell@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "template_instance_record",
+          "ref_id": "dominium.schema.system.template_instance_record@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "plan_artifact",
+          "ref_id": "dominium.schema.control.plan_artifact@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "material_commitment",
+          "ref_id": "dominium.schema.materials.commitment_row@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.template_instantiate",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",
