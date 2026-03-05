@@ -1,0 +1,170 @@
+"""Shared SYS-0 TestX fixtures/helpers."""
+
+from __future__ import annotations
+
+import copy
+
+
+def base_system_state() -> dict:
+    return {
+        "schema_version": "1.0.0",
+        "simulation_time": {"tick": 0, "timestamp_utc": "1970-01-01T00:00:00Z"},
+        "process_log": [],
+        "info_artifact_rows": [],
+        "knowledge_artifacts": [],
+        "system_rows": [
+            {
+                "schema_version": "1.0.0",
+                "system_id": "system.engine.alpha",
+                "root_assembly_id": "assembly.engine.root.alpha",
+                "assembly_ids": [
+                    "assembly.engine.root.alpha",
+                    "assembly.engine.pump.alpha",
+                    "assembly.engine.generator.alpha",
+                ],
+                "interface_signature_id": "iface.system.engine.alpha",
+                "boundary_invariant_ids": [
+                    "invariant.mass_conserved",
+                    "invariant.energy_conserved",
+                    "invariant.pollutant_accounted",
+                ],
+                "tier_contract_id": "tier.system.default",
+                "current_tier": "micro",
+                "active_capsule_id": "",
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "macro_model_bindings": [
+                        {"model_id": "model.system.engine.stub", "role": "boundary"}
+                    ],
+                    "unresolved_hazard_count": 0,
+                    "pending_internal_event_count": 0,
+                    "open_branch_dependency_count": 0,
+                },
+            }
+        ],
+        "system_interface_signature_rows": [
+            {
+                "schema_version": "1.0.0",
+                "system_id": "system.engine.alpha",
+                "interface_signature_id": "iface.system.engine.alpha",
+                "port_list": [
+                    {"port_id": "port.fuel_in", "direction": "in", "bundle_id": "bundle.fluid"},
+                    {"port_id": "port.power_out", "direction": "out", "bundle_id": "bundle.power"},
+                ],
+                "signal_channels": [
+                    {"channel_id": "sig.engine.control", "direction": "bidir"}
+                ],
+                "spec_limits": {
+                    "max_pressure": 1000,
+                    "max_temperature": 1200,
+                },
+                "deterministic_fingerprint": "",
+                "extensions": {},
+            }
+        ],
+        "system_boundary_invariant_rows": [
+            {
+                "schema_version": "1.0.0",
+                "invariant_id": "invariant.mass_conserved",
+                "quantity_ids": ["quantity.mass"],
+                "tolerance_policy_id": "tol.strict",
+                "deterministic_fingerprint": "",
+                "extensions": {},
+            },
+            {
+                "schema_version": "1.0.0",
+                "invariant_id": "invariant.energy_conserved",
+                "quantity_ids": ["quantity.energy"],
+                "tolerance_policy_id": "tol.strict",
+                "deterministic_fingerprint": "",
+                "extensions": {},
+            },
+            {
+                "schema_version": "1.0.0",
+                "invariant_id": "invariant.pollutant_accounted",
+                "quantity_ids": ["quantity.pollutant_mass"],
+                "tolerance_policy_id": "tol.default",
+                "deterministic_fingerprint": "",
+                "extensions": {},
+            },
+        ],
+        "system_macro_capsule_rows": [],
+        "system_state_vector_rows": [],
+        "system_collapse_event_rows": [],
+        "system_expand_event_rows": [],
+        "assembly_rows": [
+            {
+                "schema_version": "1.0.0",
+                "assembly_id": "assembly.engine.root.alpha",
+                "assembly_type_id": "assembly.engine.root",
+                "deterministic_fingerprint": "",
+                "extensions": {"powertrain_role": "root"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "assembly_id": "assembly.engine.pump.alpha",
+                "assembly_type_id": "assembly.pump",
+                "deterministic_fingerprint": "",
+                "extensions": {"powertrain_role": "pump"},
+            },
+            {
+                "schema_version": "1.0.0",
+                "assembly_id": "assembly.engine.generator.alpha",
+                "assembly_type_id": "assembly.generator",
+                "deterministic_fingerprint": "",
+                "extensions": {"powertrain_role": "generator"},
+            },
+        ],
+    }
+
+
+def law_profile() -> dict:
+    return {
+        "law_profile_id": "law.sys0.test",
+        "allowed_processes": [
+            "process.system_collapse",
+            "process.system_expand",
+        ],
+        "forbidden_processes": [],
+        "process_entitlement_requirements": {
+            "process.system_collapse": "session.boot",
+            "process.system_expand": "session.boot",
+        },
+        "process_privilege_requirements": {
+            "process.system_collapse": "observer",
+            "process.system_expand": "observer",
+        },
+    }
+
+
+def authority_context() -> dict:
+    return {
+        "authority_origin": "tool",
+        "law_profile_id": "law.sys0.test",
+        "entitlements": ["session.boot"],
+        "privilege_level": "observer",
+    }
+
+
+def execute_system_process(*, state: dict, process_id: str, inputs: dict) -> dict:
+    from tools.xstack.sessionx.process_runtime import execute_intent
+
+    return execute_intent(
+        state=state,
+        intent={
+            "intent_id": "intent.sys0.{}.{}".format(
+                process_id.replace(".", "_"),
+                str(inputs.get("system_id") or inputs.get("capsule_id") or "id").replace(".", "_"),
+            ),
+            "process_id": process_id,
+            "inputs": dict(inputs or {}),
+        },
+        law_profile=law_profile(),
+        authority_context=authority_context(),
+        navigation_indices={},
+        policy_context={},
+    )
+
+
+def cloned_state() -> dict:
+    return copy.deepcopy(base_system_state())
