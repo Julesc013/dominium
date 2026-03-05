@@ -1,0 +1,23 @@
+SCHEMA: system/certification_result.schema
+schema_id: dominium.schema.system.certification_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic record of SYS-5 certification evaluation outcome.
+
+NON-SEMANTICS:
+- No automatic penalties or economy hooks.
+- No direct certificate visibility semantics.
+
+REQUIRED SHAPE:
+record certification_result
+  required:
+    - result_id: id
+    - system_id: id
+    - cert_type_id: id
+    - pass: bool
+    - failed_checks: list
+    - tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

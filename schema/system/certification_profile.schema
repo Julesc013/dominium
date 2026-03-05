@@ -1,0 +1,22 @@
+SCHEMA: system/certification_profile.schema
+schema_id: dominium.schema.system.certification_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic certification requirements for system-level evaluation.
+- Bind required SPEC checks, safety patterns, and invariants to a cert type.
+
+NON-SEMANTICS:
+- No direct issuance authority.
+- No institution hardcoding.
+
+REQUIRED SHAPE:
+record certification_profile
+  required:
+    - cert_type_id: id
+    - required_spec_checks: list
+    - required_safety_patterns: list
+    - required_invariants: list
+    - deterministic_fingerprint: text
+    - extensions: map
