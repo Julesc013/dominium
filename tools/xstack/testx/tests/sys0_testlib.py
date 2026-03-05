@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import json
+import os
 
 
 def base_system_state() -> dict:
@@ -36,6 +38,14 @@ def base_system_state() -> dict:
                     "macro_model_bindings": [
                         {"model_id": "model.system.engine.stub", "role": "boundary"}
                     ],
+                    "boundary_invariant_template_ids": [
+                        "inv.mass_energy_basic",
+                        "inv.energy_pollution_basic",
+                    ],
+                    "safety_pattern_ids": [
+                        "safety.fail_safe_stop",
+                    ],
+                    "emits_pollutants": True,
                     "unresolved_hazard_count": 0,
                     "pending_internal_event_count": 0,
                     "open_branch_dependency_count": 0,
@@ -48,12 +58,33 @@ def base_system_state() -> dict:
                 "system_id": "system.engine.alpha",
                 "interface_signature_id": "iface.system.engine.alpha",
                 "port_list": [
-                    {"port_id": "port.fuel_in", "direction": "in", "bundle_id": "bundle.fluid"},
-                    {"port_id": "port.power_out", "direction": "out", "bundle_id": "bundle.power"},
+                    {
+                        "port_id": "port.fuel_in",
+                        "port_type_id": "port.fluid.fuel",
+                        "direction": "in",
+                        "allowed_bundle_ids": ["bundle.fluid_basic"],
+                        "spec_limit_refs": ["spec.vehicle_interface"],
+                    },
+                    {
+                        "port_id": "port.power_out",
+                        "port_type_id": "port.power.output",
+                        "direction": "out",
+                        "allowed_bundle_ids": ["bundle.power_phasor"],
+                        "spec_limit_refs": ["spec.vehicle_interface"],
+                    },
+                ],
+                "signal_descriptors": [
+                    {
+                        "channel_type_id": "channel.wired_basic",
+                        "capacity": 1024,
+                        "delay": 1,
+                        "access_policy_id": "ctrl.policy.player.diegetic",
+                    }
                 ],
                 "signal_channels": [
                     {"channel_id": "sig.engine.control", "direction": "bidir"}
                 ],
+                "spec_compliance_ref": "spec.vehicle_interface",
                 "spec_limits": {
                     "max_pressure": 1000,
                     "max_temperature": 1200,
@@ -67,7 +98,10 @@ def base_system_state() -> dict:
                 "schema_version": "1.0.0",
                 "invariant_id": "invariant.mass_conserved",
                 "quantity_ids": ["quantity.mass"],
+                "invariant_kind": "mass",
                 "tolerance_policy_id": "tol.strict",
+                "boundary_flux_allowed": True,
+                "ledger_transform_required": False,
                 "deterministic_fingerprint": "",
                 "extensions": {},
             },
@@ -75,7 +109,10 @@ def base_system_state() -> dict:
                 "schema_version": "1.0.0",
                 "invariant_id": "invariant.energy_conserved",
                 "quantity_ids": ["quantity.energy"],
+                "invariant_kind": "energy",
                 "tolerance_policy_id": "tol.strict",
+                "boundary_flux_allowed": True,
+                "ledger_transform_required": True,
                 "deterministic_fingerprint": "",
                 "extensions": {},
             },
@@ -83,7 +120,10 @@ def base_system_state() -> dict:
                 "schema_version": "1.0.0",
                 "invariant_id": "invariant.pollutant_accounted",
                 "quantity_ids": ["quantity.pollutant_mass"],
+                "invariant_kind": "pollution",
                 "tolerance_policy_id": "tol.default",
+                "boundary_flux_allowed": True,
+                "ledger_transform_required": False,
                 "deterministic_fingerprint": "",
                 "extensions": {},
             },
@@ -168,3 +208,53 @@ def execute_system_process(*, state: dict, process_id: str, inputs: dict) -> dic
 
 def cloned_state() -> dict:
     return copy.deepcopy(base_system_state())
+
+
+def _read_registry_payload(*, repo_root: str, rel_path: str) -> dict:
+    abs_path = os.path.join(str(repo_root), str(rel_path).replace("/", os.sep))
+    try:
+        payload = json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+    if isinstance(payload.get("record"), dict):
+        return dict(payload.get("record") or {})
+    return dict(payload)
+
+
+def validation_registry_payloads(*, repo_root: str) -> dict:
+    return {
+        "quantity_bundle_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/quantity_bundle_registry.json",
+        ),
+        "spec_type_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/spec_type_registry.json",
+        ),
+        "signal_channel_type_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/signal_channel_type_registry.json",
+        ),
+        "boundary_invariant_template_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/boundary_invariant_template_registry.json",
+        ),
+        "tolerance_policy_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/tolerance_policy_registry.json",
+        ),
+        "safety_pattern_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/safety_pattern_registry.json",
+        ),
+        "macro_model_set_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/macro_model_set_registry.json",
+        ),
+        "constitutive_model_registry_payload": _read_registry_payload(
+            repo_root=repo_root,
+            rel_path="data/registries/constitutive_model_registry.json",
+        ),
+    }

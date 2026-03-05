@@ -14,7 +14,7 @@
           "invariant.energy_conserved"
         ],
         "required_safety_pattern_ids": [
-          "safety.failsafe.default"
+          "safety.fail_safe_stop"
         ],
         "deterministic_fingerprint": "",
         "extensions": {
@@ -30,7 +30,7 @@
           "invariant.pollutant_accounted"
         ],
         "required_safety_pattern_ids": [
-          "safety.failsafe.default"
+          "safety.fail_safe_stop"
         ],
         "deterministic_fingerprint": "",
         "extensions": {
@@ -46,7 +46,7 @@
           "invariant.momentum_conserved"
         ],
         "required_safety_pattern_ids": [
-          "safety.failsafe.default"
+          "safety.fail_safe_stop"
         ],
         "deterministic_fingerprint": "",
         "extensions": {
@@ -61,8 +61,8 @@
           "invariant.mass_conserved"
         ],
         "required_safety_pattern_ids": [
-          "safety.failsafe.default",
-          "safety.relief.default"
+          "safety.fail_safe_stop",
+          "safety.relief_pressure"
         ],
         "deterministic_fingerprint": "",
         "extensions": {

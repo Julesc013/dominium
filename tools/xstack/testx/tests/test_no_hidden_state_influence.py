@@ -15,24 +15,38 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from src.system.system_collapse_engine import collapse_system_graph
-    from tools.xstack.testx.tests.sys0_testlib import cloned_state
+    from tools.xstack.testx.tests.sys0_testlib import cloned_state, validation_registry_payloads
 
     state_a = cloned_state()
     state_b = copy.deepcopy(cloned_state())
     state_b["ui_temp_cache"] = {"nondiegetic_panel": "ignored"}
     state_b["debug_overlay_tokens"] = ["alpha", "beta"]
+    registry_payloads = validation_registry_payloads(repo_root=repo_root)
+    collapse_payloads = {
+        key: registry_payloads[key]
+        for key in (
+            "quantity_bundle_registry_payload",
+            "spec_type_registry_payload",
+            "signal_channel_type_registry_payload",
+            "boundary_invariant_template_registry_payload",
+            "tolerance_policy_registry_payload",
+            "safety_pattern_registry_payload",
+        )
+    }
 
     first = collapse_system_graph(
         state=state_a,
         system_id="system.engine.alpha",
         current_tick=0,
         process_id="process.system_collapse",
+        **collapse_payloads,
     )
     second = collapse_system_graph(
         state=state_b,
         system_id="system.engine.alpha",
         current_tick=0,
         process_id="process.system_collapse",
+        **collapse_payloads,
     )
 
     fingerprint_a = str(first.get("deterministic_fingerprint", "")).strip()
