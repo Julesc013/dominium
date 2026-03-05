@@ -672,6 +672,26 @@
         "extensions": {
           "source": "POLL1-6"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.compliance_violation",
+        "event_kind_id": "pollution.compliance_violation",
+        "explain_artifact_type_id": "artifact.explain.compliance_violation",
+        "required_inputs": [
+          "artifact.record",
+          "section.pollution.concentration_map",
+          "section.pollution.exposure_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.local_emission",
+          "hint.increase.containment",
+          "hint.review.compliance_thresholds"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL2-6"
+        }
       }
     ],
     "extensions": {

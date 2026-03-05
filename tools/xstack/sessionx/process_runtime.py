@@ -28446,6 +28446,9 @@ def execute_intent(
             )
             pollution_dispersion_contract = dict(explain_contract_by_event_kind.get("pollution.dispersion") or {})
             pollution_decay_contract = dict(explain_contract_by_event_kind.get("pollution.decay") or {})
+            exposure_threshold_contract = dict(
+                explain_contract_by_event_kind.get("pollution.exposure_threshold") or {}
+            )
             explain_rows = [
                 dict(row)
                 for row in list(state.get("explain_artifact_rows") or [])
@@ -28515,6 +28518,141 @@ def execute_intent(
                 if explain_row:
                     explain_rows.append(dict(explain_row))
                     generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+            if list(exposure_eval.get("health_risk_event_rows") or []) and exposure_threshold_contract:
+                source_rows_for_explain = [
+                    dict(row)
+                    for row in list(state.get("pollution_source_event_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+                for health_event_row in sorted(
+                    (
+                        dict(item)
+                        for item in list(exposure_eval.get("health_risk_event_rows") or [])
+                        if isinstance(item, Mapping)
+                    ),
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("subject_id", "")),
+                        str(item.get("pollutant_id", "")),
+                        str(item.get("threshold_crossed", "")),
+                    ),
+                ):
+                    subject_id = str(health_event_row.get("subject_id", "")).strip()
+                    pollutant_id = str(health_event_row.get("pollutant_id", "")).strip()
+                    event_id = str(health_event_row.get("event_id", "")).strip()
+                    if (not subject_id) or (not pollutant_id):
+                        continue
+                    threshold_row = dict(exposure_thresholds_by_pollutant.get(pollutant_id) or {})
+                    explain_row = generate_explain_artifact(
+                        event_id=event_id
+                        or "event.pollution.exposure_threshold.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(max(0, _as_int(current_tick, 0))),
+                                    "subject_id": subject_id,
+                                    "pollutant_id": pollutant_id,
+                                    "threshold_crossed": str(
+                                        health_event_row.get("threshold_crossed", "")
+                                    ).strip(),
+                                }
+                            )[:16]
+                        ),
+                        target_id=subject_id,
+                        event_kind_id="pollution.exposure_threshold",
+                        truth_hash_anchor=str(state.get("pollution_exposure_hash_chain", "")).strip(),
+                        epistemic_policy_id="policy.epistemic.observer",
+                        explain_contract_row=exposure_threshold_contract,
+                        hazard_rows=[dict(health_event_row)],
+                        compliance_rows=[
+                            {
+                                "result_id": "poll.exposure.threshold.{}".format(
+                                    canonical_sha256(
+                                        {
+                                            "pollutant_id": pollutant_id,
+                                            "warning_threshold": int(
+                                                max(
+                                                    0,
+                                                    _as_int(
+                                                        threshold_row.get(
+                                                            "warning_threshold", 0
+                                                        ),
+                                                        0,
+                                                    ),
+                                                )
+                                            ),
+                                            "critical_threshold": int(
+                                                max(
+                                                    0,
+                                                    _as_int(
+                                                        threshold_row.get(
+                                                            "critical_threshold", 0
+                                                        ),
+                                                        0,
+                                                    ),
+                                                )
+                                            ),
+                                        }
+                                    )[:16]
+                                ),
+                                "pollutant_id": pollutant_id,
+                                "warning_threshold": int(
+                                    max(
+                                        0,
+                                        _as_int(
+                                            threshold_row.get("warning_threshold", 0), 0
+                                        ),
+                                    )
+                                ),
+                                "critical_threshold": int(
+                                    max(
+                                        0,
+                                        _as_int(
+                                            threshold_row.get("critical_threshold", 0), 0
+                                        ),
+                                    )
+                                ),
+                                "threshold_crossed": str(
+                                    health_event_row.get("threshold_crossed", "")
+                                ).strip(),
+                            }
+                        ],
+                        model_result_rows=[
+                            {
+                                "result_id": "poll.source.chain.{}".format(
+                                    canonical_sha256(
+                                        {
+                                            "subject_id": subject_id,
+                                            "pollutant_id": pollutant_id,
+                                            "source_count": len(
+                                                [
+                                                    row
+                                                    for row in source_rows_for_explain
+                                                    if str(row.get("pollutant_id", "")).strip()
+                                                    == pollutant_id
+                                                ]
+                                            ),
+                                        }
+                                    )[:16]
+                                ),
+                                "pollutant_id": pollutant_id,
+                                "source_event_count": int(
+                                    len(
+                                        [
+                                            row
+                                            for row in source_rows_for_explain
+                                            if str(row.get("pollutant_id", "")).strip()
+                                            == pollutant_id
+                                        ]
+                                    )
+                                ),
+                            }
+                        ],
+                    )
+                    if explain_row:
+                        explain_rows.append(dict(explain_row))
+                        generated_explain_ids.append(
+                            str(explain_row.get("explain_id", "")).strip()
+                        )
             if generated_explain_ids:
                 state["explain_artifact_rows"] = normalize_explain_artifact_rows(explain_rows)
             state["pollution_explain_hash_chain"] = canonical_sha256(
@@ -29058,6 +29196,132 @@ def execute_intent(
                 ),
             )
 
+            explain_contract_by_event_kind = _explain_contract_rows_by_event_kind(
+                _load_explain_contract_registry(policy_context=policy_context)
+            )
+            compliance_violation_contract = dict(
+                explain_contract_by_event_kind.get("pollution.compliance_violation")
+                or {}
+            )
+            generated_explain_ids: List[str] = []
+            if state.get("pollution_compliance_violation_rows") and compliance_violation_contract:
+                explain_rows = [
+                    dict(row)
+                    for row in list(state.get("explain_artifact_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+                report_row_by_id = dict(
+                    (
+                        str(row.get("report_id", "")).strip(),
+                        dict(row),
+                    )
+                    for row in list(report_rows or [])
+                    if isinstance(row, Mapping) and str(row.get("report_id", "")).strip()
+                )
+                for violation_row in list(state.get("pollution_compliance_violation_rows") or []):
+                    if not isinstance(violation_row, Mapping):
+                        continue
+                    row = dict(violation_row)
+                    report_id = str(row.get("report_id", "")).strip()
+                    linked_report = dict(report_row_by_id.get(report_id) or {})
+                    explain_row = generate_explain_artifact(
+                        event_id=str(row.get("event_id", "")).strip()
+                        or "event.pollution.compliance_violation.{}".format(
+                            canonical_sha256(
+                                {
+                                    "report_id": report_id,
+                                    "tick": int(max(0, _as_int(current_tick, 0))),
+                                }
+                            )[:16]
+                        ),
+                        target_id=str(row.get("region_id", "")).strip()
+                        or "region.pollution.unknown",
+                        event_kind_id="pollution.compliance_violation",
+                        truth_hash_anchor=str(
+                            state.get("pollution_compliance_report_hash_chain", "")
+                        ).strip(),
+                        epistemic_policy_id="policy.epistemic.observer",
+                        explain_contract_row=compliance_violation_contract,
+                        hazard_rows=[dict(row)],
+                        compliance_rows=[dict(linked_report)] if linked_report else [],
+                        model_result_rows=[
+                            {
+                                "result_id": "poll.compliance.thresholds.{}".format(
+                                    canonical_sha256(
+                                        {
+                                            "pollutant_id": str(
+                                                linked_report.get("pollutant_id", "")
+                                            ).strip(),
+                                            "status": str(
+                                                linked_report.get("status", "")
+                                            ).strip(),
+                                            "threshold": int(
+                                                max(
+                                                    0,
+                                                    _as_int(
+                                                        linked_report.get("threshold", 0), 0
+                                                    ),
+                                                )
+                                            ),
+                                        }
+                                    )[:16]
+                                ),
+                                "pollutant_id": str(
+                                    linked_report.get("pollutant_id", "")
+                                ).strip(),
+                                "status": str(linked_report.get("status", "")).strip(),
+                                "threshold": int(
+                                    max(0, _as_int(linked_report.get("threshold", 0), 0))
+                                ),
+                                "observed_statistic": str(
+                                    linked_report.get("observed_statistic", "")
+                                ).strip(),
+                            }
+                        ],
+                    )
+                    if explain_row:
+                        explain_rows.append(dict(explain_row))
+                        generated_explain_ids.append(
+                            str(explain_row.get("explain_id", "")).strip()
+                        )
+                if generated_explain_ids:
+                    state["explain_artifact_rows"] = normalize_explain_artifact_rows(
+                        explain_rows
+                    )
+                state["pollution_explain_hash_chain"] = canonical_sha256(
+                    [
+                        {
+                            "explain_id": str(row.get("explain_id", "")).strip(),
+                            "event_id": str(row.get("event_id", "")).strip(),
+                            "target_id": str(row.get("target_id", "")).strip(),
+                            "event_kind_id": str(
+                                dict(row.get("extensions") or {}).get(
+                                    "event_kind_id", ""
+                                )
+                            ).strip(),
+                        }
+                        for row in sorted(
+                            (
+                                dict(item)
+                                for item in list(state.get("explain_artifact_rows") or [])
+                                if isinstance(item, Mapping)
+                                and str(
+                                    dict(item.get("extensions") or {}).get(
+                                        "event_kind_id", ""
+                                    )
+                                )
+                                .strip()
+                                .startswith("pollution.")
+                            ),
+                            key=lambda item: (
+                                str(item.get("event_id", "")),
+                                str(item.get("target_id", "")),
+                                str(item.get("explain_id", "")),
+                            ),
+                        )
+                    ]
+                )
+
             _refresh_pollution_hash_chains(state)
             result_metadata = {
                 "compliance_report_count": int(len(report_rows)),
@@ -29072,6 +29336,7 @@ def execute_intent(
                 ),
                 "dispatched_envelope_ids": _sorted_tokens(dispatched_envelope_ids),
                 "dispatch_skipped": bool(skipped_dispatch),
+                "generated_explain_ids": _sorted_tokens(generated_explain_ids),
                 "pollution_compliance_report_hash_chain": str(
                     state.get("pollution_compliance_report_hash_chain", "")
                 ).strip(),
