@@ -286,6 +286,9 @@ from analyzers import e259_hidden_system_state_smell
 from analyzers import e260_missing_interface_descriptor_smell
 from analyzers import e261_missing_invariant_template_smell
 from analyzers import e262_macro_model_signature_mismatch_smell
+from analyzers import e263_capsule_bypass_smell
+from analyzers import e264_undeclared_macro_model_smell
+from analyzers import e265_silent_forced_expand_smell
 
 
 ANALYZERS = (
@@ -575,6 +578,9 @@ ANALYZERS = (
     e260_missing_interface_descriptor_smell,
     e261_missing_invariant_template_smell,
     e262_macro_model_signature_mismatch_smell,
+    e263_capsule_bypass_smell,
+    e264_undeclared_macro_model_smell,
+    e265_silent_forced_expand_smell,
 )
 
 

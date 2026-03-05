@@ -431,6 +431,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-SYSTEM-INTERFACE-SIGNATURE-REQUIRED",
     "INV-SYSTEM-INVARIANTS-REQUIRED",
     "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE",
+    "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
+    "INV-CAPSULE-OUTPUTS-THROUGH-PROCESSES",
+    "INV-FORCED-EXPAND-LOGGED",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -742,6 +745,9 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E260_MISSING_INTERFACE_DESCRIPTOR_SMELL": "INV-SYSTEM-INTERFACE-SIGNATURE-REQUIRED",
     "E261_MISSING_INVARIANT_TEMPLATE_SMELL": "INV-SYSTEM-INVARIANTS-REQUIRED",
     "E262_MACRO_MODEL_SIGNATURE_MISMATCH_SMELL": "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE",
+    "E263_CAPSULE_BYPASS_SMELL": "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
+    "E264_UNDECLARED_MACRO_MODEL_SMELL": "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
+    "E265_SILENT_FORCED_EXPAND_SMELL": "INV-FORCED-EXPAND-LOGGED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -17684,6 +17690,179 @@ def _append_system_validation_invariant_findings(
         )
 
 
+def _append_system_macro_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    model_rule_id = "INV-CAPSULE-BEHAVIOR-MODEL-ONLY"
+    output_rule_id = "INV-CAPSULE-OUTPUTS-THROUGH-PROCESSES"
+    forced_rule_id = "INV-FORCED-EXPAND-LOGGED"
+
+    macro_engine_rel = "src/system/macro/macro_capsule_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_registry_rel = "data/registries/process_registry.json"
+    replay_tool_rel = "tools/system/tool_replay_capsule_window.py"
+    runtime_schema_rel = "schema/system/macro_runtime_state.schema"
+    forced_schema_rel = "schema/system/forced_expand_event.schema"
+    output_schema_rel = "schema/system/macro_output_record.schema"
+
+    required_paths = (
+        macro_engine_rel,
+        runtime_rel,
+        process_registry_rel,
+        replay_tool_rel,
+        runtime_schema_rel,
+        forced_schema_rel,
+        output_schema_rel,
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        rule_id = model_rule_id
+        if rel_path in {forced_schema_rel}:
+            rule_id = forced_rule_id
+        if rel_path in {runtime_rel, output_schema_rel, process_registry_rel}:
+            rule_id = output_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-2 macro capsule baseline artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    macro_engine_text = _file_text(repo_root, macro_engine_rel)
+    for token in (
+        "def evaluate_macro_capsules_tick(",
+        "evaluate_model_bindings(",
+        "process.flow_adjust",
+        "process.pollution_emit",
+        "build_forced_expand_event_row(",
+        "build_macro_output_record_row(",
+    ):
+        if token in macro_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=macro_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="macro capsule engine is missing required SYS-2 behavior token",
+                rule_id=model_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, message, rule_id in (
+        ("elif process_id == \"process.system_macro_tick\":", "runtime must expose process.system_macro_tick entrypoint", output_rule_id),
+        ("evaluate_macro_capsules_tick(", "runtime must evaluate macro capsules through model engine", model_rule_id),
+        ("system_forced_expand_event_rows", "runtime must persist forced expand event rows", forced_rule_id),
+        ("system_macro_output_record_rows", "runtime must persist macro output records", output_rule_id),
+        ("control_decision_log", "runtime must log deterministic macro degrade/denial decisions", forced_rule_id),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    process_registry_payload, process_registry_err = _load_json_object(repo_root, process_registry_rel)
+    process_rows = list(process_registry_payload.get("processes") or [])
+    macro_process_row = {}
+    if not process_registry_err:
+        for row in process_rows:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("process_id", "")).strip() != "process.system_macro_tick":
+                continue
+            macro_process_row = dict(row)
+            break
+    if process_registry_err or not macro_process_row:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet="process.system_macro_tick",
+                message="process registry must declare process.system_macro_tick",
+                rule_id=output_rule_id,
+            )
+        )
+    else:
+        for token in (
+            "dominium.schema.system.macro_runtime_state@1.0.0",
+            "dominium.schema.system.forced_expand_event@1.0.0",
+            "dominium.schema.system.macro_output_record@1.0.0",
+        ):
+            row_text = json.dumps(macro_process_row, sort_keys=True)
+            if token in row_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_registry_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="process.system_macro_tick registry declaration is missing required IO schema linkage",
+                    rule_id=output_rule_id,
+                )
+            )
+
+    scan_roots = ("src/system", "tools/xstack/sessionx")
+    allowed_paths = {
+        macro_engine_rel,
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+        "tools/xstack/testx/tests/",
+    }
+    direct_write_pattern = re.compile(
+        r"\b(?:system_forced_expand_event_rows|system_macro_output_record_rows|system_macro_runtime_state_rows)\b.*=",
+        re.IGNORECASE,
+    )
+    for root in scan_roots:
+        abs_root = os.path.join(repo_root, root.replace("/", os.sep))
+        if not os.path.isdir(abs_root):
+            continue
+        for rel_norm, abs_path in _iter_files(abs_root, repo_root):
+            if not rel_norm.endswith(".py"):
+                continue
+            if any(
+                rel_norm == token or rel_norm.startswith(token)
+                for token in allowed_paths
+            ):
+                continue
+            for line_no, line in _iter_lines(repo_root, rel_norm):
+                snippet = str(line).strip()
+                if (not snippet) or snippet.startswith("#"):
+                    continue
+                if not direct_write_pattern.search(snippet):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="direct SYS-2 macro capsule state write detected outside canonical runtime/engine path",
+                        rule_id=output_rule_id,
+                    )
+                )
+                break
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -20069,6 +20248,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_validation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_macro_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
