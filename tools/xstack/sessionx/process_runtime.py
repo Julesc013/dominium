@@ -531,17 +531,20 @@ from src.physics import (
     velocity_from_momentum_state,
 )
 from src.pollution import (
-    accumulate_pollution_exposure,
     concentration_field_id_for_pollutant,
     build_pollution_source_event,
     build_pollution_deposition_row,
     build_pollution_dispersion_step_row,
     build_pollution_exposure_state_row,
+    build_health_risk_event_row,
     build_pollution_total_row,
+    evaluate_pollution_exposure_tick,
+    exposure_threshold_rows_by_pollutant,
     evaluate_pollution_dispersion,
     normalize_pollution_deposition_rows,
     normalize_pollution_dispersion_step_rows,
     normalize_pollution_exposure_state_rows,
+    normalize_health_risk_event_rows,
     normalize_pollution_source_event_rows,
     normalize_pollution_total_rows,
     pollution_decay_models_by_id,
@@ -5253,6 +5256,28 @@ def _load_pollution_decay_model_registry(*, policy_context: dict | None) -> dict
         repo_root=REPO_ROOT_HINT,
         registry_rel_path="data/registries/pollution_decay_model_registry.json",
         default_payload={"record": {"decay_model_ids": []}},
+    )
+
+
+def _load_exposure_threshold_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "exposure_threshold_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/exposure_threshold_registry.json",
+        default_payload={"record": {"exposure_thresholds": []}},
+    )
+
+
+def _load_pollution_sensor_type_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "pollution_sensor_type_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/pollution_sensor_type_registry.json",
+        default_payload={"record": {"sensor_types": []}},
     )
 
 
@@ -10886,6 +10911,15 @@ def _ensure_pollution_exposure_increment_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_pollution_health_risk_event_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_health_risk_event_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_health_risk_event_rows(rows)
+    state["pollution_health_risk_event_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
 def _ensure_pollution_dispersion_processed_source_event_ids(state: dict) -> List[str]:
     tokens = _sorted_tokens(list(state.get("pollution_dispersion_processed_source_event_ids") or []))
     state["pollution_dispersion_processed_source_event_ids"] = list(tokens)
@@ -10939,6 +10973,7 @@ def _refresh_pollution_hash_chains(state: dict) -> None:
     deposition_rows = _ensure_pollution_deposition_rows(state)
     exposure_rows = _ensure_pollution_exposure_state_rows(state)
     exposure_increment_rows = _ensure_pollution_exposure_increment_rows(state)
+    health_risk_event_rows = _ensure_pollution_health_risk_event_rows(state)
     degrade_rows = _ensure_pollution_dispersion_degrade_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     state["pollution_source_hash_chain"] = canonical_sha256(
@@ -11022,6 +11057,27 @@ def _refresh_pollution_hash_chains(state: dict) -> None:
                     int(max(0, _as_int(item.get("tick", 0), 0))),
                     str(item.get("subject_id", "")),
                     str(item.get("pollutant_id", "")),
+                ),
+            )
+        ]
+    )
+    state["pollution_health_risk_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "subject_id": str(row.get("subject_id", "")).strip(),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "threshold_crossed": str(row.get("threshold_crossed", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(health_risk_event_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("subject_id", "")),
+                    str(item.get("pollutant_id", "")),
+                    str(item.get("threshold_crossed", "")),
+                    str(item.get("event_id", "")),
                 ),
             )
         ]
@@ -28194,13 +28250,33 @@ def execute_intent(
                     ),
                 )
             )
-            exposure_eval = accumulate_pollution_exposure(
+            max_subject_updates_per_tick = int(
+                max(
+                    0,
+                    _as_int(
+                        inputs.get(
+                            "max_subject_updates_per_tick",
+                            (dict(policy_context or {})).get(
+                                "pollution_max_subject_updates_per_tick",
+                                0,
+                            ),
+                        ),
+                        0,
+                    ),
+                )
+            )
+            exposure_thresholds_by_pollutant = exposure_threshold_rows_by_pollutant(
+                _load_exposure_threshold_registry(policy_context=policy_context)
+            )
+            exposure_eval = evaluate_pollution_exposure_tick(
                 current_tick=int(current_tick),
                 subject_rows=subject_rows,
                 field_cell_rows=normalized_field_cells,
                 pollutant_types_by_id=pollutant_types_by_id,
                 exposure_state_rows=state.get("pollution_exposure_state_rows"),
-                default_exposure_factor_permille=exposure_factor_permille,
+                exposure_thresholds_by_pollutant=exposure_thresholds_by_pollutant,
+                default_exposure_factor_permille=int(exposure_factor_permille),
+                max_subject_updates_per_tick=int(max_subject_updates_per_tick),
             )
             state["pollution_exposure_state_rows"] = normalize_pollution_exposure_state_rows(
                 exposure_eval.get("exposure_state_rows")
@@ -28222,46 +28298,47 @@ def execute_intent(
                 )
             ]
             _ensure_pollution_exposure_increment_rows(state)
+            state["pollution_health_risk_event_rows"] = normalize_health_risk_event_rows(
+                list(state.get("pollution_health_risk_event_rows") or [])
+                + [dict(row) for row in list(exposure_eval.get("health_risk_event_rows") or []) if isinstance(row, Mapping)]
+            )
             state["pollution_hazard_hook_rows"] = [
-                {
-                    "schema_version": "1.0.0",
-                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
-                    "subject_id": str(row.get("subject_id", "")).strip(),
-                    "pollutant_id": str(row.get("pollutant_id", "")).strip(),
-                    "accumulated_exposure": int(
-                        max(0, _as_int(row.get("accumulated_exposure", 0), 0))
+                dict(row)
+                for row in sorted(
+                    (
+                        dict(item)
+                        for item in list(state.get("pollution_hazard_hook_rows") or [])
+                        + list(exposure_eval.get("hazard_hook_rows") or [])
+                        if isinstance(item, Mapping)
+                        and str(item.get("subject_id", "")).strip()
+                        and str(item.get("pollutant_id", "")).strip()
                     ),
-                    "hazard_hook_id": "hazard.health_risk_stub",
-                    "deterministic_fingerprint": str(
-                        row.get(
-                            "deterministic_fingerprint",
-                            canonical_sha256(
-                                {
-                                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
-                                    "subject_id": str(row.get("subject_id", "")).strip(),
-                                    "pollutant_id": str(row.get("pollutant_id", "")).strip(),
-                                    "accumulated_exposure": int(
-                                        max(
-                                            0,
-                                            _as_int(row.get("accumulated_exposure", 0), 0),
-                                        )
-                                    ),
-                                }
-                            ),
-                        )
-                    ).strip(),
-                    "extensions": {
-                        "source_process_id": process_id,
-                        "source_increment_hash": str(
-                            row.get("deterministic_fingerprint", "")
-                        ).strip(),
-                    },
-                }
-                for row in list(exposure_eval.get("exposure_increment_rows") or [])
-                if isinstance(row, Mapping)
-                and str(row.get("subject_id", "")).strip()
-                and str(row.get("pollutant_id", "")).strip()
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("subject_id", "")),
+                        str(item.get("pollutant_id", "")),
+                        str(dict(item.get("extensions") or {}).get("threshold_crossed", "")),
+                    ),
+                )
             ]
+            if bool(exposure_eval.get("degraded", False)):
+                degrade_rows = [dict(row) for row in list(state.get("pollution_dispersion_degrade_rows") or []) if isinstance(row, Mapping)]
+                degrade_rows.append(
+                    {
+                        "schema_version": "1.0.0",
+                        "event_id": "",
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "degrade_reason": str(exposure_eval.get("degrade_reason", "")).strip() or "degrade.pollution.exposure_subject_budget",
+                        "deferred_cell_ids": _sorted_tokens(list(exposure_eval.get("deferred_subject_ids") or [])),
+                        "deterministic_fingerprint": "",
+                        "extensions": {
+                            "source_process_id": process_id,
+                            "max_subject_updates_per_tick": int(max_subject_updates_per_tick),
+                        },
+                    }
+                )
+                state["pollution_dispersion_degrade_rows"] = [dict(row) for row in degrade_rows]
+            _ensure_pollution_dispersion_degrade_rows(state)
             _refresh_pollution_hash_chains(state)
 
             explain_contract_by_event_kind = _explain_contract_rows_by_event_kind(
@@ -28372,6 +28449,7 @@ def execute_intent(
                 "dispersion_step_count": int(len(list(dispersion_eval.get("dispersion_step_rows") or []))),
                 "deposition_count": int(len(list(dispersion_eval.get("deposition_rows") or []))),
                 "exposure_increment_count": int(len(list(exposure_eval.get("exposure_increment_rows") or []))),
+                "health_risk_event_count": int(len(list(exposure_eval.get("health_risk_event_rows") or []))),
                 "hazard_hook_id": "hazard.health_risk_stub",
                 "updated_field_ids": list(field_update_result.get("updated_field_ids") or []),
                 "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),

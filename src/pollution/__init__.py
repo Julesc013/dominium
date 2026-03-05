@@ -25,6 +25,12 @@ from src.pollution.dispersion_engine import (
     pollution_exposure_rows_by_key,
     pollution_field_hash_chain,
 )
+from src.pollution.exposure_engine import (
+    build_health_risk_event_row,
+    evaluate_pollution_exposure_tick,
+    exposure_threshold_rows_by_pollutant,
+    normalize_health_risk_event_rows,
+)
 
 __all__ = [
     "REFUSAL_POLLUTION_INVALID",
@@ -48,4 +54,8 @@ __all__ = [
     "pollution_deposition_hash_chain",
     "pollution_exposure_rows_by_key",
     "pollution_field_hash_chain",
+    "build_health_risk_event_row",
+    "evaluate_pollution_exposure_tick",
+    "exposure_threshold_rows_by_pollutant",
+    "normalize_health_risk_event_rows",
 ]
