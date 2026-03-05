@@ -294,6 +294,8 @@ from analyzers import e267_template_bypass_smell
 from analyzers import e268_unversioned_template_smell
 from analyzers import e269_direct_spec_bypass_smell
 from analyzers import e270_unlogged_certificate_issue_smell
+from analyzers import e271_hidden_failure_logic_smell
+from analyzers import e272_unlogged_shutdown_smell
 
 
 ANALYZERS = (
@@ -591,6 +593,8 @@ ANALYZERS = (
     e268_unversioned_template_smell,
     e269_direct_spec_bypass_smell,
     e270_unlogged_certificate_issue_smell,
+    e271_hidden_failure_logic_smell,
+    e272_unlogged_shutdown_smell,
 )
 
 

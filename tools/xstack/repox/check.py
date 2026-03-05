@@ -435,6 +435,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
     "INV-CAPSULE-OUTPUTS-THROUGH-PROCESSES",
     "INV-FORCED-EXPAND-LOGGED",
+    "INV-SYSTEM-RELIABILITY-PROFILE-DECLARED",
+    "INV-NO-SILENT-FAILURE",
     "INV-SYSTEM-TIER-CONTRACT-DECLARED",
     "INV-TIER-TRANSITION-LOGGED",
     "INV-NO-SILENT-COLLAPSE",
@@ -762,6 +764,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E268_UNVERSIONED_TEMPLATE_SMELL": "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS",
     "E269_DIRECT_SPEC_BYPASS_SMELL": "INV-SPEC-CHECK-THROUGH-CERT-ENGINE",
     "E270_UNLOGGED_CERTIFICATE_ISSUE_SMELL": "INV-NO-SILENT-CERT-ISSUE",
+    "E271_HIDDEN_FAILURE_LOGIC_SMELL": "INV-SYSTEM-RELIABILITY-PROFILE-DECLARED",
+    "E272_UNLOGGED_SHUTDOWN_SMELL": "INV-NO-SILENT-FAILURE",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -18502,6 +18506,208 @@ def _append_system_certification_invariant_findings(
                 break
 
 
+def _append_system_reliability_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    profile_rule_id = "INV-SYSTEM-RELIABILITY-PROFILE-DECLARED"
+    silent_rule_id = "INV-NO-SILENT-FAILURE"
+    forced_rule_id = "INV-FORCED-EXPAND-LOGGED"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_registry_rel = "data/registries/process_registry.json"
+    reliability_registry_rel = "data/registries/reliability_profile_registry.json"
+    required_paths = (
+        "docs/system/SYSTEM_RELIABILITY_MODEL.md",
+        "schema/system/reliability_profile.schema",
+        "schema/system/system_health_state.schema",
+        "schema/system/failure_event.schema",
+        reliability_registry_rel,
+        "src/system/reliability/system_health_engine.py",
+        "src/system/reliability/reliability_engine.py",
+        "tools/system/tool_replay_system_failure_window.py",
+        runtime_rel,
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-6 reliability baseline artifact is missing",
+                rule_id=profile_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, message, rule_id in (
+        ('elif process_id == "process.system_health_tick":', "runtime must expose process.system_health_tick", profile_rule_id),
+        ('elif process_id == "process.system_reliability_tick":', "runtime must expose process.system_reliability_tick", profile_rule_id),
+        ("evaluate_system_health_tick(", "runtime must evaluate SYS-6 health through deterministic health engine", profile_rule_id),
+        ("evaluate_system_reliability_tick(", "runtime must evaluate SYS-6 reliability through deterministic reliability engine", profile_rule_id),
+        ("system_reliability_rng_outcome_rows", "runtime must persist profile-gated stochastic reliability outcomes", profile_rule_id),
+        ("system_failure_event_rows", "runtime must persist canonical system failure events", silent_rule_id),
+        ("artifact.record.system_failure", "system failures must emit canonical RECORD artifacts", silent_rule_id),
+        ("control_decision_log", "reliability degrade/denial must be logged in decision log", silent_rule_id),
+        ("system_forced_expand_event_rows", "forced expand requests must be logged canonically", forced_rule_id),
+        ("_refresh_system_reliability_hash_chains(state)", "reliability pathways must refresh deterministic hash chains", silent_rule_id),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    process_registry_text = _file_text(repo_root, process_registry_rel)
+    for token, message, rule_id in (
+        ('"process_id": "process.system_health_tick"', "process registry must declare process.system_health_tick", profile_rule_id),
+        ('"process_id": "process.system_reliability_tick"', "process registry must declare process.system_reliability_tick", profile_rule_id),
+        ("dominium.schema.system.system_health_state@1.0.0", "process registry must link SYS-6 health schema output", profile_rule_id),
+        ("dominium.schema.system.failure_event@1.0.0", "process registry must link SYS-6 failure schema output", silent_rule_id),
+        ("dominium.schema.system.forced_expand_event@1.0.0", "reliability process registry must link forced expand schema", forced_rule_id),
+    ):
+        if token in process_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    reliability_registry_payload, reliability_registry_err = _load_json_object(repo_root, reliability_registry_rel)
+    reliability_rows = list((dict(reliability_registry_payload.get("record") or {})).get("reliability_profiles") or [])
+    reliability_profile_ids = set(
+        str(row.get("reliability_profile_id", "")).strip()
+        for row in reliability_rows
+        if isinstance(row, dict) and str(row.get("reliability_profile_id", "")).strip()
+    )
+    required_profile_ids = {
+        "reliability.engine_basic",
+        "reliability.pump_basic",
+        "reliability.pressure_system_basic",
+        "reliability.power_system_basic",
+        "reliability.reactor_stub",
+    }
+    if reliability_registry_err or not reliability_profile_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=reliability_registry_rel,
+                line_number=1,
+                snippet="record.reliability_profiles",
+                message="reliability profile registry must declare deterministic reliability_profiles rows",
+                rule_id=profile_rule_id,
+            )
+        )
+    else:
+        for profile_id in sorted(required_profile_ids):
+            if profile_id in reliability_profile_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=reliability_registry_rel,
+                    line_number=1,
+                    snippet=profile_id,
+                    message="required SYS-6 reliability profile is missing",
+                    rule_id=profile_rule_id,
+                )
+            )
+
+    replay_tool_rel = "tools/system/tool_replay_system_failure_window.py"
+    replay_text = _file_text(repo_root, replay_tool_rel)
+    for token, message, rule_id in (
+        ("verify_system_failure_replay_window(", "replay tool must expose SYS-6 deterministic replay verifier", silent_rule_id),
+        ("system_health_hash_chain", "replay tool must validate system_health_hash_chain", profile_rule_id),
+        ("system_failure_event_hash_chain", "replay tool must validate system_failure_event_hash_chain", silent_rule_id),
+        ("system_forced_expand_event_hash_chain", "replay tool must validate system_forced_expand_event_hash_chain", forced_rule_id),
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_tool_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    direct_failure_write_pattern = re.compile(
+        r"\b(?:system_failure_event_rows|system_reliability_safe_fallback_rows|system_reliability_warning_rows)\b.*=",
+        re.IGNORECASE,
+    )
+    direct_forced_write_pattern = re.compile(
+        r"\bsystem_forced_expand_event_rows\b.*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/system/", "tools/xstack/sessionx/")
+    skip_prefixes = ("docs/", "schema/", "schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    allowed_failure_mutation_paths = {
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    allowed_forced_mutation_paths = {
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if rel_norm not in allowed_failure_mutation_paths and direct_failure_write_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="direct reliability failure/warning state mutation detected outside canonical runtime process path",
+                        rule_id=silent_rule_id,
+                    )
+                )
+                break
+            if rel_norm not in allowed_forced_mutation_paths and direct_forced_write_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="direct forced-expand mutation detected outside canonical runtime process path",
+                        rule_id=forced_rule_id,
+                    )
+                )
+                break
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -20907,6 +21113,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_certification_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_reliability_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
