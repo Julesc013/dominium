@@ -176,7 +176,8 @@
             ],
             "warning_threshold": 420,
             "forced_expand_threshold": 650,
-            "failure_threshold": 860
+            "failure_threshold": 860,
+            "stochastic_curve_permille": 150
           },
           {
             "failure_mode_id": "failure.mode.structural_fracture",
@@ -194,7 +195,8 @@
             ],
             "warning_threshold": 390,
             "forced_expand_threshold": 620,
-            "failure_threshold": 840
+            "failure_threshold": 840,
+            "stochastic_curve_permille": 650
           }
         ],
         "trigger_rules": {
