@@ -140,6 +140,7 @@ CONTRACT_STABILITY_BASELINE_IDS = (
 DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
     "data/registries/domain_registry.json",
     "data/registries/solver_registry.json",
+    "packs/system_templates/",
     "docs/scale/",
     "schema/scale/",
     "schemas/domain_",
@@ -437,6 +438,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-SYSTEM-TIER-CONTRACT-DECLARED",
     "INV-TIER-TRANSITION-LOGGED",
     "INV-NO-SILENT-COLLAPSE",
+    "INV-NO-PREFAB-BYPASS",
+    "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -752,6 +755,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E264_UNDECLARED_MACRO_MODEL_SMELL": "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
     "E265_SILENT_FORCED_EXPAND_SMELL": "INV-FORCED-EXPAND-LOGGED",
     "E266_UNLOGGED_TIER_CHANGE_SMELL": "INV-TIER-TRANSITION-LOGGED",
+    "E267_TEMPLATE_BYPASS_SMELL": "INV-NO-PREFAB-BYPASS",
+    "E268_UNVERSIONED_TEMPLATE_SMELL": "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -18149,6 +18154,167 @@ def _append_system_tier_invariant_findings(
             break
 
 
+def _append_system_template_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    bypass_rule_id = "INV-NO-PREFAB-BYPASS"
+    template_rule_id = "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS"
+
+    required_paths = (
+        "docs/system/SYSTEM_TEMPLATES.md",
+        "schema/system/system_template.schema",
+        "schema/system/template_instance_record.schema",
+        "src/system/templates/template_compiler.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "data/registries/system_template_registry.json",
+        "packs/system_templates/base/data/system_template_registry.json",
+        "tools/system/tool_verify_template_reproducible.py",
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        rule_id = template_rule_id
+        if rel_path.endswith("process_runtime.py"):
+            rule_id = bypass_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-4 template baseline artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, message, rule_id in (
+        ('elif process_id == "process.template_instantiate":', "runtime must expose process.template_instantiate canonical branch", bypass_rule_id),
+        ("compile_system_template(", "runtime template process must compile templates through deterministic compiler", bypass_rule_id),
+        ("create_plan_artifact(", "template process must create plan artifacts through CTRL planning pathway", bypass_rule_id),
+        ("create_commitment_row(", "template process must emit MAT commitments", bypass_rule_id),
+        ("system_template_instance_record_rows", "template process must persist canonical template instance records", template_rule_id),
+        ("template_instance_record_hash_chain", "template process must persist deterministic template-instance proof hash", template_rule_id),
+        ("compiled_template_fingerprint_hash_chain", "template process must persist deterministic compiled-template proof hash", template_rule_id),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    schema_text = _file_text(repo_root, "schema/system/system_template.schema")
+    for token in (
+        "template_id",
+        "interface_signature_template_id",
+        "boundary_invariant_template_ids",
+        "macro_model_set_id",
+        "tier_contract_id",
+        "safety_pattern_instance_templates",
+        "spec_bindings",
+        "nested_template_refs",
+    ):
+        if token in schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="schema/system/system_template.schema",
+                line_number=1,
+                snippet=token,
+                message="system_template schema is missing required SYS-4 declaration field",
+                rule_id=template_rule_id,
+            )
+        )
+
+    process_registry_rel = "data/registries/process_registry.json"
+    process_text = _file_text(repo_root, process_registry_rel)
+    for token in (
+        '"process_id": "process.template_instantiate"',
+        "dominium.schema.system.system_template@1.0.0",
+        "dominium.schema.system.template_instance_record@1.0.0",
+    ):
+        if token in process_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="process registry missing SYS-4 template instantiate declaration linkage",
+                rule_id=bypass_rule_id,
+            )
+        )
+
+    registry_rel = "packs/system_templates/base/data/system_template_registry.json"
+    registry_text = _file_text(repo_root, registry_rel)
+    for token in (
+        "template.engine.ice_stub",
+        "template.generator.diesel_stub",
+        "template.pump_basic",
+        "template.heat_exchanger_basic",
+        "template.boiler_steam_stub",
+    ):
+        if token in registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet=token,
+                message="starter template pack missing required SYS-4 starter template entry",
+                rule_id=template_rule_id,
+            )
+        )
+
+    compiler_pattern = re.compile(r"\bcompile_system_template\s*\(", re.IGNORECASE)
+    allowed_compiler_paths = {
+        "src/system/templates/template_compiler.py",
+        runtime_rel,
+        "tools/system/tool_verify_template_reproducible.py",
+        "tools/system/tool_template_browser.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if rel_norm.startswith(("docs/", "schema/", "schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+            continue
+        if rel_norm in allowed_compiler_paths:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not compiler_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="template compilation invoked outside canonical SYS-4 compiler/runtime/tool pathways",
+                    rule_id=bypass_rule_id,
+                )
+            )
+            break
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -20544,6 +20710,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_tier_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_template_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
