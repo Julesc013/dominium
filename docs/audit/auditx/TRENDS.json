@@ -21,6 +21,7 @@
     "architecture.inline_power_loss_smell": 1,
     "architecture.inline_protection_smell": 12,
     "architecture.inline_strength_check_smell": 1,
+    "architecture.invariant_check_skipped_smell": 1,
     "architecture.ir_nondeterminism_smell": 2,
     "architecture.magic_silent_violation_smell": 2,
     "architecture.missing_decision_log_smell": 3,
@@ -30,6 +31,7 @@
     "architecture.mobility_special_case_smell": 2,
     "architecture.model_bypass_smell": 7,
     "architecture.nondeterministic_queue_order_smell": 1,
+    "architecture.silent_collapse_smell": 2,
     "architecture.silent_corruption_smell": 1,
     "architecture.silent_degrade_smell": 10,
     "architecture.silent_downgrade_smell": 3,
@@ -37,6 +39,7 @@
     "architecture.spec_hardcode_smell": 1,
     "architecture.substrate_bypass_smell": 13,
     "architecture.thermal_bypass_smell": 1,
+    "architecture.unbounded_expand_smell": 1,
     "architecture.unbounded_spread_smell": 1,
     "architecture.unlogged_refusal_smell": 3,
     "architecture.unlogged_trip_smell": 1,
@@ -98,6 +101,7 @@
       "architecture.inline_power_loss_smell": 0,
       "architecture.inline_protection_smell": 0,
       "architecture.inline_strength_check_smell": 0,
+      "architecture.invariant_check_skipped_smell": 0,
       "architecture.ir_nondeterminism_smell": 0,
       "architecture.magic_silent_violation_smell": 0,
       "architecture.missing_decision_log_smell": 0,
@@ -107,6 +111,7 @@
       "architecture.mobility_special_case_smell": 0,
       "architecture.model_bypass_smell": 0,
       "architecture.nondeterministic_queue_order_smell": 0,
+      "architecture.silent_collapse_smell": 0,
       "architecture.silent_corruption_smell": 0,
       "architecture.silent_degrade_smell": 0,
       "architecture.silent_downgrade_smell": 0,
@@ -114,6 +119,7 @@
       "architecture.spec_hardcode_smell": 0,
       "architecture.substrate_bypass_smell": 0,
       "architecture.thermal_bypass_smell": 0,
+      "architecture.unbounded_expand_smell": 0,
       "architecture.unbounded_spread_smell": 0,
       "architecture.unlogged_refusal_smell": 0,
       "architecture.unlogged_trip_smell": 0,
@@ -130,20 +136,20 @@
       "derived_freshness": 120,
       "epistemics.hidden_state_leak_smell": 0,
       "interaction.interaction_bypass_smell": 0,
-      "legacy_contamination": 10,
+      "legacy_contamination": 11,
       "materials.hardcoded_blueprint_smell": 19,
       "materials.inspection_leak_smell": 0,
       "materials.reenactment_leak_smell": 0,
       "materials.unbounded_inspection_smell": 0,
-      "mode_flag_smell": 63,
+      "mode_flag_smell": 64,
       "net.precision_leak_smell": 0,
       "net.truth_over_net_smell": 0,
       "ownership_boundary": 9,
       "performance.performance_nondeterminism_smell": 0,
       "performance.unbudgeted_reaction_loop_smell": 0,
-      "reachability": 76,
+      "reachability": 80,
       "reliability.silent_reaction_smell": 0,
-      "schema_usage": 155,
+      "schema_usage": 160,
       "security.boundary_io": 0,
       "security.privilege_bypass": 0,
       "semantic.capability_drift": 0,
@@ -155,22 +161,22 @@
     },
     "severity_distribution": {
       "INFO": 223,
-      "RISK": 183,
-      "VIOLATION": 82,
-      "WARN": 325
+      "RISK": 189,
+      "VIOLATION": 83,
+      "WARN": 329
     }
   },
-  "findings_hash": "af0e3fbfbc483b1e5ceaf7950a5f90ea26ae29aebf21ae36b43dcfc42fa5ad38",
+  "findings_hash": "e8fd5c4a32ebef13e8d82c335615016df0226e19ba656b2445c7fbdc2c514e8d",
   "history_reference": {
-    "previous_distinct_hash": "86cec7a8401bd22c8992326fbc50ba0ff6793beca5049799a28cb63aabb360e9"
+    "previous_distinct_hash": "b4c66266e4dc35506b26835d5e9d512bbdc24a9bc01f3b0f15ab8689d0d846bb"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 223,
-    "RISK": 644,
+    "RISK": 648,
     "VIOLATION": 101,
     "WARN": 1220
   },
-  "total_findings": 2188
+  "total_findings": 2192
 }

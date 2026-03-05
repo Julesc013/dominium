@@ -3,8 +3,8 @@
   "cache_mode": "incremental",
   "changed_only": true,
   "changed_paths_since_last": 0,
-  "generated_utc": "2026-03-05T20:29:46Z",
-  "graph_hash": "80ad31c50a3853b8959596907daf1af085d90a3a484e2eb6be7174042cdf73fc",
+  "generated_utc": "2026-03-05T22:05:53Z",
+  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
   "last_reviewed": "2026-03-05",
   "output_format": "both",
   "platform": "windows",
@@ -229,6 +229,9 @@
     "E272_UNLOGGED_SHUTDOWN_SMELL",
     "E273_MISSING_SYSTEM_EXPLAIN_CONTRACT_SMELL",
     "E274_OMNISCIENT_EXPLAIN_LEAK_SMELL",
+    "E275_UNBOUNDED_EXPAND_SMELL",
+    "E276_SILENT_COLLAPSE_SMELL",
+    "E277_INVARIANT_CHECK_SKIPPED_SMELL",
     "E27_HIDDEN_NONDIEGETIC_WINDOW_SMELL",
     "E28_PRECISION_LEAK_ON_REFINEMENT_SMELL",
     "E29_HIDDEN_STATE_LEAK_SMELL",
@@ -312,5 +315,5 @@
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
   "status": "DERIVED",
-  "workspace_id": "ws-10d79f66352c8094"
+  "workspace_id": "ws-d6a389fb3491655d"
 }

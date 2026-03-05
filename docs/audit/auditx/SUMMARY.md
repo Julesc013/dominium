@@ -9,7 +9,7 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 644
+- RISK: 648
 - VIOLATION: 101
 - WARN: 1220
 
@@ -35,6 +35,7 @@ Superseded By: none
 - architecture.inline_power_loss_smell: 1
 - architecture.inline_protection_smell: 12
 - architecture.inline_strength_check_smell: 1
+- architecture.invariant_check_skipped_smell: 1
 - architecture.ir_nondeterminism_smell: 2
 - architecture.magic_silent_violation_smell: 2
 - architecture.missing_decision_log_smell: 3
@@ -44,6 +45,7 @@ Superseded By: none
 - architecture.mobility_special_case_smell: 2
 - architecture.model_bypass_smell: 7
 - architecture.nondeterministic_queue_order_smell: 1
+- architecture.silent_collapse_smell: 2
 - architecture.silent_corruption_smell: 1
 - architecture.silent_degrade_smell: 10
 - architecture.silent_downgrade_smell: 3
@@ -51,6 +53,7 @@ Superseded By: none
 - architecture.spec_hardcode_smell: 1
 - architecture.substrate_bypass_smell: 13
 - architecture.thermal_bypass_smell: 1
+- architecture.unbounded_expand_smell: 1
 - architecture.unbounded_spread_smell: 1
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1

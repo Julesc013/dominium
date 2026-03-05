@@ -1488,6 +1488,27 @@
         "RISK": 1
       }
     },
+    "INV-NO-SILENT-TIER-TRANSITION": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "REWRITE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_collapse_smell",
+          "finding_id": "E276_SILENT_COLLAPSE_SMELL:0001",
+          "location": "src/system/macro/macro_capsule_engine.py"
+        },
+        {
+          "category": "architecture.silent_collapse_smell",
+          "finding_id": "E276_SILENT_COLLAPSE_SMELL:0002",
+          "location": "src/system/reliability/reliability_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
     "INV-NO-SILENT-VIOLATIONS": {
       "finding_count": 2,
       "recommended_actions": {
@@ -1850,6 +1871,38 @@
       ],
       "severities": {
         "RISK": 5
+      }
+    },
+    "INV-SYS-BUDGETED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.unbounded_expand_smell",
+          "finding_id": "E275_UNBOUNDED_EXPAND_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-SYS-INVARIANTS-ALWAYS-CHECKED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.invariant_check_skipped_smell",
+          "finding_id": "E277_INVARIANT_CHECK_SKIPPED_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
       }
     },
     "INV-THERM-DEGRADE-LOGGED": {
