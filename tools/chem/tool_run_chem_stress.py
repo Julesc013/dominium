@@ -602,9 +602,33 @@ def run_chem_stress_scenario(
 
         deterministic_ordering_ok = bool(
             deterministic_ordering_ok
-            and _is_sorted(reaction_event_rows, key_fn=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("event_id", ""))))
-            and _is_sorted(emission_event_rows, key_fn=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("event_id", ""))))
-            and _is_sorted(ledger_rows, key_fn=lambda row: (int(_as_int(row.get("tick", 0), 0)), str(row.get("entry_id", ""))))
+            and _is_sorted(
+                reaction_event_rows,
+                key_fn=lambda row: (
+                    int(_as_int(row.get("tick", 0), 0)),
+                    str(row.get("run_id", "")),
+                    str(row.get("reaction_id", "")),
+                    str(row.get("event_id", "")),
+                ),
+            )
+            and _is_sorted(
+                emission_event_rows,
+                key_fn=lambda row: (
+                    int(_as_int(row.get("tick", 0), 0)),
+                    str(row.get("run_id", "")),
+                    str(row.get("material_id", "")),
+                    str(row.get("event_id", "")),
+                ),
+            )
+            and _is_sorted(
+                ledger_rows,
+                key_fn=lambda row: (
+                    int(_as_int(row.get("tick", 0), 0)),
+                    str(row.get("source_id", "")),
+                    str(row.get("transformation_id", "")),
+                    str(row.get("entry_id", "")),
+                ),
+            )
         )
         bounded_evaluation_ok = bool(
             bounded_evaluation_ok
