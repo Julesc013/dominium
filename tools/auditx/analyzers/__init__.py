@@ -292,6 +292,8 @@ from analyzers import e265_silent_forced_expand_smell
 from analyzers import e266_unlogged_tier_change_smell
 from analyzers import e267_template_bypass_smell
 from analyzers import e268_unversioned_template_smell
+from analyzers import e269_direct_spec_bypass_smell
+from analyzers import e270_unlogged_certificate_issue_smell
 
 
 ANALYZERS = (
@@ -587,6 +589,8 @@ ANALYZERS = (
     e266_unlogged_tier_change_smell,
     e267_template_bypass_smell,
     e268_unversioned_template_smell,
+    e269_direct_spec_bypass_smell,
+    e270_unlogged_certificate_issue_smell,
 )
 
 

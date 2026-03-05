@@ -440,6 +440,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-SILENT-COLLAPSE",
     "INV-NO-PREFAB-BYPASS",
     "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS",
+    "INV-SPEC-CHECK-THROUGH-CERT-ENGINE",
+    "INV-NO-SILENT-CERT-ISSUE",
+    "INV-CERT-INVALIDATED-ON-MODIFICATION",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -757,6 +760,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E266_UNLOGGED_TIER_CHANGE_SMELL": "INV-TIER-TRANSITION-LOGGED",
     "E267_TEMPLATE_BYPASS_SMELL": "INV-NO-PREFAB-BYPASS",
     "E268_UNVERSIONED_TEMPLATE_SMELL": "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS",
+    "E269_DIRECT_SPEC_BYPASS_SMELL": "INV-SPEC-CHECK-THROUGH-CERT-ENGINE",
+    "E270_UNLOGGED_CERTIFICATE_ISSUE_SMELL": "INV-NO-SILENT-CERT-ISSUE",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -18315,6 +18320,188 @@ def _append_system_template_invariant_findings(
             break
 
 
+def _append_system_certification_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    spec_rule_id = "INV-SPEC-CHECK-THROUGH-CERT-ENGINE"
+    issue_rule_id = "INV-NO-SILENT-CERT-ISSUE"
+    revoke_rule_id = "INV-CERT-INVALIDATED-ON-MODIFICATION"
+
+    required_paths = (
+        "docs/system/SYSTEM_CERTIFICATION_MODEL.md",
+        "schema/system/certification_profile.schema",
+        "schema/system/certification_result.schema",
+        "schema/system/certificate_artifact.schema",
+        "data/registries/certification_profile_registry.json",
+        "src/system/certification/system_cert_engine.py",
+        "tools/system/tool_replay_certification_window.py",
+        "tools/xstack/sessionx/process_runtime.py",
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-5 certification baseline artifact is missing",
+                rule_id=spec_rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, message, rule_id in (
+        ('elif process_id == "process.system_evaluate_certification":', "runtime must expose process.system_evaluate_certification canonical branch", spec_rule_id),
+        ("evaluate_system_certification(", "runtime certification process must delegate spec/safety/invariant evaluation to system_cert_engine", spec_rule_id),
+        ("process.spec_check_compliance", "runtime must keep SPEC compliance process branch available for certification inputs", spec_rule_id),
+        ("_refresh_system_certification_hash_chains(state)", "certificate issuance/revocation state must refresh deterministic certification hash chains", issue_rule_id),
+        ("artifact.record.system_certification_result", "certification results must emit canonical RECORD artifacts", issue_rule_id),
+        ("artifact.report.system_certification_result", "certification evaluation must emit REPORT artifacts", issue_rule_id),
+        ("artifact.credential.system_certificate", "certificate issuance must emit CREDENTIAL artifacts", issue_rule_id),
+        ("_revoke_system_certifications(", "certificate invalidation must route through unified revocation helper", revoke_rule_id),
+        ("event.system.certificate_revocation.collapse", "certificate revocation on collapse must be logged", revoke_rule_id),
+        ("event.system.certificate_revocation.expand", "certificate revocation on expand must be logged", revoke_rule_id),
+        ("event.system.certificate_revocation.degradation_threshold", "certificate revocation on degradation breach must be logged", revoke_rule_id),
+        ("event.system.certificate_revocation.spec_violation", "certificate revocation on spec violation must be logged", revoke_rule_id),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_text = _file_text(repo_root, process_registry_rel)
+    for token in (
+        '"process_id": "process.system_evaluate_certification"',
+        "dominium.schema.system.certification_result@1.0.0",
+        "dominium.schema.system.certificate_artifact@1.0.0",
+    ):
+        if token in process_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="process registry missing SYS-5 certification declaration linkage",
+                rule_id=spec_rule_id,
+            )
+        )
+
+    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_registry_text = _file_text(repo_root, explain_registry_rel)
+    for token in (
+        '"contract_id": "explain.system.certification_failure"',
+        '"event_kind_id": "system.certification_failure"',
+        '"contract_id": "explain.system.certificate_revocation"',
+        '"event_kind_id": "system.certificate_revocation"',
+    ):
+        if token in explain_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS-5 explain contract declarations are missing for certification failure/revocation events",
+                rule_id=issue_rule_id,
+            )
+        )
+
+    provenance_registry_rel = "data/registries/provenance_classification_registry.json"
+    provenance_registry_text = _file_text(repo_root, provenance_registry_rel)
+    for token in (
+        "artifact.record.system_certification_result",
+        "artifact.report.system_certification_result",
+        "artifact.credential.system_certificate",
+        "artifact.record.system_certificate_revocation",
+    ):
+        if token in provenance_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=provenance_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS-5 provenance classification missing certification artifact type registration",
+                rule_id=issue_rule_id,
+            )
+        )
+
+    direct_spec_pattern = re.compile(
+        r"\b(?:latest_spec_binding_for_target|spec_compliance_results)\b",
+        re.IGNORECASE,
+    )
+    cert_mutation_pattern = re.compile(
+        r"\bsystem_certificate_artifact_rows\b.*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/system/", "tools/xstack/sessionx/")
+    skip_prefixes = ("docs/", "schema/", "schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    allowed_spec_paths = {
+        "src/system/certification/system_cert_engine.py",
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    allowed_cert_mutation_paths = {
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if rel_norm not in allowed_spec_paths and direct_spec_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="potential direct SPEC/compliance bypass detected outside certification runtime/engine pathways",
+                        rule_id=spec_rule_id,
+                    )
+                )
+                break
+            if rel_norm not in allowed_cert_mutation_paths and cert_mutation_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="direct certificate artifact row mutation detected outside canonical certification runtime pathway",
+                        rule_id=issue_rule_id,
+                    )
+                )
+                break
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -20715,6 +20902,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_template_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_certification_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
