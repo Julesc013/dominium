@@ -4600,6 +4600,58 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.system.capsule_placeholder"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical SYS-0 expand process; restores deterministic internal graph from serialized state vector, validates provenance anchor hash, and records expand event artifacts.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "provenance-anchor-required"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.system_expand)",
+        "source": "SYS0-5",
+        "tier": "macro_to_micro"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "REFUSAL_SYSTEM_EXPAND_INVALID",
+        "REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH"
+      ],
+      "human_name": "System Expand",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "capsule_id",
+          "ref_id": "dominium.schema.system.macro_capsule@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "restored_assembly_graph",
+          "ref_id": "dominium.state.assembly_rows",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "expand_record_artifact",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.system_expand",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",

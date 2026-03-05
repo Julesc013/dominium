@@ -18,6 +18,12 @@ from src.system.system_collapse_engine import (
     normalize_system_state_vector_rows,
     system_rows_by_id,
 )
+from src.system.system_expand_engine import (
+    REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH,
+    REFUSAL_SYSTEM_EXPAND_INVALID,
+    SystemExpandError,
+    expand_system_graph,
+)
 
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
@@ -36,4 +42,8 @@ __all__ = [
     "normalize_system_rows",
     "system_rows_by_id",
     "collapse_system_graph",
+    "REFUSAL_SYSTEM_EXPAND_INVALID",
+    "REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH",
+    "SystemExpandError",
+    "expand_system_graph",
 ]

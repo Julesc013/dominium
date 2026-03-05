@@ -564,8 +564,12 @@ from src.pollution import (
 from src.system import (
     REFUSAL_SYSTEM_COLLAPSE_INVALID,
     REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
+    REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH,
+    REFUSAL_SYSTEM_EXPAND_INVALID,
     SystemCollapseError,
+    SystemExpandError,
     collapse_system_graph,
+    expand_system_graph,
 )
 from src.meta.explain import (
     generate_explain_artifact,
@@ -29476,6 +29480,46 @@ def execute_intent(
             "invariant_checks": [dict(row) for row in list(collapse_result.get("invariant_checks") or []) if isinstance(row, Mapping)],
             "deterministic_fingerprint": str(collapse_result.get("deterministic_fingerprint", "")).strip(),
             "system_collapse_hash_chain": str(state.get("system_collapse_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_expand":
+        capsule_id = str(inputs.get("capsule_id", "")).strip()
+        if not capsule_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.system_expand requires capsule_id",
+                "Provide a valid capsule_id from system_macro_capsule_rows.",
+                {"process_id": process_id},
+                "$.intent.inputs.capsule_id",
+            )
+        try:
+            expand_result = expand_system_graph(
+                state=state,
+                capsule_id=capsule_id,
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+                process_id=process_id,
+            )
+        except SystemExpandError as exc:
+            reason_code = str(getattr(exc, "reason_code", REFUSAL_SYSTEM_EXPAND_INVALID)).strip()
+            if reason_code not in {REFUSAL_SYSTEM_EXPAND_INVALID, REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH}:
+                reason_code = REFUSAL_SYSTEM_EXPAND_INVALID
+            details = dict(getattr(exc, "details", {}) or {})
+            details["capsule_id"] = capsule_id
+            return refusal(
+                reason_code,
+                str(exc),
+                "Validate capsule provenance anchor and serialized internal state before expand.",
+                details,
+                "$.intent.inputs.capsule_id",
+            )
+        result_metadata = {
+            "system_id": str(expand_result.get("system_id", "")).strip(),
+            "capsule_id": str(expand_result.get("capsule_id", "")).strip(),
+            "state_vector_id": str(expand_result.get("state_vector_id", "")).strip(),
+            "event_id": str(expand_result.get("event_id", "")).strip(),
+            "restored_assembly_ids": [str(token).strip() for token in list(expand_result.get("restored_assembly_ids") or []) if str(token).strip()],
+            "deterministic_fingerprint": str(expand_result.get("deterministic_fingerprint", "")).strip(),
+            "system_expand_hash_chain": str(state.get("system_expand_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":
