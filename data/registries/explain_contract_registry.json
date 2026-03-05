@@ -632,6 +632,46 @@
         "extensions": {
           "source": "POLL0-3"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.pollution_dispersion",
+        "event_kind_id": "pollution.dispersion",
+        "explain_artifact_type_id": "artifact.explain.pollution_dispersion",
+        "required_inputs": [
+          "artifact.record",
+          "section.pollution.concentration_map",
+          "section.pollution.deposition_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.emission_source",
+          "hint.adjust.pollution_field_policy",
+          "hint.add.containment"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL1-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.pollution_decay",
+        "event_kind_id": "pollution.decay",
+        "explain_artifact_type_id": "artifact.explain.pollution_decay",
+        "required_inputs": [
+          "artifact.record",
+          "section.pollution.deposition_summary",
+          "section.pollution.exposure_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.adjust.decay_model",
+          "hint.inspect.deposition_path",
+          "hint.review.exposure_controls"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL1-6"
+        }
       }
     ],
     "extensions": {

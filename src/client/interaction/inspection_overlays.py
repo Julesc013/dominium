@@ -3594,6 +3594,132 @@ def _pose_mount_overlay_payload(
     }
 
 
+def _pollution_overlay_payload(
+    *,
+    target_semantic_id: str,
+    inspection_snapshot: dict,
+) -> Dict[str, object]:
+    snapshot = dict(inspection_snapshot or {})
+    sections = dict(snapshot.get("summary_sections") or {})
+    concentration_section = dict(sections.get("section.pollution.concentration_map") or {})
+    deposition_section = dict(sections.get("section.pollution.deposition_summary") or {})
+    exposure_section = dict(sections.get("section.pollution.exposure_summary") or {})
+    concentration_data = dict(concentration_section.get("data") or {})
+    deposition_data = dict(deposition_section.get("data") or {})
+    exposure_data = dict(exposure_section.get("data") or {})
+
+    target_id = str(target_semantic_id).strip()
+    scope_hint = str(
+        concentration_data.get(
+            "scope_id",
+            deposition_data.get("scope_id", exposure_data.get("scope_id", "")),
+        )
+    ).strip()
+    if not target_id:
+        target_id = scope_hint or "region.pollution.global"
+
+    max_concentration = int(max(0, _to_int(concentration_data.get("max_concentration", 0), 0)))
+    hotspot_count = int(max(0, _to_int(concentration_data.get("hotspot_count", 0), 0)))
+    deposited_mass_total = int(max(0, _to_int(deposition_data.get("deposited_mass_total", 0), 0)))
+    accumulated_exposure_total = int(max(0, _to_int(exposure_data.get("accumulated_exposure_total", 0), 0)))
+    subject_count = int(max(0, _to_int(exposure_data.get("subject_count", 0), 0)))
+    risk_band = "low"
+    status_color = {"r": 72, "g": 186, "b": 108}
+    if max_concentration >= 600 or hotspot_count >= 8 or accumulated_exposure_total >= 3000:
+        risk_band = "high"
+        status_color = {"r": 224, "g": 86, "b": 62}
+    elif max_concentration >= 250 or hotspot_count >= 2 or accumulated_exposure_total >= 1000:
+        risk_band = "elevated"
+        status_color = {"r": 236, "g": 186, "b": 72}
+
+    summary_label = "pollution:{} band={} peak={} hotspots={} dep={} exp={}".format(
+        scope_hint or (target_id or "global"),
+        risk_band,
+        int(max_concentration),
+        int(hotspot_count),
+        int(deposited_mass_total),
+        int(accumulated_exposure_total),
+    )
+    base_materials = _overlay_materials(target_semantic_id=target_id)
+    status_material_id = "mat.inspect.pollution.status.{}".format(
+        canonical_sha256({"target": target_id, "risk_band": risk_band})[:12]
+    )
+    materials = sorted(
+        list(base_materials)
+        + [
+            {
+                "schema_version": "1.0.0",
+                "material_id": status_material_id,
+                "base_color": dict(status_color),
+                "roughness": 220,
+                "metallic": 0,
+                "emission": {
+                    "r": status_color["r"],
+                    "g": status_color["g"],
+                    "b": status_color["b"],
+                    "strength": 260,
+                },
+                "transparency": None,
+                "pattern_id": None,
+                "extensions": {"interaction_overlay": True, "overlay_kind": "pollution_status"},
+            }
+        ],
+        key=lambda row: str(row.get("material_id", "")),
+    )
+    renderables = _overlay_renderables(
+        target_semantic_id=target_id,
+        summary_label=summary_label,
+        mode="pollution_overlay",
+    )
+    renderables.append(
+        {
+            "schema_version": "1.0.0",
+            "renderable_id": "overlay.inspect.pollution.status.{}".format(
+                canonical_sha256({"target": target_id, "mode": "pollution_overlay"})[:12]
+            ),
+            "semantic_id": "overlay.inspect.pollution.status.{}".format(target_id),
+            "primitive_id": "prim.sprite.square",
+            "transform": {
+                "position_mm": {"x": 0, "y": 140, "z": 0},
+                "orientation_mdeg": {"yaw": 0, "pitch": 0, "roll": 0},
+                "scale_permille": 1120,
+            },
+            "material_id": status_material_id,
+            "layer_tags": ["overlay", "ui"],
+            "label": None,
+            "lod_hint": "lod.band.mid",
+            "flags": {"selectable": False, "highlighted": False},
+            "extensions": {
+                "interaction_overlay": True,
+                "overlay_kind": "pollution_status",
+                "risk_band": risk_band,
+            },
+        }
+    )
+
+    return {
+        "mode": "pollution_overlay",
+        "summary": summary_label,
+        "target_semantic_id": target_id,
+        "inspection_snapshot": dict(snapshot),
+        "renderables": sorted(renderables, key=lambda row: str(row.get("renderable_id", ""))),
+        "materials": materials,
+        "degraded": False,
+        "extensions": {
+            "overlay_kind": "pollution",
+            "scope_id": scope_hint or None,
+            "risk_band": risk_band,
+            "max_concentration": int(max_concentration),
+            "hotspot_count": int(hotspot_count),
+            "deposited_mass_total": int(deposited_mass_total),
+            "accumulated_exposure_total": int(accumulated_exposure_total),
+            "subject_count": int(subject_count),
+            "hazard_hook_id": str(exposure_data.get("hazard_hook_id", "hazard.health_risk_stub")).strip()
+            or "hazard.health_risk_stub",
+        },
+    }
+
+
 def build_inspection_overlays(
     *,
     perceived_model: dict,
@@ -3612,6 +3738,21 @@ def build_inspection_overlays(
     snapshot_payload = dict(inspection_snapshot or {})
     snapshot_target = dict(snapshot_payload.get("target_payload") or {})
     snapshot_collection = str(snapshot_target.get("collection", "")).strip()
+    summary_sections = dict(snapshot_payload.get("summary_sections") or {})
+    if (
+        "section.pollution.concentration_map" in summary_sections
+        or "section.pollution.deposition_summary" in summary_sections
+        or "section.pollution.exposure_summary" in summary_sections
+    ):
+        pollution_overlay = _pollution_overlay_payload(
+            target_semantic_id=target_id or str(target_semantic_id),
+            inspection_snapshot=snapshot_payload,
+        )
+        return {
+            "result": "complete",
+            "inspection_overlays": pollution_overlay,
+            "overlay_runtime": runtime,
+        }
     if (
         target_id.startswith("formalization.")
         or target_id.startswith("candidate.")

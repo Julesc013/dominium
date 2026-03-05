@@ -51,6 +51,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.pollution.concentration_map",
+        "section.pollution.deposition_summary",
+        "section.pollution.exposure_summary",
         "section.chem.fuel_levels",
         "section.chem.energy_output",
         "section.chem.emissions",
@@ -79,6 +82,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.pollution.concentration_map",
+        "section.pollution.deposition_summary",
+        "section.pollution.exposure_summary",
         "section.chem.fuel_levels",
         "section.chem.energy_output",
         "section.chem.emissions",
@@ -115,6 +121,9 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.pollution.concentration_map",
+        "section.pollution.deposition_summary",
+        "section.pollution.exposure_summary",
         "section.chem.fuel_levels",
         "section.chem.energy_output",
         "section.chem.emissions",
@@ -160,6 +169,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.pollution.concentration_map",
+        "section.pollution.deposition_summary",
+        "section.pollution.exposure_summary",
         "section.safety.instances",
         "section.safety.events",
         "section.elec.local_panel_state",
@@ -212,6 +224,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.pollution.concentration_map",
+        "section.pollution.deposition_summary",
+        "section.pollution.exposure_summary",
         "section.safety.instances",
         "section.safety.events",
         "section.elec.local_panel_state",
@@ -266,6 +281,9 @@ _SECTION_IDS_BY_FIDELITY_GRAPH = {
         "section.field.gravity",
         "section.field.radiation",
         "section.field.irradiance",
+        "section.pollution.concentration_map",
+        "section.pollution.deposition_summary",
+        "section.pollution.exposure_summary",
         "section.safety.instances",
         "section.safety.events",
         "section.elec.local_panel_state",
@@ -456,6 +474,9 @@ _DEFAULT_SECTION_ROWS = {
     "section.field.gravity": {"title": "Field Gravity", "extensions": {"cost_units": 1}},
     "section.field.radiation": {"title": "Field Radiation", "extensions": {"cost_units": 1}},
     "section.field.irradiance": {"title": "Field Irradiance", "extensions": {"cost_units": 1}},
+    "section.pollution.concentration_map": {"title": "Pollution Concentration Map", "extensions": {"cost_units": 2}},
+    "section.pollution.deposition_summary": {"title": "Pollution Deposition Summary", "extensions": {"cost_units": 1}},
+    "section.pollution.exposure_summary": {"title": "Pollution Exposure Summary", "extensions": {"cost_units": 2}},
     "section.safety.instances": {"title": "Safety Instances", "extensions": {"cost_units": 1}},
     "section.safety.events": {"title": "Safety Events", "extensions": {"cost_units": 2}},
     "section.elec.local_panel_state": {"title": "Electrical Local Panel State", "extensions": {"cost_units": 1}},
@@ -3536,6 +3557,249 @@ def _build_section_data(
                     key=lambda item: (_as_int(item.get("tick", 0), 0), str(item.get("field_id", "")), str(item.get("spatial_node_id", ""))),
                 )[-256:]
             ]
+        return payload
+    if section_id in {
+        "section.pollution.concentration_map",
+        "section.pollution.deposition_summary",
+        "section.pollution.exposure_summary",
+    }:
+        target_scope_id = str(request.get("target_id", "")).strip()
+        if not (
+            target_scope_id.startswith("cell.")
+            or target_scope_id.startswith("region.")
+            or target_scope_id.startswith("spatial.")
+        ):
+            target_scope_id = ""
+
+        if section_id == "section.pollution.concentration_map":
+            concentration_rows: List[dict] = []
+            for cell_row in sorted(
+                (
+                    dict(item)
+                    for item in list((dict(state or {})).get("field_cells") or [])
+                    if isinstance(item, dict)
+                ),
+                key=lambda item: (
+                    str(item.get("field_id", "")),
+                    str(item.get("cell_id", "")),
+                ),
+            ):
+                field_id = str(cell_row.get("field_id", "")).strip()
+                if not (
+                    field_id.startswith("field.pollution.")
+                    and field_id.endswith("_concentration")
+                ):
+                    continue
+                cell_id = str(
+                    cell_row.get("cell_id", cell_row.get("spatial_node_id", ""))
+                ).strip()
+                if (not cell_id) or (target_scope_id and cell_id != target_scope_id):
+                    continue
+                pollutant_suffix = field_id[len("field.pollution.") : -len("_concentration")]
+                pollutant_id = "pollutant.{}".format(pollutant_suffix) if pollutant_suffix else "pollutant.unknown"
+                concentration = int(
+                    _quantize_map(
+                        {"value": int(max(0, _as_int(cell_row.get("value", 0), 0)))},
+                        step=quant_step,
+                    ).get("value", 0)
+                )
+                concentration_rows.append(
+                    {
+                        "pollutant_id": pollutant_id,
+                        "cell_id": cell_id,
+                        "concentration": int(concentration),
+                    }
+                )
+            concentration_rows = sorted(
+                concentration_rows,
+                key=lambda item: (
+                    str(item.get("pollutant_id", "")),
+                    str(item.get("cell_id", "")),
+                ),
+            )
+            pollutant_ids = _sorted_unique_strings(
+                [str(row.get("pollutant_id", "")).strip() for row in concentration_rows]
+            )
+            payload = {
+                "scope_id": target_scope_id or None,
+                "cell_count": int(len(_sorted_unique_strings([row.get("cell_id", "") for row in concentration_rows]))),
+                "pollutant_count": int(len(pollutant_ids)),
+                "total_concentration": int(
+                    sum(int(max(0, _as_int(row.get("concentration", 0), 0))) for row in concentration_rows)
+                ),
+                "max_concentration": int(
+                    max(
+                        [0]
+                        + [
+                            int(max(0, _as_int(row.get("concentration", 0), 0)))
+                            for row in concentration_rows
+                        ]
+                    )
+                ),
+                "hotspot_count": int(
+                    len(
+                        [
+                            row
+                            for row in concentration_rows
+                            if int(max(0, _as_int(row.get("concentration", 0), 0))) > 0
+                        ]
+                    )
+                ),
+            }
+            if allow_hidden_state:
+                payload["rows"] = [dict(row) for row in concentration_rows[:512]]
+            else:
+                payload["top_hotspots"] = sorted(
+                    [
+                        dict(row)
+                        for row in concentration_rows
+                        if int(max(0, _as_int(row.get("concentration", 0), 0))) > 0
+                    ],
+                    key=lambda item: (
+                        -int(max(0, _as_int(item.get("concentration", 0), 0))),
+                        str(item.get("pollutant_id", "")),
+                        str(item.get("cell_id", "")),
+                    ),
+                )[:64]
+                payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+
+        if section_id == "section.pollution.deposition_summary":
+            deposition_rows = [
+                dict(item)
+                for item in list((dict(state or {})).get("pollution_deposition_rows") or [])
+                if isinstance(item, dict)
+                and (not target_scope_id or str(item.get("spatial_scope_id", "")).strip() == target_scope_id)
+            ]
+            deposition_rows = sorted(
+                deposition_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("pollutant_id", "")),
+                    str(item.get("spatial_scope_id", "")),
+                    str(item.get("deposition_id", "")),
+                ),
+            )
+            totals_by_pollutant: Dict[str, int] = {}
+            for deposition_row in deposition_rows:
+                pollutant_id = str(deposition_row.get("pollutant_id", "")).strip() or "pollutant.unknown"
+                deposited_mass = int(max(0, _as_int(deposition_row.get("deposited_mass", 0), 0)))
+                totals_by_pollutant[pollutant_id] = int(
+                    max(0, _as_int(totals_by_pollutant.get(pollutant_id, 0), 0))
+                    + deposited_mass
+                )
+            pollutant_totals = sorted(
+                (
+                    {
+                        "pollutant_id": pollutant_id,
+                        "deposited_mass": int(
+                            _quantize_map(
+                                {"value": int(max(0, _as_int(total_mass, 0)))},
+                                step=quant_step,
+                            ).get("value", 0)
+                        ),
+                    }
+                    for pollutant_id, total_mass in totals_by_pollutant.items()
+                ),
+                key=lambda item: str(item.get("pollutant_id", "")),
+            )
+            payload = {
+                "scope_id": target_scope_id or None,
+                "deposition_event_count": int(len(deposition_rows)),
+                "pollutant_count": int(len(pollutant_totals)),
+                "deposited_mass_total": int(
+                    sum(int(max(0, _as_int(row.get("deposited_mass", 0), 0))) for row in pollutant_totals)
+                ),
+                "pollutant_totals": [dict(row) for row in pollutant_totals],
+                "latest_tick": int(
+                    max([0] + [int(max(0, _as_int(row.get("tick", 0), 0))) for row in deposition_rows])
+                ),
+            }
+            if allow_hidden_state:
+                payload["recent_deposition_rows"] = [
+                    {
+                        "deposition_id": str(row.get("deposition_id", "")).strip(),
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                        "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip(),
+                        "deposited_mass": int(max(0, _as_int(row.get("deposited_mass", 0), 0))),
+                    }
+                    for row in deposition_rows[-256:]
+                ]
+            return payload
+
+        exposure_rows = [
+            dict(item)
+            for item in list((dict(state or {})).get("pollution_exposure_state_rows") or [])
+            if isinstance(item, dict)
+        ]
+        if target_scope_id:
+            exposure_rows = [
+                row
+                for row in exposure_rows
+                if str(dict(row.get("extensions") or {}).get("last_spatial_scope_id", "")).strip()
+                == target_scope_id
+            ]
+        exposure_rows = sorted(
+            exposure_rows,
+            key=lambda item: (str(item.get("subject_id", "")), str(item.get("pollutant_id", ""))),
+        )
+        totals_by_pollutant: Dict[str, int] = {}
+        for exposure_row in exposure_rows:
+            pollutant_id = str(exposure_row.get("pollutant_id", "")).strip() or "pollutant.unknown"
+            accumulated = int(max(0, _as_int(exposure_row.get("accumulated_exposure", 0), 0)))
+            totals_by_pollutant[pollutant_id] = int(
+                max(0, _as_int(totals_by_pollutant.get(pollutant_id, 0), 0))
+                + accumulated
+            )
+        pollutant_totals = sorted(
+            (
+                {
+                    "pollutant_id": pollutant_id,
+                    "accumulated_exposure": int(
+                        _quantize_map(
+                            {"value": int(max(0, _as_int(total_value, 0)))},
+                            step=quant_step,
+                        ).get("value", 0)
+                    ),
+                }
+                for pollutant_id, total_value in totals_by_pollutant.items()
+            ),
+            key=lambda item: str(item.get("pollutant_id", "")),
+        )
+        payload = {
+            "scope_id": target_scope_id or None,
+            "subject_count": int(
+                len(_sorted_unique_strings([str(row.get("subject_id", "")).strip() for row in exposure_rows]))
+            ),
+            "pollutant_count": int(len(pollutant_totals)),
+            "accumulated_exposure_total": int(
+                sum(int(max(0, _as_int(row.get("accumulated_exposure", 0), 0))) for row in pollutant_totals)
+            ),
+            "max_accumulated_exposure": int(
+                max([0] + [int(max(0, _as_int(row.get("accumulated_exposure", 0), 0))) for row in exposure_rows])
+            ),
+            "pollutant_totals": [dict(row) for row in pollutant_totals],
+            "hazard_hook_id": "hazard.health_risk_stub",
+        }
+        if allow_hidden_state:
+            payload["rows"] = [
+                {
+                    "subject_id": str(row.get("subject_id", "")).strip(),
+                    "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                    "accumulated_exposure": int(
+                        max(0, _as_int(row.get("accumulated_exposure", 0), 0))
+                    ),
+                    "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+                    "last_spatial_scope_id": str(
+                        dict(row.get("extensions") or {}).get("last_spatial_scope_id", "")
+                    ).strip()
+                    or None,
+                }
+                for row in exposure_rows[:256]
+            ]
+        else:
+            payload["epistemic_redaction"] = "coarse_summary"
         return payload
     if section_id == "section.safety.instances":
         rows = [

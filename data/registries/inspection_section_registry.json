@@ -514,6 +514,45 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.pollution.concentration_map",
+        "title": "Pollution Concentration Map",
+        "data": {
+          "data_kind": "pollution_concentration_map"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.pollution.deposition_summary",
+        "title": "Pollution Deposition Summary",
+        "data": {
+          "data_kind": "pollution_deposition_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 1
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.pollution.exposure_summary",
+        "title": "Pollution Exposure Summary",
+        "data": {
+          "data_kind": "pollution_exposure_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.institution.bulletins",
         "title": "Institution Bulletins",
         "data": {
