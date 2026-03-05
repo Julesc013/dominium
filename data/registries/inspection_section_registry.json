@@ -1161,6 +1161,45 @@
           "min_fidelity": "macro",
           "cost_units": 3
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.system.forensics_summary",
+        "title": "System Explain Summary",
+        "data": {
+          "data_kind": "system_forensics_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.system.forensics_top_causes",
+        "title": "System Explain Top Causes",
+        "data": {
+          "data_kind": "system_forensics_top_causes"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 3
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.system.forensics_remediation_hints",
+        "title": "System Explain Remediation",
+        "data": {
+          "data_kind": "system_forensics_remediation_hints"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
       }
     ],
     "extensions": {}

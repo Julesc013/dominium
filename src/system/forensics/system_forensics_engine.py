@@ -738,6 +738,7 @@ def evaluate_system_explain_request(
         extensions={
             "request_id": str(request.get("request_id", "")).strip(),
             "event_id": event_id or None,
+            "event_kind_id": str(_as_map(request.get("extensions")).get("event_kind_id", "")).strip() or None,
             "truth_hash_anchor": str(truth_hash_anchor or "").strip(),
             "requester_policy_id": policy_id,
             "cache_key": cache_key,
