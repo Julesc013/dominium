@@ -1,0 +1,23 @@
+SCHEMA: pollution/pollutant_type.schema
+schema_id: dominium.schema.pollution.pollutant_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical pollutant taxonomy entries for deterministic POLL bookkeeping and policy selection.
+- Bind default decay and dispersion policies without embedding runtime solver logic.
+
+NON-SEMANTICS:
+- No transport solve implementation.
+- No hazard/medical logic implementation.
+
+REQUIRED SHAPE:
+record pollutant_type
+  required:
+    - pollutant_id: id
+    - description: text
+    - medium: enum(air|water|soil|multi)
+    - default_decay_model_id: id
+    - default_dispersion_policy_id: id
+    - deterministic_fingerprint: text
+    - extensions: map

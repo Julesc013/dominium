@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.pollution_field_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.pollution_field_policy_registry",
+    "registry_version": "1.0.0",
+    "pollution_field_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "poll.policy.none",
+        "tier": "P0",
+        "cell_update_rule_id": "rule.pollution.noop",
+        "wind_modifier_enabled": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "null_boot_safe": true,
+          "disable_dispersion": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "poll.policy.coarse_diffuse",
+        "tier": "P1",
+        "cell_update_rule_id": "rule.pollution.coarse_diffuse",
+        "wind_modifier_enabled": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "dispersion_kind": "coarse_proxy"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "poll.policy.rank_strict",
+        "tier": "P1",
+        "cell_update_rule_id": "rule.pollution.rank_strict",
+        "wind_modifier_enabled": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "dispersion_kind": "coarse_proxy",
+          "strict_logging": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "POLL0-2"
+    }
+  }
+}

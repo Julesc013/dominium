@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.registry.pollutant_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.pollutant_type_registry",
+    "registry_version": "1.0.0",
+    "pollutant_types": [
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.smoke_particulate",
+        "description": "Combustion smoke particulate proxy pollutant.",
+        "medium": "air",
+        "default_decay_model_id": "model.poll_decay_half_life_stub",
+        "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.co2_stub",
+        "description": "CO2 externality placeholder for emissions accounting.",
+        "medium": "air",
+        "default_decay_model_id": "model.poll_decay_none",
+        "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "stub": true,
+          "source": "POLL0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.toxic_gas_stub",
+        "description": "Generic toxic gas placeholder for hazard linkage stubs.",
+        "medium": "air",
+        "default_decay_model_id": "model.poll_decay_half_life_stub",
+        "default_dispersion_policy_id": "poll.policy.rank_strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "stub": true,
+          "source": "POLL0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pollutant_id": "pollutant.oil_spill_stub",
+        "description": "Water/soil spill contaminant placeholder.",
+        "medium": "multi",
+        "default_decay_model_id": "model.poll_deposition_stub",
+        "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "stub": true,
+          "source": "POLL0"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "POLL0-2"
+    }
+  }
+}

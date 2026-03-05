@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pollution Source Event Schema",
+  "version": "1.0.0",
+  "description": "Canonical process-level pollution emission event for deterministic provenance.",
+  "x-doc-ref": [
+    "docs/pollution/POLLUTION_CONSTITUTION.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_event_id",
+    "tick",
+    "origin_kind",
+    "origin_id",
+    "pollutant_id",
+    "emitted_mass",
+    "spatial_scope_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "origin_kind": {
+      "type": "string",
+      "enum": [
+        "reaction",
+        "fire",
+        "leak",
+        "industrial"
+      ]
+    },
+    "origin_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pollutant_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "emitted_mass": {
+      "type": "number",
+      "minimum": 0
+    },
+    "spatial_scope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "source_event_id": "event.pollution.emit.0001",
+      "tick": 12,
+      "origin_kind": "fire",
+      "origin_id": "event.combustion.abc",
+      "pollutant_id": "pollutant.smoke_particulate",
+      "emitted_mass": 25,
+      "spatial_scope_id": "region.default",
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}
