@@ -627,6 +627,23 @@ from src.meta.explain import (
     generate_explain_artifact,
     normalize_explain_artifact_rows,
 )
+from src.meta.compile import (
+    REFUSAL_COMPILE_INVALID,
+    REFUSAL_COMPILE_MISSING_PROOF,
+    REFUSAL_COMPILE_SOURCE_MISSING,
+    REFUSAL_COMPILE_UNSUPPORTED_TYPE,
+    compiled_model_execute,
+    compiled_model_is_valid,
+    compile_policy_rows_by_id,
+    compiled_type_rows_by_id,
+    evaluate_compile_request,
+    normalize_compile_request_rows,
+    normalize_compile_result_rows,
+    normalize_compiled_model_rows,
+    normalize_equivalence_proof_rows,
+    normalize_validity_domain_rows,
+    verification_procedure_rows_by_id,
+)
 from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
 from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -826,6 +843,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.system_reliability_tick": "session.boot",
     "process.system_generate_explain": "entitlement.inspect",
     "process.template_instantiate": "entitlement.control.admin",
+    "process.compile_request_submit": "entitlement.inspect",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -1020,6 +1038,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.system_reliability_tick": "observer",
     "process.system_generate_explain": "observer",
     "process.template_instantiate": "operator",
+    "process.compile_request_submit": "observer",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -1134,6 +1153,7 @@ CONTROL_PROCESS_IDS = {
     "process.pollution_compliance_tick",
     "process.system_evaluate_certification",
     "process.degradation_tick",
+    "process.compile_request_submit",
 }
 CIV_PROCESS_IDS = {
     "process.faction_create",
@@ -5375,6 +5395,39 @@ def _load_pollution_sensor_type_registry(*, policy_context: dict | None) -> dict
         repo_root=REPO_ROOT_HINT,
         registry_rel_path="data/registries/pollution_sensor_type_registry.json",
         default_payload={"record": {"sensor_types": []}},
+    )
+
+
+def _load_compiled_type_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "compiled_type_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/compiled_type_registry.json",
+        default_payload={"record": {"compiled_types": []}},
+    )
+
+
+def _load_verification_procedure_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "verification_procedure_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/verification_procedure_registry.json",
+        default_payload={"record": {"verification_procedures": []}},
+    )
+
+
+def _load_compile_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "compile_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/compile_policy_registry.json",
+        default_payload={"record": {"compile_policies": []}},
     )
 
 
@@ -11341,6 +11394,132 @@ def _ensure_chem_species_pool_rows(state: dict) -> List[dict]:
     normalized = [dict(out[key]) for key in sorted(out.keys())]
     state["chem_species_pool_rows"] = [dict(row) for row in normalized]
     return [dict(row) for row in normalized]
+
+
+def _ensure_compile_request_rows(state: dict) -> List[dict]:
+    rows = state.get("compile_request_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_compile_request_rows(rows)
+    state["compile_request_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_compile_result_rows(state: dict) -> List[dict]:
+    rows = state.get("compile_result_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_compile_result_rows(rows)
+    state["compile_result_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_compiled_model_rows(state: dict) -> List[dict]:
+    rows = state.get("compiled_model_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_compiled_model_rows(rows)
+    state["compiled_model_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_equivalence_proof_rows(state: dict) -> List[dict]:
+    rows = state.get("equivalence_proof_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_equivalence_proof_rows(rows)
+    state["equivalence_proof_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_validity_domain_rows(state: dict) -> List[dict]:
+    rows = state.get("validity_domain_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_validity_domain_rows(rows)
+    state["validity_domain_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_compile_hash_chains(state: dict) -> None:
+    request_rows = _ensure_compile_request_rows(state)
+    result_rows = _ensure_compile_result_rows(state)
+    model_rows = _ensure_compiled_model_rows(state)
+    proof_rows = _ensure_equivalence_proof_rows(state)
+    validity_rows = _ensure_validity_domain_rows(state)
+    state["compile_request_hash_chain"] = canonical_sha256(
+        [
+            {
+                "request_id": str(row.get("request_id", "")).strip(),
+                "source_kind": str(row.get("source_kind", "")).strip(),
+                "target_compiled_type_id": str(row.get("target_compiled_type_id", "")).strip(),
+                "error_bound_policy_id": str(row.get("error_bound_policy_id", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(request_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("request_id", "")),
+            )
+        ]
+    )
+    state["compile_result_hash_chain"] = canonical_sha256(
+        [
+            {
+                "result_id": str(row.get("result_id", "")).strip(),
+                "compiled_model_id": str(row.get("compiled_model_id", "")).strip(),
+                "success": bool(row.get("success", False)),
+                "refusal": str(row.get("refusal", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(result_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("result_id", "")),
+            )
+        ]
+    )
+    state["compiled_model_hash_chain"] = canonical_sha256(
+        [
+            {
+                "compiled_model_id": str(row.get("compiled_model_id", "")).strip(),
+                "source_hash": str(row.get("source_hash", "")).strip(),
+                "compiled_type_id": str(row.get("compiled_type_id", "")).strip(),
+                "equivalence_proof_ref": str(row.get("equivalence_proof_ref", "")).strip(),
+                "validity_domain_ref": str(row.get("validity_domain_ref", "")).strip(),
+                "payload_hash": str(dict(row.get("compiled_payload_ref") or {}).get("payload_hash", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(model_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("compiled_model_id", "")),
+            )
+        ]
+    )
+    state["equivalence_proof_hash_chain"] = canonical_sha256(
+        [
+            {
+                "proof_id": str(row.get("proof_id", "")).strip(),
+                "proof_kind": str(row.get("proof_kind", "")).strip(),
+                "verification_procedure_id": str(row.get("verification_procedure_id", "")).strip(),
+                "error_bound_policy_id": str(row.get("error_bound_policy_id", "")).strip(),
+                "proof_hash": str(row.get("proof_hash", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(proof_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("proof_id", "")),
+            )
+        ]
+    )
+    state["validity_domain_hash_chain"] = canonical_sha256(
+        [
+            {
+                "domain_id": str(row.get("domain_id", "")).strip(),
+                "input_ranges": dict(row.get("input_ranges") or {}),
+                "timing_constraints": dict(row.get("timing_constraints") or {}),
+                "environmental_constraints": dict(row.get("environmental_constraints") or {}),
+            }
+            for row in sorted(
+                (dict(item) for item in list(validity_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("domain_id", "")),
+            )
+        ]
+    )
 
 
 def _refresh_combustion_hash_chains(state: dict) -> None:
@@ -20854,6 +21033,11 @@ def execute_intent(
     system_explain_request_rows = _ensure_system_explain_request_rows(state)
     system_explain_artifact_rows = _ensure_system_explain_artifact_rows(state)
     system_explain_cache_rows = _ensure_system_explain_cache_rows(state)
+    compile_request_rows = _ensure_compile_request_rows(state)
+    compile_result_rows = _ensure_compile_result_rows(state)
+    compiled_model_rows = _ensure_compiled_model_rows(state)
+    equivalence_proof_rows = _ensure_equivalence_proof_rows(state)
+    validity_domain_rows = _ensure_validity_domain_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     _ensure_time_mapping_cache_rows(state)
     _ensure_time_stamp_artifact_rows(state)
@@ -20884,6 +21068,11 @@ def execute_intent(
     del system_explain_request_rows
     del system_explain_artifact_rows
     del system_explain_cache_rows
+    del compile_request_rows
+    del compile_result_rows
+    del compiled_model_rows
+    del equivalence_proof_rows
+    del validity_domain_rows
     del chem_process_run_state_rows
     del batch_quality_rows
     del chem_degradation_state_rows
@@ -20901,6 +21090,7 @@ def execute_intent(
     _refresh_system_certification_hash_chains(state)
     _refresh_system_reliability_hash_chains(state)
     _refresh_system_forensics_hash_chains(state)
+    _refresh_compile_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -31846,6 +32036,167 @@ def execute_intent(
             "certificate_artifact_hash_chain": str(state.get("system_certificate_artifact_hash_chain", "")).strip(),
             "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
             "generated_explain_ids": _sorted_tokens(generated_explain_ids),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.compile_request_submit":
+        compile_request_payload = (
+            dict(inputs.get("compile_request") or {})
+            if isinstance(inputs.get("compile_request"), Mapping)
+            else {}
+        )
+        if not compile_request_payload:
+            compile_request_payload = {
+                "request_id": str(inputs.get("request_id", "")).strip(),
+                "source_kind": str(inputs.get("source_kind", "")).strip(),
+                "source_ref": dict(inputs.get("source_ref") or {})
+                if isinstance(inputs.get("source_ref"), Mapping)
+                else {},
+                "target_compiled_type_id": str(inputs.get("target_compiled_type_id", "")).strip(),
+                "error_bound_policy_id": (
+                    None
+                    if inputs.get("error_bound_policy_id") is None
+                    else str(inputs.get("error_bound_policy_id", "")).strip() or None
+                ),
+                "extensions": dict(inputs.get("extensions") or {})
+                if isinstance(inputs.get("extensions"), Mapping)
+                else {},
+            }
+
+        compiled_type_registry = _load_compiled_type_registry(policy_context=policy_context)
+        verifier_registry = _load_verification_procedure_registry(policy_context=policy_context)
+        compile_policy_registry = _load_compile_policy_registry(policy_context=policy_context)
+        compile_policy_id = (
+            str(inputs.get("compile_policy_id", "")).strip() or "compile.default"
+        )
+
+        compile_eval = evaluate_compile_request(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            compile_request=compile_request_payload,
+            compiled_type_registry_payload=compiled_type_registry,
+            verification_procedure_registry_payload=verifier_registry,
+            compile_policy_registry_payload=compile_policy_registry,
+            compile_policy_id=compile_policy_id,
+        )
+        request_row = dict(compile_eval.get("compile_request_row") or {})
+        result_row = dict(compile_eval.get("compile_result_row") or {})
+        model_row = dict(compile_eval.get("compiled_model_row") or {})
+        proof_row = dict(compile_eval.get("equivalence_proof_row") or {})
+        validity_row = dict(compile_eval.get("validity_domain_row") or {})
+
+        if request_row:
+            state["compile_request_rows"] = normalize_compile_request_rows(
+                list(state.get("compile_request_rows") or []) + [request_row]
+            )
+        if result_row:
+            state["compile_result_rows"] = normalize_compile_result_rows(
+                list(state.get("compile_result_rows") or []) + [result_row]
+            )
+        if model_row:
+            state["compiled_model_rows"] = normalize_compiled_model_rows(
+                list(state.get("compiled_model_rows") or []) + [model_row]
+            )
+        if proof_row:
+            state["equivalence_proof_rows"] = normalize_equivalence_proof_rows(
+                list(state.get("equivalence_proof_rows") or []) + [proof_row]
+            )
+        if validity_row:
+            state["validity_domain_rows"] = normalize_validity_domain_rows(
+                list(state.get("validity_domain_rows") or []) + [validity_row]
+            )
+        _refresh_compile_hash_chains(state)
+
+        info_artifact_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        result_id = str(result_row.get("result_id", "")).strip()
+        if result_id:
+            info_artifact_rows.append(
+                {
+                    "artifact_id": "artifact.record.compile_result.{}".format(
+                        canonical_sha256({"result_id": result_id})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.compile_result",
+                        "result_id": result_id,
+                        "request_id": str(request_row.get("request_id", "")).strip(),
+                        "compiled_model_id": str(result_row.get("compiled_model_id", "")).strip(),
+                        "success": bool(result_row.get("success", False)),
+                        "refusal": str(result_row.get("refusal", "")).strip() or None,
+                    },
+                }
+            )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_artifact_rows)
+        state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+        validation_result = {
+            "valid": False,
+            "reason_code": REFUSAL_COMPILE_INVALID,
+            "violations": ["missing_compiled_model"],
+        }
+        execution_result = {
+            "result": "refused",
+            "reason_code": REFUSAL_COMPILE_INVALID,
+            "outputs": {},
+        }
+        compiled_model_id = str(model_row.get("compiled_model_id", "")).strip()
+        if compiled_model_id:
+            probe_inputs = (
+                dict(inputs.get("runtime_inputs") or {})
+                if isinstance(inputs.get("runtime_inputs"), Mapping)
+                else {}
+            )
+            validation_result = compiled_model_is_valid(
+                compiled_model_id=compiled_model_id,
+                current_inputs=probe_inputs,
+                compiled_model_rows=state.get("compiled_model_rows") or [],
+                validity_domain_rows=state.get("validity_domain_rows") or [],
+            )
+            if bool(inputs.get("execute_probe", False)):
+                execution_result = compiled_model_execute(
+                    compiled_model_id=compiled_model_id,
+                    inputs=probe_inputs,
+                    compiled_model_rows=state.get("compiled_model_rows") or [],
+                    validity_domain_rows=state.get("validity_domain_rows") or [],
+                )
+
+        reason_code = str(compile_eval.get("reason_code", "")).strip()
+        if not reason_code:
+            reason_code = (
+                ""
+                if bool(result_row.get("success", False))
+                else str(result_row.get("refusal", "")).strip()
+            )
+        result_metadata = {
+            "request_id": str(request_row.get("request_id", "")).strip(),
+            "result_id": str(result_row.get("result_id", "")).strip(),
+            "compiled_model_id": compiled_model_id or None,
+            "success": bool(result_row.get("success", False)),
+            "reason_code": reason_code,
+            "compile_policy_id": compile_policy_id,
+            "compile_eval_result": str(compile_eval.get("result", "")).strip(),
+            "compiled_type_ids_registered": _sorted_tokens(
+                list(compiled_type_rows_by_id(compiled_type_registry).keys())
+            ),
+            "verification_procedure_ids_registered": _sorted_tokens(
+                list(verification_procedure_rows_by_id(verifier_registry).keys())
+            ),
+            "compile_policy_ids_registered": _sorted_tokens(
+                list(compile_policy_rows_by_id(compile_policy_registry).keys())
+            ),
+            "validity_check": dict(validation_result),
+            "execution_probe": dict(execution_result),
+            "compile_request_hash_chain": str(state.get("compile_request_hash_chain", "")).strip(),
+            "compile_result_hash_chain": str(state.get("compile_result_hash_chain", "")).strip(),
+            "compiled_model_hash_chain": str(state.get("compiled_model_hash_chain", "")).strip(),
+            "equivalence_proof_hash_chain": str(state.get("equivalence_proof_hash_chain", "")).strip(),
+            "validity_domain_hash_chain": str(state.get("validity_domain_hash_chain", "")).strip(),
+            "proof_requirement_enforced": (
+                bool(result_row.get("success", False))
+                or (str(result_row.get("refusal", "")).strip() in {REFUSAL_COMPILE_MISSING_PROOF, REFUSAL_COMPILE_UNSUPPORTED_TYPE, REFUSAL_COMPILE_SOURCE_MISSING, REFUSAL_COMPILE_INVALID})
+            ),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.template_instantiate":
