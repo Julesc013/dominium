@@ -227,6 +227,34 @@ def _replay_projection_without_derived(state_payload: Mapping[str, object]) -> d
     return out
 
 
+def _replay_projection_up_to_tick_without_derived(
+    state_payload: Mapping[str, object],
+    *,
+    end_tick: int,
+) -> dict:
+    payload = dict(state_payload or {})
+    tick_limit = int(max(0, _as_int(end_tick, 0)))
+    out = {}
+    for key in _CANONICAL_EVENT_KEYS:
+        rows = payload.get(key)
+        if not isinstance(rows, list):
+            continue
+        if key == "compaction_markers":
+            # Marker rows are proof witnesses, not part of replay-equivalence truth projection.
+            continue
+        filtered_rows = []
+        for row in _sorted_rows(rows):
+            tick = _row_tick(row)
+            if tick is None:
+                # Tick-less canonical rows are treated as globally visible for conservative replay checks.
+                filtered_rows.append(dict(row))
+                continue
+            if int(tick) <= tick_limit:
+                filtered_rows.append(dict(row))
+        out[key] = filtered_rows
+    return out
+
+
 def _refresh_compaction_hashes(state_payload: dict) -> None:
     markers = normalize_compaction_marker_rows(state_payload.get("compaction_markers"))
     state_payload["compaction_markers"] = [dict(row) for row in markers]
@@ -512,27 +540,44 @@ def verify_replay_from_compaction_anchor(
         }
 
     replay_hash = canonical_sha256(_replay_projection_without_derived(state))
+    marker_end_tick = int(max(0, _as_int(marker.get("end_tick", 0), 0)))
+    anchor_replay_hash = canonical_sha256(
+        _replay_projection_up_to_tick_without_derived(
+            state,
+            end_tick=marker_end_tick,
+        )
+    )
     marker_extensions = _as_map(marker.get("extensions"))
     expected_replay_hash = str(marker_extensions.get("replay_hash_after", "")).strip().lower()
     if not expected_replay_hash:
         expected_replay_hash = str(marker_extensions.get("replay_hash_before", "")).strip().lower()
-    if expected_replay_hash and replay_hash != expected_replay_hash:
-        return {
-            "result": "violation",
-            "reason_code": "refusal.provenance.anchor_replay_mismatch",
-            "message": "replay hash from anchor diverged",
-            "marker_id": marker_token,
-            "expected_replay_hash": expected_replay_hash,
-            "observed_replay_hash": replay_hash,
-        }
+    replay_match_mode = "none"
+    if expected_replay_hash:
+        if replay_hash == expected_replay_hash:
+            replay_match_mode = "current_state"
+        elif anchor_replay_hash == expected_replay_hash:
+            replay_match_mode = "historical_anchor"
+        else:
+            return {
+                "result": "violation",
+                "reason_code": "refusal.provenance.anchor_replay_mismatch",
+                "message": "replay hash from anchor diverged",
+                "marker_id": marker_token,
+                "expected_replay_hash": expected_replay_hash,
+                "observed_replay_hash": replay_hash,
+                "observed_anchor_replay_hash": anchor_replay_hash,
+                "marker_end_tick": marker_end_tick,
+            }
 
     _refresh_compaction_hashes(state)
     return {
         "result": "complete",
         "marker_id": marker_token,
         "replay_hash": replay_hash,
+        "anchor_replay_hash": anchor_replay_hash,
+        "replay_match_mode": replay_match_mode,
+        "marker_end_tick": marker_end_tick,
         "compaction_marker_hash_chain": str(state.get("compaction_marker_hash_chain", "")),
         "pre_compaction_hash": str(state.get("compaction_pre_anchor_hash", "")),
         "post_compaction_hash": str(state.get("compaction_post_anchor_hash", "")),
     }
-
