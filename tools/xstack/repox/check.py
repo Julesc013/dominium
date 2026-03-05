@@ -452,6 +452,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FORENSICS-DERIVED-ONLY",
     "INV-NO-BESPOKE-COMPILER",
     "INV-COMPILED-MODEL-REQUIRES-PROOF",
+    "INV-STATE-VECTOR-DECLARED-FOR-SYSTEM",
+    "INV-NO-UNDECLARED-STATE-MUTATION",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -780,6 +782,7 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E277_INVARIANT_CHECK_SKIPPED_SMELL": "INV-SYS-INVARIANTS-ALWAYS-CHECKED",
     "E278_CUSTOM_COMPILATION_SMELL": "INV-NO-BESPOKE-COMPILER",
     "E279_MISSING_EQUIVALENCE_PROOF_SMELL": "INV-COMPILED-MODEL-REQUIRES-PROOF",
+    "E280_OUTPUT_DEPENDS_ON_UNDECLARED_FIELD_SMELL": "INV-NO-UNDECLARED-STATE-MUTATION",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -19282,6 +19285,219 @@ def _append_compiled_model_invariant_findings(
             break
 
 
+def _append_state_vector_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    declared_rule_id = "INV-STATE-VECTOR-DECLARED-FOR-SYSTEM"
+    mutation_rule_id = "INV-NO-UNDECLARED-STATE-MUTATION"
+
+    statevec_engine_rel = "src/system/statevec/statevec_engine.py"
+    collapse_engine_rel = "src/system/system_collapse_engine.py"
+    expand_engine_rel = "src/system/system_expand_engine.py"
+    compile_engine_rel = "src/meta/compile/compile_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    statevec_registry_rel = "data/registries/state_vector_registry.json"
+    verify_tool_rel = "tools/system/tool_verify_statevec_roundtrip.py"
+    required_paths = (
+        "docs/system/EXPLICIT_STATE_VECTOR_RULE.md",
+        "schema/system/state_vector_definition.schema",
+        "schema/system/state_vector_snapshot.schema",
+        statevec_registry_rel,
+        statevec_engine_rel,
+        collapse_engine_rel,
+        expand_engine_rel,
+        compile_engine_rel,
+        runtime_rel,
+        verify_tool_rel,
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="STATEVEC-0 baseline artifact is missing",
+                rule_id=declared_rule_id,
+            )
+        )
+
+    collapse_text = _file_text(repo_root, collapse_engine_rel)
+    for token, message, rule_id in (
+        ("serialize_state(", "system collapse must serialize explicit owner state vectors", declared_rule_id),
+        ("state_vector_definition_rows", "system collapse must consume declared state vector definitions", declared_rule_id),
+        ("state_vector_snapshot_rows", "system collapse must persist state vector snapshots", declared_rule_id),
+        ("detect_undeclared_output_state(", "debug state-vector guard missing from collapse path", mutation_rule_id),
+        ("state_vector_violation_rows", "collapse debug guard must log undeclared output-state violations", mutation_rule_id),
+    ):
+        if token in collapse_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=collapse_engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    expand_text = _file_text(repo_root, expand_engine_rel)
+    for token, message in (
+        ("deserialize_state(", "system expand must restore deterministic owner state from snapshots"),
+        ("state_vector_definition_rows", "system expand must validate declared state vector definitions"),
+        ("state_vector_snapshot_rows", "system expand must consume deterministic state vector snapshots"),
+    ):
+        if token in expand_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=expand_engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=declared_rule_id,
+            )
+        )
+
+    compile_text = _file_text(repo_root, compile_engine_rel)
+    for token, message, rule_id in (
+        ("state_vector_definition_row", "compiled model evaluation must emit state_vector_definition_row metadata", declared_rule_id),
+        ("state_vector_snapshot_row", "compiled model evaluation must emit state_vector_snapshot_row metadata", declared_rule_id),
+        ("def compiled_model_execute(", "compiled runtime must expose deterministic stateful execute hook", declared_rule_id),
+        ("serialize_state(", "compiled runtime must serialize declared state vector state", declared_rule_id),
+        ("deserialize_state(", "compiled runtime must deserialize declared state vector state", declared_rule_id),
+    ):
+        if token in compile_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=compile_engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, message in (
+        ("_refresh_state_vector_hash_chains(state)", "runtime must refresh deterministic state-vector hash chains"),
+        ("state_vector_definition_hash_chain", "runtime metadata must expose state_vector_definition_hash_chain"),
+        ("state_vector_snapshot_hash_chain", "runtime metadata must expose state_vector_snapshot_hash_chain"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=declared_rule_id,
+            )
+        )
+
+    statevec_registry_payload, statevec_registry_error = _load_json_object(
+        repo_root,
+        statevec_registry_rel,
+    )
+    statevec_rows = list(
+        (dict(statevec_registry_payload.get("record") or {})).get(
+            "state_vector_definitions",
+            [],
+        )
+        or []
+    )
+    owner_ids = set(
+        str(row.get("owner_id", "")).strip()
+        for row in statevec_rows
+        if isinstance(row, dict) and str(row.get("owner_id", "")).strip()
+    )
+    required_owner_ids = {
+        "system.macro_capsule_default",
+        "process.process_capsule_default",
+        "compiled.compiled_model_default",
+    }
+    if statevec_registry_error or not owner_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=statevec_registry_rel,
+                line_number=1,
+                snippet="record.state_vector_definitions",
+                message="state vector registry must declare deterministic default owner definitions",
+                rule_id=declared_rule_id,
+            )
+        )
+    else:
+        for owner_id in sorted(required_owner_ids):
+            if owner_id in owner_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=statevec_registry_rel,
+                    line_number=1,
+                    snippet=owner_id,
+                    message="required STATEVEC default owner definition is missing",
+                    rule_id=declared_rule_id,
+                )
+            )
+
+    direct_statevec_mutation_pattern = re.compile(
+        r"state\s*\[\s*[\"'](?:state_vector_snapshot_rows|state_vector_definition_rows|system_state_vector_rows|state_vector_violation_rows)[\"']\s*\]\s*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_mutation_paths = {
+        statevec_engine_rel,
+        collapse_engine_rel,
+        expand_engine_rel,
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if rel_norm not in allowed_mutation_paths and direct_statevec_mutation_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="direct state vector row mutation detected outside canonical SYS/STATEVEC process pathways",
+                        rule_id=mutation_rule_id,
+                    )
+                )
+                break
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -21707,6 +21923,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_compiled_model_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_state_vector_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -12,7 +12,9 @@ from src.system.system_validation_engine import (
     validate_interface_signature,
 )
 from src.system.statevec import (
+    REFUSAL_STATEVEC_UNDECLARED_OUTPUT_FIELD,
     build_state_vector_definition_row,
+    detect_undeclared_output_state,
     normalize_state_vector_definition_rows,
     normalize_state_vector_snapshot_rows,
     serialize_state,
@@ -44,6 +46,17 @@ def _as_int(value: object, default_value: int = 0) -> int:
 
 def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
+def _as_bool(value: object, default_value: bool = False) -> bool:
+    if isinstance(value, bool):
+        return bool(value)
+    token = str(value or "").strip().lower()
+    if token in {"1", "true", "yes", "on"}:
+        return True
+    if token in {"0", "false", "no", "off"}:
+        return False
+    return bool(default_value)
 
 
 def _sorted_tokens(values: object) -> List[str]:
@@ -358,6 +371,39 @@ def _collapse_eligibility_details(system_row: Mapping[str, object] | None) -> di
     }
 
 
+def _statevec_debug_guard_enabled(state: Mapping[str, object] | None) -> bool:
+    profile = _as_map(_as_map(state).get("debug_profile"))
+    return _as_bool(
+        profile.get("enforce_state_vector_output_guard", profile.get("state_vector_output_guard", False)),
+        False,
+    )
+
+
+def _statevec_output_affecting_fields(
+    *,
+    system_row: Mapping[str, object] | None,
+    fallback_payload: Mapping[str, object] | None,
+) -> List[str]:
+    ext = _as_map(_as_map(system_row).get("extensions"))
+    declared = _sorted_tokens(
+        ext.get(
+            "output_affecting_state_fields",
+            ext.get("state_vector_output_fields", []),
+        )
+    )
+    if declared:
+        return list(declared)
+    payload = _as_map(fallback_payload)
+    fallback = [
+        str(key).strip()
+        for key in sorted(payload.keys())
+        if str(key).strip()
+        and str(key).strip()
+        not in {"schema_version", "encoding", "system_id"}
+    ]
+    return _sorted_tokens(fallback)
+
+
 def _validate_collapse_eligibility(
     *,
     system_row: Mapping[str, object],
@@ -604,6 +650,77 @@ def collapse_system_graph(
                 list(declared_state_vector_definitions) + [fallback_definition]
             )
             owner_definition = dict(fallback_definition)
+
+    if _statevec_debug_guard_enabled(state):
+        output_affecting_fields = _statevec_output_affecting_fields(
+            system_row=system_row,
+            fallback_payload=source_state_payload,
+        )
+        declaration_check = detect_undeclared_output_state(
+            owner_id=state_vector_owner_id,
+            output_affecting_fields=output_affecting_fields,
+            state_vector_definition_rows=declared_state_vector_definitions,
+        )
+        if bool(declaration_check.get("violation", False)):
+            tick_value = int(max(0, _as_int(current_tick, 0)))
+            violation_row = {
+                "schema_version": "1.0.0",
+                "violation_id": "event.statevec.violation.{}".format(
+                    canonical_sha256(
+                        {
+                            "system_id": system_token,
+                            "tick": tick_value,
+                            "owner_id": state_vector_owner_id,
+                            "missing_fields": list(
+                                declaration_check.get("missing_fields") or []
+                            ),
+                        }
+                    )[:16]
+                ),
+                "owner_id": state_vector_owner_id,
+                "system_id": system_token,
+                "tick": tick_value,
+                "reason_code": REFUSAL_STATEVEC_UNDECLARED_OUTPUT_FIELD,
+                "missing_fields": [
+                    str(item).strip()
+                    for item in list(declaration_check.get("missing_fields") or [])
+                    if str(item).strip()
+                ],
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "source_process_id": process_id,
+                    "state_vector_owner_id": state_vector_owner_id,
+                    "declaration_check_fingerprint": str(
+                        declaration_check.get("deterministic_fingerprint", "")
+                    ).strip(),
+                },
+            }
+            violation_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(violation_row, deterministic_fingerprint="")
+            )
+            state["state_vector_violation_rows"] = sorted(
+                [
+                    dict(row)
+                    for row in list(state.get("state_vector_violation_rows") or [])
+                    + [violation_row]
+                    if isinstance(row, Mapping)
+                ],
+                key=lambda row: (
+                    int(max(0, _as_int(row.get("tick", 0), 0))),
+                    str(row.get("violation_id", "")),
+                ),
+            )
+            raise SystemCollapseError(
+                "state vector declaration is missing output-affecting fields",
+                reason_code=REFUSAL_SYSTEM_COLLAPSE_INVALID,
+                details={
+                    "system_id": system_token,
+                    "state_vector_owner_id": state_vector_owner_id,
+                    "statevec_reason_code": REFUSAL_STATEVEC_UNDECLARED_OUTPUT_FIELD,
+                    "missing_fields": list(violation_row.get("missing_fields") or []),
+                    "violation_id": str(violation_row.get("violation_id", "")).strip(),
+                },
+            )
 
     serialization = serialize_state(
         owner_id=state_vector_owner_id,

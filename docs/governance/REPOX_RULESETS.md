@@ -592,3 +592,15 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - STRICT/FULL fail when CHEM reaction mutations are not paired with explicit energy-ledger artifacts and proof hash-chain surfaces.
 - Requires canonical reaction/emission/degradation proof chains and replay-window verification coverage.
 - Requires a committed CHEM regression lock (`data/regression/chem_full_baseline.json`) gated by `CHEM-REGRESSION-UPDATE`.
+
+### INV-STATE-VECTOR-DECLARED-FOR-SYSTEM
+
+- STRICT/FULL fail when SYS/COMPILE/PROC state-vector baseline artifacts are missing.
+- Requires declared state-vector definitions and snapshots plus deterministic hash-chain surfaces.
+- Requires collapse/expand/compile pathways to serialize and deserialize owner state vectors through STATEVEC engine helpers.
+
+### INV-NO-UNDECLARED-STATE-MUTATION
+
+- STRICT/FULL fail when output-affecting state is mutated outside declared state-vector pathways.
+- Requires debug guard coverage (`detect_undeclared_output_state`) and violation logging before collapse.
+- Requires state-vector row mutation to remain constrained to canonical runtime/process paths.

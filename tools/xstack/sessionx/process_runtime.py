@@ -562,6 +562,7 @@ from src.pollution import (
     pollution_totals_by_key,
 )
 from src.system import (
+    REFUSAL_STATEVEC_UNDECLARED_OUTPUT_FIELD,
     REFUSAL_SYSTEM_COLLAPSE_INVALID,
     REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
     REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE,
@@ -31807,6 +31808,7 @@ def execute_intent(
                 REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
                 REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE,
                 REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION,
+                REFUSAL_STATEVEC_UNDECLARED_OUTPUT_FIELD,
             }:
                 reason_code = REFUSAL_SYSTEM_COLLAPSE_INVALID
             details = dict(getattr(exc, "details", {}) or {})
