@@ -4652,6 +4652,71 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.system.capsule_placeholder"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical SYS-2 macro capsule runtime tick; evaluates macro model bindings deterministically, applies boundary outputs through process-governed pathways, and logs forced-expand events when validity/error bounds require higher fidelity.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "budgeted-degrade-logged"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.system_macro_tick)",
+        "source": "SYS2-3",
+        "tier": "macro"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "REFUSAL_SYSTEM_MACRO_INVALID",
+        "refusal.system.invalid_macro_model_set",
+        "refusal.system.macro_budget_denied"
+      ],
+      "human_name": "System Macro Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "capsule_runtime_inputs",
+          "ref_id": "dominium.schema.system.macro_runtime_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "forced_expand_event",
+          "ref_id": "dominium.schema.system.forced_expand_event@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "macro_output_record",
+          "ref_id": "dominium.schema.system.macro_output_record@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "forced_expand_record_artifact",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        },
+        {
+          "io_tags": [],
+          "name": "macro_output_observation_artifact",
+          "ref_id": "dominium.info.OBSERVATION",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.system_macro_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",

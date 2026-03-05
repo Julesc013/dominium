@@ -231,6 +231,8 @@ def build_system_macro_capsule_row(
     capsule_id: str,
     system_id: str,
     interface_signature_id: str,
+    macro_model_set_id: str = "",
+    model_error_bounds_ref: str = "",
     macro_model_bindings: object,
     internal_state_vector: Mapping[str, object] | None,
     provenance_anchor_hash: str,
@@ -249,6 +251,8 @@ def build_system_macro_capsule_row(
         "capsule_id": capsule_token,
         "system_id": system_token,
         "interface_signature_id": interface_token,
+        "macro_model_set_id": str(macro_model_set_id or "").strip(),
+        "model_error_bounds_ref": str(model_error_bounds_ref or "").strip(),
         "macro_model_bindings": [dict(row) for row in list(macro_model_bindings or []) if isinstance(row, Mapping)],
         "internal_state_vector": _as_map(internal_state_vector),
         "provenance_anchor_hash": anchor_token,
@@ -276,6 +280,8 @@ def normalize_system_macro_capsule_rows(rows: object) -> List[dict]:
             capsule_id=str(row.get("capsule_id", "")).strip(),
             system_id=str(row.get("system_id", "")).strip(),
             interface_signature_id=str(row.get("interface_signature_id", "")).strip(),
+            macro_model_set_id=str(row.get("macro_model_set_id", "")).strip(),
+            model_error_bounds_ref=str(row.get("model_error_bounds_ref", "")).strip(),
             macro_model_bindings=row.get("macro_model_bindings"),
             internal_state_vector=_as_map(row.get("internal_state_vector")),
             provenance_anchor_hash=str(row.get("provenance_anchor_hash", "")).strip(),
@@ -571,10 +577,14 @@ def collapse_system_graph(
 
     capsule_id = "capsule.system.{}".format(canonical_sha256({"system_id": system_token, "tick": tick_value, "anchor": provenance_anchor_hash})[:16])
     macro_model_bindings = list(_as_map(system_row.get("extensions")).get("macro_model_bindings") or [])
+    macro_model_set_id = str(_as_map(system_row.get("extensions")).get("macro_model_set_id", "")).strip()
+    model_error_bounds_ref = str(_as_map(system_row.get("extensions")).get("model_error_bounds_ref", "")).strip()
     capsule_row = build_system_macro_capsule_row(
         capsule_id=capsule_id,
         system_id=system_token,
         interface_signature_id=str(interface_row.get("interface_signature_id", "")).strip(),
+        macro_model_set_id=macro_model_set_id,
+        model_error_bounds_ref=model_error_bounds_ref,
         macro_model_bindings=macro_model_bindings,
         internal_state_vector={
             "state_vector_id": state_vector_id,

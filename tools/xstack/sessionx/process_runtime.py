@@ -570,8 +570,15 @@ from src.system import (
     REFUSAL_SYSTEM_EXPAND_INVALID,
     REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE,
     REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION,
+    REFUSAL_SYSTEM_MACRO_INVALID,
+    REFUSAL_SYSTEM_MACRO_MODEL_SET_INVALID,
+    REFUSAL_SYSTEM_MACRO_REFUSED_BY_BUDGET,
     SystemCollapseError,
     SystemExpandError,
+    evaluate_macro_capsules_tick,
+    normalize_forced_expand_event_rows,
+    normalize_macro_output_record_rows,
+    normalize_macro_runtime_state_rows,
     collapse_system_graph,
     expand_system_graph,
 )
@@ -771,6 +778,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.pollution_compliance_tick": "session.boot",
     "process.system_collapse": "session.boot",
     "process.system_expand": "session.boot",
+    "process.system_macro_tick": "session.boot",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -958,6 +966,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.pollution_compliance_tick": "observer",
     "process.system_collapse": "observer",
     "process.system_expand": "observer",
+    "process.system_macro_tick": "observer",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -29618,6 +29627,688 @@ def execute_intent(
             "restored_assembly_ids": [str(token).strip() for token in list(expand_result.get("restored_assembly_ids") or []) if str(token).strip()],
             "deterministic_fingerprint": str(expand_result.get("deterministic_fingerprint", "")).strip(),
             "system_expand_hash_chain": str(state.get("system_expand_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_macro_tick":
+        max_capsules_per_tick = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_capsules_per_tick",
+                        (dict(policy_context or {})).get("system_macro_max_capsules_per_tick", 64),
+                    ),
+                    64,
+                ),
+            )
+        )
+        tick_bucket_stride = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "tick_bucket_stride",
+                        (dict(policy_context or {})).get("system_macro_tick_bucket_stride", 1),
+                    ),
+                    1,
+                ),
+            )
+        )
+        max_cost_units_per_capsule = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_cost_units_per_capsule",
+                        (dict(policy_context or {})).get("system_macro_max_cost_units_per_capsule", 64),
+                    ),
+                    64,
+                ),
+            )
+        )
+        inspection_capsule_ids = _sorted_tokens(list(inputs.get("inspection_capsule_ids") or []))
+
+        macro_model_set_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="macro_model_set_registry",
+            registry_rel_path="data/registries/macro_model_set_registry.json",
+            entry_key="macro_model_sets",
+        )
+        constitutive_model_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="constitutive_model_registry",
+            registry_rel_path="data/registries/constitutive_model_registry.json",
+            entry_key="models",
+        )
+        model_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="model_type_registry",
+            registry_rel_path="data/registries/model_type_registry.json",
+            entry_key="model_types",
+        )
+        model_cache_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="model_cache_policy_registry",
+            registry_rel_path="data/registries/model_cache_policy_registry.json",
+            entry_key="cache_policies",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        model_residual_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="model_residual_policy_registry",
+            registry_rel_path="data/registries/model_residual_policy_registry.json",
+            entry_key="model_residual_policies",
+        )
+
+        try:
+            macro_eval = evaluate_macro_capsules_tick(
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+                state=state,
+                system_rows=state.get("system_rows") or [],
+                system_macro_capsule_rows=state.get("system_macro_capsule_rows") or [],
+                system_interface_signature_rows=state.get("system_interface_signature_rows") or [],
+                macro_runtime_state_rows=state.get("system_macro_runtime_state_rows") or [],
+                signal_channel_rows=state.get("signal_channel_rows") or state.get("signal_channels") or [],
+                field_cell_rows=state.get("field_cells") or [],
+                macro_model_set_registry_payload=macro_model_set_registry,
+                constitutive_model_registry_payload=constitutive_model_registry,
+                model_type_registry_payload=model_type_registry,
+                model_cache_policy_registry_payload=model_cache_policy_registry,
+                tolerance_policy_registry_payload=tolerance_policy_registry,
+                model_residual_policy_registry_payload=model_residual_policy_registry,
+                max_capsules_per_tick=int(max_capsules_per_tick),
+                tick_bucket_stride=int(tick_bucket_stride),
+                max_cost_units_per_capsule=int(max_cost_units_per_capsule),
+                inspection_capsule_ids=inspection_capsule_ids,
+            )
+        except Exception as exc:
+            reason_code = REFUSAL_SYSTEM_MACRO_INVALID
+            if isinstance(exc, Exception):
+                token = str(getattr(exc, "reason_code", "")).strip()
+                if token in {
+                    REFUSAL_SYSTEM_MACRO_INVALID,
+                    REFUSAL_SYSTEM_MACRO_MODEL_SET_INVALID,
+                    REFUSAL_SYSTEM_MACRO_REFUSED_BY_BUDGET,
+                }:
+                    reason_code = token
+            return refusal(
+                reason_code,
+                str(exc),
+                "Validate macro model set compatibility and deterministic budget settings before macro tick.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+
+        state["system_macro_runtime_state_rows"] = normalize_macro_runtime_state_rows(
+            macro_eval.get("runtime_state_rows")
+        )
+
+        forced_before = [dict(row) for row in list(state.get("system_forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+        forced_added = [dict(row) for row in list(macro_eval.get("forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+        state["system_forced_expand_event_rows"] = normalize_forced_expand_event_rows(
+            forced_before + forced_added
+        )
+        state["system_forced_expand_event_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "capsule_id": str(row.get("capsule_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "reason_code": str(row.get("reason_code", "")).strip(),
+                    "requested_fidelity": str(row.get("requested_fidelity", "")).strip(),
+                }
+                for row in sorted(
+                    (
+                        dict(item)
+                        for item in list(state.get("system_forced_expand_event_rows") or [])
+                        if isinstance(item, Mapping)
+                    ),
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("capsule_id", "")),
+                        str(item.get("event_id", "")),
+                    ),
+                )
+            ]
+        )
+        state["forced_expand_event_hash_chain"] = str(state.get("system_forced_expand_event_hash_chain", "")).strip()
+        forced_expand_approval_cap = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get(
+                        "max_forced_expand_approvals_per_tick",
+                        (dict(policy_context or {})).get("system_macro_max_forced_expand_approvals_per_tick", 0),
+                    ),
+                    0,
+                ),
+            )
+        )
+        approved_forced_expand_ids = []
+        denied_forced_expand_ids = []
+        denied_forced_expand_rows = []
+        for idx, forced_row in enumerate(
+            sorted(
+                (dict(item) for item in forced_added if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("capsule_id", "")),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ):
+            event_id = str(forced_row.get("event_id", "")).strip()
+            if not event_id:
+                continue
+            if forced_expand_approval_cap > 0 and idx >= forced_expand_approval_cap:
+                denied_forced_expand_ids.append(event_id)
+                denied_forced_expand_rows.append(dict(forced_row))
+            else:
+                approved_forced_expand_ids.append(event_id)
+
+        output_before = [dict(row) for row in list(state.get("system_macro_output_record_rows") or []) if isinstance(row, Mapping)]
+        output_added = [dict(row) for row in list(macro_eval.get("macro_output_record_rows") or []) if isinstance(row, Mapping)]
+        state["system_macro_output_record_rows"] = normalize_macro_output_record_rows(
+            output_before + output_added
+        )
+        state["system_macro_output_record_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "record_id": str(row.get("record_id", "")).strip(),
+                    "capsule_id": str(row.get("capsule_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "boundary_inputs_hash": str(row.get("boundary_inputs_hash", "")).strip(),
+                    "boundary_outputs_hash": str(row.get("boundary_outputs_hash", "")).strip(),
+                    "error_estimate": int(max(0, _as_int(row.get("error_estimate", 0), 0))),
+                }
+                for row in sorted(
+                    (
+                        dict(item)
+                        for item in list(state.get("system_macro_output_record_rows") or [])
+                        if isinstance(item, Mapping)
+                    ),
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("capsule_id", "")),
+                        str(item.get("record_id", "")),
+                    ),
+                )
+            ]
+        )
+        state["macro_output_record_hash_chain"] = str(state.get("system_macro_output_record_hash_chain", "")).strip()
+        state["system_macro_runtime_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "capsule_id": str(row.get("capsule_id", "")).strip(),
+                    "last_tick": int(max(0, _as_int(row.get("last_tick", 0), 0))),
+                    "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+                }
+                for row in list(state.get("system_macro_runtime_state_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        )
+
+        adjustment_rows_by_id = dict(
+            (
+                "{}::{}::{}".format(
+                    str(row.get("channel_id", "")).strip(),
+                    str(row.get("quantity_bundle_id", "")).strip() or "-",
+                    str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip(),
+                ),
+                dict(row),
+            )
+            for row in list(model_flow_adjustment_rows or [])
+            if isinstance(row, Mapping)
+            and str(row.get("channel_id", "")).strip()
+            and (str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip())
+        )
+        signal_channel_rows = normalize_signal_channel_rows(state.get("signal_channel_rows") or state.get("signal_channels") or [])
+        signal_channel_rows_by_id = dict(
+            (
+                str(row.get("channel_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(signal_channel_rows or [])
+            if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+        )
+        elec_channel_rows = []
+        for channel_row in list(state.get("elec_flow_channels") or []):
+            if not isinstance(channel_row, Mapping):
+                continue
+            try:
+                elec_channel_rows.append(normalize_core_flow_channel(dict(channel_row)))
+            except Exception:
+                continue
+        elec_channel_rows_by_id = dict(
+            (
+                str(row.get("channel_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(elec_channel_rows or [])
+            if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+        )
+        for flow_row in sorted(
+            (
+                dict(item)
+                for item in list(macro_eval.get("flow_adjustments") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (
+                str(item.get("capsule_id", "")),
+                str(item.get("channel_id", "")),
+                str(item.get("quantity_bundle_id", "")),
+                str(item.get("component_quantity_id", "")),
+            ),
+        ):
+            channel_id = str(flow_row.get("channel_id", "")).strip()
+            quantity_id = str(flow_row.get("quantity_id", "")).strip()
+            component_quantity_id = str(flow_row.get("component_quantity_id", quantity_id)).strip() or quantity_id
+            quantity_bundle_id = str(flow_row.get("quantity_bundle_id", "")).strip()
+            if (not channel_id) or (not quantity_id):
+                continue
+            delta = int(_as_int(flow_row.get("delta", 0), 0))
+            row_id = "{}::{}::{}".format(channel_id, quantity_bundle_id or "-", component_quantity_id)
+            existing = dict(adjustment_rows_by_id.get(row_id) or {})
+            accumulated_delta = int(_as_int(existing.get("accumulated_delta", 0), 0) + delta)
+            payload = {
+                "schema_version": "1.0.0",
+                "channel_id": channel_id,
+                "quantity_id": quantity_id,
+                "quantity_bundle_id": quantity_bundle_id or None,
+                "component_quantity_id": component_quantity_id or None,
+                "accumulated_delta": int(accumulated_delta),
+                "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    **(dict(existing.get("extensions") or {}) if isinstance(existing.get("extensions"), Mapping) else {}),
+                    "last_source_process_id": process_id,
+                    "last_intent_id": str(intent_id),
+                    "capsule_id": str(flow_row.get("capsule_id", "")).strip(),
+                },
+            }
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+            adjustment_rows_by_id[row_id] = payload
+
+            selected = dict(signal_channel_rows_by_id.get(channel_id) or {})
+            selected_domain = "signal"
+            if not selected:
+                selected = dict(elec_channel_rows_by_id.get(channel_id) or {})
+                selected_domain = "elec"
+            if selected:
+                ext = dict(selected.get("extensions") or {}) if isinstance(selected.get("extensions"), Mapping) else {}
+                ext_key = (
+                    "model_adjust.{}::{}".format(quantity_bundle_id, component_quantity_id)
+                    if quantity_bundle_id
+                    else "model_adjust.{}".format(component_quantity_id)
+                )
+                ext[ext_key] = int(accumulated_delta)
+                selected["extensions"] = ext
+                if selected_domain == "elec":
+                    try:
+                        selected = normalize_core_flow_channel(selected)
+                    except Exception:
+                        pass
+                    elec_channel_rows_by_id[channel_id] = dict(selected)
+                else:
+                    signal_channel_rows_by_id[channel_id] = dict(selected)
+
+        model_flow_adjustment_rows = [dict(adjustment_rows_by_id[key]) for key in sorted(adjustment_rows_by_id.keys())]
+        state["signal_channel_rows"] = normalize_signal_channel_rows(
+            [dict(signal_channel_rows_by_id[key]) for key in sorted(signal_channel_rows_by_id.keys())]
+        )
+        state["signal_channels"] = [dict(row) for row in list(state.get("signal_channel_rows") or [])]
+        state["elec_flow_channels"] = [
+            dict(elec_channel_rows_by_id[key])
+            for key in sorted(elec_channel_rows_by_id.keys())
+        ]
+        _persist_model_state(
+            state,
+            model_bindings=model_bindings,
+            model_evaluation_results=model_evaluation_results,
+            model_cache_rows=model_cache_rows,
+            model_runtime_state=model_runtime_state,
+            model_hazard_rows=model_hazard_rows,
+            model_flow_adjustment_rows=model_flow_adjustment_rows,
+        )
+
+        energy_transform_results = []
+        for transform_row in sorted(
+            (
+                dict(item)
+                for item in list(macro_eval.get("energy_transforms") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (
+                str(item.get("capsule_id", "")),
+                str(item.get("transformation_id", "")),
+                str(item.get("source_id", "")),
+            ),
+        ):
+            transform_result = _record_energy_transformation_in_state(
+                state,
+                policy_context=policy_context,
+                process_id=process_id,
+                tick=int(max(0, _as_int(current_tick, 0))),
+                transformation_id=str(transform_row.get("transformation_id", "transform.system.macro_output")).strip()
+                or "transform.system.macro_output",
+                source_id=str(transform_row.get("source_id", "")).strip() or str(transform_row.get("capsule_id", "")).strip() or "system.macro",
+                input_values=dict(transform_row.get("input_values") or {}),
+                output_values=dict(transform_row.get("output_values") or {}),
+                extensions=dict(transform_row.get("extensions") or {}) if isinstance(transform_row.get("extensions"), Mapping) else {},
+                tolerance=0,
+            )
+            energy_transform_results.append(dict(transform_result or {}))
+
+        pollutant_types_by_id = _pollutant_types_by_id(
+            _load_pollutant_type_registry(policy_context=policy_context)
+        )
+        source_rows_existing = [dict(row) for row in list(state.get("pollution_source_event_rows") or []) if isinstance(row, Mapping)]
+        total_rows_by_key = dict(
+            (
+                "{}::{}".format(
+                    str(row.get("region_id", "")).strip(),
+                    str(row.get("pollutant_id", "")).strip(),
+                ),
+                dict(row),
+            )
+            for row in list(state.get("pollution_total_rows") or [])
+            if isinstance(row, Mapping)
+            and str(row.get("region_id", "")).strip()
+            and str(row.get("pollutant_id", "")).strip()
+        )
+        emitted_source_event_ids = []
+        for emission_row in sorted(
+            (
+                dict(item)
+                for item in list(macro_eval.get("pollution_emissions") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (
+                str(item.get("capsule_id", "")),
+                str(item.get("pollutant_id", "")),
+                str(item.get("origin_id", "")),
+            ),
+        ):
+            pollutant_id = str(emission_row.get("pollutant_id", "")).strip()
+            if pollutant_id not in pollutant_types_by_id:
+                continue
+            emitted_mass = int(max(0, _as_int(emission_row.get("emitted_mass", 0), 0)))
+            if emitted_mass <= 0:
+                continue
+            event_row = build_pollution_source_event(
+                source_event_id="",
+                tick=int(max(0, _as_int(current_tick, 0))),
+                origin_kind=str(emission_row.get("origin_kind", "industrial")).strip() or "industrial",
+                origin_id=str(emission_row.get("origin_id", "")).strip() or str(emission_row.get("capsule_id", "")).strip() or "system.macro",
+                pollutant_id=pollutant_id,
+                emitted_mass=emitted_mass,
+                spatial_scope_id=str(emission_row.get("spatial_scope_id", "region.default")).strip() or "region.default",
+                deterministic_fingerprint="",
+                extensions=dict(emission_row.get("extensions") or {}) if isinstance(emission_row.get("extensions"), Mapping) else {},
+            )
+            if not event_row:
+                continue
+            source_rows_existing.append(event_row)
+            emitted_source_event_ids.append(str(event_row.get("source_event_id", "")).strip())
+            total_key = "{}::{}".format(
+                str(event_row.get("spatial_scope_id", "")).strip(),
+                pollutant_id,
+            )
+            existing_total = dict(total_rows_by_key.get(total_key) or {})
+            total_mass = int(max(0, _as_int(existing_total.get("pollutant_mass_total", 0), 0)) + emitted_mass)
+            total_row = build_pollution_total_row(
+                region_id=str(event_row.get("spatial_scope_id", "")).strip(),
+                pollutant_id=pollutant_id,
+                pollutant_mass_total=total_mass,
+                last_update_tick=int(max(0, _as_int(current_tick, 0))),
+                deterministic_fingerprint="",
+                extensions={
+                    **(dict(existing_total.get("extensions") or {}) if isinstance(existing_total.get("extensions"), Mapping) else {}),
+                    "last_source_event_id": str(event_row.get("source_event_id", "")).strip(),
+                    "source_process_id": process_id,
+                },
+            )
+            if total_row:
+                total_rows_by_key[total_key] = dict(total_row)
+        state["pollution_source_event_rows"] = normalize_pollution_source_event_rows(source_rows_existing)
+        state["pollution_total_rows"] = normalize_pollution_total_rows(list(total_rows_by_key.values()))
+        state["pollutant_mass_total"] = dict(
+            (
+                "{}::{}".format(str(row.get("region_id", "")).strip(), str(row.get("pollutant_id", "")).strip()),
+                int(max(0, _as_int(row.get("pollutant_mass_total", 0), 0))),
+            )
+            for row in list(state.get("pollution_total_rows") or [])
+            if isinstance(row, Mapping)
+            and str(row.get("region_id", "")).strip()
+            and str(row.get("pollutant_id", "")).strip()
+        )
+        _refresh_pollution_hash_chains(state)
+
+        state["system_macro_effect_apply_rows"] = [
+            dict(row)
+            for row in sorted(
+                (
+                    dict(item)
+                    for item in list(state.get("system_macro_effect_apply_rows") or [])
+                    + list(macro_eval.get("effect_applies") or [])
+                    if isinstance(item, Mapping)
+                ),
+                key=lambda item: (
+                    str(item.get("capsule_id", "")),
+                    str(item.get("target_id", "")),
+                    str(item.get("effect_type_id", "")),
+                    str(item.get("output_id", "")),
+                ),
+            )
+        ]
+
+        decision_rows = [
+            dict(row)
+            for row in list(state.get("control_decision_log") or [])
+            if isinstance(row, Mapping)
+        ]
+        decision_rows.extend(
+            dict(row)
+            for row in list(macro_eval.get("decision_log_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        for denied_row in denied_forced_expand_rows:
+            event_id = str(denied_row.get("event_id", "")).strip()
+            if not event_id:
+                continue
+            decision_rows.append(
+                {
+                    "decision_id": "decision.system.macro.expand_budget_denied.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "event_id": event_id,
+                                "capsule_id": str(denied_row.get("capsule_id", "")).strip(),
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "denied",
+                    "reason_code": REFUSAL_SYSTEM_MACRO_REFUSED_BY_BUDGET,
+                    "extensions": {
+                        "forced_expand_event_id": event_id,
+                        "capsule_id": str(denied_row.get("capsule_id", "")).strip(),
+                        "requested_fidelity": str(denied_row.get("requested_fidelity", "")).strip(),
+                        "reason_code": str(denied_row.get("reason_code", "")).strip(),
+                        "remediation": "increase_macro_budget_or_expand_capsule_manually",
+                    },
+                }
+            )
+        state["control_decision_log"] = sorted(
+            [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("decision_id", "")),
+            ),
+        )
+
+        info_artifact_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        for forced_row in forced_added:
+            event_id = str(forced_row.get("event_id", "")).strip()
+            if not event_id:
+                continue
+            info_artifact_rows.append(
+                {
+                    "artifact_id": "artifact.record.system_forced_expand.{}".format(
+                        canonical_sha256({"event_id": event_id})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.system_forced_expand",
+                        "event_id": event_id,
+                        "capsule_id": str(forced_row.get("capsule_id", "")).strip(),
+                        "reason_code": str(forced_row.get("reason_code", "")).strip(),
+                        "requested_fidelity": str(forced_row.get("requested_fidelity", "")).strip(),
+                    },
+                }
+            )
+        for output_row in output_added:
+            record_id = str(output_row.get("record_id", "")).strip()
+            if not record_id:
+                continue
+            info_artifact_rows.append(
+                {
+                    "artifact_id": "artifact.observation.system_macro_output.{}".format(
+                        canonical_sha256({"record_id": record_id})[:16]
+                    ),
+                    "artifact_family_id": "OBSERVATION",
+                    "extensions": {
+                        "artifact_type_id": "artifact.observation.system_macro_output",
+                        "record_id": record_id,
+                        "capsule_id": str(output_row.get("capsule_id", "")).strip(),
+                        "tick": int(max(0, _as_int(output_row.get("tick", 0), 0))),
+                        "boundary_inputs_hash": str(output_row.get("boundary_inputs_hash", "")).strip(),
+                        "boundary_outputs_hash": str(output_row.get("boundary_outputs_hash", "")).strip(),
+                        "error_estimate": int(max(0, _as_int(output_row.get("error_estimate", 0), 0))),
+                    },
+                }
+            )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_artifact_rows)
+        state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+        explain_registry = _load_explain_contract_registry(policy_context=policy_context)
+        explain_by_event_kind = _explain_contract_rows_by_event_kind(explain_registry)
+        explain_rows = [
+            dict(row)
+            for row in list(state.get("explain_artifact_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        generated_explain_ids = []
+        for request_row in sorted(
+            (
+                dict(item)
+                for item in list(macro_eval.get("explain_requests") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (
+                str(item.get("event_kind_id", "")),
+                str(item.get("event_id", "")),
+                str(item.get("target_id", "")),
+                str(item.get("capsule_id", "")),
+            ),
+        ):
+            event_kind_id = str(request_row.get("event_kind_id", "")).strip()
+            event_id = str(request_row.get("event_id", "")).strip()
+            target_id = str(request_row.get("target_id", "")).strip()
+            if (not event_kind_id) or (not event_id) or (not target_id):
+                continue
+            contract_row = dict(explain_by_event_kind.get(event_kind_id) or {})
+            if not contract_row:
+                continue
+            explain_row = generate_explain_artifact(
+                event_id=event_id,
+                target_id=target_id,
+                event_kind_id=event_kind_id,
+                truth_hash_anchor=str(state.get("system_forced_expand_event_hash_chain", "")).strip()
+                or str(state.get("system_macro_output_record_hash_chain", "")).strip(),
+                epistemic_policy_id="policy.epistemic.observer",
+                explain_contract_row=contract_row,
+                decision_log_rows=state.get("control_decision_log") or [],
+                safety_event_rows=state.get("safety_events") or [],
+                hazard_rows=state.get("system_forced_expand_event_rows") or [],
+                compliance_rows=[],
+                model_result_rows=list(macro_eval.get("validation_rows") or []),
+                cause_chain_keys=[
+                    "cause.system.capsule.{}".format(str(request_row.get("capsule_id", "")).strip()),
+                    "cause.system.reason.{}".format(str(request_row.get("reason_code", "")).strip() or "unknown"),
+                ],
+                remediation_hint_keys=[],
+                referenced_artifacts=[
+                    "artifact.record.system_forced_expand.{}".format(canonical_sha256({"event_id": event_id})[:16]),
+                ],
+            )
+            if explain_row:
+                explain_rows.append(dict(explain_row))
+                generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+        state["explain_artifact_rows"] = normalize_explain_artifact_rows(explain_rows)
+        state["system_macro_explain_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "explain_id": str(row.get("explain_id", "")).strip(),
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "target_id": str(row.get("target_id", "")).strip(),
+                    "event_kind_id": str(dict(row.get("extensions") or {}).get("event_kind_id", "")).strip(),
+                }
+                for row in sorted(
+                    (
+                        dict(item)
+                        for item in list(state.get("explain_artifact_rows") or [])
+                        if isinstance(item, Mapping)
+                        and str(dict(item.get("extensions") or {}).get("event_kind_id", "")).strip()
+                        in {
+                            "system.forced_expand",
+                            "system.output_degradation",
+                            "system.safety_shutdown",
+                        }
+                    ),
+                    key=lambda item: (
+                        str(item.get("event_id", "")),
+                        str(item.get("target_id", "")),
+                        str(item.get("explain_id", "")),
+                    ),
+                )
+            ]
+        )
+
+        result_metadata = {
+            "processed_capsule_ids": list(macro_eval.get("processed_capsule_ids") or []),
+            "processed_capsule_count": int(len(list(macro_eval.get("processed_capsule_ids") or []))),
+            "deferred_capsule_count": int(len(list(macro_eval.get("deferred_rows") or []))),
+            "forced_expand_count": int(len(forced_added)),
+            "approved_forced_expand_ids": _sorted_tokens(approved_forced_expand_ids),
+            "denied_forced_expand_ids": _sorted_tokens(denied_forced_expand_ids),
+            "macro_output_record_count": int(len(output_added)),
+            "flow_adjustment_count": int(len(list(macro_eval.get("flow_adjustments") or []))),
+            "energy_transform_count": int(len(list(macro_eval.get("energy_transforms") or []))),
+            "pollution_emission_count": int(len(list(macro_eval.get("pollution_emissions") or []))),
+            "effect_apply_count": int(len(list(macro_eval.get("effect_applies") or []))),
+            "emitted_source_event_ids": _sorted_tokens(emitted_source_event_ids),
+            "validation_rows": [dict(row) for row in list(macro_eval.get("validation_rows") or []) if isinstance(row, Mapping)],
+            "refusal_rows": [dict(row) for row in list(macro_eval.get("refusal_rows") or []) if isinstance(row, Mapping)],
+            "budget_denied_rows": [dict(row) for row in denied_forced_expand_rows if isinstance(row, Mapping)],
+            "output_process_events": [dict(row) for row in list(macro_eval.get("output_process_events") or []) if isinstance(row, Mapping)],
+            "energy_transform_results": [dict(row) for row in energy_transform_results if isinstance(row, Mapping)],
+            "forced_expand_event_hash_chain": str(state.get("system_forced_expand_event_hash_chain", "")).strip(),
+            "macro_output_record_hash_chain": str(state.get("system_macro_output_record_hash_chain", "")).strip(),
+            "system_macro_runtime_hash_chain": str(state.get("system_macro_runtime_hash_chain", "")).strip(),
+            "system_macro_explain_hash_chain": str(state.get("system_macro_explain_hash_chain", "")).strip(),
+            "deterministic_fingerprint": str(macro_eval.get("deterministic_fingerprint", "")).strip(),
+            "generated_explain_ids": _sorted_tokens(generated_explain_ids),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

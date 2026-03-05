@@ -115,7 +115,9 @@ def _safety_pattern_ids(payload: Mapping[str, object] | None) -> List[str]:
 
 
 def _constitutive_model_ids(payload: Mapping[str, object] | None) -> List[str]:
-    rows = _rows_from_registry_payload(payload, ("constitutive_models",))
+    # Backward/forward compatible: some registries use `constitutive_models`,
+    # while canonical domain registries expose rows under `models`.
+    rows = _rows_from_registry_payload(payload, ("constitutive_models", "models"))
     return _sorted_tokens(str(row.get("model_id", "")).strip() for row in rows)
 
 
