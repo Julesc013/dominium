@@ -28257,6 +28257,48 @@ def execute_intent(
                     }
                 )
                 state["pollution_dispersion_degrade_rows"] = [dict(row) for row in degrade_rows]
+                decision_rows = [
+                    dict(row)
+                    for row in list(state.get("control_decision_log") or [])
+                    if isinstance(row, Mapping)
+                ]
+                deferred_cell_ids = _sorted_tokens(
+                    list(dispersion_eval.get("deferred_cell_ids") or [])
+                )
+                decision_rows.append(
+                    {
+                        "decision_id": "decision.pollution.dispersion.degrade.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(max(0, _as_int(current_tick, 0))),
+                                    "degrade_reason": str(
+                                        dispersion_eval.get("degrade_reason", "")
+                                    ).strip()
+                                    or "degrade.pollution.cell_budget",
+                                    "deferred_cell_ids": list(deferred_cell_ids),
+                                }
+                            )[:16]
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "process_id": process_id,
+                        "result": "degraded",
+                        "reason_code": str(
+                            dispersion_eval.get("degrade_reason", "")
+                        ).strip()
+                        or "degrade.pollution.cell_budget",
+                        "extensions": {
+                            "deferred_cell_ids": list(deferred_cell_ids),
+                            "max_cell_updates_per_tick": int(max_cell_updates_per_tick),
+                        },
+                    }
+                )
+                state["control_decision_log"] = sorted(
+                    [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("decision_id", "")),
+                    ),
+                )
             _ensure_pollution_dispersion_degrade_rows(state)
 
             subject_rows = []
@@ -28438,6 +28480,48 @@ def execute_intent(
                     }
                 )
                 state["pollution_dispersion_degrade_rows"] = [dict(row) for row in degrade_rows]
+                decision_rows = [
+                    dict(row)
+                    for row in list(state.get("control_decision_log") or [])
+                    if isinstance(row, Mapping)
+                ]
+                deferred_subject_ids = _sorted_tokens(
+                    list(exposure_eval.get("deferred_subject_ids") or [])
+                )
+                decision_rows.append(
+                    {
+                        "decision_id": "decision.pollution.exposure.degrade.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(max(0, _as_int(current_tick, 0))),
+                                    "degrade_reason": str(
+                                        exposure_eval.get("degrade_reason", "")
+                                    ).strip()
+                                    or "degrade.pollution.exposure_subject_budget",
+                                    "deferred_subject_ids": list(deferred_subject_ids),
+                                }
+                            )[:16]
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "process_id": process_id,
+                        "result": "degraded",
+                        "reason_code": str(
+                            exposure_eval.get("degrade_reason", "")
+                        ).strip()
+                        or "degrade.pollution.exposure_subject_budget",
+                        "extensions": {
+                            "deferred_subject_ids": list(deferred_subject_ids),
+                            "max_subject_updates_per_tick": int(max_subject_updates_per_tick),
+                        },
+                    }
+                )
+                state["control_decision_log"] = sorted(
+                    [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("decision_id", "")),
+                    ),
+                )
             _ensure_pollution_dispersion_degrade_rows(state)
             _refresh_pollution_hash_chains(state)
 
