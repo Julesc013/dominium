@@ -1,0 +1,62 @@
+{
+  "schema_id": "dominium.registry.system_boundary_invariant_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.system_boundary_invariant_registry",
+    "registry_version": "1.0.0",
+    "boundary_invariants": [
+      {
+        "schema_version": "1.0.0",
+        "invariant_id": "invariant.mass_conserved",
+        "quantity_ids": [
+          "quantity.mass"
+        ],
+        "tolerance_policy_id": "tol.strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "scope": "boundary"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "invariant_id": "invariant.energy_conserved",
+        "quantity_ids": [
+          "quantity.energy"
+        ],
+        "tolerance_policy_id": "tol.strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "scope": "boundary"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "invariant_id": "invariant.momentum_conserved",
+        "quantity_ids": [
+          "quantity.momentum"
+        ],
+        "tolerance_policy_id": "tol.strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "scope": "boundary",
+          "optional": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "invariant_id": "invariant.pollutant_accounted",
+        "quantity_ids": [
+          "quantity.pollutant_mass"
+        ],
+        "tolerance_policy_id": "tol.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "scope": "boundary"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "SYS0-3"
+    }
+  }
+}
