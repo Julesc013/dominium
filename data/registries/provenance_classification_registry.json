@@ -233,6 +233,16 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_tier_transition_refusal",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS3-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.therm_overheat",
         "classification": "derived",
         "compaction_allowed": true,
@@ -437,6 +447,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "SYS2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.system_tier_change",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS3-5"
         }
       },
       {

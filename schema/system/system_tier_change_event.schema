@@ -1,0 +1,27 @@
+SCHEMA: system/system_tier_change_event.schema
+schema_id: dominium.schema.system.system_tier_change_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record deterministic SYS-3 tier transition outcomes at system granularity.
+- Provide proof/replay hooks for ROI scheduler decisions and transition results.
+
+NON-SEMANTICS:
+- Does not execute transition logic.
+- Does not override collapse/expand process semantics.
+
+REQUIRED SHAPE:
+record system_tier_change_event
+  required:
+    - event_id: id
+    - tick: int
+    - system_id: id
+    - from_tier: enum{micro,meso,macro}
+    - to_tier: enum{micro,meso,macro}
+    - result: enum{complete,denied}
+    - transition_kind: enum{expand,collapse,none,unsupported}
+    - reason_code: text
+    - deterministic_fingerprint: text
+    - extensions: map
+
