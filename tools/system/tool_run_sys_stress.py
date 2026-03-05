@@ -31,6 +31,13 @@ _INVARIANT_FAILURE_REASONS = {
     "REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION",
     "refusal.system.invariant_violation",
 }
+_SYS_DEGRADE_ORDER = (
+    "degrade.system.expand_cap",
+    "degrade.system.defer_noncritical_expand",
+    "degrade.system.force_macro_failsafe_on_expand_denied",
+    "degrade.system.inspect_refusal_when_expand_denied",
+    "degrade.system.keep_invariant_checks_mandatory",
+)
 
 
 def _read_json(path: str) -> dict:
@@ -151,6 +158,66 @@ def _proof_hash_summary(state: Mapping[str, object]) -> dict:
         "forced_expand_event_hash_chain": str(state.get("forced_expand_event_hash_chain", "")).strip() or str(state.get("system_forced_expand_event_hash_chain", "")).strip(),
         "certification_hash_chain": str(state.get("certification_hash_chain", "")).strip() or cert_hash,
         "system_health_hash_chain": str(state.get("system_health_hash_chain", "")).strip(),
+    }
+
+
+def _degradation_signal_summary(state: Mapping[str, object], *, denied_expand_count: int, invariant_failure_count: int) -> dict:
+    decision_rows = [
+        dict(row)
+        for row in list(state.get("control_decision_log") or [])
+        if isinstance(row, Mapping)
+    ]
+    decision_rows = sorted(
+        decision_rows,
+        key=lambda row: (
+            int(max(0, _as_int(row.get("tick", 0), 0))),
+            str(row.get("decision_id", "")),
+        ),
+    )
+
+    expand_cap_events = 0
+    deferred_events = 0
+    inspection_refusals = 0
+    for row in decision_rows:
+        reason_code = str(row.get("reason_code", "")).strip().lower()
+        result = str(row.get("result", "")).strip().lower()
+        ext = _as_map(row.get("extensions"))
+        denied_by = str(ext.get("denied_by", "")).strip().lower()
+        priority_class = str(ext.get("priority_class", "")).strip().lower()
+        if ("tier_budget_denied" in reason_code) and (denied_by == "budget.expand_cap"):
+            expand_cap_events += 1
+        if result in {"deferred", "degraded"}:
+            deferred_events += 1
+        if (result == "denied") and (priority_class == "inspection"):
+            inspection_refusals += 1
+
+    safe_fallback_rows = [
+        dict(row)
+        for row in list(state.get("system_reliability_safe_fallback_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    forced_failsafe_events = int(len(safe_fallback_rows))
+
+    flags = {
+        "degrade.system.expand_cap": bool(expand_cap_events > 0 or denied_expand_count <= 0),
+        "degrade.system.defer_noncritical_expand": bool(deferred_events > 0),
+        "degrade.system.force_macro_failsafe_on_expand_denied": bool(forced_failsafe_events > 0 or denied_expand_count <= 0),
+        "degrade.system.inspect_refusal_when_expand_denied": bool(inspection_refusals > 0 or denied_expand_count <= 0),
+        "degrade.system.keep_invariant_checks_mandatory": bool(invariant_failure_count == 0),
+    }
+    observed_order = [
+        token
+        for token in _SYS_DEGRADE_ORDER
+        if bool(flags.get(token))
+    ]
+    return {
+        "decision_log_rows_scanned": int(len(decision_rows)),
+        "expand_cap_events": int(expand_cap_events),
+        "deferred_events": int(deferred_events),
+        "forced_failsafe_events": int(forced_failsafe_events),
+        "inspection_refusals": int(inspection_refusals),
+        "flags": dict(flags),
+        "observed_order": observed_order,
     }
 
 
@@ -357,6 +424,13 @@ def run_sys_stress(
         prev_collapse, prev_expand, prev_forced, prev_macro = collapse_now, expand_now, forced_now, macro_now
 
     proof_hash_summary = _proof_hash_summary(state)
+    denied_expand_total = int(sum(int(_as_int(item, 0)) for item in list(metrics.get("denied_expand_count_per_tick") or [])))
+    invariant_failure_total = int(sum(int(_as_int(item, 0)) for item in list(metrics.get("invariant_check_failures_per_tick") or [])))
+    degradation_summary = _degradation_signal_summary(
+        state,
+        denied_expand_count=denied_expand_total,
+        invariant_failure_count=invariant_failure_total,
+    )
     deterministic_ordering = bool(
         _is_sorted(
             state.get("system_tier_change_event_rows"),
@@ -375,6 +449,7 @@ def run_sys_stress(
     )
     no_silent_transitions = bool(_no_silent_transition(state))
     invariants_preserved = bool(sum(metrics["invariant_check_failures_per_tick"]) == 0)
+    degrade_policy_logged = bool(all(bool(value) for value in dict(degradation_summary.get("flags") or {}).values()))
     from tools.system.tool_replay_sys_window import verify_sys_replay_window
     replay_report = verify_sys_replay_window(state_payload=state, expected_payload=copy.deepcopy(state))
     stable_replay_hashes = bool(str(replay_report.get("result", "")).strip() == "complete")
@@ -384,9 +459,11 @@ def run_sys_stress(
         "bounded_expands_per_tick": bounded_expands,
         "no_silent_transitions": no_silent_transitions,
         "invariants_preserved_roundtrip": invariants_preserved,
+        "degrade_policy_logged": degrade_policy_logged,
         "stable_replay_hashes": stable_replay_hashes,
     }
     metrics["proof_hash_summary"] = dict(proof_hash_summary)
+    metrics["degradation_signal_summary"] = dict(degradation_summary)
 
     report = {
         "schema_version": "1.0.0",
@@ -396,13 +473,7 @@ def run_sys_stress(
         "metrics": metrics,
         "assertions": assertions,
         "extensions": {
-            "degradation_policy_order": [
-                "degrade.system.expand_cap",
-                "degrade.system.defer_noncritical_expand",
-                "degrade.system.force_macro_failsafe_on_expand_denied",
-                "degrade.system.inspect_refusal_when_expand_denied",
-                "degrade.system.keep_invariant_checks_mandatory",
-            ],
+            "degradation_policy_order": list(_SYS_DEGRADE_ORDER),
             "replay_report": replay_report,
             "final_state_snapshot": dict(state),
         },
@@ -477,4 +548,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
