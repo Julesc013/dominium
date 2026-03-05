@@ -178,6 +178,18 @@ def expand_system_graph(
             reason_code=REFUSAL_SYSTEM_EXPAND_INVALID,
             details={"system_id": system_id},
         )
+    interface_row = dict(interface_by_system.get(system_id) or {})
+    if str(capsule_row.get("interface_signature_id", "")).strip() != str(interface_row.get("interface_signature_id", "")).strip():
+        raise SystemExpandError(
+            "restored system interface signature mismatch against capsule snapshot",
+            reason_code=REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE,
+            details={
+                "system_id": system_id,
+                "capsule_id": capsule_token,
+                "capsule_interface_signature_id": str(capsule_row.get("interface_signature_id", "")).strip(),
+                "current_interface_signature_id": str(interface_row.get("interface_signature_id", "")).strip(),
+            },
+        )
 
     state_vector_by_id = _state_vector_rows_by_id(state.get("system_state_vector_rows") or [])
     state_vector_row = _state_vector_for_capsule(

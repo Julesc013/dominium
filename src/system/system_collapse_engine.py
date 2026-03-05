@@ -346,6 +346,7 @@ def _collapse_eligibility_details(system_row: Mapping[str, object] | None) -> di
     return {
         "unresolved_hazard_count": int(max(0, _as_int(row.get("unresolved_hazard_count", ext.get("unresolved_hazard_count", 0)), 0))),
         "pending_internal_event_count": int(max(0, _as_int(row.get("pending_internal_event_count", ext.get("pending_internal_event_count", 0)), 0))),
+        "open_scheduled_task_count": int(max(0, _as_int(row.get("open_scheduled_task_count", ext.get("open_scheduled_task_count", 0)), 0))),
         "open_branch_dependency_count": int(max(0, _as_int(row.get("open_branch_dependency_count", ext.get("open_branch_dependency_count", 0)), 0))),
     }
 
@@ -366,6 +367,12 @@ def _validate_collapse_eligibility(
     if int(details.get("pending_internal_event_count", 0)) > 0:
         raise SystemCollapseError(
             "system has pending internal events and cannot collapse",
+            reason_code=REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
+            details=dict(details),
+        )
+    if int(details.get("open_scheduled_task_count", 0)) > 0:
+        raise SystemCollapseError(
+            "system has open scheduled internal tasks and cannot collapse",
             reason_code=REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
             details=dict(details),
         )

@@ -752,6 +752,26 @@
         "extensions": {
           "source": "SYS2-4"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_tier_transition_refusal",
+        "event_kind_id": "system.tier_transition_refusal",
+        "explain_artifact_type_id": "artifact.explain.system_tier_transition_refusal",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.tier_summary",
+          "section.system.boundary_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.raise.ctrl.fidelity_request",
+          "hint.resolve.system_transition_preconditions"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS3-3"
+        }
       }
     ],
     "extensions": {
