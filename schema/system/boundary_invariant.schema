@@ -1,6 +1,6 @@
 SCHEMA: system/boundary_invariant.schema
 schema_id: dominium.schema.system.boundary_invariant
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -14,7 +14,10 @@ REQUIRED SHAPE:
 record boundary_invariant
   required:
     - invariant_id: id
+    - invariant_kind: enum(mass|energy|momentum|pollution|safety)
     - quantity_ids: list
     - tolerance_policy_id: id
+    - boundary_flux_allowed: bool
+    - ledger_transform_required: bool
     - deterministic_fingerprint: text
     - extensions: map

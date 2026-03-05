@@ -1,6 +1,6 @@
 SCHEMA: system/macro_capsule.schema
 schema_id: dominium.schema.system.macro_capsule
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -15,6 +15,8 @@ record macro_capsule
     - capsule_id: id
     - system_id: id
     - interface_signature_id: id
+    - macro_model_set_id: id
+    - model_error_bounds_ref: id
     - macro_model_bindings: list
     - internal_state_vector: map
     - provenance_anchor_hash: text

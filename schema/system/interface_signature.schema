@@ -1,6 +1,6 @@
 SCHEMA: system/interface_signature.schema
 schema_id: dominium.schema.system.interface_signature
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -16,7 +16,26 @@ record interface_signature
   required:
     - system_id: id
     - port_list: list
+    - signal_descriptors: list
     - signal_channels: list
     - spec_limits: map
+    - spec_compliance_ref: id
     - deterministic_fingerprint: text
     - extensions: map
+
+PORT DESCRIPTOR SHAPE:
+record port_descriptor
+  required:
+    - port_id: id
+    - port_type_id: id
+    - direction: enum(in|out|bidir)
+    - allowed_bundle_ids: list
+    - spec_limit_refs: list
+
+SIGNAL DESCRIPTOR SHAPE:
+record signal_descriptor
+  required:
+    - channel_type_id: id
+    - capacity: int
+    - delay: int
+    - access_policy_id: id
