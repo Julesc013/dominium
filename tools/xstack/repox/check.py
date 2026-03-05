@@ -445,6 +445,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-SPEC-CHECK-THROUGH-CERT-ENGINE",
     "INV-NO-SILENT-CERT-ISSUE",
     "INV-CERT-INVALIDATED-ON-MODIFICATION",
+    "INV-EXPLAIN-CONTRACT-REQUIRED-FOR-SYSTEM-EVENTS",
+    "INV-FORENSICS-DERIVED-ONLY",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -766,6 +768,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E270_UNLOGGED_CERTIFICATE_ISSUE_SMELL": "INV-NO-SILENT-CERT-ISSUE",
     "E271_HIDDEN_FAILURE_LOGIC_SMELL": "INV-SYSTEM-RELIABILITY-PROFILE-DECLARED",
     "E272_UNLOGGED_SHUTDOWN_SMELL": "INV-NO-SILENT-FAILURE",
+    "E273_MISSING_SYSTEM_EXPLAIN_CONTRACT_SMELL": "INV-EXPLAIN-CONTRACT-REQUIRED-FOR-SYSTEM-EVENTS",
+    "E274_OMNISCIENT_EXPLAIN_LEAK_SMELL": "INV-FORENSICS-DERIVED-ONLY",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -18708,6 +18712,213 @@ def _append_system_reliability_invariant_findings(
                 break
 
 
+def _append_system_forensics_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    contract_rule_id = "INV-EXPLAIN-CONTRACT-REQUIRED-FOR-SYSTEM-EVENTS"
+    derived_rule_id = "INV-FORENSICS-DERIVED-ONLY"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    forensics_engine_rel = "src/system/forensics/system_forensics_engine.py"
+    process_registry_rel = "data/registries/process_registry.json"
+    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    provenance_registry_rel = "data/registries/provenance_classification_registry.json"
+    replay_tool_rel = "tools/system/tool_verify_explain_determinism.py"
+    required_paths = (
+        "docs/system/SYSTEM_FORENSICS_MODEL.md",
+        "schema/system/system_explain_request.schema",
+        "schema/system/system_explain_artifact.schema",
+        "schema/system/cause_entry.schema",
+        forensics_engine_rel,
+        runtime_rel,
+        replay_tool_rel,
+        explain_registry_rel,
+        process_registry_rel,
+        provenance_registry_rel,
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        rule_id = contract_rule_id
+        if rel_path in {provenance_registry_rel, replay_tool_rel}:
+            rule_id = derived_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-7 forensics baseline artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, message, rule_id in (
+        ('elif process_id == "process.system_generate_explain":', "runtime must expose process.system_generate_explain", contract_rule_id),
+        ("evaluate_system_explain_request(", "runtime must evaluate SYS-7 explain requests through deterministic forensics engine", contract_rule_id),
+        ("_append_system_forensics_explain_requests(", "runtime must support auto-generated SYS-7 explain requests from system events", contract_rule_id),
+        ("system_explain_hash_chain", "runtime must persist system_explain_hash_chain", derived_rule_id),
+        ("system_explain_cache_hash_chain", "runtime must persist system_explain_cache_hash_chain", derived_rule_id),
+        ("artifact.report.system_forensics_explain", "runtime must emit derived forensics report artifacts", derived_rule_id),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    process_registry_text = _file_text(repo_root, process_registry_rel)
+    for token, message, rule_id in (
+        ('"process_id": "process.system_generate_explain"', "process registry must declare process.system_generate_explain", contract_rule_id),
+        ("dominium.schema.system.system_explain_request@1.0.0", "process registry must link SYS-7 request schema", contract_rule_id),
+        ("dominium.schema.system.system_explain_artifact@1.0.0", "process registry must link SYS-7 artifact schema", contract_rule_id),
+    ):
+        if token in process_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    explain_registry_text = _file_text(repo_root, explain_registry_rel)
+    for token in (
+        '"contract_id": "explain.system_forced_expand"',
+        '"contract_id": "explain.system_failure"',
+        '"contract_id": "explain.system_safety_shutdown"',
+        '"contract_id": "explain.system.certificate_revocation"',
+        '"contract_id": "explain.system_capsule_error_bound_exceeded"',
+    ):
+        if token in explain_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS-7 explain contract declaration is missing",
+                rule_id=contract_rule_id,
+            )
+        )
+
+    provenance_payload, provenance_err = _load_json_object(repo_root, provenance_registry_rel)
+    provenance_rows = list((dict(provenance_payload.get("record") or {})).get("provenance_classifications") or [])
+    forensics_row = {}
+    if not provenance_err:
+        for row in provenance_rows:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("artifact_type_id", "")).strip() != "artifact.report.system_forensics_explain":
+                continue
+            forensics_row = dict(row)
+            break
+    if provenance_err or not forensics_row:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=provenance_registry_rel,
+                line_number=1,
+                snippet="artifact.report.system_forensics_explain",
+                message="provenance registry must classify system forensics explain artifact",
+                rule_id=derived_rule_id,
+            )
+        )
+    else:
+        if str(forensics_row.get("classification", "")).strip().lower() != "derived":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=provenance_registry_rel,
+                    line_number=1,
+                    snippet="classification",
+                    message="system forensics explain artifact must be classified as derived",
+                    rule_id=derived_rule_id,
+                )
+            )
+        if bool(forensics_row.get("compaction_allowed", False)) is not True:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=provenance_registry_rel,
+                    line_number=1,
+                    snippet="compaction_allowed",
+                    message="system forensics explain artifact must be compactable",
+                    rule_id=derived_rule_id,
+                )
+            )
+
+    replay_tool_text = _file_text(repo_root, replay_tool_rel)
+    for token, message in (
+        ("verify_explain_determinism(", "SYS-7 replay tool must expose deterministic explain verifier"),
+        ("system_explain_hash_chain", "SYS-7 replay tool must validate system_explain_hash_chain"),
+        ("system_explain_cache_hash_chain", "SYS-7 replay tool must validate system_explain_cache_hash_chain"),
+    ):
+        if token in replay_tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_tool_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=derived_rule_id,
+            )
+        )
+
+    direct_forensics_write_pattern = re.compile(
+        r"\b(?:system_explain_artifact_rows|system_explain_cache_rows|system_explain_request_rows)\b.*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/system/", "tools/xstack/sessionx/")
+    skip_prefixes = ("docs/", "schema/", "schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    allowed_write_paths = {
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if rel_norm not in allowed_write_paths and direct_forensics_write_pattern.search(snippet):
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_norm,
+                        line_number=line_no,
+                        snippet=snippet[:140],
+                        message="direct SYS-7 forensics row mutation detected outside canonical runtime process pathway",
+                        rule_id=derived_rule_id,
+                    )
+                )
+                break
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -21118,6 +21329,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_reliability_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_forensics_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

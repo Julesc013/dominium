@@ -296,6 +296,8 @@ from analyzers import e269_direct_spec_bypass_smell
 from analyzers import e270_unlogged_certificate_issue_smell
 from analyzers import e271_hidden_failure_logic_smell
 from analyzers import e272_unlogged_shutdown_smell
+from analyzers import e273_missing_system_explain_contract_smell
+from analyzers import e274_omniscient_explain_leak_smell
 
 
 ANALYZERS = (
@@ -595,6 +597,8 @@ ANALYZERS = (
     e270_unlogged_certificate_issue_smell,
     e271_hidden_failure_logic_smell,
     e272_unlogged_shutdown_smell,
+    e273_missing_system_explain_contract_smell,
+    e274_omniscient_explain_leak_smell,
 )
 
 
