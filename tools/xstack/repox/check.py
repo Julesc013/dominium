@@ -409,7 +409,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FLUID-BUDGETED",
     "INV-FLUID-DEGRADE-LOGGED",
     "INV-POLLUTION-EMIT-THROUGH-PROCESS",
+    "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS",
     "INV-NO-DIRECT-POLLUTION-FIELD-WRITES",
+    "INV-NO-DIRECT-CONCENTRATION-WRITE",
     "INV-POLLUTANT-TYPE-REGISTERED",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
@@ -713,6 +715,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E241_MISSING_COMPACTION_MARKER_SMELL": "INV-COMPACTION-MARKER-REQUIRED",
     "E250_DIRECT_SMOKE_VISUAL_HACK_SMELL": "INV-NO-DIRECT-POLLUTION-FIELD-WRITES",
     "E251_UNREGISTERED_POLLUTANT_SMELL": "INV-POLLUTANT-TYPE-REGISTERED",
+    "E252_DIRECT_CONCENTRATION_WRITE_SMELL": "INV-NO-DIRECT-CONCENTRATION-WRITE",
+    "E253_UNBOUNDED_CELL_LOOP_SMELL": "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -16446,7 +16450,8 @@ def _append_pollution_constitution_invariant_findings(
 ) -> None:
     severity = _strict_only_severity(profile)
     process_rule_id = "INV-POLLUTION-EMIT-THROUGH-PROCESS"
-    field_rule_id = "INV-NO-DIRECT-POLLUTION-FIELD-WRITES"
+    field_update_rule_id = "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS"
+    concentration_rule_id = "INV-NO-DIRECT-CONCENTRATION-WRITE"
     registry_rule_id = "INV-POLLUTANT-TYPE-REGISTERED"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
@@ -16496,6 +16501,19 @@ def _append_pollution_constitution_invariant_findings(
                 rule_id=process_rule_id,
             )
         )
+    for required_process_id in ("process.pollution_dispersion_tick", "process.field_update"):
+        if required_process_id in declared_process_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=required_process_id,
+                message="pollution dispersion field updates must be process-mediated via process.pollution_dispersion_tick and process.field_update",
+                rule_id=field_update_rule_id,
+            )
+        )
 
     runtime_text = _file_text(repo_root, runtime_rel)
     for token in (
@@ -16513,6 +16531,23 @@ def _append_pollution_constitution_invariant_findings(
                 snippet=token,
                 message="pollution emission path must stay process-mediated with registered pollutant validation",
                 rule_id=process_rule_id,
+            )
+        )
+    for token in (
+        'elif process_id == "process.pollution_dispersion_tick":',
+        "_apply_field_updates(",
+        "requested_updates=list(dispersion_eval.get(\"field_updates\") or [])",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="pollution concentration field mutations must flow through process.field_update discipline",
+                rule_id=field_update_rule_id,
             )
         )
 
@@ -16595,7 +16630,7 @@ def _append_pollution_constitution_invariant_findings(
                     line_number=line_no,
                     snippet=snippet[:140],
                     message="direct pollution concentration field writes are forbidden outside process/model pathways",
-                    rule_id=field_rule_id,
+                    rule_id=concentration_rule_id,
                 )
             )
             break

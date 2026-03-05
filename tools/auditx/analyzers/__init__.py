@@ -275,6 +275,8 @@ from analyzers import e248_silent_reaction_smell
 from analyzers import e249_unbudgeted_reaction_loop_smell
 from analyzers import e250_direct_smoke_visual_hack_smell
 from analyzers import e251_unregistered_pollutant_smell
+from analyzers import e252_direct_concentration_write_smell
+from analyzers import e253_unbounded_cell_loop_smell
 
 
 ANALYZERS = (
@@ -553,6 +555,8 @@ ANALYZERS = (
     e249_unbudgeted_reaction_loop_smell,
     e250_direct_smoke_visual_hack_smell,
     e251_unregistered_pollutant_smell,
+    e252_direct_concentration_write_smell,
+    e253_unbounded_cell_loop_smell,
 )
 
 
