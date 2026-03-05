@@ -772,6 +772,46 @@
         "extensions": {
           "source": "SYS3-3"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system.certification_failure",
+        "event_kind_id": "system.certification_failure",
+        "explain_artifact_type_id": "artifact.explain.system_certification_failure",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.report",
+          "section.system.compliance_status"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.review.spec_and_safety",
+          "hint.repair.degradation"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system.certificate_revocation",
+        "event_kind_id": "system.certificate_revocation",
+        "explain_artifact_type_id": "artifact.explain.system_certificate_revocation",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.certifications",
+          "section.system.compliance_status"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.resolve.spec_or_safety_issue",
+          "hint.request.recertification"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
+        }
       }
     ],
     "extensions": {

@@ -243,6 +243,26 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_certification_failure",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_certificate_revocation",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.therm_overheat",
         "classification": "derived",
         "compaction_allowed": true,
@@ -457,6 +477,46 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "SYS3-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.system_certification_result",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.system_certificate_revocation",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.report.system_certification_result",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.credential.system_certificate",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS5-6"
         }
       },
       {
