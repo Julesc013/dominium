@@ -203,6 +203,36 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_forced_expand",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_safety_shutdown",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_output_degradation",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.therm_overheat",
         "classification": "derived",
         "compaction_allowed": true,
@@ -397,6 +427,26 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "POLL0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.system_forced_expand",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.observation.system_macro_output",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-6"
         }
       },
       {
