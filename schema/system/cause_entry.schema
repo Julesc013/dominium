@@ -1,0 +1,21 @@
+SCHEMA: system/cause_entry.schema
+schema_id: dominium.schema.system.cause_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic cause entry rows used by SYS-7 bounded cause chains.
+
+NON-SEMANTICS:
+- No direct process mutation authority.
+- No implicit severity policy beyond explicit ranking.
+
+REQUIRED SHAPE:
+record cause_entry
+  required:
+    - entry_kind: enum(hazard|fault|ledger|spec|safety|model|signal)
+    - entry_id: id
+    - severity: int
+    - tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

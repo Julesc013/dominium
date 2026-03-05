@@ -1,0 +1,30 @@
+SCHEMA: system/system_explain_artifact.schema
+schema_id: dominium.schema.system.system_explain_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare derived SYS-7 system-level explain artifact shape for deterministic forensics output.
+- Provide bounded cause chain output for diegetic and institutional explain surfaces.
+
+INFO FAMILY:
+- REPORT (derived, compactable)
+
+NON-SEMANTICS:
+- No canonical truth mutation.
+- No omniscient disclosure by default.
+
+REQUIRED SHAPE:
+record system_explain_artifact
+  required:
+    - explain_id: id
+    - system_id: id
+    - explain_level: enum(L1|L2|L3)
+    - primary_cause: text
+    - cause_chain: list
+    - referenced_event_ids: list
+    - referenced_specs: list
+    - remediation_hints: list
+    - epistemic_redaction_level: text
+    - deterministic_fingerprint: text
+    - extensions: map
