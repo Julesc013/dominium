@@ -4489,6 +4489,59 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.pollution.smoke_particulate_concentration",
+        "field.pollution.co2_stub_concentration",
+        "field.pollution.toxic_gas_stub_concentration",
+        "field.pollution.oil_spill_stub_concentration"
+      ],
+      "deprecated": false,
+      "description": "Canonical POLL-2 compliance reporting tick; computes observed statistics, emits REPORT artifacts, and dispatches institutional reports through SIG.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "epistemic-gated"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.pollution_compliance_tick)",
+        "source": "POLL2-5",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Pollution Compliance Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "observed_statistic",
+          "ref_id": "dominium.schema.pollution.compliance_report@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "pollution_compliance_report",
+          "ref_id": "dominium.schema.pollution.compliance_report@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "institution_report_artifact",
+          "ref_id": "dominium.info.REPORT",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.pollution_compliance_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",

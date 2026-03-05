@@ -478,6 +478,7 @@ from src.signals import (
     normalize_transport_queue_rows,
     process_signal_jam_start,
     process_signal_jam_stop,
+    process_signal_send,
     tick_signal_transport,
 )
 from src.safety import (
@@ -539,9 +540,12 @@ from src.pollution import (
     build_health_risk_event_row,
     build_pollution_measurement_row,
     build_pollution_total_row,
+    build_pollution_compliance_report_row,
     evaluate_pollution_exposure_tick,
     exposure_threshold_rows_by_pollutant,
+    evaluate_pollution_compliance_tick,
     evaluate_pollution_dispersion,
+    normalize_pollution_compliance_report_rows,
     normalize_pollution_measurement_rows,
     normalize_pollution_deposition_rows,
     normalize_pollution_dispersion_step_rows,
@@ -750,6 +754,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.pollution_emit": "session.boot",
     "process.pollution_dispersion_tick": "session.boot",
     "process.pollution_measure": "entitlement.tool.use",
+    "process.pollution_compliance_tick": "session.boot",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -934,6 +939,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.pollution_emit": "observer",
     "process.pollution_dispersion_tick": "observer",
     "process.pollution_measure": "operator",
+    "process.pollution_compliance_tick": "observer",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -1044,6 +1050,7 @@ CONTROL_PROCESS_IDS = {
     "process.pollution_emit",
     "process.pollution_dispersion_tick",
     "process.pollution_measure",
+    "process.pollution_compliance_tick",
     "process.degradation_tick",
 }
 CIV_PROCESS_IDS = {
@@ -10937,6 +10944,15 @@ def _ensure_pollution_measurement_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_pollution_compliance_report_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_compliance_report_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_pollution_compliance_report_rows(rows)
+    state["pollution_compliance_report_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
 def _ensure_knowledge_receipt_rows(state: dict) -> List[dict]:
     rows = state.get("knowledge_receipt_rows")
     if not isinstance(rows, list):
@@ -11001,6 +11017,7 @@ def _refresh_pollution_hash_chains(state: dict) -> None:
     exposure_increment_rows = _ensure_pollution_exposure_increment_rows(state)
     health_risk_event_rows = _ensure_pollution_health_risk_event_rows(state)
     measurement_rows = _ensure_pollution_measurement_rows(state)
+    compliance_report_rows = _ensure_pollution_compliance_report_rows(state)
     degrade_rows = _ensure_pollution_dispersion_degrade_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     state["pollution_source_hash_chain"] = canonical_sha256(
@@ -11125,6 +11142,42 @@ def _refresh_pollution_hash_chains(state: dict) -> None:
                 key=lambda item: (
                     int(max(0, _as_int(item.get("tick", 0), 0))),
                     str(item.get("measurement_id", "")),
+                ),
+            )
+        ]
+    )
+    state["pollution_compliance_report_hash_chain"] = canonical_sha256(
+        [
+            {
+                "report_id": str(row.get("report_id", "")).strip(),
+                "region_id": str(row.get("region_id", "")).strip(),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "observed_statistic": str(row.get("observed_statistic", "")).strip(),
+                "threshold": int(max(0, _as_int(row.get("threshold", 0), 0))),
+                "status": str(row.get("status", "")).strip(),
+                "start_tick": int(
+                    max(
+                        0,
+                        _as_int(
+                            dict(row.get("tick_range") or {}).get("start_tick", 0), 0
+                        ),
+                    )
+                ),
+                "end_tick": int(
+                    max(
+                        0,
+                        _as_int(
+                            dict(row.get("tick_range") or {}).get("end_tick", 0), 0
+                        ),
+                    )
+                ),
+            }
+            for row in sorted(
+                (dict(item) for item in list(compliance_report_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("region_id", "")),
+                    str(item.get("pollutant_id", "")),
+                    str(item.get("report_id", "")),
                 ),
             )
         ]
@@ -28732,6 +28785,296 @@ def execute_intent(
                 "spatial_scope_id": spatial_scope_id,
                 "measured_concentration": int(sampled_concentration),
                 "pollution_measurement_hash_chain": str(state.get("pollution_measurement_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.pollution_compliance_tick":
+        pollutant_types_by_id = _pollutant_types_by_id(
+            _load_pollutant_type_registry(policy_context=policy_context)
+        )
+        if not pollutant_types_by_id:
+            _refresh_pollution_hash_chains(state)
+            result_metadata = {
+                "compliance_report_count": 0,
+                "note": "no_pollutant_types_registered",
+                "pollution_compliance_report_hash_chain": str(
+                    state.get("pollution_compliance_report_hash_chain", "")
+                ).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            threshold_rows_by_pollutant = exposure_threshold_rows_by_pollutant(
+                _load_exposure_threshold_registry(policy_context=policy_context)
+            )
+            observed_statistic = str(
+                inputs.get("observed_statistic", "avg")
+            ).strip() or "avg"
+            region_cell_map = (
+                dict(inputs.get("region_cell_map") or {})
+                if isinstance(inputs.get("region_cell_map"), Mapping)
+                else {}
+            )
+            if (not region_cell_map) and isinstance(inputs.get("region_ids"), list):
+                region_cell_map = dict(
+                    (
+                        str(region_id).strip(),
+                        [str(region_id).strip()],
+                    )
+                    for region_id in list(inputs.get("region_ids") or [])
+                    if str(region_id).strip()
+                )
+            compliance_eval = evaluate_pollution_compliance_tick(
+                current_tick=int(current_tick),
+                pollutant_types_by_id=pollutant_types_by_id,
+                exposure_thresholds_by_pollutant=threshold_rows_by_pollutant,
+                field_cell_rows=state.get("field_cells"),
+                observed_statistic=observed_statistic,
+                region_cell_map=region_cell_map,
+            )
+            state["pollution_compliance_report_rows"] = normalize_pollution_compliance_report_rows(
+                list(state.get("pollution_compliance_report_rows") or [])
+                + [
+                    dict(row)
+                    for row in list(compliance_eval.get("compliance_report_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+            )
+
+            report_rows = [
+                dict(row)
+                for row in list(compliance_eval.get("compliance_report_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            info_artifact_rows = [
+                dict(row)
+                for row in normalize_info_artifact_rows(
+                    list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                    + [
+                        {
+                            "artifact_id": "artifact.report.pollution_compliance.{}".format(
+                                canonical_sha256(
+                                    {"report_id": str(report_row.get("report_id", "")).strip()}
+                                )[:16]
+                            ),
+                            "artifact_family_id": "REPORT",
+                            "extensions": {
+                                "artifact_type_id": "artifact.pollution.compliance_report",
+                                "report_id": str(report_row.get("report_id", "")).strip(),
+                                "region_id": str(report_row.get("region_id", "")).strip(),
+                                "pollutant_id": str(report_row.get("pollutant_id", "")).strip(),
+                                "observed_statistic": str(report_row.get("observed_statistic", "")).strip(),
+                                "threshold": int(max(0, _as_int(report_row.get("threshold", 0), 0))),
+                                "status": str(report_row.get("status", "")).strip(),
+                                "tick_range": dict(report_row.get("tick_range") or {}),
+                                "standards_policy_id": str(
+                                    inputs.get("standards_policy_id", "standards.policy.pollution_stub")
+                                ).strip()
+                                or "standards.policy.pollution_stub",
+                                "institution_id": str(
+                                    inputs.get("institution_id", "institution.pollution.default")
+                                ).strip()
+                                or "institution.pollution.default",
+                            },
+                        }
+                        for report_row in report_rows
+                    ]
+                )
+            ]
+            state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+            state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+            signal_channel_rows = normalize_signal_channel_rows(
+                state.get("signal_channel_rows") or state.get("signal_channels") or []
+            )
+            channel_by_id = dict(
+                (
+                    str(row.get("channel_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(signal_channel_rows or [])
+                if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+            )
+            dispatch_channel_id = str(
+                inputs.get("channel_id", "channel.local_institutional")
+            ).strip() or "channel.local_institutional"
+            from_node_id = str(
+                inputs.get("from_node_id", "node.pollution.compliance")
+            ).strip() or "node.pollution.compliance"
+            institution_id = str(
+                inputs.get("institution_id", "institution.pollution.default")
+            ).strip() or "institution.pollution.default"
+            decision_rows = [
+                dict(row)
+                for row in list(state.get("control_decision_log") or [])
+                if isinstance(row, Mapping)
+            ]
+            dispatched_envelope_ids: List[str] = []
+            skipped_dispatch = False
+            if dispatch_channel_id in channel_by_id:
+                for report_row in report_rows:
+                    report_id = str(report_row.get("report_id", "")).strip()
+                    artifact_id = "artifact.report.pollution_compliance.{}".format(
+                        canonical_sha256({"report_id": report_id})[:16]
+                    )
+                    try:
+                        send_result = process_signal_send(
+                            current_tick=int(max(0, _as_int(current_tick, 0))),
+                            channel_id=dispatch_channel_id,
+                            from_node_id=from_node_id,
+                            artifact_id=artifact_id,
+                            sender_subject_id=str(
+                                inputs.get("sender_subject_id", "subject.institution.pollution_office")
+                            ).strip()
+                            or "subject.institution.pollution_office",
+                            recipient_address={
+                                "kind": "group",
+                                "group_id": str(
+                                    inputs.get("recipient_group_id", "group.pollution.compliance")
+                                ).strip()
+                                or "group.pollution.compliance",
+                                "to_node_id": from_node_id,
+                            },
+                            signal_channel_rows=signal_channel_rows,
+                            signal_message_envelope_rows=state.get("signal_message_envelope_rows") or [],
+                            signal_transport_queue_rows=state.get("signal_transport_queue_rows") or [],
+                            info_artifact_rows=info_artifact_rows,
+                            group_membership_rows=state.get("group_membership_rows") or [],
+                            broadcast_scope_rows=state.get("broadcast_scope_rows") or [],
+                            decision_log_rows=decision_rows,
+                            envelope_extensions={
+                                "report_id": report_id,
+                                "institution_id": institution_id,
+                                "report_kind": "pollution_compliance",
+                            },
+                        )
+                        state["signal_message_envelope_rows"] = [
+                            dict(row)
+                            for row in list(send_result.get("signal_message_envelope_rows") or [])
+                            if isinstance(row, Mapping)
+                        ]
+                        state["signal_transport_queue_rows"] = [
+                            dict(row)
+                            for row in list(send_result.get("signal_transport_queue_rows") or [])
+                            if isinstance(row, Mapping)
+                        ]
+                        decision_rows = [
+                            dict(row)
+                            for row in list(send_result.get("decision_log_rows") or [])
+                            if isinstance(row, Mapping)
+                        ]
+                        envelope_id = str(
+                            dict(send_result.get("envelope_row") or {}).get("envelope_id", "")
+                        ).strip()
+                        if envelope_id:
+                            dispatched_envelope_ids.append(envelope_id)
+                    except SignalTransportError as exc:
+                        skipped_dispatch = True
+                        decision_rows.append(
+                            {
+                                "decision_id": "decision.pollution.compliance.dispatch_refusal.{}".format(
+                                    canonical_sha256(
+                                        {
+                                            "tick": int(max(0, _as_int(current_tick, 0))),
+                                            "report_id": report_id,
+                                            "reason_code": str(getattr(exc, "reason_code", "")),
+                                        }
+                                    )[:16]
+                                ),
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "process_id": process_id,
+                                "result": "refused",
+                                "reason_code": str(getattr(exc, "reason_code", "refusal.signal.invalid")),
+                                "extensions": {
+                                    "report_id": report_id,
+                                    "artifact_id": artifact_id,
+                                },
+                            }
+                        )
+            else:
+                skipped_dispatch = True
+                decision_rows.append(
+                    {
+                        "decision_id": "decision.pollution.compliance.no_channel.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(max(0, _as_int(current_tick, 0))),
+                                    "channel_id": dispatch_channel_id,
+                                }
+                            )[:16]
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "process_id": process_id,
+                        "result": "degraded",
+                        "reason_code": "degrade.pollution.compliance.no_signal_channel",
+                        "extensions": {
+                            "channel_id": dispatch_channel_id,
+                            "report_count": int(len(report_rows)),
+                        },
+                    }
+                )
+            if decision_rows:
+                state["control_decision_log"] = sorted(
+                    [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("decision_id", "")),
+                    ),
+                )
+
+            violation_rows: List[dict] = []
+            for report_row in list(report_rows or []):
+                if not isinstance(report_row, Mapping):
+                    continue
+                if str(report_row.get("status", "")).strip() != "violation":
+                    continue
+                row = {
+                    "schema_version": "1.0.0",
+                    "event_id": "event.pollution.compliance_violation.{}".format(
+                        canonical_sha256(
+                            {
+                                "report_id": str(report_row.get("report_id", "")).strip(),
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "report_id": str(report_row.get("report_id", "")).strip(),
+                    "region_id": str(report_row.get("region_id", "")).strip(),
+                    "pollutant_id": str(report_row.get("pollutant_id", "")).strip(),
+                    "status": str(report_row.get("status", "")).strip(),
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source_process_id": process_id,
+                    },
+                }
+                row["deterministic_fingerprint"] = canonical_sha256(
+                    dict(row, deterministic_fingerprint="")
+                )
+                violation_rows.append(row)
+            state["pollution_compliance_violation_rows"] = sorted(
+                [dict(row) for row in violation_rows if isinstance(row, Mapping)],
+                key=lambda row: (
+                    int(max(0, _as_int(row.get("tick", 0), 0))),
+                    str(row.get("event_id", "")),
+                ),
+            )
+
+            _refresh_pollution_hash_chains(state)
+            result_metadata = {
+                "compliance_report_count": int(len(report_rows)),
+                "violation_count": int(
+                    len(
+                        [
+                            row
+                            for row in report_rows
+                            if str(row.get("status", "")).strip() == "violation"
+                        ]
+                    )
+                ),
+                "dispatched_envelope_ids": _sorted_tokens(dispatched_envelope_ids),
+                "dispatch_skipped": bool(skipped_dispatch),
+                "pollution_compliance_report_hash_chain": str(
+                    state.get("pollution_compliance_report_hash_chain", "")
+                ).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

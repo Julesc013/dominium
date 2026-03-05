@@ -37,6 +37,11 @@ from src.pollution.measurement_engine import (
     pollution_sensor_type_rows_by_id,
     sample_pollution_measurement,
 )
+from src.pollution.compliance_engine import (
+    build_pollution_compliance_report_row,
+    evaluate_pollution_compliance_tick,
+    normalize_pollution_compliance_report_rows,
+)
 
 __all__ = [
     "REFUSAL_POLLUTION_INVALID",
@@ -68,4 +73,7 @@ __all__ = [
     "normalize_pollution_measurement_rows",
     "pollution_sensor_type_rows_by_id",
     "sample_pollution_measurement",
+    "build_pollution_compliance_report_row",
+    "evaluate_pollution_compliance_tick",
+    "normalize_pollution_compliance_report_rows",
 ]
