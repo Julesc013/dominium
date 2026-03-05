@@ -9,6 +9,22 @@ from src.pollution.pollution_engine import (
     normalize_pollution_total_rows,
     pollution_totals_by_key,
 )
+from src.pollution.dispersion_engine import (
+    REFUSAL_POLLUTION_DISPERSION_INVALID,
+    accumulate_pollution_exposure,
+    build_pollution_deposition_row,
+    build_pollution_dispersion_step_row,
+    build_pollution_exposure_state_row,
+    concentration_field_id_for_pollutant,
+    evaluate_pollution_dispersion,
+    normalize_pollution_deposition_rows,
+    normalize_pollution_dispersion_step_rows,
+    normalize_pollution_exposure_state_rows,
+    pollution_decay_models_by_id,
+    pollution_deposition_hash_chain,
+    pollution_exposure_rows_by_key,
+    pollution_field_hash_chain,
+)
 
 __all__ = [
     "REFUSAL_POLLUTION_INVALID",
@@ -18,4 +34,18 @@ __all__ = [
     "normalize_pollution_source_event_rows",
     "normalize_pollution_total_rows",
     "pollution_totals_by_key",
+    "REFUSAL_POLLUTION_DISPERSION_INVALID",
+    "accumulate_pollution_exposure",
+    "build_pollution_deposition_row",
+    "build_pollution_dispersion_step_row",
+    "build_pollution_exposure_state_row",
+    "concentration_field_id_for_pollutant",
+    "evaluate_pollution_dispersion",
+    "normalize_pollution_deposition_rows",
+    "normalize_pollution_dispersion_step_rows",
+    "normalize_pollution_exposure_state_rows",
+    "pollution_decay_models_by_id",
+    "pollution_deposition_hash_chain",
+    "pollution_exposure_rows_by_key",
+    "pollution_field_hash_chain",
 ]

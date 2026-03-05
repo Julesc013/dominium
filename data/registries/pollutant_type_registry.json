@@ -14,7 +14,10 @@
         "default_dispersion_policy_id": "poll.policy.coarse_diffuse",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "POLL0"
+          "source": "POLL0",
+          "concentration_field_id": "field.pollution.smoke_particulate_concentration",
+          "diffusion_coeff_permille": 180,
+          "wind_bias_permille": 120
         }
       },
       {
@@ -27,7 +30,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "stub": true,
-          "source": "POLL0"
+          "source": "POLL0",
+          "concentration_field_id": "field.pollution.co2_stub_concentration",
+          "diffusion_coeff_permille": 220,
+          "wind_bias_permille": 90
         }
       },
       {
@@ -40,7 +46,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "stub": true,
-          "source": "POLL0"
+          "source": "POLL0",
+          "concentration_field_id": "field.pollution.toxic_gas_stub_concentration",
+          "diffusion_coeff_permille": 140,
+          "wind_bias_permille": 140
         }
       },
       {
@@ -53,7 +62,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "stub": true,
-          "source": "POLL0"
+          "source": "POLL0",
+          "concentration_field_id": "field.pollution.oil_spill_stub_concentration",
+          "diffusion_coeff_permille": 60,
+          "wind_bias_permille": 30
         }
       }
     ],

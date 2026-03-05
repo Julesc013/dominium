@@ -9,9 +9,44 @@
       "model.poll_decay_half_life_stub",
       "model.poll_deposition_stub"
     ],
+    "decay_models": [
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.poll_decay_none",
+        "kind": "none",
+        "half_life_ticks": 1,
+        "deposition_permille": 0,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.poll_decay_half_life_stub",
+        "kind": "half_life",
+        "half_life_ticks": 16,
+        "deposition_permille": 0,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.poll_deposition_stub",
+        "kind": "deposition",
+        "half_life_ticks": 1,
+        "deposition_permille": 120,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL1-3"
+        }
+      }
+    ],
     "extensions": {
       "source": "POLL0-2",
-      "ids_only": true
+      "ids_only": false
     }
   }
 }

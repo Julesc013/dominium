@@ -25,7 +25,9 @@
         "wind_modifier_enabled": true,
         "deterministic_fingerprint": "",
         "extensions": {
-          "dispersion_kind": "coarse_proxy"
+          "dispersion_kind": "coarse_proxy",
+          "max_cell_updates_per_tick": 256,
+          "degrade_policy_id": "degrade.pollution.bucketed"
         }
       },
       {
@@ -37,7 +39,9 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "dispersion_kind": "coarse_proxy",
-          "strict_logging": true
+          "strict_logging": true,
+          "max_cell_updates_per_tick": 128,
+          "degrade_policy_id": "degrade.pollution.bucketed"
         }
       }
     ],

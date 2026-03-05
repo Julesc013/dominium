@@ -531,10 +531,23 @@ from src.physics import (
     velocity_from_momentum_state,
 )
 from src.pollution import (
+    accumulate_pollution_exposure,
+    concentration_field_id_for_pollutant,
     build_pollution_source_event,
+    build_pollution_deposition_row,
+    build_pollution_dispersion_step_row,
+    build_pollution_exposure_state_row,
     build_pollution_total_row,
+    evaluate_pollution_dispersion,
+    normalize_pollution_deposition_rows,
+    normalize_pollution_dispersion_step_rows,
+    normalize_pollution_exposure_state_rows,
     normalize_pollution_source_event_rows,
     normalize_pollution_total_rows,
+    pollution_decay_models_by_id,
+    pollution_deposition_hash_chain,
+    pollution_exposure_rows_by_key,
+    pollution_field_hash_chain,
     pollution_totals_by_key,
 )
 from src.meta.explain import (
@@ -728,6 +741,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.process_run_tick": "entitlement.tool.operating",
     "process.process_run_end": "entitlement.tool.operating",
     "process.pollution_emit": "session.boot",
+    "process.pollution_dispersion_tick": "session.boot",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -910,6 +924,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.process_run_tick": "operator",
     "process.process_run_end": "operator",
     "process.pollution_emit": "observer",
+    "process.pollution_dispersion_tick": "observer",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -1018,6 +1033,7 @@ CONTROL_PROCESS_IDS = {
     "process.process_run_tick",
     "process.process_run_end",
     "process.pollution_emit",
+    "process.pollution_dispersion_tick",
     "process.degradation_tick",
 }
 CIV_PROCESS_IDS = {
@@ -1105,6 +1121,7 @@ MECHANICS_PROCESS_IDS = {
 FIELD_PROCESS_IDS = {
     "process.field_tick",
     "process.field_update",
+    "process.pollution_dispersion_tick",
 }
 SAFETY_PROCESS_IDS = {
     "process.safety_tick",
@@ -5226,6 +5243,17 @@ def _pollution_field_policies_by_id(registry_payload: Mapping[str, object] | Non
             "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
         }
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _load_pollution_decay_model_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "pollution_decay_model_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/pollution_decay_model_registry.json",
+        default_payload={"record": {"decay_model_ids": []}},
+    )
 
 
 def _load_explain_contract_registry(*, policy_context: dict | None) -> dict:
@@ -10575,9 +10603,129 @@ def _ensure_pollution_total_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_pollution_dispersion_step_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_dispersion_step_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_pollution_dispersion_step_rows(rows)
+    state["pollution_dispersion_step_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_pollution_deposition_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_deposition_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_pollution_deposition_rows(rows)
+    state["pollution_deposition_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_pollution_exposure_state_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_exposure_state_rows")
+    if not isinstance(rows, list):
+        rows = state.get("pollution_exposure_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_pollution_exposure_state_rows(rows)
+    state["pollution_exposure_state_rows"] = [dict(row) for row in normalized]
+    state["pollution_exposure_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_pollution_exposure_increment_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_exposure_increment_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("subject_id", "")),
+            str(item.get("pollutant_id", "")),
+        ),
+    ):
+        subject_id = str(row.get("subject_id", "")).strip()
+        pollutant_id = str(row.get("pollutant_id", "")).strip()
+        cell_id = str(row.get("spatial_scope_id", row.get("cell_id", ""))).strip()
+        if (not subject_id) or (not pollutant_id) or (not cell_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "subject_id": subject_id,
+            "pollutant_id": pollutant_id,
+            "spatial_scope_id": cell_id,
+            "concentration": int(max(0, _as_int(row.get("concentration", 0), 0))),
+            "exposure_factor_permille": int(max(0, _as_int(row.get("exposure_factor_permille", 1000), 1000))),
+            "increment": int(max(0, _as_int(row.get("increment", 0), 0))),
+            "accumulated_exposure": int(max(0, _as_int(row.get("accumulated_exposure", 0), 0))),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        if not payload["deterministic_fingerprint"]:
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["pollution_exposure_increment_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_pollution_dispersion_processed_source_event_ids(state: dict) -> List[str]:
+    tokens = _sorted_tokens(list(state.get("pollution_dispersion_processed_source_event_ids") or []))
+    state["pollution_dispersion_processed_source_event_ids"] = list(tokens)
+    return list(tokens)
+
+
+def _ensure_pollution_dispersion_degrade_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_dispersion_degrade_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        tick = int(max(0, _as_int(row.get("tick", 0), 0)))
+        if not event_id:
+            event_id = "event.pollution.dispersion.degrade.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": tick,
+                        "degrade_reason": str(row.get("degrade_reason", "")).strip(),
+                        "deferred_cell_ids": _sorted_tokens(list(row.get("deferred_cell_ids") or [])),
+                    }
+                )[:16]
+            )
+        payload = {
+            "schema_version": "1.0.0",
+            "event_id": event_id,
+            "tick": tick,
+            "degrade_reason": str(row.get("degrade_reason", "")).strip() or "degrade.pollution.cell_budget",
+            "deferred_cell_ids": _sorted_tokens(list(row.get("deferred_cell_ids") or [])),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+        if not payload["deterministic_fingerprint"]:
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized.append(payload)
+    state["pollution_dispersion_degrade_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
 def _refresh_pollution_hash_chains(state: dict) -> None:
     source_rows = _ensure_pollution_source_event_rows(state)
     total_rows = _ensure_pollution_total_rows(state)
+    dispersion_rows = _ensure_pollution_dispersion_step_rows(state)
+    deposition_rows = _ensure_pollution_deposition_rows(state)
+    exposure_rows = _ensure_pollution_exposure_state_rows(state)
+    exposure_increment_rows = _ensure_pollution_exposure_increment_rows(state)
+    degrade_rows = _ensure_pollution_dispersion_degrade_rows(state)
+    _ensure_pollution_dispersion_processed_source_event_ids(state)
     state["pollution_source_hash_chain"] = canonical_sha256(
         [
             {
@@ -10597,6 +10745,95 @@ def _refresh_pollution_hash_chains(state: dict) -> None:
                 ),
             )
         ]
+    )
+    state["pollution_dispersion_hash_chain"] = canonical_sha256(
+        [
+            {
+                "step_id": str(row.get("step_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip(),
+                "concentration_before": int(max(0, _as_int(row.get("concentration_before", 0), 0))),
+                "concentration_after": int(max(0, _as_int(row.get("concentration_after", 0), 0))),
+                "injected_mass": int(max(0, _as_int(row.get("injected_mass", 0), 0))),
+                "diffusion_term": int(_as_int(row.get("diffusion_term", 0), 0)),
+                "decay_mass": int(max(0, _as_int(row.get("decay_mass", 0), 0))),
+                "deposition_mass": int(max(0, _as_int(row.get("deposition_mass", 0), 0))),
+                "policy_id": str(row.get("policy_id", "")).strip(),
+                "decay_model_id": str(row.get("decay_model_id", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(dispersion_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("pollutant_id", "")),
+                    str(item.get("spatial_scope_id", "")),
+                    str(item.get("step_id", "")),
+                ),
+            )
+        ]
+    )
+    state["pollution_deposition_hash_chain"] = pollution_deposition_hash_chain(deposition_rows)
+    state["pollution_exposure_hash_chain"] = canonical_sha256(
+        [
+            {
+                "subject_id": str(row.get("subject_id", "")).strip(),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "accumulated_exposure": int(max(0, _as_int(row.get("accumulated_exposure", 0), 0))),
+                "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(exposure_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("subject_id", "")),
+                    str(item.get("pollutant_id", "")),
+                ),
+            )
+        ]
+    )
+    state["pollution_exposure_increment_hash_chain"] = canonical_sha256(
+        [
+            {
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "subject_id": str(row.get("subject_id", "")).strip(),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip(),
+                "increment": int(max(0, _as_int(row.get("increment", 0), 0))),
+                "accumulated_exposure": int(max(0, _as_int(row.get("accumulated_exposure", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(exposure_increment_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("subject_id", "")),
+                    str(item.get("pollutant_id", "")),
+                ),
+            )
+        ]
+    )
+    state["pollution_dispersion_degrade_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "degrade_reason": str(row.get("degrade_reason", "")).strip(),
+                "deferred_cell_ids": _sorted_tokens(list(row.get("deferred_cell_ids") or [])),
+            }
+            for row in sorted(
+                (dict(item) for item in list(degrade_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    pollutant_types_by_id = _pollutant_types_by_id(
+        _load_pollutant_type_registry(policy_context=None)
+    )
+    state["pollution_field_hash_chain"] = pollution_field_hash_chain(
+        field_cell_rows=state.get("field_cells"),
+        pollutant_types_by_id=pollutant_types_by_id,
     )
     state["pollution_total_hash_chain"] = canonical_sha256(
         [
@@ -19005,6 +19242,14 @@ def execute_intent(
     entropy_event_rows = _ensure_entropy_event_rows(state)
     entropy_reset_events = _ensure_entropy_reset_event_rows(state)
     entropy_effect_rows = _ensure_entropy_effect_rows(state)
+    pollution_source_event_rows = _ensure_pollution_source_event_rows(state)
+    pollution_total_rows = _ensure_pollution_total_rows(state)
+    pollution_dispersion_step_rows = _ensure_pollution_dispersion_step_rows(state)
+    pollution_deposition_rows = _ensure_pollution_deposition_rows(state)
+    pollution_exposure_state_rows = _ensure_pollution_exposure_state_rows(state)
+    pollution_exposure_increment_rows = _ensure_pollution_exposure_increment_rows(state)
+    pollution_dispersion_degrade_rows = _ensure_pollution_dispersion_degrade_rows(state)
+    _ensure_pollution_dispersion_processed_source_event_ids(state)
     _ensure_time_mapping_cache_rows(state)
     _ensure_time_stamp_artifact_rows(state)
     _ensure_proper_time_state_rows(state)
@@ -19017,6 +19262,13 @@ def execute_intent(
     del entropy_event_rows
     del entropy_reset_events
     del entropy_effect_rows
+    del pollution_source_event_rows
+    del pollution_total_rows
+    del pollution_dispersion_step_rows
+    del pollution_deposition_rows
+    del pollution_exposure_state_rows
+    del pollution_exposure_increment_rows
+    del pollution_dispersion_degrade_rows
     del chem_process_run_state_rows
     del batch_quality_rows
     del chem_degradation_state_rows
@@ -19030,6 +19282,7 @@ def execute_intent(
     _refresh_time_hash_chains(state)
     _refresh_chem_process_hash_chains(state)
     _refresh_chem_degradation_hash_chains(state)
+    _refresh_pollution_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -27308,6 +27561,436 @@ def execute_intent(
                     state.get("pollution_explain_hash_chain", "")
                 ).strip(),
                 "generated_explain_ids": list(_sorted_tokens(generated_explain_ids)),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.pollution_dispersion_tick":
+        pollutant_types_by_id = _pollutant_types_by_id(
+            _load_pollutant_type_registry(policy_context=policy_context)
+        )
+        pollution_policies_by_id = _pollution_field_policies_by_id(
+            _load_pollution_field_policy_registry(policy_context=policy_context)
+        )
+        decay_models_by_id = pollution_decay_models_by_id(
+            _load_pollution_decay_model_registry(policy_context=policy_context)
+        )
+        if not pollutant_types_by_id:
+            _refresh_pollution_hash_chains(state)
+            result_metadata = {
+                "processed_source_event_ids": [],
+                "note": "no_pollutant_types_registered",
+                "pollution_source_hash_chain": str(state.get("pollution_source_hash_chain", "")).strip(),
+                "pollution_total_hash_chain": str(state.get("pollution_total_hash_chain", "")).strip(),
+                "pollution_field_hash_chain": str(state.get("pollution_field_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            field_type_registry = _field_registry_payload(
+                policy_context=policy_context,
+                key="field_type_registry",
+                registry_rel_path="data/registries/field_type_registry.json",
+                entry_key="field_types",
+            )
+            field_update_policy_registry = _field_registry_payload(
+                policy_context=policy_context,
+                key="field_update_policy_registry",
+                registry_rel_path="data/registries/field_update_policy_registry.json",
+                entry_key="policies",
+            )
+            incoming_layers = inputs.get("field_layers")
+            incoming_cells = inputs.get("field_cells")
+            if isinstance(incoming_layers, list):
+                normalized_field_layers = normalize_field_layer_rows(incoming_layers)
+            else:
+                normalized_field_layers = normalize_field_layer_rows(field_layers)
+            if isinstance(incoming_cells, list):
+                normalized_field_cells = normalize_field_cell_rows(
+                    incoming_cells,
+                    field_layer_rows=normalized_field_layers,
+                    field_type_registry=field_type_registry,
+                )
+            else:
+                normalized_field_cells = normalize_field_cell_rows(
+                    field_cells,
+                    field_layer_rows=normalized_field_layers,
+                    field_type_registry=field_type_registry,
+                )
+
+            source_rows = _ensure_pollution_source_event_rows(state)
+            total_rows_by_key = pollution_totals_by_key(_ensure_pollution_total_rows(state))
+            source_rows_buffer = [dict(row) for row in list(source_rows or []) if isinstance(row, Mapping)]
+            coupled_sources_added = 0
+            coupling_inputs = [
+                ("coupled_source_rows", "industrial"),
+                ("fluid_contaminant_release_rows", "leak"),
+                ("chem_emission_rows", "reaction"),
+                ("therm_fire_emission_rows", "fire"),
+            ]
+            for input_key, default_origin_kind in coupling_inputs:
+                for row in list(inputs.get(input_key) or []):
+                    if not isinstance(row, Mapping):
+                        continue
+                    row_map = dict(row)
+                    pollutant_id = str(row_map.get("pollutant_id", "")).strip()
+                    if not pollutant_id:
+                        if default_origin_kind == "leak":
+                            pollutant_id = "pollutant.oil_spill_stub"
+                        elif default_origin_kind == "fire":
+                            pollutant_id = "pollutant.smoke_particulate"
+                        else:
+                            pollutant_id = "pollutant.smoke_particulate"
+                    if pollutant_id not in pollutant_types_by_id:
+                        continue
+                    emitted_mass = int(
+                        max(
+                            0,
+                            _as_int(
+                                row_map.get(
+                                    "emitted_mass",
+                                    row_map.get("mass_value", row_map.get("contaminant_mass", 0)),
+                                ),
+                                0,
+                            ),
+                        )
+                    )
+                    if emitted_mass <= 0:
+                        continue
+                    origin_kind = str(row_map.get("origin_kind", default_origin_kind)).strip().lower() or default_origin_kind
+                    if origin_kind not in {"reaction", "fire", "leak", "industrial"}:
+                        origin_kind = default_origin_kind
+                    origin_id = str(
+                        row_map.get(
+                            "origin_id",
+                            row_map.get(
+                                "source_id",
+                                row_map.get("edge_id", row_map.get("event_id", "origin.coupled")),
+                            ),
+                        )
+                    ).strip() or "origin.coupled"
+                    spatial_scope_id = str(
+                        row_map.get(
+                            "spatial_scope_id",
+                            row_map.get("region_id", row_map.get("cell_id", "region.default")),
+                        )
+                    ).strip() or "region.default"
+                    source_event_id = str(row_map.get("source_event_id", "")).strip()
+                    coupled_event = build_pollution_source_event(
+                        source_event_id=source_event_id,
+                        tick=int(max(0, _as_int(current_tick, 0))),
+                        origin_kind=origin_kind,
+                        origin_id=origin_id,
+                        pollutant_id=pollutant_id,
+                        emitted_mass=emitted_mass,
+                        spatial_scope_id=spatial_scope_id,
+                        deterministic_fingerprint="",
+                        extensions={
+                            "source_process_id": process_id,
+                            "coupled_input_key": input_key,
+                        },
+                    )
+                    if not coupled_event:
+                        continue
+                    source_rows_buffer.append(coupled_event)
+                    coupled_sources_added += 1
+                    total_key = "{}::{}".format(spatial_scope_id, pollutant_id)
+                    existing_total_row = dict(total_rows_by_key.get(total_key) or {})
+                    existing_mass = int(max(0, _as_int(existing_total_row.get("pollutant_mass_total", 0), 0)))
+                    total_row = build_pollution_total_row(
+                        region_id=spatial_scope_id,
+                        pollutant_id=pollutant_id,
+                        pollutant_mass_total=int(existing_mass + emitted_mass),
+                        last_update_tick=int(max(0, _as_int(current_tick, 0))),
+                        deterministic_fingerprint="",
+                        extensions={
+                            **(
+                                dict(existing_total_row.get("extensions") or {})
+                                if isinstance(existing_total_row.get("extensions"), Mapping)
+                                else {}
+                            ),
+                            "last_origin_kind": origin_kind,
+                            "last_source_event_id": str(coupled_event.get("source_event_id", "")).strip(),
+                        },
+                    )
+                    if total_row:
+                        total_rows_by_key[total_key] = dict(total_row)
+            if coupled_sources_added > 0:
+                state["pollution_source_event_rows"] = normalize_pollution_source_event_rows(source_rows_buffer)
+                state["pollution_total_rows"] = normalize_pollution_total_rows(list(total_rows_by_key.values()))
+                source_rows = _ensure_pollution_source_event_rows(state)
+            processed_source_event_ids = _ensure_pollution_dispersion_processed_source_event_ids(state)
+            neighbor_map_by_cell = dict(inputs.get("neighbor_map_by_cell") or {}) if isinstance(inputs.get("neighbor_map_by_cell"), Mapping) else {}
+            max_cell_updates_per_tick = int(
+                max(
+                    0,
+                    _as_int(
+                        inputs.get(
+                            "max_cell_updates_per_tick",
+                            (dict(policy_context or {})).get("pollution_max_cell_updates_per_tick", 256),
+                        ),
+                        256,
+                    ),
+                )
+            )
+            wind_field_id = str(inputs.get("wind_field_id", "field.wind")).strip() or "field.wind"
+            dispersion_eval = evaluate_pollution_dispersion(
+                current_tick=int(current_tick),
+                pollutant_types_by_id=pollutant_types_by_id,
+                pollution_policies_by_id=pollution_policies_by_id,
+                decay_models_by_id=decay_models_by_id,
+                pollution_source_event_rows=source_rows,
+                processed_source_event_ids=processed_source_event_ids,
+                field_cell_rows=normalized_field_cells,
+                neighbor_map_by_cell=neighbor_map_by_cell,
+                wind_field_id=wind_field_id,
+                max_cell_updates_per_tick=max_cell_updates_per_tick,
+            )
+
+            field_update_result = _apply_field_updates(
+                current_tick=int(current_tick),
+                field_layers=normalized_field_layers,
+                field_cells=normalized_field_cells,
+                field_type_registry=field_type_registry,
+                field_update_policy_registry=field_update_policy_registry,
+                requested_updates=list(dispersion_eval.get("field_updates") or []),
+                source_process_id=process_id,
+            )
+            normalized_field_layers = normalize_field_layer_rows(field_update_result.get("field_layer_rows"))
+            normalized_field_cells = normalize_field_cell_rows(
+                field_update_result.get("field_cell_rows"),
+                field_layer_rows=normalized_field_layers,
+                field_type_registry=field_type_registry,
+            )
+            _persist_field_state(
+                state,
+                field_layers=normalized_field_layers,
+                field_cells=normalized_field_cells,
+                field_modifier_rows=[dict(row) for row in list(state.get("field_modifier_rows") or []) if isinstance(row, Mapping)],
+            )
+            state["field_sample_rows"] = normalize_field_sample_rows(
+                list(state.get("field_sample_rows") or [])
+                + [dict(row) for row in list(field_update_result.get("field_sample_rows") or []) if isinstance(row, Mapping)]
+            )
+            _append_field_update_event(
+                state,
+                source_process_id=process_id,
+                tick=int(current_tick),
+                update_kind="pollution_dispersion",
+                updated_field_ids=list(field_update_result.get("updated_field_ids") or []),
+                applied_update_count=int(len(list(field_update_result.get("applied_updates") or []))),
+                skipped_update_count=int(len(list(field_update_result.get("skipped_updates") or []))),
+                field_sample_count=int(len(list(field_update_result.get("field_sample_rows") or []))),
+                boundary_field_exchange_count=0,
+                extensions={
+                    "source_process_id": process_id,
+                    "degraded": bool(dispersion_eval.get("degraded", False)),
+                    "degrade_reason": str(dispersion_eval.get("degrade_reason", "")).strip() or None,
+                },
+            )
+            _refresh_field_hash_chains(state)
+
+            state["pollution_dispersion_step_rows"] = normalize_pollution_dispersion_step_rows(
+                list(state.get("pollution_dispersion_step_rows") or [])
+                + [dict(row) for row in list(dispersion_eval.get("dispersion_step_rows") or []) if isinstance(row, Mapping)]
+            )
+            state["pollution_deposition_rows"] = normalize_pollution_deposition_rows(
+                list(state.get("pollution_deposition_rows") or [])
+                + [dict(row) for row in list(dispersion_eval.get("deposition_rows") or []) if isinstance(row, Mapping)]
+            )
+            state["pollution_dispersion_processed_source_event_ids"] = _sorted_tokens(
+                list(state.get("pollution_dispersion_processed_source_event_ids") or [])
+                + list(dispersion_eval.get("processed_source_event_ids") or [])
+            )
+            if bool(dispersion_eval.get("degraded", False)):
+                degrade_rows = [dict(row) for row in list(state.get("pollution_dispersion_degrade_rows") or []) if isinstance(row, Mapping)]
+                degrade_rows.append(
+                    {
+                        "schema_version": "1.0.0",
+                        "event_id": "",
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "degrade_reason": str(dispersion_eval.get("degrade_reason", "")).strip() or "degrade.pollution.cell_budget",
+                        "deferred_cell_ids": _sorted_tokens(list(dispersion_eval.get("deferred_cell_ids") or [])),
+                        "deterministic_fingerprint": "",
+                        "extensions": {
+                            "source_process_id": process_id,
+                            "max_cell_updates_per_tick": int(max_cell_updates_per_tick),
+                        },
+                    }
+                )
+                state["pollution_dispersion_degrade_rows"] = [dict(row) for row in degrade_rows]
+            _ensure_pollution_dispersion_degrade_rows(state)
+
+            subject_rows = []
+            for row in list(inputs.get("subjects") or []):
+                if isinstance(row, Mapping):
+                    subject_rows.append(dict(row))
+            if not subject_rows:
+                subject_rows = [
+                    dict(row)
+                    for row in list(state.get("pollution_subject_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+            exposure_factor_permille = int(
+                max(
+                    0,
+                    _as_int(
+                        inputs.get("default_exposure_factor_permille", inputs.get("exposure_factor_permille", 1000)),
+                        1000,
+                    ),
+                )
+            )
+            exposure_eval = accumulate_pollution_exposure(
+                current_tick=int(current_tick),
+                subject_rows=subject_rows,
+                field_cell_rows=normalized_field_cells,
+                pollutant_types_by_id=pollutant_types_by_id,
+                exposure_state_rows=state.get("pollution_exposure_state_rows"),
+                default_exposure_factor_permille=exposure_factor_permille,
+            )
+            state["pollution_exposure_state_rows"] = normalize_pollution_exposure_state_rows(
+                exposure_eval.get("exposure_state_rows")
+            )
+            state["pollution_exposure_increment_rows"] = [
+                dict(row)
+                for row in sorted(
+                    (
+                        dict(item)
+                        for item in list(state.get("pollution_exposure_increment_rows") or [])
+                        + list(exposure_eval.get("exposure_increment_rows") or [])
+                        if isinstance(item, Mapping)
+                    ),
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("subject_id", "")),
+                        str(item.get("pollutant_id", "")),
+                    ),
+                )
+            ]
+            _ensure_pollution_exposure_increment_rows(state)
+            _refresh_pollution_hash_chains(state)
+
+            explain_contract_by_event_kind = _explain_contract_rows_by_event_kind(
+                _load_explain_contract_registry(policy_context=policy_context)
+            )
+            pollution_dispersion_contract = dict(explain_contract_by_event_kind.get("pollution.dispersion") or {})
+            pollution_decay_contract = dict(explain_contract_by_event_kind.get("pollution.decay") or {})
+            explain_rows = [
+                dict(row)
+                for row in list(state.get("explain_artifact_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            generated_explain_ids: List[str] = []
+            if list(dispersion_eval.get("dispersion_step_rows") or []) and pollution_dispersion_contract:
+                dispersion_event_id = "event.pollution.dispersion.{}".format(
+                    canonical_sha256(
+                        {
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                            "processed_source_event_ids": _sorted_tokens(list(dispersion_eval.get("processed_source_event_ids") or [])),
+                            "updated_field_ids": _sorted_tokens(list(field_update_result.get("updated_field_ids") or [])),
+                        }
+                    )[:16]
+                )
+                explain_row = generate_explain_artifact(
+                    event_id=dispersion_event_id,
+                    target_id="region.pollution.global",
+                    event_kind_id="pollution.dispersion",
+                    truth_hash_anchor=str(state.get("pollution_dispersion_hash_chain", "")).strip()
+                    or str(state.get("pollution_source_hash_chain", "")).strip(),
+                    epistemic_policy_id="policy.epistemic.observer",
+                    explain_contract_row=pollution_dispersion_contract,
+                    hazard_rows=list(dispersion_eval.get("dispersion_step_rows") or [])[:128],
+                    compliance_rows=[
+                        {
+                            "result_id": "poll.dispersion.policy.{}".format(canonical_sha256({"policy_id": policy_id})[:16]),
+                            "policy_id": policy_id,
+                            "cell_update_rule_id": str((dict(pollution_policies_by_id.get(policy_id) or {})).get("cell_update_rule_id", "")).strip(),
+                        }
+                        for policy_id in _sorted_tokens(
+                            [str(row.get("policy_id", "")).strip() for row in list(dispersion_eval.get("dispersion_step_rows") or [])]
+                        )
+                    ],
+                    model_result_rows=[
+                        {
+                            "result_id": "poll.decay.model.{}".format(canonical_sha256({"model_id": model_id})[:16]),
+                            "default_decay_model_id": model_id,
+                        }
+                        for model_id in _sorted_tokens(
+                            [str(row.get("decay_model_id", "")).strip() for row in list(dispersion_eval.get("dispersion_step_rows") or [])]
+                        )
+                    ],
+                )
+                if explain_row:
+                    explain_rows.append(dict(explain_row))
+                    generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+            if list(dispersion_eval.get("deposition_rows") or []) and pollution_decay_contract:
+                decay_event_id = "event.pollution.decay.{}".format(
+                    canonical_sha256(
+                        {
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                            "deposition_count": len(list(dispersion_eval.get("deposition_rows") or [])),
+                        }
+                    )[:16]
+                )
+                explain_row = generate_explain_artifact(
+                    event_id=decay_event_id,
+                    target_id="region.pollution.global",
+                    event_kind_id="pollution.decay",
+                    truth_hash_anchor=str(state.get("pollution_deposition_hash_chain", "")).strip(),
+                    epistemic_policy_id="policy.epistemic.observer",
+                    explain_contract_row=pollution_decay_contract,
+                    hazard_rows=list(dispersion_eval.get("deposition_rows") or [])[:128],
+                )
+                if explain_row:
+                    explain_rows.append(dict(explain_row))
+                    generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+            if generated_explain_ids:
+                state["explain_artifact_rows"] = normalize_explain_artifact_rows(explain_rows)
+            state["pollution_explain_hash_chain"] = canonical_sha256(
+                [
+                    {
+                        "explain_id": str(row.get("explain_id", "")).strip(),
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "target_id": str(row.get("target_id", "")).strip(),
+                        "event_kind_id": str(dict(row.get("extensions") or {}).get("event_kind_id", "")).strip(),
+                    }
+                    for row in sorted(
+                        (
+                            dict(item)
+                            for item in list(state.get("explain_artifact_rows") or [])
+                            if isinstance(item, Mapping)
+                            and str(dict(item.get("extensions") or {}).get("event_kind_id", "")).strip().startswith("pollution.")
+                        ),
+                        key=lambda item: (
+                            str(item.get("event_id", "")),
+                            str(item.get("target_id", "")),
+                            str(item.get("explain_id", "")),
+                        ),
+                    )
+                ]
+            )
+
+            _refresh_pollution_hash_chains(state)
+
+            result_metadata = {
+                "coupled_source_event_count": int(max(0, _as_int(coupled_sources_added, 0))),
+                "processed_source_event_ids": _sorted_tokens(list(dispersion_eval.get("processed_source_event_ids") or [])),
+                "dispersion_step_count": int(len(list(dispersion_eval.get("dispersion_step_rows") or []))),
+                "deposition_count": int(len(list(dispersion_eval.get("deposition_rows") or []))),
+                "exposure_increment_count": int(len(list(exposure_eval.get("exposure_increment_rows") or []))),
+                "updated_field_ids": list(field_update_result.get("updated_field_ids") or []),
+                "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),
+                "skipped_update_count": int(len(list(field_update_result.get("skipped_updates") or []))),
+                "degraded": bool(dispersion_eval.get("degraded", False)),
+                "degrade_reason": str(dispersion_eval.get("degrade_reason", "")).strip() or None,
+                "deferred_cell_ids": _sorted_tokens(list(dispersion_eval.get("deferred_cell_ids") or [])),
+                "generated_explain_ids": list(_sorted_tokens(generated_explain_ids)),
+                "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+                "field_sample_hash_chain": str(state.get("field_sample_hash_chain", "")).strip(),
+                "pollution_source_hash_chain": str(state.get("pollution_source_hash_chain", "")).strip(),
+                "pollution_total_hash_chain": str(state.get("pollution_total_hash_chain", "")).strip(),
+                "pollution_dispersion_hash_chain": str(state.get("pollution_dispersion_hash_chain", "")).strip(),
+                "pollution_deposition_hash_chain": str(state.get("pollution_deposition_hash_chain", "")).strip(),
+                "pollution_exposure_hash_chain": str(state.get("pollution_exposure_hash_chain", "")).strip(),
+                "pollution_field_hash_chain": str(state.get("pollution_field_hash_chain", "")).strip(),
+                "pollution_explain_hash_chain": str(state.get("pollution_explain_hash_chain", "")).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

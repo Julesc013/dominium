@@ -4306,6 +4306,71 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.pollution.smoke_particulate_concentration",
+        "field.pollution.co2_stub_concentration",
+        "field.pollution.toxic_gas_stub_concentration",
+        "field.pollution.oil_spill_stub_concentration"
+      ],
+      "deprecated": false,
+      "description": "Canonical POLL-1 dispersion tick; applies deterministic coarse diffusion/decay/deposition updates and exposure accumulation stubs.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "budgeted-degrade"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.pollution_dispersion_tick)",
+        "source": "POLL1-3",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Pollution Dispersion Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "pollution_source_event",
+          "ref_id": "dominium.schema.pollution.pollution_source_event@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "field_cells",
+          "ref_id": "dominium.schema.field.field_cell@1.0.0",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "pollution_dispersion_steps",
+          "ref_id": "dominium.schema.pollution.dispersion_step_rows@1.0.0",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "pollution_deposition_rows",
+          "ref_id": "dominium.schema.pollution.deposition_rows@1.0.0",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "pollution_exposure_state",
+          "ref_id": "dominium.schema.pollution.exposure_state@1.0.0",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.pollution_dispersion_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",
