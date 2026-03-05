@@ -51,9 +51,32 @@ def run(repo_root: str):
             "extensions": {},
         }
     ]
+    policy_overrides = {
+        "exposure_threshold_registry": {
+            "record": {
+                "exposure_thresholds": [
+                    {
+                        "pollutant_id": pollutant_id,
+                        "warning_threshold": 1,
+                        "critical_threshold": 2,
+                    }
+                ]
+            }
+        }
+    }
 
-    out_a = execute_pollution_dispersion_tick(repo_root=repo_root, state=state_a, inputs=copy.deepcopy(inputs))
-    out_b = execute_pollution_dispersion_tick(repo_root=repo_root, state=state_b, inputs=copy.deepcopy(inputs))
+    out_a = execute_pollution_dispersion_tick(
+        repo_root=repo_root,
+        state=state_a,
+        inputs=copy.deepcopy(inputs),
+        policy_overrides=copy.deepcopy(policy_overrides),
+    )
+    out_b = execute_pollution_dispersion_tick(
+        repo_root=repo_root,
+        state=state_b,
+        inputs=copy.deepcopy(inputs),
+        policy_overrides=copy.deepcopy(policy_overrides),
+    )
     if str(out_a.get("result", "")).strip() != "complete":
         return {"status": "fail", "message": "first exposure accumulation run failed: {}".format(out_a)}
     if str(out_b.get("result", "")).strip() != "complete":
