@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.registry.compiled_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compiled_type_registry",
+    "registry_version": "1.0.0",
+    "compiled_types": [
+      {
+        "schema_version": "1.0.0",
+        "compiled_type_id": "compiled.automaton",
+        "description": "Deterministic reduced finite-state representation.",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "compiled_type_id": "compiled.lookup_table",
+        "description": "Deterministic table approximation with declared bounds.",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "compiled_type_id": "compiled.reduced_graph",
+        "description": "Pruned and constant-folded model graph preserving equivalence.",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "compiled_type_id": "compiled.ir",
+        "description": "Bounded deterministic instruction-list representation.",
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "COMPILE0-3",
+      "null_boot_safe": true
+    }
+  }
+}
