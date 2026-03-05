@@ -11,6 +11,13 @@ from src.system.system_validation_engine import (
     validate_boundary_invariants,
     validate_interface_signature,
 )
+from src.system.statevec import (
+    build_state_vector_definition_row,
+    normalize_state_vector_definition_rows,
+    normalize_state_vector_snapshot_rows,
+    serialize_state,
+    state_vector_definition_for_owner,
+)
 
 
 REFUSAL_SYSTEM_COLLAPSE_INVALID = "REFUSAL_SYSTEM_COLLAPSE_INVALID"
@@ -433,6 +440,7 @@ def collapse_system_graph(
     system_id: str,
     current_tick: int,
     process_id: str = "process.system_collapse",
+    state_vector_definition_rows: object | None = None,
     quantity_bundle_registry_payload: Mapping[str, object] | None = None,
     spec_type_registry_payload: Mapping[str, object] | None = None,
     signal_channel_type_registry_payload: Mapping[str, object] | None = None,
@@ -561,15 +569,80 @@ def collapse_system_graph(
         )
 
     tick_value = int(max(0, _as_int(current_tick, 0)))
-    serialized_internal_state = {
+    source_state_payload = {
         "schema_version": "1.0.0",
         "encoding": "canonical_json.v1",
         "system_id": system_token,
         "captured_tick": tick_value,
+        "root_assembly_id": root_assembly_id,
         "assembly_rows": [dict(row) for row in captured_rows],
     }
-    provenance_anchor_hash = canonical_sha256(serialized_internal_state)
-    state_vector_id = "statevec.system.{}".format(canonical_sha256({"system_id": system_token, "tick": tick_value})[:16])
+
+    declared_state_vector_definitions = normalize_state_vector_definition_rows(
+        list(state.get("state_vector_definition_rows") or [])
+        + list(state_vector_definition_rows or [])
+    )
+    state_vector_owner_id = "system.{}".format(system_token)
+    owner_definition = state_vector_definition_for_owner(
+        owner_id=state_vector_owner_id,
+        state_vector_definition_rows=declared_state_vector_definitions,
+    )
+    if not owner_definition:
+        fallback_definition = build_state_vector_definition_row(
+            owner_id=state_vector_owner_id,
+            version="1.0.0",
+            state_fields=[
+                {"field_id": "captured_tick", "path": "captured_tick", "field_kind": "u64", "default": 0},
+                {"field_id": "assembly_rows", "path": "assembly_rows", "field_kind": "list", "default": []},
+                {"field_id": "root_assembly_id", "path": "root_assembly_id", "field_kind": "id", "default": ""},
+            ],
+            deterministic_fingerprint="",
+            extensions={"source": "system_collapse_engine.fallback_default"},
+        )
+        if fallback_definition:
+            declared_state_vector_definitions = normalize_state_vector_definition_rows(
+                list(declared_state_vector_definitions) + [fallback_definition]
+            )
+            owner_definition = dict(fallback_definition)
+
+    serialization = serialize_state(
+        owner_id=state_vector_owner_id,
+        source_state=source_state_payload,
+        state_vector_definition_rows=declared_state_vector_definitions,
+        current_tick=tick_value,
+        expected_version=str(owner_definition.get("version", "")).strip() if owner_definition else None,
+        extensions={
+            "source_process_id": process_id,
+            "system_id": system_token,
+            "captured_assembly_count": int(len(captured_rows)),
+        },
+    )
+    if str(serialization.get("result", "")).strip() != "complete":
+        raise SystemCollapseError(
+            "state vector serialization failed during system collapse",
+            reason_code=REFUSAL_SYSTEM_COLLAPSE_INVALID,
+            details={
+                "system_id": system_token,
+                "state_vector_owner_id": state_vector_owner_id,
+                "statevec_reason_code": str(serialization.get("reason_code", "")).strip(),
+                "statevec_message": str(serialization.get("message", "")).strip(),
+            },
+        )
+    snapshot_row = dict(serialization.get("snapshot_row") or {})
+    serialized_internal_state = _as_map(snapshot_row.get("serialized_state"))
+    provenance_anchor_hash = str(serialization.get("anchor_hash", "")).strip() or canonical_sha256(serialized_internal_state)
+    snapshot_id = str(snapshot_row.get("snapshot_id", "")).strip()
+    snapshot_version = str(snapshot_row.get("version", "")).strip() or "1.0.0"
+    state_vector_id = "statevec.system.{}".format(
+        canonical_sha256(
+            {
+                "system_id": system_token,
+                "tick": tick_value,
+                "snapshot_id": snapshot_id,
+                "anchor_hash": provenance_anchor_hash,
+            }
+        )[:16]
+    )
     state_vector_row = build_system_state_vector_row(
         state_vector_id=state_vector_id,
         system_id=system_token,
@@ -579,6 +652,9 @@ def collapse_system_graph(
             "source_process_id": process_id,
             "captured_assembly_count": int(len(captured_rows)),
             "anchor_hash": provenance_anchor_hash,
+            "state_vector_owner_id": state_vector_owner_id,
+            "state_vector_snapshot_id": snapshot_id,
+            "state_vector_version": snapshot_version,
         },
     )
 
@@ -596,6 +672,9 @@ def collapse_system_graph(
         internal_state_vector={
             "state_vector_id": state_vector_id,
             "anchor_hash": provenance_anchor_hash,
+            "snapshot_id": snapshot_id,
+            "owner_id": state_vector_owner_id,
+            "state_vector_version": snapshot_version,
         },
         provenance_anchor_hash=provenance_anchor_hash,
         tier_mode="macro",
@@ -634,6 +713,12 @@ def collapse_system_graph(
 
     state["system_state_vector_rows"] = normalize_system_state_vector_rows(
         list(state.get("system_state_vector_rows") or []) + [state_vector_row]
+    )
+    state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+        list(state.get("state_vector_snapshot_rows") or []) + [snapshot_row]
+    )
+    state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+        list(declared_state_vector_definitions or [])
     )
     state["system_macro_capsule_rows"] = normalize_system_macro_capsule_rows(
         list(state.get("system_macro_capsule_rows") or []) + [capsule_row]

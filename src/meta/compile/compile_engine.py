@@ -5,6 +5,13 @@ from __future__ import annotations
 from typing import Dict, Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.system.statevec import (
+    build_state_vector_definition_row,
+    deserialize_state,
+    serialize_state,
+    state_vector_definition_for_owner,
+    state_vector_snapshot_rows_by_owner,
+)
 
 
 REFUSAL_COMPILE_INVALID = "refusal.compile.invalid"
@@ -364,6 +371,30 @@ def _source_hash(*, source_kind: str, source_ref: Mapping[str, object]) -> str:
     return canonical_sha256({"source_kind": str(source_kind or "").strip(), "source_ref": _as_map(source_ref)})
 
 
+def _compiled_state_owner_id(compiled_model_id: str) -> str:
+    token = str(compiled_model_id or "").strip()
+    if not token:
+        return ""
+    return "compiled.{}".format(token)
+
+
+def _compiled_state_definition(
+    *,
+    owner_id: str,
+) -> dict:
+    return build_state_vector_definition_row(
+        owner_id=owner_id,
+        version="1.0.0",
+        state_fields=[
+            {"field_id": "execution_count", "path": "execution_count", "field_kind": "u64", "default": 0},
+            {"field_id": "last_input_hash", "path": "last_input_hash", "field_kind": "sha256", "default": ""},
+            {"field_id": "last_output_hash", "path": "last_output_hash", "field_kind": "sha256", "default": ""},
+        ],
+        deterministic_fingerprint="",
+        extensions={"source": "COMPILE0"},
+    )
+
+
 def _compile_reduced_graph(source_ref: Mapping[str, object]) -> dict:
     nodes = [
         {
@@ -498,8 +529,51 @@ def evaluate_compile_request(
         extensions={"source_hash": source_hash, "source_tick": tick},
     )
     payload_hash = canonical_sha256(reduced_payload)
+    compiled_model_id = "compiled_model.{}".format(
+        canonical_sha256(
+            {
+                "request_id": request_row.get("request_id"),
+                "source_hash": source_hash,
+                "target_type": target_type,
+                "payload_hash": payload_hash,
+                "proof_id": proof_row.get("proof_id"),
+            }
+        )[:16]
+    )
+    state_owner_id = _compiled_state_owner_id(compiled_model_id)
+    state_vector_definition_row = _compiled_state_definition(owner_id=state_owner_id)
+    initial_state_serialization = serialize_state(
+        owner_id=state_owner_id,
+        source_state={"execution_count": 0, "last_input_hash": "", "last_output_hash": ""},
+        state_vector_definition_rows=[state_vector_definition_row] if state_vector_definition_row else [],
+        current_tick=tick,
+        expected_version="1.0.0",
+        extensions={"source": "compile_engine.initial_state"},
+    )
+    if str(initial_state_serialization.get("result", "")).strip() != "complete":
+        return {
+            "result": "refused",
+            "reason_code": REFUSAL_COMPILE_INVALID,
+            "compile_request_row": request_row,
+            "compile_result_row": build_compile_result_row(
+                result_id="compile_result.{}".format(
+                    canonical_sha256(
+                        {
+                            "request_id": request_row.get("request_id"),
+                            "reason": REFUSAL_COMPILE_INVALID,
+                        }
+                    )[:16]
+                ),
+                compiled_model_id=None,
+                success=False,
+                refusal=REFUSAL_COMPILE_INVALID,
+                deterministic_fingerprint="",
+                extensions={"request_id": request_row.get("request_id")},
+            ),
+        }
+    initial_state_snapshot_row = dict(initial_state_serialization.get("snapshot_row") or {})
     model_row = build_compiled_model_row(
-        compiled_model_id="compiled_model.{}".format(canonical_sha256({"request_id": request_row.get("request_id"), "source_hash": source_hash, "target_type": target_type, "payload_hash": payload_hash, "proof_id": proof_row.get("proof_id")})[:16]),
+        compiled_model_id=compiled_model_id,
         source_kind=str(request_row.get("source_kind", "")).strip(),
         source_hash=source_hash,
         compiled_type_id=target_type,
@@ -513,6 +587,10 @@ def evaluate_compile_request(
             "source_ref_snapshot": source_ref,
             "compile_policy_id": str(policy_row.get("compile_policy_id", "")).strip() or "compile.default",
             "source_tick": tick,
+            "state_vector_owner_id": state_owner_id,
+            "state_vector_version": "1.0.0",
+            "state_vector_snapshot_id": str(initial_state_snapshot_row.get("snapshot_id", "")).strip(),
+            "state_vector_anchor_hash": str(initial_state_serialization.get("anchor_hash", "")).strip(),
         },
     )
     result_row = build_compile_result_row(
@@ -531,8 +609,20 @@ def evaluate_compile_request(
         "compiled_model_row": model_row,
         "equivalence_proof_row": proof_row,
         "validity_domain_row": validity_row,
+        "state_vector_definition_row": state_vector_definition_row,
+        "state_vector_snapshot_row": initial_state_snapshot_row,
         "source_hash": source_hash,
-        "deterministic_fingerprint": canonical_sha256({"compile_request_row": request_row, "compile_result_row": result_row, "compiled_model_row": model_row, "equivalence_proof_row": proof_row, "validity_domain_row": validity_row}),
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "compile_request_row": request_row,
+                "compile_result_row": result_row,
+                "compiled_model_row": model_row,
+                "equivalence_proof_row": proof_row,
+                "validity_domain_row": validity_row,
+                "state_vector_definition_row": state_vector_definition_row,
+                "state_vector_snapshot_row": initial_state_snapshot_row,
+            }
+        ),
     }
 
 
@@ -542,6 +632,7 @@ def compiled_model_is_valid(
     current_inputs: Mapping[str, object] | None,
     compiled_model_rows: object,
     validity_domain_rows: object,
+    state_vector_definition_rows: object | None = None,
 ) -> dict:
     model_id = str(compiled_model_id or "").strip()
     model_row = dict(compiled_model_rows_by_id(compiled_model_rows).get(model_id) or {})
@@ -551,6 +642,19 @@ def compiled_model_is_valid(
     validity_row = dict(validity_domain_rows_by_id(validity_domain_rows).get(validity_id) or {})
     if not validity_row:
         return {"valid": False, "reason_code": REFUSAL_COMPILE_INVALID, "violations": ["missing_validity_domain"]}
+    state_owner_id = str(_as_map(model_row.get("extensions")).get("state_vector_owner_id", "")).strip()
+    if state_owner_id and state_vector_definition_rows is not None:
+        definition = state_vector_definition_for_owner(
+            owner_id=state_owner_id,
+            state_vector_definition_rows=state_vector_definition_rows,
+        )
+        if not definition:
+            return {
+                "valid": False,
+                "reason_code": REFUSAL_COMPILE_INVALID,
+                "violations": ["missing_state_vector_definition"],
+                "state_vector_owner_id": state_owner_id,
+            }
     inputs = _as_map(current_inputs)
     violations: List[str] = []
     for key, rule in sorted(_as_map(validity_row.get("input_ranges")).items()):
@@ -572,8 +676,17 @@ def compiled_model_execute(
     inputs: Mapping[str, object] | None,
     compiled_model_rows: object,
     validity_domain_rows: object,
+    state_vector_definition_rows: object | None = None,
+    state_vector_snapshot_rows: object | None = None,
+    current_tick: int = 0,
 ) -> dict:
-    validity = compiled_model_is_valid(compiled_model_id=compiled_model_id, current_inputs=inputs, compiled_model_rows=compiled_model_rows, validity_domain_rows=validity_domain_rows)
+    validity = compiled_model_is_valid(
+        compiled_model_id=compiled_model_id,
+        current_inputs=inputs,
+        compiled_model_rows=compiled_model_rows,
+        validity_domain_rows=validity_domain_rows,
+        state_vector_definition_rows=state_vector_definition_rows,
+    )
     if not bool(validity.get("valid", False)):
         return {"result": "refused", "reason_code": REFUSAL_COMPILE_INVALID, "outputs": {}, "validity": validity}
     model_row = dict(compiled_model_rows_by_id(compiled_model_rows).get(str(compiled_model_id or "").strip()) or {})
@@ -587,8 +700,80 @@ def compiled_model_execute(
         "optimization_summary": _as_map(payload.get("optimization_summary")),
         "constant_bindings": _as_map(payload.get("constant_bindings")),
     }
+    state_owner_id = str(_as_map(model_row.get("extensions")).get("state_vector_owner_id", "")).strip() or _compiled_state_owner_id(
+        str(model_row.get("compiled_model_id", "")).strip()
+    )
+    state_vector_definitions = list(state_vector_definition_rows or [])
+    owner_definition = state_vector_definition_for_owner(
+        owner_id=state_owner_id,
+        state_vector_definition_rows=state_vector_definitions,
+    )
+    if not owner_definition:
+        fallback_definition = _compiled_state_definition(owner_id=state_owner_id)
+        if fallback_definition:
+            state_vector_definitions = list(state_vector_definitions) + [fallback_definition]
+            owner_definition = dict(fallback_definition)
+    if not owner_definition:
+        return {
+            "result": "refused",
+            "reason_code": REFUSAL_COMPILE_INVALID,
+            "outputs": {},
+            "validity": dict(validity),
+            "violations": ["missing_state_vector_definition"],
+        }
+    previous_state = {"execution_count": 0, "last_input_hash": "", "last_output_hash": ""}
+    previous_snapshot_by_owner = state_vector_snapshot_rows_by_owner(state_vector_snapshot_rows)
+    previous_snapshot = dict(previous_snapshot_by_owner.get(state_owner_id) or {})
+    if previous_snapshot:
+        restored = deserialize_state(
+            snapshot_row=previous_snapshot,
+            state_vector_definition_rows=state_vector_definitions,
+            expected_version=str(owner_definition.get("version", "")).strip() or "1.0.0",
+        )
+        if str(restored.get("result", "")).strip() != "complete":
+            return {
+                "result": "refused",
+                "reason_code": REFUSAL_COMPILE_INVALID,
+                "outputs": {},
+                "validity": dict(validity),
+                "violations": ["state_vector_deserialize_failed"],
+                "statevec_reason_code": str(restored.get("reason_code", "")).strip(),
+            }
+        previous_state = _as_map(restored.get("restored_state"))
+    next_state = {
+        "execution_count": int(max(0, _as_int(previous_state.get("execution_count", 0), 0))) + 1,
+        "last_input_hash": str(outputs.get("input_hash", "")).strip(),
+        "last_output_hash": str(outputs.get("payload_hash", "")).strip(),
+    }
+    state_serialization = serialize_state(
+        owner_id=state_owner_id,
+        source_state=next_state,
+        state_vector_definition_rows=state_vector_definitions,
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        expected_version=str(owner_definition.get("version", "")).strip() or "1.0.0",
+        extensions={"source": "compiled_model_execute"},
+    )
+    if str(state_serialization.get("result", "")).strip() != "complete":
+        return {
+            "result": "refused",
+            "reason_code": REFUSAL_COMPILE_INVALID,
+            "outputs": {},
+            "validity": dict(validity),
+            "violations": ["state_vector_serialize_failed"],
+            "statevec_reason_code": str(state_serialization.get("reason_code", "")).strip(),
+        }
+    snapshot_row = dict(state_serialization.get("snapshot_row") or {})
+    outputs["state_vector_anchor_hash"] = str(state_serialization.get("anchor_hash", "")).strip()
+    outputs["state_vector_snapshot_id"] = str(snapshot_row.get("snapshot_id", "")).strip()
     outputs["deterministic_fingerprint"] = canonical_sha256(dict(outputs, deterministic_fingerprint=""))
-    return {"result": "complete", "reason_code": "", "outputs": outputs}
+    return {
+        "result": "complete",
+        "reason_code": "",
+        "outputs": outputs,
+        "state_vector_owner_id": state_owner_id,
+        "state_vector_snapshot_row": snapshot_row,
+        "state_vector_definition_row": owner_definition,
+    }
 
 
 __all__ = [

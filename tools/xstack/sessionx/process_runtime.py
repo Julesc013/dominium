@@ -622,6 +622,12 @@ from src.system import (
     normalize_system_explain_request_rows,
     normalize_system_explain_artifact_rows,
     evaluate_system_explain_request,
+    build_state_vector_definition_row,
+    normalize_state_vector_definition_rows,
+    state_vector_definition_for_owner,
+    normalize_state_vector_snapshot_rows,
+    state_vector_snapshot_rows_by_owner,
+    serialize_state,
 )
 from src.meta.explain import (
     generate_explain_artifact,
@@ -5428,6 +5434,17 @@ def _load_compile_policy_registry(*, policy_context: dict | None) -> dict:
         repo_root=REPO_ROOT_HINT,
         registry_rel_path="data/registries/compile_policy_registry.json",
         default_payload={"record": {"compile_policies": []}},
+    )
+
+
+def _load_state_vector_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "state_vector_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/state_vector_registry.json",
+        default_payload={"record": {"state_vector_definitions": []}},
     )
 
 
@@ -10494,6 +10511,79 @@ def _refresh_chem_process_hash_chains(state: dict) -> None:
         ]
     )
 
+    definition_rows = _ensure_state_vector_definition_rows(state)
+    snapshot_rows = _ensure_state_vector_snapshot_rows(state)
+    snapshot_by_owner = state_vector_snapshot_rows_by_owner(snapshot_rows)
+    current_tick = int(max(0, _as_int((_ensure_simulation_time(state)).get("tick", 0), 0)))
+
+    for run_row in sorted(
+        (dict(item) for item in list(run_rows or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("run_id", "")),
+    ):
+        run_id = str(run_row.get("run_id", "")).strip()
+        if not run_id:
+            continue
+        owner_id = "process.{}".format(run_id)
+        owner_definition = state_vector_definition_for_owner(
+            owner_id=owner_id,
+            state_vector_definition_rows=definition_rows,
+        )
+        if not owner_definition:
+            fallback_definition = build_state_vector_definition_row(
+                owner_id=owner_id,
+                version="1.0.0",
+                state_fields=[
+                    {"field_id": "run_id", "path": "run_id", "field_kind": "id", "default": run_id},
+                    {"field_id": "progress", "path": "progress", "field_kind": "fixed_point", "default": 0},
+                    {"field_id": "status", "path": "status", "field_kind": "text", "default": "active"},
+                ],
+                deterministic_fingerprint="",
+                extensions={"source": "process_run_state.fallback_default"},
+            )
+            if fallback_definition:
+                definition_rows = normalize_state_vector_definition_rows(
+                    list(definition_rows) + [fallback_definition]
+                )
+                owner_definition = dict(fallback_definition)
+        if not owner_definition:
+            continue
+        run_tick = int(
+            max(
+                0,
+                _as_int(
+                    run_row.get("end_tick", run_row.get("start_tick", current_tick)),
+                    current_tick,
+                ),
+            )
+        )
+        state_payload = {
+            "run_id": run_id,
+            "progress": int(max(0, _as_int(run_row.get("progress", 0), 0))),
+            "status": str((dict(run_row.get("extensions") or {})).get("status", "")).strip() or "active",
+        }
+        serialization = serialize_state(
+            owner_id=owner_id,
+            source_state=state_payload,
+            state_vector_definition_rows=definition_rows,
+            current_tick=run_tick,
+            expected_version=str(owner_definition.get("version", "")).strip() or "1.0.0",
+            extensions={"source": "process_run_state", "run_id": run_id},
+        )
+        if str(serialization.get("result", "")).strip() != "complete":
+            continue
+        snapshot_row = dict(serialization.get("snapshot_row") or {})
+        previous_snapshot = dict(snapshot_by_owner.get(owner_id) or {})
+        if snapshot_row and str(snapshot_row.get("deterministic_fingerprint", "")).strip() != str(
+            previous_snapshot.get("deterministic_fingerprint", "")
+        ).strip():
+            snapshot_rows = normalize_state_vector_snapshot_rows(
+                list(snapshot_rows) + [snapshot_row]
+            )
+            snapshot_by_owner = state_vector_snapshot_rows_by_owner(snapshot_rows)
+
+    state["state_vector_definition_rows"] = [dict(row) for row in list(definition_rows or []) if isinstance(row, Mapping)]
+    state["state_vector_snapshot_rows"] = [dict(row) for row in list(snapshot_rows or []) if isinstance(row, Mapping)]
+
 
 def _ensure_chem_degradation_state_rows(state: dict) -> List[dict]:
     rows = state.get("chem_degradation_state_rows")
@@ -11439,6 +11529,88 @@ def _ensure_validity_domain_rows(state: dict) -> List[dict]:
     normalized = normalize_validity_domain_rows(rows)
     state["validity_domain_rows"] = [dict(row) for row in normalized]
     return [dict(row) for row in normalized]
+
+
+def _ensure_state_vector_definition_rows(state: dict) -> List[dict]:
+    rows = state.get("state_vector_definition_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_state_vector_definition_rows(rows)
+    state["state_vector_definition_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_state_vector_snapshot_rows(state: dict) -> List[dict]:
+    rows = state.get("state_vector_snapshot_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_state_vector_snapshot_rows(rows)
+    state["state_vector_snapshot_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _seed_state_vector_definitions(
+    *,
+    state: dict,
+    policy_context: dict | None,
+) -> None:
+    registry_payload = _load_state_vector_registry(policy_context=policy_context)
+    registry_rows = _registry_rows(registry_payload, "state_vector_definitions")
+    existing_rows = _ensure_state_vector_definition_rows(state)
+    merged_rows = normalize_state_vector_definition_rows(
+        [dict(row) for row in list(existing_rows or []) if isinstance(row, Mapping)]
+        + [dict(row) for row in list(registry_rows or []) if isinstance(row, Mapping)]
+    )
+    state["state_vector_definition_rows"] = [dict(row) for row in merged_rows]
+
+
+def _refresh_state_vector_hash_chains(state: dict) -> None:
+    definition_rows = _ensure_state_vector_definition_rows(state)
+    snapshot_rows = _ensure_state_vector_snapshot_rows(state)
+    state["state_vector_definition_hash_chain"] = canonical_sha256(
+        [
+            {
+                "owner_id": str(row.get("owner_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "state_fields": [
+                    {
+                        "field_id": str(field.get("field_id", "")).strip(),
+                        "path": str(field.get("path", "")).strip(),
+                        "field_kind": str(field.get("field_kind", "")).strip(),
+                    }
+                    for field in sorted(
+                        (dict(item) for item in list(row.get("state_fields") or []) if isinstance(item, Mapping)),
+                        key=lambda item: str(item.get("field_id", "")),
+                    )
+                ],
+            }
+            for row in sorted(
+                (dict(item) for item in list(definition_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("owner_id", "")),
+            )
+        ]
+    )
+    state["state_vector_snapshot_hash_chain"] = canonical_sha256(
+        [
+            {
+                "snapshot_id": str(row.get("snapshot_id", "")).strip(),
+                "owner_id": str(row.get("owner_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "serialized_state": dict(row.get("serialized_state") or {})
+                if isinstance(row.get("serialized_state"), Mapping)
+                else {},
+            }
+            for row in sorted(
+                (dict(item) for item in list(snapshot_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("owner_id", "")),
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("snapshot_id", "")),
+                ),
+            )
+        ]
+    )
 
 
 def _refresh_compile_hash_chains(state: dict) -> None:
@@ -21038,6 +21210,9 @@ def execute_intent(
     compiled_model_rows = _ensure_compiled_model_rows(state)
     equivalence_proof_rows = _ensure_equivalence_proof_rows(state)
     validity_domain_rows = _ensure_validity_domain_rows(state)
+    _seed_state_vector_definitions(state=state, policy_context=policy_context)
+    state_vector_definition_rows = _ensure_state_vector_definition_rows(state)
+    state_vector_snapshot_rows = _ensure_state_vector_snapshot_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     _ensure_time_mapping_cache_rows(state)
     _ensure_time_stamp_artifact_rows(state)
@@ -21073,6 +21248,8 @@ def execute_intent(
     del compiled_model_rows
     del equivalence_proof_rows
     del validity_domain_rows
+    del state_vector_definition_rows
+    del state_vector_snapshot_rows
     del chem_process_run_state_rows
     del batch_quality_rows
     del chem_degradation_state_rows
@@ -21091,6 +21268,7 @@ def execute_intent(
     _refresh_system_reliability_hash_chains(state)
     _refresh_system_forensics_hash_chains(state)
     _refresh_compile_hash_chains(state)
+    _refresh_state_vector_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -31614,6 +31792,7 @@ def execute_intent(
                 system_id=system_id,
                 current_tick=int(max(0, _as_int(current_tick, 0))),
                 process_id=process_id,
+                state_vector_definition_rows=state.get("state_vector_definition_rows") or [],
                 quantity_bundle_registry_payload=quantity_bundle_registry,
                 spec_type_registry_payload=spec_type_registry,
                 signal_channel_type_registry_payload=signal_channel_type_registry,
@@ -31664,6 +31843,8 @@ def execute_intent(
             "revoked_cert_ids": _sorted_tokens(revocation_result.get("revoked_cert_ids")),
             "generated_revocation_explain_ids": _sorted_tokens(generated_revocation_explain_ids),
             "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
+            "state_vector_definition_hash_chain": str(state.get("state_vector_definition_hash_chain", "")).strip(),
+            "state_vector_snapshot_hash_chain": str(state.get("state_vector_snapshot_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.system_expand":
@@ -31718,6 +31899,8 @@ def execute_intent(
                 capsule_id=capsule_id,
                 current_tick=int(max(0, _as_int(current_tick, 0))),
                 process_id=process_id,
+                state_vector_definition_rows=state.get("state_vector_definition_rows") or [],
+                state_vector_snapshot_rows=state.get("state_vector_snapshot_rows") or [],
                 quantity_bundle_registry_payload=quantity_bundle_registry,
                 spec_type_registry_payload=spec_type_registry,
                 signal_channel_type_registry_payload=signal_channel_type_registry,
@@ -31767,6 +31950,8 @@ def execute_intent(
             "revoked_cert_ids": _sorted_tokens(revocation_result.get("revoked_cert_ids")),
             "generated_revocation_explain_ids": _sorted_tokens(generated_revocation_explain_ids),
             "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
+            "state_vector_definition_hash_chain": str(state.get("state_vector_definition_hash_chain", "")).strip(),
+            "state_vector_snapshot_hash_chain": str(state.get("state_vector_snapshot_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.system_evaluate_certification":
@@ -32082,6 +32267,8 @@ def execute_intent(
         model_row = dict(compile_eval.get("compiled_model_row") or {})
         proof_row = dict(compile_eval.get("equivalence_proof_row") or {})
         validity_row = dict(compile_eval.get("validity_domain_row") or {})
+        state_vector_definition_row = dict(compile_eval.get("state_vector_definition_row") or {})
+        state_vector_snapshot_row = dict(compile_eval.get("state_vector_snapshot_row") or {})
 
         if request_row:
             state["compile_request_rows"] = normalize_compile_request_rows(
@@ -32103,7 +32290,16 @@ def execute_intent(
             state["validity_domain_rows"] = normalize_validity_domain_rows(
                 list(state.get("validity_domain_rows") or []) + [validity_row]
             )
+        if state_vector_definition_row:
+            state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+                list(state.get("state_vector_definition_rows") or []) + [state_vector_definition_row]
+            )
+        if state_vector_snapshot_row:
+            state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+                list(state.get("state_vector_snapshot_rows") or []) + [state_vector_snapshot_row]
+            )
         _refresh_compile_hash_chains(state)
+        _refresh_state_vector_hash_chains(state)
 
         info_artifact_rows = [
             dict(row)
@@ -32153,6 +32349,7 @@ def execute_intent(
                 current_inputs=probe_inputs,
                 compiled_model_rows=state.get("compiled_model_rows") or [],
                 validity_domain_rows=state.get("validity_domain_rows") or [],
+                state_vector_definition_rows=state.get("state_vector_definition_rows") or [],
             )
             if bool(inputs.get("execute_probe", False)):
                 execution_result = compiled_model_execute(
@@ -32160,7 +32357,22 @@ def execute_intent(
                     inputs=probe_inputs,
                     compiled_model_rows=state.get("compiled_model_rows") or [],
                     validity_domain_rows=state.get("validity_domain_rows") or [],
+                    state_vector_definition_rows=state.get("state_vector_definition_rows") or [],
+                    state_vector_snapshot_rows=state.get("state_vector_snapshot_rows") or [],
+                    current_tick=int(max(0, _as_int(current_tick, 0))),
                 )
+                execution_snapshot_row = dict(execution_result.get("state_vector_snapshot_row") or {})
+                execution_definition_row = dict(execution_result.get("state_vector_definition_row") or {})
+                if execution_definition_row:
+                    state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+                        list(state.get("state_vector_definition_rows") or []) + [execution_definition_row]
+                    )
+                if execution_snapshot_row:
+                    state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+                        list(state.get("state_vector_snapshot_rows") or []) + [execution_snapshot_row]
+                    )
+                if execution_definition_row or execution_snapshot_row:
+                    _refresh_state_vector_hash_chains(state)
 
         reason_code = str(compile_eval.get("reason_code", "")).strip()
         if not reason_code:
@@ -32193,6 +32405,8 @@ def execute_intent(
             "compiled_model_hash_chain": str(state.get("compiled_model_hash_chain", "")).strip(),
             "equivalence_proof_hash_chain": str(state.get("equivalence_proof_hash_chain", "")).strip(),
             "validity_domain_hash_chain": str(state.get("validity_domain_hash_chain", "")).strip(),
+            "state_vector_definition_hash_chain": str(state.get("state_vector_definition_hash_chain", "")).strip(),
+            "state_vector_snapshot_hash_chain": str(state.get("state_vector_snapshot_hash_chain", "")).strip(),
             "proof_requirement_enforced": (
                 bool(result_row.get("success", False))
                 or (str(result_row.get("refusal", "")).strip() in {REFUSAL_COMPILE_MISSING_PROOF, REFUSAL_COMPILE_UNSUPPORTED_TYPE, REFUSAL_COMPILE_SOURCE_MISSING, REFUSAL_COMPILE_INVALID})
@@ -32616,13 +32830,88 @@ def execute_intent(
                 "resolved_template_order": resolved_template_order,
                 "root_assembly_id": root_assembly_id,
             }
-            anchor_hash = canonical_sha256(state_vector_payload)
-            state_vector_id = "statevec.system.{}".format(canonical_sha256({"system_id": system_id, "template_id": template_id})[:16])
+            state_vector_owner_id = "system.{}".format(system_id)
+            state_vector_definitions = _ensure_state_vector_definition_rows(state)
+            owner_definition = state_vector_definition_for_owner(
+                owner_id=state_vector_owner_id,
+                state_vector_definition_rows=state_vector_definitions,
+            )
+            if not owner_definition:
+                fallback_definition = build_state_vector_definition_row(
+                    owner_id=state_vector_owner_id,
+                    version="1.0.0",
+                    state_fields=[
+                        {"field_id": "captured_tick", "path": "captured_tick", "field_kind": "u64", "default": 0},
+                        {"field_id": "assembly_rows", "path": "assembly_rows", "field_kind": "list", "default": []},
+                        {"field_id": "root_assembly_id", "path": "root_assembly_id", "field_kind": "id", "default": ""},
+                    ],
+                    deterministic_fingerprint="",
+                    extensions={"source": "process.template_instantiate.fallback_default"},
+                )
+                if fallback_definition:
+                    state_vector_definitions = normalize_state_vector_definition_rows(
+                        list(state_vector_definitions) + [fallback_definition]
+                    )
+                    owner_definition = dict(fallback_definition)
+                    state["state_vector_definition_rows"] = [
+                        dict(row)
+                        for row in list(state_vector_definitions or [])
+                        if isinstance(row, Mapping)
+                    ]
+            state_vector_serialization = serialize_state(
+                owner_id=state_vector_owner_id,
+                source_state=state_vector_payload,
+                state_vector_definition_rows=state_vector_definitions,
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+                expected_version=str(owner_definition.get("version", "")).strip() if owner_definition else None,
+                extensions={
+                    "source_process_id": process_id,
+                    "template_id": template_id,
+                    "system_id": system_id,
+                },
+            )
+            if str(state_vector_serialization.get("result", "")).strip() != "complete":
+                return refusal(
+                    "refusal.statevec.invalid",
+                    "template instantiation failed to serialize macro state vector",
+                    "Provide a compatible state_vector_definition for this system owner.",
+                    {
+                        "system_id": system_id,
+                        "template_id": template_id,
+                        "state_vector_owner_id": state_vector_owner_id,
+                        "statevec_reason_code": str(state_vector_serialization.get("reason_code", "")).strip(),
+                    },
+                    "$.intent.inputs.template_id",
+                )
+            state_vector_snapshot_row = dict(state_vector_serialization.get("snapshot_row") or {})
+            state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+                list(state.get("state_vector_snapshot_rows") or []) + [state_vector_snapshot_row]
+            )
+            anchor_hash = str(state_vector_serialization.get("anchor_hash", "")).strip()
+            snapshot_id = str(state_vector_snapshot_row.get("snapshot_id", "")).strip()
+            snapshot_version = str(state_vector_snapshot_row.get("version", "")).strip() or "1.0.0"
+            state_vector_id = "statevec.system.{}".format(
+                canonical_sha256(
+                    {
+                        "system_id": system_id,
+                        "template_id": template_id,
+                        "snapshot_id": snapshot_id,
+                        "anchor_hash": anchor_hash,
+                    }
+                )[:16]
+            )
             state_vector_row = build_system_state_vector_row(
                 state_vector_id=state_vector_id,
                 system_id=system_id,
-                serialized_internal_state=state_vector_payload,
-                extensions={"source_process_id": process_id, "template_id": template_id, "anchor_hash": anchor_hash},
+                serialized_internal_state=dict(state_vector_snapshot_row.get("serialized_state") or {}),
+                extensions={
+                    "source_process_id": process_id,
+                    "template_id": template_id,
+                    "anchor_hash": anchor_hash,
+                    "state_vector_owner_id": state_vector_owner_id,
+                    "state_vector_snapshot_id": snapshot_id,
+                    "state_vector_version": snapshot_version,
+                },
             )
             state["system_state_vector_rows"] = normalize_system_state_vector_rows(
                 [
@@ -32639,7 +32928,13 @@ def execute_intent(
                 macro_model_set_id=str((dict(compiled_template.get("compiled_macro_capsule") or {})).get("macro_model_set_id", "")).strip(),
                 model_error_bounds_ref=str((dict(compiled_template.get("compiled_macro_capsule") or {})).get("error_bound_policy_id", "")).strip() or "tol.default",
                 macro_model_bindings=list((dict(compiled_template.get("compiled_macro_capsule") or {})).get("model_bindings") or []),
-                internal_state_vector={"state_vector_id": state_vector_id, "anchor_hash": anchor_hash},
+                internal_state_vector={
+                    "state_vector_id": state_vector_id,
+                    "anchor_hash": anchor_hash,
+                    "snapshot_id": snapshot_id,
+                    "owner_id": state_vector_owner_id,
+                    "state_vector_version": snapshot_version,
+                },
                 provenance_anchor_hash=anchor_hash,
                 tier_mode="macro",
                 extensions={"source_process_id": process_id, "template_id": template_id},

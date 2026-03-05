@@ -15,6 +15,12 @@ from src.system.system_collapse_engine import (
     normalize_system_rows,
     normalize_system_state_vector_rows,
 )
+from src.system.statevec import (
+    build_state_vector_snapshot_row,
+    deserialize_state,
+    normalize_state_vector_definition_rows,
+    normalize_state_vector_snapshot_rows,
+)
 from src.system.system_validation_engine import (
     REFUSAL_SYSTEM_INVALID_INTERFACE,
     REFUSAL_SYSTEM_INVARIANT_VIOLATION,
@@ -56,6 +62,15 @@ def _macro_capsule_rows_by_id(rows: object) -> Dict[str, dict]:
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
+def _state_vector_snapshot_rows_by_id(rows: object) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_state_vector_snapshot_rows(rows):
+        snapshot_id = str(row.get("snapshot_id", "")).strip()
+        if snapshot_id:
+            out[snapshot_id] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
 def _state_vector_for_capsule(
     *,
     capsule_row: Mapping[str, object],
@@ -90,11 +105,15 @@ def _validate_expand_payload(
     *,
     capsule_row: Mapping[str, object],
     state_vector_row: Mapping[str, object],
+    restored_state_payload: Mapping[str, object] | None = None,
+    observed_anchor_hash: str = "",
 ) -> List[dict]:
     system_id = str(capsule_row.get("system_id", "")).strip()
-    serialized_internal_state = _as_map(state_vector_row.get("serialized_internal_state"))
+    serialized_internal_state = _as_map(restored_state_payload)
+    if not serialized_internal_state:
+        serialized_internal_state = _as_map(state_vector_row.get("serialized_internal_state"))
     anchor_expected = str(capsule_row.get("provenance_anchor_hash", "")).strip()
-    anchor_observed = canonical_sha256(serialized_internal_state)
+    anchor_observed = str(observed_anchor_hash or "").strip() or canonical_sha256(serialized_internal_state)
     if anchor_expected != anchor_observed:
         raise SystemExpandError(
             "provenance anchor hash mismatch for system expand",
@@ -126,6 +145,9 @@ def expand_system_graph(
     capsule_id: str,
     current_tick: int,
     process_id: str = "process.system_expand",
+    state_vector_definition_rows: object | None = None,
+    state_vector_snapshot_rows: object | None = None,
+    state_vector_compat_migrations: Mapping[str, object] | None = None,
     quantity_bundle_registry_payload: Mapping[str, object] | None = None,
     spec_type_registry_payload: Mapping[str, object] | None = None,
     signal_channel_type_registry_payload: Mapping[str, object] | None = None,
@@ -203,9 +225,64 @@ def expand_system_graph(
             details={"capsule_id": capsule_token, "system_id": system_id},
         )
 
+    merged_state_vector_definitions = normalize_state_vector_definition_rows(
+        list(state.get("state_vector_definition_rows") or [])
+        + list(state_vector_definition_rows or [])
+    )
+    merged_snapshot_rows = normalize_state_vector_snapshot_rows(
+        list(state.get("state_vector_snapshot_rows") or [])
+        + list(state_vector_snapshot_rows or [])
+    )
+    snapshot_by_id = _state_vector_snapshot_rows_by_id(merged_snapshot_rows)
+    internal_state_vector = _as_map(capsule_row.get("internal_state_vector"))
+    snapshot_id = str(internal_state_vector.get("snapshot_id", "")).strip()
+    snapshot_owner_id = str(internal_state_vector.get("owner_id", "")).strip() or "system.{}".format(system_id)
+    snapshot_version = str(internal_state_vector.get("state_vector_version", "")).strip() or "1.0.0"
+    snapshot_row = dict(snapshot_by_id.get(snapshot_id) or {})
+    if not snapshot_row:
+        snapshot_row = build_state_vector_snapshot_row(
+            owner_id=snapshot_owner_id,
+            version=snapshot_version,
+            serialized_state=_as_map(state_vector_row.get("serialized_internal_state")),
+            tick=int(max(0, _as_int(current_tick, 0))),
+            snapshot_id=snapshot_id,
+            deterministic_fingerprint="",
+            extensions={"source": "system_expand_engine.legacy_snapshot_fallback"},
+        )
+        merged_snapshot_rows = normalize_state_vector_snapshot_rows(
+            list(merged_snapshot_rows) + [snapshot_row]
+        )
+
+    deserialization = deserialize_state(
+        snapshot_row=snapshot_row,
+        state_vector_definition_rows=merged_state_vector_definitions,
+        expected_version=snapshot_version,
+        compat_migrations=state_vector_compat_migrations,
+    )
+    if str(deserialization.get("result", "")).strip() != "complete":
+        raise SystemExpandError(
+            "state vector deserialization failed during system expand",
+            reason_code=REFUSAL_SYSTEM_EXPAND_INVALID,
+            details={
+                "system_id": system_id,
+                "capsule_id": capsule_token,
+                "statevec_reason_code": str(deserialization.get("reason_code", "")).strip(),
+                "statevec_message": str(deserialization.get("message", "")).strip(),
+            },
+        )
+    restored_state_payload = _as_map(deserialization.get("restored_state"))
+    state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+        list(merged_state_vector_definitions)
+    )
+    state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+        list(merged_snapshot_rows)
+    )
+
     restored_assembly_rows = _validate_expand_payload(
         capsule_row=capsule_row,
         state_vector_row=state_vector_row,
+        restored_state_payload=restored_state_payload,
+        observed_anchor_hash=str(deserialization.get("anchor_hash", "")).strip(),
     )
 
     interface_validation = validate_interface_signature(
