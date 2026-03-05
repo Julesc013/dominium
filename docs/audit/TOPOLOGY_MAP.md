@@ -4,13 +4,13 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:da5f5e51d4a3de4cc26e3c0fbb64194bd80d5850`
+- repository_hash: `HEAD:2c96753486351837a9d8b171287402a161d71bc2`
 - generated_tick: `0`
-- deterministic_fingerprint: `4209ab08d56ac8505ac6f16e6c3760e35e1c9648b16bb1662ca2e6c2d4b21ff5`
+- deterministic_fingerprint: `ee2d2181768dd1bf74e3e5410958e7175dddce9eaf3707521c7af3a58c2960c9`
 
 ## Counts
 - node_count: 3290
-- edge_count: 307708
+- edge_count: 307709
 
 ## Node Kinds
 - contract_set: 54
@@ -22,7 +22,7 @@ Version: 1.0.0
 - tool: 1421
 
 ## Edge Kinds
-- consumes: 3131
+- consumes: 3132
 - depends_on: 1689
 - enforces: 79147
 - produces: 1
