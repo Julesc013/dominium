@@ -425,6 +425,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-EXPOSURE-PROCESS-ONLY",
     "INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE",
     "INV-COMPLIANCE-REPORT-ARTIFACT",
+    "INV-NO-HIDDEN-SYSTEM-STATE",
+    "INV-SYSTEM-BOUNDARY-INVARIANTS-DECLARED",
+    "INV-COLLAPSE-ONLY-VIA-PROCESS",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -733,6 +736,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E255_OMNISCIENT_POLLUTION_UI_LEAK_SMELL": "INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE",
     "E256_UNBUDGETED_DISPERSION_SMELL": "INV-POLL-BUDGETED",
     "E257_SILENT_EXPOSURE_SMELL": "INV-POLL-DEGRADE-LOGGED",
+    "E258_IMPLICIT_SYSTEM_COLLAPSE_SMELL": "INV-COLLAPSE-ONLY-VIA-PROCESS",
+    "E259_HIDDEN_SYSTEM_STATE_SMELL": "INV-NO-HIDDEN-SYSTEM-STATE",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -17144,6 +17149,230 @@ def _append_pollution_envelope_invariant_findings(
         )
 
 
+def _append_system_composition_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    hidden_rule_id = "INV-NO-HIDDEN-SYSTEM-STATE"
+    boundary_rule_id = "INV-SYSTEM-BOUNDARY-INVARIANTS-DECLARED"
+    process_rule_id = "INV-COLLAPSE-ONLY-VIA-PROCESS"
+
+    collapse_engine_rel = "src/system/system_collapse_engine.py"
+    expand_engine_rel = "src/system/system_expand_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_registry_rel = "data/registries/process_registry.json"
+    boundary_registry_rel = "data/registries/system_boundary_invariant_registry.json"
+    required_schema_rels = (
+        "schema/system/interface_signature.schema",
+        "schema/system/boundary_invariant.schema",
+        "schema/system/macro_capsule.schema",
+        "schema/system/system_state_vector.schema",
+    )
+    required_registry_rels = (
+        "data/registries/system_template_registry.json",
+        "data/registries/system_macro_model_registry.json",
+        boundary_registry_rel,
+    )
+
+    for rel_path in (collapse_engine_rel, expand_engine_rel, runtime_rel, process_registry_rel) + required_schema_rels + required_registry_rels:
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-0 composition baseline requires schema/registry/runtime artifact",
+                rule_id=boundary_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in (
+        'elif process_id == "process.system_collapse":',
+        'elif process_id == "process.system_expand":',
+        "collapse_system_graph(",
+        "expand_system_graph(",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="system collapse/expand must execute only through canonical process runtime paths",
+                rule_id=process_rule_id,
+            )
+        )
+
+    collapse_engine_text = _file_text(repo_root, collapse_engine_rel)
+    for token in (
+        "_validate_collapse_eligibility(",
+        "serialized_internal_state",
+        "provenance_anchor_hash",
+        "build_system_macro_capsule_row(",
+        "build_system_state_vector_row(",
+        "system_boundary_invariant_rows",
+    ):
+        if token in collapse_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=collapse_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="system collapse engine is missing required eligibility/state-capture/invariant token",
+                rule_id=boundary_rule_id,
+            )
+        )
+
+    expand_engine_text = _file_text(repo_root, expand_engine_rel)
+    for token in (
+        "_validate_expand_payload(",
+        "provenance_anchor_hash",
+        "REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH",
+        "serialized_internal_state",
+    ):
+        if token in expand_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=expand_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="system expand engine must validate provenance anchor against serialized state vector",
+                rule_id=hidden_rule_id,
+            )
+        )
+
+    process_registry_payload, process_registry_error = _load_json_object(repo_root, process_registry_rel)
+    process_rows = list(process_registry_payload.get("processes") or [])
+    required_process_ids = {"process.system_collapse", "process.system_expand"}
+    declared_process_ids = set(
+        str(row.get("process_id", "")).strip()
+        for row in process_rows
+        if isinstance(row, dict) and str(row.get("process_id", "")).strip()
+    )
+    if process_registry_error or not declared_process_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet="processes",
+                message="process registry is missing while validating SYS-0 process discipline",
+                rule_id=process_rule_id,
+            )
+        )
+    else:
+        for process_id in sorted(required_process_ids):
+            if process_id in declared_process_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_registry_rel,
+                    line_number=1,
+                    snippet=process_id,
+                    message="system process id is missing from process_registry",
+                    rule_id=process_rule_id,
+                )
+            )
+
+    boundary_payload, boundary_error = _load_json_object(repo_root, boundary_registry_rel)
+    boundary_rows = list((dict(boundary_payload.get("record") or {})).get("boundary_invariants") or [])
+    boundary_ids = set(
+        str(row.get("invariant_id", "")).strip()
+        for row in boundary_rows
+        if isinstance(row, dict) and str(row.get("invariant_id", "")).strip()
+    )
+    required_boundary_ids = {
+        "invariant.mass_conserved",
+        "invariant.energy_conserved",
+        "invariant.momentum_conserved",
+        "invariant.pollutant_accounted",
+    }
+    if boundary_error or not boundary_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=boundary_registry_rel,
+                line_number=1,
+                snippet="record.boundary_invariants",
+                message="system boundary invariant registry must exist and declare required invariants",
+                rule_id=boundary_rule_id,
+            )
+        )
+    else:
+        for invariant_id in sorted(required_boundary_ids):
+            if invariant_id in boundary_ids:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=boundary_registry_rel,
+                    line_number=1,
+                    snippet=invariant_id,
+                    message="required system boundary invariant id is missing",
+                    rule_id=boundary_rule_id,
+                )
+            )
+
+    direct_mutation_pattern = re.compile(
+        r"state\s*\[\s*[\"'](?:system_macro_capsule_rows|system_collapse_event_rows|system_expand_event_rows|system_state_vector_rows)[\"']\s*\]\s*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        collapse_engine_rel,
+        expand_engine_rel,
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not direct_mutation_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="system collapse/expand state mutation detected outside canonical SYS process pathways",
+                    rule_id=process_rule_id,
+                )
+            )
+            break
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -19519,6 +19748,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_pollution_envelope_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_composition_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -281,6 +281,8 @@ from analyzers import e254_direct_exposure_write_smell
 from analyzers import e255_omniscient_pollution_ui_leak_smell
 from analyzers import e256_unbudgeted_dispersion_smell
 from analyzers import e257_silent_exposure_smell
+from analyzers import e258_implicit_system_collapse_smell
+from analyzers import e259_hidden_system_state_smell
 
 
 ANALYZERS = (
@@ -565,6 +567,8 @@ ANALYZERS = (
     e255_omniscient_pollution_ui_leak_smell,
     e256_unbudgeted_dispersion_smell,
     e257_silent_exposure_smell,
+    e258_implicit_system_collapse_smell,
+    e259_hidden_system_state_smell,
 )
 
 
