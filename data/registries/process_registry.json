@@ -4316,6 +4316,65 @@
         "field.pollution.oil_spill_stub_concentration"
       ],
       "deprecated": false,
+      "description": "Canonical field mutation process for deterministic field-layer updates under declared field update policies.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "budgeted-degrade"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.field_update)",
+        "source": "PHYS-2/POLL1",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Field Update",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "field_updates",
+          "ref_id": "dominium.state.field_update_request_rows",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "field_cells",
+          "ref_id": "dominium.schema.field.field_cell@1.0.0",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "field_layer_rows",
+          "ref_id": "dominium.state.field_layer_rows",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "field_update_events",
+          "ref_id": "dominium.state.field_update_event_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.field_update",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.pollution.smoke_particulate_concentration",
+        "field.pollution.co2_stub_concentration",
+        "field.pollution.toxic_gas_stub_concentration",
+        "field.pollution.oil_spill_stub_concentration"
+      ],
+      "deprecated": false,
       "description": "Canonical POLL-1 dispersion tick; applies deterministic coarse diffusion/decay/deposition updates and exposure accumulation stubs.",
       "determinism_notes": [
         "deterministic-order",

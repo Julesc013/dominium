@@ -10,4 +10,10 @@ Format (one entry per line):
 - `relative/path.ext`|short reason
 
 Current entries:
-# none
+- `docs/audit/auditx/FINDINGS.json`: pre-existing local AuditX run artifact (kept uncommitted for iterative governance scans)
+- `docs/audit/auditx/FINDINGS.md`: pre-existing local AuditX run artifact (kept uncommitted for iterative governance scans)
+- `docs/audit/auditx/INVARIANT_MAP.json`: pre-existing local AuditX run artifact (kept uncommitted for iterative governance scans)
+- `docs/audit/auditx/PROMOTION_CANDIDATES.json`: pre-existing local AuditX run artifact (kept uncommitted for iterative governance scans)
+- `docs/audit/auditx/RUN_META.json`: pre-existing local AuditX run artifact (kept uncommitted for iterative governance scans)
+- `docs/audit/auditx/SUMMARY.md`: pre-existing local AuditX run artifact (kept uncommitted for iterative governance scans)
+- `docs/audit/auditx/TRENDS.json`: pre-existing local AuditX run artifact (kept uncommitted for iterative governance scans)

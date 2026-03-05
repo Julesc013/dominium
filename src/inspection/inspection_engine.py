@@ -3596,7 +3596,9 @@ def _build_section_data(
                 if (not cell_id) or (target_scope_id and cell_id != target_scope_id):
                     continue
                 pollutant_suffix = field_id[len("field.pollution.") : -len("_concentration")]
-                pollutant_id = "pollutant.{}".format(pollutant_suffix) if pollutant_suffix else "pollutant.unknown"
+                if not pollutant_suffix:
+                    continue
+                pollutant_id = "pollutant.{}".format(pollutant_suffix)
                 concentration = int(
                     _quantize_map(
                         {"value": int(max(0, _as_int(cell_row.get("value", 0), 0)))},
@@ -3682,7 +3684,9 @@ def _build_section_data(
             )
             totals_by_pollutant: Dict[str, int] = {}
             for deposition_row in deposition_rows:
-                pollutant_id = str(deposition_row.get("pollutant_id", "")).strip() or "pollutant.unknown"
+                pollutant_id = str(deposition_row.get("pollutant_id", "")).strip()
+                if not pollutant_id:
+                    continue
                 deposited_mass = int(max(0, _as_int(deposition_row.get("deposited_mass", 0), 0)))
                 totals_by_pollutant[pollutant_id] = int(
                     max(0, _as_int(totals_by_pollutant.get(pollutant_id, 0), 0))
@@ -3746,7 +3750,9 @@ def _build_section_data(
         )
         totals_by_pollutant: Dict[str, int] = {}
         for exposure_row in exposure_rows:
-            pollutant_id = str(exposure_row.get("pollutant_id", "")).strip() or "pollutant.unknown"
+            pollutant_id = str(exposure_row.get("pollutant_id", "")).strip()
+            if not pollutant_id:
+                continue
             accumulated = int(max(0, _as_int(exposure_row.get("accumulated_exposure", 0), 0)))
             totals_by_pollutant[pollutant_id] = int(
                 max(0, _as_int(totals_by_pollutant.get(pollutant_id, 0), 0))
