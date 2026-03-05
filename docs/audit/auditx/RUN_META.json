@@ -2,13 +2,13 @@
   "artifact_class": "RUN_META",
   "cache_mode": "full_reuse",
   "changed_only": false,
-  "generated_utc": "2026-03-05T11:24:07Z",
-  "graph_hash": "c8d9912f7af9e0a36f8432d113c62028dce355405f3fcec9945076c76f338d46",
+  "generated_utc": "2026-03-05T13:24:36Z",
+  "graph_hash": "f8de484acb956c00fc26311430871e693ab1f8d162f507a67603767af7e58d95",
   "last_reviewed": "2026-03-05",
   "output_format": "both",
   "platform": "windows",
   "python_version": "3.11.9",
   "result": "scan_complete",
   "status": "DERIVED",
-  "workspace_id": "ws-96bc3d398a7a129a"
+  "workspace_id": "ws-4848ec86fee2bae5"
 }

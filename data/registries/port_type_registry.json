@@ -58,7 +58,7 @@
         "port_type_id": "port.thermal_in",
         "description": "Thermal input port for exchanger/coupling assemblies.",
         "direction": "in",
-        "payload_kind": "thermal",
+        "payload_kind": "energy",
         "extensions": {}
       },
       {
@@ -66,7 +66,7 @@
         "port_type_id": "port.thermal_out",
         "description": "Thermal output port for exchanger/coupling assemblies.",
         "direction": "out",
-        "payload_kind": "thermal",
+        "payload_kind": "energy",
         "extensions": {}
       },
       {
@@ -74,7 +74,7 @@
         "port_type_id": "port.fluid_in_stub",
         "description": "Fluid input stub port reserved for FLUID coupling.",
         "direction": "in",
-        "payload_kind": "fluid_stub",
+        "payload_kind": "material",
         "extensions": {
           "stub": true
         }
@@ -84,7 +84,7 @@
         "port_type_id": "port.fluid_out_stub",
         "description": "Fluid output stub port reserved for FLUID coupling.",
         "direction": "out",
-        "payload_kind": "fluid_stub",
+        "payload_kind": "material",
         "extensions": {
           "stub": true
         }
