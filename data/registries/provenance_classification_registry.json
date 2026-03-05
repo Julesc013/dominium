@@ -183,6 +183,26 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.pollution_spike",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.exposure_threshold",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.therm_overheat",
         "classification": "derived",
         "compaction_allowed": true,

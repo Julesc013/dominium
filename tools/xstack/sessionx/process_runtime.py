@@ -537,6 +537,10 @@ from src.pollution import (
     normalize_pollution_total_rows,
     pollution_totals_by_key,
 )
+from src.meta.explain import (
+    generate_explain_artifact,
+    normalize_explain_artifact_rows,
+)
 from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
 from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -5221,6 +5225,33 @@ def _pollution_field_policies_by_id(registry_payload: Mapping[str, object] | Non
             "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
             "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
         }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _load_explain_contract_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "explain_contract_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/explain_contract_registry.json",
+        default_payload={"record": {"explain_contracts": []}},
+    )
+
+
+def _explain_contract_rows_by_event_kind(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("explain_contracts")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("explain_contracts")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("event_kind_id", ""))):
+        event_kind_id = str(row.get("event_kind_id", "")).strip()
+        if not event_kind_id:
+            continue
+        out[event_kind_id] = dict(row)
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
@@ -26885,6 +26916,12 @@ def execute_intent(
                     {"policy_id": requested_policy_id},
                     "$.intent.inputs.policy_id",
                 )
+            explain_contract_by_event_kind = _explain_contract_rows_by_event_kind(
+                _load_explain_contract_registry(policy_context=policy_context)
+            )
+            pollution_spike_contract = dict(
+                explain_contract_by_event_kind.get("pollution.spike") or {}
+            )
 
             source_rows_existing = [
                 dict(row)
@@ -26920,6 +26957,7 @@ def execute_intent(
             emitted_source_event_ids: List[str] = []
             emitted_total_mass = 0
             origin_kinds_used: List[str] = []
+            affected_total_keys: List[str] = []
             for row in sorted(
                 (dict(item) for item in incoming_rows if isinstance(item, Mapping)),
                 key=lambda item: (
@@ -27018,6 +27056,8 @@ def execute_intent(
                 )
                 if total_row:
                     total_rows_by_key[total_key] = dict(total_row)
+                    if total_key not in affected_total_keys:
+                        affected_total_keys.append(total_key)
 
             state["pollution_source_event_rows"] = normalize_pollution_source_event_rows(
                 source_rows_existing
@@ -27036,17 +27076,183 @@ def execute_intent(
                 and str(row.get("pollutant_id", "")).strip()
             )
             _refresh_pollution_hash_chains(state)
-
-            if emitted_source_event_ids:
-                source_rows_by_id = dict(
-                    (
-                        str(row.get("source_event_id", "")).strip(),
-                        dict(row),
-                    )
-                    for row in list(state.get("pollution_source_event_rows") or [])
-                    if isinstance(row, Mapping) and str(row.get("source_event_id", "")).strip()
+            emitted_set = set(
+                str(token).strip()
+                for token in emitted_source_event_ids
+                if str(token).strip()
+            )
+            source_rows_by_id = dict(
+                (
+                    str(row.get("source_event_id", "")).strip(),
+                    dict(row),
                 )
-                emitted_set = set(str(token).strip() for token in emitted_source_event_ids if str(token).strip())
+                for row in list(state.get("pollution_source_event_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("source_event_id", "")).strip()
+            )
+
+            generated_explain_ids: List[str] = []
+            if emitted_set and pollution_spike_contract:
+                explain_rows = [
+                    dict(row)
+                    for row in list(state.get("explain_artifact_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+                coupling_by_origin = {
+                    "reaction": "coupling.chem.emission_to_poll.source",
+                    "fire": "coupling.therm.fire_to_poll.source",
+                    "leak": "coupling.fluid.contaminant_to_poll.transport",
+                    "industrial": "coupling.chem.emission_to_poll.source",
+                }
+                source_rows_for_explain = [
+                    dict(source_rows_by_id[source_event_id])
+                    for source_event_id in sorted(emitted_set)
+                    if source_event_id in source_rows_by_id
+                ]
+                compliance_rows = []
+                for source_row in source_rows_for_explain:
+                    origin_kind = str(source_row.get("origin_kind", "industrial")).strip() or "industrial"
+                    compliance_rows.append(
+                        {
+                            "result_id": "poll.policy.result.{}".format(
+                                canonical_sha256(
+                                    {
+                                        "source_event_id": str(
+                                            source_row.get("source_event_id", "")
+                                        ).strip(),
+                                        "policy_id": requested_policy_id,
+                                        "origin_kind": origin_kind,
+                                    }
+                                )[:16]
+                            ),
+                            "policy_id": requested_policy_id,
+                            "coupling_contract_id": str(
+                                coupling_by_origin.get(
+                                    origin_kind, "coupling.chem.emission_to_poll.source"
+                                )
+                            ),
+                            "source_event_id": str(
+                                source_row.get("source_event_id", "")
+                            ).strip(),
+                        }
+                    )
+                for total_key in sorted(_sorted_tokens(affected_total_keys)):
+                    target_region = str(total_key.split("::", 1)[0]).strip() or "region.default"
+                    spike_event_id = "event.pollution.spike.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": current_tick_value,
+                                "target_region": target_region,
+                                "source_event_ids": sorted(emitted_set),
+                                "policy_id": requested_policy_id,
+                            }
+                        )[:16]
+                    )
+                    cause_chain_keys = [
+                        "cause.pollution.source_chain.{}".format(source_event_id)
+                        for source_event_id in sorted(emitted_set)
+                    ] + [
+                        "cause.pollution.policy.{}".format(requested_policy_id),
+                    ]
+                    referenced_artifacts = [
+                        "artifact.record:artifact.record.pollution.emit.{}".format(
+                            canonical_sha256({"source_event_id": source_event_id})[:16]
+                        )
+                        for source_event_id in sorted(emitted_set)
+                    ]
+                    explain_row = generate_explain_artifact(
+                        event_id=spike_event_id,
+                        target_id=target_region,
+                        event_kind_id="pollution.spike",
+                        truth_hash_anchor=str(
+                            state.get("pollution_source_hash_chain", "")
+                        ).strip(),
+                        epistemic_policy_id="policy.epistemic.observer",
+                        explain_contract_row=pollution_spike_contract,
+                        decision_log_rows=[],
+                        safety_event_rows=[],
+                        hazard_rows=source_rows_for_explain,
+                        compliance_rows=compliance_rows,
+                        model_result_rows=[
+                            {
+                                "result_id": "pollutant.profile.{}".format(
+                                    canonical_sha256(
+                                        {
+                                            "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                                            "decay_model_id": str(
+                                                pollutant_types_by_id.get(
+                                                    str(row.get("pollutant_id", "")).strip(),
+                                                    {},
+                                                ).get("default_decay_model_id", "")
+                                            ).strip(),
+                                            "dispersion_policy_id": str(
+                                                pollutant_types_by_id.get(
+                                                    str(row.get("pollutant_id", "")).strip(),
+                                                    {},
+                                                ).get("default_dispersion_policy_id", "")
+                                            ).strip(),
+                                        }
+                                    )[:16]
+                                ),
+                                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                                "default_decay_model_id": str(
+                                    pollutant_types_by_id.get(
+                                        str(row.get("pollutant_id", "")).strip(), {}
+                                    ).get("default_decay_model_id", "")
+                                ).strip(),
+                                "default_dispersion_policy_id": str(
+                                    pollutant_types_by_id.get(
+                                        str(row.get("pollutant_id", "")).strip(), {}
+                                    ).get("default_dispersion_policy_id", "")
+                                ).strip(),
+                            }
+                            for row in source_rows_for_explain
+                        ],
+                        cause_chain_keys=cause_chain_keys,
+                        remediation_hint_keys=[],
+                        referenced_artifacts=referenced_artifacts,
+                    )
+                    if explain_row:
+                        explain_rows.append(dict(explain_row))
+                        generated_explain_ids.append(
+                            str(explain_row.get("explain_id", "")).strip()
+                        )
+                state["explain_artifact_rows"] = normalize_explain_artifact_rows(
+                    explain_rows
+                )
+                state["pollution_explain_hash_chain"] = canonical_sha256(
+                    [
+                        {
+                            "explain_id": str(row.get("explain_id", "")).strip(),
+                            "event_id": str(row.get("event_id", "")).strip(),
+                            "target_id": str(row.get("target_id", "")).strip(),
+                            "event_kind_id": str(
+                                dict(row.get("extensions") or {}).get(
+                                    "event_kind_id", ""
+                                )
+                            ).strip(),
+                        }
+                        for row in sorted(
+                            (
+                                dict(item)
+                                for item in list(state.get("explain_artifact_rows") or [])
+                                if isinstance(item, Mapping)
+                                and str(
+                                    dict(item.get("extensions") or {}).get(
+                                        "event_kind_id", ""
+                                    )
+                                ).strip()
+                                == "pollution.spike"
+                            ),
+                            key=lambda item: (
+                                str(item.get("event_id", "")),
+                                str(item.get("target_id", "")),
+                                str(item.get("explain_id", "")),
+                            ),
+                        )
+                    ]
+                )
+
+            if emitted_set:
                 info_artifact_rows = normalize_info_artifact_rows(
                     list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
                     + [
@@ -27098,6 +27304,10 @@ def execute_intent(
                 "pollution_total_hash_chain": str(
                     state.get("pollution_total_hash_chain", "")
                 ).strip(),
+                "pollution_explain_hash_chain": str(
+                    state.get("pollution_explain_hash_chain", "")
+                ).strip(),
+                "generated_explain_ids": list(_sorted_tokens(generated_explain_ids)),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

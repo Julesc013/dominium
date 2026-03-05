@@ -333,6 +333,43 @@ def _event_specific_cause_keys(
             )
         )
 
+    if event_kind.startswith("pollution."):
+        out.extend(
+            _event_cause_tokens(
+                rows=hazard_rows,
+                cause_prefix="pollution_source",
+                key_candidates=(
+                    "source_event_id",
+                    "origin_kind",
+                    "origin_id",
+                    "pollutant_id",
+                    "spatial_scope_id",
+                    "emitted_mass",
+                ),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=compliance_rows,
+                cause_prefix="pollution_policy",
+                key_candidates=("policy_id", "coupling_contract_id", "cell_update_rule_id"),
+                max_items=bound,
+            )
+        )
+        out.extend(
+            _event_cause_tokens(
+                rows=model_result_rows,
+                cause_prefix="pollution_model",
+                key_candidates=(
+                    "default_decay_model_id",
+                    "default_dispersion_policy_id",
+                    "pollutant_id",
+                ),
+                max_items=bound,
+            )
+        )
+
     if event_kind.startswith("mob."):
         out.extend(
             _event_cause_tokens(
