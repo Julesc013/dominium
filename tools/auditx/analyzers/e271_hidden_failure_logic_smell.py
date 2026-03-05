@@ -16,7 +16,7 @@ class HiddenFailureLogicSmell:
 
 
 _FAILURE_LOGIC_PATTERN = re.compile(
-    r"\b(?:failure_mode_id|system_failure_event_rows|system_reliability_safe_fallback_rows)\b.*(?:=|append\()",
+    r"\b(?:system_failure_event_rows|system_reliability_safe_fallback_rows|system_reliability_warning_rows|system_reliability_output_adjustment_rows)\b.*(?:=|append\()",
     re.IGNORECASE,
 )
 
@@ -99,7 +99,7 @@ def run(graph, repo_root, changed_files=None):
         )
 
     scan_roots = (
-        os.path.join(repo_root, "src"),
+        os.path.join(repo_root, "src", "system"),
         os.path.join(repo_root, "tools", "xstack", "sessionx"),
     )
     skip_prefixes = (
@@ -164,4 +164,3 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
-

@@ -32148,7 +32148,7 @@ def execute_intent(
                     "transformation_id": "transform.system.reliability_heat_loss",
                     "source_id": str(capsule_id),
                     "input_values": {"quantity.energy": 0},
-                    "output_values": {"quantity.thermal_energy": int(extra_heat_loss)},
+                    "output_values": {"quantity.energy_thermal": int(extra_heat_loss)},
                     "extensions": {
                         "source_process_id": "process.system_macro_tick",
                         "reliability_adjustment": True,
