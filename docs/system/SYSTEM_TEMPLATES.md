@@ -72,3 +72,24 @@ No direct world spawn is allowed unless explicitly authorized by profile/law and
 - No wall-clock behavior.
 - No nondeterministic compile/instantiate behavior.
 - No bypass of SYS collapse/expand or control-plane contracts.
+
+## I) UX Integration (RND + CTRL)
+- Developer-facing browser: `tools/system/tool_template_browser`.
+- Browser surfaces:
+  - interface signature template summary,
+  - invariant template set,
+  - safety pattern instances,
+  - expected macro outputs from compiled model bindings.
+- Execution path remains policy-gated:
+  - browser execute requires explicit gate (`--allow-execute`),
+  - macro mode additionally requires policy (`allow_macro`).
+- Build actions run through `process.template_instantiate`; no direct spawn path.
+
+## J) Proof and Replay
+- Instantiation process writes:
+  - canonical `system_template_instance_record_rows`,
+  - `template_instance_record_hash_chain`,
+  - `compiled_template_fingerprint_hash_chain`.
+- Deterministic reproducibility verifier:
+  - `tools/system/tool_verify_template_reproducible`
+- Any fingerprint drift under identical inputs is treated as a contract violation.
