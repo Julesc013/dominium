@@ -609,6 +609,14 @@ from src.system import (
     normalize_system_certificate_artifact_rows,
     normalize_system_certificate_revocation_rows,
     revoke_system_certificates,
+    build_system_health_state_row,
+    normalize_system_health_state_rows,
+    system_health_rows_by_system,
+    evaluate_system_health_tick,
+    build_system_failure_event_row,
+    normalize_system_failure_event_rows,
+    reliability_profile_rows_by_id,
+    evaluate_system_reliability_tick,
 )
 from src.meta.explain import (
     generate_explain_artifact,
@@ -809,6 +817,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.system_evaluate_certification": "entitlement.inspect",
     "process.system_roi_tick": "session.boot",
     "process.system_macro_tick": "session.boot",
+    "process.system_health_tick": "session.boot",
+    "process.system_reliability_tick": "session.boot",
     "process.template_instantiate": "entitlement.control.admin",
     "process.degradation_tick": "session.boot",
 }
@@ -1000,6 +1010,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.system_evaluate_certification": "observer",
     "process.system_roi_tick": "observer",
     "process.system_macro_tick": "observer",
+    "process.system_health_tick": "observer",
+    "process.system_reliability_tick": "observer",
     "process.template_instantiate": "operator",
     "process.degradation_tick": "observer",
 }
@@ -15364,6 +15376,196 @@ def _refresh_system_certification_hash_chains(state: dict) -> None:
     state["revocation_hash_chain"] = str(state.get("system_certificate_revocation_hash_chain", "")).strip()
 
 
+def _reliability_profile_registry_payload(*, policy_context: dict | None) -> dict:
+    return _spec_registry_payload(
+        policy_context=policy_context,
+        key="reliability_profile_registry",
+        registry_rel_path="data/registries/reliability_profile_registry.json",
+        entry_key="reliability_profiles",
+    )
+
+
+def _ensure_system_health_state_rows(state: dict) -> List[dict]:
+    rows = state.get("system_health_state_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_system_health_state_rows(rows)
+    state["system_health_state_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_system_failure_event_rows(state: dict) -> List[dict]:
+    rows = state.get("system_failure_event_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_system_failure_event_rows(rows)
+    state["system_failure_event_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_system_reliability_warning_rows(state: dict) -> List[dict]:
+    rows = state.get("system_reliability_warning_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("system_id", "")),
+            str(item.get("failure_mode_id", "")),
+            str(item.get("warning_id", "")),
+        ),
+    ):
+        warning_id = str(row.get("warning_id", "")).strip()
+        system_id = str(row.get("system_id", "")).strip()
+        failure_mode_id = str(row.get("failure_mode_id", "")).strip()
+        if (not warning_id) or (not system_id) or (not failure_mode_id):
+            continue
+        normalized.append(
+            {
+                "warning_id": warning_id,
+                "system_id": system_id,
+                "capsule_id": str(row.get("capsule_id", "")).strip() or None,
+                "failure_mode_id": failure_mode_id,
+                "hazard_value": int(max(0, _as_int(row.get("hazard_value", 0), 0))),
+                "warning_threshold": int(max(0, _as_int(row.get("warning_threshold", 0), 0))),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+            }
+        )
+    state["system_reliability_warning_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_system_reliability_rng_outcome_rows(state: dict) -> List[dict]:
+    rows = state.get("system_reliability_rng_outcome_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("system_id", "")),
+            str(item.get("failure_mode_id", "")),
+        ),
+    ):
+        system_id = str(row.get("system_id", "")).strip()
+        failure_mode_id = str(row.get("failure_mode_id", "")).strip()
+        if (not system_id) or (not failure_mode_id):
+            continue
+        normalized.append(
+            {
+                "system_id": system_id,
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "reliability_profile_id": str(row.get("reliability_profile_id", "")).strip(),
+                "failure_mode_id": failure_mode_id,
+                "rng_stream_name": str(row.get("rng_stream_name", "")).strip(),
+                "roll_permille": int(max(0, min(1000, _as_int(row.get("roll_permille", 0), 0)))),
+                "threshold_permille": int(max(0, min(1000, _as_int(row.get("threshold_permille", 0), 0)))),
+                "hit": bool(row.get("hit", False)),
+            }
+        )
+    state["system_reliability_rng_outcome_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_system_reliability_hash_chains(state: dict) -> None:
+    health_rows = _ensure_system_health_state_rows(state)
+    failure_rows = _ensure_system_failure_event_rows(state)
+    warning_rows = _ensure_system_reliability_warning_rows(state)
+    rng_rows = _ensure_system_reliability_rng_outcome_rows(state)
+    state["system_health_hash_chain"] = canonical_sha256(
+        [
+            {
+                "system_id": str(row.get("system_id", "")).strip(),
+                "aggregated_hazard_levels": dict(
+                    (
+                        str(key).strip(),
+                        int(max(0, _as_int(value, 0))),
+                    )
+                    for key, value in sorted((dict(row.get("aggregated_hazard_levels") or {})).items(), key=lambda item: str(item[0]))
+                    if str(key).strip()
+                ),
+                "entropy_value": (
+                    None
+                    if row.get("entropy_value") is None
+                    else int(max(0, _as_int(row.get("entropy_value", 0), 0)))
+                ),
+                "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(health_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("system_id", "")),
+            )
+        ]
+    )
+    state["system_failure_event_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "system_id": str(row.get("system_id", "")).strip(),
+                "failure_mode_id": str(row.get("failure_mode_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(failure_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("system_id", "")),
+                    str(item.get("failure_mode_id", "")),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["system_warning_hash_chain"] = canonical_sha256(
+        [
+            {
+                "warning_id": str(row.get("warning_id", "")).strip(),
+                "system_id": str(row.get("system_id", "")).strip(),
+                "failure_mode_id": str(row.get("failure_mode_id", "")).strip(),
+                "hazard_value": int(max(0, _as_int(row.get("hazard_value", 0), 0))),
+                "warning_threshold": int(max(0, _as_int(row.get("warning_threshold", 0), 0))),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(warning_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("system_id", "")),
+                    str(item.get("failure_mode_id", "")),
+                    str(item.get("warning_id", "")),
+                ),
+            )
+        ]
+    )
+    state["system_reliability_rng_hash_chain"] = canonical_sha256(
+        [
+            {
+                "system_id": str(row.get("system_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "reliability_profile_id": str(row.get("reliability_profile_id", "")).strip(),
+                "failure_mode_id": str(row.get("failure_mode_id", "")).strip(),
+                "rng_stream_name": str(row.get("rng_stream_name", "")).strip(),
+                "roll_permille": int(max(0, min(1000, _as_int(row.get("roll_permille", 0), 0)))),
+                "threshold_permille": int(max(0, min(1000, _as_int(row.get("threshold_permille", 0), 0)))),
+                "hit": bool(row.get("hit", False)),
+            }
+            for row in sorted(
+                (dict(item) for item in list(rng_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("system_id", "")),
+                    str(item.get("failure_mode_id", "")),
+                ),
+            )
+        ]
+    )
+    state["failure_event_hash_chain"] = str(state.get("system_failure_event_hash_chain", "")).strip()
+
+
 def _revoke_system_certifications(
     *,
     state: dict,
@@ -20271,6 +20473,10 @@ def execute_intent(
     system_certification_result_rows = _ensure_system_certification_result_rows(state)
     system_certificate_artifact_rows = _ensure_system_certificate_artifact_rows(state)
     system_certificate_revocation_rows = _ensure_system_certificate_revocation_rows(state)
+    system_health_state_rows = _ensure_system_health_state_rows(state)
+    system_failure_event_rows = _ensure_system_failure_event_rows(state)
+    system_reliability_warning_rows = _ensure_system_reliability_warning_rows(state)
+    system_reliability_rng_rows = _ensure_system_reliability_rng_outcome_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     _ensure_time_mapping_cache_rows(state)
     _ensure_time_stamp_artifact_rows(state)
@@ -20294,6 +20500,10 @@ def execute_intent(
     del system_certification_result_rows
     del system_certificate_artifact_rows
     del system_certificate_revocation_rows
+    del system_health_state_rows
+    del system_failure_event_rows
+    del system_reliability_warning_rows
+    del system_reliability_rng_rows
     del chem_process_run_state_rows
     del batch_quality_rows
     del chem_degradation_state_rows
@@ -20309,6 +20519,7 @@ def execute_intent(
     _refresh_chem_degradation_hash_chains(state)
     _refresh_pollution_hash_chains(state)
     _refresh_system_certification_hash_chains(state)
+    _refresh_system_reliability_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -31870,6 +32081,100 @@ def execute_intent(
                 "$.intent.inputs",
             )
 
+        reliability_adjustments_by_capsule = dict(
+            (
+                str(row.get("capsule_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("system_reliability_output_adjustment_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("capsule_id", "")).strip()
+        )
+        raw_flow_adjustments = [
+            dict(item)
+            for item in list(macro_eval.get("flow_adjustments") or [])
+            if isinstance(item, Mapping)
+        ]
+        adjusted_flow_adjustments = []
+        for flow_row in sorted(
+            raw_flow_adjustments,
+            key=lambda item: (
+                str(item.get("capsule_id", "")),
+                str(item.get("channel_id", "")),
+                str(item.get("quantity_bundle_id", "")),
+                str(item.get("component_quantity_id", "")),
+            ),
+        ):
+            capsule_id = str(flow_row.get("capsule_id", "")).strip()
+            adjustment_row = dict(reliability_adjustments_by_capsule.get(capsule_id) or {})
+            scale_permille = int(max(0, min(1000, _as_int(adjustment_row.get("output_scale_permille", 1000), 1000))))
+            delta = int(_as_int(flow_row.get("delta", 0), 0))
+            scaled_delta = int((delta * scale_permille) // 1000)
+            if scale_permille <= 0:
+                continue
+            adjusted_flow_adjustments.append(
+                dict(
+                    flow_row,
+                    delta=int(scaled_delta),
+                    extensions={
+                        **(dict(flow_row.get("extensions") or {}) if isinstance(flow_row.get("extensions"), Mapping) else {}),
+                        "reliability_output_scale_permille": int(scale_permille),
+                    },
+                )
+            )
+
+        raw_energy_transforms = [
+            dict(item)
+            for item in list(macro_eval.get("energy_transforms") or [])
+            if isinstance(item, Mapping)
+        ]
+        adjusted_energy_transforms = [
+            dict(row)
+            for row in sorted(
+                raw_energy_transforms,
+                key=lambda item: (
+                    str(item.get("capsule_id", "")),
+                    str(item.get("transformation_id", "")),
+                    str(item.get("source_id", "")),
+                ),
+            )
+        ]
+        for capsule_id, adjustment_row in sorted(reliability_adjustments_by_capsule.items(), key=lambda item: str(item[0])):
+            extra_heat_loss = int(max(0, _as_int(dict(adjustment_row).get("extra_heat_loss", 0), 0)))
+            if extra_heat_loss <= 0:
+                continue
+            adjusted_energy_transforms.append(
+                {
+                    "capsule_id": str(capsule_id),
+                    "transformation_id": "transform.system.reliability_heat_loss",
+                    "source_id": str(capsule_id),
+                    "input_values": {"quantity.energy": 0},
+                    "output_values": {"quantity.thermal_energy": int(extra_heat_loss)},
+                    "extensions": {
+                        "source_process_id": "process.system_macro_tick",
+                        "reliability_adjustment": True,
+                    },
+                }
+            )
+
+        reliability_effect_rows = []
+        for capsule_id, adjustment_row in sorted(reliability_adjustments_by_capsule.items(), key=lambda item: str(item[0])):
+            if not bool(dict(adjustment_row).get("safe_fallback", False)):
+                continue
+            reliability_effect_rows.append(
+                {
+                    "capsule_id": str(capsule_id),
+                    "target_id": str(dict(adjustment_row).get("system_id", "")).strip() or str(capsule_id),
+                    "effect_type_id": "effect.system.safety_shutdown",
+                    "output_id": "safety.shutdown",
+                    "value": 1,
+                    "extensions": {
+                        "source_process_id": "process.system_macro_tick",
+                        "reliability_adjustment": True,
+                        "safe_fallback": True,
+                    },
+                }
+            )
+
         state["system_macro_runtime_state_rows"] = normalize_macro_runtime_state_rows(
             macro_eval.get("runtime_state_rows")
         )
@@ -32021,7 +32326,7 @@ def execute_intent(
         for flow_row in sorted(
             (
                 dict(item)
-                for item in list(macro_eval.get("flow_adjustments") or [])
+                for item in list(adjusted_flow_adjustments or [])
                 if isinstance(item, Mapping)
             ),
             key=lambda item: (
@@ -32106,7 +32411,7 @@ def execute_intent(
         for transform_row in sorted(
             (
                 dict(item)
-                for item in list(macro_eval.get("energy_transforms") or [])
+                for item in list(adjusted_energy_transforms or [])
                 if isinstance(item, Mapping)
             ),
             key=lambda item: (
@@ -32222,6 +32527,7 @@ def execute_intent(
                     dict(item)
                     for item in list(state.get("system_macro_effect_apply_rows") or [])
                     + list(macro_eval.get("effect_applies") or [])
+                    + list(reliability_effect_rows or [])
                     if isinstance(item, Mapping)
                 ),
                 key=lambda item: (
@@ -32419,10 +32725,10 @@ def execute_intent(
             "approved_forced_expand_ids": _sorted_tokens(approved_forced_expand_ids),
             "denied_forced_expand_ids": _sorted_tokens(denied_forced_expand_ids),
             "macro_output_record_count": int(len(output_added)),
-            "flow_adjustment_count": int(len(list(macro_eval.get("flow_adjustments") or []))),
-            "energy_transform_count": int(len(list(macro_eval.get("energy_transforms") or []))),
+            "flow_adjustment_count": int(len(list(adjusted_flow_adjustments or []))),
+            "energy_transform_count": int(len(list(adjusted_energy_transforms or []))),
             "pollution_emission_count": int(len(list(macro_eval.get("pollution_emissions") or []))),
-            "effect_apply_count": int(len(list(macro_eval.get("effect_applies") or []))),
+            "effect_apply_count": int(len(list(macro_eval.get("effect_applies") or [])) + len(list(reliability_effect_rows or []))),
             "emitted_source_event_ids": _sorted_tokens(emitted_source_event_ids),
             "validation_rows": [dict(row) for row in list(macro_eval.get("validation_rows") or []) if isinstance(row, Mapping)],
             "refusal_rows": [dict(row) for row in list(macro_eval.get("refusal_rows") or []) if isinstance(row, Mapping)],
@@ -32435,6 +32741,474 @@ def execute_intent(
             "system_macro_explain_hash_chain": str(state.get("system_macro_explain_hash_chain", "")).strip(),
             "deterministic_fingerprint": str(macro_eval.get("deterministic_fingerprint", "")).strip(),
             "generated_explain_ids": _sorted_tokens(generated_explain_ids),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_health_tick":
+        max_system_updates_per_tick = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_system_updates_per_tick",
+                        (dict(policy_context or {})).get("system_health_max_updates_per_tick", 256),
+                    ),
+                    256,
+                ),
+            )
+        )
+        low_priority_update_stride = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "low_priority_update_stride",
+                        (dict(policy_context or {})).get("system_health_low_priority_update_stride", 4),
+                    ),
+                    4,
+                ),
+            )
+        )
+        high_priority_system_ids = _sorted_tokens(list(inputs.get("high_priority_system_ids") or []))
+        health_eval = evaluate_system_health_tick(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            system_rows=state.get("system_rows") or [],
+            system_macro_capsule_rows=state.get("system_macro_capsule_rows") or [],
+            previous_health_rows=state.get("system_health_state_rows") or [],
+            model_hazard_rows=state.get("model_hazard_rows") or [],
+            safety_event_rows=state.get("safety_events") or [],
+            chem_degradation_event_rows=state.get("chem_degradation_event_rows") or [],
+            entropy_state_rows=state.get("entropy_states") or [],
+            high_priority_system_ids=high_priority_system_ids,
+            max_system_updates_per_tick=int(max_system_updates_per_tick),
+            low_priority_update_stride=int(low_priority_update_stride),
+        )
+        state["system_health_state_rows"] = normalize_system_health_state_rows(
+            list(health_eval.get("system_health_state_rows") or [])
+        )
+        decision_rows = [
+            dict(row)
+            for row in list(state.get("control_decision_log") or [])
+            if isinstance(row, Mapping)
+        ]
+        decision_rows.extend(
+            dict(row)
+            for row in list(health_eval.get("decision_log_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        for deferred_row in sorted(
+            (
+                dict(item)
+                for item in list(health_eval.get("deferred_rows") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (str(item.get("system_id", "")), str(item.get("reason_code", ""))),
+        ):
+            decision_rows.append(
+                {
+                    "decision_id": "decision.system.health.defer.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "system_id": str(deferred_row.get("system_id", "")).strip(),
+                                "reason_code": str(deferred_row.get("reason_code", "")).strip(),
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "deferred",
+                    "reason_code": str(deferred_row.get("reason_code", "")).strip() or "degrade.system.health_budget",
+                    "extensions": {
+                        "system_id": str(deferred_row.get("system_id", "")).strip(),
+                    },
+                }
+            )
+        state["control_decision_log"] = sorted(
+            [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("decision_id", "")),
+            ),
+        )
+        _refresh_system_reliability_hash_chains(state)
+        result_metadata = {
+            "processed_system_ids": _sorted_tokens(list(health_eval.get("processed_system_ids") or [])),
+            "processed_system_count": int(len(list(health_eval.get("processed_system_ids") or []))),
+            "deferred_rows": [dict(row) for row in list(health_eval.get("deferred_rows") or []) if isinstance(row, Mapping)],
+            "deferred_count": int(len(list(health_eval.get("deferred_rows") or []))),
+            "system_health_hash_chain": str(state.get("system_health_hash_chain", "")).strip(),
+            "deterministic_fingerprint": str(health_eval.get("deterministic_fingerprint", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_reliability_tick":
+        max_system_evaluations_per_tick = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "max_system_evaluations_per_tick",
+                        (dict(policy_context or {})).get("system_reliability_max_evaluations_per_tick", 256),
+                    ),
+                    256,
+                ),
+            )
+        )
+        tick_bucket_stride = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get(
+                        "tick_bucket_stride",
+                        (dict(policy_context or {})).get("system_reliability_tick_bucket_stride", 1),
+                    ),
+                    1,
+                ),
+            )
+        )
+        denied_expand_system_ids = _sorted_tokens(list(inputs.get("denied_expand_system_ids") or []))
+        inspection_requested_system_ids = _sorted_tokens(list(inputs.get("inspection_requested_system_ids") or []))
+        reliability_profile_registry = _reliability_profile_registry_payload(policy_context=policy_context)
+        reliability_profiles_by_id = reliability_profile_rows_by_id(reliability_profile_registry)
+
+        reliability_eval = evaluate_system_reliability_tick(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            system_rows=state.get("system_rows") or [],
+            system_macro_capsule_rows=state.get("system_macro_capsule_rows") or [],
+            system_health_state_rows=state.get("system_health_state_rows") or [],
+            reliability_profile_registry_payload=reliability_profile_registry,
+            existing_failure_event_rows=state.get("system_failure_event_rows") or [],
+            denied_expand_system_ids=denied_expand_system_ids,
+            inspection_requested_system_ids=inspection_requested_system_ids,
+            max_system_evaluations_per_tick=int(max_system_evaluations_per_tick),
+            tick_bucket_stride=int(tick_bucket_stride),
+        )
+
+        state["system_failure_event_rows"] = normalize_system_failure_event_rows(
+            list(reliability_eval.get("failure_event_rows") or [])
+        )
+
+        warning_by_id = dict(
+            (
+                str(row.get("warning_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(_ensure_system_reliability_warning_rows(state))
+            if isinstance(row, Mapping) and str(row.get("warning_id", "")).strip()
+        )
+        for row in list(reliability_eval.get("warning_rows") or []):
+            if not isinstance(row, Mapping):
+                continue
+            warning_id = str(row.get("warning_id", "")).strip()
+            if warning_id:
+                warning_by_id[warning_id] = dict(row)
+        state["system_reliability_warning_rows"] = _ensure_system_reliability_warning_rows(
+            {"system_reliability_warning_rows": [dict(value) for value in warning_by_id.values()]}
+        )
+
+        rng_rows = [
+            dict(row)
+            for row in list(_ensure_system_reliability_rng_outcome_rows(state))
+            if isinstance(row, Mapping)
+        ]
+        rng_rows.extend(
+            dict(row)
+            for row in list(reliability_eval.get("rng_outcome_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        state["system_reliability_rng_outcome_rows"] = _ensure_system_reliability_rng_outcome_rows(
+            {"system_reliability_rng_outcome_rows": rng_rows}
+        )
+
+        output_adjustment_rows = [
+            dict(row)
+            for row in sorted(
+                (
+                    dict(item)
+                    for item in list(reliability_eval.get("output_adjustment_rows") or [])
+                    if isinstance(item, Mapping)
+                ),
+                key=lambda item: (str(item.get("system_id", "")), str(item.get("capsule_id", ""))),
+            )
+        ]
+        state["system_reliability_output_adjustment_rows"] = output_adjustment_rows
+        state["system_reliability_safe_fallback_rows"] = [
+            dict(row)
+            for row in sorted(
+                (
+                    dict(item)
+                    for item in list(reliability_eval.get("safe_fallback_rows") or [])
+                    if isinstance(item, Mapping)
+                ),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("system_id", "")),
+                ),
+            )
+        ]
+
+        forced_before = [
+            dict(row)
+            for row in list(state.get("system_forced_expand_event_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        forced_added = [
+            dict(row)
+            for row in list(reliability_eval.get("forced_expand_request_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        state["system_forced_expand_event_rows"] = normalize_forced_expand_event_rows(
+            forced_before + forced_added
+        )
+        state["system_forced_expand_event_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "capsule_id": str(row.get("capsule_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "reason_code": str(row.get("reason_code", "")).strip(),
+                    "requested_fidelity": str(row.get("requested_fidelity", "")).strip(),
+                }
+                for row in sorted(
+                    (
+                        dict(item)
+                        for item in list(state.get("system_forced_expand_event_rows") or [])
+                        if isinstance(item, Mapping)
+                    ),
+                    key=lambda item: (
+                        int(max(0, _as_int(item.get("tick", 0), 0))),
+                        str(item.get("capsule_id", "")),
+                        str(item.get("event_id", "")),
+                    ),
+                )
+            ]
+        )
+        state["forced_expand_event_hash_chain"] = str(state.get("system_forced_expand_event_hash_chain", "")).strip()
+
+        system_rows_by_id = dict(
+            (
+                str(row.get("system_id", "")).strip(),
+                dict(row),
+            )
+            for row in normalize_system_rows(state.get("system_rows") or [])
+            if str(row.get("system_id", "")).strip()
+        )
+        capsule_rows_by_system = dict(
+            (
+                str(row.get("system_id", "")).strip(),
+                dict(row),
+            )
+            for row in normalize_system_macro_capsule_rows(state.get("system_macro_capsule_rows") or [])
+            if str(row.get("system_id", "")).strip()
+        )
+        fallback_by_system = dict(
+            (
+                str(row.get("system_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("system_reliability_safe_fallback_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("system_id", "")).strip()
+        )
+        for adj_row in output_adjustment_rows:
+            system_id = str(adj_row.get("system_id", "")).strip()
+            if not system_id:
+                continue
+            system_row = dict(system_rows_by_id.get(system_id) or {})
+            if system_row:
+                ext = dict(system_row.get("extensions") or {}) if isinstance(system_row.get("extensions"), Mapping) else {}
+                ext["reliability_output_scale_permille"] = int(max(0, min(1000, _as_int(adj_row.get("output_scale_permille", 1000), 1000))))
+                ext["reliability_extra_heat_loss"] = int(max(0, _as_int(adj_row.get("extra_heat_loss", 0), 0)))
+                ext["reliability_safe_fallback"] = bool(adj_row.get("safe_fallback", False))
+                if system_id in fallback_by_system:
+                    ext["reliability_safe_fallback_actions"] = _sorted_tokens(
+                        list(dict(fallback_by_system.get(system_id) or {}).get("safe_fallback_actions") or [])
+                    )
+                ext["reliability_profile_id"] = str(ext.get("reliability_profile_id", "")).strip() or str(
+                    dict(fallback_by_system.get(system_id) or {}).get("reliability_profile_id", "")
+                ).strip() or str(dict(reliability_profiles_by_id).keys().__iter__().__next__() if reliability_profiles_by_id else "")
+                ext["reliability_last_tick"] = int(max(0, _as_int(current_tick, 0)))
+                system_row["extensions"] = ext
+                system_rows_by_id[system_id] = system_row
+            capsule_row = dict(capsule_rows_by_system.get(system_id) or {})
+            if capsule_row:
+                capsule_ext = dict(capsule_row.get("extensions") or {}) if isinstance(capsule_row.get("extensions"), Mapping) else {}
+                capsule_ext["reliability_output_scale_permille"] = int(max(0, min(1000, _as_int(adj_row.get("output_scale_permille", 1000), 1000))))
+                capsule_ext["reliability_extra_heat_loss"] = int(max(0, _as_int(adj_row.get("extra_heat_loss", 0), 0)))
+                capsule_ext["reliability_safe_fallback"] = bool(adj_row.get("safe_fallback", False))
+                if bool(adj_row.get("safe_fallback", False)):
+                    capsule_ext["fail_safe_on_forced_expand"] = True
+                capsule_row["extensions"] = capsule_ext
+                capsule_rows_by_system[system_id] = capsule_row
+        state["system_rows"] = normalize_system_rows([dict(row) for row in system_rows_by_id.values()])
+        state["system_macro_capsule_rows"] = normalize_system_macro_capsule_rows(
+            [dict(row) for row in capsule_rows_by_system.values()]
+        )
+
+        decision_rows = [
+            dict(row)
+            for row in list(state.get("control_decision_log") or [])
+            if isinstance(row, Mapping)
+        ]
+        decision_rows.extend(
+            dict(row)
+            for row in list(reliability_eval.get("decision_log_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        for deferred_row in sorted(
+            (
+                dict(item)
+                for item in list(reliability_eval.get("deferred_rows") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (str(item.get("system_id", "")), str(item.get("reason_code", ""))),
+        ):
+            decision_rows.append(
+                {
+                    "decision_id": "decision.system.reliability.defer.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "system_id": str(deferred_row.get("system_id", "")).strip(),
+                                "reason_code": str(deferred_row.get("reason_code", "")).strip(),
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "deferred",
+                    "reason_code": str(deferred_row.get("reason_code", "")).strip() or "degrade.system.reliability_budget",
+                    "extensions": {
+                        "system_id": str(deferred_row.get("system_id", "")).strip(),
+                    },
+                }
+            )
+        state["control_decision_log"] = sorted(
+            [dict(row) for row in decision_rows if isinstance(row, Mapping)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("decision_id", "")),
+            ),
+        )
+
+        info_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        failure_rows_now = [
+            dict(row)
+            for row in list(state.get("system_failure_event_rows") or [])
+            if isinstance(row, Mapping) and int(max(0, _as_int(row.get("tick", 0), 0))) == int(max(0, _as_int(current_tick, 0)))
+        ]
+        for failure_row in failure_rows_now:
+            event_id = str(failure_row.get("event_id", "")).strip()
+            if not event_id:
+                continue
+            info_rows.append(
+                {
+                    "artifact_id": "artifact.record.system_failure.{}".format(
+                        canonical_sha256({"event_id": event_id})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.system_failure",
+                        "event_id": event_id,
+                        "system_id": str(failure_row.get("system_id", "")).strip(),
+                        "failure_mode_id": str(failure_row.get("failure_mode_id", "")).strip(),
+                    },
+                }
+            )
+        for warning_row in list(reliability_eval.get("warning_rows") or []):
+            if not isinstance(warning_row, Mapping):
+                continue
+            warning_id = str(warning_row.get("warning_id", "")).strip()
+            if not warning_id:
+                continue
+            info_rows.append(
+                {
+                    "artifact_id": "artifact.report.system_warning.{}".format(
+                        canonical_sha256({"warning_id": warning_id})[:16]
+                    ),
+                    "artifact_family_id": "REPORT",
+                    "extensions": {
+                        "artifact_type_id": "artifact.report.system_warning",
+                        "warning_id": warning_id,
+                        "system_id": str(warning_row.get("system_id", "")).strip(),
+                        "failure_mode_id": str(warning_row.get("failure_mode_id", "")).strip(),
+                    },
+                }
+            )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_rows)
+        state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+        explain_registry = _load_explain_contract_registry(policy_context=policy_context)
+        explain_by_event_kind = _explain_contract_rows_by_event_kind(explain_registry)
+        explain_rows = [
+            dict(row)
+            for row in list(state.get("explain_artifact_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        generated_explain_ids = []
+        for request_row in sorted(
+            (
+                dict(item)
+                for item in list(reliability_eval.get("explain_requests") or [])
+                if isinstance(item, Mapping)
+            ),
+            key=lambda item: (
+                str(item.get("event_kind_id", "")),
+                str(item.get("event_id", "")),
+                str(item.get("target_id", "")),
+            ),
+        ):
+            event_kind_id = str(request_row.get("event_kind_id", "")).strip()
+            event_id = str(request_row.get("event_id", "")).strip()
+            target_id = str(request_row.get("target_id", "")).strip()
+            if (not event_kind_id) or (not event_id) or (not target_id):
+                continue
+            contract_row = dict(explain_by_event_kind.get(event_kind_id) or {})
+            if not contract_row:
+                continue
+            explain_row = generate_explain_artifact(
+                event_id=event_id,
+                target_id=target_id,
+                event_kind_id=event_kind_id,
+                truth_hash_anchor=str(state.get("system_failure_event_hash_chain", "")).strip()
+                or str(state.get("system_forced_expand_event_hash_chain", "")).strip(),
+                epistemic_policy_id="policy.epistemic.observer",
+                explain_contract_row=contract_row,
+                decision_log_rows=state.get("control_decision_log") or [],
+                safety_event_rows=state.get("safety_events") or [],
+                hazard_rows=list(state.get("system_reliability_warning_rows") or []) + list(state.get("system_failure_event_rows") or []),
+                compliance_rows=[],
+                model_result_rows=state.get("model_evaluation_results") or [],
+                cause_chain_keys=[
+                    "cause.system.{}".format(str(request_row.get("system_id", "")).strip() or target_id),
+                    "cause.system.reason.{}".format(str(request_row.get("reason_code", "")).strip() or "unknown"),
+                ],
+                remediation_hint_keys=[],
+                referenced_artifacts=[],
+            )
+            if explain_row:
+                explain_rows.append(dict(explain_row))
+                generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+        state["explain_artifact_rows"] = normalize_explain_artifact_rows(explain_rows)
+
+        _refresh_system_reliability_hash_chains(state)
+        result_metadata = {
+            "processed_system_ids": _sorted_tokens(list(reliability_eval.get("processed_system_ids") or [])),
+            "processed_system_count": int(len(list(reliability_eval.get("processed_system_ids") or []))),
+            "warning_count": int(len(list(reliability_eval.get("warning_rows") or []))),
+            "failure_count": int(len(failure_rows_now)),
+            "forced_expand_request_count": int(len(forced_added)),
+            "safe_fallback_count": int(len(list(state.get("system_reliability_safe_fallback_rows") or []))),
+            "deferred_rows": [dict(row) for row in list(reliability_eval.get("deferred_rows") or []) if isinstance(row, Mapping)],
+            "deferred_count": int(len(list(reliability_eval.get("deferred_rows") or []))),
+            "system_health_hash_chain": str(state.get("system_health_hash_chain", "")).strip(),
+            "failure_event_hash_chain": str(state.get("system_failure_event_hash_chain", "")).strip(),
+            "forced_expand_event_hash_chain": str(state.get("system_forced_expand_event_hash_chain", "")).strip(),
+            "stochastic_rng_hash_chain": str(state.get("system_reliability_rng_hash_chain", "")).strip(),
+            "generated_explain_ids": _sorted_tokens(generated_explain_ids),
+            "deterministic_fingerprint": str(reliability_eval.get("deterministic_fingerprint", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

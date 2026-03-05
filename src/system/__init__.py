@@ -85,6 +85,16 @@ from src.system.certification import (
     evaluate_system_certification,
     revoke_system_certificates,
 )
+from src.system.reliability import (
+    build_system_failure_event_row,
+    build_system_health_state_row,
+    evaluate_system_health_tick,
+    evaluate_system_reliability_tick,
+    normalize_system_failure_event_rows,
+    normalize_system_health_state_rows,
+    reliability_profile_rows_by_id,
+    system_health_rows_by_system,
+)
 
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
@@ -158,4 +168,12 @@ __all__ = [
     "certification_profile_rows_by_id",
     "evaluate_system_certification",
     "revoke_system_certificates",
+    "build_system_health_state_row",
+    "normalize_system_health_state_rows",
+    "system_health_rows_by_system",
+    "evaluate_system_health_tick",
+    "build_system_failure_event_row",
+    "normalize_system_failure_event_rows",
+    "reliability_profile_rows_by_id",
+    "evaluate_system_reliability_tick",
 ]
