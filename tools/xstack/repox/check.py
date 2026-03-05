@@ -434,6 +434,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
     "INV-CAPSULE-OUTPUTS-THROUGH-PROCESSES",
     "INV-FORCED-EXPAND-LOGGED",
+    "INV-SYSTEM-TIER-CONTRACT-DECLARED",
+    "INV-TIER-TRANSITION-LOGGED",
+    "INV-NO-SILENT-COLLAPSE",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -748,6 +751,7 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E263_CAPSULE_BYPASS_SMELL": "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
     "E264_UNDECLARED_MACRO_MODEL_SMELL": "INV-CAPSULE-BEHAVIOR-MODEL-ONLY",
     "E265_SILENT_FORCED_EXPAND_SMELL": "INV-FORCED-EXPAND-LOGGED",
+    "E266_UNLOGGED_TIER_CHANGE_SMELL": "INV-TIER-TRANSITION-LOGGED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -17780,7 +17784,22 @@ def _append_system_macro_invariant_findings(
         )
 
     process_registry_payload, process_registry_err = _load_json_object(repo_root, process_registry_rel)
-    process_rows = list(process_registry_payload.get("processes") or [])
+    process_rows: List[dict] = []
+    process_rows.extend(
+        row
+        for row in list(process_registry_payload.get("processes") or [])
+        if isinstance(row, dict)
+    )
+    process_rows.extend(
+        row
+        for row in list(process_registry_payload.get("records") or [])
+        if isinstance(row, dict)
+    )
+    process_rows.extend(
+        row
+        for row in list((dict(process_registry_payload.get("record") or {})).get("processes") or [])
+        if isinstance(row, dict)
+    )
     macro_process_row = {}
     if not process_registry_err:
         for row in process_rows:
@@ -17836,31 +17855,298 @@ def _append_system_macro_invariant_findings(
         abs_root = os.path.join(repo_root, root.replace("/", os.sep))
         if not os.path.isdir(abs_root):
             continue
-        for rel_norm, abs_path in _iter_files(abs_root, repo_root):
-            if not rel_norm.endswith(".py"):
-                continue
-            if any(
-                rel_norm == token or rel_norm.startswith(token)
-                for token in allowed_paths
-            ):
-                continue
-            for line_no, line in _iter_lines(repo_root, rel_norm):
-                snippet = str(line).strip()
-                if (not snippet) or snippet.startswith("#"):
+        for walk_root, _dirs, files in os.walk(abs_root):
+            for name in files:
+                if not name.endswith(".py"):
                     continue
-                if not direct_write_pattern.search(snippet):
+                abs_path = os.path.join(walk_root, name)
+                rel_norm = _norm(os.path.relpath(abs_path, repo_root))
+                if any(
+                    rel_norm == token or rel_norm.startswith(token)
+                    for token in allowed_paths
+                ):
                     continue
-                findings.append(
-                    _finding(
-                        severity=severity,
-                        file_path=rel_norm,
-                        line_number=line_no,
-                        snippet=snippet[:140],
-                        message="direct SYS-2 macro capsule state write detected outside canonical runtime/engine path",
-                        rule_id=output_rule_id,
+                for line_no, line in _iter_lines(repo_root, rel_norm):
+                    snippet = str(line).strip()
+                    if (not snippet) or snippet.startswith("#"):
+                        continue
+                    if not direct_write_pattern.search(snippet):
+                        continue
+                    findings.append(
+                        _finding(
+                            severity=severity,
+                            file_path=rel_norm,
+                            line_number=line_no,
+                            snippet=snippet[:140],
+                            message="direct SYS-2 macro capsule state write detected outside canonical runtime/engine path",
+                            rule_id=output_rule_id,
+                        )
                     )
+                    break
+
+
+def _append_system_tier_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    contract_rule_id = "INV-SYSTEM-TIER-CONTRACT-DECLARED"
+    logged_rule_id = "INV-TIER-TRANSITION-LOGGED"
+    silent_rule_id = "INV-NO-SILENT-COLLAPSE"
+
+    scheduler_rel = "src/system/roi/system_roi_scheduler.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    schema_rel = "schema/system/system_tier_change_event.schema"
+    process_registry_rel = "data/registries/process_registry.json"
+    tier_registry_rel = "data/registries/tier_contract_registry.json"
+    replay_tool_rel = "tools/system/tool_replay_tier_transitions.py"
+
+    for rel_path in (
+        scheduler_rel,
+        runtime_rel,
+        schema_rel,
+        process_registry_rel,
+        tier_registry_rel,
+        replay_tool_rel,
+    ):
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        rule_id = logged_rule_id
+        if rel_path in {tier_registry_rel}:
+            rule_id = contract_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-3 tier integration baseline artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    scheduler_text = _file_text(repo_root, scheduler_rel)
+    for token in (
+        "def evaluate_system_roi_tick(",
+        "sorted(",
+        "priority_rank",
+        "requested_process_id",
+        "deterministic_fingerprint",
+    ):
+        if token in scheduler_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=scheduler_rel,
+                line_number=1,
+                snippet=token,
+                message="system ROI scheduler must preserve deterministic tier ordering and logged transition intents",
+                rule_id=logged_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, rule_id, message in (
+        ('elif process_id == "process.system_roi_tick":', logged_rule_id, "runtime must expose process.system_roi_tick"),
+        ("evaluate_system_roi_tick(", logged_rule_id, "runtime must evaluate system ROI transitions through scheduler"),
+        ("system_tier_change_event_rows", logged_rule_id, "runtime must persist system tier transition events"),
+        ("system_tier_change_hash_chain", logged_rule_id, "runtime must compute system tier transition hash chain"),
+        ("collapse_expand_event_hash_chain", logged_rule_id, "runtime must compute collapse/expand combined hash chain"),
+        ("artifact.record.system_tier_change", logged_rule_id, "runtime must emit canonical tier-change RECORD artifacts"),
+        ("control_decision_log", logged_rule_id, "runtime must log transition budget approvals/denials"),
+        ("process.system_collapse", silent_rule_id, "runtime tier scheduler path must execute collapse through canonical process"),
+        ("process.system_expand", silent_rule_id, "runtime tier scheduler path must execute expand through canonical process"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    schema_text = _file_text(repo_root, schema_rel)
+    for token in (
+        "event_id",
+        "tick",
+        "system_id",
+        "from_tier",
+        "to_tier",
+        "result",
+        "transition_kind",
+        "reason_code",
+        "deterministic_fingerprint",
+    ):
+        if token in schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=schema_rel,
+                line_number=1,
+                snippet=token,
+                message="system tier change schema is missing required deterministic event field",
+                rule_id=logged_rule_id,
+            )
+        )
+
+    tier_payload, tier_err = _load_json_object(repo_root, tier_registry_rel)
+    tier_rows = list(tier_payload.get("tier_contracts") or [])
+    if not tier_rows:
+        tier_rows = list((dict(tier_payload.get("record") or {})).get("tier_contracts") or [])
+    tier_ids = set(
+        str(row.get("contract_id", "")).strip()
+        for row in tier_rows
+        if isinstance(row, dict) and str(row.get("contract_id", "")).strip()
+    )
+    if tier_err or (not tier_ids):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=tier_registry_rel,
+                line_number=1,
+                snippet="tier_contracts",
+                message="tier contract registry missing while validating SYS-3 tier integration",
+                rule_id=contract_rule_id,
+            )
+        )
+    elif "tier.system.default" not in tier_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=tier_registry_rel,
+                line_number=1,
+                snippet="tier.system.default",
+                message="system tier contract must declare tier.system.default for SYS-3 scheduling",
+                rule_id=contract_rule_id,
+            )
+        )
+
+    process_payload, process_err = _load_json_object(repo_root, process_registry_rel)
+    process_rows: List[dict] = []
+    process_rows.extend(
+        row
+        for row in list(process_payload.get("processes") or [])
+        if isinstance(row, dict)
+    )
+    process_rows.extend(
+        row
+        for row in list(process_payload.get("records") or [])
+        if isinstance(row, dict)
+    )
+    process_rows.extend(
+        row
+        for row in list((dict(process_payload.get("record") or {})).get("processes") or [])
+        if isinstance(row, dict)
+    )
+    roi_row = {}
+    if not process_err:
+        for row in process_rows:
+            if str(row.get("process_id", "")).strip() != "process.system_roi_tick":
+                continue
+            roi_row = dict(row)
+            break
+    if process_err or not roi_row:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet="process.system_roi_tick",
+                message="process registry must declare process.system_roi_tick for SYS-3",
+                rule_id=logged_rule_id,
+            )
+        )
+    else:
+        row_text = json.dumps(roi_row, sort_keys=True)
+        for token in (
+            "dominium.schema.meta.tier_contract@1.0.0",
+            "dominium.schema.system.system_tier_change_event@1.0.0",
+        ):
+            if token in row_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_registry_rel,
+                    line_number=1,
+                    snippet=token,
+                    message="process.system_roi_tick registry declaration is missing required IO schema linkage",
+                    rule_id=logged_rule_id,
                 )
-                break
+            )
+
+    replay_text = _file_text(repo_root, replay_tool_rel)
+    for token in (
+        "verify_tier_transition_replay_window(",
+        "system_tier_change_hash_chain",
+        "collapse_expand_event_hash_chain",
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS-3 replay tool must verify deterministic tier and collapse/expand hash chains",
+                rule_id=logged_rule_id,
+            )
+        )
+
+    direct_tier_write_pattern = re.compile(
+        r"\[\s*[\"'](?:current_tier|active_capsule_id)[\"']\s*\]\s*=",
+        re.IGNORECASE,
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        "src/system/system_collapse_engine.py",
+        "src/system/system_expand_engine.py",
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not direct_tier_write_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct system tier/capsule mutation detected outside canonical collapse/expand/ROI runtime pathways",
+                    rule_id=silent_rule_id,
+                )
+            )
+            break
 
 
 def _append_cross_domain_mutation_invariant_findings(
@@ -20253,6 +20539,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_macro_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_tier_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -289,6 +289,7 @@ from analyzers import e262_macro_model_signature_mismatch_smell
 from analyzers import e263_capsule_bypass_smell
 from analyzers import e264_undeclared_macro_model_smell
 from analyzers import e265_silent_forced_expand_smell
+from analyzers import e266_unlogged_tier_change_smell
 
 
 ANALYZERS = (
@@ -581,6 +582,7 @@ ANALYZERS = (
     e263_capsule_bypass_smell,
     e264_undeclared_macro_model_smell,
     e265_silent_forced_expand_smell,
+    e266_unlogged_tier_change_smell,
 )
 
 
