@@ -58,6 +58,24 @@
       },
       {
         "schema_version": "1.0.0",
+        "policy_id": "field.pollution_profile_defined",
+        "update_policy_id": "field.pollution_profile_defined",
+        "description": "POLL-1 deterministic concentration updates routed through process field-update pathways.",
+        "tier": "F1",
+        "update_schedule_id": null,
+        "schedule_id": null,
+        "flow_channel_ref": null,
+        "hazard_ref": null,
+        "deterministic_function_id": "deterministic.field.pollution_proxy",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "extensions": {
+          "allow_process_field_update": true,
+          "source": "POLL1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "policy_id": "field.flow_linked",
         "update_policy_id": "field.flow_linked",
         "description": "F1 deterministic updates derived from FlowSystem channels.",

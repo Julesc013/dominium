@@ -245,6 +245,98 @@
         "extensions": {
           "physics_domain": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.pollution.smoke_particulate_concentration",
+        "field_id": "field.pollution.smoke_particulate_concentration",
+        "description": "POLL-1 smoke particulate concentration proxy field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 1,
+          "L": -3,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.pollution_profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "pollutant_id": "pollutant.smoke_particulate",
+          "pollution_field_policy_id": "poll.policy.coarse_diffuse",
+          "source": "POLL1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.pollution.co2_stub_concentration",
+        "field_id": "field.pollution.co2_stub_concentration",
+        "description": "POLL-1 CO2 concentration proxy field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 1,
+          "L": -3,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.pollution_profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "pollutant_id": "pollutant.co2_stub",
+          "pollution_field_policy_id": "poll.policy.coarse_diffuse",
+          "source": "POLL1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.pollution.toxic_gas_stub_concentration",
+        "field_id": "field.pollution.toxic_gas_stub_concentration",
+        "description": "POLL-1 toxic gas concentration proxy field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 1,
+          "L": -3,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.pollution_profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "pollutant_id": "pollutant.toxic_gas_stub",
+          "pollution_field_policy_id": "poll.policy.rank_strict",
+          "source": "POLL1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.pollution.oil_spill_stub_concentration",
+        "field_id": "field.pollution.oil_spill_stub_concentration",
+        "description": "POLL-1 oil spill concentration proxy field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 1,
+          "L": -3,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.pollution_profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "pollutant_id": "pollutant.oil_spill_stub",
+          "pollution_field_policy_id": "poll.policy.coarse_diffuse",
+          "source": "POLL1-2"
+        }
       }
     ],
     "extensions": {
