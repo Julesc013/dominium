@@ -852,6 +852,66 @@
         "extensions": {
           "source": "SYS5-6"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_capsule_error_bound_exceeded",
+        "event_kind_id": "system.capsule_error_bound_exceeded",
+        "explain_artifact_type_id": "artifact.explain.system_capsule_error_bound_exceeded",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.boundary_summary",
+          "section.system.macro_output_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.reduce.boundary_load",
+          "hint.review.macro_model_set"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS7-0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_invariant_violation",
+        "event_kind_id": "system.invariant_violation",
+        "explain_artifact_type_id": "artifact.explain.system_invariant_violation",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.boundary_summary",
+          "section.system.certifications"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.resolve.system_transition_preconditions",
+          "hint.request.recertification"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS7-0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_compliance_failure",
+        "event_kind_id": "system.compliance_failure",
+        "explain_artifact_type_id": "artifact.explain.system_compliance_failure",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.report",
+          "section.system.compliance_status"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.review.spec_and_safety",
+          "hint.request.recertification"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS7-0"
+        }
       }
     ],
     "extensions": {
