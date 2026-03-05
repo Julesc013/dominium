@@ -573,8 +573,13 @@ from src.system import (
     REFUSAL_SYSTEM_MACRO_INVALID,
     REFUSAL_SYSTEM_MACRO_MODEL_SET_INVALID,
     REFUSAL_SYSTEM_MACRO_REFUSED_BY_BUDGET,
+    REFUSAL_SYSTEM_TIER_BUDGET_DENIED,
+    REFUSAL_SYSTEM_TIER_CONTRACT_MISSING,
+    REFUSAL_SYSTEM_TIER_INVALID,
+    REFUSAL_SYSTEM_TIER_UNSUPPORTED,
     SystemCollapseError,
     SystemExpandError,
+    evaluate_system_roi_tick,
     evaluate_macro_capsules_tick,
     normalize_forced_expand_event_rows,
     normalize_macro_output_record_rows,
@@ -778,6 +783,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.pollution_compliance_tick": "session.boot",
     "process.system_collapse": "session.boot",
     "process.system_expand": "session.boot",
+    "process.system_roi_tick": "session.boot",
     "process.system_macro_tick": "session.boot",
     "process.degradation_tick": "session.boot",
 }
@@ -966,6 +972,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.pollution_compliance_tick": "observer",
     "process.system_collapse": "observer",
     "process.system_expand": "observer",
+    "process.system_roi_tick": "observer",
     "process.system_macro_tick": "observer",
     "process.degradation_tick": "observer",
 }
@@ -29454,6 +29461,676 @@ def execute_intent(
                 ).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_roi_tick":
+        roi_system_ids = _sorted_tokens(list(inputs.get("roi_system_ids") or []))
+        inspection_system_ids = _sorted_tokens(list(inputs.get("inspection_system_ids") or []))
+        hazard_system_ids = _sorted_tokens(list(inputs.get("hazard_system_ids") or []))
+        fidelity_request_system_ids = _sorted_tokens(list(inputs.get("fidelity_request_system_ids") or []))
+        denied_system_ids = _sorted_tokens(list(inputs.get("denied_system_ids") or []))
+        max_expands_per_tick = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get(
+                        "max_expands_per_tick",
+                        (dict(policy_context or {})).get("system_roi_max_expands_per_tick", 16),
+                    ),
+                    16,
+                ),
+            )
+        )
+        max_collapses_per_tick = int(
+            max(
+                0,
+                _as_int(
+                    inputs.get(
+                        "max_collapses_per_tick",
+                        (dict(policy_context or {})).get("system_roi_max_collapses_per_tick", 32),
+                    ),
+                    32,
+                ),
+            )
+        )
+
+        tier_contract_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tier_contract_registry",
+            registry_rel_path="data/registries/tier_contract_registry.json",
+            entry_key="tier_contracts",
+        )
+        roi_eval = evaluate_system_roi_tick(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            state=state,
+            system_rows=state.get("system_rows") or [],
+            system_macro_capsule_rows=state.get("system_macro_capsule_rows") or [],
+            tier_contract_registry_payload=tier_contract_registry,
+            roi_system_ids=roi_system_ids,
+            inspection_system_ids=inspection_system_ids,
+            hazard_system_ids=hazard_system_ids,
+            fidelity_request_system_ids=fidelity_request_system_ids,
+            denied_system_ids=denied_system_ids,
+            max_expands_per_tick=int(max_expands_per_tick),
+            max_collapses_per_tick=int(max_collapses_per_tick),
+        )
+
+        quantity_bundle_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="quantity_bundle_registry",
+            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            entry_key="quantity_bundles",
+        )
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        signal_channel_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="signal_channel_type_registry",
+            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            entry_key="signal_channel_types",
+        )
+        boundary_invariant_template_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="boundary_invariant_template_registry",
+            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            entry_key="boundary_invariant_templates",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        safety_pattern_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="safety_pattern_registry",
+            registry_rel_path="data/registries/safety_pattern_registry.json",
+            entry_key="safety_patterns",
+        )
+
+        tier_change_rows = [
+            dict(row)
+            for row in list(state.get("system_tier_change_event_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        valid_system_tiers = {"micro", "meso", "macro"}
+
+        def _system_tier_token(value: object, default_value: str = "macro") -> str:
+            token = str(value or "").strip().lower()
+            if token in valid_system_tiers:
+                return token
+            fallback = str(default_value or "").strip().lower()
+            if fallback in valid_system_tiers:
+                return fallback
+            return "macro"
+
+        system_rows_snapshot_by_id = {
+            str(row.get("system_id", "")).strip(): dict(row)
+            for row in list(state.get("system_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("system_id", "")).strip()
+        }
+        transition_refusals = []
+        executed_rows = []
+        approved_expand_ids = []
+        approved_collapse_ids = []
+        denied_transition_rows = [
+            dict(row)
+            for row in list(roi_eval.get("denied_transition_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        for denied_row in denied_transition_rows:
+            system_id = str(denied_row.get("system_id", "")).strip()
+            current_tier = _system_tier_token(
+                denied_row.get("current_tier", ""),
+                _system_tier_token(
+                    dict(system_rows_snapshot_by_id.get(system_id) or {}).get("current_tier", "macro"),
+                    "macro",
+                ),
+            )
+            target_tier = _system_tier_token(denied_row.get("effective_tier", ""), current_tier)
+            reason_code = str(denied_row.get("reason_code", "")).strip() or REFUSAL_SYSTEM_TIER_INVALID
+            event_id = "event.system.tier_change.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "system_id": system_id,
+                        "from": current_tier,
+                        "to": target_tier,
+                        "result": "denied",
+                        "reason_code": reason_code,
+                    }
+                )[:16]
+            )
+            tier_change_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "event_id": event_id,
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "system_id": system_id,
+                    "from_tier": current_tier,
+                    "to_tier": target_tier,
+                    "result": "denied",
+                    "transition_kind": str(denied_row.get("transition_kind", "")).strip() or "unsupported",
+                    "reason_code": reason_code,
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "priority_class": str(denied_row.get("priority_class", "")).strip() or "background",
+                        "tier_contract_id": str(denied_row.get("tier_contract_id", "")).strip(),
+                        "cost_model_id": str(denied_row.get("cost_model_id", "")).strip(),
+                        "denied_by": str(denied_row.get("denied_by", "")).strip() or "scheduler",
+                    },
+                }
+            )
+
+        scheduler_refusal_rows = [
+            dict(row)
+            for row in list(roi_eval.get("refusal_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        for refusal_row in scheduler_refusal_rows:
+            system_id = str(refusal_row.get("system_id", "")).strip()
+            system_snapshot = dict(system_rows_snapshot_by_id.get(system_id) or {})
+            current_tier = _system_tier_token(system_snapshot.get("current_tier", "macro"), "macro")
+            reason_code = str(refusal_row.get("reason_code", "")).strip() or REFUSAL_SYSTEM_TIER_INVALID
+            tier_change_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "event_id": "event.system.tier_change.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "system_id": system_id,
+                                "from": current_tier,
+                                "to": current_tier,
+                                "result": "denied",
+                                "reason_code": reason_code,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "system_id": system_id,
+                    "from_tier": current_tier,
+                    "to_tier": current_tier,
+                    "result": "denied",
+                    "transition_kind": "unsupported",
+                    "reason_code": reason_code,
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "tier_contract_id": str(refusal_row.get("tier_contract_id", "")).strip(),
+                        "priority_class": "background",
+                    },
+                }
+            )
+
+        for request in list(roi_eval.get("approved_transition_rows") or []):
+            if not isinstance(request, Mapping):
+                continue
+            request_row = dict(request)
+            system_id = str(request_row.get("system_id", "")).strip()
+            transition_kind = str(request_row.get("transition_kind", "")).strip()
+            current_tier_token = _system_tier_token(
+                request_row.get("current_tier", ""),
+                _system_tier_token(
+                    dict(system_rows_snapshot_by_id.get(system_id) or {}).get("current_tier", "macro"),
+                    "macro",
+                ),
+            )
+            target_tier = _system_tier_token(request_row.get("effective_tier", ""), current_tier_token)
+            request_process_id = str(request_row.get("requested_process_id", "")).strip()
+            if transition_kind == "expand":
+                capsule_id = str(request_row.get("capsule_id", "")).strip()
+                if not capsule_id:
+                    transition_refusals.append(
+                        {
+                            "system_id": system_id,
+                            "reason_code": REFUSAL_SYSTEM_TIER_INVALID,
+                            "message": "expand transition requires capsule_id",
+                            "request_row": dict(request_row),
+                        }
+                    )
+                    continue
+                try:
+                    expand_result = expand_system_graph(
+                        state=state,
+                        capsule_id=capsule_id,
+                        current_tick=int(max(0, _as_int(current_tick, 0))),
+                        process_id=request_process_id or "process.system_expand",
+                        quantity_bundle_registry_payload=quantity_bundle_registry,
+                        spec_type_registry_payload=spec_type_registry,
+                        signal_channel_type_registry_payload=signal_channel_type_registry,
+                        boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
+                        tolerance_policy_registry_payload=tolerance_policy_registry,
+                        safety_pattern_registry_payload=safety_pattern_registry,
+                    )
+                    approved_expand_ids.append(str(system_id))
+                    event_id = "event.system.tier_change.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "system_id": system_id,
+                                "from": current_tier_token,
+                                "to": target_tier,
+                                "result": "complete",
+                                "kind": transition_kind,
+                            }
+                        )[:16]
+                    )
+                    tier_change_rows.append(
+                        {
+                            "schema_version": "1.0.0",
+                            "event_id": event_id,
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                            "system_id": system_id,
+                            "from_tier": current_tier_token,
+                            "to_tier": target_tier,
+                            "result": "complete",
+                            "transition_kind": transition_kind,
+                            "reason_code": "system.tier.expand",
+                            "deterministic_fingerprint": "",
+                            "extensions": {
+                                "source_process_id": process_id,
+                                "executed_process_id": request_process_id or "process.system_expand",
+                                "process_event_id": str(expand_result.get("event_id", "")).strip(),
+                                "capsule_id": capsule_id,
+                                "priority_class": str(request_row.get("priority_class", "")).strip() or "background",
+                                "tier_contract_id": str(request_row.get("tier_contract_id", "")).strip(),
+                                "cost_model_id": str(request_row.get("cost_model_id", "")).strip(),
+                            },
+                        }
+                    )
+                    executed_rows.append(
+                        {
+                            "system_id": system_id,
+                            "transition_kind": transition_kind,
+                            "event_id": str(expand_result.get("event_id", "")).strip(),
+                            "result": "complete",
+                        }
+                    )
+                except SystemExpandError as exc:
+                    transition_refusals.append(
+                        {
+                            "system_id": system_id,
+                            "reason_code": str(getattr(exc, "reason_code", REFUSAL_SYSTEM_EXPAND_INVALID)).strip() or REFUSAL_SYSTEM_EXPAND_INVALID,
+                            "message": str(exc),
+                            "request_row": dict(request_row),
+                            "details": dict(getattr(exc, "details", {}) or {}),
+                        }
+                    )
+            elif transition_kind == "collapse":
+                try:
+                    collapse_result = collapse_system_graph(
+                        state=state,
+                        system_id=system_id,
+                        current_tick=int(max(0, _as_int(current_tick, 0))),
+                        process_id=request_process_id or "process.system_collapse",
+                        quantity_bundle_registry_payload=quantity_bundle_registry,
+                        spec_type_registry_payload=spec_type_registry,
+                        signal_channel_type_registry_payload=signal_channel_type_registry,
+                        boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
+                        tolerance_policy_registry_payload=tolerance_policy_registry,
+                        safety_pattern_registry_payload=safety_pattern_registry,
+                    )
+                    approved_collapse_ids.append(str(system_id))
+                    event_id = "event.system.tier_change.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "system_id": system_id,
+                                "from": current_tier_token,
+                                "to": target_tier,
+                                "result": "complete",
+                                "kind": transition_kind,
+                            }
+                        )[:16]
+                    )
+                    tier_change_rows.append(
+                        {
+                            "schema_version": "1.0.0",
+                            "event_id": event_id,
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                            "system_id": system_id,
+                            "from_tier": current_tier_token,
+                            "to_tier": target_tier,
+                            "result": "complete",
+                            "transition_kind": transition_kind,
+                            "reason_code": "system.tier.collapse",
+                            "deterministic_fingerprint": "",
+                            "extensions": {
+                                "source_process_id": process_id,
+                                "executed_process_id": request_process_id or "process.system_collapse",
+                                "process_event_id": str(collapse_result.get("event_id", "")).strip(),
+                                "capsule_id": str(collapse_result.get("capsule_id", "")).strip(),
+                                "priority_class": str(request_row.get("priority_class", "")).strip() or "background",
+                                "tier_contract_id": str(request_row.get("tier_contract_id", "")).strip(),
+                                "cost_model_id": str(request_row.get("cost_model_id", "")).strip(),
+                            },
+                        }
+                    )
+                    executed_rows.append(
+                        {
+                            "system_id": system_id,
+                            "transition_kind": transition_kind,
+                            "event_id": str(collapse_result.get("event_id", "")).strip(),
+                            "result": "complete",
+                        }
+                    )
+                except SystemCollapseError as exc:
+                    transition_refusals.append(
+                        {
+                            "system_id": system_id,
+                            "reason_code": str(getattr(exc, "reason_code", REFUSAL_SYSTEM_COLLAPSE_INVALID)).strip() or REFUSAL_SYSTEM_COLLAPSE_INVALID,
+                            "message": str(exc),
+                            "request_row": dict(request_row),
+                            "details": dict(getattr(exc, "details", {}) or {}),
+                        }
+                    )
+            else:
+                transition_refusals.append(
+                    {
+                        "system_id": system_id,
+                        "reason_code": REFUSAL_SYSTEM_TIER_UNSUPPORTED,
+                        "message": "unsupported transition_kind for system_roi_tick",
+                        "request_row": dict(request_row),
+                    }
+                )
+
+        decision_rows = [
+            dict(row)
+            for row in list(state.get("control_decision_log") or [])
+            if isinstance(row, Mapping)
+        ]
+        decision_rows.extend(
+            dict(row)
+            for row in list(roi_eval.get("decision_log_rows") or [])
+            if isinstance(row, Mapping)
+        )
+        for refusal_row in transition_refusals:
+            system_id = str(refusal_row.get("system_id", "")).strip()
+            reason_code = str(refusal_row.get("reason_code", "")).strip() or REFUSAL_SYSTEM_TIER_INVALID
+            decision_rows.append(
+                {
+                    "decision_id": "decision.system.roi.execution_refusal.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "system_id": system_id,
+                                "reason_code": reason_code,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "denied",
+                    "reason_code": reason_code,
+                    "extensions": {
+                        "system_id": system_id,
+                        "message": str(refusal_row.get("message", "")).strip(),
+                        "request_row": dict(refusal_row.get("request_row") or {}) if isinstance(refusal_row.get("request_row"), Mapping) else {},
+                        "details": dict(refusal_row.get("details") or {}) if isinstance(refusal_row.get("details"), Mapping) else {},
+                    },
+                }
+            )
+            request_row = dict(refusal_row.get("request_row") or {}) if isinstance(refusal_row.get("request_row"), Mapping) else {}
+            tier_change_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "event_id": "event.system.tier_change.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "system_id": system_id,
+                                "from": str(request_row.get("current_tier", "")).strip(),
+                                "to": str(request_row.get("effective_tier", "")).strip(),
+                                "result": "denied",
+                                "reason_code": reason_code,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "system_id": system_id,
+                    "from_tier": _system_tier_token(
+                        request_row.get("current_tier", ""),
+                        _system_tier_token(
+                            dict(system_rows_snapshot_by_id.get(system_id) or {}).get("current_tier", "macro"),
+                            "macro",
+                        ),
+                    ),
+                    "to_tier": _system_tier_token(
+                        request_row.get("effective_tier", ""),
+                        _system_tier_token(
+                            request_row.get("current_tier", ""),
+                            _system_tier_token(
+                                dict(system_rows_snapshot_by_id.get(system_id) or {}).get("current_tier", "macro"),
+                                "macro",
+                            ),
+                        ),
+                    ),
+                    "result": "denied",
+                    "transition_kind": str(request_row.get("transition_kind", "")).strip() or "unsupported",
+                    "reason_code": reason_code,
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source_process_id": process_id,
+                        "priority_class": str(request_row.get("priority_class", "")).strip() or "background",
+                        "tier_contract_id": str(request_row.get("tier_contract_id", "")).strip(),
+                        "cost_model_id": str(request_row.get("cost_model_id", "")).strip(),
+                        "message": str(refusal_row.get("message", "")).strip(),
+                    },
+                }
+            )
+
+        for row in tier_change_rows:
+            if not isinstance(row, Mapping):
+                continue
+            normalized = dict(row)
+            normalized["deterministic_fingerprint"] = canonical_sha256(dict(normalized, deterministic_fingerprint=""))
+            row.update(normalized)
+        state["system_tier_change_event_rows"] = sorted(
+            (dict(row) for row in tier_change_rows if isinstance(row, Mapping)),
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("system_id", "")),
+                str(row.get("event_id", "")),
+            ),
+        )
+        state["control_decision_log"] = sorted(
+            (dict(row) for row in decision_rows if isinstance(row, Mapping)),
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("decision_id", "")),
+            ),
+        )
+        state["system_tier_change_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "system_id": str(row.get("system_id", "")).strip(),
+                    "from_tier": str(row.get("from_tier", "")).strip(),
+                    "to_tier": str(row.get("to_tier", "")).strip(),
+                    "result": str(row.get("result", "")).strip(),
+                    "reason_code": str(row.get("reason_code", "")).strip(),
+                }
+                for row in list(state.get("system_tier_change_event_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        )
+        state["collapse_expand_event_hash_chain"] = canonical_sha256(
+            {
+                "collapse_events": [
+                    {
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "system_id": str(row.get("system_id", "")).strip(),
+                        "capsule_id": str(row.get("capsule_id", "")).strip(),
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    }
+                    for row in list(state.get("system_collapse_event_rows") or [])
+                    if isinstance(row, Mapping)
+                ],
+                "expand_events": [
+                    {
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "system_id": str(row.get("system_id", "")).strip(),
+                        "capsule_id": str(row.get("capsule_id", "")).strip(),
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    }
+                    for row in list(state.get("system_expand_event_rows") or [])
+                    if isinstance(row, Mapping)
+                ],
+            }
+        )
+
+        info_artifact_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        existing_artifact_ids = set(
+            str(row.get("artifact_id", "")).strip()
+            for row in info_artifact_rows
+            if str(row.get("artifact_id", "")).strip()
+        )
+        for tier_row in list(state.get("system_tier_change_event_rows") or []):
+            if not isinstance(tier_row, Mapping):
+                continue
+            event_id = str(tier_row.get("event_id", "")).strip()
+            if not event_id:
+                continue
+            artifact_id = "artifact.record.system_tier_change.{}".format(
+                canonical_sha256({"event_id": event_id})[:16]
+            )
+            if artifact_id in existing_artifact_ids:
+                continue
+            existing_artifact_ids.add(artifact_id)
+            info_artifact_rows.append(
+                {
+                    "artifact_id": artifact_id,
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.system_tier_change",
+                        "event_id": event_id,
+                        "system_id": str(tier_row.get("system_id", "")).strip(),
+                        "from_tier": str(tier_row.get("from_tier", "")).strip(),
+                        "to_tier": str(tier_row.get("to_tier", "")).strip(),
+                        "result": str(tier_row.get("result", "")).strip(),
+                        "reason_code": str(tier_row.get("reason_code", "")).strip(),
+                    },
+                }
+            )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_artifact_rows)
+        state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+        explain_rows = [
+            dict(row)
+            for row in list(state.get("explain_artifact_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        explain_registry = _load_explain_contract_registry(policy_context=policy_context)
+        explain_by_event_kind = _explain_contract_rows_by_event_kind(explain_registry)
+        generated_explain_ids = []
+        for refusal_row in transition_refusals:
+            system_id = str(refusal_row.get("system_id", "")).strip()
+            if not system_id:
+                continue
+            reason_code = str(refusal_row.get("reason_code", "")).strip() or REFUSAL_SYSTEM_TIER_INVALID
+            event_id = "event.system.tier_refusal.{}".format(
+                canonical_sha256(
+                    {
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "system_id": system_id,
+                        "reason_code": reason_code,
+                    }
+                )[:16]
+            )
+            explain_row = generate_explain_artifact(
+                event_id=event_id,
+                target_id=system_id,
+                event_kind_id="system.tier_transition_refusal",
+                truth_hash_anchor=str(state.get("system_tier_change_hash_chain", "")).strip(),
+                epistemic_policy_id="policy.epistemic.observer",
+                explain_contract_row=dict(explain_by_event_kind.get("system.tier_transition_refusal") or {}),
+                decision_log_rows=state.get("control_decision_log") or [],
+                safety_event_rows=state.get("safety_events") or [],
+                hazard_rows=[],
+                compliance_rows=[],
+                model_result_rows=[],
+                cause_chain_keys=[
+                    "cause.system.tier_transition.refusal",
+                    "cause.system.tier_transition.reason.{}".format(reason_code),
+                ],
+                remediation_hint_keys=["hint.inspect.system_micro", "hint.raise.ctrl.fidelity_request"],
+                referenced_artifacts=[],
+            )
+            if explain_row:
+                explain_rows.append(dict(explain_row))
+                generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+        if generated_explain_ids:
+            state["explain_artifact_rows"] = normalize_explain_artifact_rows(explain_rows)
+
+        ctrl_budget_request_rows = []
+        for row in [
+            dict(item)
+            for item in list(roi_eval.get("approved_transition_rows") or [])
+            if isinstance(item, Mapping)
+        ] + [
+            dict(item)
+            for item in list(roi_eval.get("denied_transition_rows") or [])
+            if isinstance(item, Mapping)
+        ]:
+            transition_kind = str(row.get("transition_kind", "")).strip().lower()
+            if transition_kind == "expand":
+                cost_estimate_units = 8
+            elif transition_kind == "collapse":
+                cost_estimate_units = 6
+            else:
+                cost_estimate_units = 1
+            ctrl_budget_request_rows.append(
+                {
+                    "system_id": str(row.get("system_id", "")).strip(),
+                    "transition_kind": transition_kind or "unsupported",
+                    "priority_class": str(row.get("priority_class", "")).strip() or "background",
+                    "cost_model_id": str(row.get("cost_model_id", "")).strip(),
+                    "cost_estimate_units": int(cost_estimate_units),
+                    "decision": "approved"
+                    if dict(row) in list(roi_eval.get("approved_transition_rows") or [])
+                    else "denied",
+                    "reason_code": str(row.get("reason_code", "")).strip(),
+                    "denied_by": str(row.get("denied_by", "")).strip(),
+                }
+            )
+        ctrl_budget_request_rows = sorted(
+            (dict(row) for row in ctrl_budget_request_rows if isinstance(row, Mapping)),
+            key=lambda row: (
+                str(row.get("system_id", "")),
+                str(row.get("transition_kind", "")),
+                str(row.get("decision", "")),
+            ),
+        )
+
+        result_metadata = {
+            "roi_system_ids": list(roi_system_ids),
+            "inspection_system_ids": list(inspection_system_ids),
+            "hazard_system_ids": list(hazard_system_ids),
+            "fidelity_request_system_ids": list(fidelity_request_system_ids),
+            "ctrl_denied_system_ids": list(denied_system_ids),
+            "ctrl_budget_request_rows": list(ctrl_budget_request_rows),
+            "approved_expand_system_ids": _sorted_tokens(approved_expand_ids),
+            "approved_collapse_system_ids": _sorted_tokens(approved_collapse_ids),
+            "denied_transition_count": int(len(denied_transition_rows) + len(transition_refusals)),
+            "noop_count": int(len(list(roi_eval.get("noop_rows") or []))),
+            "executed_transition_count": int(len(executed_rows)),
+            "refusal_rows": [dict(row) for row in transition_refusals if isinstance(row, Mapping)],
+            "scheduler_refusal_rows": [dict(row) for row in list(roi_eval.get("refusal_rows") or []) if isinstance(row, Mapping)],
+            "system_tier_change_hash_chain": str(state.get("system_tier_change_hash_chain", "")).strip(),
+            "collapse_expand_event_hash_chain": str(state.get("collapse_expand_event_hash_chain", "")).strip(),
+            "scheduler_deterministic_fingerprint": str(roi_eval.get("deterministic_fingerprint", "")).strip(),
+            "generated_explain_ids": _sorted_tokens(generated_explain_ids),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.system_collapse":
         system_id = str(inputs.get("system_id", "")).strip()
         if not system_id:

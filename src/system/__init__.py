@@ -49,6 +49,13 @@ from src.system.macro import (
     normalize_macro_output_record_rows,
     normalize_macro_runtime_state_rows,
 )
+from src.system.roi import (
+    REFUSAL_SYSTEM_TIER_BUDGET_DENIED,
+    REFUSAL_SYSTEM_TIER_CONTRACT_MISSING,
+    REFUSAL_SYSTEM_TIER_INVALID,
+    REFUSAL_SYSTEM_TIER_UNSUPPORTED,
+    evaluate_system_roi_tick,
+)
 
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
@@ -92,4 +99,9 @@ __all__ = [
     "build_macro_output_record_row",
     "normalize_macro_output_record_rows",
     "evaluate_macro_capsules_tick",
+    "REFUSAL_SYSTEM_TIER_CONTRACT_MISSING",
+    "REFUSAL_SYSTEM_TIER_BUDGET_DENIED",
+    "REFUSAL_SYSTEM_TIER_UNSUPPORTED",
+    "REFUSAL_SYSTEM_TIER_INVALID",
+    "evaluate_system_roi_tick",
 ]

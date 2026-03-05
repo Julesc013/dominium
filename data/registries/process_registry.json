@@ -4659,6 +4659,60 @@
       ],
       "affected_fields": [],
       "deprecated": false,
+      "description": "Canonical SYS-3 ROI scheduler tick; deterministically evaluates desired system tiers, performs budgeted collapse/expand transitions, and logs tier transition events and decisions.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "budgeted-degrade-logged"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.system_roi_tick)",
+        "source": "SYS3-2",
+        "tier": "micro_meso_macro"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.system.tier_contract_missing",
+        "refusal.system.tier_budget_denied",
+        "refusal.system.tier_transition_invalid",
+        "refusal.system.tier_transition_unsupported"
+      ],
+      "human_name": "System ROI Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "tier_contracts",
+          "ref_id": "dominium.schema.meta.tier_contract@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "system_tier_change_event",
+          "ref_id": "dominium.schema.system.system_tier_change_event@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "tier_change_record_artifact",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.system_roi_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.system.capsule_placeholder"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
       "description": "Canonical SYS-2 macro capsule runtime tick; evaluates macro model bindings deterministically, applies boundary outputs through process-governed pathways, and logs forced-expand events when validity/error bounds require higher fidelity.",
       "determinism_notes": [
         "deterministic-order",
