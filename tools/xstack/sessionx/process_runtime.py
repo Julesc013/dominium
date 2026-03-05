@@ -7856,6 +7856,12 @@ def _spec_target_for_inspection_payload(
     if collection == "machine_assemblies":
         token = str(row.get("machine_id", "")).strip() or token_target
         return "vehicle", token
+    if collection == "system_rows":
+        ext = dict(row.get("extensions") or {})
+        spec_target_kind = str(ext.get("spec_target_kind", "")).strip()
+        spec_target_id = str(ext.get("spec_target_id", "")).strip()
+        if spec_target_kind and spec_target_id:
+            return spec_target_kind, spec_target_id
     if collection == "guide_geometries":
         token = str(row.get("geometry_id", "")).strip() or token_target
         return "geometry", token
@@ -16968,6 +16974,157 @@ def _augment_inspection_target_payload_for_specs(
     return payload
 
 
+def _credential_artifact_id_for_system_cert(cert_id: str) -> str:
+    token = str(cert_id or "").strip()
+    if not token:
+        return ""
+    return "artifact.credential.system_cert.{}".format(
+        canonical_sha256({"cert_id": token})[:16]
+    )
+
+
+def _augment_inspection_target_payload_for_system_certification(
+    *,
+    state: dict,
+    authority_context: dict,
+    target_payload: dict,
+) -> dict:
+    payload = dict(target_payload or {})
+    if not bool(payload.get("exists", False)):
+        return payload
+    collection = str(payload.get("collection", "")).strip()
+    row = dict(payload.get("row") or {})
+    target_id = str(payload.get("target_id", "")).strip()
+
+    system_id = ""
+    if collection == "system_rows":
+        system_id = str(row.get("system_id", "")).strip() or target_id
+    if (not system_id) and collection in {"installed_structure_instances", "machine_assemblies", "vehicles"}:
+        system_id = str(dict(row.get("extensions") or {}).get("system_id", "")).strip()
+    if not system_id:
+        return payload
+
+    requester_subject_id = (
+        str(authority_context.get("subject_id", "")).strip()
+        or str(authority_context.get("peer_id", "")).strip()
+        or "subject.system"
+    )
+    receipt_rows = [
+        dict(item)
+        for item in list(state.get("knowledge_receipts") or state.get("knowledge_receipt_rows") or [])
+        if isinstance(item, Mapping)
+        and str(item.get("subject_id", "")).strip() == requester_subject_id
+    ]
+    receipt_rows = sorted(
+        receipt_rows,
+        key=lambda item: (
+            int(max(0, _as_int(item.get("acquired_tick", 0), 0))),
+            str(item.get("receipt_id", "")),
+        ),
+    )
+    receipt_by_artifact_id = dict(
+        (str(row.get("artifact_id", "")).strip(), dict(row))
+        for row in receipt_rows
+        if str(row.get("artifact_id", "")).strip()
+    )
+
+    cert_rows = [
+        dict(item)
+        for item in list(state.get("system_certificate_artifact_rows") or [])
+        if isinstance(item, Mapping)
+        and str(item.get("system_id", "")).strip() == system_id
+        and str(dict(item.get("extensions") or {}).get("status", "active")).strip().lower() == "active"
+    ]
+    cert_rows = sorted(
+        cert_rows,
+        key=lambda item: (
+            int(max(0, _as_int(item.get("issued_tick", 0), 0))),
+            str(item.get("cert_type_id", "")),
+            str(item.get("cert_id", "")),
+        ),
+    )
+    visible_cert_rows = []
+    for cert_row in cert_rows:
+        cert_id = str(cert_row.get("cert_id", "")).strip()
+        artifact_id = _credential_artifact_id_for_system_cert(cert_id)
+        receipt_row = dict(receipt_by_artifact_id.get(artifact_id) or {})
+        if not receipt_row:
+            continue
+        verification_state = str(receipt_row.get("verification_state", "unverified")).strip().lower() or "unverified"
+        trust_weight = float(_as_float(receipt_row.get("trust_weight", 1.0), 1.0))
+        if verification_state in {"revoked", "rejected"}:
+            continue
+        if trust_weight <= 0.0:
+            continue
+        visible_cert_rows.append(
+            {
+                "cert_id": cert_id,
+                "cert_type_id": str(cert_row.get("cert_type_id", "")).strip(),
+                "issuer_subject_id": str(cert_row.get("issuer_subject_id", "")).strip(),
+                "issued_tick": int(max(0, _as_int(cert_row.get("issued_tick", 0), 0))),
+                "verification_state": str(receipt_row.get("verification_state", "")).strip() or "unverified",
+                "receipt_id": str(receipt_row.get("receipt_id", "")).strip() or None,
+            }
+        )
+
+    result_rows = [
+        dict(item)
+        for item in list(state.get("system_certification_result_rows") or [])
+        if isinstance(item, Mapping) and str(item.get("system_id", "")).strip() == system_id
+    ]
+    latest_result = (
+        sorted(
+            result_rows,
+            key=lambda item: (
+                int(max(0, _as_int(item.get("tick", 0), 0))),
+                str(item.get("cert_type_id", "")),
+                str(item.get("result_id", "")),
+            ),
+        )[-1]
+        if result_rows
+        else {}
+    )
+    spec_summary = dict(dict(payload.get("extensions") or {}).get("spec_compliance_summary") or {})
+    overall_grade = str(spec_summary.get("overall_grade", "")).strip().lower()
+    cert_failed = bool(latest_result) and (not bool(latest_result.get("pass", False)))
+    compliance_failed = overall_grade == "fail"
+    has_visible_certificate = bool(visible_cert_rows)
+    certified_badge_visible = bool(has_visible_certificate)
+    inspection_failed_warning_visible = bool(cert_failed or compliance_failed)
+    status = "uncertified"
+    if inspection_failed_warning_visible:
+        status = "inspection_failed"
+    elif certified_badge_visible:
+        status = "certified"
+
+    extensions = dict(payload.get("extensions") or {})
+    extensions["system_certification_summary"] = {
+        "system_id": system_id,
+        "requester_subject_id": requester_subject_id,
+        "active_certificate_count": int(len(cert_rows)),
+        "visible_certificates": [dict(row) for row in visible_cert_rows],
+        "certified_badge_visible": bool(certified_badge_visible),
+        "receipt_gated": True,
+    }
+    extensions["system_compliance_status"] = {
+        "system_id": system_id,
+        "status": status,
+        "overall_grade": overall_grade or None,
+        "result_id": str(latest_result.get("result_id", "")).strip() or None,
+        "failed_checks": _sorted_tokens(latest_result.get("failed_checks")),
+        "certification_pass": bool(latest_result.get("pass", False)),
+        "has_visible_certificate": bool(has_visible_certificate),
+        "certified_badge_visible": bool(certified_badge_visible),
+        "inspection_failed_warning_visible": bool(inspection_failed_warning_visible),
+    }
+    extensions["system_ui_markers"] = {
+        "certified_badge_visible": bool(certified_badge_visible),
+        "inspection_failed_warning_visible": bool(inspection_failed_warning_visible),
+    }
+    payload["extensions"] = extensions
+    return payload
+
+
 def _augment_inspection_target_payload_for_mechanics(
     *,
     state: dict,
@@ -17265,6 +17422,16 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
                 "collection": "vehicles",
                 "row": row,
             }
+    if token.startswith("system."):
+        system_id = str(token).strip()
+        row = _row_by_id_value(state.get("system_rows"), "system_id", system_id)
+        if row:
+            return {
+                "target_id": token,
+                "exists": True,
+                "collection": "system_rows",
+                "row": row,
+            }
     if token.startswith("junction."):
         junction_id = str(token).strip()
         row = _row_by_id_value(state.get("mobility_junctions"), "junction_id", junction_id)
@@ -17294,6 +17461,7 @@ def _inspection_target_payload(state: dict, target_id: str) -> dict:
         ("body_assemblies", "body_id"),
         ("order_assemblies", "order_id"),
         ("institution_assemblies", "institution_id"),
+        ("system_rows", "system_id"),
         ("logistics_node_inventories", "node_id"),
         ("logistics_manifests", "manifest_id"),
         ("shipment_commitments", "commitment_id"),
@@ -17604,6 +17772,11 @@ def _execute_inspection_snapshot_process(
     )
     target_payload = _augment_inspection_target_payload_for_specs(
         state=state,
+        target_payload=target_payload,
+    )
+    target_payload = _augment_inspection_target_payload_for_system_certification(
+        state=state,
+        authority_context=authority_context,
         target_payload=target_payload,
     )
     target_payload = _augment_inspection_target_payload_for_mechanics(

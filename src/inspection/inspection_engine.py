@@ -21,6 +21,7 @@ REFUSAL_INSPECT_TARGET_INVALID = "refusal.inspect.target_invalid"
 
 _VALID_TARGET_KINDS = {
     "structure",
+    "system",
     "vehicle",
     "project",
     "plan",
@@ -150,6 +151,35 @@ _SECTION_IDS_BY_FIDELITY = {
         "section.events_summary",
         "section.reenactment_link",
         "section.micro_parts_summary",
+    ],
+}
+_SECTION_IDS_BY_FIDELITY_SYSTEM = {
+    "macro": [
+        "section.capabilities_summary",
+        "section.system.certifications",
+        "section.system.compliance_status",
+        "section.spec_compliance_summary",
+        "section.failure_risk_summary",
+        "section.events_summary",
+    ],
+    "meso": [
+        "section.capabilities_summary",
+        "section.system.certifications",
+        "section.system.compliance_status",
+        "section.spec_compliance_summary",
+        "section.failure_risk_summary",
+        "section.commitments_summary",
+        "section.events_summary",
+    ],
+    "micro": [
+        "section.capabilities_summary",
+        "section.system.certifications",
+        "section.system.compliance_status",
+        "section.spec_compliance_summary",
+        "section.failure_risk_summary",
+        "section.commitments_summary",
+        "section.events_summary",
+        "section.reenactment_link",
     ],
 }
 _SECTION_IDS_BY_FIDELITY_GRAPH = {
@@ -539,6 +569,8 @@ _DEFAULT_SECTION_ROWS = {
     "section.maintenance_backlog": {"title": "Maintenance Backlog", "extensions": {"cost_units": 1}},
     "section.failure_risk_summary": {"title": "Failure Risk Summary", "extensions": {"cost_units": 1}},
     "section.spec_compliance_summary": {"title": "Spec Compliance Summary", "extensions": {"cost_units": 1}},
+    "section.system.certifications": {"title": "System Certifications", "extensions": {"cost_units": 1}},
+    "section.system.compliance_status": {"title": "System Compliance Status", "extensions": {"cost_units": 1}},
     "section.commitments_summary": {"title": "Commitments", "extensions": {"cost_units": 2}},
     "section.events_summary": {"title": "Events", "extensions": {"cost_units": 2}},
     "section.reenactment_link": {"title": "Reenactment", "extensions": {"cost_units": 1}},
@@ -585,6 +617,8 @@ def _quantize_map(values: object, *, step: int) -> dict:
 
 def _target_kind_from_target_id(target_id: str) -> str:
     token = str(target_id or "").strip()
+    if token.startswith("system."):
+        return "system"
     if token.startswith("institution."):
         return "institution"
     if token.startswith("vehicle."):
@@ -718,6 +752,8 @@ def _section_ids_for_fidelity(*, fidelity: str, target_kind: str) -> List[str]:
     kind = str(target_kind).strip()
     if kind == "vehicle":
         return list(_SECTION_IDS_BY_FIDELITY_VEHICLE[token])
+    if kind == "system":
+        return list(_SECTION_IDS_BY_FIDELITY_SYSTEM[token])
     if kind == "plan":
         return list(_SECTION_IDS_BY_FIDELITY_PLAN[token])
     if kind == "graph":
@@ -4795,6 +4831,62 @@ def _build_section_data(
         if explicit:
             return {"risk_rows": [dict(item) for item in list(explicit.get("risk_rows") or [])[:16] if isinstance(item, dict)]}
         return {"risk_rows": []}
+    if section_id == "section.system.certifications":
+        payload_ext = dict(target_payload.get("extensions") or {})
+        summary = dict(payload_ext.get("system_certification_summary") or {})
+        if not summary:
+            return {"available": False}
+        visible_rows = [
+            dict(item)
+            for item in list(summary.get("visible_certificates") or [])
+            if isinstance(item, dict)
+        ]
+        payload = {
+            "available": True,
+            "system_id": str(summary.get("system_id", "")).strip() or None,
+            "visible_certificate_count": int(len(visible_rows)),
+            "certified_badge_visible": bool(summary.get("certified_badge_visible", False)),
+            "receipt_gated": bool(summary.get("receipt_gated", True)),
+            "rows": [
+                {
+                    "cert_id": str(row.get("cert_id", "")).strip() or None,
+                    "cert_type_id": str(row.get("cert_type_id", "")).strip() or None,
+                    "issuer_subject_id": str(row.get("issuer_subject_id", "")).strip() or None,
+                    "issued_tick": int(max(0, _as_int(row.get("issued_tick", 0), 0))),
+                    "verification_state": str(row.get("verification_state", "")).strip() or None,
+                    "receipt_id": str(row.get("receipt_id", "")).strip() or None,
+                }
+                for row in visible_rows[:32]
+            ],
+        }
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "receipt_gated"
+            return payload
+        payload["active_certificate_count"] = int(max(0, _as_int(summary.get("active_certificate_count", 0), 0)))
+        payload["epistemic_redaction"] = "none"
+        return payload
+    if section_id == "section.system.compliance_status":
+        payload_ext = dict(target_payload.get("extensions") or {})
+        summary = dict(payload_ext.get("system_compliance_status") or {})
+        if not summary:
+            return {"available": False}
+        payload = {
+            "available": True,
+            "system_id": str(summary.get("system_id", "")).strip() or None,
+            "status": str(summary.get("status", "")).strip() or "unknown",
+            "overall_grade": str(summary.get("overall_grade", "")).strip() or None,
+            "certified_badge_visible": bool(summary.get("certified_badge_visible", False)),
+            "inspection_failed_warning_visible": bool(summary.get("inspection_failed_warning_visible", False)),
+            "certification_pass": bool(summary.get("certification_pass", False)),
+            "has_visible_certificate": bool(summary.get("has_visible_certificate", False)),
+        }
+        if not allow_hidden_state:
+            payload["epistemic_redaction"] = "coarse_summary"
+            return payload
+        payload["result_id"] = str(summary.get("result_id", "")).strip() or None
+        payload["failed_checks"] = _sorted_unique_strings(summary.get("failed_checks"))
+        payload["epistemic_redaction"] = "none"
+        return payload
     if section_id == "section.spec_compliance_summary":
         payload_ext = dict(target_payload.get("extensions") or {})
         summary = dict(payload_ext.get("spec_compliance_summary") or {})
