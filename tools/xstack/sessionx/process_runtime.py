@@ -15402,6 +15402,115 @@ def _revoke_system_certifications(
     }
 
 
+def _append_system_certification_revocation_artifacts(
+    *,
+    state: dict,
+    revocation_rows: object,
+    policy_context: dict | None,
+) -> List[str]:
+    rows = [
+        dict(row)
+        for row in list(revocation_rows or [])
+        if isinstance(row, Mapping)
+    ]
+    if not rows:
+        return []
+    info_rows = [
+        dict(row)
+        for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+        if isinstance(row, Mapping)
+    ]
+    artifact_ids = set(
+        str(row.get("artifact_id", "")).strip()
+        for row in info_rows
+        if str(row.get("artifact_id", "")).strip()
+    )
+    for row in sorted(
+        rows,
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("system_id", "")),
+            str(item.get("cert_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        artifact_id = "artifact.record.system_cert_revocation.{}".format(
+            canonical_sha256({"event_id": event_id})[:16]
+        )
+        if artifact_id in artifact_ids:
+            continue
+        artifact_ids.add(artifact_id)
+        info_rows.append(
+            {
+                "artifact_id": artifact_id,
+                "artifact_family_id": "RECORD",
+                "extensions": {
+                    "artifact_type_id": "artifact.record.system_certificate_revocation",
+                    "event_id": event_id,
+                    "system_id": str(row.get("system_id", "")).strip(),
+                    "cert_id": str(row.get("cert_id", "")).strip(),
+                    "cert_type_id": str(row.get("cert_type_id", "")).strip(),
+                    "reason_code": str(row.get("reason_code", "")).strip(),
+                },
+            }
+        )
+    state["info_artifact_rows"] = normalize_info_artifact_rows(info_rows)
+    state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+    explain_registry = _load_explain_contract_registry(policy_context=policy_context)
+    explain_by_event_kind = _explain_contract_rows_by_event_kind(explain_registry)
+    explain_rows = [
+        dict(row)
+        for row in list(state.get("explain_artifact_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    generated_explain_ids: List[str] = []
+    for row in sorted(
+        rows,
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("system_id", "")),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        system_id = str(row.get("system_id", "")).strip()
+        if (not event_id) or (not system_id):
+            continue
+        explain_row = generate_explain_artifact(
+            event_id=event_id,
+            target_id=system_id,
+            event_kind_id="system.certificate_revocation",
+            truth_hash_anchor=str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
+            epistemic_policy_id="policy.epistemic.observer",
+            explain_contract_row=dict(explain_by_event_kind.get("system.certificate_revocation") or {}),
+            decision_log_rows=state.get("control_decision_log") or [],
+            safety_event_rows=state.get("safety_events") or [],
+            hazard_rows=[],
+            compliance_rows=state.get("spec_compliance_results") or [],
+            model_result_rows=[],
+            cause_chain_keys=[
+                "cause.system.certificate.revoked",
+                "cause.system.certificate.reason.{}".format(str(row.get("reason_code", "")).strip() or "unknown"),
+            ],
+            remediation_hint_keys=[
+                "hint.inspect.system_micro",
+                "hint.resolve.spec_or_safety_issue",
+                "hint.request.recertification",
+            ],
+            referenced_artifacts=[],
+        )
+        if explain_row:
+            explain_rows.append(dict(explain_row))
+            generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+    if generated_explain_ids:
+        state["explain_artifact_rows"] = normalize_explain_artifact_rows(explain_rows)
+    return _sorted_tokens(generated_explain_ids)
+
+
 def _formalization_registry_payload(
     *,
     policy_context: dict | None,
@@ -30552,6 +30661,17 @@ def execute_intent(
                 details,
                 "$.intent.inputs.system_id",
             )
+        revocation_result = _revoke_system_certifications(
+            state=state,
+            system_id=str(collapse_result.get("system_id", "")).strip(),
+            reason_code="event.system.certificate_revocation.collapse",
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+        )
+        generated_revocation_explain_ids = _append_system_certification_revocation_artifacts(
+            state=state,
+            revocation_rows=revocation_result.get("revocation_rows") or [],
+            policy_context=policy_context,
+        )
         result_metadata = {
             "system_id": str(collapse_result.get("system_id", "")).strip(),
             "capsule_id": str(collapse_result.get("capsule_id", "")).strip(),
@@ -30561,6 +30681,9 @@ def execute_intent(
             "invariant_checks": [dict(row) for row in list(collapse_result.get("invariant_checks") or []) if isinstance(row, Mapping)],
             "deterministic_fingerprint": str(collapse_result.get("deterministic_fingerprint", "")).strip(),
             "system_collapse_hash_chain": str(state.get("system_collapse_hash_chain", "")).strip(),
+            "revoked_cert_ids": _sorted_tokens(revocation_result.get("revoked_cert_ids")),
+            "generated_revocation_explain_ids": _sorted_tokens(generated_revocation_explain_ids),
+            "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.system_expand":
@@ -30640,6 +30763,17 @@ def execute_intent(
                 details,
                 "$.intent.inputs.capsule_id",
             )
+        revocation_result = _revoke_system_certifications(
+            state=state,
+            system_id=str(expand_result.get("system_id", "")).strip(),
+            reason_code="event.system.certificate_revocation.expand",
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+        )
+        generated_revocation_explain_ids = _append_system_certification_revocation_artifacts(
+            state=state,
+            revocation_rows=revocation_result.get("revocation_rows") or [],
+            policy_context=policy_context,
+        )
         result_metadata = {
             "system_id": str(expand_result.get("system_id", "")).strip(),
             "capsule_id": str(expand_result.get("capsule_id", "")).strip(),
@@ -30648,6 +30782,9 @@ def execute_intent(
             "restored_assembly_ids": [str(token).strip() for token in list(expand_result.get("restored_assembly_ids") or []) if str(token).strip()],
             "deterministic_fingerprint": str(expand_result.get("deterministic_fingerprint", "")).strip(),
             "system_expand_hash_chain": str(state.get("system_expand_hash_chain", "")).strip(),
+            "revoked_cert_ids": _sorted_tokens(revocation_result.get("revoked_cert_ids")),
+            "generated_revocation_explain_ids": _sorted_tokens(generated_revocation_explain_ids),
+            "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.system_evaluate_certification":
@@ -32804,6 +32941,39 @@ def execute_intent(
             state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
             _ensure_chem_degradation_state_rows(state)
             _refresh_chem_degradation_hash_chains(state)
+            system_id_set = set(
+                str(row.get("system_id", "")).strip()
+                for row in list(state.get("system_rows") or [])
+                if isinstance(row, Mapping) and str(row.get("system_id", "")).strip()
+            )
+            revoke_system_ids = set()
+            for row in list(new_events or []):
+                if not isinstance(row, Mapping):
+                    continue
+                target_id = str(row.get("target_id", "")).strip()
+                if target_id not in system_id_set:
+                    continue
+                level_after = int(max(0, _as_int(row.get("level_after", 0), 0)))
+                event_type = str(row.get("event_type", "")).strip().lower()
+                if (level_after >= 900) or ("threshold" in event_type):
+                    revoke_system_ids.add(target_id)
+            revoked_cert_ids: List[str] = []
+            generated_revocation_explain_ids: List[str] = []
+            for system_id in sorted(revoke_system_ids):
+                revocation_result = _revoke_system_certifications(
+                    state=state,
+                    system_id=system_id,
+                    reason_code="event.system.certificate_revocation.degradation_threshold",
+                    current_tick=int(max(0, _as_int(current_tick, 0))),
+                )
+                revoked_cert_ids.extend(_sorted_tokens(revocation_result.get("revoked_cert_ids")))
+                generated_revocation_explain_ids.extend(
+                    _append_system_certification_revocation_artifacts(
+                        state=state,
+                        revocation_rows=revocation_result.get("revocation_rows") or [],
+                        policy_context=policy_context,
+                    )
+                )
             result_metadata = {
                 "processed_target_ids": list(_sorted_tokens(degradation_eval.get("processed_target_ids"))),
                 "deferred_target_ids": list(_sorted_tokens(degradation_eval.get("deferred_target_ids"))),
@@ -32813,6 +32983,9 @@ def execute_intent(
                 "degradation_hash_chain": str(state.get("degradation_hash_chain", "")).strip(),
                 "degradation_event_hash_chain": str(state.get("degradation_event_hash_chain", "")).strip(),
                 "maintenance_action_hash_chain": str(state.get("maintenance_action_hash_chain", "")).strip(),
+                "revoked_cert_ids": _sorted_tokens(revoked_cert_ids),
+                "generated_revocation_explain_ids": _sorted_tokens(generated_revocation_explain_ids),
+                "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.material_transform_phase":
@@ -46414,6 +46587,46 @@ def execute_intent(
             compliance_results=spec_compliance_results,
             provenance_events=spec_provenance_events,
         )
+        revoked_cert_ids: List[str] = []
+        generated_revocation_explain_ids: List[str] = []
+        if str(compliance_result.get("overall_grade", "")).strip().lower() == "fail":
+            matched_system_ids = set()
+            for system_row in sorted(
+                (
+                    dict(item)
+                    for item in list(state.get("system_rows") or [])
+                    if isinstance(item, Mapping)
+                ),
+                key=lambda item: str(item.get("system_id", "")),
+            ):
+                system_id = str(system_row.get("system_id", "")).strip()
+                if not system_id:
+                    continue
+                system_ext = dict(system_row.get("extensions") or {})
+                system_target_kind = str(system_ext.get("spec_target_kind", "")).strip()
+                system_target_id = str(system_ext.get("spec_target_id", "")).strip()
+                if (not system_target_kind) or (not system_target_id):
+                    continue
+                if system_target_kind != target_kind:
+                    continue
+                if system_target_id != target_id:
+                    continue
+                matched_system_ids.add(system_id)
+            for system_id in sorted(matched_system_ids):
+                revocation_result = _revoke_system_certifications(
+                    state=state,
+                    system_id=system_id,
+                    reason_code="event.system.certificate_revocation.spec_violation",
+                    current_tick=int(max(0, _as_int(current_tick, 0))),
+                )
+                revoked_cert_ids.extend(_sorted_tokens(revocation_result.get("revoked_cert_ids")))
+                generated_revocation_explain_ids.extend(
+                    _append_system_certification_revocation_artifacts(
+                        state=state,
+                        revocation_rows=revocation_result.get("revocation_rows") or [],
+                        policy_context=policy_context,
+                    )
+                )
         if bool(strict_spec) and str(compliance_result.get("overall_grade", "")).strip() == "fail":
             refusal_code = str(strict_refusal_code or REFUSAL_SPEC_NONCOMPLIANT).strip() or REFUSAL_SPEC_NONCOMPLIANT
             return refusal(
@@ -46425,6 +46638,9 @@ def execute_intent(
                     "target_id": target_id,
                     "target_kind": target_kind,
                     "result_id": str(compliance_result.get("result_id", "")).strip(),
+                    "revoked_cert_ids": _sorted_tokens(revoked_cert_ids),
+                    "generated_revocation_explain_ids": _sorted_tokens(generated_revocation_explain_ids),
+                    "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
                 },
                 "$.intent.inputs",
             )
@@ -46436,6 +46652,9 @@ def execute_intent(
             "recommended_speed_cap_effect_id": track_speed_cap_effect_id,
             "removed_speed_cap_effect_ids": list(removed_track_speed_cap_effect_ids),
             "provenance_event_id": str(provenance_row.get("event_id", "")).strip(),
+            "revoked_cert_ids": _sorted_tokens(revoked_cert_ids),
+            "generated_revocation_explain_ids": _sorted_tokens(generated_revocation_explain_ids),
+            "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.construction_project_create":
