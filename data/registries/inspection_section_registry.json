@@ -1135,6 +1135,32 @@
           "min_fidelity": "meso",
           "cost_units": 2
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.system.health_summary",
+        "title": "System Health Summary",
+        "data": {
+          "data_kind": "system_health_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.system.failure_risks",
+        "title": "System Failure Risks",
+        "data": {
+          "data_kind": "system_failure_risks"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 3
+        }
       }
     ],
     "extensions": {}

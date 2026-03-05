@@ -52,6 +52,21 @@ If failure threshold is exceeded:
 - apply fail-safe safety actions,
 - emit explain artifact linkage for forensic pathways.
 
+## Explainability and Inspection Integration
+Explain contracts for SYS-6:
+- `explain.system_warning`
+- `explain.system_forced_expand`
+- `explain.system_failure`
+
+Inspection sections exposed for reliability workflows:
+- `section.system.health_summary`
+- `section.system.failure_risks`
+
+Diegetic status markers derive from canonical reliability outputs:
+- warning-active state (warning light equivalent),
+- maintenance-required state,
+- quarantined/shutdown state when safe fallback is active.
+
 ## Determinism and Budget Discipline
 - No wall-clock input.
 - Fixed canonical tick integration.

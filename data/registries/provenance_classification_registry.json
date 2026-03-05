@@ -213,6 +213,26 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_warning",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.explain.system_failure",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.system_safety_shutdown",
         "classification": "derived",
         "compaction_allowed": true,

@@ -715,6 +715,46 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.system_warning",
+        "event_kind_id": "system.warning",
+        "explain_artifact_type_id": "artifact.explain.system_warning",
+        "required_inputs": [
+          "artifact.report",
+          "section.system.health_summary",
+          "section.system.failure_risks"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.schedule.preventive_maintenance",
+          "hint.reduce.system_load"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.system_failure",
+        "event_kind_id": "system.failure",
+        "explain_artifact_type_id": "artifact.explain.system_failure",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.health_summary",
+          "section.system.failure_risks"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.system_micro",
+          "hint.apply.safety_isolation",
+          "hint.request.certification_reinspection"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.system_safety_shutdown",
         "event_kind_id": "system.safety_shutdown",
         "explain_artifact_type_id": "artifact.explain.system_safety_shutdown",
