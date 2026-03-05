@@ -8,9 +8,10 @@ Superseded By: none
 
 ## Counts By Severity
 
-- RISK: 614
-- VIOLATION: 18
-- WARN: 892
+- INFO: 223
+- RISK: 644
+- VIOLATION: 101
+- WARN: 1220
 
 ## Counts By Category
 
@@ -41,7 +42,7 @@ Superseded By: none
 - architecture.missing_ledger_entry_smell: 4
 - architecture.mobility_graph_duplication_smell: 1
 - architecture.mobility_special_case_smell: 2
-- architecture.model_bypass_smell: 6
+- architecture.model_bypass_smell: 7
 - architecture.nondeterministic_queue_order_smell: 1
 - architecture.silent_corruption_smell: 1
 - architecture.silent_degrade_smell: 10
@@ -57,22 +58,27 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 731
+- canon_drift: 732
 - capability_bypass_smell: 1
+- capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 11
+- derived_freshness: 131
 - epistemics.hidden_state_leak_smell: 6
 - interaction.interaction_bypass_smell: 2
+- legacy_contamination: 11
+- materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
+- mode_flag_smell: 64
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
+- ownership_boundary: 9
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- reachability: 2
+- reachability: 80
 - reliability.silent_reaction_smell: 3
 - schema_usage: 160
 - security.boundary_io: 29
@@ -81,3 +87,5 @@ Superseded By: none
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
+- terminology_misuse: 1
+- ui_parity: 220

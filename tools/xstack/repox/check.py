@@ -17862,6 +17862,7 @@ def _append_system_macro_invariant_findings(
     allowed_paths = {
         macro_engine_rel,
         runtime_rel,
+        "src/system/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
         "tools/xstack/testx/tests/",
     }

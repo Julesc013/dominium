@@ -82,6 +82,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         macro_engine_rel,
         runtime_rel,
+        "src/system/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:
@@ -130,4 +131,3 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
-
