@@ -59,6 +59,16 @@ When systems are collapsed:
 - forced-expand events and error-bound breaches must link to capsule records and hashes,
 - explain output remains derived and does not mutate canonical truth.
 
+## E) UX Affordances
+RND-facing system inspection surfaces expose explainability deterministically:
+- system "Explain" action routes through `process.system_generate_explain`,
+- summary card includes:
+  - `primary_cause`,
+  - top 3 bounded `cause_chain` entries,
+  - top remediation hints,
+- diegetic/inspector/admin views are redacted via requester epistemic policy,
+- no direct truth mutation or omniscient bypass is permitted.
+
 ## Determinism and Caching
 Explain generation cache key:
 - `(system_id, event_id, truth_hash_anchor, requester_policy)`
