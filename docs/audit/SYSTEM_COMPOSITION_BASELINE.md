@@ -87,16 +87,22 @@ Validation level executed: STRICT governance gates plus explicit SYS-0 TestX sub
   - deterministic_fingerprint: `9db47748a1ca9823c6eb42ca7e2f27b956916063678e6009043abc3ce04f2aa0`
 - RepoX STRICT:
   - command: `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
-  - result: `pending`
+  - result: `pass` (`findings=17`, warnings only)
 - AuditX STRICT:
   - command: `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`
-  - result: `pending`
+  - result: `pass` (`findings=1313`, `promoted_blockers=0`)
 - TestX PASS (SYS-0 required subset):
   - command: `py -3 tools/xstack/testx/runner.py --profile STRICT --cache off --subset test_system_collapse_expand_roundtrip,test_boundary_invariant_preserved_after_collapse,test_no_hidden_state_influence,test_provenance_anchor_validation,test_cross_platform_capsule_hash_match`
   - result: `pass` (`selected_tests=5`)
 - strict build:
   - command: `py -3 tools/xstack/run.py strict --repo-root . --cache on`
-  - result: `pending`
+  - result: `refusal` (global baseline blockers outside SYS-0 scope)
+  - blocking steps:
+    - `01.compatx.check` refusal
+    - `04.registry.compile` refusal
+    - `07.session_boot.smoke` refusal
+    - `10.testx.run` fail (global strict suite)
+    - `13.packaging.verify` refusal
 
 ## 6) Readiness
 
