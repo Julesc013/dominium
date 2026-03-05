@@ -1,0 +1,192 @@
+{
+  "baseline_id": "poll.full.baseline.v1",
+  "composite_poll_hash_anchor": "94420fbb8661b4814dc95e1e3f4956ba3ea6dfd0c1e002908e14bb5d5953769a",
+  "description": "POLL-3 deterministic hardening baseline for stress/degradation, mass balance verification, proof/replay, and regression lock.",
+  "deterministic_fingerprint": "1a46de34395f0378d7482c2e9f37510240709d85217194b3d5e823d3c5d4c0b8",
+  "extensions": {
+    "assertions_by_scenario": {
+      "degrade": {
+        "all_events_logged": true,
+        "bounded_execution": true,
+        "deterministic_ordering": true,
+        "no_silent_field_writes": true
+      },
+      "fire_smoke": {
+        "all_events_logged": true,
+        "bounded_execution": true,
+        "deterministic_ordering": true,
+        "no_silent_field_writes": true
+      },
+      "industrial_emission": {
+        "all_events_logged": true,
+        "bounded_execution": true,
+        "deterministic_ordering": true,
+        "no_silent_field_writes": true
+      },
+      "spill": {
+        "all_events_logged": true,
+        "bounded_execution": true,
+        "deterministic_ordering": true,
+        "no_silent_field_writes": true
+      }
+    },
+    "metrics_by_scenario": {
+      "degrade": {
+        "max_concentration_observed": 167,
+        "total_compliance_delays": 6,
+        "total_compliance_reports": 24,
+        "total_degraded_dispersion_ticks": 12,
+        "total_measurement_refusals": 0,
+        "total_threshold_events": 6
+      },
+      "fire_smoke": {
+        "max_concentration_observed": 210,
+        "total_compliance_delays": 0,
+        "total_compliance_reports": 24,
+        "total_degraded_dispersion_ticks": 0,
+        "total_measurement_refusals": 0,
+        "total_threshold_events": 7
+      },
+      "industrial_emission": {
+        "max_concentration_observed": 147,
+        "total_compliance_delays": 0,
+        "total_compliance_reports": 24,
+        "total_degraded_dispersion_ticks": 0,
+        "total_measurement_refusals": 0,
+        "total_threshold_events": 8
+      },
+      "spill": {
+        "max_concentration_observed": 100,
+        "total_compliance_delays": 0,
+        "total_compliance_reports": 24,
+        "total_degraded_dispersion_ticks": 0,
+        "total_measurement_refusals": 0,
+        "total_threshold_events": 15
+      }
+    },
+    "result_by_scenario": {
+      "degrade": {
+        "mass_result": "complete",
+        "replay_result": "complete",
+        "stress_result": "complete"
+      },
+      "fire_smoke": {
+        "mass_result": "complete",
+        "replay_result": "complete",
+        "stress_result": "complete"
+      },
+      "industrial_emission": {
+        "mass_result": "complete",
+        "replay_result": "complete",
+        "stress_result": "complete"
+      },
+      "spill": {
+        "mass_result": "complete",
+        "replay_result": "complete",
+        "stress_result": "complete"
+      }
+    }
+  },
+  "fixed_seed_scenarios": {
+    "degrade": {
+      "budget_envelope_id": "poll.envelope.tight",
+      "report_path": "build/pollution/poll3_degrade_report.json",
+      "scenario_id": "scenario.poll.stress.10f98775f90c",
+      "scenario_path": "build/pollution/poll3_degrade_scenario.json",
+      "scenario_seed": 9301
+    },
+    "fire_smoke": {
+      "budget_envelope_id": "poll.envelope.standard",
+      "report_path": "build/pollution/poll3_fire_smoke_report.json",
+      "scenario_id": "scenario.poll.stress.fire_smoke.b78974b50060",
+      "scenario_path": "build/pollution/poll3_fire_smoke_scenario.json",
+      "scenario_seed": 9321
+    },
+    "industrial_emission": {
+      "budget_envelope_id": "poll.envelope.standard",
+      "report_path": "build/pollution/poll3_industrial_emission_report.json",
+      "scenario_id": "scenario.poll.stress.10f98775f90c",
+      "scenario_path": "build/pollution/poll3_industrial_emission_scenario.json",
+      "scenario_seed": 9301
+    },
+    "spill": {
+      "budget_envelope_id": "poll.envelope.standard",
+      "report_path": "build/pollution/poll3_spill_report.json",
+      "scenario_id": "scenario.poll.stress.spill.dce2cfe861d4",
+      "scenario_path": "build/pollution/poll3_spill_scenario.json",
+      "scenario_seed": 9311
+    }
+  },
+  "pattern_hashes": {
+    "degrade_cost_pattern_hash": "a42bda48583a410fe877f6b09ae132087a17dfd51be5bd8ecc82ae6cc96b4b0c",
+    "degrade_reason_pattern_hash": "ae4d4df3b90b9e648f3cfe4ded84f845c4ad9331bdd980d3ca25c6b4fa3789b5",
+    "fire_threshold_pattern_hash": "4cdb02f26d7c32abaae4abd54eec5cd74d53ada3c7fbb6d8a23106467e372220",
+    "industrial_concentration_pattern_hash": "ee68c388b44836b3307cd1753bdeb61494d83e2166669d3c444c13c5be9fcda5",
+    "spill_exposure_pattern_hash": "80365af85e8f11278810aaefe1cd041e5443c7ec1dd99d759c35ab028c56f16a"
+  },
+  "proof_hashes": {
+    "degrade": {
+      "decision_log_hash_chain": "3d597f760a64b58f67b364e8aa796b595284db8c2879e4e168f098f67a8791cb",
+      "pollution_compliance_hash_chain": "fa8f05db0274a7373b17e4f74a62d1b9595df3335dafad49329143d4c0d0f16d",
+      "pollution_degradation_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "pollution_emission_hash_chain": "422442fa9b47be9ec1fd6a5f4d8b3a802e88a0df76bf5c94ea2c8c6bce41130f",
+      "pollution_exposure_hash_chain": "7096e4b7c8b32ee7f114013427ffe169258d268371f5bc0478b68a442386e2ab",
+      "pollution_field_hash_chain": "f98ff6b5c60de5d9fc34b2d794a4cf573818f8a36c6fa519de50fb432840e1be"
+    },
+    "fire_smoke": {
+      "decision_log_hash_chain": "7fac3bf08be2730a8e841d7b53dc7a4a8d84414c4cd2a6da1b08d2b56d191aa7",
+      "pollution_compliance_hash_chain": "9e04101f29078bede06f5bbe49d2f8be31cb6f643ab64a4570b707c7c89d8112",
+      "pollution_degradation_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "pollution_emission_hash_chain": "318db50371a492d5dd2864e6801f622cf0dda7afe546977b02c20370726d673b",
+      "pollution_exposure_hash_chain": "2b29947d8aae0864a3e656acbf08d30407d7392e005902b25f0785f4d1518a32",
+      "pollution_field_hash_chain": "ff6bf7b755444b2af904dd9e60e4711a629e76a3670eaa7c44ef5795a708199f"
+    },
+    "industrial_emission": {
+      "decision_log_hash_chain": "52d8f302244a8df4ccc42153ce7612445b9675e2cd933e46700119d8d7eb4a83",
+      "pollution_compliance_hash_chain": "db0e9953ed86526f4baf54a9e5b680292820c3888d5988d73ac83fb0421f8c3a",
+      "pollution_degradation_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "pollution_emission_hash_chain": "dcb7ff2ed3be0c386fb26b3f0342cac958d3bf4e3a1ec76ed88f0a2bd298ea75",
+      "pollution_exposure_hash_chain": "5b88d91a40089603c97008b93cd3056c4a6f6c59a42b8cef13761e1d4a9aeedf",
+      "pollution_field_hash_chain": "82a61c47fd9b044f19ca2d649c66276f18f8e6b0fca57738d018b810330c673e"
+    },
+    "spill": {
+      "decision_log_hash_chain": "51dd7b649a73569689a34fd36e4edad2f0acbe1ff5562db588b470be8a0fcc4d",
+      "pollution_compliance_hash_chain": "55cf25b86bd22f580ce7750a19ac84f5ddaefb8532139b140e9fb04d4e6b2e2b",
+      "pollution_degradation_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "pollution_emission_hash_chain": "21b96a60f90184ae55cf75606d995c4481c707ca38b6e42796f5510ba01e9cdb",
+      "pollution_exposure_hash_chain": "bc9e5c4bfc202178c76dfa763f3ca4daed18ccf18df346b8de187f3e1c1f5a0f",
+      "pollution_field_hash_chain": "6f71fe1f03ef4df091d8de0d20f621bc70e3adae8829c0d4fc3351a9e549f8ff"
+    }
+  },
+  "scenario_fingerprints": {
+    "degrade": {
+      "mass_fingerprint": "6ffc112eef7fa7414281cf6d4543e4573464d28a39b90a2205e301f2069c9812",
+      "replay_fingerprint": "e011ea4b8ff4b56c0e4a3ce9dc730feaf355867f893aaac196961149c25e0b3f",
+      "report_fingerprint": "fd9605343596a884bc1d6d0ba1c8fd4deeff8e4eafb941d6d9466606126ba146",
+      "scenario_fingerprint": "ffbeb872fa26502d5f371ad6dbc948acba22789d3054de737bfe8b2c7f9328bc"
+    },
+    "fire_smoke": {
+      "mass_fingerprint": "da57009a884a3bda9915aae6b634aff0250a27afefe3c85226c4610e40eebb79",
+      "replay_fingerprint": "8d76f1b2734343b8ab5cf238d4a07fab218784c63a68bf52dfe032fb53baa177",
+      "report_fingerprint": "3f8fb49596cdd6432a0f83ccb31757cde1748f5239b439c552428c86fa9520ab",
+      "scenario_fingerprint": "94c3c0ec1f991030f066f2283c929eb39a2701f2e65029670926d3c0d25050a0"
+    },
+    "industrial_emission": {
+      "mass_fingerprint": "d10831b8fb64c69a78557db105dd8f0d29b2593fa7e2519439d6a1bdfdbcfd31",
+      "replay_fingerprint": "7f60c06e513f8d7cc1072cdcb6d9c936614671b64438ed9b0a1dc1059a91eadd",
+      "report_fingerprint": "08b59a80908918368823c686c431033c8ad4c6e34c25694eeac231ae6ffe4091",
+      "scenario_fingerprint": "ffbeb872fa26502d5f371ad6dbc948acba22789d3054de737bfe8b2c7f9328bc"
+    },
+    "spill": {
+      "mass_fingerprint": "e0aa4814512d69270d340899007299cc83f77f5d9db5ccfb3be78da50eb914c2",
+      "replay_fingerprint": "67dc6f96f737813dd796a3d188018323f82d4c4d4221c9967b81ee25ae880cac",
+      "report_fingerprint": "85a96d0dd097b1b20d6371d884e40ff73a05f64887e51ba9d41094d3f7ad813e",
+      "scenario_fingerprint": "7eec627a1fb071949f5221cc5ab6f429f8d66292a3ae7919a62fa866d03153cb"
+    }
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic POLL stress+replay+mass-balance reruns and explicit POLL-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "POLL-REGRESSION-UPDATE"
+  }
+}
