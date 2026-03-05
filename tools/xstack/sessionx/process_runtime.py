@@ -573,6 +573,9 @@ from src.system import (
     REFUSAL_SYSTEM_MACRO_INVALID,
     REFUSAL_SYSTEM_MACRO_MODEL_SET_INVALID,
     REFUSAL_SYSTEM_MACRO_REFUSED_BY_BUDGET,
+    REFUSAL_SYSTEM_CERT_INVALID,
+    REFUSAL_SYSTEM_CERT_SYSTEM_UNKNOWN,
+    REFUSAL_SYSTEM_CERT_UNKNOWN_PROFILE,
     REFUSAL_SYSTEM_TIER_BUDGET_DENIED,
     REFUSAL_SYSTEM_TIER_CONTRACT_MISSING,
     REFUSAL_SYSTEM_TIER_INVALID,
@@ -597,8 +600,15 @@ from src.system import (
     normalize_system_rows,
     normalize_system_state_vector_rows,
     normalize_system_template_rows,
+    validate_interface_signature,
+    validate_boundary_invariants,
     collapse_system_graph,
     expand_system_graph,
+    evaluate_system_certification,
+    normalize_system_certification_result_rows,
+    normalize_system_certificate_artifact_rows,
+    normalize_system_certificate_revocation_rows,
+    revoke_system_certificates,
 )
 from src.meta.explain import (
     generate_explain_artifact,
@@ -796,6 +806,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.pollution_compliance_tick": "session.boot",
     "process.system_collapse": "session.boot",
     "process.system_expand": "session.boot",
+    "process.system_evaluate_certification": "entitlement.inspect",
     "process.system_roi_tick": "session.boot",
     "process.system_macro_tick": "session.boot",
     "process.template_instantiate": "entitlement.control.admin",
@@ -986,6 +997,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.pollution_compliance_tick": "observer",
     "process.system_collapse": "observer",
     "process.system_expand": "observer",
+    "process.system_evaluate_certification": "observer",
     "process.system_roi_tick": "observer",
     "process.system_macro_tick": "observer",
     "process.template_instantiate": "operator",
@@ -1101,6 +1113,7 @@ CONTROL_PROCESS_IDS = {
     "process.pollution_dispersion_tick",
     "process.pollution_measure",
     "process.pollution_compliance_tick",
+    "process.system_evaluate_certification",
     "process.degradation_tick",
 }
 CIV_PROCESS_IDS = {
@@ -15232,6 +15245,163 @@ def _template_instance_hash_chain(rows: object) -> str:
     )
 
 
+def _certification_profile_registry_payload(*, policy_context: dict | None) -> dict:
+    return _spec_registry_payload(
+        policy_context=policy_context,
+        key="certification_profile_registry",
+        registry_rel_path="data/registries/certification_profile_registry.json",
+        entry_key="certification_profiles",
+    )
+
+
+def _ensure_system_certification_result_rows(state: dict) -> List[dict]:
+    rows = state.get("system_certification_result_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_system_certification_result_rows(rows)
+    state["system_certification_result_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_system_certificate_artifact_rows(state: dict) -> List[dict]:
+    rows = state.get("system_certificate_artifact_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_system_certificate_artifact_rows(rows)
+    state["system_certificate_artifact_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_system_certificate_revocation_rows(state: dict) -> List[dict]:
+    rows = state.get("system_certificate_revocation_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_system_certificate_revocation_rows(rows)
+    state["system_certificate_revocation_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_system_certification_hash_chains(state: dict) -> None:
+    result_rows = _ensure_system_certification_result_rows(state)
+    cert_rows = _ensure_system_certificate_artifact_rows(state)
+    revocation_rows = _ensure_system_certificate_revocation_rows(state)
+    state["system_certification_result_hash_chain"] = canonical_sha256(
+        [
+            {
+                "result_id": str(row.get("result_id", "")).strip(),
+                "system_id": str(row.get("system_id", "")).strip(),
+                "cert_type_id": str(row.get("cert_type_id", "")).strip(),
+                "pass": bool(row.get("pass", False)),
+                "failed_checks": _sorted_tokens(row.get("failed_checks")),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(result_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("system_id", "")),
+                    str(item.get("cert_type_id", "")),
+                    str(item.get("result_id", "")),
+                ),
+            )
+        ]
+    )
+    state["system_certificate_artifact_hash_chain"] = canonical_sha256(
+        [
+            {
+                "cert_id": str(row.get("cert_id", "")).strip(),
+                "system_id": str(row.get("system_id", "")).strip(),
+                "cert_type_id": str(row.get("cert_type_id", "")).strip(),
+                "issuer_subject_id": str(row.get("issuer_subject_id", "")).strip(),
+                "issued_tick": int(max(0, _as_int(row.get("issued_tick", 0), 0))),
+                "valid_until_tick": (
+                    None
+                    if row.get("valid_until_tick") is None
+                    else int(max(0, _as_int(row.get("valid_until_tick", 0), 0)))
+                ),
+                "status": str(dict(row.get("extensions") or {}).get("status", "active")).strip() or "active",
+            }
+            for row in sorted(
+                (dict(item) for item in list(cert_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("issued_tick", 0), 0))),
+                    str(item.get("system_id", "")),
+                    str(item.get("cert_type_id", "")),
+                    str(item.get("cert_id", "")),
+                ),
+            )
+        ]
+    )
+    state["system_certificate_revocation_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "system_id": str(row.get("system_id", "")).strip(),
+                "cert_id": str(row.get("cert_id", "")).strip(),
+                "cert_type_id": str(row.get("cert_type_id", "")).strip(),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(revocation_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("system_id", "")),
+                    str(item.get("cert_id", "")),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["certification_result_hash_chain"] = str(state.get("system_certification_result_hash_chain", "")).strip()
+    state["certificate_artifact_hash_chain"] = str(state.get("system_certificate_artifact_hash_chain", "")).strip()
+    state["revocation_hash_chain"] = str(state.get("system_certificate_revocation_hash_chain", "")).strip()
+
+
+def _revoke_system_certifications(
+    *,
+    state: dict,
+    system_id: str,
+    reason_code: str,
+    current_tick: int,
+) -> dict:
+    system_token = str(system_id or "").strip()
+    if not system_token:
+        return {"revoked_cert_ids": [], "revocation_rows": [], "deterministic_fingerprint": ""}
+    revoke_result = revoke_system_certificates(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        system_id=system_token,
+        reason_code=str(reason_code or "").strip() or "event.system.certificate_revoked",
+        certificate_rows=state.get("system_certificate_artifact_rows") or [],
+    )
+    state["system_certificate_artifact_rows"] = normalize_system_certificate_artifact_rows(
+        list(revoke_result.get("certificate_rows") or [])
+    )
+    previous_revocations = [
+        dict(row)
+        for row in list(state.get("system_certificate_revocation_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    state["system_certificate_revocation_rows"] = normalize_system_certificate_revocation_rows(
+        previous_revocations
+        + [
+            dict(row)
+            for row in list(revoke_result.get("revocation_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+    )
+    _refresh_system_certification_hash_chains(state)
+    return {
+        "revoked_cert_ids": _sorted_tokens(list(revoke_result.get("revoked_cert_ids") or [])),
+        "revocation_rows": [
+            dict(row)
+            for row in list(revoke_result.get("revocation_rows") or [])
+            if isinstance(row, Mapping)
+        ],
+        "deterministic_fingerprint": str(revoke_result.get("deterministic_fingerprint", "")).strip(),
+    }
+
+
 def _formalization_registry_payload(
     *,
     policy_context: dict | None,
@@ -19816,6 +19986,9 @@ def execute_intent(
     pollution_exposure_state_rows = _ensure_pollution_exposure_state_rows(state)
     pollution_exposure_increment_rows = _ensure_pollution_exposure_increment_rows(state)
     pollution_dispersion_degrade_rows = _ensure_pollution_dispersion_degrade_rows(state)
+    system_certification_result_rows = _ensure_system_certification_result_rows(state)
+    system_certificate_artifact_rows = _ensure_system_certificate_artifact_rows(state)
+    system_certificate_revocation_rows = _ensure_system_certificate_revocation_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     _ensure_time_mapping_cache_rows(state)
     _ensure_time_stamp_artifact_rows(state)
@@ -19836,6 +20009,9 @@ def execute_intent(
     del pollution_exposure_state_rows
     del pollution_exposure_increment_rows
     del pollution_dispersion_degrade_rows
+    del system_certification_result_rows
+    del system_certificate_artifact_rows
+    del system_certificate_revocation_rows
     del chem_process_run_state_rows
     del batch_quality_rows
     del chem_degradation_state_rows
@@ -19850,6 +20026,7 @@ def execute_intent(
     _refresh_chem_process_hash_chains(state)
     _refresh_chem_degradation_hash_chains(state)
     _refresh_pollution_hash_chains(state)
+    _refresh_system_certification_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -30471,6 +30648,275 @@ def execute_intent(
             "restored_assembly_ids": [str(token).strip() for token in list(expand_result.get("restored_assembly_ids") or []) if str(token).strip()],
             "deterministic_fingerprint": str(expand_result.get("deterministic_fingerprint", "")).strip(),
             "system_expand_hash_chain": str(state.get("system_expand_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_evaluate_certification":
+        system_id = str(inputs.get("system_id", "")).strip()
+        cert_type_id = str(inputs.get("cert_type_id", "")).strip()
+        if (not system_id) or (not cert_type_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.system_evaluate_certification requires system_id and cert_type_id",
+                "Provide deterministic system_id/cert_type_id inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+        quantity_bundle_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="quantity_bundle_registry",
+            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            entry_key="quantity_bundles",
+        )
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        signal_channel_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="signal_channel_type_registry",
+            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            entry_key="signal_channel_types",
+        )
+        boundary_invariant_template_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="boundary_invariant_template_registry",
+            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            entry_key="boundary_invariant_templates",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        safety_pattern_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="safety_pattern_registry",
+            registry_rel_path="data/registries/safety_pattern_registry.json",
+            entry_key="safety_patterns",
+        )
+        certification_profile_registry = _certification_profile_registry_payload(
+            policy_context=policy_context,
+        )
+        spec_type_registry_for_sheets = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        tolerance_policy_registry_for_sheets = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compliance_check_registry_for_sheets = _spec_registry_payload(
+            policy_context=policy_context,
+            key="compliance_check_registry",
+            registry_rel_path="data/registries/compliance_check_registry.json",
+            entry_key="compliance_checks",
+        )
+        spec_rows, spec_load_errors = _spec_sheet_rows(
+            policy_context=policy_context,
+            spec_type_registry=spec_type_registry_for_sheets,
+            tolerance_policy_registry=tolerance_policy_registry_for_sheets,
+            compliance_check_registry=compliance_check_registry_for_sheets,
+        )
+        if spec_load_errors:
+            first_error = dict(spec_load_errors[0] if spec_load_errors else {})
+            return refusal(
+                "refusal.system.certification.spec_sheet_invalid",
+                str(first_error.get("message", "spec sheet validation failed")),
+                "Fix spec sheet pack data and retry system certification evaluation.",
+                {"system_id": system_id, "cert_type_id": cert_type_id},
+                str(first_error.get("path", "$.spec_sheets")),
+            )
+
+        interface_validation = validate_interface_signature(
+            system_id=system_id,
+            system_rows=state.get("system_rows") or [],
+            interface_signature_rows=state.get("system_interface_signature_rows") or [],
+            quantity_bundle_registry_payload=quantity_bundle_registry,
+            spec_type_registry_payload=spec_type_registry,
+            signal_channel_type_registry_payload=signal_channel_type_registry,
+        )
+        invariant_validation = validate_boundary_invariants(
+            system_id=system_id,
+            system_rows=state.get("system_rows") or [],
+            boundary_invariant_rows=state.get("system_boundary_invariant_rows")
+            or state.get("boundary_invariant_rows")
+            or [],
+            boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
+            tolerance_policy_registry_payload=tolerance_policy_registry,
+            safety_pattern_registry_payload=safety_pattern_registry,
+        )
+        cert_eval = evaluate_system_certification(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            system_id=system_id,
+            cert_type_id=cert_type_id,
+            issuer_subject_id=str(inputs.get("issuer_subject_id", "")).strip()
+            or _authority_subject_id(authority_context),
+            certification_profile_registry_payload=certification_profile_registry,
+            system_rows=state.get("system_rows") or [],
+            interface_validation_result=interface_validation,
+            invariant_validation_result=invariant_validation,
+            spec_binding_rows=state.get("spec_bindings") or [],
+            spec_compliance_result_rows=state.get("spec_compliance_results") or [],
+            spec_sheet_rows=spec_rows,
+            safety_instance_rows=state.get("safety_instances") or [],
+            degradation_event_rows=state.get("degradation_event_rows") or [],
+            existing_certificate_rows=state.get("system_certificate_artifact_rows") or [],
+        )
+        if str(cert_eval.get("result", "")).strip() != "complete":
+            reason_code = str(cert_eval.get("reason_code", REFUSAL_SYSTEM_CERT_INVALID)).strip()
+            if reason_code not in {
+                REFUSAL_SYSTEM_CERT_INVALID,
+                REFUSAL_SYSTEM_CERT_UNKNOWN_PROFILE,
+                REFUSAL_SYSTEM_CERT_SYSTEM_UNKNOWN,
+            }:
+                reason_code = REFUSAL_SYSTEM_CERT_INVALID
+            return refusal(
+                reason_code,
+                "system certification evaluation refused",
+                "Resolve certification profile/system prerequisites and retry.",
+                {
+                    "system_id": system_id,
+                    "cert_type_id": cert_type_id,
+                },
+                "$.intent.inputs.cert_type_id",
+            )
+
+        result_row = dict(cert_eval.get("certification_result_row") or {})
+        cert_row = dict(cert_eval.get("certificate_artifact_row") or {})
+        state["system_certification_result_rows"] = normalize_system_certification_result_rows(
+            [dict(row) for row in list(state.get("system_certification_result_rows") or []) if isinstance(row, Mapping)]
+            + ([result_row] if result_row else [])
+        )
+        if cert_row:
+            state["system_certificate_artifact_rows"] = normalize_system_certificate_artifact_rows(
+                [dict(row) for row in list(state.get("system_certificate_artifact_rows") or []) if isinstance(row, Mapping)]
+                + [cert_row]
+            )
+        else:
+            state["system_certificate_artifact_rows"] = normalize_system_certificate_artifact_rows(
+                list(state.get("system_certificate_artifact_rows") or [])
+            )
+        state["system_certificate_revocation_rows"] = normalize_system_certificate_revocation_rows(
+            list(state.get("system_certificate_revocation_rows") or [])
+        )
+        _refresh_system_certification_hash_chains(state)
+
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + (
+                [
+                    {
+                        "artifact_id": "artifact.record.system_cert_result.{}".format(
+                            canonical_sha256({"result_id": str(result_row.get("result_id", "")).strip()})[:16]
+                        ),
+                        "artifact_family_id": "RECORD",
+                        "extensions": {
+                            "artifact_type_id": "artifact.record.system_certification_result",
+                            "result_id": str(result_row.get("result_id", "")).strip(),
+                            "system_id": str(result_row.get("system_id", "")).strip(),
+                            "cert_type_id": str(result_row.get("cert_type_id", "")).strip(),
+                            "pass": bool(result_row.get("pass", False)),
+                        },
+                    },
+                    {
+                        "artifact_id": "artifact.report.system_cert.{}".format(
+                            canonical_sha256({"result_id": str(result_row.get("result_id", "")).strip()})[:16]
+                        ),
+                        "artifact_family_id": "REPORT",
+                        "extensions": {
+                            "artifact_type_id": "artifact.report.system_certification_result",
+                            "result_id": str(result_row.get("result_id", "")).strip(),
+                            "system_id": str(result_row.get("system_id", "")).strip(),
+                            "cert_type_id": str(result_row.get("cert_type_id", "")).strip(),
+                            "status": "pass" if bool(result_row.get("pass", False)) else "fail",
+                            "failed_checks": _sorted_tokens(result_row.get("failed_checks")),
+                        },
+                    },
+                ]
+                + (
+                    [
+                        {
+                            "artifact_id": "artifact.credential.system_cert.{}".format(
+                                canonical_sha256({"cert_id": str(cert_row.get("cert_id", "")).strip()})[:16]
+                            ),
+                            "artifact_family_id": "CREDENTIAL",
+                            "extensions": {
+                                "artifact_type_id": "artifact.credential.system_certificate",
+                                "cert_id": str(cert_row.get("cert_id", "")).strip(),
+                                "system_id": str(cert_row.get("system_id", "")).strip(),
+                                "cert_type_id": str(cert_row.get("cert_type_id", "")).strip(),
+                                "issuer_subject_id": str(cert_row.get("issuer_subject_id", "")).strip(),
+                            },
+                        }
+                    ]
+                    if cert_row
+                    else []
+                )
+            )
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+        generated_explain_ids: List[str] = []
+        if not bool(result_row.get("pass", False)):
+            explain_registry = _load_explain_contract_registry(policy_context=policy_context)
+            explain_by_event_kind = _explain_contract_rows_by_event_kind(explain_registry)
+            failure_event_id = "event.system.certification_failure.{}".format(
+                canonical_sha256(
+                    {
+                        "result_id": str(result_row.get("result_id", "")).strip(),
+                        "system_id": str(result_row.get("system_id", "")).strip(),
+                    }
+                )[:16]
+            )
+            explain_row = generate_explain_artifact(
+                event_id=failure_event_id,
+                target_id=str(result_row.get("system_id", "")).strip(),
+                event_kind_id="system.certification_failure",
+                truth_hash_anchor=str(state.get("system_certification_result_hash_chain", "")).strip(),
+                epistemic_policy_id="policy.epistemic.observer",
+                explain_contract_row=dict(explain_by_event_kind.get("system.certification_failure") or {}),
+                decision_log_rows=state.get("control_decision_log") or [],
+                safety_event_rows=state.get("safety_events") or [],
+                hazard_rows=[],
+                compliance_rows=state.get("spec_compliance_results") or [],
+                model_result_rows=[],
+                cause_chain_keys=[
+                    "cause.system.certification.failure",
+                    "cause.system.certification.profile.{}".format(cert_type_id),
+                ],
+                remediation_hint_keys=[
+                    "hint.inspect.system_micro",
+                    "hint.review.spec_and_safety",
+                    "hint.repair.degradation",
+                ],
+                referenced_artifacts=[],
+            )
+            if explain_row:
+                state["explain_artifact_rows"] = normalize_explain_artifact_rows(
+                    list(state.get("explain_artifact_rows") or [])
+                    + [dict(explain_row)]
+                )
+                generated_explain_ids.append(str(explain_row.get("explain_id", "")).strip())
+
+        result_metadata = {
+            "system_id": str(result_row.get("system_id", "")).strip(),
+            "cert_type_id": str(result_row.get("cert_type_id", "")).strip(),
+            "result_id": str(result_row.get("result_id", "")).strip(),
+            "pass": bool(result_row.get("pass", False)),
+            "failed_checks": _sorted_tokens(result_row.get("failed_checks")),
+            "cert_id": str(cert_row.get("cert_id", "")).strip() or None,
+            "certification_result_hash_chain": str(state.get("system_certification_result_hash_chain", "")).strip(),
+            "certificate_artifact_hash_chain": str(state.get("system_certificate_artifact_hash_chain", "")).strip(),
+            "revocation_hash_chain": str(state.get("system_certificate_revocation_hash_chain", "")).strip(),
+            "generated_explain_ids": _sorted_tokens(generated_explain_ids),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.template_instantiate":

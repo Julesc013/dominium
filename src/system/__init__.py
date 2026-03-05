@@ -71,6 +71,20 @@ from src.system.templates.template_compiler import (
     resolve_nested_template_order,
     system_template_rows_by_id,
 )
+from src.system.certification import (
+    REFUSAL_SYSTEM_CERT_INVALID,
+    REFUSAL_SYSTEM_CERT_UNKNOWN_PROFILE,
+    REFUSAL_SYSTEM_CERT_SYSTEM_UNKNOWN,
+    build_system_certification_result_row,
+    normalize_system_certification_result_rows,
+    build_system_certificate_artifact_row,
+    normalize_system_certificate_artifact_rows,
+    build_system_certificate_revocation_row,
+    normalize_system_certificate_revocation_rows,
+    certification_profile_rows_by_id,
+    evaluate_system_certification,
+    revoke_system_certificates,
+)
 
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
@@ -132,4 +146,16 @@ __all__ = [
     "system_template_rows_by_id",
     "resolve_nested_template_order",
     "compile_system_template",
+    "REFUSAL_SYSTEM_CERT_INVALID",
+    "REFUSAL_SYSTEM_CERT_UNKNOWN_PROFILE",
+    "REFUSAL_SYSTEM_CERT_SYSTEM_UNKNOWN",
+    "build_system_certification_result_row",
+    "normalize_system_certification_result_rows",
+    "build_system_certificate_artifact_row",
+    "normalize_system_certificate_artifact_rows",
+    "build_system_certificate_revocation_row",
+    "normalize_system_certificate_revocation_rows",
+    "certification_profile_rows_by_id",
+    "evaluate_system_certification",
+    "revoke_system_certificates",
 ]
