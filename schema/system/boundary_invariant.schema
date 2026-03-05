@@ -1,0 +1,20 @@
+SCHEMA: system/boundary_invariant.schema
+schema_id: dominium.schema.system.boundary_invariant
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic boundary invariants for Systems.
+- Bind quantity/tolerance references required for collapse/expand invariant checks.
+
+NON-SEMANTICS:
+- No direct process execution behavior.
+
+REQUIRED SHAPE:
+record boundary_invariant
+  required:
+    - invariant_id: id
+    - quantity_ids: list
+    - tolerance_policy_id: id
+    - deterministic_fingerprint: text
+    - extensions: map

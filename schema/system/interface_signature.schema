@@ -1,0 +1,22 @@
+SCHEMA: system/interface_signature.schema
+schema_id: dominium.schema.system.interface_signature
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic boundary interface signatures for formal Systems.
+- Bind system ports/signals/spec limits to collapse/expand eligibility and boundary validation.
+
+NON-SEMANTICS:
+- No runtime solver behavior.
+- No mutation authority.
+
+REQUIRED SHAPE:
+record interface_signature
+  required:
+    - system_id: id
+    - port_list: list
+    - signal_channels: list
+    - spec_limits: map
+    - deterministic_fingerprint: text
+    - extensions: map

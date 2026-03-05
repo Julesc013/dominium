@@ -1,0 +1,18 @@
+SCHEMA: system/system_state_vector.schema
+schema_id: dominium.schema.system.system_state_vector
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Persist deterministic serialized internal system state required for reversible expand.
+
+NON-SEMANTICS:
+- No hidden side-channel state.
+
+REQUIRED SHAPE:
+record system_state_vector
+  required:
+    - system_id: id
+    - serialized_internal_state: map
+    - deterministic_fingerprint: text
+    - extensions: map
