@@ -277,6 +277,8 @@ from analyzers import e250_direct_smoke_visual_hack_smell
 from analyzers import e251_unregistered_pollutant_smell
 from analyzers import e252_direct_concentration_write_smell
 from analyzers import e253_unbounded_cell_loop_smell
+from analyzers import e254_direct_exposure_write_smell
+from analyzers import e255_omniscient_pollution_ui_leak_smell
 
 
 ANALYZERS = (
@@ -557,6 +559,8 @@ ANALYZERS = (
     e251_unregistered_pollutant_smell,
     e252_direct_concentration_write_smell,
     e253_unbounded_cell_loop_smell,
+    e254_direct_exposure_write_smell,
+    e255_omniscient_pollution_ui_leak_smell,
 )
 
 

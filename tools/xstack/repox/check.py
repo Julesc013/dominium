@@ -413,6 +413,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DIRECT-POLLUTION-FIELD-WRITES",
     "INV-NO-DIRECT-CONCENTRATION-WRITE",
     "INV-POLLUTANT-TYPE-REGISTERED",
+    "INV-EXPOSURE-PROCESS-ONLY",
+    "INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE",
+    "INV-COMPLIANCE-REPORT-ARTIFACT",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -717,6 +720,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E251_UNREGISTERED_POLLUTANT_SMELL": "INV-POLLUTANT-TYPE-REGISTERED",
     "E252_DIRECT_CONCENTRATION_WRITE_SMELL": "INV-NO-DIRECT-CONCENTRATION-WRITE",
     "E253_UNBOUNDED_CELL_LOOP_SMELL": "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS",
+    "E254_DIRECT_EXPOSURE_WRITE_SMELL": "INV-EXPOSURE-PROCESS-ONLY",
+    "E255_OMNISCIENT_POLLUTION_UI_LEAK_SMELL": "INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -16453,6 +16458,9 @@ def _append_pollution_constitution_invariant_findings(
     field_update_rule_id = "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS"
     concentration_rule_id = "INV-NO-DIRECT-CONCENTRATION-WRITE"
     registry_rule_id = "INV-POLLUTANT-TYPE-REGISTERED"
+    exposure_process_rule_id = "INV-EXPOSURE-PROCESS-ONLY"
+    omniscient_rule_id = "INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE"
+    compliance_report_artifact_rule_id = "INV-COMPLIANCE-REPORT-ARTIFACT"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "data/registries/process_registry.json"
@@ -16460,11 +16468,20 @@ def _append_pollution_constitution_invariant_findings(
 
     required_paths = (
         "docs/pollution/POLLUTION_CONSTITUTION.md",
+        "docs/pollution/EXPOSURE_AND_COMPLIANCE_MODEL.md",
         "schema/pollution/pollutant_type.schema",
         "schema/pollution/pollution_source_event.schema",
         "schema/pollution/pollution_field_policy.schema",
         "schema/pollution/exposure_state.schema",
+        "schema/pollution/exposure_threshold.schema",
+        "schema/pollution/health_risk_event.schema",
+        "schema/pollution/pollution_measurement.schema",
+        "schema/pollution/compliance_report.schema",
         "src/pollution/pollution_engine.py",
+        "src/pollution/exposure_engine.py",
+        "src/pollution/measurement_engine.py",
+        "src/pollution/compliance_engine.py",
+        "tools/pollution/tool_replay_exposure_window.py",
     )
     for rel_path in required_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -16514,6 +16531,32 @@ def _append_pollution_constitution_invariant_findings(
                 rule_id=field_update_rule_id,
             )
         )
+    for required_process_id in ("process.pollution_dispersion_tick",):
+        if required_process_id in declared_process_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=required_process_id,
+                message="pollution exposure updates must execute in process.pollution_dispersion_tick",
+                rule_id=exposure_process_rule_id,
+            )
+        )
+    for required_process_id in ("process.pollution_measure", "process.pollution_compliance_tick"):
+        if required_process_id in declared_process_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=required_process_id,
+                message="pollution measurement/compliance flows must be declared as canonical processes",
+                rule_id=compliance_report_artifact_rule_id,
+            )
+        )
 
     runtime_text = _file_text(repo_root, runtime_rel)
     for token in (
@@ -16548,6 +16591,60 @@ def _append_pollution_constitution_invariant_findings(
                 snippet=token,
                 message="pollution concentration field mutations must flow through process.field_update discipline",
                 rule_id=field_update_rule_id,
+            )
+        )
+    for token in (
+        "evaluate_pollution_exposure_tick(",
+        'state["pollution_exposure_state_rows"] =',
+        'state["pollution_health_risk_event_rows"] =',
+        "hazard.health_risk_stub",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="exposure and health-risk updates must stay process-mediated in pollution dispersion tick",
+                rule_id=exposure_process_rule_id,
+            )
+        )
+    for token in (
+        'elif process_id == "process.pollution_measure":',
+        "build_pollution_measurement_row(",
+        "build_knowledge_receipt(",
+        '"epistemic_scope": "diegetic_local"',
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="pollution measurement must be diegetic and receipt-gated",
+                rule_id=omniscient_rule_id,
+            )
+        )
+    for token in (
+        'elif process_id == "process.pollution_compliance_tick":',
+        "evaluate_pollution_compliance_tick(",
+        '"artifact_family_id": "REPORT"',
+        '"artifact_type_id": "artifact.pollution.compliance_report"',
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="pollution compliance must emit REPORT artifacts through process.pollution_compliance_tick",
+                rule_id=compliance_report_artifact_rule_id,
             )
         )
 
@@ -16631,6 +16728,125 @@ def _append_pollution_constitution_invariant_findings(
                     snippet=snippet[:140],
                     message="direct pollution concentration field writes are forbidden outside process/model pathways",
                     rule_id=concentration_rule_id,
+                )
+            )
+            break
+
+    exposure_write_patterns = (
+        re.compile(r"\bpollution_exposure_state_rows\b\s*=", re.IGNORECASE),
+        re.compile(r"\bpollution_exposure_state_rows\b\.append\s*\(", re.IGNORECASE),
+        re.compile(r"\bpollution_health_risk_event_rows\b\s*=", re.IGNORECASE),
+        re.compile(r"\bpollution_hazard_hook_rows\b\s*=", re.IGNORECASE),
+    )
+    allowed_exposure_write_files = {
+        runtime_rel,
+        "src/pollution/exposure_engine.py",
+        "src/pollution/dispersion_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_exposure_write_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in exposure_write_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="pollution exposure mutation detected outside canonical process/exposure pathways",
+                    rule_id=exposure_process_rule_id,
+                )
+            )
+            break
+
+    pollution_truth_patterns = (
+        re.compile(r"\bfield\.pollution\.[a-z0-9_]+_concentration\b", re.IGNORECASE),
+        re.compile(r"\bpollution_exposure_state_rows\b", re.IGNORECASE),
+        re.compile(r"\bpollution_health_risk_event_rows\b", re.IGNORECASE),
+        re.compile(r"\bpollution_compliance_report_rows\b", re.IGNORECASE),
+    )
+    pollution_ui_allowed_files = {
+        runtime_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not (
+            rel_norm.startswith("src/client/")
+            or rel_norm.startswith("tools/interaction/")
+            or rel_norm == "tools/xstack/sessionx/observation.py"
+        ):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in pollution_ui_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in pollution_truth_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="pollution UI/observation surfaces must not read omniscient concentration/exposure truth directly",
+                    rule_id=omniscient_rule_id,
+                )
+            )
+            break
+
+    compliance_artifact_patterns = (
+        re.compile(r"artifact\.pollution\.compliance_report", re.IGNORECASE),
+        re.compile(r"pollution_compliance_report_rows\s*=", re.IGNORECASE),
+    )
+    allowed_compliance_artifact_files = {
+        runtime_rel,
+        "src/pollution/compliance_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_compliance_artifact_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in compliance_artifact_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="pollution compliance REPORT artifacts must be emitted through process.pollution_compliance_tick",
+                    rule_id=compliance_report_artifact_rule_id,
                 )
             )
             break
