@@ -1,0 +1,142 @@
+{
+  "baseline_id": "sys.full.baseline.v1",
+  "composite_sys_hash_anchor": "0c9eace420fb20ced978703238bb8c00fecff5966d218093ed368ace9e52c446",
+  "description": "SYS-8 deterministic stress/proof/regression baseline for mass collapse/expand, ROI movement, shard boundaries, and time-warp-safe replay.",
+  "deterministic_fingerprint": "a1883fe2ffe902b16a299b116698d2883e5390b64d2580aad3d71ca5e6efe1e3",
+  "extensions": {
+    "required_invariants": [
+      "INV-SYS-BUDGETED",
+      "INV-SYS-INVARIANTS-ALWAYS-CHECKED",
+      "INV-NO-SILENT-TIER-TRANSITION"
+    ]
+  },
+  "fixed_seed_scenarios": {
+    "degradation": {
+      "report_path": "build/system/sys8_degradation_report.json",
+      "scenario_id": "scenario.sys.stress.2b05bcdaff7b",
+      "scenario_path": "build/system/sys8_degradation_scenario.json",
+      "scenario_seed": 88047
+    },
+    "forced_expand": {
+      "report_path": "build/system/sys8_forced_expand_report.json",
+      "scenario_id": "scenario.sys.stress.263bf8a1015c",
+      "scenario_path": "build/system/sys8_forced_expand_scenario.json",
+      "scenario_seed": 88037
+    },
+    "nested_plant": {
+      "report_path": "build/system/sys8_nested_plant_report.json",
+      "scenario_id": "scenario.sys.stress.34a540452f1c",
+      "scenario_path": "build/system/sys8_nested_plant_scenario.json",
+      "scenario_seed": 88017
+    },
+    "roi_movement": {
+      "report_path": "build/system/sys8_roi_movement_report.json",
+      "scenario_id": "scenario.sys.stress.0631e650d021",
+      "scenario_path": "build/system/sys8_roi_movement_scenario.json",
+      "scenario_seed": 88027
+    }
+  },
+  "proof_hashes": {
+    "degradation": {
+      "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
+      "forced_expand_event_hash_chain": "fa9a12233c75522a1189ebdfc19ab2d2f64bce9cf395ab2de2b1a6b9b2bee6bc",
+      "macro_output_record_hash_chain": "bdab8c6920ce402e3299da65687c26fef12d3ed16fcacaeb1a7f6ea6b57f6bf9",
+      "system_collapse_expand_hash_chain": "ec3ab96d9ae490bc6286d0db1cfb4219df537085c8fc38ed9355f8648bc5c950",
+      "system_health_hash_chain": "1eb7ad27f56bb69929fc24cbb9058bcf5d473ff29091011eabd3609f42517716"
+    },
+    "forced_expand": {
+      "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
+      "forced_expand_event_hash_chain": "0cc267ca4195e6ed6cbf2fce04311a773416a7339e1f33393f76d2ce4a5d4206",
+      "macro_output_record_hash_chain": "ec9667855e080bb1baeba2612dbe8f13ebafe32069801f21f0460a45f5293f3e",
+      "system_collapse_expand_hash_chain": "7ebd105c6953f21782d6c8bee0b3c8019ec59437cfa76ca5b51999f665bf6c81",
+      "system_health_hash_chain": "a5db928aa2c7df79495d6a3bb6c2fea6f95b5ec8e2f5561f5598ed89a5182880"
+    },
+    "nested_plant": {
+      "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
+      "forced_expand_event_hash_chain": "95e26b42912d8f43e68bef42a9dc4d36f0b9a6278ae287442668fbb78aebaaf3",
+      "macro_output_record_hash_chain": "439bfc9f2e742adb294eebe88a371d33fdcc5fce0169710e18cd822a26be9aed",
+      "system_collapse_expand_hash_chain": "dc3b7ccb4d123b73cfe9d839d257bd489c6beae11e3fd39e493002c54a70010d",
+      "system_health_hash_chain": "065bd99ec648e2a1f769a7ecacaae944b502de94ee0d3ef338c30cc9531d581f"
+    },
+    "roi_movement": {
+      "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
+      "forced_expand_event_hash_chain": "f13ef6551ee1e9ac3e5eac88d01ea07fe70b68c7350670ea041ee45769fd25ec",
+      "macro_output_record_hash_chain": "f927459f25fb6fe09f732240ca7a95241975414959a4657820cd298f8227d49d",
+      "system_collapse_expand_hash_chain": "4076159031cdd9d7ca0329a67a40db1f11e0f9a51048b8905234b658b41d6c5a",
+      "system_health_hash_chain": "c76691580328569e8e8fa5a594652cac763cd626d3a5d8e59555776614af3028"
+    }
+  },
+  "result_by_scenario": {
+    "degradation": {
+      "assertions": {
+        "bounded_expands_per_tick": true,
+        "degrade_policy_logged": true,
+        "deterministic_ordering": true,
+        "invariants_preserved_roundtrip": true,
+        "no_silent_transitions": true,
+        "stable_replay_hashes": true
+      },
+      "result": "complete"
+    },
+    "forced_expand": {
+      "assertions": {
+        "bounded_expands_per_tick": true,
+        "degrade_policy_logged": true,
+        "deterministic_ordering": true,
+        "invariants_preserved_roundtrip": true,
+        "no_silent_transitions": true,
+        "stable_replay_hashes": true
+      },
+      "result": "complete"
+    },
+    "nested_plant": {
+      "assertions": {
+        "bounded_expands_per_tick": true,
+        "degrade_policy_logged": true,
+        "deterministic_ordering": true,
+        "invariants_preserved_roundtrip": true,
+        "no_silent_transitions": true,
+        "stable_replay_hashes": true
+      },
+      "result": "complete"
+    },
+    "roi_movement": {
+      "assertions": {
+        "bounded_expands_per_tick": true,
+        "degrade_policy_logged": true,
+        "deterministic_ordering": true,
+        "invariants_preserved_roundtrip": true,
+        "no_silent_transitions": true,
+        "stable_replay_hashes": true
+      },
+      "result": "complete"
+    }
+  },
+  "scenario_fingerprints": {
+    "degradation": {
+      "report_fingerprint": "ed4604621e6fe66c18497ed2d6cda70dec249a2d42dbcf0d842a8166ec9d8e76",
+      "scenario_fingerprint": "27b69e04690e76717525b69726a9c61954ca9a3f3412a73dcc6e24e4dddc55ec",
+      "state_fingerprint": "96467f95847f5efb5db292ec026b04a5a8bbc0271f2c84d858d003db11402b1c"
+    },
+    "forced_expand": {
+      "report_fingerprint": "cd46e861f91ef3bad868d880b011848f5b974896adae918b7c1159f9c2d2e823",
+      "scenario_fingerprint": "6e759cceebdcfe0de117298f48f147f67eefb856c56eaa8d426260be6fde0164",
+      "state_fingerprint": "5151156a72bb805e20b9e669c3a7fa7eb79a8244263df46d96709492cd116ca3"
+    },
+    "nested_plant": {
+      "report_fingerprint": "cd7482455d77310a2adec61403e3b6c328e3b0f53b4b09a6334638ffb24db075",
+      "scenario_fingerprint": "f98d147661b28c3cd1068b22ac3be9d1566915adcedc2cfe68594f553c06f9a7",
+      "state_fingerprint": "336748b2d892e5a5725aa78dc4f3458257c71faf6eb11a2b2518fea819ca5952"
+    },
+    "roi_movement": {
+      "report_fingerprint": "ce1d38afb1cee35b5a9d961213734c1e17a23d18d27b2e75ee42ddba8fed6a2a",
+      "scenario_fingerprint": "f9bc897d17ff88513f2db592be71fefd67c6af97bb697f8a656a1bb671d9d0d6",
+      "state_fingerprint": "0f06fdaf6d9904384b26176d0554ce5c3f60372d96b1043179e38ac63948dab7"
+    }
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic SYS-8 stress/replay reruns and explicit SYS-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "SYS-REGRESSION-UPDATE"
+  }
+}
