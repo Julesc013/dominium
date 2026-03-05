@@ -561,6 +561,12 @@ from src.pollution import (
     pollution_field_hash_chain,
     pollution_totals_by_key,
 )
+from src.system import (
+    REFUSAL_SYSTEM_COLLAPSE_INVALID,
+    REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
+    SystemCollapseError,
+    collapse_system_graph,
+)
 from src.meta.explain import (
     generate_explain_artifact,
     normalize_explain_artifact_rows,
@@ -755,6 +761,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.pollution_dispersion_tick": "session.boot",
     "process.pollution_measure": "entitlement.tool.use",
     "process.pollution_compliance_tick": "session.boot",
+    "process.system_collapse": "session.boot",
+    "process.system_expand": "session.boot",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -940,6 +948,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.pollution_dispersion_tick": "observer",
     "process.pollution_measure": "operator",
     "process.pollution_compliance_tick": "observer",
+    "process.system_collapse": "observer",
+    "process.system_expand": "observer",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -29427,6 +29437,47 @@ def execute_intent(
                 ).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.system_collapse":
+        system_id = str(inputs.get("system_id", "")).strip()
+        if not system_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.system_collapse requires system_id",
+                "Provide a declared system_id in intent inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.system_id",
+            )
+        try:
+            collapse_result = collapse_system_graph(
+                state=state,
+                system_id=system_id,
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+                process_id=process_id,
+            )
+        except SystemCollapseError as exc:
+            reason_code = str(getattr(exc, "reason_code", REFUSAL_SYSTEM_COLLAPSE_INVALID)).strip()
+            if reason_code not in {REFUSAL_SYSTEM_COLLAPSE_INVALID, REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE}:
+                reason_code = REFUSAL_SYSTEM_COLLAPSE_INVALID
+            details = dict(getattr(exc, "details", {}) or {})
+            details["system_id"] = system_id
+            return refusal(
+                reason_code,
+                str(exc),
+                "Resolve eligibility/interface/invariant requirements before collapsing this system.",
+                details,
+                "$.intent.inputs.system_id",
+            )
+        result_metadata = {
+            "system_id": str(collapse_result.get("system_id", "")).strip(),
+            "capsule_id": str(collapse_result.get("capsule_id", "")).strip(),
+            "state_vector_id": str(collapse_result.get("state_vector_id", "")).strip(),
+            "event_id": str(collapse_result.get("event_id", "")).strip(),
+            "provenance_anchor_hash": str(collapse_result.get("provenance_anchor_hash", "")).strip(),
+            "invariant_checks": [dict(row) for row in list(collapse_result.get("invariant_checks") or []) if isinstance(row, Mapping)],
+            "deterministic_fingerprint": str(collapse_result.get("deterministic_fingerprint", "")).strip(),
+            "system_collapse_hash_chain": str(state.get("system_collapse_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":
         run_id = str(inputs.get("run_id", "")).strip()
         if not run_id:
