@@ -700,6 +700,24 @@ def build_control_proof_bundle_from_markers(
             "decision_log_hashes": list(decision_log_hashes),
         },
     )
+    compiled_model_hash_chain = _hash64(
+        str(surface_payload.get("compiled_model_hash_chain", "")).strip(),
+        {
+            "key": "compiled_model_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+    equivalence_proof_hash_chain = _hash64(
+        str(surface_payload.get("equivalence_proof_hash_chain", "")).strip(),
+        {
+            "key": "equivalence_proof_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
     drift_policy_id = str((dict(mobility_proof_surface or {})).get("drift_policy_id", "drift.none")).strip() or "drift.none"
 
     payload = {
@@ -778,6 +796,8 @@ def build_control_proof_bundle_from_markers(
             pollution_degradation_event_hash_chain
         ),
         "deposition_hash_chain": str(deposition_hash_chain),
+        "compiled_model_hash_chain": str(compiled_model_hash_chain),
+        "equivalence_proof_hash_chain": str(equivalence_proof_hash_chain),
         "drift_policy_id": str(drift_policy_id),
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
@@ -866,6 +886,8 @@ def build_control_proof_bundle_from_markers(
                     "pollution_compliance_hash_chain": str(payload.get("pollution_compliance_hash_chain", "")),
                     "pollution_degradation_event_hash_chain": str(payload.get("pollution_degradation_event_hash_chain", "")),
                     "deposition_hash_chain": str(payload.get("deposition_hash_chain", "")),
+                    "compiled_model_hash_chain": str(payload.get("compiled_model_hash_chain", "")),
+                    "equivalence_proof_hash_chain": str(payload.get("equivalence_proof_hash_chain", "")),
                     "drift_policy_id": str(payload.get("drift_policy_id", "")),
                 }
             )[:16]

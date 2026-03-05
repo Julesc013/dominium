@@ -73,6 +73,8 @@ record control_proof_bundle
     - compaction_marker_hash_chain: sha256
     - compaction_pre_anchor_hash: sha256
     - compaction_post_anchor_hash: sha256
+    - compiled_model_hash_chain: sha256
+    - equivalence_proof_hash_chain: sha256
     - drift_policy_id: id
     - deterministic_fingerprint: sha256
     - extensions: map
@@ -91,5 +93,6 @@ INVARIANTS:
 - TEMP mapping/schedule artifacts (`time_mapping`, `schedule_domain_evaluation`) must be represented by deterministic hash-chain fields when present.
 - TEMP synchronization artifacts (`time_adjust_event`) must be represented by deterministic hash-chain fields when present.
 - PROV compaction artifacts (`compaction_marker`) must be represented by deterministic hash-chain and anchor hash fields when present.
+- COMPILE artifacts (`compiled_model`, `equivalence_proof`) must be represented by deterministic hash-chain fields when present.
 - Replay windows must reproduce exception-event ordering and deterministic fingerprints for equivalent inputs.
 - Extensions remain open-map for forward-compatible domain augmentation.
