@@ -176,7 +176,8 @@
         "FIELD",
         "MAT",
         "THERM",
-        "FLUID"
+        "FLUID",
+        "POLL"
       ],
       "series_planned": [
         "DOM",
@@ -437,6 +438,19 @@
         "time_synchronization"
       ],
       "series_id": "PHYS",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "environment_living_systems",
+        "measurement_verification",
+        "safety_protection"
+      ],
+      "series_id": "POLL",
       "tiers": [
         "macro",
         "meso",
