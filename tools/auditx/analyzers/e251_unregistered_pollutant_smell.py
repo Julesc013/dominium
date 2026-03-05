@@ -16,7 +16,10 @@ class UnregisteredPollutantSmell:
     analyzer_id = ANALYZER_ID
 
 
-_POLLUTANT_LITERAL_PATTERN = re.compile(r"pollutant\.[a-z0-9_]+", re.IGNORECASE)
+_POLLUTANT_LITERAL_PATTERN = re.compile(
+    r"[\"'](pollutant\.[a-z0-9_]+)[\"']",
+    re.IGNORECASE,
+)
 
 
 def _norm(path: str) -> str:

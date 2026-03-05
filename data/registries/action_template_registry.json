@@ -5381,6 +5381,33 @@
         ]
       },
       {
+        "action_family_id": "action_family.sense_measure",
+        "action_template_id": "task.measure_pollution",
+        "affected_substrates": [
+          "Field",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "completion_process_id": "process.pollution_measure",
+          "task_type_id": "task.measure_pollution",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.measurement"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
         "action_family_id": "action_family.transform",
         "action_template_id": "action.fluid.connect_hose_pipe",
         "affected_substrates": [

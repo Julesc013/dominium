@@ -16890,7 +16890,10 @@ def _append_pollution_constitution_invariant_findings(
                 )
             )
 
-    pollutant_literal_pattern = re.compile(r"pollutant\.[a-z0-9_]+", re.IGNORECASE)
+    pollutant_literal_pattern = re.compile(
+        r"[\"'](pollutant\.[a-z0-9_]+)[\"']",
+        re.IGNORECASE,
+    )
     ignored_tokens = {
         "pollutant.coarse",
     }
