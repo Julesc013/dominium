@@ -301,6 +301,12 @@ BOUNDARY_ALIAS_RULES = {
     "INV-FIELD-MUTATION-PROCESS-ONLY": {
         "INV-FIELD-MUTATION-THROUGH-PROCESS",
     },
+    "INV-POLL-FIELD-UPDATE-PROCESS-ONLY": {
+        "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS",
+    },
+    "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS": {
+        "INV-POLL-FIELD-UPDATE-PROCESS-ONLY",
+    },
     "INV-NO-WALLCLOCK-TIME": {
         "INV-NO-WALLCLOCK-IN-TIME-ENGINE",
         "INV-NO-WALLCLOCK-IN-TRANSITION",
@@ -410,6 +416,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FLUID-DEGRADE-LOGGED",
     "INV-POLLUTION-EMIT-THROUGH-PROCESS",
     "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS",
+    "INV-POLL-FIELD-UPDATE-PROCESS-ONLY",
+    "INV-POLL-BUDGETED",
+    "INV-POLL-DEGRADE-LOGGED",
     "INV-NO-DIRECT-POLLUTION-FIELD-WRITES",
     "INV-NO-DIRECT-CONCENTRATION-WRITE",
     "INV-POLLUTANT-TYPE-REGISTERED",
@@ -722,6 +731,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E253_UNBOUNDED_CELL_LOOP_SMELL": "INV-POLLUTION-FIELD-UPDATE-THROUGH-PROCESS",
     "E254_DIRECT_EXPOSURE_WRITE_SMELL": "INV-EXPOSURE-PROCESS-ONLY",
     "E255_OMNISCIENT_POLLUTION_UI_LEAK_SMELL": "INV-NO-OMNISCIENT-POLLUTION-KNOWLEDGE",
+    "E256_UNBUDGETED_DISPERSION_SMELL": "INV-POLL-BUDGETED",
+    "E257_SILENT_EXPOSURE_SMELL": "INV-POLL-DEGRADE-LOGGED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -16935,6 +16946,204 @@ def _append_pollution_constitution_invariant_findings(
             break
 
 
+def _append_pollution_envelope_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    budget_rule_id = "INV-POLL-BUDGETED"
+    degrade_rule_id = "INV-POLL-DEGRADE-LOGGED"
+    field_process_rule_id = "INV-POLL-FIELD-UPDATE-PROCESS-ONLY"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    scenario_tool_rel = "tools/pollution/tool_generate_poll_stress.py"
+    stress_tool_rel = "tools/pollution/tool_run_poll_stress.py"
+    replay_tool_rel = "tools/pollution/tool_replay_poll_window.py"
+    mass_tool_rel = "tools/pollution/tool_verify_poll_mass_balance.py"
+    regression_rel = "data/regression/poll_full_baseline.json"
+
+    for rel_path in (
+        scenario_tool_rel,
+        stress_tool_rel,
+        replay_tool_rel,
+        mass_tool_rel,
+        regression_rel,
+    ):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="POLL-3 envelope requires deterministic stress/proof/regression artifacts",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in (
+        'elif process_id == "process.pollution_dispersion_tick":',
+        "_apply_field_updates(",
+        'requested_updates=list(dispersion_eval.get("field_updates") or [])',
+        "process.field_update",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="pollution concentration updates must remain process-mediated through process.field_update",
+                rule_id=field_process_rule_id,
+            )
+        )
+
+    stress_text = _file_text(repo_root, stress_tool_rel)
+    replay_text = _file_text(repo_root, replay_tool_rel)
+    mass_text = _file_text(repo_root, mass_tool_rel)
+
+    for token in (
+        "run_poll_stress_scenario(",
+        "max_compute_units_per_tick",
+        "dispersion_tick_stride_base",
+        "max_cell_updates_per_tick",
+        "max_subject_updates_per_tick",
+        "max_compliance_reports_per_tick",
+        "max_measurements_per_tick",
+        "budget_envelope_id",
+    ):
+        if token in stress_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="POLL stress harness must enforce explicit deterministic budget controls",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    for token in (
+        "degrade.pollution.dispersion_tick_bucket",
+        "degrade.pollution.cell_budget",
+        "degrade.pollution.exposure_subject_budget",
+        "degrade.pollution.compliance_delay",
+        "degrade.pollution.measurement_refusal",
+        "_append_decision(",
+        "control_decision_log",
+    ):
+        if (token in stress_text) or (token in runtime_text):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="POLL degradation order/actions must be explicitly logged through DecisionLog pathways",
+                rule_id=degrade_rule_id,
+            )
+        )
+
+    for token in (
+        "pollution_emission_hash_chain",
+        "pollution_field_hash_chain",
+        "pollution_exposure_hash_chain",
+        "pollution_compliance_hash_chain",
+        "pollution_degradation_event_hash_chain",
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="POLL replay verifier must include all required proof hash-chain surfaces",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    for token in (
+        "proxy_error_permille",
+        "residual_abs",
+        "allowed_residual_abs",
+        "within_declared_bounds",
+    ):
+        if token in mass_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=mass_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="POLL mass-balance verifier must validate residuals against declared proxy error bounds",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    regression_payload, regression_err = _load_json_object(repo_root, regression_rel)
+    if regression_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=regression_rel,
+                message="POLL regression lock baseline is required for POLL-3 envelope stability",
+                rule_id=degrade_rule_id,
+            )
+        )
+        return
+    required_fields = (
+        "baseline_id",
+        "schema_version",
+        "description",
+        "composite_poll_hash_anchor",
+        "fixed_seed_scenarios",
+        "scenario_fingerprints",
+        "pattern_hashes",
+        "proof_hashes",
+        "update_policy",
+        "deterministic_fingerprint",
+    )
+    for token in required_fields:
+        if token in regression_payload:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=token,
+                message="POLL regression lock missing required baseline field",
+                rule_id=degrade_rule_id,
+            )
+        )
+    update_policy = dict(regression_payload.get("update_policy") or {})
+    if str(update_policy.get("required_commit_tag", "")).strip() != "POLL-REGRESSION-UPDATE":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="required_commit_tag",
+                message="POLL regression lock updates must require POLL-REGRESSION-UPDATE tag",
+                rule_id=degrade_rule_id,
+            )
+        )
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -19305,6 +19514,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_pollution_constitution_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_pollution_envelope_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
