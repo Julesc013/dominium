@@ -198,11 +198,12 @@ def _degradation_signal_summary(state: Mapping[str, object], *, denied_expand_co
     ]
     forced_failsafe_events = int(len(safe_fallback_rows))
 
+    under_pressure = bool(int(max(0, int(denied_expand_count))) > 0)
     flags = {
-        "degrade.system.expand_cap": bool(expand_cap_events > 0 or denied_expand_count <= 0),
-        "degrade.system.defer_noncritical_expand": bool(deferred_events > 0),
-        "degrade.system.force_macro_failsafe_on_expand_denied": bool(forced_failsafe_events > 0 or denied_expand_count <= 0),
-        "degrade.system.inspect_refusal_when_expand_denied": bool(inspection_refusals > 0 or denied_expand_count <= 0),
+        "degrade.system.expand_cap": bool(expand_cap_events > 0 or (not under_pressure)),
+        "degrade.system.defer_noncritical_expand": bool(deferred_events > 0 or (not under_pressure)),
+        "degrade.system.force_macro_failsafe_on_expand_denied": bool(forced_failsafe_events > 0 or (not under_pressure)),
+        "degrade.system.inspect_refusal_when_expand_denied": bool(inspection_refusals > 0 or (not under_pressure)),
         "degrade.system.keep_invariant_checks_mandatory": bool(invariant_failure_count == 0),
     }
     observed_order = [
@@ -216,6 +217,7 @@ def _degradation_signal_summary(state: Mapping[str, object], *, denied_expand_co
         "deferred_events": int(deferred_events),
         "forced_failsafe_events": int(forced_failsafe_events),
         "inspection_refusals": int(inspection_refusals),
+        "under_budget_pressure": bool(under_pressure),
         "flags": dict(flags),
         "observed_order": observed_order,
     }
