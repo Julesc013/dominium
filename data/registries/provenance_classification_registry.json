@@ -531,6 +531,16 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.report.system_forensics_explain",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS7-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.credential.system_certificate",
         "classification": "canonical",
         "compaction_allowed": false,

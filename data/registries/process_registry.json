@@ -4721,6 +4721,59 @@
     },
     {
       "affected_assemblies": [
+        "assembly.system.root",
+        "assembly.system.capsule_placeholder"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical SYS-7 forensics process; deterministically evaluates bounded system cause chains and emits epistemically redacted derived explain artifacts without mutating canonical truth.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "derived-only",
+        "process-only-mutation"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.system_generate_explain)",
+        "source": "SYS7-3",
+        "tier": "micro_macro"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.system.explain.invalid",
+        "refusal.system.explain.system_unknown"
+      ],
+      "human_name": "System Generate Explain",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "system_explain_request",
+          "ref_id": "dominium.schema.system.system_explain_request@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "system_explain_artifact",
+          "ref_id": "dominium.schema.system.system_explain_artifact@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "system_forensics_report_artifact",
+          "ref_id": "dominium.info.REPORT",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.system_generate_explain",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
         "assembly.system.capsule_placeholder"
       ],
       "affected_fields": [],
