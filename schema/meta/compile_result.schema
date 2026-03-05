@@ -1,0 +1,25 @@
+SCHEMA: meta/compile_result.schema
+schema_id: dominium.schema.meta.compile_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic outcomes of compile request execution.
+- Bind compile success/failure to a compiled model identifier or refusal code.
+
+NON-SEMANTICS:
+- No implicit retries or nondeterministic fallback compilation.
+
+REQUIRED SHAPE:
+record compile_result
+  required:
+    - result_id: id
+    - compiled_model_id: id|null
+    - success: bool
+    - refusal: text|null
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `success=true` requires non-null `compiled_model_id`.
+- `success=false` requires non-null refusal reason.
