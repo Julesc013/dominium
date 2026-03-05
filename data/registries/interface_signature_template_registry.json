@@ -1,0 +1,229 @@
+{
+  "schema_id": "dominium.registry.interface_signature_template_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.interface_signature_template_registry",
+    "registry_version": "1.0.0",
+    "interface_signature_templates": [
+      {
+        "schema_version": "1.0.0",
+        "interface_signature_template_id": "interface.engine_basic",
+        "description": "Baseline engine interface template with fuel/air/power/heat/exhaust boundary ports.",
+        "port_descriptors": [
+          {
+            "port_id": "port.fuel_in",
+            "port_type_id": "port.fluid.fuel",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.air_in",
+            "port_type_id": "port.fluid.air",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.power_out",
+            "port_type_id": "port.power.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.power_phasor"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.heat_out",
+            "port_type_id": "port.thermal.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.thermal_basic"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.exhaust_out",
+            "port_type_id": "port.fluid.exhaust",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          }
+        ],
+        "signal_descriptors": [
+          {
+            "channel_type_id": "channel.wired_basic",
+            "capacity": 1024,
+            "delay": 1,
+            "access_policy_id": "ctrl.policy.player.diegetic"
+          }
+        ],
+        "required_spec_type_ids": ["spec.vehicle_interface"],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "interface_signature_template_id": "interface.generator_basic",
+        "description": "Baseline generator interface template.",
+        "port_descriptors": [
+          {
+            "port_id": "port.fuel_in",
+            "port_type_id": "port.fluid.fuel",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.power_out",
+            "port_type_id": "port.power.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.power_phasor"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.heat_out",
+            "port_type_id": "port.thermal.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.thermal_basic"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          }
+        ],
+        "signal_descriptors": [
+          {
+            "channel_type_id": "channel.wired_basic",
+            "capacity": 512,
+            "delay": 1,
+            "access_policy_id": "ctrl.policy.player.diegetic"
+          }
+        ],
+        "required_spec_type_ids": ["spec.vehicle_interface"],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "interface_signature_template_id": "interface.pump_basic",
+        "description": "Baseline pump/compressor interface template.",
+        "port_descriptors": [
+          {
+            "port_id": "port.power_in",
+            "port_type_id": "port.power.input",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.power_phasor"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.fluid_in",
+            "port_type_id": "port.fluid.input",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.track"]
+          },
+          {
+            "port_id": "port.fluid_out",
+            "port_type_id": "port.fluid.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.track"]
+          }
+        ],
+        "signal_descriptors": [
+          {
+            "channel_type_id": "channel.wired_basic",
+            "capacity": 512,
+            "delay": 1,
+            "access_policy_id": "ctrl.policy.player.diegetic"
+          }
+        ],
+        "required_spec_type_ids": ["spec.track", "spec.vehicle_interface"],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "interface_signature_template_id": "interface.heat_exchanger_basic",
+        "description": "Baseline thermal-fluid exchanger interface template.",
+        "port_descriptors": [
+          {
+            "port_id": "port.thermal_in",
+            "port_type_id": "port.thermal.input",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.thermal_basic"],
+            "spec_limit_refs": ["spec.bridge"]
+          },
+          {
+            "port_id": "port.thermal_out",
+            "port_type_id": "port.thermal.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.thermal_basic"],
+            "spec_limit_refs": ["spec.bridge"]
+          },
+          {
+            "port_id": "port.fluid_in",
+            "port_type_id": "port.fluid.input",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.track"]
+          },
+          {
+            "port_id": "port.fluid_out",
+            "port_type_id": "port.fluid.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.fluid_basic"],
+            "spec_limit_refs": ["spec.track"]
+          }
+        ],
+        "signal_descriptors": [
+          {
+            "channel_type_id": "channel.wired_basic",
+            "capacity": 512,
+            "delay": 1,
+            "access_policy_id": "ctrl.policy.player.diegetic"
+          }
+        ],
+        "required_spec_type_ids": ["spec.bridge", "spec.track"],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "interface_signature_template_id": "interface.vehicle_propulsion_basic",
+        "description": "Baseline vehicle propulsion interface template.",
+        "port_descriptors": [
+          {
+            "port_id": "port.powertrain_in",
+            "port_type_id": "port.power.input",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.power_phasor"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.traction_out",
+            "port_type_id": "port.force.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.power_phasor"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          },
+          {
+            "port_id": "port.heat_out",
+            "port_type_id": "port.thermal.output",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.thermal_basic"],
+            "spec_limit_refs": ["spec.vehicle_interface"]
+          }
+        ],
+        "signal_descriptors": [
+          {
+            "channel_type_id": "channel.wired_basic",
+            "capacity": 1024,
+            "delay": 1,
+            "access_policy_id": "ctrl.policy.player.diegetic"
+          }
+        ],
+        "required_spec_type_ids": ["spec.vehicle_interface"],
+        "deterministic_fingerprint": "",
+        "extensions": {}
+      }
+    ],
+    "extensions": {
+      "source": "SYS1-3"
+    }
+  }
+}

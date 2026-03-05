@@ -1,0 +1,13 @@
+{
+  "schema_id": "dominium.registry.macro_model_set_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.macro_model_set_registry",
+    "registry_version": "1.0.0",
+    "macro_model_sets": [],
+    "extensions": {
+      "source": "SYS1-3",
+      "null_boot_safe": true
+    }
+  }
+}
