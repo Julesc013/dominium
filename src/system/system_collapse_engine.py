@@ -425,6 +425,7 @@ def collapse_system_graph(
     signal_channel_type_registry_payload: Mapping[str, object] | None = None,
     boundary_invariant_template_registry_payload: Mapping[str, object] | None = None,
     tolerance_policy_registry_payload: Mapping[str, object] | None = None,
+    safety_pattern_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     if not isinstance(state, dict):
         raise SystemCollapseError(
@@ -484,6 +485,7 @@ def collapse_system_graph(
         boundary_invariant_rows=state.get("system_boundary_invariant_rows") or state.get("boundary_invariant_rows") or [],
         boundary_invariant_template_registry_payload=boundary_invariant_template_registry_payload,
         tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        safety_pattern_registry_payload=safety_pattern_registry_payload,
     )
     if str(invariant_validation.get("result", "")).strip() != "complete":
         raise SystemCollapseError(

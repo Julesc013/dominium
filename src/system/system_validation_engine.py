@@ -109,6 +109,11 @@ def _tolerance_policy_ids(payload: Mapping[str, object] | None) -> List[str]:
     return _sorted_tokens(str(row.get("tolerance_policy_id", "")).strip() for row in rows)
 
 
+def _safety_pattern_ids(payload: Mapping[str, object] | None) -> List[str]:
+    rows = _rows_from_registry_payload(payload, ("safety_patterns",))
+    return _sorted_tokens(str(row.get("pattern_id", "")).strip() for row in rows)
+
+
 def _constitutive_model_ids(payload: Mapping[str, object] | None) -> List[str]:
     rows = _rows_from_registry_payload(payload, ("constitutive_models",))
     return _sorted_tokens(str(row.get("model_id", "")).strip() for row in rows)
@@ -216,6 +221,7 @@ def validate_boundary_invariants(
     boundary_invariant_rows: object,
     boundary_invariant_template_registry_payload: Mapping[str, object] | None,
     tolerance_policy_registry_payload: Mapping[str, object] | None,
+    safety_pattern_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     checks: List[dict] = []
     system_token = str(system_id or "").strip()
@@ -261,7 +267,9 @@ def validate_boundary_invariants(
 
     system_ext = _as_map(system_row.get("extensions"))
     safety_pattern_ids = _sorted_tokens(system_ext.get("safety_pattern_ids") or [])
+    registered_safety_pattern_ids = set(_safety_pattern_ids(safety_pattern_registry_payload))
     for pattern_id in _sorted_tokens(required_safety_pattern_ids):
+        checks.append(_check("invariant.required_safety_pattern.registered.{}".format(pattern_id), pattern_id in registered_safety_pattern_ids, "required safety pattern registered"))
         checks.append(_check("invariant.required_safety_pattern.present.{}".format(pattern_id), pattern_id in set(safety_pattern_ids), "required safety pattern present"))
     if bool(system_ext.get("emits_pollutants", False)):
         has_pollution = False

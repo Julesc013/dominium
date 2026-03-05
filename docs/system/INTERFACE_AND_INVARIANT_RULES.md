@@ -2,7 +2,7 @@ Status: BASELINE
 Last Reviewed: 2026-03-05
 Supersedes: docs/system/SYSTEM_COMPOSITION_CONSTITUTION.md
 Superseded By: none
-Version: 1.0.0
+Version: 1.1.0
 Compatibility: SYS-1 interface signature, invariant, and macro model binding validation rules.
 
 # Interface and Invariant Rules
@@ -80,3 +80,10 @@ Validation requirements:
 - Validation ordering is deterministic (sorted by system_id, then stable key order).
 - Validation failures must produce explicit refusal codes; no silent violations.
 - SYS-1 introduces validation only and does not alter domain solver semantics.
+
+## Spec and Safety Integration
+- Interface validation must resolve `spec_compliance_ref` and port-level `spec_limit_refs` against registered SPEC types.
+- Invariant-template-required safety patterns must be both:
+  - declared by the system (`extensions.safety_pattern_ids`)
+  - registered in the safety pattern registry.
+- Missing required spec or safety declarations keep the system uncertifiable and force refusal on collapse/expand validation paths.

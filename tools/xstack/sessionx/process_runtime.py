@@ -29485,6 +29485,12 @@ def execute_intent(
             registry_rel_path="data/registries/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
+        safety_pattern_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="safety_pattern_registry",
+            registry_rel_path="data/registries/safety_pattern_registry.json",
+            entry_key="safety_patterns",
+        )
         try:
             collapse_result = collapse_system_graph(
                 state=state,
@@ -29496,6 +29502,7 @@ def execute_intent(
                 signal_channel_type_registry_payload=signal_channel_type_registry,
                 boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
                 tolerance_policy_registry_payload=tolerance_policy_registry,
+                safety_pattern_registry_payload=safety_pattern_registry,
             )
         except SystemCollapseError as exc:
             reason_code = str(getattr(exc, "reason_code", REFUSAL_SYSTEM_COLLAPSE_INVALID)).strip()
@@ -29566,6 +29573,12 @@ def execute_intent(
             registry_rel_path="data/registries/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
+        safety_pattern_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="safety_pattern_registry",
+            registry_rel_path="data/registries/safety_pattern_registry.json",
+            entry_key="safety_patterns",
+        )
         try:
             expand_result = expand_system_graph(
                 state=state,
@@ -29577,6 +29590,7 @@ def execute_intent(
                 signal_channel_type_registry_payload=signal_channel_type_registry,
                 boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
                 tolerance_policy_registry_payload=tolerance_policy_registry,
+                safety_pattern_registry_payload=safety_pattern_registry,
             )
         except SystemExpandError as exc:
             reason_code = str(getattr(exc, "reason_code", REFUSAL_SYSTEM_EXPAND_INVALID)).strip()
