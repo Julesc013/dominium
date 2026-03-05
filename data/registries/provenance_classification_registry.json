@@ -371,6 +371,26 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.record.pollution_source_event",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.pollution.concentration_field",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "POLL0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.batch_quality",
         "classification": "canonical",
         "compaction_allowed": false,

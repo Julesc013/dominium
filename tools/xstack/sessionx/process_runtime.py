@@ -530,6 +530,13 @@ from src.physics import (
     record_entropy_contribution,
     velocity_from_momentum_state,
 )
+from src.pollution import (
+    build_pollution_source_event,
+    build_pollution_total_row,
+    normalize_pollution_source_event_rows,
+    normalize_pollution_total_rows,
+    pollution_totals_by_key,
+)
 from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
 from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -716,6 +723,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.process_run_start": "entitlement.tool.operating",
     "process.process_run_tick": "entitlement.tool.operating",
     "process.process_run_end": "entitlement.tool.operating",
+    "process.pollution_emit": "session.boot",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -897,6 +905,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.process_run_start": "operator",
     "process.process_run_tick": "operator",
     "process.process_run_end": "operator",
+    "process.pollution_emit": "observer",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -1004,6 +1013,7 @@ CONTROL_PROCESS_IDS = {
     "process.process_run_start",
     "process.process_run_tick",
     "process.process_run_end",
+    "process.pollution_emit",
     "process.degradation_tick",
 }
 CIV_PROCESS_IDS = {
@@ -5141,6 +5151,77 @@ def _load_degradation_profile_registry(*, policy_context: dict | None) -> dict:
         registry_rel_path="data/registries/degradation_profile_registry.json",
         default_payload={"record": {"degradation_profiles": []}},
     )
+
+
+def _load_pollutant_type_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "pollutant_type_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/pollutant_type_registry.json",
+        default_payload={"record": {"pollutant_types": []}},
+    )
+
+
+def _pollutant_types_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("pollutant_types")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("pollutant_types")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("pollutant_id", ""))):
+        pollutant_id = str(row.get("pollutant_id", "")).strip()
+        if not pollutant_id:
+            continue
+        out[pollutant_id] = {
+            "schema_version": "1.0.0",
+            "pollutant_id": pollutant_id,
+            "description": str(row.get("description", "")).strip(),
+            "medium": str(row.get("medium", "air")).strip() or "air",
+            "default_decay_model_id": str(row.get("default_decay_model_id", "")).strip() or "model.poll_decay_none",
+            "default_dispersion_policy_id": str(row.get("default_dispersion_policy_id", "")).strip() or "poll.policy.none",
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _load_pollution_field_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "pollution_field_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/pollution_field_policy_registry.json",
+        default_payload={"record": {"pollution_field_policies": []}},
+    )
+
+
+def _pollution_field_policies_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("pollution_field_policies")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("pollution_field_policies")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("policy_id", ""))):
+        policy_id = str(row.get("policy_id", "")).strip()
+        if not policy_id:
+            continue
+        out[policy_id] = {
+            "schema_version": "1.0.0",
+            "policy_id": policy_id,
+            "tier": str(row.get("tier", "P0")).strip() or "P0",
+            "cell_update_rule_id": str(row.get("cell_update_rule_id", "")).strip() or "rule.pollution.noop",
+            "wind_modifier_enabled": bool(row.get("wind_modifier_enabled", False)),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
 def _chem_rate_permille(
@@ -10435,6 +10516,74 @@ def _ensure_combustion_impulse_rows(state: dict) -> List[dict]:
     normalized = [dict(out[key]) for key in sorted(out.keys())]
     state["combustion_impulse_rows"] = [dict(row) for row in normalized]
     return [dict(row) for row in normalized]
+
+
+def _ensure_pollution_source_event_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_source_event_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_pollution_source_event_rows(rows)
+    state["pollution_source_event_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_pollution_total_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_total_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_pollution_total_rows(rows)
+    state["pollution_total_rows"] = [dict(row) for row in normalized]
+    state["pollutant_mass_total"] = dict(
+        (
+            "{}::{}".format(str(row.get("region_id", "")).strip(), str(row.get("pollutant_id", "")).strip()),
+            int(max(0, _as_int(row.get("pollutant_mass_total", 0), 0))),
+        )
+        for row in normalized
+        if str(row.get("region_id", "")).strip() and str(row.get("pollutant_id", "")).strip()
+    )
+    return [dict(row) for row in normalized]
+
+
+def _refresh_pollution_hash_chains(state: dict) -> None:
+    source_rows = _ensure_pollution_source_event_rows(state)
+    total_rows = _ensure_pollution_total_rows(state)
+    state["pollution_source_hash_chain"] = canonical_sha256(
+        [
+            {
+                "source_event_id": str(row.get("source_event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "origin_kind": str(row.get("origin_kind", "")).strip(),
+                "origin_id": str(row.get("origin_id", "")).strip(),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "emitted_mass": int(max(0, _as_int(row.get("emitted_mass", 0), 0))),
+                "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(source_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("source_event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["pollution_total_hash_chain"] = canonical_sha256(
+        [
+            {
+                "region_id": str(row.get("region_id", "")).strip(),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "pollutant_mass_total": int(max(0, _as_int(row.get("pollutant_mass_total", 0), 0))),
+                "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(total_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("region_id", "")),
+                    str(item.get("pollutant_id", "")),
+                ),
+            )
+        ]
+    )
 
 
 def _ensure_chem_species_pool_rows(state: dict) -> List[dict]:
@@ -26706,6 +26855,249 @@ def execute_intent(
                 "batch_quality_hash_chain": str(state.get("batch_quality_hash_chain", "")).strip(),
                 "yield_model_hash_chain": str(state.get("yield_model_hash_chain", "")).strip(),
                 "energy_ledger_hash_chain": str(state.get("energy_ledger_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.pollution_emit":
+        pollutant_types_by_id = _pollutant_types_by_id(
+            _load_pollutant_type_registry(policy_context=policy_context)
+        )
+        pollution_policies_by_id = _pollution_field_policies_by_id(
+            _load_pollution_field_policy_registry(policy_context=policy_context)
+        )
+        if not pollutant_types_by_id:
+            result_metadata = {
+                "processed_source_event_ids": [],
+                "note": "no_pollutant_types_registered",
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            requested_policy_id = str(
+                inputs.get(
+                    "policy_id",
+                    inputs.get("pollution_policy_id", "poll.policy.none"),
+                )
+            ).strip() or "poll.policy.none"
+            if pollution_policies_by_id and requested_policy_id not in pollution_policies_by_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "pollution policy_id is not registered",
+                    "Register policy_id in pollution_field_policy_registry or provide a valid policy id.",
+                    {"policy_id": requested_policy_id},
+                    "$.intent.inputs.policy_id",
+                )
+
+            source_rows_existing = [
+                dict(row)
+                for row in _ensure_pollution_source_event_rows(state)
+                if isinstance(row, Mapping)
+            ]
+            total_rows_by_key = pollution_totals_by_key(_ensure_pollution_total_rows(state))
+
+            incoming_rows: List[dict] = []
+            for row in list(inputs.get("events") or []):
+                if isinstance(row, Mapping):
+                    incoming_rows.append(dict(row))
+            if not incoming_rows:
+                incoming_rows = [dict(inputs or {})]
+
+            current_tick_value = int(max(0, _as_int(current_tick, 0)))
+            default_origin_kind = str(inputs.get("origin_kind", "industrial")).strip().lower() or "industrial"
+            default_origin_id = str(inputs.get("origin_id", "")).strip() or "origin.unknown"
+            default_scope_id = str(
+                inputs.get(
+                    "spatial_scope_id",
+                    inputs.get("region_id", "region.default"),
+                )
+            ).strip() or "region.default"
+            default_pollutant_id = str(inputs.get("pollutant_id", "")).strip()
+            default_emitted_mass = int(
+                max(
+                    0,
+                    _as_int(inputs.get("emitted_mass", inputs.get("mass_value", 0)), 0),
+                )
+            )
+
+            emitted_source_event_ids: List[str] = []
+            emitted_total_mass = 0
+            origin_kinds_used: List[str] = []
+            for row in sorted(
+                (dict(item) for item in incoming_rows if isinstance(item, Mapping)),
+                key=lambda item: (
+                    str(item.get("origin_kind", "")),
+                    str(item.get("origin_id", "")),
+                    str(item.get("pollutant_id", "")),
+                    str(item.get("spatial_scope_id", item.get("region_id", ""))),
+                ),
+            ):
+                pollutant_id = str(row.get("pollutant_id", default_pollutant_id)).strip()
+                if not pollutant_id:
+                    return refusal(
+                        "PROCESS_INPUT_INVALID",
+                        "process.pollution_emit requires pollutant_id",
+                        "Provide pollutant_id directly or inside events[] entries.",
+                        {"process_id": process_id},
+                        "$.intent.inputs.pollutant_id",
+                    )
+                if pollutant_id not in pollutant_types_by_id:
+                    return refusal(
+                        "PROCESS_INPUT_INVALID",
+                        "pollutant_id is not registered in pollutant_type_registry",
+                        "Register pollutant_id before emitting pollution events.",
+                        {"pollutant_id": pollutant_id},
+                        "$.intent.inputs.pollutant_id",
+                    )
+                emitted_mass = int(
+                    max(
+                        0,
+                        _as_int(
+                            row.get(
+                                "emitted_mass",
+                                row.get("mass_value", default_emitted_mass),
+                            ),
+                            default_emitted_mass,
+                        ),
+                    )
+                )
+                if emitted_mass <= 0:
+                    continue
+                origin_kind = str(row.get("origin_kind", default_origin_kind)).strip().lower() or "industrial"
+                if origin_kind not in {"reaction", "fire", "leak", "industrial"}:
+                    return refusal(
+                        "PROCESS_INPUT_INVALID",
+                        "origin_kind must be reaction|fire|leak|industrial",
+                        "Provide a supported origin_kind for process.pollution_emit.",
+                        {"origin_kind": origin_kind},
+                        "$.intent.inputs.origin_kind",
+                    )
+                origin_id = str(row.get("origin_id", default_origin_id)).strip() or "origin.unknown"
+                spatial_scope_id = str(
+                    row.get(
+                        "spatial_scope_id",
+                        row.get("region_id", default_scope_id),
+                    )
+                ).strip() or default_scope_id
+                source_event_id = (
+                    str(row.get("source_event_id", "")).strip()
+                    or str(row.get("event_id", "")).strip()
+                )
+                event_extensions = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+                event_extensions["source_process_id"] = str(process_id)
+                event_extensions["policy_id"] = requested_policy_id
+                event_row = build_pollution_source_event(
+                    source_event_id=source_event_id,
+                    tick=current_tick_value,
+                    origin_kind=origin_kind,
+                    origin_id=origin_id,
+                    pollutant_id=pollutant_id,
+                    emitted_mass=emitted_mass,
+                    spatial_scope_id=spatial_scope_id,
+                    deterministic_fingerprint="",
+                    extensions=event_extensions,
+                )
+                if not event_row:
+                    continue
+                source_rows_existing.append(event_row)
+                emitted_source_event_ids.append(str(event_row.get("source_event_id", "")).strip())
+                emitted_total_mass += int(emitted_mass)
+                if origin_kind not in origin_kinds_used:
+                    origin_kinds_used.append(origin_kind)
+
+                total_key = "{}::{}".format(spatial_scope_id, pollutant_id)
+                existing_total_row = dict(total_rows_by_key.get(total_key) or {})
+                existing_total_mass = int(max(0, _as_int(existing_total_row.get("pollutant_mass_total", 0), 0)))
+                total_extensions = dict(existing_total_row.get("extensions") or {}) if isinstance(existing_total_row.get("extensions"), Mapping) else {}
+                total_extensions["last_source_event_id"] = str(event_row.get("source_event_id", "")).strip()
+                total_extensions["last_origin_kind"] = origin_kind
+                total_row = build_pollution_total_row(
+                    region_id=spatial_scope_id,
+                    pollutant_id=pollutant_id,
+                    pollutant_mass_total=int(existing_total_mass + emitted_mass),
+                    last_update_tick=current_tick_value,
+                    deterministic_fingerprint="",
+                    extensions=total_extensions,
+                )
+                if total_row:
+                    total_rows_by_key[total_key] = dict(total_row)
+
+            state["pollution_source_event_rows"] = normalize_pollution_source_event_rows(
+                source_rows_existing
+            )
+            state["pollution_total_rows"] = normalize_pollution_total_rows(
+                list(total_rows_by_key.values())
+            )
+            state["pollutant_mass_total"] = dict(
+                (
+                    "{}::{}".format(str(row.get("region_id", "")).strip(), str(row.get("pollutant_id", "")).strip()),
+                    int(max(0, _as_int(row.get("pollutant_mass_total", 0), 0))),
+                )
+                for row in list(state.get("pollution_total_rows") or [])
+                if isinstance(row, Mapping)
+                and str(row.get("region_id", "")).strip()
+                and str(row.get("pollutant_id", "")).strip()
+            )
+            _refresh_pollution_hash_chains(state)
+
+            if emitted_source_event_ids:
+                source_rows_by_id = dict(
+                    (
+                        str(row.get("source_event_id", "")).strip(),
+                        dict(row),
+                    )
+                    for row in list(state.get("pollution_source_event_rows") or [])
+                    if isinstance(row, Mapping) and str(row.get("source_event_id", "")).strip()
+                )
+                emitted_set = set(str(token).strip() for token in emitted_source_event_ids if str(token).strip())
+                info_artifact_rows = normalize_info_artifact_rows(
+                    list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                    + [
+                        {
+                            "artifact_id": "artifact.record.pollution.emit.{}".format(
+                                canonical_sha256({"source_event_id": source_event_id})[:16]
+                            ),
+                            "artifact_family_id": "RECORD",
+                            "extensions": {
+                                "artifact_type_id": "artifact.record.pollution_source_event",
+                                "event_id": source_event_id,
+                                "event_type": "incident.pollution_source_event",
+                                "origin_kind": str(source_rows_by_id.get(source_event_id, {}).get("origin_kind", "")).strip(),
+                                "origin_id": str(source_rows_by_id.get(source_event_id, {}).get("origin_id", "")).strip(),
+                                "pollutant_id": str(source_rows_by_id.get(source_event_id, {}).get("pollutant_id", "")).strip(),
+                                "spatial_scope_id": str(source_rows_by_id.get(source_event_id, {}).get("spatial_scope_id", "")).strip(),
+                                "emitted_mass": int(
+                                    max(
+                                        0,
+                                        _as_int(
+                                            source_rows_by_id.get(source_event_id, {}).get(
+                                                "emitted_mass", 0
+                                            ),
+                                            0,
+                                        ),
+                                    )
+                                ),
+                            },
+                        }
+                        for source_event_id in sorted(emitted_set)
+                    ]
+                )
+                state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+                state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+            result_metadata = {
+                "processed_source_event_ids": list(
+                    _sorted_tokens(emitted_source_event_ids)
+                ),
+                "processed_source_event_count": int(
+                    len(list(_sorted_tokens(emitted_source_event_ids)))
+                ),
+                "emitted_mass_total": int(max(0, emitted_total_mass)),
+                "origin_kinds": list(_sorted_tokens(origin_kinds_used)),
+                "policy_id": requested_policy_id,
+                "pollution_source_hash_chain": str(
+                    state.get("pollution_source_hash_chain", "")
+                ).strip(),
+                "pollution_total_hash_chain": str(
+                    state.get("pollution_total_hash_chain", "")
+                ).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

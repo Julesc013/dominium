@@ -4260,6 +4260,52 @@
       ],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical POLL-0 emission intake process; records pollution source events and updates deterministic P0 regional pollutant mass totals.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.pollution_emit)",
+        "source": "POLL0-4"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Pollution Emit",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "pollution_source_event",
+          "ref_id": "dominium.schema.pollution.pollution_source_event@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "pollution_source_event",
+          "ref_id": "dominium.schema.pollution.pollution_source_event@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "pollution_totals",
+          "ref_id": "dominium.schema.pollution.pollution_total_rows@1.0.0",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.pollution_emit",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",
