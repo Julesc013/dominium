@@ -4,9 +4,197 @@
   "record": {
     "registry_id": "dominium.registry.macro_model_set_registry",
     "registry_version": "1.0.0",
-    "macro_model_sets": [],
+    "macro_model_sets": [
+      {
+        "schema_version": "1.0.0",
+        "macro_model_set_id": "macro.engine_stub",
+        "model_bindings": [
+          {
+            "binding_id": "binding.macro.engine.combustion",
+            "model_id": "model.therm_combust_stub",
+            "input_port_ids": [
+              "fuel_in",
+              "air_in",
+              "signal_in"
+            ],
+            "output_port_ids": [
+              "power_out",
+              "heat_out",
+              "exhaust_out"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "power_out": "process.flow_adjust",
+                "heat_out": "process.energy_transform",
+                "exhaust_out": "process.pollution_emit"
+              }
+            }
+          },
+          {
+            "binding_id": "binding.macro.engine.loss",
+            "model_id": "model.elec_device_loss",
+            "input_port_ids": [
+              "power_out"
+            ],
+            "output_port_ids": [
+              "heat_out"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "heat_out": "process.energy_transform"
+              }
+            }
+          }
+        ],
+        "validity_conditions": {
+          "required_tier_mode": "macro",
+          "requires_interface_template_ids": [
+            "interface.engine_basic"
+          ]
+        },
+        "error_bound_policy_id": "tol.strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "macro_model_set_id": "macro.pump_stub",
+        "model_bindings": [
+          {
+            "binding_id": "binding.macro.pump.curve",
+            "model_id": "model.fluid.pump_curve.default",
+            "input_port_ids": [
+              "power_in",
+              "fluid_in"
+            ],
+            "output_port_ids": [
+              "head_out",
+              "flow_out"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "head_out": "process.flow_adjust",
+                "flow_out": "process.flow_adjust"
+              }
+            }
+          }
+        ],
+        "validity_conditions": {
+          "required_tier_mode": "macro",
+          "requires_interface_template_ids": [
+            "interface.pump_basic"
+          ]
+        },
+        "error_bound_policy_id": "tol.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "macro_model_set_id": "macro.generator_stub",
+        "model_bindings": [
+          {
+            "binding_id": "binding.macro.generator.combustion",
+            "model_id": "model.therm_combust_stub",
+            "input_port_ids": [
+              "fuel_in"
+            ],
+            "output_port_ids": [
+              "electric_out",
+              "heat_loss"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "electric_out": "process.flow_adjust",
+                "heat_loss": "process.energy_transform"
+              }
+            }
+          },
+          {
+            "binding_id": "binding.macro.generator.phasor",
+            "model_id": "model.elec.load.phasor.default",
+            "input_port_ids": [
+              "fuel_in"
+            ],
+            "output_port_ids": [
+              "electric_out"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "electric_out": "process.flow_adjust"
+              }
+            }
+          }
+        ],
+        "validity_conditions": {
+          "required_tier_mode": "macro",
+          "requires_interface_template_ids": [
+            "interface.generator_basic"
+          ]
+        },
+        "error_bound_policy_id": "tol.strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "macro_model_set_id": "macro.heat_exchanger_stub",
+        "model_bindings": [
+          {
+            "binding_id": "binding.macro.hex.conductance",
+            "model_id": "model.therm.conductance.default",
+            "input_port_ids": [
+              "thermal_in",
+              "fluid_in"
+            ],
+            "output_port_ids": [
+              "thermal_out",
+              "fluid_out"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "thermal_out": "process.energy_transform",
+                "fluid_out": "process.flow_adjust"
+              }
+            }
+          },
+          {
+            "binding_id": "binding.macro.hex.ambient",
+            "model_id": "model.therm_ambient_exchange",
+            "input_port_ids": [
+              "thermal_out"
+            ],
+            "output_port_ids": [
+              "heat_loss"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "heat_loss": "process.energy_transform"
+              }
+            }
+          }
+        ],
+        "validity_conditions": {
+          "required_tier_mode": "macro",
+          "requires_interface_template_ids": [
+            "interface.heat_exchanger_basic"
+          ]
+        },
+        "error_bound_policy_id": "tol.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS2-2"
+        }
+      }
+    ],
     "extensions": {
-      "source": "SYS1-3",
+      "source": "SYS2-2",
       "null_boot_safe": true
     }
   }

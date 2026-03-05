@@ -1,0 +1,22 @@
+SCHEMA: system/forced_expand_event.schema
+schema_id: dominium.schema.system.forced_expand_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical SYS-2 event for deterministic forced expansion triggers from macro capsules.
+
+NON-SEMANTICS:
+- No direct expand mutation authority by itself.
+- No scheduler/budget arbitration semantics embedded in schema.
+
+REQUIRED SHAPE:
+record forced_expand_event
+  required:
+    - event_id: id
+    - capsule_id: id
+    - tick: int
+    - reason_code: text
+    - requested_fidelity: text
+    - deterministic_fingerprint: text
+    - extensions: map

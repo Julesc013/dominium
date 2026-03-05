@@ -1,0 +1,27 @@
+SCHEMA: system/macro_output_record.schema
+schema_id: dominium.schema.system.macro_output_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Derived SYS-2 macro capsule boundary I/O summary record per tick.
+- Supports replay/proof hash stability without introducing canonical truth duplication.
+
+INFO FAMILY:
+- OBSERVATION (derived, compactable)
+
+NON-SEMANTICS:
+- No canonical authority mutation.
+- No replacement for canonical forced-expand or collapse/expand events.
+
+REQUIRED SHAPE:
+record macro_output_record
+  required:
+    - record_id: id
+    - capsule_id: id
+    - tick: int
+    - boundary_inputs_hash: text
+    - boundary_outputs_hash: text
+    - error_estimate: int?
+    - deterministic_fingerprint: text
+    - extensions: map
