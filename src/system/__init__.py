@@ -3,6 +3,8 @@
 from src.system.system_collapse_engine import (
     REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
     REFUSAL_SYSTEM_COLLAPSE_INVALID,
+    REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE,
+    REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION,
     SystemCollapseError,
     boundary_invariant_rows_by_id,
     build_boundary_invariant_row,
@@ -21,6 +23,8 @@ from src.system.system_collapse_engine import (
 from src.system.system_expand_engine import (
     REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH,
     REFUSAL_SYSTEM_EXPAND_INVALID,
+    REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE,
+    REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION,
     SystemExpandError,
     expand_system_graph,
 )
@@ -36,6 +40,8 @@ from src.system.system_validation_engine import (
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
     "REFUSAL_SYSTEM_COLLAPSE_INVALID",
+    "REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE",
+    "REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION",
     "SystemCollapseError",
     "build_interface_signature_row",
     "normalize_interface_signature_rows",
@@ -52,6 +58,8 @@ __all__ = [
     "collapse_system_graph",
     "REFUSAL_SYSTEM_EXPAND_INVALID",
     "REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH",
+    "REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE",
+    "REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION",
     "SystemExpandError",
     "expand_system_graph",
     "REFUSAL_SYSTEM_INVALID_INTERFACE",

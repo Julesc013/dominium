@@ -5,10 +5,18 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.system.system_validation_engine import (
+    REFUSAL_SYSTEM_INVALID_INTERFACE,
+    REFUSAL_SYSTEM_INVARIANT_VIOLATION,
+    validate_boundary_invariants,
+    validate_interface_signature,
+)
 
 
 REFUSAL_SYSTEM_COLLAPSE_INVALID = "REFUSAL_SYSTEM_COLLAPSE_INVALID"
 REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE = "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE"
+REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE = REFUSAL_SYSTEM_INVALID_INTERFACE
+REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION = REFUSAL_SYSTEM_INVARIANT_VIOLATION
 
 
 class SystemCollapseError(RuntimeError):
@@ -412,6 +420,11 @@ def collapse_system_graph(
     system_id: str,
     current_tick: int,
     process_id: str = "process.system_collapse",
+    quantity_bundle_registry_payload: Mapping[str, object] | None = None,
+    spec_type_registry_payload: Mapping[str, object] | None = None,
+    signal_channel_type_registry_payload: Mapping[str, object] | None = None,
+    boundary_invariant_template_registry_payload: Mapping[str, object] | None = None,
+    tolerance_policy_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     if not isinstance(state, dict):
         raise SystemCollapseError(
@@ -444,6 +457,43 @@ def collapse_system_graph(
             "system interface signature is missing",
             reason_code=REFUSAL_SYSTEM_COLLAPSE_INVALID,
             details={"system_id": system_token},
+        )
+
+    interface_validation = validate_interface_signature(
+        system_id=system_token,
+        system_rows=state.get("system_rows") or [],
+        interface_signature_rows=state.get("system_interface_signature_rows") or [],
+        quantity_bundle_registry_payload=quantity_bundle_registry_payload,
+        spec_type_registry_payload=spec_type_registry_payload,
+        signal_channel_type_registry_payload=signal_channel_type_registry_payload,
+    )
+    if str(interface_validation.get("result", "")).strip() != "complete":
+        raise SystemCollapseError(
+            "system interface signature validation failed",
+            reason_code=REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE,
+            details={
+                "system_id": system_token,
+                "failed_checks": [dict(row) for row in list(interface_validation.get("failed_checks") or []) if isinstance(row, Mapping)],
+                "deterministic_fingerprint": str(interface_validation.get("deterministic_fingerprint", "")).strip(),
+            },
+        )
+
+    invariant_validation = validate_boundary_invariants(
+        system_id=system_token,
+        system_rows=state.get("system_rows") or [],
+        boundary_invariant_rows=state.get("system_boundary_invariant_rows") or state.get("boundary_invariant_rows") or [],
+        boundary_invariant_template_registry_payload=boundary_invariant_template_registry_payload,
+        tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+    )
+    if str(invariant_validation.get("result", "")).strip() != "complete":
+        raise SystemCollapseError(
+            "system boundary invariant validation failed",
+            reason_code=REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION,
+            details={
+                "system_id": system_token,
+                "failed_checks": [dict(row) for row in list(invariant_validation.get("failed_checks") or []) if isinstance(row, Mapping)],
+                "deterministic_fingerprint": str(invariant_validation.get("deterministic_fingerprint", "")).strip(),
+            },
         )
 
     if str(system_row.get("current_tier", "micro")).strip() == "macro":
@@ -583,6 +633,8 @@ def collapse_system_graph(
             "source_process_id": process_id,
             "placeholder_assembly_id": placeholder_assembly_id,
             "provenance_anchor_hash": provenance_anchor_hash,
+            "interface_validation_fingerprint": str(interface_validation.get("deterministic_fingerprint", "")).strip(),
+            "invariant_validation_fingerprint": str(invariant_validation.get("deterministic_fingerprint", "")).strip(),
         },
     }
     collapse_event["deterministic_fingerprint"] = canonical_sha256(dict(collapse_event, deterministic_fingerprint=""))
@@ -677,6 +729,8 @@ def collapse_system_graph(
 __all__ = [
     "REFUSAL_SYSTEM_COLLAPSE_INVALID",
     "REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE",
+    "REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE",
+    "REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION",
     "SystemCollapseError",
     "build_interface_signature_row",
     "normalize_interface_signature_rows",

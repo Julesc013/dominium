@@ -6,22 +6,62 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from src.system.system_collapse_engine import (
-    _as_map,
-    interface_signature_rows_by_system,
-    normalize_boundary_invariant_rows,
-    normalize_system_macro_capsule_rows,
-    system_rows_by_id,
-)
-
 
 REFUSAL_SYSTEM_INVALID_INTERFACE = "refusal.system.invalid_interface"
 REFUSAL_SYSTEM_INVARIANT_VIOLATION = "refusal.system.invariant_violation"
 REFUSAL_SYSTEM_INVALID_MACRO_MODEL_SET = "refusal.system.invalid_macro_model_set"
 
 
+def _as_map(value: object) -> dict:
+    return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
 def _sorted_tokens(values: Iterable[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
+
+
+def _system_rows_by_id(rows: object) -> Dict[str, dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("system_id", ""))):
+        system_id = str(row.get("system_id", "")).strip()
+        if system_id:
+            out[system_id] = dict(row)
+    return out
+
+
+def _interface_signature_rows_by_system(rows: object) -> Dict[str, dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("system_id", ""))):
+        system_id = str(row.get("system_id", "")).strip()
+        if system_id:
+            out[system_id] = dict(row)
+    return out
+
+
+def _boundary_invariant_rows_by_id(rows: object) -> Dict[str, dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("invariant_id", ""))):
+        invariant_id = str(row.get("invariant_id", "")).strip()
+        if invariant_id:
+            out[invariant_id] = dict(row)
+    return out
+
+
+def _macro_capsule_rows_by_id(rows: object) -> Dict[str, dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("capsule_id", ""))):
+        capsule_id = str(row.get("capsule_id", "")).strip()
+        if capsule_id:
+            out[capsule_id] = dict(row)
+    return out
 
 
 def _rows_from_registry_payload(payload: Mapping[str, object] | None, keys: Sequence[str]) -> List[dict]:
@@ -105,8 +145,8 @@ def validate_interface_signature(
 ) -> dict:
     checks: List[dict] = []
     system_token = str(system_id or "").strip()
-    systems = system_rows_by_id(system_rows)
-    interface_by_system = interface_signature_rows_by_system(interface_signature_rows)
+    systems = _system_rows_by_id(system_rows)
+    interface_by_system = _interface_signature_rows_by_system(interface_signature_rows)
     system_row = dict(systems.get(system_token) or {})
     interface_row = dict(interface_by_system.get(system_token) or {})
     checks.append(_check("interface.system.present", bool(system_row), "system row lookup", {"system_id": system_token}))
@@ -179,7 +219,7 @@ def validate_boundary_invariants(
 ) -> dict:
     checks: List[dict] = []
     system_token = str(system_id or "").strip()
-    systems = system_rows_by_id(system_rows)
+    systems = _system_rows_by_id(system_rows)
     system_row = dict(systems.get(system_token) or {})
     checks.append(_check("invariant.system.present", bool(system_row), "system row lookup", {"system_id": system_token}))
     if not system_row:
@@ -193,11 +233,7 @@ def validate_boundary_invariants(
         }
 
     tolerance_ids = set(_tolerance_policy_ids(tolerance_policy_registry_payload))
-    invariant_by_id = dict(
-        (str(row.get("invariant_id", "")).strip(), dict(row))
-        for row in normalize_boundary_invariant_rows(boundary_invariant_rows)
-        if str(row.get("invariant_id", "")).strip()
-    )
+    invariant_by_id = _boundary_invariant_rows_by_id(boundary_invariant_rows)
     invariant_ids = _sorted_tokens(system_row.get("boundary_invariant_ids") or [])
     checks.append(_check("invariant.ids.present", bool(invariant_ids), "boundary_invariant_ids present"))
     for invariant_id in invariant_ids:
@@ -260,11 +296,7 @@ def validate_macro_model_set(
 ) -> dict:
     checks: List[dict] = []
     capsule_token = str(capsule_id or "").strip()
-    capsule_by_id = dict(
-        (str(row.get("capsule_id", "")).strip(), dict(row))
-        for row in normalize_system_macro_capsule_rows(system_macro_capsule_rows)
-        if str(row.get("capsule_id", "")).strip()
-    )
+    capsule_by_id = _macro_capsule_rows_by_id(system_macro_capsule_rows)
     capsule_row = dict(capsule_by_id.get(capsule_token) or {})
     checks.append(_check("macro.capsule.present", bool(capsule_row), "capsule row lookup", {"capsule_id": capsule_token}))
     if not capsule_row:
@@ -278,7 +310,7 @@ def validate_macro_model_set(
         }
 
     system_id = str(capsule_row.get("system_id", "")).strip()
-    interface_row = dict(interface_signature_rows_by_system(interface_signature_rows).get(system_id) or {})
+    interface_row = dict(_interface_signature_rows_by_system(interface_signature_rows).get(system_id) or {})
     checks.append(_check("macro.interface.present", bool(interface_row), "interface for capsule system"))
     macro_model_set_id = str(capsule_row.get("macro_model_set_id", "")).strip() or str(_as_map(capsule_row.get("extensions")).get("macro_model_set_id", "")).strip()
     model_error_bounds_ref = str(capsule_row.get("model_error_bounds_ref", "")).strip() or str(_as_map(capsule_row.get("extensions")).get("model_error_bounds_ref", "")).strip()

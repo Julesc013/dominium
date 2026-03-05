@@ -564,8 +564,12 @@ from src.pollution import (
 from src.system import (
     REFUSAL_SYSTEM_COLLAPSE_INVALID,
     REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
+    REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE,
+    REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION,
     REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH,
     REFUSAL_SYSTEM_EXPAND_INVALID,
+    REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE,
+    REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION,
     SystemCollapseError,
     SystemExpandError,
     collapse_system_graph,
@@ -29451,16 +29455,56 @@ def execute_intent(
                 {"process_id": process_id},
                 "$.intent.inputs.system_id",
             )
+        quantity_bundle_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="quantity_bundle_registry",
+            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            entry_key="quantity_bundles",
+        )
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        signal_channel_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="signal_channel_type_registry",
+            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            entry_key="signal_channel_types",
+        )
+        boundary_invariant_template_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="boundary_invariant_template_registry",
+            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            entry_key="boundary_invariant_templates",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
         try:
             collapse_result = collapse_system_graph(
                 state=state,
                 system_id=system_id,
                 current_tick=int(max(0, _as_int(current_tick, 0))),
                 process_id=process_id,
+                quantity_bundle_registry_payload=quantity_bundle_registry,
+                spec_type_registry_payload=spec_type_registry,
+                signal_channel_type_registry_payload=signal_channel_type_registry,
+                boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
+                tolerance_policy_registry_payload=tolerance_policy_registry,
             )
         except SystemCollapseError as exc:
             reason_code = str(getattr(exc, "reason_code", REFUSAL_SYSTEM_COLLAPSE_INVALID)).strip()
-            if reason_code not in {REFUSAL_SYSTEM_COLLAPSE_INVALID, REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE}:
+            if reason_code not in {
+                REFUSAL_SYSTEM_COLLAPSE_INVALID,
+                REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
+                REFUSAL_SYSTEM_COLLAPSE_INVALID_INTERFACE,
+                REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION,
+            }:
                 reason_code = REFUSAL_SYSTEM_COLLAPSE_INVALID
             details = dict(getattr(exc, "details", {}) or {})
             details["system_id"] = system_id
@@ -29492,16 +29536,56 @@ def execute_intent(
                 {"process_id": process_id},
                 "$.intent.inputs.capsule_id",
             )
+        quantity_bundle_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="quantity_bundle_registry",
+            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            entry_key="quantity_bundles",
+        )
+        spec_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="spec_type_registry",
+            registry_rel_path="data/registries/spec_type_registry.json",
+            entry_key="spec_types",
+        )
+        signal_channel_type_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="signal_channel_type_registry",
+            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            entry_key="signal_channel_types",
+        )
+        boundary_invariant_template_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="boundary_invariant_template_registry",
+            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            entry_key="boundary_invariant_templates",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
         try:
             expand_result = expand_system_graph(
                 state=state,
                 capsule_id=capsule_id,
                 current_tick=int(max(0, _as_int(current_tick, 0))),
                 process_id=process_id,
+                quantity_bundle_registry_payload=quantity_bundle_registry,
+                spec_type_registry_payload=spec_type_registry,
+                signal_channel_type_registry_payload=signal_channel_type_registry,
+                boundary_invariant_template_registry_payload=boundary_invariant_template_registry,
+                tolerance_policy_registry_payload=tolerance_policy_registry,
             )
         except SystemExpandError as exc:
             reason_code = str(getattr(exc, "reason_code", REFUSAL_SYSTEM_EXPAND_INVALID)).strip()
-            if reason_code not in {REFUSAL_SYSTEM_EXPAND_INVALID, REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH}:
+            if reason_code not in {
+                REFUSAL_SYSTEM_EXPAND_INVALID,
+                REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH,
+                REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE,
+                REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION,
+            }:
                 reason_code = REFUSAL_SYSTEM_EXPAND_INVALID
             details = dict(getattr(exc, "details", {}) or {})
             details["capsule_id"] = capsule_id

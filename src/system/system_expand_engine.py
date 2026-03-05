@@ -15,10 +15,18 @@ from src.system.system_collapse_engine import (
     normalize_system_rows,
     normalize_system_state_vector_rows,
 )
+from src.system.system_validation_engine import (
+    REFUSAL_SYSTEM_INVALID_INTERFACE,
+    REFUSAL_SYSTEM_INVARIANT_VIOLATION,
+    validate_boundary_invariants,
+    validate_interface_signature,
+)
 
 
 REFUSAL_SYSTEM_EXPAND_INVALID = "REFUSAL_SYSTEM_EXPAND_INVALID"
 REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH = "REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH"
+REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE = REFUSAL_SYSTEM_INVALID_INTERFACE
+REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION = REFUSAL_SYSTEM_INVARIANT_VIOLATION
 
 
 class SystemExpandError(RuntimeError):
@@ -118,6 +126,11 @@ def expand_system_graph(
     capsule_id: str,
     current_tick: int,
     process_id: str = "process.system_expand",
+    quantity_bundle_registry_payload: Mapping[str, object] | None = None,
+    spec_type_registry_payload: Mapping[str, object] | None = None,
+    signal_channel_type_registry_payload: Mapping[str, object] | None = None,
+    boundary_invariant_template_registry_payload: Mapping[str, object] | None = None,
+    tolerance_policy_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     if not isinstance(state, dict):
         raise SystemExpandError(
@@ -181,6 +194,45 @@ def expand_system_graph(
         capsule_row=capsule_row,
         state_vector_row=state_vector_row,
     )
+
+    interface_validation = validate_interface_signature(
+        system_id=system_id,
+        system_rows=state.get("system_rows") or [],
+        interface_signature_rows=state.get("system_interface_signature_rows") or [],
+        quantity_bundle_registry_payload=quantity_bundle_registry_payload,
+        spec_type_registry_payload=spec_type_registry_payload,
+        signal_channel_type_registry_payload=signal_channel_type_registry_payload,
+    )
+    if str(interface_validation.get("result", "")).strip() != "complete":
+        raise SystemExpandError(
+            "restored system failed interface signature validation",
+            reason_code=REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE,
+            details={
+                "system_id": system_id,
+                "capsule_id": capsule_token,
+                "failed_checks": [dict(row) for row in list(interface_validation.get("failed_checks") or []) if isinstance(row, Mapping)],
+                "deterministic_fingerprint": str(interface_validation.get("deterministic_fingerprint", "")).strip(),
+            },
+        )
+
+    invariant_validation = validate_boundary_invariants(
+        system_id=system_id,
+        system_rows=state.get("system_rows") or [],
+        boundary_invariant_rows=state.get("system_boundary_invariant_rows") or state.get("boundary_invariant_rows") or [],
+        boundary_invariant_template_registry_payload=boundary_invariant_template_registry_payload,
+        tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+    )
+    if str(invariant_validation.get("result", "")).strip() != "complete":
+        raise SystemExpandError(
+            "restored system failed boundary invariant validation",
+            reason_code=REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION,
+            details={
+                "system_id": system_id,
+                "capsule_id": capsule_token,
+                "failed_checks": [dict(row) for row in list(invariant_validation.get("failed_checks") or []) if isinstance(row, Mapping)],
+                "deterministic_fingerprint": str(invariant_validation.get("deterministic_fingerprint", "")).strip(),
+            },
+        )
 
     tick_value = int(max(0, _as_int(current_tick, 0)))
     restored_assembly_ids = sorted(
@@ -246,6 +298,8 @@ def expand_system_graph(
             "signals_rebound": True,
             "restored_assembly_ids": list(restored_assembly_ids),
             "provenance_anchor_hash": str(capsule_row.get("provenance_anchor_hash", "")).strip(),
+            "interface_validation_fingerprint": str(interface_validation.get("deterministic_fingerprint", "")).strip(),
+            "invariant_validation_fingerprint": str(invariant_validation.get("deterministic_fingerprint", "")).strip(),
         },
     }
     expand_event["deterministic_fingerprint"] = canonical_sha256(dict(expand_event, deterministic_fingerprint=""))
@@ -320,6 +374,8 @@ def expand_system_graph(
 __all__ = [
     "REFUSAL_SYSTEM_EXPAND_INVALID",
     "REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH",
+    "REFUSAL_SYSTEM_EXPAND_INVALID_INTERFACE",
+    "REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION",
     "SystemExpandError",
     "expand_system_graph",
 ]
