@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "system_templates.base",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0"
+  ],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "registry.system_templates.base",
+      "path": "data/system_template_registry.json"
+    }
+  ],
+  "canonical_hash": "placeholder.system_templates.base.v1",
+  "signature_status": "unsigned"
+}

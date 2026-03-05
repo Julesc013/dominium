@@ -1,0 +1,30 @@
+SCHEMA: system/system_template.schema
+schema_id: dominium.schema.system.system_template
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define pack-driven reusable system template records for deterministic compilation/instantiation.
+- Bind template declarations to interface/invariant/macro/tier/safety/spec contracts.
+
+NON-SEMANTICS:
+- No direct runtime mutation authority.
+- No implicit spawn or direct world edit behavior.
+
+REQUIRED SHAPE:
+record system_template
+  required:
+    - template_id: id
+    - version: text
+    - description: text
+    - required_domains: list
+    - assembly_graph_spec_ref: text
+    - interface_signature_template_id: id
+    - boundary_invariant_template_ids: list
+    - macro_model_set_id: id
+    - tier_contract_id: id
+    - safety_pattern_instance_templates: list
+    - spec_bindings: list
+    - nested_template_refs: list
+    - deterministic_fingerprint: text
+    - extensions: map

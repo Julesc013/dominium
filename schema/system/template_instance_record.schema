@@ -1,0 +1,22 @@
+SCHEMA: system/template_instance_record.schema
+schema_id: dominium.schema.system.template_instance_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record canonical process-based instantiation of a system template.
+- Provide deterministic provenance anchor for plan/commitment-driven instantiation.
+
+NON-SEMANTICS:
+- Does not perform compilation or process execution.
+- Does not authorize direct assembly mutation.
+
+REQUIRED SHAPE:
+record template_instance_record
+  required:
+    - instance_id: id
+    - template_id: id
+    - instantiation_mode: enum{micro,macro,hybrid}
+    - created_tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

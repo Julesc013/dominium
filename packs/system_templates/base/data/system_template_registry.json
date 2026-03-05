@@ -1,0 +1,10 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.system_templates.base",
+  "registry_version": "1.0.0",
+  "system_templates": [],
+  "extensions": {
+    "source": "SYS4-2",
+    "optional_pack": true
+  }
+}

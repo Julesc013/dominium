@@ -6,8 +6,11 @@
     "registry_version": "1.0.0",
     "system_templates": [],
     "extensions": {
-      "source": "SYS0-3",
-      "null_boot_safe": true
+      "source": "SYS4-2",
+      "null_boot_safe": true,
+      "optional_pack_paths": [
+        "packs/system_templates/base"
+      ]
     }
   }
 }
