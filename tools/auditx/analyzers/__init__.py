@@ -301,6 +301,8 @@ from analyzers import e274_omniscient_explain_leak_smell
 from analyzers import e275_unbounded_expand_smell
 from analyzers import e276_silent_collapse_smell
 from analyzers import e277_invariant_check_skipped_smell
+from analyzers import e278_custom_compilation_smell
+from analyzers import e279_missing_equivalence_proof_smell
 
 
 ANALYZERS = (
@@ -605,6 +607,8 @@ ANALYZERS = (
     e275_unbounded_expand_smell,
     e276_silent_collapse_smell,
     e277_invariant_check_skipped_smell,
+    e278_custom_compilation_smell,
+    e279_missing_equivalence_proof_smell,
 )
 
 

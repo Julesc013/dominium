@@ -450,6 +450,8 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-CERT-INVALIDATED-ON-MODIFICATION",
     "INV-EXPLAIN-CONTRACT-REQUIRED-FOR-SYSTEM-EVENTS",
     "INV-FORENSICS-DERIVED-ONLY",
+    "INV-NO-BESPOKE-COMPILER",
+    "INV-COMPILED-MODEL-REQUIRES-PROOF",
     "INV-ALL-FAILURES-LOGGED",
     "INV-SCHEDULE-DOMAIN-DECLARED",
     "INV-TIME-MAPPING-MODEL-ONLY",
@@ -776,6 +778,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E275_UNBOUNDED_EXPAND_SMELL": "INV-SYS-BUDGETED",
     "E276_SILENT_COLLAPSE_SMELL": "INV-NO-SILENT-TIER-TRANSITION",
     "E277_INVARIANT_CHECK_SKIPPED_SMELL": "INV-SYS-INVARIANTS-ALWAYS-CHECKED",
+    "E278_CUSTOM_COMPILATION_SMELL": "INV-NO-BESPOKE-COMPILER",
+    "E279_MISSING_EQUIVALENCE_PROOF_SMELL": "INV-COMPILED-MODEL-REQUIRES-PROOF",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -19134,6 +19138,149 @@ def _append_system_envelope_invariant_findings(
             )
         )
 
+def _append_compiled_model_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    bespoke_rule_id = "INV-NO-BESPOKE-COMPILER"
+    proof_rule_id = "INV-COMPILED-MODEL-REQUIRES-PROOF"
+
+    compile_engine_rel = "src/meta/compile/compile_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    process_registry_rel = "data/registries/process_registry.json"
+    verify_tool_rel = "tools/meta/tool_verify_compiled_model.py"
+    required_schema_rels = (
+        "schema/meta/compiled_model.schema",
+        "schema/meta/equivalence_proof.schema",
+        "schema/meta/validity_domain.schema",
+        "schema/meta/compile_request.schema",
+        "schema/meta/compile_result.schema",
+    )
+    required_registry_rels = (
+        "data/registries/compiled_type_registry.json",
+        "data/registries/verification_procedure_registry.json",
+        "data/registries/compile_policy_registry.json",
+    )
+    for rel_path in (
+        compile_engine_rel,
+        runtime_rel,
+        process_registry_rel,
+        verify_tool_rel,
+    ) + required_schema_rels + required_registry_rels:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        rule_id = bespoke_rule_id
+        if rel_path in required_schema_rels:
+            rule_id = proof_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="COMPILE-0 baseline artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, message, rule_id in (
+        ('elif process_id == "process.compile_request_submit":', "runtime must expose compile_request_submit process branch", bespoke_rule_id),
+        ("evaluate_compile_request(", "compile process must route through framework compile engine", bespoke_rule_id),
+        ("_refresh_compile_hash_chains(state)", "compile process must refresh deterministic compile hash-chain surfaces", proof_rule_id),
+        ("equivalence_proof_rows", "compile process must persist equivalence_proof_rows", proof_rule_id),
+        ("compiled_model_rows", "compile process must persist compiled_model_rows", proof_rule_id),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    compile_engine_text = _file_text(repo_root, compile_engine_rel)
+    for token, message, rule_id in (
+        ("def evaluate_compile_request(", "compile engine must expose deterministic evaluate_compile_request entrypoint", bespoke_rule_id),
+        ("build_equivalence_proof_row(", "compile engine must emit equivalence proofs for compile outputs", proof_rule_id),
+        ("REFUSAL_COMPILE_MISSING_PROOF", "compile engine must explicitly refuse compile requests without valid proof rows", proof_rule_id),
+        ("def compiled_model_is_valid(", "runtime validity hook missing from compile framework", proof_rule_id),
+        ("def compiled_model_execute(", "runtime execute hook missing from compile framework", proof_rule_id),
+    ):
+        if token in compile_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=compile_engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    process_registry_text = _file_text(repo_root, process_registry_rel)
+    for token, rule_id in (
+        ('"process_id": "process.compile_request_submit"', bespoke_rule_id),
+        ("dominium.schema.meta.compile_request@1.0.0", proof_rule_id),
+        ("dominium.schema.meta.compile_result@1.0.0", proof_rule_id),
+        ("dominium.schema.meta.equivalence_proof@1.0.0", proof_rule_id),
+        ("dominium.schema.meta.compiled_model@1.0.0", proof_rule_id),
+    ):
+        if token in process_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="process registry is missing COMPILE-0 process/schema linkage token",
+                rule_id=rule_id,
+            )
+        )
+
+    compile_call_pattern = re.compile(r"\bevaluate_compile_request\s*\(", re.IGNORECASE)
+    allowed_compile_paths = {
+        compile_engine_rel,
+        runtime_rel,
+        verify_tool_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if rel_norm.startswith(("docs/", "schema/", "schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+            continue
+        if rel_norm in allowed_compile_paths:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not compile_call_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="compile engine invoked outside canonical COMPILE-0 runtime/tool pathway",
+                    rule_id=bespoke_rule_id,
+                )
+            )
+            break
+
 
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
@@ -21555,6 +21702,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_envelope_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_compiled_model_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
