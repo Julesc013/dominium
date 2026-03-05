@@ -62,6 +62,10 @@ Domains may execute compiled forms only through framework hooks:
 
 Domains must not introduce direct custom compiled execution bypasses.
 
+Reference implementation location:
+
+- `src/meta/compile/compile_engine.py` (framework-owned hook surface only; no domain-specific wiring in COMPILE-0)
+
 ## 6) Forced Expand / Fallback Triggers
 
 Compiled execution must trigger expand/fallback when:
