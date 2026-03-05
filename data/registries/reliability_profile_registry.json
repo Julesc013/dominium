@@ -1,0 +1,223 @@
+{
+  "schema_id": "dominium.registry.reliability_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.reliability_profile_registry",
+    "registry_version": "1.0.0",
+    "reliability_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "reliability_profile_id": "reliability.engine_basic",
+        "failure_modes": [
+          {
+            "failure_mode_id": "failure.mode.overheat",
+            "hazard_ids": [
+              "hazard.thermal.overheat",
+              "hazard.fire.risk"
+            ],
+            "warning_threshold": 450,
+            "forced_expand_threshold": 700,
+            "failure_threshold": 900
+          },
+          {
+            "failure_mode_id": "failure.mode.control_loss",
+            "hazard_ids": [
+              "hazard.control.loss"
+            ],
+            "warning_threshold": 400,
+            "forced_expand_threshold": 650,
+            "failure_threshold": 850
+          }
+        ],
+        "trigger_rules": {
+          "default_warning_threshold": 450,
+          "default_forced_expand_threshold": 700,
+          "default_failure_threshold": 900
+        },
+        "stochastic_allowed": false,
+        "rng_stream_name": null,
+        "safe_fallback_actions": [
+          "safety.fail_safe_stop",
+          "safety.shutdown.isolate"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reliability_profile_id": "reliability.pump_basic",
+        "failure_modes": [
+          {
+            "failure_mode_id": "failure.mode.overpressure",
+            "hazard_ids": [
+              "hazard.fluid.overpressure",
+              "hazard.fluid.burst"
+            ],
+            "warning_threshold": 500,
+            "forced_expand_threshold": 720,
+            "failure_threshold": 910
+          },
+          {
+            "failure_mode_id": "failure.mode.corrosion_breach",
+            "hazard_ids": [
+              "hazard.chem.corrosion"
+            ],
+            "warning_threshold": 420,
+            "forced_expand_threshold": 680,
+            "failure_threshold": 880
+          }
+        ],
+        "trigger_rules": {
+          "default_warning_threshold": 500,
+          "default_forced_expand_threshold": 720,
+          "default_failure_threshold": 910
+        },
+        "stochastic_allowed": false,
+        "rng_stream_name": null,
+        "safe_fallback_actions": [
+          "safety.relief.open",
+          "safety.shutdown.isolate"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reliability_profile_id": "reliability.pressure_system_basic",
+        "failure_modes": [
+          {
+            "failure_mode_id": "failure.mode.overpressure",
+            "hazard_ids": [
+              "hazard.fluid.overpressure"
+            ],
+            "warning_threshold": 480,
+            "forced_expand_threshold": 700,
+            "failure_threshold": 905
+          },
+          {
+            "failure_mode_id": "failure.mode.structural_fracture",
+            "hazard_ids": [
+              "hazard.structural.stress"
+            ],
+            "warning_threshold": 430,
+            "forced_expand_threshold": 690,
+            "failure_threshold": 900
+          }
+        ],
+        "trigger_rules": {
+          "default_warning_threshold": 480,
+          "default_forced_expand_threshold": 700,
+          "default_failure_threshold": 905
+        },
+        "stochastic_allowed": false,
+        "rng_stream_name": null,
+        "safe_fallback_actions": [
+          "safety.relief.open",
+          "safety.fail_safe_stop"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reliability_profile_id": "reliability.power_system_basic",
+        "failure_modes": [
+          {
+            "failure_mode_id": "failure.mode.electrical_fault",
+            "hazard_ids": [
+              "hazard.elec.fault",
+              "hazard.elec.arc"
+            ],
+            "warning_threshold": 460,
+            "forced_expand_threshold": 710,
+            "failure_threshold": 900
+          },
+          {
+            "failure_mode_id": "failure.mode.control_loss",
+            "hazard_ids": [
+              "hazard.control.loss"
+            ],
+            "warning_threshold": 420,
+            "forced_expand_threshold": 680,
+            "failure_threshold": 870
+          }
+        ],
+        "trigger_rules": {
+          "default_warning_threshold": 460,
+          "default_forced_expand_threshold": 710,
+          "default_failure_threshold": 900
+        },
+        "stochastic_allowed": false,
+        "rng_stream_name": null,
+        "safe_fallback_actions": [
+          "safety.breaker.trip",
+          "safety.fail_safe_stop"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "reliability_profile_id": "reliability.reactor_stub",
+        "failure_modes": [
+          {
+            "failure_mode_id": "failure.mode.overheat",
+            "hazard_ids": [
+              "hazard.thermal.overheat",
+              "hazard.fire.risk"
+            ],
+            "warning_threshold": 420,
+            "forced_expand_threshold": 650,
+            "failure_threshold": 860
+          },
+          {
+            "failure_mode_id": "failure.mode.structural_fracture",
+            "hazard_ids": [
+              "hazard.structural.stress"
+            ],
+            "warning_threshold": 430,
+            "forced_expand_threshold": 670,
+            "failure_threshold": 870
+          },
+          {
+            "failure_mode_id": "failure.mode.control_loss",
+            "hazard_ids": [
+              "hazard.control.loss"
+            ],
+            "warning_threshold": 390,
+            "forced_expand_threshold": 620,
+            "failure_threshold": 840
+          }
+        ],
+        "trigger_rules": {
+          "default_warning_threshold": 420,
+          "default_forced_expand_threshold": 650,
+          "default_failure_threshold": 860
+        },
+        "stochastic_allowed": true,
+        "rng_stream_name": "rng.system.reliability.reactor_stub",
+        "safe_fallback_actions": [
+          "safety.scram",
+          "safety.shutdown.isolate"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS6-2",
+          "stochastic_policy": "profile_gated"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "SYS6-2",
+      "null_boot_safe": true
+    }
+  }
+}

@@ -1,0 +1,20 @@
+SCHEMA: system/failure_event.schema
+schema_id: dominium.schema.system.failure_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical system-level failure events for SYS-6 reliability outputs.
+
+NON-SEMANTICS:
+- No implicit failure generation outside deterministic process paths.
+
+REQUIRED SHAPE:
+record failure_event
+  required:
+    - event_id: id
+    - system_id: id
+    - failure_mode_id: id
+    - tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

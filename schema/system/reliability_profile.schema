@@ -1,0 +1,24 @@
+SCHEMA: system/reliability_profile.schema
+schema_id: dominium.schema.system.reliability_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic system reliability profiles for SYS-6.
+- Bind failure modes and trigger rules to safety fallback actions.
+
+NON-SEMANTICS:
+- No direct process mutation authority.
+- No stochastic behavior unless profile explicitly allows it.
+
+REQUIRED SHAPE:
+record reliability_profile
+  required:
+    - reliability_profile_id: id
+    - failure_modes: list
+    - trigger_rules: map
+    - stochastic_allowed: bool
+    - rng_stream_name: text?
+    - safe_fallback_actions: list
+    - deterministic_fingerprint: text
+    - extensions: map
