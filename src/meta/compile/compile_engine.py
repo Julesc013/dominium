@@ -426,7 +426,7 @@ def evaluate_compile_request(
         target_compiled_type_id=str(compile_request.get("target_compiled_type_id", "")).strip(),
         error_bound_policy_id=(None if compile_request.get("error_bound_policy_id") is None else str(compile_request.get("error_bound_policy_id", "")).strip() or None),
         deterministic_fingerprint=str(compile_request.get("deterministic_fingerprint", "")).strip(),
-        extensions=dict(_as_map(compile_request.get("extensions")), current_tick=tick),
+        extensions=dict(_as_map(compile_request.get("extensions")), current_tick=tick, source_tick=tick),
     )
     if not request_row:
         return {
@@ -479,7 +479,7 @@ def evaluate_compile_request(
         error_bound_policy_id=error_policy,
         proof_hash=canonical_sha256({"source_hash": source_hash, "compiled_payload_hash": canonical_sha256(reduced_payload), "proof_kind": proof_kind, "verification_procedure_id": verifier_id, "error_bound_policy_id": error_policy}),
         deterministic_fingerprint="",
-        extensions={},
+        extensions={"source_tick": tick},
     )
     if not proof_row:
         return {
@@ -495,7 +495,7 @@ def evaluate_compile_request(
         timing_constraints=_as_map(_as_map(source_ref.get("validity_domain")).get("timing_constraints")) or None,
         environmental_constraints=_as_map(_as_map(source_ref.get("validity_domain")).get("environmental_constraints")) or None,
         deterministic_fingerprint="",
-        extensions={"source_hash": source_hash},
+        extensions={"source_hash": source_hash, "source_tick": tick},
     )
     payload_hash = canonical_sha256(reduced_payload)
     model_row = build_compiled_model_row(
@@ -509,7 +509,11 @@ def evaluate_compile_request(
         validity_domain_ref=str(validity_row.get("domain_id", "")).strip(),
         equivalence_proof_ref=str(proof_row.get("proof_id", "")).strip(),
         deterministic_fingerprint="",
-        extensions={"source_ref_snapshot": source_ref, "compile_policy_id": str(policy_row.get("compile_policy_id", "")).strip() or "compile.default"},
+        extensions={
+            "source_ref_snapshot": source_ref,
+            "compile_policy_id": str(policy_row.get("compile_policy_id", "")).strip() or "compile.default",
+            "source_tick": tick,
+        },
     )
     result_row = build_compile_result_row(
         result_id="compile_result.{}".format(canonical_sha256({"request_id": request_row.get("request_id"), "compiled_model_id": model_row.get("compiled_model_id")})[:16]),
@@ -517,7 +521,7 @@ def evaluate_compile_request(
         success=True,
         refusal=None,
         deterministic_fingerprint="",
-        extensions={"request_id": request_row.get("request_id"), "proof_id": proof_row.get("proof_id")},
+        extensions={"request_id": request_row.get("request_id"), "proof_id": proof_row.get("proof_id"), "source_tick": tick},
     )
     return {
         "result": "complete",

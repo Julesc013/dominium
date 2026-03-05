@@ -16,6 +16,10 @@ _DERIVED_STATE_KEYS = (
     "inspection_snapshot_rows",
     "derived_summary_rows",
     "derived_statistics_rows",
+    "compiled_model_rows",
+    "equivalence_proof_rows",
+    "validity_domain_rows",
+    "compile_result_rows",
 )
 
 _BRANCH_OPEN_STATUSES = {"open", "pending", "active"}
