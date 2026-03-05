@@ -37,7 +37,11 @@ def _read_json(path: str) -> Tuple[dict, str]:
 
 def _is_energy_quantity(quantity_id: str) -> bool:
     token = str(quantity_id or "").strip()
-    return token.startswith("quantity.energy_") or token in {"quantity.energy_total", "quantity.mass_energy_total"}
+    return token.startswith("quantity.energy_") or token in {
+        "quantity.energy_total",
+        "quantity.mass_energy_total",
+        "quantity.heat_loss",
+    }
 
 
 def _quantity_map(value: object) -> Dict[str, int]:
