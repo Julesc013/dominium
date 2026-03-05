@@ -1,4 +1,4 @@
-"""FAST test: SYS-2 capsule hash chains remain stable across equivalent reordered inputs."""
+"""FAST test: SYS-2 capsule execution produces deterministic replay-equal results."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import copy
 import sys
 
 
-TEST_ID = "test_cross_platform_capsule_hash_match"
+TEST_ID = "test_capsule_execution_deterministic"
 TEST_TAGS = ["fast", "system", "sys2", "determinism"]
 
 
@@ -24,35 +24,31 @@ def run(repo_root: str):
     policy_context = policy_context_for_macro(repo_root=repo_root)
     state_a = base_state()
     state_b = copy.deepcopy(state_a)
-    interface_rows = list(state_b.get("system_interface_signature_rows") or [])
-    if interface_rows:
-        interface_rows[0]["port_list"] = list(reversed(list(interface_rows[0].get("port_list") or [])))
-        state_b["system_interface_signature_rows"] = interface_rows
-    state_b["signal_channel_rows"] = list(reversed(list(state_b.get("signal_channel_rows") or [])))
-    state_b["signal_channels"] = list(reversed(list(state_b.get("signal_channels") or [])))
 
     result_a = execute_macro_tick(state=state_a, repo_root=repo_root, inputs={}, policy_context=policy_context)
     result_b = execute_macro_tick(state=state_b, repo_root=repo_root, inputs={}, policy_context=policy_context)
     if str(result_a.get("result", "")).strip() != "complete":
-        return {"status": "fail", "message": "base macro tick execution failed"}
+        return {"status": "fail", "message": "first macro tick execution did not complete"}
     if str(result_b.get("result", "")).strip() != "complete":
-        return {"status": "fail", "message": "reordered macro tick execution failed"}
+        return {"status": "fail", "message": "second macro tick execution did not complete"}
 
-    digest_a = canonical_sha256(
+    fingerprint_a = canonical_sha256(
         {
+            "runtime": str(state_a.get("system_macro_runtime_hash_chain", "")).strip(),
             "forced": str(state_a.get("system_forced_expand_event_hash_chain", "")).strip(),
             "output": str(state_a.get("system_macro_output_record_hash_chain", "")).strip(),
-            "runtime": str(state_a.get("system_macro_runtime_hash_chain", "")).strip(),
+            "flow_adjust": state_a.get("model_flow_adjustment_rows") or [],
         }
     )
-    digest_b = canonical_sha256(
+    fingerprint_b = canonical_sha256(
         {
+            "runtime": str(state_b.get("system_macro_runtime_hash_chain", "")).strip(),
             "forced": str(state_b.get("system_forced_expand_event_hash_chain", "")).strip(),
             "output": str(state_b.get("system_macro_output_record_hash_chain", "")).strip(),
-            "runtime": str(state_b.get("system_macro_runtime_hash_chain", "")).strip(),
+            "flow_adjust": state_b.get("model_flow_adjustment_rows") or [],
         }
     )
-    if digest_a != digest_b:
-        return {"status": "fail", "message": "cross-platform capsule hash digest diverged for equivalent input ordering"}
-    return {"status": "pass", "message": "cross-platform capsule hash digest stable"}
+    if fingerprint_a != fingerprint_b:
+        return {"status": "fail", "message": "macro capsule execution fingerprint changed across equivalent runs"}
+    return {"status": "pass", "message": "macro capsule execution deterministic fingerprint stable"}
 
