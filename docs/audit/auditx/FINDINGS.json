@@ -1,7 +1,7 @@
 {
   "artifact_class": "CANONICAL",
-  "changed_only": false,
-  "finding_count": 2187,
+  "changed_only": true,
+  "finding_count": 2183,
   "findings": [
     {
       "analyzer_id": "A4_DERIVED_ARTIFACT_CONTRACT",
@@ -1528,6 +1528,58 @@
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
       "finding_id": "C2_MODE_FLAG_SMELL:0050",
+      "fingerprint": "f82cbdcb8286776eb2077b55689c507423f399d6e5511ba90375af02014159d2",
+      "location": {
+        "file_path": ".xstack_cache/ws-9573dfcfb0515f37/auditx/entries/18f8dcc2c071eabb5435b29184a1610142c819b54185ebad6c1458ed8eb1e62c.json"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-MODE-AS-PROFILES",
+        "INV-NO-HARDCODED-MODE-BRANCH"
+      ],
+      "related_paths": [
+        ".xstack_cache/ws-9573dfcfb0515f37/auditx/entries/18f8dcc2c071eabb5435b29184a1610142c819b54185ebad6c1458ed8eb1e62c.json"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C2_MODE_FLAG_SMELL",
+      "category": "mode_flag_smell",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
+        "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
+      ],
+      "finding_id": "C2_MODE_FLAG_SMELL:0051",
+      "fingerprint": "9e7bf90c3b89a8349950a0e46b67ed0e6148b7d23848713d8e18da496bdcaf94",
+      "location": {
+        "file_path": ".xstack_cache/ws-9573dfcfb0515f37/auditx/entries/5f209bae921c16620e51dd9414efa4aeb236821ab74c32a4734ac47de6d9e6de.json"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-MODE-AS-PROFILES",
+        "INV-NO-HARDCODED-MODE-BRANCH"
+      ],
+      "related_paths": [
+        ".xstack_cache/ws-9573dfcfb0515f37/auditx/entries/5f209bae921c16620e51dd9414efa4aeb236821ab74c32a4734ac47de6d9e6de.json"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C2_MODE_FLAG_SMELL",
+      "category": "mode_flag_smell",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
+        "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
+      ],
+      "finding_id": "C2_MODE_FLAG_SMELL:0052",
       "fingerprint": "bf3b1ecb5e7f621dd9d4f851b4393fb9916e2c65ca89d2ce5ca81adbf582a9b5",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/0fda9d8ac5db7a27ddd99f168d338c61c3905b798b6c0e005bf5b678d0aae5cd.json"
@@ -1553,7 +1605,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0051",
+      "finding_id": "C2_MODE_FLAG_SMELL:0053",
       "fingerprint": "8261403d216543befd50ea6766d8deb47bada0f391516f66c8a106bf48de1e38",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/1961a1edbe632ac55f0157d4ee42f16d8cf24bf6f4d2af74884b4874152cd17e.json"
@@ -1579,7 +1631,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0052",
+      "finding_id": "C2_MODE_FLAG_SMELL:0054",
       "fingerprint": "a1bbebc92d2777718e5ffa3f43e4c5366bec411d0950472f6cb01ab22cb7bfa0",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/1c9f245d4739f9156d49fc907dd7bcdd9514b1bfa80d16e01c13b1142209da15.json"
@@ -1605,7 +1657,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0053",
+      "finding_id": "C2_MODE_FLAG_SMELL:0055",
       "fingerprint": "b9c26fe7d7029293cfc03cbfd9ee9d7988f81cc5ac0bf7c00246ae6f8f41f487",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/26b46cf64fd9abddfac52bff2f709241987d2e34368e7fe45bb4d29f7dbcea2a.json"
@@ -1631,7 +1683,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0054",
+      "finding_id": "C2_MODE_FLAG_SMELL:0056",
       "fingerprint": "b2dfef6273219fb792f18f5276c97790fb5a0540747cb096cc82505573281ca6",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/657b2295998bd7c7df6168a9a6739891f60ba65ca8a3cc34817592bd0ac06ba3.json"
@@ -1657,7 +1709,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0055",
+      "finding_id": "C2_MODE_FLAG_SMELL:0057",
       "fingerprint": "d2b0e670e2118f6af82efdce3b077b13339004b35ee12d7d055a751ab6caa254",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/74c16b925989ba79229bc03e662b1ffe3d53a3994266a57edcf1c2d28c35bab4.json"
@@ -1683,7 +1735,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0056",
+      "finding_id": "C2_MODE_FLAG_SMELL:0058",
       "fingerprint": "781a8a42a3c5a35162f2ca90423a9036db909cb99f0c7bbd8cd6ff7aeec3b454",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/84ceb49fa7aa2b8a62eae799e286809d06aa50a36c206ce301d55b00e3947636.json"
@@ -1709,7 +1761,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0057",
+      "finding_id": "C2_MODE_FLAG_SMELL:0059",
       "fingerprint": "4a1e1e481109f3048ed8582f5c419e5e9ae131b2968d8523e054236a70444ec1",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/85a8a517e6d8c8eba8d77944dfbecbf9996a073ea8fbb18fe276faba70ab2e58.json"
@@ -1735,7 +1787,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0058",
+      "finding_id": "C2_MODE_FLAG_SMELL:0060",
       "fingerprint": "c6dfb86ad3911f7982df864a846534b451bea92cd91330be98326b6f7b98127a",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/90ea1d7d86a6ae3ca9f9c7a8989174c41707afe57d605dae936b4f5516a517c1.json"
@@ -1761,7 +1813,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0059",
+      "finding_id": "C2_MODE_FLAG_SMELL:0061",
       "fingerprint": "f80f7db0d504e8e2f1288b0ed27e730a7787cd60353f013ef1e6c86a5a2a3ecd",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/d25089f9d7924cdd58a0989dd5946559b5cb8783d5d342a04595520a803657ba.json"
@@ -1787,7 +1839,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0060",
+      "finding_id": "C2_MODE_FLAG_SMELL:0062",
       "fingerprint": "fbb383425528f742fa91b328830eb39e44b5f861c64a1be06485677671b20e37",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/eb3f9a462051f165f7299198f3faf5990ad19903eb8111dcf671edf778ddc40c.json"
@@ -1813,7 +1865,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0061",
+      "finding_id": "C2_MODE_FLAG_SMELL:0063",
       "fingerprint": "b861c588d2d94dfcdf833a614cb246ca2461c986a4151189cdb755f62e39483a",
       "location": {
         "file_path": ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/fb5985d189b4f47b6ac918572c42bff3304d70f939b687b1c844a83421a81244.json"
@@ -1839,7 +1891,7 @@
         "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
         "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
       ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0062",
+      "finding_id": "C2_MODE_FLAG_SMELL:0064",
       "fingerprint": "f49bc58bf7fdf8bdb60e388aa20d7f730424fe56561b90e3dc120f6d9530c481",
       "location": {
         "file_path": ".xstack_cache/ws-98a5517800ad128e/auditx/entries/117f69e16585dc505c7601cb2a90cba4a2aed3297c16a39616924677ace09b7c.json"
@@ -1851,58 +1903,6 @@
       ],
       "related_paths": [
         ".xstack_cache/ws-98a5517800ad128e/auditx/entries/117f69e16585dc505c7601cb2a90cba4a2aed3297c16a39616924677ace09b7c.json"
-      ],
-      "severity": "VIOLATION",
-      "status": "OPEN",
-      "suggested_classification": "INVALID"
-    },
-    {
-      "analyzer_id": "C2_MODE_FLAG_SMELL",
-      "category": "mode_flag_smell",
-      "confidence": 0.9,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
-        "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
-      ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0063",
-      "fingerprint": "433f8408f77e823bedec93f0e4b9a81de6f8b9ec13c51b51548893d149f3df9f",
-      "location": {
-        "file_path": ".xstack_cache/ws-98a5517800ad128e/auditx/entries/2d704e1348f74e14fcc0496fe073348f01f739f75b14921969ed955fd5e65e92.json"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-MODE-AS-PROFILES",
-        "INV-NO-HARDCODED-MODE-BRANCH"
-      ],
-      "related_paths": [
-        ".xstack_cache/ws-98a5517800ad128e/auditx/entries/2d704e1348f74e14fcc0496fe073348f01f739f75b14921969ed955fd5e65e92.json"
-      ],
-      "severity": "VIOLATION",
-      "status": "OPEN",
-      "suggested_classification": "INVALID"
-    },
-    {
-      "analyzer_id": "C2_MODE_FLAG_SMELL",
-      "category": "mode_flag_smell",
-      "confidence": 0.9,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Found hardcoded mode token 'survival_mode' in runtime-affecting source.",
-        "Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle."
-      ],
-      "finding_id": "C2_MODE_FLAG_SMELL:0064",
-      "fingerprint": "22187c20a195ebd3113d235cc6a8728de8280a36cc63a11992f1a4f449fabf12",
-      "location": {
-        "file_path": ".xstack_cache/ws-98a5517800ad128e/auditx/entries/3a830a6d2d60166dad120743da026047dc2cbbfd973ee3ffd2fcbc7107014eff.json"
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-MODE-AS-PROFILES",
-        "INV-NO-HARDCODED-MODE-BRANCH"
-      ],
-      "related_paths": [
-        ".xstack_cache/ws-98a5517800ad128e/auditx/entries/3a830a6d2d60166dad120743da026047dc2cbbfd973ee3ffd2fcbc7107014eff.json"
       ],
       "severity": "VIOLATION",
       "status": "OPEN",
@@ -7721,110 +7721,6 @@
       "severity": "RISK",
       "status": "OPEN",
       "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
-      "fingerprint": "d0db2239d1aeab3ab8a92ce1d9a6354c94c4ba0340cb233a4e5bf842ec9caf91",
-      "location": {
-        "file_path": "schema/system/certificate_artifact.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/system/certificate_artifact.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
-      "fingerprint": "83797005d531de8706d103f9d460dd9cfafa6f184dd7637d7a3abfcc9999a784",
-      "location": {
-        "file_path": "schema/system/certification_profile.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/system/certification_profile.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
-      "fingerprint": "a1d29c403244c13d8fcf7609fdb000effb2c0caafee54d458ee80903f6e38d4d",
-      "location": {
-        "file_path": "schema/system/certification_result.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/system/certification_result.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E108_UNDECLARED_REGISTRY_SMELL",
-      "category": "architecture.undeclared_registry_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "registry path missing from topology registry nodes"
-      ],
-      "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0001",
-      "fingerprint": "e65d705582d54aac16f548c8778429a66a39dc5a4fddb283c2c1ff5b43e79d5f",
-      "location": {
-        "file_path": "data/registries/certification_profile_registry.json",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-REGISTRY"
-      ],
-      "related_paths": [
-        "data/registries/certification_profile_registry.json",
-        "docs/audit/TOPOLOGY_MAP.json"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
     },
     {
       "analyzer_id": "E113_DEPRECATED_USAGE_SMELL",
@@ -56067,7 +55963,7 @@
       "suggested_classification": "TODO-BLOCKED"
     }
   ],
-  "graph_hash": "f53636c48b108729c39fe45dc3404d801ef97a745a98e494e3c3e69646200199",
+  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
   "result": "scan_complete",
   "schema_id": "dominium.auditx.findings",
   "schema_version": "1.0.0"

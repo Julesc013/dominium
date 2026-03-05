@@ -1,15 +1,17 @@
 {
   "artifact_class": "RUN_META",
-  "cache_mode": "full_scan",
-  "changed_only": false,
-  "changed_paths_since_last": 10965,
-  "generated_utc": "2026-03-05T18:02:42Z",
-  "graph_hash": "f53636c48b108729c39fe45dc3404d801ef97a745a98e494e3c3e69646200199",
+  "cache_mode": "incremental",
+  "changed_only": true,
+  "changed_paths_since_last": 0,
+  "generated_utc": "2026-03-05T18:19:26Z",
+  "graph_hash": "caa4a36388d11768f64d0e002d799b9f7fce04dfb61f4845fbf21dc9b47b20bc",
   "last_reviewed": "2026-03-05",
   "output_format": "both",
   "platform": "windows",
   "python_version": "3.11.9",
-  "recomputed_analyzers": [
+  "recomputed_analyzers": [],
+  "result": "scan_complete",
+  "reused_analyzers": [
     "A1_DUPLICATE_CONCEPT",
     "A1_REACHABILITY_ORPHANED",
     "A2_OWNERSHIP_BOUNDARY",
@@ -305,8 +307,6 @@
     "E99_INSTRUMENT_TRUTH_LEAK_SMELL",
     "E9_HIDDEN_TERMINATION_SMELL"
   ],
-  "result": "scan_complete",
-  "reused_analyzers": [],
   "status": "DERIVED",
-  "workspace_id": "ws-9573dfcfb0515f37"
+  "workspace_id": "ws-a3e8a7ce2f3d708a"
 }

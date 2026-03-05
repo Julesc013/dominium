@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 63,
+  "candidate_count": 61,
   "candidates": [
     {
       "evidence_paths": [
@@ -76,6 +76,8 @@
         ".xstack_cache/ws-7e8e944858b5d772/auditx/entries/b0c79a6848aea975586664ff76ff05281706f8b19ace70b224843e0018912fd7.json",
         ".xstack_cache/ws-912d32a1cdd174b7/auditx/entries/365fa735f1deda1838bd604520c911556a760f34df32a8aafaf2a67476861352.json",
         ".xstack_cache/ws-912d32a1cdd174b7/auditx/entries/4e9259994d45d7da902443661191786b1a8f0442335a579a93551804d8d45eeb.json",
+        ".xstack_cache/ws-9573dfcfb0515f37/auditx/entries/18f8dcc2c071eabb5435b29184a1610142c819b54185ebad6c1458ed8eb1e62c.json",
+        ".xstack_cache/ws-9573dfcfb0515f37/auditx/entries/5f209bae921c16620e51dd9414efa4aeb236821ab74c32a4734ac47de6d9e6de.json",
         ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/0fda9d8ac5db7a27ddd99f168d338c61c3905b798b6c0e005bf5b678d0aae5cd.json",
         ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/1961a1edbe632ac55f0157d4ee42f16d8cf24bf6f4d2af74884b4874152cd17e.json",
         ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/1c9f245d4739f9156d49fc907dd7bcdd9514b1bfa80d16e01c13b1142209da15.json",
@@ -88,9 +90,7 @@
         ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/d25089f9d7924cdd58a0989dd5946559b5cb8783d5d342a04595520a803657ba.json",
         ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/eb3f9a462051f165f7299198f3faf5990ad19903eb8111dcf671edf778ddc40c.json",
         ".xstack_cache/ws-96bc3d398a7a129a/auditx/entries/fb5985d189b4f47b6ac918572c42bff3304d70f939b687b1c844a83421a81244.json",
-        ".xstack_cache/ws-98a5517800ad128e/auditx/entries/117f69e16585dc505c7601cb2a90cba4a2aed3297c16a39616924677ace09b7c.json",
-        ".xstack_cache/ws-98a5517800ad128e/auditx/entries/2d704e1348f74e14fcc0496fe073348f01f739f75b14921969ed955fd5e65e92.json",
-        ".xstack_cache/ws-98a5517800ad128e/auditx/entries/3a830a6d2d60166dad120743da026047dc2cbbfd973ee3ffd2fcbc7107014eff.json"
+        ".xstack_cache/ws-98a5517800ad128e/auditx/entries/117f69e16585dc505c7601cb2a90cba4a2aed3297c16a39616924677ace09b7c.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
@@ -128,28 +128,6 @@
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
       "rule_type": "TEST_REGRESSION",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "data/registries/certification_profile_registry.json",
-        "docs/audit/TOPOLOGY_MAP.json"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.6825,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/system/certificate_artifact.schema",
-        "schema/system/certification_profile.schema",
-        "schema/system/certification_result.schema"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.6825,
-      "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
     {
