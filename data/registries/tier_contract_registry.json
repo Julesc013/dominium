@@ -156,6 +156,296 @@
           ],
           "notes": "F2 reserved"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.chem.default",
+        "subsystem_id": "CHEM",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.physics.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "reaction_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.field.default",
+        "subsystem_id": "FIELD",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.physics.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "field_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.mech.default",
+        "subsystem_id": "MECH",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.mobility.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "structural_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.int.default",
+        "subsystem_id": "INT",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.mobility.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "compartment_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.temp.default",
+        "subsystem_id": "TEMP",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "deterministic_degradation_order": [
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.ctrl.default",
+        "subsystem_id": "CTRL",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "deterministic_degradation_order": [
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.abs.default",
+        "subsystem_id": "ABS",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.physics.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "substrate_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.prov.default",
+        "subsystem_id": "PROV",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "deterministic_degradation_order": [
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.tol.default",
+        "subsystem_id": "TOL",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "deterministic_degradation_order": [
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.physics.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.meta_action.default",
+        "subsystem_id": "META_ACTION",
+        "supported_tiers": [
+          "macro"
+        ],
+        "deterministic_degradation_order": [
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.meta_info.default",
+        "subsystem_id": "META_INFO",
+        "supported_tiers": [
+          "macro"
+        ],
+        "deterministic_degradation_order": [
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.meta_model.default",
+        "subsystem_id": "META_MODEL",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "deterministic_degradation_order": [
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.rwam.default",
+        "subsystem_id": "RWAM",
+        "supported_tiers": [
+          "macro"
+        ],
+        "deterministic_degradation_order": [
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.safety.default",
+        "subsystem_id": "SAFETY",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "deterministic_degradation_order": [
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GLOBAL-REVIEW-1"
+        }
       }
     ],
     "extensions": {
