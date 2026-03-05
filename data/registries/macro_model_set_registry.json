@@ -191,6 +191,41 @@
         "extensions": {
           "source": "SYS2-2"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "macro_model_set_id": "macro.boiler_stub",
+        "model_bindings": [
+          {
+            "binding_id": "binding.macro.boiler.combustion",
+            "model_id": "model.therm_combust_stub",
+            "input_port_ids": [
+              "fuel_in",
+              "water_in"
+            ],
+            "output_port_ids": [
+              "steam_out",
+              "heat_loss"
+            ],
+            "extensions": {
+              "output_process_map": {
+                "steam_out": "process.flow_adjust",
+                "heat_loss": "process.energy_transform"
+              }
+            }
+          }
+        ],
+        "validity_conditions": {
+          "required_tier_mode": "macro",
+          "requires_interface_template_ids": [
+            "interface.engine_basic"
+          ]
+        },
+        "error_bound_policy_id": "tol.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "SYS4-5"
+        }
       }
     ],
     "extensions": {

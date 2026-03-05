@@ -2,7 +2,281 @@
   "artifact_class": "CANONICAL",
   "registry_id": "registry.system_templates.base",
   "registry_version": "1.0.0",
-  "system_templates": [],
+  "system_templates": [
+    {
+      "schema_version": "1.0.0",
+      "template_id": "template.engine.ice_stub",
+      "version": "1.0.0",
+      "description": "Starter ICE engine template stub.",
+      "required_domains": [
+        "dom.domain.energy.basic",
+        "dom.domain.heat.basic",
+        "dom.domain.fluids.basic"
+      ],
+      "assembly_graph_spec_ref": "ag.system_template.engine.ice_stub",
+      "interface_signature_template_id": "interface.engine_basic",
+      "boundary_invariant_template_ids": [
+        "inv.mass_energy_basic",
+        "inv.energy_pollution_basic",
+        "inv.safety_failsafe_required"
+      ],
+      "macro_model_set_id": "macro.engine_stub",
+      "tier_contract_id": "tier.system.default",
+      "safety_pattern_instance_templates": [
+        {
+          "instance_id": "safety.instance.overtemp.engine",
+          "pattern_id": "safety.overtemp_trip"
+        },
+        {
+          "instance_id": "safety.instance.relief.engine",
+          "pattern_id": "safety.relief_pressure"
+        }
+      ],
+      "spec_bindings": [
+        {
+          "binding_id": "spec.binding.engine.vehicle",
+          "spec_type_id": "spec.vehicle_interface",
+          "target": "system"
+        }
+      ],
+      "nested_template_refs": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "interface_summary": {
+          "ports": [
+            "fuel_in",
+            "air_in",
+            "power_out",
+            "heat_out",
+            "exhaust_out",
+            "signal_in"
+          ]
+        },
+        "assembly_graph_spec": {
+          "node_ids": [
+            "assembly.template.engine.ice_stub.root"
+          ]
+        }
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "template_id": "template.generator.diesel_stub",
+      "version": "1.0.0",
+      "description": "Starter diesel generator template stub.",
+      "required_domains": [
+        "dom.domain.energy.basic",
+        "dom.domain.heat.basic",
+        "dom.domain.fluids.basic"
+      ],
+      "assembly_graph_spec_ref": "ag.system_template.generator.diesel_stub",
+      "interface_signature_template_id": "interface.generator_basic",
+      "boundary_invariant_template_ids": [
+        "inv.mass_energy_basic",
+        "inv.energy_pollution_basic",
+        "inv.safety_failsafe_required"
+      ],
+      "macro_model_set_id": "macro.generator_stub",
+      "tier_contract_id": "tier.system.default",
+      "safety_pattern_instance_templates": [
+        {
+          "instance_id": "safety.instance.overtemp.generator",
+          "pattern_id": "safety.overtemp_trip"
+        },
+        {
+          "instance_id": "safety.instance.relief.generator",
+          "pattern_id": "safety.relief_pressure"
+        }
+      ],
+      "spec_bindings": [
+        {
+          "binding_id": "spec.binding.generator.vehicle",
+          "spec_type_id": "spec.vehicle_interface",
+          "target": "system"
+        }
+      ],
+      "nested_template_refs": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "interface_summary": {
+          "ports": [
+            "fuel_in",
+            "power_out",
+            "heat_out",
+            "exhaust_out"
+          ]
+        },
+        "assembly_graph_spec": {
+          "node_ids": [
+            "assembly.template.generator.diesel_stub.root"
+          ]
+        }
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "template_id": "template.pump_basic",
+      "version": "1.0.0",
+      "description": "Starter pump/compressor template.",
+      "required_domains": [
+        "dom.domain.energy.basic",
+        "dom.domain.fluids.basic"
+      ],
+      "assembly_graph_spec_ref": "ag.system_template.pump_basic",
+      "interface_signature_template_id": "interface.pump_basic",
+      "boundary_invariant_template_ids": [
+        "inv.mass_energy_basic",
+        "inv.safety_failsafe_required"
+      ],
+      "macro_model_set_id": "macro.pump_stub",
+      "tier_contract_id": "tier.system.default",
+      "safety_pattern_instance_templates": [
+        {
+          "instance_id": "safety.instance.overtemp.pump",
+          "pattern_id": "safety.overtemp_trip"
+        },
+        {
+          "instance_id": "safety.instance.relief.pump",
+          "pattern_id": "safety.relief_pressure"
+        }
+      ],
+      "spec_bindings": [
+        {
+          "binding_id": "spec.binding.pump.track",
+          "spec_type_id": "spec.track",
+          "target": "system"
+        }
+      ],
+      "nested_template_refs": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "interface_summary": {
+          "ports": [
+            "power_in",
+            "fluid_in",
+            "fluid_out",
+            "heat_out"
+          ]
+        },
+        "assembly_graph_spec": {
+          "node_ids": [
+            "assembly.template.pump_basic.root"
+          ]
+        }
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "template_id": "template.heat_exchanger_basic",
+      "version": "1.0.0",
+      "description": "Starter heat exchanger template.",
+      "required_domains": [
+        "dom.domain.heat.basic",
+        "dom.domain.fluids.basic"
+      ],
+      "assembly_graph_spec_ref": "ag.system_template.heat_exchanger_basic",
+      "interface_signature_template_id": "interface.heat_exchanger_basic",
+      "boundary_invariant_template_ids": [
+        "inv.mass_energy_basic",
+        "inv.safety_failsafe_required"
+      ],
+      "macro_model_set_id": "macro.heat_exchanger_stub",
+      "tier_contract_id": "tier.system.default",
+      "safety_pattern_instance_templates": [
+        {
+          "instance_id": "safety.instance.overtemp.hex",
+          "pattern_id": "safety.overtemp_trip"
+        },
+        {
+          "instance_id": "safety.instance.relief.hex",
+          "pattern_id": "safety.relief_pressure"
+        }
+      ],
+      "spec_bindings": [
+        {
+          "binding_id": "spec.binding.hex.bridge",
+          "spec_type_id": "spec.bridge",
+          "target": "system"
+        }
+      ],
+      "nested_template_refs": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "interface_summary": {
+          "ports": [
+            "thermal_in",
+            "thermal_out",
+            "fluid_in",
+            "fluid_out"
+          ]
+        },
+        "assembly_graph_spec": {
+          "node_ids": [
+            "assembly.template.heat_exchanger_basic.root"
+          ]
+        }
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "template_id": "template.boiler_steam_stub",
+      "version": "1.0.0",
+      "description": "Starter boiler steam template stub.",
+      "required_domains": [
+        "dom.domain.energy.basic",
+        "dom.domain.heat.basic",
+        "dom.domain.fluids.basic"
+      ],
+      "assembly_graph_spec_ref": "ag.system_template.boiler_steam_stub",
+      "interface_signature_template_id": "interface.engine_basic",
+      "boundary_invariant_template_ids": [
+        "inv.mass_energy_basic",
+        "inv.energy_pollution_basic",
+        "inv.safety_failsafe_required"
+      ],
+      "macro_model_set_id": "macro.boiler_stub",
+      "tier_contract_id": "tier.system.default",
+      "safety_pattern_instance_templates": [
+        {
+          "instance_id": "safety.instance.overtemp.boiler",
+          "pattern_id": "safety.overtemp_trip"
+        },
+        {
+          "instance_id": "safety.instance.relief.boiler",
+          "pattern_id": "safety.relief_pressure"
+        }
+      ],
+      "spec_bindings": [
+        {
+          "binding_id": "spec.binding.boiler.vehicle",
+          "spec_type_id": "spec.vehicle_interface",
+          "target": "system"
+        },
+        {
+          "binding_id": "spec.binding.boiler.bridge",
+          "spec_type_id": "spec.bridge",
+          "target": "system"
+        }
+      ],
+      "nested_template_refs": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "interface_summary": {
+          "ports": [
+            "fuel_in",
+            "water_in",
+            "steam_out",
+            "heat_loss"
+          ]
+        },
+        "assembly_graph_spec": {
+          "node_ids": [
+            "assembly.template.boiler_steam_stub.root"
+          ]
+        }
+      }
+    }
+  ],
   "extensions": {
     "source": "SYS4-2",
     "optional_pack": true
