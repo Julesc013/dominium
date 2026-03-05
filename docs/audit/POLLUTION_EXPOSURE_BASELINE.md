@@ -91,12 +91,11 @@ Validation level executed: STRICT governance checks + POLL-2 targeted TestX.
 
 - RepoX STRICT:  
   `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`  
-  - result: `refusal`  
-  - refusal cause in this run: `INV-WORKTREE-HYGIENE` (uncommitted POLL-2 finalization files at gate time), with remaining findings warn-only.
+  - result: `pass` (`findings=17`, warnings only)
 
 - AuditX STRICT:  
   `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`  
-  - result: `pass` (`promoted_blockers=0`)
+  - result: `pass` (`findings=1310`, `promoted_blockers=0`)
 
 - TestX PASS (POLL-2 required suite):  
   `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --subset test_exposure_accumulation_deterministic,test_threshold_crossing_event,test_measurement_artifact_created,test_compliance_report_deterministic,test_replay_window_hash_match`  
@@ -109,7 +108,7 @@ Validation level executed: STRICT governance checks + POLL-2 targeted TestX.
 
 - strict build gate:  
   `py -3 tools/xstack/run.py strict --repo-root . --cache on`  
-  - result: `refusal` due pre-existing global strict-lane blockers outside POLL-2 scope (`compatx`, `registry_compile`, `session_boot`, global strict `testx`, `packaging.verify`, and `repox` worktree hygiene in dirty-gate context).
+  - result: `refusal` due pre-existing global strict-lane blockers outside POLL-2 scope (`compatx`, `registry_compile`, `session_boot`, global strict `testx`, `packaging.verify`).
 
 ## 7) Contract Impact and Readiness
 
