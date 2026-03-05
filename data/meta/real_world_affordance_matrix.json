@@ -482,6 +482,22 @@
       ]
     },
     {
+      "series_id": "SYS",
+      "affordance_ids": [
+        "matter_transformation",
+        "motion_force_transmission",
+        "containment_interfaces",
+        "institutions_contracts",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
       "affordance_ids": [
         "communication_coordination",
         "measurement_verification",

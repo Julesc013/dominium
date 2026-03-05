@@ -17254,7 +17254,17 @@ def _append_system_composition_invariant_findings(
         )
 
     process_registry_payload, process_registry_error = _load_json_object(repo_root, process_registry_rel)
-    process_rows = list(process_registry_payload.get("processes") or [])
+    process_rows: List[dict] = []
+    process_rows.extend(
+        row
+        for row in list(process_registry_payload.get("records") or [])
+        if isinstance(row, dict)
+    )
+    process_rows.extend(
+        row
+        for row in list((dict(process_registry_payload.get("record") or {})).get("processes") or [])
+        if isinstance(row, dict)
+    )
     required_process_ids = {"process.system_collapse", "process.system_expand"}
     declared_process_ids = set(
         str(row.get("process_id", "")).strip()
