@@ -440,6 +440,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-SYSTEM-TIER-CONTRACT-DECLARED",
     "INV-TIER-TRANSITION-LOGGED",
     "INV-NO-SILENT-COLLAPSE",
+    "INV-SYS-BUDGETED",
+    "INV-SYS-INVARIANTS-ALWAYS-CHECKED",
+    "INV-NO-SILENT-TIER-TRANSITION",
     "INV-NO-PREFAB-BYPASS",
     "INV-TEMPLATE-HAS-SIGNATURE-INVARIANTS",
     "INV-SPEC-CHECK-THROUGH-CERT-ENGINE",
@@ -770,6 +773,9 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E272_UNLOGGED_SHUTDOWN_SMELL": "INV-NO-SILENT-FAILURE",
     "E273_MISSING_SYSTEM_EXPLAIN_CONTRACT_SMELL": "INV-EXPLAIN-CONTRACT-REQUIRED-FOR-SYSTEM-EVENTS",
     "E274_OMNISCIENT_EXPLAIN_LEAK_SMELL": "INV-FORENSICS-DERIVED-ONLY",
+    "E275_UNBOUNDED_EXPAND_SMELL": "INV-SYS-BUDGETED",
+    "E276_SILENT_COLLAPSE_SMELL": "INV-NO-SILENT-TIER-TRANSITION",
+    "E277_INVARIANT_CHECK_SKIPPED_SMELL": "INV-SYS-INVARIANTS-ALWAYS-CHECKED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -18920,6 +18926,215 @@ def _append_system_forensics_invariant_findings(
                 break
 
 
+def _append_system_envelope_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    budget_rule_id = "INV-SYS-BUDGETED"
+    invariant_rule_id = "INV-SYS-INVARIANTS-ALWAYS-CHECKED"
+    silent_rule_id = "INV-NO-SILENT-TIER-TRANSITION"
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    scheduler_rel = "src/system/roi/system_roi_scheduler.py"
+    collapse_rel = "src/system/system_collapse_engine.py"
+    expand_rel = "src/system/system_expand_engine.py"
+    scenario_tool_rel = "tools/system/tool_generate_sys_stress.py"
+    stress_tool_rel = "tools/system/tool_run_sys_stress.py"
+    replay_tool_rel = "tools/system/tool_replay_sys_window.py"
+    regression_rel = "data/regression/sys_full_baseline.json"
+    shard_rules_rel = "docs/system/SYS_SHARD_BOUNDARY_RULES.md"
+
+    required_paths = (
+        scenario_tool_rel,
+        stress_tool_rel,
+        replay_tool_rel,
+        regression_rel,
+        shard_rules_rel,
+        runtime_rel,
+        scheduler_rel,
+        collapse_rel,
+        expand_rel,
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        rule_id = budget_rule_id
+        if rel_path in {collapse_rel, expand_rel}:
+            rule_id = invariant_rule_id
+        if rel_path in {runtime_rel, scheduler_rel}:
+            rule_id = silent_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="SYS-8 envelope artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    scheduler_text = _file_text(repo_root, scheduler_rel)
+    for token in (
+        "max_expands_per_tick",
+        "max_collapses_per_tick",
+        "priority_rank",
+        "decision.system.roi.expand_cap",
+    ):
+        if token in scheduler_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=scheduler_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS scheduler must enforce deterministic expand/collapse budgeting",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, rule_id, message in (
+        ('elif process_id == "process.system_roi_tick":', silent_rule_id, "runtime must expose process.system_roi_tick for logged tier transitions"),
+        ("control_decision_log", silent_rule_id, "runtime must persist DecisionLog rows for SYS transition/degradation decisions"),
+        ("collapse_expand_event_hash_chain", budget_rule_id, "runtime must persist collapse/expand proof hash chain"),
+        ("system_collapse_expand_hash_chain", budget_rule_id, "runtime must expose SYS-8 collapse/expand proof alias"),
+        ("system_tier_change_event_rows", silent_rule_id, "runtime must persist canonical system tier-change events"),
+        ("REFUSAL_SYSTEM_COLLAPSE_INVARIANT_VIOLATION", invariant_rule_id, "runtime must propagate collapse invariant-violation refusal"),
+        ("REFUSAL_SYSTEM_EXPAND_INVARIANT_VIOLATION", invariant_rule_id, "runtime must propagate expand invariant-violation refusal"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    collapse_text = _file_text(repo_root, collapse_rel)
+    expand_text = _file_text(repo_root, expand_rel)
+    for rel_path, text, token in (
+        (collapse_rel, collapse_text, "validate_boundary_invariants("),
+        (expand_rel, expand_text, "validate_boundary_invariants("),
+    ):
+        if token in text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=token,
+                message="SYS collapse/expand pathways must always execute boundary invariant validation",
+                rule_id=invariant_rule_id,
+            )
+        )
+
+    stress_text = _file_text(repo_root, stress_tool_rel)
+    for token in (
+        "run_sys_stress(",
+        "max_expands_per_tick",
+        "bounded_expands_per_tick",
+        "no_silent_transitions",
+        "invariants_preserved_roundtrip",
+        "degrade_policy_logged",
+        "proof_hash_summary",
+        "degradation_policy_order",
+    ):
+        if token in stress_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS stress harness must assert deterministic budget/degrade/proof envelope behaviors",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    replay_text = _file_text(repo_root, replay_tool_rel)
+    for token in (
+        "verify_sys_replay_window(",
+        "system_collapse_expand_hash_chain",
+        "macro_output_record_hash_chain",
+        "forced_expand_event_hash_chain",
+        "certification_hash_chain",
+        "system_health_hash_chain",
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS replay verifier must validate all required SYS-8 proof hash-chain surfaces",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    regression_payload, regression_err = _load_json_object(repo_root, regression_rel)
+    if regression_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=regression_rel,
+                message="SYS regression lock baseline is required for SYS-8 envelope stability",
+                rule_id=budget_rule_id,
+            )
+        )
+        return
+    required_fields = (
+        "baseline_id",
+        "schema_version",
+        "description",
+        "composite_sys_hash_anchor",
+        "fixed_seed_scenarios",
+        "scenario_fingerprints",
+        "proof_hashes",
+        "update_policy",
+        "deterministic_fingerprint",
+    )
+    for token in required_fields:
+        if token in regression_payload:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=token,
+                message="SYS regression lock missing required baseline field",
+                rule_id=budget_rule_id,
+            )
+        )
+    update_policy = dict(regression_payload.get("update_policy") or {})
+    if str(update_policy.get("required_commit_tag", "")).strip() != "SYS-REGRESSION-UPDATE":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="required_commit_tag",
+                message="SYS regression lock updates must require SYS-REGRESSION-UPDATE tag",
+                rule_id=budget_rule_id,
+            )
+        )
+
+
 def _append_cross_domain_mutation_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -21335,6 +21550,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_system_forensics_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_system_envelope_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

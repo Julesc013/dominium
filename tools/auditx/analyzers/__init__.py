@@ -298,6 +298,9 @@ from analyzers import e271_hidden_failure_logic_smell
 from analyzers import e272_unlogged_shutdown_smell
 from analyzers import e273_missing_system_explain_contract_smell
 from analyzers import e274_omniscient_explain_leak_smell
+from analyzers import e275_unbounded_expand_smell
+from analyzers import e276_silent_collapse_smell
+from analyzers import e277_invariant_check_skipped_smell
 
 
 ANALYZERS = (
@@ -599,6 +602,9 @@ ANALYZERS = (
     e272_unlogged_shutdown_smell,
     e273_missing_system_explain_contract_smell,
     e274_omniscient_explain_leak_smell,
+    e275_unbounded_expand_smell,
+    e276_silent_collapse_smell,
+    e277_invariant_check_skipped_smell,
 )
 
 
