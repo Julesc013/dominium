@@ -5256,6 +5256,221 @@ def _load_pollution_decay_model_registry(*, policy_context: dict | None) -> dict
     )
 
 
+def _pollution_material_token_candidates(material_token: object) -> List[str]:
+    token = str(material_token or "").strip().lower()
+    if not token:
+        return []
+    token = token.replace("-", "_")
+    if token.startswith("material."):
+        token = token.split(".", 1)[1]
+    if token in {"pollutant.coarse", "pollutant_coarse", "pollutant_coarse_stub"}:
+        return ["pollutant.smoke_particulate"]
+    out: List[str] = []
+    if "co2" in token:
+        out.append("pollutant.co2_stub")
+    if any(tag in token for tag in ("toxic", "nox", "so2", "sox", "h2s", "chlor", "ammonia")):
+        out.append("pollutant.toxic_gas_stub")
+    if any(tag in token for tag in ("oil", "diesel", "petrol", "hydrocarbon", "spill")):
+        out.append("pollutant.oil_spill_stub")
+    if any(tag in token for tag in ("smoke", "soot", "ash", "particulate", "pollutant", "coarse", "pm")):
+        out.append("pollutant.smoke_particulate")
+    return _sorted_tokens(out)
+
+
+def _resolve_pollutant_id_for_coupling_row(
+    *,
+    row: Mapping[str, object],
+    default_origin_kind: str,
+    pollutant_types_by_id: Mapping[str, Mapping[str, object]],
+) -> str:
+    row_map = dict(row or {})
+    ext = dict(row_map.get("extensions") or {}) if isinstance(row_map.get("extensions"), Mapping) else {}
+    candidates: List[str] = []
+
+    def _push(token: object) -> None:
+        value = str(token or "").strip()
+        if not value:
+            return
+        if value == "pollutant.coarse":
+            value = "pollutant.smoke_particulate"
+        if value not in candidates:
+            candidates.append(value)
+
+    for token in (
+        row_map.get("pollutant_id", ""),
+        row_map.get("pollutant_type_id", ""),
+        ext.get("pollutant_id", ""),
+        ext.get("pollutant_type_id", ""),
+        row_map.get("pollutant_tag", ""),
+        ext.get("pollutant_tag", ""),
+    ):
+        _push(token)
+    for token in (
+        row_map.get("material_id", ""),
+        row_map.get("species_id", ""),
+        ext.get("material_id", ""),
+        ext.get("species_id", ""),
+        row_map.get("contaminant_id", ""),
+        ext.get("contaminant_id", ""),
+    ):
+        for candidate in _pollution_material_token_candidates(token):
+            _push(candidate)
+
+    origin_kind = str(default_origin_kind or "").strip().lower()
+    if origin_kind == "leak":
+        _push("pollutant.oil_spill_stub")
+    elif origin_kind == "fire":
+        _push("pollutant.smoke_particulate")
+    else:
+        _push("pollutant.smoke_particulate")
+
+    for candidate in candidates:
+        if candidate in pollutant_types_by_id:
+            return candidate
+    return ""
+
+
+def _pollution_coupling_rows_from_state(*, state: Mapping[str, object], current_tick: int) -> Dict[str, List[dict]]:
+    tick = int(max(0, _as_int(current_tick, 0)))
+    out: Dict[str, List[dict]] = {
+        "chem_emission_rows": [],
+        "therm_fire_emission_rows": [],
+        "fluid_contaminant_release_rows": [],
+    }
+    state_map = dict(state or {})
+
+    for row in sorted(
+        (
+            dict(item)
+            for item in list(state_map.get("chem_process_emission_rows") or [])
+            if isinstance(item, Mapping)
+        ),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        row_tick = int(max(0, _as_int(row.get("tick", 0), 0)))
+        if row_tick > tick:
+            continue
+        event_id = str(row.get("event_id", "")).strip()
+        ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+        out["chem_emission_rows"].append(
+            {
+                "source_event_id": "event.pollution.coupled.chem.{}".format(
+                    canonical_sha256({"event_id": event_id or row, "kind": "chem"})[:16]
+                ),
+                "origin_id": event_id
+                or str(row.get("run_id", "")).strip()
+                or str(row.get("reaction_id", "")).strip()
+                or "origin.chem.process_emission",
+                "pollutant_id": str(row.get("pollutant_id", "")).strip()
+                or str(ext.get("pollutant_id", "")).strip(),
+                "material_id": str(row.get("material_id", "")).strip(),
+                "emitted_mass": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+                "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip()
+                or str(row.get("target_id", "")).strip()
+                or "region.default",
+                "extensions": {"source_row_kind": "chem_process_emission_rows"},
+            }
+        )
+
+    for row in sorted(
+        (
+            dict(item)
+            for item in list(state_map.get("combustion_emission_rows") or [])
+            if isinstance(item, Mapping)
+        ),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        row_tick = int(max(0, _as_int(row.get("tick", 0), 0)))
+        if row_tick > tick:
+            continue
+        event_id = str(row.get("event_id", "")).strip()
+        ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+        out["therm_fire_emission_rows"].append(
+            {
+                "source_event_id": "event.pollution.coupled.therm.{}".format(
+                    canonical_sha256({"event_id": event_id or row, "kind": "therm"})[:16]
+                ),
+                "origin_id": event_id
+                or str(row.get("source_reaction_id", "")).strip()
+                or "origin.therm.combustion_emission",
+                "pollutant_id": str(row.get("pollutant_id", "")).strip()
+                or str(ext.get("pollutant_id", "")).strip(),
+                "material_id": str(row.get("material_id", "")).strip(),
+                "emitted_mass": int(max(0, _as_int(row.get("mass_value", 0), 0))),
+                "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip()
+                or str(row.get("target_id", "")).strip()
+                or "region.default",
+                "extensions": {"source_row_kind": "combustion_emission_rows"},
+            }
+        )
+
+    for row in sorted(
+        (
+            dict(item)
+            for item in list(state_map.get("leak_event_rows") or [])
+            if isinstance(item, Mapping)
+        ),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        row_tick = int(max(0, _as_int(row.get("tick", 0), 0)))
+        if row_tick > tick:
+            continue
+        event_id = str(row.get("event_id", "")).strip()
+        ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+        sink_kind = str(row.get("sink_kind", "")).strip() or str(ext.get("sink_kind", "")).strip()
+        sink_kind = sink_kind.lower() or "external"
+        if sink_kind in {"interior", "internal", "contained"}:
+            # Interior containment remains a fluid/interior concern and does not emit to pollution fields.
+            continue
+        spatial_scope_id = (
+            str(row.get("spatial_scope_id", "")).strip()
+            or str(row.get("cell_id", "")).strip()
+            or str(row.get("sink_id", "")).strip()
+            or str(row.get("target_id", "")).strip()
+            or "region.default"
+        )
+        out["fluid_contaminant_release_rows"].append(
+            {
+                "source_event_id": "event.pollution.coupled.fluid.{}".format(
+                    canonical_sha256({"event_id": event_id or row, "kind": "fluid"})[:16]
+                ),
+                "origin_id": event_id
+                or str(row.get("target_id", "")).strip()
+                or "origin.fluid.leak_event",
+                "pollutant_id": str(row.get("pollutant_id", "")).strip()
+                or str(ext.get("pollutant_id", "")).strip(),
+                "material_id": str(row.get("material_id", "")).strip()
+                or str(ext.get("material_id", "")).strip()
+                or "material.oil_stub",
+                "contaminant_mass": int(
+                    max(
+                        0,
+                        _as_int(
+                            row.get("contaminant_mass", row.get("transferred_mass", 0)),
+                            0,
+                        ),
+                    )
+                ),
+                "spatial_scope_id": spatial_scope_id,
+                "sink_kind": sink_kind,
+                "extensions": {
+                    "source_row_kind": "leak_event_rows",
+                    "sink_kind": sink_kind,
+                },
+            }
+        )
+    return dict((key, [dict(row) for row in list(out.get(key) or []) if isinstance(row, Mapping)]) for key in sorted(out.keys()))
+
+
 def _load_explain_contract_registry(*, policy_context: dict | None) -> dict:
     registry = dict(_policy_payload(policy_context, "explain_contract_registry") or {})
     if registry:
@@ -27618,7 +27833,16 @@ def execute_intent(
             source_rows = _ensure_pollution_source_event_rows(state)
             total_rows_by_key = pollution_totals_by_key(_ensure_pollution_total_rows(state))
             source_rows_buffer = [dict(row) for row in list(source_rows or []) if isinstance(row, Mapping)]
+            existing_source_event_ids = set(
+                str(row.get("source_event_id", "")).strip()
+                for row in source_rows_buffer
+                if isinstance(row, Mapping) and str(row.get("source_event_id", "")).strip()
+            )
             coupled_sources_added = 0
+            coupled_rows_from_state = _pollution_coupling_rows_from_state(
+                state=state,
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+            )
             coupling_inputs = [
                 ("coupled_source_rows", "industrial"),
                 ("fluid_contaminant_release_rows", "leak"),
@@ -27626,92 +27850,153 @@ def execute_intent(
                 ("therm_fire_emission_rows", "fire"),
             ]
             for input_key, default_origin_kind in coupling_inputs:
-                for row in list(inputs.get(input_key) or []):
-                    if not isinstance(row, Mapping):
-                        continue
-                    row_map = dict(row)
-                    pollutant_id = str(row_map.get("pollutant_id", "")).strip()
-                    if not pollutant_id:
-                        if default_origin_kind == "leak":
-                            pollutant_id = "pollutant.oil_spill_stub"
-                        elif default_origin_kind == "fire":
-                            pollutant_id = "pollutant.smoke_particulate"
-                        else:
-                            pollutant_id = "pollutant.smoke_particulate"
-                    if pollutant_id not in pollutant_types_by_id:
-                        continue
-                    emitted_mass = int(
-                        max(
-                            0,
-                            _as_int(
-                                row_map.get(
-                                    "emitted_mass",
-                                    row_map.get("mass_value", row_map.get("contaminant_mass", 0)),
-                                ),
+                for coupling_origin, source_rows_in in (
+                    ("input", list(inputs.get(input_key) or [])),
+                    (
+                        "state",
+                        list(coupled_rows_from_state.get(input_key) or []),
+                    ),
+                ):
+                    normalized_rows = sorted(
+                        (dict(item) for item in source_rows_in if isinstance(item, Mapping)),
+                        key=lambda item: (
+                            int(max(0, _as_int(item.get("tick", current_tick), current_tick))),
+                            str(item.get("source_event_id", item.get("event_id", ""))),
+                            str(item.get("origin_id", item.get("source_id", ""))),
+                        ),
+                    )
+                    for row_map in normalized_rows:
+                        row_ext = (
+                            dict(row_map.get("extensions") or {})
+                            if isinstance(row_map.get("extensions"), Mapping)
+                            else {}
+                        )
+                        sink_kind = str(
+                            row_map.get("sink_kind", row_ext.get("sink_kind", ""))
+                        ).strip().lower()
+                        if default_origin_kind == "leak" and sink_kind in {"interior", "internal", "contained"}:
+                            continue
+
+                        pollutant_id = _resolve_pollutant_id_for_coupling_row(
+                            row=row_map,
+                            default_origin_kind=default_origin_kind,
+                            pollutant_types_by_id=pollutant_types_by_id,
+                        )
+                        if pollutant_id not in pollutant_types_by_id:
+                            continue
+                        emitted_mass = int(
+                            max(
                                 0,
-                            ),
+                                _as_int(
+                                    row_map.get(
+                                        "emitted_mass",
+                                        row_map.get(
+                                            "mass_value",
+                                            row_map.get(
+                                                "contaminant_mass",
+                                                row_map.get("transferred_mass", 0),
+                                            ),
+                                        ),
+                                    ),
+                                    0,
+                                ),
+                            )
                         )
-                    )
-                    if emitted_mass <= 0:
-                        continue
-                    origin_kind = str(row_map.get("origin_kind", default_origin_kind)).strip().lower() or default_origin_kind
-                    if origin_kind not in {"reaction", "fire", "leak", "industrial"}:
-                        origin_kind = default_origin_kind
-                    origin_id = str(
-                        row_map.get(
-                            "origin_id",
+                        if emitted_mass <= 0:
+                            continue
+
+                        origin_kind = (
+                            str(row_map.get("origin_kind", default_origin_kind)).strip().lower()
+                            or default_origin_kind
+                        )
+                        if origin_kind not in {"reaction", "fire", "leak", "industrial"}:
+                            origin_kind = default_origin_kind
+                        origin_id = str(
                             row_map.get(
-                                "source_id",
-                                row_map.get("edge_id", row_map.get("event_id", "origin.coupled")),
-                            ),
+                                "origin_id",
+                                row_map.get(
+                                    "source_id",
+                                    row_map.get(
+                                        "edge_id",
+                                        row_map.get(
+                                            "event_id",
+                                            row_map.get(
+                                                "run_id",
+                                                row_map.get(
+                                                    "reaction_id",
+                                                    row_map.get("source_reaction_id", "origin.coupled"),
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            )
+                        ).strip() or "origin.coupled"
+                        spatial_scope_id = str(
+                            row_map.get(
+                                "spatial_scope_id",
+                                row_map.get(
+                                    "region_id",
+                                    row_map.get(
+                                        "cell_id",
+                                        row_map.get(
+                                            "target_id",
+                                            row_map.get("sink_id", "region.default"),
+                                        ),
+                                    ),
+                                ),
+                            )
+                        ).strip() or "region.default"
+                        source_event_id = str(
+                            row_map.get("source_event_id", row_map.get("event_id", ""))
+                        ).strip()
+                        coupled_event = build_pollution_source_event(
+                            source_event_id=source_event_id,
+                            tick=int(max(0, _as_int(current_tick, 0))),
+                            origin_kind=origin_kind,
+                            origin_id=origin_id,
+                            pollutant_id=pollutant_id,
+                            emitted_mass=emitted_mass,
+                            spatial_scope_id=spatial_scope_id,
+                            deterministic_fingerprint="",
+                            extensions={
+                                **row_ext,
+                                "source_process_id": process_id,
+                                "coupled_input_key": input_key,
+                                "coupling_origin": str(coupling_origin),
+                            },
                         )
-                    ).strip() or "origin.coupled"
-                    spatial_scope_id = str(
-                        row_map.get(
-                            "spatial_scope_id",
-                            row_map.get("region_id", row_map.get("cell_id", "region.default")),
+                        if not coupled_event:
+                            continue
+                        coupled_source_event_id = str(coupled_event.get("source_event_id", "")).strip()
+                        if (not coupled_source_event_id) or coupled_source_event_id in existing_source_event_ids:
+                            continue
+                        existing_source_event_ids.add(coupled_source_event_id)
+                        source_rows_buffer.append(coupled_event)
+                        coupled_sources_added += 1
+                        total_key = "{}::{}".format(spatial_scope_id, pollutant_id)
+                        existing_total_row = dict(total_rows_by_key.get(total_key) or {})
+                        existing_mass = int(
+                            max(0, _as_int(existing_total_row.get("pollutant_mass_total", 0), 0))
                         )
-                    ).strip() or "region.default"
-                    source_event_id = str(row_map.get("source_event_id", "")).strip()
-                    coupled_event = build_pollution_source_event(
-                        source_event_id=source_event_id,
-                        tick=int(max(0, _as_int(current_tick, 0))),
-                        origin_kind=origin_kind,
-                        origin_id=origin_id,
-                        pollutant_id=pollutant_id,
-                        emitted_mass=emitted_mass,
-                        spatial_scope_id=spatial_scope_id,
-                        deterministic_fingerprint="",
-                        extensions={
-                            "source_process_id": process_id,
-                            "coupled_input_key": input_key,
-                        },
-                    )
-                    if not coupled_event:
-                        continue
-                    source_rows_buffer.append(coupled_event)
-                    coupled_sources_added += 1
-                    total_key = "{}::{}".format(spatial_scope_id, pollutant_id)
-                    existing_total_row = dict(total_rows_by_key.get(total_key) or {})
-                    existing_mass = int(max(0, _as_int(existing_total_row.get("pollutant_mass_total", 0), 0)))
-                    total_row = build_pollution_total_row(
-                        region_id=spatial_scope_id,
-                        pollutant_id=pollutant_id,
-                        pollutant_mass_total=int(existing_mass + emitted_mass),
-                        last_update_tick=int(max(0, _as_int(current_tick, 0))),
-                        deterministic_fingerprint="",
-                        extensions={
-                            **(
-                                dict(existing_total_row.get("extensions") or {})
-                                if isinstance(existing_total_row.get("extensions"), Mapping)
-                                else {}
-                            ),
-                            "last_origin_kind": origin_kind,
-                            "last_source_event_id": str(coupled_event.get("source_event_id", "")).strip(),
-                        },
-                    )
-                    if total_row:
-                        total_rows_by_key[total_key] = dict(total_row)
+                        total_row = build_pollution_total_row(
+                            region_id=spatial_scope_id,
+                            pollutant_id=pollutant_id,
+                            pollutant_mass_total=int(existing_mass + emitted_mass),
+                            last_update_tick=int(max(0, _as_int(current_tick, 0))),
+                            deterministic_fingerprint="",
+                            extensions={
+                                **(
+                                    dict(existing_total_row.get("extensions") or {})
+                                    if isinstance(existing_total_row.get("extensions"), Mapping)
+                                    else {}
+                                ),
+                                "last_origin_kind": origin_kind,
+                                "last_source_event_id": coupled_source_event_id,
+                            },
+                        )
+                        if total_row:
+                            total_rows_by_key[total_key] = dict(total_row)
             if coupled_sources_added > 0:
                 state["pollution_source_event_rows"] = normalize_pollution_source_event_rows(source_rows_buffer)
                 state["pollution_total_rows"] = normalize_pollution_total_rows(list(total_rows_by_key.values()))
