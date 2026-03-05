@@ -28703,6 +28703,7 @@ def execute_intent(
                 "pollution_dispersion_hash_chain": str(state.get("pollution_dispersion_hash_chain", "")).strip(),
                 "pollution_deposition_hash_chain": str(state.get("pollution_deposition_hash_chain", "")).strip(),
                 "pollution_exposure_hash_chain": str(state.get("pollution_exposure_hash_chain", "")).strip(),
+                "pollution_health_risk_hash_chain": str(state.get("pollution_health_risk_hash_chain", "")).strip(),
                 "pollution_field_hash_chain": str(state.get("pollution_field_hash_chain", "")).strip(),
                 "pollution_explain_hash_chain": str(state.get("pollution_explain_hash_chain", "")).strip(),
             }
