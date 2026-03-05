@@ -4430,6 +4430,65 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [
+        "field.pollution.smoke_particulate_concentration",
+        "field.pollution.co2_stub_concentration",
+        "field.pollution.toxic_gas_stub_concentration",
+        "field.pollution.oil_spill_stub_concentration"
+      ],
+      "deprecated": false,
+      "description": "Canonical POLL-2 diegetic sensor measurement process; samples local concentration fields and emits observation/knowledge-receipt artifacts.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "epistemic-gated"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.pollution_measure)",
+        "source": "POLL2-4",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Pollution Measure",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "pollutant_id",
+          "ref_id": "dominium.schema.pollution.pollutant_type@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "spatial_scope_id",
+          "ref_id": "dominium.schema.field.field_cell@1.0.0",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "pollution_measurement",
+          "ref_id": "dominium.schema.pollution.pollution_measurement@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "knowledge_receipt",
+          "ref_id": "dominium.schema.signals.knowledge_receipt@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.pollution_measure",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",

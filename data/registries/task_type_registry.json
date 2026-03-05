@@ -335,6 +335,25 @@
         "extensions": {
           "chem3_maintenance_kind": "all"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.measure_pollution",
+        "description": "Deterministic diegetic pollution measurement task.",
+        "default_progress_units_total": 4194304,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "completion_process_id": "process.pollution_measure",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "source": "POLL2-4",
+          "artifact_family_id": "OBSERVATION"
+        }
       }
     ],
     "extensions": {}

@@ -537,14 +537,18 @@ from src.pollution import (
     build_pollution_dispersion_step_row,
     build_pollution_exposure_state_row,
     build_health_risk_event_row,
+    build_pollution_measurement_row,
     build_pollution_total_row,
     evaluate_pollution_exposure_tick,
     exposure_threshold_rows_by_pollutant,
     evaluate_pollution_dispersion,
+    normalize_pollution_measurement_rows,
     normalize_pollution_deposition_rows,
     normalize_pollution_dispersion_step_rows,
     normalize_pollution_exposure_state_rows,
     normalize_health_risk_event_rows,
+    pollution_sensor_type_rows_by_id,
+    sample_pollution_measurement,
     normalize_pollution_source_event_rows,
     normalize_pollution_total_rows,
     pollution_decay_models_by_id,
@@ -745,6 +749,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.process_run_end": "entitlement.tool.operating",
     "process.pollution_emit": "session.boot",
     "process.pollution_dispersion_tick": "session.boot",
+    "process.pollution_measure": "entitlement.tool.use",
     "process.degradation_tick": "session.boot",
 }
 PROCESS_PRIVILEGE_DEFAULTS = {
@@ -928,6 +933,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.process_run_end": "operator",
     "process.pollution_emit": "observer",
     "process.pollution_dispersion_tick": "observer",
+    "process.pollution_measure": "operator",
     "process.degradation_tick": "observer",
 }
 PROCESS_ID_ALIASES = {
@@ -1037,6 +1043,7 @@ CONTROL_PROCESS_IDS = {
     "process.process_run_end",
     "process.pollution_emit",
     "process.pollution_dispersion_tick",
+    "process.pollution_measure",
     "process.degradation_tick",
 }
 CIV_PROCESS_IDS = {
@@ -1106,6 +1113,7 @@ TOOL_PROCESS_IDS = {
     "process.tool_unbind",
     "process.tool_use_prepare",
     "process.tool_readout_tick",
+    "process.pollution_measure",
 }
 TASK_PROCESS_IDS = {
     "process.task_create",
@@ -10920,6 +10928,24 @@ def _ensure_pollution_health_risk_event_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_pollution_measurement_rows(state: dict) -> List[dict]:
+    rows = state.get("pollution_measurement_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_pollution_measurement_rows(rows)
+    state["pollution_measurement_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_knowledge_receipt_rows(state: dict) -> List[dict]:
+    rows = state.get("knowledge_receipt_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_knowledge_receipt_rows(rows)
+    state["knowledge_receipt_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
 def _ensure_pollution_dispersion_processed_source_event_ids(state: dict) -> List[str]:
     tokens = _sorted_tokens(list(state.get("pollution_dispersion_processed_source_event_ids") or []))
     state["pollution_dispersion_processed_source_event_ids"] = list(tokens)
@@ -10974,6 +11000,7 @@ def _refresh_pollution_hash_chains(state: dict) -> None:
     exposure_rows = _ensure_pollution_exposure_state_rows(state)
     exposure_increment_rows = _ensure_pollution_exposure_increment_rows(state)
     health_risk_event_rows = _ensure_pollution_health_risk_event_rows(state)
+    measurement_rows = _ensure_pollution_measurement_rows(state)
     degrade_rows = _ensure_pollution_dispersion_degrade_rows(state)
     _ensure_pollution_dispersion_processed_source_event_ids(state)
     state["pollution_source_hash_chain"] = canonical_sha256(
@@ -11078,6 +11105,26 @@ def _refresh_pollution_hash_chains(state: dict) -> None:
                     str(item.get("pollutant_id", "")),
                     str(item.get("threshold_crossed", "")),
                     str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["pollution_measurement_hash_chain"] = canonical_sha256(
+        [
+            {
+                "measurement_id": str(row.get("measurement_id", "")).strip(),
+                "pollutant_id": str(row.get("pollutant_id", "")).strip(),
+                "spatial_scope_id": str(row.get("spatial_scope_id", "")).strip(),
+                "measured_concentration": int(max(0, _as_int(row.get("measured_concentration", 0), 0))),
+                "instrument_id": None if row.get("instrument_id") is None else str(row.get("instrument_id", "")).strip() or None,
+                "calibration_cert_id": None if row.get("calibration_cert_id") is None else str(row.get("calibration_cert_id", "")).strip() or None,
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(measurement_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("measurement_id", "")),
                 ),
             )
         ]
@@ -28467,6 +28514,224 @@ def execute_intent(
                 "pollution_exposure_hash_chain": str(state.get("pollution_exposure_hash_chain", "")).strip(),
                 "pollution_field_hash_chain": str(state.get("pollution_field_hash_chain", "")).strip(),
                 "pollution_explain_hash_chain": str(state.get("pollution_explain_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.pollution_measure":
+        pollutant_types_by_id = _pollutant_types_by_id(
+            _load_pollutant_type_registry(policy_context=policy_context)
+        )
+        if not pollutant_types_by_id:
+            _refresh_pollution_hash_chains(state)
+            result_metadata = {
+                "measurement_id": None,
+                "note": "no_pollutant_types_registered",
+                "pollution_measurement_hash_chain": str(state.get("pollution_measurement_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            pollutant_id = str(inputs.get("pollutant_id", "")).strip()
+            if not pollutant_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.pollution_measure requires pollutant_id",
+                    "Provide pollutant_id from pollutant_type_registry.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.pollutant_id",
+                )
+            if pollutant_id not in pollutant_types_by_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "pollutant_id is not registered in pollutant_type_registry",
+                    "Use a registered pollutant_id before requesting measurement.",
+                    {"pollutant_id": pollutant_id},
+                    "$.intent.inputs.pollutant_id",
+                )
+
+            spatial_scope_id = str(
+                inputs.get("spatial_scope_id", inputs.get("cell_id", ""))
+            ).strip()
+            if not spatial_scope_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.pollution_measure requires spatial_scope_id",
+                    "Provide local cell/scope id for diegetic measurement.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.spatial_scope_id",
+                )
+
+            sensor_types_by_id = pollution_sensor_type_rows_by_id(
+                _load_pollution_sensor_type_registry(policy_context=policy_context)
+            )
+            sensor_type_id = str(inputs.get("sensor_type_id", "")).strip()
+            sensor_row = dict(sensor_types_by_id.get(sensor_type_id) or {})
+            if sensor_type_id and not sensor_row:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "sensor_type_id is not registered in pollution_sensor_type_registry",
+                    "Register sensor_type_id or omit sensor_type_id for generic sampling.",
+                    {"sensor_type_id": sensor_type_id},
+                    "$.intent.inputs.sensor_type_id",
+                )
+            if sensor_row:
+                supported_pollutants = _sorted_tokens(
+                    list(sensor_row.get("supported_pollutants") or [])
+                )
+                if supported_pollutants and pollutant_id not in supported_pollutants:
+                    return refusal(
+                        "PROCESS_INPUT_INVALID",
+                        "sensor_type_id does not support pollutant_id",
+                        "Use compatible sensor type for requested pollutant_id.",
+                        {
+                            "sensor_type_id": sensor_type_id,
+                            "pollutant_id": pollutant_id,
+                        },
+                        "$.intent.inputs.sensor_type_id",
+                    )
+
+            instrument_id = str(inputs.get("instrument_id", "")).strip() or None
+            calibration_cert_id = (
+                str(inputs.get("calibration_cert_id", "")).strip() or None
+            )
+            if sensor_row and bool(sensor_row.get("requires_calibration", False)) and (
+                calibration_cert_id is None
+            ):
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "sensor_type_id requires calibration_cert_id",
+                    "Provide calibration_cert_id for this measurement device type.",
+                    {"sensor_type_id": sensor_type_id},
+                    "$.intent.inputs.calibration_cert_id",
+                )
+
+            sampled_concentration = int(
+                sample_pollution_measurement(
+                    pollutant_id=pollutant_id,
+                    spatial_scope_id=spatial_scope_id,
+                    field_cell_rows=(
+                        list(inputs.get("field_cells"))
+                        if isinstance(inputs.get("field_cells"), list)
+                        else list(state.get("field_cells") or [])
+                    ),
+                )
+            )
+
+            measurement_row = build_pollution_measurement_row(
+                measurement_id=str(inputs.get("measurement_id", "")).strip(),
+                pollutant_id=pollutant_id,
+                spatial_scope_id=spatial_scope_id,
+                measured_concentration=int(sampled_concentration),
+                instrument_id=instrument_id,
+                calibration_cert_id=calibration_cert_id,
+                tick=int(max(0, _as_int(current_tick, 0))),
+                deterministic_fingerprint="",
+                extensions={
+                    "source_process_id": process_id,
+                    "sensor_type_id": sensor_type_id or None,
+                    "task_type_id": "task.measure_pollution",
+                },
+            )
+            if not measurement_row:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "pollution measurement request is invalid",
+                    "Provide pollutant_id and spatial_scope_id for measurement.",
+                    {"process_id": process_id},
+                    "$.intent.inputs",
+                )
+            state["pollution_measurement_rows"] = normalize_pollution_measurement_rows(
+                list(state.get("pollution_measurement_rows") or []) + [measurement_row]
+            )
+
+            artifact_id = "artifact.observation.pollution_measurement.{}".format(
+                canonical_sha256(
+                    {
+                        "measurement_id": str(
+                            measurement_row.get("measurement_id", "")
+                        ).strip(),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    }
+                )[:16]
+            )
+            info_artifact_rows = normalize_info_artifact_rows(
+                list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                + [
+                    {
+                        "artifact_id": artifact_id,
+                        "artifact_family_id": "OBSERVATION",
+                        "extensions": {
+                            "artifact_type_id": "artifact.pollution.measurement",
+                            "measurement_id": str(
+                                measurement_row.get("measurement_id", "")
+                            ).strip(),
+                            "pollutant_id": pollutant_id,
+                            "spatial_scope_id": spatial_scope_id,
+                            "measured_concentration": int(sampled_concentration),
+                            "instrument_id": instrument_id,
+                            "calibration_cert_id": calibration_cert_id,
+                            "sensor_type_id": sensor_type_id or None,
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                        },
+                    }
+                ]
+            )
+            state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+            state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+            subject_id = str(
+                inputs.get(
+                    "subject_id",
+                    inputs.get(
+                        "requester_subject_id",
+                        inputs.get("actor_subject_id", "subject.unknown"),
+                    ),
+                )
+            ).strip() or "subject.unknown"
+            envelope_id = "env.local.pollution_measure.{}".format(
+                canonical_sha256(
+                    {
+                        "subject_id": subject_id,
+                        "artifact_id": artifact_id,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    }
+                )[:16]
+            )
+            receipt_id = deterministic_knowledge_receipt_id(
+                subject_id=subject_id,
+                artifact_id=artifact_id,
+                envelope_id=envelope_id,
+                acquired_tick=int(max(0, _as_int(current_tick, 0))),
+            )
+            receipt_row = build_knowledge_receipt(
+                receipt_id=receipt_id,
+                subject_id=subject_id,
+                artifact_id=artifact_id,
+                envelope_id=envelope_id,
+                acquired_tick=int(max(0, _as_int(current_tick, 0))),
+                trust_weight=1.0,
+                verification_state=("verified" if calibration_cert_id else "unverified"),
+                delivery_event_id=None,
+                extensions={
+                    "source_process_id": process_id,
+                    "measurement_id": str(measurement_row.get("measurement_id", "")).strip(),
+                    "epistemic_scope": "diegetic_local",
+                    "spatial_scope_id": spatial_scope_id,
+                },
+            )
+            state["knowledge_receipt_rows"] = normalize_knowledge_receipt_rows(
+                list(state.get("knowledge_receipt_rows") or []) + [receipt_row]
+            )
+            _ensure_knowledge_receipt_rows(state)
+
+            _refresh_pollution_hash_chains(state)
+            result_metadata = {
+                "measurement_id": str(measurement_row.get("measurement_id", "")).strip(),
+                "artifact_id": str(artifact_id),
+                "knowledge_receipt_id": str(receipt_id),
+                "subject_id": subject_id,
+                "pollutant_id": pollutant_id,
+                "spatial_scope_id": spatial_scope_id,
+                "measured_concentration": int(sampled_concentration),
+                "pollution_measurement_hash_chain": str(state.get("pollution_measurement_hash_chain", "")).strip(),
             }
             _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.process_run_end":

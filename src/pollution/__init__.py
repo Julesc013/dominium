@@ -31,6 +31,12 @@ from src.pollution.exposure_engine import (
     exposure_threshold_rows_by_pollutant,
     normalize_health_risk_event_rows,
 )
+from src.pollution.measurement_engine import (
+    build_pollution_measurement_row,
+    normalize_pollution_measurement_rows,
+    pollution_sensor_type_rows_by_id,
+    sample_pollution_measurement,
+)
 
 __all__ = [
     "REFUSAL_POLLUTION_INVALID",
@@ -58,4 +64,8 @@ __all__ = [
     "evaluate_pollution_exposure_tick",
     "exposure_threshold_rows_by_pollutant",
     "normalize_health_risk_event_rows",
+    "build_pollution_measurement_row",
+    "normalize_pollution_measurement_rows",
+    "pollution_sensor_type_rows_by_id",
+    "sample_pollution_measurement",
 ]
