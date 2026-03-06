@@ -7,6 +7,9 @@ from typing import Dict, Iterable, List, Mapping
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
+REFUSAL_CANDIDATE_PROMOTION_DENIED = "refusal.process.candidate.promotion_denied"
+
+
 def _as_int(value: object, default_value: int = 0) -> int:
     try:
         return int(value)
@@ -269,6 +272,170 @@ def infer_candidate_artifacts(
                 "candidate_id": candidate_id,
                 "artifact_ids": list(artifact_ids),
                 "confidence_score": confidence_score,
+            }
+        ),
+    }
+
+
+def evaluate_candidate_promotion(
+    *,
+    current_tick: int,
+    candidate_id: str,
+    candidate_rows: object,
+    experiment_run_binding_rows: object,
+    qc_result_record_rows: object,
+    process_metrics_state_rows: object,
+    required_replications: int,
+    min_qc_pass_rate: int,
+    min_stabilization_score: int,
+) -> dict:
+    tick = int(max(0, _as_int(current_tick, 0)))
+    candidate_token = _token(candidate_id)
+    candidate_map = candidate_process_definition_rows_by_id(candidate_rows)
+    candidate_row = dict(candidate_map.get(candidate_token) or {})
+    if not candidate_row:
+        return {
+            "result": "refusal",
+            "refusal_code": REFUSAL_CANDIDATE_PROMOTION_DENIED,
+            "reason_code": "candidate_unknown",
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "result": "refusal",
+                    "candidate_id": candidate_token,
+                    "reason_code": "candidate_unknown",
+                    "tick": tick,
+                }
+            ),
+        }
+
+    process_ref = _token(candidate_row.get("proposed_process_definition_ref"))
+    process_id = process_ref
+    version = "1.0.0"
+    if "@" in process_ref:
+        process_id, version = process_ref.split("@", 1)
+        process_id = _token(process_id)
+        version = _token(version) or "1.0.0"
+    process_key = "{}@{}".format(process_id, version)
+
+    completed_runs = [
+        dict(item)
+        for item in _as_list(experiment_run_binding_rows)
+        if isinstance(item, Mapping)
+        and _token(dict(item).get("process_id")) == process_id
+        and (_token(dict(item).get("version")) or "1.0.0") == version
+        and _token(dict(item).get("status")).lower() == "completed"
+    ]
+    replication_count = int(len(completed_runs))
+
+    qc_rows = [
+        dict(item)
+        for item in _as_list(qc_result_record_rows)
+        if isinstance(item, Mapping)
+        and _token(dict(item).get("run_id"))
+        in set(_token(row.get("run_id")) for row in completed_runs)
+        and bool(dict(item).get("sampled", False))
+    ]
+    qc_pass_rate = 1000
+    if qc_rows:
+        pass_count = int(sum(1 for row in qc_rows if bool(row.get("passed", False))))
+        qc_pass_rate = int(max(0, min(1000, (pass_count * 1000) // len(qc_rows))))
+
+    metrics_row = {}
+    for row in sorted(
+        (dict(item) for item in _as_list(process_metrics_state_rows) if isinstance(item, Mapping)),
+        key=lambda item: (_token(item.get("process_id")), _token(item.get("version"))),
+    ):
+        row_process_key = "{}@{}".format(
+            _token(row.get("process_id")),
+            _token(row.get("version")) or "1.0.0",
+        )
+        if row_process_key != process_key:
+            continue
+        metrics_row = dict(row)
+        break
+    defect_rate = int(max(0, min(1000, _as_int(metrics_row.get("defect_rate", 0), 0))))
+    env_dev = int(max(0, min(1000, _as_int(metrics_row.get("env_deviation_score", 0), 0))))
+    cal_dev = int(
+        max(0, min(1000, _as_int(metrics_row.get("calibration_deviation_score", 0), 0)))
+    )
+    stabilization_score = int(
+        max(
+            0,
+            min(
+                1000,
+                qc_pass_rate
+                - defect_rate
+                - (env_dev // 2)
+                - (cal_dev // 2),
+            ),
+        )
+    )
+
+    required_runs = int(max(1, _as_int(required_replications, 3)))
+    min_qc = int(max(0, min(1000, _as_int(min_qc_pass_rate, 700))))
+    min_score = int(max(0, min(1000, _as_int(min_stabilization_score, 650))))
+    denied = (
+        replication_count < required_runs
+        or qc_pass_rate < min_qc
+        or stabilization_score < min_score
+    )
+    if denied:
+        return {
+            "result": "refusal",
+            "refusal_code": REFUSAL_CANDIDATE_PROMOTION_DENIED,
+            "reason_code": "promotion_threshold_not_met",
+            "metrics": {
+                "replication_count": replication_count,
+                "required_replications": required_runs,
+                "qc_pass_rate": qc_pass_rate,
+                "min_qc_pass_rate": min_qc,
+                "stabilization_score": stabilization_score,
+                "min_stabilization_score": min_score,
+            },
+            "candidate_row": dict(candidate_row),
+            "process_id": process_id,
+            "version": version,
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "result": "refusal",
+                    "candidate_id": candidate_token,
+                    "reason_code": "promotion_threshold_not_met",
+                    "metrics": {
+                        "replication_count": replication_count,
+                        "required_replications": required_runs,
+                        "qc_pass_rate": qc_pass_rate,
+                        "min_qc_pass_rate": min_qc,
+                        "stabilization_score": stabilization_score,
+                        "min_stabilization_score": min_score,
+                    },
+                }
+            ),
+        }
+
+    return {
+        "result": "complete",
+        "candidate_row": dict(candidate_row),
+        "process_id": process_id,
+        "version": version,
+        "metrics": {
+            "replication_count": replication_count,
+            "required_replications": required_runs,
+            "qc_pass_rate": qc_pass_rate,
+            "min_qc_pass_rate": min_qc,
+            "stabilization_score": stabilization_score,
+            "min_stabilization_score": min_score,
+        },
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "result": "complete",
+                "candidate_id": candidate_token,
+                "process_id": process_id,
+                "version": version,
+                "metrics": {
+                    "replication_count": replication_count,
+                    "qc_pass_rate": qc_pass_rate,
+                    "stabilization_score": stabilization_score,
+                },
             }
         ),
     }

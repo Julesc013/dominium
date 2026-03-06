@@ -64,6 +64,7 @@ from src.process.drift import (
     schedule_revalidation_trials,
 )
 from src.process.research import (
+    REFUSAL_CANDIDATE_PROMOTION_DENIED,
     REFUSAL_EXPERIMENT_INVALID,
     REFUSAL_EXPERIMENT_PROCESS_UNKNOWN,
     REFUSAL_EXPERIMENT_UNKNOWN,
@@ -72,6 +73,7 @@ from src.process.research import (
     build_experiment_definition_row,
     build_experiment_result_row,
     candidate_process_definition_rows_by_id,
+    evaluate_candidate_promotion,
     evaluate_experiment_run_complete,
     evaluate_experiment_run_start,
     infer_candidate_artifacts,
@@ -139,6 +141,7 @@ __all__ = [
     "REFUSAL_EXPERIMENT_INVALID",
     "REFUSAL_EXPERIMENT_UNKNOWN",
     "REFUSAL_EXPERIMENT_PROCESS_UNKNOWN",
+    "REFUSAL_CANDIDATE_PROMOTION_DENIED",
     "build_experiment_definition_row",
     "normalize_experiment_definition_rows",
     "experiment_definition_rows_by_id",
@@ -152,4 +155,5 @@ __all__ = [
     "build_candidate_model_binding_row",
     "normalize_candidate_model_binding_rows",
     "infer_candidate_artifacts",
+    "evaluate_candidate_promotion",
 ]

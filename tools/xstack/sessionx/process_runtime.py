@@ -660,9 +660,11 @@ from src.process.capsules import (
     normalize_process_capsule_rows,
 )
 from src.process.research import (
+    REFUSAL_CANDIDATE_PROMOTION_DENIED,
     REFUSAL_EXPERIMENT_INVALID,
     REFUSAL_EXPERIMENT_PROCESS_UNKNOWN,
     REFUSAL_EXPERIMENT_UNKNOWN,
+    evaluate_candidate_promotion,
     evaluate_experiment_run_complete,
     evaluate_experiment_run_start,
     infer_candidate_artifacts,
@@ -36211,6 +36213,245 @@ def execute_intent(
             ).strip(),
             "deterministic_fingerprint": str(
                 experiment_eval.get("deterministic_fingerprint", "")
+            ).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.candidate_promote_to_defined":
+        candidate_id = str(inputs.get("candidate_id", "")).strip()
+        if not candidate_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.candidate_promote_to_defined requires candidate_id",
+                "Provide deterministic candidate_id from candidate_process_definition rows.",
+                {"process_id": process_id},
+                "$.intent.inputs.candidate_id",
+            )
+
+        promotion_eval = evaluate_candidate_promotion(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            candidate_id=candidate_id,
+            candidate_rows=list(state.get("candidate_process_definition_rows") or []),
+            experiment_run_binding_rows=list(state.get("experiment_run_binding_rows") or []),
+            qc_result_record_rows=list(state.get("qc_result_record_rows") or []),
+            process_metrics_state_rows=list(state.get("process_metrics_state_rows") or []),
+            required_replications=int(
+                max(1, _as_int(inputs.get("required_replications", 3), 3))
+            ),
+            min_qc_pass_rate=int(max(0, min(1000, _as_int(inputs.get("min_qc_pass_rate", 700), 700)))),
+            min_stabilization_score=int(
+                max(0, min(1000, _as_int(inputs.get("min_stabilization_score", 650), 650)))
+            ),
+        )
+        if str(promotion_eval.get("result", "")).strip() != "complete":
+            metrics = dict(promotion_eval.get("metrics") or {})
+            return refusal(
+                REFUSAL_CANDIDATE_PROMOTION_DENIED,
+                "candidate promotion thresholds not met",
+                "Increase replication/QC/stability evidence and retry promotion.",
+                {
+                    "candidate_id": candidate_id,
+                    "reason_code": str(promotion_eval.get("reason_code", "")).strip(),
+                    "replication_count": int(
+                        max(0, _as_int(metrics.get("replication_count", 0), 0))
+                    ),
+                    "required_replications": int(
+                        max(1, _as_int(metrics.get("required_replications", 1), 1))
+                    ),
+                    "qc_pass_rate": int(max(0, _as_int(metrics.get("qc_pass_rate", 0), 0))),
+                    "stabilization_score": int(
+                        max(0, _as_int(metrics.get("stabilization_score", 0), 0))
+                    ),
+                },
+                "$.intent.inputs.candidate_id",
+            )
+
+        process_id_token = str(promotion_eval.get("process_id", "")).strip()
+        version_token = str(promotion_eval.get("version", "")).strip() or "1.0.0"
+        process_definition_rows = [
+            dict(row)
+            for row in list(state.get("process_definition_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        existing = False
+        for row in process_definition_rows:
+            if str(row.get("process_id", "")).strip() != process_id_token:
+                continue
+            if str(row.get("version", "")).strip() != version_token:
+                continue
+            existing = True
+            break
+        if not existing:
+            process_definition_rows.append(
+                {
+                    "schema_version": "1.0.0",
+                    "process_id": process_id_token,
+                    "version": version_token,
+                    "description": "PROC-7 promoted candidate process definition",
+                    "step_graph": {
+                        "steps": [
+                            {
+                                "step_id": "step.inferred.transform",
+                                "step_kind": "transform",
+                                "domain_process_id": "process.inferred.stub",
+                                "inputs": [],
+                                "outputs": [],
+                                "cost_units": 1,
+                            }
+                        ],
+                        "edges": [],
+                    },
+                    "input_signature": [],
+                    "output_signature": [],
+                    "required_tools": [],
+                    "required_environment": [],
+                    "tier_contract_id": "tier.proc.default",
+                    "coupling_budget_id": "budget.coupling.process.default",
+                    "qc_policy_id": str(inputs.get("qc_policy_id", "")).strip()
+                    or "qc.basic_sampling",
+                    "stabilization_policy_id": str(
+                        inputs.get("stabilization_policy_id", "")
+                    ).strip()
+                    or "stab.default",
+                    "process_lifecycle_policy_id": str(
+                        inputs.get("process_lifecycle_policy_id", "")
+                    ).strip()
+                    or "proc.lifecycle.default",
+                    "process_cert_type_id": str(inputs.get("process_cert_type_id", "")).strip()
+                    or "cert.process.basic",
+                    "drift_policy_id": str(inputs.get("drift_policy_id", "")).strip()
+                    or "drift.default",
+                    "yield_model_id": str(inputs.get("yield_model_id", "")).strip()
+                    or "yield.default_deterministic",
+                    "defect_model_id": str(inputs.get("defect_model_id", "")).strip()
+                    or "defect.default_deterministic",
+                    "deterministic_fingerprint": "",
+                    "extensions": {
+                        "source": "PROC7-5",
+                        "candidate_id": candidate_id,
+                        "promotion_tick": int(max(0, _as_int(current_tick, 0))),
+                        "derived_from_candidate": True,
+                    },
+                }
+            )
+        for row in process_definition_rows:
+            fingerprint = str(row.get("deterministic_fingerprint", "")).strip()
+            if fingerprint:
+                continue
+            row["deterministic_fingerprint"] = canonical_sha256(
+                dict(row, deterministic_fingerprint="")
+            )
+        state["process_definition_rows"] = sorted(
+            process_definition_rows,
+            key=lambda row: (
+                str(row.get("process_id", "")),
+                str(row.get("version", "")),
+            ),
+        )
+
+        metrics = dict(promotion_eval.get("metrics") or {})
+        promotion_record = {
+            "schema_version": "1.0.0",
+            "record_id": "record.process.candidate_promotion.{}".format(
+                canonical_sha256(
+                    {
+                        "candidate_id": candidate_id,
+                        "process_id": process_id_token,
+                        "version": version_token,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    }
+                )[:16]
+            ),
+            "candidate_id": candidate_id,
+            "process_id": process_id_token,
+            "version": version_token,
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "status": "promoted",
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "source_process_id": process_id,
+                "replication_count": int(
+                    max(0, _as_int(metrics.get("replication_count", 0), 0))
+                ),
+                "required_replications": int(
+                    max(1, _as_int(metrics.get("required_replications", 1), 1))
+                ),
+                "qc_pass_rate": int(max(0, _as_int(metrics.get("qc_pass_rate", 0), 0))),
+                "stabilization_score": int(
+                    max(0, _as_int(metrics.get("stabilization_score", 0), 0))
+                ),
+            },
+        }
+        promotion_record["deterministic_fingerprint"] = canonical_sha256(
+            dict(promotion_record, deterministic_fingerprint="")
+        )
+        state["candidate_promotion_record_rows"] = list(
+            state.get("candidate_promotion_record_rows") or []
+        ) + [promotion_record]
+        _ensure_candidate_promotion_record_rows(state)
+
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": "artifact.record.candidate_promotion.{}".format(
+                        canonical_sha256(
+                            {"record_id": str(promotion_record.get("record_id", "")).strip()}
+                        )[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.candidate_promoted",
+                        "record_id": str(promotion_record.get("record_id", "")).strip(),
+                        "candidate_id": candidate_id,
+                        "process_id": process_id_token,
+                        "version": version_token,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    },
+                }
+            ]
+        )
+        if bool(inputs.get("request_certification", False)):
+            info_artifact_rows = normalize_info_artifact_rows(
+                list(info_artifact_rows)
+                + [
+                    {
+                        "artifact_id": "artifact.report.candidate_promotion_cert_request.{}".format(
+                            canonical_sha256(
+                                {
+                                    "candidate_id": candidate_id,
+                                    "process_id": process_id_token,
+                                    "version": version_token,
+                                }
+                            )[:16]
+                        ),
+                        "artifact_family_id": "REPORT",
+                        "extensions": {
+                            "artifact_type_id": "artifact.report.candidate_promotion_cert_request",
+                            "candidate_id": candidate_id,
+                            "process_id": process_id_token,
+                            "version": version_token,
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                        },
+                    }
+                ]
+            )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+        _refresh_process_research_hash_chains(state)
+
+        result_metadata = {
+            "candidate_id": candidate_id,
+            "process_id": process_id_token,
+            "version": version_token,
+            "record_id": str(promotion_record.get("record_id", "")).strip(),
+            "candidate_promotion_hash_chain": str(
+                state.get("candidate_promotion_hash_chain", "")
+            ).strip(),
+            "candidate_process_hash_chain": str(
+                state.get("candidate_process_hash_chain", "")
+            ).strip(),
+            "deterministic_fingerprint": str(
+                promotion_eval.get("deterministic_fingerprint", "")
             ).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)

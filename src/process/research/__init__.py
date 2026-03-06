@@ -13,9 +13,11 @@ from src.process.research.experiment_engine import (
     normalize_experiment_result_rows,
 )
 from src.process.research.inference_engine import (
+    REFUSAL_CANDIDATE_PROMOTION_DENIED,
     build_candidate_model_binding_row,
     build_candidate_process_definition_row,
     candidate_process_definition_rows_by_id,
+    evaluate_candidate_promotion,
     infer_candidate_artifacts,
     normalize_candidate_model_binding_rows,
     normalize_candidate_process_definition_rows,
@@ -38,4 +40,6 @@ __all__ = [
     "build_candidate_model_binding_row",
     "normalize_candidate_model_binding_rows",
     "infer_candidate_artifacts",
+    "REFUSAL_CANDIDATE_PROMOTION_DENIED",
+    "evaluate_candidate_promotion",
 ]
