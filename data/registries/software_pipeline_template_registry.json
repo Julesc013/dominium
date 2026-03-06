@@ -12,7 +12,256 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "PROC8-2",
-          "process_definition_ref": "proc.pipeline.build_test_package_sign_deploy@1.0.0"
+          "process_definition_ref": "proc.pipeline.build_test_package_sign_deploy@1.0.0",
+          "process_definition_template": {
+            "schema_version": "1.0.0",
+            "process_id": "proc.pipeline.build_test_package_sign_deploy",
+            "version": "1.0.0",
+            "description": "PROC-8 deterministic software pipeline template.",
+            "step_graph": {
+              "steps": [
+                {
+                  "step_id": "step.verify_inputs",
+                  "step_kind": "verify",
+                  "inputs": [
+                    {
+                      "ref_id": "artifact.source",
+                      "ref_type": "artifact"
+                    },
+                    {
+                      "ref_id": "registry.software_toolchain",
+                      "ref_type": "registry"
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "ref_id": "artifact.record.verify_inputs",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "cost_units": 1,
+                  "extensions": {
+                    "refusal_codes": [
+                      "refusal.software_pipeline.invalid_inputs",
+                      "refusal.software_pipeline.toolchain_unknown"
+                    ]
+                  }
+                },
+                {
+                  "step_id": "step.compile",
+                  "step_kind": "transform",
+                  "domain_process_id": "process.compile_request_submit",
+                  "inputs": [
+                    {
+                      "ref_id": "artifact.source",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "ref_id": "artifact.binary",
+                      "ref_type": "artifact"
+                    },
+                    {
+                      "ref_id": "artifact.model.compiled",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "cost_units": 3,
+                  "extensions": {
+                    "refusal_codes": [
+                      "refusal.software_pipeline.compile_failed",
+                      "refusal.compile.missing_proof"
+                    ]
+                  }
+                },
+                {
+                  "step_id": "step.run_tests",
+                  "step_kind": "measure",
+                  "inputs": [
+                    {
+                      "ref_id": "artifact.binary",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "ref_id": "artifact.report.test",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "cost_units": 2,
+                  "extensions": {
+                    "refusal_codes": [
+                      "refusal.software_pipeline.test_failed"
+                    ]
+                  }
+                },
+                {
+                  "step_id": "step.package",
+                  "step_kind": "transform",
+                  "inputs": [
+                    {
+                      "ref_id": "artifact.binary",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "ref_id": "artifact.package",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "cost_units": 1,
+                  "extensions": {
+                    "refusal_codes": [
+                      "refusal.software_pipeline.package_failed"
+                    ]
+                  }
+                },
+                {
+                  "step_id": "step.sign",
+                  "step_kind": "verify",
+                  "inputs": [
+                    {
+                      "ref_id": "artifact.package",
+                      "ref_type": "artifact"
+                    },
+                    {
+                      "ref_id": "artifact.credential.signing_key",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "ref_id": "artifact.signature",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "cost_units": 1,
+                  "extensions": {
+                    "refusal_codes": [
+                      "refusal.software_pipeline.signing_key_required",
+                      "refusal.software_pipeline.signature_invalid"
+                    ]
+                  }
+                },
+                {
+                  "step_id": "step.deploy",
+                  "step_kind": "action",
+                  "action_template_id": "action.sig.send.message",
+                  "inputs": [
+                    {
+                      "ref_id": "artifact.package",
+                      "ref_type": "artifact"
+                    },
+                    {
+                      "ref_id": "artifact.signature",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "ref_id": "artifact.record.deployment",
+                      "ref_type": "artifact"
+                    }
+                  ],
+                  "cost_units": 1,
+                  "extensions": {
+                    "refusal_codes": [
+                      "refusal.software_pipeline.deploy_failed",
+                      "refusal.software_pipeline.signature_required_for_deploy"
+                    ]
+                  }
+                }
+              ],
+              "edges": [
+                {
+                  "from_step_id": "step.verify_inputs",
+                  "to_step_id": "step.compile"
+                },
+                {
+                  "from_step_id": "step.compile",
+                  "to_step_id": "step.run_tests"
+                },
+                {
+                  "from_step_id": "step.run_tests",
+                  "to_step_id": "step.package"
+                },
+                {
+                  "from_step_id": "step.package",
+                  "to_step_id": "step.sign"
+                },
+                {
+                  "from_step_id": "step.sign",
+                  "to_step_id": "step.deploy"
+                }
+              ]
+            },
+            "input_signature": [
+              {
+                "name": "source_artifact",
+                "ref_id": "artifact.source",
+                "ref_type": "artifact"
+              },
+              {
+                "name": "toolchain",
+                "ref_id": "registry.software_toolchain",
+                "ref_type": "registry"
+              },
+              {
+                "name": "config_hash",
+                "ref_id": "hash.config",
+                "ref_type": "hash"
+              },
+              {
+                "name": "signing_key",
+                "ref_id": "artifact.credential.signing_key",
+                "ref_type": "artifact"
+              }
+            ],
+            "output_signature": [
+              {
+                "name": "binary_artifact",
+                "ref_id": "artifact.binary",
+                "ref_type": "artifact"
+              },
+              {
+                "name": "package_artifact",
+                "ref_id": "artifact.package",
+                "ref_type": "artifact"
+              },
+              {
+                "name": "signature_artifact",
+                "ref_id": "artifact.signature",
+                "ref_type": "artifact"
+              },
+              {
+                "name": "test_report",
+                "ref_id": "artifact.report.test",
+                "ref_type": "artifact"
+              }
+            ],
+            "required_tools": [
+              "toolchain.stub_c89"
+            ],
+            "required_environment": [
+              "env.software.build.default"
+            ],
+            "tier_contract_id": "tier.proc.default",
+            "coupling_budget_id": "budget.coupling.process.default",
+            "qc_policy_id": "qc.basic_sampling",
+            "stabilization_policy_id": "stab.default",
+            "process_lifecycle_policy_id": "proc.lifecycle.default",
+            "process_cert_type_id": "cert.process.basic",
+            "drift_policy_id": "drift.default",
+            "yield_model_id": "yield.default_deterministic",
+            "defect_model_id": "defect.default_deterministic",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "source": "PROC8-3"
+            }
+          }
         }
       }
     ],
