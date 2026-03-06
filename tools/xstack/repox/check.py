@@ -14100,6 +14100,8 @@ def _append_mobility_invariant_findings(
     profile: str,
 ) -> None:
     severity = "warn"
+    promotion_replication_rule_id = "INV-PROMOTION-REQUIRES-REPLICATION"
+    research_policy_registry_rel = "data/registries/research_policy_registry.json"
 
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     control_plane_rel = "src/control/control_plane_engine.py"
