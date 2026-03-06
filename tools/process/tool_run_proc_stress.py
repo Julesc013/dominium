@@ -63,6 +63,7 @@ def _scenario_tasks(scenario: Mapping[str, object], *, horizon: int) -> Dict[int
                 "task_kind": "capsule",
                 "task_id": "capsule.{}".format(process_id),
                 "process_id": process_id,
+                "safety_critical": bool(row.get("safety_critical", False)),
                 "out_of_domain": bool(int(canonical_sha256(process_id)[:4], 16) % 13 == 0),
             }
         )
@@ -74,7 +75,12 @@ def _scenario_tasks(scenario: Mapping[str, object], *, horizon: int) -> Dict[int
             continue
         tick = assign_tick("micro", process_id)
         out.setdefault(tick, []).append(
-            {"task_kind": "micro", "task_id": "micro.{}".format(process_id), "process_id": process_id}
+            {
+                "task_kind": "micro",
+                "task_id": "micro.{}".format(process_id),
+                "process_id": process_id,
+                "safety_critical": False,
+            }
         )
     for row in list(dict(scenario or {}).get("drift_revalidation", {}).get("drift_injections") or []):
         if not isinstance(row, Mapping):
@@ -84,7 +90,12 @@ def _scenario_tasks(scenario: Mapping[str, object], *, horizon: int) -> Dict[int
             continue
         tick = int(max(0, _as_int(row.get("tick", 0), 0)))
         out.setdefault(tick, []).append(
-            {"task_kind": "drift", "task_id": "drift.{}".format(process_id), "process_id": process_id}
+            {
+                "task_kind": "drift",
+                "task_id": "drift.{}".format(process_id),
+                "process_id": process_id,
+                "safety_critical": True,
+            }
         )
     for row in list(dict(scenario or {}).get("research_campaigns") or []):
         if not isinstance(row, Mapping):
@@ -95,10 +106,20 @@ def _scenario_tasks(scenario: Mapping[str, object], *, horizon: int) -> Dict[int
         run_tick = int(max(0, _as_int(row.get("run_tick", 0), 0)))
         promote_tick = int(max(run_tick, _as_int(row.get("promotion_tick", run_tick), run_tick)))
         out.setdefault(run_tick, []).append(
-            {"task_kind": "research", "task_id": "research.{}".format(experiment_id), "row": dict(row)}
+            {
+                "task_kind": "research",
+                "task_id": "research.{}".format(experiment_id),
+                "row": dict(row),
+                "safety_critical": False,
+            }
         )
         out.setdefault(promote_tick, []).append(
-            {"task_kind": "promotion", "task_id": "promotion.{}".format(experiment_id), "row": dict(row)}
+            {
+                "task_kind": "promotion",
+                "task_id": "promotion.{}".format(experiment_id),
+                "row": dict(row),
+                "safety_critical": False,
+            }
         )
     for row in list(dict(scenario or {}).get("software_pipelines") or []):
         if not isinstance(row, Mapping):
@@ -108,7 +129,12 @@ def _scenario_tasks(scenario: Mapping[str, object], *, horizon: int) -> Dict[int
             continue
         tick = int(max(0, _as_int(row.get("tick", 0), 0)))
         out.setdefault(tick, []).append(
-            {"task_kind": "software", "task_id": "software.{}".format(run_id), "row": dict(row)}
+            {
+                "task_kind": "software",
+                "task_id": "software.{}".format(run_id),
+                "row": dict(row),
+                "safety_critical": False,
+            }
         )
     for tick in list(out.keys()):
         out[tick] = sorted(
@@ -169,22 +195,87 @@ def run_proc_stress(
     micro_per_tick: List[int] = []
     trace: List[dict] = []
 
+    kind_priority = {
+        "capsule": 0,
+        "drift": 1,
+        "software": 2,
+        "micro": 3,
+        "research": 4,
+        "promotion": 5,
+    }
+
     for tick in range(horizon):
         tasks = [dict(row) for row in list(tasks_by_tick.get(tick) or []) if isinstance(row, Mapping)]
+        tasks = sorted(
+            tasks,
+            key=lambda row: (
+                0 if bool(row.get("safety_critical", False)) else 1,
+                int(kind_priority.get(str(row.get("task_kind", "")).strip(), 99)),
+                str(row.get("task_id", "")),
+            ),
+        )
+        state["control_decision_log"].append(
+            {
+                "decision_id": "decision.proc9.order.{}".format(
+                    canonical_sha256({"tick": tick, "task_count": len(tasks)})[:12]
+                ),
+                "tick": tick,
+                "result": "logged",
+                "reason_code": "degrade.proc.prefer_capsules",
+                "extensions": {
+                    "degradation_order": [
+                        "degrade.proc.cap_micro_steps",
+                        "degrade.proc.prefer_capsules",
+                        "degrade.proc.defer_research_inference",
+                        "degrade.proc.reduce_low_risk_qc_sampling",
+                        "degrade.proc.never_defer_safety_checks",
+                    ]
+                },
+            }
+        )
         ran = 0
         ran_micro = 0
+        deferred_inference = False
         for task in tasks:
-            if ran >= total_cap:
-                metrics["deferred_task_count"] += 1
-                continue
+            is_safety_critical = bool(task.get("safety_critical", False))
             kind = str(task.get("task_kind", "")).strip()
-            if kind in {"micro", "research", "promotion", "software"} and ran_micro >= micro_cap:
+            if ran >= total_cap and (not is_safety_critical):
                 metrics["deferred_task_count"] += 1
+                if kind in {"research", "promotion"}:
+                    deferred_inference = True
+                state["control_decision_log"].append(
+                    {
+                        "decision_id": "decision.proc9.defer.total.{}".format(
+                            canonical_sha256({"tick": tick, "task_id": task.get("task_id")})[:12]
+                        ),
+                        "tick": tick,
+                        "result": "deferred",
+                        "reason_code": "degrade.proc.defer_research_inference"
+                        if kind in {"research", "promotion"}
+                        else "degrade.proc.total_task_cap",
+                        "extensions": {"task_id": str(task.get("task_id", ""))},
+                    }
+                )
+                continue
+            if kind in {"micro", "research", "promotion", "software"} and ran_micro >= micro_cap and (not is_safety_critical):
+                metrics["deferred_task_count"] += 1
+                state["control_decision_log"].append(
+                    {
+                        "decision_id": "decision.proc9.defer.micro.{}".format(
+                            canonical_sha256({"tick": tick, "task_id": task.get("task_id")})[:12]
+                        ),
+                        "tick": tick,
+                        "result": "deferred",
+                        "reason_code": "degrade.proc.cap_micro_steps",
+                        "extensions": {"task_id": str(task.get("task_id", ""))},
+                    }
+                )
                 continue
 
             if kind == "software":
                 row = _as_map(task.get("row"))
                 inputs = dict(proc8_testlib.default_inputs())
+                reduce_qc = bool(ran_micro >= max(1, micro_cap // 2)) and (not is_safety_critical)
                 inputs.update(
                     {
                         "source_hash": str(row.get("source_hash", "")).strip(),
@@ -193,8 +284,21 @@ def run_proc_stress(
                         "config_hash": str(row.get("config_hash", "")).strip(),
                         "signing_key_artifact_id": str(row.get("signing_key_artifact_id", "cred.signing.proc9")).strip(),
                         "deploy_to_address": str(row.get("deploy_to_address", "sig://station.proc9")).strip(),
+                        "test_subset_rate_permille": 250 if reduce_qc else 500,
                     }
                 )
+                if reduce_qc:
+                    state["control_decision_log"].append(
+                        {
+                            "decision_id": "decision.proc9.reduce_qc.{}".format(
+                                canonical_sha256({"tick": tick, "task_id": task.get("task_id")})[:12]
+                            ),
+                            "tick": tick,
+                            "result": "degraded",
+                            "reason_code": "degrade.proc.reduce_low_risk_qc_sampling",
+                            "extensions": {"task_id": str(task.get("task_id", ""))},
+                        }
+                    )
                 out = proc8_testlib.execute_pipeline(repo_root=repo_root, state=software_state, inputs=inputs)
                 if str(out.get("result", "")).strip() == "complete":
                     run_id = str(out.get("run_id", "")).strip() or str(row.get("run_id", ""))
@@ -283,9 +387,21 @@ def run_proc_stress(
                 ran_micro += 1
                 metrics["micro_process_run_count"] += 1
 
-            ran += 1
-            trace.append({"tick": tick, "task_id": str(task.get("task_id", "")), "kind": kind})
+                ran += 1
+                trace.append({"tick": tick, "task_id": str(task.get("task_id", "")), "kind": kind})
         micro_per_tick.append(ran_micro)
+        if not deferred_inference:
+            state["control_decision_log"].append(
+                {
+                    "decision_id": "decision.proc9.safety_checks.{}".format(
+                        canonical_sha256({"tick": tick, "mode": "mandatory"})[:12]
+                    ),
+                    "tick": tick,
+                    "result": "logged",
+                    "reason_code": "degrade.proc.never_defer_safety_checks",
+                    "extensions": {"safety_checks_mandatory": True},
+                }
+            )
 
     state["process_run_record_hash_chain"] = _hash_rows(state.get("process_run_record_rows"), ["run_id", "process_id", "version", "start_tick", "end_tick", "status"])
     state["process_step_record_hash_chain"] = _hash_rows(state.get("process_step_record_rows"), ["run_id", "step_id", "tick", "status"])
@@ -334,6 +450,55 @@ def run_proc_stress(
             "deployment_hash_chain": str(state.get("deployment_hash_chain", "")),
         },
         "degradation_order": list(_as_map(scenario_row).get("degradation_policy_order") or []),
+        "degradation_summary": {
+            "expand_or_micro_cap_events": int(
+                len(
+                    [
+                        row
+                        for row in list(state.get("control_decision_log") or [])
+                        if isinstance(row, Mapping)
+                        and str(row.get("reason_code", "")).strip()
+                        in {
+                            "degrade.proc.cap_micro_steps",
+                            "degrade.proc.total_task_cap",
+                        }
+                    ]
+                )
+            ),
+            "deferred_inference_events": int(
+                len(
+                    [
+                        row
+                        for row in list(state.get("control_decision_log") or [])
+                        if isinstance(row, Mapping)
+                        and str(row.get("reason_code", "")).strip()
+                        == "degrade.proc.defer_research_inference"
+                    ]
+                )
+            ),
+            "reduced_qc_events": int(
+                len(
+                    [
+                        row
+                        for row in list(state.get("control_decision_log") or [])
+                        if isinstance(row, Mapping)
+                        and str(row.get("reason_code", "")).strip()
+                        == "degrade.proc.reduce_low_risk_qc_sampling"
+                    ]
+                )
+            ),
+            "safety_check_guard_events": int(
+                len(
+                    [
+                        row
+                        for row in list(state.get("control_decision_log") or [])
+                        if isinstance(row, Mapping)
+                        and str(row.get("reason_code", "")).strip()
+                        == "degrade.proc.never_defer_safety_checks"
+                    ]
+                )
+            ),
+        },
         "execution_trace_fingerprint": canonical_sha256(trace),
         "deterministic_fingerprint": "",
         "extensions": {"final_state_snapshot": state, "micro_count_per_tick": micro_per_tick},
