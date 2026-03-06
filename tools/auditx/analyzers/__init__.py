@@ -318,6 +318,8 @@ from analyzers import e291_silent_drift_smell
 from analyzers import e292_capsule_used_while_invalid_smell
 from analyzers import e293_magic_unlock_smell
 from analyzers import e294_undeclared_inference_smell
+from analyzers import e295_direct_binary_write_smell
+from analyzers import e296_signing_bypass_smell
 
 
 ANALYZERS = (
@@ -639,6 +641,8 @@ ANALYZERS = (
     e292_capsule_used_while_invalid_smell,
     e293_magic_unlock_smell,
     e294_undeclared_inference_smell,
+    e295_direct_binary_write_smell,
+    e296_signing_bypass_smell,
 )
 
 

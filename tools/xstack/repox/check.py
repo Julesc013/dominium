@@ -434,6 +434,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-DRIFT-SCORE-DETERMINISTIC",
     "INV-CAPSULE-INVALIDATION-RECORDED",
     "INV-NO-SILENT-QC-ESCALATION",
+    "INV-NO-MAGIC-BUILD",
+    "INV-SIGN-REQUIRES-KEY",
+    "INV-DEPLOY-THROUGH-SIG",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
     "INV-DEGRADATION-MODEL-ONLY",
@@ -837,6 +840,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E292_CAPSULE_USED_WHILE_INVALID_SMELL": "INV-CAPSULE-INVALIDATION-RECORDED",
     "E293_MAGIC_UNLOCK_SMELL": "INV-NO-MAGIC-UNLOCKS-RESEARCH",
     "E294_UNDECLARED_INFERENCE_SMELL": "INV-CANDIDATE-DERIVED-ONLY",
+    "E295_DIRECT_BINARY_WRITE_SMELL": "INV-NO-MAGIC-BUILD",
+    "E296_SIGNING_BYPASS_SMELL": "INV-SIGN-REQUIRES-KEY",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20431,6 +20436,9 @@ def _append_process_constitution_invariant_findings(
     drift_score_rule_id = "INV-DRIFT-SCORE-DETERMINISTIC"
     capsule_invalidation_recorded_rule_id = "INV-CAPSULE-INVALIDATION-RECORDED"
     no_silent_qc_escalation_rule_id = "INV-NO-SILENT-QC-ESCALATION"
+    no_magic_build_rule_id = "INV-NO-MAGIC-BUILD"
+    sign_requires_key_rule_id = "INV-SIGN-REQUIRES-KEY"
+    deploy_through_sig_rule_id = "INV-DEPLOY-THROUGH-SIG"
 
     process_registry_rel = "data/registries/process_registry.json"
     lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
@@ -20483,6 +20491,13 @@ def _append_process_constitution_invariant_findings(
     candidate_process_schema_rel = "schema/process/candidate_process_definition.schema"
     reverse_engineering_schema_rel = "schema/process/reverse_engineering_record.schema"
     research_policy_registry_rel = "data/registries/research_policy_registry.json"
+    software_pipeline_profile_schema_rel = "schema/process/software_pipeline_profile.schema"
+    software_artifact_schema_rel = "schema/process/software_artifact.schema"
+    deployment_record_schema_rel = "schema/process/deployment_record.schema"
+    software_toolchain_registry_rel = "data/registries/software_toolchain_registry.json"
+    software_pipeline_template_registry_rel = "data/registries/software_pipeline_template_registry.json"
+    software_pipeline_doc_rel = "docs/process/SOFTWARE_PIPELINE_MODEL.md"
+    pipeline_replay_tool_rel = "tools/process/tool_replay_pipeline_window.py"
     run_schema_rel = "schema/process/process_run_record.schema"
     step_schema_rel = "schema/process/process_step_record.schema"
 
@@ -20528,6 +20543,17 @@ def _append_process_constitution_invariant_findings(
                 snippet=process_id,
                 message="process registry is missing required PROC-7 research process id",
                 rule_id=candidate_derived_only_rule_id,
+            )
+        )
+    if "process.software_pipeline_execute" not in process_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet="process.software_pipeline_execute",
+                message="process registry is missing required PROC-8 software pipeline process id",
+                rule_id=no_magic_build_rule_id,
             )
         )
 
@@ -21267,6 +21293,10 @@ def _append_process_constitution_invariant_findings(
         "explain.experiment_result",
         "explain.candidate_inference",
         "explain.promotion_denied",
+        "explain.build_failed",
+        "explain.test_failed",
+        "explain.signature_invalid",
+        "explain.deploy_failed",
     ):
         if contract_id in explain_ids:
             continue
@@ -21287,7 +21317,17 @@ def _append_process_constitution_invariant_findings(
                     "explain.candidate_inference",
                     "explain.promotion_denied",
                 }
-                else qc_bypass_rule_id
+                else (
+                    no_magic_build_rule_id
+                    if contract_id
+                    in {
+                        "explain.build_failed",
+                        "explain.test_failed",
+                        "explain.signature_invalid",
+                        "explain.deploy_failed",
+                    }
+                    else qc_bypass_rule_id
+                )
             )
         )
         findings.append(
@@ -21371,6 +21411,19 @@ def _append_process_constitution_invariant_findings(
                 snippet=section_id,
                 message="inspection section registry must expose PROC-7 lab notebook/queue/candidate-confidence sections",
                 rule_id=candidate_derived_only_rule_id,
+            )
+        )
+    for section_id in ("section.software.pipeline_status", "section.software.artifacts"):
+        if section_id in section_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inspection_section_rel,
+                line_number=1,
+                snippet=section_id,
+                message="inspection section registry must expose PROC-8 software pipeline sections",
+                rule_id=no_magic_build_rule_id,
             )
         )
     if section_error and not section_rows:
@@ -21478,6 +21531,106 @@ def _append_process_constitution_invariant_findings(
                 file_path=runtime_rel,
                 line_number=1,
                 snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    for token, rule_id, message in (
+        (
+            'elif process_id == "process.software_pipeline_execute":',
+            no_magic_build_rule_id,
+            "runtime must expose deterministic software pipeline process handler",
+        ),
+        (
+            "evaluate_software_pipeline_execution(",
+            no_magic_build_rule_id,
+            "software pipeline execution must route through deterministic PROC-8 pipeline engine",
+        ),
+        (
+            "REFUSAL_SOFTWARE_PIPELINE_SIGNING_KEY_REQUIRED",
+            sign_requires_key_rule_id,
+            "software pipeline runtime must enforce signing key requirements before deploy",
+        ),
+        (
+            "REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_REQUIRED_FOR_DEPLOY",
+            sign_requires_key_rule_id,
+            "software pipeline runtime must enforce signature requirement for deploy",
+        ),
+        (
+            "sig_outbound_rows",
+            deploy_through_sig_rule_id,
+            "software pipeline deploy path must emit SIG outbound envelopes",
+        ),
+        (
+            "deployment_record_rows",
+            deploy_through_sig_rule_id,
+            "software pipeline deploy path must emit canonical deployment records",
+        ),
+        (
+            "_refresh_software_pipeline_hash_chains(state)",
+            no_magic_build_rule_id,
+            "runtime must refresh software pipeline proof hash chains after PROC-8 mutations",
+        ),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    for rel_path, rule_id, message in (
+        (
+            software_pipeline_profile_schema_rel,
+            no_magic_build_rule_id,
+            "software pipeline profile schema is required for PROC-8 process declarations",
+        ),
+        (
+            software_artifact_schema_rel,
+            no_magic_build_rule_id,
+            "software artifact schema is required for PROC-8 artifact outputs",
+        ),
+        (
+            deployment_record_schema_rel,
+            deploy_through_sig_rule_id,
+            "deployment record schema is required for canonical deploy tracking",
+        ),
+        (
+            software_toolchain_registry_rel,
+            no_magic_build_rule_id,
+            "software toolchain registry is required for deterministic build inputs",
+        ),
+        (
+            software_pipeline_template_registry_rel,
+            no_magic_build_rule_id,
+            "software pipeline template registry is required for deterministic step graphs",
+        ),
+        (
+            software_pipeline_doc_rel,
+            no_magic_build_rule_id,
+            "software pipeline doctrine document is required",
+        ),
+        (
+            pipeline_replay_tool_rel,
+            no_magic_build_rule_id,
+            "software pipeline replay verification tool is required for PROC-8 proof integration",
+        ),
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
                 message=message,
                 rule_id=rule_id,
             )
@@ -22099,6 +22252,95 @@ def _append_process_constitution_invariant_findings(
                 rule_id=rule_id,
             )
         )
+
+    software_patterns = (
+        re.compile(r"\bartifact\.software\.(?:binary|package)\b", re.IGNORECASE),
+        re.compile(r"\bkind\s*=\s*[\"'](?:binary|package)[\"']", re.IGNORECASE),
+        re.compile(r"\bsoftware_artifact_rows\b", re.IGNORECASE),
+    )
+    software_scan_prefixes = ("src/process/", "tools/xstack/sessionx/")
+    software_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    software_allowed_files = {
+        runtime_rel,
+        "src/process/software/pipeline_engine.py",
+        "src/process/software/__init__.py",
+        pipeline_replay_tool_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(software_scan_prefixes):
+            continue
+        if rel_norm.startswith(software_skip_prefixes):
+            continue
+        if rel_norm in software_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in software_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="software binary/package write token detected outside canonical PROC-8 pipeline pathways",
+                    rule_id=no_magic_build_rule_id,
+                )
+            )
+            break
+
+    signing_patterns = (
+        re.compile(r"\bsigning_key_artifact_id\b", re.IGNORECASE),
+        re.compile(r"\bsignature_hash\b", re.IGNORECASE),
+        re.compile(r"\bdeploy_to_address\b", re.IGNORECASE),
+        re.compile(r"\bsig_outbound_rows\b", re.IGNORECASE),
+    )
+    signing_allowed_files = {
+        runtime_rel,
+        "src/process/software/pipeline_engine.py",
+        "src/process/software/__init__.py",
+        pipeline_replay_tool_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(software_scan_prefixes):
+            continue
+        if rel_norm.startswith(software_skip_prefixes):
+            continue
+        if rel_norm in signing_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in signing_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="software signing/deploy token detected outside canonical PROC-8 signing pathways",
+                    rule_id=sign_requires_key_rule_id,
+                )
+            )
+            break
 
 
 def _append_chem_degradation_invariant_findings(
