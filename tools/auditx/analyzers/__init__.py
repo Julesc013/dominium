@@ -306,6 +306,8 @@ from analyzers import e279_missing_equivalence_proof_smell
 from analyzers import e280_output_depends_on_undeclared_field_smell
 from analyzers import e281_unregistered_workflow_smell
 from analyzers import e282_process_step_without_cost_smell
+from analyzers import e283_inline_yield_smell
+from analyzers import e284_defect_flag_bypass_smell
 
 
 ANALYZERS = (
@@ -615,6 +617,8 @@ ANALYZERS = (
     e280_output_depends_on_undeclared_field_smell,
     e281_unregistered_workflow_smell,
     e282_process_step_without_cost_smell,
+    e283_inline_yield_smell,
+    e284_defect_flag_bypass_smell,
 )
 
 

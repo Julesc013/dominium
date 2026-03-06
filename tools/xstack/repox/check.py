@@ -410,6 +410,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-PROCESS-RUN-RECORD-CANONICAL",
     "INV-PROCESS-OUTPUTS-LEDGERED",
     "INV-PROCESS-CAPSULE-REQUIRES-STABILIZED",
+    "INV-YIELD-DEFECT-MODEL-DECLARED",
+    "INV-NO-ADHOC-YIELD",
+    "INV-NO-UNDECLARED-RNG",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
     "INV-DEGRADATION-MODEL-ONLY",
@@ -801,6 +804,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E280_OUTPUT_DEPENDS_ON_UNDECLARED_FIELD_SMELL": "INV-NO-UNDECLARED-STATE-MUTATION",
     "E281_UNREGISTERED_WORKFLOW_SMELL": "INV-NO-IMPLICIT-WORKFLOWS",
     "E282_PROCESS_STEP_WITHOUT_COST_SMELL": "INV-PROCESS-STEPS-MAP-TO-ACTION-GRAMMAR",
+    "E283_INLINE_YIELD_SMELL": "INV-NO-ADHOC-YIELD",
+    "E284_DEFECT_FLAG_BYPASS_SMELL": "INV-YIELD-DEFECT-MODEL-DECLARED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -13184,6 +13189,89 @@ def _append_effect_system_invariant_findings(
             )
             break
 
+    yield_patterns = (
+        re.compile(r"\byield_factor(?:_permille)?\b\s*=", re.IGNORECASE),
+        re.compile(r"\bdefect_flags\b\s*=", re.IGNORECASE),
+        re.compile(r"\bquality_grade\b\s*=", re.IGNORECASE),
+    )
+    allowed_yield_files = {
+        run_engine_rel,
+        "src/models/model_engine.py",
+        "src/chem/process_run_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_yield_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in yield_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="inline process yield/defect mutation detected outside PROC-2 model/runtime pathways",
+                    rule_id=ad_hoc_yield_rule_id,
+                )
+            )
+            break
+
+    random_patterns = (
+        re.compile(r"\brandom\.(?:random|randint|randrange|choice|choices|uniform)\s*\(", re.IGNORECASE),
+        re.compile(r"\bsecrets\.", re.IGNORECASE),
+        re.compile(r"\buuid4\s*\(", re.IGNORECASE),
+    )
+    rng_scan_prefixes = ("src/process/", "tools/process/")
+    rng_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_rng_files = {
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(rng_scan_prefixes):
+            continue
+        if rel_norm.startswith(rng_skip_prefixes):
+            continue
+        if rel_norm in allowed_rng_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in random_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="undeclared random source detected in process quality paths; named RNG policy required",
+                    rule_id=undeclared_rng_rule_id,
+                )
+            )
+            break
+
 
 def _append_specsheet_invariant_findings(
     findings: List[Dict[str, object]],
@@ -20310,11 +20398,18 @@ def _append_process_constitution_invariant_findings(
     canonical_run_rule_id = "INV-PROCESS-RUN-RECORD-CANONICAL"
     ledger_rule_id = "INV-PROCESS-OUTPUTS-LEDGERED"
     capsule_rule_id = "INV-PROCESS-CAPSULE-REQUIRES-STABILIZED"
+    quality_model_rule_id = "INV-YIELD-DEFECT-MODEL-DECLARED"
+    ad_hoc_yield_rule_id = "INV-NO-ADHOC-YIELD"
+    undeclared_rng_rule_id = "INV-NO-UNDECLARED-RNG"
 
     process_registry_rel = "data/registries/process_registry.json"
     lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
     stabilization_policy_rel = "data/registries/process_stabilization_policy_registry.json"
     drift_policy_rel = "data/registries/process_drift_policy_registry.json"
+    yield_registry_rel = "data/registries/yield_model_registry.json"
+    defect_registry_rel = "data/registries/defect_model_registry.json"
+    process_definition_schema_rel = "schema/process/process_definition.schema"
+    process_quality_schema_rel = "schema/process/process_quality_record.schema"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     validator_rel = "src/process/process_definition_validator.py"
@@ -20388,6 +20483,146 @@ def _append_process_constitution_invariant_findings(
                 rule_id=canonical_run_rule_id,
             )
         )
+    for token in (
+        "build_process_quality_record_row(",
+        "_evaluate_process_quality(",
+        "process_quality_hash_chain",
+        "batch_quality_hash_chain",
+    ):
+        if token in run_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=run_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="process run engine must integrate deterministic quality model outputs for PROC-2",
+                rule_id=quality_model_rule_id,
+            )
+        )
+    process_definition_schema_text = _file_text(repo_root, process_definition_schema_rel)
+    for token in ("yield_model_id", "defect_model_id"):
+        if token in process_definition_schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_definition_schema_rel,
+                line_number=1,
+                snippet=token,
+                message="process definition schema must expose quality model references for batch-producing processes",
+                rule_id=quality_model_rule_id,
+            )
+        )
+    process_quality_schema_text = _file_text(repo_root, process_quality_schema_rel)
+    for token in ("SCHEMA: process/process_quality_record.schema", "run_id", "yield_factor", "defect_flags", "quality_grade"):
+        if token in process_quality_schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_quality_schema_rel,
+                line_number=1,
+                snippet=token,
+                message="process quality schema must declare canonical PROC-2 quality outcome fields",
+                rule_id=quality_model_rule_id,
+            )
+        )
+    yield_payload, yield_error = _load_json_object(repo_root, yield_registry_rel)
+    yield_rows = list((dict(yield_payload.get("record") or {})).get("yield_models") or [])
+    yield_ids = set(
+        str(row.get("yield_model_id", "")).strip()
+        for row in yield_rows
+        if isinstance(row, dict) and str(row.get("yield_model_id", "")).strip()
+    )
+    for required_id in ("yield.default_deterministic", "yield.named_rng_optional"):
+        if required_id in yield_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=yield_registry_rel,
+                line_number=1,
+                snippet=required_id,
+                message="required PROC-2 yield model registry entry is missing",
+                rule_id=quality_model_rule_id,
+            )
+        )
+    if yield_error and not yield_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=yield_registry_rel,
+                line_number=1,
+                snippet="record.yield_models",
+                message="yield model registry is missing or invalid",
+                rule_id=quality_model_rule_id,
+            )
+        )
+    defect_payload, defect_error = _load_json_object(repo_root, defect_registry_rel)
+    defect_rows = list((dict(defect_payload.get("record") or {})).get("defect_models") or [])
+    defect_ids = set(
+        str(row.get("defect_model_id", "")).strip()
+        for row in defect_rows
+        if isinstance(row, dict) and str(row.get("defect_model_id", "")).strip()
+    )
+    for required_id in ("defect.default_deterministic", "defect.named_rng_optional"):
+        if required_id in defect_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=defect_registry_rel,
+                line_number=1,
+                snippet=required_id,
+                message="required PROC-2 defect model registry entry is missing",
+                rule_id=quality_model_rule_id,
+            )
+        )
+    if defect_error and not defect_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=defect_registry_rel,
+                line_number=1,
+                snippet="record.defect_models",
+                message="defect model registry is missing or invalid",
+                rule_id=quality_model_rule_id,
+            )
+        )
+    if yield_rows:
+        for row in yield_rows:
+            entry = dict(row)
+            stochastic_allowed = bool(entry.get("stochastic_allowed", False))
+            rng_name = str(entry.get("rng_stream_name", "")).strip()
+            if stochastic_allowed and not rng_name:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=yield_registry_rel,
+                        line_number=1,
+                        snippet=str(entry.get("yield_model_id", "")).strip(),
+                        message="stochastic yield model rows must declare rng_stream_name",
+                        rule_id=undeclared_rng_rule_id,
+                    )
+                )
+    if defect_rows:
+        for row in defect_rows:
+            entry = dict(row)
+            stochastic_allowed = bool(entry.get("stochastic_allowed", False))
+            rng_name = str(entry.get("rng_stream_name", "")).strip()
+            if stochastic_allowed and not rng_name:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=defect_registry_rel,
+                        line_number=1,
+                        snippet=str(entry.get("defect_model_id", "")).strip(),
+                        message="stochastic defect model rows must declare rng_stream_name",
+                        rule_id=undeclared_rng_rule_id,
+                    )
+                )
     for rel_path in (run_schema_rel, step_schema_rel):
         if _file_text(repo_root, rel_path):
             continue
