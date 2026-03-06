@@ -5490,6 +5490,65 @@ def _load_state_vector_registry(*, policy_context: dict | None) -> dict:
     )
 
 
+def _load_research_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "research_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/research_policy_registry.json",
+        default_payload={"record": {"research_policies": []}},
+    )
+
+
+def _research_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    payload = dict(registry_payload or {})
+    rows = payload.get("research_policies")
+    if not isinstance(rows, list):
+        rows = dict(payload.get("record") or {}).get("research_policies")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("research_policy_id", "")),
+    ):
+        policy_id = str(row.get("research_policy_id", "")).strip()
+        if not policy_id:
+            continue
+        out[policy_id] = {
+            "schema_version": "1.0.0",
+            "research_policy_id": policy_id,
+            "max_experiments_per_tick": int(
+                max(1, _as_int(row.get("max_experiments_per_tick", 64), 64))
+            ),
+            "max_inference_jobs_per_tick": int(
+                max(1, _as_int(row.get("max_inference_jobs_per_tick", 128), 128))
+            ),
+            "promotion_replication_threshold": int(
+                max(1, _as_int(row.get("promotion_replication_threshold", 3), 3))
+            ),
+            "allow_destructive_reverse_engineering": bool(
+                row.get("allow_destructive_reverse_engineering", True)
+            ),
+            "allow_named_rng": bool(row.get("allow_named_rng", False)),
+            "allow_candidate_compiled_model_before_validation": bool(
+                row.get("allow_candidate_compiled_model_before_validation", False)
+            ),
+            "require_state_vector_for_candidate_capsule": bool(
+                row.get("require_state_vector_for_candidate_capsule", True)
+            ),
+            "deterministic_fingerprint": str(
+                row.get("deterministic_fingerprint", "")
+            ).strip()
+            or canonical_sha256(dict(row, deterministic_fingerprint="")),
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
 def _pollution_material_token_candidates(material_token: object) -> List[str]:
     token = str(material_token or "").strip().lower()
     if not token:
@@ -36057,22 +36116,139 @@ def execute_intent(
         state["experiment_result_rows"] = normalize_experiment_result_rows(
             list(state.get("experiment_result_rows") or []) + [result_row]
         )
-        inference_eval = infer_candidate_artifacts(
-            current_tick=int(max(0, _as_int(current_tick, 0))),
-            experiment_result_rows=[dict(result_row)],
-            reverse_engineering_record_rows=[],
-            process_definition_ref_hint="{}@{}".format(
-                str(binding_row.get("process_id", "")).strip(),
-                str(binding_row.get("version", "")).strip() or "1.0.0",
-            ),
-            model_id_hint=(
-                None
-                if inputs.get("model_id_hint") is None
-                else str(inputs.get("model_id_hint", "")).strip() or None
-            ),
-            existing_candidate_rows=list(state.get("candidate_process_definition_rows") or []),
-            existing_candidate_model_binding_rows=list(state.get("candidate_model_binding_rows") or []),
+        research_policy_rows = _research_policy_rows_by_id(
+            _load_research_policy_registry(policy_context=policy_context)
         )
+        research_policy_id = str(inputs.get("research_policy_id", "")).strip() or "research.default"
+        research_policy_row = dict(
+            research_policy_rows.get(research_policy_id)
+            or research_policy_rows.get("research.default")
+            or {}
+        )
+        allow_compiled_model_hint = bool(
+            research_policy_row.get("allow_candidate_compiled_model_before_validation", False)
+        )
+        max_inference_jobs = int(
+            max(1, _as_int(research_policy_row.get("max_inference_jobs_per_tick", 128), 128))
+        )
+        compiled_model_ids = set(
+            str(row.get("compiled_model_id", "")).strip()
+            for row in list(state.get("compiled_model_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("compiled_model_id", "")).strip()
+        )
+        model_id_hint = (
+            None
+            if inputs.get("model_id_hint") is None
+            else str(inputs.get("model_id_hint", "")).strip() or None
+        )
+        if (
+            model_id_hint
+            and (not allow_compiled_model_hint)
+            and model_id_hint in compiled_model_ids
+        ):
+            state["control_decision_log"] = list(state.get("control_decision_log") or []) + [
+                {
+                    "decision_id": "decision.process.research.compiled_hint_blocked.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "run_id": run_id,
+                                "model_id_hint": model_id_hint,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "blocked",
+                    "reason_code": "policy.compiled_model_requires_validation",
+                    "extensions": {
+                        "research_policy_id": research_policy_id,
+                        "model_id_hint": model_id_hint,
+                    },
+                }
+            ]
+            model_id_hint = None
+        budget_state = dict(state.get("research_inference_budget_state") or {})
+        budget_tick = int(max(0, _as_int(budget_state.get("tick", -1), -1)))
+        policy_counts = dict(budget_state.get("policy_counts") or {})
+        if budget_tick != int(max(0, _as_int(current_tick, 0))):
+            budget_tick = int(max(0, _as_int(current_tick, 0)))
+            policy_counts = {}
+        used_jobs = int(max(0, _as_int(policy_counts.get(research_policy_id, 0), 0)))
+        inference_deferred = used_jobs >= max_inference_jobs
+        if inference_deferred:
+            inference_eval = {
+                "result": "complete",
+                "candidate_rows": list(state.get("candidate_process_definition_rows") or []),
+                "candidate_model_binding_rows": list(state.get("candidate_model_binding_rows") or []),
+                "produced_candidate_ids": [],
+                "deterministic_fingerprint": canonical_sha256(
+                    {
+                        "result": "complete",
+                        "deferred": True,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "research_policy_id": research_policy_id,
+                        "used_jobs": used_jobs,
+                    }
+                ),
+            }
+            state["control_decision_log"] = list(state.get("control_decision_log") or []) + [
+                {
+                    "decision_id": "decision.process.research.inference.deferred.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "run_id": run_id,
+                                "research_policy_id": research_policy_id,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "deferred",
+                    "reason_code": "budget.inference_limit",
+                    "extensions": {
+                        "research_policy_id": research_policy_id,
+                        "used_jobs": used_jobs,
+                        "max_jobs": max_inference_jobs,
+                    },
+                }
+            ]
+        else:
+            inference_eval = infer_candidate_artifacts(
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+                experiment_result_rows=[dict(result_row)],
+                reverse_engineering_record_rows=[],
+                process_definition_ref_hint="{}@{}".format(
+                    str(binding_row.get("process_id", "")).strip(),
+                    str(binding_row.get("version", "")).strip() or "1.0.0",
+                ),
+                model_id_hint=model_id_hint,
+                existing_candidate_rows=list(state.get("candidate_process_definition_rows") or []),
+                existing_candidate_model_binding_rows=list(state.get("candidate_model_binding_rows") or []),
+            )
+            policy_counts[research_policy_id] = int(used_jobs + 1)
+        state["research_inference_budget_state"] = {
+            "tick": int(budget_tick),
+            "policy_counts": dict(
+                (str(key), int(max(0, _as_int(value, 0))))
+                for key, value in sorted(policy_counts.items(), key=lambda item: str(item[0]))
+                if str(key).strip()
+            ),
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "tick": int(budget_tick),
+                    "policy_counts": dict(
+                        (str(key), int(max(0, _as_int(value, 0))))
+                        for key, value in sorted(policy_counts.items(), key=lambda item: str(item[0]))
+                        if str(key).strip()
+                    ),
+                }
+            ),
+            "extensions": {
+                "source": "PROC7-8",
+            },
+        }
         state["candidate_process_definition_rows"] = [
             dict(row)
             for row in list(inference_eval.get("candidate_rows") or [])
@@ -36137,6 +36313,7 @@ def execute_intent(
                         "candidate_ids": _sorted_tokens(
                             list(inference_eval.get("produced_candidate_ids") or [])
                         ),
+                        "inference_deferred": bool(inference_deferred),
                         "tick": int(max(0, _as_int(current_tick, 0))),
                     },
                 },
@@ -36302,6 +36479,8 @@ def execute_intent(
                 state.get("candidate_model_binding_hash_chain", "")
             ).strip(),
             "dispatched_envelope_ids": list(dispatched_envelope_ids),
+            "inference_deferred": bool(inference_deferred),
+            "research_policy_id": research_policy_id,
             "deterministic_fingerprint": str(
                 experiment_eval.get("deterministic_fingerprint", "")
             ).strip(),
@@ -36318,6 +36497,28 @@ def execute_intent(
                 "$.intent.inputs.candidate_id",
             )
 
+        research_policy_rows = _research_policy_rows_by_id(
+            _load_research_policy_registry(policy_context=policy_context)
+        )
+        research_policy_id = str(inputs.get("research_policy_id", "")).strip() or "research.default"
+        research_policy_row = dict(
+            research_policy_rows.get(research_policy_id)
+            or research_policy_rows.get("research.default")
+            or {}
+        )
+        required_replications = (
+            int(max(1, _as_int(inputs.get("required_replications"), 0)))
+            if inputs.get("required_replications") is not None
+            else int(
+                max(
+                    1,
+                    _as_int(
+                        research_policy_row.get("promotion_replication_threshold", 3),
+                        3,
+                    ),
+                )
+            )
+        )
         promotion_eval = evaluate_candidate_promotion(
             current_tick=int(max(0, _as_int(current_tick, 0))),
             candidate_id=candidate_id,
@@ -36325,9 +36526,7 @@ def execute_intent(
             experiment_run_binding_rows=list(state.get("experiment_run_binding_rows") or []),
             qc_result_record_rows=list(state.get("qc_result_record_rows") or []),
             process_metrics_state_rows=list(state.get("process_metrics_state_rows") or []),
-            required_replications=int(
-                max(1, _as_int(inputs.get("required_replications", 3), 3))
-            ),
+            required_replications=int(max(1, required_replications)),
             min_qc_pass_rate=int(max(0, min(1000, _as_int(inputs.get("min_qc_pass_rate", 700), 700)))),
             min_stabilization_score=int(
                 max(0, min(1000, _as_int(inputs.get("min_stabilization_score", 650), 650)))
@@ -36358,6 +36557,124 @@ def execute_intent(
 
         process_id_token = str(promotion_eval.get("process_id", "")).strip()
         version_token = str(promotion_eval.get("version", "")).strip() or "1.0.0"
+        candidate_binding_model_ids = _sorted_tokens(
+            [
+                str(row.get("model_id", "")).strip()
+                for row in list(state.get("candidate_model_binding_rows") or [])
+                if isinstance(row, Mapping)
+                and str(row.get("candidate_id", "")).strip() == candidate_id
+                and str(row.get("model_id", "")).strip()
+            ]
+        )
+        compiled_model_rows = [
+            dict(row)
+            for row in list(state.get("compiled_model_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        compiled_model_by_id = dict(
+            (
+                str(row.get("compiled_model_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(compiled_model_rows or [])
+            if str(row.get("compiled_model_id", "")).strip()
+        )
+        equivalence_proof_by_id = dict(
+            (
+                str(row.get("proof_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("equivalence_proof_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("proof_id", "")).strip()
+        )
+        validity_domain_by_id = dict(
+            (
+                str(row.get("domain_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(state.get("validity_domain_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("domain_id", "")).strip()
+        )
+        requested_compiled_model_id = str(inputs.get("compiled_model_id", "")).strip()
+        selected_compiled_model_id = requested_compiled_model_id
+        if (not selected_compiled_model_id) and candidate_binding_model_ids:
+            for model_id in list(candidate_binding_model_ids):
+                if model_id in compiled_model_by_id:
+                    selected_compiled_model_id = model_id
+                    break
+        validated_compiled_model_id = ""
+        compiled_equivalence_proof_id = ""
+        compiled_validity_domain_id = ""
+        if selected_compiled_model_id:
+            compiled_row = dict(compiled_model_by_id.get(selected_compiled_model_id) or {})
+            if not compiled_row:
+                return refusal(
+                    "refusal.process.candidate.compiled_model_invalid",
+                    "compiled model reference is not registered",
+                    "Supply a compiled_model_id that exists with proof and validity domain.",
+                    {
+                        "candidate_id": candidate_id,
+                        "compiled_model_id": selected_compiled_model_id,
+                    },
+                    "$.intent.inputs.compiled_model_id",
+                )
+            compiled_equivalence_proof_id = str(
+                compiled_row.get("equivalence_proof_ref", "")
+            ).strip()
+            compiled_validity_domain_id = str(
+                compiled_row.get("validity_domain_ref", "")
+            ).strip()
+            if (
+                (not compiled_equivalence_proof_id)
+                or (compiled_equivalence_proof_id not in equivalence_proof_by_id)
+                or (not compiled_validity_domain_id)
+                or (compiled_validity_domain_id not in validity_domain_by_id)
+            ):
+                return refusal(
+                    "refusal.process.candidate.compiled_model_invalid",
+                    "compiled model is missing proof or validity domain",
+                    "Compile with COMPILE-0 proof+validity artifacts before candidate promotion.",
+                    {
+                        "candidate_id": candidate_id,
+                        "compiled_model_id": selected_compiled_model_id,
+                        "equivalence_proof_ref": compiled_equivalence_proof_id,
+                        "validity_domain_ref": compiled_validity_domain_id,
+                    },
+                    "$.intent.inputs.compiled_model_id",
+                )
+            validated_compiled_model_id = selected_compiled_model_id
+
+        require_statevec_for_capsule = bool(
+            research_policy_row.get("require_state_vector_for_candidate_capsule", True)
+        )
+        request_capsule_eligibility = bool(inputs.get("request_capsule_eligibility", False))
+        state_vector_owner_candidates = {
+            "{}@{}".format(process_id_token, version_token),
+            "process.{}@{}".format(process_id_token, version_token),
+        }
+        state_vector_rows = [
+            dict(row)
+            for row in list(state.get("state_vector_definition_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        has_state_vector = any(
+            str(row.get("owner_id", "")).strip() in state_vector_owner_candidates
+            for row in list(state_vector_rows)
+        )
+        if require_statevec_for_capsule and request_capsule_eligibility and (not has_state_vector):
+            return refusal(
+                "refusal.process.candidate.statevec_required",
+                "candidate promotion requires declared state vector for capsule eligibility",
+                "Declare a STATEVEC owner for process before requesting capsule eligibility.",
+                {
+                    "candidate_id": candidate_id,
+                    "process_id": process_id_token,
+                    "version": version_token,
+                    "owner_candidates": sorted(state_vector_owner_candidates),
+                },
+                "$.intent.inputs.request_capsule_eligibility",
+            )
+
         process_definition_rows = [
             dict(row)
             for row in list(state.get("process_definition_rows") or [])
@@ -36421,6 +36738,25 @@ def execute_intent(
                         "candidate_id": candidate_id,
                         "promotion_tick": int(max(0, _as_int(current_tick, 0))),
                         "derived_from_candidate": True,
+                        "research_policy_id": research_policy_id,
+                        "state_vector_required_for_capsule_eligibility": bool(
+                            require_statevec_for_capsule
+                        ),
+                        "state_vector_declared": bool(has_state_vector),
+                        "capsule_eligibility_status": (
+                            "blocked_statevec_missing"
+                            if (require_statevec_for_capsule and (not has_state_vector))
+                            else "statevec_declared"
+                        ),
+                        "validated_compiled_model_id": (
+                            validated_compiled_model_id or None
+                        ),
+                        "equivalence_proof_ref": (
+                            compiled_equivalence_proof_id or None
+                        ),
+                        "validity_domain_ref": (
+                            compiled_validity_domain_id or None
+                        ),
                     },
                 }
             )
@@ -36460,6 +36796,7 @@ def execute_intent(
             "deterministic_fingerprint": "",
             "extensions": {
                 "source_process_id": process_id,
+                "research_policy_id": research_policy_id,
                 "replication_count": int(
                     max(0, _as_int(metrics.get("replication_count", 0), 0))
                 ),
@@ -36469,6 +36806,13 @@ def execute_intent(
                 "qc_pass_rate": int(max(0, _as_int(metrics.get("qc_pass_rate", 0), 0))),
                 "stabilization_score": int(
                     max(0, _as_int(metrics.get("stabilization_score", 0), 0))
+                ),
+                "state_vector_required_for_capsule_eligibility": bool(
+                    require_statevec_for_capsule
+                ),
+                "state_vector_declared": bool(has_state_vector),
+                "validated_compiled_model_id": (
+                    validated_compiled_model_id or None
                 ),
             },
         }
@@ -36535,6 +36879,12 @@ def execute_intent(
             "process_id": process_id_token,
             "version": version_token,
             "record_id": str(promotion_record.get("record_id", "")).strip(),
+            "research_policy_id": research_policy_id,
+            "state_vector_declared": bool(has_state_vector),
+            "state_vector_required_for_capsule_eligibility": bool(
+                require_statevec_for_capsule
+            ),
+            "validated_compiled_model_id": validated_compiled_model_id or "",
             "candidate_promotion_hash_chain": str(
                 state.get("candidate_promotion_hash_chain", "")
             ).strip(),
@@ -36570,8 +36920,21 @@ def execute_intent(
                 ),
             )
         ).strip() or "subject.unknown"
+        research_policy_rows = _research_policy_rows_by_id(
+            _load_research_policy_registry(policy_context=policy_context)
+        )
+        research_policy_id = str(inputs.get("research_policy_id", "")).strip() or "research.default"
+        research_policy_row = dict(
+            research_policy_rows.get(research_policy_id)
+            or research_policy_rows.get("research.default")
+            or {}
+        )
         default_destroyed = method in {"disassemble", "assay"}
         destroyed = bool(inputs.get("destroyed", default_destroyed))
+        if destroyed and not bool(
+            research_policy_row.get("allow_destructive_reverse_engineering", True)
+        ):
+            destroyed = False
         measured_values = dict(inputs.get("measured_values") or {}) if isinstance(inputs.get("measured_values"), Mapping) else {}
         if not measured_values:
             measured_values = {
@@ -36635,22 +36998,130 @@ def execute_intent(
         ) + [reverse_record]
         _ensure_reverse_engineering_record_rows(state)
 
-        inference_eval = infer_candidate_artifacts(
-            current_tick=int(max(0, _as_int(current_tick, 0))),
-            experiment_result_rows=[],
-            reverse_engineering_record_rows=[dict(reverse_record)],
-            process_definition_ref_hint=str(
-                inputs.get("proposed_process_definition_ref", "")
-            ).strip()
-            or "process.unknown@1.0.0",
-            model_id_hint=(
-                None
-                if inputs.get("model_id_hint") is None
-                else str(inputs.get("model_id_hint", "")).strip() or None
-            ),
-            existing_candidate_rows=list(state.get("candidate_process_definition_rows") or []),
-            existing_candidate_model_binding_rows=list(state.get("candidate_model_binding_rows") or []),
+        allow_compiled_model_hint = bool(
+            research_policy_row.get("allow_candidate_compiled_model_before_validation", False)
         )
+        compiled_model_ids = set(
+            str(row.get("compiled_model_id", "")).strip()
+            for row in list(state.get("compiled_model_rows") or [])
+            if isinstance(row, Mapping) and str(row.get("compiled_model_id", "")).strip()
+        )
+        model_id_hint = (
+            None
+            if inputs.get("model_id_hint") is None
+            else str(inputs.get("model_id_hint", "")).strip() or None
+        )
+        if (
+            model_id_hint
+            and (not allow_compiled_model_hint)
+            and model_id_hint in compiled_model_ids
+        ):
+            state["control_decision_log"] = list(state.get("control_decision_log") or []) + [
+                {
+                    "decision_id": "decision.process.research.compiled_hint_blocked.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "record_id": reverse_record_id,
+                                "model_id_hint": model_id_hint,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "blocked",
+                    "reason_code": "policy.compiled_model_requires_validation",
+                    "extensions": {
+                        "research_policy_id": research_policy_id,
+                        "model_id_hint": model_id_hint,
+                    },
+                }
+            ]
+            model_id_hint = None
+        max_inference_jobs = int(
+            max(1, _as_int(research_policy_row.get("max_inference_jobs_per_tick", 128), 128))
+        )
+        budget_state = dict(state.get("research_inference_budget_state") or {})
+        budget_tick = int(max(0, _as_int(budget_state.get("tick", -1), -1)))
+        policy_counts = dict(budget_state.get("policy_counts") or {})
+        if budget_tick != int(max(0, _as_int(current_tick, 0))):
+            budget_tick = int(max(0, _as_int(current_tick, 0)))
+            policy_counts = {}
+        used_jobs = int(max(0, _as_int(policy_counts.get(research_policy_id, 0), 0)))
+        inference_deferred = used_jobs >= max_inference_jobs
+        if inference_deferred:
+            inference_eval = {
+                "result": "complete",
+                "candidate_rows": list(state.get("candidate_process_definition_rows") or []),
+                "candidate_model_binding_rows": list(state.get("candidate_model_binding_rows") or []),
+                "produced_candidate_ids": [],
+                "deterministic_fingerprint": canonical_sha256(
+                    {
+                        "result": "complete",
+                        "deferred": True,
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "research_policy_id": research_policy_id,
+                        "used_jobs": used_jobs,
+                    }
+                ),
+            }
+            state["control_decision_log"] = list(state.get("control_decision_log") or []) + [
+                {
+                    "decision_id": "decision.process.research.inference.deferred.{}".format(
+                        canonical_sha256(
+                            {
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                                "record_id": reverse_record_id,
+                                "research_policy_id": research_policy_id,
+                            }
+                        )[:16]
+                    ),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": process_id,
+                    "result": "deferred",
+                    "reason_code": "budget.inference_limit",
+                    "extensions": {
+                        "research_policy_id": research_policy_id,
+                        "used_jobs": used_jobs,
+                        "max_jobs": max_inference_jobs,
+                    },
+                }
+            ]
+        else:
+            inference_eval = infer_candidate_artifacts(
+                current_tick=int(max(0, _as_int(current_tick, 0))),
+                experiment_result_rows=[],
+                reverse_engineering_record_rows=[dict(reverse_record)],
+                process_definition_ref_hint=str(
+                    inputs.get("proposed_process_definition_ref", "")
+                ).strip()
+                or "process.unknown@1.0.0",
+                model_id_hint=model_id_hint,
+                existing_candidate_rows=list(state.get("candidate_process_definition_rows") or []),
+                existing_candidate_model_binding_rows=list(state.get("candidate_model_binding_rows") or []),
+            )
+            policy_counts[research_policy_id] = int(used_jobs + 1)
+        state["research_inference_budget_state"] = {
+            "tick": int(budget_tick),
+            "policy_counts": dict(
+                (str(key), int(max(0, _as_int(value, 0))))
+                for key, value in sorted(policy_counts.items(), key=lambda item: str(item[0]))
+                if str(key).strip()
+            ),
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "tick": int(budget_tick),
+                    "policy_counts": dict(
+                        (str(key), int(max(0, _as_int(value, 0))))
+                        for key, value in sorted(policy_counts.items(), key=lambda item: str(item[0]))
+                        if str(key).strip()
+                    ),
+                }
+            ),
+            "extensions": {
+                "source": "PROC7-8",
+            },
+        }
         state["candidate_process_definition_rows"] = [
             dict(row)
             for row in list(inference_eval.get("candidate_rows") or [])
@@ -36772,11 +37243,16 @@ def execute_intent(
             "destroyed": bool(destroyed),
             "candidate_ids": list(produced_candidate_ids),
             "knowledge_receipt_id": str(receipt_id),
+            "inference_deferred": bool(inference_deferred),
+            "research_policy_id": research_policy_id,
             "reverse_engineering_record_hash_chain": str(
                 state.get("reverse_engineering_record_hash_chain", "")
             ).strip(),
             "candidate_process_hash_chain": str(
                 state.get("candidate_process_hash_chain", "")
+            ).strip(),
+            "candidate_model_binding_hash_chain": str(
+                state.get("candidate_model_binding_hash_chain", "")
             ).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)

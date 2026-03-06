@@ -76,3 +76,9 @@ Research and inference are budgeted deterministic workloads:
 - explicit defer logs under budget pressure
 
 Named RNG is allowed only by explicit profile gate and must be proof-logged.
+
+## 7) COUPLE/COMPILE/STATEVEC Integration
+
+- Inference jobs are budgeted per policy (`max_inference_jobs_per_tick`) with deterministic defer logging.
+- Candidate references to compiled models are accepted only when COMPILE artifacts include valid equivalence proof and validity-domain bindings.
+- Candidate promotion may request capsule eligibility only when explicit state vectors are declared for the promoted process owner.

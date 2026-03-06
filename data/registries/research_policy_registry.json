@@ -14,6 +14,8 @@
         "promotion_replication_threshold": 3,
         "allow_destructive_reverse_engineering": true,
         "allow_named_rng": false,
+        "allow_candidate_compiled_model_before_validation": false,
+        "require_state_vector_for_candidate_capsule": true,
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "PROC7-2",
@@ -29,6 +31,8 @@
         "promotion_replication_threshold": 5,
         "allow_destructive_reverse_engineering": true,
         "allow_named_rng": false,
+        "allow_candidate_compiled_model_before_validation": false,
+        "require_state_vector_for_candidate_capsule": true,
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "PROC7-2",
@@ -44,6 +48,8 @@
         "promotion_replication_threshold": 6,
         "allow_destructive_reverse_engineering": true,
         "allow_named_rng": false,
+        "allow_candidate_compiled_model_before_validation": false,
+        "require_state_vector_for_candidate_capsule": true,
         "deterministic_fingerprint": "",
         "extensions": {
           "source": "PROC7-2",
