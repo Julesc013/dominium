@@ -118,6 +118,131 @@
       "affected_assemblies": [],
       "affected_fields": [],
       "deprecated": false,
+      "description": "PROC-1 archetype id placeholder for casting pipeline definitions.",
+      "determinism_notes": [
+        "deterministic-order",
+        "proc-archetype-id-only"
+      ],
+      "extensions": {
+        "source": "PROC1-3",
+        "template_only": true
+      },
+      "failure_modes": [
+        "refusal.process.invalid_definition"
+      ],
+      "human_name": "Process Archetype Cast Part",
+      "inputs": [],
+      "outputs": [],
+      "owning_layer": "game",
+      "process_id": "proc.archetype.cast_part",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "PROC-1 archetype id placeholder for machining pipeline definitions.",
+      "determinism_notes": [
+        "deterministic-order",
+        "proc-archetype-id-only"
+      ],
+      "extensions": {
+        "source": "PROC1-3",
+        "template_only": true
+      },
+      "failure_modes": [
+        "refusal.process.invalid_definition"
+      ],
+      "human_name": "Process Archetype Machine Part",
+      "inputs": [],
+      "outputs": [],
+      "owning_layer": "game",
+      "process_id": "proc.archetype.machine_part",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "PROC-1 archetype id placeholder for system assembly process definitions.",
+      "determinism_notes": [
+        "deterministic-order",
+        "proc-archetype-id-only"
+      ],
+      "extensions": {
+        "source": "PROC1-3",
+        "template_only": true
+      },
+      "failure_modes": [
+        "refusal.process.invalid_definition"
+      ],
+      "human_name": "Process Archetype Assemble System",
+      "inputs": [],
+      "outputs": [],
+      "owning_layer": "game",
+      "process_id": "proc.archetype.assemble_system",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "PROC-1 archetype id placeholder for deterministic test and calibration workflows.",
+      "determinism_notes": [
+        "deterministic-order",
+        "proc-archetype-id-only"
+      ],
+      "extensions": {
+        "source": "PROC1-3",
+        "template_only": true
+      },
+      "failure_modes": [
+        "refusal.process.invalid_definition"
+      ],
+      "human_name": "Process Archetype Test And Calibrate",
+      "inputs": [],
+      "outputs": [],
+      "owning_layer": "game",
+      "process_id": "proc.archetype.test_and_calibrate",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "PROC-1 archetype id placeholder for firmware/software compilation pipelines.",
+      "determinism_notes": [
+        "deterministic-order",
+        "proc-archetype-id-only"
+      ],
+      "extensions": {
+        "source": "PROC1-3",
+        "template_only": true
+      },
+      "failure_modes": [
+        "refusal.process.invalid_definition"
+      ],
+      "human_name": "Process Archetype Compile Firmware",
+      "inputs": [],
+      "outputs": [],
+      "owning_layer": "game",
+      "process_id": "proc.archetype.compile_firmware",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
       "description": "Data-defined process from data/packs/org.dominium.realities.alchemy/content/processes.json",
       "determinism_notes": [
         "data-defined",
