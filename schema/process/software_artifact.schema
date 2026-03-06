@@ -1,0 +1,25 @@
+SCHEMA: process/software_artifact.schema
+schema_id: dominium.schema.process.software_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic software pipeline artifacts (source, binary, package, signature, test report).
+
+NON-SEMANTICS:
+- Does not authorize artifact mutation outside process execution.
+- Does not classify epistemic visibility by itself.
+
+REQUIRED SHAPE:
+record software_artifact
+  required:
+    - artifact_id: id
+    - kind: enum(source|binary|package|signature|test_report)
+    - content_hash: sha256
+    - produced_by_run_id: id
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- content_hash must deterministically derive from declared pipeline inputs or step outputs.
+- produced_by_run_id must reference canonical process run identity.
