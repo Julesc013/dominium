@@ -98,6 +98,9 @@ def _compiled_model_hash(state: Mapping[str, object]) -> str:
                 "compiled_type_id": str(row.get("compiled_type_id", "")).strip(),
                 "equivalence_proof_ref": str(row.get("equivalence_proof_ref", "")).strip(),
                 "validity_domain_ref": str(row.get("validity_domain_ref", "")).strip(),
+                "payload_hash": str(
+                    _as_map(row.get("compiled_payload_ref")).get("payload_hash", "")
+                ).strip(),
             }
             for row in rows
         ]
