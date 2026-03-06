@@ -1,0 +1,30 @@
+SCHEMA: process/process_definition.schema
+schema_id: dominium.schema.process.process_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a versioned deterministic ProcessDefinition step graph for PROC-1.
+
+NON-SEMANTICS:
+- Does not define yield/defect stochastic models (PROC-2+).
+- Does not grant direct mutation authority outside process runtime.
+
+REQUIRED SHAPE:
+record process_definition
+  required:
+    - process_id: id
+    - version: semver
+    - description: text
+    - step_graph: map
+      required:
+        - steps: [process_step]
+        - edges: [map]
+    - input_signature: list
+    - output_signature: list
+    - required_tools: list
+    - required_environment: list
+    - tier_contract_id: id
+    - coupling_budget_id: id?
+    - deterministic_fingerprint: text
+    - extensions: map

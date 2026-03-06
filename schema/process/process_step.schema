@@ -1,0 +1,25 @@
+SCHEMA: process/process_step.schema
+schema_id: dominium.schema.process.process_step
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic typed process step nodes used in ProcessDefinition DAGs.
+
+NON-SEMANTICS:
+- No implicit scheduling semantics beyond declared temporal bindings.
+- No direct domain mutation authority by schema declaration alone.
+
+REQUIRED SHAPE:
+record process_step
+  required:
+    - step_id: id
+    - step_kind: enum(action|transform|measure|verify|wait)
+    - action_template_id: id?
+    - domain_process_id: id?
+    - temporal_domain_id: id?
+    - inputs: list
+    - outputs: list
+    - cost_units: u64
+    - deterministic_fingerprint: text
+    - extensions: map
