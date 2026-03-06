@@ -328,8 +328,12 @@ BOUNDARY_ALIAS_RULES = {
     },
     "INV-NO-RECIPE-HACKS": {
         "INV-NO-RECIPE-HACKS-FOR-CHEM",
+        "INV-NO-IMPLICIT-WORKFLOWS",
     },
     "INV-NO-RECIPE-HACKS-FOR-CHEM": {
+        "INV-NO-RECIPE-HACKS",
+    },
+    "INV-NO-IMPLICIT-WORKFLOWS": {
         "INV-NO-RECIPE-HACKS",
     },
 }
@@ -401,6 +405,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-DIRECT-FUEL-DECREMENT",
     "INV-NO-RECIPE-HACKS-FOR-CHEM",
     "INV-NO-RECIPE-HACKS",
+    "INV-NO-IMPLICIT-WORKFLOWS",
+    "INV-PROCESS-STEPS-MAP-TO-ACTION-GRAMMAR",
+    "INV-PROCESS-RUN-RECORD-CANONICAL",
     "INV-PROCESS-OUTPUTS-LEDGERED",
     "INV-PROCESS-CAPSULE-REQUIRES-STABILIZED",
     "INV-YIELD-MUST-BE-MODEL",
@@ -792,7 +799,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E278_CUSTOM_COMPILATION_SMELL": "INV-NO-BESPOKE-COMPILER",
     "E279_MISSING_EQUIVALENCE_PROOF_SMELL": "INV-COMPILED-MODEL-REQUIRES-PROOF",
     "E280_OUTPUT_DEPENDS_ON_UNDECLARED_FIELD_SMELL": "INV-NO-UNDECLARED-STATE-MUTATION",
-    "E281_UNREGISTERED_WORKFLOW_SMELL": "INV-NO-RECIPE-HACKS",
+    "E281_UNREGISTERED_WORKFLOW_SMELL": "INV-NO-IMPLICIT-WORKFLOWS",
+    "E282_PROCESS_STEP_WITHOUT_COST_SMELL": "INV-PROCESS-STEPS-MAP-TO-ACTION-GRAMMAR",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20297,6 +20305,9 @@ def _append_process_constitution_invariant_findings(
 ) -> None:
     severity = _strict_only_severity(profile)
     recipe_rule_id = "INV-NO-RECIPE-HACKS"
+    implicit_workflow_rule_id = "INV-NO-IMPLICIT-WORKFLOWS"
+    action_mapping_rule_id = "INV-PROCESS-STEPS-MAP-TO-ACTION-GRAMMAR"
+    canonical_run_rule_id = "INV-PROCESS-RUN-RECORD-CANONICAL"
     ledger_rule_id = "INV-PROCESS-OUTPUTS-LEDGERED"
     capsule_rule_id = "INV-PROCESS-CAPSULE-REQUIRES-STABILIZED"
 
@@ -20306,6 +20317,10 @@ def _append_process_constitution_invariant_findings(
     drift_policy_rel = "data/registries/process_drift_policy_registry.json"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    validator_rel = "src/process/process_definition_validator.py"
+    run_engine_rel = "src/process/process_run_engine.py"
+    run_schema_rel = "schema/process/process_run_record.schema"
+    step_schema_rel = "schema/process/process_step_record.schema"
 
     process_payload, process_error = _load_json_object(repo_root, process_registry_rel)
     process_rows = list(process_payload.get("records") or [])
@@ -20331,6 +20346,59 @@ def _append_process_constitution_invariant_findings(
                 snippet=process_id,
                 message="process registry is missing required PROC lifecycle process id",
                 rule_id=ledger_rule_id,
+            )
+        )
+
+    validator_text = _file_text(repo_root, validator_rel)
+    for token in (
+        "validate_process_definition(",
+        "_action_template_ids(",
+        "refusal.process.invalid_definition",
+    ):
+        if token in validator_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=validator_rel,
+                line_number=1,
+                snippet=token,
+                message="process definition validator must enforce deterministic action-grammar mapping",
+                rule_id=action_mapping_rule_id,
+            )
+        )
+
+    run_engine_text = _file_text(repo_root, run_engine_rel)
+    for token in (
+        "build_process_run_record_row(",
+        "build_process_step_record_row(",
+        "process_run_start(",
+        "process_run_tick(",
+        "process_run_end(",
+    ):
+        if token in run_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=run_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="process run engine must emit canonical run/step records through explicit lifecycle functions",
+                rule_id=canonical_run_rule_id,
+            )
+        )
+    for rel_path in (run_schema_rel, step_schema_rel):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message="required canonical process record schema is missing",
+                rule_id=canonical_run_rule_id,
             )
         )
     if process_error and not process_rows:
@@ -20521,7 +20589,7 @@ def _append_process_constitution_invariant_findings(
                     line_number=line_no,
                     snippet=snippet[:140],
                     message="ad hoc recipe/workflow token detected outside PROC-governed process pathways",
-                    rule_id=recipe_rule_id,
+                    rule_id=implicit_workflow_rule_id,
                 )
             )
             break
