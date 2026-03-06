@@ -15,6 +15,7 @@ from src.process.capsules.capsule_executor import (
     REFUSAL_PROCESS_CAPSULE_EXECUTION_REFUSED,
     REFUSAL_PROCESS_CAPSULE_OUT_OF_DOMAIN,
     build_capsule_execution_record_row,
+    build_process_capsule_invalidation_row,
     execute_process_capsule,
     normalize_capsule_execution_record_rows,
 )
@@ -32,6 +33,7 @@ __all__ = [
     "REFUSAL_PROCESS_CAPSULE_OUT_OF_DOMAIN",
     "REFUSAL_PROCESS_CAPSULE_EXECUTION_REFUSED",
     "build_capsule_execution_record_row",
+    "build_process_capsule_invalidation_row",
     "normalize_capsule_execution_record_rows",
     "execute_process_capsule",
 ]

@@ -330,6 +330,63 @@ def execute_process_capsule(
             "message": "capsule_id is not registered",
             "capsule_id": capsule_token,
         }
+    capsule_ext = _as_map(capsule_row.get("extensions"))
+    if bool(capsule_ext.get("invalidated", False)):
+        reason_codes = _tokens(list(capsule_ext.get("invalidation_reason_codes") or []))
+        reason_code = reason_codes[0] if reason_codes else "capsule.invalidated"
+        invalidation_row = build_process_capsule_invalidation_row(
+            capsule_id=capsule_token,
+            process_id=str(capsule_row.get("process_id", "")).strip(),
+            version=str(capsule_row.get("version", "")).strip() or "1.0.0",
+            tick=int(tick),
+            reason_code=reason_code,
+            extensions={
+                "source": "PROC8-7",
+                "existing_invalidated_flag": True,
+                "invalidation_reason_codes": reason_codes,
+            },
+        )
+        forced_expand_event = {
+            "event_id": "event.process.capsule_forced_expand.{}".format(
+                canonical_sha256(
+                    {
+                        "capsule_id": capsule_token,
+                        "tick": tick,
+                        "reason_code": reason_code,
+                    }
+                )[:16]
+            ),
+            "capsule_id": capsule_token,
+            "process_id": str(capsule_row.get("process_id", "")).strip(),
+            "version": str(capsule_row.get("version", "")).strip() or "1.0.0",
+            "tick": int(tick),
+            "reason_code": reason_code,
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "invalidation_event_id": str(invalidation_row.get("event_id", "")).strip()
+                or None,
+                "allow_micro_fallback": bool(allow_micro_fallback),
+            },
+        }
+        forced_expand_event["deterministic_fingerprint"] = canonical_sha256(
+            dict(forced_expand_event, deterministic_fingerprint="")
+        )
+        if bool(allow_forced_expand):
+            return {
+                "result": "forced_expand",
+                "reason_code": reason_code,
+                "message": "capsule invalidated by process drift",
+                "forced_expand_event_row": forced_expand_event,
+                "capsule_invalidation_row": invalidation_row,
+                "micro_fallback_requested": bool(allow_micro_fallback),
+            }
+        return {
+            "result": "refused",
+            "reason_code": reason_code or REFUSAL_PROCESS_CAPSULE_EXECUTION_REFUSED,
+            "message": "capsule invalidated by process drift",
+            "capsule_invalidation_row": invalidation_row,
+            "forced_expand_event_row": forced_expand_event,
+        }
 
     validity_rows = {
         str(row.get("domain_id", "")).strip(): dict(row)

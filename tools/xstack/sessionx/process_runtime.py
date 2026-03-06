@@ -653,6 +653,7 @@ from src.meta.compile import (
 )
 from src.process.capsules import (
     REFUSAL_PROCESS_CAPSULE_INVALID,
+    build_process_capsule_invalidation_row,
     build_capsule_execution_record_row,
     execute_process_capsule,
     generate_process_capsule,
@@ -33689,6 +33690,25 @@ def execute_intent(
         requester_subject_id = str(inputs.get("requester_subject_id", "")).strip() or str(
             authority_context.get("subject_id", "")
         ).strip()
+        previous_profile_rows = [
+            dict(row)
+            for row in list(state.get("software_pipeline_profile_rows") or [])
+            if isinstance(row, Mapping)
+            and str(row.get("pipeline_id", "")).strip() == pipeline_id
+        ]
+        previous_profile_row = (
+            dict(
+                sorted(
+                    previous_profile_rows,
+                    key=lambda row: (
+                        str(row.get("toolchain_version", "")),
+                        str(row.get("config_hash", "")),
+                    ),
+                )[-1]
+            )
+            if previous_profile_rows
+            else {}
+        )
         if not source_hash and source_artifact_id:
             source_hash = canonical_sha256({"source_artifact_id": source_artifact_id})
         if not source_artifact_id and source_hash:
@@ -34046,9 +34066,143 @@ def execute_intent(
             dict(row) for row in list(state.get("info_artifact_rows") or [])
         ]
 
+        drift_reason_codes = []
+        prev_toolchain_version = str(previous_profile_row.get("toolchain_version", "")).strip()
+        prev_config_hash = str(previous_profile_row.get("config_hash", "")).strip().lower()
+        if prev_toolchain_version and prev_toolchain_version != toolchain_version:
+            drift_reason_codes.append("capsule.toolchain_version_changed")
+        if prev_config_hash and prev_config_hash != config_hash:
+            drift_reason_codes.append("capsule.config_hash_changed")
+        qc_failed = int(sum(1 for row in qc_rows if not bool(row.get("passed", False))))
+        qc_total = int(len(qc_rows))
+        qc_fail_rate_permille = int((1000 * qc_failed) // max(1, qc_total)) if qc_total else 0
+        if qc_fail_rate_permille >= int(
+            max(0, _as_int(inputs.get("drift_qc_fail_threshold_permille", 500), 500))
+        ):
+            drift_reason_codes.append("capsule.test_failure_spike")
+
+        invalidated_capsule_ids = []
+        if drift_reason_codes:
+            process_id_token = str(process_run_record_row.get("process_id", "")).strip()
+            updated_capsule_rows = []
+            new_invalidation_rows = []
+            for capsule_row in sorted(
+                (
+                    dict(row)
+                    for row in list(state.get("process_capsule_rows") or [])
+                    if isinstance(row, Mapping)
+                ),
+                key=lambda row: str(row.get("capsule_id", "")),
+            ):
+                if str(capsule_row.get("process_id", "")).strip() != process_id_token:
+                    updated_capsule_rows.append(dict(capsule_row))
+                    continue
+                capsule_ext = (
+                    dict(capsule_row.get("extensions") or {})
+                    if isinstance(capsule_row.get("extensions"), Mapping)
+                    else {}
+                )
+                capsule_ext["invalidated"] = True
+                capsule_ext["invalidation_reason_codes"] = _sorted_tokens(
+                    list(capsule_ext.get("invalidation_reason_codes") or []) + drift_reason_codes
+                )
+                capsule_ext["last_invalidation_tick"] = int(max(0, _as_int(current_tick, 0)))
+                capsule_row["extensions"] = capsule_ext
+                updated_capsule_rows.append(dict(capsule_row))
+                capsule_id = str(capsule_row.get("capsule_id", "")).strip()
+                if capsule_id:
+                    invalidated_capsule_ids.append(capsule_id)
+                    reason_code = capsule_ext["invalidation_reason_codes"][0]
+                    invalidation_row = build_process_capsule_invalidation_row(
+                        capsule_id=capsule_id,
+                        process_id=process_id_token,
+                        version=str(capsule_row.get("version", "")).strip() or "1.0.0",
+                        tick=int(max(0, _as_int(current_tick, 0))),
+                        reason_code=reason_code,
+                        deterministic_fingerprint="",
+                        extensions={
+                            "source": "PROC8-7",
+                            "pipeline_id": pipeline_id,
+                            "run_id": run_id,
+                            "qc_fail_rate_permille": qc_fail_rate_permille,
+                            "drift_reason_codes": _sorted_tokens(drift_reason_codes),
+                        },
+                    )
+                    if invalidation_row:
+                        new_invalidation_rows.append(invalidation_row)
+            if updated_capsule_rows:
+                state["process_capsule_rows"] = normalize_process_capsule_rows(
+                    updated_capsule_rows
+                )
+            if new_invalidation_rows:
+                state["process_capsule_invalidation_rows"] = list(
+                    state.get("process_capsule_invalidation_rows") or []
+                ) + new_invalidation_rows
+                _ensure_process_capsule_invalidation_rows(state)
+                forced_expand_rows = list(
+                    state.get("process_capsule_forced_expand_event_rows") or []
+                )
+                for invalidation_row in new_invalidation_rows:
+                    forced_expand_rows.append(
+                        {
+                            "schema_version": "1.0.0",
+                            "event_id": "event.process.capsule_forced_expand.{}".format(
+                                canonical_sha256(
+                                    {
+                                        "capsule_id": str(
+                                            invalidation_row.get("capsule_id", "")
+                                        ).strip(),
+                                        "tick": int(
+                                            max(
+                                                0,
+                                                _as_int(
+                                                    invalidation_row.get("tick", 0), 0
+                                                ),
+                                            )
+                                        ),
+                                        "reason_code": str(
+                                            invalidation_row.get("reason_code", "")
+                                        ).strip(),
+                                    }
+                                )[:16]
+                            ),
+                            "capsule_id": str(invalidation_row.get("capsule_id", "")).strip(),
+                            "process_id": str(invalidation_row.get("process_id", "")).strip(),
+                            "version": str(invalidation_row.get("version", "")).strip()
+                            or "1.0.0",
+                            "tick": int(max(0, _as_int(invalidation_row.get("tick", 0), 0))),
+                            "reason_code": str(invalidation_row.get("reason_code", "")).strip(),
+                            "deterministic_fingerprint": canonical_sha256(
+                                {
+                                    "capsule_id": str(
+                                        invalidation_row.get("capsule_id", "")
+                                    ).strip(),
+                                    "tick": int(
+                                        max(
+                                            0,
+                                            _as_int(invalidation_row.get("tick", 0), 0),
+                                        )
+                                    ),
+                                    "reason_code": str(
+                                        invalidation_row.get("reason_code", "")
+                                    ).strip(),
+                                }
+                            ),
+                            "extensions": {"source": "PROC8-7"},
+                        }
+                    )
+                state["process_capsule_forced_expand_event_rows"] = sorted(
+                    (dict(row) for row in forced_expand_rows if isinstance(row, Mapping)),
+                    key=lambda row: (
+                        int(max(0, _as_int(row.get("tick", 0), 0))),
+                        str(row.get("event_id", "")),
+                    ),
+                )
+
         _refresh_compile_hash_chains(state)
         _refresh_software_pipeline_hash_chains(state)
         _refresh_software_pipeline_quality_hash_chains(state)
+        _refresh_process_capsule_hash_chains(state)
         result_metadata = {
             "pipeline_id": pipeline_id,
             "run_id": run_id,
@@ -34070,6 +34224,8 @@ def execute_intent(
             "software_test_sampling_hash_chain": str(
                 state.get("software_test_sampling_hash_chain", "")
             ).strip(),
+            "capsule_drift_reason_codes": _sorted_tokens(drift_reason_codes),
+            "invalidated_capsule_ids": _sorted_tokens(invalidated_capsule_ids),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.compile_request_submit":
