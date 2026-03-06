@@ -1072,6 +1072,66 @@
         "extensions": {
           "source": "PROC4-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.capsule_invalid",
+        "event_kind_id": "process.capsule_invalid",
+        "explain_artifact_type_id": "artifact.explain.process_capsule_invalid",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.capsule_validity",
+          "section.process.capsule_history"
+        ],
+        "remediation_hint_keys": [
+          "hint.run.revalidation",
+          "hint.force.expand",
+          "hint.review.validity_domain"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC5-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.capsule_forced_expand",
+        "event_kind_id": "process.capsule_forced_expand",
+        "explain_artifact_type_id": "artifact.explain.process_capsule_forced_expand",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.capsule_summary",
+          "section.process.capsule_validity"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.process_micro",
+          "hint.review.input_domain",
+          "hint.review.tool_condition"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC5-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.capsule_output_out_of_bounds",
+        "event_kind_id": "process.capsule_output_out_of_bounds",
+        "explain_artifact_type_id": "artifact.explain.process_capsule_output_out_of_bounds",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.capsule_summary",
+          "section.process.capsule_history"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.process_micro",
+          "hint.adjust.error_bounds",
+          "hint.rebuild.capsule"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC5-7"
+        }
       }
     ],
     "extensions": {

@@ -1242,6 +1242,48 @@
           "cost_units": 2,
           "source": "PROC4-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.capsule_summary",
+        "title": "Process Capsule Summary",
+        "data": {
+          "data_kind": "process_capsule_summary"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC5-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.capsule_validity",
+        "title": "Process Capsule Validity",
+        "data": {
+          "data_kind": "process_capsule_validity"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC5-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.capsule_history",
+        "title": "Process Capsule History",
+        "data": {
+          "data_kind": "process_capsule_history"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 3,
+          "source": "PROC5-7"
+        }
       }
     ],
     "extensions": {}
