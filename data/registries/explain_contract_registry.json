@@ -1272,6 +1272,86 @@
         "extensions": {
           "source": "PROC7-9"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.build_failed",
+        "event_kind_id": "process.software.build_failed",
+        "explain_artifact_type_id": "artifact.explain.software_build_failed",
+        "required_inputs": [
+          "artifact.record",
+          "section.software.pipeline_status",
+          "section.software.artifacts"
+        ],
+        "remediation_hint_keys": [
+          "hint.review.toolchain_hash",
+          "hint.verify.source_and_config",
+          "hint.retry.compile"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.test_failed",
+        "event_kind_id": "process.software.test_failed",
+        "explain_artifact_type_id": "artifact.explain.software_test_failed",
+        "required_inputs": [
+          "artifact.report",
+          "section.software.pipeline_status",
+          "section.software.artifacts"
+        ],
+        "remediation_hint_keys": [
+          "hint.review.test_subset_policy",
+          "hint.fix.failing_tests",
+          "hint.retry.pipeline"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.signature_invalid",
+        "event_kind_id": "process.software.signature_invalid",
+        "explain_artifact_type_id": "artifact.explain.software_signature_invalid",
+        "required_inputs": [
+          "artifact.credential",
+          "section.software.pipeline_status",
+          "section.software.artifacts"
+        ],
+        "remediation_hint_keys": [
+          "hint.rotate.signing_key",
+          "hint.reissue.signature",
+          "hint.verify.signature_chain"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.deploy_failed",
+        "event_kind_id": "process.software.deploy_failed",
+        "explain_artifact_type_id": "artifact.explain.software_deploy_failed",
+        "required_inputs": [
+          "artifact.record",
+          "section.software.pipeline_status",
+          "section.software.artifacts"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.sig_channel",
+          "hint.require.signature_before_deploy",
+          "hint.retry.deploy"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC8-8"
+        }
       }
     ],
     "extensions": {

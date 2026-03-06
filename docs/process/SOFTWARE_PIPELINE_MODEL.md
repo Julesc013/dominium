@@ -87,6 +87,11 @@ Explain contracts cover:
 - signature invalid
 - deploy failed
 
+Inspection sections for RND/inspector UX:
+
+- `section.software.pipeline_status`
+- `section.software.artifacts`
+
 ## 6) Reverse Engineering Alignment
 
 Decompile/inspect workflows are process-governed and epistemically gated:

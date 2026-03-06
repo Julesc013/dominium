@@ -1354,6 +1354,34 @@
           "cost_units": 2,
           "source": "PROC7-9"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.software.pipeline_status",
+        "title": "Software Pipeline Status",
+        "data": {
+          "data_kind": "software_pipeline_status"
+        },
+        "epistemic_redaction_level": "coarse",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.software.artifacts",
+        "title": "Software Artifacts",
+        "data": {
+          "data_kind": "software_artifacts"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC8-8"
+        }
       }
     ],
     "extensions": {}
