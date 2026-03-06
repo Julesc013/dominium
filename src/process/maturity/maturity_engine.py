@@ -181,7 +181,7 @@ def compute_stabilization_score(
     w_env = int(max(0, _as_int(weights.get("environment", 0), 0)))
     w_cal = int(max(0, _as_int(weights.get("calibration", 0), 0)))
 
-    total_weight = int(max(1, w_runs + w_consistency + w_qc + w_defect + w_env + w_cal))
+    positive_weight = int(max(1, w_runs + w_consistency + w_qc))
     raw = (
         (w_runs * runs_norm)
         + (w_consistency * consistency)
@@ -190,7 +190,7 @@ def compute_stabilization_score(
         - (w_env * env_dev)
         - (w_cal * cal_dev)
     )
-    score = int(raw // total_weight)
+    score = int(raw // positive_weight)
     return int(max(0, min(1000, score)))
 
 

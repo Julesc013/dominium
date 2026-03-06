@@ -14,6 +14,7 @@
           "defined",
           "stabilized",
           "certified",
+          "capsule_eligible",
           "capsule",
           "drifted"
         ],
@@ -33,6 +34,7 @@
           "defined",
           "stabilized",
           "certified",
+          "capsule_eligible",
           "capsule",
           "drifted"
         ],
