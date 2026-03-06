@@ -312,6 +312,8 @@ from analyzers import e285_implicit_qc_logic_smell
 from analyzers import e286_nondeterministic_sampling_smell
 from analyzers import e287_hidden_unlock_smell
 from analyzers import e288_undeclared_maturity_transition_smell
+from analyzers import e289_silent_capsule_execution_smell
+from analyzers import e290_capsule_used_out_of_domain_smell
 
 
 ANALYZERS = (
@@ -627,6 +629,8 @@ ANALYZERS = (
     e286_nondeterministic_sampling_smell,
     e287_hidden_unlock_smell,
     e288_undeclared_maturity_transition_smell,
+    e289_silent_capsule_execution_smell,
+    e290_capsule_used_out_of_domain_smell,
 )
 
 

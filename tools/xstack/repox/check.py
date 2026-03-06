@@ -417,6 +417,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-SAMPLING-DETERMINISTIC",
     "INV-NO-ADHOC-INSPECTION",
     "INV-CAPSULE-REQUIRES-CAPSULE_ELIGIBLE",
+    "INV-CAPSULE-STATEVEC-REQUIRED",
+    "INV-CAPSULE-ERROR-BOUNDS-REQUIRED",
+    "INV-CAPSULE-EXECUTION-RECORDED",
     "INV-MATURITY-RECORD-CANONICAL",
     "INV-NO-MAGIC-UNLOCKS",
     "INV-YIELD-MUST-BE-MODEL",
@@ -816,6 +819,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E286_NONDETERMINISTIC_SAMPLING_SMELL": "INV-SAMPLING-DETERMINISTIC",
     "E287_HIDDEN_UNLOCK_SMELL": "INV-NO-MAGIC-UNLOCKS",
     "E288_UNDECLARED_MATURITY_TRANSITION_SMELL": "INV-MATURITY-RECORD-CANONICAL",
+    "E289_SILENT_CAPSULE_EXECUTION_SMELL": "INV-CAPSULE-EXECUTION-RECORDED",
+    "E290_CAPSULE_USED_OUT_OF_DOMAIN_SMELL": "INV-CAPSULE-ERROR-BOUNDS-REQUIRED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20331,6 +20336,9 @@ def _append_process_constitution_invariant_findings(
     qc_sampling_rule_id = "INV-SAMPLING-DETERMINISTIC"
     qc_bypass_rule_id = "INV-NO-ADHOC-INSPECTION"
     capsule_eligibility_rule_id = "INV-CAPSULE-REQUIRES-CAPSULE_ELIGIBLE"
+    capsule_statevec_rule_id = "INV-CAPSULE-STATEVEC-REQUIRED"
+    capsule_error_bounds_rule_id = "INV-CAPSULE-ERROR-BOUNDS-REQUIRED"
+    capsule_execution_recorded_rule_id = "INV-CAPSULE-EXECUTION-RECORDED"
     maturity_record_rule_id = "INV-MATURITY-RECORD-CANONICAL"
     no_magic_unlock_rule_id = "INV-NO-MAGIC-UNLOCKS"
 
@@ -20348,10 +20356,13 @@ def _append_process_constitution_invariant_findings(
     qc_result_schema_rel = "schema/process/qc_result_record.schema"
     test_procedure_schema_rel = "schema/process/test_procedure.schema"
     process_quality_schema_rel = "schema/process/process_quality_record.schema"
+    process_capsule_schema_rel = "schema/process/process_capsule.schema"
+    capsule_execution_schema_rel = "schema/process/capsule_execution_record.schema"
     process_metrics_schema_rel = "schema/process/process_metrics_state.schema"
     process_maturity_schema_rel = "schema/process/process_maturity_record.schema"
     stabilization_policy_schema_rel = "schema/process/stabilization_policy.schema"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
+    process_capsule_doc_rel = "docs/process/PROCESS_CAPSULE_MODEL.md"
     qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
     maturity_doc_rel = "docs/process/STABILIZATION_AND_MATURITY_MODEL.md"
     explain_registry_rel = "data/registries/explain_contract_registry.json"
@@ -20360,10 +20371,13 @@ def _append_process_constitution_invariant_findings(
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     validator_rel = "src/process/process_definition_validator.py"
     run_engine_rel = "src/process/process_run_engine.py"
+    capsule_builder_rel = "src/process/capsules/capsule_builder.py"
+    capsule_executor_rel = "src/process/capsules/capsule_executor.py"
     qc_engine_rel = "src/process/qc/qc_engine.py"
     metrics_engine_rel = "src/process/maturity/metrics_engine.py"
     maturity_engine_rel = "src/process/maturity/maturity_engine.py"
     maturity_replay_tool_rel = "tools/process/tool_replay_maturity_window.py"
+    capsule_replay_tool_rel = "tools/process/tool_replay_capsule_window.py"
     run_schema_rel = "schema/process/process_run_record.schema"
     step_schema_rel = "schema/process/process_step_record.schema"
 
@@ -20505,6 +20519,113 @@ def _append_process_constitution_invariant_findings(
                 snippet=token,
                 message="process run engine must route maturity transitions and capsule gating through PROC-4 deterministic pathways",
                 rule_id=capsule_eligibility_rule_id,
+            )
+        )
+    capsule_builder_text = _file_text(repo_root, capsule_builder_rel)
+    for token in (
+        "generate_process_capsule(",
+        "REFUSAL_PROCESS_CAPSULE_STATEVEC_REQUIRED",
+        "state_vector_definition_for_owner(",
+    ):
+        if token in capsule_builder_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=capsule_builder_rel,
+                line_number=1,
+                snippet=token,
+                message="process capsule builder must require declared state vectors before capsule generation",
+                rule_id=capsule_statevec_rule_id,
+            )
+        )
+    for token in (
+        "REFUSAL_PROCESS_CAPSULE_ERROR_BOUNDS_REQUIRED",
+        "tolerance_policy_rows_by_id(",
+        "error_bound_policy_id",
+    ):
+        if token in capsule_builder_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=capsule_builder_rel,
+                line_number=1,
+                snippet=token,
+                message="process capsule builder must require declared error-bound policies",
+                rule_id=capsule_error_bounds_rule_id,
+            )
+        )
+    capsule_executor_text = _file_text(repo_root, capsule_executor_rel)
+    for token in (
+        "execute_process_capsule(",
+        "build_capsule_execution_record_row(",
+        "capsule_execution_record_row",
+        "REFUSAL_PROCESS_CAPSULE_OUT_OF_DOMAIN",
+    ):
+        if token in capsule_executor_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=capsule_executor_rel,
+                line_number=1,
+                snippet=token,
+                message="process capsule executor must emit canonical execution records and deterministic out-of-domain handling",
+                rule_id=capsule_execution_recorded_rule_id,
+            )
+        )
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in (
+        'elif process_id == "process.process_capsule_generate":',
+        'elif process_id == "process.process_capsule_execute":',
+        "capsule_execution_record_rows",
+        "_refresh_process_capsule_hash_chains(",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="runtime must route process capsule generation/execution through deterministic process handlers with recorded outputs",
+                rule_id=capsule_execution_recorded_rule_id,
+            )
+        )
+    for rel_path, rule_id, message in (
+        (
+            process_capsule_schema_rel,
+            capsule_statevec_rule_id,
+            "process capsule schema is required and must declare explicit state vector bindings",
+        ),
+        (
+            capsule_execution_schema_rel,
+            capsule_execution_recorded_rule_id,
+            "capsule execution schema is required for canonical execution recording",
+        ),
+        (
+            process_capsule_doc_rel,
+            capsule_error_bounds_rule_id,
+            "process capsule model doctrine document is required",
+        ),
+        (
+            capsule_replay_tool_rel,
+            capsule_execution_recorded_rule_id,
+            "capsule replay verification tool is required for PROC-5 proof integration",
+        ),
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message=message,
+                rule_id=rule_id,
             )
         )
     metrics_engine_text = _file_text(repo_root, metrics_engine_rel)
@@ -21155,6 +21276,7 @@ def _append_process_constitution_invariant_findings(
     allowed_yield_files = {
         runtime_rel,
         run_engine_rel,
+        capsule_executor_rel,
         "src/models/model_engine.py",
         "src/chem/process_run_engine.py",
         "tools/xstack/repox/check.py",
@@ -21293,7 +21415,9 @@ def _append_process_constitution_invariant_findings(
         run_engine_rel,
         validator_rel,
         qc_engine_rel,
+        capsule_executor_rel,
         "src/process/qc/__init__.py",
+        "src/process/capsules/__init__.py",
         "tools/process/tool_replay_qc_window.py",
         "tools/xstack/repox/check.py",
     }
