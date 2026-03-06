@@ -8,6 +8,8 @@ from src.process.maturity.metrics_engine import (
     update_process_metrics_for_run,
 )
 from src.process.maturity.maturity_engine import (
+    build_process_certificate_artifact_row,
+    build_process_certificate_revocation_row,
     build_process_maturity_record_row,
     compute_stabilization_score,
     evaluate_process_maturity,
@@ -22,6 +24,8 @@ __all__ = [
     "stabilization_policy_rows_by_id",
     "update_process_metrics_for_run",
     "build_process_maturity_record_row",
+    "build_process_certificate_artifact_row",
+    "build_process_certificate_revocation_row",
     "normalize_process_maturity_record_rows",
     "process_lifecycle_policy_rows_by_id",
     "compute_stabilization_score",

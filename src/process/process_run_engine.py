@@ -13,6 +13,15 @@ from src.models.model_engine import (
     evaluate_model_bindings,
     model_type_rows_by_id,
 )
+from src.process.maturity import (
+    build_process_certificate_artifact_row,
+    build_process_certificate_revocation_row,
+    evaluate_process_maturity,
+    process_lifecycle_policy_rows_by_id,
+    process_metrics_rows_by_key,
+    stabilization_policy_rows_by_id,
+    update_process_metrics_for_run,
+)
 from src.process.qc.qc_engine import evaluate_qc_for_run
 from src.process.process_definition_validator import (
     REFUSAL_PROCESS_INVALID_DEFINITION,
@@ -387,6 +396,9 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None,
         qc_policy_id=str(_as_map(process_definition_row).get("qc_policy_id", "")).strip() or None,
+        stabilization_policy_id=str(_as_map(process_definition_row).get("stabilization_policy_id", "")).strip() or None,
+        process_lifecycle_policy_id=str(_as_map(process_definition_row).get("process_lifecycle_policy_id", "")).strip() or None,
+        process_cert_type_id=str(_as_map(process_definition_row).get("process_cert_type_id", "")).strip() or None,
         yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
         defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
@@ -407,6 +419,9 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "process_id": str(definition.get("process_id", "")).strip(),
         "version": str(definition.get("version", "")).strip(),
         "qc_policy_id": str(definition.get("qc_policy_id", "")).strip() or "qc.none",
+        "stabilization_policy_id": str(definition.get("stabilization_policy_id", "")).strip() or "stab.default",
+        "process_lifecycle_policy_id": str(definition.get("process_lifecycle_policy_id", "")).strip() or "proc.lifecycle.default",
+        "process_cert_type_id": str(definition.get("process_cert_type_id", "")).strip() or "cert.process.default",
         "yield_model_id": str(definition.get("yield_model_id", "")).strip(),
         "defect_model_id": str(definition.get("defect_model_id", "")).strip(),
         "step_order": _tokens(validation.get("ordered_step_ids")),
@@ -432,10 +447,21 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "qc_rework_request_rows": [],
         "qc_drift_escalation_rows": [],
         "qc_certification_hook_rows": [],
+        "process_metrics_state_rows": [],
+        "process_maturity_record_rows": [],
+        "process_maturity_observation_rows": [],
+        "process_certification_artifact_rows": [],
+        "process_certification_revocation_rows": [],
+        "current_maturity_state": "exploration",
+        "maturity_state_extensions": {},
+        "process_capsule_eligible": False,
         "qc_result_hash_chain": "",
         "sampling_decision_hash_chain": "",
         "qc_drift_escalation_hash_chain": "",
         "qc_certification_hook_hash_chain": "",
+        "metrics_state_hash_chain": "",
+        "process_maturity_hash_chain": "",
+        "process_cert_hash_chain": "",
         "decision_log_rows": [],
         "run_status": "running",
     }
@@ -467,6 +493,9 @@ def process_run_tick(*, current_tick: int, run_state: Mapping[str, object], proc
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None,
         qc_policy_id=str(_as_map(process_definition_row).get("qc_policy_id", "")).strip() or None,
+        stabilization_policy_id=str(_as_map(process_definition_row).get("stabilization_policy_id", "")).strip() or None,
+        process_lifecycle_policy_id=str(_as_map(process_definition_row).get("process_lifecycle_policy_id", "")).strip() or None,
+        process_cert_type_id=str(_as_map(process_definition_row).get("process_cert_type_id", "")).strip() or None,
         yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
         defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
@@ -597,6 +626,13 @@ def process_run_end(
     instrument_id: str | None = None,
     calibration_cert_id: str | None = None,
     requester_subject_id: str | None = None,
+    stabilization_policy_registry_payload: Mapping[str, object] | None = None,
+    process_lifecycle_policy_registry_payload: Mapping[str, object] | None = None,
+    process_certification_required: bool = False,
+    certification_issuer_subject_id: str | None = None,
+    cert_validity_ticks: int | None = None,
+    metrics_update_stride: int = 1,
+    force_metrics_update: bool = False,
 ) -> dict:
     run_record = dict(_as_map(run_record_row))
     run_id = str(run_record.get("run_id", "")).strip()
@@ -1022,6 +1058,177 @@ def process_run_end(
             }
         ]
 
+    process_id = str(run_record.get("process_id", "")).strip()
+    process_version = str(run_record.get("version", "")).strip() or "1.0.0"
+    stabilization_policy_id = str(state.get("stabilization_policy_id", "")).strip() or "stab.default"
+    process_lifecycle_policy_id = (
+        str(state.get("process_lifecycle_policy_id", "")).strip()
+        or "proc.lifecycle.default"
+    )
+    process_cert_type_id = (
+        str(state.get("process_cert_type_id", "")).strip() or "cert.process.default"
+    )
+    metrics_key = "{}@{}".format(process_id, process_version)
+    metrics_by_key = process_metrics_rows_by_key(state.get("process_metrics_state_rows"))
+    previous_metrics_row = dict(metrics_by_key.get(metrics_key) or {})
+    qc_rows_for_run = [
+        dict(row)
+        for row in _as_list(state.get("qc_result_record_rows"))
+        if isinstance(row, Mapping) and str(row.get("run_id", "")).strip() == str(run_id)
+    ]
+    metrics_update = update_process_metrics_for_run(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        process_id=str(process_id),
+        version=str(process_version),
+        previous_metrics_row=previous_metrics_row,
+        process_quality_row=(dict(quality_record) if quality_record else {}),
+        qc_result_rows=qc_rows_for_run,
+        environment_snapshot_hash=str(traceability.get("environment_snapshot_hash", "")).strip(),
+        calibration_cert_id=str(calibration_cert_id or "").strip(),
+        update_stride=int(max(1, _as_int(metrics_update_stride, 1))),
+        force_update=bool(force_metrics_update),
+        policy_id=str(stabilization_policy_id),
+    )
+    metrics_row = dict(metrics_update.get("metrics_row") or previous_metrics_row)
+    if metrics_row:
+        metrics_by_key[metrics_key] = dict(metrics_row)
+    state["process_metrics_state_rows"] = [
+        dict(metrics_by_key[key]) for key in sorted(metrics_by_key.keys())
+    ]
+    decision_row = _as_map(metrics_update.get("decision_log_row"))
+    if decision_row:
+        state["decision_log_rows"] = [
+            dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+        ] + [dict(decision_row)]
+
+    stabilization_policy_rows = stabilization_policy_rows_by_id(
+        stabilization_policy_registry_payload
+    )
+    stabilization_policy_row = dict(
+        stabilization_policy_rows.get(str(stabilization_policy_id))
+        or stabilization_policy_rows.get("stab.default")
+        or {
+            "policy_id": "stab.default",
+            "weights": {
+                "runs": 200,
+                "consistency": 250,
+                "qc_pass": 250,
+                "defect": 150,
+                "environment": 100,
+                "calibration": 50,
+            },
+            "thresholds": {
+                "defined": 120,
+                "stabilized": 650,
+                "certified": 780,
+                "capsule_eligible": 860,
+                "cert_qc_min": 850,
+                "cert_defect_max": 180,
+            },
+            "min_runs": 8,
+            "stability_horizon_ticks": 64,
+            "extensions": {"source": "PROC4-4.default"},
+        }
+    )
+    lifecycle_policy_rows = process_lifecycle_policy_rows_by_id(
+        process_lifecycle_policy_registry_payload
+    )
+    lifecycle_policy_row = dict(
+        lifecycle_policy_rows.get(str(process_lifecycle_policy_id))
+        or lifecycle_policy_rows.get("proc.lifecycle.default")
+        or {
+            "process_lifecycle_policy_id": "proc.lifecycle.default",
+            "allowed_states": [
+                "exploration",
+                "defined",
+                "stabilized",
+                "certified",
+                "capsule_eligible",
+            ],
+            "allow_capsule_without_certification": True,
+            "extensions": {"source": "PROC4-4.default"},
+        }
+    )
+    certification_gate_passed = bool(
+        str(quality_result.get("result", "")).strip() in {"complete", "skipped"}
+    ) and int(failed_count) <= 0
+    maturity_eval = evaluate_process_maturity(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        process_id=str(process_id),
+        version=str(process_version),
+        metrics_row=dict(metrics_row),
+        previous_maturity_state=str(state.get("current_maturity_state", "exploration")),
+        previous_state_extensions=_as_map(state.get("maturity_state_extensions")),
+        stabilization_policy_row=stabilization_policy_row,
+        lifecycle_policy_row=lifecycle_policy_row,
+        certification_gate_passed=bool(certification_gate_passed),
+        certification_required=bool(process_certification_required),
+    )
+    state["current_maturity_state"] = str(
+        maturity_eval.get("next_maturity_state", "exploration")
+    ).strip() or "exploration"
+    state["maturity_state_extensions"] = dict(
+        _as_map(maturity_eval.get("state_extensions"))
+    )
+    maturity_record_row = _as_map(maturity_eval.get("record_row"))
+    if maturity_record_row:
+        state["process_maturity_record_rows"] = sorted(
+            [
+                dict(row)
+                for row in _as_list(state.get("process_maturity_record_rows"))
+                if isinstance(row, Mapping)
+            ]
+            + [dict(maturity_record_row)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("record_id", "")),
+            ),
+        )
+        state["decision_log_rows"] = [
+            dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+        ] + [
+            {
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "run_id": str(run_id),
+                "reason": "process_maturity_transition",
+                "previous_state": str(maturity_eval.get("previous_maturity_state", "")).strip(),
+                "next_state": str(maturity_eval.get("next_maturity_state", "")).strip(),
+                "stabilization_score": int(
+                    max(0, min(1000, _as_int(maturity_eval.get("stabilization_score", 0), 0)))
+                ),
+            }
+        ]
+    maturity_observation_row = _as_map(maturity_eval.get("observation_row"))
+    if maturity_observation_row:
+        state["process_maturity_observation_rows"] = sorted(
+            [
+                dict(row)
+                for row in _as_list(state.get("process_maturity_observation_rows"))
+                if isinstance(row, Mapping)
+            ]
+            + [dict(maturity_observation_row)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("process_id", "")),
+                str(row.get("version", "")),
+            ),
+        )
+    maturity_explain_row = _as_map(maturity_eval.get("explain_row"))
+    if maturity_explain_row:
+        state["report_artifacts"] = [
+            dict(row) for row in _as_list(state.get("report_artifacts")) if isinstance(row, Mapping)
+        ] + [
+            dict(
+                maturity_explain_row,
+                explain_contract_id=(
+                    "explain.process_maturity_change"
+                    if maturity_record_row
+                    else "explain.process_not_stable"
+                ),
+                visibility_policy="policy.epistemic.inspector",
+            )
+        ]
+
     state["process_quality_hash_chain"] = canonical_sha256(
         [
             {
@@ -1046,6 +1253,209 @@ def process_run_end(
             for row in state["batch_quality_rows"]
         ]
     )
+    cert_rows = sorted(
+        [
+            dict(row)
+            for row in _as_list(state.get("process_certification_artifact_rows"))
+            if isinstance(row, Mapping)
+        ],
+        key=lambda row: (
+            int(max(0, _as_int(row.get("issued_tick", 0), 0))),
+            str(row.get("cert_id", "")),
+        ),
+    )
+    cert_revocation_rows = sorted(
+        [
+            dict(row)
+            for row in _as_list(state.get("process_certification_revocation_rows"))
+            if isinstance(row, Mapping)
+        ],
+        key=lambda row: (
+            int(max(0, _as_int(row.get("tick", 0), 0))),
+            str(row.get("event_id", "")),
+        ),
+    )
+    revoked_cert_ids = set(
+        str(row.get("cert_id", "")).strip() for row in cert_revocation_rows if str(row.get("cert_id", "")).strip()
+    )
+    active_cert_rows = [
+        dict(row)
+        for row in cert_rows
+        if str(row.get("cert_id", "")).strip() and str(row.get("cert_id", "")).strip() not in revoked_cert_ids
+    ]
+    next_maturity_state = str(state.get("current_maturity_state", "exploration")).strip()
+    should_issue_cert = (
+        next_maturity_state in {"certified", "capsule_eligible"} and not active_cert_rows
+    )
+    if should_issue_cert:
+        issued_tick = int(max(0, _as_int(current_tick, 0)))
+        valid_until_tick = (
+            None
+            if cert_validity_ticks is None
+            else int(max(issued_tick, issued_tick + max(0, _as_int(cert_validity_ticks, 0))))
+        )
+        cert_row = build_process_certificate_artifact_row(
+            cert_id="",
+            process_id=str(process_id),
+            version=str(process_version),
+            cert_type_id=str(process_cert_type_id),
+            issuer_subject_id=(
+                str(certification_issuer_subject_id).strip()
+                if str(certification_issuer_subject_id or "").strip()
+                else "subject.system.process_certifier"
+            ),
+            issued_tick=issued_tick,
+            valid_until_tick=valid_until_tick,
+            extensions={
+                "source": "PROC4-5",
+                "run_id": str(run_id),
+                "maturity_state": str(next_maturity_state),
+            },
+        )
+        if cert_row:
+            cert_rows.append(dict(cert_row))
+            state["decision_log_rows"] = [
+                dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+            ] + [
+                {
+                    "tick": int(issued_tick),
+                    "run_id": str(run_id),
+                    "reason": "process_certification_issued",
+                    "cert_id": str(cert_row.get("cert_id", "")).strip(),
+                    "cert_type_id": str(process_cert_type_id),
+                    "maturity_state": str(next_maturity_state),
+                }
+            ]
+
+    qc_failure_spike = bool(sampled_count > 0 and fail_rate >= drift_fail_rate_threshold)
+    should_revoke = bool(
+        active_cert_rows
+        and (
+            (cert_invalidation_on_fail and failed_count > 0)
+            or qc_failure_spike
+            or next_maturity_state not in {"certified", "capsule_eligible"}
+        )
+    )
+    if should_revoke:
+        revoke_reason = (
+            "process.qc_failure_spike"
+            if ((cert_invalidation_on_fail and failed_count > 0) or qc_failure_spike)
+            else "process.maturity_dropped"
+        )
+        for cert_row in list(active_cert_rows):
+            cert_id = str(cert_row.get("cert_id", "")).strip()
+            if (not cert_id) or cert_id in set(
+                str(row.get("cert_id", "")).strip() for row in cert_revocation_rows
+            ):
+                continue
+            rev_row = build_process_certificate_revocation_row(
+                event_id="",
+                cert_id=cert_id,
+                process_id=str(process_id),
+                version=str(process_version),
+                cert_type_id=str(process_cert_type_id),
+                reason_code=str(revoke_reason),
+                tick=int(max(0, _as_int(current_tick, 0))),
+                extensions={
+                    "source": "PROC4-5",
+                    "run_id": str(run_id),
+                    "maturity_state": str(next_maturity_state),
+                },
+            )
+            if rev_row:
+                cert_revocation_rows.append(dict(rev_row))
+        if cert_revocation_rows:
+            state["decision_log_rows"] = [
+                dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+            ] + [
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "run_id": str(run_id),
+                    "reason": "process_certification_revoked",
+                    "reason_code": str(revoke_reason),
+                }
+            ]
+
+    state["process_certification_artifact_rows"] = sorted(
+        list(cert_rows),
+        key=lambda row: (
+            int(max(0, _as_int(row.get("issued_tick", 0), 0))),
+            str(row.get("cert_id", "")),
+        ),
+    )
+    state["process_certification_revocation_rows"] = sorted(
+        list(cert_revocation_rows),
+        key=lambda row: (
+            int(max(0, _as_int(row.get("tick", 0), 0))),
+            str(row.get("event_id", "")),
+        ),
+    )
+    state["metrics_state_hash_chain"] = canonical_sha256(
+        [
+            {
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "runs_count": int(max(0, _as_int(row.get("runs_count", 0), 0))),
+                "yield_mean": int(max(0, min(1000, _as_int(row.get("yield_mean", 0), 0)))),
+                "yield_variance": int(max(0, _as_int(row.get("yield_variance", 0), 0))),
+                "defect_rate": int(max(0, min(1000, _as_int(row.get("defect_rate", 0), 0)))),
+                "qc_pass_rate": int(max(0, min(1000, _as_int(row.get("qc_pass_rate", 0), 0)))),
+                "env_deviation_score": int(
+                    max(0, min(1000, _as_int(row.get("env_deviation_score", 0), 0)))
+                ),
+                "calibration_deviation_score": int(
+                    max(0, min(1000, _as_int(row.get("calibration_deviation_score", 0), 0)))
+                ),
+                "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            }
+            for row in [dict(item) for item in _as_list(state.get("process_metrics_state_rows")) if isinstance(item, Mapping)]
+        ]
+    )
+    state["process_maturity_hash_chain"] = canonical_sha256(
+        [
+            {
+                "record_id": str(row.get("record_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "maturity_state": str(row.get("maturity_state", "")).strip(),
+                "stabilization_score": int(
+                    max(0, min(1000, _as_int(row.get("stabilization_score", 0), 0)))
+                ),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in [dict(item) for item in _as_list(state.get("process_maturity_record_rows")) if isinstance(item, Mapping)]
+        ]
+    )
+    state["process_cert_hash_chain"] = canonical_sha256(
+        {
+            "certificates": [
+                {
+                    "cert_id": str(row.get("cert_id", "")).strip(),
+                    "process_id": str(row.get("process_id", "")).strip(),
+                    "version": str(row.get("version", "")).strip(),
+                    "cert_type_id": str(row.get("cert_type_id", "")).strip(),
+                    "issued_tick": int(max(0, _as_int(row.get("issued_tick", 0), 0))),
+                    "valid_until_tick": (
+                        None
+                        if row.get("valid_until_tick") is None
+                        else int(max(0, _as_int(row.get("valid_until_tick", 0), 0)))
+                    ),
+                }
+                for row in [dict(item) for item in _as_list(state.get("process_certification_artifact_rows")) if isinstance(item, Mapping)]
+            ],
+            "revocations": [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "cert_id": str(row.get("cert_id", "")).strip(),
+                    "process_id": str(row.get("process_id", "")).strip(),
+                    "version": str(row.get("version", "")).strip(),
+                    "reason_code": str(row.get("reason_code", "")).strip(),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                }
+                for row in [dict(item) for item in _as_list(state.get("process_certification_revocation_rows")) if isinstance(item, Mapping)]
+            ],
+        }
+    )
 
     finalized["extensions"] = dict(
         _as_map(finalized.get("extensions")),
@@ -1055,6 +1465,9 @@ def process_run_end(
         sampling_decision_hash_chain=str(state.get("sampling_decision_hash_chain", "")).strip(),
         qc_drift_escalation_hash_chain=str(state.get("qc_drift_escalation_hash_chain", "")).strip(),
         qc_certification_hook_hash_chain=str(state.get("qc_certification_hook_hash_chain", "")).strip(),
+        metrics_state_hash_chain=str(state.get("metrics_state_hash_chain", "")).strip(),
+        process_maturity_hash_chain=str(state.get("process_maturity_hash_chain", "")).strip(),
+        process_cert_hash_chain=str(state.get("process_cert_hash_chain", "")).strip(),
     )
     state["run_status"] = final_status
     state["deterministic_fingerprint"] = canonical_sha256(dict(state, deterministic_fingerprint=""))

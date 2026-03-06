@@ -382,10 +382,118 @@ def evaluate_process_maturity(
     return out
 
 
+def build_process_certificate_artifact_row(
+    *,
+    cert_id: str,
+    process_id: str,
+    version: str,
+    cert_type_id: str,
+    issuer_subject_id: str,
+    issued_tick: int,
+    valid_until_tick: int | None,
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    process_token = _token(process_id)
+    version_token = _token(version) or "1.0.0"
+    cert_type_token = _token(cert_type_id) or "cert.process.default"
+    issuer_token = _token(issuer_subject_id) or "subject.system.process_certifier"
+    if not process_token:
+        return {}
+    issued = int(max(0, _as_int(issued_tick, 0)))
+    valid_until = (
+        None
+        if valid_until_tick is None
+        else int(max(issued, _as_int(valid_until_tick, issued)))
+    )
+    payload = {
+        "schema_version": "1.0.0",
+        "cert_id": _token(cert_id),
+        "process_id": process_token,
+        "version": version_token,
+        "cert_type_id": cert_type_token,
+        "issuer_subject_id": issuer_token,
+        "issued_tick": int(issued),
+        "valid_until_tick": valid_until,
+        "deterministic_fingerprint": _token(deterministic_fingerprint),
+        "extensions": _as_map(extensions),
+    }
+    if not payload["cert_id"]:
+        payload["cert_id"] = "cert.process.{}".format(
+            canonical_sha256(
+                {
+                    "process_id": process_token,
+                    "version": version_token,
+                    "cert_type_id": cert_type_token,
+                    "issuer_subject_id": issuer_token,
+                    "issued_tick": int(issued),
+                }
+            )[:16]
+        )
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(
+            dict(payload, deterministic_fingerprint="")
+        )
+    return payload
+
+
+def build_process_certificate_revocation_row(
+    *,
+    event_id: str,
+    cert_id: str,
+    process_id: str,
+    version: str,
+    cert_type_id: str,
+    reason_code: str,
+    tick: int,
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    process_token = _token(process_id)
+    version_token = _token(version) or "1.0.0"
+    cert_token = _token(cert_id)
+    cert_type_token = _token(cert_type_id) or "cert.process.default"
+    reason_token = _token(reason_code) or "process.certification_revoked"
+    tick_value = int(max(0, _as_int(tick, 0)))
+    if (not process_token) or (not cert_token):
+        return {}
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": _token(event_id),
+        "cert_id": cert_token,
+        "process_id": process_token,
+        "version": version_token,
+        "cert_type_id": cert_type_token,
+        "reason_code": reason_token,
+        "tick": int(tick_value),
+        "deterministic_fingerprint": _token(deterministic_fingerprint),
+        "extensions": _as_map(extensions),
+    }
+    if not payload["event_id"]:
+        payload["event_id"] = "event.process.cert_revocation.{}".format(
+            canonical_sha256(
+                {
+                    "cert_id": cert_token,
+                    "process_id": process_token,
+                    "version": version_token,
+                    "reason_code": reason_token,
+                    "tick": int(tick_value),
+                }
+            )[:16]
+        )
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(
+            dict(payload, deterministic_fingerprint="")
+        )
+    return payload
+
+
 __all__ = [
     "build_process_maturity_record_row",
     "normalize_process_maturity_record_rows",
     "process_lifecycle_policy_rows_by_id",
     "compute_stabilization_score",
     "evaluate_process_maturity",
+    "build_process_certificate_artifact_row",
+    "build_process_certificate_revocation_row",
 ]

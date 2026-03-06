@@ -27,6 +27,9 @@ record process_definition
     - tier_contract_id: id
     - coupling_budget_id: id?
     - qc_policy_id: id?
+    - stabilization_policy_id: id?
+    - process_lifecycle_policy_id: id?
+    - process_cert_type_id: id?
     - yield_model_id: id?
     - defect_model_id: id?
     - deterministic_fingerprint: text
