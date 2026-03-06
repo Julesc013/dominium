@@ -16,6 +16,7 @@ from src.process.process_definition_validator import (
 
 REFUSAL_PROCESS_RUN_NOT_FOUND = "refusal.process.run_not_found"
 REFUSAL_PROCESS_LEDGER_REQUIRED = "refusal.process.ledger_required"
+REFUSAL_PROCESS_DIRECT_MASS_ENERGY_MUTATION = "refusal.process.direct_mass_energy_mutation"
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -117,6 +118,9 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "step_records": [],
         "task_requests": [],
         "output_refs": [],
+        "energy_ledger_refs": [],
+        "emission_refs": [],
+        "entropy_events": [],
         "transform_results": [],
         "observation_artifacts": [],
         "report_artifacts": [],
@@ -200,10 +204,29 @@ def process_run_tick(*, current_tick: int, run_state: Mapping[str, object], proc
                 records.append(build_process_step_record_row(run_id=run_id, step_id=step_id, tick=tick, status="failed"))
         elif kind == "transform":
             result = dict(transform_map.get(step_id) or {})
+            if int(_as_int(result.get("direct_mass_delta", 0), 0)) != 0 or int(_as_int(result.get("direct_energy_delta", 0), 0)) != 0:
+                return {
+                    "result": "refused",
+                    "reason_code": REFUSAL_PROCESS_DIRECT_MASS_ENERGY_MUTATION,
+                    "step_id": step_id,
+                    "run_state": state,
+                }
             ext = _as_map(step.get("extensions"))
             if bool(ext.get("moves_mass_energy", False) or ext.get("requires_energy_ledger", False)):
                 if (not _tokens(result.get("energy_transform_refs"))) or int(max(0, _as_int(result.get("entropy_increment", 0), 0))) <= 0:
                     return {"result": "refused", "reason_code": REFUSAL_PROCESS_LEDGER_REQUIRED, "step_id": step_id, "run_state": state}
+            state["energy_ledger_refs"] = _tokens(list(_as_list(state.get("energy_ledger_refs"))) + list(_tokens(result.get("energy_transform_refs"))))
+            state["emission_refs"] = _tokens(list(_as_list(state.get("emission_refs"))) + list(_tokens(result.get("emission_refs"))))
+            if int(max(0, _as_int(result.get("entropy_increment", 0), 0))) > 0:
+                state.setdefault("entropy_events", [])
+                state["entropy_events"] = [dict(row) for row in _as_list(state.get("entropy_events")) if isinstance(row, Mapping)] + [
+                    {
+                        "run_id": run_id,
+                        "step_id": step_id,
+                        "tick": tick,
+                        "entropy_increment": int(max(0, _as_int(result.get("entropy_increment", 0), 0))),
+                    }
+                ]
             state.setdefault("transform_results", []).append({
                 "run_id": run_id,
                 "step_id": step_id,
@@ -267,6 +290,7 @@ __all__ = [
     "REFUSAL_PROCESS_INVALID_DEFINITION",
     "REFUSAL_PROCESS_RUN_NOT_FOUND",
     "REFUSAL_PROCESS_LEDGER_REQUIRED",
+    "REFUSAL_PROCESS_DIRECT_MASS_ENERGY_MUTATION",
     "build_process_run_record_row",
     "build_process_step_record_row",
     "process_run_start",
