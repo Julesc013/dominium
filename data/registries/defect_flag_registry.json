@@ -1,0 +1,56 @@
+{
+  "schema_id": "dominium.registry.defect_flag_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.defect_flag_registry",
+    "registry_version": "1.0.0",
+    "defect_flags": [
+      {
+        "schema_version": "1.0.0",
+        "defect_flag_id": "contamination",
+        "description": "Detected contamination in produced output batch.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "defect_flag_id": "out_of_spec",
+        "description": "Produced output did not satisfy required spec thresholds.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "defect_flag_id": "incomplete",
+        "description": "Process run finished without completing all required quality-critical transforms.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "defect_flag_id": "overprocessed",
+        "description": "Output exposed to excessive process conditions.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "defect_flag_id": "software_bug",
+        "description": "Process build/output flagged by deterministic software quality defect model.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC2-2"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

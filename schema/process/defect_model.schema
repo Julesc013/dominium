@@ -1,0 +1,23 @@
+SCHEMA: process/defect_model.schema
+schema_id: dominium.schema.process.defect_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare process-domain defect model bindings for PROC-2 quality outcomes.
+- Bind defect model identifiers to constitutive model IDs and RNG policy gates.
+
+NON-SEMANTICS:
+- Does not execute model evaluation.
+- Does not define QC sampling behavior (PROC-3).
+
+REQUIRED SHAPE:
+record defect_model
+  required:
+    - defect_model_id: id
+    - description: text
+    - model_id: id
+    - stochastic_allowed: bool
+    - rng_stream_name: text?
+    - deterministic_fingerprint: text
+    - extensions: map

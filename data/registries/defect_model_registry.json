@@ -1,0 +1,36 @@
+{
+  "schema_id": "dominium.registry.defect_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.defect_model_registry",
+    "registry_version": "1.0.0",
+    "defect_models": [
+      {
+        "schema_version": "1.0.0",
+        "defect_model_id": "defect.default_deterministic",
+        "description": "PROC-2 deterministic default defect model.",
+        "model_id": "model.proc_defect.default",
+        "stochastic_allowed": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "defect_model_id": "defect.named_rng_optional",
+        "description": "PROC-2 optional named-RNG defect model policy gate.",
+        "model_id": "model.proc_defect.default",
+        "stochastic_allowed": true,
+        "rng_stream_name": "rng.process.quality.defect",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC2-2",
+          "policy_gated": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

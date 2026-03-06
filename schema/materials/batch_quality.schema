@@ -6,6 +6,7 @@ stability: core
 PURPOSE:
 - Declare CHEM-2 batch quality truth rows used by downstream gameplay and QA surfaces.
 - Standardize deterministic defect/contamination/yield metadata for produced batches.
+- Carry process traceability links for PROC-2 quality provenance.
 
 NON-SEMANTICS:
 - This schema does not compute quality outcomes.
@@ -21,7 +22,17 @@ record batch_quality
     - yield_factor: fixed_point_nonnegative
     - deterministic_fingerprint: sha256
     - extensions: map
+      required:
+        - traceability: map
+          required:
+            - run_id: id
+            - process_id: id
+            - process_version: semver
+            - input_batch_ids: list[id]
+            - tool_ids: list[id]
+            - environment_snapshot_hash: sha256
 
 INVARIANTS:
 - `batch_id` must map to an existing material batch row.
 - `defect_flags` and `contamination_tags` are deterministic for equivalent model inputs.
+- Process-produced batches must include `extensions.traceability.run_id`.
