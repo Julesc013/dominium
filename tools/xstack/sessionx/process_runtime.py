@@ -36455,6 +36455,240 @@ def execute_intent(
             ).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.reverse_engineering_action":
+        target_item_id = str(inputs.get("target_item_id", "")).strip()
+        method = str(inputs.get("method", "")).strip().lower()
+        if (not target_item_id) or (method not in {"disassemble", "assay", "scan"}):
+            return refusal(
+                "refusal.process.reverse_engineering.invalid",
+                "reverse engineering action requires valid target_item_id and method",
+                "Provide target_item_id and method in {disassemble|assay|scan}.",
+                {
+                    "target_item_id": target_item_id,
+                    "method": method,
+                },
+                "$.intent.inputs",
+            )
+
+        subject_id = str(
+            inputs.get(
+                "subject_id",
+                inputs.get(
+                    "requester_subject_id",
+                    dict(authority_context or {}).get("subject_id", "subject.unknown"),
+                ),
+            )
+        ).strip() or "subject.unknown"
+        default_destroyed = method in {"disassemble", "assay"}
+        destroyed = bool(inputs.get("destroyed", default_destroyed))
+        measured_values = dict(inputs.get("measured_values") or {}) if isinstance(inputs.get("measured_values"), Mapping) else {}
+        if not measured_values:
+            measured_values = {
+                "measurement.signal_integrity_permille": int(
+                    max(0, min(1000, _as_int(inputs.get("signal_integrity_permille", 700), 700)))
+                ),
+                "measurement.contamination_permille": int(
+                    max(0, min(1000, _as_int(inputs.get("contamination_permille", 120), 120)))
+                ),
+                "measurement.wear_permille": int(
+                    max(0, min(1000, _as_int(inputs.get("wear_permille", 300), 300)))
+                ),
+            }
+
+        measurement_artifact_id = "artifact.observation.reverse_engineering_measurement.{}".format(
+            canonical_sha256(
+                {
+                    "subject_id": subject_id,
+                    "target_item_id": target_item_id,
+                    "method": method,
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        )
+        reverse_record_id = "record.reverse_engineering.{}".format(
+            canonical_sha256(
+                {
+                    "subject_id": subject_id,
+                    "target_item_id": target_item_id,
+                    "method": method,
+                    "destroyed": bool(destroyed),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        )
+        reverse_record = {
+            "schema_version": "1.0.0",
+            "record_id": reverse_record_id,
+            "subject_id": subject_id,
+            "target_item_id": target_item_id,
+            "method": method,
+            "destroyed": bool(destroyed),
+            "produced_artifact_ids": [measurement_artifact_id],
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "source_process_id": process_id,
+                "tool_id": str(inputs.get("tool_id", "")).strip() or None,
+                "policy_id": str(inputs.get("research_policy_id", "")).strip()
+                or "research.default",
+                "measured_values": dict(
+                    sorted(measured_values.items(), key=lambda item: str(item[0]))
+                ),
+            },
+        }
+        reverse_record["deterministic_fingerprint"] = canonical_sha256(
+            dict(reverse_record, deterministic_fingerprint="")
+        )
+        state["reverse_engineering_record_rows"] = list(
+            state.get("reverse_engineering_record_rows") or []
+        ) + [reverse_record]
+        _ensure_reverse_engineering_record_rows(state)
+
+        inference_eval = infer_candidate_artifacts(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            experiment_result_rows=[],
+            reverse_engineering_record_rows=[dict(reverse_record)],
+            process_definition_ref_hint=str(
+                inputs.get("proposed_process_definition_ref", "")
+            ).strip()
+            or "process.unknown@1.0.0",
+            model_id_hint=(
+                None
+                if inputs.get("model_id_hint") is None
+                else str(inputs.get("model_id_hint", "")).strip() or None
+            ),
+            existing_candidate_rows=list(state.get("candidate_process_definition_rows") or []),
+            existing_candidate_model_binding_rows=list(state.get("candidate_model_binding_rows") or []),
+        )
+        state["candidate_process_definition_rows"] = [
+            dict(row)
+            for row in list(inference_eval.get("candidate_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        state["candidate_model_binding_rows"] = [
+            dict(row)
+            for row in list(inference_eval.get("candidate_model_binding_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        produced_candidate_ids = _sorted_tokens(
+            list(inference_eval.get("produced_candidate_ids") or [])
+        )
+        if produced_candidate_ids:
+            reverse_record["produced_artifact_ids"] = _sorted_tokens(
+                list(reverse_record.get("produced_artifact_ids") or [])
+                + [
+                    "artifact.derived.candidate_process_definition.{}".format(
+                        canonical_sha256({"candidate_id": candidate_id})[:16]
+                    )
+                    for candidate_id in produced_candidate_ids
+                ]
+            )
+            reverse_record["deterministic_fingerprint"] = canonical_sha256(
+                dict(reverse_record, deterministic_fingerprint="")
+            )
+            state["reverse_engineering_record_rows"] = list(
+                state.get("reverse_engineering_record_rows") or []
+            )
+            _ensure_reverse_engineering_record_rows(state)
+
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": measurement_artifact_id,
+                    "artifact_family_id": "OBSERVATION",
+                    "extensions": {
+                        "artifact_type_id": "artifact.observation.reverse_engineering_measurement",
+                        "record_id": reverse_record_id,
+                        "subject_id": subject_id,
+                        "target_item_id": target_item_id,
+                        "method": method,
+                        "measured_values": dict(
+                            sorted(measured_values.items(), key=lambda item: str(item[0]))
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    },
+                },
+                {
+                    "artifact_id": "artifact.record.reverse_engineering.{}".format(
+                        canonical_sha256({"record_id": reverse_record_id})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.reverse_engineering",
+                        "record_id": reverse_record_id,
+                        "subject_id": subject_id,
+                        "target_item_id": target_item_id,
+                        "method": method,
+                        "destroyed": bool(destroyed),
+                        "candidate_ids": list(produced_candidate_ids),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    },
+                },
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+        if destroyed:
+            state["destroyed_item_ids"] = _sorted_tokens(
+                list(state.get("destroyed_item_ids") or []) + [target_item_id]
+            )
+
+        envelope_id = "env.local.reverse_engineering.{}".format(
+            canonical_sha256(
+                {
+                    "subject_id": subject_id,
+                    "artifact_id": measurement_artifact_id,
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        )
+        receipt_id = deterministic_knowledge_receipt_id(
+            subject_id=subject_id,
+            artifact_id=measurement_artifact_id,
+            envelope_id=envelope_id,
+            acquired_tick=int(max(0, _as_int(current_tick, 0))),
+        )
+        receipt_row = build_knowledge_receipt(
+            receipt_id=receipt_id,
+            subject_id=subject_id,
+            artifact_id=measurement_artifact_id,
+            envelope_id=envelope_id,
+            acquired_tick=int(max(0, _as_int(current_tick, 0))),
+            trust_weight=1.0,
+            verification_state="verified",
+            delivery_event_id=None,
+            extensions={
+                "source_process_id": process_id,
+                "record_id": reverse_record_id,
+                "target_item_id": target_item_id,
+                "method": method,
+                "epistemic_scope": "subject_bound",
+            },
+        )
+        state["knowledge_receipt_rows"] = normalize_knowledge_receipt_rows(
+            list(state.get("knowledge_receipt_rows") or []) + [receipt_row]
+        )
+        _ensure_knowledge_receipt_rows(state)
+
+        _refresh_process_research_hash_chains(state)
+        result_metadata = {
+            "record_id": reverse_record_id,
+            "subject_id": subject_id,
+            "target_item_id": target_item_id,
+            "method": method,
+            "destroyed": bool(destroyed),
+            "candidate_ids": list(produced_candidate_ids),
+            "knowledge_receipt_id": str(receipt_id),
+            "reverse_engineering_record_hash_chain": str(
+                state.get("reverse_engineering_record_hash_chain", "")
+            ).strip(),
+            "candidate_process_hash_chain": str(
+                state.get("candidate_process_hash_chain", "")
+            ).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.degradation_tick":
         degradation_profile_registry = _load_degradation_profile_registry(policy_context=policy_context)
         profiles_by_id = degradation_profile_rows_by_id(degradation_profile_registry)

@@ -354,6 +354,67 @@
           "source": "POLL2-4",
           "artifact_family_id": "OBSERVATION"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.disassemble",
+        "description": "Deterministic reverse-engineering disassembly task; destructive by default.",
+        "default_progress_units_total": 8388608,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.seam",
+          "surface.fastener"
+        ],
+        "completion_process_id": "process.reverse_engineering_action",
+        "progress_model_id": "progress.heavy_work_default",
+        "extensions": {
+          "source": "PROC7-6",
+          "reverse_engineering_method": "disassemble",
+          "destroyed_default": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.assay",
+        "description": "Deterministic reverse-engineering assay task for destructive material analysis.",
+        "default_progress_units_total": 6291456,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "completion_process_id": "process.reverse_engineering_action",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "source": "PROC7-6",
+          "reverse_engineering_method": "assay",
+          "destroyed_default": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "task_type_id": "task.scan",
+        "description": "Deterministic reverse-engineering scan task for non-destructive observational analysis.",
+        "default_progress_units_total": 4194304,
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "allowed_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "completion_process_id": "process.reverse_engineering_action",
+        "progress_model_id": "progress.linear_default",
+        "extensions": {
+          "source": "PROC7-6",
+          "reverse_engineering_method": "scan",
+          "destroyed_default": false
+        }
       }
     ],
     "extensions": {}
