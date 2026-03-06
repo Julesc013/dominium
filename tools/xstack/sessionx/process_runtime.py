@@ -651,6 +651,14 @@ from src.meta.compile import (
     normalize_validity_domain_rows,
     verification_procedure_rows_by_id,
 )
+from src.process.capsules import (
+    REFUSAL_PROCESS_CAPSULE_INVALID,
+    build_capsule_execution_record_row,
+    execute_process_capsule,
+    generate_process_capsule,
+    normalize_capsule_execution_record_rows,
+    normalize_process_capsule_rows,
+)
 from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
 from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -837,6 +845,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.process_run_start": "entitlement.tool.operating",
     "process.process_run_tick": "entitlement.tool.operating",
     "process.process_run_end": "entitlement.tool.operating",
+    "process.process_capsule_generate": "entitlement.control.admin",
+    "process.process_capsule_execute": "entitlement.tool.operating",
     "process.pollution_emit": "session.boot",
     "process.pollution_dispersion_tick": "session.boot",
     "process.pollution_measure": "entitlement.tool.use",
@@ -1032,6 +1042,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.process_run_start": "operator",
     "process.process_run_tick": "operator",
     "process.process_run_end": "operator",
+    "process.process_capsule_generate": "operator",
+    "process.process_capsule_execute": "operator",
     "process.pollution_emit": "observer",
     "process.pollution_dispersion_tick": "observer",
     "process.pollution_measure": "operator",
@@ -1154,6 +1166,8 @@ CONTROL_PROCESS_IDS = {
     "process.process_run_start",
     "process.process_run_tick",
     "process.process_run_end",
+    "process.process_capsule_generate",
+    "process.process_capsule_execute",
     "process.pollution_emit",
     "process.pollution_dispersion_tick",
     "process.pollution_measure",
@@ -11532,6 +11546,95 @@ def _ensure_validity_domain_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_process_capsule_rows(state: dict) -> List[dict]:
+    rows = state.get("process_capsule_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_process_capsule_rows(rows)
+    state["process_capsule_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_capsule_generated_record_rows(state: dict) -> List[dict]:
+    rows = state.get("capsule_generated_record_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        capsule_id = str(row.get("capsule_id", "")).strip()
+        process_id = str(row.get("process_id", "")).strip()
+        if (not event_id) or (not capsule_id) or (not process_id):
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "event_id": event_id,
+                "capsule_id": capsule_id,
+                "process_id": process_id,
+                "version": str(row.get("version", "")).strip() or "1.0.0",
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip()
+                or canonical_sha256(dict(row, deterministic_fingerprint="")),
+                "extensions": dict(row.get("extensions") or {})
+                if isinstance(row.get("extensions"), Mapping)
+                else {},
+            }
+        )
+    state["capsule_generated_record_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_process_capsule_invalidation_rows(state: dict) -> List[dict]:
+    rows = state.get("process_capsule_invalidation_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: List[dict] = []
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("event_id", "")),
+        ),
+    ):
+        event_id = str(row.get("event_id", "")).strip()
+        if not event_id:
+            continue
+        normalized.append(
+            {
+                "schema_version": "1.0.0",
+                "event_id": event_id,
+                "capsule_id": str(row.get("capsule_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip() or "1.0.0",
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+                "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip()
+                or canonical_sha256(dict(row, deterministic_fingerprint="")),
+                "extensions": dict(row.get("extensions") or {})
+                if isinstance(row.get("extensions"), Mapping)
+                else {},
+            }
+        )
+    state["process_capsule_invalidation_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_capsule_execution_record_rows(state: dict) -> List[dict]:
+    rows = state.get("capsule_execution_record_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_capsule_execution_record_rows(rows)
+    state["capsule_execution_record_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
 def _ensure_state_vector_definition_rows(state: dict) -> List[dict]:
     rows = state.get("state_vector_definition_rows")
     if not isinstance(rows, list):
@@ -11693,6 +11796,93 @@ def _refresh_compile_hash_chains(state: dict) -> None:
             )
         ]
     )
+
+
+def _refresh_process_capsule_hash_chains(state: dict) -> None:
+    capsule_rows = _ensure_process_capsule_rows(state)
+    generated_rows = _ensure_capsule_generated_record_rows(state)
+    execution_rows = _ensure_capsule_execution_record_rows(state)
+    invalidation_rows = _ensure_process_capsule_invalidation_rows(state)
+    state["capsule_generation_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "capsule_id": str(row.get("capsule_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(generated_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["process_capsule_generation_hash_chain"] = str(
+        state.get("capsule_generation_hash_chain", "")
+    ).strip()
+    state["capsule_execution_hash_chain"] = canonical_sha256(
+        [
+            {
+                "exec_id": str(row.get("exec_id", "")).strip(),
+                "capsule_id": str(row.get("capsule_id", "")).strip(),
+                "tick_range": dict(row.get("tick_range") or {})
+                if isinstance(row.get("tick_range"), Mapping)
+                else {},
+                "inputs_hash": str(row.get("inputs_hash", "")).strip(),
+                "outputs_hash": str(row.get("outputs_hash", "")).strip(),
+                "qc_outcome_hash": (
+                    None
+                    if row.get("qc_outcome_hash") is None
+                    else str(row.get("qc_outcome_hash", "")).strip() or None
+                ),
+            }
+            for row in sorted(
+                (dict(item) for item in list(execution_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("exec_id", "")),
+            )
+        ]
+    )
+    state["process_capsule_execution_hash_chain"] = str(
+        state.get("capsule_execution_hash_chain", "")
+    ).strip()
+    state["process_capsule_invalidation_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "capsule_id": str(row.get("capsule_id", "")).strip(),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(invalidation_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    if not state.get("compiled_model_hash_chain"):
+        state["compiled_model_hash_chain"] = canonical_sha256(
+            [
+                {
+                    "compiled_model_id": str(row.get("compiled_model_id", "")).strip(),
+                    "source_hash": str(row.get("source_hash", "")).strip(),
+                }
+                for row in sorted(
+                    (
+                        dict(item)
+                        for item in list(state.get("compiled_model_rows") or [])
+                        if isinstance(item, Mapping)
+                    ),
+                    key=lambda item: str(item.get("compiled_model_id", "")),
+                )
+            ]
+        )
 
 
 def _refresh_combustion_hash_chains(state: dict) -> None:
@@ -32225,6 +32415,475 @@ def execute_intent(
             "generated_explain_ids": _sorted_tokens(generated_explain_ids),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.process_capsule_generate":
+        requested_process_id = str(inputs.get("process_id", "")).strip()
+        requested_version = str(inputs.get("version", "")).strip() or "1.0.0"
+        if not requested_process_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.process_capsule_generate requires process_id",
+                "Provide process_id for capsule generation.",
+                {"process_id": process_id},
+                "$.intent.inputs.process_id",
+            )
+
+        process_definition_row = (
+            dict(inputs.get("process_definition_row") or {})
+            if isinstance(inputs.get("process_definition_row"), Mapping)
+            else {}
+        )
+        if not process_definition_row:
+            for row in sorted(
+                (
+                    dict(item)
+                    for item in list(state.get("process_definition_rows") or [])
+                    if isinstance(item, Mapping)
+                ),
+                key=lambda item: (
+                    str(item.get("process_id", "")),
+                    str(item.get("version", "")),
+                ),
+            ):
+                if str(row.get("process_id", "")).strip() != requested_process_id:
+                    continue
+                if str(row.get("version", "")).strip() != requested_version:
+                    continue
+                process_definition_row = dict(row)
+                break
+
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        compile_with_compiled_model = bool(inputs.get("compile_with_compiled_model", False))
+        compile_eval = generate_process_capsule(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            process_id=requested_process_id,
+            version=requested_version,
+            process_maturity_record_rows=list(state.get("process_maturity_record_rows") or []),
+            process_metrics_state_rows=list(state.get("process_metrics_state_rows") or []),
+            state_vector_definition_rows=list(state.get("state_vector_definition_rows") or []),
+            tolerance_policy_registry_payload=tolerance_policy_registry,
+            process_definition_row=process_definition_row,
+            error_bound_policy_id=str(inputs.get("error_bound_policy_id", "")).strip() or "tol.default",
+            coupling_budget_id=str(inputs.get("coupling_budget_id", "")).strip()
+            or "budget.coupling.process.default",
+            compile_with_compiled_model=compile_with_compiled_model,
+            compiled_type_registry_payload=_load_compiled_type_registry(policy_context=policy_context),
+            verification_procedure_registry_payload=_load_verification_procedure_registry(
+                policy_context=policy_context
+            ),
+            compile_policy_registry_payload=_load_compile_policy_registry(
+                policy_context=policy_context
+            ),
+            compile_policy_id=str(inputs.get("compile_policy_id", "")).strip() or "compile.default",
+            extensions=dict(inputs.get("extensions") or {})
+            if isinstance(inputs.get("extensions"), Mapping)
+            else {},
+        )
+        if str(compile_eval.get("result", "")).strip() != "complete":
+            return refusal(
+                str(compile_eval.get("reason_code", "")).strip() or REFUSAL_PROCESS_CAPSULE_INVALID,
+                str(compile_eval.get("message", "process capsule generation refused")).strip(),
+                "Ensure process is capsule_eligible and statevec/tolerance policies are declared.",
+                {
+                    "process_id": requested_process_id,
+                    "version": requested_version,
+                    "maturity_state": str(compile_eval.get("maturity_state", "")).strip(),
+                },
+                "$.intent.inputs.process_id",
+            )
+
+        capsule_row = dict(compile_eval.get("process_capsule_row") or {})
+        generated_row = dict(compile_eval.get("capsule_generated_record_row") or {})
+        validity_row = dict(compile_eval.get("validity_domain_row") or {})
+        state_vector_definition_row = dict(compile_eval.get("state_vector_definition_row") or {})
+        compile_request_row = dict(compile_eval.get("compile_request_row") or {})
+        compile_result_row = dict(compile_eval.get("compile_result_row") or {})
+        compiled_model_row = dict(compile_eval.get("compiled_model_row") or {})
+        equivalence_proof_row = dict(compile_eval.get("equivalence_proof_row") or {})
+
+        if capsule_row:
+            state["process_capsule_rows"] = normalize_process_capsule_rows(
+                list(state.get("process_capsule_rows") or []) + [capsule_row]
+            )
+        if generated_row:
+            state["capsule_generated_record_rows"] = list(
+                state.get("capsule_generated_record_rows") or []
+            ) + [generated_row]
+            _ensure_capsule_generated_record_rows(state)
+        if validity_row:
+            state["validity_domain_rows"] = normalize_validity_domain_rows(
+                list(state.get("validity_domain_rows") or []) + [validity_row]
+            )
+        if state_vector_definition_row:
+            state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+                list(state.get("state_vector_definition_rows") or [])
+                + [state_vector_definition_row]
+            )
+        if compile_request_row:
+            state["compile_request_rows"] = normalize_compile_request_rows(
+                list(state.get("compile_request_rows") or []) + [compile_request_row]
+            )
+        if compile_result_row:
+            state["compile_result_rows"] = normalize_compile_result_rows(
+                list(state.get("compile_result_rows") or []) + [compile_result_row]
+            )
+        if compiled_model_row:
+            state["compiled_model_rows"] = normalize_compiled_model_rows(
+                list(state.get("compiled_model_rows") or []) + [compiled_model_row]
+            )
+        if equivalence_proof_row:
+            state["equivalence_proof_rows"] = normalize_equivalence_proof_rows(
+                list(state.get("equivalence_proof_rows") or []) + [equivalence_proof_row]
+            )
+
+        _refresh_compile_hash_chains(state)
+        _refresh_state_vector_hash_chains(state)
+        _refresh_process_capsule_hash_chains(state)
+
+        info_artifact_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        event_id = str(generated_row.get("event_id", "")).strip()
+        if event_id:
+            info_artifact_rows.append(
+                {
+                    "artifact_id": "artifact.record.process_capsule_generated.{}".format(
+                        canonical_sha256({"event_id": event_id})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.process_capsule_generated",
+                        "event_id": event_id,
+                        "capsule_id": str(capsule_row.get("capsule_id", "")).strip(),
+                        "process_id": requested_process_id,
+                        "version": requested_version,
+                    },
+                }
+            )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_artifact_rows)
+        state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+        result_metadata = {
+            "process_id": requested_process_id,
+            "version": requested_version,
+            "capsule_id": str(capsule_row.get("capsule_id", "")).strip(),
+            "compiled_model_id": str(capsule_row.get("compiled_model_id", "")).strip() or None,
+            "validity_domain_ref": str(capsule_row.get("validity_domain_ref", "")).strip(),
+            "capsule_generation_hash_chain": str(state.get("capsule_generation_hash_chain", "")).strip(),
+            "capsule_execution_hash_chain": str(state.get("capsule_execution_hash_chain", "")).strip(),
+            "compiled_model_hash_chain": str(state.get("compiled_model_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.process_capsule_execute":
+        capsule_id = str(inputs.get("capsule_id", "")).strip()
+        if not capsule_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.process_capsule_execute requires capsule_id",
+                "Provide capsule_id for deterministic macro process execution.",
+                {"process_id": process_id},
+                "$.intent.inputs.capsule_id",
+            )
+
+        input_batch_rows = [
+            dict(item)
+            for item in list(inputs.get("input_batch_rows") or [])
+            if isinstance(item, Mapping)
+        ]
+        if not input_batch_rows:
+            requested_input_batch_ids = _sorted_tokens(list(inputs.get("input_batch_ids") or []))
+            batch_by_id = {
+                str(row.get("batch_id", "")).strip(): dict(row)
+                for row in list(_ensure_material_batches(state))
+                if isinstance(row, Mapping) and str(row.get("batch_id", "")).strip()
+            }
+            input_batch_rows = [
+                dict(batch_by_id[token])
+                for token in requested_input_batch_ids
+                if token in batch_by_id
+            ]
+
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+        qc_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="qc_policy_registry",
+            registry_rel_path="data/registries/qc_policy_registry.json",
+            entry_key="qc_policies",
+        )
+        sampling_strategy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="sampling_strategy_registry",
+            registry_rel_path="data/registries/sampling_strategy_registry.json",
+            entry_key="sampling_strategies",
+        )
+        test_procedure_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="test_procedure_registry",
+            registry_rel_path="data/registries/test_procedure_registry.json",
+            entry_key="test_procedures",
+        )
+
+        execution_eval = execute_process_capsule(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            capsule_id=capsule_id,
+            process_capsule_rows=list(state.get("process_capsule_rows") or []),
+            validity_domain_rows=list(state.get("validity_domain_rows") or []),
+            input_batch_rows=input_batch_rows,
+            output_batch_ids=list(inputs.get("output_batch_ids") or []),
+            process_quality_record_rows=list(state.get("process_quality_record_rows") or []),
+            qc_policy_registry_payload=qc_policy_registry,
+            sampling_strategy_registry_payload=sampling_strategy_registry,
+            test_procedure_registry_payload=test_procedure_registry,
+            tolerance_policy_registry_payload=tolerance_policy_registry,
+            compiled_model_rows=list(state.get("compiled_model_rows") or []),
+            state_vector_definition_rows=list(state.get("state_vector_definition_rows") or []),
+            state_vector_snapshot_rows=list(state.get("state_vector_snapshot_rows") or []),
+            environment_entropy_index=int(max(0, _as_int(inputs.get("environment_entropy_index", 0), 0))),
+            tool_wear_permille=int(max(0, _as_int(inputs.get("tool_wear_permille", 0), 0))),
+            allow_forced_expand=bool(inputs.get("allow_forced_expand", True)),
+            allow_micro_fallback=bool(inputs.get("allow_micro_fallback", True)),
+            requester_subject_id=str(inputs.get("requester_subject_id", "")).strip() or None,
+            instrument_id=str(inputs.get("instrument_id", "")).strip() or None,
+            calibration_cert_id=str(inputs.get("calibration_cert_id", "")).strip() or None,
+            qc_fail_rate_permille=int(max(0, _as_int(inputs.get("qc_fail_rate_permille", 0), 0))),
+            drift_score_permille=int(max(0, _as_int(inputs.get("drift_score_permille", 0), 0))),
+            spec_revision_hash=(
+                None
+                if inputs.get("spec_revision_hash") is None
+                else str(inputs.get("spec_revision_hash", "")).strip() or None
+            ),
+            expected_spec_revision_hash=(
+                None
+                if inputs.get("expected_spec_revision_hash") is None
+                else str(inputs.get("expected_spec_revision_hash", "")).strip() or None
+            ),
+            extensions=dict(inputs.get("extensions") or {})
+            if isinstance(inputs.get("extensions"), Mapping)
+            else {},
+        )
+
+        execution_result = str(execution_eval.get("result", "")).strip()
+        if execution_result == "forced_expand":
+            forced_expand_row = dict(execution_eval.get("forced_expand_event_row") or {})
+            if forced_expand_row:
+                state["process_capsule_forced_expand_event_rows"] = sorted(
+                    list(state.get("process_capsule_forced_expand_event_rows") or []) + [forced_expand_row],
+                    key=lambda row: (
+                        int(max(0, _as_int((dict(row) if isinstance(row, Mapping) else {}).get("tick", 0), 0))),
+                        str((dict(row) if isinstance(row, Mapping) else {}).get("event_id", "")),
+                    ),
+                )
+            invalidation_row = dict(execution_eval.get("capsule_invalidation_row") or {})
+            if invalidation_row:
+                state["process_capsule_invalidation_rows"] = list(
+                    state.get("process_capsule_invalidation_rows") or []
+                ) + [invalidation_row]
+                _ensure_process_capsule_invalidation_rows(state)
+            _refresh_process_capsule_hash_chains(state)
+            result_metadata = {
+                "capsule_id": capsule_id,
+                "result": "forced_expand",
+                "reason_code": str(execution_eval.get("reason_code", "")).strip(),
+                "micro_fallback_requested": bool(execution_eval.get("micro_fallback_requested", False)),
+                "capsule_generation_hash_chain": str(state.get("capsule_generation_hash_chain", "")).strip(),
+                "capsule_execution_hash_chain": str(state.get("capsule_execution_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        elif execution_result == "complete":
+            run_record_row = dict(execution_eval.get("run_record_row") or {})
+            process_quality_row = dict(execution_eval.get("process_quality_record_row") or {})
+            capsule_execution_row = dict(execution_eval.get("capsule_execution_record_row") or {})
+            batch_quality_rows = [
+                dict(row)
+                for row in list(execution_eval.get("batch_quality_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            if run_record_row:
+                state["process_run_record_rows"] = sorted(
+                    list(state.get("process_run_record_rows") or []) + [run_record_row],
+                    key=lambda row: (
+                        str((dict(row) if isinstance(row, Mapping) else {}).get("run_id", "")),
+                        int(max(0, _as_int((dict(row) if isinstance(row, Mapping) else {}).get("start_tick", 0), 0))),
+                    ),
+                )
+            if process_quality_row:
+                state["process_quality_record_rows"] = sorted(
+                    list(state.get("process_quality_record_rows") or []) + [process_quality_row],
+                    key=lambda row: str((dict(row) if isinstance(row, Mapping) else {}).get("run_id", "")),
+                )
+            if batch_quality_rows:
+                state["batch_quality_rows"] = normalize_batch_quality_rows(
+                    list(state.get("batch_quality_rows") or []) + batch_quality_rows
+                )
+            if capsule_execution_row:
+                state["capsule_execution_record_rows"] = normalize_capsule_execution_record_rows(
+                    list(state.get("capsule_execution_record_rows") or []) + [capsule_execution_row]
+                )
+            invalidation_row = dict(execution_eval.get("capsule_invalidation_row") or {})
+            if invalidation_row:
+                state["process_capsule_invalidation_rows"] = list(
+                    state.get("process_capsule_invalidation_rows") or []
+                ) + [invalidation_row]
+                _ensure_process_capsule_invalidation_rows(state)
+
+            qc_rows = [
+                dict(row)
+                for row in list(execution_eval.get("qc_result_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            measurement_rows = [
+                dict(row)
+                for row in list(execution_eval.get("qc_measurement_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            decision_rows = [
+                dict(row)
+                for row in list(execution_eval.get("sampling_decision_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            if qc_rows:
+                state["qc_result_record_rows"] = sorted(
+                    list(state.get("qc_result_record_rows") or []) + qc_rows,
+                    key=lambda row: (
+                        str((dict(row) if isinstance(row, Mapping) else {}).get("run_id", "")),
+                        str((dict(row) if isinstance(row, Mapping) else {}).get("batch_id", "")),
+                    ),
+                )
+            if measurement_rows:
+                state["qc_measurement_rows"] = sorted(
+                    list(state.get("qc_measurement_rows") or []) + measurement_rows,
+                    key=lambda row: (
+                        str((dict(row) if isinstance(row, Mapping) else {}).get("measurement_id", "")),
+                    ),
+                )
+            if decision_rows:
+                state["sampling_decision_rows"] = sorted(
+                    list(state.get("sampling_decision_rows") or []) + decision_rows,
+                    key=lambda row: (
+                        str((dict(row) if isinstance(row, Mapping) else {}).get("batch_id", "")),
+                        str((dict(row) if isinstance(row, Mapping) else {}).get("sampling_strategy_id", "")),
+                    ),
+                )
+
+            state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+                list(state.get("state_vector_definition_rows") or [])
+                + [
+                    dict(row)
+                    for row in list(execution_eval.get("state_vector_definition_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+            )
+            state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+                list(state.get("state_vector_snapshot_rows") or [])
+                + [
+                    dict(row)
+                    for row in list(execution_eval.get("state_vector_snapshot_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
+            )
+
+            output_batch_rows = []
+            for row in batch_quality_rows:
+                batch_id = str(row.get("batch_id", "")).strip()
+                if not batch_id:
+                    continue
+                quality_dist = {
+                    "yield_factor_permille": int(max(0, _as_int(row.get("yield_factor", 0), 0))),
+                    "quality_grade": str(row.get("quality_grade", "")).strip() or "grade.C",
+                }
+                ext = dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {}
+                output_batch_rows.append(
+                    {
+                        "schema_version": "1.0.0",
+                        "batch_id": batch_id,
+                        "material_id": str(inputs.get("output_material_id", "material.generic.output")).strip()
+                        or "material.generic.output",
+                        "quantity_mass_raw": int(max(0, _as_int(ext.get("quantity_mass_raw", 0), 0))),
+                        "origin_process_id": process_id,
+                        "origin_tick": int(max(0, _as_int(current_tick, 0))),
+                        "parent_batch_ids": _sorted_tokens(
+                            [
+                                str(item.get("batch_id", "")).strip()
+                                for item in input_batch_rows
+                                if isinstance(item, Mapping)
+                            ]
+                        ),
+                        "quality_distribution": quality_dist,
+                        "extensions": {
+                            "source": "process.process_capsule_execute",
+                            "capsule_id": capsule_id,
+                            "run_id": str(run_record_row.get("run_id", "")).strip(),
+                        },
+                    }
+                )
+            if output_batch_rows:
+                state["material_batches"] = _ensure_material_batches(
+                    {
+                        **state,
+                        "material_batches": list(state.get("material_batches") or [])
+                        + output_batch_rows,
+                    }
+                )
+
+            info_artifact_rows = [
+                dict(row)
+                for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+                if isinstance(row, Mapping)
+            ]
+            exec_id = str(capsule_execution_row.get("exec_id", "")).strip()
+            if exec_id:
+                info_artifact_rows.append(
+                    {
+                        "artifact_id": "artifact.record.process_capsule_execution.{}".format(
+                            canonical_sha256({"exec_id": exec_id})[:16]
+                        ),
+                        "artifact_family_id": "RECORD",
+                        "extensions": {
+                            "artifact_type_id": "artifact.record.process_capsule_execution",
+                            "exec_id": exec_id,
+                            "capsule_id": capsule_id,
+                            "run_id": str(run_record_row.get("run_id", "")).strip(),
+                        },
+                    }
+                )
+            state["info_artifact_rows"] = normalize_info_artifact_rows(info_artifact_rows)
+            state["knowledge_artifacts"] = [dict(row) for row in list(state.get("info_artifact_rows") or [])]
+
+            _refresh_state_vector_hash_chains(state)
+            _refresh_process_capsule_hash_chains(state)
+
+            result_metadata = {
+                "capsule_id": capsule_id,
+                "result": "complete",
+                "run_id": str(run_record_row.get("run_id", "")).strip(),
+                "exec_id": str(capsule_execution_row.get("exec_id", "")).strip(),
+                "compiled_model_used": bool(execution_eval.get("compiled_model_used", False)),
+                "inputs_hash": str(execution_eval.get("inputs_hash", "")).strip(),
+                "outputs_hash": str(execution_eval.get("outputs_hash", "")).strip(),
+                "capsule_generation_hash_chain": str(state.get("capsule_generation_hash_chain", "")).strip(),
+                "capsule_execution_hash_chain": str(state.get("capsule_execution_hash_chain", "")).strip(),
+                "compiled_model_hash_chain": str(state.get("compiled_model_hash_chain", "")).strip(),
+            }
+            _advance_time(state, steps=1, policy_context=policy_context)
+        else:
+            return refusal(
+                str(execution_eval.get("reason_code", "")).strip() or REFUSAL_PROCESS_CAPSULE_INVALID,
+                "process capsule execution refused",
+                "Resolve capsule validity/state-vector requirements and retry execution.",
+                {"capsule_id": capsule_id, "result": execution_result},
+                "$.intent.inputs.capsule_id",
+            )
     elif process_id == "process.compile_request_submit":
         compile_request_payload = (
             dict(inputs.get("compile_request") or {})
