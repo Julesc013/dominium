@@ -1,0 +1,27 @@
+SCHEMA: process/qc_policy.schema
+schema_id: dominium.schema.process.qc_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic QC sampling policy controls for process outputs.
+
+NON-SEMANTICS:
+- Does not execute tests or mutate batch truth directly.
+- Does not require QC for all processes; policy-controlled.
+
+REQUIRED SHAPE:
+record qc_policy
+  required:
+    - qc_policy_id: id
+    - sampling_rate: fixed_point_nonnegative
+    - sampling_strategy_id: id
+    - test_procedure_refs: list[id]
+    - fail_action: enum(reject_batch|rework_batch|accept_with_warning|quarantine)
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- `sampling_strategy_id` must resolve in sampling strategy registry.
+- `test_procedure_refs` must resolve in test procedure registry.
+- `sampling_rate` interpretation is deterministic under selected strategy.

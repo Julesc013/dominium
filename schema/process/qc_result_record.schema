@@ -1,0 +1,29 @@
+SCHEMA: process/qc_result_record.schema
+schema_id: dominium.schema.process.qc_result_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD for deterministic QC sampling decisions and outcomes.
+
+NON-SEMANTICS:
+- Does not replace process quality or batch quality records.
+- Does not define stabilization scoring policy (PROC-4).
+
+REQUIRED SHAPE:
+record qc_result_record
+  required:
+    - run_id: id
+    - batch_id: id
+    - sampled: bool
+    - passed: bool
+    - fail_reason: text?
+    - action_taken: enum(reject|rework|accept_warning|none)
+    - tick: tick
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Unsampled rows must set `sampled=false` and `action_taken=none`.
+- Failed sampled rows must carry deterministic `action_taken` from policy mapping.
+- Each row must be traceable to run and batch identifiers.

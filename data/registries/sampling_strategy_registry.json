@@ -1,0 +1,40 @@
+{
+  "schema_id": "dominium.registry.sampling_strategy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.sampling_strategy_registry",
+    "registry_version": "1.0.0",
+    "sampling_strategies": [
+      {
+        "schema_version": "1.0.0",
+        "sampling_strategy_id": "sample.hash_based",
+        "description": "Deterministic hash threshold sampling using run and batch identifiers.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "sampling_strategy_id": "sample.every_n",
+        "description": "Deterministic interval sampling in stable batch order.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC3-2",
+          "default_every_n": 5
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "sampling_strategy_id": "sample.risk_weighted",
+        "description": "Deterministic risk-weighted sampling based on defect severity metadata.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC3-2",
+          "risk_uplift_scale_permille": 500
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

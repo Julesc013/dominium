@@ -26,6 +26,7 @@ record process_definition
     - required_environment: list
     - tier_contract_id: id
     - coupling_budget_id: id?
+    - qc_policy_id: id?
     - yield_model_id: id?
     - defect_model_id: id?
     - deterministic_fingerprint: text
