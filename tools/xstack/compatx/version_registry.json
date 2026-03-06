@@ -3682,6 +3682,27 @@
         "1.0.0"
       ]
     },
+    "process_metrics_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "process_maturity_record": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "stabilization_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "qc_policy": {
       "current_version": "1.0.0",
       "migrations": {},

@@ -1,0 +1,93 @@
+{
+  "schema_id": "dominium.registry.stabilization_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.stabilization_policy_registry",
+    "registry_version": "1.0.0",
+    "stabilization_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "stab.default",
+        "weights": {
+          "runs": 200,
+          "consistency": 250,
+          "qc_pass": 250,
+          "defect": 150,
+          "environment": 100,
+          "calibration": 50
+        },
+        "thresholds": {
+          "defined": 120,
+          "stabilized": 650,
+          "certified": 780,
+          "capsule_eligible": 860,
+          "cert_qc_min": 850,
+          "cert_defect_max": 180
+        },
+        "min_runs": 8,
+        "stability_horizon_ticks": 64,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC4-2",
+          "score_scale": "permille"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "stab.strict",
+        "weights": {
+          "runs": 220,
+          "consistency": 280,
+          "qc_pass": 280,
+          "defect": 130,
+          "environment": 70,
+          "calibration": 20
+        },
+        "thresholds": {
+          "defined": 180,
+          "stabilized": 760,
+          "certified": 880,
+          "capsule_eligible": 930,
+          "cert_qc_min": 920,
+          "cert_defect_max": 90
+        },
+        "min_runs": 24,
+        "stability_horizon_ticks": 192,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC4-2",
+          "score_scale": "permille"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "stab.fast_dev",
+        "weights": {
+          "runs": 160,
+          "consistency": 220,
+          "qc_pass": 220,
+          "defect": 180,
+          "environment": 140,
+          "calibration": 80
+        },
+        "thresholds": {
+          "defined": 80,
+          "stabilized": 540,
+          "certified": 680,
+          "capsule_eligible": 760,
+          "cert_qc_min": 700,
+          "cert_defect_max": 260
+        },
+        "min_runs": 4,
+        "stability_horizon_ticks": 24,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC4-2",
+          "score_scale": "permille",
+          "non_ranked_only": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -1,0 +1,26 @@
+SCHEMA: process/stabilization_policy.schema
+schema_id: dominium.schema.process.stabilization_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic process stabilization/maturity scoring weights and thresholds.
+
+NON-SEMANTICS:
+- Does not execute process runs.
+- Does not bypass QC/certification policy checks.
+
+REQUIRED SHAPE:
+record stabilization_policy
+  required:
+    - policy_id: id
+    - weights: map
+    - thresholds: map
+    - min_runs: nonnegative_int
+    - stability_horizon_ticks: nonnegative_int
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Weights and thresholds must be deterministic scalar values.
+- Policy interpretation is deterministic and profile-bound.
