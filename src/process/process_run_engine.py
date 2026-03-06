@@ -434,6 +434,8 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "qc_certification_hook_rows": [],
         "qc_result_hash_chain": "",
         "sampling_decision_hash_chain": "",
+        "qc_drift_escalation_hash_chain": "",
+        "qc_certification_hook_hash_chain": "",
         "decision_log_rows": [],
         "run_status": "running",
     }
@@ -874,6 +876,16 @@ def process_run_end(
             [dict(row) for row in _as_list(state.get("qc_drift_escalation_rows")) if isinstance(row, Mapping)] + [dict(drift_row)],
             key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
         )
+        state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
+            {
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "run_id": str(run_id),
+                "reason": "qc_drift_escalated",
+                "event_id": str(drift_row.get("event_id", "")).strip(),
+                "fail_rate_permille": int(fail_rate),
+                "threshold_permille": int(drift_fail_rate_threshold),
+            }
+        ]
     else:
         state["qc_drift_escalation_rows"] = [dict(row) for row in _as_list(state.get("qc_drift_escalation_rows")) if isinstance(row, Mapping)]
 
@@ -931,6 +943,30 @@ def process_run_end(
 
     state["qc_result_hash_chain"] = str(qc_result.get("qc_result_hash_chain", "")).strip()
     state["sampling_decision_hash_chain"] = str(qc_result.get("sampling_decision_hash_chain", "")).strip()
+    state["qc_drift_escalation_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "run_id": str(row.get("run_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "fail_rate_permille": int(max(0, min(1000, _as_int(row.get("fail_rate_permille", 0), 0)))),
+                "threshold_permille": int(max(0, min(1000, _as_int(row.get("threshold_permille", 0), 0)))),
+            }
+            for row in [dict(item) for item in _as_list(state.get("qc_drift_escalation_rows")) if isinstance(item, Mapping)]
+        ]
+    )
+    state["qc_certification_hook_hash_chain"] = canonical_sha256(
+        [
+            {
+                "hook_id": str(row.get("hook_id", "")).strip(),
+                "run_id": str(row.get("run_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+                "cert_action": str(row.get("cert_action", "")).strip(),
+            }
+            for row in [dict(item) for item in _as_list(state.get("qc_certification_hook_rows")) if isinstance(item, Mapping)]
+        ]
+    )
     state.setdefault("decision_log_rows", [])
     if output_batch_ids:
         state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
@@ -1017,6 +1053,8 @@ def process_run_end(
         batch_quality_hash_chain=str(state.get("batch_quality_hash_chain", "")).strip(),
         qc_result_hash_chain=str(state.get("qc_result_hash_chain", "")).strip(),
         sampling_decision_hash_chain=str(state.get("sampling_decision_hash_chain", "")).strip(),
+        qc_drift_escalation_hash_chain=str(state.get("qc_drift_escalation_hash_chain", "")).strip(),
+        qc_certification_hook_hash_chain=str(state.get("qc_certification_hook_hash_chain", "")).strip(),
     )
     state["run_status"] = final_status
     state["deterministic_fingerprint"] = canonical_sha256(dict(state, deterministic_fingerprint=""))
