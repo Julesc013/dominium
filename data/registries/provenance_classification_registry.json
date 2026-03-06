@@ -571,6 +571,36 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.run_record",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC1-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.step_record",
+        "classification": "canonical",
+        "compaction_allowed": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC1-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.measurement",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC1-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.batch_quality",
         "classification": "canonical",
         "compaction_allowed": false,
