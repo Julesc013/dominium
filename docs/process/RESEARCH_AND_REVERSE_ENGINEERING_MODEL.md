@@ -82,3 +82,14 @@ Named RNG is allowed only by explicit profile gate and must be proof-logged.
 - Inference jobs are budgeted per policy (`max_inference_jobs_per_tick`) with deterministic defer logging.
 - Candidate references to compiled models are accepted only when COMPILE artifacts include valid equivalence proof and validity-domain bindings.
 - Candidate promotion may request capsule eligibility only when explicit state vectors are declared for the promoted process owner.
+
+## 8) Explain And UX Contracts
+
+- Explain contracts:
+  - `explain.experiment_result`
+  - `explain.candidate_inference`
+  - `explain.promotion_denied`
+- Inspection sections:
+  - `section.process.lab_notebook`
+  - `section.process.experiment_queue`
+  - `section.process.candidate_confidence`

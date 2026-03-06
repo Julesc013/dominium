@@ -1212,6 +1212,66 @@
         "extensions": {
           "source": "PROC5-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.experiment_result",
+        "event_kind_id": "process.experiment.result",
+        "explain_artifact_type_id": "artifact.explain.process_experiment_result",
+        "required_inputs": [
+          "artifact.report",
+          "section.process.lab_notebook",
+          "section.process.experiment_queue"
+        ],
+        "remediation_hint_keys": [
+          "hint.repeat.experiment",
+          "hint.adjust.variable_control",
+          "hint.improve.measurement_plan"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC7-9"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.candidate_inference",
+        "event_kind_id": "process.candidate.inference",
+        "explain_artifact_type_id": "artifact.explain.process_candidate_inference",
+        "required_inputs": [
+          "artifact.observation",
+          "section.process.lab_notebook",
+          "section.process.candidate_confidence"
+        ],
+        "remediation_hint_keys": [
+          "hint.collect.more_evidence",
+          "hint.increase.replication_count",
+          "hint.run.qc_validation"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC7-9"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.promotion_denied",
+        "event_kind_id": "process.candidate.promotion_denied",
+        "explain_artifact_type_id": "artifact.explain.process_promotion_denied",
+        "required_inputs": [
+          "artifact.decision",
+          "section.process.candidate_confidence",
+          "section.process.maturity_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.increase.replication_count",
+          "hint.raise.qc_pass_rate",
+          "hint.reduce.variance"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC7-9"
+        }
       }
     ],
     "extensions": {

@@ -1312,6 +1312,48 @@
           "cost_units": 3,
           "source": "PROC5-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.lab_notebook",
+        "title": "Process Lab Notebook",
+        "data": {
+          "data_kind": "process_lab_notebook"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2,
+          "source": "PROC7-9"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.experiment_queue",
+        "title": "Process Experiment Queue",
+        "data": {
+          "data_kind": "process_experiment_queue"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2,
+          "source": "PROC7-9"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.candidate_confidence",
+        "title": "Process Candidate Confidence",
+        "data": {
+          "data_kind": "process_candidate_confidence"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC7-9"
+        }
       }
     ],
     "extensions": {}
