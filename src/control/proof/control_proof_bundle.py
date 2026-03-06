@@ -503,6 +503,20 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    qc_result_hash_chain = _mobility_surface_hash(
+        key="qc_result_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    sampling_decision_hash_chain = _mobility_surface_hash(
+        key="sampling_decision_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     yield_model_hash_chain = _mobility_surface_hash(
         key="yield_model_hash_chain",
         surface=mobility_proof_surface,
@@ -778,6 +792,8 @@ def build_control_proof_bundle_from_markers(
         "process_run_hash_chain": str(process_run_hash_chain),
         "process_quality_hash_chain": str(process_quality_hash_chain),
         "batch_quality_hash_chain": str(batch_quality_hash_chain),
+        "qc_result_hash_chain": str(qc_result_hash_chain),
+        "sampling_decision_hash_chain": str(sampling_decision_hash_chain),
         "yield_model_hash_chain": str(yield_model_hash_chain),
         "quantity_tolerance_registry_hash": str(quantity_tolerance_registry_hash),
         "rounding_mode_policy_hash": str(rounding_mode_policy_hash),
@@ -871,6 +887,8 @@ def build_control_proof_bundle_from_markers(
                     "process_run_hash_chain": str(payload.get("process_run_hash_chain", "")),
                     "process_quality_hash_chain": str(payload.get("process_quality_hash_chain", "")),
                     "batch_quality_hash_chain": str(payload.get("batch_quality_hash_chain", "")),
+                    "qc_result_hash_chain": str(payload.get("qc_result_hash_chain", "")),
+                    "sampling_decision_hash_chain": str(payload.get("sampling_decision_hash_chain", "")),
                     "yield_model_hash_chain": str(payload.get("yield_model_hash_chain", "")),
                     "quantity_tolerance_registry_hash": str(payload.get("quantity_tolerance_registry_hash", "")),
                     "rounding_mode_policy_hash": str(payload.get("rounding_mode_policy_hash", "")),
