@@ -84,6 +84,7 @@ Mandatory declarations:
 - equivalence/compiled-model compatibility declarations (COMPILE)
 
 Process capsules are derived artifacts and must not bypass process mutation law.
+Every ProcessCapsule must be derived from stabilized ProcessDefinition.
 
 ## 6) Drift Detection Contract
 

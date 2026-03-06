@@ -5151,6 +5151,168 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.chem.process_equipment"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical CHEM process-run lifecycle start; creates deterministic process-run state and start-event artifacts for governed industrial workflows.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "ledgered-outputs"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.process_run_start)",
+        "source": "PROC0-5",
+        "tier": "micro_meso"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Process Run Start",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "reaction_id",
+          "ref_id": "dominium.registry.reaction_profile_registry",
+          "ref_type": "registry"
+        },
+        {
+          "io_tags": [],
+          "name": "equipment_id",
+          "ref_id": "dominium.schema.chem.process_equipment_profile@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "process_run_state",
+          "ref_id": "dominium.schema.chem.process_run_state@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "process_run_record_artifact",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.process_run_start",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.chem.process_equipment"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical CHEM process-run lifecycle tick; evaluates deterministic process progression, updates quality/yield outputs, and records energy/emission ledger artifacts.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "budgeted-degrade-logged"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.process_run_tick)",
+        "source": "PROC0-5",
+        "tier": "micro_meso"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Process Run Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "process_run_state",
+          "ref_id": "dominium.schema.chem.process_run_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "process_run_state",
+          "ref_id": "dominium.schema.chem.process_run_state@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "batch_quality",
+          "ref_id": "dominium.schema.materials.batch_quality@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "process_energy_ledger_record",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.process_run_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.chem.process_equipment"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical CHEM process-run lifecycle end; closes deterministic run state and emits completion records for provenance, replay, and compactable process audit trails.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "ledgered-outputs"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.process_run_end)",
+        "source": "PROC0-5",
+        "tier": "micro_meso"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Process Run End",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "run_id",
+          "ref_id": "dominium.schema.chem.process_run_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "process_run_state",
+          "ref_id": "dominium.schema.chem.process_run_state@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "process_run_record_artifact",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.process_run_end",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",

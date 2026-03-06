@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "pack_id": "system_templates.base",
+  "pack_id": "base",
   "version": "1.0.0",
   "compatibility": {
     "session_spec_min": "1.0.0",

@@ -13,6 +13,7 @@ PACK_CATEGORIES = (
     "representation",
     "specs",
     "source",
+    "system_templates",
     "tool",
 )
 
