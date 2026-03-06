@@ -316,6 +316,8 @@ from analyzers import e289_silent_capsule_execution_smell
 from analyzers import e290_capsule_used_out_of_domain_smell
 from analyzers import e291_silent_drift_smell
 from analyzers import e292_capsule_used_while_invalid_smell
+from analyzers import e293_magic_unlock_smell
+from analyzers import e294_undeclared_inference_smell
 
 
 ANALYZERS = (
@@ -635,6 +637,8 @@ ANALYZERS = (
     e290_capsule_used_out_of_domain_smell,
     e291_silent_drift_smell,
     e292_capsule_used_while_invalid_smell,
+    e293_magic_unlock_smell,
+    e294_undeclared_inference_smell,
 )
 
 

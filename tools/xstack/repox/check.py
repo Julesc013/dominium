@@ -336,6 +336,12 @@ BOUNDARY_ALIAS_RULES = {
     "INV-NO-IMPLICIT-WORKFLOWS": {
         "INV-NO-RECIPE-HACKS",
     },
+    "INV-NO-MAGIC-UNLOCKS-RESEARCH": {
+        "INV-NO-MAGIC-UNLOCKS",
+    },
+    "INV-NO-MAGIC-UNLOCKS": {
+        "INV-NO-MAGIC-UNLOCKS-RESEARCH",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -422,6 +428,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-CAPSULE-EXECUTION-RECORDED",
     "INV-MATURITY-RECORD-CANONICAL",
     "INV-NO-MAGIC-UNLOCKS",
+    "INV-NO-MAGIC-UNLOCKS-RESEARCH",
+    "INV-CANDIDATE-DERIVED-ONLY",
+    "INV-PROMOTION-REQUIRES-REPLICATION",
     "INV-DRIFT-SCORE-DETERMINISTIC",
     "INV-CAPSULE-INVALIDATION-RECORDED",
     "INV-NO-SILENT-QC-ESCALATION",
@@ -826,6 +835,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E290_CAPSULE_USED_OUT_OF_DOMAIN_SMELL": "INV-CAPSULE-ERROR-BOUNDS-REQUIRED",
     "E291_SILENT_DRIFT_SMELL": "INV-DRIFT-SCORE-DETERMINISTIC",
     "E292_CAPSULE_USED_WHILE_INVALID_SMELL": "INV-CAPSULE-INVALIDATION-RECORDED",
+    "E293_MAGIC_UNLOCK_SMELL": "INV-NO-MAGIC-UNLOCKS-RESEARCH",
+    "E294_UNDECLARED_INFERENCE_SMELL": "INV-CANDIDATE-DERIVED-ONLY",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -14097,6 +14108,71 @@ def _append_mobility_invariant_findings(
 
     runtime_text = _file_text(repo_root, process_runtime_rel)
     control_text = _file_text(repo_root, control_plane_rel)
+    research_policy_payload, research_policy_error = _load_json_object(
+        repo_root, research_policy_registry_rel
+    )
+    research_policy_rows = list(
+        (dict(research_policy_payload.get("record") or {})).get("research_policies")
+        or []
+    )
+    research_policy_ids = set(
+        str(row.get("research_policy_id", "")).strip()
+        for row in research_policy_rows
+        if isinstance(row, dict) and str(row.get("research_policy_id", "")).strip()
+    )
+    for policy_id in ("research.default", "research.lab_strict", "research.rank_limited"):
+        if policy_id in research_policy_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=research_policy_registry_rel,
+                line_number=1,
+                snippet=policy_id,
+                message="required PROC-7 research policy id is missing",
+                rule_id=promotion_replication_rule_id,
+            )
+        )
+    if research_policy_error and not research_policy_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=research_policy_registry_rel,
+                line_number=1,
+                snippet="record.research_policies",
+                message="research policy registry is missing or invalid",
+                rule_id=promotion_replication_rule_id,
+            )
+        )
+    for policy_id, row in sorted(
+        (
+            (str(dict(item).get("research_policy_id", "")).strip(), dict(item))
+            for item in research_policy_rows
+            if isinstance(item, dict)
+        ),
+        key=lambda pair: pair[0],
+    ):
+        if not policy_id:
+            continue
+        required_keys = (
+            "max_experiments_per_tick",
+            "max_inference_jobs_per_tick",
+            "promotion_replication_threshold",
+        )
+        for key in required_keys:
+            if key in row:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=research_policy_registry_rel,
+                    line_number=1,
+                    snippet="{}:{}".format(policy_id, key),
+                    message="research policy row must declare deterministic budget/promotion fields",
+                    rule_id=promotion_replication_rule_id,
+                )
+            )
+
     constitution_text = _file_text(repo_root, constitution_rel)
     travel_engine_text = _file_text(repo_root, travel_engine_rel)
     constitution_lower = constitution_text.lower()
@@ -20347,6 +20423,9 @@ def _append_process_constitution_invariant_findings(
     capsule_execution_recorded_rule_id = "INV-CAPSULE-EXECUTION-RECORDED"
     maturity_record_rule_id = "INV-MATURITY-RECORD-CANONICAL"
     no_magic_unlock_rule_id = "INV-NO-MAGIC-UNLOCKS"
+    no_magic_unlock_research_rule_id = "INV-NO-MAGIC-UNLOCKS-RESEARCH"
+    candidate_derived_only_rule_id = "INV-CANDIDATE-DERIVED-ONLY"
+    promotion_replication_rule_id = "INV-PROMOTION-REQUIRES-REPLICATION"
     drift_score_rule_id = "INV-DRIFT-SCORE-DETERMINISTIC"
     capsule_invalidation_recorded_rule_id = "INV-CAPSULE-INVALIDATION-RECORDED"
     no_silent_qc_escalation_rule_id = "INV-NO-SILENT-QC-ESCALATION"
@@ -20378,6 +20457,7 @@ def _append_process_constitution_invariant_findings(
     qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
     maturity_doc_rel = "docs/process/STABILIZATION_AND_MATURITY_MODEL.md"
     drift_doc_rel = "docs/process/DRIFT_AND_REVALIDATION_MODEL.md"
+    research_doc_rel = "docs/process/RESEARCH_AND_REVERSE_ENGINEERING_MODEL.md"
     explain_registry_rel = "data/registries/explain_contract_registry.json"
     inspection_section_rel = "data/registries/inspection_section_registry.json"
     stabilization_policy_registry_v2_rel = "data/registries/stabilization_policy_registry.json"
@@ -20389,9 +20469,18 @@ def _append_process_constitution_invariant_findings(
     qc_engine_rel = "src/process/qc/qc_engine.py"
     metrics_engine_rel = "src/process/maturity/metrics_engine.py"
     maturity_engine_rel = "src/process/maturity/maturity_engine.py"
+    experiment_engine_rel = "src/process/research/experiment_engine.py"
+    inference_engine_rel = "src/process/research/inference_engine.py"
     maturity_replay_tool_rel = "tools/process/tool_replay_maturity_window.py"
     capsule_replay_tool_rel = "tools/process/tool_replay_capsule_window.py"
     drift_replay_tool_rel = "tools/process/tool_replay_drift_window.py"
+    experiment_replay_tool_rel = "tools/process/tool_replay_experiment_window.py"
+    reverse_replay_tool_rel = "tools/process/tool_replay_reverse_engineering_window.py"
+    experiment_definition_schema_rel = "schema/process/experiment_definition.schema"
+    experiment_result_schema_rel = "schema/process/experiment_result.schema"
+    candidate_process_schema_rel = "schema/process/candidate_process_definition.schema"
+    reverse_engineering_schema_rel = "schema/process/reverse_engineering_record.schema"
+    research_policy_registry_rel = "data/registries/research_policy_registry.json"
     run_schema_rel = "schema/process/process_run_record.schema"
     step_schema_rel = "schema/process/process_step_record.schema"
 
@@ -20419,6 +20508,24 @@ def _append_process_constitution_invariant_findings(
                 snippet=process_id,
                 message="process registry is missing required PROC lifecycle process id",
                 rule_id=ledger_rule_id,
+            )
+        )
+    for process_id in (
+        "process.experiment_run_start",
+        "process.experiment_run_complete",
+        "process.candidate_promote_to_defined",
+        "process.reverse_engineering_action",
+    ):
+        if process_id in process_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=process_id,
+                message="process registry is missing required PROC-7 research process id",
+                rule_id=candidate_derived_only_rule_id,
             )
         )
 
@@ -20665,6 +20772,96 @@ def _append_process_constitution_invariant_findings(
             capsule_replay_tool_rel,
             capsule_execution_recorded_rule_id,
             "capsule replay verification tool is required for PROC-5 proof integration",
+        ),
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+    experiment_engine_text = _file_text(repo_root, experiment_engine_rel)
+    for token in (
+        "evaluate_experiment_run_start(",
+        "evaluate_experiment_run_complete(",
+        "build_experiment_result_row(",
+    ):
+        if token in experiment_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=experiment_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="experiment engine is missing required deterministic experiment evaluation token",
+                rule_id=candidate_derived_only_rule_id,
+            )
+        )
+    inference_engine_text = _file_text(repo_root, inference_engine_rel)
+    for token in (
+        "infer_candidate_artifacts(",
+        "evaluate_candidate_promotion(",
+        "REFUSAL_CANDIDATE_PROMOTION_DENIED",
+    ):
+        if token in inference_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inference_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="inference engine is missing required deterministic candidate inference/promotion token",
+                rule_id=promotion_replication_rule_id,
+            )
+        )
+    for rel_path, rule_id, message in (
+        (
+            experiment_definition_schema_rel,
+            candidate_derived_only_rule_id,
+            "experiment definition schema is required for PROC-7 deterministic experiment declarations",
+        ),
+        (
+            experiment_result_schema_rel,
+            candidate_derived_only_rule_id,
+            "experiment result schema is required for PROC-7 deterministic experiment outputs",
+        ),
+        (
+            candidate_process_schema_rel,
+            candidate_derived_only_rule_id,
+            "candidate process definition schema is required for PROC-7 derived inference artifacts",
+        ),
+        (
+            reverse_engineering_schema_rel,
+            candidate_derived_only_rule_id,
+            "reverse engineering record schema is required for PROC-7 canonical destructive analysis records",
+        ),
+        (
+            research_policy_registry_rel,
+            candidate_derived_only_rule_id,
+            "research policy registry is required for deterministic research budgeting and promotion thresholds",
+        ),
+        (
+            research_doc_rel,
+            candidate_derived_only_rule_id,
+            "research and reverse engineering doctrine document is required",
+        ),
+        (
+            experiment_replay_tool_rel,
+            candidate_derived_only_rule_id,
+            "experiment replay verification tool is required for PROC-7 proof integration",
+        ),
+        (
+            reverse_replay_tool_rel,
+            candidate_derived_only_rule_id,
+            "reverse engineering replay verification tool is required for PROC-7 proof integration",
         ),
     ):
         if _file_text(repo_root, rel_path):
@@ -21065,6 +21262,9 @@ def _append_process_constitution_invariant_findings(
         "explain.drift_critical",
         "explain.revalidation_required",
         "explain.capsule_invalidated_by_drift",
+        "explain.experiment_result",
+        "explain.candidate_inference",
+        "explain.promotion_denied",
     ):
         if contract_id in explain_ids:
             continue
@@ -21077,7 +21277,16 @@ def _append_process_constitution_invariant_findings(
                 "explain.revalidation_required",
                 "explain.capsule_invalidated_by_drift",
             }
-            else qc_bypass_rule_id
+            else (
+                candidate_derived_only_rule_id
+                if contract_id
+                in {
+                    "explain.experiment_result",
+                    "explain.candidate_inference",
+                    "explain.promotion_denied",
+                }
+                else qc_bypass_rule_id
+            )
         )
         findings.append(
             _finding(
@@ -21145,6 +21354,23 @@ def _append_process_constitution_invariant_findings(
                 rule_id=drift_score_rule_id,
             )
         )
+    for section_id in (
+        "section.process.lab_notebook",
+        "section.process.experiment_queue",
+        "section.process.candidate_confidence",
+    ):
+        if section_id in section_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inspection_section_rel,
+                line_number=1,
+                snippet=section_id,
+                message="inspection section registry must expose PROC-7 lab notebook/queue/candidate-confidence sections",
+                rule_id=candidate_derived_only_rule_id,
+            )
+        )
     if section_error and not section_rows:
         findings.append(
             _finding(
@@ -21198,6 +21424,60 @@ def _append_process_constitution_invariant_findings(
                 snippet=token,
                 message="process runtime is missing required process-output ledger integration token",
                 rule_id=ledger_rule_id,
+            )
+        )
+    for token, rule_id, message in (
+        (
+            'elif process_id == "process.experiment_run_start":',
+            candidate_derived_only_rule_id,
+            "runtime must expose deterministic experiment start process handler",
+        ),
+        (
+            'elif process_id == "process.experiment_run_complete":',
+            candidate_derived_only_rule_id,
+            "runtime must expose deterministic experiment completion process handler",
+        ),
+        (
+            'elif process_id == "process.candidate_promote_to_defined":',
+            promotion_replication_rule_id,
+            "runtime must expose candidate promotion process handler with replication gates",
+        ),
+        (
+            'elif process_id == "process.reverse_engineering_action":',
+            candidate_derived_only_rule_id,
+            "runtime must expose reverse engineering process handler",
+        ),
+        (
+            "infer_candidate_artifacts(",
+            candidate_derived_only_rule_id,
+            "candidate inference must route through deterministic derived-only inference engine",
+        ),
+        (
+            "evaluate_candidate_promotion(",
+            promotion_replication_rule_id,
+            "candidate promotion must route through deterministic replication gate evaluation",
+        ),
+        (
+            "research_inference_budget_state",
+            candidate_derived_only_rule_id,
+            "research inference workloads must be budgeted deterministically",
+        ),
+        (
+            "_refresh_process_research_hash_chains(state)",
+            candidate_derived_only_rule_id,
+            "runtime must refresh deterministic research hash chains after PROC-7 mutations",
+        ),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
             )
         )
 
@@ -21702,6 +21982,121 @@ def _append_process_constitution_invariant_findings(
                 )
             )
             break
+    inference_patterns = (
+        re.compile(r"\binfer_candidate_artifacts\s*\(", re.IGNORECASE),
+        re.compile(r"\bcandidate_process_definition_rows\b", re.IGNORECASE),
+        re.compile(r"\bcandidate_model_binding_rows\b", re.IGNORECASE),
+    )
+    inference_scan_prefixes = ("src/process/", "tools/xstack/sessionx/")
+    inference_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    inference_allowed_files = {
+        runtime_rel,
+        experiment_engine_rel,
+        inference_engine_rel,
+        "src/process/research/__init__.py",
+        experiment_replay_tool_rel,
+        reverse_replay_tool_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(inference_scan_prefixes):
+            continue
+        if rel_norm.startswith(inference_skip_prefixes):
+            continue
+        if rel_norm in inference_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in inference_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="candidate inference token detected outside declared PROC-7 research pathways",
+                    rule_id=candidate_derived_only_rule_id,
+                )
+            )
+            break
+    promotion_patterns = (
+        re.compile(r"\bprocess_definition_rows\.append\s*\(", re.IGNORECASE),
+        re.compile(r"\bcandidate_promotion_record_rows\b", re.IGNORECASE),
+        re.compile(r"\bprocess\.candidate_promote_to_defined\b", re.IGNORECASE),
+    )
+    promotion_allowed_files = {
+        runtime_rel,
+        inference_engine_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(inference_scan_prefixes):
+            continue
+        if rel_norm.startswith(inference_skip_prefixes):
+            continue
+        if rel_norm in promotion_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in promotion_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="candidate promotion token detected outside deterministic replication-gated PROC-7 pathways",
+                    rule_id=no_magic_unlock_research_rule_id,
+                )
+            )
+            break
+    for token, rule_id, message in (
+        (
+            "required_replications",
+            promotion_replication_rule_id,
+            "candidate promotion runtime path must gate promotion by replication thresholds",
+        ),
+        (
+            "promotion_replication_threshold",
+            promotion_replication_rule_id,
+            "candidate promotion runtime path must consult policy replication thresholds",
+        ),
+        (
+            "refusal.process.candidate.promotion_denied",
+            no_magic_unlock_research_rule_id,
+            "candidate promotion runtime path must emit explicit refusal when promotion gates fail",
+        ),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
 
 
 def _append_chem_degradation_invariant_findings(
