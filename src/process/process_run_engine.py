@@ -13,6 +13,7 @@ from src.models.model_engine import (
     evaluate_model_bindings,
     model_type_rows_by_id,
 )
+from src.process.qc.qc_engine import evaluate_qc_for_run
 from src.process.process_definition_validator import (
     REFUSAL_PROCESS_INVALID_DEFINITION,
     build_process_definition_row,
@@ -145,6 +146,16 @@ def _defect_model_rows_by_id(payload: Mapping[str, object] | None) -> Dict[str, 
     out: Dict[str, dict] = {}
     for row in rows:
         token = str(row.get("defect_model_id", "")).strip()
+        if token:
+            out[token] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _qc_policy_rows_by_id(payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    rows = _rows_from_registry(payload, "qc_policies")
+    out: Dict[str, dict] = {}
+    for row in rows:
+        token = str(row.get("qc_policy_id", "")).strip()
         if token:
             out[token] = dict(row)
     return dict((key, dict(out[key])) for key in sorted(out.keys()))
@@ -363,7 +374,7 @@ def _evaluate_process_quality(
     }
 
 
-def process_run_start(*, current_tick: int, process_definition_row: Mapping[str, object], action_template_registry_payload: Mapping[str, object] | None, temporal_domain_registry_payload: Mapping[str, object] | None, input_refs: object, run_id: str | None = None) -> dict:
+def process_run_start(*, current_tick: int, process_definition_row: Mapping[str, object], action_template_registry_payload: Mapping[str, object] | None, temporal_domain_registry_payload: Mapping[str, object] | None, input_refs: object, run_id: str | None = None, qc_policy_registry_payload: Mapping[str, object] | None = None) -> dict:
     definition = build_process_definition_row(
         process_id=str(_as_map(process_definition_row).get("process_id", "")).strip(),
         version=str(_as_map(process_definition_row).get("version", "")).strip() or "1.0.0",
@@ -375,12 +386,18 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         required_environment=_as_map(process_definition_row).get("required_environment"),
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None,
+        qc_policy_id=str(_as_map(process_definition_row).get("qc_policy_id", "")).strip() or None,
         yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
         defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
         extensions=_as_map(_as_map(process_definition_row).get("extensions")),
     )
-    validation = validate_process_definition(process_definition_row=definition, action_template_registry_payload=action_template_registry_payload, temporal_domain_registry_payload=temporal_domain_registry_payload)
+    validation = validate_process_definition(
+        process_definition_row=definition,
+        action_template_registry_payload=action_template_registry_payload,
+        temporal_domain_registry_payload=temporal_domain_registry_payload,
+        qc_policy_registry_payload=qc_policy_registry_payload,
+    )
     if str(validation.get("result", "")).strip() != "complete":
         return {"result": "refused", "reason_code": REFUSAL_PROCESS_INVALID_DEFINITION, "validation": dict(validation)}
     token = str(run_id or "").strip() or "process_run.{}".format(canonical_sha256({"tick": int(max(0, _as_int(current_tick, 0))), "process_id": definition.get("process_id"), "input_refs": _as_list(input_refs)})[:16])
@@ -389,6 +406,7 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "run_id": token,
         "process_id": str(definition.get("process_id", "")).strip(),
         "version": str(definition.get("version", "")).strip(),
+        "qc_policy_id": str(definition.get("qc_policy_id", "")).strip() or "qc.none",
         "yield_model_id": str(definition.get("yield_model_id", "")).strip(),
         "defect_model_id": str(definition.get("defect_model_id", "")).strip(),
         "step_order": _tokens(validation.get("ordered_step_ids")),
@@ -408,6 +426,14 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "quality_model_evaluation_rows": [],
         "quality_rng_event_rows": [],
         "quality_model_cache_rows": [],
+        "qc_result_record_rows": [],
+        "qc_measurement_observation_rows": [],
+        "qc_sampling_decision_rows": [],
+        "qc_rework_request_rows": [],
+        "qc_drift_escalation_rows": [],
+        "qc_certification_hook_rows": [],
+        "qc_result_hash_chain": "",
+        "sampling_decision_hash_chain": "",
         "decision_log_rows": [],
         "run_status": "running",
     }
@@ -438,6 +464,7 @@ def process_run_tick(*, current_tick: int, run_state: Mapping[str, object], proc
         required_environment=_as_map(process_definition_row).get("required_environment"),
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None,
+        qc_policy_id=str(_as_map(process_definition_row).get("qc_policy_id", "")).strip() or None,
         yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
         defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
@@ -561,6 +588,13 @@ def process_run_end(
     constitutive_model_registry_payload: Mapping[str, object] | None = None,
     model_type_registry_payload: Mapping[str, object] | None = None,
     model_cache_policy_registry_payload: Mapping[str, object] | None = None,
+    qc_policy_registry_payload: Mapping[str, object] | None = None,
+    sampling_strategy_registry_payload: Mapping[str, object] | None = None,
+    test_procedure_registry_payload: Mapping[str, object] | None = None,
+    tolerance_policy_registry_payload: Mapping[str, object] | None = None,
+    instrument_id: str | None = None,
+    calibration_cert_id: str | None = None,
+    requester_subject_id: str | None = None,
 ) -> dict:
     run_record = dict(_as_map(run_record_row))
     run_id = str(run_record.get("run_id", "")).strip()
@@ -585,6 +619,7 @@ def process_run_end(
 
     output_batch_ids = _batch_ids_from_refs(state.get("output_refs"))
     input_batch_ids = _batch_ids_from_refs(run_record.get("input_refs"))
+    qc_policy_id = str(state.get("qc_policy_id", "")).strip() or "qc.none"
     yield_model_id = str(state.get("yield_model_id", "")).strip()
     defect_model_id = str(state.get("defect_model_id", "")).strip()
     quality_result = {
@@ -683,6 +718,50 @@ def process_run_end(
     merged_batch_rows = [dict(row) for row in _as_list(state.get("batch_quality_rows")) if isinstance(row, Mapping)] + [dict(row) for row in list(generated_batch_quality_rows)]
     merged_batch_rows = sorted(merged_batch_rows, key=lambda row: str(row.get("batch_id", "")))
 
+    qc_result = evaluate_qc_for_run(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        run_id=str(run_id),
+        qc_policy_id=str(qc_policy_id),
+        batch_quality_rows=list(merged_batch_rows),
+        process_quality_record_rows=list(merged_quality_rows),
+        qc_policy_registry_payload=qc_policy_registry_payload,
+        sampling_strategy_registry_payload=sampling_strategy_registry_payload,
+        test_procedure_registry_payload=test_procedure_registry_payload,
+        tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        instrument_id=instrument_id,
+        calibration_cert_id=calibration_cert_id,
+        requester_subject_id=requester_subject_id,
+    )
+
+    rejected_ids = set(_tokens(qc_result.get("rejected_batch_ids")))
+    rework_ids = set(_tokens(qc_result.get("rework_batch_ids")))
+    warning_ids = set(_tokens(qc_result.get("warning_batch_ids")))
+    quarantine_ids = set(_tokens(qc_result.get("quarantine_batch_ids")))
+
+    batch_with_qc: List[dict] = []
+    for row in merged_batch_rows:
+        item = dict(row)
+        batch_id = str(item.get("batch_id", "")).strip()
+        ext = _as_map(item.get("extensions"))
+        if batch_id in quarantine_ids:
+            ext["qc_status"] = "quarantine"
+            ext["qc_usable"] = False
+        elif batch_id in rejected_ids:
+            ext["qc_status"] = "rejected"
+            ext["qc_usable"] = False
+        elif batch_id in rework_ids:
+            ext["qc_status"] = "rework_required"
+            ext["qc_usable"] = False
+        elif batch_id in warning_ids:
+            ext["qc_status"] = "accept_warning"
+            ext["qc_usable"] = True
+        if batch_id in (rejected_ids | rework_ids | warning_ids | quarantine_ids):
+            ext["qc_policy_id"] = str(qc_policy_id)
+            ext["qc_result_hash_chain"] = str(qc_result.get("qc_result_hash_chain", "")).strip()
+        item["extensions"] = ext
+        batch_with_qc.append(item)
+    merged_batch_rows = sorted(batch_with_qc, key=lambda row: str(row.get("batch_id", "")))
+
     state["process_quality_record_rows"] = merged_quality_rows
     state["batch_quality_rows"] = merged_batch_rows
     state["quality_model_evaluation_rows"] = [
@@ -704,6 +783,154 @@ def process_run_end(
         if isinstance(row, Mapping)
     ]
     state["quality_model_cache_rows"] = [dict(row) for row in _as_list(quality_result.get("cache_rows")) if isinstance(row, Mapping)]
+    state["qc_result_record_rows"] = sorted(
+        [dict(row) for row in _as_list(state.get("qc_result_record_rows")) if isinstance(row, Mapping)]
+        + [dict(row) for row in _as_list(qc_result.get("qc_result_rows")) if isinstance(row, Mapping)],
+        key=lambda row: (str(row.get("run_id", "")), str(row.get("batch_id", ""))),
+    )
+    state["qc_measurement_observation_rows"] = sorted(
+        [dict(row) for row in _as_list(state.get("qc_measurement_observation_rows")) if isinstance(row, Mapping)]
+        + [dict(row) for row in _as_list(qc_result.get("measurement_rows")) if isinstance(row, Mapping)],
+        key=lambda row: (str(row.get("batch_id", "")), str(row.get("test_id", ""))),
+    )
+    state["qc_sampling_decision_rows"] = sorted(
+        [dict(row) for row in _as_list(state.get("qc_sampling_decision_rows")) if isinstance(row, Mapping)]
+        + [dict(row) for row in _as_list(qc_result.get("decision_rows")) if isinstance(row, Mapping)],
+        key=lambda row: (str(row.get("run_id", "")), str(row.get("batch_id", ""))),
+    )
+    state["qc_rework_request_rows"] = sorted(
+        [dict(row) for row in _as_list(state.get("qc_rework_request_rows")) if isinstance(row, Mapping)]
+        + [
+            {
+                "request_id": "request.process.rework.{}".format(
+                    canonical_sha256(
+                        {
+                            "run_id": str(run_id),
+                            "batch_id": str(batch_id),
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                        }
+                    )[:16]
+                ),
+                "run_id": str(run_id),
+                "batch_id": str(batch_id),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "status": "requested",
+                "deterministic_fingerprint": canonical_sha256(
+                    {
+                        "run_id": str(run_id),
+                        "batch_id": str(batch_id),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "status": "requested",
+                    }
+                ),
+                "extensions": {
+                    "source": "PROC3-3",
+                    "qc_policy_id": str(qc_policy_id),
+                },
+            }
+            for batch_id in sorted(rework_ids)
+        ],
+        key=lambda row: (str(row.get("run_id", "")), str(row.get("batch_id", ""))),
+    )
+
+    qc_policy_rows = _qc_policy_rows_by_id(qc_policy_registry_payload)
+    qc_policy_row = dict(qc_policy_rows.get(str(qc_policy_id)) or {})
+    qc_policy_ext = _as_map(qc_policy_row.get("extensions"))
+    drift_fail_rate_threshold = int(max(0, min(1000, _as_int(qc_policy_ext.get("drift_escalation_fail_rate_permille", 1001), 1001))))
+    fail_rate = int(max(0, min(1000, _as_int(qc_result.get("fail_rate_permille", 0), 0))))
+    sampled_count = int(max(0, _as_int(qc_result.get("sampled_count", 0), 0)))
+    failed_count = int(max(0, _as_int(qc_result.get("failed_count", 0), 0)))
+    cert_invalidation_on_fail = bool(qc_policy_ext.get("cert_invalidation_on_fail", False))
+
+    if sampled_count > 0 and fail_rate >= drift_fail_rate_threshold and drift_fail_rate_threshold <= 1000:
+        drift_row = {
+            "event_id": "event.process.drift_escalation.{}".format(
+                canonical_sha256(
+                    {
+                        "run_id": str(run_id),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "fail_rate_permille": int(fail_rate),
+                        "threshold_permille": int(drift_fail_rate_threshold),
+                    }
+                )[:16]
+            ),
+            "run_id": str(run_id),
+            "process_id": str(run_record.get("process_id", "")).strip(),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "event_kind_id": "process.drift_detected",
+            "fail_rate_permille": int(fail_rate),
+            "threshold_permille": int(drift_fail_rate_threshold),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "qc_policy_id": str(qc_policy_id),
+                "sampled_count": int(sampled_count),
+                "failed_count": int(failed_count),
+                "source": "PROC3-4",
+                "explain_contract_id": "explain.qc_failure",
+            },
+        }
+        drift_row["deterministic_fingerprint"] = canonical_sha256(dict(drift_row, deterministic_fingerprint=""))
+        state["qc_drift_escalation_rows"] = sorted(
+            [dict(row) for row in _as_list(state.get("qc_drift_escalation_rows")) if isinstance(row, Mapping)] + [dict(drift_row)],
+            key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("event_id", ""))),
+        )
+    else:
+        state["qc_drift_escalation_rows"] = [dict(row) for row in _as_list(state.get("qc_drift_escalation_rows")) if isinstance(row, Mapping)]
+
+    if cert_invalidation_on_fail and failed_count > 0:
+        cert_row = {
+            "hook_id": "hook.process.certification.invalidate.{}".format(
+                canonical_sha256(
+                    {
+                        "run_id": str(run_id),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "failed_count": int(failed_count),
+                    }
+                )[:16]
+            ),
+            "run_id": str(run_id),
+            "process_id": str(run_record.get("process_id", "")).strip(),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "reason_code": "process.qc_failure_threshold",
+            "cert_action": "invalidate_pending",
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "qc_policy_id": str(qc_policy_id),
+                "failed_count": int(failed_count),
+                "source": "PROC3-4",
+                "explain_contract_id": "explain.qc_failure",
+            },
+        }
+        cert_row["deterministic_fingerprint"] = canonical_sha256(dict(cert_row, deterministic_fingerprint=""))
+        state["qc_certification_hook_rows"] = sorted(
+            [dict(row) for row in _as_list(state.get("qc_certification_hook_rows")) if isinstance(row, Mapping)] + [dict(cert_row)],
+            key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("hook_id", ""))),
+        )
+    else:
+        state["qc_certification_hook_rows"] = [dict(row) for row in _as_list(state.get("qc_certification_hook_rows")) if isinstance(row, Mapping)]
+
+    state["observation_artifacts"] = [dict(row) for row in _as_list(state.get("observation_artifacts")) if isinstance(row, Mapping)] + [
+        dict(row)
+        for row in _as_list(qc_result.get("measurement_rows"))
+        if isinstance(row, Mapping)
+    ]
+    state["report_artifacts"] = [dict(row) for row in _as_list(state.get("report_artifacts")) if isinstance(row, Mapping)] + [
+        {
+            "artifact_type_id": "artifact.record.process_qc_result",
+            "run_id": str(row.get("run_id", "")).strip(),
+            "batch_id": str(row.get("batch_id", "")).strip(),
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "sampled": bool(row.get("sampled", False)),
+            "passed": bool(row.get("passed", False)),
+            "action_taken": str(row.get("action_taken", "")).strip(),
+            "visibility_policy": "policy.epistemic.inspector",
+        }
+        for row in _as_list(qc_result.get("qc_result_rows"))
+        if isinstance(row, Mapping)
+    ]
+
+    state["qc_result_hash_chain"] = str(qc_result.get("qc_result_hash_chain", "")).strip()
+    state["sampling_decision_hash_chain"] = str(qc_result.get("sampling_decision_hash_chain", "")).strip()
     state.setdefault("decision_log_rows", [])
     if output_batch_ids:
         state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
@@ -715,6 +942,47 @@ def process_run_end(
                 "defect_model_id": str(defect_model_id),
                 "output_batch_ids": list(output_batch_ids),
                 "quality_result": str(quality_result.get("result", "")),
+            }
+        ]
+    state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
+        {
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "run_id": str(run_id),
+            "reason": "qc_evaluated",
+            "qc_policy_id": str(qc_policy_id),
+            "sampled_count": int(sampled_count),
+            "failed_count": int(failed_count),
+            "fail_rate_permille": int(fail_rate),
+            "qc_result_hash_chain": str(state.get("qc_result_hash_chain", "")).strip(),
+            "sampling_decision_hash_chain": str(state.get("sampling_decision_hash_chain", "")).strip(),
+        }
+    ]
+    if rework_ids:
+        state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
+            {
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "run_id": str(run_id),
+                "reason": "qc_rework_requested",
+                "batch_ids": sorted(rework_ids),
+            }
+        ]
+    if rejected_ids or quarantine_ids:
+        state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
+            {
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "run_id": str(run_id),
+                "reason": "qc_batches_rejected",
+                "batch_ids": sorted(rejected_ids | quarantine_ids),
+            }
+        ]
+    if cert_invalidation_on_fail and failed_count > 0:
+        state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
+            {
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "run_id": str(run_id),
+                "reason": "qc_certification_invalidation_hook",
+                "failed_count": int(failed_count),
+                "qc_policy_id": str(qc_policy_id),
             }
         ]
 
@@ -747,6 +1015,8 @@ def process_run_end(
         _as_map(finalized.get("extensions")),
         process_quality_hash_chain=str(state.get("process_quality_hash_chain", "")).strip(),
         batch_quality_hash_chain=str(state.get("batch_quality_hash_chain", "")).strip(),
+        qc_result_hash_chain=str(state.get("qc_result_hash_chain", "")).strip(),
+        sampling_decision_hash_chain=str(state.get("sampling_decision_hash_chain", "")).strip(),
     )
     state["run_status"] = final_status
     state["deterministic_fingerprint"] = canonical_sha256(dict(state, deterministic_fingerprint=""))

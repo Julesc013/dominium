@@ -158,6 +158,7 @@ def build_process_definition_row(
     required_environment: object,
     tier_contract_id: str,
     coupling_budget_id: str | None = None,
+    qc_policy_id: str | None = None,
     yield_model_id: str | None = None,
     defect_model_id: str | None = None,
     deterministic_fingerprint: str = "",
@@ -181,6 +182,7 @@ def build_process_definition_row(
         "required_environment": _sorted_tokens(required_environment),
         "tier_contract_id": tier_token,
         "coupling_budget_id": str(coupling_budget_id or "").strip() or None,
+        "qc_policy_id": str(qc_policy_id or "").strip() or None,
         "yield_model_id": str(yield_model_id or "").strip() or None,
         "defect_model_id": str(defect_model_id or "").strip() or None,
         "deterministic_fingerprint": str(deterministic_fingerprint or "").strip(),
@@ -207,6 +209,7 @@ def normalize_process_definition_rows(rows: object) -> List[dict]:
             required_environment=row.get("required_environment"),
             tier_contract_id=str(row.get("tier_contract_id", "")).strip(),
             coupling_budget_id=(None if row.get("coupling_budget_id") is None else str(row.get("coupling_budget_id", "")).strip() or None),
+            qc_policy_id=(None if row.get("qc_policy_id") is None else str(row.get("qc_policy_id", "")).strip() or None),
             yield_model_id=(None if row.get("yield_model_id") is None else str(row.get("yield_model_id", "")).strip() or None),
             defect_model_id=(None if row.get("defect_model_id") is None else str(row.get("defect_model_id", "")).strip() or None),
             deterministic_fingerprint=str(row.get("deterministic_fingerprint", "")).strip(),
@@ -332,6 +335,7 @@ def validate_process_definition(
     process_definition_row: Mapping[str, object],
     action_template_registry_payload: Mapping[str, object] | None,
     temporal_domain_registry_payload: Mapping[str, object] | None,
+    qc_policy_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     normalized = build_process_definition_row(
         process_id=str(_as_map(process_definition_row).get("process_id", "")).strip(),
@@ -344,6 +348,7 @@ def validate_process_definition(
         required_environment=_as_map(process_definition_row).get("required_environment"),
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=(None if _as_map(process_definition_row).get("coupling_budget_id") is None else str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None),
+        qc_policy_id=(None if _as_map(process_definition_row).get("qc_policy_id") is None else str(_as_map(process_definition_row).get("qc_policy_id", "")).strip() or None),
         yield_model_id=(None if _as_map(process_definition_row).get("yield_model_id") is None else str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None),
         defect_model_id=(None if _as_map(process_definition_row).get("defect_model_id") is None else str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None),
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
@@ -365,6 +370,14 @@ def validate_process_definition(
 
     action_template_ids = _action_template_ids(action_template_registry_payload)
     temporal_domain_ids = _temporal_domain_ids(temporal_domain_registry_payload)
+    qc_policy_ids = set()
+    if isinstance(qc_policy_registry_payload, Mapping):
+        qc_record = _as_map(_as_map(qc_policy_registry_payload).get("record"))
+        for row in _as_list(qc_record.get("qc_policies")):
+            entry = _as_map(row)
+            token = str(entry.get("qc_policy_id", "")).strip()
+            if token:
+                qc_policy_ids.add(token)
 
     for step_row in step_rows:
         row = _as_map(step_row)
@@ -385,6 +398,10 @@ def validate_process_definition(
                 violations.append("wait step {} missing valid temporal_domain_id".format(step_id))
         if not _step_info_output_ok(row):
             violations.append("step {} does not map outputs to META-INFO artifact refs".format(step_id))
+
+    qc_policy_id = str(normalized.get("qc_policy_id", "")).strip()
+    if qc_policy_id and qc_policy_ids and qc_policy_id not in qc_policy_ids:
+        violations.append("process qc_policy_id is not registered: {}".format(qc_policy_id))
 
     if str(topo.get("result", "")).strip() != "complete":
         return {
