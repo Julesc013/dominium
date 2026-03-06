@@ -1,0 +1,25 @@
+SCHEMA: process/candidate_process_definition.schema
+schema_id: dominium.schema.process.candidate_process_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define derived candidate process-definition artifacts inferred from research observations.
+
+NON-SEMANTICS:
+- Does not mutate canonical process definition state directly.
+- Does not guarantee promotion eligibility.
+
+REQUIRED SHAPE:
+record candidate_process_definition
+  required:
+    - candidate_id: id
+    - inferred_from_artifact_ids: [id]
+    - proposed_process_definition_ref: id
+    - confidence_score: fixed_point_nonnegative
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- candidates are derived-only artifacts.
+- confidence_score must be deterministic from provided evidence.

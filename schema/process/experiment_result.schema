@@ -1,0 +1,30 @@
+SCHEMA: process/experiment_result.schema
+schema_id: dominium.schema.process.experiment_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic experiment result artifacts with bounded confidence metadata.
+
+NON-SEMANTICS:
+- Does not certify a process by itself.
+- Does not imply global knowledge access.
+
+REQUIRED SHAPE:
+record experiment_result
+  required:
+    - result_id: id
+    - experiment_id: id
+    - run_id: id
+    - measured_values: map
+    - confidence_bounds: map
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INFO FAMILY:
+- REPORT (default for institutional/lab publication)
+- OBSERVATION (allowed for local diegetic results)
+
+INVARIANTS:
+- values and confidence bounds must be replay-stable.
+- result linkage to run_id is mandatory.

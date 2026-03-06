@@ -1,0 +1,28 @@
+SCHEMA: process/reverse_engineering_record.schema
+schema_id: dominium.schema.process.reverse_engineering_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD for deterministic reverse engineering actions and outputs.
+
+NON-SEMANTICS:
+- Does not grant global knowledge propagation without SIG/receipt pathways.
+- Does not guarantee successful inference/promotion.
+
+REQUIRED SHAPE:
+record reverse_engineering_record
+  required:
+    - record_id: id
+    - subject_id: id
+    - target_item_id: id
+    - method: enum(disassemble|assay|scan)
+    - destroyed: bool
+    - produced_artifact_ids: [id]
+    - tick: tick
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- destructive actions must be explicit (`destroyed=true`).
+- produced artifacts must be traceable and receipt-gated.

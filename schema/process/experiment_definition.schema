@@ -1,0 +1,26 @@
+SCHEMA: process/experiment_definition.schema
+schema_id: dominium.schema.process.experiment_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic experiment definitions as process-bound research workflows.
+
+NON-SEMANTICS:
+- Does not grant omniscient process disclosure.
+- Does not bypass process run, QC, or provenance contracts.
+
+REQUIRED SHAPE:
+record experiment_definition
+  required:
+    - experiment_id: id
+    - process_definition_ref: id
+    - hypothesis_text_ref: id?
+    - variable_defs: [map]
+    - measurement_plan_ref: id
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- experiment definitions must be deterministic and replayable.
+- process_definition_ref must resolve to a versioned ProcessDefinition.

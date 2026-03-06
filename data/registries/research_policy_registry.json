@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.registry.research_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.research_policy_registry",
+    "registry_version": "1.0.0",
+    "research_policies": [
+      {
+        "schema_version": "1.0.0",
+        "research_policy_id": "research.default",
+        "description": "Default deterministic research policy with bounded replication and conservative inference.",
+        "max_experiments_per_tick": 64,
+        "max_inference_jobs_per_tick": 128,
+        "promotion_replication_threshold": 3,
+        "allow_destructive_reverse_engineering": true,
+        "allow_named_rng": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC7-2",
+          "budget_class": "important"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "research_policy_id": "research.lab_strict",
+        "description": "Strict institutional research policy with higher replication and tighter promotion gates.",
+        "max_experiments_per_tick": 48,
+        "max_inference_jobs_per_tick": 96,
+        "promotion_replication_threshold": 5,
+        "allow_destructive_reverse_engineering": true,
+        "allow_named_rng": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC7-2",
+          "institutional_mode": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "research_policy_id": "research.rank_limited",
+        "description": "Ranked-safe research policy with strict deterministic promotion and constrained throughput.",
+        "max_experiments_per_tick": 24,
+        "max_inference_jobs_per_tick": 48,
+        "promotion_replication_threshold": 6,
+        "allow_destructive_reverse_engineering": true,
+        "allow_named_rng": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC7-2",
+          "ranked_mode": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "PROC7-2"
+    }
+  }
+}
