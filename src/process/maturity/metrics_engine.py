@@ -261,7 +261,7 @@ def update_process_metrics_for_run(
     if quality:
         runs_count += 1
         quality_samples += 1
-        yield_factor = int(max(0, min(1000, _as_int(quality.get("yield_factor", 0), 0))))
+        yield_sample = int(max(0, min(1000, _as_int(quality.get("yield_factor", 0), 0))))
         defect_severity = int(
             max(
                 0,
@@ -273,8 +273,8 @@ def update_process_metrics_for_run(
         )
         if defect_severity <= 0:
             defect_severity = int(max(0, min(1000, len(_as_list(quality.get("defect_flags"))) * 250)))
-        yield_sum += yield_factor
-        yield_sq_sum += yield_factor * yield_factor
+        yield_sum += yield_sample
+        yield_sq_sum += yield_sample * yield_sample
         defect_sum += defect_severity
 
     for row in sorted(
