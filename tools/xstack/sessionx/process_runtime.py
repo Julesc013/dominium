@@ -36144,6 +36144,96 @@ def execute_intent(
         )
         state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
         state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+        dispatched_envelope_ids: List[str] = []
+        if bool(inputs.get("publish_report_via_sig", True)):
+            signal_channel_rows = normalize_signal_channel_rows(
+                state.get("signal_channel_rows") or state.get("signal_channels") or []
+            )
+            channel_by_id = dict(
+                (
+                    str(row.get("channel_id", "")).strip(),
+                    dict(row),
+                )
+                for row in list(signal_channel_rows or [])
+                if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip()
+            )
+            dispatch_channel_id = str(
+                inputs.get("channel_id", "channel.local_institutional")
+            ).strip() or "channel.local_institutional"
+            if dispatch_channel_id in channel_by_id:
+                try:
+                    send_result = process_signal_send(
+                        current_tick=int(max(0, _as_int(current_tick, 0))),
+                        channel_id=dispatch_channel_id,
+                        from_node_id=str(
+                            inputs.get("from_node_id", "node.process.research")
+                        ).strip()
+                        or "node.process.research",
+                        artifact_id=artifact_id,
+                        sender_subject_id=str(
+                            inputs.get(
+                                "sender_subject_id",
+                                inputs.get(
+                                    "subject_id",
+                                    dict(authority_context or {}).get(
+                                        "subject_id", "subject.unknown"
+                                    ),
+                                ),
+                            )
+                        ).strip()
+                        or "subject.unknown",
+                        recipient_address={
+                            "kind": "group",
+                            "group_id": str(
+                                inputs.get("recipient_group_id", "group.research.publication")
+                            ).strip()
+                            or "group.research.publication",
+                            "to_node_id": str(
+                                inputs.get("to_node_id", "node.process.research")
+                            ).strip()
+                            or "node.process.research",
+                        },
+                        signal_channel_rows=signal_channel_rows,
+                        signal_message_envelope_rows=state.get("signal_message_envelope_rows")
+                        or [],
+                        signal_transport_queue_rows=state.get("signal_transport_queue_rows")
+                        or [],
+                        info_artifact_rows=info_artifact_rows,
+                        group_membership_rows=state.get("group_membership_rows") or [],
+                        broadcast_scope_rows=state.get("broadcast_scope_rows") or [],
+                        decision_log_rows=state.get("control_decision_log") or [],
+                        envelope_extensions={
+                            "report_id": str(result_row.get("result_id", "")).strip(),
+                            "report_kind": "experiment_result",
+                            "process_id": str(binding_row.get("process_id", "")).strip(),
+                            "process_version": str(binding_row.get("version", "")).strip(),
+                            "candidate_ids": _sorted_tokens(
+                                list(inference_eval.get("produced_candidate_ids") or [])
+                            ),
+                        },
+                    )
+                    state["signal_message_envelope_rows"] = [
+                        dict(row)
+                        for row in list(send_result.get("signal_message_envelope_rows") or [])
+                        if isinstance(row, Mapping)
+                    ]
+                    state["signal_transport_queue_rows"] = [
+                        dict(row)
+                        for row in list(send_result.get("signal_transport_queue_rows") or [])
+                        if isinstance(row, Mapping)
+                    ]
+                    state["control_decision_log"] = [
+                        dict(row)
+                        for row in list(send_result.get("decision_log_rows") or [])
+                        if isinstance(row, Mapping)
+                    ]
+                    envelope_id = str(
+                        dict(send_result.get("envelope_row") or {}).get("envelope_id", "")
+                    ).strip()
+                    if envelope_id:
+                        dispatched_envelope_ids.append(envelope_id)
+                except SignalTransportError:
+                    pass
 
         subject_id = str(
             inputs.get(
@@ -36211,6 +36301,7 @@ def execute_intent(
             "candidate_model_binding_hash_chain": str(
                 state.get("candidate_model_binding_hash_chain", "")
             ).strip(),
+            "dispatched_envelope_ids": list(dispatched_envelope_ids),
             "deterministic_fingerprint": str(
                 experiment_eval.get("deterministic_fingerprint", "")
             ).strip(),
