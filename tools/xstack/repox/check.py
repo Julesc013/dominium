@@ -13189,90 +13189,6 @@ def _append_effect_system_invariant_findings(
             )
             break
 
-    yield_patterns = (
-        re.compile(r"\byield_factor(?:_permille)?\b\s*=", re.IGNORECASE),
-        re.compile(r"\bdefect_flags\b\s*=", re.IGNORECASE),
-        re.compile(r"\bquality_grade\b\s*=", re.IGNORECASE),
-    )
-    allowed_yield_files = {
-        run_engine_rel,
-        "src/models/model_engine.py",
-        "src/chem/process_run_engine.py",
-        "tools/xstack/repox/check.py",
-    }
-    for rel_path in _scan_files(repo_root):
-        rel_norm = _norm(rel_path)
-        if not rel_norm.endswith(".py"):
-            continue
-        if not rel_norm.startswith(scan_prefixes):
-            continue
-        if rel_norm.startswith(skip_prefixes):
-            continue
-        if rel_norm in allowed_yield_files:
-            continue
-        for line_no, line in _iter_lines(repo_root, rel_norm):
-            snippet = str(line).strip()
-            if (not snippet) or snippet.startswith("#"):
-                continue
-            if not any(pattern.search(snippet) for pattern in yield_patterns):
-                continue
-            findings.append(
-                _finding(
-                    severity=severity,
-                    file_path=rel_norm,
-                    line_number=line_no,
-                    snippet=snippet[:140],
-                    message="inline process yield/defect mutation detected outside PROC-2 model/runtime pathways",
-                    rule_id=ad_hoc_yield_rule_id,
-                )
-            )
-            break
-
-    random_patterns = (
-        re.compile(r"\brandom\.(?:random|randint|randrange|choice|choices|uniform)\s*\(", re.IGNORECASE),
-        re.compile(r"\bsecrets\.", re.IGNORECASE),
-        re.compile(r"\buuid4\s*\(", re.IGNORECASE),
-    )
-    rng_scan_prefixes = ("src/process/", "tools/process/")
-    rng_skip_prefixes = (
-        "docs/",
-        "schema/",
-        "schemas/",
-        "tools/auditx/analyzers/",
-        "tools/xstack/testx/tests/",
-    )
-    allowed_rng_files = {
-        "tools/xstack/repox/check.py",
-    }
-    for rel_path in _scan_files(repo_root):
-        rel_norm = _norm(rel_path)
-        if not rel_norm.endswith(".py"):
-            continue
-        if not rel_norm.startswith(rng_scan_prefixes):
-            continue
-        if rel_norm.startswith(rng_skip_prefixes):
-            continue
-        if rel_norm in allowed_rng_files:
-            continue
-        for line_no, line in _iter_lines(repo_root, rel_norm):
-            snippet = str(line).strip()
-            if (not snippet) or snippet.startswith("#"):
-                continue
-            if not any(pattern.search(snippet) for pattern in random_patterns):
-                continue
-            findings.append(
-                _finding(
-                    severity=severity,
-                    file_path=rel_norm,
-                    line_number=line_no,
-                    snippet=snippet[:140],
-                    message="undeclared random source detected in process quality paths; named RNG policy required",
-                    rule_id=undeclared_rng_rule_id,
-                )
-            )
-            break
-
-
 def _append_specsheet_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -20825,6 +20741,90 @@ def _append_process_constitution_invariant_findings(
                     snippet=snippet[:140],
                     message="ad hoc recipe/workflow token detected outside PROC-governed process pathways",
                     rule_id=implicit_workflow_rule_id,
+                )
+            )
+            break
+
+    yield_patterns = (
+        re.compile(r"\byield_factor(?:_permille)?\b\s*=", re.IGNORECASE),
+        re.compile(r"\bdefect_flags\b\s*=", re.IGNORECASE),
+        re.compile(r"\bquality_grade\b\s*=", re.IGNORECASE),
+    )
+    allowed_yield_files = {
+        runtime_rel,
+        run_engine_rel,
+        "src/models/model_engine.py",
+        "src/chem/process_run_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_yield_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in yield_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="inline process yield/defect mutation detected outside PROC-2 model/runtime pathways",
+                    rule_id=ad_hoc_yield_rule_id,
+                )
+            )
+            break
+
+    random_patterns = (
+        re.compile(r"\brandom\.(?:random|randint|randrange|choice|choices|uniform)\s*\(", re.IGNORECASE),
+        re.compile(r"\bsecrets\.", re.IGNORECASE),
+        re.compile(r"\buuid4\s*\(", re.IGNORECASE),
+    )
+    rng_scan_prefixes = ("src/process/", "tools/process/")
+    rng_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_rng_files = {
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(rng_scan_prefixes):
+            continue
+        if rel_norm.startswith(rng_skip_prefixes):
+            continue
+        if rel_norm in allowed_rng_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in random_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="undeclared random source detected in process quality paths; named RNG policy required",
+                    rule_id=undeclared_rng_rule_id,
                 )
             )
             break

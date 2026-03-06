@@ -40,8 +40,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     scan_roots = (
-        os.path.join(repo_root, "src"),
-        os.path.join(repo_root, "tools", "xstack", "sessionx"),
+        os.path.join(repo_root, "src", "process"),
+        os.path.join(repo_root, "tools", "process"),
     )
     skip_prefixes = (
         "docs/",
