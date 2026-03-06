@@ -59,7 +59,6 @@ def _qc_result_hash(state: Mapping[str, object]) -> str:
         key=lambda item: (
             str(item.get("run_id", "")),
             str(item.get("batch_id", "")),
-            int(max(0, _as_int(item.get("tick", 0), 0))),
         ),
     )
     return canonical_sha256(
@@ -75,7 +74,6 @@ def _qc_result_hash(state: Mapping[str, object]) -> str:
                     else str(row.get("fail_reason", "")).strip()
                 ),
                 "action_taken": str(row.get("action_taken", "")).strip(),
-                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
             }
             for row in rows
         ]
