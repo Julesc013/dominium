@@ -1200,6 +1200,20 @@
           "min_fidelity": "macro",
           "cost_units": 2
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.qc_summary",
+        "title": "Process QC Summary",
+        "data": {
+          "data_kind": "process_qc_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "meso",
+          "cost_units": 2,
+          "source": "PROC3-5"
+        }
       }
     ],
     "extensions": {}
