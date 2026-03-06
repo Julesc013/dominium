@@ -11153,6 +11153,75 @@ def _refresh_software_pipeline_hash_chains(state: dict) -> None:
     )
 
 
+def _refresh_software_pipeline_quality_hash_chains(state: dict) -> None:
+    process_quality_rows = [
+        dict(row)
+        for row in list(state.get("process_quality_record_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    qc_result_rows = [
+        dict(row)
+        for row in list(state.get("qc_result_record_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    sampling_decision_rows = [
+        dict(row)
+        for row in list(state.get("sampling_decision_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    state["software_quality_hash_chain"] = canonical_sha256(
+        [
+            {
+                "run_id": str(row.get("run_id", "")).strip(),
+                "yield_factor": int(max(0, _as_int(row.get("yield_factor", 0), 0))),
+                "quality_grade": str(row.get("quality_grade", "")).strip(),
+                "defect_flags": _sorted_tokens(list(row.get("defect_flags") or [])),
+            }
+            for row in sorted(
+                process_quality_rows,
+                key=lambda item: str(item.get("run_id", "")),
+            )
+            if str((dict(row.get("extensions") or {})).get("pipeline_id", "")).strip()
+        ]
+    )
+    state["software_qc_hash_chain"] = canonical_sha256(
+        [
+            {
+                "run_id": str(row.get("run_id", "")).strip(),
+                "batch_id": str(row.get("batch_id", "")).strip(),
+                "sampled": bool(row.get("sampled", False)),
+                "passed": bool(row.get("passed", False)),
+                "action_taken": str(row.get("action_taken", "")).strip(),
+            }
+            for row in sorted(
+                qc_result_rows,
+                key=lambda item: (
+                    str(item.get("run_id", "")),
+                    str(item.get("batch_id", "")),
+                ),
+            )
+        ]
+    )
+    state["software_test_sampling_hash_chain"] = canonical_sha256(
+        [
+            {
+                "run_id": str(row.get("run_id", "")).strip(),
+                "batch_id": str(row.get("batch_id", "")).strip(),
+                "sampling_strategy_id": str(row.get("sampling_strategy_id", "")).strip(),
+                "sampled": bool(row.get("sampled", False)),
+            }
+            for row in sorted(
+                sampling_decision_rows,
+                key=lambda item: (
+                    str(item.get("run_id", "")),
+                    str(item.get("batch_id", "")),
+                    str(item.get("sampling_strategy_id", "")),
+                ),
+            )
+        ]
+    )
+
+
 def _ensure_batch_quality_rows(state: dict) -> List[dict]:
     rows = state.get("batch_quality_rows")
     normalized = normalize_batch_quality_rows(rows)
@@ -33979,6 +34048,7 @@ def execute_intent(
 
         _refresh_compile_hash_chains(state)
         _refresh_software_pipeline_hash_chains(state)
+        _refresh_software_pipeline_quality_hash_chains(state)
         result_metadata = {
             "pipeline_id": pipeline_id,
             "run_id": run_id,
@@ -33995,6 +34065,11 @@ def execute_intent(
             "deployment_hash_chain": str(state.get("deployment_hash_chain", "")).strip(),
             "sig_deployment_hash_chain": str(state.get("sig_deployment_hash_chain", "")).strip(),
             "software_artifact_hash_chain": str(state.get("software_artifact_hash_chain", "")).strip(),
+            "software_quality_hash_chain": str(state.get("software_quality_hash_chain", "")).strip(),
+            "software_qc_hash_chain": str(state.get("software_qc_hash_chain", "")).strip(),
+            "software_test_sampling_hash_chain": str(
+                state.get("software_test_sampling_hash_chain", "")
+            ).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.compile_request_submit":
