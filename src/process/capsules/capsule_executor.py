@@ -7,7 +7,7 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from src.chem.process_run_engine import build_batch_quality_row
-from src.meta.compile import compiled_model_execute, compiled_model_is_valid
+from src.meta.compile import compiled_model_execute, compiled_model_is_valid, compiled_model_rows_by_id
 from src.process.capsules.capsule_builder import (
     REFUSAL_PROCESS_CAPSULE_INVALID,
     normalize_process_capsule_rows,
@@ -403,13 +403,34 @@ def execute_process_capsule(
     next_state_definition_rows = list(state_vector_definition_rows or [])
     next_state_snapshot_rows = list(state_vector_snapshot_rows or [])
     if compiled_model_id:
-        compiled_validation = compiled_model_is_valid(
-            compiled_model_id=compiled_model_id,
-            current_inputs=features,
-            compiled_model_rows=compiled_model_rows or [],
-            validity_domain_rows=validity_domain_rows or [],
-            state_vector_definition_rows=next_state_definition_rows,
-        )
+        compiled_rows_by_id = compiled_model_rows_by_id(compiled_model_rows or [])
+        compiled_row = dict(compiled_rows_by_id.get(compiled_model_id) or {})
+        if not compiled_row:
+            compiled_validation = {
+                "valid": False,
+                "reason_code": "refusal.compile.invalid",
+                "violations": ["missing_compiled_model"],
+            }
+        elif not str(compiled_row.get("equivalence_proof_ref", "")).strip():
+            compiled_validation = {
+                "valid": False,
+                "reason_code": "refusal.compile.missing_proof",
+                "violations": ["missing_equivalence_proof_ref"],
+            }
+        elif not str(compiled_row.get("validity_domain_ref", "")).strip():
+            compiled_validation = {
+                "valid": False,
+                "reason_code": "refusal.compile.invalid",
+                "violations": ["missing_validity_domain_ref"],
+            }
+        else:
+            compiled_validation = compiled_model_is_valid(
+                compiled_model_id=compiled_model_id,
+                current_inputs=features,
+                compiled_model_rows=compiled_model_rows or [],
+                validity_domain_rows=validity_domain_rows or [],
+                state_vector_definition_rows=next_state_definition_rows,
+            )
         if bool(compiled_validation.get("valid", False)):
             compiled_execution = compiled_model_execute(
                 compiled_model_id=compiled_model_id,
@@ -707,4 +728,3 @@ __all__ = [
     "evaluate_process_capsule_invalidation",
     "execute_process_capsule",
 ]
-
