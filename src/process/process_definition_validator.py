@@ -158,6 +158,8 @@ def build_process_definition_row(
     required_environment: object,
     tier_contract_id: str,
     coupling_budget_id: str | None = None,
+    yield_model_id: str | None = None,
+    defect_model_id: str | None = None,
     deterministic_fingerprint: str = "",
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
@@ -179,6 +181,8 @@ def build_process_definition_row(
         "required_environment": _sorted_tokens(required_environment),
         "tier_contract_id": tier_token,
         "coupling_budget_id": str(coupling_budget_id or "").strip() or None,
+        "yield_model_id": str(yield_model_id or "").strip() or None,
+        "defect_model_id": str(defect_model_id or "").strip() or None,
         "deterministic_fingerprint": str(deterministic_fingerprint or "").strip(),
         "extensions": _as_map(extensions),
     }
@@ -203,6 +207,8 @@ def normalize_process_definition_rows(rows: object) -> List[dict]:
             required_environment=row.get("required_environment"),
             tier_contract_id=str(row.get("tier_contract_id", "")).strip(),
             coupling_budget_id=(None if row.get("coupling_budget_id") is None else str(row.get("coupling_budget_id", "")).strip() or None),
+            yield_model_id=(None if row.get("yield_model_id") is None else str(row.get("yield_model_id", "")).strip() or None),
+            defect_model_id=(None if row.get("defect_model_id") is None else str(row.get("defect_model_id", "")).strip() or None),
             deterministic_fingerprint=str(row.get("deterministic_fingerprint", "")).strip(),
             extensions=_as_map(row.get("extensions")),
         )
@@ -338,6 +344,8 @@ def validate_process_definition(
         required_environment=_as_map(process_definition_row).get("required_environment"),
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=(None if _as_map(process_definition_row).get("coupling_budget_id") is None else str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None),
+        yield_model_id=(None if _as_map(process_definition_row).get("yield_model_id") is None else str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None),
+        defect_model_id=(None if _as_map(process_definition_row).get("defect_model_id") is None else str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None),
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
         extensions=_as_map(_as_map(process_definition_row).get("extensions")),
     )

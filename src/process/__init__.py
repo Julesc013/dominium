@@ -14,6 +14,7 @@ from src.process.process_definition_validator import (
 from src.process.process_run_engine import (
     REFUSAL_PROCESS_LEDGER_REQUIRED,
     REFUSAL_PROCESS_RUN_NOT_FOUND,
+    build_process_quality_record_row,
     build_process_run_record_row,
     build_process_step_record_row,
     process_run_end,
@@ -33,6 +34,7 @@ __all__ = [
     "validate_process_definition",
     "REFUSAL_PROCESS_LEDGER_REQUIRED",
     "REFUSAL_PROCESS_RUN_NOT_FOUND",
+    "build_process_quality_record_row",
     "build_process_run_record_row",
     "build_process_step_record_row",
     "process_run_start",

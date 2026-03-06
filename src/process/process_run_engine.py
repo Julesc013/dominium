@@ -6,6 +6,13 @@ from typing import Dict, Iterable, List, Mapping, Set
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
+from src.chem.process_run_engine import build_batch_quality_row
+from src.models.model_engine import (
+    cache_policy_rows_by_id,
+    constitutive_model_rows_by_id,
+    evaluate_model_bindings,
+    model_type_rows_by_id,
+)
 from src.process.process_definition_validator import (
     REFUSAL_PROCESS_INVALID_DEFINITION,
     build_process_definition_row,
@@ -36,6 +43,31 @@ def _as_list(value: object) -> list:
 
 def _tokens(values: Iterable[object]) -> List[str]:
     return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
+
+
+def build_process_quality_record_row(
+    *,
+    run_id: str,
+    yield_factor: int,
+    defect_flags: object,
+    quality_grade: str,
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "run_id": str(run_id or "").strip(),
+        "yield_factor": int(max(0, min(1000, _as_int(yield_factor, 0)))),
+        "defect_flags": _tokens(defect_flags),
+        "quality_grade": str(quality_grade or "").strip() or "grade.C",
+        "deterministic_fingerprint": str(deterministic_fingerprint or "").strip(),
+        "extensions": _as_map(extensions),
+    }
+    if not payload["run_id"]:
+        return {}
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
 
 
 def build_process_run_record_row(*, run_id: str, process_id: str, version: str, start_tick: int, end_tick: int | None, status: str, input_refs: object, output_refs: object, deterministic_fingerprint: str = "", extensions: Mapping[str, object] | None = None) -> dict:
@@ -88,6 +120,249 @@ def _deps(process_definition_row: Mapping[str, object]) -> Dict[str, List[str]]:
     return dict((key, sorted(set(value))) for key, value in out.items())
 
 
+def _rows_from_registry(payload: Mapping[str, object] | None, key: str) -> List[dict]:
+    body = _as_map(payload)
+    if isinstance(body.get(key), list):
+        return [dict(row) for row in _as_list(body.get(key)) if isinstance(row, Mapping)]
+    record = _as_map(body.get("record"))
+    if isinstance(record.get(key), list):
+        return [dict(row) for row in _as_list(record.get(key)) if isinstance(row, Mapping)]
+    return []
+
+
+def _yield_model_rows_by_id(payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    rows = _rows_from_registry(payload, "yield_models")
+    out: Dict[str, dict] = {}
+    for row in rows:
+        token = str(row.get("yield_model_id", "")).strip()
+        if token:
+            out[token] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _defect_model_rows_by_id(payload: Mapping[str, object] | None) -> Dict[str, dict]:
+    rows = _rows_from_registry(payload, "defect_models")
+    out: Dict[str, dict] = {}
+    for row in rows:
+        token = str(row.get("defect_model_id", "")).strip()
+        if token:
+            out[token] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def _batch_ids_from_refs(ref_rows: object) -> List[str]:
+    out: List[str] = []
+    for row in [dict(item) for item in _as_list(ref_rows) if isinstance(item, Mapping)]:
+        ref_type = str(row.get("ref_type", "")).strip().lower()
+        ref_id = str(row.get("ref_id", "")).strip()
+        if not ref_id:
+            continue
+        if ref_type == "batch" or ref_id.startswith("batch."):
+            out.append(ref_id)
+    return _tokens(out)
+
+
+def _quality_input_resolver(input_ref: Mapping[str, object], binding: Mapping[str, object]) -> object:
+    input_id = str(_as_map(input_ref).get("input_id", "")).strip()
+    params = _as_map(_as_map(binding).get("parameters"))
+    mapping = {
+        "field.temperature": int(_as_int(params.get("temperature", 29315), 29315)),
+        "quantity.pressure_head": int(max(0, _as_int(params.get("pressure_head", 0), 0))),
+        "quantity.entropy_index": int(max(0, _as_int(params.get("entropy_index", 0), 0))),
+        "derived.process.tool_wear_permille": int(max(0, min(1000, _as_int(params.get("tool_wear_permille", 0), 0)))),
+        "derived.process.input_batch_quality_permille": int(max(0, min(1000, _as_int(params.get("input_batch_quality_permille", 900), 900)))),
+        "derived.process.spec_score_permille": int(max(0, min(1000, _as_int(params.get("spec_score_permille", 1000), 1000)))),
+        "derived.process.calibration_state_permille": int(max(0, min(1000, _as_int(params.get("calibration_state_permille", 1000), 1000)))),
+        "derived.process.run_id": str(params.get("run_id", "")).strip(),
+        "derived.process.step_id": str(params.get("step_id", "")).strip(),
+        "derived.process.tick": int(max(0, _as_int(params.get("tick", 0), 0))),
+    }
+    if input_id in mapping:
+        return mapping[input_id]
+    if input_id in params:
+        return params.get(input_id)
+    return 0
+
+
+def _evaluate_process_quality(
+    *,
+    current_tick: int,
+    run_id: str,
+    process_id: str,
+    process_version: str,
+    yield_model_id: str,
+    defect_model_id: str,
+    output_batch_ids: List[str],
+    input_batch_ids: List[str],
+    quality_inputs: Mapping[str, object] | None,
+    stochastic_quality_enabled: bool,
+    yield_model_registry_payload: Mapping[str, object] | None,
+    defect_model_registry_payload: Mapping[str, object] | None,
+    constitutive_model_registry_payload: Mapping[str, object] | None,
+    model_type_registry_payload: Mapping[str, object] | None,
+    model_cache_policy_registry_payload: Mapping[str, object] | None,
+    cache_rows: object,
+) -> dict:
+    inputs = _as_map(quality_inputs)
+    yield_registry = _yield_model_rows_by_id(yield_model_registry_payload)
+    defect_registry = _defect_model_rows_by_id(defect_model_registry_payload)
+    yield_row = dict(yield_registry.get(str(yield_model_id).strip()) or {})
+    defect_row = dict(defect_registry.get(str(defect_model_id).strip()) or {})
+    if not yield_row or not defect_row:
+        return {
+            "result": "skipped",
+            "reason": "missing_model_registry_row",
+            "yield_factor": 1000,
+            "defect_flags": [],
+            "quality_grade": "grade.A",
+            "error_estimate_permille": 0,
+            "evaluation_results": [],
+            "output_actions": [],
+            "cache_rows": [dict(row) for row in _as_list(cache_rows) if isinstance(row, Mapping)],
+        }
+
+    model_rows_by_id = constitutive_model_rows_by_id(constitutive_model_registry_payload)
+    yield_model_ref = str(yield_row.get("model_id", "")).strip()
+    defect_model_ref = str(defect_row.get("model_id", "")).strip()
+    if (yield_model_ref not in model_rows_by_id) or (defect_model_ref not in model_rows_by_id):
+        return {
+            "result": "skipped",
+            "reason": "missing_constitutive_model_row",
+            "yield_factor": 1000,
+            "defect_flags": [],
+            "quality_grade": "grade.A",
+            "error_estimate_permille": 0,
+            "evaluation_results": [],
+            "output_actions": [],
+            "cache_rows": [dict(row) for row in _as_list(cache_rows) if isinstance(row, Mapping)],
+        }
+
+    use_yield_rng = bool(stochastic_quality_enabled) and bool(yield_row.get("stochastic_allowed", False))
+    use_defect_rng = bool(stochastic_quality_enabled) and bool(defect_row.get("stochastic_allowed", False))
+    tick = int(max(0, _as_int(current_tick, 0)))
+    quality_step_id = "step.quality.finalize"
+    parameters_base = {
+        "temperature": int(_as_int(inputs.get("temperature", 29315), 29315)),
+        "pressure_head": int(max(0, _as_int(inputs.get("pressure_head", 0), 0))),
+        "entropy_index": int(max(0, _as_int(inputs.get("entropy_index", 0), 0))),
+        "tool_wear_permille": int(max(0, min(1000, _as_int(inputs.get("tool_wear_permille", 0), 0)))),
+        "input_batch_quality_permille": int(max(0, min(1000, _as_int(inputs.get("input_batch_quality_permille", 900), 900)))),
+        "spec_score_permille": int(max(0, min(1000, _as_int(inputs.get("spec_score_permille", 1000), 1000)))),
+        "calibration_state_permille": int(max(0, min(1000, _as_int(inputs.get("calibration_state_permille", 1000), 1000)))),
+        "run_id": str(run_id),
+        "step_id": str(quality_step_id),
+        "tick": int(tick),
+        "process_id": str(process_id),
+        "process_version": str(process_version),
+        "output_batch_ids": list(output_batch_ids),
+        "input_batch_ids": list(input_batch_ids),
+    }
+    binding_rows = [
+        {
+            "binding_id": "binding.proc2.yield.{}".format(str(run_id)),
+            "model_id": str(yield_model_ref),
+            "target_kind": "custom",
+            "target_id": str(run_id),
+            "tier": "macro",
+            "parameters": dict(
+                parameters_base,
+                stochastic_allowed=bool(use_yield_rng),
+                rng_stream_name=(str(yield_row.get("rng_stream_name", "")).strip() if use_yield_rng else ""),
+            ),
+            "enabled": True,
+            "extensions": {},
+        },
+        {
+            "binding_id": "binding.proc2.defect.{}".format(str(run_id)),
+            "model_id": str(defect_model_ref),
+            "target_kind": "custom",
+            "target_id": str(run_id),
+            "tier": "macro",
+            "parameters": dict(
+                parameters_base,
+                stochastic_allowed=bool(use_defect_rng),
+                rng_stream_name=(str(defect_row.get("rng_stream_name", "")).strip() if use_defect_rng else ""),
+            ),
+            "enabled": True,
+            "extensions": {},
+        },
+    ]
+    eval_result = evaluate_model_bindings(
+        current_tick=int(tick),
+        model_rows=[dict(model_rows_by_id[yield_model_ref]), dict(model_rows_by_id[defect_model_ref])],
+        binding_rows=binding_rows,
+        cache_rows=[dict(row) for row in _as_list(cache_rows) if isinstance(row, Mapping)],
+        model_type_rows=model_type_rows_by_id(model_type_registry_payload),
+        cache_policy_rows=cache_policy_rows_by_id(model_cache_policy_registry_payload),
+        input_resolver_fn=_quality_input_resolver,
+        max_cost_units=16,
+    )
+    output_actions = [dict(row) for row in _as_list(eval_result.get("output_actions")) if isinstance(row, Mapping)]
+
+    yield_factor = 1000
+    quality_grade = "grade.A"
+    error_estimate = 0
+    defect_flags: List[str] = []
+    defect_severity = 0
+    contamination_tags: List[str] = []
+    rng_rows: List[dict] = []
+
+    for row in output_actions:
+        payload = _as_map(row.get("payload"))
+        output_id = str(row.get("output_id", "")).strip().lower()
+        if "yield_factor" in output_id:
+            yield_factor = int(max(0, min(1000, _as_int(payload.get("yield_factor_permille", payload.get("value", yield_factor)), yield_factor))))
+            error_estimate = int(max(0, min(1000, _as_int(payload.get("error_estimate_permille", error_estimate), error_estimate))))
+            grade = str(payload.get("quality_grade", "")).strip()
+            if grade:
+                quality_grade = grade
+        elif "quality_grade" in output_id:
+            grade = str(payload.get("quality_grade", payload.get("value", quality_grade))).strip()
+            if grade:
+                quality_grade = grade
+        elif "error_estimate" in output_id:
+            error_estimate = int(max(0, min(1000, _as_int(payload.get("value", error_estimate), error_estimate))))
+        if "defect_flags" in output_id or isinstance(payload.get("defect_flags"), list):
+            defect_flags = _tokens(list(payload.get("defect_flags", defect_flags)))
+            defect_severity = int(max(0, min(1000, _as_int(payload.get("defect_severity", defect_severity), defect_severity))))
+            contamination_tags = _tokens(list(payload.get("contamination_tags", contamination_tags)))
+        if payload.get("stochastic_allowed") and str(payload.get("rng_stream_name", "")).strip():
+            rng_rows.append(
+                {
+                    "run_id": str(run_id),
+                    "model_id": str(row.get("model_id", "")).strip(),
+                    "rng_stream_name": str(payload.get("rng_stream_name", "")).strip(),
+                    "rng_seed_hash": str(payload.get("rng_seed_hash", "")).strip(),
+                    "tick": int(tick),
+                }
+            )
+
+    if not defect_flags and defect_severity <= 0:
+        defect_flags = []
+    if not contamination_tags and ("contamination" in set(defect_flags)):
+        contamination_tags = ["contamination.process"]
+
+    if str(quality_grade).strip() not in {"grade.A", "grade.B", "grade.C"}:
+        quality_grade = "grade.C" if yield_factor < 760 else "grade.B"
+        if yield_factor >= 900 and not defect_flags:
+            quality_grade = "grade.A"
+
+    return {
+        "result": "complete",
+        "reason": "",
+        "yield_factor": int(max(0, min(1000, yield_factor))),
+        "defect_flags": _tokens(defect_flags),
+        "quality_grade": str(quality_grade),
+        "error_estimate_permille": int(max(0, min(1000, error_estimate))),
+        "defect_severity": int(max(0, min(1000, defect_severity))),
+        "contamination_tags": _tokens(contamination_tags),
+        "evaluation_results": [dict(row) for row in _as_list(eval_result.get("evaluation_results")) if isinstance(row, Mapping)],
+        "output_actions": output_actions,
+        "cache_rows": [dict(row) for row in _as_list(eval_result.get("cache_rows")) if isinstance(row, Mapping)],
+        "rng_rows": [dict(row) for row in _as_list(rng_rows) if isinstance(row, Mapping)],
+    }
+
+
 def process_run_start(*, current_tick: int, process_definition_row: Mapping[str, object], action_template_registry_payload: Mapping[str, object] | None, temporal_domain_registry_payload: Mapping[str, object] | None, input_refs: object, run_id: str | None = None) -> dict:
     definition = build_process_definition_row(
         process_id=str(_as_map(process_definition_row).get("process_id", "")).strip(),
@@ -100,6 +375,8 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         required_environment=_as_map(process_definition_row).get("required_environment"),
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None,
+        yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
+        defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
         extensions=_as_map(_as_map(process_definition_row).get("extensions")),
     )
@@ -112,6 +389,8 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "run_id": token,
         "process_id": str(definition.get("process_id", "")).strip(),
         "version": str(definition.get("version", "")).strip(),
+        "yield_model_id": str(definition.get("yield_model_id", "")).strip(),
+        "defect_model_id": str(definition.get("defect_model_id", "")).strip(),
         "step_order": _tokens(validation.get("ordered_step_ids")),
         "step_status": dict((step_id, "pending") for step_id in _tokens(validation.get("ordered_step_ids"))),
         "deps": _deps(definition),
@@ -124,6 +403,11 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "transform_results": [],
         "observation_artifacts": [],
         "report_artifacts": [],
+        "process_quality_record_rows": [],
+        "batch_quality_rows": [],
+        "quality_model_evaluation_rows": [],
+        "quality_rng_event_rows": [],
+        "quality_model_cache_rows": [],
         "decision_log_rows": [],
         "run_status": "running",
     }
@@ -154,6 +438,8 @@ def process_run_tick(*, current_tick: int, run_state: Mapping[str, object], proc
         required_environment=_as_map(process_definition_row).get("required_environment"),
         tier_contract_id=str(_as_map(process_definition_row).get("tier_contract_id", "")).strip(),
         coupling_budget_id=str(_as_map(process_definition_row).get("coupling_budget_id", "")).strip() or None,
+        yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
+        defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
         extensions=_as_map(_as_map(process_definition_row).get("extensions")),
     )
@@ -260,7 +546,22 @@ def process_run_tick(*, current_tick: int, run_state: Mapping[str, object], proc
     return {"result": "complete", "reason_code": "", "run_state": state, "cost_units_consumed": consumed}
 
 
-def process_run_end(*, current_tick: int, run_record_row: Mapping[str, object], run_state: Mapping[str, object], status: str | None = None) -> dict:
+def process_run_end(
+    *,
+    current_tick: int,
+    run_record_row: Mapping[str, object],
+    run_state: Mapping[str, object],
+    status: str | None = None,
+    quality_inputs: Mapping[str, object] | None = None,
+    tool_ids: object = None,
+    environment_snapshot_hash: str | None = None,
+    stochastic_quality_enabled: bool = False,
+    yield_model_registry_payload: Mapping[str, object] | None = None,
+    defect_model_registry_payload: Mapping[str, object] | None = None,
+    constitutive_model_registry_payload: Mapping[str, object] | None = None,
+    model_type_registry_payload: Mapping[str, object] | None = None,
+    model_cache_policy_registry_payload: Mapping[str, object] | None = None,
+) -> dict:
     run_record = dict(_as_map(run_record_row))
     run_id = str(run_record.get("run_id", "")).strip()
     if not run_id:
@@ -281,6 +582,172 @@ def process_run_end(*, current_tick: int, run_record_row: Mapping[str, object], 
         deterministic_fingerprint="",
         extensions=dict(_as_map(run_record.get("extensions")), run_state_fingerprint=str(state.get("deterministic_fingerprint", "")).strip()),
     )
+
+    output_batch_ids = _batch_ids_from_refs(state.get("output_refs"))
+    input_batch_ids = _batch_ids_from_refs(run_record.get("input_refs"))
+    yield_model_id = str(state.get("yield_model_id", "")).strip()
+    defect_model_id = str(state.get("defect_model_id", "")).strip()
+    quality_result = {
+        "result": "skipped",
+        "reason": "no_output_batches",
+        "yield_factor": 1000,
+        "defect_flags": [],
+        "quality_grade": "grade.A",
+        "error_estimate_permille": 0,
+        "defect_severity": 0,
+        "contamination_tags": [],
+        "evaluation_results": [],
+        "output_actions": [],
+        "cache_rows": [dict(row) for row in _as_list(state.get("quality_model_cache_rows")) if isinstance(row, Mapping)],
+        "rng_rows": [],
+    }
+    if output_batch_ids and yield_model_id and defect_model_id:
+        quality_result = _evaluate_process_quality(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            run_id=str(run_id),
+            process_id=str(run_record.get("process_id", "")).strip(),
+            process_version=str(run_record.get("version", "")).strip() or "1.0.0",
+            yield_model_id=str(yield_model_id),
+            defect_model_id=str(defect_model_id),
+            output_batch_ids=list(output_batch_ids),
+            input_batch_ids=list(input_batch_ids),
+            quality_inputs=_as_map(quality_inputs),
+            stochastic_quality_enabled=bool(stochastic_quality_enabled),
+            yield_model_registry_payload=yield_model_registry_payload,
+            defect_model_registry_payload=defect_model_registry_payload,
+            constitutive_model_registry_payload=constitutive_model_registry_payload,
+            model_type_registry_payload=model_type_registry_payload,
+            model_cache_policy_registry_payload=model_cache_policy_registry_payload,
+            cache_rows=state.get("quality_model_cache_rows"),
+        )
+    elif output_batch_ids:
+        quality_result["reason"] = "missing_process_quality_model_ids"
+
+    quality_record = {}
+    if output_batch_ids:
+        quality_record = build_process_quality_record_row(
+            run_id=str(run_id),
+            yield_factor=int(max(0, min(1000, _as_int(quality_result.get("yield_factor", 1000), 1000)))),
+            defect_flags=_tokens(quality_result.get("defect_flags")),
+            quality_grade=str(quality_result.get("quality_grade", "grade.C")).strip() or "grade.C",
+            extensions={
+                "process_id": str(run_record.get("process_id", "")).strip(),
+                "process_version": str(run_record.get("version", "")).strip() or "1.0.0",
+                "yield_model_id": str(yield_model_id),
+                "defect_model_id": str(defect_model_id),
+                "output_batch_ids": list(output_batch_ids),
+                "input_batch_ids": list(input_batch_ids),
+                "quality_reason": str(quality_result.get("reason", "")).strip(),
+                "error_estimate_permille": int(max(0, min(1000, _as_int(quality_result.get("error_estimate_permille", 0), 0)))),
+                "defect_severity": int(max(0, min(1000, _as_int(quality_result.get("defect_severity", 0), 0)))),
+                "stochastic_quality_enabled": bool(stochastic_quality_enabled),
+            },
+        )
+    traceability = {
+        "run_id": str(run_id),
+        "process_id": str(run_record.get("process_id", "")).strip(),
+        "process_version": str(run_record.get("version", "")).strip() or "1.0.0",
+        "input_batch_ids": list(input_batch_ids),
+        "tool_ids": _tokens(tool_ids),
+        "environment_snapshot_hash": str(environment_snapshot_hash or canonical_sha256({"run_id": run_id, "tick": int(max(0, _as_int(current_tick, 0)))})).strip(),
+    }
+    generated_batch_quality_rows: List[dict] = []
+    if output_batch_ids:
+        contamination_tags = _tokens(quality_result.get("contamination_tags"))
+        if (not contamination_tags) and ("contamination" in set(_tokens(quality_result.get("defect_flags")))):
+            contamination_tags = ["contamination.process"]
+        for batch_id in list(output_batch_ids):
+            row = build_batch_quality_row(
+                batch_id=str(batch_id),
+                quality_grade=str(quality_result.get("quality_grade", "grade.C")).strip() or "grade.C",
+                defect_flags=_tokens(quality_result.get("defect_flags")),
+                contamination_tags=list(contamination_tags),
+                yield_factor=int(max(0, min(1000, _as_int(quality_result.get("yield_factor", 1000), 1000)))),
+                extensions={
+                    "traceability": dict(traceability),
+                    "quality_model_ids": {
+                        "yield_model_id": str(yield_model_id),
+                        "defect_model_id": str(defect_model_id),
+                    },
+                    "source": "PROC2-4",
+                },
+            )
+            if row:
+                generated_batch_quality_rows.append(dict(row))
+
+    merged_quality_rows = [dict(row) for row in _as_list(state.get("process_quality_record_rows")) if isinstance(row, Mapping)]
+    if quality_record:
+        merged_quality_rows.append(dict(quality_record))
+    merged_quality_rows = sorted(merged_quality_rows, key=lambda row: (str(row.get("run_id", "")), str(row.get("deterministic_fingerprint", ""))))
+
+    merged_batch_rows = [dict(row) for row in _as_list(state.get("batch_quality_rows")) if isinstance(row, Mapping)] + [dict(row) for row in list(generated_batch_quality_rows)]
+    merged_batch_rows = sorted(merged_batch_rows, key=lambda row: str(row.get("batch_id", "")))
+
+    state["process_quality_record_rows"] = merged_quality_rows
+    state["batch_quality_rows"] = merged_batch_rows
+    state["quality_model_evaluation_rows"] = [
+        dict(row)
+        for row in _as_list(state.get("quality_model_evaluation_rows"))
+        if isinstance(row, Mapping)
+    ] + [
+        dict(row)
+        for row in _as_list(quality_result.get("evaluation_results"))
+        if isinstance(row, Mapping)
+    ]
+    state["quality_rng_event_rows"] = [
+        dict(row)
+        for row in _as_list(state.get("quality_rng_event_rows"))
+        if isinstance(row, Mapping)
+    ] + [
+        dict(row)
+        for row in _as_list(quality_result.get("rng_rows"))
+        if isinstance(row, Mapping)
+    ]
+    state["quality_model_cache_rows"] = [dict(row) for row in _as_list(quality_result.get("cache_rows")) if isinstance(row, Mapping)]
+    state.setdefault("decision_log_rows", [])
+    if output_batch_ids:
+        state["decision_log_rows"] = [dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)] + [
+            {
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "run_id": str(run_id),
+                "reason": "quality_modeled",
+                "yield_model_id": str(yield_model_id),
+                "defect_model_id": str(defect_model_id),
+                "output_batch_ids": list(output_batch_ids),
+                "quality_result": str(quality_result.get("result", "")),
+            }
+        ]
+
+    state["process_quality_hash_chain"] = canonical_sha256(
+        [
+            {
+                "run_id": str(row.get("run_id", "")).strip(),
+                "yield_factor": int(max(0, min(1000, _as_int(row.get("yield_factor", 0), 0)))),
+                "defect_flags": _tokens(row.get("defect_flags")),
+                "quality_grade": str(row.get("quality_grade", "")).strip(),
+            }
+            for row in state["process_quality_record_rows"]
+        ]
+    )
+    state["batch_quality_hash_chain"] = canonical_sha256(
+        [
+            {
+                "batch_id": str(row.get("batch_id", "")).strip(),
+                "quality_grade": str(row.get("quality_grade", "")).strip(),
+                "defect_flags": _tokens(row.get("defect_flags")),
+                "contamination_tags": _tokens(row.get("contamination_tags")),
+                "yield_factor": int(max(0, min(1000, _as_int(row.get("yield_factor", 0), 0)))),
+                "traceability_run_id": str(_as_map(_as_map(row.get("extensions")).get("traceability")).get("run_id", "")).strip(),
+            }
+            for row in state["batch_quality_rows"]
+        ]
+    )
+
+    finalized["extensions"] = dict(
+        _as_map(finalized.get("extensions")),
+        process_quality_hash_chain=str(state.get("process_quality_hash_chain", "")).strip(),
+        batch_quality_hash_chain=str(state.get("batch_quality_hash_chain", "")).strip(),
+    )
     state["run_status"] = final_status
     state["deterministic_fingerprint"] = canonical_sha256(dict(state, deterministic_fingerprint=""))
     return {"result": "complete", "reason_code": "", "run_record_row": finalized, "run_state": state}
@@ -291,6 +758,7 @@ __all__ = [
     "REFUSAL_PROCESS_RUN_NOT_FOUND",
     "REFUSAL_PROCESS_LEDGER_REQUIRED",
     "REFUSAL_PROCESS_DIRECT_MASS_ENERGY_MUTATION",
+    "build_process_quality_record_row",
     "build_process_run_record_row",
     "build_process_step_record_row",
     "process_run_start",
