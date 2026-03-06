@@ -19292,6 +19292,7 @@ def _append_compiled_model_invariant_findings(
     allowed_compile_paths = {
         compile_engine_rel,
         runtime_rel,
+        "src/process/capsules/capsule_builder.py",
         verify_tool_rel,
         "tools/xstack/repox/check.py",
     }

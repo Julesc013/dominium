@@ -82,6 +82,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         _norm(compile_engine_rel),
         _norm(runtime_rel),
+        _norm("src/process/capsules/capsule_builder.py"),
         _norm("tools/meta/tool_verify_compiled_model.py"),
         _norm("tools/xstack/repox/check.py"),
         _norm("tools/xstack/testx/tests/test_compile_engine_deterministic.py"),

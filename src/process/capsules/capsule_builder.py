@@ -391,6 +391,8 @@ def generate_process_capsule(
     compiled_model_row = {}
     equivalence_proof_row = {}
     compile_validity_row = {}
+    compiled_state_vector_definition_row = {}
+    compiled_state_vector_snapshot_row = {}
     compiled_model_id = None
     compile_result_token = "skipped"
 
@@ -451,6 +453,12 @@ def generate_process_capsule(
         compiled_model_row = _as_map(compile_eval.get("compiled_model_row"))
         equivalence_proof_row = _as_map(compile_eval.get("equivalence_proof_row"))
         compile_validity_row = _as_map(compile_eval.get("validity_domain_row"))
+        compiled_state_vector_definition_row = _as_map(
+            compile_eval.get("state_vector_definition_row")
+        )
+        compiled_state_vector_snapshot_row = _as_map(
+            compile_eval.get("state_vector_snapshot_row")
+        )
         if str(compile_eval.get("result", "")).strip() == "complete":
             compile_result_token = "complete"
             compiled_model_id = str(compiled_model_row.get("compiled_model_id", "")).strip() or None
@@ -552,6 +560,8 @@ def generate_process_capsule(
         "compile_result_row": compile_result_row,
         "compiled_model_row": compiled_model_row,
         "equivalence_proof_row": equivalence_proof_row,
+        "compiled_state_vector_definition_row": compiled_state_vector_definition_row,
+        "compiled_state_vector_snapshot_row": compiled_state_vector_snapshot_row,
         "decision_log_row": decision_log_row,
         "deterministic_fingerprint": str(deterministic_fingerprint or "").strip(),
     }
@@ -573,4 +583,3 @@ __all__ = [
     "build_capsule_generated_record_row",
     "generate_process_capsule",
 ]
-

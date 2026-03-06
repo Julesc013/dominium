@@ -32500,6 +32500,12 @@ def execute_intent(
         generated_row = dict(compile_eval.get("capsule_generated_record_row") or {})
         validity_row = dict(compile_eval.get("validity_domain_row") or {})
         state_vector_definition_row = dict(compile_eval.get("state_vector_definition_row") or {})
+        compiled_state_vector_definition_row = dict(
+            compile_eval.get("compiled_state_vector_definition_row") or {}
+        )
+        compiled_state_vector_snapshot_row = dict(
+            compile_eval.get("compiled_state_vector_snapshot_row") or {}
+        )
         compile_request_row = dict(compile_eval.get("compile_request_row") or {})
         compile_result_row = dict(compile_eval.get("compile_result_row") or {})
         compiled_model_row = dict(compile_eval.get("compiled_model_row") or {})
@@ -32522,6 +32528,16 @@ def execute_intent(
             state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
                 list(state.get("state_vector_definition_rows") or [])
                 + [state_vector_definition_row]
+            )
+        if compiled_state_vector_definition_row:
+            state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+                list(state.get("state_vector_definition_rows") or [])
+                + [compiled_state_vector_definition_row]
+            )
+        if compiled_state_vector_snapshot_row:
+            state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+                list(state.get("state_vector_snapshot_rows") or [])
+                + [compiled_state_vector_snapshot_row]
             )
         if compile_request_row:
             state["compile_request_rows"] = normalize_compile_request_rows(

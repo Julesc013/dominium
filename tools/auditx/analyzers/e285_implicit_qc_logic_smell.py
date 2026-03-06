@@ -55,6 +55,7 @@ def run(graph, repo_root, changed_files=None):
         "src/process/process_definition_validator.py",
         "src/process/qc/qc_engine.py",
         "src/process/qc/__init__.py",
+        "src/process/capsules/capsule_executor.py",
         "tools/process/tool_replay_qc_window.py",
         "tools/xstack/repox/check.py",
     }

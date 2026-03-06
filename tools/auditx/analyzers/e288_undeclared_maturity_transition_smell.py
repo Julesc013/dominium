@@ -54,6 +54,7 @@ def run(graph, repo_root, changed_files=None):
         "src/process/process_run_engine.py",
         "src/process/maturity/maturity_engine.py",
         "src/process/maturity/__init__.py",
+        "src/process/capsules/capsule_builder.py",
         "tools/process/tool_replay_maturity_window.py",
         "tools/xstack/repox/check.py",
     }

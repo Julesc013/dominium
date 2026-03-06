@@ -746,8 +746,8 @@ def execute_process_capsule(
             "capsule_id": capsule_token,
             "run_id": run_id,
             "tick": int(tick),
-            "pollutant_id": str(capsule_ext.get("pollutant_id", "pollutant.pm25")).strip()
-            or "pollutant.pm25",
+            "pollutant_id": str(capsule_ext.get("pollutant_id", "pollutant.smoke_particulate")).strip()
+            or "pollutant.smoke_particulate",
             "emitted_mass_raw": int(max(0, input_total_mass - output_total_mass)),
             "deterministic_fingerprint": "",
             "extensions": {"source": "PROC5-4"},
