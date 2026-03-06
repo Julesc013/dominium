@@ -34,6 +34,11 @@
         "schema_version": "1.0.0",
         "info_family_id": "BELIEF",
         "description": "Interpreted belief-state artifacts derived from receipts"
+      },
+      {
+        "schema_version": "1.0.0",
+        "info_family_id": "MODEL",
+        "description": "Deterministic model and capsule behavior artifacts"
       }
     ],
     "artifact_type_mappings": [
@@ -211,6 +216,26 @@
         "schema_version": "1.0.0",
         "artifact_type_id": "artifact.explain.out_of_spec_batch",
         "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.run_record",
+        "info_family_id": "RECORD"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.qc_report",
+        "info_family_id": "REPORT"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.capsule_model",
+        "info_family_id": "MODEL"
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.capsule_observation",
+        "info_family_id": "OBSERVATION"
       }
     ],
     "extensions": {

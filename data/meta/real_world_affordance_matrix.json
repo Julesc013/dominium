@@ -10,7 +10,8 @@
         "MAT",
         "MECH",
         "SPEC",
-        "THERM"
+        "THERM",
+        "PROC"
       ],
       "series_planned": [
         "DOM",
@@ -96,7 +97,8 @@
         "MOB",
         "MAT",
         "THERM",
-        "FLUID"
+        "FLUID",
+        "PROC"
       ],
       "series_planned": [
         "SCI",
@@ -150,7 +152,8 @@
         "SIG",
         "SPEC",
         "MAT",
-        "CTRL"
+        "CTRL",
+        "PROC"
       ],
       "series_planned": [
         "ECO",
@@ -570,6 +573,21 @@
         "measurement_verification",
         "time_synchronization",
         "institutions_contracts",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "PROC",
+      "affordance_ids": [
+        "matter_transformation",
+        "measurement_verification",
+        "institutions_contracts",
+        "time_synchronization",
         "safety_protection"
       ],
       "tiers": [

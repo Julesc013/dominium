@@ -16,6 +16,7 @@ Define canonical artifact-family semantics for information-bearing outputs so do
 - `MESSAGE`: transport envelope content payloads.
 - `CREDENTIAL`: identity/certification/security artifacts.
 - `BELIEF`: interpreted knowledge state derived from receipts and policy.
+- `MODEL`: deterministic model/capsule behavior representations with declared validity/error bounds.
 
 ## 3) Constitutive Model Integration (META-MODEL)
 
@@ -61,7 +62,18 @@ Physics constitution exception artifacts map as:
 
 Exception events are deterministic provenance records and must be carried in proof/replay witnesses when present.
 
-## 8) Non-Goals
+## 8) Process Artifact Mapping (PROC-0)
+
+Process constitution artifact families:
+
+- process run events and provenance rows -> `RECORD`
+- quality-control summaries and compliance outcomes -> `REPORT`
+- process capsule model payloads -> `MODEL`
+- process capsule sampled outputs -> `OBSERVATION`
+
+This keeps process outputs within canonical META-INFO families and avoids bespoke process-only information grammars.
+
+## 9) Non-Goals
 
 - no runtime semantic changes in META-MODEL-0
-- no new artifact family additions in this phase
+- no bespoke artifact families outside the canonical list above

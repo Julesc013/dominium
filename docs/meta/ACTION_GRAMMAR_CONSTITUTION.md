@@ -117,6 +117,16 @@ PHYS-0 canonical action mapping examples:
 - `inject energy` -> `TRANSFORM` by default when it performs physical quantity transformation.
 - `authorize force application` / `authorize energy injection` -> `DECIDE/AUTHORIZE` when the action only grants policy authority and does not mutate physics directly.
 
+PROC-0 canonical process-step action mapping examples:
+
+- `formalize process definition` -> `DECIDE/AUTHORIZE`
+- `execute transformation step` -> `TRANSFORM`
+- `sample qc instrument` -> `SENSE/MEASURE`
+- `apply stabilization/maintenance action` -> `MAINTAIN`
+- `publish process compliance result` -> `COMMUNICATE`
+
+These are action-family bindings for process workflows; they do not introduce process-only action families.
+
 ## 4) Action Template Contract
 
 Every action template must declare:
