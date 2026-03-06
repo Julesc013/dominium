@@ -416,6 +416,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-QC-POLICY-DECLARED",
     "INV-SAMPLING-DETERMINISTIC",
     "INV-NO-ADHOC-INSPECTION",
+    "INV-CAPSULE-REQUIRES-CAPSULE_ELIGIBLE",
+    "INV-MATURITY-RECORD-CANONICAL",
+    "INV-NO-MAGIC-UNLOCKS",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
     "INV-DEGRADATION-MODEL-ONLY",
@@ -811,6 +814,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E284_DEFECT_FLAG_BYPASS_SMELL": "INV-YIELD-DEFECT-MODEL-DECLARED",
     "E285_IMPLICIT_QC_LOGIC_SMELL": "INV-NO-ADHOC-INSPECTION",
     "E286_NONDETERMINISTIC_SAMPLING_SMELL": "INV-SAMPLING-DETERMINISTIC",
+    "E287_HIDDEN_UNLOCK_SMELL": "INV-NO-MAGIC-UNLOCKS",
+    "E288_UNDECLARED_MATURITY_TRANSITION_SMELL": "INV-MATURITY-RECORD-CANONICAL",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20325,6 +20330,9 @@ def _append_process_constitution_invariant_findings(
     qc_policy_rule_id = "INV-QC-POLICY-DECLARED"
     qc_sampling_rule_id = "INV-SAMPLING-DETERMINISTIC"
     qc_bypass_rule_id = "INV-NO-ADHOC-INSPECTION"
+    capsule_eligibility_rule_id = "INV-CAPSULE-REQUIRES-CAPSULE_ELIGIBLE"
+    maturity_record_rule_id = "INV-MATURITY-RECORD-CANONICAL"
+    no_magic_unlock_rule_id = "INV-NO-MAGIC-UNLOCKS"
 
     process_registry_rel = "data/registries/process_registry.json"
     lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
@@ -20340,14 +20348,22 @@ def _append_process_constitution_invariant_findings(
     qc_result_schema_rel = "schema/process/qc_result_record.schema"
     test_procedure_schema_rel = "schema/process/test_procedure.schema"
     process_quality_schema_rel = "schema/process/process_quality_record.schema"
+    process_metrics_schema_rel = "schema/process/process_metrics_state.schema"
+    process_maturity_schema_rel = "schema/process/process_maturity_record.schema"
+    stabilization_policy_schema_rel = "schema/process/stabilization_policy.schema"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
     qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
+    maturity_doc_rel = "docs/process/STABILIZATION_AND_MATURITY_MODEL.md"
     explain_registry_rel = "data/registries/explain_contract_registry.json"
     inspection_section_rel = "data/registries/inspection_section_registry.json"
+    stabilization_policy_registry_v2_rel = "data/registries/stabilization_policy_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     validator_rel = "src/process/process_definition_validator.py"
     run_engine_rel = "src/process/process_run_engine.py"
     qc_engine_rel = "src/process/qc/qc_engine.py"
+    metrics_engine_rel = "src/process/maturity/metrics_engine.py"
+    maturity_engine_rel = "src/process/maturity/maturity_engine.py"
+    maturity_replay_tool_rel = "tools/process/tool_replay_maturity_window.py"
     run_schema_rel = "schema/process/process_run_record.schema"
     step_schema_rel = "schema/process/process_step_record.schema"
 
@@ -20469,6 +20485,76 @@ def _append_process_constitution_invariant_findings(
                 rule_id=qc_bypass_rule_id,
             )
         )
+    for token in (
+        "update_process_metrics_for_run(",
+        "evaluate_process_maturity(",
+        "process_capsule_eligibility_status(",
+        "process_maturity_record_rows",
+        "process_capsule_eligible",
+        "metrics_state_hash_chain",
+        "process_maturity_hash_chain",
+        "process_cert_hash_chain",
+    ):
+        if token in run_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=run_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="process run engine must route maturity transitions and capsule gating through PROC-4 deterministic pathways",
+                rule_id=capsule_eligibility_rule_id,
+            )
+        )
+    metrics_engine_text = _file_text(repo_root, metrics_engine_rel)
+    for token in (
+        "update_process_metrics_for_run(",
+        "build_process_metrics_state_row(",
+        "policy_id",
+    ):
+        if token in metrics_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=metrics_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="process metrics engine missing required PROC-4 aggregation token",
+                rule_id=maturity_record_rule_id,
+            )
+        )
+    maturity_engine_text = _file_text(repo_root, maturity_engine_rel)
+    for token in (
+        "compute_stabilization_score(",
+        "evaluate_process_maturity(",
+        "build_process_maturity_record_row(",
+        "process_capsule_eligibility_status(",
+    ):
+        if token in maturity_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=maturity_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="process maturity engine missing required PROC-4 deterministic evaluation token",
+                rule_id=maturity_record_rule_id,
+            )
+        )
+    if not _file_text(repo_root, maturity_replay_tool_rel):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=maturity_replay_tool_rel,
+                line_number=1,
+                snippet="missing",
+                message="maturity replay verification tool is required for PROC-4 proof integration",
+                rule_id=maturity_record_rule_id,
+            )
+        )
     process_definition_schema_text = _file_text(repo_root, process_definition_schema_rel)
     for token in ("yield_model_id", "defect_model_id"):
         if token in process_definition_schema_text:
@@ -20492,6 +20578,37 @@ def _append_process_constitution_invariant_findings(
                 snippet="qc_policy_id",
                 message="process definition schema must expose qc_policy_id for policy-driven sampling",
                 rule_id=qc_policy_rule_id,
+            )
+        )
+    for token in ("stabilization_policy_id", "process_lifecycle_policy_id", "process_cert_type_id"):
+        if token in process_definition_schema_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_definition_schema_rel,
+                line_number=1,
+                snippet=token,
+                message="process definition schema must declare PROC-4 maturity/certification policy ids",
+                rule_id=maturity_record_rule_id,
+            )
+        )
+    for rel_path in (
+        process_metrics_schema_rel,
+        process_maturity_schema_rel,
+        stabilization_policy_schema_rel,
+        maturity_doc_rel,
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message="required PROC-4 maturity schema/documentation artifact is missing",
+                rule_id=maturity_record_rule_id,
             )
         )
     for rel_path in (qc_policy_schema_rel, qc_result_schema_rel, test_procedure_schema_rel, qc_doc_rel):
@@ -20716,7 +20833,13 @@ def _append_process_constitution_invariant_findings(
         for row in explain_rows
         if isinstance(row, dict) and str(row.get("contract_id", "")).strip()
     )
-    for contract_id in ("explain.qc_failure", "explain.qc_sampling_decision"):
+    for contract_id in (
+        "explain.qc_failure",
+        "explain.qc_sampling_decision",
+        "explain.process_maturity_change",
+        "explain.process_not_stable",
+        "explain.certification_denied",
+    ):
         if contract_id in explain_ids:
             continue
         findings.append(
@@ -20757,6 +20880,19 @@ def _append_process_constitution_invariant_findings(
                 snippet="section.process.qc_summary",
                 message="inspection section registry must expose section.process.qc_summary for PROC-3 UX integration",
                 rule_id=qc_bypass_rule_id,
+            )
+        )
+    for section_id in ("section.process.maturity_summary", "section.process.metrics_summary"):
+        if section_id in section_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inspection_section_rel,
+                line_number=1,
+                snippet=section_id,
+                message="inspection section registry must expose PROC-4 maturity/metrics sections",
+                rule_id=maturity_record_rule_id,
             )
         )
     if section_error and not section_rows:
@@ -20882,6 +21018,41 @@ def _append_process_constitution_invariant_findings(
                 snippet="process_stabilization_policies",
                 message="process stabilization policy registry is missing or invalid",
                 rule_id=capsule_rule_id,
+            )
+        )
+    stabilization_v2_payload, stabilization_v2_error = _load_json_object(
+        repo_root, stabilization_policy_registry_v2_rel
+    )
+    stabilization_v2_rows = list(
+        (dict(stabilization_v2_payload.get("record") or {}).get("stabilization_policies") or [])
+    )
+    stabilization_v2_ids = set(
+        str(row.get("policy_id", "")).strip()
+        for row in stabilization_v2_rows
+        if isinstance(row, dict) and str(row.get("policy_id", "")).strip()
+    )
+    for policy_id in ("stab.default", "stab.strict", "stab.fast_dev"):
+        if policy_id in stabilization_v2_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stabilization_policy_registry_v2_rel,
+                line_number=1,
+                snippet=policy_id,
+                message="required PROC-4 stabilization policy id is missing from stabilization_policy_registry",
+                rule_id=maturity_record_rule_id,
+            )
+        )
+    if stabilization_v2_error and not stabilization_v2_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stabilization_policy_registry_v2_rel,
+                line_number=1,
+                snippet="record.stabilization_policies",
+                message="PROC-4 stabilization policy registry is missing or invalid",
+                rule_id=maturity_record_rule_id,
             )
         )
 
@@ -21150,6 +21321,91 @@ def _append_process_constitution_invariant_findings(
                     snippet=snippet[:140],
                     message="implicit qc logic detected outside declared PROC-3 qc engine/process pathways",
                     rule_id=qc_bypass_rule_id,
+                )
+            )
+            break
+
+    hidden_unlock_patterns = (
+        re.compile(r"\bprocess_capsule_eligible\s*=\s*True\b", re.IGNORECASE),
+        re.compile(r"\bcurrent_maturity_state\s*=\s*[\"']capsule_eligible[\"']", re.IGNORECASE),
+    )
+    maturity_scan_prefixes = ("src/process/", "tools/process/")
+    maturity_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    hidden_unlock_allowed_files = {
+        run_engine_rel,
+        maturity_engine_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(maturity_scan_prefixes):
+            continue
+        if rel_norm.startswith(maturity_skip_prefixes):
+            continue
+        if rel_norm in hidden_unlock_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in hidden_unlock_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="hidden process capsule unlock pattern detected outside declared PROC-4 maturity engine pathways",
+                    rule_id=no_magic_unlock_rule_id,
+                )
+            )
+            break
+
+    maturity_transition_patterns = (
+        re.compile(r"\bcurrent_maturity_state\b", re.IGNORECASE),
+        re.compile(r"\bprocess_maturity_record_rows\b", re.IGNORECASE),
+        re.compile(r"\bevaluate_process_maturity\s*\(", re.IGNORECASE),
+    )
+    maturity_transition_allowed_files = {
+        run_engine_rel,
+        maturity_engine_rel,
+        "src/process/maturity/__init__.py",
+        "tools/process/tool_replay_maturity_window.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(maturity_scan_prefixes):
+            continue
+        if rel_norm.startswith(maturity_skip_prefixes):
+            continue
+        if rel_norm in maturity_transition_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in maturity_transition_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="undeclared maturity transition token detected outside canonical PROC-4 transition engine",
+                    rule_id=maturity_record_rule_id,
                 )
             )
             break

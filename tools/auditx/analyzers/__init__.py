@@ -310,6 +310,8 @@ from analyzers import e283_inline_yield_smell
 from analyzers import e284_defect_flag_bypass_smell
 from analyzers import e285_implicit_qc_logic_smell
 from analyzers import e286_nondeterministic_sampling_smell
+from analyzers import e287_hidden_unlock_smell
+from analyzers import e288_undeclared_maturity_transition_smell
 
 
 ANALYZERS = (
@@ -623,6 +625,8 @@ ANALYZERS = (
     e284_defect_flag_bypass_smell,
     e285_implicit_qc_logic_smell,
     e286_nondeterministic_sampling_smell,
+    e287_hidden_unlock_smell,
+    e288_undeclared_maturity_transition_smell,
 )
 
 
