@@ -156,6 +156,13 @@ def run_proc_stress(
         sys.path.insert(0, repo_root)
 
     from src.process.drift import drift_policy_rows_by_id, evaluate_process_drift
+    from tools.process.tool_replay_capsule_window import verify_capsule_replay_window
+    from tools.process.tool_replay_drift_window import verify_drift_replay_window
+    from tools.process.tool_replay_maturity_window import verify_maturity_replay_window
+    from tools.process.tool_replay_pipeline_window import verify_pipeline_replay_window
+    from tools.process.tool_replay_process_window import verify_process_replay_window
+    from tools.process.tool_replay_qc_window import verify_qc_replay_window
+    from tools.process.tool_replay_quality_window import verify_quality_replay_window
     from tools.xstack.testx.tests import proc5_testlib, proc7_testlib, proc8_testlib
 
     scenario_row = copy.deepcopy(dict(scenario or {}))
@@ -403,16 +410,38 @@ def run_proc_stress(
                 }
             )
 
-    state["process_run_record_hash_chain"] = _hash_rows(state.get("process_run_record_rows"), ["run_id", "process_id", "version", "start_tick", "end_tick", "status"])
-    state["process_step_record_hash_chain"] = _hash_rows(state.get("process_step_record_rows"), ["run_id", "step_id", "tick", "status"])
-    state["process_quality_hash_chain"] = _hash_rows(state.get("process_quality_record_rows"), ["run_id", "yield_factor", "quality_grade"])
-    state["qc_result_hash_chain"] = _hash_rows(state.get("qc_result_record_rows"), ["run_id", "batch_id", "sampled", "passed", "tick"])
-    state["process_maturity_hash_chain"] = _hash_rows(state.get("process_maturity_record_rows"), ["record_id", "process_id", "version", "maturity_state", "tick"])
-    state["drift_event_hash_chain"] = _hash_rows(state.get("drift_event_record_rows"), ["event_id", "process_id", "version", "drift_band", "tick", "action_taken"])
-    state["capsule_execution_hash_chain"] = _hash_rows(state.get("capsule_execution_record_rows"), ["exec_id", "capsule_id", "inputs_hash", "outputs_hash"])
-    state["compiled_model_hash_chain"] = _hash_rows(state.get("compiled_model_rows"), ["compiled_model_id", "source_hash", "compiled_type_id", "equivalence_proof_ref"])
-    state["candidate_promotion_hash_chain"] = _hash_rows(state.get("candidate_promotion_record_rows"), ["record_id", "candidate_id", "process_id", "version", "tick"])
-    state["deployment_hash_chain"] = _hash_rows(state.get("deployment_record_rows"), ["deploy_id", "artifact_id", "from_subject_id", "to_address", "tick"])
+    process_obs = _as_map(verify_process_replay_window(state_payload=state).get("observed"))
+    quality_obs = _as_map(verify_quality_replay_window(state_payload=state).get("observed"))
+    qc_obs = _as_map(verify_qc_replay_window(state_payload=state).get("observed"))
+    maturity_obs = _as_map(verify_maturity_replay_window(state_payload=state).get("observed"))
+    drift_obs = _as_map(verify_drift_replay_window(state_payload=state).get("observed"))
+    capsule_obs = _as_map(verify_capsule_replay_window(state_payload=state).get("observed"))
+    pipeline_obs = _as_map(verify_pipeline_replay_window(state_payload=state).get("observed"))
+    promotion_rows = sorted(
+        [dict(row) for row in list(state.get("candidate_promotion_record_rows") or []) if isinstance(row, Mapping)],
+        key=lambda row: (int(max(0, _as_int(row.get("tick", 0), 0))), str(row.get("record_id", ""))),
+    )
+    state["process_run_record_hash_chain"] = str(process_obs.get("process_run_record_hash_chain", ""))
+    state["process_step_record_hash_chain"] = str(process_obs.get("process_step_record_hash_chain", ""))
+    state["process_quality_hash_chain"] = str(quality_obs.get("process_quality_hash_chain", ""))
+    state["qc_result_hash_chain"] = str(qc_obs.get("qc_result_hash_chain", ""))
+    state["process_maturity_hash_chain"] = str(maturity_obs.get("process_maturity_hash_chain", ""))
+    state["drift_event_hash_chain"] = str(drift_obs.get("drift_event_hash_chain", ""))
+    state["capsule_execution_hash_chain"] = str(capsule_obs.get("capsule_execution_hash_chain", ""))
+    state["compiled_model_hash_chain"] = str(capsule_obs.get("compiled_model_hash_chain", "")) or str(pipeline_obs.get("compiled_model_hash_chain", ""))
+    state["candidate_promotion_hash_chain"] = canonical_sha256(
+        [
+            {
+                "record_id": str(row.get("record_id", "")).strip(),
+                "candidate_id": str(row.get("candidate_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in promotion_rows
+        ]
+    )
+    state["deployment_hash_chain"] = str(pipeline_obs.get("deployment_hash_chain", ""))
 
     metrics["compaction_marker_count"] = int(len(list(state.get("compaction_markers") or [])))
     metrics["compiled_model_cache_hit_rate"] = 0.0 if metrics["compiled_model_eval_count"] <= 0 else float(metrics["compiled_model_cache_hit_count"]) / float(metrics["compiled_model_eval_count"])
