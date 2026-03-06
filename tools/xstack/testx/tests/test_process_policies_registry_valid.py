@@ -29,6 +29,19 @@ def _collect_ids(rows, key: str):
     return out
 
 
+def _collect_drift_ids(rows):
+    out = set()
+    for row in list(rows or []):
+        if not isinstance(row, dict):
+            continue
+        token = str(
+            row.get("drift_policy_id", row.get("process_drift_policy_id", ""))
+        ).strip()
+        if token:
+            out.add(token)
+    return out
+
+
 def run(repo_root: str):
     lifecycle_payload, lifecycle_err = _load(repo_root, "data/registries/process_lifecycle_policy_registry.json")
     stabilization_payload, stabilization_err = _load(repo_root, "data/registries/process_stabilization_policy_registry.json")
@@ -47,7 +60,7 @@ def run(repo_root: str):
 
     lifecycle_ids = _collect_ids(lifecycle_rows, "process_lifecycle_policy_id")
     stabilization_ids = _collect_ids(stabilization_rows, "process_stabilization_policy_id")
-    drift_ids = _collect_ids(drift_rows, "process_drift_policy_id")
+    drift_ids = _collect_drift_ids(drift_rows)
 
     missing = []
     for token in ("proc.lifecycle.default", "proc.lifecycle.rank_strict", "proc.lifecycle.lab_experimental"):
@@ -56,7 +69,7 @@ def run(repo_root: str):
     for token in ("stab.default", "stab.strict", "stab.fast_dev"):
         if token not in stabilization_ids:
             missing.append(token)
-    for token in ("drift.default", "drift.strict"):
+    for token in ("drift.default", "drift.strict", "drift.fast_dev"):
         if token not in drift_ids:
             missing.append(token)
     if missing:

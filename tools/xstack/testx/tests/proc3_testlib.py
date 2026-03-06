@@ -19,7 +19,13 @@ def _load_json(repo_root: str, rel_path: str) -> dict:
     return payload if isinstance(payload, dict) else {}
 
 
-def _process_definition(*, qc_policy_id: str, yield_model_id: str, defect_model_id: str) -> dict:
+def _process_definition(
+    *,
+    qc_policy_id: str,
+    yield_model_id: str,
+    defect_model_id: str,
+    drift_policy_id: str,
+) -> dict:
     return {
         "process_id": "proc.test.proc3.qc",
         "version": "1.0.0",
@@ -59,6 +65,7 @@ def _process_definition(*, qc_policy_id: str, yield_model_id: str, defect_model_
         "tier_contract_id": "tier.proc.default",
         "coupling_budget_id": None,
         "qc_policy_id": str(qc_policy_id),
+        "drift_policy_id": str(drift_policy_id),
         "yield_model_id": str(yield_model_id),
         "defect_model_id": str(defect_model_id),
     }
@@ -72,12 +79,18 @@ def run_proc3_qc_case(
     output_batch_ids: Sequence[str] | None = None,
     yield_model_id: str = "yield.default_deterministic",
     defect_model_id: str = "defect.default_deterministic",
+    drift_policy_id: str = "drift.default",
     quality_inputs: Mapping[str, object] | None = None,
     stochastic_quality_enabled: bool = False,
     qc_policy_registry_payload: Mapping[str, object] | None = None,
     sampling_strategy_registry_payload: Mapping[str, object] | None = None,
     test_procedure_registry_payload: Mapping[str, object] | None = None,
     tolerance_policy_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
+    drift_update_stride: int = 1,
+    force_drift_update: bool = True,
+    reliability_failure_count: int = 0,
+    run_state_overrides: Mapping[str, object] | None = None,
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
@@ -111,11 +124,17 @@ def run_proc3_qc_case(
         if isinstance(tolerance_policy_registry_payload, Mapping)
         else _load_json(repo_root, "data/registries/tolerance_policy_registry.json")
     )
+    drift_registry = (
+        dict(drift_policy_registry_payload)
+        if isinstance(drift_policy_registry_payload, Mapping)
+        else _load_json(repo_root, "data/registries/process_drift_policy_registry.json")
+    )
 
     process_definition = _process_definition(
         qc_policy_id=str(qc_policy_id),
         yield_model_id=str(yield_model_id),
         defect_model_id=str(defect_model_id),
+        drift_policy_id=str(drift_policy_id),
     )
     started = process_run_start(
         current_tick=200,
@@ -128,6 +147,7 @@ def run_proc3_qc_case(
         ],
         run_id=str(run_id),
         qc_policy_registry_payload=qc_registry,
+        drift_policy_registry_payload=drift_registry,
     )
     if str(started.get("result", "")).strip() != "complete":
         return {"start": dict(started), "tick": {}, "end": {}, "state": {}}
@@ -157,6 +177,11 @@ def run_proc3_qc_case(
     )
     if str(ticked.get("result", "")).strip() != "complete":
         return {"start": dict(started), "tick": dict(ticked), "end": {}, "state": {}}
+    if isinstance(run_state_overrides, Mapping):
+        patched_state = dict(ticked.get("run_state") or {})
+        for key, value in sorted(dict(run_state_overrides).items(), key=lambda item: str(item[0])):
+            patched_state[str(key)] = value
+        ticked["run_state"] = patched_state
 
     q_inputs = dict(
         {
@@ -191,6 +216,10 @@ def run_proc3_qc_case(
         instrument_id="instrument.proc3.qc.basic",
         calibration_cert_id="cert.instrument.proc3.qc.basic",
         requester_subject_id="subject.proc3.inspector",
+        drift_policy_registry_payload=drift_registry,
+        drift_update_stride=int(max(1, int(drift_update_stride))),
+        force_drift_update=bool(force_drift_update),
+        reliability_failure_count=int(max(0, int(reliability_failure_count))),
     )
     return {
         "start": dict(started),
