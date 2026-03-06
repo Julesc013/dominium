@@ -3654,6 +3654,20 @@
         "1.0.0"
       ]
     },
+    "process_capsule": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "capsule_execution_record": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "process_step_record": {
       "current_version": "1.0.0",
       "migrations": {},

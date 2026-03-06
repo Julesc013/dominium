@@ -1,0 +1,28 @@
+SCHEMA: process/process_capsule.schema
+schema_id: dominium.schema.process.process_capsule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic macro ProcessCapsule artifacts derived from stabilized ProcessDefinitions.
+
+NON-SEMANTICS:
+- Does not grant direct truth mutation authority outside process runtime.
+- Does not bypass maturity, QC, certification, or validity checks.
+
+REQUIRED SHAPE:
+record process_capsule
+  required:
+    - capsule_id: id
+    - process_id: id
+    - version: semver
+    - input_signature_ref: id
+    - output_signature_ref: id
+    - validity_domain_ref: id
+    - error_bound_policy_id: id
+    - state_vector_definition_id: id
+    - coupling_budget_id: id
+    - compiled_model_id: id?
+    - deterministic_fingerprint: text
+    - extensions: map
+
