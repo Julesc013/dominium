@@ -912,6 +912,86 @@
         "extensions": {
           "source": "SYS7-0"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.qc_failure",
+        "event_kind_id": "process.qc_failure",
+        "explain_artifact_type_id": "artifact.explain.process_qc_failure",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.measurement",
+          "section.process.quality_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.recalibrate.instrument",
+          "hint.increase.qc_sampling",
+          "hint.review.input_lot"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.drift_detected",
+        "event_kind_id": "process.drift_detected",
+        "explain_artifact_type_id": "artifact.explain.process_drift_detected",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.drift_summary",
+          "section.process.stability_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.run.revalidation",
+          "hint.force.expand",
+          "hint.check.tool_wear"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.yield_drop",
+        "event_kind_id": "process.yield_drop",
+        "explain_artifact_type_id": "artifact.explain.process_yield_drop",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.yield_summary",
+          "section.process.input_variance"
+        ],
+        "remediation_hint_keys": [
+          "hint.adjust.parameter_bundle",
+          "hint.inspect.tooling",
+          "hint.recheck.environment"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.process_refusal",
+        "event_kind_id": "process.refusal",
+        "explain_artifact_type_id": "artifact.explain.process_refusal",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.decision",
+          "section.process.refusal_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.capability",
+          "hint.verify.policy_mode",
+          "hint.review.preconditions"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-3"
+        }
       }
     ],
     "extensions": {

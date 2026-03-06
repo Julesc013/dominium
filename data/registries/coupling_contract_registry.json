@@ -16,7 +16,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Electrical losses are routed through canonical PHYS-3 transform into thermal ledger channels."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.safety_force_expand",
+        "coupling_priority_class": "critical",
+        "coupling_cost_units": 8
       },
       {
         "schema_version": "1.0.0",
@@ -29,7 +32,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "FIELD irradiance contributes deterministic heat input via constitutive model output."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -43,7 +49,10 @@
         "extensions": {
           "description": "Temperature-influenced structural response remains model-mediated.",
           "note": "Current baseline uses fatigue model as strength/degradation proxy."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -56,7 +65,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Signal receipt acceptance is policy-mediated through trust/belief thresholds."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.optional_best_effort",
+        "coupling_priority_class": "optional",
+        "coupling_cost_units": 2
       },
       {
         "schema_version": "1.0.0",
@@ -70,7 +82,10 @@
         "extensions": {
           "description": "FIELD friction sampling influences MOB traction outcomes through declared field policy pathways.",
           "effect_id": "effect.mobility.traction_modifier"
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -84,7 +99,10 @@
         "extensions": {
           "description": "PHYS gravity model emits deterministic force application consumed by MOB ROI integration.",
           "process_id": "process.apply_force"
-        }
+        },
+        "coupling_relevance_policy_id": "policy.safety_force_expand",
+        "coupling_priority_class": "critical",
+        "coupling_cost_units": 8
       },
       {
         "schema_version": "1.0.0",
@@ -97,7 +115,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "FLUID heat exchange influences THERM via constitutive model binding."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -114,7 +135,10 @@
             "process.start_leak",
             "process.leak_tick"
           ]
-        }
+        },
+        "coupling_relevance_policy_id": "policy.safety_force_expand",
+        "coupling_priority_class": "critical",
+        "coupling_cost_units": 8
       },
       {
         "schema_version": "1.0.0",
@@ -127,7 +151,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "FLUID pressure load contributes to MECH hazards via constitutive model."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.safety_force_expand",
+        "coupling_priority_class": "critical",
+        "coupling_cost_units": 8
       },
       {
         "schema_version": "1.0.0",
@@ -140,7 +167,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "CHEM scaling/fouling degradation modifies FLUID edge capacity/loss through emitted effects."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -153,7 +183,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "CHEM fouling degradation reduces THERM effective conductance through effect outputs."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -166,7 +199,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "CHEM corrosion degradation reduces MECH effective strength through effect outputs."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -179,7 +215,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "CHEM corrosion/moisture degradation increases ELEC insulation-breakdown hazard through effect outputs."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.safety_force_expand",
+        "coupling_priority_class": "critical",
+        "coupling_cost_units": 8
       },
       {
         "schema_version": "1.0.0",
@@ -192,7 +231,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "CHEM reaction/process emissions are normalized into canonical pollution source events."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -205,7 +247,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "THERM combustion/fire emissions are normalized into canonical pollution source events."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -218,7 +263,10 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "FLUID leak/flow contaminants are carried into POLL transport accounting (POLL-0 stub)."
-        }
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       },
       {
         "schema_version": "1.0.0",
@@ -232,7 +280,10 @@
         "extensions": {
           "description": "Visibility reduction must be model-derived from pollutant concentration pathways, never direct ad hoc field writes.",
           "optional": true
-        }
+        },
+        "coupling_relevance_policy_id": "policy.optional_best_effort",
+        "coupling_priority_class": "optional",
+        "coupling_cost_units": 2
       },
       {
         "schema_version": "1.0.0",
@@ -246,7 +297,61 @@
         "extensions": {
           "description": "Institutional pollution reporting handoff to SIG domain.",
           "status": "reserved_for_later"
-        }
+        },
+        "coupling_relevance_policy_id": "policy.optional_best_effort",
+        "coupling_priority_class": "optional",
+        "coupling_cost_units": 2
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.proc.capsule_to_chem.outputs",
+        "coupling_class_id": "compliance_coupling",
+        "from_domain_id": "PROC",
+        "to_domain_id": "CHEM",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.proc_capsule_output_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Process capsule outputs are projected to CHEM-compatible inputs through declared constitutive bindings.",
+          "source": "PROC0-3"
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.proc.qc_to_sig.report",
+        "coupling_class_id": "info_coupling",
+        "from_domain_id": "PROC",
+        "to_domain_id": "SIG",
+        "mechanism": "signal_policy",
+        "mechanism_id": "belief.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Process QC and drift reports are transmitted through SIG trust/receipt policy pathways.",
+          "source": "PROC0-3"
+        },
+        "coupling_relevance_policy_id": "policy.optional_best_effort",
+        "coupling_priority_class": "optional",
+        "coupling_cost_units": 2
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.proc.drift_to_sys.fidelity",
+        "coupling_class_id": "safety_coupling",
+        "from_domain_id": "PROC",
+        "to_domain_id": "SYS",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.proc_drift_score_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Process drift/failure-risk outputs can trigger system fidelity escalation and forced revalidation.",
+          "source": "PROC0-3"
+        },
+        "coupling_relevance_policy_id": "policy.safety_force_expand",
+        "coupling_priority_class": "critical",
+        "coupling_cost_units": 8
       }
     ],
     "extensions": {

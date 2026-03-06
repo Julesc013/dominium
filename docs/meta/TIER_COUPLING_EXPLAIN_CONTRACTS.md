@@ -1,7 +1,7 @@
 # Tier/Coupling/Explain Contracts
 
 Status: CANONICAL
-Last Updated: 2026-03-04
+Last Updated: 2026-03-06
 Scope: META-CONTRACT-0/1 mandatory declarations and hard-gate enforcement for tier discipline, cross-domain coupling, and explainability.
 
 ## 1) Purpose
@@ -136,6 +136,25 @@ Current baseline domain coverage:
 - SIG
 - PHYS
 - FLUID
+
+PROC-0 template coverage:
+
+- Tier template:
+  - `tier.proc.default`
+  - lifecycle tier expectations:
+    - exploration/defined: micro+meso
+    - stabilized/certified: meso+macro
+    - capsule: macro
+    - drifted: micro+meso revalidation path
+- Coupling templates:
+  - `coupling.proc.capsule_to_chem.outputs`
+  - `coupling.proc.qc_to_sig.report`
+  - `coupling.proc.drift_to_sys.fidelity`
+- Explain templates:
+  - `explain.qc_failure`
+  - `explain.drift_detected`
+  - `explain.yield_drop`
+  - `explain.process_refusal`
 
 Topology/semantic-impact integration must include:
 

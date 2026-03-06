@@ -500,6 +500,56 @@
           "source": "SYS3-2",
           "notes": "SYS tier transitions are process-governed via process.system_roi_tick."
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "tier.proc.default",
+        "subsystem_id": "PROC",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.physics.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "process_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-3",
+          "lifecycle_tier_support": {
+            "exploration": [
+              "micro",
+              "meso"
+            ],
+            "defined": [
+              "micro",
+              "meso"
+            ],
+            "stabilized": [
+              "meso",
+              "macro"
+            ],
+            "certified": [
+              "meso",
+              "macro"
+            ],
+            "capsule": [
+              "macro"
+            ],
+            "drifted": [
+              "micro",
+              "meso"
+            ]
+          }
+        }
       }
     ],
     "extensions": {
