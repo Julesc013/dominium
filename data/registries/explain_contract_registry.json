@@ -935,6 +935,26 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.qc_sampling_decision",
+        "event_kind_id": "process.qc_sampling_decision",
+        "explain_artifact_type_id": "artifact.explain.process_qc_sampling_decision",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.measurement",
+          "section.process.qc_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.review.qc_policy",
+          "hint.recalibrate.instrument",
+          "hint.request.additional_sampling"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC3-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.drift_detected",
         "event_kind_id": "process.drift_detected",
         "explain_artifact_type_id": "artifact.explain.process_drift_detected",
