@@ -5438,6 +5438,211 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.process.lab"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical PROC-7 experiment start process; validates experiment definition and opens deterministic experiment run binding for epistemic process discovery.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "receipt-gated"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.experiment_run_start)",
+        "source": "PROC7-3",
+        "tier": "micro_meso"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.process.experiment.unknown",
+        "refusal.process.experiment.process_unknown"
+      ],
+      "human_name": "Experiment Run Start",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "experiment_id",
+          "ref_id": "dominium.schema.process.experiment_definition@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "experiment_run_binding",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.experiment_run_start",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.process.lab"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical PROC-7 experiment completion process; derives deterministic experiment result reports from measured observations and emits subject-bound receipts.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "receipt-gated"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.experiment_run_complete)",
+        "source": "PROC7-3",
+        "tier": "micro_meso"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.process.experiment.invalid"
+      ],
+      "human_name": "Experiment Run Complete",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "experiment_id",
+          "ref_id": "dominium.schema.process.experiment_definition@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "run_id",
+          "ref_id": "dominium.schema.process.process_run_record@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "experiment_result",
+          "ref_id": "dominium.schema.process.experiment_result@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "experiment_result_report",
+          "ref_id": "dominium.info.REPORT",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.experiment_run_complete",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.process.lab"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical PROC-7 candidate promotion process; promotes a derived candidate process definition to defined status when deterministic replication and QC gates pass.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "policy-gated"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.candidate_promote_to_defined)",
+        "source": "PROC7-5",
+        "tier": "micro_meso"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.process.candidate.promotion_denied"
+      ],
+      "human_name": "Candidate Promote To Defined",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "candidate_id",
+          "ref_id": "dominium.schema.process.candidate_process_definition@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "candidate_promotion_record",
+          "ref_id": "dominium.info.RECORD",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.candidate_promote_to_defined",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.tool.lab"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical PROC-7 reverse engineering action process; executes deterministic disassemble/assay/scan workflows and emits canonical reverse engineering records.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "receipt-gated"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.reverse_engineering_action)",
+        "source": "PROC7-6",
+        "tier": "micro_meso"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.process.reverse_engineering.invalid"
+      ],
+      "human_name": "Reverse Engineering Action",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "target_item_id",
+          "ref_id": "dominium.item",
+          "ref_type": "concept"
+        },
+        {
+          "io_tags": [],
+          "name": "method",
+          "ref_id": "dominium.schema.process.reverse_engineering_record@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "reverse_engineering_record",
+          "ref_id": "dominium.schema.process.reverse_engineering_record@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "measurement_artifact",
+          "ref_id": "dominium.info.OBSERVATION",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.reverse_engineering_action",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",

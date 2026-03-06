@@ -63,6 +63,18 @@ from src.process.drift import (
     process_drift_rows_by_key,
     schedule_revalidation_trials,
 )
+from src.process.research import (
+    REFUSAL_EXPERIMENT_INVALID,
+    REFUSAL_EXPERIMENT_PROCESS_UNKNOWN,
+    REFUSAL_EXPERIMENT_UNKNOWN,
+    build_experiment_definition_row,
+    build_experiment_result_row,
+    evaluate_experiment_run_complete,
+    evaluate_experiment_run_start,
+    experiment_definition_rows_by_id,
+    normalize_experiment_definition_rows,
+    normalize_experiment_result_rows,
+)
 
 __all__ = [
     "REFUSAL_PROCESS_INVALID_DEFINITION",
@@ -118,4 +130,14 @@ __all__ = [
     "evaluate_process_drift",
     "schedule_revalidation_trials",
     "apply_revalidation_trial_result",
+    "REFUSAL_EXPERIMENT_INVALID",
+    "REFUSAL_EXPERIMENT_UNKNOWN",
+    "REFUSAL_EXPERIMENT_PROCESS_UNKNOWN",
+    "build_experiment_definition_row",
+    "normalize_experiment_definition_rows",
+    "experiment_definition_rows_by_id",
+    "build_experiment_result_row",
+    "normalize_experiment_result_rows",
+    "evaluate_experiment_run_start",
+    "evaluate_experiment_run_complete",
 ]

@@ -659,6 +659,15 @@ from src.process.capsules import (
     normalize_capsule_execution_record_rows,
     normalize_process_capsule_rows,
 )
+from src.process.research import (
+    REFUSAL_EXPERIMENT_INVALID,
+    REFUSAL_EXPERIMENT_PROCESS_UNKNOWN,
+    REFUSAL_EXPERIMENT_UNKNOWN,
+    evaluate_experiment_run_complete,
+    evaluate_experiment_run_start,
+    normalize_experiment_definition_rows,
+    normalize_experiment_result_rows,
+)
 from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
 from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -845,6 +854,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.process_run_start": "entitlement.tool.operating",
     "process.process_run_tick": "entitlement.tool.operating",
     "process.process_run_end": "entitlement.tool.operating",
+    "process.experiment_run_start": "entitlement.tool.use",
+    "process.experiment_run_complete": "entitlement.tool.use",
+    "process.candidate_promote_to_defined": "entitlement.control.admin",
+    "process.reverse_engineering_action": "entitlement.tool.use",
     "process.process_capsule_generate": "entitlement.control.admin",
     "process.process_capsule_execute": "entitlement.tool.operating",
     "process.pollution_emit": "session.boot",
@@ -1042,6 +1055,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.process_run_start": "operator",
     "process.process_run_tick": "operator",
     "process.process_run_end": "operator",
+    "process.experiment_run_start": "operator",
+    "process.experiment_run_complete": "operator",
+    "process.candidate_promote_to_defined": "operator",
+    "process.reverse_engineering_action": "operator",
     "process.process_capsule_generate": "operator",
     "process.process_capsule_execute": "operator",
     "process.pollution_emit": "observer",
@@ -1166,6 +1183,10 @@ CONTROL_PROCESS_IDS = {
     "process.process_run_start",
     "process.process_run_tick",
     "process.process_run_end",
+    "process.experiment_run_start",
+    "process.experiment_run_complete",
+    "process.candidate_promote_to_defined",
+    "process.reverse_engineering_action",
     "process.process_capsule_generate",
     "process.process_capsule_execute",
     "process.pollution_emit",
@@ -1244,6 +1265,9 @@ TOOL_PROCESS_IDS = {
     "process.tool_use_prepare",
     "process.tool_readout_tick",
     "process.pollution_measure",
+    "process.experiment_run_start",
+    "process.experiment_run_complete",
+    "process.reverse_engineering_action",
 }
 TASK_PROCESS_IDS = {
     "process.task_create",
@@ -10457,6 +10481,362 @@ def _ensure_process_run_state_rows(state: dict) -> List[dict]:
     state["chem_process_run_state_rows"] = [dict(row) for row in normalized]
     state["process_run_state_rows"] = [dict(row) for row in normalized]
     return [dict(row) for row in normalized]
+
+
+def _ensure_experiment_definition_rows(state: dict) -> List[dict]:
+    rows = state.get("experiment_definition_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_experiment_definition_rows(rows)
+    state["experiment_definition_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_experiment_result_rows(state: dict) -> List[dict]:
+    rows = state.get("experiment_result_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_experiment_result_rows(rows)
+    state["experiment_result_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_experiment_run_binding_rows(state: dict) -> List[dict]:
+    rows = state.get("experiment_run_binding_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("start_tick", 0), 0))),
+            str(item.get("run_id", "")),
+        ),
+    ):
+        experiment_id = str(row.get("experiment_id", "")).strip()
+        run_id = str(row.get("run_id", "")).strip()
+        process_id = str(row.get("process_id", "")).strip()
+        if (not experiment_id) or (not run_id) or (not process_id):
+            continue
+        status = str(row.get("status", "running")).strip().lower() or "running"
+        if status not in {"running", "completed", "failed", "aborted"}:
+            status = "running"
+        payload = {
+            "schema_version": "1.0.0",
+            "experiment_id": experiment_id,
+            "run_id": run_id,
+            "process_id": process_id,
+            "version": str(row.get("version", "")).strip() or "1.0.0",
+            "start_tick": int(max(0, _as_int(row.get("start_tick", 0), 0))),
+            "end_tick": (
+                None
+                if row.get("end_tick") is None
+                else int(max(0, _as_int(row.get("end_tick", 0), 0)))
+            ),
+            "status": status,
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+        payload["deterministic_fingerprint"] = str(
+            row.get("deterministic_fingerprint", "")
+        ).strip() or canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[run_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["experiment_run_binding_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_candidate_process_definition_rows(state: dict) -> List[dict]:
+    rows = state.get("candidate_process_definition_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("candidate_id", "")),
+    ):
+        candidate_id = str(row.get("candidate_id", "")).strip()
+        if not candidate_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "candidate_id": candidate_id,
+            "inferred_from_artifact_ids": _sorted_tokens(
+                list(row.get("inferred_from_artifact_ids") or [])
+            ),
+            "proposed_process_definition_ref": str(
+                row.get("proposed_process_definition_ref", "")
+            ).strip(),
+            "confidence_score": int(
+                max(0, min(1000, _as_int(row.get("confidence_score", 0), 0)))
+            ),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+        if not payload["proposed_process_definition_ref"]:
+            continue
+        payload["deterministic_fingerprint"] = str(
+            row.get("deterministic_fingerprint", "")
+        ).strip() or canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[candidate_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["candidate_process_definition_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_candidate_model_binding_rows(state: dict) -> List[dict]:
+    rows = state.get("candidate_model_binding_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("candidate_binding_id", "")),
+    ):
+        binding_id = str(row.get("candidate_binding_id", "")).strip()
+        candidate_id = str(row.get("candidate_id", "")).strip()
+        if (not binding_id) or (not candidate_id):
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "candidate_binding_id": binding_id,
+            "candidate_id": candidate_id,
+            "model_id": str(row.get("model_id", "")).strip() or None,
+            "confidence_score": int(
+                max(0, min(1000, _as_int(row.get("confidence_score", 0), 0)))
+            ),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+        payload["deterministic_fingerprint"] = str(
+            row.get("deterministic_fingerprint", "")
+        ).strip() or canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[binding_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["candidate_model_binding_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_reverse_engineering_record_rows(state: dict) -> List[dict]:
+    rows = state.get("reverse_engineering_record_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("record_id", "")),
+        ),
+    ):
+        record_id = str(row.get("record_id", "")).strip()
+        subject_id = str(row.get("subject_id", "")).strip()
+        target_item_id = str(row.get("target_item_id", "")).strip()
+        method = str(row.get("method", "")).strip().lower()
+        if (not record_id) or (not subject_id) or (not target_item_id):
+            continue
+        if method not in {"disassemble", "assay", "scan"}:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "record_id": record_id,
+            "subject_id": subject_id,
+            "target_item_id": target_item_id,
+            "method": method,
+            "destroyed": bool(row.get("destroyed", False)),
+            "produced_artifact_ids": _sorted_tokens(
+                list(row.get("produced_artifact_ids") or [])
+            ),
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+        payload["deterministic_fingerprint"] = str(
+            row.get("deterministic_fingerprint", "")
+        ).strip() or canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[record_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["reverse_engineering_record_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_candidate_promotion_record_rows(state: dict) -> List[dict]:
+    rows = state.get("candidate_promotion_record_rows")
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("record_id", "")),
+        ),
+    ):
+        record_id = str(row.get("record_id", "")).strip()
+        if not record_id:
+            continue
+        payload = {
+            "schema_version": "1.0.0",
+            "record_id": record_id,
+            "candidate_id": str(row.get("candidate_id", "")).strip(),
+            "process_id": str(row.get("process_id", "")).strip(),
+            "version": str(row.get("version", "")).strip() or "1.0.0",
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "status": str(row.get("status", "promoted")).strip().lower() or "promoted",
+            "deterministic_fingerprint": "",
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+        payload["deterministic_fingerprint"] = str(
+            row.get("deterministic_fingerprint", "")
+        ).strip() or canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        out[record_id] = payload
+    normalized = [dict(out[key]) for key in sorted(out.keys())]
+    state["candidate_promotion_record_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _refresh_process_research_hash_chains(state: dict) -> None:
+    experiment_rows = _ensure_experiment_result_rows(state)
+    binding_rows = _ensure_experiment_run_binding_rows(state)
+    candidate_rows = _ensure_candidate_process_definition_rows(state)
+    candidate_binding_rows = _ensure_candidate_model_binding_rows(state)
+    reverse_rows = _ensure_reverse_engineering_record_rows(state)
+    promotion_rows = _ensure_candidate_promotion_record_rows(state)
+    state["experiment_result_hash_chain"] = canonical_sha256(
+        [
+            {
+                "result_id": str(row.get("result_id", "")).strip(),
+                "experiment_id": str(row.get("experiment_id", "")).strip(),
+                "run_id": str(row.get("run_id", "")).strip(),
+                "measured_values": dict(row.get("measured_values") or {})
+                if isinstance(row.get("measured_values"), Mapping)
+                else {},
+                "confidence_bounds": dict(row.get("confidence_bounds") or {})
+                if isinstance(row.get("confidence_bounds"), Mapping)
+                else {},
+            }
+            for row in sorted(
+                (dict(item) for item in list(experiment_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("result_id", "")),
+            )
+        ]
+    )
+    state["experiment_run_binding_hash_chain"] = canonical_sha256(
+        [
+            {
+                "experiment_id": str(row.get("experiment_id", "")).strip(),
+                "run_id": str(row.get("run_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "status": str(row.get("status", "")).strip(),
+                "start_tick": int(max(0, _as_int(row.get("start_tick", 0), 0))),
+                "end_tick": (
+                    None
+                    if row.get("end_tick") is None
+                    else int(max(0, _as_int(row.get("end_tick", 0), 0)))
+                ),
+            }
+            for row in sorted(
+                (dict(item) for item in list(binding_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("run_id", "")),
+            )
+        ]
+    )
+    state["candidate_process_hash_chain"] = canonical_sha256(
+        [
+            {
+                "candidate_id": str(row.get("candidate_id", "")).strip(),
+                "proposed_process_definition_ref": str(
+                    row.get("proposed_process_definition_ref", "")
+                ).strip(),
+                "confidence_score": int(
+                    max(0, min(1000, _as_int(row.get("confidence_score", 0), 0)))
+                ),
+                "inferred_from_artifact_ids": _sorted_tokens(
+                    list(row.get("inferred_from_artifact_ids") or [])
+                ),
+            }
+            for row in sorted(
+                (dict(item) for item in list(candidate_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("candidate_id", "")),
+            )
+        ]
+    )
+    state["candidate_model_binding_hash_chain"] = canonical_sha256(
+        [
+            {
+                "candidate_binding_id": str(row.get("candidate_binding_id", "")).strip(),
+                "candidate_id": str(row.get("candidate_id", "")).strip(),
+                "model_id": (
+                    None
+                    if row.get("model_id") is None
+                    else str(row.get("model_id", "")).strip() or None
+                ),
+                "confidence_score": int(
+                    max(0, min(1000, _as_int(row.get("confidence_score", 0), 0)))
+                ),
+            }
+            for row in sorted(
+                (
+                    dict(item)
+                    for item in list(candidate_binding_rows or [])
+                    if isinstance(item, Mapping)
+                ),
+                key=lambda item: str(item.get("candidate_binding_id", "")),
+            )
+        ]
+    )
+    state["reverse_engineering_record_hash_chain"] = canonical_sha256(
+        [
+            {
+                "record_id": str(row.get("record_id", "")).strip(),
+                "subject_id": str(row.get("subject_id", "")).strip(),
+                "target_item_id": str(row.get("target_item_id", "")).strip(),
+                "method": str(row.get("method", "")).strip(),
+                "destroyed": bool(row.get("destroyed", False)),
+                "produced_artifact_ids": _sorted_tokens(
+                    list(row.get("produced_artifact_ids") or [])
+                ),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(reverse_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("record_id", "")),
+                ),
+            )
+        ]
+    )
+    state["candidate_promotion_hash_chain"] = canonical_sha256(
+        [
+            {
+                "record_id": str(row.get("record_id", "")).strip(),
+                "candidate_id": str(row.get("candidate_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "status": str(row.get("status", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(promotion_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("record_id", "")),
+                ),
+            )
+        ]
+    )
 
 
 def _ensure_batch_quality_rows(state: dict) -> List[dict]:
@@ -21304,6 +21684,13 @@ def execute_intent(
     material_batches = _ensure_material_batches(state)
     chem_process_run_state_rows = _ensure_process_run_state_rows(state)
     batch_quality_rows = _ensure_batch_quality_rows(state)
+    experiment_definition_rows = _ensure_experiment_definition_rows(state)
+    experiment_result_rows = _ensure_experiment_result_rows(state)
+    experiment_run_binding_rows = _ensure_experiment_run_binding_rows(state)
+    candidate_process_definition_rows = _ensure_candidate_process_definition_rows(state)
+    candidate_model_binding_rows = _ensure_candidate_model_binding_rows(state)
+    reverse_engineering_record_rows = _ensure_reverse_engineering_record_rows(state)
+    candidate_promotion_record_rows = _ensure_candidate_promotion_record_rows(state)
     chem_degradation_state_rows = _ensure_chem_degradation_state_rows(state)
     chem_degradation_event_rows = _ensure_chem_degradation_event_rows(state)
     chem_maintenance_action_rows = _ensure_chem_maintenance_action_rows(state)
@@ -21443,6 +21830,13 @@ def execute_intent(
     del state_vector_snapshot_rows
     del chem_process_run_state_rows
     del batch_quality_rows
+    del experiment_definition_rows
+    del experiment_result_rows
+    del experiment_run_binding_rows
+    del candidate_process_definition_rows
+    del candidate_model_binding_rows
+    del reverse_engineering_record_rows
+    del candidate_promotion_record_rows
     del chem_degradation_state_rows
     del chem_degradation_event_rows
     del chem_maintenance_action_rows
@@ -21453,6 +21847,7 @@ def execute_intent(
     _refresh_field_hash_chains(state)
     _refresh_time_hash_chains(state)
     _refresh_chem_process_hash_chains(state)
+    _refresh_process_research_hash_chains(state)
     _refresh_chem_degradation_hash_chains(state)
     _refresh_pollution_hash_chains(state)
     _refresh_system_certification_hash_chains(state)
@@ -35476,6 +35871,290 @@ def execute_intent(
             "process_run_hash_chain": str(state.get("process_run_hash_chain", "")).strip(),
             "batch_quality_hash_chain": str(state.get("batch_quality_hash_chain", "")).strip(),
             "yield_model_hash_chain": str(state.get("yield_model_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.experiment_run_start":
+        experiment_id = str(inputs.get("experiment_id", "")).strip()
+        if not experiment_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.experiment_run_start requires experiment_id",
+                "Provide deterministic experiment_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.experiment_id",
+            )
+
+        incoming_definitions = []
+        if isinstance(inputs.get("experiment_definition_row"), Mapping):
+            incoming_definitions.append(dict(inputs.get("experiment_definition_row") or {}))
+        for row in list(inputs.get("experiment_definition_rows") or []):
+            if isinstance(row, Mapping):
+                incoming_definitions.append(dict(row))
+        if incoming_definitions:
+            state["experiment_definition_rows"] = normalize_experiment_definition_rows(
+                list(state.get("experiment_definition_rows") or [])
+                + [dict(row) for row in incoming_definitions]
+            )
+
+        experiment_eval = evaluate_experiment_run_start(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            experiment_id=experiment_id,
+            run_id=str(inputs.get("run_id", "")).strip() or None,
+            experiment_definition_rows=_ensure_experiment_definition_rows(state),
+            process_definition_rows=list(state.get("process_definition_rows") or []),
+            extensions=dict(inputs.get("extensions") or {})
+            if isinstance(inputs.get("extensions"), Mapping)
+            else {},
+        )
+        if str(experiment_eval.get("result", "")).strip() != "complete":
+            refusal_code = str(experiment_eval.get("refusal_code", "")).strip()
+            if refusal_code == REFUSAL_EXPERIMENT_UNKNOWN:
+                return refusal(
+                    REFUSAL_EXPERIMENT_UNKNOWN,
+                    "experiment_id is not registered",
+                    "Provide experiment_id present in experiment_definition_rows.",
+                    {"experiment_id": experiment_id},
+                    "$.intent.inputs.experiment_id",
+                )
+            if refusal_code == REFUSAL_EXPERIMENT_PROCESS_UNKNOWN:
+                return refusal(
+                    REFUSAL_EXPERIMENT_PROCESS_UNKNOWN,
+                    "experiment references unknown process definition",
+                    "Register the referenced process definition before starting experiment run.",
+                    {"experiment_id": experiment_id},
+                    "$.intent.inputs.experiment_id",
+                )
+            return refusal(
+                REFUSAL_EXPERIMENT_INVALID,
+                "invalid experiment run start payload",
+                "Provide deterministic experiment_id and optional run_id.",
+                {"experiment_id": experiment_id},
+                "$.intent.inputs",
+            )
+
+        binding_row = dict(experiment_eval.get("binding_row") or {})
+        state["experiment_run_binding_rows"] = list(
+            state.get("experiment_run_binding_rows") or []
+        ) + [binding_row]
+        _ensure_experiment_run_binding_rows(state)
+
+        artifact_id = "artifact.record.experiment_run_start.{}".format(
+            canonical_sha256(
+                {
+                    "experiment_id": str(binding_row.get("experiment_id", "")).strip(),
+                    "run_id": str(binding_row.get("run_id", "")).strip(),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        )
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": artifact_id,
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.experiment_run_start",
+                        "experiment_id": str(binding_row.get("experiment_id", "")).strip(),
+                        "run_id": str(binding_row.get("run_id", "")).strip(),
+                        "process_id": str(binding_row.get("process_id", "")).strip(),
+                        "version": str(binding_row.get("version", "")).strip(),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    },
+                }
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+        _refresh_process_research_hash_chains(state)
+        result_metadata = {
+            "experiment_id": str(binding_row.get("experiment_id", "")).strip(),
+            "run_id": str(binding_row.get("run_id", "")).strip(),
+            "process_id": str(binding_row.get("process_id", "")).strip(),
+            "experiment_run_binding_hash_chain": str(
+                state.get("experiment_run_binding_hash_chain", "")
+            ).strip(),
+            "deterministic_fingerprint": str(
+                experiment_eval.get("deterministic_fingerprint", "")
+            ).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.experiment_run_complete":
+        experiment_id = str(inputs.get("experiment_id", "")).strip()
+        run_id = str(inputs.get("run_id", "")).strip()
+        if (not experiment_id) or (not run_id):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.experiment_run_complete requires experiment_id and run_id",
+                "Provide deterministic experiment_id and run_id.",
+                {"process_id": process_id},
+                "$.intent.inputs",
+            )
+
+        binding_rows = _ensure_experiment_run_binding_rows(state)
+        binding_by_run = dict(
+            (
+                str(row.get("run_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(binding_rows or [])
+            if isinstance(row, Mapping) and str(row.get("run_id", "")).strip()
+        )
+        binding_row = dict(binding_by_run.get(run_id) or {})
+        if not binding_row:
+            return refusal(
+                REFUSAL_EXPERIMENT_INVALID,
+                "experiment run_id not active",
+                "Start experiment run before completing it.",
+                {"run_id": run_id},
+                "$.intent.inputs.run_id",
+            )
+        if str(binding_row.get("experiment_id", "")).strip() != experiment_id:
+            return refusal(
+                REFUSAL_EXPERIMENT_INVALID,
+                "run_id does not belong to experiment_id",
+                "Provide matching experiment_id/run_id pair.",
+                {"experiment_id": experiment_id, "run_id": run_id},
+                "$.intent.inputs",
+            )
+
+        measurement_rows = [
+            dict(row)
+            for row in list(inputs.get("measurement_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        if not measurement_rows:
+            measurement_rows = [
+                dict(row)
+                for row in list(state.get("pollution_measurement_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        experiment_eval = evaluate_experiment_run_complete(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            experiment_id=experiment_id,
+            run_id=run_id,
+            measurement_rows=measurement_rows,
+            confidence_floor_permille=int(
+                max(0, min(1000, _as_int(inputs.get("confidence_floor_permille", 250), 250)))
+            ),
+            extensions=dict(inputs.get("extensions") or {})
+            if isinstance(inputs.get("extensions"), Mapping)
+            else {},
+        )
+        if str(experiment_eval.get("result", "")).strip() != "complete":
+            return refusal(
+                REFUSAL_EXPERIMENT_INVALID,
+                "invalid experiment completion payload",
+                "Provide deterministic experiment completion inputs.",
+                {"experiment_id": experiment_id, "run_id": run_id},
+                "$.intent.inputs",
+            )
+
+        result_row = dict(experiment_eval.get("experiment_result_row") or {})
+        state["experiment_result_rows"] = normalize_experiment_result_rows(
+            list(state.get("experiment_result_rows") or []) + [result_row]
+        )
+
+        binding_row["status"] = "completed"
+        binding_row["end_tick"] = int(max(0, _as_int(current_tick, 0)))
+        binding_row["deterministic_fingerprint"] = canonical_sha256(
+            dict(binding_row, deterministic_fingerprint="")
+        )
+        state["experiment_run_binding_rows"] = list(binding_by_run.values()) + [binding_row]
+        _ensure_experiment_run_binding_rows(state)
+
+        artifact_id = "artifact.report.experiment_result.{}".format(
+            canonical_sha256(
+                {
+                    "result_id": str(result_row.get("result_id", "")).strip(),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        )
+        info_artifact_rows = normalize_info_artifact_rows(
+            list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            + [
+                {
+                    "artifact_id": artifact_id,
+                    "artifact_family_id": "REPORT",
+                    "extensions": {
+                        "artifact_type_id": "artifact.report.experiment_result",
+                        "result_id": str(result_row.get("result_id", "")).strip(),
+                        "experiment_id": experiment_id,
+                        "run_id": run_id,
+                        "measurement_count": int(
+                            len(list((dict(result_row).get("measured_values") or {}).keys()))
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    },
+                }
+            ]
+        )
+        state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
+        state["knowledge_artifacts"] = [dict(row) for row in info_artifact_rows]
+
+        subject_id = str(
+            inputs.get(
+                "subject_id",
+                inputs.get(
+                    "requester_subject_id",
+                    dict(authority_context or {}).get("subject_id", "subject.unknown"),
+                ),
+            )
+        ).strip() or "subject.unknown"
+        envelope_id = "env.local.experiment_result.{}".format(
+            canonical_sha256(
+                {
+                    "subject_id": subject_id,
+                    "artifact_id": artifact_id,
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        )
+        receipt_id = deterministic_knowledge_receipt_id(
+            subject_id=subject_id,
+            artifact_id=artifact_id,
+            envelope_id=envelope_id,
+            acquired_tick=int(max(0, _as_int(current_tick, 0))),
+        )
+        receipt_row = build_knowledge_receipt(
+            receipt_id=receipt_id,
+            subject_id=subject_id,
+            artifact_id=artifact_id,
+            envelope_id=envelope_id,
+            acquired_tick=int(max(0, _as_int(current_tick, 0))),
+            trust_weight=1.0,
+            verification_state="verified",
+            delivery_event_id=None,
+            extensions={
+                "source_process_id": process_id,
+                "result_id": str(result_row.get("result_id", "")).strip(),
+                "experiment_id": experiment_id,
+                "run_id": run_id,
+                "epistemic_scope": "lab_local",
+            },
+        )
+        state["knowledge_receipt_rows"] = normalize_knowledge_receipt_rows(
+            list(state.get("knowledge_receipt_rows") or []) + [receipt_row]
+        )
+        _ensure_knowledge_receipt_rows(state)
+
+        _refresh_process_research_hash_chains(state)
+        result_metadata = {
+            "experiment_id": experiment_id,
+            "run_id": run_id,
+            "result_id": str(result_row.get("result_id", "")).strip(),
+            "knowledge_receipt_id": str(receipt_id),
+            "subject_id": subject_id,
+            "experiment_result_hash_chain": str(
+                state.get("experiment_result_hash_chain", "")
+            ).strip(),
+            "experiment_run_binding_hash_chain": str(
+                state.get("experiment_run_binding_hash_chain", "")
+            ).strip(),
+            "deterministic_fingerprint": str(
+                experiment_eval.get("deterministic_fingerprint", "")
+            ).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.degradation_tick":
