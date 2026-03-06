@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.process_stabilization_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.process_stabilization_policy_registry",
+    "registry_version": "1.0.0",
+    "process_stabilization_policies": [
+      {
+        "schema_version": "1.0.0",
+        "process_stabilization_policy_id": "stab.default",
+        "description": "Default stabilization gate balancing evidence volume and throughput.",
+        "minimum_run_count": 16,
+        "max_yield_variance_ppm": 25000,
+        "max_defect_rate_ppm": 15000,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "process_stabilization_policy_id": "stab.strict",
+        "description": "Strict stabilization gate requiring lower variance and defect envelope.",
+        "minimum_run_count": 64,
+        "max_yield_variance_ppm": 10000,
+        "max_defect_rate_ppm": 5000,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "process_stabilization_policy_id": "stab.fast_dev",
+        "description": "Developer-focused stabilization policy with lower sample requirements.",
+        "minimum_run_count": 6,
+        "max_yield_variance_ppm": 40000,
+        "max_defect_rate_ppm": 25000,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-4",
+          "non_ranked_only": true
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

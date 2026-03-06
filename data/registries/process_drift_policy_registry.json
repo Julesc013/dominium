@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.registry.process_drift_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.process_drift_policy_registry",
+    "registry_version": "1.0.0",
+    "process_drift_policies": [
+      {
+        "schema_version": "1.0.0",
+        "process_drift_policy_id": "drift.default",
+        "description": "Default drift envelope with staged escalation from QC increase to revalidation.",
+        "warning_threshold_permille": 350,
+        "forced_expand_threshold_permille": 600,
+        "revocation_threshold_permille": 800,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-4",
+          "actions": [
+            "increase_qc",
+            "force_expand",
+            "request_recertification"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "process_drift_policy_id": "drift.strict",
+        "description": "Strict drift policy with earlier escalations for regulated operation.",
+        "warning_threshold_permille": 250,
+        "forced_expand_threshold_permille": 450,
+        "revocation_threshold_permille": 650,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC0-4",
+          "actions": [
+            "increase_qc",
+            "force_expand",
+            "revoke_certification"
+          ]
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}
