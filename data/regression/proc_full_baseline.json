@@ -1,0 +1,192 @@
+{
+  "baseline_id": "proc.full.baseline.v1",
+  "composite_proc_hash_anchor": "c271f580f2c0ce263421a73fd3efa0a72dcf1d98b872876875191dfada3ce976",
+  "description": "PROC-9 deterministic stress/proof/regression baseline for process envelopes at MMO scale.",
+  "deterministic_fingerprint": "85caa64504c6c90f2fe9c5f9ef93064b1cb91831f47d06684c4c7520ab8952c8",
+  "extensions": {
+    "required_invariants": [
+      "INV-PROC-BUDGETED",
+      "INV-PROC-CAPSULE-EXEC-RECORDED",
+      "INV-PROC-INFERENCE-DERIVED-ONLY",
+      "INV-PROC-STATEVEC-REQUIRED"
+    ]
+  },
+  "fixed_seed_scenarios": {
+    "degrade": {
+      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_degrade_report.json",
+      "scenario_id": "scenario.proc.stress.b76c73dab27a",
+      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_degrade_scenario.json",
+      "scenario_seed": 99141
+    },
+    "drift_revalidation": {
+      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_drift_revalidation_report.json",
+      "scenario_id": "scenario.proc.stress.61476f54af9c",
+      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_drift_revalidation_scenario.json",
+      "scenario_seed": 99111
+    },
+    "research_candidate_promotion": {
+      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_research_candidate_promotion_report.json",
+      "scenario_id": "scenario.proc.stress.0b9a2d102a99",
+      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_research_candidate_promotion_scenario.json",
+      "scenario_seed": 99121
+    },
+    "software_pipeline": {
+      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_software_pipeline_report.json",
+      "scenario_id": "scenario.proc.stress.0983bcbefb10",
+      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_software_pipeline_scenario.json",
+      "scenario_seed": 99131
+    },
+    "stabilized_capsule_heavy": {
+      "report_path": "D:/Projects/Dominium/dominium/build/process/proc9_stabilized_capsule_heavy_report.json",
+      "scenario_id": "scenario.proc.stress.c98cd9e1d157",
+      "scenario_path": "D:/Projects/Dominium/dominium/build/process/proc9_stabilized_capsule_heavy_scenario.json",
+      "scenario_seed": 99101
+    }
+  },
+  "proof_hashes": {
+    "degrade": {
+      "candidate_promotion_hash_chain": "0f87899b46a5f5d6f2cb57676837d38603eb7278064baad08a4adf81195fb36a",
+      "capsule_execution_hash_chain": "c8f2ad92e43f77932d03db5d6ba9fb652d9a0507da9fb994fa54fdfe4c814d05",
+      "compiled_model_hash_chain": "142ffed958aa4d944bcfd73a0c69c2728e27428b1e3d158ffe0096986b13993d",
+      "deployment_hash_chain": "bbbabeab237f6d07e5ba5bdff2590ac3f486e7ae502d4b2b8f64cedd22c75b92",
+      "drift_event_hash_chain": "c6f9b2cddcafaaa8dd6539ab34f22ebb366b2cfbf07f11719ded671ee3842b66",
+      "process_maturity_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_quality_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_run_record_hash_chain": "b0084b2960495cc1784958d26aa3496f5ae524a8553f7ba2b5ccc6e7a5784e2f",
+      "process_step_record_hash_chain": "cacb67914373ce34092275dae86e82ba2409d11a6008203a1ca735b794369386",
+      "qc_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "drift_revalidation": {
+      "candidate_promotion_hash_chain": "50c251cec41ccd9bc3a118302d56cbb21282aea550f38d82d1394e734c47cbba",
+      "capsule_execution_hash_chain": "e26c9a9e69338432e6e8b64b67f0b08f68d8e796a9a4097f221e69f0d350d4e7",
+      "compiled_model_hash_chain": "67c42a1f081fd938ebf4ff662674405da6cc754935e8ec845e6c742281eb4dab",
+      "deployment_hash_chain": "e2e94620ce27888a647e1494a2059629ba9c11b996d0fc3b02b6c5848abb8d68",
+      "drift_event_hash_chain": "eeca063fb53de6bb697f5f564915a3634e9a93090d32970bc9dc8ebc0dea0efd",
+      "process_maturity_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_quality_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_run_record_hash_chain": "8146bfa6f1111ea71dd4e1c99f321b660a78b94549d793fb97a315e397a75777",
+      "process_step_record_hash_chain": "64963e10d0ce9f1395eb3cf59e90373993776f23c662d743d8b35ba9545583f3",
+      "qc_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "research_candidate_promotion": {
+      "candidate_promotion_hash_chain": "a1b3c6ffc20b3da1e0d53612f94b35f6885adb2a33f738b169ed8807cb4ae548",
+      "capsule_execution_hash_chain": "8786abe2c9814c9a5c553fd8ba18c6770de4bc93a5526ecd1f06eb2253aefca4",
+      "compiled_model_hash_chain": "fb5cc66a9fe10a82321302753a543f2e5d434f50804ff640cdd010671e4b1cfa",
+      "deployment_hash_chain": "3ccfff91b97ec4a25fd00fbc0e8458e4f0a4e093534bd5beb25eaee45a701bf3",
+      "drift_event_hash_chain": "13263ee126aa474114f7fd8acea319b43d0695606c6ca49c402fd076a0dfe516",
+      "process_maturity_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_quality_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_run_record_hash_chain": "f97796768e180f30856692c889687ac86d3a3d99ff323e07f88bb82c96c1a522",
+      "process_step_record_hash_chain": "02be8f3671b446f531c8221d1dfa2c007cb0529be257fd7a9ae3dcfb85721d5e",
+      "qc_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "software_pipeline": {
+      "candidate_promotion_hash_chain": "7415568ca02928814266578ab5259a2743139c9b327474ca0eaa50ba43e06007",
+      "capsule_execution_hash_chain": "f0b98a32f4bb04391452814d63e29ab90a214c5f7f3b2c64ad883b63993a3ed3",
+      "compiled_model_hash_chain": "33530a146cf15aec4d3ac88f65ff6d7fed9bac7a6daf38e9c8f3d4d8f852ea60",
+      "deployment_hash_chain": "535630ca3c392eaf1dce1bd88d9352d2bc84875f930415f7947aae6d77767d4d",
+      "drift_event_hash_chain": "439f17bcc7326ec402a84e32e838b411ce8cf6fea69e4b0bdfcd128322cc640d",
+      "process_maturity_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_quality_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_run_record_hash_chain": "522532bb6881fb8b780d0dce2afbcab6c15e6bb46140e73a891191fe24a0a380",
+      "process_step_record_hash_chain": "21ba8033587a5f8d28e9fab9b4395b360505564befdda244f3752214bbd0c6be",
+      "qc_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "stabilized_capsule_heavy": {
+      "candidate_promotion_hash_chain": "1a3d5dceb553ad451a5bb762e865e4e24b4d369a5fc619864e0a69407b481b5a",
+      "capsule_execution_hash_chain": "c8a7695ff9a86a2a0c333e4595112125cf9921a22332401c9d00d7bb7e62cf16",
+      "compiled_model_hash_chain": "6b1f9aa5f47ea48a62b2e14dde871011c3960045c11c35eeb65f1578a64ad0b0",
+      "deployment_hash_chain": "04cfa812b31794435760eb26a33fd3437b3d7667d22b8fe539db4a570b151d3a",
+      "drift_event_hash_chain": "8ee5f510a08e1486c97a1d89e87adefc6a6ae05ccd955b3c35cd8271b9eb8123",
+      "process_maturity_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_quality_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "process_run_record_hash_chain": "bb68271118605f402fb3db06e445e8b6e285e5bbba52d8d9f7d4e0d5f64530b6",
+      "process_step_record_hash_chain": "b8ae1b2cd468a3f88a45da9be46747faebc50bfb3b8b6cdc4c28c166133c3cc2",
+      "qc_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "result_by_scenario": {
+    "degrade": {
+      "assertions": {
+        "bounded_micro_execution": true,
+        "compaction_replay_anchor_match": true,
+        "deterministic_ordering": true,
+        "no_hidden_state_drift": true,
+        "no_silent_capsule_execution": true
+      },
+      "result": "pass"
+    },
+    "drift_revalidation": {
+      "assertions": {
+        "bounded_micro_execution": true,
+        "compaction_replay_anchor_match": true,
+        "deterministic_ordering": true,
+        "no_hidden_state_drift": true,
+        "no_silent_capsule_execution": true
+      },
+      "result": "pass"
+    },
+    "research_candidate_promotion": {
+      "assertions": {
+        "bounded_micro_execution": true,
+        "compaction_replay_anchor_match": true,
+        "deterministic_ordering": true,
+        "no_hidden_state_drift": true,
+        "no_silent_capsule_execution": true
+      },
+      "result": "pass"
+    },
+    "software_pipeline": {
+      "assertions": {
+        "bounded_micro_execution": true,
+        "compaction_replay_anchor_match": true,
+        "deterministic_ordering": true,
+        "no_hidden_state_drift": true,
+        "no_silent_capsule_execution": true
+      },
+      "result": "pass"
+    },
+    "stabilized_capsule_heavy": {
+      "assertions": {
+        "bounded_micro_execution": true,
+        "compaction_replay_anchor_match": true,
+        "deterministic_ordering": true,
+        "no_hidden_state_drift": true,
+        "no_silent_capsule_execution": true
+      },
+      "result": "pass"
+    }
+  },
+  "scenario_fingerprints": {
+    "degrade": {
+      "report_fingerprint": "69b3036440feea0cecca5efbdd5fd526b009c04122d29f43fcc5cc168145eab5",
+      "scenario_fingerprint": "a6c32392f40a7e5132253ad7bbb5e1075830d8b1f68d13b3c4ccbb948aea5955",
+      "state_fingerprint": "8fc5aaf8969728bc6ac4b659003c774e78f01b1a3cd7e534c0264dd64105ff23"
+    },
+    "drift_revalidation": {
+      "report_fingerprint": "5e6a78117416cb59ab309191ce2a38644ebf403fa6882c4aab612db365b8df2b",
+      "scenario_fingerprint": "8b744d2bb7c131932d559f7a7b68767a90b2daf3df6dd8a3c505bd964ad2fd9a",
+      "state_fingerprint": "172730fdee4f1aeefa88ae74139e041f4e6e813b3b2138cdeb9fc412d5592153"
+    },
+    "research_candidate_promotion": {
+      "report_fingerprint": "d4c6dffeef51ac7a8277013a917e020f3c4627f94c2f7754d6bcb74f61848f13",
+      "scenario_fingerprint": "50b474c5b5e2f044392d3c7da62fd38bbb4b6cfc96d0aa8659e1b1dbe2182c84",
+      "state_fingerprint": "7c969c80c8704b7dd77ba141f92ab8569fd4c0c34c41f21e9baf2851c0c0eb31"
+    },
+    "software_pipeline": {
+      "report_fingerprint": "f2a3c086730ca07b955851940c53d5925ead63431af6de72a965c0b153aafafe",
+      "scenario_fingerprint": "6bc0a173f793b55c72b15848726c0a16d13f08b9c159bdd79e7e6f55aec3e22a",
+      "state_fingerprint": "19778b4811b97996882e46e1a6cf76dbc3b2e0de479396e81947a2ad36c7bdbf"
+    },
+    "stabilized_capsule_heavy": {
+      "report_fingerprint": "0e81e89e3b09a3b49d431160cfabee91281796238154f93f55dc8b392b576f6e",
+      "scenario_fingerprint": "0daf65c5b72c1bd835733b2edd54a0da7f175bb2f05beddf9fb166d0691c12b2",
+      "state_fingerprint": "426a6d97733ff4144944c8b439f30973c30c75774e61b784d42a9a671e410001"
+    }
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic PROC-9 stress/replay reruns and explicit PROC-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "PROC-REGRESSION-UPDATE"
+  }
+}
