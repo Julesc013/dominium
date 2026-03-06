@@ -312,6 +312,10 @@ def execute_process_capsule(
     requester_subject_id: str | None = None,
     instrument_id: str | None = None,
     calibration_cert_id: str | None = None,
+    qc_fail_rate_permille: int = 0,
+    drift_score_permille: int = 0,
+    spec_revision_hash: str | None = None,
+    expected_spec_revision_hash: str | None = None,
     deterministic_fingerprint: str = "",
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
@@ -339,6 +343,70 @@ def execute_process_capsule(
             "reason_code": REFUSAL_PROCESS_CAPSULE_INVALID,
             "message": "missing validity domain for capsule",
             "capsule_id": capsule_token,
+        }
+
+    invalidation_eval = evaluate_process_capsule_invalidation(
+        current_tick=tick,
+        capsule_row=capsule_row,
+        qc_fail_rate_permille=int(max(0, _as_int(qc_fail_rate_permille, 0))),
+        drift_score_permille=int(max(0, _as_int(drift_score_permille, 0))),
+        spec_revision_hash=(None if spec_revision_hash is None else str(spec_revision_hash).strip() or None),
+        expected_spec_revision_hash=(
+            None
+            if expected_spec_revision_hash is None
+            else str(expected_spec_revision_hash).strip() or None
+        ),
+    )
+    invalidation_row = _as_map(invalidation_eval.get("invalidation_row"))
+    if bool(invalidation_eval.get("invalid", False)):
+        forced_expand_event = {
+            "event_id": "event.process.capsule_forced_expand.{}".format(
+                canonical_sha256(
+                    {
+                        "capsule_id": capsule_token,
+                        "tick": tick,
+                        "reason_code": str(invalidation_eval.get("reason_code", "")).strip(),
+                    }
+                )[:16]
+            ),
+            "capsule_id": capsule_token,
+            "process_id": str(capsule_row.get("process_id", "")).strip(),
+            "version": str(capsule_row.get("version", "")).strip() or "1.0.0",
+            "tick": int(tick),
+            "reason_code": str(invalidation_eval.get("reason_code", "")).strip()
+            or REFUSAL_PROCESS_CAPSULE_EXECUTION_REFUSED,
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "invalidation_event_id": str(invalidation_row.get("event_id", "")).strip() or None,
+                "allow_micro_fallback": bool(allow_micro_fallback),
+            },
+        }
+        forced_expand_event["deterministic_fingerprint"] = canonical_sha256(
+            dict(forced_expand_event, deterministic_fingerprint="")
+        )
+        if bool(allow_forced_expand):
+            return {
+                "result": "forced_expand",
+                "reason_code": str(invalidation_eval.get("reason_code", "")).strip()
+                or REFUSAL_PROCESS_CAPSULE_EXECUTION_REFUSED,
+                "forced_expand_event_row": forced_expand_event,
+                "capsule_invalidation_row": invalidation_row,
+                "micro_fallback_requested": bool(allow_micro_fallback),
+                "deterministic_fingerprint": canonical_sha256(
+                    {
+                        "capsule_id": capsule_token,
+                        "result": "forced_expand",
+                        "reason_code": str(invalidation_eval.get("reason_code", "")).strip(),
+                        "tick": tick,
+                    }
+                ),
+            }
+        return {
+            "result": "refused",
+            "reason_code": str(invalidation_eval.get("reason_code", "")).strip()
+            or REFUSAL_PROCESS_CAPSULE_EXECUTION_REFUSED,
+            "message": "capsule invalidated",
+            "capsule_invalidation_row": invalidation_row,
         }
 
     features = _input_features(
@@ -704,6 +772,7 @@ def execute_process_capsule(
         "compiled_model_used": bool(compiled_model_used),
         "compiled_model_validation": dict(compiled_validation),
         "compiled_model_execution": dict(compiled_execution),
+        "capsule_invalidation_row": invalidation_row,
         "state_vector_definition_rows": [dict(row) for row in next_state_definition_rows if isinstance(row, Mapping)],
         "state_vector_snapshot_rows": [dict(row) for row in next_state_snapshot_rows if isinstance(row, Mapping)],
         "state_vector_snapshot_row": state_snapshot_row,
