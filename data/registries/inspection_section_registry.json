@@ -1214,6 +1214,34 @@
           "cost_units": 2,
           "source": "PROC3-5"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.maturity_summary",
+        "title": "Process Maturity Summary",
+        "data": {
+          "data_kind": "process_maturity_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC4-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.metrics_summary",
+        "title": "Process Metrics Summary",
+        "data": {
+          "data_kind": "process_metrics_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC4-7"
+        }
       }
     ],
     "extensions": {}

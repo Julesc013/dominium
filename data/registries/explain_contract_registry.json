@@ -1012,6 +1012,66 @@
         "extensions": {
           "source": "PROC0-3"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.process_maturity_change",
+        "event_kind_id": "process.maturity.transition",
+        "explain_artifact_type_id": "artifact.explain.process_maturity_change",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.maturity_summary",
+          "section.process.metrics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.review.stabilization_policy",
+          "hint.extend.stability_horizon",
+          "hint.monitor.qc_pass_rate"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC4-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.process_not_stable",
+        "event_kind_id": "process.maturity.no_transition",
+        "explain_artifact_type_id": "artifact.explain.process_not_stable",
+        "required_inputs": [
+          "artifact.observation",
+          "section.process.maturity_summary",
+          "section.process.metrics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.run.more_trials",
+          "hint.reduce.variance",
+          "hint.improve.calibration_stability"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC4-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.certification_denied",
+        "event_kind_id": "process.certification_denied",
+        "explain_artifact_type_id": "artifact.explain.process_certification_denied",
+        "required_inputs": [
+          "artifact.decision",
+          "section.process.maturity_summary",
+          "section.process.metrics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.increase.qc_pass_rate",
+          "hint.reduce.defect_rate",
+          "hint.request.inspector_review"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC4-7"
+        }
       }
     ],
     "extensions": {

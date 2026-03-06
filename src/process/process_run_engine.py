@@ -1217,19 +1217,40 @@ def process_run_end(
         )
     maturity_explain_row = _as_map(maturity_eval.get("explain_row"))
     if maturity_explain_row:
+        deny_reason = str(
+            _as_map(maturity_eval.get("state_extensions")).get("deny_reason", "")
+        ).strip()
+        explain_contract_id = "explain.process_not_stable"
+        if maturity_record_row:
+            explain_contract_id = "explain.process_maturity_change"
+        elif deny_reason in {
+            "certification_gate_failed",
+            "qc_pass_rate_below_minimum",
+            "defect_rate_above_maximum",
+            "score_below_certified_threshold",
+            "state_disallowed_by_lifecycle_policy",
+        }:
+            explain_contract_id = "explain.certification_denied"
         state["report_artifacts"] = [
             dict(row) for row in _as_list(state.get("report_artifacts")) if isinstance(row, Mapping)
         ] + [
             dict(
                 maturity_explain_row,
-                explain_contract_id=(
-                    "explain.process_maturity_change"
-                    if maturity_record_row
-                    else "explain.process_not_stable"
-                ),
+                explain_contract_id=explain_contract_id,
                 visibility_policy="policy.epistemic.inspector",
             )
         ]
+        if explain_contract_id == "explain.certification_denied":
+            state["decision_log_rows"] = [
+                dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+            ] + [
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "run_id": str(run_id),
+                    "reason": "process_certification_denied",
+                    "reason_code": deny_reason,
+                }
+            ]
 
     state["process_quality_hash_chain"] = canonical_sha256(
         [
