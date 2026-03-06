@@ -413,6 +413,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-YIELD-DEFECT-MODEL-DECLARED",
     "INV-NO-ADHOC-YIELD",
     "INV-NO-UNDECLARED-RNG",
+    "INV-QC-POLICY-DECLARED",
+    "INV-SAMPLING-DETERMINISTIC",
+    "INV-NO-ADHOC-INSPECTION",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
     "INV-DEGRADATION-MODEL-ONLY",
@@ -806,6 +809,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E282_PROCESS_STEP_WITHOUT_COST_SMELL": "INV-PROCESS-STEPS-MAP-TO-ACTION-GRAMMAR",
     "E283_INLINE_YIELD_SMELL": "INV-NO-ADHOC-YIELD",
     "E284_DEFECT_FLAG_BYPASS_SMELL": "INV-YIELD-DEFECT-MODEL-DECLARED",
+    "E285_IMPLICIT_QC_LOGIC_SMELL": "INV-NO-ADHOC-INSPECTION",
+    "E286_NONDETERMINISTIC_SAMPLING_SMELL": "INV-SAMPLING-DETERMINISTIC",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20317,19 +20322,32 @@ def _append_process_constitution_invariant_findings(
     quality_model_rule_id = "INV-YIELD-DEFECT-MODEL-DECLARED"
     ad_hoc_yield_rule_id = "INV-NO-ADHOC-YIELD"
     undeclared_rng_rule_id = "INV-NO-UNDECLARED-RNG"
+    qc_policy_rule_id = "INV-QC-POLICY-DECLARED"
+    qc_sampling_rule_id = "INV-SAMPLING-DETERMINISTIC"
+    qc_bypass_rule_id = "INV-NO-ADHOC-INSPECTION"
 
     process_registry_rel = "data/registries/process_registry.json"
     lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
     stabilization_policy_rel = "data/registries/process_stabilization_policy_registry.json"
     drift_policy_rel = "data/registries/process_drift_policy_registry.json"
+    qc_policy_registry_rel = "data/registries/qc_policy_registry.json"
+    sampling_strategy_registry_rel = "data/registries/sampling_strategy_registry.json"
+    test_procedure_registry_rel = "data/registries/test_procedure_registry.json"
     yield_registry_rel = "data/registries/yield_model_registry.json"
     defect_registry_rel = "data/registries/defect_model_registry.json"
     process_definition_schema_rel = "schema/process/process_definition.schema"
+    qc_policy_schema_rel = "schema/process/qc_policy.schema"
+    qc_result_schema_rel = "schema/process/qc_result_record.schema"
+    test_procedure_schema_rel = "schema/process/test_procedure.schema"
     process_quality_schema_rel = "schema/process/process_quality_record.schema"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
+    qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
+    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    inspection_section_rel = "data/registries/inspection_section_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     validator_rel = "src/process/process_definition_validator.py"
     run_engine_rel = "src/process/process_run_engine.py"
+    qc_engine_rel = "src/process/qc/qc_engine.py"
     run_schema_rel = "schema/process/process_run_record.schema"
     step_schema_rel = "schema/process/process_step_record.schema"
 
@@ -20378,6 +20396,22 @@ def _append_process_constitution_invariant_findings(
                 rule_id=action_mapping_rule_id,
             )
         )
+    for token in (
+        "qc_policy_id",
+        "qc_policy_registry_payload",
+    ):
+        if token in validator_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=validator_rel,
+                line_number=1,
+                snippet=token,
+                message="process definition validator must enforce qc policy registration when registry payload is provided",
+                rule_id=qc_policy_rule_id,
+            )
+        )
 
     run_engine_text = _file_text(repo_root, run_engine_rel)
     for token in (
@@ -20417,6 +20451,24 @@ def _append_process_constitution_invariant_findings(
                 rule_id=quality_model_rule_id,
             )
         )
+    for token in (
+        "evaluate_qc_for_run(",
+        "qc_result_hash_chain",
+        "sampling_decision_hash_chain",
+        "qc_policy_id",
+    ):
+        if token in run_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=run_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="process run engine must route QC evaluation through deterministic PROC-3 sampling pathways",
+                rule_id=qc_bypass_rule_id,
+            )
+        )
     process_definition_schema_text = _file_text(repo_root, process_definition_schema_rel)
     for token in ("yield_model_id", "defect_model_id"):
         if token in process_definition_schema_text:
@@ -20429,6 +20481,30 @@ def _append_process_constitution_invariant_findings(
                 snippet=token,
                 message="process definition schema must expose quality model references for batch-producing processes",
                 rule_id=quality_model_rule_id,
+            )
+        )
+    if "qc_policy_id" not in process_definition_schema_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_definition_schema_rel,
+                line_number=1,
+                snippet="qc_policy_id",
+                message="process definition schema must expose qc_policy_id for policy-driven sampling",
+                rule_id=qc_policy_rule_id,
+            )
+        )
+    for rel_path in (qc_policy_schema_rel, qc_result_schema_rel, test_procedure_schema_rel, qc_doc_rel):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message="required PROC-3 QC schema/documentation artifact is missing",
+                rule_id=qc_policy_rule_id,
             )
         )
     process_quality_schema_text = _file_text(repo_root, process_quality_schema_rel)
@@ -20539,6 +20615,161 @@ def _append_process_constitution_invariant_findings(
                         rule_id=undeclared_rng_rule_id,
                     )
                 )
+    qc_payload, qc_error = _load_json_object(repo_root, qc_policy_registry_rel)
+    qc_rows = list((dict(qc_payload.get("record") or {})).get("qc_policies") or [])
+    qc_ids = set(
+        str(row.get("qc_policy_id", "")).strip()
+        for row in qc_rows
+        if isinstance(row, dict) and str(row.get("qc_policy_id", "")).strip()
+    )
+    for required_id in ("qc.none", "qc.basic_sampling", "qc.strict_sampling"):
+        if required_id in qc_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=qc_policy_registry_rel,
+                line_number=1,
+                snippet=required_id,
+                message="required PROC-3 qc policy id is missing",
+                rule_id=qc_policy_rule_id,
+            )
+        )
+    if qc_error and not qc_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=qc_policy_registry_rel,
+                line_number=1,
+                snippet="record.qc_policies",
+                message="qc policy registry is missing or invalid",
+                rule_id=qc_policy_rule_id,
+            )
+        )
+    sampling_payload, sampling_error = _load_json_object(repo_root, sampling_strategy_registry_rel)
+    sampling_rows = list((dict(sampling_payload.get("record") or {})).get("sampling_strategies") or [])
+    sampling_ids = set(
+        str(row.get("sampling_strategy_id", "")).strip()
+        for row in sampling_rows
+        if isinstance(row, dict) and str(row.get("sampling_strategy_id", "")).strip()
+    )
+    for required_id in ("sample.hash_based", "sample.every_n", "sample.risk_weighted"):
+        if required_id in sampling_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=sampling_strategy_registry_rel,
+                line_number=1,
+                snippet=required_id,
+                message="required deterministic sampling strategy id is missing",
+                rule_id=qc_sampling_rule_id,
+            )
+        )
+    if sampling_error and not sampling_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=sampling_strategy_registry_rel,
+                line_number=1,
+                snippet="record.sampling_strategies",
+                message="sampling strategy registry is missing or invalid",
+                rule_id=qc_sampling_rule_id,
+            )
+        )
+    test_payload, test_error = _load_json_object(repo_root, test_procedure_registry_rel)
+    test_rows = list((dict(test_payload.get("record") or {})).get("test_procedures") or [])
+    test_ids = set(
+        str(row.get("test_id", "")).strip()
+        for row in test_rows
+        if isinstance(row, dict) and str(row.get("test_id", "")).strip()
+    )
+    for required_id in ("test.dimensions_basic", "test.contamination_basic", "test.software_unit_stub"):
+        if required_id in test_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=test_procedure_registry_rel,
+                line_number=1,
+                snippet=required_id,
+                message="required PROC-3 test procedure id is missing",
+                rule_id=qc_policy_rule_id,
+            )
+        )
+    if test_error and not test_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=test_procedure_registry_rel,
+                line_number=1,
+                snippet="record.test_procedures",
+                message="test procedure registry is missing or invalid",
+                rule_id=qc_policy_rule_id,
+            )
+        )
+
+    explain_payload, explain_error = _load_json_object(repo_root, explain_registry_rel)
+    explain_rows = list((dict(explain_payload.get("record") or {})).get("explain_contracts") or [])
+    explain_ids = set(
+        str(row.get("contract_id", "")).strip()
+        for row in explain_rows
+        if isinstance(row, dict) and str(row.get("contract_id", "")).strip()
+    )
+    for contract_id in ("explain.qc_failure", "explain.qc_sampling_decision"):
+        if contract_id in explain_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_registry_rel,
+                line_number=1,
+                snippet=contract_id,
+                message="PROC-3 explain contract is missing required qc contract id",
+                rule_id=qc_bypass_rule_id,
+            )
+        )
+    if explain_error and not explain_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_registry_rel,
+                line_number=1,
+                snippet="record.explain_contracts",
+                message="explain contract registry is missing or invalid",
+                rule_id=qc_bypass_rule_id,
+            )
+        )
+
+    section_payload, section_error = _load_json_object(repo_root, inspection_section_rel)
+    section_rows = list((dict(section_payload.get("record") or {})).get("sections") or [])
+    section_ids = set(
+        str(row.get("section_id", "")).strip()
+        for row in section_rows
+        if isinstance(row, dict) and str(row.get("section_id", "")).strip()
+    )
+    if "section.process.qc_summary" not in section_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inspection_section_rel,
+                line_number=1,
+                snippet="section.process.qc_summary",
+                message="inspection section registry must expose section.process.qc_summary for PROC-3 UX integration",
+                rule_id=qc_bypass_rule_id,
+            )
+        )
+    if section_error and not section_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inspection_section_rel,
+                line_number=1,
+                snippet="record.sections",
+                message="inspection section registry is missing or invalid",
+                rule_id=qc_bypass_rule_id,
+            )
+        )
     for rel_path in (run_schema_rel, step_schema_rel):
         if _file_text(repo_root, rel_path):
             continue
@@ -20825,6 +21056,100 @@ def _append_process_constitution_invariant_findings(
                     snippet=snippet[:140],
                     message="undeclared random source detected in process quality paths; named RNG policy required",
                     rule_id=undeclared_rng_rule_id,
+                )
+            )
+            break
+
+    qc_sampling_random_patterns = (
+        re.compile(r"\brandom\.(?:random|randint|randrange|choice|choices|uniform)\s*\(", re.IGNORECASE),
+        re.compile(r"\bsecrets\.", re.IGNORECASE),
+        re.compile(r"\buuid4\s*\(", re.IGNORECASE),
+        re.compile(r"\btime\.(?:time|time_ns|perf_counter)\s*\(", re.IGNORECASE),
+    )
+    qc_sampling_scan_prefixes = ("src/process/qc/", "tools/process/")
+    qc_sampling_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    qc_sampling_allowed_files = {
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(qc_sampling_scan_prefixes):
+            continue
+        if rel_norm.startswith(qc_sampling_skip_prefixes):
+            continue
+        if rel_norm in qc_sampling_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in qc_sampling_random_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="nondeterministic source detected in qc sampling path; deterministic sampling is required",
+                    rule_id=qc_sampling_rule_id,
+                )
+            )
+            break
+
+    qc_logic_patterns = (
+        re.compile(r"\bqc_result_record_rows\b", re.IGNORECASE),
+        re.compile(r"\bevaluate_qc_for_run\s*\(", re.IGNORECASE),
+        re.compile(r"\bqc_sampling_decision_rows\b", re.IGNORECASE),
+    )
+    qc_logic_scan_prefixes = ("src/process/", "tools/process/")
+    qc_logic_skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    qc_logic_allowed_files = {
+        run_engine_rel,
+        validator_rel,
+        qc_engine_rel,
+        "src/process/qc/__init__.py",
+        "tools/process/tool_replay_qc_window.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(qc_logic_scan_prefixes):
+            continue
+        if rel_norm.startswith(qc_logic_skip_prefixes):
+            continue
+        if rel_norm in qc_logic_allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in qc_logic_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="implicit qc logic detected outside declared PROC-3 qc engine/process pathways",
+                    rule_id=qc_bypass_rule_id,
                 )
             )
             break

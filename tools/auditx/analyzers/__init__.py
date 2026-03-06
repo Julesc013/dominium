@@ -308,6 +308,8 @@ from analyzers import e281_unregistered_workflow_smell
 from analyzers import e282_process_step_without_cost_smell
 from analyzers import e283_inline_yield_smell
 from analyzers import e284_defect_flag_bypass_smell
+from analyzers import e285_implicit_qc_logic_smell
+from analyzers import e286_nondeterministic_sampling_smell
 
 
 ANALYZERS = (
@@ -619,6 +621,8 @@ ANALYZERS = (
     e282_process_step_without_cost_smell,
     e283_inline_yield_smell,
     e284_defect_flag_bypass_smell,
+    e285_implicit_qc_logic_smell,
+    e286_nondeterministic_sampling_smell,
 )
 
 
