@@ -671,6 +671,20 @@ from src.process.research import (
     normalize_experiment_definition_rows,
     normalize_experiment_result_rows,
 )
+from src.process.software import (
+    REFUSAL_SOFTWARE_PIPELINE_COMPILE_FAILED,
+    REFUSAL_SOFTWARE_PIPELINE_INVALID,
+    REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_INVALID,
+    REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_REQUIRED_FOR_DEPLOY,
+    REFUSAL_SOFTWARE_PIPELINE_SIGNING_KEY_REQUIRED,
+    REFUSAL_SOFTWARE_PIPELINE_TEMPLATE_UNKNOWN,
+    REFUSAL_SOFTWARE_PIPELINE_TEST_FAILED,
+    REFUSAL_SOFTWARE_PIPELINE_TOOLCHAIN_UNKNOWN,
+    evaluate_software_pipeline_execution,
+    normalize_deployment_record_rows,
+    normalize_software_artifact_rows,
+    normalize_software_pipeline_profile_rows,
+)
 from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
 from src.meta.provenance import normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -861,6 +875,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.experiment_run_complete": "entitlement.tool.use",
     "process.candidate_promote_to_defined": "entitlement.control.admin",
     "process.reverse_engineering_action": "entitlement.tool.use",
+    "process.software_pipeline_execute": "entitlement.tool.operating",
     "process.process_capsule_generate": "entitlement.control.admin",
     "process.process_capsule_execute": "entitlement.tool.operating",
     "process.pollution_emit": "session.boot",
@@ -1062,6 +1077,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.experiment_run_complete": "operator",
     "process.candidate_promote_to_defined": "operator",
     "process.reverse_engineering_action": "operator",
+    "process.software_pipeline_execute": "operator",
     "process.process_capsule_generate": "operator",
     "process.process_capsule_execute": "operator",
     "process.pollution_emit": "observer",
@@ -1190,6 +1206,7 @@ CONTROL_PROCESS_IDS = {
     "process.experiment_run_complete",
     "process.candidate_promote_to_defined",
     "process.reverse_engineering_action",
+    "process.software_pipeline_execute",
     "process.process_capsule_generate",
     "process.process_capsule_execute",
     "process.pollution_emit",
@@ -1271,6 +1288,7 @@ TOOL_PROCESS_IDS = {
     "process.experiment_run_start",
     "process.experiment_run_complete",
     "process.reverse_engineering_action",
+    "process.software_pipeline_execute",
 }
 TASK_PROCESS_IDS = {
     "process.task_create",
@@ -5498,6 +5516,30 @@ def _load_research_policy_registry(*, policy_context: dict | None) -> dict:
         repo_root=REPO_ROOT_HINT,
         registry_rel_path="data/registries/research_policy_registry.json",
         default_payload={"record": {"research_policies": []}},
+    )
+
+
+def _load_software_toolchain_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "software_toolchain_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/software_toolchain_registry.json",
+        default_payload={"record": {"toolchains": []}},
+    )
+
+
+def _load_software_pipeline_template_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(
+        _policy_payload(policy_context, "software_pipeline_template_registry") or {}
+    )
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/software_pipeline_template_registry.json",
+        default_payload={"record": {"pipeline_templates": []}},
     )
 
 
@@ -10895,6 +10937,146 @@ def _refresh_process_research_hash_chains(state: dict) -> None:
                 key=lambda item: (
                     int(max(0, _as_int(item.get("tick", 0), 0))),
                     str(item.get("record_id", "")),
+                ),
+            )
+        ]
+    )
+
+
+def _ensure_software_pipeline_profile_rows(state: dict) -> List[dict]:
+    rows = state.get("software_pipeline_profile_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_software_pipeline_profile_rows(rows)
+    state["software_pipeline_profile_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_software_artifact_rows(state: dict) -> List[dict]:
+    rows = state.get("software_artifact_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_software_artifact_rows(rows)
+    state["software_artifact_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_deployment_record_rows(state: dict) -> List[dict]:
+    rows = state.get("deployment_record_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized = normalize_deployment_record_rows(rows)
+    state["deployment_record_rows"] = [dict(row) for row in normalized]
+    return [dict(row) for row in normalized]
+
+
+def _ensure_software_build_cache_rows(state: dict) -> List[dict]:
+    rows = state.get("software_build_cache_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("cache_key", "")),
+    ):
+        cache_key = str(row.get("cache_key", "")).strip()
+        if not cache_key:
+            continue
+        payload = {
+            "cache_key": cache_key,
+            "compiled_model_id": str(row.get("compiled_model_id", "")).strip(),
+            "source_hash": str(row.get("source_hash", "")).strip(),
+            "toolchain_version": str(row.get("toolchain_version", "")).strip(),
+            "config_hash": str(row.get("config_hash", "")).strip(),
+            "tick_cached": int(max(0, _as_int(row.get("tick_cached", 0), 0))),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip()
+            or canonical_sha256(
+                {
+                    "cache_key": cache_key,
+                    "compiled_model_id": str(row.get("compiled_model_id", "")).strip(),
+                    "source_hash": str(row.get("source_hash", "")).strip(),
+                    "toolchain_version": str(row.get("toolchain_version", "")).strip(),
+                    "config_hash": str(row.get("config_hash", "")).strip(),
+                }
+            ),
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+        normalized[cache_key] = payload
+    rows_out = [dict(normalized[key]) for key in sorted(normalized.keys())]
+    state["software_build_cache_rows"] = [dict(row) for row in rows_out]
+    return [dict(row) for row in rows_out]
+
+
+def _refresh_software_pipeline_hash_chains(state: dict) -> None:
+    artifact_rows = _ensure_software_artifact_rows(state)
+    deployment_rows = _ensure_deployment_record_rows(state)
+    _ensure_software_pipeline_profile_rows(state)
+    _ensure_software_build_cache_rows(state)
+    state["software_artifact_hash_chain"] = canonical_sha256(
+        [
+            {
+                "artifact_id": str(row.get("artifact_id", "")).strip(),
+                "kind": str(row.get("kind", "")).strip(),
+                "content_hash": str(row.get("content_hash", "")).strip(),
+                "produced_by_run_id": str(row.get("produced_by_run_id", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(artifact_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("artifact_id", "")),
+            )
+        ]
+    )
+    state["build_artifact_hash_chain"] = canonical_sha256(
+        [
+            {
+                "artifact_id": str(row.get("artifact_id", "")).strip(),
+                "content_hash": str(row.get("content_hash", "")).strip(),
+                "produced_by_run_id": str(row.get("produced_by_run_id", "")).strip(),
+            }
+            for row in sorted(
+                (
+                    dict(item)
+                    for item in list(artifact_rows or [])
+                    if isinstance(item, Mapping)
+                    and str(item.get("kind", "")).strip() in {"binary", "package", "test_report"}
+                ),
+                key=lambda item: str(item.get("artifact_id", "")),
+            )
+        ]
+    )
+    state["signature_hash_chain"] = canonical_sha256(
+        [
+            {
+                "artifact_id": str(row.get("artifact_id", "")).strip(),
+                "content_hash": str(row.get("content_hash", "")).strip(),
+                "produced_by_run_id": str(row.get("produced_by_run_id", "")).strip(),
+            }
+            for row in sorted(
+                (
+                    dict(item)
+                    for item in list(artifact_rows or [])
+                    if isinstance(item, Mapping) and str(item.get("kind", "")).strip() == "signature"
+                ),
+                key=lambda item: str(item.get("artifact_id", "")),
+            )
+        ]
+    )
+    state["deployment_hash_chain"] = canonical_sha256(
+        [
+            {
+                "deploy_id": str(row.get("deploy_id", "")).strip(),
+                "artifact_id": str(row.get("artifact_id", "")).strip(),
+                "from_subject_id": str(row.get("from_subject_id", "")).strip(),
+                "to_address": str(row.get("to_address", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                (dict(item) for item in list(deployment_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("deploy_id", "")),
                 ),
             )
         ]
@@ -33357,6 +33539,380 @@ def execute_intent(
                 {"capsule_id": capsule_id, "result": execution_result},
                 "$.intent.inputs.capsule_id",
             )
+    elif process_id == "process.software_pipeline_execute":
+        pipeline_id = str(inputs.get("pipeline_id", "")).strip() or "pipeline.build_test_package_sign_deploy"
+        source_artifact_id = str(inputs.get("source_artifact_id", "")).strip()
+        source_hash = str(inputs.get("source_hash", "")).strip().lower()
+        toolchain_id = str(inputs.get("toolchain_id", "")).strip() or "toolchain.stub_c89"
+        toolchain_version = str(inputs.get("toolchain_version", "")).strip()
+        config_hash = str(inputs.get("config_hash", "")).strip().lower()
+        compile_policy_id = str(inputs.get("compile_policy_id", "")).strip() or "compile.default"
+        requester_subject_id = str(inputs.get("requester_subject_id", "")).strip() or str(
+            authority_context.get("subject_id", "")
+        ).strip()
+        if not source_hash and source_artifact_id:
+            source_hash = canonical_sha256({"source_artifact_id": source_artifact_id})
+        if not source_artifact_id and source_hash:
+            source_artifact_id = "artifact.software.source.{}".format(source_hash[:16])
+        if not config_hash and source_hash:
+            config_hash = canonical_sha256(
+                {"pipeline_id": pipeline_id, "source_hash": source_hash}
+            )
+
+        software_toolchain_registry = _load_software_toolchain_registry(
+            policy_context=policy_context
+        )
+        software_pipeline_template_registry = _load_software_pipeline_template_registry(
+            policy_context=policy_context
+        )
+        if not toolchain_version:
+            toolchain_rows = list(
+                (
+                    dict(item)
+                    for item in list(
+                        (dict(software_toolchain_registry.get("record") or {})).get("toolchains")
+                        or software_toolchain_registry.get("toolchains")
+                        or []
+                    )
+                    if isinstance(item, Mapping)
+                )
+            )
+            for row in sorted(
+                toolchain_rows,
+                key=lambda item: str(item.get("toolchain_id", "")),
+            ):
+                if str(row.get("toolchain_id", "")).strip() != toolchain_id:
+                    continue
+                toolchain_version = str(row.get("toolchain_version", "")).strip()
+                break
+
+        qc_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="qc_policy_registry",
+            registry_rel_path="data/registries/qc_policy_registry.json",
+            entry_key="qc_policies",
+        )
+        sampling_strategy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="sampling_strategy_registry",
+            registry_rel_path="data/registries/sampling_strategy_registry.json",
+            entry_key="sampling_strategies",
+        )
+        test_procedure_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="test_procedure_registry",
+            registry_rel_path="data/registries/test_procedure_registry.json",
+            entry_key="test_procedures",
+        )
+        tolerance_policy_registry = _spec_registry_payload(
+            policy_context=policy_context,
+            key="tolerance_policy_registry",
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            entry_key="tolerance_policies",
+        )
+
+        software_eval = evaluate_software_pipeline_execution(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            pipeline_id=pipeline_id,
+            source_artifact_id=source_artifact_id,
+            source_hash=source_hash,
+            toolchain_id=toolchain_id,
+            toolchain_version=toolchain_version,
+            config_hash=config_hash,
+            compile_policy_id=compile_policy_id,
+            software_toolchain_registry_payload=software_toolchain_registry,
+            software_pipeline_template_registry_payload=software_pipeline_template_registry,
+            compiled_type_registry_payload=_load_compiled_type_registry(policy_context=policy_context),
+            verification_procedure_registry_payload=_load_verification_procedure_registry(
+                policy_context=policy_context
+            ),
+            compile_policy_registry_payload=_load_compile_policy_registry(
+                policy_context=policy_context
+            ),
+            existing_build_cache_rows=list(_ensure_software_build_cache_rows(state) or []),
+            signing_key_artifact_id=(
+                None
+                if inputs.get("signing_key_artifact_id") is None
+                else str(inputs.get("signing_key_artifact_id", "")).strip() or None
+            ),
+            deploy_to_address=(
+                None
+                if inputs.get("deploy_to_address") is None
+                else str(inputs.get("deploy_to_address", "")).strip() or None
+            ),
+            requester_subject_id=requester_subject_id or None,
+            run_id=(
+                None
+                if inputs.get("run_id") is None
+                else str(inputs.get("run_id", "")).strip() or None
+            ),
+            available_test_ids=_sorted_tokens(list(inputs.get("available_test_ids") or [])),
+            qc_policy_id=str(inputs.get("qc_policy_id", "")).strip() or "qc.basic_sampling",
+            qc_policy_registry_payload=qc_policy_registry,
+            sampling_strategy_registry_payload=sampling_strategy_registry,
+            test_procedure_registry_payload=test_procedure_registry,
+            tolerance_policy_registry_payload=tolerance_policy_registry,
+            runtime_bug_risk_permille=int(
+                max(0, min(1000, _as_int(inputs.get("runtime_bug_risk_permille", 0), 0)))
+            ),
+            force_test_failure=bool(inputs.get("force_test_failure", False)),
+            force_signature_invalid=bool(inputs.get("force_signature_invalid", False)),
+            allow_deploy_without_signature=bool(
+                inputs.get("allow_deploy_without_signature", False)
+            ),
+            test_subset_rate_permille=int(
+                max(0, min(1000, _as_int(inputs.get("test_subset_rate_permille", 500), 500)))
+            ),
+        )
+
+        if str(software_eval.get("result", "")).strip() != "complete":
+            reason_code = str(software_eval.get("reason_code", "")).strip()
+            recommendation = (
+                "Provide valid pipeline/source/toolchain/config hashes and retry."
+                if reason_code == REFUSAL_SOFTWARE_PIPELINE_INVALID
+                else "Select a registered software pipeline template and toolchain before executing."
+            )
+            if reason_code in (
+                REFUSAL_SOFTWARE_PIPELINE_SIGNING_KEY_REQUIRED,
+                REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_REQUIRED_FOR_DEPLOY,
+                REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_INVALID,
+            ):
+                recommendation = "Provide a valid signing key artifact and signature before deploy."
+            elif reason_code == REFUSAL_SOFTWARE_PIPELINE_TEST_FAILED:
+                recommendation = "Resolve failing tests or adjust deterministic QC test subset policy."
+            elif reason_code == REFUSAL_SOFTWARE_PIPELINE_COMPILE_FAILED:
+                recommendation = "Resolve compile proof/refusal and retry with valid compile inputs."
+            elif reason_code == REFUSAL_SOFTWARE_PIPELINE_TEMPLATE_UNKNOWN:
+                recommendation = "Register pipeline template in software_pipeline_template_registry."
+            elif reason_code == REFUSAL_SOFTWARE_PIPELINE_TOOLCHAIN_UNKNOWN:
+                recommendation = "Register toolchain in software_toolchain_registry."
+            return refusal(
+                reason_code or REFUSAL_SOFTWARE_PIPELINE_INVALID,
+                "software pipeline execution refused",
+                recommendation,
+                {
+                    "pipeline_id": pipeline_id,
+                    "toolchain_id": toolchain_id,
+                    "source_artifact_id": source_artifact_id,
+                    "reason_code": reason_code,
+                },
+                "$.intent.inputs.pipeline_id",
+            )
+
+        pipeline_profile_row = dict(software_eval.get("pipeline_profile_row") or {})
+        software_artifact_rows = [
+            dict(row)
+            for row in list(software_eval.get("software_artifact_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        deployment_record_rows = [
+            dict(row)
+            for row in list(software_eval.get("deployment_record_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        process_run_record_row = dict(software_eval.get("process_run_record_row") or {})
+        process_step_record_rows = [
+            dict(row)
+            for row in list(software_eval.get("process_step_record_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        process_quality_record_row = dict(
+            software_eval.get("process_quality_record_row") or {}
+        )
+        qc_rows = [
+            dict(row)
+            for row in list(software_eval.get("qc_result_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        measurement_rows = [
+            dict(row)
+            for row in list(software_eval.get("qc_measurement_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        decision_rows = [
+            dict(row)
+            for row in list(software_eval.get("sampling_decision_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        compile_request_row = dict(software_eval.get("compile_request_row") or {})
+        compile_result_row = dict(software_eval.get("compile_result_row") or {})
+        compiled_model_row = dict(software_eval.get("compiled_model_row") or {})
+        equivalence_proof_row = dict(software_eval.get("equivalence_proof_row") or {})
+        validity_domain_row = dict(software_eval.get("validity_domain_row") or {})
+        sig_outbound_row = dict(software_eval.get("sig_outbound_row") or {})
+
+        if pipeline_profile_row:
+            state["software_pipeline_profile_rows"] = normalize_software_pipeline_profile_rows(
+                list(state.get("software_pipeline_profile_rows") or []) + [pipeline_profile_row]
+            )
+        if software_artifact_rows:
+            state["software_artifact_rows"] = normalize_software_artifact_rows(
+                list(state.get("software_artifact_rows") or []) + software_artifact_rows
+            )
+        if deployment_record_rows:
+            state["deployment_record_rows"] = normalize_deployment_record_rows(
+                list(state.get("deployment_record_rows") or []) + deployment_record_rows
+            )
+        state["software_build_cache_rows"] = list(
+            software_eval.get("software_build_cache_rows") or []
+        )
+        _ensure_software_build_cache_rows(state)
+
+        if process_run_record_row:
+            state["process_run_record_rows"] = sorted(
+                list(state.get("process_run_record_rows") or []) + [process_run_record_row],
+                key=lambda row: (
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("run_id", "")),
+                    int(
+                        max(
+                            0,
+                            _as_int(
+                                (dict(row) if isinstance(row, Mapping) else {}).get(
+                                    "start_tick", 0
+                                ),
+                                0,
+                            ),
+                        )
+                    ),
+                ),
+            )
+        if process_step_record_rows:
+            state["process_step_record_rows"] = sorted(
+                list(state.get("process_step_record_rows") or []) + process_step_record_rows,
+                key=lambda row: (
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("run_id", "")),
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("step_id", "")),
+                    int(
+                        max(
+                            0,
+                            _as_int((dict(row) if isinstance(row, Mapping) else {}).get("tick", 0), 0),
+                        )
+                    ),
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("status", "")),
+                ),
+            )
+        if process_quality_record_row:
+            state["process_quality_record_rows"] = sorted(
+                list(state.get("process_quality_record_rows") or [])
+                + [process_quality_record_row],
+                key=lambda row: str((dict(row) if isinstance(row, Mapping) else {}).get("run_id", "")),
+            )
+        if qc_rows:
+            state["qc_result_record_rows"] = sorted(
+                list(state.get("qc_result_record_rows") or []) + qc_rows,
+                key=lambda row: (
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("run_id", "")),
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("batch_id", "")),
+                ),
+            )
+        if measurement_rows:
+            state["qc_measurement_rows"] = sorted(
+                list(state.get("qc_measurement_rows") or []) + measurement_rows,
+                key=lambda row: str((dict(row) if isinstance(row, Mapping) else {}).get("measurement_id", "")),
+            )
+        if decision_rows:
+            state["sampling_decision_rows"] = sorted(
+                list(state.get("sampling_decision_rows") or []) + decision_rows,
+                key=lambda row: (
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("batch_id", "")),
+                    str(
+                        (dict(row) if isinstance(row, Mapping) else {}).get(
+                            "sampling_strategy_id", ""
+                        )
+                    ),
+                ),
+            )
+        if compile_request_row:
+            state["compile_request_rows"] = normalize_compile_request_rows(
+                list(state.get("compile_request_rows") or []) + [compile_request_row]
+            )
+        if compile_result_row:
+            state["compile_result_rows"] = normalize_compile_result_rows(
+                list(state.get("compile_result_rows") or []) + [compile_result_row]
+            )
+        if compiled_model_row:
+            state["compiled_model_rows"] = normalize_compiled_model_rows(
+                list(state.get("compiled_model_rows") or []) + [compiled_model_row]
+            )
+        if equivalence_proof_row:
+            state["equivalence_proof_rows"] = normalize_equivalence_proof_rows(
+                list(state.get("equivalence_proof_rows") or []) + [equivalence_proof_row]
+            )
+        if validity_domain_row:
+            state["validity_domain_rows"] = normalize_validity_domain_rows(
+                list(state.get("validity_domain_rows") or []) + [validity_domain_row]
+            )
+
+        if sig_outbound_row:
+            state["sig_outbound_rows"] = sorted(
+                list(state.get("sig_outbound_rows") or []) + [sig_outbound_row],
+                key=lambda row: (
+                    int(max(0, _as_int((dict(row) if isinstance(row, Mapping) else {}).get("tick", 0), 0))),
+                    str((dict(row) if isinstance(row, Mapping) else {}).get("envelope_id", "")),
+                ),
+            )
+
+        info_artifact_rows = [
+            dict(row)
+            for row in list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or [])
+            if isinstance(row, Mapping)
+        ]
+        run_id = str(process_run_record_row.get("run_id", "")).strip()
+        if run_id:
+            info_artifact_rows.append(
+                {
+                    "artifact_id": "artifact.record.software_pipeline_run.{}".format(
+                        canonical_sha256({"run_id": run_id})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.software_pipeline_run",
+                        "run_id": run_id,
+                        "pipeline_id": pipeline_id,
+                    },
+                }
+            )
+        for row in deployment_record_rows:
+            deploy_id = str(row.get("deploy_id", "")).strip()
+            if not deploy_id:
+                continue
+            info_artifact_rows.append(
+                {
+                    "artifact_id": "artifact.record.software_deployment.{}".format(
+                        canonical_sha256({"deploy_id": deploy_id})[:16]
+                    ),
+                    "artifact_family_id": "RECORD",
+                    "extensions": {
+                        "artifact_type_id": "artifact.record.software_deployment",
+                        "deploy_id": deploy_id,
+                        "artifact_id_ref": str(row.get("artifact_id", "")).strip(),
+                    },
+                }
+            )
+        state["info_artifact_rows"] = normalize_info_artifact_rows(info_artifact_rows)
+        state["knowledge_artifacts"] = [
+            dict(row) for row in list(state.get("info_artifact_rows") or [])
+        ]
+
+        _refresh_compile_hash_chains(state)
+        _refresh_software_pipeline_hash_chains(state)
+        result_metadata = {
+            "pipeline_id": pipeline_id,
+            "run_id": run_id,
+            "compile_cache_hit": bool(software_eval.get("compile_cache_hit", False)),
+            "build_cache_key": str(software_eval.get("build_cache_key", "")).strip(),
+            "compiled_model_id": software_eval.get("compiled_model_id"),
+            "selected_tests": _sorted_tokens(list(software_eval.get("selected_tests") or [])),
+            "binary_hash": str(software_eval.get("binary_hash", "")).strip(),
+            "package_hash": str(software_eval.get("package_hash", "")).strip(),
+            "signature_hash": software_eval.get("signature_hash"),
+            "build_artifact_hash_chain": str(state.get("build_artifact_hash_chain", "")).strip(),
+            "compiled_model_hash_chain": str(state.get("compiled_model_hash_chain", "")).strip(),
+            "signature_hash_chain": str(state.get("signature_hash_chain", "")).strip(),
+            "deployment_hash_chain": str(state.get("deployment_hash_chain", "")).strip(),
+            "software_artifact_hash_chain": str(state.get("software_artifact_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.compile_request_submit":
         compile_request_payload = (
             dict(inputs.get("compile_request") or {})

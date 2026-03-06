@@ -5643,6 +5643,82 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "assembly.software.pipeline"
+      ],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical PROC-8 software pipeline execution process; deterministically executes verify/compile/test/package/sign/deploy steps, records software artifacts, and routes deploy through SIG-governed transport outputs.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "cache-by-hash"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.software_pipeline_execute)",
+        "source": "PROC8-4",
+        "tier": "micro_macro"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.software_pipeline.invalid_inputs",
+        "refusal.software_pipeline.toolchain_unknown",
+        "refusal.software_pipeline.template_unknown",
+        "refusal.software_pipeline.compile_failed",
+        "refusal.software_pipeline.test_failed",
+        "refusal.software_pipeline.signing_key_required",
+        "refusal.software_pipeline.signature_required_for_deploy",
+        "refusal.software_pipeline.signature_invalid"
+      ],
+      "human_name": "Software Pipeline Execute",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "pipeline_id",
+          "ref_id": "dominium.schema.process.software_pipeline_profile@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "source_artifact",
+          "ref_id": "dominium.schema.process.software_artifact@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "signing_key",
+          "ref_id": "dominium.info.CREDENTIAL",
+          "ref_type": "artifact"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "software_artifacts",
+          "ref_id": "dominium.schema.process.software_artifact@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "deployment_record",
+          "ref_id": "dominium.schema.process.deployment_record@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "compile_result",
+          "ref_id": "dominium.schema.meta.compile_result@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.software_pipeline_execute",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",
