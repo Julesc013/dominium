@@ -559,6 +559,20 @@ def evaluate_software_pipeline_execution(
                 dict(cache_by_key[key]) for key in sorted(cache_by_key.keys())
             ],
         }
+    if signer_token and (
+        not signer_token.startswith("artifact.credential.")
+        and not signer_token.startswith("credential.")
+        and not signer_token.startswith("cred.")
+    ):
+        return {
+            "result": "refusal",
+            "reason_code": REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_INVALID,
+            "compile_cache_hit": bool(compile_cache_hit),
+            "build_cache_key": compile_cache_key,
+            "software_build_cache_rows": [
+                dict(cache_by_key[key]) for key in sorted(cache_by_key.keys())
+            ],
+        }
     signature_hash = (
         canonical_sha256({"package_hash": package_hash, "signing_key_artifact_id": signer_token})
         if signer_token
@@ -731,6 +745,8 @@ def evaluate_software_pipeline_execution(
             ),
             "tick": tick,
             "delivery_mode": "sig_channel",
+            "receipt_required": True,
+            "trust_policy_id": "trust.default",
             "deterministic_fingerprint": canonical_sha256(
                 {
                     "from_subject_id": subject_token,
@@ -742,6 +758,9 @@ def evaluate_software_pipeline_execution(
                         ]
                     ),
                     "tick": tick,
+                    "delivery_mode": "sig_channel",
+                    "receipt_required": True,
+                    "trust_policy_id": "trust.default",
                 }
             ),
             "extensions": {"source": "PROC8-5"},

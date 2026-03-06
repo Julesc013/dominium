@@ -10970,6 +10970,54 @@ def _ensure_deployment_record_rows(state: dict) -> List[dict]:
     return [dict(row) for row in normalized]
 
 
+def _ensure_sig_outbound_rows(state: dict) -> List[dict]:
+    rows = state.get("sig_outbound_rows")
+    if not isinstance(rows, list):
+        rows = []
+    normalized: Dict[str, dict] = {}
+    for row in sorted(
+        (dict(item) for item in rows if isinstance(item, Mapping)),
+        key=lambda item: (
+            int(max(0, _as_int(item.get("tick", 0), 0))),
+            str(item.get("envelope_id", "")),
+        ),
+    ):
+        envelope_id = str(row.get("envelope_id", "")).strip()
+        if not envelope_id:
+            continue
+        payload = {
+            "envelope_id": envelope_id,
+            "from_subject_id": str(row.get("from_subject_id", "")).strip(),
+            "to_address": str(row.get("to_address", "")).strip(),
+            "artifact_ids": _sorted_tokens(list(row.get("artifact_ids") or [])),
+            "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            "delivery_mode": str(row.get("delivery_mode", "")).strip() or "sig_channel",
+            "receipt_required": bool(row.get("receipt_required", True)),
+            "trust_policy_id": str(row.get("trust_policy_id", "")).strip() or "trust.default",
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip()
+            or canonical_sha256(
+                {
+                    "envelope_id": envelope_id,
+                    "from_subject_id": str(row.get("from_subject_id", "")).strip(),
+                    "to_address": str(row.get("to_address", "")).strip(),
+                    "artifact_ids": _sorted_tokens(list(row.get("artifact_ids") or [])),
+                    "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                    "delivery_mode": str(row.get("delivery_mode", "")).strip() or "sig_channel",
+                    "receipt_required": bool(row.get("receipt_required", True)),
+                    "trust_policy_id": str(row.get("trust_policy_id", "")).strip()
+                    or "trust.default",
+                }
+            ),
+            "extensions": dict(row.get("extensions") or {})
+            if isinstance(row.get("extensions"), Mapping)
+            else {},
+        }
+        normalized[envelope_id] = payload
+    rows_out = [dict(normalized[key]) for key in sorted(normalized.keys())]
+    state["sig_outbound_rows"] = [dict(row) for row in rows_out]
+    return [dict(row) for row in rows_out]
+
+
 def _ensure_software_build_cache_rows(state: dict) -> List[dict]:
     rows = state.get("software_build_cache_rows")
     if not isinstance(rows, list):
@@ -11012,6 +11060,7 @@ def _ensure_software_build_cache_rows(state: dict) -> List[dict]:
 def _refresh_software_pipeline_hash_chains(state: dict) -> None:
     artifact_rows = _ensure_software_artifact_rows(state)
     deployment_rows = _ensure_deployment_record_rows(state)
+    sig_outbound_rows = _ensure_sig_outbound_rows(state)
     _ensure_software_pipeline_profile_rows(state)
     _ensure_software_build_cache_rows(state)
     state["software_artifact_hash_chain"] = canonical_sha256(
@@ -11077,6 +11126,27 @@ def _refresh_software_pipeline_hash_chains(state: dict) -> None:
                 key=lambda item: (
                     int(max(0, _as_int(item.get("tick", 0), 0))),
                     str(item.get("deploy_id", "")),
+                ),
+            )
+        ]
+    )
+    state["sig_deployment_hash_chain"] = canonical_sha256(
+        [
+            {
+                "envelope_id": str(row.get("envelope_id", "")).strip(),
+                "from_subject_id": str(row.get("from_subject_id", "")).strip(),
+                "to_address": str(row.get("to_address", "")).strip(),
+                "artifact_ids": _sorted_tokens(list(row.get("artifact_ids") or [])),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "delivery_mode": str(row.get("delivery_mode", "")).strip(),
+                "receipt_required": bool(row.get("receipt_required", False)),
+                "trust_policy_id": str(row.get("trust_policy_id", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(sig_outbound_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("envelope_id", "")),
                 ),
             )
         ]
@@ -33740,6 +33810,18 @@ def execute_intent(
         equivalence_proof_row = dict(software_eval.get("equivalence_proof_row") or {})
         validity_domain_row = dict(software_eval.get("validity_domain_row") or {})
         sig_outbound_row = dict(software_eval.get("sig_outbound_row") or {})
+        requested_deploy_address = str(inputs.get("deploy_to_address", "")).strip()
+        if requested_deploy_address and ((not deployment_record_rows) or (not sig_outbound_row)):
+            return refusal(
+                "refusal.software_pipeline.deploy_failed",
+                "software pipeline deploy step did not emit required SIG/deployment records",
+                "Retry deploy with valid package/signature and SIG channel inputs.",
+                {
+                    "pipeline_id": pipeline_id,
+                    "deploy_to_address": requested_deploy_address,
+                },
+                "$.intent.inputs.deploy_to_address",
+            )
 
         if pipeline_profile_row:
             state["software_pipeline_profile_rows"] = normalize_software_pipeline_profile_rows(
@@ -33851,6 +33933,7 @@ def execute_intent(
                     str((dict(row) if isinstance(row, Mapping) else {}).get("envelope_id", "")),
                 ),
             )
+            _ensure_sig_outbound_rows(state)
 
         info_artifact_rows = [
             dict(row)
@@ -33910,6 +33993,7 @@ def execute_intent(
             "compiled_model_hash_chain": str(state.get("compiled_model_hash_chain", "")).strip(),
             "signature_hash_chain": str(state.get("signature_hash_chain", "")).strip(),
             "deployment_hash_chain": str(state.get("deployment_hash_chain", "")).strip(),
+            "sig_deployment_hash_chain": str(state.get("sig_deployment_hash_chain", "")).strip(),
             "software_artifact_hash_chain": str(state.get("software_artifact_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
