@@ -14,6 +14,7 @@ from src.process.maturity.maturity_engine import (
     compute_stabilization_score,
     evaluate_process_maturity,
     normalize_process_maturity_record_rows,
+    process_capsule_eligibility_status,
     process_lifecycle_policy_rows_by_id,
 )
 
@@ -30,4 +31,5 @@ __all__ = [
     "process_lifecycle_policy_rows_by_id",
     "compute_stabilization_score",
     "evaluate_process_maturity",
+    "process_capsule_eligibility_status",
 ]

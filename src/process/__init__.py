@@ -21,6 +21,19 @@ from src.process.process_run_engine import (
     process_run_start,
     process_run_tick,
 )
+from src.process.maturity import (
+    build_process_certificate_artifact_row,
+    build_process_certificate_revocation_row,
+    build_process_maturity_record_row,
+    build_process_metrics_state_row,
+    compute_stabilization_score,
+    evaluate_process_maturity,
+    process_capsule_eligibility_status,
+    process_lifecycle_policy_rows_by_id,
+    process_metrics_rows_by_key,
+    stabilization_policy_rows_by_id,
+    update_process_metrics_for_run,
+)
 
 __all__ = [
     "REFUSAL_PROCESS_INVALID_DEFINITION",
@@ -40,4 +53,15 @@ __all__ = [
     "process_run_start",
     "process_run_tick",
     "process_run_end",
+    "build_process_metrics_state_row",
+    "process_metrics_rows_by_key",
+    "stabilization_policy_rows_by_id",
+    "update_process_metrics_for_run",
+    "build_process_maturity_record_row",
+    "compute_stabilization_score",
+    "evaluate_process_maturity",
+    "process_lifecycle_policy_rows_by_id",
+    "build_process_certificate_artifact_row",
+    "build_process_certificate_revocation_row",
+    "process_capsule_eligibility_status",
 ]

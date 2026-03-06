@@ -488,6 +488,59 @@ def build_process_certificate_revocation_row(
     return payload
 
 
+def process_capsule_eligibility_status(
+    *,
+    maturity_state: str,
+    lifecycle_policy_row: Mapping[str, object] | None,
+    has_process_certificate: bool,
+    require_human_or_institution_cert: bool,
+) -> dict:
+    state = _token(maturity_state).lower() or "exploration"
+    lifecycle_policy = _as_map(lifecycle_policy_row)
+    allow_capsule_without_cert = bool(
+        lifecycle_policy.get("allow_capsule_without_certification", True)
+    )
+    if state != "capsule_eligible":
+        reason = "maturity_state_not_capsule_eligible"
+        return {
+            "result": "refused",
+            "eligible": False,
+            "reason_code": reason,
+            "deterministic_fingerprint": canonical_sha256(
+                {"state": state, "eligible": False, "reason_code": reason}
+            ),
+        }
+    if require_human_or_institution_cert and not bool(has_process_certificate):
+        reason = "policy.requires_human_or_institution_certificate"
+        return {
+            "result": "refused",
+            "eligible": False,
+            "reason_code": reason,
+            "deterministic_fingerprint": canonical_sha256(
+                {"state": state, "eligible": False, "reason_code": reason}
+            ),
+        }
+    if (not allow_capsule_without_cert) and not bool(has_process_certificate):
+        reason = "policy.requires_process_certificate"
+        return {
+            "result": "refused",
+            "eligible": False,
+            "reason_code": reason,
+            "deterministic_fingerprint": canonical_sha256(
+                {"state": state, "eligible": False, "reason_code": reason}
+            ),
+        }
+    reason = ""
+    return {
+        "result": "complete",
+        "eligible": True,
+        "reason_code": reason,
+        "deterministic_fingerprint": canonical_sha256(
+            {"state": state, "eligible": True, "reason_code": reason}
+        ),
+    }
+
+
 __all__ = [
     "build_process_maturity_record_row",
     "normalize_process_maturity_record_rows",
@@ -496,4 +549,5 @@ __all__ = [
     "evaluate_process_maturity",
     "build_process_certificate_artifact_row",
     "build_process_certificate_revocation_row",
+    "process_capsule_eligibility_status",
 ]

@@ -17,6 +17,7 @@ from src.process.maturity import (
     build_process_certificate_artifact_row,
     build_process_certificate_revocation_row,
     evaluate_process_maturity,
+    process_capsule_eligibility_status,
     process_lifecycle_policy_rows_by_id,
     process_metrics_rows_by_key,
     stabilization_policy_rows_by_id,
@@ -633,6 +634,7 @@ def process_run_end(
     cert_validity_ticks: int | None = None,
     metrics_update_stride: int = 1,
     force_metrics_update: bool = False,
+    require_human_or_institution_cert: bool = False,
 ) -> dict:
     run_record = dict(_as_map(run_record_row))
     run_id = str(run_record.get("run_id", "")).strip()
@@ -1390,6 +1392,42 @@ def process_run_end(
             str(row.get("event_id", "")),
         ),
     )
+    revoked_cert_ids_after = set(
+        str(row.get("cert_id", "")).strip()
+        for row in state["process_certification_revocation_rows"]
+        if str(row.get("cert_id", "")).strip()
+    )
+    active_cert_ids_after = sorted(
+        set(
+            str(row.get("cert_id", "")).strip()
+            for row in state["process_certification_artifact_rows"]
+            if str(row.get("cert_id", "")).strip()
+        )
+        - revoked_cert_ids_after
+    )
+    capsule_gate = process_capsule_eligibility_status(
+        maturity_state=str(state.get("current_maturity_state", "exploration")),
+        lifecycle_policy_row=lifecycle_policy_row,
+        has_process_certificate=bool(active_cert_ids_after),
+        require_human_or_institution_cert=bool(require_human_or_institution_cert),
+    )
+    state["process_capsule_eligible"] = bool(capsule_gate.get("eligible", False))
+    state["decision_log_rows"] = [
+        dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+    ] + [
+        {
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "run_id": str(run_id),
+            "reason": (
+                "process_capsule_eligibility_granted"
+                if bool(state.get("process_capsule_eligible", False))
+                else "process_capsule_eligibility_refused"
+            ),
+            "maturity_state": str(state.get("current_maturity_state", "exploration")),
+            "has_active_process_certificate": bool(active_cert_ids_after),
+            "reason_code": str(capsule_gate.get("reason_code", "")).strip(),
+        }
+    ]
     state["metrics_state_hash_chain"] = canonical_sha256(
         [
             {
@@ -1468,6 +1506,8 @@ def process_run_end(
         metrics_state_hash_chain=str(state.get("metrics_state_hash_chain", "")).strip(),
         process_maturity_hash_chain=str(state.get("process_maturity_hash_chain", "")).strip(),
         process_cert_hash_chain=str(state.get("process_cert_hash_chain", "")).strip(),
+        current_maturity_state=str(state.get("current_maturity_state", "exploration")).strip(),
+        process_capsule_eligible=bool(state.get("process_capsule_eligible", False)),
     )
     state["run_status"] = final_status
     state["deterministic_fingerprint"] = canonical_sha256(dict(state, deterministic_fingerprint=""))
