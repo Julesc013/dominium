@@ -93,3 +93,16 @@ Named RNG is allowed only by explicit profile gate and must be proof-logged.
   - `section.process.lab_notebook`
   - `section.process.experiment_queue`
   - `section.process.candidate_confidence`
+
+## 9) Proof And Replay
+
+- Hash chains:
+  - `experiment_result_hash_chain`
+  - `experiment_run_binding_hash_chain`
+  - `candidate_process_hash_chain`
+  - `candidate_model_binding_hash_chain`
+  - `reverse_engineering_record_hash_chain`
+  - `candidate_promotion_hash_chain`
+- Replay tools:
+  - `tools/process/tool_replay_experiment_window`
+  - `tools/process/tool_replay_reverse_engineering_window`
