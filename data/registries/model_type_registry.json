@@ -238,6 +238,24 @@
         "extensions": {
           "source": "CHEM3-3"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.proc_yield_factor_model",
+        "description": "PROC-2 deterministic process yield-factor constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {
+          "source": "PROC2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_type_id": "model_type.proc_defect_model",
+        "description": "PROC-2 deterministic process defect/quality constitutive model.",
+        "parameter_schema_id": "dominium.schema.models.model_binding.v1",
+        "extensions": {
+          "source": "PROC2-3"
+        }
       }
     ],
     "extensions": {}

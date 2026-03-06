@@ -1928,6 +1928,455 @@ def _evaluate_chem_contamination_risk_model(
     return outputs
 
 
+def _evaluate_proc_yield_factor_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+
+    temperature_value = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    pressure_head = int(
+        _binding_param_int(
+            binding=binding,
+            key="pressure_head",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="quantity.pressure_head",
+                default_value=0,
+            ),
+        )
+    )
+    entropy_value = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="entropy_index",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.entropy_index",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    tool_wear_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="tool_wear_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.process.tool_wear_permille",
+                        default_value=0,
+                    ),
+                ),
+            ),
+        )
+    )
+    input_quality_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="input_batch_quality_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.process.input_batch_quality_permille",
+                        default_value=900,
+                    ),
+                ),
+            ),
+        )
+    )
+    spec_score_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="spec_score_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.process.spec_score_permille",
+                        default_value=1000,
+                    ),
+                ),
+            ),
+        )
+    )
+
+    nominal_temp = int(_as_int(params.get("nominal_temperature", 620), 620))
+    temp_band = int(max(1, _as_int(params.get("temperature_band", 160), 160)))
+    pressure_nominal = int(max(0, _as_int(params.get("pressure_head_nominal", 220), 220)))
+    pressure_band = int(max(1, _as_int(params.get("pressure_head_band", 180), 180)))
+    entropy_scale = int(max(1, _as_int(params.get("entropy_scale", 180), 180)))
+    wear_scale = int(max(1, _as_int(params.get("tool_wear_scale", 20), 20)))
+    input_quality_scale = int(max(1, _as_int(params.get("input_quality_scale", 3), 3)))
+    spec_scale = int(max(1, _as_int(params.get("spec_compliance_scale", 2), 2)))
+    base_yield = int(max(0, min(1000, _as_int(params.get("base_yield_permille", 900), 900))))
+
+    temp_penalty = int((abs(int(temperature_value) - int(nominal_temp)) * 100) // int(temp_band))
+    pressure_penalty = int((abs(int(pressure_head) - int(pressure_nominal)) * 80) // int(pressure_band))
+    entropy_penalty = int(int(entropy_value) // int(entropy_scale))
+    wear_penalty = int(int(tool_wear_permille) // int(wear_scale))
+    input_quality_penalty = int(max(0, 1000 - int(input_quality_permille)) // int(input_quality_scale))
+    spec_penalty = int(max(0, 1000 - int(spec_score_permille)) // int(spec_scale))
+
+    yield_factor_permille = int(
+        int(base_yield)
+        - int(temp_penalty)
+        - int(pressure_penalty)
+        - int(entropy_penalty)
+        - int(wear_penalty)
+        - int(input_quality_penalty)
+        - int(spec_penalty)
+    )
+    if yield_factor_permille < 0:
+        yield_factor_permille = 0
+    if yield_factor_permille > 1000:
+        yield_factor_permille = 1000
+
+    stochastic_allowed = bool(params.get("stochastic_allowed", False))
+    rng_stream_name = str(params.get("rng_stream_name", "")).strip()
+    rng_noise = 0
+    rng_seed_hash = ""
+    if stochastic_allowed and rng_stream_name:
+        run_id = str(params.get("run_id", _resolved_input_any(resolved_inputs=resolved_inputs, input_id="derived.process.run_id")) or "").strip()
+        step_id = str(params.get("step_id", _resolved_input_any(resolved_inputs=resolved_inputs, input_id="derived.process.step_id")) or "").strip()
+        tick = int(
+            max(
+                0,
+                _as_int(
+                    params.get(
+                        "tick",
+                        _resolved_input_int(
+                            resolved_inputs=resolved_inputs,
+                            input_id="derived.process.tick",
+                            default_value=0,
+                        ),
+                    ),
+                    0,
+                ),
+            )
+        )
+        rng_seed_hash = canonical_sha256(
+            {
+                "rng_stream_name": str(rng_stream_name),
+                "run_id": str(run_id),
+                "step_id": str(step_id),
+                "tick": int(tick),
+            }
+        )
+        max_noise = int(max(0, _as_int(params.get("yield_noise_max_permille", 20), 20)))
+        if max_noise > 0:
+            rng_noise = int((int(rng_seed_hash[:8], 16) % int((max_noise * 2) + 1)) - int(max_noise))
+            yield_factor_permille = int(max(0, min(1000, int(yield_factor_permille + rng_noise))))
+
+    error_estimate_permille = int(
+        min(
+            1000,
+            max(
+                0,
+                abs(int(rng_noise))
+                + int(max(0, _as_int(params.get("base_error_permille", 0), 0)))
+                + (int(entropy_value) // int(max(1, _as_int(params.get("error_entropy_scale", 240), 240)))),
+            ),
+        )
+    )
+    quality_grade = "grade.C"
+    if yield_factor_permille >= 900:
+        quality_grade = "grade.A"
+    elif yield_factor_permille >= 760:
+        quality_grade = "grade.B"
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind != "derived_quantity":
+            continue
+        output_id_lower = output_id.lower()
+        value: object = int(yield_factor_permille)
+        if "quality_grade" in output_id_lower:
+            value = str(quality_grade)
+        elif "error_estimate" in output_id_lower or "residual" in output_id_lower:
+            value = int(error_estimate_permille)
+        outputs.append(
+            _build_output_row(
+                model_id=model_id,
+                binding_id=binding_id,
+                target_id=target_id,
+                output_kind=output_kind,
+                output_id=output_id,
+                payload={
+                    "quantity_id": output_id,
+                    "value": _canon(value),
+                    "yield_factor_permille": int(yield_factor_permille),
+                    "quality_grade": str(quality_grade),
+                    "error_estimate_permille": int(error_estimate_permille),
+                    "temperature": int(temperature_value),
+                    "pressure_head": int(pressure_head),
+                    "entropy_index": int(entropy_value),
+                    "tool_wear_permille": int(tool_wear_permille),
+                    "input_batch_quality_permille": int(input_quality_permille),
+                    "spec_score_permille": int(spec_score_permille),
+                    "stochastic_allowed": bool(stochastic_allowed),
+                    "rng_stream_name": str(rng_stream_name) if stochastic_allowed else "",
+                    "rng_noise_permille": int(rng_noise),
+                    "rng_seed_hash": str(rng_seed_hash),
+                },
+            )
+        )
+    return outputs
+
+
+def _evaluate_proc_defect_model(
+    *,
+    model_row: Mapping[str, object],
+    binding: Mapping[str, object],
+    resolved_inputs: List[dict],
+    output_signature: List[dict],
+) -> List[dict]:
+    model_id = str(model_row.get("model_id", "")).strip()
+    binding_id = str(binding.get("binding_id", "")).strip()
+    target_id = str(binding.get("target_id", "")).strip()
+    params = _as_map(binding.get("parameters"))
+
+    temperature_value = int(
+        _binding_param_int(
+            binding=binding,
+            key="temperature",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="field.temperature",
+                default_value=29315,
+            ),
+        )
+    )
+    pressure_head = int(
+        _binding_param_int(
+            binding=binding,
+            key="pressure_head",
+            default_value=_resolved_input_int(
+                resolved_inputs=resolved_inputs,
+                input_id="quantity.pressure_head",
+                default_value=0,
+            ),
+        )
+    )
+    entropy_value = int(
+        max(
+            0,
+            _binding_param_int(
+                binding=binding,
+                key="entropy_index",
+                default_value=_resolved_input_int(
+                    resolved_inputs=resolved_inputs,
+                    input_id="quantity.entropy_index",
+                    default_value=0,
+                ),
+            ),
+        )
+    )
+    tool_wear_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="tool_wear_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.process.tool_wear_permille",
+                        default_value=0,
+                    ),
+                ),
+            ),
+        )
+    )
+    input_quality_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="input_batch_quality_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.process.input_batch_quality_permille",
+                        default_value=900,
+                    ),
+                ),
+            ),
+        )
+    )
+    spec_score_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="spec_score_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.process.spec_score_permille",
+                        default_value=1000,
+                    ),
+                ),
+            ),
+        )
+    )
+    calibration_state_permille = int(
+        max(
+            0,
+            min(
+                1000,
+                _binding_param_int(
+                    binding=binding,
+                    key="calibration_state_permille",
+                    default_value=_resolved_input_int(
+                        resolved_inputs=resolved_inputs,
+                        input_id="derived.process.calibration_state_permille",
+                        default_value=1000,
+                    ),
+                ),
+            ),
+        )
+    )
+
+    contamination_threshold = int(max(0, _as_int(params.get("contamination_threshold_permille", 760), 760)))
+    out_of_spec_threshold = int(max(0, _as_int(params.get("out_of_spec_threshold_permille", 820), 820)))
+    incomplete_threshold = int(max(0, _as_int(params.get("incomplete_threshold_permille", 740), 740)))
+    overprocessed_temp = int(_as_int(params.get("overprocessed_temperature", 780), 780))
+    software_bug_wear_threshold = int(max(0, _as_int(params.get("software_bug_wear_threshold", 980), 980)))
+
+    defect_flags: List[str] = []
+    if input_quality_permille < contamination_threshold or entropy_value >= int(max(0, _as_int(params.get("contamination_entropy_threshold", 900), 900))):
+        defect_flags.append("contamination")
+    if spec_score_permille < out_of_spec_threshold or pressure_head > int(max(0, _as_int(params.get("out_of_spec_pressure_head", 900), 900))):
+        defect_flags.append("out_of_spec")
+    if calibration_state_permille < incomplete_threshold:
+        defect_flags.append("incomplete")
+    if temperature_value > overprocessed_temp:
+        defect_flags.append("overprocessed")
+    if tool_wear_permille >= software_bug_wear_threshold:
+        defect_flags.append("software_bug")
+
+    stochastic_allowed = bool(params.get("stochastic_allowed", False))
+    rng_stream_name = str(params.get("rng_stream_name", "")).strip()
+    rng_roll = 0
+    rng_seed_hash = ""
+    if stochastic_allowed and rng_stream_name:
+        run_id = str(params.get("run_id", _resolved_input_any(resolved_inputs=resolved_inputs, input_id="derived.process.run_id")) or "").strip()
+        step_id = str(params.get("step_id", _resolved_input_any(resolved_inputs=resolved_inputs, input_id="derived.process.step_id")) or "").strip()
+        tick = int(
+            max(
+                0,
+                _as_int(
+                    params.get(
+                        "tick",
+                        _resolved_input_int(
+                            resolved_inputs=resolved_inputs,
+                            input_id="derived.process.tick",
+                            default_value=0,
+                        ),
+                    ),
+                    0,
+                ),
+            )
+        )
+        rng_seed_hash = canonical_sha256(
+            {
+                "rng_stream_name": str(rng_stream_name),
+                "run_id": str(run_id),
+                "step_id": str(step_id),
+                "tick": int(tick),
+            }
+        )
+        rng_roll = int(int(rng_seed_hash[:8], 16) % 1000)
+        if rng_roll >= int(max(0, _as_int(params.get("software_bug_roll_threshold", 990), 990))):
+            defect_flags.append("software_bug")
+
+    defect_flags = sorted(set(_sorted_tokens(defect_flags)))
+    defect_severity = int(
+        min(
+            1000,
+            max(
+                0,
+                (len(defect_flags) * 180)
+                + (max(0, 1000 - int(input_quality_permille)) // 8)
+                + (max(0, 1000 - int(spec_score_permille)) // 8)
+                + (max(0, int(tool_wear_permille)) // 20)
+                + (max(0, int(entropy_value)) // 30),
+            ),
+        )
+    )
+
+    outputs: List[dict] = []
+    for output_ref in list(output_signature or []):
+        output_kind = str(output_ref.get("output_kind", "")).strip()
+        output_id = str(output_ref.get("output_id", "")).strip()
+        if output_kind != "derived_quantity":
+            continue
+        output_id_lower = output_id.lower()
+        value: object = int(defect_severity)
+        if "defect_flags" in output_id_lower:
+            value = list(defect_flags)
+        outputs.append(
+            _build_output_row(
+                model_id=model_id,
+                binding_id=binding_id,
+                target_id=target_id,
+                output_kind=output_kind,
+                output_id=output_id,
+                payload={
+                    "quantity_id": output_id,
+                    "value": _canon(value),
+                    "defect_flags": list(defect_flags),
+                    "defect_severity": int(defect_severity),
+                    "temperature": int(temperature_value),
+                    "pressure_head": int(pressure_head),
+                    "entropy_index": int(entropy_value),
+                    "tool_wear_permille": int(tool_wear_permille),
+                    "input_batch_quality_permille": int(input_quality_permille),
+                    "spec_score_permille": int(spec_score_permille),
+                    "calibration_state_permille": int(calibration_state_permille),
+                    "stochastic_allowed": bool(stochastic_allowed),
+                    "rng_stream_name": str(rng_stream_name) if stochastic_allowed else "",
+                    "rng_roll_permille": int(rng_roll),
+                    "rng_seed_hash": str(rng_seed_hash),
+                },
+            )
+        )
+    return outputs
+
+
 def _evaluate_chem_corrosion_rate_model(
     *,
     model_row: Mapping[str, object],
@@ -2755,6 +3204,20 @@ def _evaluate_known_model_outputs(
         )
     if model_type_id == "model_type.chem_scaling_rate":
         return _evaluate_chem_scaling_rate_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.proc_yield_factor_model":
+        return _evaluate_proc_yield_factor_model(
+            model_row=model_row,
+            binding=binding,
+            resolved_inputs=resolved_inputs,
+            output_signature=output_signature,
+        )
+    if model_type_id == "model_type.proc_defect_model":
+        return _evaluate_proc_defect_model(
             model_row=model_row,
             binding=binding,
             resolved_inputs=resolved_inputs,

@@ -1726,6 +1726,217 @@
       },
       {
         "schema_version": "1.0.0",
+        "model_id": "model.proc_yield_factor.default",
+        "model_type_id": "model_type.proc_yield_factor_model",
+        "description": "PROC-2 deterministic yield-factor model for process output quality.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.pressure_head",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "quantity.entropy_index",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.tool_wear_permille",
+            "selector": "target.tool",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.input_batch_quality_permille",
+            "selector": "target.batch",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.spec_score_permille",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.run_id",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.step_id",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.tick",
+            "selector": "target.process",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.process.yield_factor_permille",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.process.quality_grade",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.process.error_estimate_permille",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "PROC2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "model_id": "model.proc_defect.default",
+        "model_type_id": "model_type.proc_defect_model",
+        "description": "PROC-2 deterministic defect flag and severity model for process outputs.",
+        "supported_tiers": [
+          "macro",
+          "meso"
+        ],
+        "input_signature": [
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "field",
+            "input_id": "field.temperature",
+            "selector": "target.node",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "flow_quantity",
+            "input_id": "quantity.pressure_head",
+            "selector": "target.channel",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "quantity.entropy_index",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.tool_wear_permille",
+            "selector": "target.tool",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.input_batch_quality_permille",
+            "selector": "target.batch",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.spec_score_permille",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.calibration_state_permille",
+            "selector": "target.tool",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.run_id",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.step_id",
+            "selector": "target.process",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "input_kind": "derived",
+            "input_id": "derived.process.tick",
+            "selector": "target.process",
+            "extensions": {}
+          }
+        ],
+        "output_signature": [
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.process.defect_flags",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "output_kind": "derived_quantity",
+            "output_id": "derived.process.defect_severity",
+            "extensions": {}
+          }
+        ],
+        "cost_units": 1,
+        "cache_policy_id": "cache.by_inputs_hash",
+        "uses_rng_stream": false,
+        "rng_stream_name": null,
+        "deterministic_fingerprint": "",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "PROC2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "model_id": "model.chem_corrosion_rate.default",
         "model_type_id": "model_type.chem_corrosion_rate",
         "description": "CHEM-3 deterministic corrosion rate model driven by thermal/field/fluid entropy inputs.",
