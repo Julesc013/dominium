@@ -162,6 +162,7 @@ def build_process_definition_row(
     stabilization_policy_id: str | None = None,
     process_lifecycle_policy_id: str | None = None,
     process_cert_type_id: str | None = None,
+    drift_policy_id: str | None = None,
     yield_model_id: str | None = None,
     defect_model_id: str | None = None,
     deterministic_fingerprint: str = "",
@@ -189,6 +190,7 @@ def build_process_definition_row(
         "stabilization_policy_id": str(stabilization_policy_id or "").strip() or None,
         "process_lifecycle_policy_id": str(process_lifecycle_policy_id or "").strip() or None,
         "process_cert_type_id": str(process_cert_type_id or "").strip() or None,
+        "drift_policy_id": str(drift_policy_id or "").strip() or None,
         "yield_model_id": str(yield_model_id or "").strip() or None,
         "defect_model_id": str(defect_model_id or "").strip() or None,
         "deterministic_fingerprint": str(deterministic_fingerprint or "").strip(),
@@ -219,6 +221,7 @@ def normalize_process_definition_rows(rows: object) -> List[dict]:
             stabilization_policy_id=(None if row.get("stabilization_policy_id") is None else str(row.get("stabilization_policy_id", "")).strip() or None),
             process_lifecycle_policy_id=(None if row.get("process_lifecycle_policy_id") is None else str(row.get("process_lifecycle_policy_id", "")).strip() or None),
             process_cert_type_id=(None if row.get("process_cert_type_id") is None else str(row.get("process_cert_type_id", "")).strip() or None),
+            drift_policy_id=(None if row.get("drift_policy_id") is None else str(row.get("drift_policy_id", "")).strip() or None),
             yield_model_id=(None if row.get("yield_model_id") is None else str(row.get("yield_model_id", "")).strip() or None),
             defect_model_id=(None if row.get("defect_model_id") is None else str(row.get("defect_model_id", "")).strip() or None),
             deterministic_fingerprint=str(row.get("deterministic_fingerprint", "")).strip(),
@@ -345,6 +348,7 @@ def validate_process_definition(
     action_template_registry_payload: Mapping[str, object] | None,
     temporal_domain_registry_payload: Mapping[str, object] | None,
     qc_policy_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     normalized = build_process_definition_row(
         process_id=str(_as_map(process_definition_row).get("process_id", "")).strip(),
@@ -361,6 +365,7 @@ def validate_process_definition(
         stabilization_policy_id=(None if _as_map(process_definition_row).get("stabilization_policy_id") is None else str(_as_map(process_definition_row).get("stabilization_policy_id", "")).strip() or None),
         process_lifecycle_policy_id=(None if _as_map(process_definition_row).get("process_lifecycle_policy_id") is None else str(_as_map(process_definition_row).get("process_lifecycle_policy_id", "")).strip() or None),
         process_cert_type_id=(None if _as_map(process_definition_row).get("process_cert_type_id") is None else str(_as_map(process_definition_row).get("process_cert_type_id", "")).strip() or None),
+        drift_policy_id=(None if _as_map(process_definition_row).get("drift_policy_id") is None else str(_as_map(process_definition_row).get("drift_policy_id", "")).strip() or None),
         yield_model_id=(None if _as_map(process_definition_row).get("yield_model_id") is None else str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None),
         defect_model_id=(None if _as_map(process_definition_row).get("defect_model_id") is None else str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None),
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
@@ -383,6 +388,7 @@ def validate_process_definition(
     action_template_ids = _action_template_ids(action_template_registry_payload)
     temporal_domain_ids = _temporal_domain_ids(temporal_domain_registry_payload)
     qc_policy_ids = set()
+    drift_policy_ids = set()
     if isinstance(qc_policy_registry_payload, Mapping):
         qc_record = _as_map(_as_map(qc_policy_registry_payload).get("record"))
         for row in _as_list(qc_record.get("qc_policies")):
@@ -390,6 +396,15 @@ def validate_process_definition(
             token = str(entry.get("qc_policy_id", "")).strip()
             if token:
                 qc_policy_ids.add(token)
+    if isinstance(drift_policy_registry_payload, Mapping):
+        drift_record = _as_map(_as_map(drift_policy_registry_payload).get("record"))
+        for row in _as_list(drift_record.get("process_drift_policies")):
+            entry = _as_map(row)
+            token = str(
+                entry.get("drift_policy_id", entry.get("process_drift_policy_id", ""))
+            ).strip()
+            if token:
+                drift_policy_ids.add(token)
 
     for step_row in step_rows:
         row = _as_map(step_row)
@@ -414,6 +429,11 @@ def validate_process_definition(
     qc_policy_id = str(normalized.get("qc_policy_id", "")).strip()
     if qc_policy_id and qc_policy_ids and qc_policy_id not in qc_policy_ids:
         violations.append("process qc_policy_id is not registered: {}".format(qc_policy_id))
+    drift_policy_id = str(normalized.get("drift_policy_id", "")).strip()
+    if drift_policy_id and drift_policy_ids and drift_policy_id not in drift_policy_ids:
+        violations.append(
+            "process drift_policy_id is not registered: {}".format(drift_policy_id)
+        )
 
     if str(topo.get("result", "")).strip() != "complete":
         return {

@@ -422,6 +422,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-CAPSULE-EXECUTION-RECORDED",
     "INV-MATURITY-RECORD-CANONICAL",
     "INV-NO-MAGIC-UNLOCKS",
+    "INV-DRIFT-SCORE-DETERMINISTIC",
+    "INV-CAPSULE-INVALIDATION-RECORDED",
+    "INV-NO-SILENT-QC-ESCALATION",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
     "INV-DEGRADATION-MODEL-ONLY",
@@ -821,6 +824,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E288_UNDECLARED_MATURITY_TRANSITION_SMELL": "INV-MATURITY-RECORD-CANONICAL",
     "E289_SILENT_CAPSULE_EXECUTION_SMELL": "INV-CAPSULE-EXECUTION-RECORDED",
     "E290_CAPSULE_USED_OUT_OF_DOMAIN_SMELL": "INV-CAPSULE-ERROR-BOUNDS-REQUIRED",
+    "E291_SILENT_DRIFT_SMELL": "INV-DRIFT-SCORE-DETERMINISTIC",
+    "E292_CAPSULE_USED_WHILE_INVALID_SMELL": "INV-CAPSULE-INVALIDATION-RECORDED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20342,6 +20347,9 @@ def _append_process_constitution_invariant_findings(
     capsule_execution_recorded_rule_id = "INV-CAPSULE-EXECUTION-RECORDED"
     maturity_record_rule_id = "INV-MATURITY-RECORD-CANONICAL"
     no_magic_unlock_rule_id = "INV-NO-MAGIC-UNLOCKS"
+    drift_score_rule_id = "INV-DRIFT-SCORE-DETERMINISTIC"
+    capsule_invalidation_recorded_rule_id = "INV-CAPSULE-INVALIDATION-RECORDED"
+    no_silent_qc_escalation_rule_id = "INV-NO-SILENT-QC-ESCALATION"
 
     process_registry_rel = "data/registries/process_registry.json"
     lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
@@ -20362,10 +20370,14 @@ def _append_process_constitution_invariant_findings(
     process_metrics_schema_rel = "schema/process/process_metrics_state.schema"
     process_maturity_schema_rel = "schema/process/process_maturity_record.schema"
     stabilization_policy_schema_rel = "schema/process/stabilization_policy.schema"
+    drift_policy_schema_rel = "schema/process/drift_policy.schema"
+    process_drift_state_schema_rel = "schema/process/process_drift_state.schema"
+    drift_event_record_schema_rel = "schema/process/drift_event_record.schema"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
     process_capsule_doc_rel = "docs/process/PROCESS_CAPSULE_MODEL.md"
     qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
     maturity_doc_rel = "docs/process/STABILIZATION_AND_MATURITY_MODEL.md"
+    drift_doc_rel = "docs/process/DRIFT_AND_REVALIDATION_MODEL.md"
     explain_registry_rel = "data/registries/explain_contract_registry.json"
     inspection_section_rel = "data/registries/inspection_section_registry.json"
     stabilization_policy_registry_v2_rel = "data/registries/stabilization_policy_registry.json"
@@ -20379,6 +20391,7 @@ def _append_process_constitution_invariant_findings(
     maturity_engine_rel = "src/process/maturity/maturity_engine.py"
     maturity_replay_tool_rel = "tools/process/tool_replay_maturity_window.py"
     capsule_replay_tool_rel = "tools/process/tool_replay_capsule_window.py"
+    drift_replay_tool_rel = "tools/process/tool_replay_drift_window.py"
     run_schema_rel = "schema/process/process_run_record.schema"
     step_schema_rel = "schema/process/process_step_record.schema"
 
@@ -20520,6 +20533,43 @@ def _append_process_constitution_invariant_findings(
                 snippet=token,
                 message="process run engine must route maturity transitions and capsule gating through PROC-4 deterministic pathways",
                 rule_id=capsule_eligibility_rule_id,
+            )
+        )
+    for token in (
+        "evaluate_process_drift(",
+        "process_drift_state_rows",
+        "drift_event_record_rows",
+        "qc_policy_change_rows",
+        "revalidation_run_rows",
+        "process_capsule_invalidation_rows",
+        "drift_state_hash_chain",
+        "drift_event_hash_chain",
+        "qc_policy_change_hash_chain",
+        "revalidation_run_hash_chain",
+    ):
+        if token in run_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=run_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="process run engine must compute deterministic drift score/actions and log PROC-6 drift/revalidation chains",
+                rule_id=drift_score_rule_id,
+            )
+        )
+    for token in ("qc_policy_change_rows", "qc_policy_escalated_by_drift"):
+        if token in run_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=run_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="qc escalation due to drift must be explicit and logged",
+                rule_id=no_silent_qc_escalation_rule_id,
             )
         )
     capsule_builder_text = _file_text(repo_root, capsule_builder_rel)
@@ -20715,6 +20765,17 @@ def _append_process_constitution_invariant_findings(
                 rule_id=maturity_record_rule_id,
             )
         )
+    if "drift_policy_id" not in process_definition_schema_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_definition_schema_rel,
+                line_number=1,
+                snippet="drift_policy_id",
+                message="process definition schema must declare PROC-6 drift policy id",
+                rule_id=drift_score_rule_id,
+            )
+        )
     for rel_path in (
         process_metrics_schema_rel,
         process_maturity_schema_rel,
@@ -20731,6 +20792,45 @@ def _append_process_constitution_invariant_findings(
                 snippet="missing",
                 message="required PROC-4 maturity schema/documentation artifact is missing",
                 rule_id=maturity_record_rule_id,
+            )
+        )
+    for rel_path, rule_id, message in (
+        (
+            drift_policy_schema_rel,
+            drift_score_rule_id,
+            "drift policy schema is required for PROC-6 deterministic drift scoring",
+        ),
+        (
+            process_drift_state_schema_rel,
+            drift_score_rule_id,
+            "process drift state schema is required for PROC-6 deterministic drift state tracking",
+        ),
+        (
+            drift_event_record_schema_rel,
+            capsule_invalidation_recorded_rule_id,
+            "drift event record schema is required for canonical PROC-6 drift actions",
+        ),
+        (
+            drift_doc_rel,
+            drift_score_rule_id,
+            "drift and revalidation doctrine document is required",
+        ),
+        (
+            drift_replay_tool_rel,
+            drift_score_rule_id,
+            "drift replay verification tool is required for PROC-6 proof integration",
+        ),
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message=message,
+                rule_id=rule_id,
             )
         )
     for rel_path in (qc_policy_schema_rel, qc_result_schema_rel, test_procedure_schema_rel, qc_doc_rel):
@@ -20961,17 +21061,32 @@ def _append_process_constitution_invariant_findings(
         "explain.process_maturity_change",
         "explain.process_not_stable",
         "explain.certification_denied",
+        "explain.drift_warning",
+        "explain.drift_critical",
+        "explain.revalidation_required",
+        "explain.capsule_invalidated_by_drift",
     ):
         if contract_id in explain_ids:
             continue
+        explain_rule_id = (
+            drift_score_rule_id
+            if contract_id
+            in {
+                "explain.drift_warning",
+                "explain.drift_critical",
+                "explain.revalidation_required",
+                "explain.capsule_invalidated_by_drift",
+            }
+            else qc_bypass_rule_id
+        )
         findings.append(
             _finding(
                 severity=severity,
                 file_path=explain_registry_rel,
                 line_number=1,
                 snippet=contract_id,
-                message="PROC-3 explain contract is missing required qc contract id",
-                rule_id=qc_bypass_rule_id,
+                message="process explain contract registry is missing required PROC contract id",
+                rule_id=explain_rule_id,
             )
         )
     if explain_error and not explain_rows:
@@ -21015,6 +21130,19 @@ def _append_process_constitution_invariant_findings(
                 snippet=section_id,
                 message="inspection section registry must expose PROC-4 maturity/metrics sections",
                 rule_id=maturity_record_rule_id,
+            )
+        )
+    for section_id in ("section.process.drift_summary", "section.process.qc_escalation"):
+        if section_id in section_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=inspection_section_rel,
+                line_number=1,
+                snippet=section_id,
+                message="inspection section registry must expose PROC-6 drift and qc escalation sections",
+                rule_id=drift_score_rule_id,
             )
         )
     if section_error and not section_rows:
@@ -21181,11 +21309,18 @@ def _append_process_constitution_invariant_findings(
     drift_payload, drift_error = _load_json_object(repo_root, drift_policy_rel)
     drift_rows = list((dict(drift_payload.get("record") or {})).get("process_drift_policies") or [])
     drift_ids = set(
-        str(row.get("process_drift_policy_id", "")).strip()
+        (
+            str(row.get("drift_policy_id", "")).strip()
+            or str(row.get("process_drift_policy_id", "")).strip()
+        )
         for row in drift_rows
-        if isinstance(row, dict) and str(row.get("process_drift_policy_id", "")).strip()
+        if isinstance(row, dict)
+        and (
+            str(row.get("drift_policy_id", "")).strip()
+            or str(row.get("process_drift_policy_id", "")).strip()
+        )
     )
-    for policy_id in ("drift.default", "drift.strict"):
+    for policy_id in ("drift.default", "drift.strict", "drift.fast_dev"):
         if policy_id in drift_ids:
             continue
         findings.append(
@@ -21209,6 +21344,39 @@ def _append_process_constitution_invariant_findings(
                 rule_id=capsule_rule_id,
             )
         )
+    for policy_id, row in sorted(
+        (
+            (
+                str(
+                    (
+                        dict(item).get("drift_policy_id")
+                        or dict(item).get("process_drift_policy_id")
+                        or ""
+                    )
+                ).strip(),
+                dict(item),
+            )
+            for item in drift_rows
+            if isinstance(item, dict)
+        ),
+        key=lambda pair: pair[0],
+    ):
+        if not policy_id:
+            continue
+        required_keys = ("weights", "thresholds", "qc_escalation_rules", "revalidation_trial_count")
+        for key in required_keys:
+            if key in row:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=drift_policy_rel,
+                    line_number=1,
+                    snippet="{}:{}".format(policy_id, key),
+                    message="drift policy row must declare PROC-6 deterministic scoring/escalation fields",
+                    rule_id=drift_score_rule_id,
+                )
+            )
 
     constitution_text = _file_text(repo_root, constitution_rel)
     if "must be derived from stabilized ProcessDefinition" not in constitution_text:

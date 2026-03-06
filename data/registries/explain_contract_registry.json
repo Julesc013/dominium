@@ -975,6 +975,86 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.drift_warning",
+        "event_kind_id": "process.drift.warning",
+        "explain_artifact_type_id": "artifact.explain.process_drift_warning",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.drift_summary",
+          "section.process.qc_escalation"
+        ],
+        "remediation_hint_keys": [
+          "hint.increase.qc_sampling",
+          "hint.recalibrate.instrument",
+          "hint.inspect.environment"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.drift_critical",
+        "event_kind_id": "process.drift.critical",
+        "explain_artifact_type_id": "artifact.explain.process_drift_critical",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.drift_summary",
+          "section.process.capsule_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.run.revalidation",
+          "hint.force.expand",
+          "hint.recertify.process"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.revalidation_required",
+        "event_kind_id": "process.revalidation.required",
+        "explain_artifact_type_id": "artifact.explain.process_revalidation_required",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.drift_summary",
+          "section.process.maturity_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.schedule.revalidation_trials",
+          "hint.use.micro_process_mode",
+          "hint.audit.tooling"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.capsule_invalidated_by_drift",
+        "event_kind_id": "process.capsule.invalidated_by_drift",
+        "explain_artifact_type_id": "artifact.explain.process_capsule_invalidated_by_drift",
+        "required_inputs": [
+          "artifact.record",
+          "section.process.capsule_validity",
+          "section.process.drift_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.run.revalidation",
+          "hint.reenable.capsule_after_validation",
+          "hint.review.drift_policy"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.yield_drop",
         "event_kind_id": "process.yield_drop",
         "explain_artifact_type_id": "artifact.explain.process_yield_drop",

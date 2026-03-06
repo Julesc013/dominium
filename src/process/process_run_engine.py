@@ -23,6 +23,16 @@ from src.process.maturity import (
     stabilization_policy_rows_by_id,
     update_process_metrics_for_run,
 )
+from src.process.drift import (
+    apply_revalidation_trial_result,
+    build_drift_event_record_row,
+    build_process_drift_state_row,
+    drift_policy_rows_by_id,
+    evaluate_process_drift,
+    normalize_drift_event_record_rows,
+    process_drift_rows_by_key,
+    schedule_revalidation_trials,
+)
 from src.process.qc.qc_engine import evaluate_qc_for_run
 from src.process.process_definition_validator import (
     REFUSAL_PROCESS_INVALID_DEFINITION,
@@ -384,7 +394,17 @@ def _evaluate_process_quality(
     }
 
 
-def process_run_start(*, current_tick: int, process_definition_row: Mapping[str, object], action_template_registry_payload: Mapping[str, object] | None, temporal_domain_registry_payload: Mapping[str, object] | None, input_refs: object, run_id: str | None = None, qc_policy_registry_payload: Mapping[str, object] | None = None) -> dict:
+def process_run_start(
+    *,
+    current_tick: int,
+    process_definition_row: Mapping[str, object],
+    action_template_registry_payload: Mapping[str, object] | None,
+    temporal_domain_registry_payload: Mapping[str, object] | None,
+    input_refs: object,
+    run_id: str | None = None,
+    qc_policy_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
+) -> dict:
     definition = build_process_definition_row(
         process_id=str(_as_map(process_definition_row).get("process_id", "")).strip(),
         version=str(_as_map(process_definition_row).get("version", "")).strip() or "1.0.0",
@@ -400,6 +420,7 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         stabilization_policy_id=str(_as_map(process_definition_row).get("stabilization_policy_id", "")).strip() or None,
         process_lifecycle_policy_id=str(_as_map(process_definition_row).get("process_lifecycle_policy_id", "")).strip() or None,
         process_cert_type_id=str(_as_map(process_definition_row).get("process_cert_type_id", "")).strip() or None,
+        drift_policy_id=str(_as_map(process_definition_row).get("drift_policy_id", "")).strip() or None,
         yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
         defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
@@ -410,6 +431,7 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         action_template_registry_payload=action_template_registry_payload,
         temporal_domain_registry_payload=temporal_domain_registry_payload,
         qc_policy_registry_payload=qc_policy_registry_payload,
+        drift_policy_registry_payload=drift_policy_registry_payload,
     )
     if str(validation.get("result", "")).strip() != "complete":
         return {"result": "refused", "reason_code": REFUSAL_PROCESS_INVALID_DEFINITION, "validation": dict(validation)}
@@ -420,9 +442,11 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "process_id": str(definition.get("process_id", "")).strip(),
         "version": str(definition.get("version", "")).strip(),
         "qc_policy_id": str(definition.get("qc_policy_id", "")).strip() or "qc.none",
+        "base_qc_policy_id": str(definition.get("qc_policy_id", "")).strip() or "qc.none",
         "stabilization_policy_id": str(definition.get("stabilization_policy_id", "")).strip() or "stab.default",
         "process_lifecycle_policy_id": str(definition.get("process_lifecycle_policy_id", "")).strip() or "proc.lifecycle.default",
         "process_cert_type_id": str(definition.get("process_cert_type_id", "")).strip() or "cert.process.default",
+        "drift_policy_id": str(definition.get("drift_policy_id", "")).strip() or "drift.default",
         "yield_model_id": str(definition.get("yield_model_id", "")).strip(),
         "defect_model_id": str(definition.get("defect_model_id", "")).strip(),
         "step_order": _tokens(validation.get("ordered_step_ids")),
@@ -448,6 +472,11 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "qc_rework_request_rows": [],
         "qc_drift_escalation_rows": [],
         "qc_certification_hook_rows": [],
+        "process_drift_state_rows": [],
+        "drift_event_record_rows": [],
+        "qc_policy_change_rows": [],
+        "revalidation_run_rows": [],
+        "process_capsule_invalidation_rows": [],
         "process_metrics_state_rows": [],
         "process_maturity_record_rows": [],
         "process_maturity_observation_rows": [],
@@ -456,10 +485,15 @@ def process_run_start(*, current_tick: int, process_definition_row: Mapping[str,
         "current_maturity_state": "exploration",
         "maturity_state_extensions": {},
         "process_capsule_eligible": False,
+        "process_capsule_forced_invalid": False,
         "qc_result_hash_chain": "",
         "sampling_decision_hash_chain": "",
         "qc_drift_escalation_hash_chain": "",
         "qc_certification_hook_hash_chain": "",
+        "drift_state_hash_chain": "",
+        "drift_event_hash_chain": "",
+        "qc_policy_change_hash_chain": "",
+        "revalidation_run_hash_chain": "",
         "metrics_state_hash_chain": "",
         "process_maturity_hash_chain": "",
         "process_cert_hash_chain": "",
@@ -497,6 +531,7 @@ def process_run_tick(*, current_tick: int, run_state: Mapping[str, object], proc
         stabilization_policy_id=str(_as_map(process_definition_row).get("stabilization_policy_id", "")).strip() or None,
         process_lifecycle_policy_id=str(_as_map(process_definition_row).get("process_lifecycle_policy_id", "")).strip() or None,
         process_cert_type_id=str(_as_map(process_definition_row).get("process_cert_type_id", "")).strip() or None,
+        drift_policy_id=str(_as_map(process_definition_row).get("drift_policy_id", "")).strip() or None,
         yield_model_id=str(_as_map(process_definition_row).get("yield_model_id", "")).strip() or None,
         defect_model_id=str(_as_map(process_definition_row).get("defect_model_id", "")).strip() or None,
         deterministic_fingerprint=str(_as_map(process_definition_row).get("deterministic_fingerprint", "")).strip(),
@@ -629,12 +664,16 @@ def process_run_end(
     requester_subject_id: str | None = None,
     stabilization_policy_registry_payload: Mapping[str, object] | None = None,
     process_lifecycle_policy_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
     process_certification_required: bool = False,
     certification_issuer_subject_id: str | None = None,
     cert_validity_ticks: int | None = None,
     metrics_update_stride: int = 1,
     force_metrics_update: bool = False,
+    drift_update_stride: int = 1,
+    force_drift_update: bool = False,
     require_human_or_institution_cert: bool = False,
+    reliability_failure_count: int = 0,
 ) -> dict:
     run_record = dict(_as_map(run_record_row))
     run_id = str(run_record.get("run_id", "")).strip()
@@ -1103,6 +1142,382 @@ def process_run_end(
             dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
         ] + [dict(decision_row)]
 
+    drift_policy_id = str(state.get("drift_policy_id", "")).strip() or "drift.default"
+    drift_policy_rows = drift_policy_rows_by_id(drift_policy_registry_payload)
+    drift_policy_row = dict(
+        drift_policy_rows.get(str(drift_policy_id))
+        or drift_policy_rows.get("drift.default")
+        or {
+            "drift_policy_id": "drift.default",
+            "weights": {
+                "qc_fail_rate_delta": 260,
+                "yield_variance_delta": 210,
+                "environment_deviation_score": 150,
+                "tool_degradation_score": 150,
+                "calibration_deviation_score": 90,
+                "entropy_growth_rate": 140,
+            },
+            "thresholds": {"normal": 220, "warning": 450, "critical": 700},
+            "qc_escalation_rules": {
+                "warning_qc_policy_id": "qc.strict_sampling",
+                "critical_qc_policy_id": "qc.strict_sampling",
+            },
+            "revalidation_trial_count": 3,
+            "extensions": {"source": "PROC6-3.default"},
+        }
+    )
+    drift_state_by_key = process_drift_rows_by_key(state.get("process_drift_state_rows"))
+    previous_drift_state_row = dict(drift_state_by_key.get(metrics_key) or {})
+    quality_input_map = _as_map(quality_inputs)
+    env_deviation_score = int(
+        max(0, min(1000, _as_int(_as_map(metrics_row).get("env_deviation_score", 0), 0)))
+    )
+    tool_degradation_score = int(
+        max(0, min(1000, _as_int(quality_input_map.get("tool_wear_permille", 0), 0)))
+    )
+    calibration_state_permille = int(
+        max(0, min(1000, _as_int(quality_input_map.get("calibration_state_permille", 1000), 1000)))
+    )
+    calibration_deviation_score = int(max(0, min(1000, 1000 - calibration_state_permille)))
+    entropy_growth_rate = int(
+        max(0, min(1000, _as_int(quality_input_map.get("entropy_index", 0), 0)))
+    )
+    drift_eval = evaluate_process_drift(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        process_id=str(process_id),
+        version=str(process_version),
+        previous_metrics_row=previous_metrics_row,
+        metrics_row=metrics_row,
+        environment_deviation_score=int(env_deviation_score),
+        tool_degradation_score=int(tool_degradation_score),
+        calibration_deviation_score=int(calibration_deviation_score),
+        entropy_growth_rate=int(entropy_growth_rate),
+        drift_policy_row=drift_policy_row,
+        previous_drift_state_row=previous_drift_state_row,
+        update_stride=int(max(1, _as_int(drift_update_stride, 1))),
+        force_update=bool(force_drift_update),
+        reliability_failure_count=int(max(0, _as_int(reliability_failure_count, 0))),
+    )
+    drift_state_row = _as_map(drift_eval.get("drift_state_row"))
+    drift_event_row = _as_map(drift_eval.get("drift_event_row"))
+    drift_band = str(
+        drift_state_row.get(
+            "drift_band",
+            _as_map(previous_drift_state_row).get("drift_band", "drift.normal"),
+        )
+    ).strip() or "drift.normal"
+    drift_score = int(max(0, min(1000, _as_int(drift_state_row.get("drift_score", 0), 0))))
+    state["current_drift_band"] = str(drift_band)
+    state["current_drift_score"] = int(drift_score)
+    if drift_state_row:
+        drift_state_by_key[metrics_key] = dict(drift_state_row)
+        state["process_drift_state_rows"] = [
+            dict(drift_state_by_key[key]) for key in sorted(drift_state_by_key.keys())
+        ]
+    else:
+        state["process_drift_state_rows"] = [
+            dict(row)
+            for row in _as_list(state.get("process_drift_state_rows"))
+            if isinstance(row, Mapping)
+        ]
+    if drift_event_row:
+        merged_drift_events = normalize_drift_event_record_rows(
+            [
+                dict(row)
+                for row in _as_list(state.get("drift_event_record_rows"))
+                if isinstance(row, Mapping)
+            ]
+            + [dict(drift_event_row)]
+        )
+        # Critical events must explicitly log capsule invalidation and certificate revocation actions.
+        if str(drift_band) == "drift.critical":
+            extra_events: List[dict] = []
+            for action_taken in ("capsule_invalidate", "cert_revoke"):
+                event_row = build_drift_event_record_row(
+                    event_id="",
+                    process_id=str(process_id),
+                    version=str(process_version),
+                    drift_band=str(drift_band),
+                    drift_score=int(drift_score),
+                    tick=int(max(0, _as_int(current_tick, 0))),
+                    action_taken=action_taken,
+                    extensions={
+                        "source": "PROC6-4",
+                        "drift_policy_id": str(drift_policy_id),
+                    },
+                )
+                if event_row:
+                    extra_events.append(dict(event_row))
+            merged_drift_events = normalize_drift_event_record_rows(
+                list(merged_drift_events) + extra_events
+            )
+        state["drift_event_record_rows"] = merged_drift_events
+        explain_contract_id = (
+            "explain.drift_critical"
+            if str(drift_band) == "drift.critical"
+            else "explain.drift_warning"
+        )
+        state["report_artifacts"] = [
+            dict(row) for row in _as_list(state.get("report_artifacts")) if isinstance(row, Mapping)
+        ] + [
+            {
+                "artifact_type_id": "artifact.explain.process_drift",
+                "run_id": str(run_id),
+                "process_id": str(process_id),
+                "version": str(process_version),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "drift_band": str(drift_band),
+                "drift_score": int(drift_score),
+                "event_id": str(drift_event_row.get("event_id", "")).strip(),
+                "explain_contract_id": explain_contract_id,
+                "visibility_policy": "policy.epistemic.inspector",
+            }
+        ]
+    drift_decision_row = _as_map(drift_eval.get("decision_log_row"))
+    if drift_decision_row:
+        state["decision_log_rows"] = [
+            dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+        ] + [dict(drift_decision_row)]
+
+    if bool(drift_eval.get("qc_escalation_required", False)):
+        next_qc_policy_id = str(drift_eval.get("escalated_qc_policy_id", "")).strip()
+        current_qc_policy = str(state.get("qc_policy_id", "")).strip() or "qc.none"
+        if next_qc_policy_id and next_qc_policy_id != current_qc_policy:
+            change_row = {
+                "event_id": "event.process.qc_policy_change.{}".format(
+                    canonical_sha256(
+                        {
+                            "process_id": str(process_id),
+                            "version": str(process_version),
+                            "tick": int(max(0, _as_int(current_tick, 0))),
+                            "from_qc_policy_id": str(current_qc_policy),
+                            "to_qc_policy_id": str(next_qc_policy_id),
+                            "drift_band": str(drift_band),
+                        }
+                    )[:16]
+                ),
+                "process_id": str(process_id),
+                "version": str(process_version),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "from_qc_policy_id": str(current_qc_policy),
+                "to_qc_policy_id": str(next_qc_policy_id),
+                "reason_code": "drift.qc_escalation",
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "source": "PROC6-4",
+                    "drift_policy_id": str(drift_policy_id),
+                    "drift_band": str(drift_band),
+                    "explain_contract_id": "explain.drift_warning",
+                },
+            }
+            change_row["deterministic_fingerprint"] = canonical_sha256(
+                dict(change_row, deterministic_fingerprint="")
+            )
+            state["qc_policy_change_rows"] = sorted(
+                [
+                    dict(row)
+                    for row in _as_list(state.get("qc_policy_change_rows"))
+                    if isinstance(row, Mapping)
+                ]
+                + [dict(change_row)],
+                key=lambda row: (
+                    int(max(0, _as_int(row.get("tick", 0), 0))),
+                    str(row.get("event_id", "")),
+                ),
+            )
+            state["qc_policy_id"] = str(next_qc_policy_id)
+            state["decision_log_rows"] = [
+                dict(row)
+                for row in _as_list(state.get("decision_log_rows"))
+                if isinstance(row, Mapping)
+            ] + [
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "run_id": str(run_id),
+                    "reason": "qc_policy_escalated_by_drift",
+                    "from_qc_policy_id": str(current_qc_policy),
+                    "to_qc_policy_id": str(next_qc_policy_id),
+                    "drift_band": str(drift_band),
+                }
+            ]
+
+    if bool(drift_eval.get("capsule_invalidation_required", False)):
+        invalidation_row = {
+            "event_id": "event.process.capsule_invalidated.{}".format(
+                canonical_sha256(
+                    {
+                        "process_id": str(process_id),
+                        "version": str(process_version),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "reason_code": "capsule.drift_exceeded",
+                    }
+                )[:16]
+            ),
+            "process_id": str(process_id),
+            "version": str(process_version),
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "reason_code": "capsule.drift_exceeded",
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "source": "PROC6-4",
+                "drift_band": str(drift_band),
+                "drift_score": int(drift_score),
+                "explain_contract_id": "explain.capsule_invalidated_by_drift",
+            },
+        }
+        invalidation_row["deterministic_fingerprint"] = canonical_sha256(
+            dict(invalidation_row, deterministic_fingerprint="")
+        )
+        state["process_capsule_invalidation_rows"] = sorted(
+            [
+                dict(row)
+                for row in _as_list(state.get("process_capsule_invalidation_rows"))
+                if isinstance(row, Mapping)
+            ]
+            + [dict(invalidation_row)],
+            key=lambda row: (
+                int(max(0, _as_int(row.get("tick", 0), 0))),
+                str(row.get("event_id", "")),
+            ),
+        )
+        state["process_capsule_forced_invalid"] = True
+        state["report_artifacts"] = [
+            dict(row) for row in _as_list(state.get("report_artifacts")) if isinstance(row, Mapping)
+        ] + [
+            {
+                "artifact_type_id": "artifact.explain.process_capsule_invalidated",
+                "run_id": str(run_id),
+                "process_id": str(process_id),
+                "version": str(process_version),
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "reason_code": "capsule.drift_exceeded",
+                "explain_contract_id": "explain.capsule_invalidated_by_drift",
+                "visibility_policy": "policy.epistemic.inspector",
+            }
+        ]
+
+    if bool(drift_eval.get("revalidation_required", False)):
+        schedule_result = schedule_revalidation_trials(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            process_id=str(process_id),
+            version=str(process_version),
+            trial_count=int(max(1, _as_int(drift_eval.get("revalidation_trial_count", 3), 3))),
+            existing_rows=state.get("revalidation_run_rows"),
+        )
+        state["revalidation_run_rows"] = [
+            dict(row)
+            for row in _as_list(schedule_result.get("revalidation_rows"))
+            if isinstance(row, Mapping)
+        ]
+        if _as_list(schedule_result.get("scheduled_rows")):
+            state["decision_log_rows"] = [
+                dict(row)
+                for row in _as_list(state.get("decision_log_rows"))
+                if isinstance(row, Mapping)
+            ] + [
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "run_id": str(run_id),
+                    "reason": "revalidation_scheduled",
+                    "trial_count": int(
+                        len(
+                            [
+                                row
+                                for row in _as_list(schedule_result.get("scheduled_rows"))
+                                if isinstance(row, Mapping)
+                            ]
+                        )
+                    ),
+                }
+            ]
+            state["report_artifacts"] = [
+                dict(row)
+                for row in _as_list(state.get("report_artifacts"))
+                if isinstance(row, Mapping)
+            ] + [
+                {
+                    "artifact_type_id": "artifact.explain.process_revalidation_required",
+                    "run_id": str(run_id),
+                    "process_id": str(process_id),
+                    "version": str(process_version),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "explain_contract_id": "explain.revalidation_required",
+                    "visibility_policy": "policy.epistemic.inspector",
+                }
+            ]
+
+    revalidation_apply = apply_revalidation_trial_result(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        process_id=str(process_id),
+        version=str(process_version),
+        run_passed=bool(final_status == "completed" and failed_count <= 0),
+        revalidation_rows=state.get("revalidation_run_rows"),
+    )
+    state["revalidation_run_rows"] = [
+        dict(row)
+        for row in _as_list(revalidation_apply.get("revalidation_rows"))
+        if isinstance(row, Mapping)
+    ]
+    if bool(revalidation_apply.get("consumed", False)):
+        pending_count = int(max(0, _as_int(revalidation_apply.get("pending_count", 0), 0)))
+        fail_count_trials = int(max(0, _as_int(revalidation_apply.get("fail_count", 0), 0)))
+        pass_count_trials = int(max(0, _as_int(revalidation_apply.get("pass_count", 0), 0)))
+        state["decision_log_rows"] = [
+            dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
+        ] + [
+            {
+                "tick": int(max(0, _as_int(current_tick, 0))),
+                "run_id": str(run_id),
+                "reason": "revalidation_trial_consumed",
+                "pending_count": int(pending_count),
+                "pass_count": int(pass_count_trials),
+                "fail_count": int(fail_count_trials),
+            }
+        ]
+        if pending_count == 0 and pass_count_trials > 0 and fail_count_trials == 0:
+            reset_row = build_process_drift_state_row(
+                process_id=str(process_id),
+                version=str(process_version),
+                drift_score=0,
+                drift_band="drift.normal",
+                last_update_tick=int(max(0, _as_int(current_tick, 0))),
+                extensions={
+                    "source": "PROC6-5",
+                    "revalidation_reset": True,
+                },
+            )
+            if reset_row:
+                drift_state_by_key[metrics_key] = dict(reset_row)
+                state["process_drift_state_rows"] = [
+                    dict(drift_state_by_key[key]) for key in sorted(drift_state_by_key.keys())
+                ]
+            state["process_capsule_forced_invalid"] = False
+            state["qc_policy_id"] = str(state.get("base_qc_policy_id", "qc.none")).strip() or "qc.none"
+            state["decision_log_rows"] = [
+                dict(row)
+                for row in _as_list(state.get("decision_log_rows"))
+                if isinstance(row, Mapping)
+            ] + [
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "run_id": str(run_id),
+                    "reason": "revalidation_succeeded_reset_drift",
+                }
+            ]
+        elif pending_count == 0 and fail_count_trials > 0:
+            state["process_capsule_forced_invalid"] = True
+            state["decision_log_rows"] = [
+                dict(row)
+                for row in _as_list(state.get("decision_log_rows"))
+                if isinstance(row, Mapping)
+            ] + [
+                {
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "run_id": str(run_id),
+                    "reason": "revalidation_failed_remain_invalid",
+                }
+            ]
+
     stabilization_policy_rows = stabilization_policy_rows_by_id(
         stabilization_policy_registry_payload
     )
@@ -1351,20 +1766,26 @@ def process_run_end(
             ]
 
     qc_failure_spike = bool(sampled_count > 0 and fail_rate >= drift_fail_rate_threshold)
+    drift_cert_revocation_required = bool(
+        drift_band == "drift.critical"
+        or bool(drift_eval.get("certification_revocation_required", False))
+    )
     should_revoke = bool(
         active_cert_rows
         and (
             (cert_invalidation_on_fail and failed_count > 0)
             or qc_failure_spike
+            or drift_cert_revocation_required
             or next_maturity_state not in {"certified", "capsule_eligible"}
         )
     )
     if should_revoke:
-        revoke_reason = (
-            "process.qc_failure_spike"
-            if ((cert_invalidation_on_fail and failed_count > 0) or qc_failure_spike)
-            else "process.maturity_dropped"
-        )
+        if drift_cert_revocation_required:
+            revoke_reason = "process.drift_critical"
+        elif (cert_invalidation_on_fail and failed_count > 0) or qc_failure_spike:
+            revoke_reason = "process.qc_failure_spike"
+        else:
+            revoke_reason = "process.maturity_dropped"
         for cert_row in list(active_cert_rows):
             cert_id = str(cert_row.get("cert_id", "")).strip()
             if (not cert_id) or cert_id in set(
@@ -1432,7 +1853,13 @@ def process_run_end(
         has_process_certificate=bool(active_cert_ids_after),
         require_human_or_institution_cert=bool(require_human_or_institution_cert),
     )
-    state["process_capsule_eligible"] = bool(capsule_gate.get("eligible", False))
+    drift_forced_invalid = bool(state.get("process_capsule_forced_invalid", False))
+    state["process_capsule_eligible"] = bool(capsule_gate.get("eligible", False)) and (not drift_forced_invalid)
+    capsule_gate_reason_code = (
+        "process.capsule_invalidated_by_drift"
+        if drift_forced_invalid
+        else str(capsule_gate.get("reason_code", "")).strip()
+    )
     state["decision_log_rows"] = [
         dict(row) for row in _as_list(state.get("decision_log_rows")) if isinstance(row, Mapping)
     ] + [
@@ -1446,7 +1873,7 @@ def process_run_end(
             ),
             "maturity_state": str(state.get("current_maturity_state", "exploration")),
             "has_active_process_certificate": bool(active_cert_ids_after),
-            "reason_code": str(capsule_gate.get("reason_code", "")).strip(),
+            "reason_code": str(capsule_gate_reason_code),
         }
     ]
     state["metrics_state_hash_chain"] = canonical_sha256(
@@ -1515,6 +1942,123 @@ def process_run_end(
             ],
         }
     )
+    state["drift_state_hash_chain"] = canonical_sha256(
+        [
+            {
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "drift_score": int(max(0, min(1000, _as_int(row.get("drift_score", 0), 0)))),
+                "drift_band": str(row.get("drift_band", "")).strip(),
+                "last_update_tick": int(max(0, _as_int(row.get("last_update_tick", 0), 0))),
+            }
+            for row in sorted(
+                [
+                    dict(item)
+                    for item in _as_list(state.get("process_drift_state_rows"))
+                    if isinstance(item, Mapping)
+                ],
+                key=lambda item: (
+                    str(item.get("process_id", "")),
+                    str(item.get("version", "")),
+                ),
+            )
+        ]
+    )
+    state["drift_event_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "drift_band": str(row.get("drift_band", "")).strip(),
+                "drift_score": int(max(0, min(1000, _as_int(row.get("drift_score", 0), 0)))),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "action_taken": str(row.get("action_taken", "")).strip(),
+            }
+            for row in sorted(
+                [
+                    dict(item)
+                    for item in _as_list(state.get("drift_event_record_rows"))
+                    if isinstance(item, Mapping)
+                ],
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["qc_policy_change_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "from_qc_policy_id": str(row.get("from_qc_policy_id", "")).strip(),
+                "to_qc_policy_id": str(row.get("to_qc_policy_id", "")).strip(),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+            }
+            for row in sorted(
+                [
+                    dict(item)
+                    for item in _as_list(state.get("qc_policy_change_rows"))
+                    if isinstance(item, Mapping)
+                ],
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["revalidation_run_hash_chain"] = canonical_sha256(
+        [
+            {
+                "revalidation_id": str(row.get("revalidation_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "trial_index": int(max(1, _as_int(row.get("trial_index", 1), 1))),
+                "scheduled_tick": int(max(0, _as_int(row.get("scheduled_tick", 0), 0))),
+                "status": str(row.get("status", "")).strip(),
+            }
+            for row in sorted(
+                [
+                    dict(item)
+                    for item in _as_list(state.get("revalidation_run_rows"))
+                    if isinstance(item, Mapping)
+                ],
+                key=lambda item: (
+                    str(item.get("process_id", "")),
+                    str(item.get("version", "")),
+                    int(max(1, _as_int(item.get("trial_index", 1), 1))),
+                    str(item.get("revalidation_id", "")),
+                ),
+            )
+        ]
+    )
+    state["process_capsule_invalidation_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+                "version": str(row.get("version", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "reason_code": str(row.get("reason_code", "")).strip(),
+            }
+            for row in sorted(
+                [
+                    dict(item)
+                    for item in _as_list(state.get("process_capsule_invalidation_rows"))
+                    if isinstance(item, Mapping)
+                ],
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
 
     finalized["extensions"] = dict(
         _as_map(finalized.get("extensions")),
@@ -1524,11 +2068,21 @@ def process_run_end(
         sampling_decision_hash_chain=str(state.get("sampling_decision_hash_chain", "")).strip(),
         qc_drift_escalation_hash_chain=str(state.get("qc_drift_escalation_hash_chain", "")).strip(),
         qc_certification_hook_hash_chain=str(state.get("qc_certification_hook_hash_chain", "")).strip(),
+        drift_state_hash_chain=str(state.get("drift_state_hash_chain", "")).strip(),
+        drift_event_hash_chain=str(state.get("drift_event_hash_chain", "")).strip(),
+        qc_policy_change_hash_chain=str(state.get("qc_policy_change_hash_chain", "")).strip(),
+        revalidation_run_hash_chain=str(state.get("revalidation_run_hash_chain", "")).strip(),
+        process_capsule_invalidation_hash_chain=str(
+            state.get("process_capsule_invalidation_hash_chain", "")
+        ).strip(),
         metrics_state_hash_chain=str(state.get("metrics_state_hash_chain", "")).strip(),
         process_maturity_hash_chain=str(state.get("process_maturity_hash_chain", "")).strip(),
         process_cert_hash_chain=str(state.get("process_cert_hash_chain", "")).strip(),
         current_maturity_state=str(state.get("current_maturity_state", "exploration")).strip(),
         process_capsule_eligible=bool(state.get("process_capsule_eligible", False)),
+        process_capsule_forced_invalid=bool(state.get("process_capsule_forced_invalid", False)),
+        current_drift_band=str(state.get("current_drift_band", "drift.normal")).strip(),
+        current_drift_score=int(max(0, _as_int(state.get("current_drift_score", 0), 0))),
     )
     state["run_status"] = final_status
     state["deterministic_fingerprint"] = canonical_sha256(dict(state, deterministic_fingerprint=""))

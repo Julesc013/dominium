@@ -8,34 +8,112 @@
       {
         "schema_version": "1.0.0",
         "process_drift_policy_id": "drift.default",
-        "description": "Default drift envelope with staged escalation from QC increase to revalidation.",
-        "warning_threshold_permille": 350,
-        "forced_expand_threshold_permille": 600,
-        "revocation_threshold_permille": 800,
+        "drift_policy_id": "drift.default",
+        "description": "Default deterministic drift envelope balancing throughput and revalidation safety.",
+        "weights": {
+          "qc_fail_rate_delta": 260,
+          "yield_variance_delta": 210,
+          "environment_deviation_score": 150,
+          "tool_degradation_score": 150,
+          "calibration_deviation_score": 90,
+          "entropy_growth_rate": 140
+        },
+        "thresholds": {
+          "normal": 220,
+          "warning": 450,
+          "critical": 700
+        },
+        "qc_escalation_rules": {
+          "warning_qc_policy_id": "qc.strict_sampling",
+          "critical_qc_policy_id": "qc.strict_sampling"
+        },
+        "revalidation_trial_count": 3,
+        "warning_threshold_permille": 450,
+        "forced_expand_threshold_permille": 700,
+        "revocation_threshold_permille": 700,
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "PROC0-4",
+          "source": "PROC6-2",
           "actions": [
-            "increase_qc",
-            "force_expand",
-            "request_recertification"
+            "qc_escalate",
+            "capsule_invalidate",
+            "cert_revoke",
+            "revalidate_required"
           ]
         }
       },
       {
         "schema_version": "1.0.0",
         "process_drift_policy_id": "drift.strict",
-        "description": "Strict drift policy with earlier escalations for regulated operation.",
-        "warning_threshold_permille": 250,
-        "forced_expand_threshold_permille": 450,
-        "revocation_threshold_permille": 650,
+        "drift_policy_id": "drift.strict",
+        "description": "Strict deterministic drift envelope for ranked/regulatory use.",
+        "weights": {
+          "qc_fail_rate_delta": 300,
+          "yield_variance_delta": 230,
+          "environment_deviation_score": 140,
+          "tool_degradation_score": 140,
+          "calibration_deviation_score": 70,
+          "entropy_growth_rate": 120
+        },
+        "thresholds": {
+          "normal": 180,
+          "warning": 360,
+          "critical": 600
+        },
+        "qc_escalation_rules": {
+          "warning_qc_policy_id": "qc.strict_sampling",
+          "critical_qc_policy_id": "qc.strict_sampling"
+        },
+        "revalidation_trial_count": 5,
+        "warning_threshold_permille": 360,
+        "forced_expand_threshold_permille": 600,
+        "revocation_threshold_permille": 600,
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "PROC0-4",
+          "source": "PROC6-2",
           "actions": [
-            "increase_qc",
-            "force_expand",
-            "revoke_certification"
+            "qc_escalate",
+            "capsule_invalidate",
+            "cert_revoke",
+            "revalidate_required"
+          ]
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "process_drift_policy_id": "drift.fast_dev",
+        "drift_policy_id": "drift.fast_dev",
+        "description": "Fast iteration drift envelope with earlier warning and short revalidation loop.",
+        "weights": {
+          "qc_fail_rate_delta": 220,
+          "yield_variance_delta": 190,
+          "environment_deviation_score": 170,
+          "tool_degradation_score": 170,
+          "calibration_deviation_score": 110,
+          "entropy_growth_rate": 140
+        },
+        "thresholds": {
+          "normal": 200,
+          "warning": 420,
+          "critical": 660
+        },
+        "qc_escalation_rules": {
+          "warning_qc_policy_id": "qc.basic_sampling",
+          "critical_qc_policy_id": "qc.strict_sampling"
+        },
+        "revalidation_trial_count": 2,
+        "warning_threshold_permille": 420,
+        "forced_expand_threshold_permille": 660,
+        "revocation_threshold_permille": 660,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC6-2",
+          "non_ranked_only": true,
+          "actions": [
+            "qc_escalate",
+            "capsule_invalidate",
+            "cert_revoke",
+            "revalidate_required"
           ]
         }
       }

@@ -538,6 +538,34 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    drift_state_hash_chain = _mobility_surface_hash(
+        key="drift_state_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    drift_event_hash_chain = _mobility_surface_hash(
+        key="drift_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    qc_policy_change_hash_chain = _mobility_surface_hash(
+        key="qc_policy_change_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
+    revalidation_run_hash_chain = _mobility_surface_hash(
+        key="revalidation_run_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     yield_model_hash_chain = _mobility_surface_hash(
         key="yield_model_hash_chain",
         surface=mobility_proof_surface,
@@ -846,6 +874,10 @@ def build_control_proof_bundle_from_markers(
         "process_maturity_hash_chain": str(process_maturity_hash_chain),
         "metrics_state_hash_chain": str(metrics_state_hash_chain),
         "process_cert_hash_chain": str(process_cert_hash_chain),
+        "drift_state_hash_chain": str(drift_state_hash_chain),
+        "drift_event_hash_chain": str(drift_event_hash_chain),
+        "qc_policy_change_hash_chain": str(qc_policy_change_hash_chain),
+        "revalidation_run_hash_chain": str(revalidation_run_hash_chain),
         "yield_model_hash_chain": str(yield_model_hash_chain),
         "quantity_tolerance_registry_hash": str(quantity_tolerance_registry_hash),
         "rounding_mode_policy_hash": str(rounding_mode_policy_hash),
@@ -950,6 +982,14 @@ def build_control_proof_bundle_from_markers(
                     "process_maturity_hash_chain": str(payload.get("process_maturity_hash_chain", "")),
                     "metrics_state_hash_chain": str(payload.get("metrics_state_hash_chain", "")),
                     "process_cert_hash_chain": str(payload.get("process_cert_hash_chain", "")),
+                    "drift_state_hash_chain": str(payload.get("drift_state_hash_chain", "")),
+                    "drift_event_hash_chain": str(payload.get("drift_event_hash_chain", "")),
+                    "qc_policy_change_hash_chain": str(
+                        payload.get("qc_policy_change_hash_chain", "")
+                    ),
+                    "revalidation_run_hash_chain": str(
+                        payload.get("revalidation_run_hash_chain", "")
+                    ),
                     "yield_model_hash_chain": str(payload.get("yield_model_hash_chain", "")),
                     "quantity_tolerance_registry_hash": str(payload.get("quantity_tolerance_registry_hash", "")),
                     "rounding_mode_policy_hash": str(payload.get("rounding_mode_policy_hash", "")),

@@ -30,6 +30,7 @@ record process_definition
     - stabilization_policy_id: id?
     - process_lifecycle_policy_id: id?
     - process_cert_type_id: id?
+    - drift_policy_id: id?
     - yield_model_id: id?
     - defect_model_id: id?
     - deterministic_fingerprint: text

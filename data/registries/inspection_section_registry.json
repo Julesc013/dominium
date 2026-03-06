@@ -1217,6 +1217,34 @@
       },
       {
         "schema_version": "1.0.0",
+        "section_id": "section.process.drift_summary",
+        "title": "Process Drift Summary",
+        "data": {
+          "data_kind": "process_drift_summary"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "section_id": "section.process.qc_escalation",
+        "title": "Process QC Escalation",
+        "data": {
+          "data_kind": "process_qc_escalation"
+        },
+        "epistemic_redaction_level": "restricted",
+        "extensions": {
+          "min_fidelity": "macro",
+          "cost_units": 2,
+          "source": "PROC6-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "section_id": "section.process.maturity_summary",
         "title": "Process Maturity Summary",
         "data": {
