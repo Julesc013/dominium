@@ -326,6 +326,12 @@ BOUNDARY_ALIAS_RULES = {
     "INV-NO-WALLCLOCK-IN-MOTION": {
         "INV-NO-WALLCLOCK-TIME",
     },
+    "INV-NO-RECIPE-HACKS": {
+        "INV-NO-RECIPE-HACKS-FOR-CHEM",
+    },
+    "INV-NO-RECIPE-HACKS-FOR-CHEM": {
+        "INV-NO-RECIPE-HACKS",
+    },
 }
 
 BOUNDARY_BLOCKER_RULE_IDS = (
@@ -394,6 +400,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-COMBUSTION-THROUGH-REACTION-ENGINE",
     "INV-NO-DIRECT-FUEL-DECREMENT",
     "INV-NO-RECIPE-HACKS-FOR-CHEM",
+    "INV-NO-RECIPE-HACKS",
+    "INV-PROCESS-OUTPUTS-LEDGERED",
+    "INV-PROCESS-CAPSULE-REQUIRES-STABILIZED",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
     "INV-DEGRADATION-MODEL-ONLY",
@@ -783,6 +792,7 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E278_CUSTOM_COMPILATION_SMELL": "INV-NO-BESPOKE-COMPILER",
     "E279_MISSING_EQUIVALENCE_PROOF_SMELL": "INV-COMPILED-MODEL-REQUIRES-PROOF",
     "E280_OUTPUT_DEPENDS_ON_UNDECLARED_FIELD_SMELL": "INV-NO-UNDECLARED-STATE-MUTATION",
+    "E281_UNREGISTERED_WORKFLOW_SMELL": "INV-NO-RECIPE-HACKS",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20280,6 +20290,241 @@ def _append_chem_processing_invariant_findings(
                     )
                 )
                 break
+def _append_process_constitution_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    recipe_rule_id = "INV-NO-RECIPE-HACKS"
+    ledger_rule_id = "INV-PROCESS-OUTPUTS-LEDGERED"
+    capsule_rule_id = "INV-PROCESS-CAPSULE-REQUIRES-STABILIZED"
+
+    process_registry_rel = "data/registries/process_registry.json"
+    lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
+    stabilization_policy_rel = "data/registries/process_stabilization_policy_registry.json"
+    drift_policy_rel = "data/registries/process_drift_policy_registry.json"
+    constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+
+    process_payload, process_error = _load_json_object(repo_root, process_registry_rel)
+    process_rows = list(process_payload.get("records") or [])
+    process_ids = set()
+    for row in process_rows:
+        if not isinstance(row, dict):
+            continue
+        process_id = str(row.get("process_id", "")).strip()
+        if process_id:
+            process_ids.add(process_id)
+    for process_id in (
+        "process.process_run_start",
+        "process.process_run_tick",
+        "process.process_run_end",
+    ):
+        if process_id in process_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=process_id,
+                message="process registry is missing required PROC lifecycle process id",
+                rule_id=ledger_rule_id,
+            )
+        )
+    if process_error and not process_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet="records",
+                message="process registry is missing or invalid",
+                rule_id=ledger_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    required_runtime_tokens = (
+        'elif process_id == "process.process_run_tick":',
+        "_append_energy_ledger_entry_artifact(",
+        "batch_quality_rows",
+    )
+    for token in required_runtime_tokens:
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="process runtime is missing required process-output ledger integration token",
+                rule_id=ledger_rule_id,
+            )
+        )
+
+    lifecycle_payload, lifecycle_error = _load_json_object(repo_root, lifecycle_policy_rel)
+    lifecycle_rows = list((dict(lifecycle_payload.get("record") or {})).get("process_lifecycle_policies") or [])
+    lifecycle_ids = set(
+        str(row.get("process_lifecycle_policy_id", "")).strip()
+        for row in lifecycle_rows
+        if isinstance(row, dict) and str(row.get("process_lifecycle_policy_id", "")).strip()
+    )
+    for policy_id in (
+        "proc.lifecycle.default",
+        "proc.lifecycle.rank_strict",
+        "proc.lifecycle.lab_experimental",
+    ):
+        if policy_id in lifecycle_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=lifecycle_policy_rel,
+                line_number=1,
+                snippet=policy_id,
+                message="required PROC lifecycle policy id is missing",
+                rule_id=capsule_rule_id,
+            )
+        )
+    if lifecycle_error and not lifecycle_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=lifecycle_policy_rel,
+                line_number=1,
+                snippet="process_lifecycle_policies",
+                message="process lifecycle policy registry is missing or invalid",
+                rule_id=capsule_rule_id,
+            )
+        )
+
+    stabilization_payload, stabilization_error = _load_json_object(repo_root, stabilization_policy_rel)
+    stabilization_rows = list(
+        (dict(stabilization_payload.get("record") or {})).get("process_stabilization_policies") or []
+    )
+    stabilization_ids = set(
+        str(row.get("process_stabilization_policy_id", "")).strip()
+        for row in stabilization_rows
+        if isinstance(row, dict) and str(row.get("process_stabilization_policy_id", "")).strip()
+    )
+    for policy_id in ("stab.default", "stab.strict", "stab.fast_dev"):
+        if policy_id in stabilization_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stabilization_policy_rel,
+                line_number=1,
+                snippet=policy_id,
+                message="required process stabilization policy id is missing",
+                rule_id=capsule_rule_id,
+            )
+        )
+    if stabilization_error and not stabilization_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stabilization_policy_rel,
+                line_number=1,
+                snippet="process_stabilization_policies",
+                message="process stabilization policy registry is missing or invalid",
+                rule_id=capsule_rule_id,
+            )
+        )
+
+    drift_payload, drift_error = _load_json_object(repo_root, drift_policy_rel)
+    drift_rows = list((dict(drift_payload.get("record") or {})).get("process_drift_policies") or [])
+    drift_ids = set(
+        str(row.get("process_drift_policy_id", "")).strip()
+        for row in drift_rows
+        if isinstance(row, dict) and str(row.get("process_drift_policy_id", "")).strip()
+    )
+    for policy_id in ("drift.default", "drift.strict"):
+        if policy_id in drift_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=drift_policy_rel,
+                line_number=1,
+                snippet=policy_id,
+                message="required process drift policy id is missing",
+                rule_id=capsule_rule_id,
+            )
+        )
+    if drift_error and not drift_rows:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=drift_policy_rel,
+                line_number=1,
+                snippet="process_drift_policies",
+                message="process drift policy registry is missing or invalid",
+                rule_id=capsule_rule_id,
+            )
+        )
+
+    constitution_text = _file_text(repo_root, constitution_rel)
+    if "must be derived from stabilized ProcessDefinition" not in constitution_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=constitution_rel,
+                line_number=1,
+                snippet="must be derived from stabilized ProcessDefinition",
+                message="process constitution must declare stabilization prerequisite for process capsules",
+                rule_id=capsule_rule_id,
+            )
+        )
+
+    recipe_patterns = (
+        re.compile(r"\bad_hoc_recipe\b", re.IGNORECASE),
+        re.compile(r"\bworkflow_steps?\b", re.IGNORECASE),
+        re.compile(r"\bmanual_workflow\b", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = (
+        "docs/",
+        "schema/",
+        "schemas/",
+        "tools/auditx/analyzers/",
+        "tools/xstack/testx/tests/",
+    )
+    allowed_files = {
+        runtime_rel,
+        "src/chem/process_run_engine.py",
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in recipe_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="ad hoc recipe/workflow token detected outside PROC-governed process pathways",
+                    rule_id=recipe_rule_id,
+                )
+            )
+            break
 
 
 def _append_chem_degradation_invariant_findings(
@@ -21953,6 +22198,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_chem_processing_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_process_constitution_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
