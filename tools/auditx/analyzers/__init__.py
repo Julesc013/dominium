@@ -320,6 +320,9 @@ from analyzers import e293_magic_unlock_smell
 from analyzers import e294_undeclared_inference_smell
 from analyzers import e295_direct_binary_write_smell
 from analyzers import e296_signing_bypass_smell
+from analyzers import e297_silent_process_execution_smell
+from analyzers import e298_unbudgeted_process_loop_smell
+from analyzers import e299_capsule_used_while_invalid_smell
 
 
 ANALYZERS = (
@@ -643,6 +646,9 @@ ANALYZERS = (
     e294_undeclared_inference_smell,
     e295_direct_binary_write_smell,
     e296_signing_bypass_smell,
+    e297_silent_process_execution_smell,
+    e298_unbudgeted_process_loop_smell,
+    e299_capsule_used_while_invalid_smell,
 )
 
 

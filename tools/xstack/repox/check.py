@@ -437,6 +437,10 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-MAGIC-BUILD",
     "INV-SIGN-REQUIRES-KEY",
     "INV-DEPLOY-THROUGH-SIG",
+    "INV-PROC-BUDGETED",
+    "INV-PROC-CAPSULE-EXEC-RECORDED",
+    "INV-PROC-INFERENCE-DERIVED-ONLY",
+    "INV-PROC-STATEVEC-REQUIRED",
     "INV-YIELD-MUST-BE-MODEL",
     "INV-BATCH-QUALITY-DECLARED",
     "INV-DEGRADATION-MODEL-ONLY",
@@ -842,6 +846,9 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E294_UNDECLARED_INFERENCE_SMELL": "INV-CANDIDATE-DERIVED-ONLY",
     "E295_DIRECT_BINARY_WRITE_SMELL": "INV-NO-MAGIC-BUILD",
     "E296_SIGNING_BYPASS_SMELL": "INV-SIGN-REQUIRES-KEY",
+    "E297_SILENT_PROCESS_EXECUTION_SMELL": "INV-PROC-CAPSULE-EXEC-RECORDED",
+    "E298_UNBUDGETED_PROCESS_LOOP_SMELL": "INV-PROC-BUDGETED",
+    "E299_CAPSULE_USED_WHILE_INVALID_SMELL": "INV-PROC-STATEVEC-REQUIRED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -20439,6 +20446,10 @@ def _append_process_constitution_invariant_findings(
     no_magic_build_rule_id = "INV-NO-MAGIC-BUILD"
     sign_requires_key_rule_id = "INV-SIGN-REQUIRES-KEY"
     deploy_through_sig_rule_id = "INV-DEPLOY-THROUGH-SIG"
+    proc_budgeted_rule_id = "INV-PROC-BUDGETED"
+    proc_capsule_record_rule_id = "INV-PROC-CAPSULE-EXEC-RECORDED"
+    proc_inference_derived_rule_id = "INV-PROC-INFERENCE-DERIVED-ONLY"
+    proc_statevec_rule_id = "INV-PROC-STATEVEC-REQUIRED"
 
     process_registry_rel = "data/registries/process_registry.json"
     lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
@@ -20498,6 +20509,11 @@ def _append_process_constitution_invariant_findings(
     software_pipeline_template_registry_rel = "data/registries/software_pipeline_template_registry.json"
     software_pipeline_doc_rel = "docs/process/SOFTWARE_PIPELINE_MODEL.md"
     pipeline_replay_tool_rel = "tools/process/tool_replay_pipeline_window.py"
+    proc_stress_generator_rel = "tools/process/tool_generate_proc_stress.py"
+    proc_stress_harness_rel = "tools/process/tool_run_proc_stress.py"
+    proc_replay_tool_rel = "tools/process/tool_replay_proc_window.py"
+    proc_compaction_tool_rel = "tools/process/tool_verify_proc_compaction.py"
+    proc_regression_rel = "data/regression/proc_full_baseline.json"
     run_schema_rel = "schema/process/process_run_record.schema"
     step_schema_rel = "schema/process/process_step_record.schema"
 
@@ -21635,6 +21651,130 @@ def _append_process_constitution_invariant_findings(
                 rule_id=rule_id,
             )
         )
+
+    for rel_path, rule_id, message in (
+        (
+            proc_stress_generator_rel,
+            proc_budgeted_rule_id,
+            "PROC-9 stress generator tool is required for deterministic envelope scenario generation",
+        ),
+        (
+            proc_stress_harness_rel,
+            proc_budgeted_rule_id,
+            "PROC-9 stress harness tool is required for deterministic budget/degrade validation",
+        ),
+        (
+            proc_replay_tool_rel,
+            proc_capsule_record_rule_id,
+            "PROC-9 replay verifier is required for process proof-window checks",
+        ),
+        (
+            proc_compaction_tool_rel,
+            proc_inference_derived_rule_id,
+            "PROC-9 compaction verifier is required for derived-artifact compaction replay checks",
+        ),
+        (
+            proc_regression_rel,
+            proc_budgeted_rule_id,
+            "PROC-9 regression lock baseline is required for long-horizon process envelope stability",
+        ),
+    ):
+        if _file_text(repo_root, rel_path):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="missing",
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    proc_stress_harness_text = _file_text(repo_root, proc_stress_harness_rel)
+    for token, rule_id, message in (
+        (
+            "max_micro_steps_per_tick",
+            proc_budgeted_rule_id,
+            "PROC-9 stress harness must enforce deterministic micro-step caps per tick",
+        ),
+        (
+            "degrade.proc.defer_research_inference",
+            proc_inference_derived_rule_id,
+            "PROC-9 stress harness must log deterministic inference deferrals under budget pressure",
+        ),
+        (
+            "capsule_execution_record_rows",
+            proc_capsule_record_rule_id,
+            "PROC-9 stress harness must surface canonical capsule execution records",
+        ),
+        (
+            "final_state_snapshot",
+            proc_statevec_rule_id,
+            "PROC-9 stress/replay path must preserve explicit state vector context",
+        ),
+    ):
+        if token in proc_stress_harness_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proc_stress_harness_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    proc_regression_payload, proc_regression_error = _load_json_object(
+        repo_root, proc_regression_rel
+    )
+    proc_regression_row = dict(proc_regression_payload or {})
+    if proc_regression_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proc_regression_rel,
+                line_number=1,
+                snippet="missing_or_invalid",
+                message="PROC-9 regression lock baseline must be readable and valid JSON",
+                rule_id=proc_budgeted_rule_id,
+            )
+        )
+    else:
+        for field in (
+            "baseline_id",
+            "composite_proc_hash_anchor",
+            "proof_hashes",
+            "scenario_fingerprints",
+            "update_policy",
+        ):
+            if field in proc_regression_row:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=proc_regression_rel,
+                    line_number=1,
+                    snippet=field,
+                    message="PROC regression lock missing required baseline field",
+                    rule_id=proc_budgeted_rule_id,
+                )
+            )
+        update_policy = _as_map(proc_regression_row.get("update_policy"))
+        if str(update_policy.get("required_commit_tag", "")).strip() != "PROC-REGRESSION-UPDATE":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=proc_regression_rel,
+                    line_number=1,
+                    snippet=str(update_policy.get("required_commit_tag", "")),
+                    message="PROC regression lock updates must require PROC-REGRESSION-UPDATE tag",
+                    rule_id=proc_budgeted_rule_id,
+                )
+            )
 
     lifecycle_payload, lifecycle_error = _load_json_object(repo_root, lifecycle_policy_rel)
     lifecycle_rows = list((dict(lifecycle_payload.get("record") or {})).get("process_lifecycle_policies") or [])
