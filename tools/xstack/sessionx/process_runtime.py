@@ -665,6 +665,7 @@ from src.process.research import (
     REFUSAL_EXPERIMENT_UNKNOWN,
     evaluate_experiment_run_complete,
     evaluate_experiment_run_start,
+    infer_candidate_artifacts,
     normalize_experiment_definition_rows,
     normalize_experiment_result_rows,
 )
@@ -36054,6 +36055,32 @@ def execute_intent(
         state["experiment_result_rows"] = normalize_experiment_result_rows(
             list(state.get("experiment_result_rows") or []) + [result_row]
         )
+        inference_eval = infer_candidate_artifacts(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            experiment_result_rows=[dict(result_row)],
+            reverse_engineering_record_rows=[],
+            process_definition_ref_hint="{}@{}".format(
+                str(binding_row.get("process_id", "")).strip(),
+                str(binding_row.get("version", "")).strip() or "1.0.0",
+            ),
+            model_id_hint=(
+                None
+                if inputs.get("model_id_hint") is None
+                else str(inputs.get("model_id_hint", "")).strip() or None
+            ),
+            existing_candidate_rows=list(state.get("candidate_process_definition_rows") or []),
+            existing_candidate_model_binding_rows=list(state.get("candidate_model_binding_rows") or []),
+        )
+        state["candidate_process_definition_rows"] = [
+            dict(row)
+            for row in list(inference_eval.get("candidate_rows") or [])
+            if isinstance(row, Mapping)
+        ]
+        state["candidate_model_binding_rows"] = [
+            dict(row)
+            for row in list(inference_eval.get("candidate_model_binding_rows") or [])
+            if isinstance(row, Mapping)
+        ]
 
         binding_row["status"] = "completed"
         binding_row["end_tick"] = int(max(0, _as_int(current_tick, 0)))
@@ -36087,7 +36114,30 @@ def execute_intent(
                         ),
                         "tick": int(max(0, _as_int(current_tick, 0))),
                     },
-                }
+                },
+                {
+                    "artifact_id": "artifact.observation.candidate_inference.{}".format(
+                        canonical_sha256(
+                            {
+                                "run_id": run_id,
+                                "candidate_ids": _sorted_tokens(
+                                    list(inference_eval.get("produced_candidate_ids") or [])
+                                ),
+                                "tick": int(max(0, _as_int(current_tick, 0))),
+                            }
+                        )[:16]
+                    ),
+                    "artifact_family_id": "OBSERVATION",
+                    "extensions": {
+                        "artifact_type_id": "artifact.observation.candidate_inference",
+                        "experiment_id": experiment_id,
+                        "run_id": run_id,
+                        "candidate_ids": _sorted_tokens(
+                            list(inference_eval.get("produced_candidate_ids") or [])
+                        ),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                    },
+                },
             ]
         )
         state["info_artifact_rows"] = [dict(row) for row in info_artifact_rows]
@@ -36144,6 +36194,7 @@ def execute_intent(
             "experiment_id": experiment_id,
             "run_id": run_id,
             "result_id": str(result_row.get("result_id", "")).strip(),
+            "candidate_ids": _sorted_tokens(list(inference_eval.get("produced_candidate_ids") or [])),
             "knowledge_receipt_id": str(receipt_id),
             "subject_id": subject_id,
             "experiment_result_hash_chain": str(
@@ -36151,6 +36202,12 @@ def execute_intent(
             ).strip(),
             "experiment_run_binding_hash_chain": str(
                 state.get("experiment_run_binding_hash_chain", "")
+            ).strip(),
+            "candidate_process_hash_chain": str(
+                state.get("candidate_process_hash_chain", "")
+            ).strip(),
+            "candidate_model_binding_hash_chain": str(
+                state.get("candidate_model_binding_hash_chain", "")
             ).strip(),
             "deterministic_fingerprint": str(
                 experiment_eval.get("deterministic_fingerprint", "")
