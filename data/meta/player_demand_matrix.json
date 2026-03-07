@@ -2045,6 +2045,178 @@
         "action_family.communicate"
       ],
       "action_templates": [
+        "process.on_planet.network.route_flow",
+        "interaction.issue_order",
+        "process.on_planet.manufacturing.scrap_or_rework"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.survival.default",
+          "law.lab.default",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "factory_automation"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "planned",
+      "demand_id": "fact.plc_control_panel",
+      "deterministic_fingerprint": "a3724130b66c5eebf0459f96f9a877cf81fb2715d13144c32ae897695d8e06d7",
+      "domains": [
+        "PHYS",
+        "ELEC",
+        "THERM",
+        "FLUID",
+        "CHEM",
+        "POLL",
+        "SIG",
+        "PROC",
+        "SYS"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.system_output_degradation",
+        "explain.compliance_violation",
+        "explain.qc_sampling_decision"
+      ],
+      "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (PLC control panel).",
+      "next_series": "LOGIC-2",
+      "notes": "Panel semantics depend on LOGIC typed signals and elements; existing factory rows cover adjacent process/system grounding.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "matter_transformation",
+        "communication_coordination",
+        "safety_protection"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "PLC Control Panel",
+      "verbs": [
+        "route",
+        "schedule",
+        "optimize"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.transform",
+        "action_family.decide_authorize",
+        "action_family.communicate"
+      ],
+      "action_templates": [
+        "process.on_planet.network.route_flow",
+        "interaction.issue_order",
+        "process.on_planet.manufacturing.scrap_or_rework"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.survival.default",
+          "law.lab.default",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "factory_automation"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "partial",
+      "demand_id": "fact.automated_factory",
+      "deterministic_fingerprint": "02a7524b215257e7b202efc0c75e9269cc598e29bda812c022c935397c875f18",
+      "domains": [
+        "PHYS",
+        "ELEC",
+        "THERM",
+        "FLUID",
+        "CHEM",
+        "POLL",
+        "SIG",
+        "PROC",
+        "SYS"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.system_output_degradation",
+        "explain.compliance_violation",
+        "explain.qc_sampling_decision"
+      ],
+      "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (automated factory).",
+      "next_series": "LOGIC-2",
+      "notes": "Adjacent factory automation slices are present, but reusable controller semantics remain a LOGIC-series dependency.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "matter_transformation",
+        "communication_coordination",
+        "safety_protection"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Automated Factory",
+      "verbs": [
+        "route",
+        "schedule",
+        "optimize"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.transform",
+        "action_family.decide_authorize",
+        "action_family.communicate"
+      ],
+      "action_templates": [
         "process.on_planet.network.balance_flow",
         "process.on_planet.manufacturing.assemble_subsystem"
       ],
@@ -2070,7 +2242,7 @@
       },
       "coverage_status": "partial",
       "demand_id": "fact.lights_out_shift",
-      "deterministic_fingerprint": "15588f52ee8bef442b0d9537eb76e72a8df423b2d24c93deae3af2739468c5a3",
+      "deterministic_fingerprint": "9f2b77846726e6471ee5d49c03fe5926389ad0366661f1403bd5b98ee0237798",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2092,7 +2264,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (lights out shift).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-2",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2155,7 +2327,7 @@
       },
       "coverage_status": "planned",
       "demand_id": "fact.bottleneck_hunt",
-      "deterministic_fingerprint": "5f2e04fedd42b4fb0d7993938db50dcf9dea3f354306da188049878806a60523",
+      "deterministic_fingerprint": "9bd228115e48b0a6fd01525a778d6da042cc4c5d6bdfd6116f9e89b792360665",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2177,7 +2349,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (bottleneck hunt).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-2",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2241,7 +2413,7 @@
       },
       "coverage_status": "unknown",
       "demand_id": "fact.automated_rework_loop",
-      "deterministic_fingerprint": "6460e4c3dec6d8862fca153eef1ba7643de2d3f958b20990d8b3042d1f95dacd",
+      "deterministic_fingerprint": "ed0b8561bc50f8160ab8ac913c38a783f9ba1cd38251784ad617cfef99bf247a",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2263,7 +2435,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (automated rework loop).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-2",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2411,7 +2583,7 @@
       },
       "coverage_status": "partial",
       "demand_id": "fact.traceability_backfill",
-      "deterministic_fingerprint": "c33001e64a818057e92f254bd53939554efcf03ab3497dbe3218daaaef20fec0",
+      "deterministic_fingerprint": "dae494d9320edb72a5e8163144fe34661822dbda5ad49cc182db872e7ab787ae",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2433,7 +2605,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (traceability backfill).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-2",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2497,7 +2669,7 @@
       },
       "coverage_status": "planned",
       "demand_id": "fact.compliance_shift_management",
-      "deterministic_fingerprint": "69f83dae86935938a58f75e76591c02af9a60a4e2869e3564a31f5360f4fc95f",
+      "deterministic_fingerprint": "3110bd3d05e35a67ec15e47a7acd88b32ee31d64fcb5a85621c07859d342a822",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2519,7 +2691,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (compliance shift management).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-3",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2582,7 +2754,7 @@
       },
       "coverage_status": "unknown",
       "demand_id": "fact.rapid_changeover",
-      "deterministic_fingerprint": "6c61144741212ff4a505d0ed49e4d3915f0d3cb005096d0f7a30a0f3c3499c95",
+      "deterministic_fingerprint": "548f1292378f18076d7092e040c7a5b9960e159d64b7b3637ac2e0ee94474ce5",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2604,7 +2776,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (rapid changeover).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-2",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2753,7 +2925,7 @@
       },
       "coverage_status": "partial",
       "demand_id": "fact.conveyor_jam_forensics",
-      "deterministic_fingerprint": "4539a28fe744eb05d641b2e6fd5bb37a3c3a6b4e2847712b81e24c2686c6708c",
+      "deterministic_fingerprint": "f96c0181bbeb8abbe5d9e15f24f0f8237588ff6fd1cd1fc8b5672a6429289fb6",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2775,7 +2947,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (conveyor jam forensics).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-2",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2838,7 +3010,7 @@
       },
       "coverage_status": "planned",
       "demand_id": "fact.multi_plant_dispatch",
-      "deterministic_fingerprint": "1299821fa5423dcb973c69493a9778c12e10362a01f0398d9e2b5e070c7d17d6",
+      "deterministic_fingerprint": "ece31a4e66631258433040de6bbd4a4338626f9ccff09a32d5b1bb18cc9eafc9",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2860,7 +3032,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (multi plant dispatch).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-3",
       "notes": "",
       "proc": {
         "needs": true,
@@ -2923,7 +3095,7 @@
       },
       "coverage_status": "unknown",
       "demand_id": "fact.deadlock_free_signaling",
-      "deterministic_fingerprint": "87eb32249854dadaf965aea972aece4ee627edc89168c84cd79edb6d58ea46a5",
+      "deterministic_fingerprint": "f32af5979b8ebc899217c67c213651394eab6b4a56ccc5d40c59124b9b8c4fe8",
       "domains": [
         "PHYS",
         "ELEC",
@@ -2945,7 +3117,7 @@
         "explain.qc_sampling_decision"
       ],
       "fantasy": "Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (deadlock free signaling).",
-      "next_series": "LOGIC-0",
+      "next_series": "LOGIC-2",
       "notes": "",
       "proc": {
         "needs": true,
@@ -3058,6 +3230,182 @@
         "micro_roi"
       ],
       "title": "District Heating Grid",
+      "verbs": [
+        "plan",
+        "allocate",
+        "protect"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.decide_authorize",
+        "action_family.transform",
+        "action_family.communicate"
+      ],
+      "action_templates": [
+        "interaction.issue_order",
+        "process.on_planet.network.repair",
+        "process.on_planet.regulation.inspect"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.mission.player",
+          "law.survival.default",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "cities_infrastructure"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "partial",
+      "demand_id": "city.smart_power_grid",
+      "deterministic_fingerprint": "240bfc99dbdcdc8e84248969b8f2382f4273d000628fa36cace1de2ea207c957",
+      "domains": [
+        "PHYS",
+        "ELEC",
+        "THERM",
+        "FLUID",
+        "CHEM",
+        "POLL",
+        "SIG",
+        "PROC",
+        "SYS",
+        "MOB"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.compliance_violation",
+        "explain.system_warning",
+        "explain.system_failure"
+      ],
+      "fantasy": "Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (smart power grid).",
+      "next_series": "LOGIC-3",
+      "notes": "City-scale balancing and distributed controller coordination depend on LOGIC network semantics beyond existing utility substrates.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "institutions_contracts",
+        "communication_coordination",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Smart Power Grid",
+      "verbs": [
+        "plan",
+        "allocate",
+        "protect"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.decide_authorize",
+        "action_family.transform",
+        "action_family.communicate"
+      ],
+      "action_templates": [
+        "interaction.issue_order",
+        "process.on_planet.network.repair",
+        "process.on_planet.regulation.inspect"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.mission.player",
+          "law.survival.default",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "cities_infrastructure"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "planned",
+      "demand_id": "city.traffic_lights_coordination",
+      "deterministic_fingerprint": "ccf514a7359cf07b2afbd5f8d9db8edfe4fafb43dff85316bd8e3fd001579646",
+      "domains": [
+        "PHYS",
+        "ELEC",
+        "THERM",
+        "FLUID",
+        "CHEM",
+        "POLL",
+        "SIG",
+        "PROC",
+        "SYS",
+        "MOB"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.compliance_violation",
+        "explain.system_warning",
+        "explain.mob.signal_violation"
+      ],
+      "fantasy": "Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (traffic lights coordination).",
+      "next_series": "LOGIC-3",
+      "notes": "Requires distributed timing-aware control and mobility-facing actuation semantics, not just isolated signal assets.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "institutions_contracts",
+        "communication_coordination",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Traffic Lights Coordination",
       "verbs": [
         "plan",
         "allocate",
@@ -4274,6 +4622,92 @@
         "micro_roi"
       ],
       "title": "Rail Interlocking Mastery",
+      "verbs": [
+        "dispatch",
+        "route",
+        "recover"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.move",
+        "action_family.decide_authorize",
+        "action_family.communicate"
+      ],
+      "action_templates": [
+        "process.on_planet.trade.move_goods",
+        "action.mobility.switch_set_state",
+        "interaction.issue_order"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.mission.player",
+          "law.survival.default",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "transport_logistics"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "planned",
+      "demand_id": "trans.train_interlocking_cabinet",
+      "deterministic_fingerprint": "cc8bb0a71cbcd3f3d3b6e2f64b839fcd4b5b7767cac13baf63dce93d9c8c52e3",
+      "domains": [
+        "PHYS",
+        "MOB",
+        "ELEC",
+        "THERM",
+        "FLUID",
+        "POLL",
+        "SIG",
+        "PROC",
+        "SYS"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.mob.derailment",
+        "explain.mob.signal_violation",
+        "explain.system_forced_expand"
+      ],
+      "fantasy": "Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (train interlocking cabinet).",
+      "next_series": "LOGIC-2",
+      "notes": "Cabinet-level interlocking depends on LOGIC elements and typed buses; mobility routing remains an adjacent prerequisite.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "motion_force_transmission",
+        "communication_coordination",
+        "time_synchronization"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Train Interlocking Cabinet",
       "verbs": [
         "dispatch",
         "route",
@@ -5585,6 +6019,95 @@
         "action_family.sense_measure"
       ],
       "action_templates": [
+        "action.therm.measure_temperature",
+        "process.hyperspace.enter",
+        "process.on_planet.construction.verify_integrity"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.mission.player",
+          "law.lab.default",
+          "phys.realistic.default",
+          "phys.lab.exotic"
+        ]
+      },
+      "clusters": [
+        "space_engineering"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "partial",
+      "demand_id": "space.reactor_control_room",
+      "deterministic_fingerprint": "b44f251bb8de876f4edb9e6757a675746caf78a9a3f0ce11173294e442675917",
+      "domains": [
+        "PHYS",
+        "ELEC",
+        "THERM",
+        "FLUID",
+        "CHEM",
+        "POLL",
+        "SIG",
+        "PROC",
+        "SYS",
+        "MOB"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.system_failure",
+        "explain.therm.overheat",
+        "explain.system_forced_expand"
+      ],
+      "fantasy": "Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (reactor control room).",
+      "next_series": "LOGIC-2",
+      "notes": "Safety and substrate foundations exist, but operator-room controller semantics still need LOGIC assemblies and policies.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "motion_force_transmission",
+        "safety_protection",
+        "matter_transformation",
+        "time_synchronization"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Reactor Control Room",
+      "verbs": [
+        "launch",
+        "dock",
+        "repair"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.move",
+        "action_family.transform",
+        "action_family.sense_measure"
+      ],
+      "action_templates": [
         "process.hyperspace.travel",
         "process.hyperspace.exit",
         "process.on_planet.mining.extract_material"
@@ -6184,6 +6707,170 @@
         "micro_roi"
       ],
       "title": "Ics Network Hardening",
+      "verbs": [
+        "probe",
+        "harden",
+        "verify"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.communicate",
+        "action_family.decide_authorize",
+        "action_family.sense_measure"
+      ],
+      "action_templates": [
+        "process.epistemic.observe",
+        "action.formalize.promote_network",
+        "interaction.communicate"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.lab.default",
+          "law.mission.player",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "cyber_automation_hacking"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "partial",
+      "demand_id": "cyber.hacking_scada",
+      "deterministic_fingerprint": "3d6e45c92c31ef71035757173c0be8e4918a5d2a844e261155de3649d24a2bbe",
+      "domains": [
+        "SIG",
+        "ELEC",
+        "PROC",
+        "SYS",
+        "PHYS"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.sig.decrypt_denied",
+        "explain.sig.delivery_loss",
+        "explain.system_compliance_failure"
+      ],
+      "fantasy": "Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (hacking SCADA).",
+      "next_series": "LOGIC-3",
+      "notes": "SCADA attack and spoofing play depends on LOGIC network semantics layered on top of SIG trust and profile gates.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "communication_coordination",
+        "measurement_verification",
+        "institutions_contracts"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Hacking SCADA",
+      "verbs": [
+        "probe",
+        "harden",
+        "verify"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.communicate",
+        "action_family.decide_authorize",
+        "action_family.sense_measure"
+      ],
+      "action_templates": [
+        "process.epistemic.observe",
+        "action.formalize.promote_network",
+        "action.elec.loto.apply"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.lab.default",
+          "law.mission.player",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "cyber_automation_hacking"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "partial",
+      "demand_id": "cyber.firmware_flashing_pipeline_integration",
+      "deterministic_fingerprint": "c303683b871c6ac636c568702f70ad0f796c7f2091373143c2de7076e7093b69",
+      "domains": [
+        "SIG",
+        "ELEC",
+        "PROC",
+        "SYS",
+        "PHYS"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.build_failed",
+        "explain.test_failed",
+        "explain.deploy_failed"
+      ],
+      "fantasy": "Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (firmware flashing pipeline integration).",
+      "next_series": "LOGIC-2",
+      "notes": "PROC-8 already covers deterministic build/test/deploy, but controller-facing flashing semantics still require LOGIC integration.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "communication_coordination",
+        "measurement_verification",
+        "institutions_contracts"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Firmware Flashing Pipeline Integration",
       "verbs": [
         "probe",
         "harden",
@@ -7942,6 +8629,93 @@
         "micro_roi"
       ],
       "title": "Drone Swarm Jamming",
+      "verbs": [
+        "fortify",
+        "disrupt",
+        "survive"
+      ]
+    },
+    {
+      "action_families": [
+        "action_family.decide_authorize",
+        "action_family.move",
+        "action_family.maintain"
+      ],
+      "action_templates": [
+        "action.elec.breaker.toggle",
+        "task.repair_basic",
+        "process.on_planet.network.repair"
+      ],
+      "break_rules": {
+        "notes": "Rule-bending allowed only through declared profiles and audit logs.",
+        "profiles": [
+          "law.mission.player",
+          "law.survival.hardcore",
+          "phys.realistic.default"
+        ]
+      },
+      "clusters": [
+        "military_defense_sabotage"
+      ],
+      "collapse": {
+        "forced_expand_triggers": [
+          "qc_fail",
+          "drift_critical",
+          "inspection_request",
+          "safety_event"
+        ],
+        "strategy": "Use macro/capsules when stable; force expand on safety, drift, inspection, or validity breaches."
+      },
+      "coverage_status": "planned",
+      "demand_id": "mil.drone_autopilot",
+      "deterministic_fingerprint": "82ac7e5efefd9478cfc50a57f57dfc2fb898f3cf21ca120c4d0ab6ec891d83fb",
+      "domains": [
+        "PHYS",
+        "MOB",
+        "ELEC",
+        "THERM",
+        "FLUID",
+        "CHEM",
+        "POLL",
+        "SIG",
+        "PROC",
+        "SYS"
+      ],
+      "epistemics": {
+        "needs": true,
+        "notes": "Diegetic instruments and trust-gated reports only; no omniscience."
+      },
+      "explain": [
+        "explain.system_safety_shutdown",
+        "explain.system_failure",
+        "explain.process_refusal"
+      ],
+      "fantasy": "Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (drone autopilot).",
+      "next_series": "LOGIC-3",
+      "notes": "Autopilot behavior needs controller-network semantics and spoof-aware signal policy, not only mobility or SIG adjacency.",
+      "proc": {
+        "needs": true,
+        "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
+      },
+      "rwam_affordances": [
+        "safety_protection",
+        "communication_coordination",
+        "motion_force_transmission"
+      ],
+      "sig_logic": {
+        "needs": true,
+        "notes": "Deterministic typed signal routing, controller state transitions, and trust/receipt paths required."
+      },
+      "sys": {
+        "needs": true,
+        "notes": "System templates/reliability/collapse path required."
+      },
+      "tiers": [
+        "macro",
+        "meso",
+        "micro_roi"
+      ],
+      "title": "Drone Autopilot",
       "verbs": [
         "fortify",
         "disrupt",
