@@ -19,15 +19,17 @@ from .propagate_engine import flush_due_logic_signal_updates, schedule_logic_out
 from .runtime_state import (
     build_logic_eval_record_row,
     build_logic_network_runtime_state_row,
+    build_logic_oscillation_record_row,
     build_logic_timing_violation_event_row,
     build_logic_throttle_event_row,
     normalize_logic_eval_state,
     normalize_logic_network_runtime_state_rows,
+    normalize_logic_oscillation_record_rows,
     normalize_logic_timing_violation_event_rows,
     normalize_logic_throttle_event_rows,
 )
 from .sense_engine import build_logic_sense_snapshot
-from src.logic.timing import evaluate_logic_timing_constraints
+from src.logic.timing import detect_network_oscillation, evaluate_logic_timing_constraints
 
 
 PROCESS_LOGIC_NETWORK_EVALUATE = "process.logic_network_evaluate"
@@ -262,6 +264,42 @@ def process_logic_network_evaluate(
             "explain_artifact_rows": [explain],
         }
 
+    prior_runtime_extensions = as_map(prior_runtime.get("extensions"))
+    if bool(prior_runtime_extensions.get("l1_timing_refused", False)) or bool(
+        prior_runtime_extensions.get("requires_l2_timing", False)
+    ):
+        gate_reason = token(prior_runtime_extensions.get("timing_gate_reason")) or "timing_policy"
+        explain_kind = (
+            "explain.logic_oscillation"
+            if gate_reason == "unstable_oscillation"
+            else "explain.logic_timing_violation"
+        )
+        explain = build_explain_artifact(
+            explain_id="explain.logic_timing_gate.{}".format(
+                canonical_sha256({"tick": tick, "network_id": network_id, "reason": gate_reason})[:16]
+            ),
+            event_id="event.logic.timing_gate.{}".format(
+                canonical_sha256({"tick": tick, "network_id": network_id, "reason": gate_reason})[:16]
+            ),
+            target_id=network_id,
+            cause_chain=["cause.logic.timing_gate"],
+            remediation_hints=[
+                "route this network through future L2 timing or change the declared timing policy"
+                if bool(prior_runtime_extensions.get("requires_l2_timing", False))
+                else "resolve the unstable timing pattern before retrying L1 evaluation"
+            ],
+            extensions={"event_kind_id": explain_kind, "timing_gate_reason": gate_reason},
+        )
+        return {
+            "result": "refused",
+            "reason_code": REFUSAL_LOGIC_EVAL_TIMING_VIOLATION,
+            "logic_eval_state": normalize_logic_eval_state(
+                dict(eval_state, logic_network_runtime_state_rows=normalize_logic_network_runtime_state_rows(list(runtime_rows.values())))
+            ),
+            "signal_store_state": updated_signal_store_state,
+            "explain_artifact_rows": [explain],
+        }
+
     validation_status = token(as_map(binding_row.get("extensions")).get("validation_status"))
     validation_record = _validation_record_for_network(network_state.get("logic_network_validation_records"), network_id)
     if validation_status != "validated":
@@ -368,6 +406,7 @@ def process_logic_network_evaluate(
     )
 
     throttle_event_rows = list(eval_state.get("logic_throttle_event_rows") or [])
+    oscillation_record_rows = list(eval_state.get("logic_oscillation_record_rows") or [])
     timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
     explain_rows = []
     for event in as_list(compute_result.get("throttle_events")):
@@ -398,12 +437,40 @@ def process_logic_network_evaluate(
                 )
             )
 
+    oscillation_result = detect_network_oscillation(
+        current_tick=tick,
+        network_id=network_id,
+        graph_row=graph_row,
+        signal_store_state=updated_signal_store_state,
+        pending_signal_update_rows=propagation_result.get("logic_pending_signal_update_rows"),
+        state_vector_snapshot_rows=commit_result.get("state_vector_snapshot_rows") or state_vector_snapshot_rows,
+        runtime_row=prior_runtime,
+        logic_policy_row=logic_policy_row,
+    )
+    for row in as_list(oscillation_result.get("oscillation_record_rows")):
+        if not isinstance(row, Mapping):
+            continue
+        record = build_logic_oscillation_record_row(
+            tick=as_int(row.get("tick"), tick),
+            network_id=token(row.get("network_id")) or network_id,
+            period_ticks=as_int(row.get("period_ticks"), 1),
+            stable=bool(row.get("stable", False)),
+            deterministic_fingerprint="",
+            extensions=as_map(row.get("extensions")),
+        )
+        if record:
+            oscillation_record_rows.append(record)
+    explain_rows.extend(
+        [dict(row) for row in as_list(oscillation_result.get("explain_artifact_rows")) if isinstance(row, Mapping)]
+    )
+
     timing_enforcement = evaluate_logic_timing_constraints(
         current_tick=tick,
         network_id=network_id,
         binding_row=binding_row,
         logic_policy_row=logic_policy_row,
         propagation_result=propagation_result,
+        oscillation_classification=as_map(oscillation_result.get("classification")),
     )
     for event in as_list(timing_enforcement.get("timing_violation_events")):
         if not isinstance(event, Mapping):
@@ -421,6 +488,46 @@ def process_logic_network_evaluate(
         [dict(row) for row in as_list(timing_enforcement.get("explain_artifact_rows")) if isinstance(row, Mapping)]
     )
 
+    policy_extensions = as_map(logic_policy_row.get("extensions"))
+    oscillation_classification = as_map(oscillation_result.get("classification"))
+    combined_runtime_extensions = dict(as_map(oscillation_result.get("runtime_extensions")))
+    combined_runtime_extensions.update(as_map(timing_enforcement.get("runtime_extensions")))
+    if oscillation_classification and not bool(oscillation_classification.get("stable", False)):
+        unstable_action = token(policy_extensions.get("unstable_oscillation_action")) or "force_roi"
+        timing_mode = token(logic_policy_row.get("timing_mode")) or "sync_tick"
+        if unstable_action == "refuse" or (unstable_action == "force_roi" and timing_mode != "roi_micro_optional"):
+            combined_runtime_extensions.update(
+                {
+                    "l1_timing_refused": True,
+                    "requires_l2_timing": False,
+                    "timing_gate_reason": "unstable_oscillation",
+                    "timing_status": "l1_refused",
+                }
+            )
+        elif unstable_action == "force_roi":
+            combined_runtime_extensions.update(
+                {
+                    "l1_timing_refused": False,
+                    "requires_l2_timing": True,
+                    "timing_gate_reason": "unstable_oscillation",
+                    "timing_status": "requires_l2",
+                }
+            )
+        if unstable_action in {"refuse", "force_roi"}:
+            timing_row = build_logic_timing_violation_event_row(
+                tick=tick,
+                network_id=network_id,
+                reason="unstable_oscillation",
+                deterministic_fingerprint="",
+                extensions={
+                    "policy_action": unstable_action,
+                    "timing_mode": timing_mode,
+                    "oscillation_classification": canon(oscillation_classification),
+                },
+            )
+            if timing_row:
+                timing_violation_event_rows.append(timing_row)
+
     runtime_rows[network_id] = build_logic_network_runtime_state_row(
         network_id=network_id,
         last_evaluated_tick=tick,
@@ -430,7 +537,7 @@ def process_logic_network_evaluate(
             "snapshot_hash": token(sense_snapshot.get("snapshot_hash")),
             "scheduled_outputs": int(propagation_result.get("scheduled_count", 0)),
             "delivered_inputs": int(flush_result.get("delivered_count", 0)),
-            **as_map(timing_enforcement.get("runtime_extensions")),
+            **combined_runtime_extensions,
         },
     )
     eval_record_rows = list(eval_state.get("logic_eval_record_rows") or []) + [
@@ -454,6 +561,7 @@ def process_logic_network_evaluate(
             "logic_network_runtime_state_rows": list(runtime_rows.values()),
             "logic_eval_record_rows": eval_record_rows,
             "logic_throttle_event_rows": normalize_logic_throttle_event_rows(throttle_event_rows),
+            "logic_oscillation_record_rows": normalize_logic_oscillation_record_rows(oscillation_record_rows),
             "logic_timing_violation_event_rows": normalize_logic_timing_violation_event_rows(timing_violation_event_rows),
             "logic_state_update_record_rows": list(commit_result.get("state_update_record_rows") or []),
             "logic_pending_signal_update_rows": propagation_result.get("logic_pending_signal_update_rows"),
