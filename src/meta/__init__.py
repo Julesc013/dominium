@@ -9,6 +9,36 @@ from src.meta.compile import (
     compiled_model_is_valid,
     evaluate_compile_request,
 )
+from src.meta.instrumentation import (
+    generate_measurement_observation,
+    resolve_instrumentation_surface,
+    route_forensics_request,
+    validate_control_access,
+)
+from src.meta.profile import (
+    apply_override,
+    resolve_effective_profile_snapshot,
+    resolve_profile,
+)
+from src.meta.compute import (
+    REFUSAL_COMPUTE_BUDGET_EXCEEDED,
+    REFUSAL_COMPUTE_INVALID_OWNER,
+    REFUSAL_COMPUTE_MEMORY_EXCEEDED,
+    evaluate_compute_budget_tick,
+    request_compute,
+)
+
+
+def evaluate_reference_evaluator(*args, **kwargs):
+    from src.meta.reference import evaluate_reference_evaluator as _evaluate_reference_evaluator
+
+    return _evaluate_reference_evaluator(*args, **kwargs)
+
+
+def evaluate_reference_suite(*args, **kwargs):
+    from src.meta.reference import evaluate_reference_suite as _evaluate_reference_suite
+
+    return _evaluate_reference_suite(*args, **kwargs)
 
 __all__ = [
     "REFUSAL_COMPILE_INVALID",
@@ -18,4 +48,18 @@ __all__ = [
     "evaluate_compile_request",
     "compiled_model_is_valid",
     "compiled_model_execute",
+    "evaluate_reference_evaluator",
+    "evaluate_reference_suite",
+    "resolve_instrumentation_surface",
+    "validate_control_access",
+    "generate_measurement_observation",
+    "route_forensics_request",
+    "resolve_profile",
+    "apply_override",
+    "resolve_effective_profile_snapshot",
+    "REFUSAL_COMPUTE_INVALID_OWNER",
+    "REFUSAL_COMPUTE_BUDGET_EXCEEDED",
+    "REFUSAL_COMPUTE_MEMORY_EXCEEDED",
+    "request_compute",
+    "evaluate_compute_budget_tick",
 ]

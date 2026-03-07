@@ -1,0 +1,355 @@
+{
+  "current_tick": 12,
+  "deterministic_fingerprint": "826c88dc804d9b31b0810165d5eb79ad41eae339be665094cc17fec1261fcaa0",
+  "evaluator_ids": [
+    "ref.compiled_model_verify",
+    "ref.coupling_scheduler",
+    "ref.energy_ledger",
+    "ref.system_invariant_check"
+  ],
+  "mismatch_report_path": "",
+  "mismatches": [],
+  "reference_run_record_rows": [
+    {
+      "deterministic_fingerprint": "3f6670128add85778dc03565eee2ba69c767341bb07d8f54f4b68901331580e7",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.coupling_scheduler",
+      "extensions": {
+        "current_tick": 12,
+        "reference_output": {
+          "budget_outcome": "complete",
+          "cost_units": 9,
+          "deferred_rows": [],
+          "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+          "processed_binding_ids": [
+            "binding.ref.alpha",
+            "binding.ref.beta"
+          ]
+        },
+        "runtime_output": {
+          "budget_outcome": "complete",
+          "cost_units": 9,
+          "deferred_rows": [],
+          "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+          "processed_binding_ids": [
+            "binding.ref.alpha",
+            "binding.ref.beta"
+          ]
+        }
+      },
+      "match": true,
+      "reference_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+      "run_id": "reference_run.1038a6c9b2e60928",
+      "runtime_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+      "schema_version": "1.0.0",
+      "seed": 20260307,
+      "tick_range": {
+        "end": 12,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "73a979e630cc7abfd42ed4f371edf4cb1ba0d322606f1f76c19464dc3ef47396",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.compiled_model_verify",
+      "extensions": {
+        "current_tick": 12,
+        "reference_output": {
+          "compiled_model_id": "compiled_model.ref.alpha",
+          "equivalence_proof_ref": "proof.ref.alpha",
+          "output_hash": "416d4dada2cf784f08e995f2906e16c808ea4131d6e3b2285e761eebf3703af5",
+          "proof_hash": "eae0ea115956c777c6b2ba6d47072db1ef36f090f60a8ce9b6d74447eb021bce"
+        },
+        "runtime_output": {
+          "compiled_model_id": "compiled_model.ref.alpha",
+          "equivalence_proof_ref": "proof.ref.alpha",
+          "output_hash": "416d4dada2cf784f08e995f2906e16c808ea4131d6e3b2285e761eebf3703af5",
+          "proof_hash": "eae0ea115956c777c6b2ba6d47072db1ef36f090f60a8ce9b6d74447eb021bce"
+        }
+      },
+      "match": true,
+      "reference_output_hash": "416d4dada2cf784f08e995f2906e16c808ea4131d6e3b2285e761eebf3703af5",
+      "run_id": "reference_run.1ef2dff451734c33",
+      "runtime_output_hash": "416d4dada2cf784f08e995f2906e16c808ea4131d6e3b2285e761eebf3703af5",
+      "schema_version": "1.0.0",
+      "seed": 20260307,
+      "tick_range": {
+        "end": 12,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "f81d9e72f0669e6facd7b797bd619ba9876227de560cd6604dc52152121cea1f",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.energy_ledger",
+      "extensions": {
+        "current_tick": 12,
+        "reference_output": {
+          "entry_count": 6,
+          "entry_delta_mismatch": 0,
+          "output_hash": "f05a133186329ebfe4d8a2f4dfcdede6409455f7845096ec067ac49d6ef3057b",
+          "per_tick": [
+            {
+              "entry_count": 2,
+              "input_total": 205,
+              "output_total": 185,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 0
+            },
+            {
+              "entry_count": 2,
+              "input_total": 207,
+              "output_total": 187,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 1
+            },
+            {
+              "entry_count": 2,
+              "input_total": 209,
+              "output_total": 189,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 2
+            }
+          ]
+        },
+        "runtime_output": {
+          "entry_count": 6,
+          "entry_delta_mismatch": 0,
+          "output_hash": "f05a133186329ebfe4d8a2f4dfcdede6409455f7845096ec067ac49d6ef3057b",
+          "per_tick": [
+            {
+              "entry_count": 2,
+              "input_total": 205,
+              "output_total": 185,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 0
+            },
+            {
+              "entry_count": 2,
+              "input_total": 207,
+              "output_total": 187,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 1
+            },
+            {
+              "entry_count": 2,
+              "input_total": 209,
+              "output_total": 189,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 2
+            }
+          ]
+        }
+      },
+      "match": true,
+      "reference_output_hash": "f05a133186329ebfe4d8a2f4dfcdede6409455f7845096ec067ac49d6ef3057b",
+      "run_id": "reference_run.b3c13c407941c3d3",
+      "runtime_output_hash": "f05a133186329ebfe4d8a2f4dfcdede6409455f7845096ec067ac49d6ef3057b",
+      "schema_version": "1.0.0",
+      "seed": 20260307,
+      "tick_range": {
+        "end": 12,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "cbb0c3c4569717949af19face54c88c1efe07375e8a423ca0acebed4c6ee1305",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.system_invariant_check",
+      "extensions": {
+        "current_tick": 12,
+        "reference_output": {
+          "checks": [
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ids.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.system.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.present.inv.ref.mass_energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.templates.declared",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+              "status": "pass"
+            }
+          ],
+          "failed_check_ids": [],
+          "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+          "reason_code": "",
+          "result": "complete"
+        },
+        "runtime_output": {
+          "checks": [
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ids.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.system.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.present.inv.ref.mass_energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.templates.declared",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+              "status": "pass"
+            }
+          ],
+          "failed_check_ids": [],
+          "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+          "reason_code": "",
+          "result": "complete"
+        }
+      },
+      "match": true,
+      "reference_output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+      "run_id": "reference_run.b7090abd33369b43",
+      "runtime_output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+      "schema_version": "1.0.0",
+      "seed": 20260307,
+      "tick_range": {
+        "end": 12,
+        "start": 0
+      }
+    }
+  ],
+  "result": "complete",
+  "seed": 20260307,
+  "state_source": "fixture",
+  "tick_range": {
+    "end": 12,
+    "start": 0
+  }
+}

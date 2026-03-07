@@ -437,6 +437,13 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-NO-MAGIC-BUILD",
     "INV-SIGN-REQUIRES-KEY",
     "INV-DEPLOY-THROUGH-SIG",
+    "INV-OVERRIDE-REQUIRES-PROFILE",
+    "INV-EXCEPTION-EVENT-LOGGED",
+    "INV-CHANGE-MUST-REFERENCE-DEMAND",
+    "INV-CRITICAL-SUBSYSTEM-REF-AVAILABLE",
+    "INV-ALL-EXECUTION-BUDGETED",
+    "INV-NO-UNMETERED-COMPUTE",
+    "INV-THROTTLE-LOGGED",
     "INV-PROC-BUDGETED",
     "INV-PROC-CAPSULE-EXEC-RECORDED",
     "INV-PROC-INFERENCE-DERIVED-ONLY",
@@ -849,6 +856,11 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E297_SILENT_PROCESS_EXECUTION_SMELL": "INV-PROC-CAPSULE-EXEC-RECORDED",
     "E298_UNBUDGETED_PROCESS_LOOP_SMELL": "INV-PROC-BUDGETED",
     "E299_CAPSULE_USED_WHILE_INVALID_SMELL": "INV-PROC-STATEVEC-REQUIRED",
+    "E300_ORPHAN_FEATURE_SMELL": "INV-CHANGE-MUST-REFERENCE-DEMAND",
+    "E301_MISSING_REFERENCE_EVALUATOR_SMELL": "INV-CRITICAL-SUBSYSTEM-REF-AVAILABLE",
+    "E304_SILENT_OVERRIDE_SMELL": "INV-EXCEPTION-EVENT-LOGGED",
+    "E305_UNMETERED_LOOP_SMELL": "INV-NO-UNMETERED-COMPUTE",
+    "E306_SILENT_THROTTLE_SMELL": "INV-THROTTLE-LOGGED",
 }
 
 CI_LANE_WORKFLOW_PATH = ".github/workflows/xstack_lanes.yml"
@@ -963,6 +975,18 @@ RUNTIME_PATH_PREFIXES = (
     "launcher/",
     "setup/",
     "libs/",
+)
+
+PLAYER_DEMAND_MATRIX_REL = "data/meta/player_demand_matrix.json"
+PLAYER_DEMAND_IMPACT_PREFIX = "docs/impact/"
+PLAYER_DEMAND_RUNTIME_PREFIXES = (
+    "src/",
+    "engine/",
+    "game/",
+    "client/",
+    "server/",
+    "tools/domain/",
+    "tools/xstack/sessionx/",
 )
 
 DERIVED_PROVENANCE_REQUIRED_FIELDS = (
@@ -1096,6 +1120,13 @@ def _invariant_severity(profile: str) -> str:
 def _strict_only_severity(profile: str) -> str:
     token = str(profile).strip().upper()
     return _invariant_severity(token) if token in ("STRICT", "FULL") else "warn"
+
+
+def _full_fail_strict_warn_severity(profile: str) -> str:
+    token = str(profile).strip().upper()
+    if token == "FULL":
+        return "fail"
+    return "warn"
 
 
 def _deprecated_inline_response_curve_sites(repo_root: str) -> Set[Tuple[str, int]]:
@@ -2632,6 +2663,582 @@ def _git_status_paths(repo_root: str) -> List[str]:
 
 def _runtime_status_paths(repo_root: str) -> List[str]:
     return sorted(path for path in _git_status_paths(repo_root) if path.startswith(RUNTIME_PATH_PREFIXES))
+
+
+def _player_demand_ids(repo_root: str) -> Tuple[Set[str], str]:
+    payload, err = _load_json_object(repo_root, PLAYER_DEMAND_MATRIX_REL)
+    if err:
+        return set(), err
+    rows = list(payload.get("demands") or [])
+    out: Set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        demand_id = str(row.get("demand_id", "")).strip()
+        if demand_id:
+            out.add(demand_id)
+    return out, ""
+
+
+def _runtime_domain_status_paths(repo_root: str) -> List[str]:
+    rows = _git_status_paths(repo_root)
+    return sorted(
+        path
+        for path in rows
+        if path.startswith(PLAYER_DEMAND_RUNTIME_PREFIXES)
+        and not path.startswith("tools/xstack/testx/tests/")
+    )
+
+
+def _demand_refs_in_text(text: str, demand_ids: Set[str]) -> List[str]:
+    if not text:
+        return []
+    refs = [demand_id for demand_id in sorted(demand_ids) if demand_id in text]
+    return refs
+
+
+def _append_player_demand_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    rule_id = "INV-CHANGE-MUST-REFERENCE-DEMAND"
+
+    runtime_changed = _runtime_domain_status_paths(repo_root)
+    if not runtime_changed:
+        return
+
+    demand_ids, err = _player_demand_ids(repo_root)
+    if err or not demand_ids:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=PLAYER_DEMAND_MATRIX_REL,
+                line_number=1,
+                snippet="demands",
+                message="player demand matrix must exist and declare demand ids before runtime-domain demand mapping can be enforced",
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    referenced: Set[str] = set()
+    impact_files = sorted(
+        path
+        for path in _git_status_paths(repo_root)
+        if path.startswith(PLAYER_DEMAND_IMPACT_PREFIX) and path.lower().endswith(".md")
+    )
+
+    for rel_path in impact_files:
+        referenced.update(_demand_refs_in_text(_file_text(repo_root, rel_path), demand_ids))
+
+    if not referenced:
+        for rel_path in runtime_changed:
+            referenced.update(_demand_refs_in_text(_file_text(repo_root, rel_path), demand_ids))
+            if referenced:
+                break
+
+    if referenced:
+        return
+
+    findings.append(
+        _finding(
+            severity=severity,
+            file_path=runtime_changed[0],
+            line_number=1,
+            snippet=runtime_changed[0][:140],
+            message=(
+                "runtime-domain changes must reference at least one demand_id "
+                "via docs/impact/*.md or inline demand tags"
+            ),
+            rule_id=rule_id,
+        )
+    )
+
+
+def _append_reference_evaluator_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _full_fail_strict_warn_severity(profile)
+    rule_id = "INV-CRITICAL-SUBSYSTEM-REF-AVAILABLE"
+    registry_rel = "data/registries/reference_evaluator_registry.json"
+    required_evaluator_ids = (
+        "ref.energy_ledger",
+        "ref.coupling_scheduler",
+        "ref.system_invariant_check",
+        "ref.compiled_model_verify",
+    )
+    required_paths = (
+        "src/meta/reference/reference_engine.py",
+        "tools/meta/tool_run_reference_suite.py",
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="critical reference-evaluator surface is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    payload, err = _load_json_object(repo_root, registry_rel)
+    if err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet="record.reference_evaluators",
+                message="reference evaluator registry must exist and be valid JSON",
+                rule_id=rule_id,
+            )
+        )
+        return
+
+    rows = list((dict(payload.get("record") or {})).get("reference_evaluators") or payload.get("reference_evaluators") or [])
+    if not isinstance(rows, list):
+        rows = []
+    by_id = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        evaluator_id = str(row.get("evaluator_id", "")).strip()
+        if evaluator_id:
+            by_id[evaluator_id] = dict(row)
+
+    for evaluator_id in required_evaluator_ids:
+        row = dict(by_id.get(evaluator_id) or {})
+        if not row:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet=evaluator_id,
+                    message="critical subsystem is missing required reference evaluator registration",
+                    rule_id=rule_id,
+                )
+            )
+            continue
+        status = str((dict(row.get("extensions") or {})).get("status", "active")).strip().lower() or "active"
+        if status != "active":
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=registry_rel,
+                    line_number=1,
+                    snippet="{} status={}".format(evaluator_id, status),
+                    message="critical reference evaluator must be active in registry",
+                    rule_id=rule_id,
+                )
+            )
+
+
+def _append_instrumentation_surface_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    surface_rule_id = "INV-SYSTEM-MUST-DECLARE-INSTRUMENTATION"
+    readout_rule_id = "INV-NO-TRUTH-READOUT-WITHOUT-INSTRUMENT"
+    surface_severity = _full_fail_strict_warn_severity(profile)
+    readout_severity = _strict_only_severity(profile)
+
+    registry_rel = "data/registries/instrumentation_surface_registry.json"
+    required_owners = (
+        ("domain", "domain.elec"),
+        ("domain", "domain.therm"),
+        ("domain", "domain.fluid"),
+        ("domain", "domain.chem"),
+        ("process", "process.proc.default"),
+        ("capsule", "capsule.system.default"),
+    )
+    registry_payload, registry_err = _load_json_object(repo_root, registry_rel)
+    if registry_err:
+        findings.append(
+            _finding(
+                severity=surface_severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet="record.instrumentation_surfaces",
+                message="instrumentation surface registry must exist and be valid JSON",
+                rule_id=surface_rule_id,
+            )
+        )
+    else:
+        rows = list((dict(registry_payload.get("record") or {})).get("instrumentation_surfaces") or registry_payload.get("instrumentation_surfaces") or [])
+        if not isinstance(rows, list):
+            rows = []
+        by_owner = {}
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            owner_kind = str(row.get("owner_kind", "")).strip().lower()
+            owner_id = str(row.get("owner_id", "")).strip()
+            if owner_kind and owner_id:
+                by_owner["{}::{}".format(owner_kind, owner_id)] = dict(row)
+        for owner_kind, owner_id in required_owners:
+            key = "{}::{}".format(owner_kind, owner_id)
+            row = dict(by_owner.get(key) or {})
+            if not row:
+                findings.append(
+                    _finding(
+                        severity=surface_severity,
+                        file_path=registry_rel,
+                        line_number=1,
+                        snippet=key,
+                        message="required owner instrumentation surface is missing",
+                        rule_id=surface_rule_id,
+                    )
+                )
+                continue
+            for field_key in ("control_points", "measurement_points", "forensics_points"):
+                if isinstance(row.get(field_key), list) and row.get(field_key):
+                    continue
+                findings.append(
+                    _finding(
+                        severity=surface_severity,
+                        file_path=registry_rel,
+                        line_number=1,
+                        snippet="{} {}".format(key, field_key),
+                        message="required owner instrumentation surface must declare non-empty {}".format(field_key),
+                        rule_id=surface_rule_id,
+                    )
+                )
+
+    engine_rel = "src/meta/instrumentation/instrumentation_engine.py"
+    engine_abs = os.path.join(repo_root, engine_rel.replace("/", os.sep))
+    if not os.path.isfile(engine_abs):
+        findings.append(
+            _finding(
+                severity=readout_severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet="",
+                message="instrumentation engine surface is missing",
+                rule_id=readout_rule_id,
+            )
+        )
+        return
+    try:
+        engine_text = open(engine_abs, "r", encoding="utf-8").read()
+    except OSError:
+        engine_text = ""
+    forbidden_pattern = re.compile(r"\b(truth_model|universe_state|render_model)\b", re.IGNORECASE)
+    for line_no, line in _iter_lines(repo_root, engine_rel):
+        if not forbidden_pattern.search(str(line)):
+            continue
+        findings.append(
+            _finding(
+                severity=readout_severity,
+                file_path=engine_rel,
+                line_number=line_no,
+                snippet=str(line).strip()[:140],
+                message="instrumentation readout logic must not reference omniscient truth/render symbols directly",
+                rule_id=readout_rule_id,
+            )
+        )
+    required_tokens = (
+        "REFUSAL_INSTRUMENTATION_INSTRUMENT_REQUIRED",
+        "required_instrument not in available_instruments",
+        "\"artifact_family_id\": \"OBSERVATION\"",
+    )
+    for token in required_tokens:
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=readout_severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message="instrumentation measurement path must enforce instrument gating and produce observation artifacts",
+                rule_id=readout_rule_id,
+            )
+        )
+
+
+def _append_profile_override_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    mode_rule_id = "INV-NO-MODE-FLAGS"
+    override_rule_id = "INV-OVERRIDE-REQUIRES-PROFILE"
+    exception_rule_id = "INV-EXCEPTION-EVENT-LOGGED"
+    strict_severity = _strict_only_severity(profile)
+    mode_severity = _invariant_severity(profile)
+
+    required_paths = (
+        "src/meta/profile/profile_engine.py",
+        "schema/meta/profile.schema",
+        "schema/meta/profile_binding.schema",
+        "schema/meta/exception_event.schema",
+        "data/registries/profile_registry.json",
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="profile override contract requires this artifact",
+                rule_id=override_rule_id,
+            )
+        )
+
+    runtime_roots = ("src", "engine", "game", "client", "server", "launcher", "setup")
+    skip_dirs = {".git", "__pycache__", "build", "dist", "out", "legacy"}
+    source_exts = {".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp"}
+    legacy_tokens = ("debug_profile", "creative_mode", "godmode", "sandbox_mode")
+    for root_name in runtime_roots:
+        abs_root = os.path.join(repo_root, root_name)
+        if not os.path.isdir(abs_root):
+            continue
+        for walk_root, dirs, files in os.walk(abs_root):
+            dirs[:] = sorted(name for name in dirs if name not in skip_dirs)
+            for name in sorted(files):
+                if os.path.splitext(name)[1].lower() not in source_exts:
+                    continue
+                abs_path = os.path.join(walk_root, name)
+                rel_path = _norm(os.path.relpath(abs_path, repo_root))
+                try:
+                    text = open(abs_path, "r", encoding="utf-8", errors="ignore").read()
+                except OSError:
+                    continue
+                lower = str(text).lower()
+                for token in legacy_tokens:
+                    if token not in lower:
+                        continue
+                    findings.append(
+                        _finding(
+                            severity=mode_severity,
+                            file_path=rel_path,
+                            line_number=1,
+                            snippet=token,
+                            message="legacy mode-like token must be replaced by unified profile resolution",
+                            rule_id=mode_rule_id,
+                        )
+                    )
+                    break
+
+    profile_engine_rel = "src/meta/profile/profile_engine.py"
+    profile_engine_text = _file_text(repo_root, profile_engine_rel)
+    required_override_tokens = (
+        "resolve_profile(",
+        "apply_override(",
+        "profile_registry_payload",
+        "profile_binding_rows",
+    )
+    for token in required_override_tokens:
+        if token in profile_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=profile_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="profile override engine is missing required deterministic resolution token",
+                rule_id=override_rule_id,
+            )
+        )
+
+    required_exception_tokens = (
+        "build_profile_exception_event_row(",
+        "event.profile.override.",
+        "\"exception_event\"",
+    )
+    for token in required_exception_tokens:
+        if token in profile_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=profile_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="profile override engine must emit canonical exception events for effective overrides",
+                rule_id=exception_rule_id,
+            )
+        )
+
+    collapse_rel = "src/system/system_collapse_engine.py"
+    collapse_text = _file_text(repo_root, collapse_rel)
+    collapse_required = (
+        "_statevec_output_guard_status(",
+        "_append_profile_exception_event(",
+        "apply_override(",
+    )
+    for token in collapse_required:
+        if token in collapse_text:
+            continue
+        findings.append(
+            _finding(
+                severity=strict_severity,
+                file_path=collapse_rel,
+                line_number=1,
+                snippet=token,
+                message="system collapse override path must resolve profile + log exception event deterministically",
+                rule_id=exception_rule_id,
+            )
+            )
+
+
+def _append_compute_budget_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    budget_rule_id = "INV-ALL-EXECUTION-BUDGETED"
+    unmetered_rule_id = "INV-NO-UNMETERED-COMPUTE"
+    throttle_rule_id = "INV-THROTTLE-LOGGED"
+    severity = _strict_only_severity(profile)
+
+    required_paths = (
+        "schema/meta/compute_budget_profile.schema",
+        "schema/meta/compute_consumption_record.schema",
+        "data/registries/compute_budget_profile_registry.json",
+        "data/registries/compute_degrade_policy_registry.json",
+        "src/meta/compute/compute_budget_engine.py",
+    )
+    for rel_path in required_paths:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="compute budgeting contract requires this artifact",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    hook_specs = (
+        (
+            "src/system/macro/macro_capsule_engine.py",
+            (
+                "request_compute(",
+                "compute_consumption_record_rows",
+                "compute_decision_log_rows",
+            ),
+        ),
+        (
+            "src/meta/compile/compile_engine.py",
+            (
+                "request_compute(",
+                "compute_consumption_record_row",
+                "compute_decision_log_row",
+            ),
+        ),
+        (
+            "src/process/software/pipeline_engine.py",
+            (
+                "request_compute(",
+                "compute_consumption_record_rows",
+                "compute_decision_log_rows",
+            ),
+        ),
+    )
+    for rel_path, required_tokens in hook_specs:
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet="",
+                    message="compute-budget integration target missing",
+                    rule_id=budget_rule_id,
+                )
+            )
+            continue
+        for token in required_tokens:
+            if token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="compute-budget integration target missing required metering token",
+                    rule_id=budget_rule_id,
+                )
+            )
+
+    compute_engine_rel = "src/meta/compute/compute_budget_engine.py"
+    compute_engine_text = _file_text(repo_root, compute_engine_rel)
+    required_metering_tokens = (
+        "build_compute_consumption_record_row(",
+        "\"decision_kind\": \"compute_budget\"",
+        "runtime_state[\"consumption_record_rows\"]",
+        "runtime_state[\"decision_log_rows\"]",
+    )
+    for token in required_metering_tokens:
+        if token in compute_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=compute_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="compute budget engine missing canonical metering token",
+                rule_id=unmetered_rule_id,
+            )
+        )
+
+    required_throttle_tokens = (
+        "explain.compute_throttle",
+        "explain.compute_refusal",
+        "explain.compute_shutdown",
+        "runtime_state[\"throttled_owner_ids\"]",
+        "runtime_state[\"explain_artifact_rows\"]",
+    )
+    for token in required_throttle_tokens:
+        if token in compute_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=compute_engine_rel,
+                line_number=1,
+                snippet=token,
+                message="compute throttle/refusal/shutdown path missing required explain or runtime-log token",
+                rule_id=throttle_rule_id,
+            )
+        )
+
+    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_text = _file_text(repo_root, explain_registry_rel)
+    for token in ("explain.compute_throttle", "explain.compute_refusal", "explain.compute_shutdown"):
+        if token in explain_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="compute explain contracts must be declared in explain registry",
+                rule_id=throttle_rule_id,
+            )
+        )
 
 
 def _derived_artifact_files(repo_root: str) -> List[str]:
@@ -21763,7 +22370,8 @@ def _append_process_constitution_invariant_findings(
                     rule_id=proc_budgeted_rule_id,
                 )
             )
-        update_policy = _as_map(proc_regression_row.get("update_policy"))
+        raw_update_policy = proc_regression_row.get("update_policy")
+        update_policy = dict(raw_update_policy) if isinstance(raw_update_policy, dict) else {}
         if str(update_policy.get("required_commit_tag", "")).strip() != "PROC-REGRESSION-UPDATE":
             findings.append(
                 _finding(
@@ -24159,6 +24767,31 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_process_constitution_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_player_demand_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_reference_evaluator_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_instrumentation_surface_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_profile_override_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_compute_budget_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

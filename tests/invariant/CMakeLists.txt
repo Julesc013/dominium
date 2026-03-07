@@ -460,3 +460,73 @@ dom_add_testx(NAME test_gate_snapshot_allows_snapshot_writes
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME test_profile_resolution_order_deterministic
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/profile_override_architecture_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case profile_resolution_order_deterministic
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_override_emits_exception_event
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/profile_override_architecture_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case override_emits_exception_event
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_no_mode_flags_detected
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/profile_override_architecture_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case no_mode_flags_detected
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_profile_binding_hash_stable
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/profile_override_architecture_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case profile_binding_hash_stable
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_cross_platform_profile_hash_match
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/profile_override_architecture_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case cross_platform_profile_hash_match
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_budget_allocation_deterministic
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compute_budgeting_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case budget_allocation_deterministic
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_throttle_order_deterministic
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compute_budgeting_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case throttle_order_deterministic
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_consumption_records_logged
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compute_budgeting_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case consumption_records_logged
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_power_coupling_ledgered_when_enabled
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compute_budgeting_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case power_coupling_ledgered_when_enabled
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)
+
+dom_add_testx(NAME test_cross_platform_compute_hash_match
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/compute_budgeting_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case cross_platform_compute_hash_match
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

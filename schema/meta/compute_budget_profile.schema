@@ -1,0 +1,28 @@
+SCHEMA: meta/compute_budget_profile.schema
+schema_id: dominium.schema.meta.compute_budget_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic compute budget envelopes for executable owners.
+- Bind instruction/memory/evaluation caps to profile-driven degrade policies.
+
+NON-SEMANTICS:
+- This schema does not execute scheduling.
+- It does not mutate truth directly.
+
+REQUIRED SHAPE:
+record compute_budget_profile
+  required:
+    - compute_profile_id: id
+    - instruction_budget_per_tick: int
+    - memory_budget_total: int
+    - evaluation_cap_per_tick: int
+    - degrade_policy_id: id
+    - power_coupling_enabled: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Budget enforcement must be deterministic and replay-stable.
+- Over-budget outcomes must be explicit and logged.

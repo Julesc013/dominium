@@ -1,0 +1,137 @@
+{
+  "current_tick": 8,
+  "deterministic_fingerprint": "fafedf3b737ebac30683e8c6035e8518ee087548f01e7abbd846113877527763",
+  "evaluator_ids": [
+    "ref.coupling_scheduler",
+    "ref.energy_ledger"
+  ],
+  "mismatch_report_path": "",
+  "mismatches": [],
+  "reference_run_record_rows": [
+    {
+      "deterministic_fingerprint": "ecad74738b2bd9c9b1e61ac637a849d86019bc4b60c085de3a76c46975317880",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.energy_ledger",
+      "extensions": {
+        "current_tick": 8,
+        "reference_output": {
+          "entry_count": 6,
+          "entry_delta_mismatch": 0,
+          "output_hash": "882fa63ef95fa8bf781c380d2ef49ace99cd545c2b45e5f039aa2053b06f1f97",
+          "per_tick": [
+            {
+              "entry_count": 2,
+              "input_total": 207,
+              "output_total": 187,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 0
+            },
+            {
+              "entry_count": 2,
+              "input_total": 209,
+              "output_total": 189,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 1
+            },
+            {
+              "entry_count": 2,
+              "input_total": 211,
+              "output_total": 191,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 2
+            }
+          ]
+        },
+        "runtime_output": {
+          "entry_count": 6,
+          "entry_delta_mismatch": 0,
+          "output_hash": "882fa63ef95fa8bf781c380d2ef49ace99cd545c2b45e5f039aa2053b06f1f97",
+          "per_tick": [
+            {
+              "entry_count": 2,
+              "input_total": 207,
+              "output_total": 187,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 0
+            },
+            {
+              "entry_count": 2,
+              "input_total": 209,
+              "output_total": 189,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 1
+            },
+            {
+              "entry_count": 2,
+              "input_total": 211,
+              "output_total": 191,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 2
+            }
+          ]
+        }
+      },
+      "match": true,
+      "reference_output_hash": "882fa63ef95fa8bf781c380d2ef49ace99cd545c2b45e5f039aa2053b06f1f97",
+      "run_id": "reference_run.7ceef58c92004b93",
+      "runtime_output_hash": "882fa63ef95fa8bf781c380d2ef49ace99cd545c2b45e5f039aa2053b06f1f97",
+      "schema_version": "1.0.0",
+      "seed": 101,
+      "tick_range": {
+        "end": 8,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "17d7b6690e09fa12bb06a708d0def73371d0319a1f21a4fa526c4ae49ef7d771",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.coupling_scheduler",
+      "extensions": {
+        "current_tick": 8,
+        "reference_output": {
+          "budget_outcome": "complete",
+          "cost_units": 9,
+          "deferred_rows": [],
+          "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+          "processed_binding_ids": [
+            "binding.ref.alpha",
+            "binding.ref.beta"
+          ]
+        },
+        "runtime_output": {
+          "budget_outcome": "complete",
+          "cost_units": 9,
+          "deferred_rows": [],
+          "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+          "processed_binding_ids": [
+            "binding.ref.alpha",
+            "binding.ref.beta"
+          ]
+        }
+      },
+      "match": true,
+      "reference_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+      "run_id": "reference_run.8f9f7ccf0c46d804",
+      "runtime_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+      "schema_version": "1.0.0",
+      "seed": 101,
+      "tick_range": {
+        "end": 8,
+        "start": 0
+      }
+    }
+  ],
+  "result": "complete",
+  "seed": 101,
+  "state_source": "fixture",
+  "tick_range": {
+    "end": 8,
+    "start": 0
+  }
+}

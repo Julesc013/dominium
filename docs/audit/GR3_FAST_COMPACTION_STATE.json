@@ -1,0 +1,196 @@
+{
+  "compaction_marker": {
+    "deterministic_fingerprint": "706c117e4472589dd01e76fe645539556ad1a54957983e29f39798006f2822ae",
+    "end_tick": 8,
+    "extensions": {
+      "derived_removed_by_key": {
+        "derived_statistics_rows": 1,
+        "derived_summary_rows": 1,
+        "explain_artifact_rows": 1,
+        "info_artifact_rows": 1,
+        "inspection_snapshot_rows": 1,
+        "model_evaluation_results": 1
+      },
+      "derived_removed_total": 6,
+      "replay_hash_after": "b84bd751c4d8e823dc87fa212238d8601608a80c7864b96cef4c0d36eee44622",
+      "replay_hash_before": "b84bd751c4d8e823dc87fa212238d8601608a80c7864b96cef4c0d36eee44622"
+    },
+    "marker_id": "compaction.marker.164aa2326a8bb56a",
+    "post_compaction_hash": "01194284ce9bfc37d12b9b27e9000a67ddbfcd778f64df3d5825f47db598c44b",
+    "pre_compaction_hash": "01194284ce9bfc37d12b9b27e9000a67ddbfcd778f64df3d5825f47db598c44b",
+    "schema_version": "1.0.0",
+    "shard_id": "shard.gr3.fast",
+    "start_tick": 5
+  },
+  "post_replay_hash": "b84bd751c4d8e823dc87fa212238d8601608a80c7864b96cef4c0d36eee44622",
+  "pre_replay_hash": "b84bd751c4d8e823dc87fa212238d8601608a80c7864b96cef4c0d36eee44622",
+  "record": {
+    "boundary_flux_events": [
+      {
+        "direction": "in",
+        "extensions": {},
+        "flux_id": "flux.gr3fast.001",
+        "quantity_id": "quantity.energy_thermal",
+        "reason_code": "test.boundary",
+        "tick": 7,
+        "value": 80
+      }
+    ],
+    "branch_events": [],
+    "burst_events": [],
+    "compaction_marker_hash_chain": "e45ee4556200b0505551b336a4e836b2c8bcbf01906d6c5289b1bb4cfd17b6c9",
+    "compaction_markers": [
+      {
+        "deterministic_fingerprint": "706c117e4472589dd01e76fe645539556ad1a54957983e29f39798006f2822ae",
+        "end_tick": 8,
+        "extensions": {
+          "derived_removed_by_key": {
+            "derived_statistics_rows": 1,
+            "derived_summary_rows": 1,
+            "explain_artifact_rows": 1,
+            "info_artifact_rows": 1,
+            "inspection_snapshot_rows": 1,
+            "model_evaluation_results": 1
+          },
+          "derived_removed_total": 6,
+          "replay_hash_after": "b84bd751c4d8e823dc87fa212238d8601608a80c7864b96cef4c0d36eee44622",
+          "replay_hash_before": "b84bd751c4d8e823dc87fa212238d8601608a80c7864b96cef4c0d36eee44622"
+        },
+        "marker_id": "compaction.marker.164aa2326a8bb56a",
+        "post_compaction_hash": "01194284ce9bfc37d12b9b27e9000a67ddbfcd778f64df3d5825f47db598c44b",
+        "pre_compaction_hash": "01194284ce9bfc37d12b9b27e9000a67ddbfcd778f64df3d5825f47db598c44b",
+        "schema_version": "1.0.0",
+        "shard_id": "shard.gr3.fast",
+        "start_tick": 5
+      }
+    ],
+    "compaction_post_anchor_hash": "01194284ce9bfc37d12b9b27e9000a67ddbfcd778f64df3d5825f47db598c44b",
+    "compaction_pre_anchor_hash": "01194284ce9bfc37d12b9b27e9000a67ddbfcd778f64df3d5825f47db598c44b",
+    "control_proof_bundles": [],
+    "derived_statistics_rows": [],
+    "derived_summary_rows": [],
+    "energy_ledger_entries": [
+      {
+        "energy_total_delta": 0,
+        "entry_id": "entry.energy.gr3fast.001",
+        "extensions": {},
+        "input_values": {
+          "quantity.energy_electrical": 400
+        },
+        "output_values": {
+          "quantity.energy_thermal": 400
+        },
+        "source_id": "assembly.gr3fast",
+        "tick": 6,
+        "transformation_id": "transform.electrical_to_thermal"
+      },
+      {
+        "energy_total_delta": 0,
+        "entry_id": "entry.energy.gr3fast.002",
+        "extensions": {},
+        "input_values": {
+          "quantity.energy_kinetic": 120
+        },
+        "output_values": {
+          "quantity.energy_thermal": 120
+        },
+        "source_id": "assembly.gr3fast",
+        "tick": 10,
+        "transformation_id": "transform.kinetic_to_thermal"
+      }
+    ],
+    "exception_events": [],
+    "explain_artifact_rows": [
+      {
+        "cause_chain": [
+          "event.synthetic"
+        ],
+        "explain_id": "explain.gr3fast.002",
+        "extensions": {},
+        "tick": 11
+      }
+    ],
+    "fault_events": [
+      {
+        "event_id": "fault.gr3fast.001",
+        "extensions": {},
+        "reason_code": "fault.synthetic",
+        "target_id": "assembly.gr3fast",
+        "tick": 7
+      }
+    ],
+    "info_artifact_rows": [
+      {
+        "artifact_id": "artifact.info.energy.gr3fast.canonical",
+        "artifact_type_id": "artifact.energy_ledger_entry",
+        "extensions": {},
+        "tick": 6
+      },
+      {
+        "artifact_id": "artifact.info.explain.gr3fast.outside_window",
+        "artifact_type_id": "artifact.explain",
+        "extensions": {},
+        "tick": 12
+      }
+    ],
+    "inspection_snapshot_rows": [
+      {
+        "extensions": {},
+        "snapshot_id": "snapshot.gr3fast.002",
+        "target_id": "assembly.gr3fast",
+        "tick": 12
+      }
+    ],
+    "knowledge_artifacts": [
+      {
+        "artifact_id": "artifact.info.energy.gr3fast.canonical",
+        "artifact_type_id": "artifact.energy_ledger_entry",
+        "extensions": {},
+        "tick": 6
+      },
+      {
+        "artifact_id": "artifact.info.explain.gr3fast.outside_window",
+        "artifact_type_id": "artifact.explain",
+        "extensions": {},
+        "tick": 12
+      }
+    ],
+    "leak_events": [],
+    "model_evaluation_results": [],
+    "provenance_compaction_summaries": [
+      {
+        "deterministic_fingerprint": "4e0c967fede1a11f62802818713dc48611bfd83dae3d8d1d96e9d7c07c5a4a26",
+        "end_tick": 8,
+        "extensions": {},
+        "removed_by_key": {
+          "derived_statistics_rows": 1,
+          "derived_summary_rows": 1,
+          "explain_artifact_rows": 1,
+          "info_artifact_rows": 1,
+          "inspection_snapshot_rows": 1,
+          "model_evaluation_results": 1
+        },
+        "removed_total": 6,
+        "schema_version": "1.0.0",
+        "shard_id": "shard.gr3.fast",
+        "start_tick": 5,
+        "summary_id": "derived.compaction.summary.6d3dad629d30f8f9"
+      }
+    ],
+    "relief_events": [],
+    "time_adjust_events": [
+      {
+        "adjust_id": "time.adjust.gr3fast.001",
+        "adjustment_delta": 4,
+        "extensions": {},
+        "new_domain_time": 1004,
+        "originating_receipt_id": "receipt.gr3fast",
+        "previous_domain_time": 1000,
+        "target_id": "clock.gr3fast",
+        "tick": 6
+      }
+    ],
+    "time_branches": []
+  },
+  "schema_version": "1.0.0"
+}

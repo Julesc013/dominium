@@ -1,0 +1,56 @@
+{
+  "schema_id": "dominium.registry.access_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.access_policy_registry",
+    "registry_version": "1.0.0",
+    "access_policies": [
+      {
+        "schema_version": "1.0.0",
+        "access_policy_id": "access.physical_contact_required",
+        "description": "Requires physical-contact access to owner surface and baseline operator entitlement.",
+        "required_entitlements": [
+          "session.boot"
+        ],
+        "required_privilege_level": "observer",
+        "physical_access_required": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "access_policy_id": "access.role_required",
+        "description": "Requires role/capability entitlement for non-destructive remote control/inspection.",
+        "required_entitlements": [
+          "entitlement.inspect"
+        ],
+        "required_privilege_level": "operator",
+        "physical_access_required": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "access_policy_id": "access.admin_only",
+        "description": "Restricted instrumentation path for administrative diagnostics and forensic override contexts.",
+        "required_entitlements": [
+          "entitlement.admin",
+          "entitlement.inspect"
+        ],
+        "required_privilege_level": "admin",
+        "physical_access_required": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0"
+        }
+      }
+    ],
+    "extensions": {
+      "null_boot_safe": true
+    }
+  }
+}

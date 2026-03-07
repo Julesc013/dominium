@@ -1,0 +1,28 @@
+SCHEMA: meta/exception_event.schema
+schema_id: dominium.schema.meta.profile_exception_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical exception-ledger record for profile-based rule overrides.
+
+NON-SEMANTICS:
+- Event rows are RECORD artifacts and never apply the override themselves.
+
+REQUIRED SHAPE:
+record exception_event
+  required:
+    - event_id: id
+    - profile_id: id
+    - rule_id: id
+    - owner_id: id
+    - tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+OPTIONAL:
+  - details: map
+
+INVARIANTS:
+- Event emission must be deterministic and replayable.
+- Event rows must be generated when effective override changes governed behavior.

@@ -1,0 +1,23 @@
+SCHEMA: meta/forensics_point.schema
+schema_id: dominium.schema.meta.forensics_point
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic forensics/explain endpoints on instrumentation surfaces.
+
+NON-SEMANTICS:
+- Does not create canonical events.
+- Does not bypass explain contract policy.
+
+REQUIRED SHAPE:
+record forensics_point
+  required:
+    - forensics_point_id: id
+    - explain_contract_id: id
+    - redaction_policy_id: id
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- Forensics endpoint routing must resolve to explain contracts.
+- Returned artifacts must honor epistemic redaction policy.

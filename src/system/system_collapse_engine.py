@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.meta.profile import apply_override
 from src.system.system_validation_engine import (
     REFUSAL_SYSTEM_INVALID_INTERFACE,
     REFUSAL_SYSTEM_INVARIANT_VIOLATION,
@@ -46,17 +47,6 @@ def _as_int(value: object, default_value: int = 0) -> int:
 
 def _as_map(value: object) -> dict:
     return dict(value or {}) if isinstance(value, Mapping) else {}
-
-
-def _as_bool(value: object, default_value: bool = False) -> bool:
-    if isinstance(value, bool):
-        return bool(value)
-    token = str(value or "").strip().lower()
-    if token in {"1", "true", "yes", "on"}:
-        return True
-    if token in {"0", "false", "no", "off"}:
-        return False
-    return bool(default_value)
 
 
 def _sorted_tokens(values: object) -> List[str]:
@@ -371,12 +361,78 @@ def _collapse_eligibility_details(system_row: Mapping[str, object] | None) -> di
     }
 
 
-def _statevec_debug_guard_enabled(state: Mapping[str, object] | None) -> bool:
-    profile = _as_map(_as_map(state).get("debug_profile"))
-    return _as_bool(
-        profile.get("enforce_state_vector_output_guard", profile.get("state_vector_output_guard", False)),
-        False,
+def _statevec_output_guard_status(
+    *,
+    state: Mapping[str, object] | None,
+    system_id: str,
+    current_tick: int,
+) -> dict:
+    state_row = _as_map(state)
+    session_spec = _as_map(state_row.get("session_spec"))
+    authority_context = _as_map(state_row.get("authority_context")) or _as_map(session_spec.get("authority_context"))
+    owner_context = {
+        "universe_id": (
+            str(state_row.get("universe_id", "")).strip()
+            or str(_as_map(state_row.get("universe_identity")).get("universe_id", "")).strip()
+            or str(session_spec.get("universe_id", "")).strip()
+        ),
+        "session_id": (
+            str(state_row.get("session_id", "")).strip()
+            or str(session_spec.get("session_id", "")).strip()
+            or str(session_spec.get("save_id", "")).strip()
+        ),
+        "authority_id": (
+            str(state_row.get("authority_id", "")).strip()
+            or str(authority_context.get("authority_context_id", "")).strip()
+            or str(authority_context.get("authority_origin", "")).strip()
+        ),
+        "system_id": str(system_id or "").strip(),
+        "session_spec": session_spec,
+        "authority_context": authority_context,
+        "profile_binding_rows": list(state_row.get("profile_binding_rows") or []),
+        "profile_registry_payload": _as_map(state_row.get("profile_registry_payload")) or _as_map(state_row.get("profile_registry")),
+    }
+    eval_row = apply_override(
+        rule_id="rule.statevec.output_guard",
+        owner_id="system.{}".format(str(system_id or "").strip()),
+        tick=int(max(0, _as_int(current_tick, 0))),
+        owner_context=owner_context,
+        profile_registry_payload=_as_map(state_row.get("profile_registry_payload")) or _as_map(state_row.get("profile_registry")),
+        profile_binding_rows=list(state_row.get("profile_binding_rows") or []),
+        law_profile_row=_as_map(state_row.get("law_profile")),
+        details={"justification": "statevec.output_guard.evaluation"},
     )
+    resolution = _as_map(eval_row.get("resolution"))
+    value = resolution.get("effective_value")
+    enabled = False
+    if isinstance(value, bool):
+        enabled = bool(value)
+    elif value is not None:
+        token = str(value).strip().lower()
+        enabled = token in {"1", "true", "yes", "on", "enforce", "enabled", "required"}
+    return {
+        "enabled": bool(enabled),
+        "exception_event": dict(eval_row.get("exception_event") or {}) if isinstance(eval_row.get("exception_event"), Mapping) else {},
+        "resolution": resolution,
+        "deterministic_fingerprint": str(eval_row.get("deterministic_fingerprint", "")).strip(),
+    }
+
+
+def _append_profile_exception_event(state: dict, event_row: Mapping[str, object] | None) -> None:
+    row = _as_map(event_row)
+    event_id = str(row.get("event_id", "")).strip()
+    if (not isinstance(state, dict)) or (not event_id):
+        return
+    by_id: Dict[str, dict] = {}
+    for existing in sorted(
+        (dict(item) for item in list(state.get("profile_exception_events") or []) if isinstance(item, Mapping)),
+        key=lambda item: str(item.get("event_id", "")),
+    ):
+        token = str(existing.get("event_id", "")).strip()
+        if token:
+            by_id[token] = dict(existing)
+    by_id[event_id] = dict(row)
+    state["profile_exception_events"] = [dict(by_id[key]) for key in sorted(by_id.keys())]
 
 
 def _statevec_output_affecting_fields(
@@ -651,7 +707,13 @@ def collapse_system_graph(
             )
             owner_definition = dict(fallback_definition)
 
-    if _statevec_debug_guard_enabled(state):
+    statevec_guard_status = _statevec_output_guard_status(
+        state=state,
+        system_id=system_token,
+        current_tick=tick_value,
+    )
+    _append_profile_exception_event(state, _as_map(statevec_guard_status.get("exception_event")))
+    if bool(statevec_guard_status.get("enabled", False)):
         output_affecting_fields = _statevec_output_affecting_fields(
             system_row=system_row,
             fallback_payload=source_state_payload,

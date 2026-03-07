@@ -1,0 +1,99 @@
+{
+  "schema_id": "dominium.registry.reference_evaluator_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.reference_evaluator_registry",
+    "registry_version": "1.0.0",
+    "reference_evaluators": [
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.energy_ledger",
+        "subsystem_id": "phys.energy_ledger",
+        "input_signature_ref": "signature.ref.energy_ledger.input.v1",
+        "output_signature_ref": "signature.ref.energy_ledger.output.v1",
+        "equivalence_kind": "tolerance_bounded",
+        "tolerance_policy_id": "tol.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "META-REF0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.coupling_scheduler",
+        "subsystem_id": "meta.coupling_scheduler",
+        "input_signature_ref": "signature.ref.coupling_scheduler.input.v1",
+        "output_signature_ref": "signature.ref.coupling_scheduler.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "META-REF0",
+          "runtime_surface": "src.models.evaluate_model_bindings"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.system_invariant_check",
+        "subsystem_id": "sys.boundary_invariant_check",
+        "input_signature_ref": "signature.ref.system_invariant_check.input.v1",
+        "output_signature_ref": "signature.ref.system_invariant_check.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "META-REF0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.compiled_model_verify",
+        "subsystem_id": "meta.compiled_model_verify",
+        "input_signature_ref": "signature.ref.compiled_model_verify.input.v1",
+        "output_signature_ref": "signature.ref.compiled_model_verify.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "META-REF0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.proc_quality_baseline",
+        "subsystem_id": "proc.quality_baseline",
+        "input_signature_ref": "signature.ref.proc_quality_baseline.input.v1",
+        "output_signature_ref": "signature.ref.proc_quality_baseline.output.v1",
+        "equivalence_kind": "tolerance_bounded",
+        "tolerance_policy_id": "tol.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "stub",
+          "next_series": "PROC-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.logic_eval_engine",
+        "subsystem_id": "logic.eval_engine",
+        "input_signature_ref": "signature.ref.logic_eval_engine.input.v1",
+        "output_signature_ref": "signature.ref.logic_eval_engine.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "stub",
+          "next_series": "LOGIC-4"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "META-REF0-2",
+      "null_boot_safe": true
+    }
+  }
+}

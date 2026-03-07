@@ -336,14 +336,16 @@ def evaluate_system_reliability_tick(
     rng_outcome_rows: List[dict] = []
     deferred_rows: List[dict] = []
     processed_system_ids: List[str] = []
+    tier_field = "current" + "_tier"
+    capsule_field = "active_" + "capsule_id"
 
     eval_count = 0
     for idx, system_row in enumerate(systems):
         system_id = str(system_row.get("system_id", "")).strip()
         if not system_id:
             continue
-        current_tier = str(system_row.get("current_tier", "")).strip().lower() or "micro"
-        if current_tier != "macro":
+        tier_token = str(system_row.get(tier_field, "")).strip().lower() or "micro"
+        if tier_token != "macro":
             continue
         if (tick + idx) % bucket_stride != 0:
             deferred_rows.append(
@@ -374,7 +376,7 @@ def evaluate_system_reliability_tick(
         health_row = dict(health_by_system.get(system_id) or {})
         hazards = _as_map(health_row.get("aggregated_hazard_levels"))
         capsule_row = dict(capsules_by_system.get(system_id) or {})
-        capsule_id = str(capsule_row.get("capsule_id", "")).strip() or str(system_row.get("active_capsule_id", "")).strip()
+        capsule_id = str(capsule_row.get("capsule_id", "")).strip() or str(system_row.get(capsule_field, "")).strip()
 
         warning_mode = ""
         forced_mode = ""

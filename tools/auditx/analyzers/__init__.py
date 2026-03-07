@@ -323,6 +323,13 @@ from analyzers import e296_signing_bypass_smell
 from analyzers import e297_silent_process_execution_smell
 from analyzers import e298_unbudgeted_process_loop_smell
 from analyzers import e299_capsule_used_while_invalid_smell
+from analyzers import e300_orphan_feature_smell
+from analyzers import e301_missing_reference_evaluator_smell
+from analyzers import e302_omniscient_readout_smell
+from analyzers import e303_missing_instrumentation_surface_smell
+from analyzers import e304_silent_override_smell
+from analyzers import e305_unmetered_loop_smell
+from analyzers import e306_silent_throttle_smell
 
 
 ANALYZERS = (
@@ -649,6 +656,13 @@ ANALYZERS = (
     e297_silent_process_execution_smell,
     e298_unbudgeted_process_loop_smell,
     e299_capsule_used_while_invalid_smell,
+    e300_orphan_feature_smell,
+    e301_missing_reference_evaluator_smell,
+    e302_omniscient_readout_smell,
+    e303_missing_instrumentation_surface_smell,
+    e304_silent_override_smell,
+    e305_unmetered_loop_smell,
+    e306_silent_throttle_smell,
 )
 
 

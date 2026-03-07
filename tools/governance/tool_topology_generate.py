@@ -131,15 +131,18 @@ def _node(
     owner_subsystem: str = "",
     extensions: Dict[str, object] | None = None,
 ) -> dict:
-    return {
+    node = {
         "node_id": str(node_id),
         "node_kind": str(node_kind),
         "path": _norm(path) or None,
         "version": str(version).strip() or None,
         "tags": sorted(set(str(item).strip() for item in (tags or []) if str(item).strip())),
         "owner_subsystem": str(owner_subsystem).strip() or None,
-        "extensions": dict(extensions or {}),
     }
+    ext = dict(extensions or {})
+    if ext:
+        node["extensions"] = ext
+    return node
 
 
 def _edge(*, edge_kind: str, from_node_id: str, to_node_id: str, extensions: Dict[str, object] | None = None) -> dict:
@@ -149,13 +152,16 @@ def _edge(*, edge_kind: str, from_node_id: str, to_node_id: str, extensions: Dic
         "to_node_id": str(to_node_id),
     }
     edge_id = "edge.{}.{}".format(str(edge_kind), canonical_sha256(base)[:16])
-    return {
+    edge = {
         "edge_id": edge_id,
         "from_node_id": str(from_node_id),
         "to_node_id": str(to_node_id),
         "edge_kind": str(edge_kind),
-        "extensions": dict(extensions or {}),
     }
+    ext = dict(extensions or {})
+    if ext:
+        edge["extensions"] = ext
+    return edge
 
 
 def _deterministic_nodes(rows: List[dict]) -> List[dict]:

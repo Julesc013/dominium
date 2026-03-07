@@ -33,3 +33,4 @@ record session_spec
 
 OPTIONAL:
   - time_control_policy_id: id
+  - profile_bindings: [id]

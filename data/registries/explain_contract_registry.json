@@ -795,6 +795,66 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.compute_throttle",
+        "event_kind_id": "compute.throttle",
+        "explain_artifact_type_id": "artifact.explain.compute_budget",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.boundary_summary",
+          "section.system.macro_output_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.controller_load",
+          "hint.raise.compute_profile_budget",
+          "hint.defer.noncritical_tasks"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-COMPUTE0-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.compute_refusal",
+        "event_kind_id": "compute.refusal",
+        "explain_artifact_type_id": "artifact.explain.compute_budget",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.boundary_summary",
+          "section.system.macro_output_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.raise.compute_profile_budget",
+          "hint.split.controller_work",
+          "hint.retry.when_budget_available"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-COMPUTE0-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.compute_shutdown",
+        "event_kind_id": "compute.shutdown",
+        "explain_artifact_type_id": "artifact.explain.compute_budget",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.safety_status",
+          "section.system.boundary_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.controller_load",
+          "hint.restore.power_budget",
+          "hint.review.safety_policy"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-COMPUTE0-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.system_tier_transition_refusal",
         "event_kind_id": "system.tier_transition_refusal",
         "explain_artifact_type_id": "artifact.explain.system_tier_transition_refusal",

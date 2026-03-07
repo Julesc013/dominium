@@ -1,0 +1,49 @@
+{
+  "schema_id": "dominium.registry.compute_degrade_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compute_degrade_policy_registry",
+    "registry_version": "1.0.0",
+    "compute_degrade_policies": [
+      {
+        "schema_version": "1.0.0",
+        "degrade_policy_id": "degrade.default_order",
+        "order": [
+          "reduce_frequency",
+          "degrade_representation",
+          "cap_evaluations",
+          "refuse_noncritical",
+          "shutdown_if_required"
+        ],
+        "tick_bucket_stride": 2,
+        "allow_representation_degrade": true,
+        "fail_safe_on_critical_overrun": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-COMPUTE0-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "degrade_policy_id": "degrade.strict_shutdown",
+        "order": [
+          "reduce_frequency",
+          "cap_evaluations",
+          "refuse_noncritical",
+          "shutdown_if_required"
+        ],
+        "tick_bucket_stride": 2,
+        "allow_representation_degrade": false,
+        "fail_safe_on_critical_overrun": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-COMPUTE0-2"
+        }
+      }
+    ],
+    "extensions": {
+      "null_boot_safe": true,
+      "source": "META-COMPUTE0-2"
+    }
+  }
+}

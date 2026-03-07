@@ -6,7 +6,8 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from src.meta.compile import evaluate_compile_request
+from src.meta.compile import evaluate_compile_request as run_compile_request
+from src.meta.compute import request_compute
 from src.process.process_run_engine import (
     build_process_quality_record_row,
     build_process_run_record_row,
@@ -25,6 +26,7 @@ REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_REQUIRED_FOR_DEPLOY = (
     "refusal.software_pipeline.signature_required_for_deploy"
 )
 REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_INVALID = "refusal.software_pipeline.signature_invalid"
+REFUSAL_SOFTWARE_PIPELINE_COMPUTE_BUDGET_DENIED = "refusal.software_pipeline.compute_budget_denied"
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -345,6 +347,10 @@ def evaluate_software_pipeline_execution(
     force_signature_invalid: bool = False,
     allow_deploy_without_signature: bool = False,
     test_subset_rate_permille: int = 500,
+    compute_runtime_state: Mapping[str, object] | None = None,
+    compute_budget_profile_registry_payload: Mapping[str, object] | None = None,
+    compute_degrade_policy_registry_payload: Mapping[str, object] | None = None,
+    compute_budget_profile_id: str = "compute.default",
 ) -> dict:
     tick = int(max(0, _as_int(current_tick, 0)))
     pipeline_token = _token(pipeline_id)
@@ -417,12 +423,70 @@ def evaluate_software_pipeline_execution(
     )
     cache_row = dict(cache_by_key.get(compile_cache_key) or {})
     compile_cache_hit = bool(cache_row)
+    compute_state = dict(compute_runtime_state or {})
+    compute_consumption_record_rows: List[dict] = []
+    compute_decision_log_rows: List[dict] = []
+    compute_explain_artifact_rows: List[dict] = []
+    compute_energy_transform_rows: List[dict] = []
 
     compile_request_row = {}
     compile_result_row = {}
     compiled_model_row = {}
     equivalence_proof_row = {}
     validity_domain_row = {}
+    compile_compute = request_compute(
+        current_tick=tick,
+        owner_kind="process",
+        owner_id="process.pipeline.compile.{}".format(run_token),
+        instruction_units=int(max(32, 128 if compile_cache_hit else 512)),
+        memory_units=int(max(8, 16 if compile_cache_hit else 64)),
+        owner_priority=40,
+        critical=False,
+        compute_runtime_state=compute_state,
+        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+        compute_budget_profile_id=str(compute_budget_profile_id or "compute.default"),
+        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+    )
+    compute_state = dict(compile_compute.get("runtime_state") or compute_state)
+    if _as_map(compile_compute.get("consumption_record_row")):
+        compute_consumption_record_rows.append(dict(_as_map(compile_compute.get("consumption_record_row"))))
+    if _as_map(compile_compute.get("decision_log_row")):
+        compute_decision_log_rows.append(dict(_as_map(compile_compute.get("decision_log_row"))))
+    if _as_map(compile_compute.get("explain_artifact_row")):
+        compute_explain_artifact_rows.append(dict(_as_map(compile_compute.get("explain_artifact_row"))))
+    if bool(_as_map(compile_compute.get("compute_profile_row")).get("power_coupling_enabled", False)):
+        compile_instruction_used = int(
+            max(
+                0,
+                _as_int(
+                    _as_map(compile_compute.get("consumption_record_row")).get("instruction_units_used", 0),
+                    0,
+                ),
+            )
+        )
+        if compile_instruction_used > 0:
+            compute_energy_transform_rows.append(
+                {
+                    "transformation_id": "transform.electrical_to_thermal",
+                    "source_id": "process.pipeline.compile.{}".format(run_token),
+                    "input_values": {"quantity.energy.electrical": int(compile_instruction_used)},
+                    "output_values": {"quantity.energy.thermal": int(compile_instruction_used)},
+                    "extensions": {"source": "META-COMPUTE0-5", "reason_code": "compute_power_coupling"},
+                }
+            )
+    if str(compile_compute.get("result", "")).strip().lower() in {"deferred", "refused", "shutdown"}:
+        return {
+            "result": "refusal",
+            "reason_code": REFUSAL_SOFTWARE_PIPELINE_COMPUTE_BUDGET_DENIED,
+            "compute_stage": "compile",
+            "compute_consumption_record_row": dict(_as_map(compile_compute.get("consumption_record_row"))),
+            "compute_decision_log_row": dict(_as_map(compile_compute.get("decision_log_row"))),
+            "compute_budget_runtime_state": dict(compute_state),
+            "compute_explain_artifact_rows": [
+                dict(row) for row in compute_explain_artifact_rows if isinstance(row, Mapping)
+            ],
+            "compute_energy_transform_rows": [dict(row) for row in compute_energy_transform_rows if isinstance(row, Mapping)],
+        }
     if not compile_cache_hit:
         compile_request = {
             "request_id": "compile_request.pipeline.{}".format(
@@ -471,7 +535,7 @@ def evaluate_software_pipeline_execution(
                 "toolchain_id": toolchain_token,
             },
         }
-        compile_eval = evaluate_compile_request(
+        compile_eval = run_compile_request(
             current_tick=tick,
             compile_request=compile_request,
             compiled_type_registry_payload=compiled_type_registry_payload,
@@ -533,6 +597,59 @@ def evaluate_software_pipeline_execution(
         ),
         sample_rate_permille=int(max(0, min(1000, _as_int(test_subset_rate_permille, 500)))),
     )
+    test_compute = request_compute(
+        current_tick=tick,
+        owner_kind="process",
+        owner_id="process.pipeline.test.{}".format(run_token),
+        instruction_units=int(max(16, len(selected_tests) * 64)),
+        memory_units=int(max(4, len(selected_tests) * 4)),
+        owner_priority=50,
+        critical=False,
+        compute_runtime_state=compute_state,
+        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+        compute_budget_profile_id=str(compute_budget_profile_id or "compute.default"),
+        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+    )
+    compute_state = dict(test_compute.get("runtime_state") or compute_state)
+    if _as_map(test_compute.get("consumption_record_row")):
+        compute_consumption_record_rows.append(dict(_as_map(test_compute.get("consumption_record_row"))))
+    if _as_map(test_compute.get("decision_log_row")):
+        compute_decision_log_rows.append(dict(_as_map(test_compute.get("decision_log_row"))))
+    if _as_map(test_compute.get("explain_artifact_row")):
+        compute_explain_artifact_rows.append(dict(_as_map(test_compute.get("explain_artifact_row"))))
+    if bool(_as_map(test_compute.get("compute_profile_row")).get("power_coupling_enabled", False)):
+        test_instruction_used = int(
+            max(
+                0,
+                _as_int(
+                    _as_map(test_compute.get("consumption_record_row")).get("instruction_units_used", 0),
+                    0,
+                ),
+            )
+        )
+        if test_instruction_used > 0:
+            compute_energy_transform_rows.append(
+                {
+                    "transformation_id": "transform.electrical_to_thermal",
+                    "source_id": "process.pipeline.test.{}".format(run_token),
+                    "input_values": {"quantity.energy.electrical": int(test_instruction_used)},
+                    "output_values": {"quantity.energy.thermal": int(test_instruction_used)},
+                    "extensions": {"source": "META-COMPUTE0-5", "reason_code": "compute_power_coupling"},
+                }
+            )
+    if str(test_compute.get("result", "")).strip().lower() in {"deferred", "refused", "shutdown"}:
+        return {
+            "result": "refusal",
+            "reason_code": REFUSAL_SOFTWARE_PIPELINE_COMPUTE_BUDGET_DENIED,
+            "compute_stage": "test",
+            "compute_consumption_record_row": dict(_as_map(test_compute.get("consumption_record_row"))),
+            "compute_decision_log_row": dict(_as_map(test_compute.get("decision_log_row"))),
+            "compute_budget_runtime_state": dict(compute_state),
+            "compute_explain_artifact_rows": [
+                dict(row) for row in compute_explain_artifact_rows if isinstance(row, Mapping)
+            ],
+            "compute_energy_transform_rows": [dict(row) for row in compute_energy_transform_rows if isinstance(row, Mapping)],
+        }
     if force_test_failure:
         return {
             "result": "refusal",
@@ -799,10 +916,29 @@ def evaluate_software_pipeline_execution(
         deterministic_fingerprint="",
         extensions={"source": "PROC8-4", "compile_policy_id": compile_policy_token},
     )
+    compute_consumption_hash_chain = canonical_sha256(
+        [
+            {
+                "record_id": _token(row.get("record_id")),
+                "owner_id": _token(row.get("owner_id")),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "instruction_units_used": int(max(0, _as_int(row.get("instruction_units_used", 0), 0))),
+                "action_taken": _token(row.get("action_taken")),
+            }
+            for row in compute_consumption_record_rows
+            if isinstance(row, Mapping)
+        ]
+    )
     return {
         "result": "complete",
         "reason_code": "",
         "pipeline_profile_row": pipeline_profile_row,
+        "compute_budget_runtime_state": dict(compute_state),
+        "compute_consumption_record_rows": [dict(row) for row in compute_consumption_record_rows if isinstance(row, Mapping)],
+        "compute_decision_log_rows": [dict(row) for row in compute_decision_log_rows if isinstance(row, Mapping)],
+        "compute_explain_artifact_rows": [dict(row) for row in compute_explain_artifact_rows if isinstance(row, Mapping)],
+        "compute_energy_transform_rows": [dict(row) for row in compute_energy_transform_rows if isinstance(row, Mapping)],
+        "compute_consumption_hash_chain": compute_consumption_hash_chain,
         "software_artifact_rows": [dict(row) for row in software_artifact_rows],
         "deployment_record_rows": [dict(row) for row in deployment_record_rows],
         "process_run_record_row": dict(process_run_record_row),
@@ -851,6 +987,7 @@ __all__ = [
     "REFUSAL_SOFTWARE_PIPELINE_SIGNING_KEY_REQUIRED",
     "REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_REQUIRED_FOR_DEPLOY",
     "REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_INVALID",
+    "REFUSAL_SOFTWARE_PIPELINE_COMPUTE_BUDGET_DENIED",
     "build_software_pipeline_profile_row",
     "normalize_software_pipeline_profile_rows",
     "build_software_artifact_row",

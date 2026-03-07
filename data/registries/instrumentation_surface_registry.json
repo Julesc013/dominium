@@ -1,0 +1,457 @@
+{
+  "schema_id": "dominium.registry.instrumentation_surface_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.instrumentation_surface_registry",
+    "registry_version": "1.0.0",
+    "instrumentation_surfaces": [
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "domain",
+        "owner_id": "domain.elec",
+        "control_points": [
+          {
+            "control_point_id": "control.elec.breaker.reset",
+            "action_template_id": "action.elec.breaker.reset",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.breaker_trip"
+            ],
+            "deterministic_fingerprint": ""
+          },
+          {
+            "control_point_id": "control.elec.breaker.toggle",
+            "action_template_id": "action.elec.breaker.toggle",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.breaker_trip"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.elec.voltage",
+            "quantity_id": "quantity.elec.voltage",
+            "instrument_type_id": "instrument.multimeter",
+            "measurement_model_id": "meas.calibrated_basic",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.elec.current",
+            "quantity_id": "quantity.elec.current",
+            "instrument_type_id": "instrument.multimeter",
+            "measurement_model_id": "meas.calibrated_basic",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.elec.pf",
+            "quantity_id": "quantity.elec.power_factor",
+            "instrument_type_id": "instrument.multimeter",
+            "measurement_model_id": "meas.calibrated_basic",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.elec.trip",
+            "explain_contract_id": "explain.elec.trip",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "domain",
+        "owner_id": "domain.therm",
+        "control_points": [
+          {
+            "control_point_id": "control.therm.cool",
+            "action_template_id": "action.therm.cool",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.overtemp"
+            ],
+            "deterministic_fingerprint": ""
+          },
+          {
+            "control_point_id": "control.therm.vent_heat",
+            "action_template_id": "action.therm.vent_heat",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.overtemp"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.therm.temperature",
+            "quantity_id": "quantity.therm.temperature",
+            "instrument_type_id": "instrument.thermometer",
+            "measurement_model_id": "meas.calibrated_basic",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.therm.overheat",
+            "explain_contract_id": "explain.therm.overheat",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.therm.fire",
+            "explain_contract_id": "explain.therm.fire",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "domain",
+        "owner_id": "domain.fluid",
+        "control_points": [
+          {
+            "control_point_id": "control.fluid.open_valve",
+            "action_template_id": "action.fluid.open_valve",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.relief_valve"
+            ],
+            "deterministic_fingerprint": ""
+          },
+          {
+            "control_point_id": "control.fluid.isolate_section",
+            "action_template_id": "action.fluid.isolate_section",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.relief_valve"
+            ],
+            "deterministic_fingerprint": ""
+          },
+          {
+            "control_point_id": "control.fluid.bleed_pressure",
+            "action_template_id": "action.fluid.bleed_pressure",
+            "required_access_policy_id": "access.physical_contact_required",
+            "safety_interlock_refs": [
+              "safety.relief_valve"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.fluid.pressure",
+            "quantity_id": "quantity.fluid.pressure_head",
+            "instrument_type_id": "instrument.pressure_gauge",
+            "measurement_model_id": "meas.calibrated_basic",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.fluid.flow_rate",
+            "quantity_id": "quantity.fluid.flow_rate",
+            "instrument_type_id": "instrument.pressure_gauge",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.fluid.leak",
+            "explain_contract_id": "explain.fluid.leak",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.fluid.burst",
+            "explain_contract_id": "explain.fluid.burst",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "domain",
+        "owner_id": "domain.chem",
+        "control_points": [
+          {
+            "control_point_id": "control.chem.process_start",
+            "action_template_id": "action.interaction.execute_process",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.chem_reaction_guard"
+            ],
+            "deterministic_fingerprint": ""
+          },
+          {
+            "control_point_id": "control.chem.process_stop",
+            "action_template_id": "action.formalize.revert",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.chem_reaction_guard"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.chem.yield_factor",
+            "quantity_id": "quantity.process.yield_factor",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.chem.defect_rate",
+            "quantity_id": "quantity.process.defect_rate",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.chem.qc_failure",
+            "explain_contract_id": "explain.qc_failure",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.chem.drift",
+            "explain_contract_id": "explain.drift_detected",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "process",
+        "owner_id": "process.proc.default",
+        "control_points": [
+          {
+            "control_point_id": "control.proc.run_start",
+            "action_template_id": "action.interaction.execute_process",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.process_interlock"
+            ],
+            "deterministic_fingerprint": ""
+          },
+          {
+            "control_point_id": "control.proc.run_stop",
+            "action_template_id": "action.formalize.revert",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.process_interlock"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.proc.yield_factor",
+            "quantity_id": "quantity.process.yield_factor",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.proc.defect_rate",
+            "quantity_id": "quantity.process.defect_rate",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.proc.compute_instruction_units",
+            "quantity_id": "quantity.compute.instruction_units",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.proc.compute_memory_units",
+            "quantity_id": "quantity.compute.memory_units",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.proc.qc_failure",
+            "explain_contract_id": "explain.qc_failure",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.proc.drift",
+            "explain_contract_id": "explain.drift_detected",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.proc.compute_throttle",
+            "explain_contract_id": "explain.compute_throttle",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.proc.compute_refusal",
+            "explain_contract_id": "explain.compute_refusal",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.proc.compute_shutdown",
+            "explain_contract_id": "explain.compute_shutdown",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "capsule",
+        "owner_id": "capsule.system.default",
+        "control_points": [
+          {
+            "control_point_id": "control.system.request_expand",
+            "action_template_id": "interaction.inspect",
+            "required_access_policy_id": "access.admin_only",
+            "safety_interlock_refs": [
+              "safety.system_fail_safe"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.system.boundary_mass_flow",
+            "quantity_id": "quantity.system.boundary_mass_flow",
+            "instrument_type_id": "instrument.multimeter",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.system.boundary_energy_flow",
+            "quantity_id": "quantity.system.boundary_energy_flow",
+            "instrument_type_id": "instrument.multimeter",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.system.compute_instruction_units",
+            "quantity_id": "quantity.compute.instruction_units",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "measurement_point_id": "measure.system.compute_memory_units",
+            "quantity_id": "quantity.compute.memory_units",
+            "instrument_type_id": "instr.notebook",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.diegetic_quantized",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.system.forced_expand",
+            "explain_contract_id": "explain.system_forced_expand",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.system.failure",
+            "explain_contract_id": "explain.system_failure",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.system.compute_throttle",
+            "explain_contract_id": "explain.compute_throttle",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.system.compute_refusal",
+            "explain_contract_id": "explain.compute_refusal",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.system.compute_shutdown",
+            "explain_contract_id": "explain.compute_shutdown",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-INSTR0-3"
+        }
+      }
+    ],
+    "extensions": {
+      "null_boot_safe": true
+    }
+  }
+}

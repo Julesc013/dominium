@@ -1,0 +1,177 @@
+{
+  "schema_id": "dominium.registry.profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.profile_registry",
+    "registry_version": "1.0.0",
+    "profiles": [
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "physics.default_realistic",
+        "profile_type": "physics",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.conservation.mass": "enforce_strict",
+          "rule.conservation.energy": "enforce_strict",
+          "rule.entropy.policy": "tracked",
+          "rule.statevec.output_guard": "disabled"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "physics.alternate_magic",
+        "profile_type": "physics",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.conservation.mass": "allow_with_ledger",
+          "rule.conservation.energy": "allow_with_ledger",
+          "rule.entropy.policy": "tracked"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "law.softcore",
+        "profile_type": "law",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.profile.override_allowed": true,
+          "rule.respawn.allowed": true
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "profile_override_allowed_rule_ids": [
+            "*"
+          ],
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "law.strict",
+        "profile_type": "law",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.profile.override_allowed": false,
+          "rule.respawn.allowed": false
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "profile_override_allowed_rule_ids": [],
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "process.default",
+        "profile_type": "process",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.process.capsule_requirements": "default",
+          "rule.process.qc.strictness": "default",
+          "rule.process.drift.threshold": "default"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "process.strict",
+        "profile_type": "process",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.process.capsule_requirements": "strict",
+          "rule.process.qc.strictness": "strict",
+          "rule.process.drift.threshold": "strict"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "safety.default",
+        "profile_type": "safety",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.safety.interlock.required": true,
+          "rule.safety.fallback.severity": "default"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "epistemic.default_diegetic",
+        "profile_type": "epistemic",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.epistemic.visibility": "diegetic",
+          "rule.instrumentation.access": "policy_gated"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "epistemic.admin_full",
+        "profile_type": "epistemic",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.epistemic.visibility": "admin_full",
+          "rule.instrumentation.access": "admin"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "coupling.default",
+        "profile_type": "coupling",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.coupling.budget.units": "default",
+          "rule.coupling.degrade.priority": "safety_first"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "profile_id": "compute.default",
+        "profile_type": "compute",
+        "version": "1.0.0",
+        "overrides": {
+          "rule.compute.instruction_budget": "default",
+          "rule.compute.memory_budget": "default",
+          "rule.compute.logic_limits": "default"
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "META-PROFILE0"
+        }
+      }
+    ],
+    "extensions": {
+      "null_boot_safe": true
+    }
+  }
+}

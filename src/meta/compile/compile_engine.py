@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Dict, Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.meta.compute import request_compute
 from src.system.statevec import (
     build_state_vector_definition_row,
     deserialize_state,
@@ -679,6 +680,11 @@ def compiled_model_execute(
     state_vector_definition_rows: object | None = None,
     state_vector_snapshot_rows: object | None = None,
     current_tick: int = 0,
+    compute_runtime_state: Mapping[str, object] | None = None,
+    compute_budget_profile_registry_payload: Mapping[str, object] | None = None,
+    compute_degrade_policy_registry_payload: Mapping[str, object] | None = None,
+    compute_budget_profile_id: str = "compute.default",
+    owner_priority: int = 100,
 ) -> dict:
     validity = compiled_model_is_valid(
         compiled_model_id=compiled_model_id,
@@ -692,6 +698,66 @@ def compiled_model_execute(
     model_row = dict(compiled_model_rows_by_id(compiled_model_rows).get(str(compiled_model_id or "").strip()) or {})
     payload_ref = _as_map(model_row.get("compiled_payload_ref"))
     payload = _as_map(payload_ref.get("payload"))
+    compute_request = request_compute(
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        owner_kind="controller",
+        owner_id="compiled_model.{}".format(str(model_row.get("compiled_model_id", "")).strip() or str(compiled_model_id or "").strip()),
+        instruction_units=int(
+            max(
+                1,
+                min(
+                    4096,
+                    (len(_as_map(inputs)) * 8)
+                    + (len(payload) * 4)
+                    + (len(_as_map(payload.get("optimization_summary"))) * 2)
+                    + 12,
+                ),
+            )
+        ),
+        memory_units=int(max(1, (len(_as_map(payload.get("constant_bindings"))) * 8) + 8)),
+        owner_priority=int(max(0, _as_int(owner_priority, 100))),
+        critical=False,
+        compute_runtime_state=compute_runtime_state,
+        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+        compute_budget_profile_id=str(compute_budget_profile_id or "compute.default"),
+        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+    )
+    compute_result = str(compute_request.get("result", "")).strip().lower()
+    if compute_result in {"refused", "deferred", "shutdown"}:
+        return {
+            "result": "refused",
+            "reason_code": str(compute_request.get("reason_code", "")).strip() or REFUSAL_COMPILE_INVALID,
+            "outputs": {},
+            "validity": validity,
+            "violations": ["compute_budget_{}".format(compute_result)],
+            "compute_consumption_record_row": dict(compute_request.get("consumption_record_row") or {}),
+            "compute_decision_log_row": dict(compute_request.get("decision_log_row") or {}),
+            "compute_explain_artifact_row": dict(compute_request.get("explain_artifact_row") or {}),
+            "compute_runtime_state": dict(compute_request.get("runtime_state") or {}),
+        }
+    compute_energy_transform_row = {}
+    if bool(_as_map(compute_request.get("compute_profile_row")).get("power_coupling_enabled", False)):
+        instruction_used = int(
+            max(
+                0,
+                _as_int(
+                    _as_map(compute_request.get("consumption_record_row")).get("instruction_units_used", 0),
+                    0,
+                ),
+            )
+        )
+        if instruction_used > 0:
+            compute_energy_transform_row = {
+                "transformation_id": "transform.electrical_to_thermal",
+                "source_id": str(model_row.get("compiled_model_id", "")).strip()
+                or str(compiled_model_id or "").strip(),
+                "input_values": {"quantity.energy.electrical": int(instruction_used)},
+                "output_values": {"quantity.energy.thermal": int(instruction_used)},
+                "extensions": {
+                    "source": "META-COMPUTE0-5",
+                    "reason_code": "compute_power_coupling",
+                },
+            }
     outputs = {
         "compiled_model_id": str(model_row.get("compiled_model_id", "")).strip(),
         "compiled_type_id": str(model_row.get("compiled_type_id", "")).strip(),
@@ -765,6 +831,11 @@ def compiled_model_execute(
     snapshot_row = dict(state_serialization.get("snapshot_row") or {})
     outputs["state_vector_anchor_hash"] = str(state_serialization.get("anchor_hash", "")).strip()
     outputs["state_vector_snapshot_id"] = str(snapshot_row.get("snapshot_id", "")).strip()
+    outputs["compute_throttled"] = bool(compute_request.get("throttled", False))
+    outputs["compute_action_taken"] = str(compute_request.get("action_taken", "")).strip() or "none"
+    outputs["compute_consumption_record_id"] = str(
+        _as_map(compute_request.get("consumption_record_row")).get("record_id", "")
+    ).strip()
     outputs["deterministic_fingerprint"] = canonical_sha256(dict(outputs, deterministic_fingerprint=""))
     return {
         "result": "complete",
@@ -773,6 +844,11 @@ def compiled_model_execute(
         "state_vector_owner_id": state_owner_id,
         "state_vector_snapshot_row": snapshot_row,
         "state_vector_definition_row": owner_definition,
+        "compute_energy_transform_row": dict(compute_energy_transform_row),
+        "compute_consumption_record_row": dict(compute_request.get("consumption_record_row") or {}),
+        "compute_decision_log_row": dict(compute_request.get("decision_log_row") or {}),
+        "compute_explain_artifact_row": dict(compute_request.get("explain_artifact_row") or {}),
+        "compute_runtime_state": dict(compute_request.get("runtime_state") or {}),
     }
 
 

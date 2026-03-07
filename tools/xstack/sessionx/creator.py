@@ -19,6 +19,8 @@ from tools.xstack.registry_compile.bundle_profile import resolve_bundle_selectio
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from worldgen.core.pipeline import run_worldgen_pipeline
 
+from src.meta.profile import resolve_effective_profile_snapshot
+
 from .common import (
     DEFAULT_TIMESTAMP_UTC,
     deterministic_seed_hex,
@@ -1056,6 +1058,104 @@ def _initial_universe_state(
     }
 
 
+def _profile_binding_row(*, scope: str, target_id: str, profile_id: str) -> dict:
+    scope_token = str(scope or "").strip().lower()
+    target_token = str(target_id or "").strip() or "*"
+    profile_token = str(profile_id or "").strip()
+    if (not scope_token) or (not target_token) or (not profile_token):
+        return {}
+    payload = {
+        "binding_id": "binding.profile.{}".format(
+            canonical_sha256(
+                {
+                    "scope": scope_token,
+                    "target_id": target_token,
+                    "profile_id": profile_token,
+                }
+            )[:16]
+        ),
+        "scope": scope_token,
+        "target_id": target_token,
+        "profile_id": profile_token,
+        "tick_applied": 0,
+        "extensions": {
+            "source": "sessionx.creator",
+        },
+    }
+    return payload
+
+
+def _physics_overlay_profile_id(physics_profile_id: str) -> str:
+    token = str(physics_profile_id or "").strip().lower()
+    if "magic" in token:
+        return "physics.alternate_magic"
+    return "physics.default_realistic"
+
+
+def _law_overlay_profile_id(law_profile_id: str) -> str:
+    token = str(law_profile_id or "").strip().lower()
+    if ("strict" in token) or ("hardcore" in token):
+        return "law.strict"
+    return "law.softcore"
+
+
+def _epistemic_overlay_profile_id(privilege_level: str) -> str:
+    token = str(privilege_level or "").strip().lower()
+    if token in {"system", "admin"}:
+        return "epistemic.admin_full"
+    return "epistemic.default_diegetic"
+
+
+def _default_profile_bindings(
+    *,
+    universe_id: str,
+    session_id: str,
+    authority_id: str,
+    physics_profile_id: str,
+    law_profile_id: str,
+    privilege_level: str,
+) -> List[dict]:
+    rows = [
+        _profile_binding_row(
+            scope="universe",
+            target_id=str(universe_id or "").strip() or "*",
+            profile_id=_physics_overlay_profile_id(physics_profile_id),
+        ),
+        _profile_binding_row(
+            scope="session",
+            target_id=str(session_id or "").strip() or "*",
+            profile_id="process.default",
+        ),
+        _profile_binding_row(
+            scope="session",
+            target_id=str(session_id or "").strip() or "*",
+            profile_id="safety.default",
+        ),
+        _profile_binding_row(
+            scope="session",
+            target_id=str(session_id or "").strip() or "*",
+            profile_id="coupling.default",
+        ),
+        _profile_binding_row(
+            scope="session",
+            target_id=str(session_id or "").strip() or "*",
+            profile_id="compute.default",
+        ),
+        _profile_binding_row(
+            scope="authority",
+            target_id=str(authority_id or "").strip() or "*",
+            profile_id=_law_overlay_profile_id(law_profile_id),
+        ),
+        _profile_binding_row(
+            scope="authority",
+            target_id=str(authority_id or "").strip() or "*",
+            profile_id=_epistemic_overlay_profile_id(privilege_level),
+        ),
+    ]
+    out = [dict(row) for row in rows if row]
+    return sorted(out, key=lambda row: (str(row.get("scope", "")), str(row.get("target_id", "")), str(row.get("profile_id", ""))))
+
+
 def create_session_spec(
     repo_root: str,
     save_id: str,
@@ -1500,6 +1600,32 @@ def create_session_spec(
     if network_payload:
         network_payload["physics_profile_id"] = str(identity_payload.get("physics_profile_id", "")).strip()
 
+    profile_registry_path = os.path.join(repo_root, "data", "registries", "profile_registry.json")
+    profile_registry_payload = read_json_object(profile_registry_path) if os.path.isfile(profile_registry_path) else {}
+    authority_binding_target = "client"
+    session_profile_bindings = _default_profile_bindings(
+        universe_id=calculated_universe_id,
+        session_id=save_token,
+        authority_id=authority_binding_target,
+        physics_profile_id=str(identity_payload.get("physics_profile_id", "")).strip(),
+        law_profile_id=str(law_profile_id),
+        privilege_level=str(privilege_level),
+    )
+    effective_profile_snapshot_payload = resolve_effective_profile_snapshot(
+        owner_context={
+            "universe_id": calculated_universe_id,
+            "session_id": save_token,
+            "authority_id": authority_binding_target,
+            "session_spec": {
+                "save_id": save_token,
+                "profile_bindings": session_profile_bindings,
+            },
+        },
+        profile_registry_payload=profile_registry_payload,
+        profile_binding_rows=session_profile_bindings,
+    )
+    effective_profile_snapshot = dict(effective_profile_snapshot_payload.get("snapshot") or {})
+
     session_payload = {
         "schema_version": "1.0.0",
         "universe_id": calculated_universe_id,
@@ -1521,7 +1647,14 @@ def create_session_spec(
                 "visibility_level": str(visibility_level),
             },
             "privilege_level": str(privilege_level),
+            "profile_bindings": [
+                dict(row)
+                for row in session_profile_bindings
+                if str(row.get("scope", "")).strip() == "authority"
+            ],
+            "effective_profile_snapshot": dict(effective_profile_snapshot),
         },
+        "profile_bindings": [dict(row) for row in session_profile_bindings],
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
         "budget_policy_id": str(budget_policy_id),
         "fidelity_policy_id": str(fidelity_policy_id),

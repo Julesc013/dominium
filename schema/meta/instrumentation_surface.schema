@@ -1,0 +1,27 @@
+SCHEMA: meta/instrumentation_surface.schema
+schema_id: dominium.schema.meta.instrumentation_surface
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic instrumentation surfaces for system/capsule/process/domain owners.
+- Bind control, measurement, and forensics points to explicit owner contracts.
+
+NON-SEMANTICS:
+- Does not execute control actions.
+- Does not mutate truth state.
+
+REQUIRED SHAPE:
+record instrumentation_surface
+  required:
+    - owner_kind: text
+    - owner_id: id
+    - control_points: list
+    - measurement_points: list
+    - forensics_points: list
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Surface lookup ordering must be deterministic by owner key.
+- Surface declarations are informational contracts and must not bypass process/law gating.

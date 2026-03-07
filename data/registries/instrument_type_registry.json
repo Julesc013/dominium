@@ -599,6 +599,108 @@
         }
       },
       {
+        "instrument_type_id": "instrument.multimeter",
+        "description": "Standard instrumentation surface multimeter for voltage/current/PF reads.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.instrument.multimeter"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "stub",
+          "next_series": "META-INSTR-1",
+          "source": "META-INSTR0"
+        }
+      },
+      {
+        "instrument_type_id": "instrument.thermometer",
+        "description": "Standard instrumentation surface thermometer for thermal measurements.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.instrument.thermometer"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "stub",
+          "next_series": "META-INSTR-1",
+          "source": "META-INSTR0"
+        }
+      },
+      {
+        "instrument_type_id": "instrument.pressure_gauge",
+        "description": "Standard instrumentation pressure gauge for fluid pressure/head readouts.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.instrument.pressure_gauge"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "stub",
+          "next_series": "META-INSTR-1",
+          "source": "META-INSTR0"
+        }
+      },
+      {
+        "instrument_type_id": "instrument.pollution_sensor",
+        "description": "Standard instrumentation pollution concentration sensor.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.instrument.pollution_sensor"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "stub",
+          "next_series": "META-INSTR-1",
+          "source": "META-INSTR0"
+        }
+      },
+      {
+        "instrument_type_id": "instrument.logic_probe",
+        "description": "Future logic probe instrumentation surface for circuit/state point reads.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.instrument.logic_probe"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "stub",
+          "next_series": "LOGIC-4",
+          "source": "META-INSTR0"
+        }
+      },
+      {
+        "instrument_type_id": "instrument.logic_analyzer",
+        "description": "Future logic analyzer instrumentation surface for temporal trace diagnostics.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.instrument.logic_analyzer"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "stub",
+          "next_series": "LOGIC-4",
+          "source": "META-INSTR0"
+        }
+      },
+      {
         "instrument_type_id": "instr.rangefinder",
         "description": "Rangefinder stub for future domain sensor channels.",
         "required_channels_in": [

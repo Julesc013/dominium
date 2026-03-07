@@ -1,0 +1,34 @@
+{
+  "candidate_model_binding_rows": [],
+  "candidate_process_definition_rows": [],
+  "candidate_promotion_record_rows": [],
+  "capsule_execution_record_rows": [],
+  "compaction_markers": [],
+  "compiled_model_rows": [],
+  "control_decision_log": [],
+  "deployment_record_rows": [],
+  "drift_event_record_rows": [],
+  "experiment_result_rows": [],
+  "forced_expand_event_rows": [],
+  "info_artifact_rows": [],
+  "knowledge_artifacts": [],
+  "process_capsule_invalidation_rows": [],
+  "process_capsule_rows": [],
+  "process_drift_state_rows": [],
+  "process_maturity_record_rows": [],
+  "process_quality_record_rows": [],
+  "process_run_record_rows": [],
+  "process_step_record_rows": [],
+  "qc_result_record_rows": [],
+  "reverse_engineering_record_rows": [],
+  "sig_outbound_rows": [],
+  "simulation_time": {
+    "deterministic_clock": {
+      "tick_duration_ms": 1000
+    },
+    "tick": 0,
+    "tick_rate": 1
+  },
+  "software_artifact_rows": [],
+  "tick": 0
+}

@@ -2,7 +2,7 @@
   "record": {
     "extensions": {
       "generated_by": "meta_action0_registry_builder",
-      "template_count": 213
+      "template_count": 216
     },
     "registry_id": "dominium.registry.action_template_registry",
     "registry_version": "1.0.0",
@@ -5387,10 +5387,92 @@
           "Field",
           "Spec"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "1ef47fe53a8634b6ca9f6551ceb5d71c7a1d4d0eedcb24f77d9da32330ca7df1",
         "extensions": {
           "completion_process_id": "process.pollution_measure",
           "task_type_id": "task.measure_pollution",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.measurement"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.port"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.sense_measure",
+        "action_template_id": "task.assay",
+        "affected_substrates": [
+          "Mechanics",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "8ab0f6fa0b5ab60940abbf4e28a005f6f7d32f439ae2a4576c9574d5d540f478",
+        "extensions": {
+          "completion_process_id": "process.reverse_engineering_action",
+          "task_type_id": "task.assay",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.measurement"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.port",
+          "surface.panel"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.transform",
+        "action_template_id": "task.disassemble",
+        "affected_substrates": [
+          "Mechanics",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "20c2f7102852c2bf9f472fe380d991c391c284777e37b3b2a179d62076a64a42",
+        "extensions": {
+          "completion_process_id": "process.reverse_engineering_action",
+          "task_type_id": "task.disassemble",
+          "template_kind": "task_type"
+        },
+        "produced_artifact_types": [
+          "artifact.transform"
+        ],
+        "produced_hazard_types": [],
+        "required_capabilities": [],
+        "required_surface_types": [
+          "surface.panel",
+          "surface.seam",
+          "surface.fastener"
+        ],
+        "required_tool_tags": [
+          "tool_tag.operating"
+        ],
+        "schema_version": "1.0.0"
+      },
+      {
+        "action_family_id": "action_family.sense_measure",
+        "action_template_id": "task.scan",
+        "affected_substrates": [
+          "Mechanics",
+          "Spec"
+        ],
+        "deterministic_fingerprint": "7b641638e5443f3d9cb0a96d6ed1300b302d11a74b1d5f4442783122a0d3a947",
+        "extensions": {
+          "completion_process_id": "process.reverse_engineering_action",
+          "task_type_id": "task.scan",
           "template_kind": "task_type"
         },
         "produced_artifact_types": [
@@ -5415,7 +5497,7 @@
           "Network",
           "Spec"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "6173ebfdf6b0f2fd3c1157881b4e93b752e4f6de5f47ad3a9bcdf99d042fa2ce",
         "extensions": {
           "action_id": "action.fluid.connect_hose_pipe",
           "process_id": "process.port_connect",
@@ -5448,7 +5530,7 @@
           "Network",
           "Spec"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "9010bbb65dcfdcccd31addcbef22a14459235a354a15b9cf6404c967a1b69b7c",
         "extensions": {
           "action_id": "action.fluid.open_valve",
           "process_id": "process.portal_open",
@@ -5482,7 +5564,7 @@
           "Field",
           "Interior"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "f876c16e813aa3eb811be2f002ef6026171326f7f8f4c485b9e24ff7aa4ef865",
         "extensions": {
           "action_id": "action.fluid.bleed_pressure",
           "process_id": "process.vent_activate",
@@ -5518,7 +5600,7 @@
           "Network",
           "Spec"
         ],
-        "deterministic_fingerprint": "",
+        "deterministic_fingerprint": "a68c8e7ab011e05215fc7529387b8c532319abea8f481de2ae5aa485e4c7f2e8",
         "extensions": {
           "action_id": "action.fluid.isolate_section",
           "process_id": "process.portal_lock",

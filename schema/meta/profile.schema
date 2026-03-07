@@ -1,0 +1,26 @@
+SCHEMA: meta/profile.schema
+schema_id: dominium.schema.meta.profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare unified profile overrides used for deterministic behavior composition.
+- Replace ad-hoc mode flags with explicit rule override maps.
+
+NON-SEMANTICS:
+- Profile rows do not mutate truth directly.
+- Profile rows do not bypass process/law enforcement.
+
+REQUIRED SHAPE:
+record profile
+  required:
+    - profile_id: id
+    - profile_type: enum(physics|law|process|safety|epistemic|coupling|compute)
+    - version: semver
+    - overrides: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Profile resolution order is deterministic and external to this schema.
+- Unknown override keys are preserved as declarative payload.

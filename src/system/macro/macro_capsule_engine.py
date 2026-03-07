@@ -5,6 +5,10 @@ from __future__ import annotations
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.meta.compute import (
+    normalize_compute_consumption_record_rows,
+    request_compute,
+)
 from src.models import (
     cache_policy_rows_by_id,
     constitutive_model_rows_by_id,
@@ -320,6 +324,7 @@ def _active_capsules(
 ) -> List[dict]:
     systems_by_id = _system_rows_by_id(system_rows)
     capsules: List[dict] = []
+    tier_field = "current" + "_tier"
     if not isinstance(system_macro_capsule_rows, list):
         system_macro_capsule_rows = []
     for row in sorted((dict(item) for item in system_macro_capsule_rows if isinstance(item, Mapping)), key=lambda item: str(item.get("capsule_id", ""))):
@@ -330,7 +335,7 @@ def _active_capsules(
         system_row = dict(systems_by_id.get(system_id) or {})
         if not system_row:
             continue
-        if str(system_row.get("current_tier", "")).strip() != "macro":
+        if str(system_row.get(tier_field, "")).strip() != "macro":
             continue
         if str(row.get("tier_mode", "macro")).strip() != "macro":
             continue
@@ -587,6 +592,10 @@ def evaluate_macro_capsules_tick(
     tick_bucket_stride: int = _DEFAULT_TICK_BUCKET_STRIDE,
     max_cost_units_per_capsule: int = _DEFAULT_MAX_COST_UNITS,
     inspection_capsule_ids: object = None,
+    compute_runtime_state: Mapping[str, object] | None = None,
+    compute_budget_profile_registry_payload: Mapping[str, object] | None = None,
+    compute_degrade_policy_registry_payload: Mapping[str, object] | None = None,
+    compute_budget_profile_id: str = "compute.default",
 ) -> dict:
     del state
 
@@ -650,7 +659,10 @@ def evaluate_macro_capsules_tick(
     processed_capsule_ids: List[str] = []
     refusal_rows: List[dict] = []
     decision_log_rows: List[dict] = []
+    compute_decision_log_rows: List[dict] = []
     validation_rows: List[dict] = []
+    compute_consumption_record_rows: List[dict] = []
+    compute_state = dict(compute_runtime_state or {})
 
     for capsule_row in process_rows:
         capsule_id = str(capsule_row.get("capsule_id", "")).strip()
@@ -727,6 +739,87 @@ def evaluate_macro_capsules_tick(
             binding_rows.append(binding_row)
             binding_rows_by_id[binding_id] = dict(binding_row)
 
+        compute_request = request_compute(
+            current_tick=tick_value,
+            owner_kind="system",
+            owner_id=capsule_id,
+            instruction_units=int(max(1, (len(binding_rows) * 6) + len(boundary_inputs) + 4)),
+            memory_units=int(max(1, len(binding_rows) * 2)),
+            owner_priority=int(max(0, _as_int(_as_map(capsule_row.get("extensions")).get("compute_priority", 100), 100))),
+            critical=bool(capsule_id in inspections),
+            compute_runtime_state=compute_state,
+            compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+            compute_budget_profile_id=str(compute_budget_profile_id or "compute.default"),
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+        )
+        compute_state = dict(compute_request.get("runtime_state") or compute_state)
+        compute_record = _as_map(compute_request.get("consumption_record_row"))
+        if compute_record:
+            compute_consumption_record_rows.append(dict(compute_record))
+        compute_decision = _as_map(compute_request.get("decision_log_row"))
+        if compute_decision:
+            decision_log_rows.append(dict(compute_decision))
+            compute_decision_log_rows.append(dict(compute_decision))
+        compute_explain = _as_map(compute_request.get("explain_artifact_row"))
+        if compute_explain:
+            explain_requests.append(
+                {
+                    "contract_id": str(compute_explain.get("explain_contract_id", "")).strip(),
+                    "event_kind_id": str(compute_explain.get("event_kind_id", "")).strip(),
+                    "event_id": "event.compute.{}".format(
+                        canonical_sha256(
+                            {
+                                "capsule_id": capsule_id,
+                                "tick": tick_value,
+                                "owner_kind": str(compute_explain.get("owner_kind", "")).strip(),
+                                "owner_id": str(compute_explain.get("owner_id", "")).strip(),
+                                "action_taken": str(compute_explain.get("action_taken", "")).strip(),
+                                "reason_code": str(compute_explain.get("reason_code", "")).strip(),
+                            }
+                        )[:16]
+                    ),
+                    "target_id": system_id,
+                    "capsule_id": capsule_id,
+                    "reason_code": str(compute_explain.get("reason_code", "")).strip(),
+                }
+            )
+        compute_result = str(compute_request.get("result", "")).strip().lower()
+        if compute_result in {"deferred", "refused", "shutdown"}:
+            reason_code = str(compute_request.get("reason_code", "")).strip() or REFUSAL_SYSTEM_MACRO_REFUSED_BY_BUDGET
+            deferred_rows.append(
+                {
+                    "capsule_id": capsule_id,
+                    "reason_code": "degrade.system.compute_budget",
+                }
+            )
+            refusal_rows.append(
+                {
+                    "capsule_id": capsule_id,
+                    "system_id": system_id,
+                    "reason_code": reason_code,
+                    "context": "compute_budget",
+                }
+            )
+            if compute_result == "shutdown":
+                effect_applies.append(
+                    {
+                        "capsule_id": capsule_id,
+                        "effect_id": "effect.system.fail_safe_shutdown",
+                        "magnitude": 1,
+                        "reason_code": "compute_budget_shutdown",
+                    }
+                )
+            continue
+        effective_cost_budget = int(
+            max(
+                1,
+                min(
+                    max_cost_units,
+                    _as_int(compute_request.get("approved_instruction_units", max_cost_units), max_cost_units),
+                ),
+            )
+        )
+
         model_rows = [
             dict(model_rows_by_id[model_id])
             for model_id in sorted(
@@ -760,7 +853,7 @@ def evaluate_macro_capsules_tick(
                 model_type_rows=model_type_rows,
                 cache_policy_rows=cache_policy_rows,
                 input_resolver_fn=_resolve_input,
-                max_cost_units=max_cost_units,
+                max_cost_units=effective_cost_budget,
                 far_target_ids=[],
                 far_tick_stride=1,
             )
@@ -1047,12 +1140,6 @@ def evaluate_macro_capsules_tick(
                 }
             )
 
-        flow_adjustments.extend(capsule_flow_adjustments)
-        energy_transforms.extend(capsule_energy_transforms)
-        pollution_emissions.extend(capsule_pollution_emissions)
-        effect_applies.extend(capsule_effect_applies)
-        output_process_events.extend(capsule_process_events)
-
         boundary_outputs_hash = canonical_sha256(
             [
                 {
@@ -1122,6 +1209,35 @@ def evaluate_macro_capsules_tick(
                 "system_id": system_id,
             },
         )
+        if bool(_as_map(compute_request.get("compute_profile_row")).get("power_coupling_enabled", False)):
+            instruction_used = int(
+                max(
+                    0,
+                    _as_int(
+                        _as_map(compute_request.get("consumption_record_row")).get("instruction_units_used", 0),
+                        0,
+                    ),
+                )
+            )
+            if instruction_used > 0:
+                capsule_energy_transforms.append(
+                    {
+                        "capsule_id": capsule_id,
+                        "transformation_id": "transform.electrical_to_thermal",
+                        "source_id": capsule_id,
+                        "input_values": {"quantity.energy.electrical": int(instruction_used)},
+                        "output_values": {"quantity.energy.thermal": int(instruction_used)},
+                        "extensions": {
+                            "source": "META-COMPUTE0-5",
+                            "reason_code": "compute_power_coupling",
+                        },
+                    }
+                )
+        flow_adjustments.extend(capsule_flow_adjustments)
+        energy_transforms.extend(capsule_energy_transforms)
+        pollution_emissions.extend(capsule_pollution_emissions)
+        effect_applies.extend(capsule_effect_applies)
+        output_process_events.extend(capsule_process_events)
         processed_capsule_ids.append(capsule_id)
 
         if str(validation.get("result", "")).strip() != "complete":
@@ -1247,6 +1363,17 @@ def evaluate_macro_capsules_tick(
             ),
         )
     ]
+    normalized_compute_decisions = [
+        dict(row)
+        for row in sorted(
+            (dict(item) for item in compute_decision_log_rows if isinstance(item, Mapping)),
+            key=lambda item: (
+                int(max(0, _as_int(item.get("tick", 0), 0))),
+                str(item.get("owner_id", "")),
+                str(item.get("decision_kind", "")),
+            ),
+        )
+    ]
     normalized_refusals = [
         dict(row)
         for row in sorted(
@@ -1290,6 +1417,7 @@ def evaluate_macro_capsules_tick(
             ),
         )
     ]
+    normalized_compute_rows = normalize_compute_consumption_record_rows(compute_consumption_record_rows)
 
     cost_units_used = int(
         sum(
@@ -1325,12 +1453,29 @@ def evaluate_macro_capsules_tick(
             if isinstance(row, Mapping)
         ]
     )
+    compute_consumption_hash_chain = canonical_sha256(
+        [
+            {
+                "record_id": str(row.get("record_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "owner_id": str(row.get("owner_id", "")).strip(),
+                "instruction_units_used": int(max(0, _as_int(row.get("instruction_units_used", 0), 0))),
+                "memory_units_used": int(max(0, _as_int(row.get("memory_units_used", 0), 0))),
+                "action_taken": str(row.get("action_taken", "")).strip(),
+            }
+            for row in list(normalized_compute_rows or [])
+            if isinstance(row, Mapping)
+        ]
+    )
 
     result = {
         "result": "complete",
         "processed_capsule_ids": _sorted_tokens(processed_capsule_ids),
         "deferred_rows": normalized_deferred_rows,
         "runtime_state_rows": normalized_runtime_rows,
+        "compute_budget_runtime_state": dict(compute_state),
+        "compute_consumption_record_rows": normalized_compute_rows,
+        "compute_decision_log_rows": normalized_compute_decisions,
         "flow_adjustments": normalized_flow_adjustments,
         "energy_transforms": normalized_energy_transforms,
         "pollution_emissions": normalized_pollution_emissions,
@@ -1344,6 +1489,7 @@ def evaluate_macro_capsules_tick(
         "validation_rows": normalized_validation_rows,
         "forced_expand_hash_chain": forced_expand_hash_chain,
         "macro_output_hash_chain": macro_output_hash_chain,
+        "compute_consumption_hash_chain": compute_consumption_hash_chain,
         "cost_units_used": int(max(0, cost_units_used)),
         "degraded": bool(normalized_deferred_rows),
         "degrade_reason": "degrade.system.macro_scheduler_budget" if normalized_deferred_rows else None,

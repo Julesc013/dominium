@@ -601,6 +601,36 @@
       },
       {
         "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.qc_report",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC3-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.capsule_model",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC5-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "artifact_type_id": "artifact.process.capsule_observation",
+        "classification": "derived",
+        "compaction_allowed": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "PROC5-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "artifact_type_id": "artifact.batch_quality",
         "classification": "canonical",
         "compaction_allowed": false,

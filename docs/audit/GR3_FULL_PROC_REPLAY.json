@@ -1,0 +1,41 @@
+{
+  "deterministic_fingerprint": "46e7e8a18c157cd04dca58135b0403ec2e1f3301fe405ec302edf601129b6310",
+  "expected": {
+    "candidate_promotion_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "capsule_execution_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "compiled_model_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "deployment_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "drift_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_maturity_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_quality_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_run_record_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_step_record_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "qc_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "observed": {
+    "candidate_promotion_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "capsule_execution_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "compiled_model_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "deployment_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "drift_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_maturity_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_quality_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_run_record_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "process_step_record_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "qc_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "recorded": {
+    "candidate_promotion_hash_chain": "",
+    "capsule_execution_hash_chain": "",
+    "compiled_model_hash_chain": "",
+    "deployment_hash_chain": "",
+    "drift_event_hash_chain": "",
+    "process_maturity_hash_chain": "",
+    "process_quality_hash_chain": "",
+    "process_run_record_hash_chain": "",
+    "process_step_record_hash_chain": "",
+    "qc_result_hash_chain": ""
+  },
+  "result": "complete",
+  "violations": []
+}

@@ -39,6 +39,9 @@ Define the canonical, deterministic session bootstrap payload for profile-driven
 - `pipeline_id` (string, pattern `pipeline.*`)
   - Declares the lifecycle pipeline contract used for stage transition enforcement.
   - Session tooling defaults to `pipeline.client.default` when omitted by legacy payloads.
+- `profile_bindings` (array)
+  - Explicit ordered profile overlay bindings (`universe|session|authority|system` scopes).
+  - Used by unified profile resolution to replace mode-like behavior toggles.
 
 ## Invariants
 - No mode flags; all behavior composition is profile data.

@@ -26,3 +26,7 @@ record authority_context
     - server_authoritative: bool
     - refusal_policy_id: id
     - extensions: map
+
+OPTIONAL:
+  - profile_bindings: [id]
+  - effective_profile_snapshot: map

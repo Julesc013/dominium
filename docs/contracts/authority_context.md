@@ -25,6 +25,12 @@ Define the canonical authority envelope required for lawful process admission an
 - `epistemic_scope` (object with `scope_id` and `visibility_level`)
 - `privilege_level` (`observer|operator|system`)
 
+## Optional Fields (`v1.0.0`)
+- `profile_bindings` (array)
+  - Authority-scoped overlay bindings resolved after session scope.
+- `effective_profile_snapshot` (object)
+  - Deterministic resolved profile map used for diagnostics/replay and audit context.
+
 ## Invariants
 - Authority is explicit and never bypasses law.
 - Missing or malformed authority context is refused deterministically.

@@ -7,11 +7,14 @@
       "id": "matter_transformation",
       "series_implemented": [
         "CHEM",
+        "COMPILE",
+        "COUPLE",
         "MAT",
         "MECH",
+        "PROC",
         "SPEC",
-        "THERM",
-        "PROC"
+        "STATEVEC",
+        "THERM"
       ],
       "series_planned": [
         "DOM",
@@ -36,9 +39,9 @@
       ],
       "id": "motion_force_transmission",
       "series_implemented": [
-        "MOB",
-        "MECH",
         "FIELD",
+        "MECH",
+        "MOB",
         "PHYS"
       ],
       "series_planned": [
@@ -63,10 +66,10 @@
       ],
       "id": "containment_interfaces",
       "series_implemented": [
-        "INT",
         "ACT",
-        "SPEC",
-        "FLUID"
+        "FLUID",
+        "INT",
+        "SPEC"
       ],
       "series_planned": [
         "ELEC",
@@ -92,13 +95,16 @@
       ],
       "id": "measurement_verification",
       "series_implemented": [
-        "SPEC",
-        "SIG",
-        "MOB",
-        "MAT",
-        "THERM",
+        "COMPILE",
+        "COUPLE",
         "FLUID",
-        "PROC"
+        "MAT",
+        "MOB",
+        "PROC",
+        "SIG",
+        "SPEC",
+        "STATEVEC",
+        "THERM"
       ],
       "series_planned": [
         "SCI",
@@ -149,11 +155,11 @@
       ],
       "id": "institutions_contracts",
       "series_implemented": [
-        "SIG",
-        "SPEC",
-        "MAT",
         "CTRL",
-        "PROC"
+        "MAT",
+        "PROC",
+        "SIG",
+        "SPEC"
       ],
       "series_planned": [
         "ECO",
@@ -177,10 +183,10 @@
       "id": "environment_living_systems",
       "series_implemented": [
         "FIELD",
-        "MAT",
-        "THERM",
         "FLUID",
-        "POLL"
+        "MAT",
+        "POLL",
+        "THERM"
       ],
       "series_planned": [
         "DOM",
@@ -203,10 +209,13 @@
       "gaps": [],
       "id": "time_synchronization",
       "series_implemented": [
-        "RS",
         "ABS",
-        "MAT",
+        "COMPILE",
+        "COUPLE",
         "CTRL",
+        "MAT",
+        "RS",
+        "STATEVEC",
         "TEMP"
       ],
       "series_planned": [
@@ -231,12 +240,15 @@
       ],
       "id": "safety_protection",
       "series_implemented": [
-        "MOB",
-        "MECH",
-        "MAT",
+        "COMPILE",
+        "COUPLE",
         "CTRL",
-        "THERM",
-        "FLUID"
+        "FLUID",
+        "MAT",
+        "MECH",
+        "MOB",
+        "STATEVEC",
+        "THERM"
       ],
       "series_planned": [
         "ELEC",
@@ -299,6 +311,32 @@
       ]
     },
     {
+      "series_id": "COMPILE",
+      "affordance_ids": [
+        "matter_transformation",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "COUPLE",
+      "affordance_ids": [
+        "measurement_verification",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
       "affordance_ids": [
         "institutions_contracts",
         "time_synchronization",
@@ -334,6 +372,20 @@
         "communication_coordination"
       ],
       "series_id": "FIELD",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "FLUID",
+      "affordance_ids": [
+        "containment_interfaces",
+        "environment_living_systems",
+        "safety_protection",
+        "measurement_verification"
+      ],
       "tiers": [
         "macro",
         "meso",
@@ -424,17 +476,6 @@
     },
     {
       "affordance_ids": [
-        "containment_interfaces",
-        "motion_force_transmission"
-      ],
-      "series_id": "POSE",
-      "tiers": [
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
         "motion_force_transmission",
         "environment_living_systems",
         "measurement_verification",
@@ -462,38 +503,50 @@
     },
     {
       "affordance_ids": [
+        "containment_interfaces",
+        "motion_force_transmission"
+      ],
+      "series_id": "POSE",
+      "tiers": [
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "PROC",
+      "affordance_ids": [
+        "matter_transformation",
+        "measurement_verification",
+        "institutions_contracts",
+        "time_synchronization",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "PROV",
+      "affordance_ids": [
+        "measurement_verification",
+        "time_synchronization",
+        "institutions_contracts",
+        "safety_protection"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
         "time_synchronization",
         "measurement_verification"
       ],
       "series_id": "RS",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "affordance_ids": [
-        "time_synchronization",
-        "measurement_verification"
-      ],
-      "series_id": "TEMP",
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "series_id": "SYS",
-      "affordance_ids": [
-        "matter_transformation",
-        "motion_force_transmission",
-        "containment_interfaces",
-        "institutions_contracts",
-        "safety_protection",
-        "time_synchronization"
-      ],
       "tiers": [
         "macro",
         "meso",
@@ -527,6 +580,47 @@
       ]
     },
     {
+      "series_id": "STATEVEC",
+      "affordance_ids": [
+        "matter_transformation",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "series_id": "SYS",
+      "affordance_ids": [
+        "matter_transformation",
+        "motion_force_transmission",
+        "containment_interfaces",
+        "institutions_contracts",
+        "safety_protection",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
+      "affordance_ids": [
+        "time_synchronization",
+        "measurement_verification"
+      ],
+      "series_id": "TEMP",
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
       "affordance_ids": [
         "matter_transformation",
         "measurement_verification",
@@ -541,54 +635,11 @@
       ]
     },
     {
-      "series_id": "FLUID",
-      "affordance_ids": [
-        "containment_interfaces",
-        "environment_living_systems",
-        "safety_protection",
-        "measurement_verification"
-      ],
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
       "series_id": "TOL",
       "affordance_ids": [
         "measurement_verification",
         "time_synchronization",
         "matter_transformation"
-      ],
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "series_id": "PROV",
-      "affordance_ids": [
-        "measurement_verification",
-        "time_synchronization",
-        "institutions_contracts",
-        "safety_protection"
-      ],
-      "tiers": [
-        "macro",
-        "meso",
-        "micro"
-      ]
-    },
-    {
-      "series_id": "PROC",
-      "affordance_ids": [
-        "matter_transformation",
-        "measurement_verification",
-        "institutions_contracts",
-        "time_synchronization",
-        "safety_protection"
       ],
       "tiers": [
         "macro",

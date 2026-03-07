@@ -17,7 +17,29 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.sys0_testlib import cloned_state, execute_system_process
 
     state = cloned_state()
-    state["debug_profile"] = {"enforce_state_vector_output_guard": True}
+    state["profile_registry_payload"] = {
+        "profiles": [
+            {
+                "profile_id": "law.test_statevec_guard",
+                "profile_type": "law",
+                "version": "1.0.0",
+                "overrides": {"rule.statevec.output_guard": True},
+                "deterministic_fingerprint": "",
+                "extensions": {},
+            }
+        ]
+    }
+    state["profile_binding_rows"] = [
+        {
+            "binding_id": "binding.test.statevec_guard",
+            "scope": "session",
+            "target_id": "*",
+            "profile_id": "law.test_statevec_guard",
+            "tick_applied": 0,
+            "deterministic_fingerprint": "",
+            "extensions": {},
+        }
+    ]
     system_rows = [dict(row) for row in list(state.get("system_rows") or []) if isinstance(row, dict)]
     if not system_rows:
         return {"status": "fail", "message": "missing system rows in fixture"}

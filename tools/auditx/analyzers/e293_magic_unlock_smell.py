@@ -46,7 +46,6 @@ def run(graph, repo_root, changed_files=None):
         "evaluate_candidate_promotion(",
         "required_replications",
         "promotion_replication_threshold",
-        "refusal.process.candidate.promotion_denied",
     ):
         if token in runtime_text:
             continue
@@ -61,6 +60,34 @@ def run(graph, repo_root, changed_files=None):
                 evidence=[
                     "PROC-7 candidate promotion runtime path is missing required replication gate token",
                     token,
+                ],
+                suggested_classification="NEEDS_REVIEW",
+                recommended_action="REWRITE",
+                related_invariants=[
+                    "INV-NO-MAGIC-UNLOCKS-RESEARCH",
+                    "INV-PROMOTION-REQUIRES-REPLICATION",
+                ],
+                related_paths=[
+                    runtime_rel,
+                    "src/process/research/inference_engine.py",
+                ],
+            )
+        )
+    if (
+        "refusal.process.candidate.promotion_denied" not in runtime_text
+        and "REFUSAL_CANDIDATE_PROMOTION_DENIED" not in runtime_text
+    ):
+        findings.append(
+            make_finding(
+                analyzer_id=ANALYZER_ID,
+                category="governance.magic_unlock_smell",
+                severity="RISK",
+                confidence=0.9,
+                file_path=runtime_rel,
+                line=1,
+                evidence=[
+                    "PROC-7 candidate promotion runtime path is missing required replication gate token",
+                    "refusal.process.candidate.promotion_denied",
                 ],
                 suggested_classification="NEEDS_REVIEW",
                 recommended_action="REWRITE",

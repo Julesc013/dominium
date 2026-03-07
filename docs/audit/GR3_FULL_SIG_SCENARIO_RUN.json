@@ -1,0 +1,1223 @@
+{
+  "artifact_refs": [
+    {
+      "artifact_ref_id": "run_meta.sig.stress.41cb2df3631b",
+      "artifact_type_id": "run_meta.sig_stress_scenario"
+    },
+    {
+      "artifact_ref_id": "scenario.pack.sig.55bbb5225507",
+      "artifact_type_id": "scenario.pack.sig_stress"
+    }
+  ],
+  "bulletin_emit_rows": [
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0000",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0000",
+      "group_id": "group.sig.inst.0000",
+      "institution_id": "institution.sig.0000",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0000"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0001",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0001",
+      "group_id": "group.sig.inst.0001",
+      "institution_id": "institution.sig.0001",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0001"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0002",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0002",
+      "group_id": "group.sig.inst.0002",
+      "institution_id": "institution.sig.0002",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0002"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0003",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0003",
+      "group_id": "group.sig.inst.0003",
+      "institution_id": "institution.sig.0003",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0003"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0004",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0004",
+      "group_id": "group.sig.inst.0004",
+      "institution_id": "institution.sig.0004",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0004"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0005",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0005",
+      "group_id": "group.sig.inst.0005",
+      "institution_id": "institution.sig.0005",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0005"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0006",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0006",
+      "group_id": "group.sig.inst.0006",
+      "institution_id": "institution.sig.0006",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0006"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0007",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0007",
+      "group_id": "group.sig.inst.0007",
+      "institution_id": "institution.sig.0007",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0007"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0008",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0000",
+      "group_id": "group.sig.inst.0008",
+      "institution_id": "institution.sig.0008",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0008"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0009",
+      "channel_id": "channel.local_institutional",
+      "from_node_id": "node.sig.0001",
+      "group_id": "group.sig.inst.0009",
+      "institution_id": "institution.sig.0009",
+      "priority": "normal",
+      "schedule_id": "schedule.sig.bulletin.0009"
+    }
+  ],
+  "bulletin_schedule_rows": [
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 6,
+      "next_due_tick": 1,
+      "schedule_id": "schedule.sig.bulletin.0000",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 8,
+      "next_due_tick": 3,
+      "schedule_id": "schedule.sig.bulletin.0001",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 15,
+      "next_due_tick": 5,
+      "schedule_id": "schedule.sig.bulletin.0002",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 8,
+      "next_due_tick": 0,
+      "schedule_id": "schedule.sig.bulletin.0003",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 10,
+      "next_due_tick": 2,
+      "schedule_id": "schedule.sig.bulletin.0004",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 4,
+      "next_due_tick": 2,
+      "schedule_id": "schedule.sig.bulletin.0005",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 14,
+      "next_due_tick": 9,
+      "schedule_id": "schedule.sig.bulletin.0006",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 5,
+      "next_due_tick": 1,
+      "schedule_id": "schedule.sig.bulletin.0007",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 8,
+      "next_due_tick": 6,
+      "schedule_id": "schedule.sig.bulletin.0008",
+      "temporal_domain_id": "time.canonical_tick"
+    },
+    {
+      "extensions": {
+        "priority": "normal"
+      },
+      "interval_ticks": 8,
+      "next_due_tick": 0,
+      "schedule_id": "schedule.sig.bulletin.0009",
+      "temporal_domain_id": "time.canonical_tick"
+    }
+  ],
+  "deterministic_fingerprint": "9533434ae90ef099cb316f0aded58742d4d3722dc44c23a1122d2e9aeae8ca5b",
+  "dispatch_update_rows": [
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0008",
+      "itinerary_id": "itinerary.sig.0008",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 166,
+      "schedule_id": "schedule.travel.institution_sig_0008",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.0054fd609da17ac3",
+      "vehicle_id": "vehicle.sig.0008"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0009",
+      "itinerary_id": "itinerary.sig.0009",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 83,
+      "schedule_id": "schedule.travel.institution_sig_0009",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.1cab376e3a6afeab",
+      "vehicle_id": "vehicle.sig.0009"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0000",
+      "itinerary_id": "itinerary.sig.0000",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 19,
+      "schedule_id": "schedule.travel.institution_sig_0000",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.2dd081ab02578945",
+      "vehicle_id": "vehicle.sig.0000"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0002",
+      "itinerary_id": "itinerary.sig.0002",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 159,
+      "schedule_id": "schedule.travel.institution_sig_0002",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.3e3cc4f6cc0909c0",
+      "vehicle_id": "vehicle.sig.0002"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0003",
+      "itinerary_id": "itinerary.sig.0003",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 155,
+      "schedule_id": "schedule.travel.institution_sig_0003",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.4188be9096ca4910",
+      "vehicle_id": "vehicle.sig.0003"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0005",
+      "itinerary_id": "itinerary.sig.0005",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 46,
+      "schedule_id": "schedule.travel.institution_sig_0005",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.8147731e35246c18",
+      "vehicle_id": "vehicle.sig.0005"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0007",
+      "itinerary_id": "itinerary.sig.0007",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 165,
+      "schedule_id": "schedule.travel.institution_sig_0007",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.82d3bc46dca13154",
+      "vehicle_id": "vehicle.sig.0007"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0006",
+      "itinerary_id": "itinerary.sig.0006",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 167,
+      "schedule_id": "schedule.travel.institution_sig_0006",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.8994a4efd3d93023",
+      "vehicle_id": "vehicle.sig.0006"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0004",
+      "itinerary_id": "itinerary.sig.0004",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 56,
+      "schedule_id": "schedule.travel.institution_sig_0004",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.bbd575557e9ad89f",
+      "vehicle_id": "vehicle.sig.0004"
+    },
+    {
+      "extensions": {},
+      "institution_id": "institution.sig.0001",
+      "itinerary_id": "itinerary.sig.0001",
+      "notes": "sig stress dispatch",
+      "priority": "passenger",
+      "requested_tick": 159,
+      "schedule_id": "schedule.travel.institution_sig_0001",
+      "schedule_kind": "travel.departure",
+      "schema_version": "1.0.0",
+      "update_id": "dispatch.update.fc14404ff7e99a62",
+      "vehicle_id": "vehicle.sig.0001"
+    }
+  ],
+  "group_membership_rows": [
+    {
+      "group_id": "group.sig.inst.0000",
+      "subject_ids": [
+        "subject.sig.000000",
+        "subject.sig.000001",
+        "subject.sig.000002",
+        "subject.sig.000003",
+        "subject.sig.000004",
+        "subject.sig.000005",
+        "subject.sig.000006",
+        "subject.sig.000007",
+        "subject.sig.000008",
+        "subject.sig.000009",
+        "subject.sig.000010",
+        "subject.sig.000011"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0001",
+      "subject_ids": [
+        "subject.sig.000012",
+        "subject.sig.000013",
+        "subject.sig.000014",
+        "subject.sig.000015",
+        "subject.sig.000016",
+        "subject.sig.000017",
+        "subject.sig.000018",
+        "subject.sig.000019",
+        "subject.sig.000020",
+        "subject.sig.000021",
+        "subject.sig.000022",
+        "subject.sig.000023"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0002",
+      "subject_ids": [
+        "subject.sig.000024",
+        "subject.sig.000025",
+        "subject.sig.000026",
+        "subject.sig.000027",
+        "subject.sig.000028",
+        "subject.sig.000029",
+        "subject.sig.000030",
+        "subject.sig.000031",
+        "subject.sig.000032",
+        "subject.sig.000033",
+        "subject.sig.000034",
+        "subject.sig.000035"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0003",
+      "subject_ids": [
+        "subject.sig.000036",
+        "subject.sig.000037",
+        "subject.sig.000038",
+        "subject.sig.000039",
+        "subject.sig.000040",
+        "subject.sig.000041",
+        "subject.sig.000042",
+        "subject.sig.000043",
+        "subject.sig.000044",
+        "subject.sig.000045",
+        "subject.sig.000046",
+        "subject.sig.000047"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0004",
+      "subject_ids": [
+        "subject.sig.000048",
+        "subject.sig.000049",
+        "subject.sig.000050",
+        "subject.sig.000051",
+        "subject.sig.000052",
+        "subject.sig.000053",
+        "subject.sig.000054",
+        "subject.sig.000055",
+        "subject.sig.000056",
+        "subject.sig.000057",
+        "subject.sig.000058",
+        "subject.sig.000059"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0005",
+      "subject_ids": [
+        "subject.sig.000060",
+        "subject.sig.000061",
+        "subject.sig.000062",
+        "subject.sig.000063",
+        "subject.sig.000064",
+        "subject.sig.000065",
+        "subject.sig.000066",
+        "subject.sig.000067",
+        "subject.sig.000068",
+        "subject.sig.000069",
+        "subject.sig.000070",
+        "subject.sig.000071"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0006",
+      "subject_ids": [
+        "subject.sig.000072",
+        "subject.sig.000073",
+        "subject.sig.000074",
+        "subject.sig.000075",
+        "subject.sig.000076",
+        "subject.sig.000077",
+        "subject.sig.000078",
+        "subject.sig.000079",
+        "subject.sig.000080",
+        "subject.sig.000081",
+        "subject.sig.000082",
+        "subject.sig.000083"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0007",
+      "subject_ids": [
+        "subject.sig.000084",
+        "subject.sig.000085",
+        "subject.sig.000086",
+        "subject.sig.000087",
+        "subject.sig.000088",
+        "subject.sig.000089",
+        "subject.sig.000090",
+        "subject.sig.000091",
+        "subject.sig.000092",
+        "subject.sig.000093",
+        "subject.sig.000094",
+        "subject.sig.000095"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0008",
+      "subject_ids": [
+        "subject.sig.000096",
+        "subject.sig.000097",
+        "subject.sig.000098",
+        "subject.sig.000099",
+        "subject.sig.000100",
+        "subject.sig.000101",
+        "subject.sig.000102",
+        "subject.sig.000103",
+        "subject.sig.000104",
+        "subject.sig.000105",
+        "subject.sig.000106",
+        "subject.sig.000107"
+      ]
+    },
+    {
+      "group_id": "group.sig.inst.0009",
+      "subject_ids": [
+        "subject.sig.000108",
+        "subject.sig.000109",
+        "subject.sig.000110",
+        "subject.sig.000111",
+        "subject.sig.000112",
+        "subject.sig.000113",
+        "subject.sig.000114",
+        "subject.sig.000115",
+        "subject.sig.000116",
+        "subject.sig.000117",
+        "subject.sig.000118",
+        "subject.sig.000119"
+      ]
+    }
+  ],
+  "institution_profile_rows": [
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0000",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "915765e65a90079030edf21353c174348b5c2e0a1154257f1cada774808a6bac",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0000",
+        "home_node_id": "node.sig.0000"
+      },
+      "institution_id": "institution.sig.0000",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0001",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "e4522092046cd2cd278e95c35512d7e61a542423b1eb071204160b1813af9818",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0001",
+        "home_node_id": "node.sig.0001"
+      },
+      "institution_id": "institution.sig.0001",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0002",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "8b9fb564c7c6db7eb9d278a64444d93f0d625bd15d677d42bcb2e25c3a71c5ac",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0002",
+        "home_node_id": "node.sig.0002"
+      },
+      "institution_id": "institution.sig.0002",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0003",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "dd45333bba05e887539cf56c3b96145d13b8a16552a409f1fce9dca9f190cef7",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0003",
+        "home_node_id": "node.sig.0003"
+      },
+      "institution_id": "institution.sig.0003",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0004",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "b1eff95a819950a20e2812b6ebf351c508450c66cca89468da04c25216db975f",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0004",
+        "home_node_id": "node.sig.0004"
+      },
+      "institution_id": "institution.sig.0004",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0005",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "e0b9f28848e2c947b677e01638d45259d665d3add7aade73909e5cad7cf9ec0b",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0005",
+        "home_node_id": "node.sig.0005"
+      },
+      "institution_id": "institution.sig.0005",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0006",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "c00b4b70a1f80802555795b210d5af3ae6e4840cf4eaecc59eea2d0075aaacf2",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0006",
+        "home_node_id": "node.sig.0006"
+      },
+      "institution_id": "institution.sig.0006",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0007",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "7966d9fefe5d6ea129dbbe1bf4ae2ef3126f3357bf9a9960d2270ac6bddb58d6",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0007",
+        "home_node_id": "node.sig.0007"
+      },
+      "institution_id": "institution.sig.0007",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0008",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "e0d189d22f8bd0d2f783301fb777f9a022b6722e364336ae54305e392804bede",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0008",
+        "home_node_id": "node.sig.0000"
+      },
+      "institution_id": "institution.sig.0008",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    },
+    {
+      "bulletin_policy_id": "bulletin.policy.sig.0009",
+      "channels_available": [
+        "channel.local_institutional",
+        "channel.sig.wired.stress"
+      ],
+      "deterministic_fingerprint": "40b2640a071a7a2be004d091cd8e1c88d7fd4e02e859aa92da3f06b6bc321d9b",
+      "dispatch_policy_id": "dispatch.rail_basic",
+      "extensions": {
+        "group_id": "group.sig.inst.0009",
+        "home_node_id": "node.sig.0001"
+      },
+      "institution_id": "institution.sig.0009",
+      "schema_version": "1.0.0",
+      "standards_policy_id": "standards.basic_body"
+    }
+  ],
+  "jamming_effect_rows": [
+    {
+      "deterministic_fingerprint": "ab37b6a187b0a6915600038b30ddeea491c0c99c25b9b3939bf2b1107af5df6e",
+      "duration_ticks": 4,
+      "effect_id": "effect.jam.11a5bd540b7937d6",
+      "end_tick": 135,
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "start_tick": 131,
+      "strength_modifier": 592,
+      "target_channel_id": "channel.sig.wired.stress"
+    },
+    {
+      "deterministic_fingerprint": "ab78c64671bd0550f9971ddb605fe0e7e39d25d0bc80ef74423fbb40d1e374eb",
+      "duration_ticks": 7,
+      "effect_id": "effect.jam.3ce63a5b5e08e787",
+      "end_tick": 30,
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "start_tick": 23,
+      "strength_modifier": 121,
+      "target_channel_id": "channel.sig.wired.stress"
+    },
+    {
+      "deterministic_fingerprint": "57391b7ee7b831f31cfcea706892d5beb0c635effd1b9620ff32ace878f5feb2",
+      "duration_ticks": 8,
+      "effect_id": "effect.jam.66274d97d1ea0592",
+      "end_tick": 111,
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "start_tick": 103,
+      "strength_modifier": 273,
+      "target_channel_id": "channel.sig.radio.stress"
+    },
+    {
+      "deterministic_fingerprint": "b161f97bcf7bc636bea4fd880cddc86f9f413cf1bfebaad07fbd58e7ba5068b1",
+      "duration_ticks": 4,
+      "effect_id": "effect.jam.a16f5c6ae7f1abb9",
+      "end_tick": 32,
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "start_tick": 28,
+      "strength_modifier": 285,
+      "target_channel_id": "channel.sig.radio.stress"
+    },
+    {
+      "deterministic_fingerprint": "5eb69b9755087db99159a94e3cb871a1d413e0f5746bf1d98376e7276ab3e1fc",
+      "duration_ticks": 5,
+      "effect_id": "effect.jam.c04cd53feaabd51b",
+      "end_tick": 126,
+      "extensions": {},
+      "schema_version": "1.0.0",
+      "start_tick": 121,
+      "strength_modifier": 544,
+      "target_channel_id": "channel.sig.radio.stress"
+    }
+  ],
+  "key_rotation_rows": [
+    {
+      "institution_id": "institution.sig.0005",
+      "key_id_after": "key.group.institution_sig_0005.b",
+      "key_id_before": "key.group.institution_sig_0005.a",
+      "rotation_tick": 8
+    },
+    {
+      "institution_id": "institution.sig.0007",
+      "key_id_after": "key.group.institution_sig_0007.b",
+      "key_id_before": "key.group.institution_sig_0007.a",
+      "rotation_tick": 26
+    },
+    {
+      "institution_id": "institution.sig.0001",
+      "key_id_after": "key.group.institution_sig_0001.b",
+      "key_id_before": "key.group.institution_sig_0001.a",
+      "rotation_tick": 30
+    },
+    {
+      "institution_id": "institution.sig.0009",
+      "key_id_after": "key.group.institution_sig_0009.b",
+      "key_id_before": "key.group.institution_sig_0009.a",
+      "rotation_tick": 41
+    },
+    {
+      "institution_id": "institution.sig.0002",
+      "key_id_after": "key.group.institution_sig_0002.b",
+      "key_id_before": "key.group.institution_sig_0002.a",
+      "rotation_tick": 46
+    },
+    {
+      "institution_id": "institution.sig.0008",
+      "key_id_after": "key.group.institution_sig_0008.b",
+      "key_id_before": "key.group.institution_sig_0008.a",
+      "rotation_tick": 108
+    },
+    {
+      "institution_id": "institution.sig.0004",
+      "key_id_after": "key.group.institution_sig_0004.b",
+      "key_id_before": "key.group.institution_sig_0004.a",
+      "rotation_tick": 123
+    },
+    {
+      "institution_id": "institution.sig.0000",
+      "key_id_after": "key.group.institution_sig_0000.b",
+      "key_id_before": "key.group.institution_sig_0000.a",
+      "rotation_tick": 155
+    },
+    {
+      "institution_id": "institution.sig.0006",
+      "key_id_after": "key.group.institution_sig_0006.b",
+      "key_id_before": "key.group.institution_sig_0006.a",
+      "rotation_tick": 159
+    },
+    {
+      "institution_id": "institution.sig.0003",
+      "key_id_after": "key.group.institution_sig_0003.b",
+      "key_id_before": "key.group.institution_sig_0003.a",
+      "rotation_tick": 186
+    }
+  ],
+  "network_graph_rows": [
+    {
+      "deterministic_routing_policy_id": "route.shortest_delay",
+      "edges": [
+        {
+          "capacity": 4,
+          "delay_ticks": 1,
+          "edge_id": "edge.sig.2d4c0296e523",
+          "from_node_id": "node.sig.0002",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0003"
+        },
+        {
+          "capacity": 4,
+          "delay_ticks": 1,
+          "edge_id": "edge.sig.40b4c4d160cc",
+          "from_node_id": "node.sig.0000",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0001"
+        },
+        {
+          "capacity": 12,
+          "delay_ticks": 4,
+          "edge_id": "edge.sig.55b69caa9d01",
+          "from_node_id": "node.sig.0005",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0006"
+        },
+        {
+          "capacity": 15,
+          "delay_ticks": 1,
+          "edge_id": "edge.sig.82a6f7b11fcf",
+          "from_node_id": "node.sig.0001",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0002"
+        },
+        {
+          "capacity": 13,
+          "delay_ticks": 2,
+          "edge_id": "edge.sig.8b916d033c0a",
+          "from_node_id": "node.sig.0007",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0000"
+        },
+        {
+          "capacity": 15,
+          "delay_ticks": 2,
+          "edge_id": "edge.sig.b92d35d5b6f0",
+          "from_node_id": "node.sig.0003",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0004"
+        },
+        {
+          "capacity": 14,
+          "delay_ticks": 2,
+          "edge_id": "edge.sig.cd5fa3f008bc",
+          "from_node_id": "node.sig.0004",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0005"
+        },
+        {
+          "capacity": 7,
+          "delay_ticks": 2,
+          "edge_id": "edge.sig.d3813b3a1ce6",
+          "from_node_id": "node.sig.0006",
+          "tags": [
+            "tag.signal.attenuation.medium"
+          ],
+          "to_node_id": "node.sig.0007"
+        }
+      ],
+      "extensions": {
+        "topology_kind": "ring"
+      },
+      "graph_id": "graph.sig.stress.696f3b234ab0",
+      "nodes": [
+        {
+          "node_id": "node.sig.0000"
+        },
+        {
+          "node_id": "node.sig.0001"
+        },
+        {
+          "node_id": "node.sig.0002"
+        },
+        {
+          "node_id": "node.sig.0003"
+        },
+        {
+          "node_id": "node.sig.0004"
+        },
+        {
+          "node_id": "node.sig.0005"
+        },
+        {
+          "node_id": "node.sig.0006"
+        },
+        {
+          "node_id": "node.sig.0007"
+        }
+      ],
+      "schema_version": "1.0.0"
+    }
+  ],
+  "scenario_id": "scenario.sig.stress.beced1fe6963",
+  "schema_version": "1.0.0",
+  "seed": 7,
+  "signal_channel_rows": [
+    {
+      "base_delay_ticks": 0,
+      "capacity_per_tick": 128,
+      "channel_id": "channel.local_institutional",
+      "channel_type_id": "channel.local_institutional",
+      "deterministic_fingerprint": "6b80704f82ca5c2c615955ba4c24a47f56e3abb68f9e3829f3ca60a5f44a7910",
+      "encryption_policy_id": "enc.none",
+      "extensions": {
+        "routing_policy_id": "route.shortest_delay"
+      },
+      "loss_policy_id": "loss.none",
+      "network_graph_id": "graph.sig.stress.696f3b234ab0",
+      "schema_version": "1.0.0"
+    },
+    {
+      "base_delay_ticks": 1,
+      "capacity_per_tick": 72,
+      "channel_id": "channel.sig.radio.stress",
+      "channel_type_id": "channel.radio_basic",
+      "deterministic_fingerprint": "7b1445bb088a339748cc5d6364ac4008949665f947747324822cf852e2466b2c",
+      "encryption_policy_id": "enc.none",
+      "extensions": {
+        "routing_policy_id": "route.shortest_delay"
+      },
+      "loss_policy_id": "loss.deterministic_rng",
+      "network_graph_id": "graph.sig.stress.696f3b234ab0",
+      "schema_version": "1.0.0"
+    },
+    {
+      "base_delay_ticks": 1,
+      "capacity_per_tick": 96,
+      "channel_id": "channel.sig.wired.stress",
+      "channel_type_id": "channel.wired_basic",
+      "deterministic_fingerprint": "90cbbd59ec39beacc566db2bda94721d8b270915acdcf29391294df53fc3eda6",
+      "encryption_policy_id": "enc.none",
+      "extensions": {
+        "routing_policy_id": "route.shortest_delay"
+      },
+      "loss_policy_id": "loss.linear_attenuation",
+      "network_graph_id": "graph.sig.stress.696f3b234ab0",
+      "schema_version": "1.0.0"
+    }
+  ],
+  "standards_issue_request_rows": [
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0008",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.0054fd609da17ac3",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0008",
+      "spec_parameters": {
+        "limit": 5
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0009",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.1cab376e3a6afeab",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0009",
+      "spec_parameters": {
+        "limit": 5
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0000",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.2dd081ab02578945",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0000",
+      "spec_parameters": {
+        "limit": 3
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0002",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.3e3cc4f6cc0909c0",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0002",
+      "spec_parameters": {
+        "limit": 2
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0003",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.4188be9096ca4910",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0003",
+      "spec_parameters": {
+        "limit": 3
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0005",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.8147731e35246c18",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0005",
+      "spec_parameters": {
+        "limit": 8
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0007",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.82d3bc46dca13154",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0007",
+      "spec_parameters": {
+        "limit": 8
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0006",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.8994a4efd3d93023",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0006",
+      "spec_parameters": {
+        "limit": 3
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0004",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.bbd575557e9ad89f",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0004",
+      "spec_parameters": {
+        "limit": 7
+      },
+      "spec_type_id": "spec.track"
+    },
+    {
+      "compliance_check_ids": [
+        "check.sig.basic"
+      ],
+      "extensions": {},
+      "institution_id": "institution.sig.0001",
+      "notes": "stress-issued standard",
+      "request_id": "request.spec.fc14404ff7e99a62",
+      "schema_version": "1.0.0",
+      "spec_id": "spec.sig.standard.0001",
+      "spec_parameters": {
+        "limit": 6
+      },
+      "spec_type_id": "spec.track"
+    }
+  ],
+  "subject_ids": [
+    "subject.sig.000000",
+    "subject.sig.000001",
+    "subject.sig.000002",
+    "subject.sig.000003",
+    "subject.sig.000004",
+    "subject.sig.000005",
+    "subject.sig.000006",
+    "subject.sig.000007",
+    "subject.sig.000008",
+    "subject.sig.000009",
+    "subject.sig.000010",
+    "subject.sig.000011",
+    "subject.sig.000012",
+    "subject.sig.000013",
+    "subject.sig.000014",
+    "subject.sig.000015",
+    "subject.sig.000016",
+    "subject.sig.000017",
+    "subject.sig.000018",
+    "subject.sig.000019",
+    "subject.sig.000020",
+    "subject.sig.000021",
+    "subject.sig.000022",
+    "subject.sig.000023",
+    "subject.sig.000024",
+    "subject.sig.000025",
+    "subject.sig.000026",
+    "subject.sig.000027",
+    "subject.sig.000028",
+    "subject.sig.000029",
+    "subject.sig.000030",
+    "subject.sig.000031",
+    "subject.sig.000032",
+    "subject.sig.000033",
+    "subject.sig.000034",
+    "subject.sig.000035",
+    "subject.sig.000036",
+    "subject.sig.000037",
+    "subject.sig.000038",
+    "subject.sig.000039",
+    "subject.sig.000040",
+    "subject.sig.000041",
+    "subject.sig.000042",
+    "subject.sig.000043",
+    "subject.sig.000044",
+    "subject.sig.000045",
+    "subject.sig.000046",
+    "subject.sig.000047",
+    "subject.sig.000048",
+    "subject.sig.000049",
+    "subject.sig.000050",
+    "subject.sig.000051",
+    "subject.sig.000052",
+    "subject.sig.000053",
+    "subject.sig.000054",
+    "subject.sig.000055",
+    "subject.sig.000056",
+    "subject.sig.000057",
+    "subject.sig.000058",
+    "subject.sig.000059",
+    "subject.sig.000060",
+    "subject.sig.000061",
+    "subject.sig.000062",
+    "subject.sig.000063",
+    "subject.sig.000064",
+    "subject.sig.000065",
+    "subject.sig.000066",
+    "subject.sig.000067",
+    "subject.sig.000068",
+    "subject.sig.000069",
+    "subject.sig.000070",
+    "subject.sig.000071",
+    "subject.sig.000072",
+    "subject.sig.000073",
+    "subject.sig.000074",
+    "subject.sig.000075",
+    "subject.sig.000076",
+    "subject.sig.000077",
+    "subject.sig.000078",
+    "subject.sig.000079",
+    "subject.sig.000080",
+    "subject.sig.000081",
+    "subject.sig.000082",
+    "subject.sig.000083",
+    "subject.sig.000084",
+    "subject.sig.000085",
+    "subject.sig.000086",
+    "subject.sig.000087",
+    "subject.sig.000088",
+    "subject.sig.000089",
+    "subject.sig.000090",
+    "subject.sig.000091",
+    "subject.sig.000092",
+    "subject.sig.000093",
+    "subject.sig.000094",
+    "subject.sig.000095",
+    "subject.sig.000096",
+    "subject.sig.000097",
+    "subject.sig.000098",
+    "subject.sig.000099",
+    "subject.sig.000100",
+    "subject.sig.000101",
+    "subject.sig.000102",
+    "subject.sig.000103",
+    "subject.sig.000104",
+    "subject.sig.000105",
+    "subject.sig.000106",
+    "subject.sig.000107",
+    "subject.sig.000108",
+    "subject.sig.000109",
+    "subject.sig.000110",
+    "subject.sig.000111",
+    "subject.sig.000112",
+    "subject.sig.000113",
+    "subject.sig.000114",
+    "subject.sig.000115",
+    "subject.sig.000116",
+    "subject.sig.000117",
+    "subject.sig.000118",
+    "subject.sig.000119"
+  ],
+  "tick_horizon": 180,
+  "topology": "ring"
+}

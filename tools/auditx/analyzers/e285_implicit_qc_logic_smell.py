@@ -56,7 +56,11 @@ def run(graph, repo_root, changed_files=None):
         "src/process/qc/qc_engine.py",
         "src/process/qc/__init__.py",
         "src/process/capsules/capsule_executor.py",
+        "src/process/research/inference_engine.py",
+        "src/process/software/pipeline_engine.py",
         "tools/process/tool_replay_qc_window.py",
+        "tools/process/tool_generate_proc_stress.py",
+        "tools/process/tool_run_proc_stress.py",
         "tools/xstack/repox/check.py",
     }
     for root in scan_roots:

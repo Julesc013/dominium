@@ -1,0 +1,54 @@
+{
+  "candidate_model_binding_rows": [],
+  "candidate_process_definition_rows": [],
+  "candidate_promotion_record_rows": [],
+  "capsule_execution_record_rows": [],
+  "compaction_marker_hash_chain": "8dac3acc4f07718f3db12f4be3dd5c227fc0875e9644308326243265be02bd1b",
+  "compaction_markers": [
+    {
+      "deterministic_fingerprint": "59d3919d26f753c9a1d7b9d1581a5c9609afa2c02109e82f3921815a4bf0bdc5",
+      "end_tick": 120,
+      "extensions": {
+        "derived_removed_by_key": {},
+        "derived_removed_total": 0,
+        "replay_hash_after": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "replay_hash_before": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      },
+      "marker_id": "compaction.marker.6e7578474bd1c043",
+      "post_compaction_hash": "070ad844a8ee79e10da6f99ce42bed108ed081cefc3d04b7d618ffd171983b3e",
+      "pre_compaction_hash": "070ad844a8ee79e10da6f99ce42bed108ed081cefc3d04b7d618ffd171983b3e",
+      "schema_version": "1.0.0",
+      "shard_id": "shard.alpha",
+      "start_tick": 0
+    }
+  ],
+  "compaction_post_anchor_hash": "070ad844a8ee79e10da6f99ce42bed108ed081cefc3d04b7d618ffd171983b3e",
+  "compaction_pre_anchor_hash": "070ad844a8ee79e10da6f99ce42bed108ed081cefc3d04b7d618ffd171983b3e",
+  "compiled_model_rows": [],
+  "control_decision_log": [],
+  "deployment_record_rows": [],
+  "drift_event_record_rows": [],
+  "experiment_result_rows": [],
+  "forced_expand_event_rows": [],
+  "info_artifact_rows": [],
+  "knowledge_artifacts": [],
+  "process_capsule_invalidation_rows": [],
+  "process_capsule_rows": [],
+  "process_drift_state_rows": [],
+  "process_maturity_record_rows": [],
+  "process_quality_record_rows": [],
+  "process_run_record_rows": [],
+  "process_step_record_rows": [],
+  "qc_result_record_rows": [],
+  "reverse_engineering_record_rows": [],
+  "sig_outbound_rows": [],
+  "simulation_time": {
+    "deterministic_clock": {
+      "tick_duration_ms": 1000
+    },
+    "tick": 0,
+    "tick_rate": 1
+  },
+  "software_artifact_rows": [],
+  "tick": 0
+}

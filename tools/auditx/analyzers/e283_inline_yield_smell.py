@@ -52,6 +52,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         "src/process/process_run_engine.py",
         "src/process/capsules/capsule_executor.py",
+        "src/process/software/pipeline_engine.py",
         "src/models/model_engine.py",
         "tools/xstack/repox/check.py",
     }

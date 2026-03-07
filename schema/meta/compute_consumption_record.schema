@@ -1,0 +1,29 @@
+SCHEMA: meta/compute_consumption_record.schema
+schema_id: dominium.schema.meta.compute_consumption_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record canonical deterministic compute consumption and throttle/refusal outcomes.
+
+NON-SEMANTICS:
+- Record rows do not authorize bypass.
+- Record rows do not replace subsystem canonical records.
+
+REQUIRED SHAPE:
+record compute_consumption_record
+  required:
+    - record_id: id
+    - tick: tick
+    - owner_kind: enum(controller|system|process)
+    - owner_id: id
+    - instruction_units_used: int
+    - memory_units_used: int
+    - throttled: bool
+    - action_taken: enum(none|degrade|defer|refuse|shutdown)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- All authoritative compute execution paths must emit metering rows.
+- action_taken must be deterministic for identical inputs and profile bindings.

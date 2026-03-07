@@ -1,0 +1,53 @@
+{
+  "compact_every_ticks": 4,
+  "deterministic_fingerprint": "e161239ce53e9e9ff99a6466f9c401e24578e73e942082adc81fe0cb2c50c867",
+  "deterministic_seed": 11,
+  "events_per_tick": 4,
+  "metrics": {
+    "compaction_effectiveness_permille": 987,
+    "generated_derived_rows": 1280,
+    "removed_derived_rows": 1264,
+    "replay_cost_units": 36,
+    "storage_growth_permille": 0
+  },
+  "replay_reports": [
+    {
+      "compaction_marker_hash_chain": "c74a6ebd8c67d7c3e08d49305e130840ca0b3a558926769b401a14cb7d0dc15b",
+      "marker_end_tick": 3,
+      "marker_id": "compaction.marker.8b8db030fff0970e",
+      "replay_hash": "fb5d1d6849c6f0683f41190484367ae65cff92e299a3015b4d045636c28b97c5",
+      "shard_id": "shard.000"
+    },
+    {
+      "compaction_marker_hash_chain": "8210b7dc4c32631f117c171c33b30112839da0b6c5b646c185183b58ff879d0b",
+      "marker_end_tick": 7,
+      "marker_id": "compaction.marker.174358bbbd903b20",
+      "replay_hash": "8c943bfb37d3e570a9024ce499a140fcdd5437c408c5ab88ba57229e3fb89bf9",
+      "shard_id": "shard.001"
+    },
+    {
+      "compaction_marker_hash_chain": "636a72f31c0564c09a2e8efc37281f9e05b1c03514e9d5681c2eea9ce039c6d3",
+      "marker_end_tick": 7,
+      "marker_id": "compaction.marker.369ccad87b816bef",
+      "replay_hash": "7eca8dacd80246b72a7ffb00b7ae3f2d8ee8681424260d0c212d7994d993b17f",
+      "shard_id": "shard.002"
+    },
+    {
+      "compaction_marker_hash_chain": "0844eb4c14b1cd129e0521550ade6868b26f7b1e9a033328dd6a78292db50a20",
+      "marker_end_tick": 11,
+      "marker_id": "compaction.marker.bbe8dc751c6f4395",
+      "replay_hash": "71ba165bb02be4f83c48dedc58e6784e14225c01564b5e4c956cde731b38f973",
+      "shard_id": "shard.003"
+    }
+  ],
+  "result": "complete",
+  "schema_version": "1.0.0",
+  "shard_count": 4,
+  "shard_state_hashes": {
+    "shard.000": "b6e3034a61cceab54396262d2d8b78f83fb0f812e35c144fc5df74a6e830292a",
+    "shard.001": "d6ffe1eb29368e7111055bf04e24237622722640ee78a8598a1f62ac5b345525",
+    "shard.002": "2e08584082fe35131cd5d64b8492b7b8b8b11ef78ef7eb6d36908f3a6837bef5",
+    "shard.003": "4d78aa72d893b708dec53dc6d8ed692d3fd3446c62ea6ee7a4bab0a5c47afc65"
+  },
+  "tick_count": 16
+}

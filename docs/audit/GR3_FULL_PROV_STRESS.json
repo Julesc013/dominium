@@ -1,0 +1,85 @@
+{
+  "compact_every_ticks": 40,
+  "deterministic_fingerprint": "9d69b4db18e6245992eddc0c3cc20a0d5f4a0d73770e9c95047b02a252ec4739",
+  "deterministic_seed": 20260307,
+  "events_per_tick": 400,
+  "metrics": {
+    "compaction_effectiveness_permille": 999,
+    "generated_derived_rows": 3840000,
+    "removed_derived_rows": 3839952,
+    "replay_cost_units": 728,
+    "storage_growth_permille": 0
+  },
+  "replay_reports": [
+    {
+      "compaction_marker_hash_chain": "25c6d77572068f269337495f3aca7779b3c6544967df6a09f8cae9b14584ddef",
+      "marker_end_tick": 119,
+      "marker_id": "compaction.marker.e9b3e0fd4d79396a",
+      "replay_hash": "4e833632122b2db06954d88d447c9aafcf19a07b94ca9cc6317fcd6151f21ac2",
+      "shard_id": "shard.000"
+    },
+    {
+      "compaction_marker_hash_chain": "c9094c44ab4752803bbdec4854720f1e1dfb1d6538e0b15994f6c9c682cb4ce5",
+      "marker_end_tick": 119,
+      "marker_id": "compaction.marker.29369fa83620ad17",
+      "replay_hash": "846bdf31162451038d086a146f8f59022c207bfae6d530590529486989e04672",
+      "shard_id": "shard.001"
+    },
+    {
+      "compaction_marker_hash_chain": "715bbfc10c0429455877f459514feeee68d9f92a853c407f52ca11cf6e982168",
+      "marker_end_tick": 79,
+      "marker_id": "compaction.marker.9f6ca78addd4e848",
+      "replay_hash": "5fe4cd999df5507f55afda24ed894f0bf91f0cad0a18ec85b84d5303c160cf36",
+      "shard_id": "shard.002"
+    },
+    {
+      "compaction_marker_hash_chain": "0755258ef49cc81d8a8663974590861fa852a0e68460f0c687d919c0fb6fa015",
+      "marker_end_tick": 119,
+      "marker_id": "compaction.marker.55b1496b1b7e90e9",
+      "replay_hash": "299e0a43c59d506dc4d645d4a2c823025e7ded5ae949f0d59b10b4a95c2947cc",
+      "shard_id": "shard.003"
+    },
+    {
+      "compaction_marker_hash_chain": "1e24111a88b2a7450c878c361fb6a918f30b4fbbce355e222f72b6a1d1fb2194",
+      "marker_end_tick": 199,
+      "marker_id": "compaction.marker.826be4a0bd465d1e",
+      "replay_hash": "cc800d8a386a893e60b3f0be7b40fe161fa90c3d0b2a99de515d5ebb32af1fdf",
+      "shard_id": "shard.004"
+    },
+    {
+      "compaction_marker_hash_chain": "7fefc1fbff415da714bb1761ce927dc860a46c998e30bc1467e23ab8d6d7c87d",
+      "marker_end_tick": 199,
+      "marker_id": "compaction.marker.20e950848c143ffd",
+      "replay_hash": "75356aac0492e6ad7137bec2bca9ec3593d5db0a821183fbce0839e6d4c82aa4",
+      "shard_id": "shard.005"
+    },
+    {
+      "compaction_marker_hash_chain": "6165d780b837d154ff17f7164b339351a0ca1a656eaf27577635c1434f52bbb1",
+      "marker_end_tick": 199,
+      "marker_id": "compaction.marker.2e34fec032d193c1",
+      "replay_hash": "53a486fda3f19b46efac224d64266a072e27c99c43354821333779219251b08f",
+      "shard_id": "shard.006"
+    },
+    {
+      "compaction_marker_hash_chain": "dcfa32293927cc12ad5f33e9df0db6dec30aa3f30241d1c63a3efd33552003f2",
+      "marker_end_tick": 159,
+      "marker_id": "compaction.marker.c73dba966fb94b8d",
+      "replay_hash": "f7db20b073d800a18144d933740df7f15e825d216308d84fb422a3d40c944962",
+      "shard_id": "shard.007"
+    }
+  ],
+  "result": "complete",
+  "schema_version": "1.0.0",
+  "shard_count": 8,
+  "shard_state_hashes": {
+    "shard.000": "cef409d80067606cd2c807c98fc3883291df406648f1c4ca6ed8583e9c38522f",
+    "shard.001": "a5121503daf902a10a212398812aa71f9d44a4cf10e54d70e0152bdda83b0591",
+    "shard.002": "1ed44e987bb35dde1d521d289992e80f0f160b5a289bdc03f2542c39b673e45b",
+    "shard.003": "0c7baf303f3e633d07f17e1b8fab26029d975d497ee44fd9d49fbe6a5e17fe9c",
+    "shard.004": "37afc453ffd7549a313ac45059e204b4f77bd68327b78cb48ec076e4243a880d",
+    "shard.005": "2565d45b0598b6e80fbcf2468577db8c007ca181b35ac7cc0bd1a2e449c2dbb4",
+    "shard.006": "a7f6ae931d45fd11c5e4c82c5e0ef7212657e3c534a32b3350ed6190cf1b1801",
+    "shard.007": "f89f2dc450d7125a75cfc1db6146aaf692b94333620625a9653392f45286ddcb"
+  },
+  "tick_count": 240
+}

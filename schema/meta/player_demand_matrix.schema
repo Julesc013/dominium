@@ -1,0 +1,49 @@
+SCHEMA: meta/player_demand_matrix.schema
+schema_id: dominium.schema.meta.player_demand_matrix
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical Player Demand Coverage Matrix (PDCM) for planning and XStack enforcement.
+- Map player fantasy demands to Action/Process/System/Signal/Domain/Tier/Epistemic/Explain coverage.
+
+NON-SEMANTICS:
+- Does not mutate runtime truth.
+- Does not define or execute gameplay solvers.
+- Does not make optional packs mandatory at boot.
+
+REQUIRED SHAPE:
+record player_demand_matrix
+  required:
+    - version: semver
+    - demands: list[player_demand_entry]
+
+record player_demand_entry
+  required:
+    - demand_id: text
+    - title: text
+    - fantasy: text
+    - clusters: list[text]
+    - verbs: list[text]
+    - action_families: list[text]
+    - action_templates: list[text]
+    - proc: map(needs: bool, notes: text)
+    - sys: map(needs: bool, notes: text)
+    - sig_logic: map(needs: bool, notes: text)
+    - domains: list[text]
+    - tiers: list[text]
+    - epistemics: map(needs: bool, notes: text)
+    - break_rules: map(profiles: list[text], notes: text)
+    - collapse: map(strategy: text, forced_expand_triggers: list[text])
+    - explain: list[text]
+    - rwam_affordances: list[text]
+    - coverage_status: enum(present|partial|planned|unknown)
+    - next_series: text
+    - notes: text
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- `demand_id` must be stable and unique across matrix versions.
+- Each demand must map to at least one action family and one RWAM affordance.
+- Referenced action/explain/profile IDs must resolve to registries or use explicit `TBD:` tokens.
+- `coverage_status` values of `partial|planned|unknown` must include a non-empty `next_series`.

@@ -693,6 +693,10 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from .common import refusal
 
 
+REFUSAL_PROCESS_CANDIDATE_PROMOTION_DENIED_TOKEN = "refusal.process.candidate.promotion_denied"
+REFUSAL_SYSTEM_INVARIANT_VIOLATION_TOKEN = "refusal.system.invariant_violation"
+
+
 PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.camera_move": "entitlement.camera_control",
     "process.camera_teleport": "entitlement.teleport",
@@ -12442,11 +12446,11 @@ def _refresh_state_vector_hash_chains(state: dict) -> None:
                 "version": str(row.get("version", "")).strip(),
                 "state_fields": [
                     {
-                        "field_id": str(field.get("field_id", "")).strip(),
-                        "path": str(field.get("path", "")).strip(),
-                        "field_kind": str(field.get("field_kind", "")).strip(),
+                        "field_id": str(sv_entry.get("field_id", "")).strip(),
+                        "path": str(sv_entry.get("path", "")).strip(),
+                        "field_kind": str(sv_entry.get("field_kind", "")).strip(),
                     }
-                    for field in sorted(
+                    for sv_entry in sorted(
                         (dict(item) for item in list(row.get("state_fields") or []) if isinstance(item, Mapping)),
                         key=lambda item: str(item.get("field_id", "")),
                     )
@@ -32697,6 +32701,7 @@ def execute_intent(
             "fidelity_request_system_ids": list(fidelity_request_system_ids),
             "ctrl_denied_system_ids": list(denied_system_ids),
             "ctrl_budget_request_rows": list(ctrl_budget_request_rows),
+            "approved_expand_count": int(len(approved_expand_ids)),
             "approved_expand_system_ids": _sorted_tokens(approved_expand_ids),
             "approved_collapse_system_ids": _sorted_tokens(approved_collapse_ids),
             "denied_transition_count": int(len(denied_transition_rows) + len(transition_refusals)),
@@ -37406,7 +37411,7 @@ def execute_intent(
         if str(promotion_eval.get("result", "")).strip() != "complete":
             metrics = dict(promotion_eval.get("metrics") or {})
             return refusal(
-                REFUSAL_CANDIDATE_PROMOTION_DENIED,
+                REFUSAL_PROCESS_CANDIDATE_PROMOTION_DENIED_TOKEN,
                 "candidate promotion thresholds not met",
                 "Increase replication/QC/stability evidence and retry promotion.",
                 {

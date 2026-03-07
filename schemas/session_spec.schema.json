@@ -212,6 +212,104 @@
             "operator",
             "system"
           ]
+        },
+        "profile_bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "binding_id",
+              "scope",
+              "target_id",
+              "profile_id",
+              "tick_applied"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "binding_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scope": {
+                "type": "string",
+                "enum": [
+                  "universe",
+                  "session",
+                  "authority",
+                  "system"
+                ]
+              },
+              "target_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "profile_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "tick_applied": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "extensions": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "effective_profile_snapshot": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "profile_bindings": {
+      "type": "array",
+      "description": "Explicit profile overlays bound at SessionSpec scope.",
+      "items": {
+        "type": "object",
+        "required": [
+          "binding_id",
+          "scope",
+          "target_id",
+          "profile_id",
+          "tick_applied"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "binding_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "universe",
+              "session",
+              "authority",
+              "system"
+            ]
+          },
+          "target_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "profile_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tick_applied": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
         }
       }
     },
