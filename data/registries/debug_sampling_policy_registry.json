@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.registry.debug_sampling_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.debug_sampling_policy_registry",
+    "registry_version": "1.0.0",
+    "debug_sampling_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "debug.sample.default",
+        "max_points": 8,
+        "max_ticks": 32,
+        "max_samples": 128,
+        "throttle_strategy": "deterministic_subsample",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "allow_force_expand": false,
+          "remote_monitoring": "sig_authorized_only",
+          "request_record_class": "derived",
+          "source": "LOGIC7-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "debug.sample.rank_strict",
+        "max_points": 4,
+        "max_ticks": 16,
+        "max_samples": 32,
+        "throttle_strategy": "refuse",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "allow_force_expand": false,
+          "remote_monitoring": "forbidden",
+          "request_record_class": "canonical",
+          "source": "LOGIC7-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "debug.sample.lab_high",
+        "max_points": 16,
+        "max_ticks": 64,
+        "max_samples": 512,
+        "throttle_strategy": "reduce_points",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "allow_force_expand": true,
+          "remote_monitoring": "sig_authorized_only",
+          "request_record_class": "derived",
+          "source": "LOGIC7-2"
+        }
+      }
+    ],
+    "extensions": {
+      "null_boot_safe": true
+    }
+  }
+}
