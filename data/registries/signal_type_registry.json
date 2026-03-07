@@ -55,7 +55,7 @@
         "signal_type_id": "signal.message",
         "description": "Carrier-agnostic message/reference logic value bound to SIG receipts and trust policy.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
-        "value_schema_id": "dominium.schema.logic.signal_value.message_ref@1.0.0",
+        "value_schema_id": "dominium.schema.logic.signal_value.message@1.0.0",
         "deterministic_fingerprint": "",
         "extensions": {
           "domain_tags": [
@@ -70,7 +70,7 @@
         "signal_type_id": "signal.bus",
         "description": "Carrier-agnostic typed bundle/bus logic value for grouped multi-signal control paths.",
         "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
-        "value_schema_id": "dominium.schema.logic.signal_value.bus@1.0.0",
+        "value_schema_id": "dominium.schema.logic.bus_definition@1.0.0",
         "deterministic_fingerprint": "",
         "extensions": {
           "domain_tags": [

@@ -1,0 +1,22 @@
+SCHEMA: logic/signal_value_message.schema
+schema_id: dominium.schema.logic.signal_value.message
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare LOGIC message signal values as references to SIG-governed artifacts and receipts.
+
+NON-SEMANTICS:
+- This schema does not replace SIG transport, trust, or encryption rules.
+
+REQUIRED SHAPE:
+record logic_signal_value_message
+  required:
+    - artifact_id: id
+    - deterministic_fingerprint: sha256
+  optional:
+    - receipt_id: id
+
+INVARIANTS:
+- Message values carry references only; payload truth remains SIG-owned.
+- Receipt references must remain causally valid within TEMP rules.

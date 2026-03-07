@@ -1,0 +1,30 @@
+SCHEMA: logic/signal.schema
+schema_id: dominium.schema.logic.signal
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical typed signal records for substrate-agnostic LOGIC truth.
+- Bind signal identity, carrier identity, typed value reference, and validity window.
+
+NON-SEMANTICS:
+- This schema does not execute propagation or evaluation.
+- It does not authorize direct mutation outside deterministic Processes.
+
+REQUIRED SHAPE:
+record logic_signal
+  required:
+    - signal_id: id
+    - signal_type_id: id
+    - carrier_type_id: id
+    - value_ref: map
+    - valid_from_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - valid_until_tick: u64
+
+INVARIANTS:
+- `value_ref` must resolve to a declared LOGIC value shape or bus definition.
+- Signal validity is canonical-tick based; wall-clock fields are invalid.
+- Carrier identity contributes constraints, not signal meaning.

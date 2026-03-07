@@ -1,0 +1,20 @@
+SCHEMA: logic/signal_value_pulse.schema
+schema_id: dominium.schema.logic.signal_value.pulse
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare bounded pulse/edge value windows for deterministic LOGIC event signaling.
+
+NON-SEMANTICS:
+- This schema does not create a scheduler or an unbounded event queue.
+
+REQUIRED SHAPE:
+record logic_signal_value_pulse
+  required:
+    - edges: list
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- `edges` must be bounded and ordered by `tick_offset`.
+- Edge payloads must remain inside the declared tick window.

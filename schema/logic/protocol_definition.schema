@@ -1,0 +1,26 @@
+SCHEMA: logic/protocol_definition.schema
+schema_id: dominium.schema.logic.protocol_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare protocol hooks for LOGIC bus framing, arbitration, and error-detection metadata.
+
+NON-SEMANTICS:
+- This schema does not execute a protocol runtime.
+- It does not introduce transport semantics outside declared registries and future SIG/LOGIC engines.
+
+REQUIRED SHAPE:
+record logic_protocol_definition
+  required:
+    - protocol_id: id
+    - bus_id: id
+    - framing_rules_ref: text
+    - arbitration_policy_id: id
+    - error_detection_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `bus_id` must reference a declared bus definition.
+- Protocol hooks are declarative and deterministic only.

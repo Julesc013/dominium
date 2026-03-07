@@ -1,0 +1,20 @@
+SCHEMA: logic/signal_value_boolean.schema
+schema_id: dominium.schema.logic.signal_value.boolean
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic boolean signal values for LOGIC.
+
+NON-SEMANTICS:
+- This schema does not imply any carrier or transport substrate.
+
+REQUIRED SHAPE:
+record logic_signal_value_boolean
+  required:
+    - value: enum(0|1)
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- Boolean value space is closed to `0` and `1`.
+- Carrier-specific interpretations must not be embedded here.

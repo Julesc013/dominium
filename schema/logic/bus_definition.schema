@@ -1,0 +1,25 @@
+SCHEMA: logic/bus_definition.schema
+schema_id: dominium.schema.logic.bus_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare typed deterministic bus layouts used by LOGIC signals and future protocol surfaces.
+
+NON-SEMANTICS:
+- This schema does not execute arbitration, framing, or propagation.
+
+REQUIRED SHAPE:
+record logic_bus_definition
+  required:
+    - bus_id: id
+    - encoding_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - width: u32
+    - fields: list
+
+INVARIANTS:
+- Field ordering must be canonical and deterministic.
+- `encoding_id` must resolve through the bus encoding registry.
