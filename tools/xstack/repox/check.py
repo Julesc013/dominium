@@ -3811,6 +3811,221 @@ def _append_logic_element_invariant_findings(
             break
 
 
+def _append_logic_network_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    substrate_rule_id = "INV-LOGIC-WIRING-USES-NETWORKGRAPH"
+    validated_rule_id = "INV-LOGIC-NETWORK-VALIDATED-BEFORE-EVAL"
+    loop_rule_id = "INV-LOOP-POLICY-ENFORCED"
+
+    required_files = (
+        ("docs/logic/LOGIC_NETWORKGRAPH.md", substrate_rule_id),
+        ("docs/logic/LOGIC_SHARD_BOUNDARY_RULES.md", loop_rule_id),
+        ("schema/logic/logic_node_payload.schema", substrate_rule_id),
+        ("schema/logic/logic_edge_payload.schema", substrate_rule_id),
+        ("schema/logic/logic_network_binding.schema", substrate_rule_id),
+        ("data/registries/logic_node_kind_registry.json", substrate_rule_id),
+        ("data/registries/logic_edge_kind_registry.json", substrate_rule_id),
+        ("data/registries/logic_network_policy_registry.json", loop_rule_id),
+        ("src/logic/network/logic_network_engine.py", substrate_rule_id),
+        ("src/logic/network/logic_network_validator.py", loop_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-3 enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    engine_rel = "src/logic/network/logic_network_engine.py"
+    engine_text = _file_text(repo_root, engine_rel)
+    if "src.core.graph.network_graph_engine" not in engine_text or "normalize_network_graph" not in engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet="normalize_network_graph",
+                message="logic network wiring must specialize the shared NetworkGraph substrate",
+                rule_id=substrate_rule_id,
+            )
+        )
+    if "process_logic_network_validate" not in engine_text or "validate_logic_network(" not in engine_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet="process_logic_network_validate",
+                message="logic network runtime must route validation through validate_logic_network before later evaluation tiers",
+                rule_id=validated_rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    if '"process.logic_network_validate"' not in runtime_text or "process_logic_network_validate(" not in runtime_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet="process.logic_network_validate",
+                message="logic network validation must remain a registered control-plane process before runtime execution",
+                rule_id=validated_rule_id,
+            )
+        )
+
+    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_text = _file_text(repo_root, process_registry_rel)
+    if '"process.logic_network_validate"' not in process_registry_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet="process.logic_network_validate",
+                message="process registry must declare process.logic_network_validate",
+                rule_id=validated_rule_id,
+            )
+        )
+
+    validator_rel = "src/logic/network/logic_network_validator.py"
+    validator_text = _file_text(repo_root, validator_rel)
+    validator_requirements = (
+        ("REFUSAL_LOGIC_LOOP_DETECTED", "logic loop policy must refuse forbidden topologies explicitly"),
+        ("_tarjan_scc", "logic loop detection must use deterministic SCC classification"),
+        ("loop_resolution_mode", "logic loop classification must consult declared loop policies"),
+        ("force_roi", "logic loop policy must support forced ROI resolution"),
+        ("allow_compiled_only", "logic loop policy must support compiled-proof gating"),
+    )
+    for token, message in validator_requirements:
+        if token in validator_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=validator_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=loop_rule_id,
+            )
+        )
+
+    policy_payload, policy_error = _load_json_object(repo_root, "data/registries/logic_network_policy_registry.json")
+    if policy_error:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path="data/registries/logic_network_policy_registry.json",
+                line_number=1,
+                snippet="logic_network_policies",
+                message="logic network policy registry must be valid JSON",
+                rule_id=loop_rule_id,
+            )
+        )
+    else:
+        record = dict(policy_payload.get("record") or {})
+        policy_rows = list(record.get("logic_network_policies") or policy_payload.get("logic_network_policies") or [])
+        policy_by_id = {}
+        for row in policy_rows:
+            if not isinstance(row, dict):
+                continue
+            policy_id = str(row.get("policy_id", "")).strip()
+            if policy_id:
+                policy_by_id[policy_id] = dict(row)
+        expected_modes = {
+            "logic.policy.default": "refuse",
+            "logic.policy.allow_roi_loops": "force_roi",
+            "logic.policy.lab_allow": "allow_compiled_only",
+        }
+        for policy_id, expected_mode in expected_modes.items():
+            row = dict(policy_by_id.get(policy_id) or {})
+            if not row:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/logic_network_policy_registry.json",
+                        line_number=1,
+                        snippet=policy_id,
+                        message="logic network policy registry missing required policy",
+                        rule_id=loop_rule_id,
+                    )
+                )
+                continue
+            observed_mode = str(row.get("loop_resolution_mode", "")).strip()
+            if observed_mode != expected_mode:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="data/registries/logic_network_policy_registry.json",
+                        line_number=1,
+                        snippet="{} -> {}".format(policy_id, observed_mode or "<missing>"),
+                        message="logic network policy has unexpected loop_resolution_mode",
+                        rule_id=loop_rule_id,
+                    )
+                )
+        default_row = dict(policy_by_id.get("logic.policy.default") or {})
+        if default_row and bool(default_row.get("allow_combinational_loops", False)):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="data/registries/logic_network_policy_registry.json",
+                    line_number=1,
+                    snippet="logic.policy.default",
+                    message="default logic network policy must refuse combinational loops",
+                    rule_id=loop_rule_id,
+                )
+            )
+
+    suspicious_eval_tokens = (
+        "evaluate_logic_network",
+        "logic_network_tick",
+        "propagate_logic_network",
+        "propagate_signal",
+        "commit_logic_network",
+    )
+    allowed_eval_paths = {
+        "src/logic/network/logic_network_engine.py",
+        "src/logic/network/logic_network_validator.py",
+        "src/logic/network/instrumentation_binding.py",
+        "src/logic/network/__init__.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if (not rel_norm.startswith("src/logic/network/")) or (not rel_norm.endswith(".py")):
+            continue
+        if rel_norm in allowed_eval_paths:
+            continue
+        text = _file_text(repo_root, rel_norm)
+        lower_text = text.lower()
+        if not any(token in lower_text for token in suspicious_eval_tokens):
+            continue
+        if "validate_logic_network" in text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_norm,
+                line_number=1,
+                snippet=suspicious_eval_tokens[0],
+                message="logic network execution-like paths must be validation-gated",
+                rule_id=validated_rule_id,
+            )
+        )
+
+
 def _derived_artifact_files(repo_root: str) -> List[str]:
     root = os.path.join(repo_root, "packs", "derived")
     rows: List[str] = []
@@ -25414,6 +25629,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_element_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_network_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -337,6 +337,8 @@ from analyzers import e310_direct_signal_mutation_smell
 from analyzers import e311_carrier_bias_smell
 from analyzers import e312_hardcoded_logic_behavior_smell
 from analyzers import e313_missing_state_vector_smell
+from analyzers import e314_adhoc_wiring_smell
+from analyzers import e315_unvalidated_network_eval_smell
 
 
 ANALYZERS = (
@@ -677,6 +679,8 @@ ANALYZERS = (
     e311_carrier_bias_smell,
     e312_hardcoded_logic_behavior_smell,
     e313_missing_state_vector_smell,
+    e314_adhoc_wiring_smell,
+    e315_unvalidated_network_eval_smell,
 )
 
 
