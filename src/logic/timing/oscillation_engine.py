@@ -42,20 +42,42 @@ def build_logic_timing_state_hash(
         slot = as_map(as_map(row.get("extensions")).get("slot"))
         if token(slot.get("network_id")) != network_token:
             continue
-        active_signals.append(dict(row))
+        active_signals.append(
+            {
+                "element_id": token(slot.get("element_id")),
+                "port_id": token(slot.get("port_id")),
+                "signal_type_id": token(row.get("signal_type_id")),
+                "carrier_type_id": token(row.get("carrier_type_id")),
+                "value_ref": canon(as_map(row.get("value_ref"))),
+            }
+        )
     pending_rows = [
         dict(row)
         for row in as_list(pending_signal_update_rows)
         if isinstance(row, Mapping) and token(row.get("network_id")) == network_token
     ]
-    state_rows = [
-        dict(row)
-        for row in as_list(state_vector_snapshot_rows)
-        if isinstance(row, Mapping) and token(row.get("owner_id")) in element_ids
-    ]
+    latest_state_rows = {}
+    for row in as_list(state_vector_snapshot_rows):
+        if not isinstance(row, Mapping):
+            continue
+        owner_id = token(row.get("owner_id"))
+        if owner_id not in element_ids:
+            continue
+        candidate = dict(row)
+        current = dict(latest_state_rows.get(owner_id) or {})
+        candidate_key = (
+            int(max(0, as_int(candidate.get("tick", 0), 0))),
+            token(candidate.get("snapshot_id")),
+        )
+        current_key = (
+            int(max(0, as_int(current.get("tick", 0), 0))),
+            token(current.get("snapshot_id")),
+        )
+        if not current or candidate_key >= current_key:
+            latest_state_rows[owner_id] = candidate
+    state_rows = [dict(latest_state_rows[owner_id]) for owner_id in sorted(latest_state_rows.keys())]
     return canonical_sha256(
         {
-            "tick": int(max(0, as_int(current_tick, 0))),
             "network_id": network_token,
             "active_signals": sorted(
                 active_signals,
@@ -66,19 +88,43 @@ def build_logic_timing_state_hash(
                 ),
             ),
             "pending_signal_updates": sorted(
-                pending_rows,
+                [
+                    {
+                        "source_element_id": token(row.get("source_element_id")),
+                        "source_port_id": token(row.get("source_port_id")),
+                        "target_element_id": token(row.get("target_element_id")),
+                        "target_port_id": token(row.get("target_port_id")),
+                        "signal_type_id": token(row.get("signal_type_id")),
+                        "carrier_type_id": token(row.get("carrier_type_id")),
+                        "deliver_delay_ticks": int(
+                            max(
+                                0,
+                                as_int(
+                                    as_map(row.get("extensions")).get("deliver_delay_ticks"),
+                                    as_int(row.get("deliver_tick"), 0) - int(max(0, as_int(current_tick, 0))),
+                                ),
+                            )
+                        ),
+                        "value_payload": canon(as_map(row.get("value_payload"))),
+                    }
+                    for row in pending_rows
+                ],
                 key=lambda row: (
-                    as_int(row.get("deliver_tick"), 0),
+                    as_int(row.get("deliver_delay_ticks"), 0),
                     token(row.get("target_element_id")),
                     token(row.get("target_port_id")),
-                    token(row.get("pending_id")),
                 ),
             ),
             "state_snapshots": sorted(
-                state_rows,
+                [
+                    {
+                        "owner_id": token(row.get("owner_id")),
+                        "serialized_state": canon(as_map(row.get("serialized_state"))),
+                    }
+                    for row in state_rows
+                ],
                 key=lambda row: (
                     token(row.get("owner_id")),
-                    token(row.get("snapshot_id")),
                 ),
             ),
         }
@@ -129,61 +175,69 @@ def detect_network_oscillation(
     if len(occurrences) >= 2:
         previous_tick = int(occurrences[-2].get("tick", tick))
         period_ticks = int(max(1, tick - previous_tick))
-        stable = False
-        if len(occurrences) >= 3:
-            prior_period = int(max(1, previous_tick - int(occurrences[-3].get("tick", previous_tick))))
-            stable = bool(prior_period == period_ticks)
-        classification = {
-            "period_ticks": int(period_ticks),
-            "stable": bool(stable),
-            "state_hash": str(state_hash),
-        }
-        record_rows.append(
-            {
-                "tick": int(tick),
-                "network_id": network_token,
+        intervening_history = [
+            dict(row)
+            for row in history
+            if int(row.get("tick", 0)) > previous_tick and int(row.get("tick", 0)) < tick
+        ]
+        has_state_transition = any(str(row.get("state_hash", "")) != state_hash for row in intervening_history)
+        if has_state_transition:
+            stable = False
+            if len(occurrences) >= 3:
+                prior_tick = int(occurrences[-3].get("tick", previous_tick))
+                prior_period = int(max(1, previous_tick - prior_tick))
+                stable = bool(prior_period == period_ticks)
+            classification = {
                 "period_ticks": int(period_ticks),
                 "stable": bool(stable),
-                "extensions": {
-                    "state_hash": str(state_hash),
-                    "window_size": int(window_size),
-                    "matched_ticks": [int(row.get("tick", 0)) for row in occurrences[-3:]],
-                },
+                "state_hash": str(state_hash),
             }
-        )
-        if not stable:
-            explain_rows.append(
-                build_explain_artifact(
-                    explain_id="explain.logic_oscillation.{}".format(
-                        canonical_sha256(
-                            {
-                                "tick": int(tick),
-                                "network_id": network_token,
-                                "state_hash": str(state_hash),
-                                "period_ticks": int(period_ticks),
-                            }
-                        )[:16]
-                    ),
-                    event_id="event.logic.oscillation.{}".format(
-                        canonical_sha256(
-                            {
-                                "tick": int(tick),
-                                "network_id": network_token,
-                                "state_hash": str(state_hash),
-                                "period_ticks": int(period_ticks),
-                            }
-                        )[:16]
-                    ),
-                    target_id=network_token,
-                    cause_chain=["cause.logic.oscillation"],
-                    remediation_hints=["inspect loop policy, delay policy, and stateful timing pattern configuration"],
-                    extensions={
-                        "event_kind_id": "explain.logic_oscillation",
-                        "period_ticks": int(period_ticks),
+            record_rows.append(
+                {
+                    "tick": int(tick),
+                    "network_id": network_token,
+                    "period_ticks": int(period_ticks),
+                    "stable": bool(stable),
+                    "extensions": {
                         "state_hash": str(state_hash),
+                        "window_size": int(window_size),
+                        "matched_ticks": [int(row.get("tick", 0)) for row in occurrences[-3:]],
                     },
-                )
+                }
             )
+            if not stable:
+                explain_rows.append(
+                    build_explain_artifact(
+                        explain_id="explain.logic_oscillation.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(tick),
+                                    "network_id": network_token,
+                                    "state_hash": str(state_hash),
+                                    "period_ticks": int(period_ticks),
+                                }
+                            )[:16]
+                        ),
+                        event_id="event.logic.oscillation.{}".format(
+                            canonical_sha256(
+                                {
+                                    "tick": int(tick),
+                                    "network_id": network_token,
+                                    "state_hash": str(state_hash),
+                                    "period_ticks": int(period_ticks),
+                                }
+                            )[:16]
+                        ),
+                        target_id=network_token,
+                        cause_chain=["cause.logic.oscillation"],
+                        remediation_hints=["inspect loop policy, delay policy, and stateful timing pattern configuration"],
+                        extensions={
+                            "event_kind_id": "explain.logic_oscillation",
+                            "period_ticks": int(period_ticks),
+                            "state_hash": str(state_hash),
+                        },
+                    )
+                )
 
     runtime_extensions["timing_hash_window"] = [
         {

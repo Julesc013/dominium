@@ -22,14 +22,17 @@ from .runtime_state import (
     build_logic_oscillation_record_row,
     build_logic_timing_violation_event_row,
     build_logic_throttle_event_row,
+    build_logic_watchdog_timeout_event_row,
     normalize_logic_eval_state,
     normalize_logic_network_runtime_state_rows,
     normalize_logic_oscillation_record_rows,
     normalize_logic_timing_violation_event_rows,
     normalize_logic_throttle_event_rows,
+    normalize_logic_watchdog_timeout_event_rows,
 )
 from .sense_engine import build_logic_sense_snapshot
 from src.logic.timing import (
+    detect_watchdog_timeout_transitions,
     detect_network_oscillation,
     evaluate_logic_timing_constraints,
     request_logic_timing_compute,
@@ -197,6 +200,7 @@ def process_logic_network_evaluate(
     drift_policy_registry_payload: Mapping[str, object] | None = None,
     model_type_registry_payload: Mapping[str, object] | None = None,
     constitutive_model_registry_payload: Mapping[str, object] | None = None,
+    watchdog_definition_rows: object = None,
     session_scope_id: str = "session.default",
 ) -> dict:
     tick = int(max(0, as_int(current_tick, 0)))
@@ -424,6 +428,7 @@ def process_logic_network_evaluate(
     throttle_event_rows = list(eval_state.get("logic_throttle_event_rows") or [])
     oscillation_record_rows = list(eval_state.get("logic_oscillation_record_rows") or [])
     timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
+    watchdog_timeout_event_rows = list(eval_state.get("logic_watchdog_timeout_event_rows") or [])
     explain_rows = []
     timing_compute_units_used = 0
     for event in as_list(compute_result.get("throttle_events")):
@@ -504,6 +509,7 @@ def process_logic_network_evaluate(
 
     oscillation_result = {"runtime_extensions": {}, "classification": {}, "oscillation_record_rows": [], "explain_artifact_rows": []}
     timing_enforcement = {"runtime_extensions": {}, "timing_violation_events": [], "explain_artifact_rows": []}
+    watchdog_transitions = []
     if timing_analysis_allowed:
         oscillation_result = detect_network_oscillation(
             current_tick=tick,
@@ -540,6 +546,13 @@ def process_logic_network_evaluate(
             propagation_result=propagation_result,
             oscillation_classification=as_map(oscillation_result.get("classification")),
         )
+        watchdog_transitions = detect_watchdog_timeout_transitions(
+            current_tick=tick,
+            network_id=network_id,
+            compute_result=compute_result,
+            logic_element_rows=logic_element_rows,
+            watchdog_definition_rows=watchdog_definition_rows,
+        )
     else:
         timing_enforcement = {
             "runtime_extensions": {
@@ -564,6 +577,36 @@ def process_logic_network_evaluate(
     explain_rows.extend(
         [dict(row) for row in as_list(timing_enforcement.get("explain_artifact_rows")) if isinstance(row, Mapping)]
     )
+    for event in as_list(watchdog_transitions):
+        if not isinstance(event, Mapping):
+            continue
+        watchdog_row = build_logic_watchdog_timeout_event_row(
+            tick=as_int(event.get("tick"), tick),
+            network_id=token(event.get("network_id")) or network_id,
+            watchdog_id=token(event.get("watchdog_id")),
+            action_on_timeout=token(event.get("action_on_timeout")) or "signal_set",
+            deterministic_fingerprint="",
+            extensions=as_map(event.get("extensions")),
+        )
+        if not watchdog_row:
+            continue
+        watchdog_timeout_event_rows.append(watchdog_row)
+        explain_rows.append(
+            build_explain_artifact(
+                explain_id="explain.watchdog_timeout.{}".format(
+                    canonical_sha256({"event_id": watchdog_row.get("event_id")})[:16]
+                ),
+                event_id=token(watchdog_row.get("event_id")),
+                target_id=network_id,
+                cause_chain=["cause.logic.watchdog_timeout"],
+                remediation_hints=["inspect the monitored signal path or widen the declared timeout window"],
+                extensions={
+                    "event_kind_id": "explain.watchdog_timeout",
+                    "watchdog_timeout_event_id": token(watchdog_row.get("event_id")),
+                    "watchdog_id": token(watchdog_row.get("watchdog_id")),
+                },
+            )
+        )
 
     policy_extensions = as_map(logic_policy_row.get("extensions"))
     oscillation_classification = as_map(oscillation_result.get("classification"))
@@ -605,6 +648,48 @@ def process_logic_network_evaluate(
             if timing_row:
                 timing_violation_event_rows.append(timing_row)
 
+    timing_violation_action = token(policy_extensions.get("timing_violation_action")) or "force_roi"
+    timing_mode = token(logic_policy_row.get("timing_mode")) or "sync_tick"
+    if timing_violation_event_rows:
+        if timing_violation_action == "refuse":
+            combined_runtime_extensions.update(
+                {
+                    "l1_timing_refused": True,
+                    "requires_l2_timing": False,
+                    "timing_gate_reason": "timing_violation",
+                    "timing_status": "l1_refused",
+                }
+            )
+        elif timing_violation_action == "force_roi":
+            if timing_mode == "roi_micro_optional":
+                combined_runtime_extensions.update(
+                    {
+                        "l1_timing_refused": False,
+                        "requires_l2_timing": True,
+                        "timing_gate_reason": "timing_violation",
+                        "timing_status": "requires_l2",
+                    }
+                )
+            else:
+                combined_runtime_extensions.update(
+                    {
+                        "l1_timing_refused": True,
+                        "requires_l2_timing": False,
+                        "timing_gate_reason": "timing_violation",
+                        "timing_status": "l1_refused",
+                    }
+                )
+        elif timing_violation_action == "throttle":
+            compute_result = dict(compute_result, network_throttled=True)
+            combined_runtime_extensions.update(
+                {
+                    "l1_timing_refused": False,
+                    "requires_l2_timing": False,
+                    "timing_gate_reason": "timing_violation",
+                    "timing_status": "throttled",
+                }
+            )
+
     runtime_rows[network_id] = build_logic_network_runtime_state_row(
         network_id=network_id,
         last_evaluated_tick=tick,
@@ -641,6 +726,7 @@ def process_logic_network_evaluate(
             "logic_throttle_event_rows": normalize_logic_throttle_event_rows(throttle_event_rows),
             "logic_oscillation_record_rows": normalize_logic_oscillation_record_rows(oscillation_record_rows),
             "logic_timing_violation_event_rows": normalize_logic_timing_violation_event_rows(timing_violation_event_rows),
+            "logic_watchdog_timeout_event_rows": normalize_logic_watchdog_timeout_event_rows(watchdog_timeout_event_rows),
             "logic_state_update_record_rows": list(commit_result.get("state_update_record_rows") or []),
             "logic_pending_signal_update_rows": propagation_result.get("logic_pending_signal_update_rows"),
             "logic_propagation_trace_artifact_rows": propagation_result.get("logic_propagation_trace_artifact_rows"),

@@ -1475,6 +1475,26 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.watchdog_timeout",
+        "event_kind_id": "logic.watchdog_timeout",
+        "explain_artifact_type_id": "artifact.explain.watchdog_timeout",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_trace",
+          "hint.review.watchdog_window",
+          "hint.inspect.monitored_signal"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC5-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.logic_compute_throttle",
         "event_kind_id": "logic.compute_throttle",
         "explain_artifact_type_id": "artifact.explain.logic_compute_throttle",

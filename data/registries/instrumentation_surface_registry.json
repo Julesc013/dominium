@@ -497,12 +497,47 @@
             "extensions": {
               "required_access_policy_id": "access.admin_only"
             }
+          },
+          {
+            "measurement_point_id": "measure.logic.timing_trace",
+            "quantity_id": "quantity.logic.bus_capture",
+            "instrument_type_id": "instrument.logic_analyzer",
+            "measurement_model_id": "meas.lab_high_precision",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.admin_only",
+              "reported_fields": [
+                "period_ticks",
+                "timeout_events",
+                "last_state_transitions"
+              ]
+            }
           }
         ],
         "forensics_points": [
           {
             "forensics_point_id": "forensics.logic.trace",
             "explain_contract_id": "explain.logic_timing_violation",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.oscillation",
+            "explain_contract_id": "explain.logic_oscillation",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.watchdog_timeout",
+            "explain_contract_id": "explain.watchdog_timeout",
             "redaction_policy_id": "redact.inspector_default",
             "deterministic_fingerprint": "",
             "extensions": {
@@ -577,6 +612,18 @@
             "explain_contract_id": "explain.logic_timing_violation",
             "redaction_policy_id": "redact.inspector_default",
             "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.logic.element.oscillation",
+            "explain_contract_id": "explain.logic_oscillation",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
+          },
+          {
+            "forensics_point_id": "forensics.logic.element.watchdog_timeout",
+            "explain_contract_id": "explain.watchdog_timeout",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": ""
           }
         ],
         "deterministic_fingerprint": "",
@@ -639,6 +686,24 @@
           {
             "forensics_point_id": "forensics.logic.network.timing_violation",
             "explain_contract_id": "explain.logic_timing_violation",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.network.oscillation",
+            "explain_contract_id": "explain.logic_oscillation",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.network.watchdog_timeout",
+            "explain_contract_id": "explain.watchdog_timeout",
             "redaction_policy_id": "redact.inspector_default",
             "deterministic_fingerprint": "",
             "extensions": {

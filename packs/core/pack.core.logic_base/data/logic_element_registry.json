@@ -189,7 +189,8 @@
         ],
         "behavior_family": "watchdog",
         "timing_pattern_id": "pattern.watchdog_basic",
-        "watchdog_definition_id": "logic_watchdog.basic"
+        "watchdog_definition_id": "logic_watchdog.basic",
+        "fixed_ticks": 2
       }
     },
     {
