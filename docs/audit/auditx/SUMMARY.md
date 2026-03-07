@@ -8,10 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 223
-- RISK: 653
-- VIOLATION: 101
-- WARN: 1231
+- RISK: 464
+- VIOLATION: 9
+- WARN: 873
 
 ## Counts By Category
 
@@ -60,32 +59,21 @@ Superseded By: none
 - authority.fault_bypass_smell: 3
 - canon_drift: 743
 - capability_bypass_smell: 1
-- capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 131
+- derived_freshness: 11
 - epistemics.hidden_state_leak_smell: 6
 - interaction.interaction_bypass_smell: 2
-- legacy_contamination: 11
-- materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
-- mode_flag_smell: 64
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
-- ownership_boundary: 9
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- reachability: 80
 - reliability.silent_reaction_smell: 3
-- schema_usage: 160
-- security.boundary_io: 29
-- security.privilege_bypass: 9
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
-- terminology_misuse: 1
-- ui_parity: 220

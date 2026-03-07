@@ -43,6 +43,16 @@ CONTROL_DEPENDENCY_TOKENS = (
     "build_control_intent(",
     "build_control_resolution(",
 )
+TOPOLOGY_COMPATX_VALIDATOR_NODE_IDS = (
+    "tool:tools/xstack/compatx/check.py",
+)
+TOPOLOGY_POLICY_ENFORCER_NODE_IDS = (
+    "tool:tools/xstack/repox/check.py",
+    "tool:tools/xstack/auditx/check.py",
+)
+TOPOLOGY_CONTRACT_VALIDATOR_NODE_IDS = (
+    "tool:tools/xstack/testx/runner.py",
+)
 
 DOMAIN_TO_MODULE_NODE_ID = {
     "ELEC": "module:src/electric",
@@ -607,17 +617,20 @@ def generate_topology_map(
     contract_node_ids = sorted(
         set(str(node.get("node_id")) for node in nodes if str(node.get("node_kind", "")) == "contract_set")
     )
-    for tool_node in sorted(set(str(node.get("node_id")) for node in nodes if str(node.get("node_kind", "")) == "tool")):
-        lower_id = tool_node.lower()
-        if "compatx" in lower_id:
-            for schema_node_id in schema_node_ids:
-                edges.append(_edge(edge_kind="validates", from_node_id=tool_node, to_node_id=schema_node_id))
-        if "repox" in lower_id or "auditx" in lower_id:
-            for target_id in policy_node_ids + contract_node_ids:
-                edges.append(_edge(edge_kind="enforces", from_node_id=tool_node, to_node_id=target_id))
-        if "testx" in lower_id:
-            for target_id in policy_node_ids + contract_node_ids:
-                edges.append(_edge(edge_kind="validates", from_node_id=tool_node, to_node_id=target_id))
+    available_tool_node_ids = set(
+        str(node.get("node_id"))
+        for node in nodes
+        if str(node.get("node_kind", "")) == "tool"
+    )
+    for tool_node in sorted(node_id for node_id in TOPOLOGY_COMPATX_VALIDATOR_NODE_IDS if node_id in available_tool_node_ids):
+        for schema_node_id in schema_node_ids:
+            edges.append(_edge(edge_kind="validates", from_node_id=tool_node, to_node_id=schema_node_id))
+    for tool_node in sorted(node_id for node_id in TOPOLOGY_POLICY_ENFORCER_NODE_IDS if node_id in available_tool_node_ids):
+        for target_id in policy_node_ids + contract_node_ids:
+            edges.append(_edge(edge_kind="enforces", from_node_id=tool_node, to_node_id=target_id))
+    for tool_node in sorted(node_id for node_id in TOPOLOGY_CONTRACT_VALIDATOR_NODE_IDS if node_id in available_tool_node_ids):
+        for target_id in policy_node_ids + contract_node_ids:
+            edges.append(_edge(edge_kind="validates", from_node_id=tool_node, to_node_id=target_id))
 
     # Module/schema/registry textual dependency approximation.
     schema_tokens = dict(
