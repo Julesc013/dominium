@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 747,
+      "finding_count": 748,
       "recommended_actions": {
-        "DOC_FIX": 747
+        "DOC_FIX": 748
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 747
+        "WARN": 748
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -748,6 +748,27 @@
         "RISK": 11
       }
     },
+    "INV-LOGIC-WIRING-USES-NETWORKGRAPH": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "MOVE_TO_NETWORKGRAPH": 2
+      },
+      "sample_findings": [
+        {
+          "category": "logic.adhoc_wiring_smell",
+          "finding_id": "E314_AD_HOC_WIRING_SMELL:0001",
+          "location": "src/logic/eval/common.py"
+        },
+        {
+          "category": "logic.adhoc_wiring_smell",
+          "finding_id": "E314_AD_HOC_WIRING_SMELL:0002",
+          "location": "src/logic/eval/propagate_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 2
+      }
+    },
     "INV-LOSS-MAPPED-TO-HEAT": {
       "finding_count": 2,
       "recommended_actions": {
@@ -1215,19 +1236,29 @@
       }
     },
     "INV-NO-CARRIER-SEMANTIC-BIAS": {
-      "finding_count": 1,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 1
+        "REWRITE": 3
       },
       "sample_findings": [
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0001",
           "location": "src/logic/element/logic_element_validator.py"
+        },
+        {
+          "category": "logic.carrier_bias_smell",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0002",
+          "location": "src/logic/eval/propagate_engine.py"
+        },
+        {
+          "category": "logic.carrier_bias_smell",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0003",
+          "location": "tools/logic/tool_run_logic_eval_stress.py"
         }
       ],
       "severities": {
-        "RISK": 1
+        "RISK": 3
       }
     },
     "INV-NO-DIRECT-ARTIFACT-DELIVERY": {
@@ -1535,6 +1566,22 @@
         "RISK": 2
       }
     },
+    "INV-NO-STATE-UPDATES-OUTSIDE-COMMIT": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ROUTE_THROUGH_PROCESS": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.commit_phase_bypass_smell",
+          "finding_id": "E317_COMMIT_PHASE_BYPASS_SMELL:0001",
+          "location": "src/logic/eval/compute_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
+      }
+    },
     "INV-NO-TRAIN-SPECIALCASE": {
       "finding_count": 4,
       "recommended_actions": {
@@ -1616,6 +1663,32 @@
       ],
       "severities": {
         "RISK": 6
+      }
+    },
+    "INV-NO-UNDECLARED-SCHEMA": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
+          "location": "schema/logic/logic_eval_record.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
+          "location": "schema/logic/logic_network_runtime_state.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
+          "location": "schema/logic/logic_throttle_event.schema"
+        }
+      ],
+      "severities": {
+        "RISK": 3
       }
     },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
