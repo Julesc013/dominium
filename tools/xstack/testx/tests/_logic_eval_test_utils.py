@@ -72,6 +72,18 @@ def load_eval_inputs(repo_root: str) -> dict:
     }
 
 
+def load_compile_inputs(repo_root: str) -> dict:
+    return {
+        "compiled_type_registry_payload": _load_json(repo_root, "data/registries/compiled_type_registry.json"),
+        "verification_procedure_registry_payload": _load_json(
+            repo_root, "data/registries/verification_procedure_registry.json"
+        ),
+        "logic_compile_policy_registry_payload": _load_json(
+            repo_root, "data/registries/logic_compile_policy_registry.json"
+        ),
+    }
+
+
 def make_chain_network(
     *,
     network_id: str,
@@ -364,3 +376,177 @@ def make_relay_feedback_oscillator_network(*, network_id: str) -> tuple[dict, di
         "compute_runtime_state": {},
     }
     return binding, logic_network_state
+
+
+def make_scalar_comparator_network(*, network_id: str) -> tuple[dict, dict]:
+    binding = binding_row(
+        network_id=network_id,
+        graph_id="graph.{}".format(network_id),
+        policy_id="logic.policy.default",
+        extensions={"validation_status": "validated", "logic_policy_id": "logic.default"},
+    )
+    graph = graph_row(
+        graph_id=binding["graph_id"],
+        nodes=[
+            node_row(node_id="node.source.value", node_kind="junction"),
+            node_row(node_id="node.source.threshold", node_kind="junction"),
+            node_row(
+                node_id="node.comparator.in.value",
+                node_kind="port_in",
+                element_instance_id="inst.logic.comparator.1",
+                port_id="in.value",
+                payload_extensions={"element_definition_id": "logic.comparator_scalar"},
+            ),
+            node_row(
+                node_id="node.comparator.in.threshold",
+                node_kind="port_in",
+                element_instance_id="inst.logic.comparator.1",
+                port_id="in.threshold",
+                payload_extensions={"element_definition_id": "logic.comparator_scalar"},
+            ),
+            node_row(
+                node_id="node.comparator.out.gte",
+                node_kind="port_out",
+                element_instance_id="inst.logic.comparator.1",
+                port_id="out.gte",
+                payload_extensions={"element_definition_id": "logic.comparator_scalar"},
+            ),
+        ],
+        edges=[
+            edge_row(
+                edge_id="edge.scalar.value",
+                from_node_id="node.source.value",
+                to_node_id="node.comparator.in.value",
+                edge_kind="link",
+                signal_type_id="signal.scalar",
+            ),
+            edge_row(
+                edge_id="edge.scalar.threshold",
+                from_node_id="node.source.threshold",
+                to_node_id="node.comparator.in.threshold",
+                edge_kind="link",
+                signal_type_id="signal.scalar",
+            ),
+        ],
+    )
+    logic_network_state = {
+        "logic_network_graph_rows": [graph],
+        "logic_network_binding_rows": [binding],
+        "logic_network_validation_records": [
+            {
+                "tick": 0,
+                "network_id": network_id,
+                "validation_hash": "comparator.validated",
+                "loop_classifications": [],
+            }
+        ],
+        "logic_network_change_records": [],
+        "logic_network_explain_artifact_rows": [],
+        "compute_runtime_state": {},
+    }
+    return binding, logic_network_state
+
+
+def make_flip_flop_network(*, network_id: str) -> tuple[dict, dict]:
+    binding = binding_row(
+        network_id=network_id,
+        graph_id="graph.{}".format(network_id),
+        policy_id="logic.policy.default",
+        extensions={"validation_status": "validated", "logic_policy_id": "logic.default"},
+    )
+    graph = graph_row(
+        graph_id=binding["graph_id"],
+        nodes=[
+            node_row(
+                node_id="node.flipflop.in.clock",
+                node_kind="port_in",
+                element_instance_id="inst.logic.flipflop.1",
+                port_id="in.clock",
+                payload_extensions={"element_definition_id": "logic.flip_flop"},
+            ),
+            node_row(
+                node_id="node.flipflop.in.data",
+                node_kind="port_in",
+                element_instance_id="inst.logic.flipflop.1",
+                port_id="in.data",
+                payload_extensions={"element_definition_id": "logic.flip_flop"},
+            ),
+            node_row(
+                node_id="node.flipflop.out.q",
+                node_kind="port_out",
+                element_instance_id="inst.logic.flipflop.1",
+                port_id="out.q",
+                payload_extensions={"element_definition_id": "logic.flip_flop"},
+            ),
+        ],
+        edges=[],
+    )
+    logic_network_state = {
+        "logic_network_graph_rows": [graph],
+        "logic_network_binding_rows": [binding],
+        "logic_network_validation_records": [
+            {
+                "tick": 0,
+                "network_id": network_id,
+                "validation_hash": "flipflop.validated",
+                "loop_classifications": [],
+            }
+        ],
+        "logic_network_change_records": [],
+        "logic_network_explain_artifact_rows": [],
+        "compute_runtime_state": {},
+    }
+    return binding, logic_network_state
+
+
+def seed_signal_requests(*, signal_store_state: dict | None, signal_requests: list[dict], inputs: dict):
+    from src.logic.signal import process_signal_set
+
+    state = dict(signal_store_state or {}) if isinstance(signal_store_state, dict) else None
+    for request in list(signal_requests or []):
+        seeded = process_signal_set(
+            current_tick=int(max(0, int(dict(request).get("tick", 0) or 0))),
+            signal_store_state=state,
+            signal_request=dict(request),
+            signal_type_registry_payload=inputs["signal_type_registry_payload"],
+            carrier_type_registry_payload=inputs["carrier_type_registry_payload"],
+            signal_delay_policy_registry_payload=inputs["signal_delay_policy_registry_payload"],
+            signal_noise_policy_registry_payload=inputs["signal_noise_policy_registry_payload"],
+            bus_encoding_registry_payload=inputs["bus_encoding_registry_payload"],
+            protocol_registry_payload=inputs["protocol_registry_payload"],
+            compute_budget_profile_registry_payload=inputs["compute_budget_profile_registry_payload"],
+            compute_degrade_policy_registry_payload=inputs["compute_degrade_policy_registry_payload"],
+            tolerance_policy_registry_payload=inputs["tolerance_policy_registry_payload"],
+        )
+        state = dict(seeded.get("signal_store_state") or {})
+    return state
+
+
+def compile_logic_network_fixture(*, repo_root: str, network_id: str, logic_network_state: dict, compile_policy_id: str = "compile.logic.default") -> dict:
+    from src.logic.compile import compile_logic_network
+    from src.system import build_state_vector_definition_row, normalize_state_vector_definition_rows
+
+    inputs = load_eval_inputs(repo_root)
+    compile_inputs = load_compile_inputs(repo_root)
+    compile_eval = compile_logic_network(
+        current_tick=0,
+        compile_request={"network_id": network_id, "compile_policy_id": compile_policy_id},
+        logic_network_state=logic_network_state,
+        logic_policy_registry_payload=inputs["logic_policy_registry_payload"],
+        logic_network_policy_registry_payload=inputs["logic_network_policy_registry_payload"],
+        logic_compile_policy_registry_payload=compile_inputs["logic_compile_policy_registry_payload"],
+        compiled_type_registry_payload=compile_inputs["compiled_type_registry_payload"],
+        verification_procedure_registry_payload=compile_inputs["verification_procedure_registry_payload"],
+        logic_element_rows=inputs["logic_element_rows"],
+        logic_behavior_model_rows=inputs["logic_behavior_model_rows"],
+        logic_interface_signature_rows=inputs["logic_interface_signature_rows"],
+        logic_state_machine_rows=inputs["logic_state_machine_rows"],
+        state_vector_definition_rows=normalize_state_vector_definition_rows(inputs["state_vector_definition_rows"]),
+        build_state_vector_definition_row=build_state_vector_definition_row,
+        normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
+    )
+    return {
+        "inputs": inputs,
+        "compile_inputs": compile_inputs,
+        "compile_eval": compile_eval,
+    }
