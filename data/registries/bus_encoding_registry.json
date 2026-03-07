@@ -1,0 +1,50 @@
+{
+  "schema_id": "dominium.registry.bus_encoding_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.bus_encoding_registry",
+    "registry_version": "1.0.0",
+    "bus_encodings": [
+      {
+        "schema_version": "1.0.0",
+        "encoding_id": "encoding.bits",
+        "description": "Ordered bit-vector bus encoding for discrete bundled signal lanes.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "encoding_id": "encoding.uint",
+        "description": "Fixed-width packed unsigned integer bus encoding for deterministic numeric bundles.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "encoding_id": "encoding.struct",
+        "description": "Ordered named-field bus encoding for typed bus structures.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "encoding_id": "encoding.frame",
+        "description": "Fielded frame encoding for future protocol-oriented buses.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC1-3",
+      "registry_driven": true
+    }
+  }
+}

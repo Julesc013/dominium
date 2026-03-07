@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.registry.protocol_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.protocol_registry",
+    "registry_version": "1.0.0",
+    "protocols": [
+      {
+        "schema_version": "1.0.0",
+        "protocol_id": "protocol.none",
+        "description": "No framing or arbitration beyond the declared bus definition.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "protocol_id": "protocol.simple_frame_stub",
+        "description": "Stub framed-bus declaration with header and payload segmentation only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-3",
+          "runtime_status": "stub"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "protocol_id": "protocol.bus_arbitration_stub",
+        "description": "Stub shared-bus arbitration declaration without execution runtime.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-3",
+          "runtime_status": "stub"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC1-3",
+      "registry_driven": true
+    }
+  }
+}
