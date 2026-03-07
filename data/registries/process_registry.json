@@ -6091,6 +6091,114 @@
       "extensions": {
         "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_validate"
       }
+    },
+    {
+      "affected_fields": [
+        "logic.network_runtime_state_rows",
+        "logic.eval_record_rows",
+        "logic.pending_signal_update_rows",
+        "logic.state_update_record_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-4 process that evaluates one validated LogicNetworkGraph in deterministic Sense/Compute/Commit/Propagate order.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "budgeted-evaluation"
+      ],
+      "failure_modes": [
+        "refusal.logic.eval.network_not_found",
+        "refusal.logic.eval.network_not_validated",
+        "refusal.logic.eval.loop_policy",
+        "refusal.logic.eval.timing_violation"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_network_state",
+          "ref_id": "dominium.state.logic.network_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "signal_store_state",
+          "ref_id": "dominium.state.logic.signal_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "evaluation_request",
+          "ref_id": "dominium.schema.logic.logic_network_runtime_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "logic_eval_records",
+          "ref_id": "dominium.schema.logic.logic_eval_record@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "logic_throttle_events",
+          "ref_id": "dominium.schema.logic.logic_throttle_event@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_network_evaluate",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/eval/logic_eval_engine.py::process_logic_network_evaluate"
+      }
+    },
+    {
+      "affected_fields": [
+        "state_vector_snapshot_rows",
+        "logic.state_update_record_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-4 commit-phase process that serializes explicit state-vector updates for deterministic logic evaluation.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "statevec-explicit"
+      ],
+      "failure_modes": [
+        "refusal.logic.statevec_update_invalid",
+        "refusal.statevec.invalid",
+        "refusal.statevec.missing_definition",
+        "refusal.statevec.version_mismatch"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "state_update_request",
+          "ref_id": "dominium.state.state_vector_snapshot_rows",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "state_vector_snapshot_rows",
+          "ref_id": "dominium.state.state_vector_snapshot_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.statevec_update",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/eval/commit_engine.py::process_statevec_update"
+      }
     }
   ],
   "schema_id": "dominium.schema.process_registry",
