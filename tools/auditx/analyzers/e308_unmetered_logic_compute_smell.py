@@ -45,7 +45,7 @@ def _read_json(repo_root: str, rel_path: str):
 
 
 def _logic_runtime_paths(repo_root: str):
-    for root_rel in ("src/logic", "tools/logic"):
+    for root_rel in ("src/logic/eval",):
         abs_root = os.path.join(repo_root, root_rel.replace("/", os.sep))
         if not os.path.isdir(abs_root):
             continue
@@ -53,11 +53,10 @@ def _logic_runtime_paths(repo_root: str):
             for name in sorted(files):
                 if not name.endswith(".py"):
                     continue
+                if name == "__init__.py":
+                    continue
                 abs_path = os.path.join(walk_root, name)
                 rel_path = _norm(os.path.relpath(abs_path, repo_root))
-                rel_lower = rel_path.lower()
-                if "transducer" in rel_lower or "carrier" in rel_lower:
-                    continue
                 yield rel_path
 
 
@@ -154,7 +153,12 @@ def run(graph, repo_root, changed_files=None):
                     )
                 )
 
-    execution_tokens = ("evaluate_logic", "logic_tick", "propagate_signal", "commit_logic", "compute_next")
+    execution_tokens = (
+        "process_logic_network_evaluate(",
+        "evaluate_logic_compute_phase(",
+        "schedule_logic_output_propagation(",
+        "flush_due_logic_signal_updates(",
+    )
     delegated_budget_tokens = (
         "request_compute(",
         "request_logic_element_compute(",

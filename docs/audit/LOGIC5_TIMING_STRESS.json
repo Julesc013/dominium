@@ -1,0 +1,16 @@
+{
+  "deterministic_fingerprint": "1e6a03cb9a281fb81463f715c0b0e1ec4529d5deddc4d91c56d5d43d27a7ec3e",
+  "final_signal_hash": "6b8ae90c774fe08ceedaa4b3b11f2ebf18bbed76eccc5709268f71c2f7b3167a",
+  "final_signal_store_hash": "6b8ae90c774fe08ceedaa4b3b11f2ebf18bbed76eccc5709268f71c2f7b3167a",
+  "logic_oscillation_record_hash_chain": "93ddea66669718d2656093482eaea9a1de25b5133befee67f94610935af59953",
+  "logic_timing_violation_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "logic_watchdog_timeout_hash_chain": "11dcd57c3417d84618abf6a94e2240567f567209fe39e80a5e9d58d92198912c",
+  "network_id": "net.logic.timing.stress",
+  "oscillation_record_count": 2,
+  "oscillator_count": 12,
+  "result": "complete",
+  "scenario_id": "scenario.logic5.timing.d851e9f13216",
+  "tick_count": 8,
+  "timing_violation_count": 0,
+  "watchdog_timeout_count": 12
+}

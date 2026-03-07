@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 748,
+      "finding_count": 749,
       "recommended_actions": {
-        "DOC_FIX": 748
+        "DOC_FIX": 749
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 748
+        "WARN": 749
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -1236,9 +1236,9 @@
       }
     },
     "INV-NO-CARRIER-SEMANTIC-BIAS": {
-      "finding_count": 3,
+      "finding_count": 4,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 4
       },
       "sample_findings": [
         {
@@ -1255,10 +1255,15 @@
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0003",
           "location": "tools/logic/tool_run_logic_eval_stress.py"
+        },
+        {
+          "category": "logic.carrier_bias_smell",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0004",
+          "location": "tools/logic/tool_run_logic_timing_stress.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 4
       }
     },
     "INV-NO-DIRECT-ARTIFACT-DELIVERY": {
@@ -1682,9 +1687,9 @@
       }
     },
     "INV-PHASE-CHANGE-MODEL-ONLY": {
-      "finding_count": 3,
+      "finding_count": 5,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 5
       },
       "sample_findings": [
         {
@@ -1700,11 +1705,21 @@
         {
           "category": "architecture.inline_phase_change_smell",
           "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0003",
+          "location": "src/logic/eval/logic_eval_engine.py"
+        },
+        {
+          "category": "architecture.inline_phase_change_smell",
+          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0004",
+          "location": "src/logic/timing/compute_hooks.py"
+        },
+        {
+          "category": "architecture.inline_phase_change_smell",
+          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0005",
           "location": "tools/xstack/sessionx/scheduler.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 5
       }
     },
     "INV-PHYS-PROFILE-DECLARED": {

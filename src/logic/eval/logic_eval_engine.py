@@ -429,6 +429,7 @@ def process_logic_network_evaluate(
     oscillation_record_rows = list(eval_state.get("logic_oscillation_record_rows") or [])
     timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
     watchdog_timeout_event_rows = list(eval_state.get("logic_watchdog_timeout_event_rows") or [])
+    network_timing_violation_rows = []
     explain_rows = []
     timing_compute_units_used = 0
     for event in as_list(compute_result.get("throttle_events")):
@@ -574,6 +575,7 @@ def process_logic_network_evaluate(
         )
         if timing_row:
             timing_violation_event_rows.append(timing_row)
+            network_timing_violation_rows.append(timing_row)
     explain_rows.extend(
         [dict(row) for row in as_list(timing_enforcement.get("explain_artifact_rows")) if isinstance(row, Mapping)]
     )
@@ -647,10 +649,11 @@ def process_logic_network_evaluate(
             )
             if timing_row:
                 timing_violation_event_rows.append(timing_row)
+                network_timing_violation_rows.append(timing_row)
 
     timing_violation_action = token(policy_extensions.get("timing_violation_action")) or "force_roi"
     timing_mode = token(logic_policy_row.get("timing_mode")) or "sync_tick"
-    if timing_violation_event_rows:
+    if network_timing_violation_rows:
         if timing_violation_action == "refuse":
             combined_runtime_extensions.update(
                 {
