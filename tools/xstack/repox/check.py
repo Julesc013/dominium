@@ -510,6 +510,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-FORENSICS-DERIVED-ONLY",
     "INV-NO-BESPOKE-COMPILER",
     "INV-COMPILED-MODEL-REQUIRES-PROOF",
+    "INV-COMPILED-LOGIC-REQUIRES-PROOF",
+    "INV-NO-SILENT-FALLBACK",
+    "INV-LOGIC-COMPILE-DETERMINISTIC",
     "INV-STATE-VECTOR-DECLARED-FOR-SYSTEM",
     "INV-NO-UNDECLARED-STATE-MUTATION",
     "INV-ALL-FAILURES-LOGGED",
@@ -840,6 +843,8 @@ AUDITX_HARD_FAIL_ANALYZER_RULES = {
     "E277_INVARIANT_CHECK_SKIPPED_SMELL": "INV-SYS-INVARIANTS-ALWAYS-CHECKED",
     "E278_CUSTOM_COMPILATION_SMELL": "INV-NO-BESPOKE-COMPILER",
     "E279_MISSING_EQUIVALENCE_PROOF_SMELL": "INV-COMPILED-MODEL-REQUIRES-PROOF",
+    "E319_SILENT_COMPILED_INVALIDATION_SMELL": "INV-NO-SILENT-FALLBACK",
+    "E320_MISSING_LOGIC_EQUIVALENCE_PROOF_SMELL": "INV-COMPILED-LOGIC-REQUIRES-PROOF",
     "E280_OUTPUT_DEPENDS_ON_UNDECLARED_FIELD_SMELL": "INV-NO-UNDECLARED-STATE-MUTATION",
     "E281_UNREGISTERED_WORKFLOW_SMELL": "INV-NO-IMPLICIT-WORKFLOWS",
     "E282_PROCESS_STEP_WITHOUT_COST_SMELL": "INV-PROCESS-STEPS-MAP-TO-ACTION-GRAMMAR",
@@ -4398,6 +4403,203 @@ def _append_logic_timing_invariant_findings(
                 )
             )
             break
+
+
+def _append_logic_compile_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    proof_rule_id = "INV-COMPILED-LOGIC-REQUIRES-PROOF"
+    fallback_rule_id = "INV-NO-SILENT-FALLBACK"
+    deterministic_rule_id = "INV-LOGIC-COMPILE-DETERMINISTIC"
+
+    required_files = (
+        ("docs/logic/LOGIC_COMPILATION_MODEL.md", proof_rule_id),
+        ("data/registries/logic_compile_policy_registry.json", deterministic_rule_id),
+        ("src/logic/compile/logic_compiler.py", deterministic_rule_id),
+        ("src/logic/compile/logic_proof_engine.py", proof_rule_id),
+        ("src/logic/eval/logic_eval_engine.py", fallback_rule_id),
+        ("src/control/proof/control_proof_bundle.py", proof_rule_id),
+        ("tools/logic/tool_replay_logic_window.py", proof_rule_id),
+        ("tools/logic/tool_replay_compiled_logic_window.py", deterministic_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-6 compilation enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_rel = "docs/logic/LOGIC_COMPILATION_MODEL.md"
+    doctrine_text = _file_text(repo_root, doctrine_rel).lower()
+    for token, rule_id, message in (
+        ("compilation is invalid without proof", proof_rule_id, "logic compilation doctrine must forbid proofless compiled models"),
+        ("must not silently change path", fallback_rule_id, "logic compilation doctrine must forbid silent compiled fallback"),
+        ("same source hash", deterministic_rule_id, "logic compilation doctrine must declare deterministic source-hash reproducibility"),
+        ("debug inspection", fallback_rule_id, "logic compilation doctrine must explain debug-driven forced expand"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=doctrine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    compiler_rel = "src/logic/compile/logic_compiler.py"
+    compiler_text = _file_text(repo_root, compiler_rel)
+    for token, rule_id, message in (
+        ("_build_compile_source(", deterministic_rule_id, "logic compiler must canonicalize compile sources deterministically"),
+        ("_choose_compile_target(", deterministic_rule_id, "logic compiler must choose compile targets through deterministic policy logic"),
+        ("build_logic_equivalence_proof_row(", proof_rule_id, "logic compiler must emit equivalence proofs"),
+        ("proof_requirement_enforced", proof_rule_id, "logic compiler must mark proof requirement enforcement on compiled outputs"),
+        ("build_logic_compiled_invalid_explain_artifact(", fallback_rule_id, "compiled invalidation must emit explain artifacts"),
+        ("build_logic_compiled_forced_expand_event(", fallback_rule_id, "compiled invalidation must log forced expand events"),
+        ("canonical_sha256(", deterministic_rule_id, "logic compiler must derive stable hashes for source and compiled artifacts"),
+    ):
+        if token in compiler_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=compiler_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    proof_rel = "src/logic/compile/logic_proof_engine.py"
+    proof_text = _file_text(repo_root, proof_rel)
+    for token in ("build_logic_equivalence_proof_row(", "verify_logic_equivalence_proof(", "logic_equivalence_proof_hash("):
+        if token in proof_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proof_rel,
+                line_number=1,
+                snippet=token,
+                message="logic proof engine must emit and verify deterministic equivalence proofs",
+                rule_id=proof_rule_id,
+            )
+        )
+
+    eval_rel = "src/logic/eval/logic_eval_engine.py"
+    eval_text = _file_text(repo_root, eval_rel)
+    for token, message in (
+        ("compiled_fallback_logged", "logic runtime must log explicit compiled-to-L1 fallback"),
+        ("build_logic_compiled_invalid_explain_artifact(", "logic runtime must emit explain artifacts when compiled models invalidate"),
+        ("build_logic_compiled_forced_expand_event(", "logic runtime must log forced expand on compiled invalidation or debug inspect"),
+        ("compiled_path_selected", "logic runtime must expose compiled-path selection explicitly"),
+    ):
+        if token in eval_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=eval_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=fallback_rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, rule_id, message in (
+        ('"process.logic_compile_request"', deterministic_rule_id, "runtime must expose process.logic_compile_request"),
+        ("_refresh_compile_hash_chains(state)", deterministic_rule_id, "logic compile process must refresh compile hash chains"),
+        ("logic_compile_policy_hash_chain", proof_rule_id, "runtime must expose logic compile policy hash chains"),
+        ("forced_expand_event_hash_chain", fallback_rule_id, "runtime must expose forced expand hash chains"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token.strip('"'),
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    replay_rel = "tools/logic/tool_replay_logic_window.py"
+    replay_text = _file_text(repo_root, replay_rel)
+    for token, rule_id in (
+        ("compile_result_hash_chain", proof_rule_id),
+        ("compiled_model_hash_chain", proof_rule_id),
+        ("equivalence_proof_hash_chain", proof_rule_id),
+        ("logic_compile_policy_hash_chain", proof_rule_id),
+        ("forced_expand_event_hash_chain", fallback_rule_id),
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_rel,
+                line_number=1,
+                snippet=token,
+                message="logic replay tool must surface LOGIC-6 proof and forced-expand hash chains",
+                rule_id=rule_id,
+            )
+        )
+
+    compiled_replay_rel = "tools/logic/tool_replay_compiled_logic_window.py"
+    compiled_replay_text = _file_text(repo_root, compiled_replay_rel)
+    for token, rule_id, message in (
+        ("compile_logic_network(", deterministic_rule_id, "compiled replay tool must compile logic networks deterministically"),
+        ("compiled_path_observed", fallback_rule_id, "compiled replay tool must refuse fallback-only windows"),
+        ("signals_match", deterministic_rule_id, "compiled replay tool must compare runtime outputs against L1"),
+        ("states_match", deterministic_rule_id, "compiled replay tool must compare state-vector results against L1"),
+    ):
+        if token in compiled_replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=compiled_replay_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    proof_bundle_rel = "src/control/proof/control_proof_bundle.py"
+    proof_bundle_text = _file_text(repo_root, proof_bundle_rel)
+    for token in ("compile_result_hash_chain", "logic_compile_policy_hash_chain", "forced_expand_event_hash_chain"):
+        if token in proof_bundle_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proof_bundle_rel,
+                line_number=1,
+                snippet=token,
+                message="control proof bundles must retain logic compile proof and forced-expand chain surfaces",
+                rule_id=proof_rule_id if "policy" in token or "compile_result" in token else fallback_rule_id,
+            )
+        )
 
 
 def _derived_artifact_files(repo_root: str) -> List[str]:
@@ -26018,6 +26220,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_timing_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_compile_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
