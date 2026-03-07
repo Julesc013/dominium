@@ -17,7 +17,7 @@ Superseded By: none
 - `python -c "from src.control.proof.control_proof_bundle import build_control_proof_bundle_from_markers; from tools.xstack.compatx.validator import validate_instance; ..."`
 
 ## Gate Outcome
-- RepoX FAST: `refusal` pre-commit on `INV-WORKTREE-HYGIENE` only; no additional FAST blocker surfaced in the repaired paths.
+- RepoX FAST: `PASS` on the clean post-commit tree (`findings=17`, all non-blocking warnings).
 - AuditX FAST: `PASS`
 - Impacted FAST/repair subset: `PASS` (11/11 targeted tests across control, system, electric, planning, reality, and net)
 - Control proof bundle schema sanity: `PASS`
@@ -41,3 +41,4 @@ Superseded By: none
 ## Notes
 - No new domains, solvers, or mode-flag branches were introduced.
 - Schema impact is additive-only: the control proof bundle schema now matches the runtime payload already in circulation.
+- The hosted-size refusal introduced by the tracked SYS stress blob was cleared by replacing the raw archive at tip with compact manifests.

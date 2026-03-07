@@ -35,7 +35,8 @@
 ## Validation Summary
 - AuditX FAST: `PASS`
 - AuditX STRICT: `PASS`
-- RepoX FAST/STRICT pre-commit: dirty-worktree refusal only
+- RepoX FAST: `PASS` (`findings=17`, warnings only)
+- RepoX STRICT: `PASS` (`findings=17`, warnings only)
 - Targeted FULL repair subset: `PASS` (11/11)
 - Control proof bundle validation: `PASS`
 - Archived GR3 FULL stress/reference artifacts: retained and still referenced by the audit set
@@ -44,7 +45,6 @@
 ## Remaining Risks
 1. The umbrella `tools/xstack/testx/runner.py --profile FAST/FULL` and `tools/xstack/run.py strict/full` commands remain expensive in this environment and were not re-established as the repair authority in this pass.
 2. Broad-window FULL stress evidence is still the archived GR3 artifact set rather than a fresh rerun from this repair commit.
-3. RepoX requires a clean tree to clear `INV-WORKTREE-HYGIENE`; that verification is expected immediately after the repair commit.
 
 ## LOGIC-0 Readiness
 - Compute budgets in place: yes
@@ -57,4 +57,4 @@
 
 ## GO / NO-GO
 - GO for GR3 repair closure on the targeted failure cluster.
-- Conditional GO for final LOGIC-0 cutover remains dependent on clean-tree RepoX rerun and any broader CI/full-lane verification the project requires beyond this repair pass.
+- Conditional GO for final LOGIC-0 cutover remains dependent on any broader CI/full-lane verification the project requires beyond this repair pass.

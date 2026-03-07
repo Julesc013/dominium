@@ -11,7 +11,7 @@
 - `python tools/xstack/testx/runner.py --repo-root . --profile FULL --cache off --subset testx.control.plan_creation_deterministic,testx.control.manual_placement_via_plan`
 
 ## Results
-- RepoX STRICT: `refusal` pre-commit on `INV-WORKTREE-HYGIENE` only.
+- RepoX STRICT: `PASS` on the clean post-commit tree (`findings=17`, all non-blocking warnings).
 - AuditX STRICT: `PASS`
 - GR3 strict-impact subset: `PASS`
 
@@ -19,4 +19,4 @@
 - The prior `E300_ORPHAN_FEATURE_SMELL`/`INV-CHANGE-MUST-REFERENCE-DEMAND` refusal was cleared by [`docs/impact/GR3_NO_STOPS_HARDENING.md`](/d:/Projects/Dominium/dominium/docs/impact/GR3_NO_STOPS_HARDENING.md).
 - No mode flags were introduced; profile/authority-driven behavior remains intact.
 - No direct truth mutation shortcuts were added; the repair set stayed inside existing process/control/protection paths.
-- The remaining RepoX refusal in this report is environmental, not semantic: the tree is dirty while regenerated audit artifacts are awaiting commit.
+- The hosted-size blocker from the raw SYS archive is cleared in the current tree by the committed manifest replacements.
