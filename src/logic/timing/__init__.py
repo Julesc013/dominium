@@ -4,6 +4,10 @@ from src.logic.timing.oscillation_engine import (
     build_logic_timing_state_hash,
     detect_network_oscillation,
 )
+from src.logic.timing.constraint_engine import (
+    declared_timing_constraint,
+    evaluate_logic_timing_constraints,
+)
 from src.logic.timing.pattern_engine import (
     build_watchdog_definition_row,
     detect_watchdog_timeout_transitions,
@@ -16,8 +20,10 @@ from src.logic.timing.pattern_engine import (
 __all__ = [
     "build_logic_timing_state_hash",
     "build_watchdog_definition_row",
+    "declared_timing_constraint",
     "detect_watchdog_timeout_transitions",
     "detect_network_oscillation",
+    "evaluate_logic_timing_constraints",
     "normalize_watchdog_definition_rows",
     "synchronizer_stage_count",
     "timing_pattern_id_for_element",

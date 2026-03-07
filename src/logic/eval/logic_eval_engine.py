@@ -19,12 +19,15 @@ from .propagate_engine import flush_due_logic_signal_updates, schedule_logic_out
 from .runtime_state import (
     build_logic_eval_record_row,
     build_logic_network_runtime_state_row,
+    build_logic_timing_violation_event_row,
     build_logic_throttle_event_row,
     normalize_logic_eval_state,
     normalize_logic_network_runtime_state_rows,
+    normalize_logic_timing_violation_event_rows,
     normalize_logic_throttle_event_rows,
 )
 from .sense_engine import build_logic_sense_snapshot
+from src.logic.timing import evaluate_logic_timing_constraints
 
 
 PROCESS_LOGIC_NETWORK_EVALUATE = "process.logic_network_evaluate"
@@ -365,6 +368,7 @@ def process_logic_network_evaluate(
     )
 
     throttle_event_rows = list(eval_state.get("logic_throttle_event_rows") or [])
+    timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
     explain_rows = []
     for event in as_list(compute_result.get("throttle_events")):
         if not isinstance(event, Mapping):
@@ -394,6 +398,29 @@ def process_logic_network_evaluate(
                 )
             )
 
+    timing_enforcement = evaluate_logic_timing_constraints(
+        current_tick=tick,
+        network_id=network_id,
+        binding_row=binding_row,
+        logic_policy_row=logic_policy_row,
+        propagation_result=propagation_result,
+    )
+    for event in as_list(timing_enforcement.get("timing_violation_events")):
+        if not isinstance(event, Mapping):
+            continue
+        timing_row = build_logic_timing_violation_event_row(
+            tick=as_int(event.get("tick"), tick),
+            network_id=token(event.get("network_id")) or network_id,
+            reason=token(event.get("reason")) or "max_propagation_ticks_exceeded",
+            deterministic_fingerprint="",
+            extensions=as_map(event.get("extensions")),
+        )
+        if timing_row:
+            timing_violation_event_rows.append(timing_row)
+    explain_rows.extend(
+        [dict(row) for row in as_list(timing_enforcement.get("explain_artifact_rows")) if isinstance(row, Mapping)]
+    )
+
     runtime_rows[network_id] = build_logic_network_runtime_state_row(
         network_id=network_id,
         last_evaluated_tick=tick,
@@ -403,6 +430,7 @@ def process_logic_network_evaluate(
             "snapshot_hash": token(sense_snapshot.get("snapshot_hash")),
             "scheduled_outputs": int(propagation_result.get("scheduled_count", 0)),
             "delivered_inputs": int(flush_result.get("delivered_count", 0)),
+            **as_map(timing_enforcement.get("runtime_extensions")),
         },
     )
     eval_record_rows = list(eval_state.get("logic_eval_record_rows") or []) + [
@@ -416,6 +444,8 @@ def process_logic_network_evaluate(
             extensions={
                 "scheduled_outputs": int(propagation_result.get("scheduled_count", 0)),
                 "delivered_inputs": int(flush_result.get("delivered_count", 0)),
+                "timing_violation_count": int(len(timing_violation_event_rows)),
+                "max_propagation_delay_ticks": int(propagation_result.get("max_propagation_delay_ticks", 0)),
             },
         )
     ]
@@ -424,6 +454,7 @@ def process_logic_network_evaluate(
             "logic_network_runtime_state_rows": list(runtime_rows.values()),
             "logic_eval_record_rows": eval_record_rows,
             "logic_throttle_event_rows": normalize_logic_throttle_event_rows(throttle_event_rows),
+            "logic_timing_violation_event_rows": normalize_logic_timing_violation_event_rows(timing_violation_event_rows),
             "logic_state_update_record_rows": list(commit_result.get("state_update_record_rows") or []),
             "logic_pending_signal_update_rows": propagation_result.get("logic_pending_signal_update_rows"),
             "logic_propagation_trace_artifact_rows": propagation_result.get("logic_propagation_trace_artifact_rows"),

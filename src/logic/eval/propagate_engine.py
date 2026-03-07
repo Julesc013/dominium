@@ -108,6 +108,8 @@ def schedule_logic_output_propagation(
     pending_rows = list(pending_signal_update_rows or [])
     trace_rows = list(propagation_trace_rows or [])
     scheduled_count = 0
+    max_propagation_delay_ticks = 0
+    max_deliver_tick = int(current_tick)
     for row in (dict(item) for item in as_list(as_map(compute_result).get("element_results")) if isinstance(item, Mapping)):
         element_instance_id = token(row.get("element_instance_id"))
         output_nodes = dict(element_nodes.get(element_instance_id) or {})
@@ -131,6 +133,11 @@ def schedule_logic_output_propagation(
             for delivery in deliveries:
                 scheduled_count += 1
                 deliver_tick = int(max(int(current_tick) + 1, int(current_tick) + as_int(delivery.get("deliver_delay_ticks"), 1)))
+                max_propagation_delay_ticks = max(
+                    int(max_propagation_delay_ticks),
+                    int(max(1, as_int(delivery.get("deliver_delay_ticks"), 1))),
+                )
+                max_deliver_tick = max(int(max_deliver_tick), int(deliver_tick))
                 pending_rows.append(
                     build_logic_pending_signal_update_row(
                         network_id=network_id,
@@ -177,6 +184,8 @@ def schedule_logic_output_propagation(
         "logic_pending_signal_update_rows": normalize_logic_pending_signal_update_rows(pending_rows),
         "logic_propagation_trace_artifact_rows": normalize_logic_propagation_trace_artifact_rows(trace_rows),
         "scheduled_count": int(scheduled_count),
+        "max_propagation_delay_ticks": int(max_propagation_delay_ticks),
+        "max_deliver_tick": int(max_deliver_tick),
     }
 
 
