@@ -16,6 +16,10 @@
 - Added deterministic planner capability bindings in [`tools/xstack/testx/tests/plan_testlib.py`](/d:/Projects/Dominium/dominium/tools/xstack/testx/tests/plan_testlib.py).
 - Added deterministic quantity-dimension bindings in [`tools/xstack/testx/tests/lod_invariance_testlib.py`](/d:/Projects/Dominium/dominium/tools/xstack/testx/tests/lod_invariance_testlib.py).
 
+### Audit artifact packaging
+- Replaced the hosted-unsafe raw SYS stress archive with committed manifests in [`docs/audit/GR3_FULL_SYS_STRESS_MANIFEST.json`](/d:/Projects/Dominium/dominium/docs/audit/GR3_FULL_SYS_STRESS_MANIFEST.json) and [`docs/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS_MANIFEST.json`](/d:/Projects/Dominium/dominium/docs/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS_MANIFEST.json).
+- Preserved raw-archive SHA-256 identifiers, deterministic fingerprints, and key event counts so the GR3 evidence chain remains inspectable without keeping 500 MB to 750 MB blobs at tip.
+
 ## Drift Prevented
 - Prevented filesystem-state drift in control resolution output hashes.
 - Prevented valid control proof bundles from being rejected by stale schema coverage.
@@ -35,6 +39,7 @@
 - Targeted FULL repair subset: `PASS` (11/11)
 - Control proof bundle validation: `PASS`
 - Archived GR3 FULL stress/reference artifacts: retained and still referenced by the audit set
+- SYS stress evidence at tip: represented by compact manifests to satisfy hosted blob limits
 
 ## Remaining Risks
 1. The umbrella `tools/xstack/testx/runner.py --profile FAST/FULL` and `tools/xstack/run.py strict/full` commands remain expensive in this environment and were not re-established as the repair authority in this pass.

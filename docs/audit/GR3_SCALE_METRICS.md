@@ -1,11 +1,11 @@
 # GR3 Scale Metrics
 
 ## SYS
-Source: `GR3_FULL_SYS_STRESS.json`
+Source: `GR3_FULL_SYS_STRESS_MANIFEST.json`
 - assertions: all pass
 - proof hash summary recorded for collapse/expand, macro outputs, forced expand, certification, health
 
-Source: `GR3_FULL_SYS_CROSS_SHARD_STRESS.json`
+Source: `GR3_FULL_SYS_CROSS_SHARD_STRESS_MANIFEST.json`
 - assertions: all pass
 - cross-shard reduced-window deterministic pass
 
@@ -79,3 +79,4 @@ Source: `GR3_FULL_PROV_STRESS.json`
 ## Hotspots
 - Large-window SYS/FLUID/PROV stress invocations exceeded environment timeout cap.
 - Reduced deterministic windows were used for completed evidence runs.
+- SYS raw archives are now represented by committed manifests because the original raw JSON blobs exceeded hosted Git size limits.

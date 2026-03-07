@@ -8,15 +8,225 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1509
-- Severities: RISK=623, VIOLATION=9, WARN=877
-- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=13, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=3, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=743, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=3, reliability.silent_reaction_smell=3, schema_usage=160, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 2208
+- Severities: INFO=223, RISK=653, VIOLATION=101, WARN=1231
+- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=13, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=3, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=743, capability_bypass_smell=1, capability_misuse=140, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=131, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, legacy_contamination=11, materials.hardcoded_blueprint_smell=19, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, mode_flag_smell=64, net.precision_leak_smell=2, net.truth_over_net_smell=6, ownership_boundary=9, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=80, reliability.silent_reaction_smell=3, schema_usage=160, security.boundary_io=29, security.privilege_bypass=9, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1, terminology_misuse=1, ui_parity=220
 
 ## Top Findings
 
 - `A4_DERIVED_ARTIFACT_CONTRACT:0001` VIOLATION `A4_DERIVED_ARTIFACT_CONTRACT` `semantic.derived_artifact_contract` (docs/audit/auditx/FINDINGS.json)
   - Canonical artifact contains forbidden run-meta fields.
   - Sample keys: findings[0].created_utc, findings[1].created_utc, findings[2].created_utc, findings[3].created_utc, findings[4].created_utc
+- `C1:0001` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - bypass_law_profile
+- `C1:0002` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - disable_epistemic_guard
+- `C1:0003` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - override_authority_state
+- `C1:0004` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - bypass_law_profile
+- `C1:0005` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - disable_epistemic_guard
+- `C1:0006` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - override_authority_state
+- `C1:0007` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - bypass_law_profile
+- `C1:0008` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - disable_epistemic_guard
+- `C1:0009` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - override_authority_state
+- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-empty-path/artifacts/repox_runner/proof_manifest.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0002` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-empty-path/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0003` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-empty-path/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0004` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-random-cwd/artifacts/repox_runner/proof_manifest.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0005` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-random-cwd/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0006` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-random-cwd/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0007` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/auditx/meta_genre0_probe/FINDINGS.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0008` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/auditx/repox_probe/FINDINGS.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0009` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-0e62fd3b0a5ad5c6/auditx/entries/dd11229589367f55a2d3800b5384e3fa4269a97ff8d1c4e5de39b1746ecf0a12.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0010` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/09d537a255add88415a6a6cd4de6298c1d500287a9b08cbed11b593654377af2.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0011` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/2644dd46e2b31cb15fd66d5a49b6e5206ed3874115fb04ee57601fc3c2eea922.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0012` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/3bc997c72007d81f38b386e88e032f39ffb1e851b736a3992c914ce78582f007.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0013` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/563fbf02a6b83e2d075e8c68f74956b71ea4b3d9cd9ed7a4c2ebb2f5dd70f079.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0014` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/6232c28682c044975cd136b9997c3865a65c9dca09007cced1b74a1f566a915f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0015` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/64350b82515d306ad7fea2244ba7726691b9171dc2c62c9b43b16303a8e88157.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0016` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/6d3df2bea179eb877acd61fe451a5a1a1c1b3ea5bb4ab2614c51059404421ced.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0017` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/7d1f369bb9f412864c19741f4939c964beef5e19ee955f2f78e1813b81536721.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0018` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/9479a9a56bbd4ec2931df4a2247adb0a8a5d6c9d24549f7502cc0fd43f7e1a46.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0019` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/9ac066143272f10df5668a80749bd7566c2598054ee350412ea3bbdb22c33687.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0020` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/9e5de1a3a7e520382c6eb460167ccb41ee6e94b6f23eb66bdefa96d62c5c548f.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0021` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/e49cdd59d01a804bc5feadbe6535c273852fdc043e15b05ada806ba3ec6b673d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0022` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/f7ddfb2c5f0ea093117b03549bf25b0b3a96a99aab4e7883e41450ffe3feb5f2.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0023` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/fbbfa1a0a153916e5f877c9e0f23456d37303ed7d41300cc02c481a39ec1cc77.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0024` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-187b6e1dbdd5a474/auditx/entries/efbd29aec3a5d11462081012fb595f1f31f46e7b9f7ba7b9384dd503cba7585d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0025` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1b048e145d13f0f1/auditx/entries/56480c03046d5012cab630cefed20f381193c0fe7245f76849721b66bc142cd1.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0026` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1cb8685d169db8e9/auditx/entries/ae07252e2e8e9f55bf0e3542cb0a5eee9df8cde738ecffd190faf0eade7f2b4b.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0027` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/51550809d66723d1baf7315cf048e76a8a00033d668fdae10496c7989ac05da7.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0028` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/6c9404ddff1fc762c9b30f0975923b7bf21605c0f0c62c2bfbc64eeb4e8d99fb.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0029` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/88626ad8ebf704caeda43081207394671d91e494d715465e79875c3359d1a954.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0030` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/8e1f3e3f60035a14629a343c39f6d632f6423b982f2a38b9cd0d919385752dd0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0031` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-217746a66e7e5a59/auditx/entries/b3440de93a0cdefa6d03762807dcffee04824231301dcf1dd54e4b0cec07a0f6.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0032` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a1c688a93aaec91/auditx/entries/f087d96b93934c046a28a44876b7cf7b95b99f3eb10ab2834182179310c73ae3.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0033` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/30cddff85bef88f5a583f3928ae5660623ab38cd990b351098d93c7606f4fcf6.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0034` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/8a1c1a45f060b411fa5f0146d6d79c003f00ea8785feeb254b8ff02158da50ff.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0035` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/d2214a530e319e62d3970ac49663ac013d7fbdeb351d3866292958d104dd102d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0036` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/d3f6ec5b42b6ae08e092a1fa2028e700a7bd13dc8a98afcd6f2f6e56755ebcbb.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0037` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/e86d9584395777d38e788f83b7ead4872af5434523161cc34a75af7af0f372bf.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0038` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2c48347082dccb08/auditx/entries/93c644decb2aee438ec74bb894c0a1dcc80a5f90003c426bd5dd9692d5e401c4.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0039` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2e507ebdb8980e60/auditx/entries/0d8be26e6b07eabdd8af3ab2bbc022f424af181c7fccb8c950356dfe7be0a0c0.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0040` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/75a0a9f1c48f633442d4114c463ddf52a045b148b1e92014a5784f2c7b18d7be.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0041` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/98de96434bb77311aff1183e41bada0c4582813e300a3e667a53a4a8eda188d8.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0042` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/f26a94dc6d352233e53214e695cb811f27db8eb96d95fcbef6f1e6f57d6f76cf.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0043` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/34661b2cdd008a873023e2286a6161782debe10cb461b3b4ed44bb4b284eb2ef.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0044` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/3974e9e8b5de4afde2714d51360be83bb6168d1140772311ee07c31cab4269ca.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0045` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/3ded0a2a4bc0f2f3c81125069b18d429c841ee829c31e228964d81fa9023bbfc.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0046` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/444be0d459f2924d8cff41f6a2cf85ab0ab675f88da3d41f89d433fe42bbfb47.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0047` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/45031f083ec2b40ba6c2213d8bf90ac3a6978f148bbbc95d37c1feccb419a255.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0048` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/8c093a0e23a4c121ba52af726588c7c227a107182b9351a19da30133a4fe82a2.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0049` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/a5030e5a39c50fdd0e68c298e52f8d817180d178a6ed5b4bb380f3a4b4134ba7.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0050` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/bd11adf978a737bd93cb38c6818e376bd58be843990b73ebd99d2e04ff005d7e.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0051` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/eac11858bb5d04441712cee1d217a5f2d0f661f74cee9433862802ba5122ec07.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0052` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/eca77cc6ddeac042ab8ea32f53cbeb336ef75d9c17a4c98535d7860cdc04e3f8.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0053` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/f01d0114a062a912adc1364adb5e65a8e2e1d10bf103de3982fab130cb93cb03.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0054` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/f029a8f23fe3aa6de93d41645bf56b6a5d718ca658347742a50b209151478c3e.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0055` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/f470e3f3bcfdc805f8a6128eabeb310ad2567c16ff7c6b70aaf8529906b0652d.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0056` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/fa52e90217f759056f77f0d092528d2202193e36a2fbeae9d6b433ebddf95772.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0057` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-34eac4eaf5bc3ee9/auditx/entries/2bdb374d57c6e10320a03c425b3951ed563a082226195c17239eb12f4f262def.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0058` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-3c94c75e801de106/auditx/entries/37d722405c242d4e88ddf3ed695aae9fceeb663a26bfb0a1cc66c943237c4f68.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0059` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-3c94c75e801de106/auditx/entries/dc4ec8f7b9421be374e99c94758cfba94e5447d4c059174e695590e91a0af7d9.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0060` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-4359a10c432dc01d/auditx/entries/08e065dc8496f6e90271968aa3559c4b7001c9accdfc5ed5823d93eb5c715f49.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0061` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-4848ec86fee2bae5/auditx/entries/92c81124be2087a1870cfd7fd28c555444bf596771df64afefc0916ec48811ac.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0062` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-4ad67f475329576f/auditx/entries/344e2702939fa22dcaefdafd68c14b192acbc2fbb402e7f292ae14c8901c6b51.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0063` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-4ad67f475329576f/auditx/entries/55410df03adc2d817f2568eef37c03e12f909bfab81571cd291ca0d70369726a.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
+- `C2_MODE_FLAG_SMELL:0064` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-574ad21efa391ca5/auditx/entries/da8cc0cb5492d19f176ec31d9b47246117ca46c5e9fa5cef7f388496ab20cc6b.json)
+  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
+  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
 - `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
   - domain downgrade path missing negotiation downgrade surface
 - `E118_SILENT_DOWNGRADE_SMELL:0002` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/materials/materialization/materialization_engine.py)
@@ -39,336 +249,117 @@ Superseded By: none
 - `E132_MISSING_DECISION_LOG_SMELL:0003` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (src/control/control_plane_engine.py)
   - refusal path not tied to decision-log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: control_ir_execution
+- `E60_HARDCODED_BLUEPRINT_SMELL:0001` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/client/interaction/preview_generator.py)
+  - hardcoded blueprint token detected in non-data source
+  - "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0002` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/client/interaction/preview_generator.py)
+  - hardcoded blueprint token detected in non-data source
+  - "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0003` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/control/ir/control_ir_programs.py)
+  - hardcoded blueprint token detected in non-data source
+  - creator="planner.blueprint.execution",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0004` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/interaction/action_surface_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - if isinstance(blueprint.get("action_surfaces"), list):
+- `E60_HARDCODED_BLUEPRINT_SMELL:0005` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/interaction/action_surface_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - out.append(("entity.blueprint_metadata.action_surfaces", list(blueprint.get("action_surfaces") or [])))
+- `E60_HARDCODED_BLUEPRINT_SMELL:0006` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - REFUSAL_BLUEPRINT_MISSING_PART_CLASS = "refusal.blueprint.missing_part_class"
+- `E60_HARDCODED_BLUEPRINT_SMELL:0007` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - REFUSAL_BLUEPRINT_INVALID_GRAPH = "refusal.blueprint.invalid_graph"
+- `E60_HARDCODED_BLUEPRINT_SMELL:0008` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - REFUSAL_BLUEPRINT_PARAMETER_INVALID = "refusal.blueprint.parameter_invalid"
+- `E60_HARDCODED_BLUEPRINT_SMELL:0009` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - material_id = "mat.blueprint.ghost.{}".format(material_digest[:12])
+- `E60_HARDCODED_BLUEPRINT_SMELL:0010` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - "semantic_id": "overlay.blueprint.node.{}".format(node_id),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0011` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - label_material_id = "mat.blueprint.label.{}".format(canonical_sha256({"blueprint_id": blueprint_id, "label": True})[:12])
+- `E60_HARDCODED_BLUEPRINT_SMELL:0012` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - "renderable_id": "overlay.blueprint.label.{}".format(canonical_sha256({"blueprint_id": blueprint_id, "summary": True})[:16]),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0013` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (src/materials/blueprint_engine.py)
+  - hardcoded blueprint token detected in non-data source
+  - "semantic_id": "overlay.blueprint.label.{}".format(blueprint_id),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0014` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0015` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.parameter_invalid",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0016` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.parameter_invalid",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0017` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0018` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/materials/tool_blueprint_compile.py)
+  - hardcoded blueprint token detected in non-data source
+  - "code": "refusal.blueprint.invalid_graph",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0019` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (tools/xstack/sessionx/runner.py)
+  - hardcoded blueprint token detected in non-data source
+  - "blueprint_registry_hash": "blueprint.registry.json",
+- `A2_OWNERSHIP_BOUNDARY:0001` RISK `A2_OWNERSHIP_BOUNDARY` `ownership_boundary` (client/app/main_client.c)
+  - Client path appears to combine install tokens with mutation operations.
+  - Client should remain presentation-only for install mutation.
+- `A2_OWNERSHIP_BOUNDARY:0002` RISK `A2_OWNERSHIP_BOUNDARY` `ownership_boundary` (client/shell/client_shell.c)
+  - Client path appears to combine install tokens with mutation operations.
+  - Client should remain presentation-only for install mutation.
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/tests/tests/vectors/gen_tlv_vectors.py)
+  - Detected key access without obvious schema anchor: caps.sim
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/system/core/base/shared/manifest_install.cpp)
+  - Detected key access without obvious schema anchor: root_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/system/core/base/shared/manifest_install.cpp)
+  - Detected key access without obvious schema anchor: root_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp)
+  - Detected key access without obvious schema anchor: beta.action
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp)
+  - Detected key access without obvious schema anchor: beta.action
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: root_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: root_path
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: default_install_id
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: effect_influence
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: default_modset_id
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: spec_compliance
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: preferred_display_mode
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: effect_influence
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: default_install_id
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: spec_compliance
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: subject.unknown
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: required_process_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: max_fidelity
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: connected_subject_ids
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: effect_influence
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
-  - Detected key access without obvious schema anchor: spec_compliance
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: state_vector_definition_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: state_vector_snapshot_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: assembly_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: system_macro_capsule_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: last_expand_tick
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: last_restored_capsule_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: current_tier
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: active_capsule_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: system_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: system_expand_event_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: info_artifact_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: knowledge_artifacts
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
-  - Detected key access without obvious schema anchor: system_expand_hash_chain
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: effect_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: effect_provenance_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: effect_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: effect_provenance_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: field_layers
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: field_cells
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: field_modifier_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: field_layers
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: field_cells
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: field_modifier_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: spec_compliance_results
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: spec_provenance_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: spec_compliance_results
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: spec_provenance_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: formalization_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: formalization_inference_candidates
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: formalization_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: formalization_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: formalization_inference_candidates
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: formalization_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: guide_geometries
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_junctions
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: geometry_candidates
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: geometry_derived_metrics
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0049` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: guide_geometries
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0050` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_junctions
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0051` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: geometry_candidates
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0052` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: geometry_derived_metrics
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0053` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_network_bindings
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0054` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_switch_state_machines
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0055` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_route_cache_state
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0056` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_route_results
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0057` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: itineraries
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0058` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: travel_schedules
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0059` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: schedule_time_bindings
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0060` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: time_mapping_cache_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0061` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: time_stamp_artifacts
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0062` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: time_stamp_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0063` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: proper_time_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0064` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: schedule_domain_evaluations
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0065` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: time_adjust_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0066` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: travel_commitments
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0067` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: travel_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0068` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: edge_occupancies
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0069` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_reservations
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0070` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_wear_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0071` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_wear_pending_updates
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0072` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_maintenance_schedules
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0073` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_maintenance_due_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0074` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_wear_runtime_state
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0075` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_signals
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0076` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_signal_state_machines
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0077` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_block_reservations
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0078` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_switch_locks
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0079` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_signal_hazards
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0080` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_signal_maintenance_schedules
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0081` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: mobility_signal_maintenance_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0082` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: safety_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0083` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: safety_runtime_state
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0084` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_evaluation_results
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0085` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_cache_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0086` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_runtime_state
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0087` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_hazard_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0088` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_flow_adjustment_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0089` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_evaluation_results
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0090` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_cache_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0091` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_runtime_state
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0092` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_hazard_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0093` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: model_flow_adjustment_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0094` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: safety_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0095` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: micro_motion_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0096` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: free_motion_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0097` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: momentum_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0098` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: force_application_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0099` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: impulse_application_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0100` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: exception_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0101` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: energy_ledger_entries
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0102` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: boundary_flux_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0103` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: entropy_state_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0104` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: entropy_event_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0105` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: entropy_reset_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0106` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: entropy_effect_rows
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0107` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: coupling_constraints
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0108` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: vehicle_motion_states
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0109` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: vehicle_compatibility_results
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0110` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: vehicle_events
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0111` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
-  - Detected key access without obvious schema anchor: vehicle_motion_states
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
+  - Detected key access without obvious schema anchor: default_modset_id
   - Best-effort heuristic; verify if schema declaration exists.

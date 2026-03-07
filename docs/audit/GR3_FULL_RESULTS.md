@@ -3,10 +3,11 @@
 ## Scope
 - Archived GR3 FULL stress/reference artifacts retained from the prior run.
 - Post-repair FULL verification focused on the exact failure cluster that had drifted since the snapshot.
+- SYS raw stress archives are represented at tip by compact manifests so the committed audit set satisfies hosted blob limits without changing the evidence fingerprint.
 
 ## Archived FULL Artifacts Retained
-- SYS stress: `docs/audit/GR3_FULL_SYS_STRESS.json`
-- SYS cross-shard reduced window: `docs/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS.json`
+- SYS stress manifest: `docs/audit/GR3_FULL_SYS_STRESS_MANIFEST.json`
+- SYS cross-shard reduced window manifest: `docs/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS_MANIFEST.json`
 - PROC stress: `docs/audit/GR3_FULL_PROC_STRESS.json`
 - POLL stress: `docs/audit/GR3_FULL_POLL_STRESS.json`
 - SIG stress: `docs/audit/GR3_FULL_SIG_STRESS.json`
@@ -29,6 +30,7 @@
 - The regressions that were invalidating authoritative net boot, deterministic control replay, expand provenance, overload protection, and planner/LOD strict fixtures are cleared.
 - No new reference mismatches were introduced.
 - Archived stress/reference artifacts remain the authoritative broad-window evidence set for GR3.
+- SYS archive manifests preserve the raw archive SHA-256 values, deterministic fingerprints, and key event counts while removing the hosted-size violation from the current tree.
 
 ## Execution Notes
 - The umbrella `TestX FAST/FULL` runs remain expensive in this environment; the repair pass therefore reran the complete impacted subset directly and left the archived broad-window artifacts unchanged.

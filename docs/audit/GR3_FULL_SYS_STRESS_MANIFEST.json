@@ -1,0 +1,42 @@
+{
+  "artifact_kind": "gr3_full_sys_stress_manifest",
+  "captured_on": "2026-03-07",
+  "raw_archive_summary": {
+    "original_path": "docs/audit/GR3_FULL_SYS_STRESS.json",
+    "sha256": "33aebefca8368e905a87a3ecc84eab3a4b0a1d349a7a538b83683f60bb993412",
+    "size_bytes": 756070654,
+    "retention_policy": "raw archive replaced at tip by this manifest to satisfy INV-GIT-HOSTED-BLOB-SIZE"
+  },
+  "assertions": {
+    "bounded_expands_per_tick": true,
+    "degrade_policy_logged": true,
+    "deterministic_ordering": true,
+    "invariants_preserved_roundtrip": true,
+    "no_silent_transitions": true,
+    "stable_replay_hashes": true
+  },
+  "deterministic_fingerprint": "33353c382d240f21f54fe777307bfc2bd8936b8e0d173d399f69b02cc116b745",
+  "degradation_policy_order": [
+    "degrade.system.expand_cap",
+    "degrade.system.defer_noncritical_expand",
+    "degrade.system.force_macro_failsafe_on_expand_denied",
+    "degrade.system.inspect_refusal_when_expand_denied",
+    "degrade.system.keep_invariant_checks_mandatory"
+  ],
+  "observed_counts": {
+    "decision.system.roi.collapse_approved": 2748,
+    "decision.system.roi.expand_approved": 8640,
+    "decision.system.macro.forced_expand": 19258,
+    "decision.system.macro.expand_budget_denied": 10618,
+    "process.system_collapse": 12018,
+    "process.system_expand": 11268,
+    "process.system_macro_tick": 121155,
+    "process.system_health_tick": 52804,
+    "provenance_anchor_hash_mismatch_messages": 12024,
+    "degrade.system.health_tick_stride": 52224
+  },
+  "notable_hash_chains": {
+    "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
+    "certification_result_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}
