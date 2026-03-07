@@ -678,6 +678,7 @@ def _compile_lookup_table(*, source: Mapping[str, object]) -> dict:
         "compiled_type_id": "compiled.lookup_table",
         "input_slots": canon(input_slots),
         "output_slots": canon(as_list(source.get("output_slots"))),
+        "element_programs": canon(programs),
         "table_rows": canon(table_rows),
         "source_hash": token(source.get("source_hash")),
         "deterministic_fingerprint": "",
@@ -740,6 +741,7 @@ def _compile_automaton(*, source: Mapping[str, object], max_state_space_nodes: i
         "compiled_type_id": "compiled.automaton",
         "input_slots": canon(input_slots),
         "output_slots": canon(as_list(source.get("output_slots"))),
+        "element_programs": canon(programs),
         "states": [dict(states[key]) for key in sorted(states.keys())],
         "transition_rows": sorted(transitions, key=lambda item: (token(item.get("state_id")), token(item.get("input_bits")))),
         "initial_state_id": "logic_state.{}".format(_state_map_hash(initial_state_by_element)[:16]),
@@ -1227,6 +1229,11 @@ def _automaton_result(
     current_state_by_element: Mapping[str, Mapping[str, object]],
 ) -> List[dict]:
     input_slots = [dict(row) for row in as_list(as_map(payload).get("input_slots")) if isinstance(row, Mapping)]
+    programs_by_element = {
+        token(row.get("element_instance_id")): dict(row)
+        for row in as_list(as_map(payload).get("element_programs"))
+        if isinstance(row, Mapping) and token(row.get("element_instance_id"))
+    }
     bits = []
     for slot in input_slots:
         bits.append("1" if bool(as_int(value_ref_to_scalar(as_map(as_map(slot_values.get(token(slot.get("slot_id")))).get("value_ref"))), 0)) else "0")
@@ -1252,8 +1259,8 @@ def _automaton_result(
         results.append(
             {
                 "element_instance_id": element_instance_id,
-                "element_definition_id": "",
-                "model_kind": "compiled.automaton",
+                "element_definition_id": token(as_map(programs_by_element.get(element_instance_id)).get("element_definition_id")),
+                "model_kind": token(as_map(programs_by_element.get(element_instance_id)).get("model_kind")) or "sequential",
                 "current_state": canon(as_map(current_state_by_element.get(element_instance_id))),
                 "next_state": canon(as_map(next_state.get(element_instance_id))),
                 "output_payloads": canon(per_element_outputs),

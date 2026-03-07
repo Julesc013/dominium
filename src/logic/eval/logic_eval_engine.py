@@ -78,15 +78,40 @@ def _logic_network_policy_rows_by_id(payload: Mapping[str, object] | None) -> di
     return rows_by_id(rows or [], "policy_id")
 
 
+def _compiled_capsule_id(network_id: str) -> str:
+    return "capsule.logic_controller.{}".format(canonical_sha256({"network_id": token(network_id)})[:16])
+
+
+def _compiled_eval_validation_gate(
+    *,
+    binding_row: Mapping[str, object],
+    validation_record: Mapping[str, object],
+    network_policy_row: Mapping[str, object],
+) -> bool:
+    validation_status = token(as_map(binding_row.get("extensions")).get("validation_status"))
+    if validation_status == "validated":
+        return True
+    return bool(
+        token(as_map(binding_row.get("extensions")).get("compiled_model_id"))
+        and token(validation_record.get("reason_code")) == "refusal.logic.loop_detected"
+        and token(network_policy_row.get("loop_resolution_mode")).lower() == "allow_compiled_only"
+    )
+
+
 def _loop_policy_refusal(
     *,
     current_tick: int,
     network_id: str,
     validation_record: Mapping[str, object],
+    network_policy_row: Mapping[str, object],
+    compiled_runtime_ready: bool,
 ) -> dict:
     loop_classifications = [dict(item) for item in as_list(as_map(validation_record).get("loop_classifications")) if isinstance(item, Mapping)]
+    loop_mode = token(network_policy_row.get("loop_resolution_mode")).lower() or "refuse"
     for row in loop_classifications:
         resolution = token(row.get("policy_resolution"))
+        if compiled_runtime_ready and loop_mode == "allow_compiled_only" and token(row.get("classification")) in {"combinational", "mixed"}:
+            continue
         if resolution == "refuse":
             return {
                 "result": "refused",
@@ -202,6 +227,9 @@ def process_logic_network_evaluate(
     constitutive_model_registry_payload: Mapping[str, object] | None = None,
     watchdog_definition_rows: object = None,
     session_scope_id: str = "session.default",
+    compiled_model_rows: object = None,
+    equivalence_proof_rows: object = None,
+    validity_domain_rows: object = None,
 ) -> dict:
     tick = int(max(0, as_int(current_tick, 0)))
     request = as_map(evaluation_request)
@@ -314,9 +342,22 @@ def process_logic_network_evaluate(
             "explain_artifact_rows": [explain],
         }
 
-    validation_status = token(as_map(binding_row.get("extensions")).get("validation_status"))
     validation_record = _validation_record_for_network(network_state.get("logic_network_validation_records"), network_id)
-    if validation_status != "validated":
+    logic_network_policy_map = _logic_network_policy_rows_by_id(logic_network_policy_registry_payload)
+    network_policy_row = dict(logic_network_policy_map.get(token(binding_row.get("policy_id"))) or {})
+    logic_policy_id = (
+        token(as_map(binding_row.get("extensions")).get("logic_policy_id"))
+        or token(as_map(network_policy_row.get("extensions")).get("logic_policy_id"))
+        or "logic.default"
+    )
+    logic_policy_map = _logic_policy_rows_by_id(logic_policy_registry_payload)
+    logic_policy_row = dict(logic_policy_map.get(logic_policy_id) or logic_policy_map.get("logic.default") or {})
+
+    if not _compiled_eval_validation_gate(
+        binding_row=binding_row,
+        validation_record=validation_record,
+        network_policy_row=network_policy_row,
+    ):
         explain = build_explain_artifact(
             explain_id="explain.logic_network_not_validated.{}".format(
                 canonical_sha256({"tick": tick, "network_id": network_id})[:16]
@@ -337,26 +378,6 @@ def process_logic_network_evaluate(
             "explain_artifact_rows": [explain],
         }
 
-    loop_gate = _loop_policy_refusal(current_tick=tick, network_id=network_id, validation_record=validation_record)
-    if token(loop_gate.get("result")) != "complete":
-        return {
-            "result": "refused",
-            "reason_code": token(loop_gate.get("reason_code")) or REFUSAL_LOGIC_EVAL_LOOP_POLICY,
-            "logic_eval_state": eval_state,
-            "signal_store_state": updated_signal_store_state,
-            "explain_artifact_rows": list(loop_gate.get("explain_artifact_rows") or []),
-        }
-
-    logic_network_policy_map = _logic_network_policy_rows_by_id(logic_network_policy_registry_payload)
-    network_policy_row = dict(logic_network_policy_map.get(token(binding_row.get("policy_id"))) or {})
-    logic_policy_id = (
-        token(as_map(binding_row.get("extensions")).get("logic_policy_id"))
-        or token(as_map(network_policy_row.get("extensions")).get("logic_policy_id"))
-        or "logic.default"
-    )
-    logic_policy_map = _logic_policy_rows_by_id(logic_policy_registry_payload)
-    logic_policy_row = dict(logic_policy_map.get(logic_policy_id) or logic_policy_map.get("logic.default") or {})
-
     sense_snapshot = build_logic_sense_snapshot(
         current_tick=tick,
         network_id=network_id,
@@ -367,24 +388,134 @@ def process_logic_network_evaluate(
         interface_signature_rows=logic_interface_signature_rows,
         state_machine_rows=logic_state_machine_rows,
     )
-    compute_result = evaluate_logic_compute_phase(
+    from src.logic.compile.logic_compiler import (
+        REFUSAL_LOGIC_COMPILED_INVALID,
+        build_logic_compiled_forced_expand_event,
+        build_logic_compiled_invalid_explain_artifact,
+        execute_logic_compiled_model,
+    )
+
+    binding_extensions = as_map(binding_row.get("extensions"))
+    compiled_model_id = token(binding_extensions.get("compiled_model_id"))
+    debug_extensions = as_map(request.get("extensions"))
+    debug_force_expand = bool(
+        debug_extensions.get("debug_force_expand", False)
+        or token(request.get("debug_instrument_id"))
+        or token(debug_extensions.get("debug_instrument_id"))
+    )
+    compiled_result = {}
+    compiled_explain_rows = []
+    forced_expand_rows = []
+    compiled_runtime_ready = False
+    if compiled_model_id:
+        if debug_force_expand:
+            forced_expand_rows.append(
+                build_logic_compiled_forced_expand_event(
+                    capsule_id=_compiled_capsule_id(network_id),
+                    tick=tick,
+                    network_id=network_id,
+                    reason_code="inspection_request",
+                    compiled_model_id=compiled_model_id,
+                )
+            )
+        else:
+            compiled_result = execute_logic_compiled_model(
+                current_tick=tick,
+                network_id=network_id,
+                binding_row=binding_row,
+                validation_record=validation_record,
+                sense_snapshot=sense_snapshot,
+                state_vector_snapshot_rows=state_vector_snapshot_rows,
+                state_vector_definition_rows=state_vector_definition_rows,
+                compiled_model_rows=compiled_model_rows,
+                equivalence_proof_rows=equivalence_proof_rows,
+                validity_domain_rows=validity_domain_rows,
+                compute_runtime_state=eval_state.get("compute_runtime_state"),
+                compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+                compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+                compute_budget_profile_id=token(logic_policy_row.get("compute_profile_id")) or "compute.default",
+                build_state_vector_definition_row=build_state_vector_definition_row,
+                normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
+                state_vector_snapshot_rows_by_owner=state_vector_snapshot_rows_by_owner,
+                deserialize_state=deserialize_state,
+            )
+            compiled_runtime_ready = token(compiled_result.get("result")) in {"complete", "throttled"}
+            if token(compiled_result.get("reason_code")) == REFUSAL_LOGIC_COMPILED_INVALID:
+                compiled_validation = as_map(compiled_result.get("compiled_validation"))
+                compiled_explain_rows.append(
+                    build_logic_compiled_invalid_explain_artifact(
+                        tick=tick,
+                        network_id=network_id,
+                        compiled_model_id=compiled_model_id,
+                        violations=as_list(compiled_validation.get("violations")),
+                    )
+                )
+                forced_expand_rows.append(
+                    build_logic_compiled_forced_expand_event(
+                        capsule_id=_compiled_capsule_id(network_id),
+                        tick=tick,
+                        network_id=network_id,
+                        reason_code="logic.compiled_invalid",
+                        compiled_model_id=compiled_model_id,
+                    )
+                )
+
+    loop_gate = _loop_policy_refusal(
         current_tick=tick,
         network_id=network_id,
-        graph_row=graph_row,
-        sense_snapshot=sense_snapshot,
-        state_vector_definition_rows=state_vector_definition_rows,
-        state_vector_snapshot_rows=state_vector_snapshot_rows,
-        compute_runtime_state=eval_state.get("compute_runtime_state"),
-        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
-        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
-        logic_policy_row=logic_policy_row,
-        logic_element_rows=logic_element_rows,
-        state_machine_rows=logic_state_machine_rows,
-        build_state_vector_definition_row=build_state_vector_definition_row,
-        state_vector_snapshot_rows_by_owner=state_vector_snapshot_rows_by_owner,
-        deserialize_state=deserialize_state,
-        normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
+        validation_record=validation_record,
+        network_policy_row=network_policy_row,
+        compiled_runtime_ready=compiled_runtime_ready,
     )
+    if token(loop_gate.get("result")) != "complete":
+        return {
+            "result": "refused",
+            "reason_code": token(loop_gate.get("reason_code")) or REFUSAL_LOGIC_EVAL_LOOP_POLICY,
+            "logic_eval_state": eval_state,
+            "signal_store_state": updated_signal_store_state,
+            "explain_artifact_rows": list(compiled_explain_rows) + list(loop_gate.get("explain_artifact_rows") or []),
+            "forced_expand_event_rows": forced_expand_rows,
+        }
+
+    compiled_only_required = token(network_policy_row.get("loop_resolution_mode")).lower() == "allow_compiled_only"
+    if compiled_model_id and token(compiled_result.get("reason_code")) == REFUSAL_LOGIC_COMPILED_INVALID and compiled_only_required:
+        return {
+            "result": "refused",
+            "reason_code": REFUSAL_LOGIC_EVAL_LOOP_POLICY,
+            "logic_eval_state": eval_state,
+            "signal_store_state": updated_signal_store_state,
+            "explain_artifact_rows": compiled_explain_rows,
+            "forced_expand_event_rows": forced_expand_rows,
+        }
+
+    compiled_path_selected = bool(compiled_runtime_ready and not debug_force_expand)
+    compiled_fallback_logged = bool(
+        compiled_model_id
+        and token(compiled_result.get("reason_code")) == REFUSAL_LOGIC_COMPILED_INVALID
+        and not compiled_only_required
+    )
+
+    if compiled_path_selected:
+        compute_result = dict(compiled_result)
+    else:
+        compute_result = evaluate_logic_compute_phase(
+            current_tick=tick,
+            network_id=network_id,
+            graph_row=graph_row,
+            sense_snapshot=sense_snapshot,
+            state_vector_definition_rows=state_vector_definition_rows,
+            state_vector_snapshot_rows=state_vector_snapshot_rows,
+            compute_runtime_state=eval_state.get("compute_runtime_state"),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+            logic_policy_row=logic_policy_row,
+            logic_element_rows=logic_element_rows,
+            state_machine_rows=logic_state_machine_rows,
+            build_state_vector_definition_row=build_state_vector_definition_row,
+            state_vector_snapshot_rows_by_owner=state_vector_snapshot_rows_by_owner,
+            deserialize_state=deserialize_state,
+            normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
+        )
     compute_result = attach_instance_definitions_to_compute_result(
         compute_result=compute_result,
         state_vector_definition_rows=compute_result.get("state_vector_definition_rows") or state_vector_definition_rows,
@@ -430,7 +561,7 @@ def process_logic_network_evaluate(
     timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
     watchdog_timeout_event_rows = list(eval_state.get("logic_watchdog_timeout_event_rows") or [])
     network_timing_violation_rows = []
-    explain_rows = []
+    explain_rows = list(compiled_explain_rows)
     timing_compute_units_used = 0
     for event in as_list(compute_result.get("throttle_events")):
         if not isinstance(event, Mapping):
@@ -702,6 +833,10 @@ def process_logic_network_evaluate(
             "snapshot_hash": token(sense_snapshot.get("snapshot_hash")),
             "scheduled_outputs": int(propagation_result.get("scheduled_count", 0)),
             "delivered_inputs": int(flush_result.get("delivered_count", 0)),
+            "compiled_model_id": compiled_model_id or None,
+            "compiled_path_selected": compiled_path_selected,
+            "compiled_fallback_logged": compiled_fallback_logged,
+            "debug_force_expand": bool(debug_force_expand),
             **combined_runtime_extensions,
         },
     )
@@ -719,6 +854,10 @@ def process_logic_network_evaluate(
                 "timing_violation_count": int(len(timing_violation_event_rows)),
                 "timing_compute_units_used": int(timing_compute_units_used),
                 "max_propagation_delay_ticks": int(propagation_result.get("max_propagation_delay_ticks", 0)),
+                "compiled_model_id": compiled_model_id or None,
+                "compiled_path_selected": compiled_path_selected,
+                "compiled_fallback_logged": compiled_fallback_logged,
+                "debug_force_expand": bool(debug_force_expand),
             },
         )
     ]
@@ -748,6 +887,7 @@ def process_logic_network_evaluate(
         "eval_record_row": dict(eval_record_rows[-1]),
         "throttle_event_rows": normalize_logic_throttle_event_rows(throttle_event_rows),
         "explain_artifact_rows": explain_rows,
+        "forced_expand_event_rows": forced_expand_rows,
     }
 
 

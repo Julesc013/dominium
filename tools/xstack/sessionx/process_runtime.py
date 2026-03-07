@@ -492,6 +492,9 @@ from src.logic.eval import (
     process_logic_network_evaluate,
     process_statevec_update,
 )
+from src.logic.compile import (
+    compile_logic_network,
+)
 from src.logic.network.logic_network_engine import (
     normalize_logic_network_state,
     process_logic_network_add_edge,
@@ -832,6 +835,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.logic_network_add_edge": "entitlement.control.admin",
     "process.logic_network_remove_edge": "entitlement.control.admin",
     "process.logic_network_validate": "entitlement.control.admin",
+    "process.logic_compile_request": "entitlement.inspect",
     "process.logic_network_evaluate": "session.boot",
     "process.statevec_update": "entitlement.control.admin",
     "process.signal_set_aspect": "entitlement.control.admin",
@@ -1043,6 +1047,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.logic_network_add_edge": "operator",
     "process.logic_network_remove_edge": "operator",
     "process.logic_network_validate": "operator",
+    "process.logic_compile_request": "observer",
     "process.logic_network_evaluate": "observer",
     "process.statevec_update": "system",
     "process.signal_set_aspect": "operator",
@@ -1200,6 +1205,7 @@ CONTROL_PROCESS_IDS = {
     "process.logic_network_add_edge",
     "process.logic_network_remove_edge",
     "process.logic_network_validate",
+    "process.logic_compile_request",
     "process.logic_network_evaluate",
     "process.statevec_update",
     "process.signal_set_aspect",
@@ -5967,6 +5973,17 @@ def _load_compile_policy_registry(*, policy_context: dict | None) -> dict:
         repo_root=REPO_ROOT_HINT,
         registry_rel_path="data/registries/compile_policy_registry.json",
         default_payload={"record": {"compile_policies": []}},
+    )
+
+
+def _load_logic_compile_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "logic_compile_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/logic_compile_policy_registry.json",
+        default_payload={"record": {"logic_compile_policies": []}},
     )
 
 
@@ -34703,6 +34720,108 @@ def execute_intent(
             "invalidated_capsule_ids": _sorted_tokens(invalidated_capsule_ids),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_compile_request":
+        compile_request_payload = (
+            dict(inputs.get("compile_request") or {})
+            if isinstance(inputs.get("compile_request"), Mapping)
+            else {}
+        )
+        if not compile_request_payload:
+            compile_request_payload = {
+                "request_id": str(inputs.get("request_id", "")).strip(),
+                "network_id": str(inputs.get("network_id", "")).strip(),
+                "compile_policy_id": str(inputs.get("compile_policy_id", "")).strip() or "compile.logic.default",
+                "extensions": dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {},
+            }
+
+        compiled_type_registry = _load_compiled_type_registry(policy_context=policy_context)
+        verifier_registry = _load_verification_procedure_registry(policy_context=policy_context)
+        logic_compile_policy_registry = _load_logic_compile_policy_registry(policy_context=policy_context)
+        logic_policy_registry = _load_logic_policy_registry(policy_context=policy_context)
+        (
+            logic_element_rows,
+            logic_behavior_model_rows,
+            logic_interface_signature_rows,
+            logic_state_machine_rows,
+            logic_state_vector_definition_rows,
+            _logic_watchdog_definition_rows,
+        ) = _load_logic_eval_rows(policy_context=policy_context)
+        _logic_node_kind_registry, _logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
+            policy_context=policy_context
+        )
+        seeded_state_vector_rows = normalize_state_vector_definition_rows(
+            list(_ensure_state_vector_definition_rows(state) or []) + list(logic_state_vector_definition_rows or [])
+        )
+        compile_eval = compile_logic_network(
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            compile_request=compile_request_payload,
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            logic_policy_registry_payload=logic_policy_registry,
+            logic_network_policy_registry_payload=logic_network_policy_registry,
+            logic_compile_policy_registry_payload=logic_compile_policy_registry,
+            compiled_type_registry_payload=compiled_type_registry,
+            verification_procedure_registry_payload=verifier_registry,
+            logic_element_rows=logic_element_rows,
+            logic_behavior_model_rows=logic_behavior_model_rows,
+            logic_interface_signature_rows=logic_interface_signature_rows,
+            logic_state_machine_rows=logic_state_machine_rows,
+            state_vector_definition_rows=seeded_state_vector_rows,
+            build_state_vector_definition_row=build_state_vector_definition_row,
+            normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
+        )
+        request_row = dict(compile_eval.get("compile_request_row") or {})
+        result_row = dict(compile_eval.get("compile_result_row") or {})
+        model_row = dict(compile_eval.get("compiled_model_row") or {})
+        proof_row = dict(compile_eval.get("equivalence_proof_row") or {})
+        validity_row = dict(compile_eval.get("validity_domain_row") or {})
+
+        if request_row:
+            state["compile_request_rows"] = normalize_compile_request_rows(
+                list(state.get("compile_request_rows") or []) + [request_row]
+            )
+        if result_row:
+            state["compile_result_rows"] = normalize_compile_result_rows(
+                list(state.get("compile_result_rows") or []) + [result_row]
+            )
+        if model_row:
+            state["compiled_model_rows"] = normalize_compiled_model_rows(
+                list(state.get("compiled_model_rows") or []) + [model_row]
+            )
+        if proof_row:
+            state["equivalence_proof_rows"] = normalize_equivalence_proof_rows(
+                list(state.get("equivalence_proof_rows") or []) + [proof_row]
+            )
+        if validity_row:
+            state["validity_domain_rows"] = normalize_validity_domain_rows(
+                list(state.get("validity_domain_rows") or []) + [validity_row]
+            )
+        if compile_eval.get("logic_network_state") is not None:
+            _persist_logic_network_state(state, compile_eval.get("logic_network_state"))
+        _refresh_compile_hash_chains(state)
+        _refresh_state_vector_hash_chains(state)
+
+        if str(compile_eval.get("result", "")) != "complete":
+            return refusal(
+                str(compile_eval.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_compile_request refused logic compilation",
+                "Validate the network or adjust the declared compile policy.",
+                {"process_id": process_id, "reason_code": str(compile_eval.get("reason_code", ""))},
+                "$.intent.inputs.compile_request",
+            )
+        result_metadata = {
+            "network_id": str(compile_request_payload.get("network_id", "")).strip(),
+            "compiled_model_id": str(model_row.get("compiled_model_id", "")).strip(),
+            "compiled_type_id": str(model_row.get("compiled_type_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.compile_request_submit":
         compile_request_payload = (
             dict(inputs.get("compile_request") or {})
@@ -43798,6 +43917,9 @@ def execute_intent(
             constitutive_model_registry_payload=constitutive_model_registry,
             watchdog_definition_rows=logic_watchdog_definition_rows,
             session_scope_id=str((dict(policy_context or {})).get("session_id", "")).strip() or "session.default",
+            compiled_model_rows=state.get("compiled_model_rows") or [],
+            equivalence_proof_rows=state.get("equivalence_proof_rows") or [],
+            validity_domain_rows=state.get("validity_domain_rows") or [],
         )
         if updated.get("signal_store_state") is not None:
             state["logic_signal_store_state"] = dict(updated.get("signal_store_state") or {})
@@ -43849,6 +43971,30 @@ def execute_intent(
                 list(state.get("logic_eval_explain_artifacts") or [])
                 + [dict(row) for row in list(updated.get("explain_artifact_rows") or []) if isinstance(row, Mapping)]
             )
+        if updated.get("forced_expand_event_rows") is not None:
+            forced_before = [dict(row) for row in list(state.get("system_forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+            forced_added = [dict(row) for row in list(updated.get("forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+            state["system_forced_expand_event_rows"] = normalize_forced_expand_event_rows(forced_before + forced_added)
+            state["system_forced_expand_event_hash_chain"] = canonical_sha256(
+                [
+                    {
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "capsule_id": str(row.get("capsule_id", "")).strip(),
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "reason_code": str(row.get("reason_code", "")).strip(),
+                        "requested_fidelity": str(row.get("requested_fidelity", "")).strip(),
+                    }
+                    for row in sorted(
+                        (dict(item) for item in list(state.get("system_forced_expand_event_rows") or []) if isinstance(item, Mapping)),
+                        key=lambda item: (
+                            int(max(0, _as_int(item.get("tick", 0), 0))),
+                            str(item.get("capsule_id", "")),
+                            str(item.get("event_id", "")),
+                        ),
+                    )
+                ]
+            )
+            state["forced_expand_event_hash_chain"] = str(state.get("system_forced_expand_event_hash_chain", "")).strip()
         _refresh_state_vector_hash_chains(state)
         _refresh_logic_eval_hash_chains(state)
         if str(updated.get("result", "")) not in {"complete", "throttled"}:

@@ -6094,6 +6094,81 @@
     },
     {
       "affected_fields": [
+        "compile_request_rows",
+        "compile_result_rows",
+        "compiled_model_rows",
+        "equivalence_proof_rows",
+        "validity_domain_rows",
+        "logic.network_binding_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-6 process that deterministically compiles a validated LogicNetworkGraph into a proved compiled artifact and binds the resulting references back onto the network.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "proof-required"
+      ],
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.logic.compile.network_not_found",
+        "refusal.logic.compile.network_not_validated",
+        "refusal.logic.compile.policy_unregistered",
+        "refusal.logic.compile.ineligible"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "compile_request",
+          "ref_id": "dominium.schema.meta.compile_request@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "logic_network_state",
+          "ref_id": "dominium.state.logic.network_store",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "compile_result",
+          "ref_id": "dominium.schema.meta.compile_result@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "compiled_model",
+          "ref_id": "dominium.schema.meta.compiled_model@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "equivalence_proof",
+          "ref_id": "dominium.schema.meta.equivalence_proof@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "validity_domain",
+          "ref_id": "dominium.schema.meta.validity_domain@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_compile_request",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.logic_compile_request)",
+        "source": "LOGIC6-5",
+        "tier": "meso_macro"
+      }
+    },
+    {
+      "affected_fields": [
         "logic.network_runtime_state_rows",
         "logic.eval_record_rows",
         "logic.pending_signal_update_rows",
