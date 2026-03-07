@@ -3683,6 +3683,134 @@ def _append_logic_constitution_invariant_findings(
             )
         )
 
+
+def _append_logic_element_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    statevec_rule_id = "INV-LOGIC-ELEMENT-STATEVEC-DECLARED"
+    compute_rule_id = "INV-LOGIC-ELEMENT-COMPUTE-COST-DECLARED"
+    hardcoded_rule_id = "INV-NO-HARDCODED-GATES"
+
+    required_files = (
+        ("docs/logic/LOGIC_ELEMENT_MODEL.md", statevec_rule_id),
+        ("schema/logic/logic_element_definition.schema", statevec_rule_id),
+        ("schema/logic/logic_behavior_model.schema", statevec_rule_id),
+        ("schema/logic/state_machine_definition.schema", statevec_rule_id),
+        ("data/registries/logic_element_registry.json", compute_rule_id),
+        ("data/registries/logic_behavior_model_registry.json", hardcoded_rule_id),
+        ("data/registries/logic_state_machine_registry.json", statevec_rule_id),
+        ("packs/core/pack.core.logic_base/data/logic_element_registry.json", compute_rule_id),
+        ("packs/core/pack.core.logic_base/data/logic_state_vectors.json", statevec_rule_id),
+        ("src/logic/element/logic_element_validator.py", statevec_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-2 enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    element_payload, element_error = _load_json_object(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json")
+    statevec_payload, statevec_error = _load_json_object(repo_root, "packs/core/pack.core.logic_base/data/logic_state_vectors.json")
+    if (not element_error) and (not statevec_error):
+        element_rows = list(element_payload.get("logic_elements") or [])
+        statevec_rows = list(statevec_payload.get("state_vector_definitions") or [])
+        statevec_by_owner = {}
+        for row in statevec_rows:
+            if not isinstance(row, dict):
+                continue
+            owner_id = str(row.get("owner_id", "")).strip()
+            if owner_id:
+                statevec_by_owner[owner_id] = dict(row)
+        for row in element_rows:
+            if not isinstance(row, dict):
+                continue
+            element_id = str(row.get("element_id", "")).strip()
+            statevec_id = str(row.get("state_vector_definition_id", "")).strip()
+            if not statevec_id:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="packs/core/pack.core.logic_base/data/logic_element_registry.json",
+                        line_number=1,
+                        snippet=element_id,
+                        message="logic elements must declare state_vector_definition_id",
+                        rule_id=statevec_rule_id,
+                    )
+                )
+            statevec_row = dict(statevec_by_owner.get(element_id) or {})
+            if not statevec_row:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+                        line_number=1,
+                        snippet=element_id,
+                        message="logic elements must have explicit state vector definitions",
+                        rule_id=statevec_rule_id,
+                    )
+                )
+            elif str(dict(statevec_row.get("extensions") or {}).get("state_vector_definition_id", "")).strip() != statevec_id:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path="packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+                        line_number=1,
+                        snippet=element_id,
+                        message="logic element state_vector_definition_id must match declared state vector row",
+                        rule_id=statevec_rule_id,
+                    )
+                )
+            if int(row.get("compute_cost_units", 0) or 0) > 0:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path="packs/core/pack.core.logic_base/data/logic_element_registry.json",
+                    line_number=1,
+                    snippet=element_id,
+                    message="logic elements must declare positive compute_cost_units",
+                    rule_id=compute_rule_id,
+                )
+            )
+
+    hardcoded_gate_pattern = re.compile(
+        r"\blogic\.(?:and|or|not|xor|relay|flip_flop|comparator_scalar|counter_small|timer_delay)\b",
+        re.IGNORECASE,
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if (not rel_norm.startswith("src/logic/")) or (not rel_norm.endswith(".py")):
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not hardcoded_gate_pattern.search(snippet):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="logic runtime must remain element-agnostic; starter gate ids belong in pack data only",
+                    rule_id=hardcoded_rule_id,
+                )
+            )
+            break
+
+
 def _derived_artifact_files(repo_root: str) -> List[str]:
     root = os.path.join(repo_root, "packs", "derived")
     rows: List[str] = []
@@ -25281,6 +25409,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_constitution_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_element_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

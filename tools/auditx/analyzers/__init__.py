@@ -335,6 +335,8 @@ from analyzers import e308_unmetered_logic_compute_smell
 from analyzers import e309_omniscient_logic_debug_smell
 from analyzers import e310_direct_signal_mutation_smell
 from analyzers import e311_carrier_bias_smell
+from analyzers import e312_hardcoded_logic_behavior_smell
+from analyzers import e313_missing_state_vector_smell
 
 
 ANALYZERS = (
@@ -673,6 +675,8 @@ ANALYZERS = (
     e309_omniscient_logic_debug_smell,
     e310_direct_signal_mutation_smell,
     e311_carrier_bias_smell,
+    e312_hardcoded_logic_behavior_smell,
+    e313_missing_state_vector_smell,
 )
 
 
