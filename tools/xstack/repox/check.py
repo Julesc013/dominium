@@ -3277,11 +3277,24 @@ def _append_logic_constitution_invariant_findings(
     compute_rule_id = "INV-LOGIC-USES-COMPUTE-BUDGET"
     instrumentation_rule_id = "INV-LOGIC-DEBUG-REQUIRES-INSTRUMENTATION"
     profile_rule_id = "INV-LOGIC-RULE-BREAK-PROFILED"
+    signal_types_rule_id = "INV-SIGNAL-TYPES-REGISTERED"
+    process_only_rule_id = "INV-SIGNAL-UPDATES-PROCESS-ONLY"
+    carrier_bias_rule_id = "INV-NO-CARRIER-SEMANTIC-BIAS"
 
     constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
     signal_schema_rel = "schema/logic/signal_type.schema"
     logic_policy_schema_rel = "schema/logic/logic_policy.schema"
     signal_registry_rel = "data/registries/signal_type_registry.json"
+    carrier_registry_rel = "data/registries/carrier_type_registry.json"
+    bus_encoding_rel = "data/registries/bus_encoding_registry.json"
+    protocol_registry_rel = "data/registries/protocol_registry.json"
+    signal_delay_policy_rel = "data/registries/signal_delay_policy_registry.json"
+    signal_noise_policy_rel = "data/registries/signal_noise_policy_registry.json"
+    process_registry_rel = "data/registries/process_registry.json"
+    signal_store_rel = "src/logic/signal/signal_store.py"
+    carrier_adapter_rel = "src/logic/signal/carrier_adapters.py"
+    observation_rel = "src/logic/signal/observation.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     logic_policy_rel = "data/registries/logic_policy_registry.json"
     compute_registry_rel = "data/registries/compute_budget_profile_registry.json"
     instrument_registry_rel = "data/registries/instrument_type_registry.json"
@@ -3363,6 +3376,16 @@ def _append_logic_constitution_invariant_findings(
     for rel_path, rule_id in (
         (signal_schema_rel, substrate_rule_id),
         (logic_policy_schema_rel, substrate_rule_id),
+        (carrier_registry_rel, signal_types_rule_id),
+        (bus_encoding_rel, signal_types_rule_id),
+        (protocol_registry_rel, signal_types_rule_id),
+        (signal_delay_policy_rel, signal_types_rule_id),
+        (signal_noise_policy_rel, signal_types_rule_id),
+        (process_registry_rel, process_only_rule_id),
+        (signal_store_rel, process_only_rule_id),
+        (carrier_adapter_rel, carrier_bias_rule_id),
+        (observation_rel, instrumentation_rule_id),
+        (runtime_rel, process_only_rule_id),
         (logic_policy_rel, compute_rule_id),
         (compute_registry_rel, compute_rule_id),
         (instrument_registry_rel, instrumentation_rule_id),
@@ -3408,6 +3431,87 @@ def _append_logic_constitution_invariant_findings(
                     snippet=snippet[:140],
                     message="logic semantics layer must remain substrate-agnostic and free of physical-unit bias",
                     rule_id=substrate_rule_id,
+                )
+            )
+            break
+
+    signal_payload, signal_err = _load_json_object(repo_root, signal_registry_rel)
+    signal_rows = list((dict(signal_payload.get("record") or {})).get("signal_types") or signal_payload.get("signal_types") or [])
+    known_signal_type_ids = {
+        str(row.get("signal_type_id", "")).strip()
+        for row in signal_rows
+        if isinstance(row, dict) and str(row.get("signal_type_id", "")).strip()
+    }
+    for signal_type_id in ("signal.boolean", "signal.scalar", "signal.pulse", "signal.message", "signal.bus"):
+        if signal_type_id in known_signal_type_ids:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=signal_registry_rel,
+                line_number=1,
+                snippet=signal_type_id,
+                message="LOGIC-1 requires canonical signal types to be registered",
+                rule_id=signal_types_rule_id,
+            )
+        )
+
+    process_payload, process_err = _load_json_object(repo_root, process_registry_rel)
+    process_rows = list((dict(process_payload.get("record") or {})).get("processes") or process_payload.get("processes") or [])
+    known_process_ids = {
+        str(row.get("process_id", "")).strip()
+        for row in process_rows
+        if isinstance(row, dict) and str(row.get("process_id", "")).strip()
+    }
+    for process_id in ("process.signal_set", "process.signal_emit_pulse"):
+        if process_id not in known_process_ids:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=process_registry_rel,
+                    line_number=1,
+                    snippet=process_id,
+                    message="signal mutation must be declared as a canonical process",
+                    rule_id=process_only_rule_id,
+                )
+            )
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in ('elif process_id == "process.signal_set":', 'elif process_id == "process.signal_emit_pulse":'):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="session runtime must route logic signal mutations through canonical process dispatch",
+                rule_id=process_only_rule_id,
+            )
+        )
+
+    for rel_path in (signal_store_rel, observation_rel):
+        text = _file_text(repo_root, rel_path)
+        if not text:
+            continue
+        for carrier_token in (
+            "carrier.electrical",
+            "carrier.pneumatic",
+            "carrier.hydraulic",
+            "carrier.mechanical",
+            "carrier.optical",
+            "carrier.sig",
+        ):
+            if carrier_token not in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=carrier_token,
+                    message="logic semantics/runtime layers must not hard-code carrier-specific behavior outside adapter seams",
+                    rule_id=carrier_bias_rule_id,
                 )
             )
             break

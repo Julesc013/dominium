@@ -333,6 +333,8 @@ from analyzers import e306_silent_throttle_smell
 from analyzers import e307_electrical_bias_in_logic_smell
 from analyzers import e308_unmetered_logic_compute_smell
 from analyzers import e309_omniscient_logic_debug_smell
+from analyzers import e310_direct_signal_mutation_smell
+from analyzers import e311_carrier_bias_smell
 
 
 ANALYZERS = (
@@ -669,6 +671,8 @@ ANALYZERS = (
     e307_electrical_bias_in_logic_smell,
     e308_unmetered_logic_compute_smell,
     e309_omniscient_logic_debug_smell,
+    e310_direct_signal_mutation_smell,
+    e311_carrier_bias_smell,
 )
 
 
