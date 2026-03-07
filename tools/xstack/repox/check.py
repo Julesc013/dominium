@@ -4026,6 +4026,211 @@ def _append_logic_network_invariant_findings(
         )
 
 
+def _append_logic_eval_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    budget_rule_id = "INV-LOGIC-EVAL-BUDGETED"
+    signal_rule_id = "INV-NO-DIRECT-SIGNAL-WRITES"
+    state_rule_id = "INV-NO-STATE-UPDATES-OUTSIDE-COMMIT"
+
+    required_files = (
+        ("docs/logic/LOGIC_EVALUATION_ENGINE.md", budget_rule_id),
+        ("schema/logic/logic_network_runtime_state.schema", budget_rule_id),
+        ("schema/logic/logic_eval_record.schema", budget_rule_id),
+        ("schema/logic/logic_throttle_event.schema", budget_rule_id),
+        ("src/logic/eval/sense_engine.py", budget_rule_id),
+        ("src/logic/eval/compute_engine.py", budget_rule_id),
+        ("src/logic/eval/commit_engine.py", state_rule_id),
+        ("src/logic/eval/propagate_engine.py", signal_rule_id),
+        ("src/logic/eval/logic_eval_engine.py", budget_rule_id),
+        ("tools/logic/tool_replay_logic_window.py", budget_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-4 enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    compute_rel = "src/logic/eval/compute_engine.py"
+    compute_text = _file_text(repo_root, compute_rel)
+    for token, message in (
+        ("request_logic_element_compute(", "logic evaluation must meter every element through META-COMPUTE"),
+        ("compute_budget_profile_registry_payload", "logic compute phase must accept compute profile registries"),
+        ("logic_policy_row", "logic compute phase must honor declared policy budgeting"),
+    ):
+        if token in compute_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=compute_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=budget_rule_id,
+            )
+        )
+
+    engine_rel = "src/logic/eval/logic_eval_engine.py"
+    engine_text = _file_text(repo_root, engine_rel)
+    for token, message, rule_id in (
+        ("build_logic_sense_snapshot(", "logic evaluation must begin with deterministic SENSE snapshots", budget_rule_id),
+        ("evaluate_logic_compute_phase(", "logic evaluation must route element work through COMPUTE", budget_rule_id),
+        ("commit_logic_state_updates(", "logic evaluation must route state mutation through COMMIT", state_rule_id),
+        ("schedule_logic_output_propagation(", "logic evaluation must route signal writes through PROPAGATE scheduling", signal_rule_id),
+        ("flush_due_logic_signal_updates(", "logic evaluation must deliver pending logic signals through the signal process path", signal_rule_id),
+        ("_loop_policy_refusal(", "logic evaluation must gate L1 execution on declared loop policy", budget_rule_id),
+    ):
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    commit_rel = "src/logic/eval/commit_engine.py"
+    commit_text = _file_text(repo_root, commit_rel)
+    for token, message in (
+        ("process_statevec_update(", "logic COMMIT must use the canonical process.statevec_update path"),
+        ("serialize_state(", "logic COMMIT must serialize explicit state vectors only during commit"),
+    ):
+        if token in commit_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=commit_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=state_rule_id,
+            )
+        )
+
+    propagate_rel = "src/logic/eval/propagate_engine.py"
+    propagate_text = _file_text(repo_root, propagate_rel)
+    for token in ("process_signal_set_fn(", "process_signal_emit_pulse_fn("):
+        if token in propagate_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=propagate_rel,
+                line_number=1,
+                snippet=token,
+                message="logic PROPAGATE must route signal mutation through canonical signal processes",
+                rule_id=signal_rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, rule_id, message in (
+        ('"process.logic_network_evaluate"', budget_rule_id, "process runtime must expose process.logic_network_evaluate"),
+        ('"process.statevec_update"', state_rule_id, "process runtime must expose process.statevec_update"),
+        ("process_logic_network_evaluate(", budget_rule_id, "runtime must dispatch LOGIC-4 evaluation through the evaluator"),
+        ("process_statevec_update(", state_rule_id, "runtime must dispatch state vector writes through the commit process"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_text = _file_text(repo_root, process_registry_rel)
+    for token, rule_id in (
+        ('"process.logic_network_evaluate"', budget_rule_id),
+        ('"process.statevec_update"', state_rule_id),
+    ):
+        if token in process_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_registry_rel,
+                line_number=1,
+                snippet=token.strip('"'),
+                message="process registry must declare LOGIC-4 process entry",
+                rule_id=rule_id,
+            )
+        )
+
+    forbidden_signal_patterns = (
+        re.compile(r'\["signal_rows"\]\s*='),
+        re.compile(r'\["signal_store_state"\]\s*='),
+        re.compile(r'\["coupling_change_rows"\]\s*='),
+    )
+    for rel_path in (
+        "src/logic/eval/sense_engine.py",
+        "src/logic/eval/compute_engine.py",
+        "src/logic/eval/commit_engine.py",
+        "src/logic/eval/propagate_engine.py",
+        "src/logic/eval/logic_eval_engine.py",
+    ):
+        text = _file_text(repo_root, rel_path)
+        for pattern in forbidden_signal_patterns:
+            match = pattern.search(text)
+            if not match:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=match.group(0),
+                    message="logic eval layers must not mutate signal store rows directly",
+                    rule_id=signal_rule_id,
+                )
+            )
+            break
+
+    for rel_path in (
+        "src/logic/eval/sense_engine.py",
+        "src/logic/eval/compute_engine.py",
+        "src/logic/eval/propagate_engine.py",
+    ):
+        text = _file_text(repo_root, rel_path)
+        for token in ("serialize_state(", "process_statevec_update("):
+            if token not in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=token,
+                    message="state vector mutation must remain isolated to the LOGIC COMMIT phase",
+                    rule_id=state_rule_id,
+                )
+            )
+            break
+
+
 def _derived_artifact_files(repo_root: str) -> List[str]:
     root = os.path.join(repo_root, "packs", "derived")
     rows: List[str] = []
@@ -25634,6 +25839,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_network_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_eval_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

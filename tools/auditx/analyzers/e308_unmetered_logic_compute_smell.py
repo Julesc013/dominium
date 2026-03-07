@@ -155,12 +155,21 @@ def run(graph, repo_root, changed_files=None):
                 )
 
     execution_tokens = ("evaluate_logic", "logic_tick", "propagate_signal", "commit_logic", "compute_next")
+    delegated_budget_tokens = (
+        "request_compute(",
+        "request_logic_element_compute(",
+        "evaluate_logic_compute_phase(",
+        "process_signal_set_fn(",
+        "process_signal_emit_pulse_fn(",
+    )
     for rel_path in _logic_runtime_paths(repo_root):
         text = _read_text(repo_root, rel_path)
         lower_text = text.lower()
         if not any(token in lower_text for token in execution_tokens):
             continue
-        if "request_compute(" in text:
+        if rel_path.endswith(("sense_engine.py", "commit_engine.py")):
+            continue
+        if any(token in text for token in delegated_budget_tokens):
             continue
         findings.append(
             make_finding(
