@@ -1,5 +1,14 @@
 """LOGIC-3 network topology exports."""
 
+from src.logic.network.instrumentation_binding import (
+    LOGIC_NETWORK_INSTRUMENTATION_DEFAULT_ID,
+    LOGIC_NETWORK_INSTRUMENTATION_OWNER_KIND,
+    authorize_logic_network_topology_view,
+    observe_logic_network_edge,
+    observe_logic_network_node,
+    resolve_logic_network_instrumentation_surface,
+    route_logic_network_forensics,
+)
 from src.logic.network.logic_network_engine import (
     PROCESS_LOGIC_NETWORK_ADD_EDGE,
     PROCESS_LOGIC_NETWORK_ADD_NODE,
@@ -35,6 +44,8 @@ from src.logic.network.logic_network_validator import (
 )
 
 __all__ = [
+    "LOGIC_NETWORK_INSTRUMENTATION_DEFAULT_ID",
+    "LOGIC_NETWORK_INSTRUMENTATION_OWNER_KIND",
     "PROCESS_LOGIC_NETWORK_ADD_EDGE",
     "PROCESS_LOGIC_NETWORK_ADD_NODE",
     "PROCESS_LOGIC_NETWORK_CREATE",
@@ -47,6 +58,7 @@ __all__ = [
     "REFUSAL_LOGIC_NETWORK_NODE_INVALID",
     "REFUSAL_LOGIC_NETWORK_NOT_FOUND",
     "REFUSAL_LOGIC_NETWORK_POLICY_UNREGISTERED",
+    "authorize_logic_network_topology_view",
     "build_logic_edge_payload_row",
     "build_logic_network_binding_row",
     "build_logic_node_payload_row",
@@ -58,10 +70,14 @@ __all__ = [
     "deterministic_logic_node_id",
     "normalize_logic_network_binding_rows",
     "normalize_logic_network_state",
+    "observe_logic_network_edge",
+    "observe_logic_network_node",
     "process_logic_network_add_edge",
     "process_logic_network_add_node",
     "process_logic_network_create",
     "process_logic_network_remove_edge",
     "process_logic_network_validate",
+    "resolve_logic_network_instrumentation_surface",
+    "route_logic_network_forensics",
     "validate_logic_network",
 ]

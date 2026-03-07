@@ -584,6 +584,73 @@
           "source": "LOGIC2-5",
           "fallback_for_logic_elements": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "logic_network",
+        "owner_id": "logic.network.default",
+        "control_points": [
+          {
+            "control_point_id": "control.logic.network.inspect",
+            "action_template_id": "interaction.inspect",
+            "required_access_policy_id": "access.admin_only",
+            "safety_interlock_refs": [
+              "safety.logic_probe_attach"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.logic.network.node",
+            "quantity_id": "quantity.logic.signal_state",
+            "instrument_type_id": "instrument.logic_probe",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "measurement_point_id": "measure.logic.network.edge",
+            "quantity_id": "quantity.logic.bus_capture",
+            "instrument_type_id": "instrument.logic_analyzer",
+            "measurement_model_id": "meas.lab_high_precision",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.admin_only"
+            }
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.logic.network.loop_detected",
+            "explain_contract_id": "explain.logic_loop_detected",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.network.timing_violation",
+            "explain_contract_id": "explain.logic_timing_violation",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-7",
+          "fallback_for_logic_networks": true
+        }
       }
     ],
     "extensions": {
