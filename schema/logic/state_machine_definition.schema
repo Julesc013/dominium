@@ -1,0 +1,28 @@
+SCHEMA: logic/state_machine_definition.schema
+schema_id: dominium.schema.logic.state_machine_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic logic-domain state machines for sequential, timer, and counter elements.
+- Provide pack-defined transition/output descriptors without introducing runtime evaluation in LOGIC-2.
+
+NON-SEMANTICS:
+- No direct execution semantics.
+- No process authority.
+- No hidden state outside declared state vectors.
+
+REQUIRED SHAPE:
+record state_machine_definition
+  required:
+    - sm_id: id
+    - states: list
+    - transition_rules: list
+    - output_rules: list
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- State ordering, transition ordering, and output-rule ordering must be deterministic.
+- Transition and output rules must be expressible without wall-clock dependence.
+- Output-affecting memory must be declared in the paired state-vector definition.

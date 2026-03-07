@@ -1,0 +1,26 @@
+SCHEMA: logic/logic_behavior_model.schema
+schema_id: dominium.schema.logic.logic_behavior_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic behavior-model descriptors for logic elements.
+- Separate element identity from reusable logic behavior definitions.
+
+NON-SEMANTICS:
+- No runtime evaluation engine.
+- No substrate/carrier execution semantics.
+
+REQUIRED SHAPE:
+record logic_behavior_model
+  required:
+    - behavior_model_id: id
+    - model_kind: enum(combinational|sequential|timer|counter|mux)
+    - model_ref: id
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- `model_ref` must resolve to a declared logic state machine or deterministic declarative model reference.
+- `model_kind` must remain substrate-agnostic.
+- Physical quantities and carrier-specific semantics must not appear in the behavior layer.
