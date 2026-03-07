@@ -1,8 +1,8 @@
 {
   "baseline_id": "sys.full.baseline.v1",
-  "composite_sys_hash_anchor": "0c9eace420fb20ced978703238bb8c00fecff5966d218093ed368ace9e52c446",
+  "composite_sys_hash_anchor": "dbf2bb86973d1256f573ab240d7b1cf3102ffdb6f8f63a1a92e41c70ed8cfeb1",
   "description": "SYS-8 deterministic stress/proof/regression baseline for mass collapse/expand, ROI movement, shard boundaries, and time-warp-safe replay.",
-  "deterministic_fingerprint": "a1883fe2ffe902b16a299b116698d2883e5390b64d2580aad3d71ca5e6efe1e3",
+  "deterministic_fingerprint": "d69ec0767c2c75dcbaddf465e9df9160460748e1c9ab12c350015f1c92bee511",
   "extensions": {
     "required_invariants": [
       "INV-SYS-BUDGETED",
@@ -13,25 +13,25 @@
   "fixed_seed_scenarios": {
     "degradation": {
       "report_path": "build/system/sys8_degradation_report.json",
-      "scenario_id": "scenario.sys.stress.2b05bcdaff7b",
+      "scenario_id": "scenario.sys.stress.7e29b1cbb5ee",
       "scenario_path": "build/system/sys8_degradation_scenario.json",
       "scenario_seed": 88047
     },
     "forced_expand": {
       "report_path": "build/system/sys8_forced_expand_report.json",
-      "scenario_id": "scenario.sys.stress.263bf8a1015c",
+      "scenario_id": "scenario.sys.stress.65bcedecdfb4",
       "scenario_path": "build/system/sys8_forced_expand_scenario.json",
       "scenario_seed": 88037
     },
     "nested_plant": {
       "report_path": "build/system/sys8_nested_plant_report.json",
-      "scenario_id": "scenario.sys.stress.34a540452f1c",
+      "scenario_id": "scenario.sys.stress.b5894a2d97ab",
       "scenario_path": "build/system/sys8_nested_plant_scenario.json",
       "scenario_seed": 88017
     },
     "roi_movement": {
       "report_path": "build/system/sys8_roi_movement_report.json",
-      "scenario_id": "scenario.sys.stress.0631e650d021",
+      "scenario_id": "scenario.sys.stress.64a514c003e5",
       "scenario_path": "build/system/sys8_roi_movement_scenario.json",
       "scenario_seed": 88027
     }
@@ -39,99 +39,99 @@
   "proof_hashes": {
     "degradation": {
       "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
-      "forced_expand_event_hash_chain": "fa9a12233c75522a1189ebdfc19ab2d2f64bce9cf395ab2de2b1a6b9b2bee6bc",
-      "macro_output_record_hash_chain": "bdab8c6920ce402e3299da65687c26fef12d3ed16fcacaeb1a7f6ea6b57f6bf9",
-      "system_collapse_expand_hash_chain": "ec3ab96d9ae490bc6286d0db1cfb4219df537085c8fc38ed9355f8648bc5c950",
-      "system_health_hash_chain": "1eb7ad27f56bb69929fc24cbb9058bcf5d473ff29091011eabd3609f42517716"
+      "forced_expand_event_hash_chain": "1b0195b32617d744174584abedae147cc3209b4e3754eabe74671bea81adf43b",
+      "macro_output_record_hash_chain": "31dc380b20d015692e2ffb6ba63b3a543fc7f832a05042a33e67b696e4dd9fa8",
+      "system_collapse_expand_hash_chain": "877174715de38965598fd7195a5785f9362ee2394814fa020641d847e1fd9e68",
+      "system_health_hash_chain": "1e2bc8182716d1b9dab820cb8ab55a1130b19e5dcca531409ca31202def13436"
     },
     "forced_expand": {
       "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
-      "forced_expand_event_hash_chain": "0cc267ca4195e6ed6cbf2fce04311a773416a7339e1f33393f76d2ce4a5d4206",
-      "macro_output_record_hash_chain": "ec9667855e080bb1baeba2612dbe8f13ebafe32069801f21f0460a45f5293f3e",
-      "system_collapse_expand_hash_chain": "7ebd105c6953f21782d6c8bee0b3c8019ec59437cfa76ca5b51999f665bf6c81",
-      "system_health_hash_chain": "a5db928aa2c7df79495d6a3bb6c2fea6f95b5ec8e2f5561f5598ed89a5182880"
+      "forced_expand_event_hash_chain": "22a5974448ea9a8aa303891464e92149ce2d92526c3aa20e31a29a28b84f865b",
+      "macro_output_record_hash_chain": "352cefe54b9eb33913ca1f4869a576cb73018d3ebec5bd6bcddf44ecca6fa77c",
+      "system_collapse_expand_hash_chain": "8bfb9574bafaccd1a017bb5e25fe6ecb6688fcb55170f3f535390380598600e7",
+      "system_health_hash_chain": "6bd64d574df0441e8d3aa7aa7ccf329deadcf1568195ab2281775f22d888b3d3"
     },
     "nested_plant": {
       "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
-      "forced_expand_event_hash_chain": "95e26b42912d8f43e68bef42a9dc4d36f0b9a6278ae287442668fbb78aebaaf3",
-      "macro_output_record_hash_chain": "439bfc9f2e742adb294eebe88a371d33fdcc5fce0169710e18cd822a26be9aed",
-      "system_collapse_expand_hash_chain": "dc3b7ccb4d123b73cfe9d839d257bd489c6beae11e3fd39e493002c54a70010d",
-      "system_health_hash_chain": "065bd99ec648e2a1f769a7ecacaae944b502de94ee0d3ef338c30cc9531d581f"
+      "forced_expand_event_hash_chain": "758b842b472eb20ccd411d52e11306ee5d4913ae11fa872e421100419e938063",
+      "macro_output_record_hash_chain": "855bb661159bcef23e1c4fa8d8a4b6adf425d57b7cc9411a65d38ab5f37f6d33",
+      "system_collapse_expand_hash_chain": "f9a832759174176a105edb3e331410bf4f7c6da141b1cf98479f91c6c70e5726",
+      "system_health_hash_chain": "f243a7383b3ff4c6ca2f90ac920205018cfbf43333efa195cb2331f5e40f9b24"
     },
     "roi_movement": {
       "certification_hash_chain": "b8768c167ce6080699d0788a6b1bffd3b79456fa823c5d854d58430f3425423c",
-      "forced_expand_event_hash_chain": "f13ef6551ee1e9ac3e5eac88d01ea07fe70b68c7350670ea041ee45769fd25ec",
-      "macro_output_record_hash_chain": "f927459f25fb6fe09f732240ca7a95241975414959a4657820cd298f8227d49d",
-      "system_collapse_expand_hash_chain": "4076159031cdd9d7ca0329a67a40db1f11e0f9a51048b8905234b658b41d6c5a",
-      "system_health_hash_chain": "c76691580328569e8e8fa5a594652cac763cd626d3a5d8e59555776614af3028"
+      "forced_expand_event_hash_chain": "2b0088b1de8019cae98211d59fa29a54f1942e5f88fbff7ae790a035e36b588c",
+      "macro_output_record_hash_chain": "c10710b554e07b01a348221612807ca4591eb15f6f1e0f13033745d88f594f99",
+      "system_collapse_expand_hash_chain": "c361d5802fc769aad221f5c8007d754cda7b9f34746a9f2088bba70857455b06",
+      "system_health_hash_chain": "10b48b7c1b911c55b001adb3ffcc88d7badcb65daf5bfd04608ba050e80c168c"
     }
   },
   "result_by_scenario": {
     "degradation": {
       "assertions": {
         "bounded_expands_per_tick": true,
-        "degrade_policy_logged": true,
+        "degrade_policy_logged": false,
         "deterministic_ordering": true,
         "invariants_preserved_roundtrip": true,
         "no_silent_transitions": true,
-        "stable_replay_hashes": true
+        "stable_replay_hashes": false
       },
-      "result": "complete"
+      "result": "refused"
     },
     "forced_expand": {
       "assertions": {
         "bounded_expands_per_tick": true,
-        "degrade_policy_logged": true,
+        "degrade_policy_logged": false,
         "deterministic_ordering": true,
         "invariants_preserved_roundtrip": true,
         "no_silent_transitions": true,
-        "stable_replay_hashes": true
+        "stable_replay_hashes": false
       },
-      "result": "complete"
+      "result": "refused"
     },
     "nested_plant": {
       "assertions": {
         "bounded_expands_per_tick": true,
-        "degrade_policy_logged": true,
+        "degrade_policy_logged": false,
         "deterministic_ordering": true,
         "invariants_preserved_roundtrip": true,
         "no_silent_transitions": true,
-        "stable_replay_hashes": true
+        "stable_replay_hashes": false
       },
-      "result": "complete"
+      "result": "refused"
     },
     "roi_movement": {
       "assertions": {
         "bounded_expands_per_tick": true,
-        "degrade_policy_logged": true,
+        "degrade_policy_logged": false,
         "deterministic_ordering": true,
         "invariants_preserved_roundtrip": true,
         "no_silent_transitions": true,
-        "stable_replay_hashes": true
+        "stable_replay_hashes": false
       },
-      "result": "complete"
+      "result": "refused"
     }
   },
   "scenario_fingerprints": {
     "degradation": {
-      "report_fingerprint": "ed4604621e6fe66c18497ed2d6cda70dec249a2d42dbcf0d842a8166ec9d8e76",
-      "scenario_fingerprint": "27b69e04690e76717525b69726a9c61954ca9a3f3412a73dcc6e24e4dddc55ec",
-      "state_fingerprint": "96467f95847f5efb5db292ec026b04a5a8bbc0271f2c84d858d003db11402b1c"
+      "report_fingerprint": "4087d9b0486b4ae13219a75fe2462c0d63c2e52e969deda3777038259ecb4d9a",
+      "scenario_fingerprint": "8d2310469a74e4632278a930f15655d90c6e1b35a1ffbc92b2ac904b9b312ef3",
+      "state_fingerprint": "fa00d9ea91f59db6377357466f1484f2e97898cadbb2aa6e31b376bc5cbdc6a5"
     },
     "forced_expand": {
-      "report_fingerprint": "cd46e861f91ef3bad868d880b011848f5b974896adae918b7c1159f9c2d2e823",
-      "scenario_fingerprint": "6e759cceebdcfe0de117298f48f147f67eefb856c56eaa8d426260be6fde0164",
-      "state_fingerprint": "5151156a72bb805e20b9e669c3a7fa7eb79a8244263df46d96709492cd116ca3"
+      "report_fingerprint": "17b605760e1f388e258cab408c52306f6b70bd0b45206fa7daf80f447c86261b",
+      "scenario_fingerprint": "b68fe9c7838d340fc8f00a32e87f3f499d9d3abf8dfa7600d2bc573da8a7fc58",
+      "state_fingerprint": "268ca5ba68db9211c1f220e32da3ed657368ea53dc7872df6a31bc1d08b9efd2"
     },
     "nested_plant": {
-      "report_fingerprint": "cd7482455d77310a2adec61403e3b6c328e3b0f53b4b09a6334638ffb24db075",
-      "scenario_fingerprint": "f98d147661b28c3cd1068b22ac3be9d1566915adcedc2cfe68594f553c06f9a7",
-      "state_fingerprint": "336748b2d892e5a5725aa78dc4f3458257c71faf6eb11a2b2518fea819ca5952"
+      "report_fingerprint": "942fc2d074a812d2f2d35b0e237b24124bca9cd237e085f823337d2dc174b505",
+      "scenario_fingerprint": "f271ba9279aa94f0c13238608aace9cec8892eaa9553c17088952b314a92373a",
+      "state_fingerprint": "108724982a3c88a0616051673d6b359ec5fb827e372ae6d059065cbab8dcea1b"
     },
     "roi_movement": {
-      "report_fingerprint": "ce1d38afb1cee35b5a9d961213734c1e17a23d18d27b2e75ee42ddba8fed6a2a",
-      "scenario_fingerprint": "f9bc897d17ff88513f2db592be71fefd67c6af97bb697f8a656a1bb671d9d0d6",
-      "state_fingerprint": "0f06fdaf6d9904384b26176d0554ce5c3f60372d96b1043179e38ac63948dab7"
+      "report_fingerprint": "33f77a892b0e310f59a17434b560535a05299e6f9071385c959fae0a117e1035",
+      "scenario_fingerprint": "2eadf4ad60818354c1eefea6e1c17beba8996eae2c44fd9cca8bd1c83327ac23",
+      "state_fingerprint": "1a4cc18ab8b82f732b2144ca359eefd27da6245ba8f7151ee6e54630f7560486"
     }
   },
   "schema_version": "1.0.0",

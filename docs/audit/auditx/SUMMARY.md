@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-05
+Last Reviewed: 2026-03-07
 Supersedes: none
 Superseded By: none
 
@@ -8,10 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- INFO: 223
-- RISK: 648
-- VIOLATION: 101
-- WARN: 1220
+- RISK: 465
+- VIOLATION: 9
+- WARN: 879
 
 ## Counts By Category
 
@@ -20,7 +19,7 @@ Superseded By: none
 - architecture.adhoc_speed_limit_smell: 2
 - architecture.adhoc_state_flag_smell: 2
 - architecture.adhoc_valve_smell: 3
-- architecture.affordance_gap_smell: 311
+- architecture.affordance_gap_smell: 317
 - architecture.broadcast_bypass_smell: 4
 - architecture.deprecated_usage_smell: 1
 - architecture.derailment_bypass_smell: 1
@@ -28,14 +27,13 @@ Superseded By: none
 - architecture.direct_position_mutation_smell: 1
 - architecture.direct_schedule_mutation_smell: 1
 - architecture.heat_loss_bypass_smell: 2
-- architecture.implicit_system_collapse_smell: 4
-- architecture.inline_cure_smell: 2
+- architecture.implicit_system_collapse_smell: 3
+- architecture.inline_cure_smell: 5
 - architecture.inline_friction_smell: 2
 - architecture.inline_phase_change_smell: 3
 - architecture.inline_power_loss_smell: 1
-- architecture.inline_protection_smell: 12
+- architecture.inline_protection_smell: 13
 - architecture.inline_strength_check_smell: 1
-- architecture.invariant_check_skipped_smell: 1
 - architecture.ir_nondeterminism_smell: 2
 - architecture.magic_silent_violation_smell: 2
 - architecture.missing_decision_log_smell: 3
@@ -45,7 +43,6 @@ Superseded By: none
 - architecture.mobility_special_case_smell: 2
 - architecture.model_bypass_smell: 7
 - architecture.nondeterministic_queue_order_smell: 1
-- architecture.silent_collapse_smell: 2
 - architecture.silent_corruption_smell: 1
 - architecture.silent_degrade_smell: 10
 - architecture.silent_downgrade_smell: 3
@@ -53,7 +50,6 @@ Superseded By: none
 - architecture.spec_hardcode_smell: 1
 - architecture.substrate_bypass_smell: 13
 - architecture.thermal_bypass_smell: 1
-- architecture.unbounded_expand_smell: 1
 - architecture.unbounded_spread_smell: 1
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
@@ -61,34 +57,25 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 732
+- canon_drift: 743
 - capability_bypass_smell: 1
-- capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
 - control.camera_bypass_smell: 1
 - control.direct_breaker_toggle_smell: 1
-- derived_freshness: 131
+- derived_freshness: 11
 - epistemics.hidden_state_leak_smell: 6
 - interaction.interaction_bypass_smell: 2
-- legacy_contamination: 11
-- materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
 - materials.unbounded_inspection_smell: 1
-- mode_flag_smell: 64
 - net.precision_leak_smell: 2
 - net.truth_over_net_smell: 6
-- ownership_boundary: 9
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- reachability: 80
+- planning.orphan_feature_smell: 1
 - reliability.silent_reaction_smell: 3
-- schema_usage: 160
-- security.boundary_io: 29
-- security.privilege_bypass: 9
+- schema_usage: 6
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120
 - semantic.workspace_contamination: 1
-- terminology_misuse: 1
-- ui_parity: 220

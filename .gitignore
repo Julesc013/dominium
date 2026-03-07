@@ -341,6 +341,7 @@ docs/audit/**/TESTX_SUMMARY*.json
 docs/audit/**/REPOX_PROFILE*.json
 docs/audit/perf/profile_trace.sample.json
 docs/audit/perf/profile_trace.sample.md
+docs/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS.json
 **/*.trace
 **/*.log
 /run_meta/

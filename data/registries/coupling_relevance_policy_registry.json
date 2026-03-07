@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.registry.coupling_relevance_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.coupling_relevance_policy_registry",
+    "registry_version": "1.0.0",
+    "coupling_relevance_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "policy.default_hold_last",
+        "relevance_triggers": [
+          "input_delta_above_tolerance",
+          "hazard_threshold_crossed",
+          "roi_or_inspection_requested",
+          "certification_requested",
+          "forced_expand_pending"
+        ],
+        "tolerance_policy_ref": "tol.default",
+        "hold_last_value": true,
+        "safe_default_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Default deterministic relevance policy with hold-last skip behavior."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "policy.safety_force_expand",
+        "relevance_triggers": [
+          "input_delta_above_tolerance",
+          "hazard_threshold_crossed",
+          "forced_expand_pending",
+          "safety_critical"
+        ],
+        "tolerance_policy_ref": "tol.strict",
+        "hold_last_value": false,
+        "safe_default_ref": "safety.fail_safe_shutdown",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Critical coupling policy; escalates to fail-safe and forced-expand pathways."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "policy.optional_best_effort",
+        "relevance_triggers": [
+          "input_delta_above_tolerance",
+          "roi_or_inspection_requested"
+        ],
+        "tolerance_policy_ref": "tol.relaxed",
+        "hold_last_value": true,
+        "safe_default_ref": "safe.default.noop",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Optional coupling policy intended for best-effort diagnostic/cosmetic coupling."
+        }
+      }
+    ],
+    "extensions": {
+      "source": "COUPLE0-2",
+      "null_boot_safe": true
+    }
+  }
+}

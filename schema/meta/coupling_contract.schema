@@ -20,10 +20,13 @@ record coupling_contract
     - to_domain_id: id
     - mechanism: enum{constitutive_model,energy_transform,field_policy,signal_policy}
     - mechanism_id: id
+    - coupling_relevance_policy_id: id
+    - coupling_priority_class: enum{critical,important,optional}
+    - coupling_cost_units: int
     - deterministic_fingerprint: sha256
     - extensions: map
 
 INVARIANTS:
 - Direct cross-domain mutation is forbidden.
 - Coupling must reference a registered legal mechanism id.
-
+- Coupling must declare relevance policy, priority class, and deterministic cost units.

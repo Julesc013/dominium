@@ -1,0 +1,104 @@
+{
+  "schema_id": "dominium.registry.coupling_budget_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.coupling_budget_registry",
+    "registry_version": "1.0.0",
+    "coupling_budgets": [
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "elec",
+        "budget_units_per_tick": 240,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "therm",
+        "budget_units_per_tick": 320,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "fluid",
+        "budget_units_per_tick": 280,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "chem",
+        "budget_units_per_tick": 220,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "poll",
+        "budget_units_per_tick": 260,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "mob",
+        "budget_units_per_tick": 340,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "sig",
+        "budget_units_per_tick": 160,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "sys",
+        "budget_units_per_tick": 300,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "domain"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "system_class.engine",
+        "budget_units_per_tick": 180,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "system_class"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_id": "system_class.plant",
+        "budget_units_per_tick": 420,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "owner_kind": "system_class"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "COUPLE0-2",
+      "null_boot_safe": true
+    }
+  }
+}
