@@ -9,9 +9,9 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 659
-- VIOLATION: 103
-- WARN: 1237
+- RISK: 660
+- VIOLATION: 104
+- WARN: 1238
 
 ## Counts By Category
 
@@ -47,6 +47,7 @@ Superseded By: none
 - architecture.silent_corruption_smell: 1
 - architecture.silent_degrade_smell: 10
 - architecture.silent_downgrade_smell: 3
+- architecture.silent_forced_expand_smell: 1
 - architecture.silent_therm_degrade_smell: 3
 - architecture.spec_hardcode_smell: 1
 - architecture.substrate_bypass_smell: 13
@@ -58,7 +59,7 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 749
+- canon_drift: 750
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
@@ -68,7 +69,7 @@ Superseded By: none
 - epistemics.hidden_state_leak_smell: 6
 - interaction.interaction_bypass_smell: 2
 - legacy_contamination: 11
-- logic.adhoc_wiring_smell: 2
+- logic.adhoc_wiring_smell: 3
 - logic.carrier_bias_smell: 4
 - materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1

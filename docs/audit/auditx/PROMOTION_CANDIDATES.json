@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 63,
+  "candidate_count": 64,
   "candidates": [
     {
       "evidence_paths": [
@@ -27,6 +27,7 @@
     },
     {
       "evidence_paths": [
+        "src/logic/compile/logic_compiler.py",
         "src/logic/eval/common.py",
         "src/logic/eval/propagate_engine.py",
         "src/logic/network/logic_network_engine.py"
@@ -45,6 +46,7 @@
         ".xstack_cache/anb-omega-random-cwd/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json",
         ".xstack_cache/anb-omega-random-cwd/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json",
         ".xstack_cache/auditx/meta_genre0_probe/FINDINGS.json",
+        ".xstack_cache/auditx/repox_probe/FINDINGS.json",
         ".xstack_cache/ws-02afd0d6484c1ab2/auditx/entries/da6879864b5c2e0bd0ec606fecab77747fcec23390611cfd5ec6f0a6a78332d8.json",
         ".xstack_cache/ws-0e62fd3b0a5ad5c6/auditx/entries/dd11229589367f55a2d3800b5384e3fa4269a97ff8d1c4e5de39b1746ecf0a12.json",
         ".xstack_cache/ws-10d79f66352c8094/auditx/entries/09d537a255add88415a6a6cd4de6298c1d500287a9b08cbed11b593654377af2.json",
@@ -100,8 +102,7 @@
         ".xstack_cache/ws-34eac4eaf5bc3ee9/auditx/entries/2bdb374d57c6e10320a03c425b3951ed563a082226195c17239eb12f4f262def.json",
         ".xstack_cache/ws-36e181e31ad2c3c7/auditx/entries/454fee6f8aa6be1a0ddd2e4f1c172eedecdf2c0ae0d2270d708b46ad9da627c2.json",
         ".xstack_cache/ws-3bf4a9a3a0c8abdd/auditx/entries/597b724d047d44232f12c70353534a871ae5dbfd72ee296fbbbe586d1894f373.json",
-        ".xstack_cache/ws-3c94c75e801de106/auditx/entries/37d722405c242d4e88ddf3ed695aae9fceeb663a26bfb0a1cc66c943237c4f68.json",
-        ".xstack_cache/ws-3c94c75e801de106/auditx/entries/dc4ec8f7b9421be374e99c94758cfba94e5447d4c059174e695590e91a0af7d9.json"
+        ".xstack_cache/ws-3c94c75e801de106/auditx/entries/37d722405c242d4e88ddf3ed695aae9fceeb663a26bfb0a1cc66c943237c4f68.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
@@ -182,6 +183,16 @@
     {
       "evidence_paths": [
         "src/client/render/renderers/software_renderer.py",
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.675,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/control/proof/control_proof_bundle.py",
         "tools/xstack/sessionx/process_runtime.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",

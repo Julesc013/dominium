@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 749,
+      "finding_count": 750,
       "recommended_actions": {
-        "DOC_FIX": 749
+        "DOC_FIX": 750
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 749
+        "WARN": 750
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -627,6 +627,22 @@
         "RISK": 3
       }
     },
+    "INV-FORCED-EXPAND-LOGGED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_forced_expand_smell",
+          "finding_id": "E265_SILENT_FORCED_EXPAND_SMELL:0001",
+          "location": "src/control/proof/control_proof_bundle.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-GLOSSARY-TERM-CANON": {
       "finding_count": 1,
       "recommended_actions": {
@@ -749,24 +765,29 @@
       }
     },
     "INV-LOGIC-WIRING-USES-NETWORKGRAPH": {
-      "finding_count": 2,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 2
+        "REWRITE": 3
       },
       "sample_findings": [
         {
           "category": "logic.adhoc_wiring_smell",
           "finding_id": "E314_AD_HOC_WIRING_SMELL:0001",
-          "location": "src/logic/eval/common.py"
+          "location": "src/logic/compile/logic_compiler.py"
         },
         {
           "category": "logic.adhoc_wiring_smell",
           "finding_id": "E314_AD_HOC_WIRING_SMELL:0002",
+          "location": "src/logic/eval/common.py"
+        },
+        {
+          "category": "logic.adhoc_wiring_smell",
+          "finding_id": "E314_AD_HOC_WIRING_SMELL:0003",
           "location": "src/logic/eval/propagate_engine.py"
         }
       ],
       "severities": {
-        "VIOLATION": 2
+        "VIOLATION": 3
       }
     },
     "INV-LOSS-MAPPED-TO-HEAT": {

@@ -1,0 +1,30 @@
+{
+  "compile_result_hash_chain": "8466659baacc9a747159755e4a0acdcebec737c432da69c261095bb4dee7c653",
+  "compiled_model_hash_chain": "86f307b5a675184269daa7c487e1b114a5638c909f7df80f73aff9ad8ea4c423",
+  "compiled_model_ids": [
+    "compiled_model.logic.81f696877e592e1d"
+  ],
+  "compiled_path_observed": true,
+  "compiled_type_ids": [
+    "compiled.reduced_graph"
+  ],
+  "deterministic_fingerprint": "d681b4fd34600a50c89465f380fc1d1914e998c0d3fadf5ba611f05ded8da86c",
+  "element_count": 48,
+  "element_pairs": 24,
+  "equivalence_proof_hash_chain": "7f6926603b3d0cfb49be0b7706ee97d2a0887b7ce93cb85bf25ec4a9c7033344",
+  "final_signal_hash": "2869519c4915b6f4aeb2cb4084da8ef59a4b14ec292ead95a494fe6ad24b0d60",
+  "final_signal_store_hash": "2869519c4915b6f4aeb2cb4084da8ef59a4b14ec292ead95a494fe6ad24b0d60",
+  "forced_expand_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "logic_compile_policy_hash_chain": "131f92331d7f3bfd339bce78fe2fae506db382e07fb4702b0927b9fbff4ad8d1",
+  "max_compute_units_used": 148,
+  "max_elements_evaluated": 48,
+  "network_id": "net.logic.eval.stress",
+  "result": "complete",
+  "runtime_record_count": 1,
+  "scenario_id": "scenario.logic4.stress.e156a5ad5931",
+  "signals_match": true,
+  "states_match": true,
+  "tick_count": 8,
+  "tick_signal_match": true,
+  "ticks_completed": 8
+}
