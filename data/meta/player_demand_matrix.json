@@ -3357,7 +3357,7 @@
       },
       "coverage_status": "planned",
       "demand_id": "city.traffic_lights_coordination",
-      "deterministic_fingerprint": "ccf514a7359cf07b2afbd5f8d9db8edfe4fafb43dff85316bd8e3fd001579646",
+      "deterministic_fingerprint": "3211556df9ad631f367520551ebf8853f6eb4a7fb4afc76c1fcbea38deed5d4e",
       "domains": [
         "PHYS",
         "ELEC",
@@ -3381,7 +3381,7 @@
       ],
       "fantasy": "Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (traffic lights coordination).",
       "next_series": "LOGIC-3",
-      "notes": "Requires distributed timing-aware control and mobility-facing actuation semantics, not just isolated signal assets.",
+      "notes": "Requires LOGIC distributed timing-aware control and mobility-facing actuation semantics, not just isolated signal assets.",
       "proc": {
         "needs": true,
         "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
@@ -8668,7 +8668,7 @@
       },
       "coverage_status": "planned",
       "demand_id": "mil.drone_autopilot",
-      "deterministic_fingerprint": "82ac7e5efefd9478cfc50a57f57dfc2fb898f3cf21ca120c4d0ab6ec891d83fb",
+      "deterministic_fingerprint": "698a024b6a269bee3fc2af7ee7188b02d725a9360a21053e4d7583ee85118bc5",
       "domains": [
         "PHYS",
         "MOB",
@@ -8692,7 +8692,7 @@
       ],
       "fantasy": "Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (drone autopilot).",
       "next_series": "LOGIC-3",
-      "notes": "Autopilot behavior needs controller-network semantics and spoof-aware signal policy, not only mobility or SIG adjacency.",
+      "notes": "Autopilot behavior needs LOGIC controller-network semantics and spoof-aware signal policy, not only mobility or SIG adjacency.",
       "proc": {
         "needs": true,
         "notes": "Process lifecycle, canonical records, and QC/drift hooks required."
