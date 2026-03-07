@@ -1,0 +1,79 @@
+{
+  "schema_id": "dominium.registry.logic_network_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logic_network_policy_registry",
+    "registry_version": "1.0.0",
+    "logic_network_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "logic.policy.default",
+        "description": "Default deterministic logic network policy that refuses combinational loops and forbids synchronous cross-shard links.",
+        "allow_combinational_loops": false,
+        "loop_resolution_mode": "refuse",
+        "require_boundary_artifact_for_cross_shard": true,
+        "allowed_carrier_type_ids": [
+          "carrier.electrical",
+          "carrier.hydraulic",
+          "carrier.mechanical",
+          "carrier.optical",
+          "carrier.pneumatic",
+          "carrier.sig"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "logic_policy_id": "logic.default",
+          "source": "LOGIC3-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "logic.policy.allow_roi_loops",
+        "description": "Policy that permits loop topologies only when validation marks them for forced ROI micro execution.",
+        "allow_combinational_loops": true,
+        "loop_resolution_mode": "force_roi",
+        "require_boundary_artifact_for_cross_shard": true,
+        "allowed_carrier_type_ids": [
+          "carrier.electrical",
+          "carrier.hydraulic",
+          "carrier.mechanical",
+          "carrier.optical",
+          "carrier.pneumatic",
+          "carrier.sig"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "logic_policy_id": "logic.default",
+          "source": "LOGIC3-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "logic.policy.lab_allow",
+        "description": "Lab policy that allows loop topologies only when compiled-stability proof or explicit profile exception is present.",
+        "allow_combinational_loops": true,
+        "loop_resolution_mode": "allow_compiled_only",
+        "require_boundary_artifact_for_cross_shard": true,
+        "allowed_carrier_type_ids": [
+          "carrier.electrical",
+          "carrier.hydraulic",
+          "carrier.mechanical",
+          "carrier.optical",
+          "carrier.pneumatic",
+          "carrier.sig"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "logic_policy_id": "logic.lab_experimental",
+          "requires_compiled_equivalence_proof": true,
+          "requires_exception_ledger": true,
+          "source": "LOGIC3-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC3-3",
+      "registry_driven": true
+    }
+  }
+}

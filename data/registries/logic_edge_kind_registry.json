@@ -1,0 +1,54 @@
+{
+  "schema_id": "dominium.registry.logic_edge_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logic_edge_kind_registry",
+    "registry_version": "1.0.0",
+    "edge_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "link",
+        "description": "Single typed-signal link between logic nodes.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "edge_type_id": "edge.logic.link"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "bus_link",
+        "description": "Bus-carrying link bound to a declared bus definition.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "edge_type_id": "edge.logic.bus_link"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "protocol_link",
+        "description": "Framed or arbitration-aware link bound to a declared protocol hook.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "edge_type_id": "edge.logic.protocol_link"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "edge_kind_id": "sig_link",
+        "description": "Receipt-based message carrier link routed through SIG semantics.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "edge_type_id": "edge.logic.sig_link"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC3-3",
+      "registry_driven": true
+    }
+  }
+}

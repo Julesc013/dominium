@@ -1,0 +1,64 @@
+{
+  "schema_id": "dominium.registry.logic_node_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logic_node_kind_registry",
+    "registry_version": "1.0.0",
+    "node_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "port_in",
+        "description": "Input port node for a logic element instance.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "node_type_id": "node.logic.port_in"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "port_out",
+        "description": "Output port node for a logic element instance.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "node_type_id": "node.logic.port_out"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "junction",
+        "description": "Single-signal merge or fanout junction.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "node_type_id": "node.logic.junction"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "bus_junction",
+        "description": "Bus-capable merge or fanout junction.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "node_type_id": "node.logic.bus_junction"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "node_kind_id": "protocol_endpoint",
+        "description": "Protocol-aware endpoint for framed or arbitrated logic links.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC3-3",
+          "node_type_id": "node.logic.protocol_endpoint"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC3-3",
+      "registry_driven": true
+    }
+  }
+}
