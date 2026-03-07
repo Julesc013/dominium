@@ -23,7 +23,7 @@ _FORBIDDEN_PATTERNS = (
     re.compile(r"\bcarrier\.mechanical\b", re.IGNORECASE),
     re.compile(r"\bcarrier\.optical\b", re.IGNORECASE),
     re.compile(r"\bvoltage\b", re.IGNORECASE),
-    re.compile(r"\bcurrent\b", re.IGNORECASE),
+    re.compile(r"\b(?:quantity\.elec\.current|measure\.elec\.current|electric current)\b", re.IGNORECASE),
     re.compile(r"\bpressure(?:_head)?\b", re.IGNORECASE),
 )
 

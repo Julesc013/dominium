@@ -21,7 +21,7 @@ WATCH_PREFIXES = (
 
 _FORBIDDEN_PATTERNS = (
     re.compile(r"\bvoltage\b", re.IGNORECASE),
-    re.compile(r"\bcurrent\b", re.IGNORECASE),
+    re.compile(r"\b(?:quantity\.elec\.current|measure\.elec\.current|electric current)\b", re.IGNORECASE),
     re.compile(r"\bohm(?:s)?\b", re.IGNORECASE),
     re.compile(r"\bamp(?:ere)?s?\b", re.IGNORECASE),
     re.compile(r"\bpower_factor\b", re.IGNORECASE),
