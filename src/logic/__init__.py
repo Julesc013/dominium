@@ -1,9 +1,11 @@
 """LOGIC domain package exports."""
 
 from src.logic.element import (
+    LOGIC_ELEMENT_COMPUTE_OWNER_KIND,
     LOGIC_ELEMENT_INSTRUMENTATION_DEFAULT_ID,
     LOGIC_ELEMENT_INSTRUMENTATION_OWNER_KIND,
     REFUSAL_LOGIC_INVALID_ELEMENT_DEFINITION,
+    build_logic_element_compute_owner_id,
     build_logic_behavior_model_row,
     build_logic_element_definition_row,
     build_state_machine_definition_row,
@@ -13,6 +15,7 @@ from src.logic.element import (
     observe_logic_element_output_port,
     observe_logic_element_state_vector,
     resolve_logic_element_instrumentation_surface,
+    request_logic_element_compute,
     route_logic_element_forensics,
     validate_logic_element_definitions,
 )
@@ -47,6 +50,7 @@ from src.logic.signal import (
 )
 
 __all__ = [
+    "LOGIC_ELEMENT_COMPUTE_OWNER_KIND",
     "LOGIC_ELEMENT_INSTRUMENTATION_DEFAULT_ID",
     "LOGIC_ELEMENT_INSTRUMENTATION_OWNER_KIND",
     "REFUSAL_LOGIC_INVALID_ELEMENT_DEFINITION",
@@ -63,6 +67,7 @@ __all__ = [
     "adapt_signal_row_to_transducer_write",
     "adapt_transducer_measurement_to_signal_request",
     "authorize_logic_probe_control",
+    "build_logic_element_compute_owner_id",
     "build_logic_behavior_model_row",
     "build_logic_element_definition_row",
     "build_state_machine_definition_row",
@@ -82,6 +87,7 @@ __all__ = [
     "observe_signal_store_slot",
     "process_signal_emit_pulse",
     "process_signal_set",
+    "request_logic_element_compute",
     "resolve_logic_element_instrumentation_surface",
     "route_logic_element_forensics",
     "signal_coupling_change_token",
