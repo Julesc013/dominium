@@ -486,6 +486,12 @@ from src.logic.signal import (
     process_signal_emit_pulse,
     process_signal_set,
 )
+from src.logic.eval import (
+    normalize_logic_state_update_record_rows,
+    normalize_logic_eval_state,
+    process_logic_network_evaluate,
+    process_statevec_update,
+)
 from src.logic.network.logic_network_engine import (
     normalize_logic_network_state,
     process_logic_network_add_edge,
@@ -641,6 +647,7 @@ from src.system import (
     state_vector_definition_for_owner,
     normalize_state_vector_snapshot_rows,
     state_vector_snapshot_rows_by_owner,
+    deserialize_state,
     serialize_state,
 )
 from src.meta.explain import (
@@ -825,6 +832,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.logic_network_add_edge": "entitlement.control.admin",
     "process.logic_network_remove_edge": "entitlement.control.admin",
     "process.logic_network_validate": "entitlement.control.admin",
+    "process.logic_network_evaluate": "session.boot",
+    "process.statevec_update": "entitlement.control.admin",
     "process.signal_set_aspect": "entitlement.control.admin",
     "process.signal_tick": "session.boot",
     "process.signal_jam_start": "entitlement.control.admin",
@@ -1034,6 +1043,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.logic_network_add_edge": "operator",
     "process.logic_network_remove_edge": "operator",
     "process.logic_network_validate": "operator",
+    "process.logic_network_evaluate": "observer",
+    "process.statevec_update": "system",
     "process.signal_set_aspect": "operator",
     "process.signal_tick": "observer",
     "process.signal_jam_start": "operator",
@@ -1189,6 +1200,8 @@ CONTROL_PROCESS_IDS = {
     "process.logic_network_add_edge",
     "process.logic_network_remove_edge",
     "process.logic_network_validate",
+    "process.logic_network_evaluate",
+    "process.statevec_update",
     "process.signal_set_aspect",
     "process.signal_tick",
     "process.signal_jam_start",
@@ -5070,6 +5083,50 @@ def _load_logic_element_validation_rows(*, policy_context: dict | None) -> Tuple
     )
 
 
+def _load_logic_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "logic_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/logic_policy_registry.json",
+        default_payload={"record": {"logic_policies": []}},
+    )
+
+
+def _load_logic_eval_rows(*, policy_context: dict | None) -> Tuple[list[dict], list[dict], list[dict], list[dict], list[dict]]:
+    logic_element_rows, logic_behavior_model_rows, logic_interface_signature_rows = _load_logic_element_validation_rows(
+        policy_context=policy_context
+    )
+    state_machine_payload = dict(_policy_payload(policy_context, "logic_state_machine_registry") or {})
+    if not _registry_rows(state_machine_payload, "state_machine_definitions"):
+        state_machine_payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="packs/core/pack.core.logic_base/data/logic_state_machine_registry.json",
+            default_payload={"state_machine_definitions": []},
+        )
+    logic_state_vector_payload = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+        default_payload={"state_vector_definitions": []},
+    )
+    state_vector_registry_payload = _load_state_vector_registry(policy_context=policy_context)
+    state_vector_rows = [
+        dict(row)
+        for row in _registry_rows(state_vector_registry_payload, "state_vector_definitions")
+    ] + [
+        dict(row)
+        for row in _registry_rows(logic_state_vector_payload, "state_vector_definitions")
+    ]
+    return (
+        logic_element_rows,
+        logic_behavior_model_rows,
+        logic_interface_signature_rows,
+        [dict(row) for row in _registry_rows(state_machine_payload, "state_machine_definitions")],
+        normalize_state_vector_definition_rows(state_vector_rows),
+    )
+
+
 def _persist_logic_network_state(state: dict, logic_network_state: Mapping[str, object] | None) -> None:
     normalized = normalize_logic_network_state(logic_network_state)
     graph_rows = [dict(row) for row in list(normalized.get("logic_network_graph_rows") or []) if isinstance(row, Mapping)]
@@ -5097,6 +5154,143 @@ def _persist_logic_network_state(state: dict, logic_network_state: Mapping[str, 
     state["network_graphs"] = sorted(
         existing_graph_rows + graph_rows,
         key=lambda row: str(row.get("graph_id", "")),
+    )
+
+
+def _persist_logic_eval_state(state: dict, logic_eval_state: Mapping[str, object] | None) -> None:
+    normalized = normalize_logic_eval_state(logic_eval_state)
+    state["logic_eval_state"] = dict(normalized)
+    state["logic_network_runtime_state_rows"] = [
+        dict(row) for row in list(normalized.get("logic_network_runtime_state_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_eval_record_rows"] = [
+        dict(row) for row in list(normalized.get("logic_eval_record_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_throttle_event_rows"] = [
+        dict(row) for row in list(normalized.get("logic_throttle_event_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_state_update_record_rows"] = [
+        dict(row) for row in list(normalized.get("logic_state_update_record_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_pending_signal_update_rows"] = [
+        dict(row) for row in list(normalized.get("logic_pending_signal_update_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_propagation_trace_artifacts"] = [
+        dict(row) for row in list(normalized.get("logic_propagation_trace_artifact_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_eval_compute_runtime_state"] = dict(_as_map(normalized.get("compute_runtime_state")))
+
+
+def _refresh_logic_eval_hash_chains(state: dict) -> None:
+    runtime_rows = [
+        dict(row)
+        for row in list(state.get("logic_network_runtime_state_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    eval_rows = [
+        dict(row)
+        for row in list(state.get("logic_eval_record_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    throttle_rows = [
+        dict(row)
+        for row in list(state.get("logic_throttle_event_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    state_update_rows = [
+        dict(row)
+        for row in list(state.get("logic_state_update_record_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    propagation_rows = [
+        dict(row)
+        for row in list(state.get("logic_propagation_trace_artifacts") or [])
+        if isinstance(row, Mapping)
+    ]
+    state["logic_network_runtime_state_hash_chain"] = canonical_sha256(
+        [
+            {
+                "network_id": str(row.get("network_id", "")).strip(),
+                "last_evaluated_tick": int(max(0, _as_int(row.get("last_evaluated_tick", 0), 0))),
+                "throttled": bool(row.get("throttled", False)),
+            }
+            for row in sorted(runtime_rows, key=lambda item: str(item.get("network_id", "")))
+        ]
+    )
+    state["logic_eval_record_hash_chain"] = canonical_sha256(
+        [
+            {
+                "record_id": str(row.get("record_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "elements_evaluated_count": int(max(0, _as_int(row.get("elements_evaluated_count", 0), 0))),
+                "compute_units_used": int(max(0, _as_int(row.get("compute_units_used", 0), 0))),
+                "throttled": bool(row.get("throttled", False)),
+            }
+            for row in sorted(
+                eval_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("record_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_throttle_event_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "reason": str(row.get("reason", "")).strip(),
+            }
+            for row in sorted(
+                throttle_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_state_update_hash_chain"] = canonical_sha256(
+        [
+            {
+                "update_id": str(row.get("update_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "owner_id": str(row.get("owner_id", "")).strip(),
+                "prior_snapshot_hash": str(row.get("prior_snapshot_hash", "")).strip(),
+                "next_snapshot_hash": str(row.get("next_snapshot_hash", "")).strip(),
+                "process_id": str(row.get("process_id", "")).strip(),
+            }
+            for row in sorted(
+                state_update_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("update_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_output_signal_hash_chain"] = canonical_sha256(
+        [
+            {
+                "artifact_id": str(row.get("artifact_id", "")).strip(),
+                "created_tick": int(max(0, _as_int(row.get("created_tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "trace_kind": str(row.get("trace_kind", "")).strip(),
+                "slot_key": str(row.get("slot_key", "")).strip(),
+                "signal_hash": str(row.get("signal_hash", "")).strip(),
+            }
+            for row in sorted(
+                propagation_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("created_tick", 0), 0))),
+                    str(item.get("artifact_id", "")),
+                ),
+            )
+            if str(row.get("trace_kind", "")).strip() == "trace.logic.propagation_delivered"
+        ]
     )
 
 
@@ -43405,6 +43599,219 @@ def execute_intent(
             "network_id": str(validation_request.get("network_id", "")).strip(),
             "validation_hash": str(dict(updated.get("validation_result") or {}).get("validation_hash", "")).strip(),
             "requires_l2_roi": bool(dict(updated.get("validation_result") or {}).get("requires_l2_roi", False)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_network_evaluate":
+        signal_type_registry, _signal_rule_policy_registry = _load_signal_registries(policy_context=policy_context)
+        (
+            carrier_type_registry,
+            bus_encoding_registry,
+            protocol_registry,
+            signal_noise_policy_registry,
+            signal_delay_policy_registry,
+        ) = _load_logic_signal_registries(policy_context=policy_context)
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
+        logic_policy_registry = _load_logic_policy_registry(policy_context=policy_context)
+        (
+            logic_element_rows,
+            logic_behavior_model_rows,
+            logic_interface_signature_rows,
+            logic_state_machine_rows,
+            logic_state_vector_definition_rows,
+        ) = _load_logic_eval_rows(policy_context=policy_context)
+        _logic_node_kind_registry, _logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
+            policy_context=policy_context
+        )
+        evaluation_request = dict(inputs.get("evaluation_request") or {})
+        if not evaluation_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_network_evaluate requires evaluation_request",
+                "Provide evaluation_request with network_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.evaluation_request",
+            )
+        seeded_state_vector_rows = normalize_state_vector_definition_rows(
+            list(_ensure_state_vector_definition_rows(state) or []) + list(logic_state_vector_definition_rows or [])
+        )
+        updated = process_logic_network_evaluate(
+            current_tick=int(current_tick),
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            signal_store_state=state.get("logic_signal_store_state")
+            or {
+                "signal_rows": state.get("logic_signal_rows"),
+                "bus_definition_rows": state.get("logic_bus_definition_rows"),
+                "protocol_definition_rows": state.get("logic_protocol_definition_rows"),
+                "signal_change_record_rows": state.get("logic_signal_change_records"),
+                "signal_trace_artifact_rows": state.get("logic_signal_trace_artifacts"),
+                "coupling_change_rows": state.get("logic_signal_coupling_change_rows"),
+                "compute_runtime_state": state.get("logic_signal_compute_runtime_state"),
+            },
+            logic_eval_state=state.get("logic_eval_state")
+            or {
+                "logic_network_runtime_state_rows": state.get("logic_network_runtime_state_rows"),
+                "logic_eval_record_rows": state.get("logic_eval_record_rows"),
+                "logic_throttle_event_rows": state.get("logic_throttle_event_rows"),
+                "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
+                "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
+                "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
+                "compute_runtime_state": state.get("logic_eval_compute_runtime_state"),
+            },
+            evaluation_request=evaluation_request,
+            signal_type_registry_payload=signal_type_registry,
+            carrier_type_registry_payload=carrier_type_registry,
+            signal_delay_policy_registry_payload=signal_delay_policy_registry,
+            signal_noise_policy_registry_payload=signal_noise_policy_registry,
+            bus_encoding_registry_payload=bus_encoding_registry,
+            protocol_registry_payload=protocol_registry,
+            logic_policy_registry_payload=logic_policy_registry,
+            logic_network_policy_registry_payload=logic_network_policy_registry,
+            logic_element_rows=logic_element_rows,
+            logic_behavior_model_rows=logic_behavior_model_rows,
+            logic_interface_signature_rows=logic_interface_signature_rows,
+            logic_state_machine_rows=logic_state_machine_rows,
+            state_vector_definition_rows=seeded_state_vector_rows,
+            state_vector_snapshot_rows=_ensure_state_vector_snapshot_rows(state),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+            tolerance_policy_registry_payload=tolerance_policy_registry,
+            build_state_vector_definition_row=build_state_vector_definition_row,
+            normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
+            normalize_state_vector_snapshot_rows=normalize_state_vector_snapshot_rows,
+            state_vector_snapshot_rows_by_owner=state_vector_snapshot_rows_by_owner,
+            deserialize_state=deserialize_state,
+            serialize_state=serialize_state,
+            process_signal_set_fn=process_signal_set,
+            process_signal_emit_pulse_fn=process_signal_emit_pulse,
+        )
+        if updated.get("signal_store_state") is not None:
+            state["logic_signal_store_state"] = dict(updated.get("signal_store_state") or {})
+            state["logic_signal_rows"] = [
+                dict(row)
+                for row in list(dict(updated.get("signal_store_state") or {}).get("signal_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            state["logic_bus_definition_rows"] = [
+                dict(row)
+                for row in list(dict(updated.get("signal_store_state") or {}).get("bus_definition_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            state["logic_protocol_definition_rows"] = [
+                dict(row)
+                for row in list(dict(updated.get("signal_store_state") or {}).get("protocol_definition_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            state["logic_signal_change_records"] = [
+                dict(row)
+                for row in list(dict(updated.get("signal_store_state") or {}).get("signal_change_record_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            state["logic_signal_trace_artifacts"] = [
+                dict(row)
+                for row in list(dict(updated.get("signal_store_state") or {}).get("signal_trace_artifact_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            state["logic_signal_coupling_change_rows"] = [
+                dict(row)
+                for row in list(dict(updated.get("signal_store_state") or {}).get("coupling_change_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            state["logic_signal_compute_runtime_state"] = dict(
+                _as_map(dict(updated.get("signal_store_state") or {}).get("compute_runtime_state"))
+            )
+        if updated.get("logic_eval_state") is not None:
+            _persist_logic_eval_state(state, updated.get("logic_eval_state"))
+        if updated.get("state_vector_definition_rows") is not None:
+            state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+                updated.get("state_vector_definition_rows")
+            )
+        if updated.get("state_vector_snapshot_rows") is not None:
+            state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+                updated.get("state_vector_snapshot_rows")
+            )
+        if updated.get("explain_artifact_rows") is not None:
+            state["logic_eval_explain_artifacts"] = normalize_explain_artifact_rows(
+                list(state.get("logic_eval_explain_artifacts") or [])
+                + [dict(row) for row in list(updated.get("explain_artifact_rows") or []) if isinstance(row, Mapping)]
+            )
+        _refresh_state_vector_hash_chains(state)
+        _refresh_logic_eval_hash_chains(state)
+        if str(updated.get("result", "")) not in {"complete", "throttled"}:
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_network_evaluate refused L1 logic evaluation",
+                "Validate the network, resolve loop policy blockers, or fix duplicate tick evaluation.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.evaluation_request",
+            )
+        result_metadata = {
+            "network_id": str(evaluation_request.get("network_id", "")).strip(),
+            "eval_record_id": str(dict(updated.get("eval_record_row") or {}).get("record_id", "")).strip(),
+            "throttled": bool(str(updated.get("result", "")) == "throttled"),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.statevec_update":
+        state_update_request = dict(inputs.get("state_update_request") or {})
+        if not state_update_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.statevec_update requires state_update_request",
+                "Provide state_update_request with owner_id and source_state.",
+                {"process_id": process_id},
+                "$.intent.inputs.state_update_request",
+            )
+        updated = process_statevec_update(
+            current_tick=int(current_tick),
+            owner_id=str(state_update_request.get("owner_id", "")).strip(),
+            source_state=dict(state_update_request.get("source_state") or {}),
+            state_vector_definition_rows=_ensure_state_vector_definition_rows(state),
+            state_vector_snapshot_rows=_ensure_state_vector_snapshot_rows(state),
+            expected_version=str(state_update_request.get("expected_version", "")).strip() or None,
+            definition_row=(
+                dict(state_update_request.get("definition_row") or {})
+                if isinstance(state_update_request.get("definition_row"), Mapping)
+                else None
+            ),
+            normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
+            normalize_state_vector_snapshot_rows=normalize_state_vector_snapshot_rows,
+            serialize_state=serialize_state,
+            state_vector_snapshot_rows_by_owner=state_vector_snapshot_rows_by_owner,
+        )
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.statevec_update refused state vector update",
+                "Provide a valid owner_id, state payload, and matching state vector definition.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.state_update_request",
+            )
+        state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
+            updated.get("state_vector_definition_rows")
+        )
+        state["state_vector_snapshot_rows"] = normalize_state_vector_snapshot_rows(
+            updated.get("state_vector_snapshot_rows")
+        )
+        state["logic_state_update_record_rows"] = normalize_logic_state_update_record_rows(
+            list(state.get("logic_state_update_record_rows") or [])
+            + [dict(row) for row in list(updated.get("state_update_record_rows") or []) if isinstance(row, Mapping)]
+        )
+        _refresh_state_vector_hash_chains(state)
+        _refresh_logic_eval_hash_chains(state)
+        result_metadata = {
+            "owner_id": str(state_update_request.get("owner_id", "")).strip(),
+            "snapshot_id": str(dict(updated.get("state_vector_snapshot_row") or {}).get("snapshot_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.signal_set_aspect":
