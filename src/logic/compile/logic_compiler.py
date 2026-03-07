@@ -858,6 +858,14 @@ def compile_logic_network(
                 extensions={"request_id": request_id, "compile_policy_id": compile_policy_id},
             ),
         }
+    request_extensions = as_map(request_row.get("extensions"))
+    request_extensions.update(
+        {
+            "compile_policy_id": compile_policy_id,
+            "compile_policy_fingerprint": token(compile_policy_row.get("deterministic_fingerprint")),
+        }
+    )
+    request_row["extensions"] = request_extensions
 
     source = _build_compile_source(
         network_id=network_id,
@@ -994,6 +1002,7 @@ def compile_logic_network(
         extensions={
             "network_id": network_id,
             "compile_policy_id": compile_policy_id,
+            "compile_policy_fingerprint": token(compile_policy_row.get("deterministic_fingerprint")),
             "validation_hash": token(as_map(source.get("validation_record")).get("validation_hash")),
             "compiled_target_type": compiled_type_id,
             "proof_requirement_enforced": True,
@@ -1006,7 +1015,13 @@ def compile_logic_network(
         success=True,
         refusal=None,
         deterministic_fingerprint="",
-        extensions={"request_id": request_id, "proof_id": token(proof_row.get("proof_id")), "source_tick": tick},
+        extensions={
+            "request_id": request_id,
+            "proof_id": token(proof_row.get("proof_id")),
+            "source_tick": tick,
+            "compile_policy_id": compile_policy_id,
+            "compile_policy_fingerprint": token(compile_policy_row.get("deterministic_fingerprint")),
+        },
     )
     network_state = as_map(logic_network_state)
     binding_row = dict(_binding_by_network_id(network_state.get("logic_network_binding_rows")).get(network_id) or {})
@@ -1017,6 +1032,7 @@ def compile_logic_network(
             "compiled_equivalence_proof_id": token(proof_row.get("proof_id")),
             "compiled_validity_domain_id": token(validity_row.get("domain_id")),
             "compile_policy_id": compile_policy_id,
+            "compile_policy_fingerprint": token(compile_policy_row.get("deterministic_fingerprint")),
             "compiled_target_type": compiled_type_id,
             "compiled_source_hash": token(source.get("source_hash")),
             "compiled_payload_hash": payload_hash,

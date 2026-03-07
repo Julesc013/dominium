@@ -64,6 +64,9 @@ def _load_eval_inputs(repo_root: str) -> dict:
         "logic_state_machine_rows": _registry_rows(read("packs/core/pack.core.logic_base/data/logic_state_machine_registry.json"), "state_machine_definitions"),
         "watchdog_definition_rows": _registry_rows(read("packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json"), "watchdog_definitions"),
         "state_vector_definition_rows": normalize_state_vector_definition_rows(state_vector_rows),
+        "compiled_type_registry_payload": read("data/registries/compiled_type_registry.json"),
+        "verification_procedure_registry_payload": read("data/registries/verification_procedure_registry.json"),
+        "logic_compile_policy_registry_payload": read("data/registries/logic_compile_policy_registry.json"),
         "compute_budget_profile_registry_payload": read("data/registries/compute_budget_profile_registry.json"),
         "compute_degrade_policy_registry_payload": read("data/registries/compute_degrade_policy_registry.json"),
         "tolerance_policy_registry_payload": read("data/registries/tolerance_policy_registry.json"),
@@ -77,14 +80,27 @@ def _load_eval_inputs(repo_root: str) -> dict:
 
 def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, object]) -> dict:
     inputs = _load_eval_inputs(repo_root)
+    eval_inputs = dict(inputs)
+    for key in (
+        "compiled_type_registry_payload",
+        "verification_procedure_registry_payload",
+        "logic_compile_policy_registry_payload",
+    ):
+        eval_inputs.pop(key, None)
     logic_network_state = dict(payload.get("logic_network_state") or {})
     signal_store_state = dict(payload.get("signal_store_state") or {})
     logic_eval_state = dict(payload.get("logic_eval_state") or {})
+    compile_request_rows = [dict(row) for row in list(payload.get("compile_request_rows") or []) if isinstance(row, Mapping)]
+    compile_result_rows = [dict(row) for row in list(payload.get("compile_result_rows") or []) if isinstance(row, Mapping)]
+    compiled_model_rows = [dict(row) for row in list(payload.get("compiled_model_rows") or []) if isinstance(row, Mapping)]
+    equivalence_proof_rows = [dict(row) for row in list(payload.get("equivalence_proof_rows") or []) if isinstance(row, Mapping)]
+    validity_domain_rows = [dict(row) for row in list(payload.get("validity_domain_rows") or []) if isinstance(row, Mapping)]
     state_vector_definition_rows = normalize_state_vector_definition_rows(
         list(inputs.get("state_vector_definition_rows") or [])
         + [dict(row) for row in list(payload.get("state_vector_definition_rows") or []) if isinstance(row, Mapping)]
     )
     state_vector_snapshot_rows = normalize_state_vector_snapshot_rows(payload.get("state_vector_snapshot_rows") or [])
+    forced_expand_event_rows = []
 
     evaluation_requests = [
         dict(row)
@@ -101,7 +117,7 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
             logic_network_state=logic_network_state,
             signal_store_state=signal_store_state,
             logic_eval_state=logic_eval_state,
-            evaluation_request={"network_id": str(request.get("network_id", "")).strip()},
+            evaluation_request=dict(request),
             state_vector_snapshot_rows=state_vector_snapshot_rows,
             process_signal_set_fn=process_signal_set,
             process_signal_emit_pulse_fn=process_signal_emit_pulse,
@@ -111,7 +127,10 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
             state_vector_snapshot_rows_by_owner=state_vector_snapshot_rows_by_owner,
             deserialize_state=deserialize_state,
             serialize_state=serialize_state,
-            **inputs,
+            compiled_model_rows=compiled_model_rows,
+            equivalence_proof_rows=equivalence_proof_rows,
+            validity_domain_rows=validity_domain_rows,
+            **eval_inputs,
         )
         if str(result.get("result", "")) not in {"complete", "throttled"}:
             return {
@@ -127,6 +146,9 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
         )
         state_vector_snapshot_rows = normalize_state_vector_snapshot_rows(
             result.get("state_vector_snapshot_rows") or state_vector_snapshot_rows
+        )
+        forced_expand_event_rows.extend(
+            dict(row) for row in list(result.get("forced_expand_event_rows") or []) if isinstance(row, Mapping)
         )
         tick_reports.append(
             {
@@ -214,6 +236,81 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
                 if isinstance(row, Mapping)
             ]
         ),
+        "compile_result_hash_chain": canonical_sha256(
+            [
+                {
+                    "result_id": str(row.get("result_id", "")).strip(),
+                    "compiled_model_id": str(row.get("compiled_model_id", "")).strip(),
+                    "success": bool(row.get("success", False)),
+                    "refusal": str(row.get("refusal", "")).strip(),
+                }
+                for row in sorted(
+                    (dict(item) for item in list(compile_result_rows or []) if isinstance(item, Mapping)),
+                    key=lambda item: str(item.get("result_id", "")),
+                )
+            ]
+        ),
+        "compiled_model_hash_chain": canonical_sha256(
+            [
+                {
+                    "compiled_model_id": str(row.get("compiled_model_id", "")).strip(),
+                    "source_hash": str(row.get("source_hash", "")).strip(),
+                    "compiled_type_id": str(row.get("compiled_type_id", "")).strip(),
+                    "equivalence_proof_ref": str(row.get("equivalence_proof_ref", "")).strip(),
+                    "validity_domain_ref": str(row.get("validity_domain_ref", "")).strip(),
+                }
+                for row in sorted(
+                    (dict(item) for item in list(compiled_model_rows or []) if isinstance(item, Mapping)),
+                    key=lambda item: str(item.get("compiled_model_id", "")),
+                )
+            ]
+        ),
+        "equivalence_proof_hash_chain": canonical_sha256(
+            [
+                {
+                    "proof_id": str(row.get("proof_id", "")).strip(),
+                    "proof_kind": str(row.get("proof_kind", "")).strip(),
+                    "verification_procedure_id": str(row.get("verification_procedure_id", "")).strip(),
+                    "proof_hash": str(row.get("proof_hash", "")).strip(),
+                }
+                for row in sorted(
+                    (dict(item) for item in list(equivalence_proof_rows or []) if isinstance(item, Mapping)),
+                    key=lambda item: str(item.get("proof_id", "")),
+                )
+            ]
+        ),
+        "logic_compile_policy_hash_chain": canonical_sha256(
+            [
+                {
+                    "request_id": str(row.get("request_id", "")).strip(),
+                    "compile_policy_id": str(dict(row.get("source_ref") or {}).get("compile_policy_id", "")).strip(),
+                    "compile_policy_fingerprint": str(dict(row.get("extensions") or {}).get("compile_policy_fingerprint", "")).strip(),
+                }
+                for row in sorted(
+                    (dict(item) for item in list(compile_request_rows or []) if isinstance(item, Mapping)),
+                    key=lambda item: str(item.get("request_id", "")),
+                )
+                if str(dict(row.get("source_ref") or {}).get("compile_policy_id", "")).strip()
+            ]
+        ),
+        "forced_expand_event_hash_chain": canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "capsule_id": str(row.get("capsule_id", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                    "reason_code": str(row.get("reason_code", "")).strip(),
+                }
+                for row in sorted(
+                    (dict(item) for item in list(forced_expand_event_rows or []) if isinstance(item, Mapping)),
+                    key=lambda item: (
+                        int(item.get("tick", 0) or 0),
+                        str(item.get("capsule_id", "")),
+                        str(item.get("event_id", "")),
+                    ),
+                )
+            ]
+        ),
     }
     report = {
         "result": "complete",
@@ -231,6 +328,11 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
                 if isinstance(row, Mapping)
             ]
         ),
+        "compile_result_hash_chain": str(proof_surface.get("compile_result_hash_chain", "")),
+        "compiled_model_hash_chain": str(proof_surface.get("compiled_model_hash_chain", "")),
+        "equivalence_proof_hash_chain": str(proof_surface.get("equivalence_proof_hash_chain", "")),
+        "logic_compile_policy_hash_chain": str(proof_surface.get("logic_compile_policy_hash_chain", "")),
+        "forced_expand_event_hash_chain": str(proof_surface.get("forced_expand_event_hash_chain", "")),
         "logic_throttle_event_hash_chain": str(proof_surface.get("logic_throttle_event_hash_chain", "")),
         "logic_state_update_hash_chain": str(proof_surface.get("logic_state_update_hash_chain", "")),
         "logic_output_signal_hash_chain": str(proof_surface.get("logic_output_signal_hash_chain", "")),
@@ -241,12 +343,20 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
         "final_logic_eval_state": logic_eval_state,
         "final_signal_store_state": signal_store_state,
         "final_state_vector_snapshot_rows": state_vector_snapshot_rows,
+        "final_state_vector_snapshot_hash": canonical_sha256(state_vector_snapshot_rows),
+        "forced_expand_event_rows": forced_expand_event_rows,
+        "compiled_model_rows": compiled_model_rows,
     }
     report["deterministic_fingerprint"] = canonical_sha256(
         {
             "tick_reports": tick_reports,
             "final_signal_hash": report["final_signal_hash"],
             "logic_eval_record_hash_chain": report["logic_eval_record_hash_chain"],
+            "compile_result_hash_chain": report["compile_result_hash_chain"],
+            "compiled_model_hash_chain": report["compiled_model_hash_chain"],
+            "equivalence_proof_hash_chain": report["equivalence_proof_hash_chain"],
+            "logic_compile_policy_hash_chain": report["logic_compile_policy_hash_chain"],
+            "forced_expand_event_hash_chain": report["forced_expand_event_hash_chain"],
             "logic_throttle_event_hash_chain": report["logic_throttle_event_hash_chain"],
             "logic_state_update_hash_chain": report["logic_state_update_hash_chain"],
             "logic_output_signal_hash_chain": report["logic_output_signal_hash_chain"],

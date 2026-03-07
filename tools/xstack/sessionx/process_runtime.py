@@ -13018,6 +13018,8 @@ def _refresh_compile_hash_chains(state: dict) -> None:
                 "source_kind": str(row.get("source_kind", "")).strip(),
                 "target_compiled_type_id": str(row.get("target_compiled_type_id", "")).strip(),
                 "error_bound_policy_id": str(row.get("error_bound_policy_id", "")).strip(),
+                "compile_policy_id": str(dict(row.get("source_ref") or {}).get("compile_policy_id", "")).strip(),
+                "compile_policy_fingerprint": str(dict(row.get("extensions") or {}).get("compile_policy_fingerprint", "")).strip(),
             }
             for row in sorted(
                 (dict(item) for item in list(request_rows or []) if isinstance(item, Mapping)),
@@ -13082,6 +13084,20 @@ def _refresh_compile_hash_chains(state: dict) -> None:
                 (dict(item) for item in list(validity_rows or []) if isinstance(item, Mapping)),
                 key=lambda item: str(item.get("domain_id", "")),
             )
+        ]
+    )
+    state["logic_compile_policy_hash_chain"] = canonical_sha256(
+        [
+            {
+                "request_id": str(row.get("request_id", "")).strip(),
+                "compile_policy_id": str(dict(row.get("source_ref") or {}).get("compile_policy_id", "")).strip(),
+                "compile_policy_fingerprint": str(dict(row.get("extensions") or {}).get("compile_policy_fingerprint", "")).strip(),
+            }
+            for row in sorted(
+                (dict(item) for item in list(request_rows or []) if isinstance(item, Mapping)),
+                key=lambda item: str(item.get("request_id", "")),
+            )
+            if str(dict(row.get("source_ref") or {}).get("compile_policy_id", "")).strip()
         ]
     )
 
@@ -35036,6 +35052,7 @@ def execute_intent(
             "compile_result_hash_chain": str(state.get("compile_result_hash_chain", "")).strip(),
             "compiled_model_hash_chain": str(state.get("compiled_model_hash_chain", "")).strip(),
             "equivalence_proof_hash_chain": str(state.get("equivalence_proof_hash_chain", "")).strip(),
+            "logic_compile_policy_hash_chain": str(state.get("logic_compile_policy_hash_chain", "")).strip(),
             "validity_domain_hash_chain": str(state.get("validity_domain_hash_chain", "")).strip(),
             "state_vector_definition_hash_chain": str(state.get("state_vector_definition_hash_chain", "")).strip(),
             "state_vector_snapshot_hash_chain": str(state.get("state_vector_snapshot_hash_chain", "")).strip(),

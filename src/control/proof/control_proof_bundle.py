@@ -788,6 +788,33 @@ def build_control_proof_bundle_from_markers(
             "decision_log_hashes": list(decision_log_hashes),
         },
     )
+    compile_result_hash_chain = _hash64(
+        str(surface_payload.get("compile_result_hash_chain", "")).strip(),
+        {
+            "key": "compile_result_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+    logic_compile_policy_hash_chain = _hash64(
+        str(surface_payload.get("logic_compile_policy_hash_chain", "")).strip(),
+        {
+            "key": "logic_compile_policy_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+    forced_expand_event_hash_chain = _hash64(
+        str(surface_payload.get("forced_expand_event_hash_chain", "")).strip(),
+        {
+            "key": "forced_expand_event_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
     process_capsule_generation_hash_chain = _hash64(
         str(
             surface_payload.get(
@@ -960,6 +987,9 @@ def build_control_proof_bundle_from_markers(
         "deposition_hash_chain": str(deposition_hash_chain),
         "compiled_model_hash_chain": str(compiled_model_hash_chain),
         "equivalence_proof_hash_chain": str(equivalence_proof_hash_chain),
+        "compile_result_hash_chain": str(compile_result_hash_chain),
+        "logic_compile_policy_hash_chain": str(logic_compile_policy_hash_chain),
+        "forced_expand_event_hash_chain": str(forced_expand_event_hash_chain),
         "process_capsule_generation_hash_chain": str(
             process_capsule_generation_hash_chain
         ),
@@ -1076,6 +1106,13 @@ def build_control_proof_bundle_from_markers(
                     "deposition_hash_chain": str(payload.get("deposition_hash_chain", "")),
                     "compiled_model_hash_chain": str(payload.get("compiled_model_hash_chain", "")),
                     "equivalence_proof_hash_chain": str(payload.get("equivalence_proof_hash_chain", "")),
+                    "compile_result_hash_chain": str(payload.get("compile_result_hash_chain", "")),
+                    "logic_compile_policy_hash_chain": str(
+                        payload.get("logic_compile_policy_hash_chain", "")
+                    ),
+                    "forced_expand_event_hash_chain": str(
+                        payload.get("forced_expand_event_hash_chain", "")
+                    ),
                     "process_capsule_generation_hash_chain": str(
                         payload.get("process_capsule_generation_hash_chain", "")
                     ),
