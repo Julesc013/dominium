@@ -297,6 +297,37 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "tier.logic.default",
+        "subsystem_id": "LOGIC",
+        "supported_tiers": [
+          "macro",
+          "meso",
+          "micro"
+        ],
+        "deterministic_degradation_order": [
+          "micro",
+          "meso",
+          "macro"
+        ],
+        "cost_model_id": "cost.signal.default",
+        "micro_roi_requirements": {
+          "requires_roi_binding": true,
+          "max_micro_scope": "logic_roi"
+        },
+        "shard_safe": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC0-4",
+          "tier_aliases": {
+            "L0": "macro",
+            "L1": "meso",
+            "L2": "micro"
+          },
+          "notes": "L2 micro timing is reserved for ROI logic timing detail; macro assumes compiled or capsule-compatible controller execution."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "tier.abs.default",
         "subsystem_id": "ABS",
         "supported_tiers": [

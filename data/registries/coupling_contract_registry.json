@@ -352,6 +352,65 @@
         "coupling_relevance_policy_id": "policy.safety_force_expand",
         "coupling_priority_class": "critical",
         "coupling_cost_units": 8
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.logic.command_to_proc.actuator",
+        "coupling_class_id": "info_coupling",
+        "from_domain_id": "LOGIC",
+        "to_domain_id": "PROC",
+        "mechanism": "signal_policy",
+        "mechanism_id": "policy.logic.command_via_process",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "LOGIC emits actuator intent only through canonical process routing; direct actuator truth mutation is forbidden.",
+          "actuator_domain_ids": [
+            "ELEC",
+            "FLUID",
+            "THERM",
+            "MOB",
+            "SYSTEM",
+            "PROC"
+          ],
+          "source": "LOGIC0-4"
+        },
+        "coupling_relevance_policy_id": "policy.safety_force_expand",
+        "coupling_priority_class": "critical",
+        "coupling_cost_units": 8
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.sys.transducer_to_logic.signal",
+        "coupling_class_id": "info_coupling",
+        "from_domain_id": "SYS",
+        "to_domain_id": "LOGIC",
+        "mechanism": "constitutive_model",
+        "mechanism_id": "model.logic.transducer_bridge",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Physical carrier observations enter LOGIC only through transducer systems with declared error bounds and interface signatures.",
+          "source": "LOGIC0-4"
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "coupling.sig.receipt_to_logic.message",
+        "coupling_class_id": "info_coupling",
+        "from_domain_id": "SIG",
+        "to_domain_id": "LOGIC",
+        "mechanism": "signal_policy",
+        "mechanism_id": "policy.sig.logic_receipt_gate",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Receipt-based message carriers enter LOGIC through SIG trust, addressing, and encryption policy gates only.",
+          "source": "LOGIC0-4"
+        },
+        "coupling_relevance_policy_id": "policy.default_hold_last",
+        "coupling_priority_class": "important",
+        "coupling_cost_units": 5
       }
     ],
     "extensions": {

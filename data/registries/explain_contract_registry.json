@@ -1412,6 +1412,106 @@
         "extensions": {
           "source": "PROC8-8"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_loop_detected",
+        "event_kind_id": "logic.loop_detected",
+        "explain_artifact_type_id": "artifact.explain.logic_loop_detected",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_path",
+          "hint.review.loop_policy",
+          "hint.force.logic_roi"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_oscillation",
+        "event_kind_id": "logic.oscillation",
+        "explain_artifact_type_id": "artifact.explain.logic_oscillation",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.channel_queue_depth",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_trace",
+          "hint.add.signal_delay",
+          "hint.review.loop_policy"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_timing_violation",
+        "event_kind_id": "logic.timing_violation",
+        "explain_artifact_type_id": "artifact.explain.logic_timing_violation",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.health_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_schedule",
+          "hint.reduce.logic_fanout",
+          "hint.force.logic_roi"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_compute_throttle",
+        "event_kind_id": "logic.compute_throttle",
+        "explain_artifact_type_id": "artifact.explain.logic_compute_throttle",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.health_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.controller_load",
+          "hint.raise.logic_compute_budget",
+          "hint.force.logic_capsule"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC0-4"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_command_refused",
+        "event_kind_id": "logic.command_refused",
+        "explain_artifact_type_id": "artifact.explain.logic_command_refused",
+        "required_inputs": [
+          "artifact.decision",
+          "artifact.record",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.logic_access",
+          "hint.review.actuator_interlock",
+          "hint.retry.authorized_process"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC0-4"
+        }
       }
     ],
     "extensions": {
