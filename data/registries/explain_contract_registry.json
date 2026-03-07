@@ -1532,6 +1532,26 @@
         "extensions": {
           "source": "LOGIC0-4"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_compiled_invalid",
+        "event_kind_id": "logic.compiled_invalid",
+        "explain_artifact_type_id": "artifact.explain.logic_compiled_invalid",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.recompile.logic_network",
+          "hint.force.logic_expand",
+          "hint.inspect.compiled_validity_domain"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC6-7"
+        }
       }
     ],
     "extensions": {

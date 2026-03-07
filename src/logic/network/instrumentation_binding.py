@@ -115,6 +115,96 @@ def _measurement_value(payload: Mapping[str, object]) -> int:
     return int(digest[:8], 16)
 
 
+def observe_logic_network_compiled_summary(
+    *,
+    network_id: str,
+    compiled_model_row: Mapping[str, object],
+    current_tick: int,
+    authority_context: Mapping[str, object] | None,
+    has_physical_access: bool,
+    available_instrument_type_ids: object,
+    instrumentation_surface_registry_payload: Mapping[str, object] | None,
+    access_policy_registry_payload: Mapping[str, object] | None,
+    measurement_model_registry_payload: Mapping[str, object] | None,
+    measurement_point_id: str = "measure.logic.network.compiled_summary",
+) -> dict:
+    payload = _materialize_logic_network_surface_payload(
+        network_id=network_id,
+        instrumentation_surface_registry_payload=instrumentation_surface_registry_payload,
+    )
+    model_row = _as_map(compiled_model_row)
+    measurement = generate_measurement_observation(
+        owner_kind=LOGIC_NETWORK_INSTRUMENTATION_OWNER_KIND,
+        owner_id=_token(network_id),
+        measurement_point_id=_token(measurement_point_id) or "measure.logic.network.compiled_summary",
+        raw_value=_measurement_value(model_row),
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        authority_context=authority_context,
+        has_physical_access=has_physical_access,
+        available_instrument_type_ids=available_instrument_type_ids,
+        instrumentation_surface_registry_payload=payload,
+        access_policy_registry_payload=access_policy_registry_payload,
+        measurement_model_registry_payload=measurement_model_registry_payload,
+    )
+    if str(measurement.get("result", "")) != "complete":
+        return dict(measurement)
+    artifact = {
+        "artifact_id": "artifact.observation.logic_network_compiled_summary.{}".format(
+            canonical_sha256(
+                {
+                    "network_id": _token(network_id),
+                    "compiled_model_id": _token(model_row.get("compiled_model_id")),
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                }
+            )[:16]
+        ),
+        "artifact_family_id": "OBSERVATION",
+        "artifact_type_id": "artifact.logic.network_compiled_summary",
+        "network_id": _token(network_id),
+        "compiled_model_id": _token(model_row.get("compiled_model_id")),
+        "compiled_type_id": _token(model_row.get("compiled_type_id")),
+        "source_hash": _token(model_row.get("source_hash")),
+        "measurement_artifact_id": _token(_as_map(measurement.get("observation_artifact")).get("artifact_id")),
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "payload_hash": _token(_as_map(model_row.get("compiled_payload_ref")).get("payload_hash")),
+            "trace_compactable": True,
+        },
+    }
+    artifact["deterministic_fingerprint"] = canonical_sha256(dict(artifact, deterministic_fingerprint=""))
+    return {
+        "result": "complete",
+        "reason_code": "",
+        "measurement_observation": dict(measurement),
+        "compiled_summary_artifact": artifact,
+    }
+
+
+def authorize_logic_network_compiled_debug(
+    *,
+    network_id: str,
+    compiled_model_row: Mapping[str, object],
+    current_tick: int,
+    authority_context: Mapping[str, object] | None,
+    has_physical_access: bool,
+    available_instrument_type_ids: object,
+    instrumentation_surface_registry_payload: Mapping[str, object] | None,
+    access_policy_registry_payload: Mapping[str, object] | None,
+    measurement_model_registry_payload: Mapping[str, object] | None,
+) -> dict:
+    return observe_logic_network_compiled_summary(
+        network_id=network_id,
+        compiled_model_row=compiled_model_row,
+        current_tick=current_tick,
+        authority_context=authority_context,
+        has_physical_access=has_physical_access,
+        available_instrument_type_ids=available_instrument_type_ids,
+        instrumentation_surface_registry_payload=instrumentation_surface_registry_payload,
+        access_policy_registry_payload=access_policy_registry_payload,
+        measurement_model_registry_payload=measurement_model_registry_payload,
+    )
+
+
 def observe_logic_network_node(
     *,
     network_id: str,
@@ -286,7 +376,9 @@ def route_logic_network_forensics(
 __all__ = [
     "LOGIC_NETWORK_INSTRUMENTATION_OWNER_KIND",
     "LOGIC_NETWORK_INSTRUMENTATION_DEFAULT_ID",
+    "authorize_logic_network_compiled_debug",
     "authorize_logic_network_topology_view",
+    "observe_logic_network_compiled_summary",
     "observe_logic_network_edge",
     "observe_logic_network_node",
     "resolve_logic_network_instrumentation_surface",

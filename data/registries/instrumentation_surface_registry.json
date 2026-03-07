@@ -671,6 +671,19 @@
             "extensions": {
               "required_access_policy_id": "access.admin_only"
             }
+          },
+          {
+            "measurement_point_id": "measure.logic.network.compiled_summary",
+            "quantity_id": "quantity.logic.state_vector_capture",
+            "instrument_type_id": "instrument.logic_analyzer",
+            "measurement_model_id": "meas.lab_high_precision",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.admin_only",
+              "trace_compactable": true
+            }
           }
         ],
         "forensics_points": [
@@ -704,6 +717,15 @@
           {
             "forensics_point_id": "forensics.logic.network.watchdog_timeout",
             "explain_contract_id": "explain.watchdog_timeout",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.network.compiled_invalid",
+            "explain_contract_id": "explain.logic_compiled_invalid",
             "redaction_policy_id": "redact.inspector_default",
             "deterministic_fingerprint": "",
             "extensions": {

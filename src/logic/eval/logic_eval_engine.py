@@ -230,6 +230,12 @@ def process_logic_network_evaluate(
     compiled_model_rows: object = None,
     equivalence_proof_rows: object = None,
     validity_domain_rows: object = None,
+    instrumentation_surface_registry_payload: Mapping[str, object] | None = None,
+    access_policy_registry_payload: Mapping[str, object] | None = None,
+    measurement_model_registry_payload: Mapping[str, object] | None = None,
+    authority_context: Mapping[str, object] | None = None,
+    has_physical_access: bool = False,
+    available_instrument_type_ids: object = None,
 ) -> dict:
     tick = int(max(0, as_int(current_tick, 0)))
     request = as_map(evaluation_request)
@@ -390,24 +396,50 @@ def process_logic_network_evaluate(
     )
     from src.logic.compile.logic_compiler import (
         REFUSAL_LOGIC_COMPILED_INVALID,
+        build_logic_compiled_introspection_artifact,
         build_logic_compiled_forced_expand_event,
         build_logic_compiled_invalid_explain_artifact,
         execute_logic_compiled_model,
     )
+    from src.logic.network.instrumentation_binding import authorize_logic_network_compiled_debug
 
     binding_extensions = as_map(binding_row.get("extensions"))
     compiled_model_id = token(binding_extensions.get("compiled_model_id"))
     debug_extensions = as_map(request.get("extensions"))
-    debug_force_expand = bool(
-        debug_extensions.get("debug_force_expand", False)
-        or token(request.get("debug_instrument_id"))
-        or token(debug_extensions.get("debug_instrument_id"))
-    )
+    debug_instrument_id = token(request.get("debug_instrument_id")) or token(debug_extensions.get("debug_instrument_id"))
+    debug_force_expand_requested = bool(debug_extensions.get("debug_force_expand", False) or debug_instrument_id)
+    debug_force_expand = False
+    compiled_introspection_artifact_rows = []
     compiled_result = {}
     compiled_explain_rows = []
     forced_expand_rows = []
     compiled_runtime_ready = False
     if compiled_model_id:
+        model_row = dict(rows_by_id(compiled_model_rows, "compiled_model_id").get(compiled_model_id) or {})
+        if debug_force_expand_requested and model_row and debug_instrument_id:
+            debug_gate = authorize_logic_network_compiled_debug(
+                network_id=network_id,
+                compiled_model_row=model_row,
+                current_tick=tick,
+                authority_context=authority_context,
+                has_physical_access=bool(has_physical_access),
+                available_instrument_type_ids=[token(item) for item in as_list(available_instrument_type_ids) if token(item)]
+                or [debug_instrument_id],
+                instrumentation_surface_registry_payload=instrumentation_surface_registry_payload,
+                access_policy_registry_payload=access_policy_registry_payload,
+                measurement_model_registry_payload=measurement_model_registry_payload,
+            )
+            debug_force_expand = token(debug_gate.get("result")) == "complete"
+            if debug_force_expand:
+                measurement_artifact = as_map(as_map(debug_gate.get("measurement_observation")).get("observation_artifact"))
+                compiled_introspection_artifact_rows.append(
+                    build_logic_compiled_introspection_artifact(
+                        tick=tick,
+                        network_id=network_id,
+                        compiled_model_row=model_row,
+                        measurement_artifact_id=token(measurement_artifact.get("artifact_id")),
+                    )
+                )
         if debug_force_expand:
             forced_expand_rows.append(
                 build_logic_compiled_forced_expand_event(
@@ -475,6 +507,7 @@ def process_logic_network_evaluate(
             "signal_store_state": updated_signal_store_state,
             "explain_artifact_rows": list(compiled_explain_rows) + list(loop_gate.get("explain_artifact_rows") or []),
             "forced_expand_event_rows": forced_expand_rows,
+            "compiled_introspection_artifact_rows": compiled_introspection_artifact_rows,
         }
 
     compiled_only_required = token(network_policy_row.get("loop_resolution_mode")).lower() == "allow_compiled_only"
@@ -486,6 +519,7 @@ def process_logic_network_evaluate(
             "signal_store_state": updated_signal_store_state,
             "explain_artifact_rows": compiled_explain_rows,
             "forced_expand_event_rows": forced_expand_rows,
+            "compiled_introspection_artifact_rows": compiled_introspection_artifact_rows,
         }
 
     compiled_path_selected = bool(compiled_runtime_ready and not debug_force_expand)
@@ -837,6 +871,7 @@ def process_logic_network_evaluate(
             "compiled_path_selected": compiled_path_selected,
             "compiled_fallback_logged": compiled_fallback_logged,
             "debug_force_expand": bool(debug_force_expand),
+            "debug_instrument_id": debug_instrument_id or None,
             **combined_runtime_extensions,
         },
     )
@@ -858,6 +893,7 @@ def process_logic_network_evaluate(
                 "compiled_path_selected": compiled_path_selected,
                 "compiled_fallback_logged": compiled_fallback_logged,
                 "debug_force_expand": bool(debug_force_expand),
+                "debug_instrument_id": debug_instrument_id or None,
             },
         )
     ]
@@ -888,6 +924,7 @@ def process_logic_network_evaluate(
         "throttle_event_rows": normalize_logic_throttle_event_rows(throttle_event_rows),
         "explain_artifact_rows": explain_rows,
         "forced_expand_event_rows": forced_expand_rows,
+        "compiled_introspection_artifact_rows": compiled_introspection_artifact_rows,
     }
 
 

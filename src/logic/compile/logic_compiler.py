@@ -1658,8 +1658,84 @@ def build_logic_compiled_invalid_explain_artifact(
         target_id=token(network_id),
         cause_chain=["cause.logic.compiled_invalid"],
         remediation_hints=["recompile the network after topology or policy changes", "force expand to L1 for inspection"],
-        extensions={"event_kind_id": "explain.logic_compiled_invalid", "compiled_model_id": token(compiled_model_id), "violations": _sorted_tokens(violations)},
+        extensions={"event_kind_id": "logic.compiled_invalid", "compiled_model_id": token(compiled_model_id), "violations": _sorted_tokens(violations)},
     )
+
+
+def build_logic_compiled_introspection_artifact(
+    *,
+    tick: int,
+    network_id: str,
+    compiled_model_row: Mapping[str, object],
+    measurement_artifact_id: str = "",
+) -> dict:
+    model_row = as_map(compiled_model_row)
+    payload = as_map(as_map(model_row.get("compiled_payload_ref")).get("payload"))
+    compiled_type_id = token(model_row.get("compiled_type_id"))
+    excerpt: dict
+    if compiled_type_id == "compiled.lookup_table":
+        excerpt = {
+            "table_rows": [
+                {
+                    "input_bits": token(row.get("input_bits")),
+                    "output_hash": canonical_sha256(canon(as_list(row.get("element_results")))),
+                }
+                for row in as_list(payload.get("table_rows"))[:4]
+                if isinstance(row, Mapping)
+            ]
+        }
+    elif compiled_type_id == "compiled.automaton":
+        excerpt = {
+            "state_count": int(len(as_list(payload.get("states")))),
+            "transition_rows": [
+                {
+                    "state_id": token(row.get("state_id")),
+                    "input_bits": token(row.get("input_bits")),
+                    "next_state_id": token(row.get("next_state_id")),
+                }
+                for row in as_list(payload.get("transition_rows"))[:4]
+                if isinstance(row, Mapping)
+            ],
+        }
+    else:
+        excerpt = {
+            "removed_node_ids": _sorted_tokens(as_list(payload.get("removed_node_ids")))[:4],
+            "constant_bindings": canon(
+                dict(list(sorted(as_map(payload.get("constant_bindings")).items(), key=lambda item: token(item[0])))[:4])
+            ),
+            "element_program_ids": [
+                token(row.get("element_instance_id"))
+                for row in as_list(payload.get("element_programs"))[:4]
+                if isinstance(row, Mapping)
+            ],
+        }
+    artifact = {
+        "artifact_id": "artifact.logic.compiled_introspection.{}".format(
+            canonical_sha256(
+                {
+                    "tick": int(max(0, as_int(tick, 0))),
+                    "network_id": token(network_id),
+                    "compiled_model_id": token(model_row.get("compiled_model_id")),
+                    "measurement_artifact_id": token(measurement_artifact_id),
+                }
+            )[:16]
+        ),
+        "artifact_family_id": "OBSERVATION",
+        "artifact_type_id": "artifact.logic.compiled_introspection",
+        "network_id": token(network_id),
+        "compiled_model_id": token(model_row.get("compiled_model_id")),
+        "compiled_type_id": compiled_type_id,
+        "tick": int(max(0, as_int(tick, 0))),
+        "measurement_artifact_id": token(measurement_artifact_id) or None,
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "excerpt": excerpt,
+            "source_hash": token(model_row.get("source_hash")),
+            "trace_compactable": True,
+        },
+    }
+    artifact["deterministic_fingerprint"] = canonical_sha256(dict(artifact, deterministic_fingerprint=""))
+    return artifact
 
 
 __all__ = [
@@ -1678,6 +1754,7 @@ __all__ = [
     "build_logic_controller_macro_capsule",
     "build_logic_controller_interface_signature_row",
     "build_logic_controller_system_bundle",
+    "build_logic_compiled_introspection_artifact",
     "build_logic_compiled_forced_expand_event",
     "build_logic_compiled_invalid_explain_artifact",
 ]

@@ -3,7 +3,9 @@
 from src.logic.network.instrumentation_binding import (
     LOGIC_NETWORK_INSTRUMENTATION_DEFAULT_ID,
     LOGIC_NETWORK_INSTRUMENTATION_OWNER_KIND,
+    authorize_logic_network_compiled_debug,
     authorize_logic_network_topology_view,
+    observe_logic_network_compiled_summary,
     observe_logic_network_edge,
     observe_logic_network_node,
     resolve_logic_network_instrumentation_surface,
@@ -46,6 +48,7 @@ from src.logic.network.logic_network_validator import (
 __all__ = [
     "LOGIC_NETWORK_INSTRUMENTATION_DEFAULT_ID",
     "LOGIC_NETWORK_INSTRUMENTATION_OWNER_KIND",
+    "authorize_logic_network_compiled_debug",
     "PROCESS_LOGIC_NETWORK_ADD_EDGE",
     "PROCESS_LOGIC_NETWORK_ADD_NODE",
     "PROCESS_LOGIC_NETWORK_CREATE",
@@ -70,6 +73,7 @@ __all__ = [
     "deterministic_logic_node_id",
     "normalize_logic_network_binding_rows",
     "normalize_logic_network_state",
+    "observe_logic_network_compiled_summary",
     "observe_logic_network_edge",
     "observe_logic_network_node",
     "process_logic_network_add_edge",

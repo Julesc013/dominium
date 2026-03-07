@@ -115,6 +115,15 @@ Runtime must not silently change path.
 - emit `explain.logic_compiled_invalid`
 - record explicit fallback to L1, or refuse if policy requires compiled-only execution
 
+### 7.3 Debug-Driven Expand
+- Debug inspection of compiled internals is instrumentation-gated.
+- A lawful debug request requires:
+  - `instrument.logic_analyzer`
+  - the compiled-summary measurement surface for the target network
+  - access-policy approval
+- When granted, runtime produces a derived compactable compiled-summary artifact and forces expand to L1 for authoritative inspection.
+- When not granted, compiled execution remains opaque and no internal truth is exposed.
+
 ## 8. Loop Policy Interaction
 
 - `refuse`: L1 and compiled execution both refuse
@@ -145,6 +154,12 @@ Required explain/event surfaces for this layer:
 - existing `explain.logic_loop_detected`
 - existing `explain.logic_timing_violation`
 - existing `explain.logic_compute_throttle`
+
+Compiled introspection remains limited:
+- truth-table excerpts for `compiled.lookup_table`
+- transition/state excerpts for `compiled.automaton`
+- reduced-program summaries for `compiled.reduced_graph`
+- all introspection artifacts are derived and compactable
 
 ## 11. Non-Goals
 

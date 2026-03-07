@@ -5987,6 +5987,39 @@ def _load_logic_compile_policy_registry(*, policy_context: dict | None) -> dict:
     )
 
 
+def _load_instrumentation_surface_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "instrumentation_surface_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/instrumentation_surface_registry.json",
+        default_payload={"record": {"instrumentation_surfaces": []}},
+    )
+
+
+def _load_access_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "access_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/access_policy_registry.json",
+        default_payload={"record": {"access_policies": []}},
+    )
+
+
+def _load_measurement_model_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "measurement_model_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/measurement_model_registry.json",
+        default_payload={"record": {"measurement_models": []}},
+    )
+
+
 def _load_state_vector_registry(*, policy_context: dict | None) -> dict:
     registry = dict(_policy_payload(policy_context, "state_vector_registry") or {})
     if registry:
@@ -43826,6 +43859,9 @@ def execute_intent(
         model_type_registry, _model_cache_policy_registry, constitutive_model_registry = _load_model_registries(
             policy_context=policy_context
         )
+        instrumentation_surface_registry = _load_instrumentation_surface_registry(policy_context=policy_context)
+        access_policy_registry = _load_access_policy_registry(policy_context=policy_context)
+        measurement_model_registry = _load_measurement_model_registry(policy_context=policy_context)
         logic_policy_registry = _load_logic_policy_registry(policy_context=policy_context)
         (
             logic_element_rows,
@@ -43920,6 +43956,23 @@ def execute_intent(
             compiled_model_rows=state.get("compiled_model_rows") or [],
             equivalence_proof_rows=state.get("equivalence_proof_rows") or [],
             validity_domain_rows=state.get("validity_domain_rows") or [],
+            instrumentation_surface_registry_payload=instrumentation_surface_registry,
+            access_policy_registry_payload=access_policy_registry,
+            measurement_model_registry_payload=measurement_model_registry,
+            authority_context=authority_context,
+            has_physical_access=bool(evaluation_request.get("has_physical_access", False)),
+            available_instrument_type_ids=[
+                str(item).strip()
+                for item in list(
+                    (
+                        dict(evaluation_request.get("extensions") or {})
+                        if isinstance(evaluation_request.get("extensions"), Mapping)
+                        else {}
+                    ).get("available_instrument_type_ids")
+                    or [str(evaluation_request.get("debug_instrument_id", "")).strip()]
+                )
+                if str(item).strip()
+            ],
         )
         if updated.get("signal_store_state") is not None:
             state["logic_signal_store_state"] = dict(updated.get("signal_store_state") or {})
@@ -43970,6 +44023,16 @@ def execute_intent(
             state["logic_eval_explain_artifacts"] = normalize_explain_artifact_rows(
                 list(state.get("logic_eval_explain_artifacts") or [])
                 + [dict(row) for row in list(updated.get("explain_artifact_rows") or []) if isinstance(row, Mapping)]
+            )
+        if updated.get("compiled_introspection_artifact_rows") is not None:
+            state["logic_compiled_introspection_artifacts"] = sorted(
+                list(state.get("logic_compiled_introspection_artifacts") or [])
+                + [
+                    dict(row)
+                    for row in list(updated.get("compiled_introspection_artifact_rows") or [])
+                    if isinstance(row, Mapping)
+                ],
+                key=lambda item: str(dict(item).get("artifact_id", "")),
             )
         if updated.get("forced_expand_event_rows") is not None:
             forced_before = [dict(row) for row in list(state.get("system_forced_expand_event_rows") or []) if isinstance(row, Mapping)]
