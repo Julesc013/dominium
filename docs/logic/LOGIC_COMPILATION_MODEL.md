@@ -63,7 +63,12 @@ The compile source hash must include:
 - state vector definitions material to execution
 - timing policy references that affect semantics
 
-Identical source hash under identical compile policy must produce identical:
+The same source hash under the same compile policy must produce the same:
+- compiled payload hash
+- equivalence proof hash
+- compiled model id
+
+Identical source hash under identical compile policy must also produce identical:
 - compiled payload hash
 - equivalence proof hash
 - compiled model id

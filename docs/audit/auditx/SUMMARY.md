@@ -9,7 +9,7 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 660
+- RISK: 659
 - VIOLATION: 104
 - WARN: 1238
 
@@ -47,7 +47,6 @@ Superseded By: none
 - architecture.silent_corruption_smell: 1
 - architecture.silent_degrade_smell: 10
 - architecture.silent_downgrade_smell: 3
-- architecture.silent_forced_expand_smell: 1
 - architecture.silent_therm_degrade_smell: 3
 - architecture.spec_hardcode_smell: 1
 - architecture.substrate_bypass_smell: 13

@@ -627,22 +627,6 @@
         "RISK": 3
       }
     },
-    "INV-FORCED-EXPAND-LOGGED": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.silent_forced_expand_smell",
-          "finding_id": "E265_SILENT_FORCED_EXPAND_SMELL:0001",
-          "location": "src/control/proof/control_proof_bundle.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
     "INV-GLOSSARY-TERM-CANON": {
       "finding_count": 1,
       "recommended_actions": {
