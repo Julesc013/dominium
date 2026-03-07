@@ -34,11 +34,14 @@ Version: 1.0.0
 - Stable node identity and deterministic node ordering.
 - Stable edge identity and deterministic edge ordering.
 - Canonical serialization for JSON artifacts.
+- Compact canonical serialization; empty extension maps must be omitted.
 - Stable deterministic fingerprint from canonical content (excluding run-meta fields).
 
 ## Artifacts
 - `docs/audit/TOPOLOGY_MAP.json`
 - `docs/audit/TOPOLOGY_MAP.md`
+- `docs/audit/TOPOLOGY_MAP.json` must remain within the repository-host budget (`99 MiB` canonical JSON including trailing newline).
+- The topology generator must refuse oversize output rather than emitting a push-blocking artifact.
 
 ## Governance Use
 - RepoX/AuditX enforce declared-boundary coverage.

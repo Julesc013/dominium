@@ -74,6 +74,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-IDENTITY-CHANGE-EXPLANATION`
 - `INV-DET-NO-ANON-RNG`
 - `INV-DET-NO-WALLCLOCK`
+- `INV-GIT-HOSTED-BLOB-SIZE`
+- `INV-TOPOLOGY-MAP-SIZE-BUDGET`
 - `INV-FP-AUTH-BAN`
 - `INV-NO-HARDCODED-CONTENT`
 - `INV-ENUM-NO-OTHER`
@@ -285,6 +287,16 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the derived artifact contract schema/registry is missing or invalid.
 - Fails when required canonical artifact IDs are missing from the registry.
 - Fails when artifact class metadata conflicts with determinism/gating expectations.
+
+### INV-GIT-HOSTED-BLOB-SIZE
+
+- Fails when a tracked file exceeds the standard Git-hosted hard blob limit (`100 MiB`).
+- Prevents local history from accumulating blobs that standard remotes will reject during push.
+
+### INV-TOPOLOGY-MAP-SIZE-BUDGET
+
+- Fails when `docs/audit/TOPOLOGY_MAP.json` exceeds the repository topology budget (`99 MiB` canonical JSON including trailing newline).
+- Preserves headroom below hosted-remote hard limits so topology regeneration remains push-safe.
 
 ### INV-AUDITX-DETERMINISM
 

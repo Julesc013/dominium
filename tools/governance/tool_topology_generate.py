@@ -55,6 +55,9 @@ DOMAIN_TO_MODULE_NODE_ID = {
     "CTRL": "module:src/control",
 }
 
+GIT_HOSTED_BLOB_HARD_LIMIT_BYTES = 100 * 1024 * 1024
+TOPOLOGY_MAP_BUDGET_BYTES = 99 * 1024 * 1024
+
 
 def _norm(path: str) -> str:
     return str(path or "").replace("\\", "/")
@@ -707,6 +710,10 @@ def _write_json(path: str, payload: dict) -> None:
         handle.write("\n")
 
 
+def topology_payload_json_size_bytes(payload: dict) -> int:
+    return len((canonical_json_text(payload) + "\n").encode("utf-8"))
+
+
 def _write_markdown(path: str, payload: dict) -> None:
     nodes = list(payload.get("nodes") or [])
     edges = list(payload.get("edges") or [])
@@ -779,6 +786,17 @@ def main() -> int:
         commit_hash=str(args.commit_hash or ""),
         generated_tick=int(args.generated_tick or 0),
     )
+    json_size_bytes = topology_payload_json_size_bytes(payload)
+    if json_size_bytes > TOPOLOGY_MAP_BUDGET_BYTES:
+        result = {
+            "result": "refuse.topology_map_size_budget_exceeded",
+            "json_size_bytes": int(json_size_bytes),
+            "json_budget_bytes": int(TOPOLOGY_MAP_BUDGET_BYTES),
+            "git_host_hard_limit_bytes": int(GIT_HOSTED_BLOB_HARD_LIMIT_BYTES),
+            "message": "topology map canonical JSON exceeds repository budget and would risk Git-hosted push rejection",
+        }
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 2
     out_json_abs = os.path.join(repo_root, str(args.out_json).replace("/", os.sep))
     out_md_abs = os.path.join(repo_root, str(args.out_md).replace("/", os.sep))
     _write_json(out_json_abs, payload)
@@ -790,6 +808,8 @@ def main() -> int:
         "node_count": int((dict(payload.get("summary") or {})).get("node_count", 0)),
         "edge_count": int((dict(payload.get("summary") or {})).get("edge_count", 0)),
         "deterministic_fingerprint": str(payload.get("deterministic_fingerprint", "")),
+        "json_size_bytes": int(json_size_bytes),
+        "json_budget_bytes": int(TOPOLOGY_MAP_BUDGET_BYTES),
     }
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0

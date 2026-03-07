@@ -107,6 +107,10 @@ TEXT_EXTENSIONS = {
     ".yml",
 }
 
+GIT_HOSTED_BLOB_HARD_LIMIT_BYTES = 100 * 1024 * 1024
+TOPOLOGY_MAP_SIZE_BUDGET_BYTES = 99 * 1024 * 1024
+TOPOLOGY_MAP_REL = "docs/audit/TOPOLOGY_MAP.json"
+
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
 RENDERER_TRUTH_INCLUDE_FORBIDDEN = {
     "domino/truth_model_v1.h",
@@ -2658,6 +2662,28 @@ def _git_status_paths(repo_root: str) -> List[str]:
         token = str(line[3:] if len(line) >= 3 else line).strip()
         if token:
             rows.append(_norm(token))
+    return sorted(set(rows))
+
+
+def _git_tracked_paths(repo_root: str) -> List[str]:
+    try:
+        proc = subprocess.run(
+            ["git", "ls-files", "-z"],
+            cwd=repo_root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except OSError:
+        return _scan_files(repo_root)
+    if int(proc.returncode) != 0:
+        return _scan_files(repo_root)
+    rows = []
+    for token in (proc.stdout or "").split("\0"):
+        rel_path = _norm(str(token).strip())
+        if rel_path:
+            rows.append(rel_path)
     return sorted(set(rows))
 
 
@@ -10014,7 +10040,7 @@ def _append_topology_map_invariant_findings(
     profile: str,
 ) -> None:
     severity = "warn" if str(profile).strip().upper() == "FAST" else _invariant_severity(profile)
-    topology_rel = "docs/audit/TOPOLOGY_MAP.json"
+    topology_rel = TOPOLOGY_MAP_REL
     topology_abs = os.path.join(repo_root, topology_rel.replace("/", os.sep))
     try:
         topology_payload = json.load(open(topology_abs, "r", encoding="utf-8"))
@@ -10116,6 +10142,43 @@ def _append_topology_map_invariant_findings(
                 snippet=rel_path,
                 message="registry must be declared in docs/audit/TOPOLOGY_MAP.json",
                 rule_id="INV-NO-UNDECLARED-REGISTRY",
+            )
+        )
+
+
+def _append_git_hosted_file_size_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    size_budgets = {
+        TOPOLOGY_MAP_REL: TOPOLOGY_MAP_SIZE_BUDGET_BYTES,
+    }
+    for rel_path in _git_tracked_paths(repo_root):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            continue
+        try:
+            size_bytes = int(os.path.getsize(abs_path))
+        except OSError:
+            continue
+        budget_bytes = int(size_budgets.get(rel_path, GIT_HOSTED_BLOB_HARD_LIMIT_BYTES))
+        if size_bytes <= budget_bytes:
+            continue
+        rule_id = "INV-TOPOLOGY-MAP-SIZE-BUDGET" if rel_path == TOPOLOGY_MAP_REL else "INV-GIT-HOSTED-BLOB-SIZE"
+        if rel_path == TOPOLOGY_MAP_REL:
+            message = "topology map exceeds repository size budget and risks Git-hosted push rejection"
+        else:
+            message = "tracked file exceeds Git-hosted blob hard limit and will be rejected by standard remotes"
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet="size_bytes={}".format(size_bytes),
+                message="{} (size_bytes={}, budget_bytes={})".format(message, size_bytes, budget_bytes),
+                rule_id=rule_id,
             )
         )
 
@@ -24542,6 +24605,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_topology_map_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_git_hosted_file_size_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
