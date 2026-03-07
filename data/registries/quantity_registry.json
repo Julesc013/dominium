@@ -276,6 +276,16 @@
         "extensions": {
           "source": "LOGIC2-3"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.logic.state_vector_capture",
+        "description": "Substrate-agnostic logic state vector capture quantity.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.dimensionless.ratio",
+        "extensions": {
+          "source": "LOGIC2-5"
+        }
       }
     ],
     "extensions": {}

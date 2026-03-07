@@ -310,6 +310,17 @@
         "extensions": {
           "source": "LOGIC2-3"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.logic.state_vector_capture",
+        "dimension_id": "dim.dimensionless",
+        "invariant_numeric_type": "fixed_point",
+        "default_unit_id": "unit.dimensionless.ratio",
+        "conservation_applicable": false,
+        "extensions": {
+          "source": "LOGIC2-5"
+        }
       }
     ],
     "extensions": {}

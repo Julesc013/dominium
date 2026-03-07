@@ -1,6 +1,8 @@
 """LOGIC domain package exports."""
 
 from src.logic.element import (
+    LOGIC_ELEMENT_INSTRUMENTATION_DEFAULT_ID,
+    LOGIC_ELEMENT_INSTRUMENTATION_OWNER_KIND,
     REFUSAL_LOGIC_INVALID_ELEMENT_DEFINITION,
     build_logic_behavior_model_row,
     build_logic_element_definition_row,
@@ -8,6 +10,10 @@ from src.logic.element import (
     normalize_logic_behavior_model_rows,
     normalize_logic_element_definition_rows,
     normalize_state_machine_definition_rows,
+    observe_logic_element_output_port,
+    observe_logic_element_state_vector,
+    resolve_logic_element_instrumentation_surface,
+    route_logic_element_forensics,
     validate_logic_element_definitions,
 )
 from src.logic.signal import (
@@ -41,6 +47,8 @@ from src.logic.signal import (
 )
 
 __all__ = [
+    "LOGIC_ELEMENT_INSTRUMENTATION_DEFAULT_ID",
+    "LOGIC_ELEMENT_INSTRUMENTATION_OWNER_KIND",
     "REFUSAL_LOGIC_INVALID_ELEMENT_DEFINITION",
     "PROCESS_SIGNAL_EMIT_PULSE",
     "PROCESS_SIGNAL_SET",
@@ -68,10 +76,14 @@ __all__ = [
     "normalize_state_machine_definition_rows",
     "normalize_transducer_binding_rows",
     "normalize_signal_store_state",
+    "observe_logic_element_output_port",
+    "observe_logic_element_state_vector",
     "observe_signal_row",
     "observe_signal_store_slot",
     "process_signal_emit_pulse",
     "process_signal_set",
+    "resolve_logic_element_instrumentation_surface",
+    "route_logic_element_forensics",
     "signal_coupling_change_token",
     "sig_receipt_to_message_value_payload",
     "sig_receipt_to_signal_request",
