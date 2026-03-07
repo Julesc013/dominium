@@ -486,6 +486,14 @@ from src.logic.signal import (
     process_signal_emit_pulse,
     process_signal_set,
 )
+from src.logic.network.logic_network_engine import (
+    normalize_logic_network_state,
+    process_logic_network_add_edge,
+    process_logic_network_add_node,
+    process_logic_network_create,
+    process_logic_network_remove_edge,
+    process_logic_network_validate,
+)
 from src.safety import (
     REFUSAL_SAFETY_INSTANCE_INVALID,
     REFUSAL_SAFETY_PATTERN_INVALID,
@@ -812,6 +820,11 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.switch_unlock": "entitlement.control.admin",
     "process.signal_set": "entitlement.control.admin",
     "process.signal_emit_pulse": "entitlement.control.admin",
+    "process.logic_network_create": "entitlement.control.admin",
+    "process.logic_network_add_node": "entitlement.control.admin",
+    "process.logic_network_add_edge": "entitlement.control.admin",
+    "process.logic_network_remove_edge": "entitlement.control.admin",
+    "process.logic_network_validate": "entitlement.control.admin",
     "process.signal_set_aspect": "entitlement.control.admin",
     "process.signal_tick": "session.boot",
     "process.signal_jam_start": "entitlement.control.admin",
@@ -1016,6 +1029,11 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.switch_unlock": "operator",
     "process.signal_set": "operator",
     "process.signal_emit_pulse": "operator",
+    "process.logic_network_create": "operator",
+    "process.logic_network_add_node": "operator",
+    "process.logic_network_add_edge": "operator",
+    "process.logic_network_remove_edge": "operator",
+    "process.logic_network_validate": "operator",
     "process.signal_set_aspect": "operator",
     "process.signal_tick": "observer",
     "process.signal_jam_start": "operator",
@@ -1166,6 +1184,11 @@ CONTROL_PROCESS_IDS = {
     "process.switch_unlock",
     "process.signal_set",
     "process.signal_emit_pulse",
+    "process.logic_network_create",
+    "process.logic_network_add_node",
+    "process.logic_network_add_edge",
+    "process.logic_network_remove_edge",
+    "process.logic_network_validate",
     "process.signal_set_aspect",
     "process.signal_tick",
     "process.signal_jam_start",
@@ -4991,6 +5014,90 @@ def _load_logic_signal_budget_registries(*, policy_context: dict | None) -> Tupl
             default_payload={"record": {"tolerance_policies": []}},
         )
     return dict(compute_budget_profile_registry), dict(compute_degrade_policy_registry), dict(tolerance_policy_registry)
+
+
+def _load_logic_network_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
+    node_kind_registry = dict(_policy_payload(policy_context, "logic_node_kind_registry") or {})
+    if not node_kind_registry:
+        node_kind_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/logic_node_kind_registry.json",
+            default_payload={"record": {"node_kinds": []}},
+        )
+    edge_kind_registry = dict(_policy_payload(policy_context, "logic_edge_kind_registry") or {})
+    if not edge_kind_registry:
+        edge_kind_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/logic_edge_kind_registry.json",
+            default_payload={"record": {"edge_kinds": []}},
+        )
+    network_policy_registry = dict(_policy_payload(policy_context, "logic_network_policy_registry") or {})
+    if not network_policy_registry:
+        network_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/logic_network_policy_registry.json",
+            default_payload={"record": {"logic_network_policies": []}},
+        )
+    return dict(node_kind_registry), dict(edge_kind_registry), dict(network_policy_registry)
+
+
+def _load_logic_element_validation_rows(*, policy_context: dict | None) -> Tuple[list[dict], list[dict], list[dict]]:
+    element_payload = dict(_policy_payload(policy_context, "logic_element_registry") or {})
+    if not _registry_rows(element_payload, "logic_elements"):
+        element_payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="packs/core/pack.core.logic_base/data/logic_element_registry.json",
+            default_payload={"logic_elements": []},
+        )
+    behavior_payload = dict(_policy_payload(policy_context, "logic_behavior_model_registry") or {})
+    if not _registry_rows(behavior_payload, "logic_behavior_models"):
+        behavior_payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json",
+            default_payload={"logic_behavior_models": []},
+        )
+    interface_payload = dict(_policy_payload(policy_context, "logic_interface_signature_registry") or {})
+    if not _registry_rows(interface_payload, "logic_interface_signatures"):
+        interface_payload = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="packs/core/pack.core.logic_base/data/logic_interface_signatures.json",
+            default_payload={"logic_interface_signatures": []},
+        )
+    return (
+        [dict(row) for row in _registry_rows(element_payload, "logic_elements")],
+        [dict(row) for row in _registry_rows(behavior_payload, "logic_behavior_models")],
+        [dict(row) for row in _registry_rows(interface_payload, "logic_interface_signatures")],
+    )
+
+
+def _persist_logic_network_state(state: dict, logic_network_state: Mapping[str, object] | None) -> None:
+    normalized = normalize_logic_network_state(logic_network_state)
+    graph_rows = [dict(row) for row in list(normalized.get("logic_network_graph_rows") or []) if isinstance(row, Mapping)]
+    graph_ids = {str(row.get("graph_id", "")).strip() for row in graph_rows if str(row.get("graph_id", "")).strip()}
+    existing_graph_rows = [
+        dict(row)
+        for row in list(state.get("network_graphs") or [])
+        if isinstance(row, Mapping) and str(row.get("graph_id", "")).strip() not in graph_ids
+    ]
+    state["logic_network_state"] = dict(normalized)
+    state["logic_network_graph_rows"] = graph_rows
+    state["logic_network_binding_rows"] = [
+        dict(row) for row in list(normalized.get("logic_network_binding_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_network_validation_records"] = [
+        dict(row) for row in list(normalized.get("logic_network_validation_records") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_network_change_records"] = [
+        dict(row) for row in list(normalized.get("logic_network_change_records") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_network_explain_artifacts"] = [
+        dict(row) for row in list(normalized.get("logic_network_explain_artifact_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_network_compute_runtime_state"] = dict(_as_map(normalized.get("compute_runtime_state")))
+    state["network_graphs"] = sorted(
+        existing_graph_rows + graph_rows,
+        key=lambda row: str(row.get("graph_id", "")),
+    )
 
 
 def _load_vehicle_class_registry(*, policy_context: dict | None) -> dict:
@@ -43000,6 +43107,304 @@ def execute_intent(
         result_metadata = {
             "signal_id": str(dict(updated.get("signal_row") or {}).get("signal_id", "")).strip(),
             "edge_count": len(list(dict(dict(updated.get("signal_row") or {}).get("value_ref") or {}).get("edges") or [])),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_network_create":
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            _tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
+        _logic_node_kind_registry, _logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
+            policy_context=policy_context
+        )
+        network_request = dict(inputs.get("network_request") or {})
+        if not network_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_network_create requires network_request",
+                "Provide network_request with network_id and policy_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.network_request",
+            )
+        network_request["control_context"] = {
+            "context_kind": "planning" if bool(inputs.get("planning_stage", False)) else "execution",
+            "intent_id": str(intent_id or "").strip() or None,
+            "plan_id": str(inputs.get("plan_id", "")).strip() or None,
+            "execution_id": str(inputs.get("execution_id", "")).strip() or None,
+        }
+        updated = process_logic_network_create(
+            current_tick=int(current_tick),
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            network_request=network_request,
+            logic_network_policy_registry_payload=logic_network_policy_registry,
+            compute_runtime_state=_as_map(state.get("logic_network_compute_runtime_state")),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+        )
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_network_create refused network creation",
+                "Provide a valid control context and declared logic network policy.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.network_request",
+            )
+        _persist_logic_network_state(state, updated.get("logic_network_state"))
+        result_metadata = {
+            "network_id": str(dict(updated.get("binding_row") or {}).get("network_id", "")).strip(),
+            "graph_id": str(dict(updated.get("graph_row") or {}).get("graph_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_network_add_node":
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            _tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
+        _logic_node_kind_registry, _logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
+            policy_context=policy_context
+        )
+        node_request = dict(inputs.get("node_request") or {})
+        if not node_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_network_add_node requires node_request",
+                "Provide node_request with network_id and node payload fields.",
+                {"process_id": process_id},
+                "$.intent.inputs.node_request",
+            )
+        node_request["control_context"] = {
+            "context_kind": "planning" if bool(inputs.get("planning_stage", False)) else "execution",
+            "intent_id": str(intent_id or "").strip() or None,
+            "plan_id": str(inputs.get("plan_id", "")).strip() or None,
+            "execution_id": str(inputs.get("execution_id", "")).strip() or None,
+        }
+        updated = process_logic_network_add_node(
+            current_tick=int(current_tick),
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            node_request=node_request,
+            logic_network_policy_registry_payload=logic_network_policy_registry,
+            compute_runtime_state=_as_map(state.get("logic_network_compute_runtime_state")),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+        )
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_network_add_node refused node update",
+                "Provide a valid network_id and node payload.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.node_request",
+            )
+        _persist_logic_network_state(state, updated.get("logic_network_state"))
+        result_metadata = {
+            "node_id": str(updated.get("node_id", "")).strip(),
+            "graph_id": str(dict(updated.get("graph_row") or {}).get("graph_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_network_add_edge":
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            _tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
+        _logic_node_kind_registry, _logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
+            policy_context=policy_context
+        )
+        edge_request = dict(inputs.get("edge_request") or {})
+        if not edge_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_network_add_edge requires edge_request",
+                "Provide edge_request with network_id, endpoint ids, and edge payload fields.",
+                {"process_id": process_id},
+                "$.intent.inputs.edge_request",
+            )
+        edge_request["control_context"] = {
+            "context_kind": "planning" if bool(inputs.get("planning_stage", False)) else "execution",
+            "intent_id": str(intent_id or "").strip() or None,
+            "plan_id": str(inputs.get("plan_id", "")).strip() or None,
+            "execution_id": str(inputs.get("execution_id", "")).strip() or None,
+        }
+        updated = process_logic_network_add_edge(
+            current_tick=int(current_tick),
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            edge_request=edge_request,
+            logic_network_policy_registry_payload=logic_network_policy_registry,
+            compute_runtime_state=_as_map(state.get("logic_network_compute_runtime_state")),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+        )
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_network_add_edge refused edge update",
+                "Provide a valid network_id, endpoint ids, and registered edge payload.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.edge_request",
+            )
+        _persist_logic_network_state(state, updated.get("logic_network_state"))
+        result_metadata = {
+            "edge_id": str(updated.get("edge_id", "")).strip(),
+            "graph_id": str(dict(updated.get("graph_row") or {}).get("graph_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_network_remove_edge":
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            _tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
+        _logic_node_kind_registry, _logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
+            policy_context=policy_context
+        )
+        edge_request = dict(inputs.get("edge_request") or {})
+        if not edge_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_network_remove_edge requires edge_request",
+                "Provide edge_request with network_id and edge_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.edge_request",
+            )
+        edge_request["control_context"] = {
+            "context_kind": "planning" if bool(inputs.get("planning_stage", False)) else "execution",
+            "intent_id": str(intent_id or "").strip() or None,
+            "plan_id": str(inputs.get("plan_id", "")).strip() or None,
+            "execution_id": str(inputs.get("execution_id", "")).strip() or None,
+        }
+        updated = process_logic_network_remove_edge(
+            current_tick=int(current_tick),
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            edge_request=edge_request,
+            logic_network_policy_registry_payload=logic_network_policy_registry,
+            compute_runtime_state=_as_map(state.get("logic_network_compute_runtime_state")),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+        )
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_network_remove_edge refused edge removal",
+                "Provide a valid network_id and existing edge_id.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.edge_request",
+            )
+        _persist_logic_network_state(state, updated.get("logic_network_state"))
+        result_metadata = {
+            "removed_edge_id": str(updated.get("removed_edge_id", "")).strip(),
+            "graph_id": str(dict(updated.get("graph_row") or {}).get("graph_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_network_validate":
+        signal_type_registry, _signal_rule_policy_registry = _load_signal_registries(policy_context=policy_context)
+        (
+            carrier_type_registry,
+            bus_encoding_registry,
+            protocol_registry,
+            signal_noise_policy_registry,
+            signal_delay_policy_registry,
+        ) = _load_logic_signal_registries(policy_context=policy_context)
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            _tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
+        logic_node_kind_registry, logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
+            policy_context=policy_context
+        )
+        logic_element_rows, logic_behavior_model_rows, logic_interface_signature_rows = _load_logic_element_validation_rows(
+            policy_context=policy_context
+        )
+        validation_request = dict(inputs.get("validation_request") or {})
+        if not validation_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_network_validate requires validation_request",
+                "Provide validation_request with network_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.validation_request",
+            )
+        validation_request["control_context"] = {
+            "context_kind": "planning" if bool(inputs.get("planning_stage", False)) else "execution",
+            "intent_id": str(intent_id or "").strip() or None,
+            "plan_id": str(inputs.get("plan_id", "")).strip() or None,
+            "execution_id": str(inputs.get("execution_id", "")).strip() or None,
+        }
+        updated = process_logic_network_validate(
+            current_tick=int(current_tick),
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            validation_request=validation_request,
+            logic_network_policy_registry_payload=logic_network_policy_registry,
+            logic_node_kind_registry_payload=logic_node_kind_registry,
+            logic_edge_kind_registry_payload=logic_edge_kind_registry,
+            signal_type_registry_payload=signal_type_registry,
+            carrier_type_registry_payload=carrier_type_registry,
+            signal_delay_policy_registry_payload=signal_delay_policy_registry,
+            signal_noise_policy_registry_payload=signal_noise_policy_registry,
+            protocol_registry_payload=protocol_registry,
+            logic_element_rows=logic_element_rows,
+            logic_behavior_model_rows=logic_behavior_model_rows,
+            interface_signature_rows=logic_interface_signature_rows,
+            bus_definition_rows=list(state.get("logic_bus_definition_rows") or []),
+            compute_runtime_state=_as_map(state.get("logic_network_compute_runtime_state")),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+        )
+        _persist_logic_network_state(state, updated.get("logic_network_state"))
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_network_validate refused logic network topology",
+                "Fix network topology, loop policy, or shard-boundary declarations and retry.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.validation_request",
+            )
+        result_metadata = {
+            "network_id": str(validation_request.get("network_id", "")).strip(),
+            "validation_hash": str(dict(updated.get("validation_result") or {}).get("validation_hash", "")).strip(),
+            "requires_l2_roi": bool(dict(updated.get("validation_result") or {}).get("requires_l2_roi", False)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.signal_set_aspect":

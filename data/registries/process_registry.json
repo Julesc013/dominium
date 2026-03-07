@@ -5833,6 +5833,264 @@
       "extensions": {
         "implementation_ref": "src/logic/signal/signal_store.py::process_signal_emit_pulse"
       }
+    },
+    {
+      "affected_fields": [
+        "logic.network_graph_rows",
+        "logic.network_bindings"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-3 process that creates an empty LogicNetworkGraph binding through the shared NetworkGraph substrate.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "networkgraph-specialization"
+      ],
+      "failure_modes": [
+        "refusal.logic.network_invalid",
+        "refusal.logic.network_policy_unregistered",
+        "refusal.logic.control_context_required"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_network_state",
+          "ref_id": "dominium.state.logic.network_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "network_request",
+          "ref_id": "dominium.schema.logic.logic_network_binding@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "network_graphs",
+          "ref_id": "dominium.schema.core.network_graph@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "logic_network_bindings",
+          "ref_id": "dominium.schema.logic.logic_network_binding@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_network_create",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_create"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.network_graph_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-3 process that adds a node payload to a declared LogicNetworkGraph.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "networkgraph-specialization"
+      ],
+      "failure_modes": [
+        "refusal.logic.network_not_found",
+        "refusal.logic.network_node_invalid",
+        "refusal.logic.network_policy_unregistered",
+        "refusal.logic.control_context_required"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_network_state",
+          "ref_id": "dominium.state.logic.network_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "node_request",
+          "ref_id": "dominium.schema.logic.logic_node_payload@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "network_graphs",
+          "ref_id": "dominium.schema.core.network_graph@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_network_add_node",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_add_node"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.network_graph_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-3 process that adds a typed edge payload to a declared LogicNetworkGraph.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "networkgraph-specialization"
+      ],
+      "failure_modes": [
+        "refusal.logic.network_not_found",
+        "refusal.logic.network_edge_invalid",
+        "refusal.logic.network_policy_unregistered",
+        "refusal.logic.control_context_required"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_network_state",
+          "ref_id": "dominium.state.logic.network_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "edge_request",
+          "ref_id": "dominium.schema.logic.logic_edge_payload@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "network_graphs",
+          "ref_id": "dominium.schema.core.network_graph@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_network_add_edge",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_add_edge"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.network_graph_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-3 process that removes an edge from a declared LogicNetworkGraph.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "networkgraph-specialization"
+      ],
+      "failure_modes": [
+        "refusal.logic.network_not_found",
+        "refusal.logic.network_edge_invalid",
+        "refusal.logic.network_policy_unregistered",
+        "refusal.logic.control_context_required"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_network_state",
+          "ref_id": "dominium.state.logic.network_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "edge_request",
+          "ref_id": "dominium.schema.logic.logic_edge_payload@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "network_graphs",
+          "ref_id": "dominium.schema.core.network_graph@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_network_remove_edge",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_remove_edge"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.network_validation_records",
+        "logic.network_explain_artifacts"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-3 process that validates a LogicNetworkGraph, classifies loops, and emits explain artifacts.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "networkgraph-specialization"
+      ],
+      "failure_modes": [
+        "refusal.logic.network_invalid",
+        "refusal.logic.loop_detected",
+        "refusal.logic.network_policy_unregistered",
+        "refusal.logic.control_context_required"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_network_state",
+          "ref_id": "dominium.state.logic.network_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "validation_request",
+          "ref_id": "dominium.schema.logic.logic_network_binding@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "validation_records",
+          "ref_id": "dominium.state.logic.network_validation_records",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "explain_artifacts",
+          "ref_id": "artifact.explain.logic_loop_detected",
+          "ref_type": "artifact"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_network_validate",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/network/logic_network_engine.py::process_logic_network_validate"
+      }
     }
   ],
   "schema_id": "dominium.schema.process_registry",
