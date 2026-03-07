@@ -8,42 +8,42 @@
       {
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.none",
-        "description": "Signal value is valid at the current canonical tick with no deferred delivery.",
+        "description": "Minimum-latency signal delivery; outputs computed at tick t become visible no earlier than tick t+1.",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "LOGIC1-3"
+          "source": "LOGIC5-2"
         }
       },
       {
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.fixed_ticks",
-        "description": "Signal value is deferred by a fixed integer tick count.",
+        "description": "Signal value is deferred by a declared fixed integer tick count.",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "LOGIC1-3"
+          "source": "LOGIC5-2"
         }
       },
       {
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.temporal_domain",
-        "description": "Signal delay resolves through TEMP domain mapping and declared schedule policy.",
+        "description": "Signal delay resolves through TEMP domain mapping and declared timing offset policy.",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "LOGIC1-3"
+          "source": "LOGIC5-2"
         }
       },
       {
         "schema_version": "1.0.0",
         "delay_policy_id": "delay.sig_delivery",
-        "description": "Message-carrier delay hook bound to SIG receipt and delivery semantics.",
+        "description": "Message-carrier delay hook bound to SIG receipt and delivery semantics with next-tick-or-later visibility.",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "LOGIC1-3"
+          "source": "LOGIC5-2"
         }
       }
     ],
     "extensions": {
-      "source": "LOGIC1-3",
+      "source": "LOGIC5-2",
       "registry_driven": true
     }
   }

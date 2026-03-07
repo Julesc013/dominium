@@ -1,0 +1,71 @@
+{
+  "schema_id": "dominium.registry.timing_pattern_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.timing_pattern_registry",
+    "registry_version": "1.0.0",
+    "timing_patterns": [
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "pattern.fixed_delay",
+        "pattern_kind": "delay",
+        "description": "Canonical fixed-tick logic delay pattern.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "delay_policy_id": "delay.fixed_ticks",
+          "source": "LOGIC5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "pattern.astable_oscillator_stub",
+        "pattern_kind": "oscillator",
+        "description": "Stub pattern for feedback-plus-delay oscillator assemblies; behavior remains pack-defined.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "requires_feedback": true,
+          "requires_state": true,
+          "source": "LOGIC5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "pattern.monostable_stub",
+        "pattern_kind": "timing_pulse",
+        "description": "Stub one-shot timing pattern expressed through explicit state and delay policy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "requires_state": true,
+          "source": "LOGIC5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "pattern.watchdog_basic",
+        "pattern_kind": "watchdog",
+        "description": "Basic watchdog timeout pattern for deterministic quiet-window monitoring.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "requires_state": true,
+          "supports_timeout_signal": true,
+          "source": "LOGIC5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "pattern_id": "pattern.synchronizer_basic",
+        "pattern_kind": "synchronizer",
+        "description": "Multi-stage deterministic synchronizer pattern for cross-domain stabilization.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "minimum_stage_count": 2,
+          "source": "LOGIC5-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC5-2",
+      "registry_driven": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+SCHEMA: logic/oscillation_record.schema
+schema_id: dominium.schema.logic.oscillation_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define derived LOGIC-5 oscillation detection records.
+- Capture deterministic period classification for replay and instrumentation.
+
+NON-SEMANTICS:
+- Oscillation records are derived and compactable.
+- They do not replace canonical refusal or throttle events.
+
+REQUIRED SHAPE:
+record oscillation_record
+  required:
+    - record_id: id
+    - network_id: id
+    - period_ticks: u64
+    - stable: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `record_id` must be deterministic from network, tick window, and classification payload.
+- `period_ticks` must be greater than zero.
+- `stable` must reflect bounded-window deterministic classification only.

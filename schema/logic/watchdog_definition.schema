@@ -1,0 +1,27 @@
+SCHEMA: logic/watchdog_definition.schema
+schema_id: dominium.schema.logic.watchdog_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define pack-driven LOGIC-5 watchdog timing patterns.
+- Bind monitored slots and timeout actions without hardcoding engine-only watchdog objects.
+
+NON-SEMANTICS:
+- This schema does not define evaluation order.
+- It does not authorize direct mutation outside logic processes.
+
+REQUIRED SHAPE:
+record watchdog_definition
+  required:
+    - watchdog_id: id
+    - monitored_signal_id: id
+    - timeout_ticks: u64
+    - action_on_timeout: enum(signal_set, refusal)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `timeout_ticks` must be greater than zero.
+- `monitored_signal_id` must resolve to a declared signal slot or pack-defined logical alias.
+- Timeout actions must remain deterministic and process-mediated.

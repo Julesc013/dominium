@@ -15,7 +15,11 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Default LOGIC policy: deterministic L1 evaluation with optional L2 ROI detail only when explicitly scheduled.",
-          "source": "LOGIC0-3"
+          "oscillation_window_ticks": 8,
+          "timing_analysis_compute_units": 4,
+          "unstable_oscillation_action": "force_roi",
+          "timing_violation_action": "force_roi",
+          "source": "LOGIC5-2"
         }
       },
       {
@@ -28,7 +32,11 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Strict LOGIC policy for competitive or auditable play; no loop relaxation and no optional micro timing.",
-          "source": "LOGIC0-3"
+          "oscillation_window_ticks": 6,
+          "timing_analysis_compute_units": 4,
+          "unstable_oscillation_action": "refuse",
+          "timing_violation_action": "refuse",
+          "source": "LOGIC5-2"
         }
       },
       {
@@ -41,8 +49,12 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Lab policy for explicit experimental controllers; loop exceptions remain budgeted and profile-governed.",
+          "oscillation_window_ticks": 12,
+          "timing_analysis_compute_units": 6,
+          "unstable_oscillation_action": "allow_with_record",
+          "timing_violation_action": "force_roi",
           "requires_exception_ledger": true,
-          "source": "LOGIC0-3"
+          "source": "LOGIC5-2"
         }
       }
     ],
