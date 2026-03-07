@@ -17,6 +17,11 @@ from src.logic.compile.logic_compiler import (
     normalize_logic_compile_policy_rows,
     validate_logic_compiled_model,
 )
+from src.logic.compile.logic_proof_engine import (
+    build_logic_equivalence_proof_row,
+    logic_equivalence_proof_hash,
+    verify_logic_equivalence_proof,
+)
 
 __all__ = [
     "PROCESS_LOGIC_COMPILE_REQUEST",
@@ -31,6 +36,9 @@ __all__ = [
     "compile_logic_network",
     "validate_logic_compiled_model",
     "execute_logic_compiled_model",
+    "build_logic_equivalence_proof_row",
+    "logic_equivalence_proof_hash",
+    "verify_logic_equivalence_proof",
     "build_logic_controller_macro_capsule",
     "build_logic_compiled_forced_expand_event",
     "build_logic_compiled_invalid_explain_artifact",

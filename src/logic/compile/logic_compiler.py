@@ -9,12 +9,10 @@ from src.meta.compile import (
     build_compile_request_row,
     build_compile_result_row,
     build_compiled_model_row,
-    build_equivalence_proof_row,
     build_validity_domain_row,
     compiled_type_rows_by_id,
     equivalence_proof_rows_by_id,
     validity_domain_rows_by_id,
-    verification_procedure_rows_by_id,
 )
 from src.meta.compute import request_compute
 from src.meta.explain import build_explain_artifact
@@ -38,6 +36,10 @@ from src.logic.eval.common import (
     value_ref_to_scalar,
 )
 from src.logic.eval.sense_engine import build_logic_element_index
+from src.logic.compile.logic_proof_engine import (
+    build_logic_equivalence_proof_row,
+    verify_logic_equivalence_proof,
+)
 
 
 PROCESS_LOGIC_COMPILE_REQUEST = "process.logic_compile_request"
@@ -786,55 +788,6 @@ def _choose_compile_target(*, source: Mapping[str, object], compile_policy_row: 
     return "compiled.reduced_graph", _compile_reduced_graph(source=source)
 
 
-def _proof_hash(*, source_hash: str, compiled_payload: Mapping[str, object], proof_kind: str, verification_procedure_id: str, error_bound_policy_id: str | None) -> str:
-    return canonical_sha256(
-        {
-            "source_hash": token(source_hash),
-            "compiled_payload_hash": canonical_sha256(canon(compiled_payload)),
-            "proof_kind": token(proof_kind),
-            "verification_procedure_id": token(verification_procedure_id),
-            "error_bound_policy_id": None if error_bound_policy_id is None else token(error_bound_policy_id) or None,
-        }
-    )
-
-
-def _initial_proof_row(
-    *,
-    request_id: str,
-    source_hash: str,
-    compiled_payload: Mapping[str, object],
-    compiled_type_id: str,
-    verification_procedure_registry_payload: Mapping[str, object] | None,
-    compile_policy_row: Mapping[str, object],
-) -> dict:
-    verifier_rows = verification_procedure_rows_by_id(verification_procedure_registry_payload)
-    preferred = token(compile_policy_row.get("preferred_verification_procedure_id")) or "verify.exact_structural"
-    verifier_id = preferred if preferred in verifier_rows else "verify.exact_structural"
-    return build_equivalence_proof_row(
-        proof_id="proof.logic.equivalence.{}".format(
-            canonical_sha256(
-                {
-                    "request_id": token(request_id),
-                    "compiled_type_id": token(compiled_type_id),
-                    "payload_hash": canonical_sha256(canon(compiled_payload)),
-                }
-            )[:16]
-        ),
-        proof_kind="exact",
-        verification_procedure_id=verifier_id,
-        error_bound_policy_id=None,
-        proof_hash=_proof_hash(
-            source_hash=source_hash,
-            compiled_payload=compiled_payload,
-            proof_kind="exact",
-            verification_procedure_id=verifier_id,
-            error_bound_policy_id=None,
-        ),
-        deterministic_fingerprint="",
-        extensions={"compiled_type_id": token(compiled_type_id), "proof_scope": "logic_compile.initial"},
-    )
-
-
 def compile_logic_network(
     *,
     current_tick: int,
@@ -957,7 +910,7 @@ def compile_logic_network(
                 extensions={"request_id": request_id, "network_id": network_id},
             ),
         }
-    proof_row = _initial_proof_row(
+    proof_row = build_logic_equivalence_proof_row(
         request_id=request_id,
         source_hash=token(source.get("source_hash")),
         compiled_payload=compiled_payload,
@@ -1178,12 +1131,9 @@ def _network_compute_request(
 
 
 def _proof_matches(*, compiled_model_row: Mapping[str, object], proof_row: Mapping[str, object]) -> bool:
-    return token(proof_row.get("proof_hash")) == _proof_hash(
-        source_hash=token(compiled_model_row.get("source_hash")),
-        compiled_payload=as_map(as_map(compiled_model_row.get("compiled_payload_ref")).get("payload")),
-        proof_kind=token(proof_row.get("proof_kind")),
-        verification_procedure_id=token(proof_row.get("verification_procedure_id")),
-        error_bound_policy_id=None if proof_row.get("error_bound_policy_id") is None else token(proof_row.get("error_bound_policy_id")) or None,
+    return verify_logic_equivalence_proof(
+        compiled_model_row=compiled_model_row,
+        proof_row=proof_row,
     )
 
 
