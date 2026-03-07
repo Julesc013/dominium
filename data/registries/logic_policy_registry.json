@@ -1,0 +1,54 @@
+{
+  "schema_id": "dominium.registry.logic_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logic_policy_registry",
+    "registry_version": "1.0.0",
+    "logic_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "logic.default",
+        "allow_combinational_loops": false,
+        "loop_resolution_mode": "refuse",
+        "timing_mode": "roi_micro_optional",
+        "compute_profile_id": "compute.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Default LOGIC policy: deterministic L1 evaluation with optional L2 ROI detail only when explicitly scheduled.",
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "logic.rank_strict",
+        "allow_combinational_loops": false,
+        "loop_resolution_mode": "refuse",
+        "timing_mode": "sync_tick",
+        "compute_profile_id": "compute.rank_strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Strict LOGIC policy for competitive or auditable play; no loop relaxation and no optional micro timing.",
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "logic.lab_experimental",
+        "allow_combinational_loops": true,
+        "loop_resolution_mode": "allow_with_caps",
+        "timing_mode": "roi_micro_optional",
+        "compute_profile_id": "compute.lab_high",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Lab policy for explicit experimental controllers; loop exceptions remain budgeted and profile-governed.",
+          "requires_exception_ledger": true,
+          "source": "LOGIC0-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC0-3",
+      "null_boot_safe": true
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schema_id": "dominium.registry.carrier_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.carrier_type_registry",
+    "registry_version": "1.0.0",
+    "carrier_types": [
+      {
+        "schema_version": "1.0.0",
+        "carrier_type_id": "carrier.electrical",
+        "description": "Electrical carrier with ELEC-owned transport costs and constraint semantics kept outside LOGIC meaning.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "ELEC"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "carrier_type_id": "carrier.pneumatic",
+        "description": "Pneumatic carrier with FLUID-owned compressibility and pressure-delay constraints kept outside LOGIC meaning.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "FLUID",
+            "gas"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "carrier_type_id": "carrier.hydraulic",
+        "description": "Hydraulic carrier with FLUID-owned incompressibility and flow/pressure constraints kept outside LOGIC meaning.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "FLUID",
+            "liquid"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "carrier_type_id": "carrier.mechanical",
+        "description": "Mechanical carrier with MECH and MOB-owned linkage, inertia, and backlash costs kept outside LOGIC meaning.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "MECH",
+            "MOB"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "carrier_type_id": "carrier.optical",
+        "description": "Optical carrier with line-of-sight and attenuation constraints kept outside LOGIC meaning.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "SIG",
+            "FIELD"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "carrier_type_id": "carrier.sig",
+        "description": "Receipt-based message carrier mediated by SIG trust, encryption, and delivery policy rather than physics-local semantics.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "SIG",
+            "receipt"
+          ],
+          "source": "LOGIC0-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC0-3",
+      "registry_driven": true
+    }
+  }
+}

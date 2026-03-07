@@ -420,6 +420,20 @@
         "1.0.0"
       ]
     },
+    "carrier_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "carrier_type_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "causality_strictness": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1799,6 +1813,20 @@
         "1.0.0"
       ]
     },
+    "logic_policy": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "logic_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "loss_policy": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2891,6 +2919,13 @@
         "1.0.0"
       ]
     },
+    "signal_type": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "signal_type_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -3228,6 +3263,13 @@
       ]
     },
     "transition_policy_registry": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "transducer": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

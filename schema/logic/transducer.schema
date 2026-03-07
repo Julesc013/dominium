@@ -1,0 +1,28 @@
+SCHEMA: logic/transducer.schema
+schema_id: dominium.schema.logic.transducer
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare constitutive transducers that map physical interfaces to logic signal interfaces and back.
+- Bind LOGIC boundary translation to model-driven, error-bounded system contracts.
+
+NON-SEMANTICS:
+- This schema does not implement runtime transduction.
+- It does not bypass process-only mutation or state-vector discipline.
+
+REQUIRED SHAPE:
+record logic_transducer
+  required:
+    - transducer_id: id
+    - input_interface_signature_id: id
+    - output_interface_signature_id: id
+    - model_bindings: list[id]
+    - error_bound_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Transducers must remain model-driven and deterministic.
+- Interface signatures must make physical and signal boundaries explicit.
+- Error bounds must be declared before a transducer can be treated as explainable or compilable.

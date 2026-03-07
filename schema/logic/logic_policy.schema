@@ -1,0 +1,28 @@
+SCHEMA: logic/logic_policy.schema
+schema_id: dominium.schema.logic.logic_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic LOGIC evaluation and loop-handling policy without introducing mode flags.
+- Bind logic scheduling constraints to compute-budget profiles and explicit override pathways.
+
+NON-SEMANTICS:
+- This schema does not execute controller networks.
+- It does not create a wall-clock or standalone timing subsystem.
+
+REQUIRED SHAPE:
+record logic_policy
+  required:
+    - policy_id: id
+    - allow_combinational_loops: bool
+    - loop_resolution_mode: enum(refuse|force_roi|allow_with_caps)
+    - timing_mode: enum(sync_tick|roi_micro_optional)
+    - compute_profile_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Loop behavior must be explicit, deterministic, and profile-governed.
+- `compute_profile_id` is mandatory; unmetered logic policy rows are invalid.
+- Timing policy must compose with TEMP schedules and delays rather than creating a separate global clock.

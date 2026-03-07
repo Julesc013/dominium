@@ -7,38 +7,128 @@
     "signal_types": [
       {
         "schema_version": "1.0.0",
+        "signal_type_id": "signal.boolean",
+        "description": "Carrier-agnostic binary logic state with deterministic low/high semantics.",
+        "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
+        "value_schema_id": "dominium.schema.logic.signal_value.boolean@1.0.0",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "logic",
+            "generic"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "signal_type_id": "signal.scalar",
+        "description": "Carrier-agnostic scalar logic value for normalized or unit-bearing control channels.",
+        "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
+        "value_schema_id": "dominium.schema.logic.signal_value.scalar@1.0.0",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "logic",
+            "generic"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "signal_type_id": "signal.pulse",
+        "description": "Carrier-agnostic edge/pulse logic value for deterministic event-like control transitions.",
+        "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
+        "value_schema_id": "dominium.schema.logic.signal_value.pulse@1.0.0",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "logic",
+            "generic"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "signal_type_id": "signal.message",
+        "description": "Carrier-agnostic message/reference logic value bound to SIG receipts and trust policy.",
+        "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
+        "value_schema_id": "dominium.schema.logic.signal_value.message_ref@1.0.0",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "logic",
+            "sig"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "signal_type_id": "signal.bus",
+        "description": "Carrier-agnostic typed bundle/bus logic value for grouped multi-signal control paths.",
+        "schema_ref": "dominium.schema.logic.signal_type@1.0.0",
+        "value_schema_id": "dominium.schema.logic.signal_value.bus@1.0.0",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "domain_tags": [
+            "logic",
+            "generic"
+          ],
+          "source": "LOGIC0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "signal_type_id": "signal.rail_block_basic",
+        "description": "Legacy mobility rail block signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
+        "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
+        "deterministic_fingerprint": "",
         "extensions": {
           "domain_tags": [
             "rail",
             "block"
-          ]
+          ],
+          "source": "LOGIC0-3-retro-compat"
         }
       },
       {
         "schema_version": "1.0.0",
         "signal_type_id": "signal.road_light_basic",
+        "description": "Legacy mobility road-light signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
+        "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
+        "deterministic_fingerprint": "",
         "extensions": {
           "domain_tags": [
             "road",
             "stub"
-          ]
+          ],
+          "source": "LOGIC0-3-retro-compat"
         }
       },
       {
         "schema_version": "1.0.0",
         "signal_type_id": "signal.air_waypoint_clearance",
+        "description": "Legacy mobility waypoint-clearance signal type retained as a domain-specific logic carrier binding.",
         "schema_ref": "dominium.schema.mobility.signal@1.0.0",
+        "value_schema_id": "dominium.schema.mobility.signal@1.0.0",
+        "deterministic_fingerprint": "",
         "extensions": {
           "domain_tags": [
             "air",
             "stub"
-          ]
+          ],
+          "source": "LOGIC0-3-retro-compat"
         }
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "source": "LOGIC0-3",
+      "notes": "Generic LOGIC signal types coexist with legacy mobility signal entries until LOGIC runtime adoption."
+    }
   }
 }

@@ -1,0 +1,28 @@
+SCHEMA: logic/signal_type.schema
+schema_id: dominium.schema.logic.signal_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare substrate-agnostic typed signal kinds for LOGIC ports, buses, and controller state transitions.
+- Separate logic value meaning from any physical carrier implementation.
+
+NON-SEMANTICS:
+- This schema does not execute networks or gates.
+- It does not imply a specific carrier, transducer, or timing engine.
+
+REQUIRED SHAPE:
+record logic_signal_type
+  required:
+    - signal_type_id: id
+    - description: text
+    - value_schema_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - schema_ref: text
+
+INVARIANTS:
+- Signal meaning must remain carrier-agnostic.
+- `value_schema_id` must describe typed value shape only, not transport substrate.
+- Compatibility aliases such as `schema_ref` must not introduce electrical or other carrier bias into logic semantics.
