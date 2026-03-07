@@ -704,6 +704,18 @@ def _emit_control_proof_bundle(
             "process_run_hash_chain": str(global_state.get("process_run_hash_chain", "")).strip(),
             "batch_quality_hash_chain": str(global_state.get("batch_quality_hash_chain", "")).strip(),
             "yield_model_hash_chain": str(global_state.get("yield_model_hash_chain", "")).strip(),
+            "logic_throttle_event_hash_chain": str(global_state.get("logic_throttle_event_hash_chain", "")).strip(),
+            "logic_state_update_hash_chain": str(global_state.get("logic_state_update_hash_chain", "")).strip(),
+            "logic_output_signal_hash_chain": str(global_state.get("logic_output_signal_hash_chain", "")).strip(),
+            "logic_oscillation_record_hash_chain": str(
+                global_state.get("logic_oscillation_record_hash_chain", "")
+            ).strip(),
+            "logic_timing_violation_hash_chain": str(
+                global_state.get("logic_timing_violation_hash_chain", "")
+            ).strip(),
+            "logic_watchdog_timeout_hash_chain": str(
+                global_state.get("logic_watchdog_timeout_hash_chain", "")
+            ).strip(),
             "entropy_hash_chain": str(global_state.get("entropy_hash_chain", "")).strip(),
             "entropy_reset_events_hash_chain": str(
                 global_state.get("entropy_reset_events_hash_chain", global_state.get("entropy_reset_hash_chain", ""))

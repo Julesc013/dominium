@@ -5094,7 +5094,10 @@ def _load_logic_policy_registry(*, policy_context: dict | None) -> dict:
     )
 
 
-def _load_logic_eval_rows(*, policy_context: dict | None) -> Tuple[list[dict], list[dict], list[dict], list[dict], list[dict]]:
+def _load_logic_eval_rows(
+    *,
+    policy_context: dict | None,
+) -> Tuple[list[dict], list[dict], list[dict], list[dict], list[dict], list[dict]]:
     logic_element_rows, logic_behavior_model_rows, logic_interface_signature_rows = _load_logic_element_validation_rows(
         policy_context=policy_context
     )
@@ -5110,6 +5113,11 @@ def _load_logic_eval_rows(*, policy_context: dict | None) -> Tuple[list[dict], l
         registry_rel_path="packs/core/pack.core.logic_base/data/logic_state_vectors.json",
         default_payload={"state_vector_definitions": []},
     )
+    watchdog_payload = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json",
+        default_payload={"watchdog_definitions": []},
+    )
     state_vector_registry_payload = _load_state_vector_registry(policy_context=policy_context)
     state_vector_rows = [
         dict(row)
@@ -5124,6 +5132,7 @@ def _load_logic_eval_rows(*, policy_context: dict | None) -> Tuple[list[dict], l
         logic_interface_signature_rows,
         [dict(row) for row in _registry_rows(state_machine_payload, "state_machine_definitions")],
         normalize_state_vector_definition_rows(state_vector_rows),
+        [dict(row) for row in _registry_rows(watchdog_payload, "watchdog_definitions")],
     )
 
 
@@ -5169,6 +5178,15 @@ def _persist_logic_eval_state(state: dict, logic_eval_state: Mapping[str, object
     state["logic_throttle_event_rows"] = [
         dict(row) for row in list(normalized.get("logic_throttle_event_rows") or []) if isinstance(row, Mapping)
     ]
+    state["logic_oscillation_record_rows"] = [
+        dict(row) for row in list(normalized.get("logic_oscillation_record_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_timing_violation_event_rows"] = [
+        dict(row) for row in list(normalized.get("logic_timing_violation_event_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_watchdog_timeout_event_rows"] = [
+        dict(row) for row in list(normalized.get("logic_watchdog_timeout_event_rows") or []) if isinstance(row, Mapping)
+    ]
     state["logic_state_update_record_rows"] = [
         dict(row) for row in list(normalized.get("logic_state_update_record_rows") or []) if isinstance(row, Mapping)
     ]
@@ -5195,6 +5213,21 @@ def _refresh_logic_eval_hash_chains(state: dict) -> None:
     throttle_rows = [
         dict(row)
         for row in list(state.get("logic_throttle_event_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    oscillation_rows = [
+        dict(row)
+        for row in list(state.get("logic_oscillation_record_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    timing_violation_rows = [
+        dict(row)
+        for row in list(state.get("logic_timing_violation_event_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    watchdog_timeout_rows = [
+        dict(row)
+        for row in list(state.get("logic_watchdog_timeout_event_rows") or [])
         if isinstance(row, Mapping)
     ]
     state_update_rows = [
@@ -5246,6 +5279,59 @@ def _refresh_logic_eval_hash_chains(state: dict) -> None:
             }
             for row in sorted(
                 throttle_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_oscillation_record_hash_chain"] = canonical_sha256(
+        [
+            {
+                "record_id": str(row.get("record_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "period_ticks": int(max(1, _as_int(row.get("period_ticks", 1), 1))),
+                "stable": bool(row.get("stable", False)),
+            }
+            for row in sorted(
+                oscillation_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("record_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_timing_violation_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "reason": str(row.get("reason", "")).strip(),
+            }
+            for row in sorted(
+                timing_violation_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_watchdog_timeout_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "watchdog_id": str(row.get("watchdog_id", "")).strip(),
+                "action_on_timeout": str(row.get("action_on_timeout", "")).strip(),
+            }
+            for row in sorted(
+                watchdog_timeout_rows,
                 key=lambda item: (
                     int(max(0, _as_int(item.get("tick", 0), 0))),
                     str(item.get("event_id", "")),
@@ -43628,6 +43714,7 @@ def execute_intent(
             logic_interface_signature_rows,
             logic_state_machine_rows,
             logic_state_vector_definition_rows,
+            logic_watchdog_definition_rows,
         ) = _load_logic_eval_rows(policy_context=policy_context)
         _logic_node_kind_registry, _logic_edge_kind_registry, logic_network_policy_registry = _load_logic_network_registries(
             policy_context=policy_context
@@ -43670,6 +43757,9 @@ def execute_intent(
                 "logic_network_runtime_state_rows": state.get("logic_network_runtime_state_rows"),
                 "logic_eval_record_rows": state.get("logic_eval_record_rows"),
                 "logic_throttle_event_rows": state.get("logic_throttle_event_rows"),
+                "logic_oscillation_record_rows": state.get("logic_oscillation_record_rows"),
+                "logic_timing_violation_event_rows": state.get("logic_timing_violation_event_rows"),
+                "logic_watchdog_timeout_event_rows": state.get("logic_watchdog_timeout_event_rows"),
                 "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
                 "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
                 "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
@@ -43706,6 +43796,7 @@ def execute_intent(
             drift_policy_registry_payload=drift_policy_registry,
             model_type_registry_payload=model_type_registry,
             constitutive_model_registry_payload=constitutive_model_registry,
+            watchdog_definition_rows=logic_watchdog_definition_rows,
             session_scope_id=str((dict(policy_context or {})).get("session_id", "")).strip() or "session.default",
         )
         if updated.get("signal_store_state") is not None:

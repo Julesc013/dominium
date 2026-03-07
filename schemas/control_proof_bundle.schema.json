@@ -91,6 +91,12 @@
     "equivalence_proof_hash_chain",
     "process_capsule_generation_hash_chain",
     "process_capsule_execution_hash_chain",
+    "logic_throttle_event_hash_chain",
+    "logic_state_update_hash_chain",
+    "logic_output_signal_hash_chain",
+    "logic_oscillation_record_hash_chain",
+    "logic_timing_violation_hash_chain",
+    "logic_watchdog_timeout_hash_chain",
     "drift_policy_id",
     "deterministic_fingerprint",
     "extensions"
@@ -439,6 +445,30 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "process_capsule_execution_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "logic_throttle_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "logic_state_update_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "logic_output_signal_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "logic_oscillation_record_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "logic_timing_violation_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "logic_watchdog_timeout_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },

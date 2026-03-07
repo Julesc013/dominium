@@ -62,10 +62,16 @@ def _load_eval_inputs(repo_root: str) -> dict:
         "logic_behavior_model_rows": _registry_rows(read("packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json"), "logic_behavior_models"),
         "logic_interface_signature_rows": _registry_rows(read("packs/core/pack.core.logic_base/data/logic_interface_signatures.json"), "logic_interface_signatures"),
         "logic_state_machine_rows": _registry_rows(read("packs/core/pack.core.logic_base/data/logic_state_machine_registry.json"), "state_machine_definitions"),
+        "watchdog_definition_rows": _registry_rows(read("packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json"), "watchdog_definitions"),
         "state_vector_definition_rows": normalize_state_vector_definition_rows(state_vector_rows),
         "compute_budget_profile_registry_payload": read("data/registries/compute_budget_profile_registry.json"),
         "compute_degrade_policy_registry_payload": read("data/registries/compute_degrade_policy_registry.json"),
         "tolerance_policy_registry_payload": read("data/registries/tolerance_policy_registry.json"),
+        "temporal_domain_registry_payload": read("data/registries/temporal_domain_registry.json"),
+        "time_mapping_registry_payload": read("data/registries/time_mapping_registry.json"),
+        "drift_policy_registry_payload": read("data/registries/drift_policy_registry.json"),
+        "model_type_registry_payload": read("data/registries/model_type_registry.json"),
+        "constitutive_model_registry_payload": read("data/registries/constitutive_model_registry.json"),
     }
 
 
@@ -170,6 +176,44 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
                 if isinstance(row, Mapping) and str(row.get("trace_kind", "")).strip() == "trace.logic.propagation_delivered"
             ]
         ),
+        "logic_oscillation_record_hash_chain": canonical_sha256(
+            [
+                {
+                    "record_id": str(row.get("record_id", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                    "network_id": str(row.get("network_id", "")).strip(),
+                    "period_ticks": int(row.get("period_ticks", 0) or 0),
+                    "stable": bool(row.get("stable", False)),
+                }
+                for row in list(logic_eval_state.get("logic_oscillation_record_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_timing_violation_hash_chain": canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                    "network_id": str(row.get("network_id", "")).strip(),
+                    "reason": str(row.get("reason", "")).strip(),
+                }
+                for row in list(logic_eval_state.get("logic_timing_violation_event_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_watchdog_timeout_hash_chain": canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                    "network_id": str(row.get("network_id", "")).strip(),
+                    "watchdog_id": str(row.get("watchdog_id", "")).strip(),
+                    "action_on_timeout": str(row.get("action_on_timeout", "")).strip(),
+                }
+                for row in list(logic_eval_state.get("logic_watchdog_timeout_event_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
     }
     report = {
         "result": "complete",
@@ -190,6 +234,9 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
         "logic_throttle_event_hash_chain": str(proof_surface.get("logic_throttle_event_hash_chain", "")),
         "logic_state_update_hash_chain": str(proof_surface.get("logic_state_update_hash_chain", "")),
         "logic_output_signal_hash_chain": str(proof_surface.get("logic_output_signal_hash_chain", "")),
+        "logic_oscillation_record_hash_chain": str(proof_surface.get("logic_oscillation_record_hash_chain", "")),
+        "logic_timing_violation_hash_chain": str(proof_surface.get("logic_timing_violation_hash_chain", "")),
+        "logic_watchdog_timeout_hash_chain": str(proof_surface.get("logic_watchdog_timeout_hash_chain", "")),
         "proof_surface": proof_surface,
         "final_logic_eval_state": logic_eval_state,
         "final_signal_store_state": signal_store_state,
@@ -203,6 +250,9 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
             "logic_throttle_event_hash_chain": report["logic_throttle_event_hash_chain"],
             "logic_state_update_hash_chain": report["logic_state_update_hash_chain"],
             "logic_output_signal_hash_chain": report["logic_output_signal_hash_chain"],
+            "logic_oscillation_record_hash_chain": report["logic_oscillation_record_hash_chain"],
+            "logic_timing_violation_hash_chain": report["logic_timing_violation_hash_chain"],
+            "logic_watchdog_timeout_hash_chain": report["logic_watchdog_timeout_hash_chain"],
         }
     )
     return report

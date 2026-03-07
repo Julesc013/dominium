@@ -843,6 +843,33 @@ def build_control_proof_bundle_from_markers(
             "decision_log_hashes": list(decision_log_hashes),
         },
     )
+    logic_oscillation_record_hash_chain = _hash64(
+        str(surface_payload.get("logic_oscillation_record_hash_chain", "")).strip(),
+        {
+            "key": "logic_oscillation_record_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+    logic_timing_violation_hash_chain = _hash64(
+        str(surface_payload.get("logic_timing_violation_hash_chain", "")).strip(),
+        {
+            "key": "logic_timing_violation_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+    logic_watchdog_timeout_hash_chain = _hash64(
+        str(surface_payload.get("logic_watchdog_timeout_hash_chain", "")).strip(),
+        {
+            "key": "logic_watchdog_timeout_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
     drift_policy_id = str((dict(mobility_proof_surface or {})).get("drift_policy_id", "drift.none")).strip() or "drift.none"
 
     payload = {
@@ -942,6 +969,9 @@ def build_control_proof_bundle_from_markers(
         "logic_throttle_event_hash_chain": str(logic_throttle_event_hash_chain),
         "logic_state_update_hash_chain": str(logic_state_update_hash_chain),
         "logic_output_signal_hash_chain": str(logic_output_signal_hash_chain),
+        "logic_oscillation_record_hash_chain": str(logic_oscillation_record_hash_chain),
+        "logic_timing_violation_hash_chain": str(logic_timing_violation_hash_chain),
+        "logic_watchdog_timeout_hash_chain": str(logic_watchdog_timeout_hash_chain),
         "drift_policy_id": str(drift_policy_id),
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
@@ -1060,6 +1090,15 @@ def build_control_proof_bundle_from_markers(
                     ),
                     "logic_output_signal_hash_chain": str(
                         payload.get("logic_output_signal_hash_chain", "")
+                    ),
+                    "logic_oscillation_record_hash_chain": str(
+                        payload.get("logic_oscillation_record_hash_chain", "")
+                    ),
+                    "logic_timing_violation_hash_chain": str(
+                        payload.get("logic_timing_violation_hash_chain", "")
+                    ),
+                    "logic_watchdog_timeout_hash_chain": str(
+                        payload.get("logic_watchdog_timeout_hash_chain", "")
                     ),
                     "drift_policy_id": str(payload.get("drift_policy_id", "")),
                 }
