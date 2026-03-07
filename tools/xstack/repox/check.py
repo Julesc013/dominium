@@ -3457,7 +3457,12 @@ def _append_logic_constitution_invariant_findings(
         )
 
     process_payload, process_err = _load_json_object(repo_root, process_registry_rel)
-    process_rows = list((dict(process_payload.get("record") or {})).get("processes") or process_payload.get("processes") or [])
+    process_rows = list(
+        (dict(process_payload.get("record") or {})).get("processes")
+        or process_payload.get("processes")
+        or process_payload.get("records")
+        or []
+    )
     known_process_ids = {
         str(row.get("process_id", "")).strip()
         for row in process_rows
