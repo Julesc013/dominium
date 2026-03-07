@@ -751,7 +751,7 @@
     "INV-LOGIC-WIRING-USES-NETWORKGRAPH": {
       "finding_count": 2,
       "recommended_actions": {
-        "MOVE_TO_NETWORKGRAPH": 2
+        "REWRITE": 2
       },
       "sample_findings": [
         {
@@ -1566,22 +1566,6 @@
         "RISK": 2
       }
     },
-    "INV-NO-STATE-UPDATES-OUTSIDE-COMMIT": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ROUTE_THROUGH_PROCESS": 1
-      },
-      "sample_findings": [
-        {
-          "category": "logic.commit_phase_bypass_smell",
-          "finding_id": "E317_COMMIT_PHASE_BYPASS_SMELL:0001",
-          "location": "src/logic/eval/compute_engine.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 1
-      }
-    },
     "INV-NO-TRAIN-SPECIALCASE": {
       "finding_count": 4,
       "recommended_actions": {
@@ -1663,32 +1647,6 @@
       ],
       "severities": {
         "RISK": 6
-      }
-    },
-    "INV-NO-UNDECLARED-SCHEMA": {
-      "finding_count": 3,
-      "recommended_actions": {
-        "ADD_RULE": 3
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
-          "location": "schema/logic/logic_eval_record.schema"
-        },
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
-          "location": "schema/logic/logic_network_runtime_state.schema"
-        },
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
-          "location": "schema/logic/logic_throttle_event.schema"
-        }
-      ],
-      "severities": {
-        "RISK": 3
       }
     },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {

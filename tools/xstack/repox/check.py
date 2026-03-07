@@ -4036,6 +4036,12 @@ def _append_logic_eval_invariant_findings(
     signal_rule_id = "INV-NO-DIRECT-SIGNAL-WRITES"
     state_rule_id = "INV-NO-STATE-UPDATES-OUTSIDE-COMMIT"
 
+    def contains_call(text: str, token: str) -> bool:
+        stem = str(token or "").strip()
+        if stem.endswith("("):
+            stem = stem[:-1]
+        return bool(re.search(r"\b{}\s*\(".format(re.escape(stem)), str(text or "")))
+
     required_files = (
         ("docs/logic/LOGIC_EVALUATION_ENGINE.md", budget_rule_id),
         ("schema/logic/logic_network_runtime_state.schema", budget_rule_id),
@@ -4111,7 +4117,7 @@ def _append_logic_eval_invariant_findings(
         ("process_statevec_update(", "logic COMMIT must use the canonical process.statevec_update path"),
         ("serialize_state(", "logic COMMIT must serialize explicit state vectors only during commit"),
     ):
-        if token in commit_text:
+        if contains_call(commit_text, token):
             continue
         findings.append(
             _finding(
@@ -4216,7 +4222,7 @@ def _append_logic_eval_invariant_findings(
     ):
         text = _file_text(repo_root, rel_path)
         for token in ("serialize_state(", "process_statevec_update("):
-            if token not in text:
+            if not contains_call(text, token):
                 continue
             findings.append(
                 _finding(

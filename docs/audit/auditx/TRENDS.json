@@ -38,7 +38,6 @@
     "architecture.substrate_bypass_smell": 13,
     "architecture.thermal_bypass_smell": 1,
     "architecture.unbounded_spread_smell": 1,
-    "architecture.undeclared_schema_smell": 3,
     "architecture.unlogged_refusal_smell": 3,
     "architecture.unlogged_trip_smell": 1,
     "architecture.unlogged_trust_change_smell": 3,
@@ -57,7 +56,6 @@
     "legacy_contamination": 11,
     "logic.adhoc_wiring_smell": 2,
     "logic.carrier_bias_smell": 3,
-    "logic.commit_phase_bypass_smell": 1,
     "materials.hardcoded_blueprint_smell": 19,
     "materials.inspection_leak_smell": 1,
     "materials.reenactment_leak_smell": 1,
@@ -119,7 +117,6 @@
       "architecture.substrate_bypass_smell": 0,
       "architecture.thermal_bypass_smell": 0,
       "architecture.unbounded_spread_smell": 0,
-      "architecture.undeclared_schema_smell": 0,
       "architecture.unlogged_refusal_smell": 0,
       "architecture.unlogged_trip_smell": 0,
       "architecture.unlogged_trust_change_smell": 0,
@@ -138,8 +135,7 @@
       "legacy_contamination": 0,
       "logic.adhoc_wiring_smell": 0,
       "logic.carrier_bias_smell": 0,
-      "logic.commit_phase_bypass_smell": 0,
-      "logic.unmetered_logic_compute_smell": -3,
+      "logic.commit_phase_bypass_smell": -1,
       "materials.hardcoded_blueprint_smell": 0,
       "materials.inspection_leak_smell": 0,
       "materials.reenactment_leak_smell": 0,
@@ -164,22 +160,22 @@
     },
     "severity_distribution": {
       "INFO": 0,
-      "RISK": -3,
-      "VIOLATION": 0,
+      "RISK": 0,
+      "VIOLATION": -1,
       "WARN": 0
     }
   },
-  "findings_hash": "da44b2e16e84671f42b5172b72f587e86d310864d36a137e7a7da7165efee2e9",
+  "findings_hash": "854b997f237b5ce09a63e0ece2bebb6c145f30274a36270cbc68c65d3a8e9f14",
   "history_reference": {
-    "previous_distinct_hash": "cc274f20430f64c6c53c7c3c36f89e8b934d99a3fd55d2dbc7578d78f6e1aa59"
+    "previous_distinct_hash": "ef2fc46c51222c49b9fff39edd23126473a91f7d5b66a6cd2180eaa7eadff676"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 223,
-    "RISK": 659,
-    "VIOLATION": 104,
+    "RISK": 656,
+    "VIOLATION": 103,
     "WARN": 1236
   },
-  "total_findings": 2222
+  "total_findings": 2218
 }

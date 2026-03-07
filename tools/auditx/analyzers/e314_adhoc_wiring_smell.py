@@ -78,7 +78,7 @@ def run(graph, repo_root, changed_files=None):
                         line=1,
                         evidence=["logic topology payload appears outside sanctioned network modules", rel_path],
                         suggested_classification="INVALID",
-                        recommended_action="MOVE_TO_NETWORKGRAPH",
+                        recommended_action="REWRITE",
                         related_invariants=["INV-LOGIC-WIRING-USES-NETWORKGRAPH"],
                         related_paths=[rel_path, "src/logic/network/logic_network_engine.py"],
                     )

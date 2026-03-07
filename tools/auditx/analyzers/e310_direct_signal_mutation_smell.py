@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
                             line=1,
                             evidence=["logic signal state mutated outside canonical signal process/store path", match.group(0)],
                             suggested_classification="INVALID",
-                            recommended_action="ROUTE_THROUGH_PROCESS",
+                            recommended_action="REWRITE",
                             related_invariants=["INV-SIGNAL-UPDATES-PROCESS-ONLY"],
                             related_paths=[rel_path, "src/logic/signal/signal_store.py", "tools/xstack/sessionx/process_runtime.py"],
                         )

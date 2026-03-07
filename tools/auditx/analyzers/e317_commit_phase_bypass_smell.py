@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 
 from analyzers.base import make_finding
 
@@ -42,6 +43,13 @@ def _read_text(repo_root: str, rel_path: str) -> str:
         return ""
 
 
+def _contains_call(text: str, token: str) -> bool:
+    stem = str(token or "").strip()
+    if stem.endswith("("):
+        stem = stem[:-1]
+    return bool(re.search(r"\b{}\s*\(".format(re.escape(stem)), str(text or "")))
+
+
 def run(graph, repo_root, changed_files=None):
     del graph
     del changed_files
@@ -50,7 +58,7 @@ def run(graph, repo_root, changed_files=None):
     commit_rel = "src/logic/eval/commit_engine.py"
     commit_text = _read_text(repo_root, commit_rel)
     for token in _COMMIT_ONLY_TOKENS:
-        if token in commit_text:
+        if _contains_call(commit_text, token):
             continue
         findings.append(
             make_finding(
@@ -73,7 +81,7 @@ def run(graph, repo_root, changed_files=None):
         if not text:
             continue
         for token in _COMMIT_ONLY_TOKENS:
-            if token not in text:
+            if not _contains_call(text, token):
                 continue
             findings.append(
                 make_finding(
@@ -85,7 +93,7 @@ def run(graph, repo_root, changed_files=None):
                     line=1,
                     evidence=["non-COMMIT logic phase contains state mutation token", token],
                     suggested_classification="INVALID",
-                    recommended_action="ROUTE_THROUGH_PROCESS",
+                    recommended_action="REWRITE",
                     related_invariants=["INV-NO-STATE-UPDATES-OUTSIDE-COMMIT"],
                     related_paths=[rel_path, commit_rel],
                 )
