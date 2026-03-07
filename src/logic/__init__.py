@@ -25,6 +25,7 @@ from src.logic.signal import (
     observe_signal_store_slot,
     process_signal_emit_pulse,
     process_signal_set,
+    signal_coupling_change_token,
     sig_receipt_to_message_value_payload,
     sig_receipt_to_signal_request,
 )
@@ -54,6 +55,7 @@ __all__ = [
     "observe_signal_store_slot",
     "process_signal_emit_pulse",
     "process_signal_set",
+    "signal_coupling_change_token",
     "sig_receipt_to_message_value_payload",
     "sig_receipt_to_signal_request",
 ]

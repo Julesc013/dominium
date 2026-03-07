@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List, Mapping
 
+from src.meta.compute import request_compute
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -304,6 +305,89 @@ def normalize_signal_rows(rows: object) -> List[dict]:
     )
 
 
+def _tolerance_scale(tolerance_policy_registry_payload: Mapping[str, object] | None, tolerance_policy_id: str) -> int:
+    rows = _registry_rows_by_id(tolerance_policy_registry_payload, "tolerance_policies", "tolerance_policy_id")
+    row = dict(rows.get(_token(tolerance_policy_id)) or rows.get("tol.default") or {})
+    scale = _as_int(_as_map(row.get("rounding_rules")).get("scale", 1), 1)
+    return int(max(1, scale))
+
+
+def signal_coupling_change_token(
+    signal_row: Mapping[str, object],
+    *,
+    tolerance_policy_registry_payload: Mapping[str, object] | None = None,
+    tolerance_policy_id: str = "tol.default",
+) -> str:
+    row = _as_map(signal_row)
+    value_ref = _as_map(row.get("value_ref"))
+    kind = _token(value_ref.get("value_kind"))
+    if kind == "scalar":
+        scale = _tolerance_scale(tolerance_policy_registry_payload, tolerance_policy_id)
+        value_fixed = _as_int(value_ref.get("value_fixed", 0), 0)
+        if value_fixed >= 0:
+            quantized = int(((value_fixed + (scale // 2)) // scale) * scale)
+        else:
+            quantized = int(-(((-value_fixed) + (scale // 2)) // scale) * scale)
+        payload = {"value_kind": kind, "value_fixed": quantized, "scale": scale}
+    elif kind == "boolean":
+        payload = {"value_kind": kind, "value": 1 if bool(_as_int(value_ref.get("value", 0), 0)) else 0}
+    else:
+        payload = {"value_kind": kind, "value_hash": canonical_sha256(value_ref)}
+    payload["slot_key"] = _slot_from_row(row)
+    return canonical_sha256(payload)
+
+
+def _estimate_signal_compute_cost(request: Mapping[str, object], value_ref: Mapping[str, object]) -> tuple[int, int]:
+    value_kind = _token(_as_map(value_ref).get("value_kind"))
+    instruction_units = 8
+    memory_units = 4
+    if value_kind == "pulse":
+        instruction_units += len(_as_list(_as_map(value_ref).get("edges"))) * 2
+        memory_units += len(_as_list(_as_map(value_ref).get("edges")))
+    elif value_kind == "bus":
+        instruction_units += len(_as_list(_as_map(value_ref).get("sub_signals"))) * 3
+        memory_units += len(_as_list(_as_map(value_ref).get("sub_signals"))) * 2
+    elif value_kind == "message":
+        instruction_units += 4
+        memory_units += 4
+    instruction_units += len(_as_list(request.get("bus_definition_rows"))) * 2
+    instruction_units += len(_as_list(request.get("protocol_definition_rows"))) * 2
+    return int(max(1, instruction_units)), int(max(1, memory_units))
+
+
+def _coupling_change_row(
+    *,
+    signal_id: str,
+    slot_key: str,
+    tick: int,
+    change_token: str,
+    prior_change_token: str | None,
+    tolerance_policy_id: str,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "coupling_change_id": "coupling.logic.signal.{}".format(
+            canonical_sha256(
+                {
+                    "signal_id": signal_id,
+                    "slot_key": slot_key,
+                    "tick": tick,
+                    "change_token": change_token,
+                    "tolerance_policy_id": tolerance_policy_id,
+                }
+            )[:16]
+        ),
+        "signal_id": _token(signal_id),
+        "slot_key": _token(slot_key),
+        "tick": int(max(0, _as_int(tick, 0))),
+        "change_token": _token(change_token),
+        "prior_change_token": None if prior_change_token is None else _token(prior_change_token) or None,
+        "tolerance_policy_id": _token(tolerance_policy_id) or "tol.default",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
 def normalize_signal_store_state(state: Mapping[str, object] | None) -> dict:
     src = _as_map(state)
     return {
@@ -319,6 +403,11 @@ def normalize_signal_store_state(state: Mapping[str, object] | None) -> dict:
             _canon(dict(item))
             for item in sorted((dict(row) for row in _as_list(src.get("signal_trace_artifact_rows")) if isinstance(row, Mapping)), key=lambda row: (_as_int(row.get("created_tick", 0), 0), _token(row.get("artifact_id"))))
         ],
+        "coupling_change_rows": [
+            _canon(dict(item))
+            for item in sorted((dict(row) for row in _as_list(src.get("coupling_change_rows")) if isinstance(row, Mapping)), key=lambda row: (_as_int(row.get("tick", 0), 0), _token(row.get("coupling_change_id"))))
+        ],
+        "compute_runtime_state": _canon(_as_map(src.get("compute_runtime_state"))),
         "extensions": _canon(_as_map(src.get("extensions"))),
     }
 
@@ -425,6 +514,12 @@ def process_signal_set(
     signal_noise_policy_registry_payload: Mapping[str, object] | None,
     bus_encoding_registry_payload: Mapping[str, object] | None = None,
     protocol_registry_payload: Mapping[str, object] | None = None,
+    compute_runtime_state: Mapping[str, object] | None = None,
+    compute_budget_profile_registry_payload: Mapping[str, object] | None = None,
+    compute_degrade_policy_registry_payload: Mapping[str, object] | None = None,
+    compute_budget_profile_id: str = "compute.default",
+    tolerance_policy_registry_payload: Mapping[str, object] | None = None,
+    tolerance_policy_id: str = "tol.default",
 ) -> dict:
     tick = int(max(0, _as_int(current_tick, 0)))
     request = _as_map(signal_request)
@@ -469,6 +564,25 @@ def process_signal_set(
     value_ref, value_reason = _build_value_ref(signal_type_id, _as_map(request.get("value_payload")), bus_ids)
     if value_reason:
         return {"result": "refused", "reason_code": value_reason, "signal_store_state": state}
+    compute_request = request_compute(
+        current_tick=tick,
+        owner_kind="process",
+        owner_id=_token(request.get("compute_owner_id")) or PROCESS_SIGNAL_SET,
+        instruction_units=_estimate_signal_compute_cost(request, value_ref)[0],
+        memory_units=_estimate_signal_compute_cost(request, value_ref)[1],
+        compute_runtime_state=(compute_runtime_state if isinstance(compute_runtime_state, Mapping) else _as_map(state.get("compute_runtime_state"))),
+        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+        compute_budget_profile_id=_token(request.get("compute_profile_id")) or _token(compute_budget_profile_id) or "compute.default",
+        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+    )
+    if str(compute_request.get("result", "")) not in {"complete", "throttled"}:
+        state["compute_runtime_state"] = _as_map(compute_request.get("runtime_state"))
+        return {
+            "result": str(compute_request.get("result", "")) or "refused",
+            "reason_code": str(compute_request.get("reason_code", "")) or REFUSAL_SIGNAL_INVALID,
+            "compute_request": dict(compute_request),
+            "signal_store_state": normalize_signal_store_state(state),
+        }
     slot_key = _slot_key(network_id, element_id, port_id)
     signal_rows = _close_prior_windows(list(state.get("signal_rows") or []), slot_key, tick)
     sequence = len([row for row in signal_rows if _slot_from_row(row) == slot_key and _as_int(row.get("valid_from_tick", 0), 0) == tick])
@@ -499,15 +613,37 @@ def process_signal_set(
     signal_rows = normalize_signal_rows(signal_rows + [new_row])
     prior_hash = None if not prior_row else canonical_sha256(prior_row)
     next_hash = canonical_sha256(new_row)
+    prior_change_token = None if not prior_row else signal_coupling_change_token(
+        prior_row,
+        tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        tolerance_policy_id=_token(request.get("tolerance_policy_id")) or _token(tolerance_policy_id) or "tol.default",
+    )
+    next_change_token = signal_coupling_change_token(
+        new_row,
+        tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        tolerance_policy_id=_token(request.get("tolerance_policy_id")) or _token(tolerance_policy_id) or "tol.default",
+    )
     state["signal_rows"] = signal_rows
     state["bus_definition_rows"] = bus_rows
     state["protocol_definition_rows"] = protocol_rows_defined
+    state["compute_runtime_state"] = _as_map(compute_request.get("runtime_state"))
     state["signal_change_record_rows"] = list(state.get("signal_change_record_rows") or []) + [
         _signal_change_row(signal_id, slot_key, tick, prior_hash, next_hash, PROCESS_SIGNAL_SET)
     ]
     state["signal_trace_artifact_rows"] = list(state.get("signal_trace_artifact_rows") or []) + [
         _signal_trace_row(signal_id, tick, PROCESS_SIGNAL_SET, next_hash, "trace.signal_snapshot", {"slot_key": slot_key})
     ]
+    if prior_change_token != next_change_token:
+        state["coupling_change_rows"] = list(state.get("coupling_change_rows") or []) + [
+            _coupling_change_row(
+                signal_id=signal_id,
+                slot_key=slot_key,
+                tick=tick,
+                change_token=next_change_token,
+                prior_change_token=prior_change_token,
+                tolerance_policy_id=_token(request.get("tolerance_policy_id")) or _token(tolerance_policy_id) or "tol.default",
+            )
+        ]
     state = normalize_signal_store_state(state)
     return {
         "result": "complete",
@@ -518,6 +654,8 @@ def process_signal_set(
         "protocol_definition_rows": list(state.get("protocol_definition_rows") or []),
         "signal_change_record_rows": list(state.get("signal_change_record_rows") or []),
         "signal_trace_artifact_rows": list(state.get("signal_trace_artifact_rows") or []),
+        "coupling_change_rows": list(state.get("coupling_change_rows") or []),
+        "compute_request": dict(compute_request),
         "signal_store_state": state,
     }
 
@@ -533,6 +671,12 @@ def process_signal_emit_pulse(
     signal_noise_policy_registry_payload: Mapping[str, object] | None,
     bus_encoding_registry_payload: Mapping[str, object] | None = None,
     protocol_registry_payload: Mapping[str, object] | None = None,
+    compute_runtime_state: Mapping[str, object] | None = None,
+    compute_budget_profile_registry_payload: Mapping[str, object] | None = None,
+    compute_degrade_policy_registry_payload: Mapping[str, object] | None = None,
+    compute_budget_profile_id: str = "compute.default",
+    tolerance_policy_registry_payload: Mapping[str, object] | None = None,
+    tolerance_policy_id: str = "tol.default",
 ) -> dict:
     request = dict(_as_map(pulse_request))
     request["signal_type_id"] = "signal.pulse"
@@ -555,6 +699,12 @@ def process_signal_emit_pulse(
         signal_noise_policy_registry_payload=signal_noise_policy_registry_payload,
         bus_encoding_registry_payload=bus_encoding_registry_payload,
         protocol_registry_payload=protocol_registry_payload,
+        compute_runtime_state=compute_runtime_state,
+        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+        compute_budget_profile_id=compute_budget_profile_id,
+        tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        tolerance_policy_id=tolerance_policy_id,
     )
     if str(result.get("result", "")) != "complete":
         return result
@@ -598,4 +748,5 @@ __all__ = [
     "normalize_signal_store_state",
     "process_signal_emit_pulse",
     "process_signal_set",
+    "signal_coupling_change_token",
 ]

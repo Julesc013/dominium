@@ -4968,6 +4968,31 @@ def _load_logic_signal_registries(*, policy_context: dict | None) -> Tuple[dict,
     )
 
 
+def _load_logic_signal_budget_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
+    compute_budget_profile_registry = dict(_policy_payload(policy_context, "compute_budget_profile_registry") or {})
+    if not compute_budget_profile_registry:
+        compute_budget_profile_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/compute_budget_profile_registry.json",
+            default_payload={"record": {"compute_budget_profiles": []}},
+        )
+    compute_degrade_policy_registry = dict(_policy_payload(policy_context, "compute_degrade_policy_registry") or {})
+    if not compute_degrade_policy_registry:
+        compute_degrade_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/compute_degrade_policy_registry.json",
+            default_payload={"record": {"compute_degrade_policies": []}},
+        )
+    tolerance_policy_registry = dict(_policy_payload(policy_context, "tolerance_policy_registry") or {})
+    if not tolerance_policy_registry:
+        tolerance_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            default_payload={"record": {"tolerance_policies": []}},
+        )
+    return dict(compute_budget_profile_registry), dict(compute_degrade_policy_registry), dict(tolerance_policy_registry)
+
+
 def _load_vehicle_class_registry(*, policy_context: dict | None) -> dict:
     direct_registry = dict(_policy_payload(policy_context, "vehicle_class_registry") or {})
     if direct_registry:
@@ -42820,6 +42845,11 @@ def execute_intent(
             signal_noise_policy_registry,
             signal_delay_policy_registry,
         ) = _load_logic_signal_registries(policy_context=policy_context)
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
         signal_store_state = normalize_signal_store_state(
             state.get("logic_signal_store_state")
             or {
@@ -42828,6 +42858,8 @@ def execute_intent(
                 "protocol_definition_rows": state.get("logic_protocol_definition_rows"),
                 "signal_change_record_rows": state.get("logic_signal_change_records"),
                 "signal_trace_artifact_rows": state.get("logic_signal_trace_artifacts"),
+                "coupling_change_rows": state.get("logic_signal_coupling_change_rows"),
+                "compute_runtime_state": state.get("logic_signal_compute_runtime_state"),
             }
         )
         signal_update = dict(inputs.get("signal_update") or inputs.get("signal_request") or {})
@@ -42849,6 +42881,10 @@ def execute_intent(
             signal_noise_policy_registry_payload=signal_noise_policy_registry,
             bus_encoding_registry_payload=bus_encoding_registry,
             protocol_registry_payload=protocol_registry,
+            compute_runtime_state=_as_map(state.get("logic_signal_compute_runtime_state")),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+            tolerance_policy_registry_payload=tolerance_policy_registry,
         )
         if str(updated.get("result", "")) != "complete":
             return refusal(
@@ -42872,6 +42908,12 @@ def execute_intent(
         state["logic_signal_trace_artifacts"] = [
             dict(row) for row in list(updated.get("signal_trace_artifact_rows") or []) if isinstance(row, Mapping)
         ]
+        state["logic_signal_coupling_change_rows"] = [
+            dict(row) for row in list(updated.get("coupling_change_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_signal_compute_runtime_state"] = dict(
+            _as_map(dict(updated.get("signal_store_state") or {}).get("compute_runtime_state"))
+        )
         result_metadata = {
             "signal_id": str(dict(updated.get("signal_row") or {}).get("signal_id", "")).strip(),
             "signal_type_id": str(signal_update.get("signal_type_id", "")).strip(),
@@ -42886,6 +42928,11 @@ def execute_intent(
             signal_noise_policy_registry,
             signal_delay_policy_registry,
         ) = _load_logic_signal_registries(policy_context=policy_context)
+        (
+            compute_budget_profile_registry,
+            compute_degrade_policy_registry,
+            tolerance_policy_registry,
+        ) = _load_logic_signal_budget_registries(policy_context=policy_context)
         signal_store_state = normalize_signal_store_state(
             state.get("logic_signal_store_state")
             or {
@@ -42894,6 +42941,8 @@ def execute_intent(
                 "protocol_definition_rows": state.get("logic_protocol_definition_rows"),
                 "signal_change_record_rows": state.get("logic_signal_change_records"),
                 "signal_trace_artifact_rows": state.get("logic_signal_trace_artifacts"),
+                "coupling_change_rows": state.get("logic_signal_coupling_change_rows"),
+                "compute_runtime_state": state.get("logic_signal_compute_runtime_state"),
             }
         )
         pulse_request = dict(inputs.get("pulse_request") or {})
@@ -42915,6 +42964,10 @@ def execute_intent(
             signal_noise_policy_registry_payload=signal_noise_policy_registry,
             bus_encoding_registry_payload=bus_encoding_registry,
             protocol_registry_payload=protocol_registry,
+            compute_runtime_state=_as_map(state.get("logic_signal_compute_runtime_state")),
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+            tolerance_policy_registry_payload=tolerance_policy_registry,
         )
         if str(updated.get("result", "")) != "complete":
             return refusal(
@@ -42938,6 +42991,12 @@ def execute_intent(
         state["logic_signal_trace_artifacts"] = [
             dict(row) for row in list(updated.get("signal_trace_artifact_rows") or []) if isinstance(row, Mapping)
         ]
+        state["logic_signal_coupling_change_rows"] = [
+            dict(row) for row in list(updated.get("coupling_change_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_signal_compute_runtime_state"] = dict(
+            _as_map(dict(updated.get("signal_store_state") or {}).get("compute_runtime_state"))
+        )
         result_metadata = {
             "signal_id": str(dict(updated.get("signal_row") or {}).get("signal_id", "")).strip(),
             "edge_count": len(list(dict(dict(updated.get("signal_row") or {}).get("value_ref") or {}).get("edges") or [])),
