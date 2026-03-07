@@ -1,0 +1,53 @@
+{
+  "schema_id": "dominium.registry.logic_compile_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logic_compile_policy_registry",
+    "registry_version": "1.0.0",
+    "logic_compile_policies": [
+      {
+        "schema_version": "1.0.0",
+        "compile_policy_id": "compile.logic.default",
+        "preferred_verification_procedure_id": "verify.exact_structural",
+        "allow_bounded_error": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Default exact LOGIC compilation policy with conservative lookup-table and automaton bounds.",
+          "max_lookup_input_width": 8,
+          "max_state_space_nodes": 256,
+          "prefer_compiled_runtime": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "compile_policy_id": "compile.logic.lab",
+        "preferred_verification_procedure_id": "verify.exact_structural",
+        "allow_bounded_error": true,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Laboratory LOGIC compilation policy allowing larger exact exploration and optional bounded scalar proofs.",
+          "max_lookup_input_width": 12,
+          "max_state_space_nodes": 1024,
+          "prefer_compiled_runtime": true
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "compile_policy_id": "compile.logic.rank_strict",
+        "preferred_verification_procedure_id": "verify.exact_structural",
+        "allow_bounded_error": false,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Rank-strict LOGIC compilation policy requiring exact proof and tight validity domains.",
+          "max_lookup_input_width": 6,
+          "max_state_space_nodes": 128,
+          "prefer_compiled_runtime": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC6-2",
+      "null_boot_safe": true
+    }
+  }
+}
