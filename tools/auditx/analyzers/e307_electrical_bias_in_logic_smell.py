@@ -67,7 +67,7 @@ def _logic_scan_paths(repo_root: str):
                 abs_path = os.path.join(walk_root, name)
                 rel_path = _norm(os.path.relpath(abs_path, repo_root))
                 rel_lower = rel_path.lower()
-                if "transducer" in rel_lower or "carrier" in rel_lower:
+                if "transducer" in rel_lower or "carrier" in rel_lower or "validator" in rel_lower:
                     continue
                 yield rel_path
 

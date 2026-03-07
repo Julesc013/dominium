@@ -44,7 +44,7 @@
     "architecture.vehicle_interior_special_case_smell": 1,
     "architecture.weather_hack_smell": 1,
     "authority.fault_bypass_smell": 3,
-    "canon_drift": 744,
+    "canon_drift": 745,
     "capability_bypass_smell": 1,
     "capability_misuse": 140,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
@@ -54,6 +54,7 @@
     "epistemics.hidden_state_leak_smell": 6,
     "interaction.interaction_bypass_smell": 2,
     "legacy_contamination": 11,
+    "logic.carrier_bias_smell": 1,
     "materials.hardcoded_blueprint_smell": 19,
     "materials.inspection_leak_smell": 1,
     "materials.reenactment_leak_smell": 1,
@@ -131,7 +132,7 @@
       "epistemics.hidden_state_leak_smell": 0,
       "interaction.interaction_bypass_smell": 0,
       "legacy_contamination": 0,
-      "logic.carrier_bias_smell": -1,
+      "logic.carrier_bias_smell": 0,
       "logic.electrical_bias_in_logic_smell": -1,
       "materials.hardcoded_blueprint_smell": 0,
       "materials.inspection_leak_smell": 0,
@@ -157,22 +158,22 @@
     },
     "severity_distribution": {
       "INFO": 0,
-      "RISK": -2,
+      "RISK": -1,
       "VIOLATION": 0,
       "WARN": 0
     }
   },
-  "findings_hash": "9d73a1252c664fc2d48337c273426bc75311757068fe423e696df2269386f9db",
+  "findings_hash": "d01c38b14929d054d0544cdafa2a036d9f2f0375c2c8fb9baa7e221da487e013",
   "history_reference": {
-    "previous_distinct_hash": "6de81d1968d975ef3e73fc91b1afc37e27ffac3e084f85dfac2af26945f8e3f7"
+    "previous_distinct_hash": "13b42f5f3857195d1034dedf42f19bcddcb8f93df0c7709657701c2114d6e9b0"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 223,
-    "RISK": 653,
+    "RISK": 654,
     "VIOLATION": 101,
-    "WARN": 1232
+    "WARN": 1233
   },
-  "total_findings": 2209
+  "total_findings": 2211
 }
