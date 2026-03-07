@@ -156,6 +156,166 @@ def normalize_logic_throttle_event_rows(rows: object) -> list[dict]:
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
+def build_logic_oscillation_record_row(
+    *,
+    tick: int,
+    network_id: str,
+    period_ticks: int,
+    stable: bool,
+    record_id: str = "",
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "record_id": token(record_id)
+        or "record.logic.oscillation.{}".format(
+            canonical_sha256(
+                {
+                    "tick": int(max(0, as_int(tick, 0))),
+                    "network_id": token(network_id),
+                    "period_ticks": int(max(1, as_int(period_ticks, 1))),
+                    "stable": bool(stable),
+                }
+            )[:16]
+        ),
+        "tick": int(max(0, as_int(tick, 0))),
+        "network_id": token(network_id),
+        "period_ticks": int(max(1, as_int(period_ticks, 1))),
+        "stable": bool(stable),
+        "deterministic_fingerprint": token(deterministic_fingerprint),
+        "extensions": canon(as_map(extensions)),
+    }
+    if not payload["network_id"]:
+        return {}
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_logic_oscillation_record_rows(rows: object) -> list[dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in as_list(rows) if isinstance(item, Mapping)), key=lambda item: (as_int(item.get("tick"), 0), token(item.get("record_id")))):
+        normalized = build_logic_oscillation_record_row(
+            tick=as_int(row.get("tick"), 0),
+            network_id=token(row.get("network_id")),
+            period_ticks=as_int(row.get("period_ticks"), 1),
+            stable=bool(row.get("stable", False)),
+            record_id=token(row.get("record_id")),
+            deterministic_fingerprint=token(row.get("deterministic_fingerprint")),
+            extensions=as_map(row.get("extensions")),
+        )
+        if normalized:
+            out[token(normalized.get("record_id"))] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def build_logic_timing_violation_event_row(
+    *,
+    tick: int,
+    network_id: str,
+    reason: str,
+    event_id: str = "",
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": token(event_id)
+        or "event.logic.timing_violation.{}".format(
+            canonical_sha256(
+                {
+                    "tick": int(max(0, as_int(tick, 0))),
+                    "network_id": token(network_id),
+                    "reason": token(reason),
+                    "extensions": canon(as_map(extensions)),
+                }
+            )[:16]
+        ),
+        "tick": int(max(0, as_int(tick, 0))),
+        "network_id": token(network_id),
+        "reason": token(reason),
+        "deterministic_fingerprint": token(deterministic_fingerprint),
+        "extensions": canon(as_map(extensions)),
+    }
+    if not payload["network_id"] or not payload["reason"]:
+        return {}
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_logic_timing_violation_event_rows(rows: object) -> list[dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in as_list(rows) if isinstance(item, Mapping)), key=lambda item: (as_int(item.get("tick"), 0), token(item.get("event_id")))):
+        normalized = build_logic_timing_violation_event_row(
+            tick=as_int(row.get("tick"), 0),
+            network_id=token(row.get("network_id")),
+            reason=token(row.get("reason")),
+            event_id=token(row.get("event_id")),
+            deterministic_fingerprint=token(row.get("deterministic_fingerprint")),
+            extensions=as_map(row.get("extensions")),
+        )
+        if normalized:
+            out[token(normalized.get("event_id"))] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def build_logic_watchdog_timeout_event_row(
+    *,
+    tick: int,
+    network_id: str,
+    watchdog_id: str,
+    action_on_timeout: str,
+    event_id: str = "",
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": token(event_id)
+        or "event.logic.watchdog_timeout.{}".format(
+            canonical_sha256(
+                {
+                    "tick": int(max(0, as_int(tick, 0))),
+                    "network_id": token(network_id),
+                    "watchdog_id": token(watchdog_id),
+                    "action_on_timeout": token(action_on_timeout),
+                    "extensions": canon(as_map(extensions)),
+                }
+            )[:16]
+        ),
+        "tick": int(max(0, as_int(tick, 0))),
+        "network_id": token(network_id),
+        "watchdog_id": token(watchdog_id),
+        "action_on_timeout": token(action_on_timeout),
+        "deterministic_fingerprint": token(deterministic_fingerprint),
+        "extensions": canon(as_map(extensions)),
+    }
+    if not payload["network_id"] or not payload["watchdog_id"] or not payload["action_on_timeout"]:
+        return {}
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_logic_watchdog_timeout_event_rows(rows: object) -> list[dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in as_list(rows) if isinstance(item, Mapping)), key=lambda item: (as_int(item.get("tick"), 0), token(item.get("event_id")))):
+        normalized = build_logic_watchdog_timeout_event_row(
+            tick=as_int(row.get("tick"), 0),
+            network_id=token(row.get("network_id")),
+            watchdog_id=token(row.get("watchdog_id")),
+            action_on_timeout=token(row.get("action_on_timeout")),
+            event_id=token(row.get("event_id")),
+            deterministic_fingerprint=token(row.get("deterministic_fingerprint")),
+            extensions=as_map(row.get("extensions")),
+        )
+        if normalized:
+            out[token(normalized.get("event_id"))] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
 def build_logic_state_update_record_row(
     *,
     tick: int,
@@ -382,6 +542,9 @@ def normalize_logic_eval_state(state: Mapping[str, object] | None) -> dict:
         "logic_network_runtime_state_rows": normalize_logic_network_runtime_state_rows(src.get("logic_network_runtime_state_rows")),
         "logic_eval_record_rows": normalize_logic_eval_record_rows(src.get("logic_eval_record_rows")),
         "logic_throttle_event_rows": normalize_logic_throttle_event_rows(src.get("logic_throttle_event_rows")),
+        "logic_oscillation_record_rows": normalize_logic_oscillation_record_rows(src.get("logic_oscillation_record_rows")),
+        "logic_timing_violation_event_rows": normalize_logic_timing_violation_event_rows(src.get("logic_timing_violation_event_rows")),
+        "logic_watchdog_timeout_event_rows": normalize_logic_watchdog_timeout_event_rows(src.get("logic_watchdog_timeout_event_rows")),
         "logic_state_update_record_rows": normalize_logic_state_update_record_rows(src.get("logic_state_update_record_rows")),
         "logic_pending_signal_update_rows": normalize_logic_pending_signal_update_rows(src.get("logic_pending_signal_update_rows")),
         "logic_propagation_trace_artifact_rows": normalize_logic_propagation_trace_artifact_rows(src.get("logic_propagation_trace_artifact_rows")),
@@ -393,15 +556,21 @@ def normalize_logic_eval_state(state: Mapping[str, object] | None) -> dict:
 __all__ = [
     "build_logic_eval_record_row",
     "build_logic_network_runtime_state_row",
+    "build_logic_oscillation_record_row",
     "build_logic_pending_signal_update_row",
     "build_logic_propagation_trace_artifact_row",
     "build_logic_state_update_record_row",
+    "build_logic_timing_violation_event_row",
     "build_logic_throttle_event_row",
+    "build_logic_watchdog_timeout_event_row",
     "normalize_logic_eval_record_rows",
     "normalize_logic_eval_state",
     "normalize_logic_network_runtime_state_rows",
+    "normalize_logic_oscillation_record_rows",
     "normalize_logic_pending_signal_update_rows",
     "normalize_logic_propagation_trace_artifact_rows",
     "normalize_logic_state_update_record_rows",
+    "normalize_logic_timing_violation_event_rows",
     "normalize_logic_throttle_event_rows",
+    "normalize_logic_watchdog_timeout_event_rows",
 ]

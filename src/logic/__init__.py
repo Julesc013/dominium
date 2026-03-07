@@ -104,6 +104,10 @@ from src.logic.signal import (
     sig_receipt_to_message_value_payload,
     sig_receipt_to_signal_request,
 )
+from src.logic.timing import (
+    build_logic_timing_state_hash,
+    detect_network_oscillation,
+)
 
 __all__ = [
     "LOGIC_ELEMENT_COMPUTE_OWNER_KIND",
@@ -151,6 +155,7 @@ __all__ = [
     "build_logic_element_compute_owner_id",
     "build_logic_behavior_model_row",
     "build_logic_element_definition_row",
+    "build_logic_timing_state_hash",
     "build_state_machine_definition_row",
     "build_transducer_binding_row",
     "canonical_logic_network_hash",
@@ -197,6 +202,7 @@ __all__ = [
     "resolve_logic_element_instrumentation_surface",
     "route_logic_network_forensics",
     "route_logic_element_forensics",
+    "detect_network_oscillation",
     "signal_coupling_change_token",
     "sig_receipt_to_message_value_payload",
     "sig_receipt_to_signal_request",
