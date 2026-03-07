@@ -137,8 +137,8 @@ Scope: LOGIC-0 cybernetic logic constitution baseline.
 
 ## Gate Results
 - RepoX STRICT (`python tools/xstack/repox/check.py --repo-root . --profile STRICT`):
-  - pre-final-commit run refused on `INV-WORKTREE-HYGIENE` only because baseline/topology/audit artifacts were not yet committed
-  - clean-tree rerun required before closure
+  - PASS
+  - `repox scan passed (files=1758, findings=17)`
 - AuditX STRICT (`python tools/xstack/auditx/check.py --repo-root . --profile STRICT`):
   - PASS
   - `auditx scan complete (changed_only=false, findings=1346, promoted_blockers=0)`
