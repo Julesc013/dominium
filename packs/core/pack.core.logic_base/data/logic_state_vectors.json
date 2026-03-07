@@ -109,6 +109,30 @@
     },
     {
       "schema_version": "1.0.0",
+      "owner_id": "logic.synchronizer_basic",
+      "version": "1.0.0",
+      "state_fields": [
+        {
+          "field_id": "stage1",
+          "path": "stage1",
+          "field_kind": "u64",
+          "default": 0
+        },
+        {
+          "field_id": "stage2",
+          "path": "stage2",
+          "field_kind": "u64",
+          "default": 0
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.synchronizer_basic",
+        "source": "LOGIC5-4"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
       "owner_id": "logic.timer_delay",
       "version": "1.0.0",
       "state_fields": [
@@ -139,6 +163,30 @@
     },
     {
       "schema_version": "1.0.0",
+      "owner_id": "logic.watchdog_basic",
+      "version": "1.0.0",
+      "state_fields": [
+        {
+          "field_id": "quiet_ticks",
+          "path": "quiet_ticks",
+          "field_kind": "u64",
+          "default": 0
+        },
+        {
+          "field_id": "timeout_state",
+          "path": "timeout_state",
+          "field_kind": "u64",
+          "default": 0
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.watchdog_basic",
+        "source": "LOGIC5-4"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
       "owner_id": "logic.xor",
       "version": "1.0.0",
       "state_fields": [],
@@ -150,6 +198,6 @@
     }
   ],
   "extensions": {
-    "source": "LOGIC2-3"
+    "source": "LOGIC5-4"
   }
 }

@@ -176,6 +176,40 @@
     },
     {
       "schema_version": "1.0.0",
+      "sm_id": "logic_sm.synchronizer_basic",
+      "states": [
+        {
+          "state_id": "syncing",
+          "description": "Two-stage synchronizer is shifting toward stable output."
+        }
+      ],
+      "transition_rules": [
+        {
+          "rule_id": "synchronizer.shift",
+          "from_state_id": "syncing",
+          "to_state_id": "syncing",
+          "guard_expression": "1",
+          "state_assignments": [
+            "stage2 = stage1",
+            "stage1 = in.data"
+          ]
+        }
+      ],
+      "output_rules": [
+        {
+          "rule_id": "synchronizer.output",
+          "port_id": "out.q",
+          "expression": "stage2"
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pattern_id": "pattern.synchronizer_basic",
+        "source": "LOGIC5-4"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
       "sm_id": "logic_sm.timer_delay",
       "states": [
         {
@@ -245,9 +279,109 @@
       "extensions": {
         "source": "LOGIC2-3"
       }
+    },
+    {
+      "schema_version": "1.0.0",
+      "sm_id": "logic_sm.watchdog_basic",
+      "states": [
+        {
+          "state_id": "disabled",
+          "description": "Watchdog is disabled and quiet-tick accumulation is reset."
+        },
+        {
+          "state_id": "monitoring",
+          "description": "Watchdog is monitoring the observed signal window."
+        },
+        {
+          "state_id": "timed_out",
+          "description": "Watchdog timeout is asserted until observe or disable resets it."
+        }
+      ],
+      "transition_rules": [
+        {
+          "rule_id": "watchdog.disable",
+          "from_state_id": "",
+          "to_state_id": "disabled",
+          "guard_expression": "in.enable == 0",
+          "state_assignments": [
+            "quiet_ticks = 0",
+            "timeout_state = 0"
+          ]
+        },
+        {
+          "rule_id": "watchdog.arm",
+          "from_state_id": "disabled",
+          "to_state_id": "monitoring",
+          "guard_expression": "in.enable == 1",
+          "state_assignments": [
+            "quiet_ticks = 0",
+            "timeout_state = 0"
+          ]
+        },
+        {
+          "rule_id": "watchdog.observe_reset",
+          "from_state_id": "monitoring",
+          "to_state_id": "monitoring",
+          "guard_expression": "in.observe == 1",
+          "state_assignments": [
+            "quiet_ticks = 0",
+            "timeout_state = 0"
+          ]
+        },
+        {
+          "rule_id": "watchdog.timeout",
+          "from_state_id": "monitoring",
+          "to_state_id": "timed_out",
+          "guard_expression": "quiet_ticks >= delay.fixed_ticks",
+          "state_assignments": [
+            "timeout_state = 1"
+          ]
+        },
+        {
+          "rule_id": "watchdog.tick",
+          "from_state_id": "monitoring",
+          "to_state_id": "monitoring",
+          "guard_expression": "quiet_ticks < delay.fixed_ticks",
+          "state_assignments": [
+            "quiet_ticks = quiet_ticks + 1",
+            "timeout_state = 0"
+          ]
+        },
+        {
+          "rule_id": "watchdog.recover",
+          "from_state_id": "timed_out",
+          "to_state_id": "monitoring",
+          "guard_expression": "in.observe == 1",
+          "state_assignments": [
+            "quiet_ticks = 0",
+            "timeout_state = 0"
+          ]
+        },
+        {
+          "rule_id": "watchdog.hold_timeout",
+          "from_state_id": "timed_out",
+          "to_state_id": "timed_out",
+          "guard_expression": "in.observe == 0",
+          "state_assignments": [
+            "timeout_state = 1"
+          ]
+        }
+      ],
+      "output_rules": [
+        {
+          "rule_id": "watchdog.output",
+          "port_id": "out.timeout",
+          "expression": "timeout_state"
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pattern_id": "pattern.watchdog_basic",
+        "source": "LOGIC5-4"
+      }
     }
   ],
   "extensions": {
-    "source": "LOGIC2-3"
+    "source": "LOGIC5-4"
   }
 }

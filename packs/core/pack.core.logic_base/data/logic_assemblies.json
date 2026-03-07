@@ -89,11 +89,35 @@
     },
     {
       "schema_version": "1.0.0",
+      "assembly_id": "logic.synchronizer_basic",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.synchronizer_basic",
+      "state_vector_definition_id": "statevec.logic.synchronizer_basic",
+      "behavior_model_id": "behavior.logic.synchronizer_basic",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
       "assembly_id": "logic.timer_delay",
       "assembly_type_id": "assembly.logic.element",
       "interface_signature_id": "iface.logic.timer_delay",
       "state_vector_definition_id": "statevec.logic.timer_delay",
       "behavior_model_id": "behavior.logic.timer_delay",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.watchdog_basic",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.watchdog_basic",
+      "state_vector_definition_id": "statevec.logic.watchdog_basic",
+      "behavior_model_id": "behavior.logic.watchdog_basic",
       "deterministic_fingerprint": "",
       "extensions": {
         "pack_id": "pack.core.logic_base"
@@ -113,6 +137,6 @@
     }
   ],
   "extensions": {
-    "source": "LOGIC2-3"
+    "source": "LOGIC5-4"
   }
 }

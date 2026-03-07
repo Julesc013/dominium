@@ -116,6 +116,20 @@
     },
     {
       "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.synchronizer_basic",
+      "model_kind": "sequential",
+      "model_ref": {
+        "ref_kind": "state_machine",
+        "ref_id": "logic_sm.synchronizer_basic"
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pattern_id": "pattern.synchronizer_basic",
+        "source": "LOGIC5-4"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
       "behavior_model_id": "behavior.logic.timer_delay",
       "model_kind": "timer",
       "model_ref": {
@@ -125,6 +139,20 @@
       "deterministic_fingerprint": "",
       "extensions": {
         "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.watchdog_basic",
+      "model_kind": "timer",
+      "model_ref": {
+        "ref_kind": "state_machine",
+        "ref_id": "logic_sm.watchdog_basic"
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pattern_id": "pattern.watchdog_basic",
+        "source": "LOGIC5-4"
       }
     },
     {
@@ -147,6 +175,6 @@
     }
   ],
   "extensions": {
-    "source": "LOGIC2-3"
+    "source": "LOGIC5-4"
   }
 }

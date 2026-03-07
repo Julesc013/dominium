@@ -135,6 +135,26 @@
     },
     {
       "schema_version": "1.0.0",
+      "element_id": "logic.synchronizer_basic",
+      "description": "Two-stage deterministic synchronizer assembly for cross-domain signal stabilization.",
+      "interface_signature_id": "iface.logic.synchronizer_basic",
+      "state_vector_definition_id": "statevec.logic.synchronizer_basic",
+      "behavior_model_id": "behavior.logic.synchronizer_basic",
+      "compute_cost_units": 2,
+      "timing_policy_id": "delay.fixed_ticks",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.synchronizer_basic",
+        "signal_type_ids": [
+          "signal.boolean"
+        ],
+        "behavior_family": "synchronizer",
+        "timing_pattern_id": "pattern.synchronizer_basic",
+        "stage_count": 2
+      }
+    },
+    {
+      "schema_version": "1.0.0",
       "element_id": "logic.timer_delay",
       "description": "Deterministic timer element using declared delay policy rather than wall-clock time.",
       "interface_signature_id": "iface.logic.timer_delay",
@@ -150,6 +170,26 @@
           "signal.boolean"
         ],
         "behavior_family": "timer"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.watchdog_basic",
+      "description": "Deterministic watchdog assembly that asserts timeout when an observed signal stays quiet beyond the declared window.",
+      "interface_signature_id": "iface.logic.watchdog_basic",
+      "state_vector_definition_id": "statevec.logic.watchdog_basic",
+      "behavior_model_id": "behavior.logic.watchdog_basic",
+      "compute_cost_units": 4,
+      "timing_policy_id": "delay.fixed_ticks",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.watchdog_basic",
+        "signal_type_ids": [
+          "signal.boolean"
+        ],
+        "behavior_family": "watchdog",
+        "timing_pattern_id": "pattern.watchdog_basic",
+        "watchdog_definition_id": "logic_watchdog.basic"
       }
     },
     {
@@ -172,6 +212,6 @@
     }
   ],
   "extensions": {
-    "source": "LOGIC2-3"
+    "source": "LOGIC5-4"
   }
 }

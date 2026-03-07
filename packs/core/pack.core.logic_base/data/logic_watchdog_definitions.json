@@ -1,0 +1,24 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.logic_base.watchdogs",
+  "registry_version": "1.0.0",
+  "watchdog_definitions": [
+    {
+      "schema_version": "1.0.0",
+      "watchdog_id": "logic_watchdog.basic",
+      "monitored_signal_id": "in.observe",
+      "timeout_ticks": 2,
+      "action_on_timeout": "signal_set",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "element_id": "logic.watchdog_basic",
+        "output_port_id": "out.timeout",
+        "pattern_id": "pattern.watchdog_basic",
+        "source": "LOGIC5-4"
+      }
+    }
+  ],
+  "extensions": {
+    "source": "LOGIC5-4"
+  }
+}

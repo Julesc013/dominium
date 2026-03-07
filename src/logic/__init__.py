@@ -106,7 +106,13 @@ from src.logic.signal import (
 )
 from src.logic.timing import (
     build_logic_timing_state_hash,
+    build_watchdog_definition_row,
+    detect_watchdog_timeout_transitions,
     detect_network_oscillation,
+    normalize_watchdog_definition_rows,
+    synchronizer_stage_count,
+    timing_pattern_id_for_element,
+    watchdog_definition_rows_by_id,
 )
 
 __all__ = [
@@ -156,6 +162,7 @@ __all__ = [
     "build_logic_behavior_model_row",
     "build_logic_element_definition_row",
     "build_logic_timing_state_hash",
+    "build_watchdog_definition_row",
     "build_state_machine_definition_row",
     "build_transducer_binding_row",
     "canonical_logic_network_hash",
@@ -203,9 +210,14 @@ __all__ = [
     "route_logic_network_forensics",
     "route_logic_element_forensics",
     "detect_network_oscillation",
+    "detect_watchdog_timeout_transitions",
     "signal_coupling_change_token",
     "sig_receipt_to_message_value_payload",
     "sig_receipt_to_signal_request",
+    "normalize_watchdog_definition_rows",
+    "synchronizer_stage_count",
+    "timing_pattern_id_for_element",
     "validate_logic_network",
     "validate_logic_element_definitions",
+    "watchdog_definition_rows_by_id",
 ]

@@ -42,6 +42,11 @@
       "type": "registry_entries",
       "id": "registry.logic_base.elements",
       "path": "data/logic_element_registry.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.logic_base.watchdogs",
+      "path": "data/logic_watchdog_definitions.json"
     }
   ],
   "canonical_hash": "placeholder.pack.core.logic_base.v1",

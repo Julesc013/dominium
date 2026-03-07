@@ -411,6 +411,54 @@
     },
     {
       "schema_version": "1.0.0",
+      "system_id": "logic.synchronizer_basic",
+      "interface_signature_id": "iface.logic.synchronizer_basic",
+      "port_list": [
+        {
+          "port_id": "in.data",
+          "port_type_id": "port.signal_in",
+          "direction": "in",
+          "allowed_bundle_ids": [
+            "bundle.signal_logic"
+          ],
+          "spec_limit_refs": [
+            "spec.logic_interface"
+          ]
+        },
+        {
+          "port_id": "out.q",
+          "port_type_id": "port.signal_out",
+          "direction": "out",
+          "allowed_bundle_ids": [
+            "bundle.signal_logic"
+          ],
+          "spec_limit_refs": [
+            "spec.logic_interface"
+          ]
+        }
+      ],
+      "signal_descriptors": [
+        {
+          "channel_type_id": "channel.wired_basic",
+          "capacity": 64,
+          "delay": 1,
+          "access_policy_id": "ctrl.policy.player.diegetic"
+        }
+      ],
+      "spec_compliance_ref": "spec.logic_interface",
+      "spec_limits": {
+        "max_signal_fan_in": 1,
+        "max_signal_fan_out": 1
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "signal_type_ids": [
+          "signal.boolean"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0.0",
       "system_id": "logic.timer_delay",
       "interface_signature_id": "iface.logic.timer_delay",
       "port_list": [
@@ -465,6 +513,65 @@
       "extensions": {
         "signal_type_ids": [
           "signal.pulse",
+          "signal.boolean"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "system_id": "logic.watchdog_basic",
+      "interface_signature_id": "iface.logic.watchdog_basic",
+      "port_list": [
+        {
+          "port_id": "in.enable",
+          "port_type_id": "port.signal_in",
+          "direction": "in",
+          "allowed_bundle_ids": [
+            "bundle.signal_logic"
+          ],
+          "spec_limit_refs": [
+            "spec.logic_interface"
+          ]
+        },
+        {
+          "port_id": "in.observe",
+          "port_type_id": "port.signal_in",
+          "direction": "in",
+          "allowed_bundle_ids": [
+            "bundle.signal_logic"
+          ],
+          "spec_limit_refs": [
+            "spec.logic_interface"
+          ]
+        },
+        {
+          "port_id": "out.timeout",
+          "port_type_id": "port.signal_out",
+          "direction": "out",
+          "allowed_bundle_ids": [
+            "bundle.signal_logic"
+          ],
+          "spec_limit_refs": [
+            "spec.logic_interface"
+          ]
+        }
+      ],
+      "signal_descriptors": [
+        {
+          "channel_type_id": "channel.wired_basic",
+          "capacity": 64,
+          "delay": 1,
+          "access_policy_id": "ctrl.policy.player.diegetic"
+        }
+      ],
+      "spec_compliance_ref": "spec.logic_interface",
+      "spec_limits": {
+        "max_signal_fan_in": 2,
+        "max_signal_fan_out": 1
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "signal_type_ids": [
           "signal.boolean"
         ]
       }
