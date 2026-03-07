@@ -112,6 +112,32 @@ def policy_context(repo_root: str) -> dict:
     payload["control_ir_rs5_budget_units"] = 4096
     payload["max_control_cost_units"] = 4096
     payload["server_profile_id"] = "server.profile.local"
+    payload["capability_bindings"] = [
+        {
+            "binding_id": "cap.bind.plan.site.alpha.blueprint",
+            "entity_id": "site.plan.alpha",
+            "capability_id": "capability.plan.blueprint",
+            "parameters": {},
+            "created_tick": 10,
+            "extensions": {"source": "plan_testlib"},
+        },
+        {
+            "binding_id": "cap.bind.plan.site.alpha.plannable",
+            "entity_id": "site.plan.alpha",
+            "capability_id": "capability.can_be_planned",
+            "parameters": {},
+            "created_tick": 10,
+            "extensions": {"source": "plan_testlib"},
+        },
+        {
+            "binding_id": "cap.bind.plan.site.manual.alpha.blueprint",
+            "entity_id": "site.plan.manual.alpha",
+            "capability_id": "capability.plan.blueprint",
+            "parameters": {},
+            "created_tick": 10,
+            "extensions": {"source": "plan_testlib"},
+        },
+    ]
     return payload
 
 
@@ -150,4 +176,3 @@ def custom_plan_create_inputs() -> dict:
         },
         "control_policy_id": "ctrl.policy.planner",
     }
-

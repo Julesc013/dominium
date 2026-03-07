@@ -1,7 +1,7 @@
 {
   "artifact_class": "CANONICAL",
   "changed_only": true,
-  "finding_count": 1353,
+  "finding_count": 1509,
   "findings": [
     {
       "analyzer_id": "A4_DERIVED_ARTIFACT_CONTRACT",
@@ -90,10 +90,10 @@
         "return {\"result\": \"refused\", \"refusal\": refusal_payload}"
       ],
       "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0001",
-      "fingerprint": "4faafdc7b08a79cf99aaabfafa95524974caaabd21f6d37b75f88ed9a4ab2464",
+      "fingerprint": "41bcf57c7d0f7271ce48f8617498a491af5cb9b0f8b3a2aa2a25e300eece30d1",
       "location": {
         "file_path": "src/control/control_plane_engine.py",
-        "line_start": 986
+        "line_start": 989
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -116,10 +116,10 @@
         "return {\"result\": \"refused\", \"refusal\": refusal_payload}"
       ],
       "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0002",
-      "fingerprint": "8c321efe24f5d8736bc81d092155426af49e876c11618d1d79dc6942fdd24c82",
+      "fingerprint": "1b6cf32ccd93b100a0d5ee7c278a5c2c95ac8b3eef69c9a07b648c2677fddc0c",
       "location": {
         "file_path": "src/control/control_plane_engine.py",
-        "line_start": 1080
+        "line_start": 1083
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -142,10 +142,10 @@
         "return {\"result\": \"refused\", \"refusal\": refusal_payload}"
       ],
       "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0003",
-      "fingerprint": "c52cc521e01445a842b4a6fa4a6919fe1b514c437e3005c6dc71803c9c2b8f4f",
+      "fingerprint": "5c72ade547975ed03f9d46ecccba539aaf0a164840f6dcefa6a9f57ed665de36",
       "location": {
         "file_path": "src/control/control_plane_engine.py",
-        "line_start": 1101
+        "line_start": 1104
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -168,10 +168,10 @@
         "return {\"result\": \"refused\", \"refusal\": refusal_payload}"
       ],
       "finding_id": "E132_MISSING_DECISION_LOG_SMELL:0001",
-      "fingerprint": "ea53089ffa61d68dc215bb537acb5251fde45ebe415337672c197fbbaee3b1eb",
+      "fingerprint": "5dae8f3ef32bcacd8b23e83b9a57c6cee211b9d70ee2291238621284a34a28cd",
       "location": {
         "file_path": "src/control/control_plane_engine.py",
-        "line_start": 986
+        "line_start": 989
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -194,10 +194,10 @@
         "return {\"result\": \"refused\", \"refusal\": refusal_payload}"
       ],
       "finding_id": "E132_MISSING_DECISION_LOG_SMELL:0002",
-      "fingerprint": "3fdc394a5efd769ead6379218531c09a711570e050d5c29c58ab3231eea1665f",
+      "fingerprint": "99a7c388cf70f895625be8328eb86ecbaca43a1cee7ed84a0ea5ceaba11afbe9",
       "location": {
         "file_path": "src/control/control_plane_engine.py",
-        "line_start": 1080
+        "line_start": 1083
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -220,10 +220,10 @@
         "return {\"result\": \"refused\", \"refusal\": refusal_payload}"
       ],
       "finding_id": "E132_MISSING_DECISION_LOG_SMELL:0003",
-      "fingerprint": "697f6487c365ffb4ede09320ce65b676db97dad4986d7dc383ce25ecd7db1e29",
+      "fingerprint": "49c13f891dea9aee6ee48c9d80201d5b12a4bc90acec83966b0c52cf93d9effc",
       "location": {
         "file_path": "src/control/control_plane_engine.py",
-        "line_start": 1101
+        "line_start": 1104
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -235,6 +235,3981 @@
       "severity": "VIOLATION",
       "status": "OPEN",
       "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: control_ir_execution",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0001",
+      "fingerprint": "2ae73b0c8fe2a0c23d22cc85c912cee40e6c3be8bf5f04b150865f135a2db8e2",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: effect_influence",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0002",
+      "fingerprint": "56c51cd79a1c5b4e6574a76bd2d499098feb9c3847a9b1b55eaf2a2e58252668",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: spec_compliance",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0003",
+      "fingerprint": "98c37a59bc0cf11d4e12517e5553f612d643223e7cb4652741e9da95b67df59e",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: effect_influence",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0004",
+      "fingerprint": "56c51cd79a1c5b4e6574a76bd2d499098feb9c3847a9b1b55eaf2a2e58252668",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: spec_compliance",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0005",
+      "fingerprint": "98c37a59bc0cf11d4e12517e5553f612d643223e7cb4652741e9da95b67df59e",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: subject.unknown",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0006",
+      "fingerprint": "1372ad33f2acc7e798d38ed46f769d19f858c94c095e4a460de32ce223ee2432",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: required_process_id",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0007",
+      "fingerprint": "c1cecb546fb08da05b3276e352a745e8c78a28a35df31158c4d5dd8f84d42bd3",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: max_fidelity",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0008",
+      "fingerprint": "6bb6b6b63a3543c3aa9e44c6cfb340a413f74ea0af18ac134ca33126e84511d0",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: connected_subject_ids",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0009",
+      "fingerprint": "3243bddab468f4b7879e2edf4f38667c9b660eaa6ae7d5cf21ba1d81b1d048b6",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: effect_influence",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0010",
+      "fingerprint": "56c51cd79a1c5b4e6574a76bd2d499098feb9c3847a9b1b55eaf2a2e58252668",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: spec_compliance",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0011",
+      "fingerprint": "98c37a59bc0cf11d4e12517e5553f612d643223e7cb4652741e9da95b67df59e",
+      "location": {
+        "file_path": "src/control/control_plane_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/control/control_plane_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: state_vector_definition_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0012",
+      "fingerprint": "a473b90fb081079bc2499dc0515253cc85cd36df6364e760f3006a5513456967",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: state_vector_snapshot_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0013",
+      "fingerprint": "ca7e5d8fc5aa8baed27b7cd056013b8188fbe76d0cfa79fc14c72eb7c9d0ef77",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: assembly_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0014",
+      "fingerprint": "ece22857794dd058db4f7a427857605eb85386fac37ee692ab869af8733747a9",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: system_macro_capsule_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0015",
+      "fingerprint": "b850b7f52b42d53a45f83cedab927e49e4722e86e2e7e55183f2f1bd8270aa3a",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: last_expand_tick",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0016",
+      "fingerprint": "2ba34e019f43aba5d792fbf61834e7bcf4bc8d0e1a01d50b8a6bfe8b9b386cf9",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: last_restored_capsule_id",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0017",
+      "fingerprint": "15ba9bc67a4ce081866a1299601e6b5bb911e3e85fbeca368ef47fe48a1ebf57",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: current_tier",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0018",
+      "fingerprint": "0d59f421dca1018eb3af705ca201249013306038b644f6160735610099314722",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: active_capsule_id",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0019",
+      "fingerprint": "34a7677090542bdf7dfbf87ab29543b48b4da637bf5ce73f4ef05657b6d47367",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: system_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0020",
+      "fingerprint": "0639aadfd51e732646e5e6aff011fcd29e8a71a393631f4ca351c90d9dd8b3a5",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: system_expand_event_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0021",
+      "fingerprint": "65683e603c6b51e0619072d7e278b5e8acd081e62d30e591c8aec0506388873c",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0022",
+      "fingerprint": "6544c93375bbbe0a176d1ad29884f650d49b8fac138aac054db3a114b8379403",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0023",
+      "fingerprint": "0fa6fbc001fe2ec6c99c7fcd9fe21c0cb341964902c7f049f66f1bef90cf0a02",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: system_expand_hash_chain",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0024",
+      "fingerprint": "63796a2f1ce110f644e16524c71402a310c5ac939c9fee3e6a229d04d2d03633",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: effect_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0025",
+      "fingerprint": "99d1feb3b062f8708725b2cecc3e2b95b5a01f82af0dab6121bba70fc930d189",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: effect_provenance_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0026",
+      "fingerprint": "82f9665cd3a50c866505bbba1e718cde78599f19d881fd449dbb85d8c6aa0404",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: effect_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0027",
+      "fingerprint": "99d1feb3b062f8708725b2cecc3e2b95b5a01f82af0dab6121bba70fc930d189",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: effect_provenance_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0028",
+      "fingerprint": "82f9665cd3a50c866505bbba1e718cde78599f19d881fd449dbb85d8c6aa0404",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_layers",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0029",
+      "fingerprint": "fa6b6c39ddb70f805e87dc5afe4be148c3f0379b4252a721f3318d60fe62ff3a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_cells",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0030",
+      "fingerprint": "05e2cc1bf7391e1148150a629cc20739c252414e0e46a88ca88f95209d0c8f4c",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_modifier_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0031",
+      "fingerprint": "c262f8920703604c3f1d636975e1fb27ccf126fe8f8a4dfca937234c3b093ce7",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_layers",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0032",
+      "fingerprint": "fa6b6c39ddb70f805e87dc5afe4be148c3f0379b4252a721f3318d60fe62ff3a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_cells",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0033",
+      "fingerprint": "05e2cc1bf7391e1148150a629cc20739c252414e0e46a88ca88f95209d0c8f4c",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_modifier_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0034",
+      "fingerprint": "c262f8920703604c3f1d636975e1fb27ccf126fe8f8a4dfca937234c3b093ce7",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: spec_compliance_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0035",
+      "fingerprint": "6aeca0925ab8125f5b63c3f090f0927b4078147ece2a917c3fcd813a8ff8743b",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: spec_provenance_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0036",
+      "fingerprint": "1b0b6052e5c8c7e59059e0dc39074e9b4b7ed3f04fa099c5162f8d236144de83",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: spec_compliance_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0037",
+      "fingerprint": "6aeca0925ab8125f5b63c3f090f0927b4078147ece2a917c3fcd813a8ff8743b",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: spec_provenance_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0038",
+      "fingerprint": "1b0b6052e5c8c7e59059e0dc39074e9b4b7ed3f04fa099c5162f8d236144de83",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: formalization_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0039",
+      "fingerprint": "0255835c7d4e8639b781e290ef29f84cdeecf1da4b26491e489cc6a9bf0f4fdc",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: formalization_inference_candidates",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0040",
+      "fingerprint": "f05a029fe595d0ed983fe8e7aa640438111a9d06f2ab27a9228aae9c59fb7d04",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: formalization_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0041",
+      "fingerprint": "62d82b6724bc8b7d9294da68cd691e1644874b637e8c0e157b3d7e12e8cac252",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: formalization_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0042",
+      "fingerprint": "0255835c7d4e8639b781e290ef29f84cdeecf1da4b26491e489cc6a9bf0f4fdc",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: formalization_inference_candidates",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0043",
+      "fingerprint": "f05a029fe595d0ed983fe8e7aa640438111a9d06f2ab27a9228aae9c59fb7d04",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: formalization_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0044",
+      "fingerprint": "62d82b6724bc8b7d9294da68cd691e1644874b637e8c0e157b3d7e12e8cac252",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: guide_geometries",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0045",
+      "fingerprint": "91f04244000d4fdf7b2f9850738ae2afd3dafff734468b6cdf094e9a20851248",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_junctions",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0046",
+      "fingerprint": "49e9d0cbd2a6ef396f09dd5e84ddbe32c49eb4d2a6dbe5615a7ef00851773e08",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: geometry_candidates",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0047",
+      "fingerprint": "52b63368c39d5982fcbe6e10d1aa17b34b2e1c17842a6daf628c05e44026090f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: geometry_derived_metrics",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0048",
+      "fingerprint": "37bff0f3040cd3e73d95c89b22b04e0d3d177ba616323d6b043cef4c0c368ecb",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: guide_geometries",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0049",
+      "fingerprint": "91f04244000d4fdf7b2f9850738ae2afd3dafff734468b6cdf094e9a20851248",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_junctions",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0050",
+      "fingerprint": "49e9d0cbd2a6ef396f09dd5e84ddbe32c49eb4d2a6dbe5615a7ef00851773e08",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: geometry_candidates",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0051",
+      "fingerprint": "52b63368c39d5982fcbe6e10d1aa17b34b2e1c17842a6daf628c05e44026090f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: geometry_derived_metrics",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0052",
+      "fingerprint": "37bff0f3040cd3e73d95c89b22b04e0d3d177ba616323d6b043cef4c0c368ecb",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_network_bindings",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0053",
+      "fingerprint": "82d4d31f0c356b2e0b5a63ff8baa24b171bc71de5e0203126c1cecedf7d62bbe",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_switch_state_machines",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0054",
+      "fingerprint": "8b29c851a8ebeca5d3826204a46fbeb1c3a285aa5c13793f587200578198120f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_route_cache_state",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0055",
+      "fingerprint": "3914307c0417a985aeef35d77936932dfb1154e769ae1adc9a4fc73c021613e5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_route_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0056",
+      "fingerprint": "7fb98ee692f811788aa2642b8353862bd3a783c7a30e9980a5ec6fe1f9b90e4d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: itineraries",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0057",
+      "fingerprint": "0f3b9b88455fbdd71f2143102890a3ad472ef020d251f3824ae57c3676d5c4f5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: travel_schedules",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0058",
+      "fingerprint": "55b64cb25e445b8b82c1f4f431fe4c5838f93ba8f5c19602efcc7da12c78cc7a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: schedule_time_bindings",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0059",
+      "fingerprint": "1ad97f96072239fb3b6757de901d3fd6a4698ff5296900f65e32f2d93b7d8e62",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: time_mapping_cache_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0060",
+      "fingerprint": "5952945a82c7155b64ec8a4af7b5f9fdf0f813f50a451357a390ef2297ff115d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: time_stamp_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0061",
+      "fingerprint": "5b358b322d7746efce616c21223efba9ce513359b61a68510e7fbeb0d8f6d445",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: time_stamp_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0062",
+      "fingerprint": "8df057085ba065154d9caf2adb0b10cc91c706cf002bc8c297acc53dad90134c",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: proper_time_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0063",
+      "fingerprint": "37c8cd6c06ad99b64c154f07addd9249fe48e56e14a32de8a9751172a5127de2",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: schedule_domain_evaluations",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0064",
+      "fingerprint": "9e949cf0faddf1dda576131abe87eef9e7655ad51917d4d74f192d7e555f5815",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: time_adjust_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0065",
+      "fingerprint": "51a95ebe60643f162dd5426aaa9cff3676efe304868a907701dea58a4f7eb8ca",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: travel_commitments",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0066",
+      "fingerprint": "1f0095be4f71863c81fb65e0ae1b842b91015b4faa2bf8045958935804b2b2ea",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: travel_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0067",
+      "fingerprint": "1fab6ef564417b145ff69e31036213c791e109e27aae73c93a878c2f9282d816",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: edge_occupancies",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0068",
+      "fingerprint": "93281a7aad67a4005127caa24ddcfecca9fd63dee39642063c0cd3cdfad19b5d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_reservations",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0069",
+      "fingerprint": "ae655d18cd88ff2133cabca2a6b08b2704b91efb7ffbdf8b60ba29e649cb7ffe",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_wear_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0070",
+      "fingerprint": "76be8f8be04e5dcb07ff338f0860156169cd065f84f12cd7aae93d1aae3977ba",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_wear_pending_updates",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0071",
+      "fingerprint": "8723ceded64a0360cd30a2c3f014a909014399874c9bc2a49b07312792ab2150",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_maintenance_schedules",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0072",
+      "fingerprint": "e84b31d73391c54366811e9c9faaeadd4254c8c341865b620a6f29e363357716",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_maintenance_due_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0073",
+      "fingerprint": "8dc10c2f523632b759c615cb79c46b1aca6344fecdf6d23b89fee5069007e335",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_wear_runtime_state",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0074",
+      "fingerprint": "0e2d6aa2cf60a55432fb12bb83d420f08d2551e48b7af5c416b820bc62f8433a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signals",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0075",
+      "fingerprint": "525d984f33887302bee2bedebd11ace548b829f02fe5b5d26bb534d13d4dbd76",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signal_state_machines",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0076",
+      "fingerprint": "f8f5fd5484160172e4b1c05e4835471a05607895a7a9d0cc182235c440d47745",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_block_reservations",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0077",
+      "fingerprint": "145087a991f6eb27c8f6f75ce16a5da857c9647e0b0dfd9475e4b98eb036527a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_switch_locks",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0078",
+      "fingerprint": "1dfd7fab0b157aa74b4a2bc87f9df1891f642f00924b19a4aa4da45c9491a33d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signal_hazards",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0079",
+      "fingerprint": "7a55a862fbe25d7d8258e3a84b1d2f6edaa8c2f5aac23555318b9a70003a153a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signal_maintenance_schedules",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0080",
+      "fingerprint": "c8d34d7b451cfd7a738ef6f31a9591770c3a7d5fbadf052eba64e305c3435c23",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signal_maintenance_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0081",
+      "fingerprint": "f441af9812aa7c6d9eb8091c077e7df0bbf28e53d578cbe0a4642649c27cab56",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: safety_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0082",
+      "fingerprint": "140b872efa82205582969a7844177a42f5330366ea7cb7ef31584f28c09c5210",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: safety_runtime_state",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0083",
+      "fingerprint": "c0970d7468523777d9629cc6827ca9c9a224c86d10ee781635f963941f95c24b",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_evaluation_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0084",
+      "fingerprint": "60a2cf9009947cfdb920c2c40230fd021006f7cb85cbd8e2f8574a24129d98db",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_cache_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0085",
+      "fingerprint": "242d6a0c7021c0f03b58d04797415664be10b4719583e9bbfcb64d1cc54423f5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_runtime_state",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0086",
+      "fingerprint": "25e32baa9ad2805db4b161cbc2e82a4ad71940034e2cb77d15d44fcf53228e67",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_hazard_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0087",
+      "fingerprint": "7222e44458c155801af6937d6bd764498c950910e9ff49632a1bb36195f2ffbf",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_flow_adjustment_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0088",
+      "fingerprint": "331ca8787c414ed30543d30e263f142f8113a088ffdb2e5ec01daad602b7dd22",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_evaluation_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0089",
+      "fingerprint": "60a2cf9009947cfdb920c2c40230fd021006f7cb85cbd8e2f8574a24129d98db",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_cache_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0090",
+      "fingerprint": "242d6a0c7021c0f03b58d04797415664be10b4719583e9bbfcb64d1cc54423f5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_runtime_state",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0091",
+      "fingerprint": "25e32baa9ad2805db4b161cbc2e82a4ad71940034e2cb77d15d44fcf53228e67",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_hazard_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0092",
+      "fingerprint": "7222e44458c155801af6937d6bd764498c950910e9ff49632a1bb36195f2ffbf",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_flow_adjustment_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0093",
+      "fingerprint": "331ca8787c414ed30543d30e263f142f8113a088ffdb2e5ec01daad602b7dd22",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: safety_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0094",
+      "fingerprint": "140b872efa82205582969a7844177a42f5330366ea7cb7ef31584f28c09c5210",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: micro_motion_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0095",
+      "fingerprint": "23bb83da111fa30119e24492804789115603daaeb8140db33186ca7ef159ef29",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: free_motion_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0096",
+      "fingerprint": "5542288d1b0f005d3dfbabb62cf632d73230537309dfe58e66b9e163ee043647",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: momentum_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0097",
+      "fingerprint": "f67c44d98fe6d5c5ceaeeadfb290f88b0c128de5103c87c1de6bae866c4017f5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: force_application_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0098",
+      "fingerprint": "a09f1dea4850950b46541cda393f213ae479438f9d5d9040c2d7528e6181f7ed",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: impulse_application_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0099",
+      "fingerprint": "ca99f6dd9594e28d0423cdac29e1be3b55c4e709fb152688320cf7f922caa292",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: exception_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0100",
+      "fingerprint": "27a320aa61a25f1594f804e4cc97b6c41186fe51a75be25231e27f3a689a2ad5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: energy_ledger_entries",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0101",
+      "fingerprint": "1118982d8610754569abbd140260da6267e149b248cd1d08042a5625e528a48d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: boundary_flux_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0102",
+      "fingerprint": "f2f5d09510cf3b19f3dc886e677c7c2c69fed4539a99b514bf90e96be57b9cba",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_state_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0103",
+      "fingerprint": "c0c8142fe985ad7e8f7b114323a334eeaac4a45f5515e2155c0730e9fc84e8f3",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_event_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0104",
+      "fingerprint": "f96eceb02abfa37cb2fea8f2ea290eac00f910f2b48ffd3949f5a8b008c9e4a2",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_reset_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0105",
+      "fingerprint": "0a9ba769eb05ba2c37d35cd74cc849bf13e829b67785c5952469eb18aad842ef",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_effect_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0106",
+      "fingerprint": "8f9ca608be54f4cb4c9667125d9730d32a679e32a16b81cc6cf28509b25369ed",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: coupling_constraints",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0107",
+      "fingerprint": "cd8cfb67a747da338c8e5819349b5bd366594704056cfbdd6015c2a0aee6cd2e",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: vehicle_motion_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0108",
+      "fingerprint": "fdf3fcffe4b3bbefe48a9699b132a41de6248b27f1726f1f6cd410e32f5731cd",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: vehicle_compatibility_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0109",
+      "fingerprint": "718f3a3d0bff563b04b9c06303f969458baca7babb5983190bad188d97f25325",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: vehicle_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0110",
+      "fingerprint": "6253f2517622846b6ae757ad44298ae8a97c4fb3cafcf525d211ce6fd57fcf89",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: vehicle_motion_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0111",
+      "fingerprint": "fdf3fcffe4b3bbefe48a9699b132a41de6248b27f1726f1f6cd410e32f5731cd",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: vehicle_compatibility_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0112",
+      "fingerprint": "718f3a3d0bff563b04b9c06303f969458baca7babb5983190bad188d97f25325",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: vehicle_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0113",
+      "fingerprint": "6253f2517622846b6ae757ad44298ae8a97c4fb3cafcf525d211ce6fd57fcf89",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: micro_motion_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0114",
+      "fingerprint": "23bb83da111fa30119e24492804789115603daaeb8140db33186ca7ef159ef29",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: coupling_constraints",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0115",
+      "fingerprint": "cd8cfb67a747da338c8e5819349b5bd366594704056cfbdd6015c2a0aee6cd2e",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: free_motion_states",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0116",
+      "fingerprint": "5542288d1b0f005d3dfbabb62cf632d73230537309dfe58e66b9e163ee043647",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: energy_quantity_totals",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0117",
+      "fingerprint": "54ec5678e27dfd1a94f9864a1f41f2e741a06199cf7bf41ed84f49bc5a478e96",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0118",
+      "fingerprint": "872984c3eaf6aa36a6550bb1428332682667ed1b1e1be1fe0ced93212deecb14",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0119",
+      "fingerprint": "15447c2788d646ccae4480f168f1c4aa0edfab7111ab144ddff0f6ebd8db0f2f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0120",
+      "fingerprint": "872984c3eaf6aa36a6550bb1428332682667ed1b1e1be1fe0ced93212deecb14",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0121",
+      "fingerprint": "15447c2788d646ccae4480f168f1c4aa0edfab7111ab144ddff0f6ebd8db0f2f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0122",
+      "fingerprint": "872984c3eaf6aa36a6550bb1428332682667ed1b1e1be1fe0ced93212deecb14",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0123",
+      "fingerprint": "15447c2788d646ccae4480f168f1c4aa0edfab7111ab144ddff0f6ebd8db0f2f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0124",
+      "fingerprint": "872984c3eaf6aa36a6550bb1428332682667ed1b1e1be1fe0ced93212deecb14",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0125",
+      "fingerprint": "15447c2788d646ccae4480f168f1c4aa0edfab7111ab144ddff0f6ebd8db0f2f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_update_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0126",
+      "fingerprint": "7bf1da9c986ea6d8deb370140a53bd2e8872064e2e9b8d8d0b839b80c0498d2c",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0127",
+      "fingerprint": "872984c3eaf6aa36a6550bb1428332682667ed1b1e1be1fe0ced93212deecb14",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0128",
+      "fingerprint": "15447c2788d646ccae4480f168f1c4aa0edfab7111ab144ddff0f6ebd8db0f2f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_update_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0129",
+      "fingerprint": "7bf1da9c986ea6d8deb370140a53bd2e8872064e2e9b8d8d0b839b80c0498d2c",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: field_sample_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0130",
+      "fingerprint": "feb28a10ec31c88c7ef75c9847ee7af4b469169a4477ec21979fab73ef6fc754",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_effect_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0131",
+      "fingerprint": "8f9ca608be54f4cb4c9667125d9730d32a679e32a16b81cc6cf28509b25369ed",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_reset_hash_chain",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0132",
+      "fingerprint": "715523ec3a022d006ddeb4873585dc33ed85e7379aac8085c38b652f0e632b41",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_state_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0133",
+      "fingerprint": "c0c8142fe985ad7e8f7b114323a334eeaac4a45f5515e2155c0730e9fc84e8f3",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_event_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0134",
+      "fingerprint": "f96eceb02abfa37cb2fea8f2ea290eac00f910f2b48ffd3949f5a8b008c9e4a2",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_state_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0135",
+      "fingerprint": "c0c8142fe985ad7e8f7b114323a334eeaac4a45f5515e2155c0730e9fc84e8f3",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: entropy_reset_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0136",
+      "fingerprint": "0a9ba769eb05ba2c37d35cd74cc849bf13e829b67785c5952469eb18aad842ef",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: energy_ledger_entries",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0137",
+      "fingerprint": "1118982d8610754569abbd140260da6267e149b248cd1d08042a5625e528a48d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: energy_quantity_totals",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0138",
+      "fingerprint": "54ec5678e27dfd1a94f9864a1f41f2e741a06199cf7bf41ed84f49bc5a478e96",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: boundary_flux_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0139",
+      "fingerprint": "f2f5d09510cf3b19f3dc886e677c7c2c69fed4539a99b514bf90e96be57b9cba",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: energy_quantity_totals",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0140",
+      "fingerprint": "54ec5678e27dfd1a94f9864a1f41f2e741a06199cf7bf41ed84f49bc5a478e96",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0141",
+      "fingerprint": "872984c3eaf6aa36a6550bb1428332682667ed1b1e1be1fe0ced93212deecb14",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0142",
+      "fingerprint": "15447c2788d646ccae4480f168f1c4aa0edfab7111ab144ddff0f6ebd8db0f2f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: model_hazard_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0143",
+      "fingerprint": "7222e44458c155801af6937d6bd764498c950910e9ff49632a1bb36195f2ffbf",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: exception_events",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0144",
+      "fingerprint": "27a320aa61a25f1594f804e4cc97b6c41186fe51a75be25231e27f3a689a2ad5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: info_artifact_rows",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0145",
+      "fingerprint": "872984c3eaf6aa36a6550bb1428332682667ed1b1e1be1fe0ced93212deecb14",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: knowledge_artifacts",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0146",
+      "fingerprint": "15447c2788d646ccae4480f168f1c4aa0edfab7111ab144ddff0f6ebd8db0f2f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: time_stamp_hash_chain",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0147",
+      "fingerprint": "6d04028114193e05a742ef36c90b3d21788090fc3005d1e763d632d7632a5072",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: proper_time_hash_chain",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0148",
+      "fingerprint": "c286742cd2dcbe492c4529939f35a4943b06e4ca04f27f1dae6d4a2f92f6b0f8",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: compaction_markers",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0149",
+      "fingerprint": "62e3d1764d309bab7fcbf3d53e8640140d50258698035c34c654182a09720236",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: schedule_domain_evaluations",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0150",
+      "fingerprint": "9e949cf0faddf1dda576131abe87eef9e7655ad51917d4d74f192d7e555f5815",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_network_bindings",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0151",
+      "fingerprint": "82d4d31f0c356b2e0b5a63ff8baa24b171bc71de5e0203126c1cecedf7d62bbe",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_switch_state_machines",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0152",
+      "fingerprint": "8b29c851a8ebeca5d3826204a46fbeb1c3a285aa5c13793f587200578198120f",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_route_cache_state",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0153",
+      "fingerprint": "3914307c0417a985aeef35d77936932dfb1154e769ae1adc9a4fc73c021613e5",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_route_results",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0154",
+      "fingerprint": "7fb98ee692f811788aa2642b8353862bd3a783c7a30e9980a5ec6fe1f9b90e4d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signals",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0155",
+      "fingerprint": "525d984f33887302bee2bedebd11ace548b829f02fe5b5d26bb534d13d4dbd76",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signal_state_machines",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0156",
+      "fingerprint": "f8f5fd5484160172e4b1c05e4835471a05607895a7a9d0cc182235c440d47745",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_block_reservations",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0157",
+      "fingerprint": "145087a991f6eb27c8f6f75ce16a5da857c9647e0b0dfd9475e4b98eb036527a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_switch_locks",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0158",
+      "fingerprint": "1dfd7fab0b157aa74b4a2bc87f9df1891f642f00924b19a4aa4da45c9491a33d",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A4_SCHEMA_USAGE",
+      "category": "schema_usage",
+      "confidence": 0.55,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "Detected key access without obvious schema anchor: mobility_signal_hazards",
+        "Best-effort heuristic; verify if schema declaration exists."
+      ],
+      "finding_id": "A4_SCHEMA_USAGE:0159",
+      "fingerprint": "7a55a862fbe25d7d8258e3a84b1d2f6edaa8c2f5aac23555318b9a70003a153a",
+      "location": {
+        "file_path": "tools/xstack/sessionx/process_runtime.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "SCHEMA_ANCHOR_REQUIRED"
+      ],
+      "related_paths": [
+        "tools/xstack/sessionx/process_runtime.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
     },
     {
       "analyzer_id": "A8_DERIVED_FRESHNESS_SMELL",
@@ -682,10 +4657,10 @@
         "max_load=0 if bool(inputs.get(\"zero_max_load_on_fracture\", True)) else int(max(0, _as_int(edge_row.get(\"max_load\", 0), 0))),"
       ],
       "finding_id": "E138_INLINE_STRENGTH_CHECK_SMELL:0001",
-      "fingerprint": "0a4656ea411aff63c6108ea8593b4e50cbbae61512a1ba3466ca6ed36e86b31b",
+      "fingerprint": "4c916f1d84ed30103ed5389be69f788346eba8790fa642c731acbbdb7e33493c",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 51457
+        "line_start": 51465
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -825,10 +4800,10 @@
         "derail_risk_band = \"high\" if int(derail_risk_permille) >= 1000 else (\"medium\" if int(derail_risk_permille) >= 700 else \"low\")"
       ],
       "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
-      "fingerprint": "a6160bd30573c2f855da483f95f39b7c44a5673860f46a7831c7a4614a4dc84f",
+      "fingerprint": "491400d5a205b5a266e0acd9169f9df39f6db2da5d063fa271817987e639d31d",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 47597
+        "line_start": 47605
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -910,10 +4885,10 @@
         "\"recommended_speed_cap_permille\": int(max(0, _as_int(mechanics_summary.get(\"recommended_speed_cap_permille\", 1000), 1000))),"
       ],
       "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0002",
-      "fingerprint": "4030b85917827dc1005d20e73cacd2ab32d4fbdf3852484718edc5651495c97c",
+      "fingerprint": "ce7ed83f841543395da2a5d38ba60ba904ad29d6094ed8cb057348f1d79352c4",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 52008
+        "line_start": 52016
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -1549,10 +5524,10 @@
         "group_id = str(row.get(\"coordination_group_id\", \"\")).strip() or \"coord.group.default\""
       ],
       "finding_id": "E169_BROADCAST_BYPASS_SMELL:0001",
-      "fingerprint": "34ac1c4c91666e4b7cd501f75e5e4c834f1b52b2ebb652bc4d8d2fe4bac4733e",
+      "fingerprint": "cd72a744c12aec7aae0330b15d95cc2e678e2153ecd622259367e498fe7e586f",
       "location": {
         "file_path": "src/electric/protection/protection_engine.py",
-        "line_start": 372
+        "line_start": 389
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -1765,10 +5740,10 @@
         "trust_weight = float(_as_float(receipt_row.get(\"trust_weight\", 1.0), 1.0))"
       ],
       "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0003",
-      "fingerprint": "92575d5bdea0b0a8ea7891ecab07325c1dbfee2cc020f15bd7729015fe54f560",
+      "fingerprint": "15c1dfda8c48e59ef54e0cc8af85abc28d54513a21d7f27e3ae4fd3c177f081f",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 18940
+        "line_start": 18942
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -12109,10 +16084,10 @@
         "defer_noncritical_models = bool(degradation_eval.get(\"defer_noncritical_models\", False))"
       ],
       "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0003",
-      "fingerprint": "c1449fc67b1d9f90b51e7f671913c894b76e7140e17049c27096b1a691e98b89",
+      "fingerprint": "976ce978f8bc2b453b8fdb5ee11dfd680f98bbbbaccbac7c9b6c2c9d3b81d6b3",
       "location": {
         "file_path": "tools/xstack/sessionx/process_runtime.py",
-        "line_start": 40294
+        "line_start": 40296
       },
       "recommended_action": "REWRITE",
       "related_invariants": [
@@ -12729,10 +16704,10 @@
         "r\"(truthmodel|truth_model).*(serialize|json|packet|socket|network|replication|delta|snapshot)\""
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0001",
-      "fingerprint": "e26893ad95714616a4a82a15b0a53216b4ff6b005f6123f2b4732ced494369a6",
+      "fingerprint": "abbd8bc71fe8cbde683a26b8cecde4068367e1d1bd1460a530f641f76b6171f8",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1872
+        "line_start": 1876
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12755,10 +16730,10 @@
         "r\"(serialize|json|packet|socket|network|replication|delta|snapshot).*(truthmodel|truth_model)\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0002",
-      "fingerprint": "74532459b6f64e96b66a99a2ef236d090922887a4ddbb46934f9659041bfa2ba",
+      "fingerprint": "769eb13d3185af4167228b9bc64da7dec78d346407f9919d577385d8758acff6",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1874
+        "line_start": 1878
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12781,10 +16756,10 @@
         "message=\"TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0003",
-      "fingerprint": "1547590f17c40e59933d65fd85e702fdcd15bfb0df017fdddeb66c703bdcb961",
+      "fingerprint": "98e381a1dbd4a0881264f781fe54307649d3ca66cf0d345a17bcf01772af43ae",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1894
+        "line_start": 1898
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12807,10 +16782,10 @@
         "message=\"network payload path must remain PerceivedModel-only and avoid TruthModel serialization\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0004",
-      "fingerprint": "e8c74f0adb8d4db340cebd788402df03a2f4b5d2e5b45a871f8540471812dd7b",
+      "fingerprint": "559dc0e60eb884599390eaceb2ffed9366ab18e30e8e4fd6767b6e3ac6b942a8",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1904
+        "line_start": 1908
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12833,10 +16808,10 @@
         "r\"(send|socket|packet|transport|wire|payload_ref).*(truth_model|truthmodel|universe_state)\""
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0005",
-      "fingerprint": "c9dca346f869a6362a36840d84d85b24d519c612424319c58ed5b5d44bb26b36",
+      "fingerprint": "92f6406bbeb0de2d9feea254b56219fc9d6f84f6cdd2aceb318bd0bb05b15a09",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 2054
+        "line_start": 2058
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12859,10 +16834,10 @@
         "r\"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0006",
-      "fingerprint": "f6814870c1c63c15c187cb2a95d01f235e719ac5f4a498ca0d98162a86467baa",
+      "fingerprint": "5c647b3e0976fbc10e7ab85a20d65abb0e6577753b129aea738693ec80a7cc9a",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 2056
+        "line_start": 2060
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -12874,34 +16849,6 @@
       "severity": "RISK",
       "status": "OPEN",
       "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "E300_ORPHAN_FEATURE_SMELL",
-      "category": "planning.orphan_feature_smell",
-      "confidence": 0.86,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "feature-like change detected without demand mapping",
-        "add demand ids in docs/impact/*.md or adjacent change notes"
-      ],
-      "finding_id": "E300_ORPHAN_FEATURE_SMELL:0001",
-      "fingerprint": "f0a2135c97ab710ebd2780eaab5e34ac458375b52ee56f1ab48ab69abd4d3d10",
-      "location": {
-        "file_path": "schema/meta/coupling_evaluation_record.schema",
-        "line_start": 1
-      },
-      "recommended_action": "REWRITE",
-      "related_invariants": [
-        "INV-CHANGE-MUST-REFERENCE-DEMAND"
-      ],
-      "related_paths": [
-        "data/meta/player_demand_matrix.json",
-        "docs/impact/",
-        "schema/meta/coupling_evaluation_record.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
     },
     {
       "analyzer_id": "E48_PERFORMANCE_NONDETERMINISM_SMELL",
@@ -13136,6 +17083,81 @@
       "severity": "RISK",
       "status": "OPEN",
       "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "A1_REACHABILITY_ORPHANED",
+      "category": "reachability",
+      "confidence": 0.7,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "No non-test or non-doc incoming references found.",
+        "Likely orphaned or prototype leakage candidate."
+      ],
+      "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+      "fingerprint": "d8f150366f0ddc774f5527aee4893abe5145712ba184b8928cd7f0b86a604e55",
+      "location": {
+        "file_path": "src/electric/protection/protection_engine.py"
+      },
+      "recommended_action": "RETIRE",
+      "related_invariants": [
+        "NO_SINGLE_USE_CODE_PATHS"
+      ],
+      "related_paths": [
+        "src/electric/protection/protection_engine.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "PROTOTYPE"
+    },
+    {
+      "analyzer_id": "A1_REACHABILITY_ORPHANED",
+      "category": "reachability",
+      "confidence": 0.7,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "No non-test or non-doc incoming references found.",
+        "Likely orphaned or prototype leakage candidate."
+      ],
+      "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+      "fingerprint": "41e3b6eb21a1369b9ff7fd65e0a96e80532920331c1ed12e86d1cd3fcefe8254",
+      "location": {
+        "file_path": "src/system/system_expand_engine.py"
+      },
+      "recommended_action": "RETIRE",
+      "related_invariants": [
+        "NO_SINGLE_USE_CODE_PATHS"
+      ],
+      "related_paths": [
+        "src/system/system_expand_engine.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "PROTOTYPE"
+    },
+    {
+      "analyzer_id": "A1_REACHABILITY_ORPHANED",
+      "category": "reachability",
+      "confidence": 0.7,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "No non-test or non-doc incoming references found.",
+        "Likely orphaned or prototype leakage candidate."
+      ],
+      "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+      "fingerprint": "791ca54fd1f37d93312ed13c039249b4e728d46fdfe48a1c7bfc336e05e00b92",
+      "location": {
+        "file_path": "tools/xstack/testx/tests/lod_invariance_testlib.py"
+      },
+      "recommended_action": "RETIRE",
+      "related_invariants": [
+        "NO_SINGLE_USE_CODE_PATHS"
+      ],
+      "related_paths": [
+        "tools/xstack/testx/tests/lod_invariance_testlib.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "PROTOTYPE"
     },
     {
       "analyzer_id": "A2_SCHEMA_SHADOWING",
@@ -34852,142 +38874,17 @@
         "Schema appears unreferenced by non-schema files in graph scan.",
         "May indicate stale, orphaned, or not-yet-integrated schema."
       ],
-      "finding_id": "A4_SCHEMA_USAGE:0001",
-      "fingerprint": "7921480ace5a3a131e2276c7429331a6bb43ec443ffe352f77a0210cd0a73728",
+      "finding_id": "A4_SCHEMA_USAGE:0160",
+      "fingerprint": "a8f40ba4f6e6b0f98abc979d11168e794c79971589208fad295eca488d57af1c",
       "location": {
-        "file_path": "dominium.registry.coupling_budget_registry"
+        "file_path": "schemas/control_proof_bundle.schema.json"
       },
       "recommended_action": "ADD_TEST",
       "related_invariants": [
         "SCHEMA_ANCHOR_REQUIRED"
       ],
       "related_paths": [
-        "dominium.registry.coupling_budget_registry"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0002",
-      "fingerprint": "7196c85684bfa89446f8b68611bdfd6a7773233a46ba7491e22cd11be1660840",
-      "location": {
-        "file_path": "dominium.registry.coupling_relevance_policy_registry"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "dominium.registry.coupling_relevance_policy_registry"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0003",
-      "fingerprint": "cd90d6002cc4ac7e982523f142afa7e32eb062ffce9e882144c2a4c583631d9b",
-      "location": {
-        "file_path": "schema/meta/coupling_budget.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/meta/coupling_budget.schema"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0004",
-      "fingerprint": "643eaddccd036ebc63a14cae47faf465488b1834c8fb2f37576ac9bcb1bd77bb",
-      "location": {
-        "file_path": "schema/meta/coupling_contract.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/meta/coupling_contract.schema"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0005",
-      "fingerprint": "cd72bbc0eec256762d5e882a1d4216e314b141ee9d575d530a285f7307570362",
-      "location": {
-        "file_path": "schema/meta/coupling_evaluation_record.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/meta/coupling_evaluation_record.schema"
-      ],
-      "severity": "WARN",
-      "status": "OPEN",
-      "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "A4_SCHEMA_USAGE",
-      "category": "schema_usage",
-      "confidence": 0.75,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "Schema appears unreferenced by non-schema files in graph scan.",
-        "May indicate stale, orphaned, or not-yet-integrated schema."
-      ],
-      "finding_id": "A4_SCHEMA_USAGE:0006",
-      "fingerprint": "c660b8a2eb8c1f0be881e1751690b547bb15c2d1e6a28ba6f39014536f53b314",
-      "location": {
-        "file_path": "schema/meta/coupling_relevance_policy.schema"
-      },
-      "recommended_action": "ADD_TEST",
-      "related_invariants": [
-        "SCHEMA_ANCHOR_REQUIRED"
-      ],
-      "related_paths": [
-        "schema/meta/coupling_relevance_policy.schema"
+        "schemas/control_proof_bundle.schema.json"
       ],
       "severity": "WARN",
       "status": "OPEN",
@@ -35121,7 +39018,7 @@
       "suggested_classification": "TODO-BLOCKED"
     }
   ],
-  "graph_hash": "f33966afa4512be797042546d8b2bd6c0e6e76515a3f1fc527f4c8391cea089b",
+  "graph_hash": "26a07061659807338c8bd8064c26a6b85050976480bbde4bda16ada0abffe8e4",
   "result": "scan_complete",
   "schema_id": "dominium.auditx.findings",
   "schema_version": "1.0.0"

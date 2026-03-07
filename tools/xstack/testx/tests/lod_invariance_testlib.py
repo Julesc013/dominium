@@ -180,7 +180,30 @@ def policy_context(memory_enabled: bool, strict_contracts: bool) -> dict:
         "activation_policy": activation_policy(),
         "budget_policy": budget_policy(),
         "fidelity_policy": fidelity_policy(),
+        "physics_profile_id": "physics.test.lod",
         "strict_contracts": bool(strict_contracts),
+        "universe_physics_profile_registry": {
+            "physics_profiles": [
+                {
+                    "physics_profile_id": "physics.test.lod",
+                    "allowed_exception_types": [
+                        "exception.boundary_flux",
+                        "exception.creation_annihilation",
+                        "exception.numeric_error_budget",
+                    ],
+                }
+            ]
+        },
+        "quantity_type_registry": {
+            "quantity_types": [
+                {"quantity_id": "quantity.mass_energy_total", "dimension_id": "dim.energy"}
+            ]
+        },
+        "quantity_registry": {
+            "quantities": [
+                {"quantity_id": "quantity.mass_energy_total", "dimension_id": "dim.energy"}
+            ]
+        },
     }
     if memory_enabled:
         payload["decay_model_registry"] = {

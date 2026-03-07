@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1353
-- Severities: RISK=465, VIOLATION=9, WARN=879
-- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=13, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=3, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=743, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, planning.orphan_feature_smell=1, reliability.silent_reaction_smell=3, schema_usage=6, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
+- Total findings: 1509
+- Severities: RISK=623, VIOLATION=9, WARN=877
+- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=4, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=2, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=3, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=13, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=2, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=1, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=3, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=743, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=11, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=3, reliability.silent_reaction_smell=3, schema_usage=160, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1
 
 ## Top Findings
 
@@ -39,336 +39,336 @@ Superseded By: none
 - `E132_MISSING_DECISION_LOG_SMELL:0003` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (src/control/control_plane_engine.py)
   - refusal path not tied to decision-log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `A8_DERIVED_FRESHNESS_SMELL:0001` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/auditx/RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.auditx.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0002` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/performx/RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.performx.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0003` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/REPOX_PROFILE.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.repox.profile
-- `A8_DERIVED_FRESHNESS_SMELL:0004` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/repox/proof_manifest.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.repox.proof_manifest
-- `A8_DERIVED_FRESHNESS_SMELL:0005` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/securex/RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.securex.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0006` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/testx/TESTX_RUN_META.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.testx.run_meta
-- `A8_DERIVED_FRESHNESS_SMELL:0007` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.xstack.full_plan_warning
-- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (dist/pkg/winnt/x86_64/index/pkg_index.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.pkg.index
-- `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/perf/profile_trace.sample.json)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.perf.trace.sample
-- `A8_DERIVED_FRESHNESS_SMELL:0010` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/system/LEDGER_SNAPSHOT.md)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.xstack.ledger_snapshot
-- `A8_DERIVED_FRESHNESS_SMELL:0011` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/xstack/PERFORMANCE_CEILING_ALERT.md)
-  - Derived artifact listed in registry is missing on disk.
-  - artifact_id=artifact.xstack.performance_ceiling_alert
-- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
-  - Bridge is missing required capability/entitlement guard markers.
-  - Missing markers: refuse.profile_not_selected
-- `E113_DEPRECATED_USAGE_SMELL:0001` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/repox/check.py)
-  - data/registries/deprecation_registry.json
-  - reference to deprecated/quarantined/removed identifier
-- `E117_IR_NONDETERMINISM_SMELL:0001` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
-  - missing deterministic token
-  - canonical_sha256(
-- `E117_IR_NONDETERMINISM_SMELL:0002` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
-  - missing deterministic token
-  - sorted(
-- `E131_SILENT_DOWNGRADE_SMELL:0001` RISK `E131_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
-  - downgrade marker found outside control subsystem
-  - module_node_id=module:src/inspection
-- `E133_SPEC_HARDCODE_SMELL:0001` RISK `E133_SPEC_HARDCODE_SMELL` `architecture.spec_hardcode_smell` (src/mobility/geometry/geometry_engine.py)
-  - hardcoded infrastructure spec literal outside SpecSheet declarations
-  - clearance = {"width_mm": 3000, "height_mm": 4000}
-- `E138_INLINE_STRENGTH_CHECK_SMELL:0001` RISK `E138_INLINE_STRENGTH_CHECK_SMELL` `architecture.inline_strength_check_smell` (tools/xstack/sessionx/process_runtime.py)
-  - inline structural load/strength check outside mechanics substrate
-  - max_load=0 if bool(inputs.get("zero_max_load_on_fracture", True)) else int(max(0, _as_int(edge_row.get("max_load", 0), 0))),
-- `E139_INLINE_FRICTION_SMELL:0001` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/constrained_motion_solver.py)
-  - inline friction/traction logic outside FIELD runtime
-  - friction_permille=int(friction_permille),
-- `E139_INLINE_FRICTION_SMELL:0002` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/free_motion_solver.py)
-  - inline friction/traction logic outside FIELD runtime
-  - traction_permille = int(max(1, _as_int(effects.get("traction_permille", 1000), 1000)))
-- `E141_WEATHER_HACK_SMELL:0001` RISK `E141_WEATHER_HACK_SMELL` `architecture.weather_hack_smell` (tools/xstack/sessionx/ui_host.py)
-  - possible direct weather/render hack outside FIELD process path
-  - if window_is_nondiegetic and not required_entitlements:
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0001` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (src/specs/spec_engine.py)
-  - mobility special-case branch detected
-  - if measured_derailment is not None and int(measured_derailment) >= 900 and grade == "pass":
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0002` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (tools/xstack/sessionx/process_runtime.py)
-  - mobility special-case branch detected
-  - derail_risk_band = "high" if int(derail_risk_permille) >= 1000 else ("medium" if int(derail_risk_permille) >= 700 else "low")
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0001` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/client/render/renderers/software_renderer.py)
-  - direct position/body mutation outside process runtime
-  - x, y, z = _camera_space(position_mm=position, camera_row=camera)
-- `E144_ADHOC_SPEED_LIMIT_SMELL:0001` RISK `E144_ADHOC_SPEED_LIMIT_SMELL` `architecture.adhoc_speed_limit_smell` (src/mechanics/structural_graph_engine.py)
-  - ad-hoc speed limit logic detected
-  - recommended_speed_cap_permille = 1000
-- `E144_ADHOC_SPEED_LIMIT_SMELL:0002` RISK `E144_ADHOC_SPEED_LIMIT_SMELL` `architecture.adhoc_speed_limit_smell` (tools/xstack/sessionx/process_runtime.py)
-  - ad-hoc speed limit logic detected
-  - "recommended_speed_cap_permille": int(max(0, _as_int(mechanics_summary.get("recommended_speed_cap_permille", 1000), 1000))),
-- `E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001` RISK `E147_MOBILITY_GRAPH_DUPLICATION_SMELL` `architecture.mobility_graph_duplication_smell` (src/pollution/dispersion_engine.py)
-  - potential ad-hoc mobility graph duplication detected
-  - neighbor_map = dict(neighbor_map_by_cell or {})
-- `E154_DERAILMENT_BYPASS_SMELL:0001` RISK `E154_DERAILMENT_BYPASS_SMELL` `architecture.derailment_bypass_smell` (src/mobility/travel/reenactment.py)
-  - derailment signaling/state mutation outside process.mob_derail path
-  - if str(row.get("kind", "")).strip() == "incident_stub" and reason_code.startswith("incident.derailment."):
-- `E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL:0001` RISK `E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL` `architecture.vehicle_interior_special_case_smell` (tools/xstack/sessionx/observation.py)
-  - vehicle interior special-case detected
-  - if channel_id == "ch.diegetic.vehicle.pressure":
-- `E163_SUBSTRATE_BYPASS_SMELL:0001` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.elec.panel.close
-- `E163_SUBSTRATE_BYPASS_SMELL:0002` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.elec.panel.open
-- `E163_SUBSTRATE_BYPASS_SMELL:0003` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.fluid.isolate_section
-- `E163_SUBSTRATE_BYPASS_SMELL:0004` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.fluid.open_valve
-- `E163_SUBSTRATE_BYPASS_SMELL:0005` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.accept
-- `E163_SUBSTRATE_BYPASS_SMELL:0006` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.promote_network
-- `E163_SUBSTRATE_BYPASS_SMELL:0007` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.revert
-- `E163_SUBSTRATE_BYPASS_SMELL:0008` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.mobility.network_create_from_formalization
-- `E163_SUBSTRATE_BYPASS_SMELL:0009` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.inspect_commitments
-- `E163_SUBSTRATE_BYPASS_SMELL:0010` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.inspect_mobility_edge
-- `E163_SUBSTRATE_BYPASS_SMELL:0011` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.promote_to_network
-- `E163_SUBSTRATE_BYPASS_SMELL:0012` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.schedule_maintenance
-- `E163_SUBSTRATE_BYPASS_SMELL:0013` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - process.on_planet.maintenance.inspect_condition
-- `E164_DIRECT_MESSAGE_SMELL:0001` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/interface.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0002` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/loopback.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0003` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/tcp_stub.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0004` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/udp_stub.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0005` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (tools/xstack/sessionx/net_handshake.py)
-  - possible direct message propagation outside SIG transport path
-  - sent = client.send(encode_proto_message(request_message))
-- `E167_NON_DETERMINISTIC_QUEUE_ORDER_SMELL:0001` RISK `E167_NON_DETERMINISTIC_QUEUE_ORDER_SMELL` `architecture.nondeterministic_queue_order_smell` (src/signals/transport/transport_engine.py)
-  - queue processing appears unsorted
-  - for queue_row in queue_rows:
-- `E169_BROADCAST_BYPASS_SMELL:0001` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/electric/protection/protection_engine.py)
-  - broadcast/group semantics outside address engine
-  - group_id = str(row.get("coordination_group_id", "")).strip() or "coord.group.default"
-- `E169_BROADCAST_BYPASS_SMELL:0002` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/bulletin_engine.py)
-  - broadcast/group semantics outside address engine
-  - return {"kind": "broadcast", "broadcast_scope": target_id, "to_node_id": str(row.get("to_node_id", "node.unknown")).strip() or "node.unknown
-- `E169_BROADCAST_BYPASS_SMELL:0003` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/dispatch_engine.py)
-  - broadcast/group semantics outside address engine
-  - "group_id": str(policy_ext.get("dispatch_report_group_id", "group.dispatch.default")).strip() or "group.dispatch.default",
-- `E169_BROADCAST_BYPASS_SMELL:0004` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/standards_engine.py)
-  - broadcast/group semantics outside address engine
-  - "group_id": str(policy_ext.get("report_group_id", "group.dispatch.default")).strip() or "group.dispatch.default",
-- `E170_ADHOC_LOSS_SMELL:0001` RISK `E170_ADHOC_LOSS_SMELL` `architecture.adhoc_loss_smell` (src/inspection/inspection_engine.py)
-  - loss logic appears outside SIG transport quality layer
-  - int(max(0, _as_int(ext.get("field_loss_modifier_permille", 0), 0)))
-- `E171_SILENT_CORRUPTION_SMELL:0001` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/inspection/inspection_engine.py)
-  - possible corruption handling outside SIG transport event path
-  - elif state_token == "corrupted":
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0001` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/inspection/inspection_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight = float(row.get("trust_weight", 1.0))
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0002` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/signals/transport/transport_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight=float(row.get("trust_weight", 1.0)),
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0003` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (tools/xstack/sessionx/process_runtime.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight = float(_as_float(receipt_row.get("trust_weight", 1.0), 1.0))
-- `E174_DIRECT_SCHEDULE_MUTATION_SMELL:0001` RISK `E174_DIRECT_SCHEDULE_MUTATION_SMELL` `architecture.direct_schedule_mutation_smell` (tools/xstack/sessionx/process_runtime.py)
-  - possible direct travel schedule mutation outside dispatch control path
-  - rows = state.get("travel_schedules")
-- `E176_AFFORDANCE_GAP_SMELL:0001` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.admin.meta_override
-- `E176_AFFORDANCE_GAP_SMELL:0002` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0003` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0004` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0005` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0006` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0007` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0008` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0009` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0010` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0011` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0012` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0013` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0014` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.unplug
-- `E176_AFFORDANCE_GAP_SMELL:0015` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.unplug
-- `E176_AFFORDANCE_GAP_SMELL:0016` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.unplug
-- `E176_AFFORDANCE_GAP_SMELL:0017` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.explain_trip
-- `E176_AFFORDANCE_GAP_SMELL:0018` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.explain_trip
-- `E176_AFFORDANCE_GAP_SMELL:0019` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.explain_trip
-- `E176_AFFORDANCE_GAP_SMELL:0020` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.flip_breaker
-- `E176_AFFORDANCE_GAP_SMELL:0021` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.flip_breaker
-- `E176_AFFORDANCE_GAP_SMELL:0022` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.flip_breaker
-- `E176_AFFORDANCE_GAP_SMELL:0023` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.isolator.close
-- `E176_AFFORDANCE_GAP_SMELL:0024` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.isolator.close
-- `E176_AFFORDANCE_GAP_SMELL:0025` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.isolator.open
-- `E176_AFFORDANCE_GAP_SMELL:0026` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.isolator.open
-- `E176_AFFORDANCE_GAP_SMELL:0027` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.lockout_tagout
-- `E176_AFFORDANCE_GAP_SMELL:0028` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.lockout_tagout
-- `E176_AFFORDANCE_GAP_SMELL:0029` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.lockout_tagout
-- `E176_AFFORDANCE_GAP_SMELL:0030` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.loto.apply
-- `E176_AFFORDANCE_GAP_SMELL:0031` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.loto.apply
-- `E176_AFFORDANCE_GAP_SMELL:0032` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.loto.apply
-- `E176_AFFORDANCE_GAP_SMELL:0033` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.loto.remove
-- `E176_AFFORDANCE_GAP_SMELL:0034` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.loto.remove
-- `E176_AFFORDANCE_GAP_SMELL:0035` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.loto.remove
-- `E176_AFFORDANCE_GAP_SMELL:0036` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.panel.close
-- `E176_AFFORDANCE_GAP_SMELL:0037` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.panel.close
-- `E176_AFFORDANCE_GAP_SMELL:0038` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.panel.open
-- `E176_AFFORDANCE_GAP_SMELL:0039` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.panel.open
-- `E176_AFFORDANCE_GAP_SMELL:0040` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.formalize.accept
-- `E176_AFFORDANCE_GAP_SMELL:0041` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.formalize.infer
-- `E176_AFFORDANCE_GAP_SMELL:0042` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.formalize.promote_network
-- `E176_AFFORDANCE_GAP_SMELL:0043` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.formalize.revert
-- `E176_AFFORDANCE_GAP_SMELL:0044` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.interaction.execute_process
-- `E176_AFFORDANCE_GAP_SMELL:0045` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.mobility.inspect_route
-- `E176_AFFORDANCE_GAP_SMELL:0046` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.mobility.inspect_route
-- `E176_AFFORDANCE_GAP_SMELL:0047` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.mobility.network_create_from_formalization
-- `E176_AFFORDANCE_GAP_SMELL:0048` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.mobility.switch_set_state
-- `E176_AFFORDANCE_GAP_SMELL:0049` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.mount.attach
-- `E176_AFFORDANCE_GAP_SMELL:0050` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.mount.detach
-- `E176_AFFORDANCE_GAP_SMELL:0051` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.plan.blueprint
-- `E176_AFFORDANCE_GAP_SMELL:0052` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.pose.enter
-- `E176_AFFORDANCE_GAP_SMELL:0053` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.pose.exit
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: control_ir_execution
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: effect_influence
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: spec_compliance
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: effect_influence
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: spec_compliance
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: subject.unknown
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: required_process_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: max_fidelity
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: connected_subject_ids
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: effect_influence
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/control/control_plane_engine.py)
+  - Detected key access without obvious schema anchor: spec_compliance
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: state_vector_definition_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: state_vector_snapshot_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: assembly_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: system_macro_capsule_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: last_expand_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: last_restored_capsule_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: current_tier
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: active_capsule_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: system_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: system_expand_event_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: info_artifact_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: knowledge_artifacts
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (src/system/system_expand_engine.py)
+  - Detected key access without obvious schema anchor: system_expand_hash_chain
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: effect_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: effect_provenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: effect_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: effect_provenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: field_layers
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: field_cells
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: field_modifier_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: field_layers
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: field_cells
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: field_modifier_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: spec_compliance_results
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: spec_provenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: spec_compliance_results
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: spec_provenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: formalization_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: formalization_inference_candidates
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: formalization_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: formalization_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: formalization_inference_candidates
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: formalization_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: guide_geometries
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_junctions
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: geometry_candidates
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: geometry_derived_metrics
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0049` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: guide_geometries
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0050` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_junctions
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0051` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: geometry_candidates
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0052` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: geometry_derived_metrics
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0053` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_network_bindings
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0054` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_switch_state_machines
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0055` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_route_cache_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0056` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_route_results
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0057` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: itineraries
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0058` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: travel_schedules
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0059` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: schedule_time_bindings
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0060` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: time_mapping_cache_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0061` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: time_stamp_artifacts
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0062` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: time_stamp_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0063` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: proper_time_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0064` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: schedule_domain_evaluations
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0065` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: time_adjust_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0066` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: travel_commitments
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0067` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: travel_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0068` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: edge_occupancies
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0069` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_reservations
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0070` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_wear_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0071` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_wear_pending_updates
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0072` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_maintenance_schedules
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0073` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_maintenance_due_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0074` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_wear_runtime_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0075` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_signals
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0076` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_signal_state_machines
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0077` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_block_reservations
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0078` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_switch_locks
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0079` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_signal_hazards
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0080` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_signal_maintenance_schedules
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0081` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: mobility_signal_maintenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0082` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: safety_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0083` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: safety_runtime_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0084` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_evaluation_results
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0085` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_cache_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0086` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_runtime_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0087` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_hazard_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0088` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_flow_adjustment_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0089` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_evaluation_results
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0090` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_cache_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0091` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_runtime_state
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0092` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_hazard_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0093` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: model_flow_adjustment_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0094` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: safety_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0095` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: micro_motion_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0096` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: free_motion_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0097` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: momentum_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0098` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: force_application_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0099` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: impulse_application_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0100` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: exception_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0101` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: energy_ledger_entries
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0102` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: boundary_flux_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0103` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: entropy_state_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0104` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: entropy_event_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0105` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: entropy_reset_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0106` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: entropy_effect_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0107` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: coupling_constraints
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0108` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: vehicle_motion_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0109` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: vehicle_compatibility_results
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0110` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: vehicle_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0111` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/sessionx/process_runtime.py)
+  - Detected key access without obvious schema anchor: vehicle_motion_states
+  - Best-effort heuristic; verify if schema declaration exists.

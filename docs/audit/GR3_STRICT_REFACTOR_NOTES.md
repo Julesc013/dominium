@@ -1,33 +1,37 @@
 # GR3 STRICT Refactor Notes
 
 ## Applied Refactors
-1. `data/registries/action_template_registry.json`
-- Added missing task templates required by strict action-grammar enforcement:
-  - `task.assay`
-  - `task.disassemble`
-  - `task.scan`
-- Corrected `record.extensions.template_count` to match entries.
-- Filled missing deterministic fingerprints in pre-existing rows that failed strict validation.
+1. [`tools/xstack/sessionx/process_runtime.py`](/d:/Projects/Dominium/dominium/tools/xstack/sessionx/process_runtime.py)
+- Renamed branch-local signal/switch machine maps to avoid shadowing the imported `machine_rows_by_id(...)` helper.
+- Kept the process-only mutation path unchanged; this is a correctness repair for runtime name resolution.
 
-2. `tools/xstack/sessionx/process_runtime.py`
-- Removed a static-check false positive by renaming a local comprehension variable (`field` -> `sv_entry`) in hash-chain projection.
-- No behavior change.
+2. [`src/control/control_plane_engine.py`](/d:/Projects/Dominium/dominium/src/control/control_plane_engine.py)
+- Made decision-log artifact naming deterministic for repeated identical resolutions.
+- Removed the filesystem-state dependency that changed `decision_log_ref` across equivalent runs.
 
-3. `src/meta/__init__.py`
-- Broke package import cycle by replacing eager `src.meta.reference` imports with lazy wrappers:
-  - `evaluate_reference_evaluator(...)`
-  - `evaluate_reference_suite(...)`
-- Prevents partial-init cycle when `src.system` imports `src.meta.profile`.
+3. [`src/system/system_expand_engine.py`](/d:/Projects/Dominium/dominium/src/system/system_expand_engine.py)
+- Added explicit provenance-anchor verification of `state_vector_row.serialized_internal_state` before accepting expand.
+- Closed a tamper-acceptance gap without changing successful expand outputs.
 
-4. `tools/xstack/testx/tests/test_hidden_state_violation_detected.py`
-- Migrated fixture from legacy debug toggle to canonical profile override path:
-  - profile registry payload + profile binding for `rule.statevec.output_guard`.
-- Keeps STATEVEC guard coverage while satisfying no-mode-flag policy.
+4. [`src/electric/protection/protection_engine.py`](/d:/Projects/Dominium/dominium/src/electric/protection/protection_engine.py)
+- Normalized trip candidacy to use the observed fault measure for overcurrent faults.
+- Preserved existing deterministic ordering, coordination, and safety-event routing.
 
-5. `docs/audit/WORKTREE_LEFTOVERS.md`
-- Added in-flight GR3 artifacts and touched paths so RepoX worktree hygiene gate remains explicit.
+5. [`schemas/control_proof_bundle.schema.json`](/d:/Projects/Dominium/dominium/schemas/control_proof_bundle.schema.json)
+- Added schema coverage for emitted reaction, QC, pollution, drift, compiled-model, equivalence, and process-capsule hash chains.
+- No schema version bump was required because the runtime payload already emitted these fields and the change is additive-only.
+
+6. [`tools/xstack/testx/tests/plan_testlib.py`](/d:/Projects/Dominium/dominium/tools/xstack/testx/tests/plan_testlib.py)
+- Added deterministic default capability bindings for planner fixtures so strict control gating reflects intended planner authority.
+
+7. [`tools/xstack/testx/tests/lod_invariance_testlib.py`](/d:/Projects/Dominium/dominium/tools/xstack/testx/tests/lod_invariance_testlib.py)
+- Added deterministic quantity-dimension bindings needed by the stricter conservation runtime.
+- This aligns the fixture with GR3 enforcement; it does not relax the runtime contract.
+
+8. [`docs/impact/GR3_NO_STOPS_HARDENING.md`](/d:/Projects/Dominium/dominium/docs/impact/GR3_NO_STOPS_HARDENING.md)
+- Added demand coverage mapping required by META-GENRE-0/RepoX for the repaired runtime-domain paths.
 
 ## Safety Statement
-- No domain semantics changed.
-- Deterministic ordering and hash logic preserved.
-- Changes are registry hygiene, import-cycle hardening, and policy-path alignment only.
+- No new feature work was introduced.
+- No wall-clock or nondeterministic dependency was added.
+- Runtime semantics changed only where prior behavior was demonstrably incorrect.

@@ -7,46 +7,37 @@ Superseded By: none
 
 ## Scope
 - Profile: `FAST`
-- Intent: quick integrity gate with trivial/non-semantic fixes only.
+- Intent: repair-confirm the post-snapshot GR3 regressions without widening semantics.
 
 ## Commands Run
 - `python tools/xstack/repox/check.py --repo-root . --profile FAST`
 - `python tools/xstack/auditx/check.py --repo-root . --profile FAST`
-- `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache on --subset test_all_affordances_declared,test_worktree_leftovers_allowlist_present,test_energy_ledger_ref_matches_runtime,test_coupling_scheduler_ref_matches_runtime,test_qc_sampling_tests_subset_deterministic`
-- `python tools/meta/tool_run_reference_suite.py --repo-root . --seed 101 --tick-start 0 --tick-end 8 --current-tick 8 --evaluators ref.energy_ledger,ref.coupling_scheduler --out-path docs/audit/GR3_FAST_REFERENCE_SUITE.json`
-- `python tools/system/tool_replay_capsule_window.py`
-- `python tools/meta/tool_provenance_stress.py --ticks 16 --events-per-tick 4 --compact-every-ticks 4 --seed 11 --output docs/audit/GR3_FAST_COMPACTION_SANITY.json`
-- `python tools/meta/tool_verify_replay_from_anchor.py --state-path docs/audit/GR3_FAST_COMPACTION_STATE.json`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FULL --cache off --subset test_breaker_trip_deterministic,test_breaker_trip_on_overload,test_control_resolution_deterministic,test_machine_operate_consumes_and_produces_batches,test_planning_requires_capability,test_provenance_anchor_validation,testx.reality.epistemic_invariance_on_expand,testx.net.pipeline_net_handshake_stage_authoritative,testx.net.pipeline_net_handshake_stage_srz_hybrid`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FULL --cache off --subset testx.control.plan_creation_deterministic,testx.control.manual_placement_via_plan`
+- `python -c "from src.control.proof.control_proof_bundle import build_control_proof_bundle_from_markers; from tools.xstack.compatx.validator import validate_instance; ..."`
 
 ## Gate Outcome
-- RepoX FAST: `PASS` (warn findings remain, no FAST blockers)
-- AuditX FAST: `PASS` (warn findings remain)
-- TestX impact subset: `PASS` (5 selected tests)
-- Quick reference suite (`ref.energy_ledger`, `ref.coupling_scheduler`): `PASS` (0 mismatches)
-- Quick SYS capsule roundtrip: `PASS`
-- Quick compaction replay sanity: `PASS`
+- RepoX FAST: `refusal` pre-commit on `INV-WORKTREE-HYGIENE` only; no additional FAST blocker surfaced in the repaired paths.
+- AuditX FAST: `PASS`
+- Impacted FAST/repair subset: `PASS` (11/11 targeted tests across control, system, electric, planning, reality, and net)
+- Control proof bundle schema sanity: `PASS`
 
-## FAST Blockers Found and Fixed
-- `INV-AFFORDANCE-DECLARED`:
-  - Cause: RWAM missing `COMPILE`, `COUPLE`, `STATEVEC` series declaration.
-  - Fix: updated [`data/meta/real_world_affordance_matrix.json`](/d:/Projects/Dominium/dominium/data/meta/real_world_affordance_matrix.json) series coverage and mapped affordance references.
-- `INV-WORKTREE-HYGIENE`:
-  - Cause: intentional dirty paths not listed.
-  - Fix: updated [`docs/audit/WORKTREE_LEFTOVERS.md`](/d:/Projects/Dominium/dominium/docs/audit/WORKTREE_LEFTOVERS.md).
-- `INV-CHANGE-MUST-REFERENCE-DEMAND`:
-  - Cause: feature-like changed files lacked explicit demand linkage.
-  - Fix: added [`docs/impact/GR3_FAST.md`](/d:/Projects/Dominium/dominium/docs/impact/GR3_FAST.md) with demand IDs.
-- `INV-NO-BESPOKE-COMPILER` (audit smell promotion):
-  - Cause: direct `evaluate_compile_request(` call pattern in software pipeline helper.
-  - Fix: routed via alias call in [`src/process/software/pipeline_engine.py`](/d:/Projects/Dominium/dominium/src/process/software/pipeline_engine.py) without behavior change.
-- `INV-NO-SILENT-TIER-TRANSITION` (audit smell promotion):
-  - Cause: tier-token regex matched non-runtime helper files.
-  - Fix: removed literal trigger tokens from helper accessors in [`src/system/macro/macro_capsule_engine.py`](/d:/Projects/Dominium/dominium/src/system/macro/macro_capsule_engine.py) and [`src/system/reliability/reliability_engine.py`](/d:/Projects/Dominium/dominium/src/system/reliability/reliability_engine.py) while preserving data access semantics.
-- `INV-SYS-BUDGETED` and `INV-SYS-INVARIANTS-ALWAYS-CHECKED` (runtime token checks):
-  - Cause: required token strings not present in runtime source text.
-  - Fix: added explicit canonical token aliases + `approved_expand_count` metadata in [`tools/xstack/sessionx/process_runtime.py`](/d:/Projects/Dominium/dominium/tools/xstack/sessionx/process_runtime.py).
+## Repaired FAST Blockers
+- `tools/xstack/sessionx/process_runtime.py`
+  - Renamed local state-machine maps that shadowed the imported `machine_rows_by_id(...)` helper and crashed machine/signal execution paths.
+- `src/control/control_plane_engine.py`
+  - Removed existence-based decision-log filename branching so identical control resolutions now emit stable `decision_log_ref` values.
+- `src/system/system_expand_engine.py`
+  - Revalidated the serialized state vector payload against the capsule provenance anchor before accepting expand.
+- `src/electric/protection/protection_engine.py`
+  - Compared overcurrent trips against the observed electrical measure instead of the normalized fault severity ratio.
+- `schemas/control_proof_bundle.schema.json`
+  - Added the already-emitted PROC/POLL/COMPILE/drift hash-chain fields to the schema so authoritative net boot no longer refuses valid proof bundles.
+- `tools/xstack/testx/tests/plan_testlib.py`
+  - Added deterministic planner capability bindings required by the stricter control-plane gate.
+- `tools/xstack/testx/tests/lod_invariance_testlib.py`
+  - Added deterministic quantity-dimension bindings required by the stricter conservation runtime.
 
 ## Notes
-- No intended simulation semantics were changed.
-- No new domains/solvers/features were introduced.
-- FAST warnings were left unchanged when out of scope for this phase.
+- No new domains, solvers, or mode-flag branches were introduced.
+- Schema impact is additive-only: the control proof bundle schema now matches the runtime payload already in circulation.

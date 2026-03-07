@@ -51,9 +51,20 @@
     "boundary_flux_hash_chain",
     "combustion_hash_chain",
     "emission_hash_chain",
+    "reaction_hash_chain",
     "impulse_hash_chain",
     "process_run_hash_chain",
+    "process_quality_hash_chain",
     "batch_quality_hash_chain",
+    "qc_result_hash_chain",
+    "sampling_decision_hash_chain",
+    "process_maturity_hash_chain",
+    "metrics_state_hash_chain",
+    "process_cert_hash_chain",
+    "drift_state_hash_chain",
+    "drift_event_hash_chain",
+    "qc_policy_change_hash_chain",
+    "revalidation_run_hash_chain",
     "yield_model_hash_chain",
     "quantity_tolerance_registry_hash",
     "rounding_mode_policy_hash",
@@ -72,6 +83,14 @@
     "compaction_marker_hash_chain",
     "compaction_pre_anchor_hash",
     "compaction_post_anchor_hash",
+    "pollution_emission_hash_chain",
+    "pollution_exposure_hash_chain",
+    "pollution_compliance_hash_chain",
+    "pollution_degradation_event_hash_chain",
+    "compiled_model_hash_chain",
+    "equivalence_proof_hash_chain",
+    "process_capsule_generation_hash_chain",
+    "process_capsule_execution_hash_chain",
     "drift_policy_id",
     "deterministic_fingerprint",
     "extensions"
@@ -255,6 +274,10 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "reaction_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "impulse_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
@@ -263,7 +286,47 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "process_quality_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "batch_quality_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "qc_result_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "sampling_decision_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "process_maturity_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "metrics_state_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "process_cert_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "drift_state_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "drift_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "qc_policy_change_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "revalidation_run_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
@@ -344,6 +407,38 @@
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
     "deposition_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_emission_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_exposure_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_compliance_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pollution_degradation_event_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compiled_model_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "equivalence_proof_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "process_capsule_generation_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "process_capsule_execution_hash_chain": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },

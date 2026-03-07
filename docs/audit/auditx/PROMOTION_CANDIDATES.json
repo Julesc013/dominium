@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 54,
+  "candidate_count": 53,
   "candidates": [
     {
       "evidence_paths": [
@@ -246,17 +246,6 @@
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.6525,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "data/meta/player_demand_matrix.json",
-        "docs/impact/",
-        "schema/meta/coupling_evaluation_record.schema"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.645,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },

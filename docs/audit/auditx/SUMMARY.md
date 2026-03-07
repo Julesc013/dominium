@@ -8,9 +8,9 @@ Superseded By: none
 
 ## Counts By Severity
 
-- RISK: 465
+- RISK: 623
 - VIOLATION: 9
-- WARN: 879
+- WARN: 877
 
 ## Counts By Category
 
@@ -72,9 +72,9 @@ Superseded By: none
 - net.truth_over_net_smell: 6
 - performance.performance_nondeterminism_smell: 1
 - performance.unbudgeted_reaction_loop_smell: 1
-- planning.orphan_feature_smell: 1
+- reachability: 3
 - reliability.silent_reaction_smell: 3
-- schema_usage: 6
+- schema_usage: 160
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120

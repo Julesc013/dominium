@@ -253,6 +253,23 @@ def _trip_threshold_for_fault(*, fault_kind_id: str, settings_row: Mapping[str, 
     return 1
 
 
+def _trip_measure_for_fault(*, fault_row: Mapping[str, object]) -> int:
+    fault = _as_map(fault_row)
+    ext = _as_map(fault.get("extensions"))
+    fault_kind_id = str(fault.get("fault_kind_id", "")).strip()
+    if fault_kind_id == "fault.overcurrent":
+        return int(
+            max(
+                0,
+                _as_int(
+                    ext.get("apparent_s", fault.get("severity", 0)),
+                    _as_int(fault.get("severity", 0), 0),
+                ),
+            )
+        )
+    return int(max(0, _as_int(fault.get("severity", 0), 0)))
+
+
 def _coordination_sort_key(
     *,
     candidate_row: Mapping[str, object],
@@ -351,8 +368,8 @@ def evaluate_protection_trip_plan(
                 fault_kind_id=str(fault_row.get("fault_kind_id", "")).strip(),
                 settings_row=settings_row,
             )
-            severity = int(max(0, _as_int(fault_row.get("severity", 0), 0)))
-            if severity < threshold:
+            trip_measure = _trip_measure_for_fault(fault_row=fault_row)
+            if trip_measure < threshold:
                 continue
             candidate_rows.append(
                 {

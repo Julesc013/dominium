@@ -109,10 +109,27 @@ def _validate_expand_payload(
     observed_anchor_hash: str = "",
 ) -> List[dict]:
     system_id = str(capsule_row.get("system_id", "")).strip()
+    anchor_expected = str(capsule_row.get("provenance_anchor_hash", "")).strip()
+    state_vector_serialized_state = _as_map(state_vector_row.get("serialized_internal_state"))
+    state_vector_anchor_observed = (
+        canonical_sha256(state_vector_serialized_state)
+        if state_vector_serialized_state
+        else ""
+    )
+    if state_vector_anchor_observed and anchor_expected != state_vector_anchor_observed:
+        raise SystemExpandError(
+            "provenance anchor hash mismatch for system expand",
+            reason_code=REFUSAL_SYSTEM_EXPAND_HASH_MISMATCH,
+            details={
+                "system_id": system_id,
+                "expected_anchor_hash": anchor_expected,
+                "observed_anchor_hash": state_vector_anchor_observed,
+                "anchor_source": "state_vector_row.serialized_internal_state",
+            },
+        )
     serialized_internal_state = _as_map(restored_state_payload)
     if not serialized_internal_state:
-        serialized_internal_state = _as_map(state_vector_row.get("serialized_internal_state"))
-    anchor_expected = str(capsule_row.get("provenance_anchor_hash", "")).strip()
+        serialized_internal_state = dict(state_vector_serialized_state)
     anchor_observed = str(observed_anchor_hash or "").strip() or canonical_sha256(serialized_internal_state)
     if anchor_expected != anchor_observed:
         raise SystemExpandError(
@@ -122,6 +139,7 @@ def _validate_expand_payload(
                 "system_id": system_id,
                 "expected_anchor_hash": anchor_expected,
                 "observed_anchor_hash": anchor_observed,
+                "anchor_source": "state_vector_snapshot",
             },
         )
 

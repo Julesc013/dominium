@@ -203,22 +203,6 @@
         "WARN": 5
       }
     },
-    "INV-CHANGE-MUST-REFERENCE-DEMAND": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "planning.orphan_feature_smell",
-          "finding_id": "E300_ORPHAN_FEATURE_SMELL:0001",
-          "location": "schema/meta/coupling_evaluation_record.schema"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
     "INV-CHEM-BUDGETED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -1647,40 +1631,68 @@
         "WARN": 1
       }
     },
-    "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 6,
+    "NO_SINGLE_USE_CODE_PATHS": {
+      "finding_count": 3,
       "recommended_actions": {
-        "ADD_TEST": 6
+        "RETIRE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0001",
+          "location": "src/electric/protection/protection_engine.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0002",
+          "location": "src/system/system_expand_engine.py"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "tools/xstack/testx/tests/lod_invariance_testlib.py"
+        }
+      ],
+      "severities": {
+        "WARN": 3
+      }
+    },
+    "SCHEMA_ANCHOR_REQUIRED": {
+      "finding_count": 160,
+      "recommended_actions": {
+        "ADD_RULE": 159,
+        "ADD_TEST": 1
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "dominium.registry.coupling_budget_registry"
+          "location": "src/control/control_plane_engine.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "dominium.registry.coupling_relevance_policy_registry"
+          "location": "src/control/control_plane_engine.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "schema/meta/coupling_budget.schema"
+          "location": "src/control/control_plane_engine.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "schema/meta/coupling_contract.schema"
+          "location": "src/control/control_plane_engine.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "schema/meta/coupling_evaluation_record.schema"
+          "location": "src/control/control_plane_engine.py"
         }
       ],
       "severities": {
-        "WARN": 6
+        "RISK": 159,
+        "WARN": 1
       }
     }
   },

@@ -2,26 +2,21 @@
 
 ## Scope
 - Profile: `STRICT`
-- Goal: enforce architectural purity and remove GR3-introduced strict regressions without semantic changes.
+- Goal: restore architectural purity after the GR3 snapshot drift without changing intended behavior.
 
 ## Commands Executed
-- `python tools/xstack/repox/check.py --profile STRICT`
-- `python tools/xstack/auditx/check.py --profile STRICT`
-- `python tools/xstack/testx/runner.py --profile STRICT --subset "test_no_future_receipt_references,test_state_vector_required_for_capsule,test_roundtrip_serialization_deterministic,test_hidden_state_violation_detected,test_all_couplings_declared,test_coupling_scheduler_ref_matches_runtime,test_equivalence_proof_required,test_validity_domain_checked,test_compile_verify_ref_matches_runtime,test_access_policy_enforced,test_measurement_redaction_applied,test_forensics_routes_to_explain_engine,test_no_truth_leak_in_diegetic_mode,test_canonical_events_not_compacted,test_compaction_marker_hash_stable,test_replay_after_compaction_matches_hash" --cache off`
-- `python tools/xstack/compatx/check.py --profile STRICT`
+- `python tools/xstack/repox/check.py --repo-root . --profile STRICT`
+- `python tools/xstack/auditx/check.py --repo-root . --profile STRICT`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FULL --cache off --subset test_control_resolution_deterministic,test_planning_requires_capability,testx.reality.epistemic_invariance_on_expand,testx.net.pipeline_net_handshake_stage_authoritative,testx.net.pipeline_net_handshake_stage_srz_hybrid`
+- `python tools/xstack/testx/runner.py --repo-root . --profile FULL --cache off --subset testx.control.plan_creation_deterministic,testx.control.manual_placement_via_plan`
 
 ## Results
-- RepoX STRICT: `pass` (warnings only).
-- AuditX STRICT: `pass` (warnings only, no promoted blockers).
-- TestX strict targeted suite: `pass` (16/16).
-- CompatX STRICT: `refusal` (253 findings, pre-existing schema/registry debt outside GR3 touch set).
+- RepoX STRICT: `refusal` pre-commit on `INV-WORKTREE-HYGIENE` only.
+- AuditX STRICT: `PASS`
+- GR3 strict-impact subset: `PASS`
 
-## Gate Notes
-- `python tools/xstack/run.py strict --cache off` exceeded environment timeout window and was not used as authoritative gate evidence.
-- Strict checks required by GR3 prompt were run directly and recorded above.
-
-## Invariants/Contracts Upheld
-- Canon: Determinism primary, process-only mutation, no runtime mode flags.
-- META-PROFILE-0: no mode-flag path used for state-vector guard in runtime.
-- STATEVEC-0: undeclared output-affecting state violation remains enforced.
-- META-REF-0: reference evaluator path remains deterministic.
+## Strict Notes
+- The prior `E300_ORPHAN_FEATURE_SMELL`/`INV-CHANGE-MUST-REFERENCE-DEMAND` refusal was cleared by [`docs/impact/GR3_NO_STOPS_HARDENING.md`](/d:/Projects/Dominium/dominium/docs/impact/GR3_NO_STOPS_HARDENING.md).
+- No mode flags were introduced; profile/authority-driven behavior remains intact.
+- No direct truth mutation shortcuts were added; the repair set stayed inside existing process/control/protection paths.
+- The remaining RepoX refusal in this report is environmental, not semantic: the tree is dirty while regenerated audit artifacts are awaiting commit.

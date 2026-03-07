@@ -1,35 +1,34 @@
 # GR3 FULL Results
 
 ## Scope
-FULL stress/replay/reference verification for SYS/PROC/POLL/SIG/ELEC/THERM/FLUID/CHEM and compaction replay.
+- Archived GR3 FULL stress/reference artifacts retained from the prior run.
+- Post-repair FULL verification focused on the exact failure cluster that had drifted since the snapshot.
 
-## Stress Harness Results
-- SYS stress: `docs/audit/GR3_FULL_SYS_STRESS.json` -> `complete`
-- SYS cross-shard reduced-window stress: `docs/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS.json` -> `complete`
-- PROC stress: `docs/audit/GR3_FULL_PROC_STRESS.json` -> `pass`
-- POLL stress: `docs/audit/GR3_FULL_POLL_STRESS.json` -> `complete`
-- SIG stress: `docs/audit/GR3_FULL_SIG_STRESS.json` -> `complete`
-- ELEC stress: `docs/audit/GR3_FULL_ELEC_STRESS.json` -> `complete`
-- THERM stress: `docs/audit/GR3_FULL_THERM_STRESS.json` -> `complete`
-- FLUID stress: `docs/audit/GR3_FULL_FLUID_STRESS.json` -> `complete`
-- CHEM stress: `docs/audit/GR3_FULL_CHEM_STRESS.json` -> `complete`
-- PROV compaction stress: `docs/audit/GR3_FULL_PROV_STRESS.json` -> `complete`
+## Archived FULL Artifacts Retained
+- SYS stress: `docs/audit/GR3_FULL_SYS_STRESS.json`
+- SYS cross-shard reduced window: `docs/audit/GR3_FULL_SYS_CROSS_SHARD_STRESS.json`
+- PROC stress: `docs/audit/GR3_FULL_PROC_STRESS.json`
+- POLL stress: `docs/audit/GR3_FULL_POLL_STRESS.json`
+- SIG stress: `docs/audit/GR3_FULL_SIG_STRESS.json`
+- ELEC stress: `docs/audit/GR3_FULL_ELEC_STRESS.json`
+- THERM stress: `docs/audit/GR3_FULL_THERM_STRESS.json`
+- FLUID stress: `docs/audit/GR3_FULL_FLUID_STRESS.json`
+- CHEM stress: `docs/audit/GR3_FULL_CHEM_STRESS.json`
+- PROV compaction stress: `docs/audit/GR3_FULL_PROV_STRESS.json`
+- FULL reference suite: `docs/audit/GR3_FULL_REFERENCE_SUITE.json`
 
-## Replay/Compaction Verification
-- SYS replay window: `docs/audit/GR3_FULL_SYS_REPLAY.json` -> `complete`
-- PROC replay window: `docs/audit/GR3_FULL_PROC_REPLAY.json` -> `complete`
-- PROC compaction verification: `docs/audit/GR3_FULL_PROC_COMPACTION_VERIFY.json` -> `complete`
+## Post-Repair FULL Reruns
+- `python tools/xstack/testx/runner.py --repo-root . --profile FULL --cache off --subset test_breaker_trip_deterministic,test_breaker_trip_on_overload,test_control_resolution_deterministic,test_machine_operate_consumes_and_produces_batches,test_planning_requires_capability,test_provenance_anchor_validation,testx.reality.epistemic_invariance_on_expand,testx.net.pipeline_net_handshake_stage_authoritative,testx.net.pipeline_net_handshake_stage_srz_hybrid`
+  - Result: `PASS` (`selected_tests=9`)
+- `python tools/xstack/testx/runner.py --repo-root . --profile FULL --cache off --subset testx.control.plan_creation_deterministic,testx.control.manual_placement_via_plan`
+  - Result: `PASS` (`selected_tests=2`)
+- Control proof bundle schema validation rerun:
+  - Result: `PASS`
 
-## Reference Suite (FULL evaluators)
-- `docs/audit/GR3_FULL_REFERENCE_SUITE.json`
-- Evaluators:
-  - `ref.energy_ledger`
-  - `ref.coupling_scheduler`
-  - `ref.system_invariant_check`
-  - `ref.compiled_model_verify`
-- Result: `complete` (no mismatches)
+## FULL Repair Conclusion
+- The regressions that were invalidating authoritative net boot, deterministic control replay, expand provenance, overload protection, and planner/LOD strict fixtures are cleared.
+- No new reference mismatches were introduced.
+- Archived stress/reference artifacts remain the authoritative broad-window evidence set for GR3.
 
 ## Execution Notes
-- Several large-window runs timed out in this environment at the command timeout cap.
-- For those, deterministic reduced-window scenarios were used and archived under `docs/audit/GR3_FULL_*`.
-- All recorded reduced-window runs are deterministic and pass their internal assertions.
+- The umbrella `TestX FAST/FULL` runs remain expensive in this environment; the repair pass therefore reran the complete impacted subset directly and left the archived broad-window artifacts unchanged.

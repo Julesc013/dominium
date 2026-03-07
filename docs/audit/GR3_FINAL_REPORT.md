@@ -1,49 +1,55 @@
 # GR3 Final Report
 
-## Summary of Changes
+## What Changed
 
-### Strict hardening fixes
-- Filled missing action-template registry entries and fingerprints required for strict action grammar enforcement.
-- Removed a strict false-positive token in runtime hash-chain projection (`field.get` pattern).
-- Broke a real import-cycle risk in `src/meta/__init__.py` via lazy reference evaluator exports.
-- Migrated hidden-state enforcement test fixture to canonical profile-binding path (no legacy debug toggle).
-- Updated worktree hygiene allowlist for in-flight GR3 artifacts.
+### Runtime correctness repairs
+- Fixed signal/switch state-machine helper shadowing in [`tools/xstack/sessionx/process_runtime.py`](/d:/Projects/Dominium/dominium/tools/xstack/sessionx/process_runtime.py), which was crashing affected process branches.
+- Made control decision-log artifact paths deterministic in [`src/control/control_plane_engine.py`](/d:/Projects/Dominium/dominium/src/control/control_plane_engine.py).
+- Restored provenance-anchor enforcement on expand in [`src/system/system_expand_engine.py`](/d:/Projects/Dominium/dominium/src/system/system_expand_engine.py).
+- Corrected overcurrent trip planning in [`src/electric/protection/protection_engine.py`](/d:/Projects/Dominium/dominium/src/electric/protection/protection_engine.py).
 
-### Full verification artifacts generated
-- Full stress/replay/reference artifacts under `docs/audit/GR3_FULL_*`.
-- Demand-gap report generated at `docs/audit/GR3_DEMAND_GAP_REPORT.md`.
-- Strict/full result summaries and scale metrics generated.
+### Contract/schema alignment
+- Extended [`schemas/control_proof_bundle.schema.json`](/d:/Projects/Dominium/dominium/schemas/control_proof_bundle.schema.json) to include the already-emitted PROC/POLL/COMPILE/drift hash chains.
+- Added demand coverage mapping in [`docs/impact/GR3_NO_STOPS_HARDENING.md`](/d:/Projects/Dominium/dominium/docs/impact/GR3_NO_STOPS_HARDENING.md).
+
+### Fixture alignment with stricter enforcement
+- Added deterministic planner capability bindings in [`tools/xstack/testx/tests/plan_testlib.py`](/d:/Projects/Dominium/dominium/tools/xstack/testx/tests/plan_testlib.py).
+- Added deterministic quantity-dimension bindings in [`tools/xstack/testx/tests/lod_invariance_testlib.py`](/d:/Projects/Dominium/dominium/tools/xstack/testx/tests/lod_invariance_testlib.py).
 
 ## Drift Prevented
-- Prevented runtime mode-flag regression in STATEVEC guard path.
-- Prevented circular import initialization drift between SYS and META-REF entry points.
-- Prevented strict schema/registry drift in action-template registry.
+- Prevented filesystem-state drift in control resolution output hashes.
+- Prevented valid control proof bundles from being rejected by stale schema coverage.
+- Prevented tampered state-vector payloads from passing expand.
+- Prevented overload faults from silently failing to trip breakers.
+- Prevented strict test fixtures from masking the real GR3 contracts with missing capability/dimension bindings.
 
-## Remaining Known Risks
-1. CompatX strict debt is large and pre-existing (`compatx --profile STRICT` refused with 253 findings).
-2. End-to-end `tools/xstack/run.py strict/full` exceeded environment timeout cap in this run context.
-3. Some large-window stress invocations timed out; reduced deterministic windows were used and passed.
+## Contract / Schema Impact
+- Contract semantics: unchanged except for bug fixes where prior behavior was wrong.
+- Schema impact: additive-only changes to `control_proof_bundle`; no migration path required and no version bump needed.
+- Invariants upheld: no mode flags, process-only mutation preserved, deterministic ordering preserved, observer/renderer/truth separation unchanged.
 
-## LOGIC-0 Readiness Checklist
-- Compute budgets in place: yes (META-COMPUTE contracts/tests present and active in strict checks).
-- Coupling budgets in place: yes (COUPLE scheduler/reference checks pass).
-- Compiled model framework ready: yes (reference verification passes).
-- State vector rule enforced: yes (hidden-state refusal test passes via profile path).
-- Instrumentation standard applied: yes (schema + access/redaction tests pass).
-- Profile overrides enforced: yes (runtime path uses profile resolution; no debug-mode branch introduced).
-- Demand coverage gate enforced: yes (matrix + demand gap report + related tests pass).
+## Validation Summary
+- AuditX FAST: `PASS`
+- AuditX STRICT: `PASS`
+- RepoX FAST/STRICT pre-commit: dirty-worktree refusal only
+- Targeted FULL repair subset: `PASS` (11/11)
+- Control proof bundle validation: `PASS`
+- Archived GR3 FULL stress/reference artifacts: retained and still referenced by the audit set
 
-## Final Gate Status (This Run)
-- RepoX STRICT: pass (warnings only)
-- AuditX STRICT: pass (warnings only)
-- TestX FULL: partial targeted pass (selected full-profile tests passed; full-suite completion not achieved in this run)
-- FULL stress: pass on archived reduced deterministic windows + existing full artifacts
-- Reference suite FULL evaluators: pass (no mismatches)
-- strict build: not completed in this run (xstack full/strict timeout)
+## Remaining Risks
+1. The umbrella `tools/xstack/testx/runner.py --profile FAST/FULL` and `tools/xstack/run.py strict/full` commands remain expensive in this environment and were not re-established as the repair authority in this pass.
+2. Broad-window FULL stress evidence is still the archived GR3 artifact set rather than a fresh rerun from this repair commit.
+3. RepoX requires a clean tree to clear `INV-WORKTREE-HYGIENE`; that verification is expected immediately after the repair commit.
 
-## GO/NO-GO
-NO-GO for unconditional LOGIC-0 cutover until the following are completed in CI or a longer-runner environment:
-1. Complete `tools/xstack/run.py full --cache off` without timeout.
-2. Close or formally waive CompatX strict baseline debt (253 findings).
+## LOGIC-0 Readiness
+- Compute budgets in place: yes
+- Coupling budgets in place: yes
+- Compiled model proof surface ready: yes
+- State vector rule enforced: yes
+- Instrumentation standard applied on the repaired paths: yes
+- Profile overrides enforced: yes
+- Demand coverage gate enforced for the repaired paths: yes
 
-Conditional GO for continued LOGIC-0 branch integration with current GR3 fixes and artifacts.
+## GO / NO-GO
+- GO for GR3 repair closure on the targeted failure cluster.
+- Conditional GO for final LOGIC-0 cutover remains dependent on clean-tree RepoX rerun and any broader CI/full-lane verification the project requires beyond this repair pass.

@@ -7380,7 +7380,7 @@ def _apply_safety_actions(
         for row in list(mobility_signals or [])
         if isinstance(row, Mapping) and str(row.get("signal_id", "")).strip()
     )
-    machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
+    signal_machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
     lock_rows_by_machine = switch_lock_rows_by_machine_id(mobility_switch_locks)
     effect_by_id = dict(
         (
@@ -7464,7 +7464,7 @@ def _apply_safety_actions(
                 machine_id = target_id
                 if target_id.startswith("signal."):
                     machine_id = str((dict(signal_rows_by_id.get(target_id) or {})).get("state_machine_id", "")).strip()
-                machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+                machine_row = dict(signal_machine_rows_by_id.get(machine_id) or {})
                 if (not machine_id) or (not machine_row) or (not target_state):
                     continue
                 transition_id = _select_transition_id_for_target_state(machine_row, target_state=target_state)
@@ -7479,7 +7479,7 @@ def _apply_safety_actions(
                     )
                 except StateMachineError:
                     continue
-                machine_rows_by_id[machine_id] = dict(transitioned.get("machine") or machine_row)
+                signal_machine_rows_by_id[machine_id] = dict(transitioned.get("machine") or machine_row)
                 applied_targets.append(machine_id)
             status = "applied" if applied_targets else "ignored"
         elif action_type == "apply_effect":
@@ -7563,7 +7563,9 @@ def _apply_safety_actions(
         )
 
     normalized_switch_locks = normalize_switch_lock_rows([dict(lock_rows_by_machine[key]) for key in sorted(lock_rows_by_machine.keys())])
-    normalized_signal_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+    normalized_signal_state_machines = [
+        dict(signal_machine_rows_by_id[key]) for key in sorted(signal_machine_rows_by_id.keys())
+    ]
     normalized_effect_rows = normalize_effect_rows([dict(effect_by_id[key]) for key in sorted(effect_by_id.keys())])
     normalized_signal_channel_rows = normalize_signal_channel_rows(
         [dict(signal_channel_rows_by_id[key]) for key in sorted(signal_channel_rows_by_id.keys())]
@@ -42779,8 +42781,8 @@ def execute_intent(
                 {"process_id": process_id},
                 "$.intent.inputs",
             )
-        machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
-        machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+        signal_machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
+        machine_row = dict(signal_machine_rows_by_id.get(machine_id) or {})
         if not machine_row:
             return refusal(
                 REFUSAL_MOBILITY_SIGNAL_INVALID,
@@ -42811,8 +42813,10 @@ def execute_intent(
                 "$.intent.inputs.target_aspect",
             )
         machine_next = dict(transitioned.get("machine") or {})
-        machine_rows_by_id[machine_id] = dict(machine_next)
-        mobility_signal_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+        signal_machine_rows_by_id[machine_id] = dict(machine_next)
+        mobility_signal_state_machines = [
+            dict(signal_machine_rows_by_id[key]) for key in sorted(signal_machine_rows_by_id.keys())
+        ]
         _persist_mobility_signal_state(
             state,
             mobility_signals=mobility_signals,
@@ -42983,7 +42987,7 @@ def execute_intent(
             current_tick=int(current_tick),
             max_signal_updates=int(max_signal_updates),
         )
-        machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
+        signal_machine_rows_by_id = signal_state_machine_rows_by_id(mobility_signal_state_machines)
         signal_rows_by_id = dict(
             (
                 str(row.get("signal_id", "")).strip(),
@@ -43001,7 +43005,7 @@ def execute_intent(
             if not signal_row:
                 continue
             machine_id = str(signal_row.get("state_machine_id", "")).strip()
-            machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+            machine_row = dict(signal_machine_rows_by_id.get(machine_id) or {})
             if not machine_row:
                 continue
             current_aspect = str(machine_row.get("state_id", "")).strip().lower()
@@ -43021,7 +43025,7 @@ def execute_intent(
             except (SignalEngineError, StateMachineError):
                 continue
             machine_next = dict(transitioned.get("machine") or {})
-            machine_rows_by_id[machine_id] = machine_next
+            signal_machine_rows_by_id[machine_id] = machine_next
             signal_event = {
                 "schema_version": "1.0.0",
                 "event_id": "event.mob.signal.tick.{}".format(
@@ -43049,7 +43053,9 @@ def execute_intent(
             }
             signal_event["deterministic_fingerprint"] = canonical_sha256(dict(signal_event, deterministic_fingerprint=""))
             signal_events.append(signal_event)
-        mobility_signal_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+        mobility_signal_state_machines = [
+            dict(signal_machine_rows_by_id[key]) for key in sorted(signal_machine_rows_by_id.keys())
+        ]
         active_block_rows = active_block_reservation_rows(
             mobility_block_reservations,
             current_tick=int(current_tick),
@@ -43390,7 +43396,7 @@ def execute_intent(
                 {"switch_node_id": str(inputs.get("switch_node_id", "")).strip()},
                 "$.intent.inputs",
             )
-        machine_rows_by_id = dict(
+        switch_machine_rows_by_id = dict(
             (
                 str(row.get("machine_id", "")).strip(),
                 dict(row),
@@ -43398,7 +43404,7 @@ def execute_intent(
             for row in list(mobility_switch_state_machines or [])
             if isinstance(row, Mapping) and str(row.get("machine_id", "")).strip()
         )
-        machine_row = dict(machine_rows_by_id.get(machine_id) or {})
+        machine_row = dict(switch_machine_rows_by_id.get(machine_id) or {})
         if not machine_row:
             return refusal(
                 REFUSAL_MOBILITY_SWITCH_INVALID,
@@ -43481,8 +43487,10 @@ def execute_intent(
             )
         machine_next = dict(transitioned.get("machine") or {})
         applied_transition = dict(transitioned.get("applied_transition") or {})
-        machine_rows_by_id[machine_id] = dict(machine_next)
-        mobility_switch_state_machines = [dict(machine_rows_by_id[key]) for key in sorted(machine_rows_by_id.keys())]
+        switch_machine_rows_by_id[machine_id] = dict(machine_next)
+        mobility_switch_state_machines = [
+            dict(switch_machine_rows_by_id[key]) for key in sorted(switch_machine_rows_by_id.keys())
+        ]
         _persist_mobility_network_state(
             state,
             mobility_network_bindings=mobility_network_bindings,

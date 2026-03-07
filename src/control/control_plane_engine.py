@@ -769,10 +769,13 @@ def _write_decision_log(repo_root: str, log_row: Mapping[str, object]) -> str:
         return str((dict(log_row or {})).get("decision_id", ""))
     tick = int(max(0, _to_int((dict(log_row or {})).get("tick", 0), 0)))
     decision_id = str((dict(log_row or {})).get("decision_id", "")).strip()
-    rel = os.path.join("run_meta", "control_decisions", "{}.json".format(int(tick)))
-    abs_path = os.path.join(repo, rel)
-    if os.path.isfile(abs_path):
-        rel = os.path.join("run_meta", "control_decisions", "{}.{}.json".format(int(tick), decision_id))
+    if not decision_id:
+        decision_id = canonical_sha256(dict(log_row or {}))[:24]
+    rel = os.path.join(
+        "run_meta",
+        "control_decisions",
+        "{}.{}.json".format(int(tick), decision_id),
+    )
     abs_path = os.path.join(repo, rel)
     parent = os.path.dirname(abs_path)
     if parent and not os.path.isdir(parent):
