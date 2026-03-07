@@ -341,6 +341,7 @@ from analyzers import e314_adhoc_wiring_smell
 from analyzers import e315_unvalidated_network_eval_smell
 from analyzers import e316_unmetered_logic_eval_smell
 from analyzers import e317_commit_phase_bypass_smell
+from analyzers import e318_implicit_timing_assumption_smell
 
 
 ANALYZERS = (
@@ -685,6 +686,7 @@ ANALYZERS = (
     e315_unvalidated_network_eval_smell,
     e316_unmetered_logic_eval_smell,
     e317_commit_phase_bypass_smell,
+    e318_implicit_timing_assumption_smell,
 )
 
 

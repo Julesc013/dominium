@@ -4237,6 +4237,169 @@ def _append_logic_eval_invariant_findings(
             break
 
 
+def _append_logic_timing_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    clock_rule_id = "INV-NO-GLOBAL-CLOCK"
+    delay_rule_id = "INV-DELAY-USES-TEMP"
+    explain_rule_id = "INV-OSCILLATION-EXPLAIN-AVAILABLE"
+
+    required_files = (
+        ("docs/logic/TIMING_AND_OSCILLATION_MODEL.md", clock_rule_id),
+        ("schema/logic/timing_constraint.schema", delay_rule_id),
+        ("schema/logic/oscillation_record.schema", explain_rule_id),
+        ("schema/logic/watchdog_definition.schema", explain_rule_id),
+        ("schema/logic/timing_violation_event.schema", explain_rule_id),
+        ("schema/logic/watchdog_timeout_event.schema", explain_rule_id),
+        ("data/registries/timing_pattern_registry.json", delay_rule_id),
+        ("src/logic/timing/oscillation_engine.py", explain_rule_id),
+        ("src/logic/timing/pattern_engine.py", explain_rule_id),
+        ("src/logic/timing/constraint_engine.py", delay_rule_id),
+        ("tools/logic/tool_replay_timing_window.py", explain_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-5 timing enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_rel = "docs/logic/TIMING_AND_OSCILLATION_MODEL.md"
+    doctrine_text = _file_text(repo_root, doctrine_rel).lower()
+    for token, rule_id, message in (
+        ("delay.temporal_domain", delay_rule_id, "timing doctrine must route temporal delay through TEMP mappings"),
+        ("delay.sig_delivery", delay_rule_id, "timing doctrine must describe SIG-delivery delay semantics"),
+        ("no global free-running clock", clock_rule_id, "timing doctrine must forbid a global free-running clock"),
+        ("watchdog", explain_rule_id, "timing doctrine must define watchdog timing patterns"),
+        ("explain.logic_oscillation", explain_rule_id, "timing doctrine must declare oscillation explain artifacts"),
+        ("explain.logic_timing_violation", explain_rule_id, "timing doctrine must declare timing violation explain artifacts"),
+        ("explain.watchdog_timeout", explain_rule_id, "timing doctrine must declare watchdog timeout explain artifacts"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=doctrine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    propagate_rel = "src/logic/eval/propagate_engine.py"
+    propagate_text = _file_text(repo_root, propagate_rel)
+    for token in ("evaluate_time_mappings(", "temporal_domain_registry_payload", "time_mapping_registry_payload"):
+        if token in propagate_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=propagate_rel,
+                line_number=1,
+                snippet=token,
+                message="logic delay resolution must route through TEMP-aware propagation helpers",
+                rule_id=delay_rule_id,
+            )
+        )
+
+    engine_rel = "src/logic/eval/logic_eval_engine.py"
+    engine_text = _file_text(repo_root, engine_rel)
+    for token, message, rule_id in (
+        ("detect_network_oscillation(", "logic evaluation must run deterministic oscillation detection", explain_rule_id),
+        ("evaluate_logic_timing_constraints(", "logic evaluation must enforce declared timing constraints", delay_rule_id),
+        ("requires_l2_timing", "timing violations must mark networks for L2 when policy allows", delay_rule_id),
+        ("explain.watchdog_timeout", "timing evaluation must emit watchdog timeout explain artifacts", explain_rule_id),
+    ):
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_text = _file_text(repo_root, explain_registry_rel)
+    for token in ("explain.logic_oscillation", "explain.logic_timing_violation", "explain.watchdog_timeout"):
+        if token in explain_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="timing explain contracts must be registered",
+                rule_id=explain_rule_id,
+            )
+        )
+
+    instr_registry_rel = "data/registries/instrumentation_surface_registry.json"
+    instr_text = _file_text(repo_root, instr_registry_rel)
+    for token in ("forensics.logic.oscillation", "forensics.logic.watchdog_timeout", "forensics.logic.network.timing_violation"):
+        if token in instr_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=instr_registry_rel,
+                line_number=1,
+                snippet=token,
+                message="timing explainability must remain bound to instrumentation/forensics surfaces",
+                rule_id=explain_rule_id,
+            )
+        )
+
+    forbidden_patterns = (
+        re.compile(r"\btime\.time\s*\("),
+        re.compile(r"\bdatetime\.(?:now|utcnow)\s*\("),
+        re.compile(r"\bperf_counter\s*\("),
+        re.compile(r"\bsleep\s*\("),
+        re.compile(r"\b(?:clock_hz|frequency_hz|tick_rate|period_ms|deadline_ms|real_time|wall_clock)\b", re.IGNORECASE),
+    )
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/logic/", "tools/logic/")):
+            continue
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+            continue
+        text = _file_text(repo_root, rel_norm)
+        for pattern in forbidden_patterns:
+            match = pattern.search(text)
+            if not match:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=1,
+                    snippet=match.group(0),
+                    message="logic timing/runtime paths must not depend on wall-clock or implicit global clock tokens",
+                    rule_id=clock_rule_id,
+                )
+            )
+            break
+
+
 def _derived_artifact_files(repo_root: str) -> List[str]:
     root = os.path.join(repo_root, "packs", "derived")
     rows: List[str] = []
@@ -25850,6 +26013,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_eval_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_timing_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
