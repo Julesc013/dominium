@@ -330,6 +330,9 @@ from analyzers import e303_missing_instrumentation_surface_smell
 from analyzers import e304_silent_override_smell
 from analyzers import e305_unmetered_loop_smell
 from analyzers import e306_silent_throttle_smell
+from analyzers import e307_electrical_bias_in_logic_smell
+from analyzers import e308_unmetered_logic_compute_smell
+from analyzers import e309_omniscient_logic_debug_smell
 
 
 ANALYZERS = (
@@ -663,6 +666,9 @@ ANALYZERS = (
     e304_silent_override_smell,
     e305_unmetered_loop_smell,
     e306_silent_throttle_smell,
+    e307_electrical_bias_in_logic_smell,
+    e308_unmetered_logic_compute_smell,
+    e309_omniscient_logic_debug_smell,
 )
 
 

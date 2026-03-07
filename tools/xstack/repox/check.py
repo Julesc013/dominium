@@ -3267,6 +3267,313 @@ def _append_compute_budget_invariant_findings(
         )
 
 
+def _append_logic_constitution_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    substrate_rule_id = "INV-LOGIC-SUBSTRATE-AGNOSTIC"
+    compute_rule_id = "INV-LOGIC-USES-COMPUTE-BUDGET"
+    instrumentation_rule_id = "INV-LOGIC-DEBUG-REQUIRES-INSTRUMENTATION"
+    profile_rule_id = "INV-LOGIC-RULE-BREAK-PROFILED"
+
+    constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
+    signal_schema_rel = "schema/logic/signal_type.schema"
+    logic_policy_schema_rel = "schema/logic/logic_policy.schema"
+    signal_registry_rel = "data/registries/signal_type_registry.json"
+    logic_policy_rel = "data/registries/logic_policy_registry.json"
+    compute_registry_rel = "data/registries/compute_budget_profile_registry.json"
+    instrument_registry_rel = "data/registries/instrument_type_registry.json"
+    profile_registry_rel = "data/registries/profile_registry.json"
+    exception_schema_rel = "schema/meta/exception_event.schema"
+
+    constitution_text = _file_text(repo_root, constitution_rel)
+    if not constitution_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=constitution_rel,
+                line_number=1,
+                snippet=constitution_rel,
+                message="LOGIC constitution document is required for constitutional enforcement",
+                rule_id=substrate_rule_id,
+            )
+        )
+    else:
+        constitution_lower = constitution_text.lower()
+        if not (
+            "does not assume any physical carrier" in constitution_lower
+            or "does not assume a physical carrier" in constitution_lower
+            or "does not assume electricity" in constitution_lower
+        ):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=constitution_rel,
+                    line_number=1,
+                    snippet="physical carrier",
+                    message="LOGIC constitution must state substrate-agnostic semantics",
+                    rule_id=substrate_rule_id,
+                )
+            )
+        if not ("constraints and costs" in constitution_lower and "logic semantics" in constitution_lower):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=constitution_rel,
+                    line_number=1,
+                    snippet="constraints and costs",
+                    message="LOGIC constitution must separate carrier costs from logic meaning",
+                    rule_id=substrate_rule_id,
+                )
+            )
+        for token, rule_id, message in (
+            ("instruction_units", compute_rule_id, "LOGIC constitution must declare instruction_units budgeting"),
+            ("memory_units", compute_rule_id, "LOGIC constitution must declare memory_units budgeting"),
+            ("instrumentation surfaces", instrumentation_rule_id, "LOGIC constitution must require instrumentation surfaces for debug visibility"),
+            ("profile-controlled", profile_rule_id, "LOGIC constitution must route rule breaks through profiles"),
+            ("exception-logged", profile_rule_id, "LOGIC constitution must require exception logging for rule breaks"),
+            ("proofable", profile_rule_id, "LOGIC constitution must require proofable rule-breaking"),
+        ):
+            if token in constitution_lower:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=constitution_rel,
+                    line_number=1,
+                    snippet=token,
+                    message=message,
+                    rule_id=rule_id,
+                )
+            )
+        if ("access policy" not in constitution_lower) and ("access policies" not in constitution_lower):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=constitution_rel,
+                    line_number=1,
+                    snippet="access policy",
+                    message="LOGIC constitution must require access policies for logic debugging",
+                    rule_id=instrumentation_rule_id,
+                )
+            )
+
+    for rel_path, rule_id in (
+        (signal_schema_rel, substrate_rule_id),
+        (logic_policy_schema_rel, substrate_rule_id),
+        (logic_policy_rel, compute_rule_id),
+        (compute_registry_rel, compute_rule_id),
+        (instrument_registry_rel, instrumentation_rule_id),
+        (profile_registry_rel, profile_rule_id),
+        (exception_schema_rel, profile_rule_id),
+    ):
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC constitutional enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    logic_bias_patterns = (
+        re.compile(r"\bvoltage\b", re.IGNORECASE),
+        re.compile(r"\bcurrent\b", re.IGNORECASE),
+        re.compile(r"\bohm(?:s)?\b", re.IGNORECASE),
+        re.compile(r"\bamp(?:ere)?s?\b", re.IGNORECASE),
+        re.compile(r"\bpower_factor\b", re.IGNORECASE),
+        re.compile(r"\breactive_power\b", re.IGNORECASE),
+        re.compile(r"\bpressure(?:_head)?\b", re.IGNORECASE),
+        re.compile(r"\bpascal(?:s)?\b", re.IGNORECASE),
+        re.compile(r"\bpsi\b", re.IGNORECASE),
+    )
+    for rel_path in (signal_schema_rel, logic_policy_schema_rel, signal_registry_rel):
+        for line_no, line in _iter_lines(repo_root, rel_path):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in logic_bias_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="logic semantics layer must remain substrate-agnostic and free of physical-unit bias",
+                    rule_id=substrate_rule_id,
+                )
+            )
+            break
+
+    logic_roots = ("src/logic/", "tools/logic/")
+    logic_execution_tokens = ("evaluate_logic", "logic_tick", "propagate_signal", "commit_logic", "compute_next")
+    truth_debug_pattern = re.compile(r"\b(truth_model|universe_state|render_model)\b", re.IGNORECASE)
+    override_pattern = re.compile(r"\b(?:ignore_loop|force_roi|allow_with_caps|allow_combinational_loops|override)\b", re.IGNORECASE)
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not any(rel_norm.startswith(prefix) for prefix in logic_roots):
+            continue
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+            continue
+        rel_lower = rel_norm.lower()
+        if "transducer" in rel_lower or "carrier" in rel_lower:
+            continue
+        text = _file_text(repo_root, rel_norm)
+        if not text:
+            continue
+        lower_text = text.lower()
+        if any(token in lower_text for token in logic_execution_tokens) and "request_compute(" not in text:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=1,
+                    snippet="request_compute(",
+                    message="logic evaluation paths must request META-COMPUTE units before execution",
+                    rule_id=compute_rule_id,
+                )
+            )
+        if truth_debug_pattern.search(text):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=1,
+                    snippet="truth_model|universe_state|render_model",
+                    message="logic debug/readout paths must not access omniscient truth or render symbols directly",
+                    rule_id=instrumentation_rule_id,
+                )
+            )
+        if override_pattern.search(text) and ("resolve_profile(" not in text or "exception_event" not in lower_text):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=1,
+                    snippet="override",
+                    message="logic rule-breaking must resolve through profile infrastructure and exception events",
+                    rule_id=profile_rule_id,
+                )
+            )
+
+    logic_policy_payload, logic_policy_err = _load_json_object(repo_root, logic_policy_rel)
+    logic_policy_rows = list((dict(logic_policy_payload.get("record") or {})).get("logic_policies") or logic_policy_payload.get("logic_policies") or [])
+    compute_payload, compute_err = _load_json_object(repo_root, compute_registry_rel)
+    compute_rows = list((dict(compute_payload.get("record") or {})).get("compute_budget_profiles") or compute_payload.get("compute_budget_profiles") or [])
+    known_compute_profiles = {
+        str(row.get("compute_profile_id", "")).strip()
+        for row in compute_rows
+        if isinstance(row, dict) and str(row.get("compute_profile_id", "")).strip()
+    }
+    logic_policies_by_id = {
+        str(row.get("policy_id", "")).strip(): dict(row)
+        for row in logic_policy_rows
+        if isinstance(row, dict) and str(row.get("policy_id", "")).strip()
+    }
+    for policy_id in ("logic.default", "logic.rank_strict", "logic.lab_experimental"):
+        row = dict(logic_policies_by_id.get(policy_id) or {})
+        if not row:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=logic_policy_rel,
+                    line_number=1,
+                    snippet=policy_id,
+                    message="required LOGIC policy declaration is missing",
+                    rule_id=compute_rule_id if policy_id != "logic.lab_experimental" else profile_rule_id,
+                )
+            )
+            continue
+        compute_profile_id = str(row.get("compute_profile_id", "")).strip()
+        if not compute_profile_id:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=logic_policy_rel,
+                    line_number=1,
+                    snippet=policy_id,
+                    message="logic policy rows must reference a compute profile",
+                    rule_id=compute_rule_id,
+                )
+            )
+        elif compute_err or compute_profile_id not in known_compute_profiles:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=logic_policy_rel,
+                    line_number=1,
+                    snippet="{} -> {}".format(policy_id, compute_profile_id),
+                    message="logic policy compute_profile_id must resolve to a registered META-COMPUTE profile",
+                    rule_id=compute_rule_id,
+                )
+            )
+
+    default_policy = dict(logic_policies_by_id.get("logic.default") or {})
+    strict_policy = dict(logic_policies_by_id.get("logic.rank_strict") or {})
+    lab_policy = dict(logic_policies_by_id.get("logic.lab_experimental") or {})
+    for policy_id, row in (("logic.default", default_policy), ("logic.rank_strict", strict_policy)):
+        if not row:
+            continue
+        if bool(row.get("allow_combinational_loops", False)):
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=logic_policy_rel,
+                    line_number=1,
+                    snippet=policy_id,
+                    message="baseline LOGIC policies must refuse combinational loops unless explicitly profiled for experiments",
+                    rule_id=profile_rule_id,
+                )
+            )
+    if lab_policy and not bool(lab_policy.get("allow_combinational_loops", False)):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=logic_policy_rel,
+                line_number=1,
+                snippet="logic.lab_experimental",
+                message="experimental LOGIC policy must declare explicit loop relaxation semantics",
+                rule_id=profile_rule_id,
+            )
+        )
+
+    profile_text = _file_text(repo_root, profile_registry_rel)
+    if "rule.compute.logic_limits" not in profile_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=profile_registry_rel,
+                line_number=1,
+                snippet="rule.compute.logic_limits",
+                message="logic rule-breaking pathway must remain profile-addressable through profile registry overrides",
+                rule_id=profile_rule_id,
+            )
+        )
+
+    instrument_text = _file_text(repo_root, instrument_registry_rel)
+    for instrument_id in ("instrument.logic_probe", "instrument.logic_analyzer"):
+        if instrument_id in instrument_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=instrument_registry_rel,
+                line_number=1,
+                snippet=instrument_id,
+                message="logic debugging must require declared logic instrumentation types",
+                rule_id=instrumentation_rule_id,
+            )
+        )
+
 def _derived_artifact_files(repo_root: str) -> List[str]:
     root = os.path.join(repo_root, "packs", "derived")
     rows: List[str] = []
@@ -24860,6 +25167,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_compute_budget_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_constitution_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
