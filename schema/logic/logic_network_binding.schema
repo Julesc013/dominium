@@ -1,0 +1,27 @@
+SCHEMA: logic/logic_network_binding.schema
+schema_id: dominium.schema.logic.logic_network_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Bind a LOGIC network identity to a canonical NetworkGraph instance and governing policy.
+- Establish the specialization seam from LOGIC topology into `core/network_graph.schema`.
+
+NON-SEMANTICS:
+- This schema does not evaluate a network.
+- It does not authorize loop bypass without policy and proof.
+- It does not replace the underlying NetworkGraph payload.
+
+REQUIRED SHAPE:
+record logic_network_binding
+  required:
+    - network_id: id
+    - graph_id: id
+    - policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `graph_id` must resolve to a canonical `NetworkGraph` row using `logic_node_payload` and `logic_edge_payload`.
+- `policy_id` must resolve to a declared logic network policy.
+- Validation status, shard metadata, and compiled proof references must be extension-driven and deterministic.
