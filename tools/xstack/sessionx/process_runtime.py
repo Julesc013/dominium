@@ -43615,6 +43615,12 @@ def execute_intent(
             compute_degrade_policy_registry,
             tolerance_policy_registry,
         ) = _load_logic_signal_budget_registries(policy_context=policy_context)
+        temporal_domain_registry, time_mapping_registry, drift_policy_registry, _sync_policy_registry = _load_temporal_registries(
+            policy_context=policy_context
+        )
+        model_type_registry, _model_cache_policy_registry, constitutive_model_registry = _load_model_registries(
+            policy_context=policy_context
+        )
         logic_policy_registry = _load_logic_policy_registry(policy_context=policy_context)
         (
             logic_element_rows,
@@ -43695,6 +43701,12 @@ def execute_intent(
             serialize_state=serialize_state,
             process_signal_set_fn=process_signal_set,
             process_signal_emit_pulse_fn=process_signal_emit_pulse,
+            temporal_domain_registry_payload=temporal_domain_registry,
+            time_mapping_registry_payload=time_mapping_registry,
+            drift_policy_registry_payload=drift_policy_registry,
+            model_type_registry_payload=model_type_registry,
+            constitutive_model_registry_payload=constitutive_model_registry,
+            session_scope_id=str((dict(policy_context or {})).get("session_id", "")).strip() or "session.default",
         )
         if updated.get("signal_store_state") is not None:
             state["logic_signal_store_state"] = dict(updated.get("signal_store_state") or {})

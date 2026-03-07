@@ -7,6 +7,9 @@ from typing import Dict, List, Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
+from src.models import constitutive_model_rows_by_id, model_type_rows_by_id
+from src.time import evaluate_time_mappings
+
 from .common import as_int, as_list, as_map, slot_key, token
 from .runtime_state import (
     build_logic_pending_signal_update_row,
@@ -16,16 +19,92 @@ from .runtime_state import (
 )
 
 
-def _resolve_delay_ticks(*, delay_policy_id: str, edge_payload: Mapping[str, object]) -> int:
+def _registry_rows(payload: Mapping[str, object] | None, key: str) -> list[dict]:
+    body = as_map(payload)
+    rows = body.get(key)
+    if not isinstance(rows, list):
+        rows = as_map(body.get("record")).get(key)
+    return [dict(item) for item in list(rows or []) if isinstance(item, Mapping)]
+
+
+def _select_time_mapping_rows(
+    *,
+    time_mapping_registry_payload: Mapping[str, object] | None,
+    mapping_id: str,
+    temporal_domain_id: str,
+) -> list[dict]:
+    mapping_rows = _registry_rows(time_mapping_registry_payload, "time_mappings")
+    if mapping_id:
+        selected = [dict(row) for row in mapping_rows if token(row.get("mapping_id")) == token(mapping_id)]
+        if selected:
+            return selected
+    if temporal_domain_id:
+        selected = [dict(row) for row in mapping_rows if token(row.get("to_domain_id")) == token(temporal_domain_id)]
+        if selected:
+            return selected
+    return [dict(mapping_rows[0])] if mapping_rows else []
+
+
+def _resolve_delay_resolution(
+    *,
+    current_tick: int,
+    network_id: str,
+    delay_policy_id: str,
+    edge_payload: Mapping[str, object],
+    temporal_domain_registry_payload: Mapping[str, object] | None = None,
+    time_mapping_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
+    model_type_registry_payload: Mapping[str, object] | None = None,
+    constitutive_model_registry_payload: Mapping[str, object] | None = None,
+    session_scope_id: str = "session.default",
+) -> dict:
     policy_id = token(delay_policy_id)
     extensions = as_map(edge_payload.get("extensions"))
     if policy_id == "delay.fixed_ticks":
-        return int(max(1, as_int(extensions.get("fixed_ticks", extensions.get("delay_ticks", 1)), 1)))
+        delay_ticks = int(max(1, as_int(extensions.get("fixed_ticks", extensions.get("delay_ticks", 1)), 1)))
+        return {"deliver_delay_ticks": delay_ticks, "resolution_trace": {"delay_policy_id": policy_id}}
     if policy_id == "delay.temporal_domain":
-        return int(max(1, as_int(extensions.get("temporal_delay_ticks", extensions.get("delay_ticks", 1)), 1)))
+        delay_ticks = int(max(1, as_int(extensions.get("temporal_delay_ticks", extensions.get("delay_ticks", 1)), 1)))
+        temporal_domain_id = token(extensions.get("temporal_domain_id")) or "time.civil"
+        mapping_id = token(extensions.get("time_mapping_id"))
+        temp_report = {}
+        selected_mappings = _select_time_mapping_rows(
+            time_mapping_registry_payload=time_mapping_registry_payload,
+            mapping_id=mapping_id,
+            temporal_domain_id=temporal_domain_id,
+        )
+        if temporal_domain_registry_payload and constitutive_model_registry_payload and selected_mappings:
+            temp_report = evaluate_time_mappings(
+                current_tick=int(max(0, as_int(current_tick, 0))),
+                time_mapping_rows=selected_mappings,
+                temporal_domain_rows=_registry_rows(temporal_domain_registry_payload, "temporal_domains"),
+                model_rows=list(constitutive_model_rows_by_id(constitutive_model_registry_payload).values()),
+                model_type_rows=model_type_rows_by_id(model_type_registry_payload),
+                drift_policy_rows=_registry_rows(drift_policy_registry_payload, "drift_policies"),
+                scope_rows_by_selector={
+                    "global": ["global"],
+                    "per_session": [token(session_scope_id) or "session.default"],
+                    "per_assembly": [token(network_id) or "logic.network"],
+                    "per_spatial": [],
+                },
+                session_id=token(session_scope_id) or "session.default",
+                max_cost_units=int(max(1, as_int(extensions.get("time_mapping_cost_units", 2), 2))),
+            )
+        return {
+            "deliver_delay_ticks": delay_ticks,
+            "resolution_trace": {
+                "delay_policy_id": policy_id,
+                "temporal_domain_id": temporal_domain_id,
+                "time_mapping_id": token(selected_mappings[0].get("mapping_id")) if selected_mappings else None,
+                "temp_fingerprint": token(temp_report.get("deterministic_fingerprint")),
+                "time_mapping_hash_chain": token(temp_report.get("time_mapping_hash_chain")),
+                "temp_cost_units": int(max(0, as_int(temp_report.get("cost_units", 0), 0))),
+            },
+        }
     if policy_id == "delay.sig_delivery":
-        return int(max(1, as_int(extensions.get("sig_delivery_ticks", extensions.get("delay_ticks", 1)), 1)))
-    return 1
+        delay_ticks = int(max(1, as_int(extensions.get("sig_delivery_ticks", extensions.get("delay_ticks", 1)), 1)))
+        return {"deliver_delay_ticks": delay_ticks, "resolution_trace": {"delay_policy_id": policy_id}}
+    return {"deliver_delay_ticks": 1, "resolution_trace": {"delay_policy_id": "delay.none"}}
 
 
 def _node_payload_by_id(graph_row: Mapping[str, object]) -> Dict[str, dict]:
@@ -44,16 +123,24 @@ def _edge_rows_from_node(graph_row: Mapping[str, object]) -> Dict[str, list[dict
 
 def _route_output_targets(
     *,
+    current_tick: int,
+    network_id: str,
     graph_row: Mapping[str, object],
     from_node_id: str,
+    temporal_domain_registry_payload: Mapping[str, object] | None = None,
+    time_mapping_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
+    model_type_registry_payload: Mapping[str, object] | None = None,
+    constitutive_model_registry_payload: Mapping[str, object] | None = None,
+    session_scope_id: str = "session.default",
 ) -> list[dict]:
     node_payloads = _node_payload_by_id(graph_row)
     outgoing_edges = _edge_rows_from_node(graph_row)
-    queue = deque([(token(from_node_id), [], 0)])
+    queue = deque([(token(from_node_id), [], 0, [])])
     visited: set[tuple[str, tuple[str, ...]]] = set()
     deliveries: List[dict] = []
     while queue:
-        node_id, edge_path, delay_accumulated = queue.popleft()
+        node_id, edge_path, delay_accumulated, delay_trace = queue.popleft()
         visit_key = (node_id, tuple(token(row.get("edge_id")) for row in edge_path))
         if visit_key in visited:
             continue
@@ -61,11 +148,21 @@ def _route_output_targets(
         for edge in outgoing_edges.get(node_id, []):
             payload = as_map(edge.get("payload"))
             next_node_id = token(edge.get("to_node_id"))
-            next_delay = delay_accumulated + _resolve_delay_ticks(
+            resolution = _resolve_delay_resolution(
+                current_tick=current_tick,
+                network_id=network_id,
                 delay_policy_id=token(payload.get("delay_policy_id")) or "delay.none",
                 edge_payload=payload,
+                temporal_domain_registry_payload=temporal_domain_registry_payload,
+                time_mapping_registry_payload=time_mapping_registry_payload,
+                drift_policy_registry_payload=drift_policy_registry_payload,
+                model_type_registry_payload=model_type_registry_payload,
+                constitutive_model_registry_payload=constitutive_model_registry_payload,
+                session_scope_id=session_scope_id,
             )
+            next_delay = delay_accumulated + int(max(1, as_int(resolution.get("deliver_delay_ticks", 1), 1)))
             next_path = list(edge_path) + [dict(edge)]
+            next_delay_trace = list(delay_trace) + [dict(as_map(resolution.get("resolution_trace")))]
             next_payload = as_map(node_payloads.get(next_node_id))
             node_kind = token(next_payload.get("node_kind"))
             if node_kind == "port_in":
@@ -81,11 +178,12 @@ def _route_output_targets(
                         "signal_type_id": token(payload.get("signal_type_id")),
                         "bus_id": token(as_map(payload.get("extensions")).get("bus_id")) or None,
                         "protocol_id": token(payload.get("protocol_id")) or None,
+                        "delay_trace": next_delay_trace,
                     }
                 )
                 continue
             if node_kind in {"junction", "bus_junction", "protocol_endpoint"}:
-                queue.append((next_node_id, next_path, next_delay))
+                queue.append((next_node_id, next_path, next_delay, next_delay_trace))
     return deliveries
 
 
@@ -98,6 +196,12 @@ def schedule_logic_output_propagation(
     sense_snapshot: Mapping[str, object],
     pending_signal_update_rows: object,
     propagation_trace_rows: object,
+    temporal_domain_registry_payload: Mapping[str, object] | None = None,
+    time_mapping_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
+    model_type_registry_payload: Mapping[str, object] | None = None,
+    constitutive_model_registry_payload: Mapping[str, object] | None = None,
+    session_scope_id: str = "session.default",
 ) -> dict:
     snapshot = as_map(sense_snapshot)
     element_nodes = {
@@ -118,7 +222,18 @@ def schedule_logic_output_propagation(
             from_node_id = token(source_node.get("node_id"))
             if not from_node_id:
                 continue
-            deliveries = _route_output_targets(graph_row=graph_row, from_node_id=from_node_id)
+            deliveries = _route_output_targets(
+                current_tick=current_tick,
+                network_id=network_id,
+                graph_row=graph_row,
+                from_node_id=from_node_id,
+                temporal_domain_registry_payload=temporal_domain_registry_payload,
+                time_mapping_registry_payload=time_mapping_registry_payload,
+                drift_policy_registry_payload=drift_policy_registry_payload,
+                model_type_registry_payload=model_type_registry_payload,
+                constitutive_model_registry_payload=constitutive_model_registry_payload,
+                session_scope_id=session_scope_id,
+            )
             signal_payload = as_map(output_payload)
             value_payload = as_map(signal_payload.get("value_payload"))
             signal_type_id = token(signal_payload.get("signal_type_id")) or "signal.boolean"
@@ -157,6 +272,7 @@ def schedule_logic_output_propagation(
                         extensions={
                             "edge_ids": [token(edge.get("edge_id")) for edge in as_list(delivery.get("edge_path"))],
                             "deliver_delay_ticks": int(as_int(delivery.get("deliver_delay_ticks"), 1)),
+                            "delay_resolution_trace": [dict(row) for row in as_list(delivery.get("delay_trace")) if isinstance(row, Mapping)],
                             "scheduled_by": "LOGIC4-6",
                         },
                     )
@@ -177,6 +293,7 @@ def schedule_logic_output_propagation(
                             "source_slot_key": source_slot,
                             "deliver_tick": deliver_tick,
                             "signal_type_id": token(delivery.get("signal_type_id")) or signal_type_id,
+                            "delay_resolution_trace": [dict(row) for row in as_list(delivery.get("delay_trace")) if isinstance(row, Mapping)],
                         },
                     )
                 )

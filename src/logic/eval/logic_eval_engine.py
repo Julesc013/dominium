@@ -29,7 +29,11 @@ from .runtime_state import (
     normalize_logic_throttle_event_rows,
 )
 from .sense_engine import build_logic_sense_snapshot
-from src.logic.timing import detect_network_oscillation, evaluate_logic_timing_constraints
+from src.logic.timing import (
+    detect_network_oscillation,
+    evaluate_logic_timing_constraints,
+    request_logic_timing_compute,
+)
 
 
 PROCESS_LOGIC_NETWORK_EVALUATE = "process.logic_network_evaluate"
@@ -188,6 +192,12 @@ def process_logic_network_evaluate(
     serialize_state,
     process_signal_set_fn,
     process_signal_emit_pulse_fn,
+    temporal_domain_registry_payload: Mapping[str, object] | None = None,
+    time_mapping_registry_payload: Mapping[str, object] | None = None,
+    drift_policy_registry_payload: Mapping[str, object] | None = None,
+    model_type_registry_payload: Mapping[str, object] | None = None,
+    constitutive_model_registry_payload: Mapping[str, object] | None = None,
+    session_scope_id: str = "session.default",
 ) -> dict:
     tick = int(max(0, as_int(current_tick, 0)))
     request = as_map(evaluation_request)
@@ -403,12 +413,19 @@ def process_logic_network_evaluate(
         sense_snapshot=sense_snapshot,
         pending_signal_update_rows=eval_state.get("logic_pending_signal_update_rows"),
         propagation_trace_rows=eval_state.get("logic_propagation_trace_artifact_rows"),
+        temporal_domain_registry_payload=temporal_domain_registry_payload,
+        time_mapping_registry_payload=time_mapping_registry_payload,
+        drift_policy_registry_payload=drift_policy_registry_payload,
+        model_type_registry_payload=model_type_registry_payload,
+        constitutive_model_registry_payload=constitutive_model_registry_payload,
+        session_scope_id=session_scope_id,
     )
 
     throttle_event_rows = list(eval_state.get("logic_throttle_event_rows") or [])
     oscillation_record_rows = list(eval_state.get("logic_oscillation_record_rows") or [])
     timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
     explain_rows = []
+    timing_compute_units_used = 0
     for event in as_list(compute_result.get("throttle_events")):
         if not isinstance(event, Mapping):
             continue
@@ -437,41 +454,101 @@ def process_logic_network_evaluate(
                 )
             )
 
-    oscillation_result = detect_network_oscillation(
+    timing_compute_request = request_logic_timing_compute(
         current_tick=tick,
         network_id=network_id,
-        graph_row=graph_row,
-        signal_store_state=updated_signal_store_state,
-        pending_signal_update_rows=propagation_result.get("logic_pending_signal_update_rows"),
-        state_vector_snapshot_rows=commit_result.get("state_vector_snapshot_rows") or state_vector_snapshot_rows,
-        runtime_row=prior_runtime,
-        logic_policy_row=logic_policy_row,
+        phase="analysis",
+        instruction_units=int(max(1, as_int(as_map(logic_policy_row.get("extensions")).get("timing_analysis_compute_units", 4), 4))),
+        compute_runtime_state=compute_result.get("compute_runtime_state"),
+        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+        compute_budget_profile_id=token(logic_policy_row.get("compute_profile_id")) or "compute.default",
     )
-    for row in as_list(oscillation_result.get("oscillation_record_rows")):
-        if not isinstance(row, Mapping):
-            continue
-        record = build_logic_oscillation_record_row(
-            tick=as_int(row.get("tick"), tick),
-            network_id=token(row.get("network_id")) or network_id,
-            period_ticks=as_int(row.get("period_ticks"), 1),
-            stable=bool(row.get("stable", False)),
+    timing_analysis_allowed = token(timing_compute_request.get("result")) not in {"deferred", "refused", "shutdown"}
+    timing_compute_units_used = int(max(0, as_int(timing_compute_request.get("approved_instruction_units", 0), 0)))
+    timing_compute_state = as_map(timing_compute_request.get("runtime_state"))
+    compute_result = dict(
+        compute_result,
+        compute_runtime_state=timing_compute_state,
+        compute_units_used=int(max(0, as_int(compute_result.get("compute_units_used"), 0)) + int(timing_compute_units_used)),
+        network_throttled=bool(compute_result.get("network_throttled", False) or (not timing_analysis_allowed)),
+    )
+    if token(timing_compute_request.get("result")) in {"deferred", "refused", "shutdown"}:
+        throttle_row = build_logic_throttle_event_row(
+            tick=tick,
+            network_id=network_id,
+            reason="budget_exceeded",
             deterministic_fingerprint="",
-            extensions=as_map(row.get("extensions")),
+            extensions={
+                "phase": "timing.analysis",
+                "reason_code": token(timing_compute_request.get("reason_code")) or "refusal.compute.budget_exceeded",
+            },
         )
-        if record:
-            oscillation_record_rows.append(record)
-    explain_rows.extend(
-        [dict(row) for row in as_list(oscillation_result.get("explain_artifact_rows")) if isinstance(row, Mapping)]
-    )
+        if throttle_row:
+            throttle_event_rows.append(throttle_row)
+            explain_rows.append(
+                build_explain_artifact(
+                    explain_id="explain.logic_compute_throttle.{}".format(
+                        canonical_sha256({"event_id": throttle_row.get("event_id"), "phase": "timing.analysis"})[:16]
+                    ),
+                    event_id=token(throttle_row.get("event_id")),
+                    target_id=network_id,
+                    cause_chain=["cause.logic.compute_budget"],
+                    remediation_hints=["raise compute profile budget or reduce timing-analysis load"],
+                    extensions={
+                        "event_kind_id": "explain.logic_compute_throttle",
+                        "throttle_event_id": token(throttle_row.get("event_id")),
+                    },
+                )
+            )
 
-    timing_enforcement = evaluate_logic_timing_constraints(
-        current_tick=tick,
-        network_id=network_id,
-        binding_row=binding_row,
-        logic_policy_row=logic_policy_row,
-        propagation_result=propagation_result,
-        oscillation_classification=as_map(oscillation_result.get("classification")),
-    )
+    oscillation_result = {"runtime_extensions": {}, "classification": {}, "oscillation_record_rows": [], "explain_artifact_rows": []}
+    timing_enforcement = {"runtime_extensions": {}, "timing_violation_events": [], "explain_artifact_rows": []}
+    if timing_analysis_allowed:
+        oscillation_result = detect_network_oscillation(
+            current_tick=tick,
+            network_id=network_id,
+            graph_row=graph_row,
+            signal_store_state=updated_signal_store_state,
+            pending_signal_update_rows=propagation_result.get("logic_pending_signal_update_rows"),
+            state_vector_snapshot_rows=commit_result.get("state_vector_snapshot_rows") or state_vector_snapshot_rows,
+            runtime_row=prior_runtime,
+            logic_policy_row=logic_policy_row,
+        )
+        for row in as_list(oscillation_result.get("oscillation_record_rows")):
+            if not isinstance(row, Mapping):
+                continue
+            record = build_logic_oscillation_record_row(
+                tick=as_int(row.get("tick"), tick),
+                network_id=token(row.get("network_id")) or network_id,
+                period_ticks=as_int(row.get("period_ticks"), 1),
+                stable=bool(row.get("stable", False)),
+                deterministic_fingerprint="",
+                extensions=as_map(row.get("extensions")),
+            )
+            if record:
+                oscillation_record_rows.append(record)
+        explain_rows.extend(
+            [dict(row) for row in as_list(oscillation_result.get("explain_artifact_rows")) if isinstance(row, Mapping)]
+        )
+
+        timing_enforcement = evaluate_logic_timing_constraints(
+            current_tick=tick,
+            network_id=network_id,
+            binding_row=binding_row,
+            logic_policy_row=logic_policy_row,
+            propagation_result=propagation_result,
+            oscillation_classification=as_map(oscillation_result.get("classification")),
+        )
+    else:
+        timing_enforcement = {
+            "runtime_extensions": {
+                "timing_status": "analysis_deferred",
+                "timing_analysis_deferred": True,
+            },
+            "timing_violation_events": [],
+            "explain_artifact_rows": [],
+        }
     for event in as_list(timing_enforcement.get("timing_violation_events")):
         if not isinstance(event, Mapping):
             continue
@@ -552,6 +629,7 @@ def process_logic_network_evaluate(
                 "scheduled_outputs": int(propagation_result.get("scheduled_count", 0)),
                 "delivered_inputs": int(flush_result.get("delivered_count", 0)),
                 "timing_violation_count": int(len(timing_violation_event_rows)),
+                "timing_compute_units_used": int(timing_compute_units_used),
                 "max_propagation_delay_ticks": int(propagation_result.get("max_propagation_delay_ticks", 0)),
             },
         )
