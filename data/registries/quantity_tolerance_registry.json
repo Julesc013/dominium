@@ -260,6 +260,71 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.compute.instruction_units",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "b99786ba275b9e6bf298f43b71381cf476039be789a6fce5915877afa81f0b93",
+        "extensions": {
+          "source": "LOGIC2-FINAL"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.compute.memory_units",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "8b1a72b175676ac5efab7c190084b91167bca1c86cacd194d112c15e38865fa5",
+        "extensions": {
+          "source": "LOGIC2-FINAL"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.logic.signal_state",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "e2bbda0469de4feaea63e4be74c5a78e88b0719d7ba8a5b7f2234e83fd012a85",
+        "extensions": {
+          "source": "LOGIC2-FINAL"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.logic.bus_capture",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "93548cdd3c7f9a4d96917a20b285b7d2711e37dd4521b6b4aaabf93c4386388a",
+        "extensions": {
+          "source": "LOGIC2-FINAL"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.logic.state_vector_capture",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "3c6d7ebf3a24d4d2bdb6dca37285f947a7459bd7a2e17932ff3b85c2a8a64884",
+        "extensions": {
+          "source": "LOGIC2-FINAL"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.radiation_dose",
         "base_resolution": 1,
         "tolerance_abs": 1,
