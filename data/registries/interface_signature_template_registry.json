@@ -220,6 +220,41 @@
         "required_spec_type_ids": ["spec.vehicle_interface"],
         "deterministic_fingerprint": "",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "interface_signature_template_id": "interface.logic_controller_basic",
+        "description": "Baseline compiled logic controller interface template for SYS macro capsules.",
+        "port_descriptors": [
+          {
+            "port_id": "port.signal_in",
+            "port_type_id": "port.signal_in",
+            "direction": "in",
+            "allowed_bundle_ids": ["bundle.signal_logic"],
+            "spec_limit_refs": ["spec.logic_interface"]
+          },
+          {
+            "port_id": "port.signal_out",
+            "port_type_id": "port.signal_out",
+            "direction": "out",
+            "allowed_bundle_ids": ["bundle.signal_logic"],
+            "spec_limit_refs": ["spec.logic_interface"]
+          }
+        ],
+        "signal_descriptors": [
+          {
+            "channel_type_id": "channel.wired_basic",
+            "capacity": 2048,
+            "delay": 1,
+            "access_policy_id": "ctrl.policy.player.diegetic"
+          }
+        ],
+        "required_spec_type_ids": ["spec.logic_interface"],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC6-6",
+          "supports_compiled_logic_capsules": true
+        }
       }
     ],
     "extensions": {

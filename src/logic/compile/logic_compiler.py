@@ -16,7 +16,11 @@ from src.meta.compile import (
 )
 from src.meta.compute import request_compute
 from src.meta.explain import build_explain_artifact
-from src.system import build_system_macro_capsule_row
+from src.system import (
+    build_interface_signature_row,
+    build_system_macro_capsule_row,
+    normalize_system_rows,
+)
 from src.system.macro import build_forced_expand_event_row
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -1416,6 +1420,12 @@ def build_logic_controller_macro_capsule(
     provenance_anchor_hash: str,
 ) -> dict:
     model_row = dict(rows_by_id(compiled_model_rows, "compiled_model_id").get(token(compiled_model_id)) or {})
+    restore_ref = {
+        "network_id": token(network_id),
+        "compiled_model_id": token(compiled_model_id),
+        "source_hash": token(model_row.get("source_hash")),
+        "compiled_type_id": token(model_row.get("compiled_type_id")),
+    }
     return build_system_macro_capsule_row(
         capsule_id="capsule.logic_controller.{}".format(
             canonical_sha256({"system_id": token(system_id), "network_id": token(network_id), "compiled_model_id": token(compiled_model_id)})[:16]
@@ -1423,21 +1433,190 @@ def build_logic_controller_macro_capsule(
         system_id=token(system_id),
         interface_signature_id=token(interface_signature_id),
         macro_model_set_id="macro.logic_controller.compiled",
-        model_error_bounds_ref=token(model_row.get("validity_domain_ref")),
+        model_error_bounds_ref="tol.strict",
         macro_model_bindings=[
             {
                 "binding_id": "binding.logic_controller.compiled",
                 "compiled_model_id": token(compiled_model_id),
                 "source_network_id": token(network_id),
-                "extensions": {"compiled_type_id": token(model_row.get("compiled_type_id"))},
+                "extensions": {
+                    "compiled_type_id": token(model_row.get("compiled_type_id")),
+                    "source_hash": token(model_row.get("source_hash")),
+                },
             }
         ],
-        internal_state_vector={"network_id": token(network_id), "compiled_model_id": token(compiled_model_id)},
+        internal_state_vector={
+            "network_id": token(network_id),
+            "compiled_model_id": token(compiled_model_id),
+            "compiled_type_id": token(model_row.get("compiled_type_id")),
+            "source_hash": token(model_row.get("source_hash")),
+            "validity_domain_ref": token(model_row.get("validity_domain_ref")),
+        },
         provenance_anchor_hash=token(provenance_anchor_hash),
         tier_mode="macro",
         deterministic_fingerprint="",
-        extensions={"template_id": "template.logic_controller", "network_id": token(network_id), "compiled_model_id": token(compiled_model_id)},
+        extensions={
+            "template_id": "template.logic_controller",
+            "network_id": token(network_id),
+            "compiled_model_id": token(compiled_model_id),
+            "restore_ref": restore_ref,
+            "validity_domain_ref": token(model_row.get("validity_domain_ref")),
+            "forced_expand_triggers": [
+                "logic.compiled_invalid",
+                "logic.timing_anomaly",
+                "inspection_request",
+            ],
+            "debug_expand_policy": "instrumented_only",
+        },
     )
+
+
+def build_logic_controller_interface_signature_row(
+    *,
+    system_id: str,
+    compiled_model_id: str,
+    compiled_model_rows: object,
+    interface_signature_id: str = "",
+) -> dict:
+    model_row = dict(rows_by_id(compiled_model_rows, "compiled_model_id").get(token(compiled_model_id)) or {})
+    if not model_row:
+        return {}
+    payload = as_map(as_map(model_row.get("compiled_payload_ref")).get("payload"))
+    input_slots = [
+        dict(row)
+        for row in sorted(
+            (dict(item) for item in as_list(payload.get("input_slots")) if isinstance(item, Mapping)),
+            key=lambda item: token(item.get("slot_id")),
+        )
+    ]
+    output_slots = [
+        dict(row)
+        for row in sorted(
+            (dict(item) for item in as_list(payload.get("output_slots")) if isinstance(item, Mapping)),
+            key=lambda item: token(item.get("slot_id")),
+        )
+    ]
+    if not token(interface_signature_id):
+        interface_signature_id = "iface.logic_controller.{}".format(
+            canonical_sha256({"system_id": token(system_id), "compiled_model_id": token(compiled_model_id)})[:16]
+        )
+    port_list = []
+    for slot in input_slots:
+        port_list.append(
+            {
+                "port_id": token(slot.get("slot_id")),
+                "port_type_id": "port.signal_in",
+                "direction": "in",
+                "allowed_bundle_ids": ["bundle.signal_logic"],
+                "spec_limit_refs": ["spec.logic_interface"],
+            }
+        )
+    for slot in output_slots:
+        port_list.append(
+            {
+                "port_id": token(slot.get("slot_id")),
+                "port_type_id": "port.signal_out",
+                "direction": "out",
+                "allowed_bundle_ids": ["bundle.signal_logic"],
+                "spec_limit_refs": ["spec.logic_interface"],
+            }
+        )
+    return build_interface_signature_row(
+        system_id=token(system_id),
+        interface_signature_id=token(interface_signature_id),
+        port_list=port_list,
+        signal_channels=[
+            {
+                "channel_id": "sig.logic_controller.{}".format(canonical_sha256({"system_id": token(system_id)})[:12]),
+                "direction": "bidir",
+            }
+        ],
+        spec_limits={
+            "max_compiled_input_slots": int(len(input_slots)),
+            "max_compiled_output_slots": int(len(output_slots)),
+        },
+        deterministic_fingerprint="",
+        extensions={
+            "template_id": "template.logic_controller",
+            "compiled_model_id": token(compiled_model_id),
+            "compiled_type_id": token(model_row.get("compiled_type_id")),
+            "source_hash": token(model_row.get("source_hash")),
+        },
+    )
+
+
+def build_logic_controller_system_bundle(
+    *,
+    system_id: str,
+    network_id: str,
+    compiled_model_id: str,
+    compiled_model_rows: object,
+    provenance_anchor_hash: str,
+    tier_contract_id: str = "tier.logic.default",
+) -> dict:
+    model_row = dict(rows_by_id(compiled_model_rows, "compiled_model_id").get(token(compiled_model_id)) or {})
+    if not model_row:
+        return {}
+    interface_row = build_logic_controller_interface_signature_row(
+        system_id=token(system_id),
+        compiled_model_id=token(compiled_model_id),
+        compiled_model_rows=compiled_model_rows,
+    )
+    if not interface_row:
+        return {}
+    capsule_row = build_logic_controller_macro_capsule(
+        system_id=token(system_id),
+        network_id=token(network_id),
+        interface_signature_id=token(interface_row.get("interface_signature_id")),
+        compiled_model_id=token(compiled_model_id),
+        compiled_model_rows=compiled_model_rows,
+        provenance_anchor_hash=token(provenance_anchor_hash),
+    )
+    system_rows = normalize_system_rows(
+        [
+            {
+                "schema_version": "1.0.0",
+                "system_id": token(system_id),
+                "root_assembly_id": "assembly.logic_controller.{}".format(
+                    canonical_sha256({"system_id": token(system_id)})[:12]
+                ),
+                "assembly_ids": [
+                    "assembly.logic_controller.{}".format(
+                        canonical_sha256({"system_id": token(system_id)})[:12]
+                    )
+                ],
+                "interface_signature_id": token(interface_row.get("interface_signature_id")),
+                "boundary_invariant_ids": [],
+                "tier_contract_id": token(tier_contract_id) or "tier.logic.default",
+                "current_tier": "macro",
+                "active_capsule_id": token(capsule_row.get("capsule_id")),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    "template_id": "template.logic_controller",
+                    "network_id": token(network_id),
+                    "compiled_model_id": token(compiled_model_id),
+                    "compiled_type_id": token(model_row.get("compiled_type_id")),
+                    "compiled_source_hash": token(model_row.get("source_hash")),
+                    "macro_model_set_id": "macro.logic_controller.compiled",
+                    "restore_ref": {
+                        "network_id": token(network_id),
+                        "compiled_model_id": token(compiled_model_id),
+                        "source_hash": token(model_row.get("source_hash")),
+                    },
+                },
+            }
+        ]
+    )
+    return {
+        "system_row": dict(system_rows[0]) if system_rows else {},
+        "interface_signature_row": dict(interface_row),
+        "macro_capsule_row": dict(capsule_row),
+        "restore_ref": {
+            "network_id": token(network_id),
+            "compiled_model_id": token(compiled_model_id),
+            "source_hash": token(model_row.get("source_hash")),
+        },
+    }
 
 
 def build_logic_compiled_forced_expand_event(
@@ -1497,6 +1676,8 @@ __all__ = [
     "validate_logic_compiled_model",
     "execute_logic_compiled_model",
     "build_logic_controller_macro_capsule",
+    "build_logic_controller_interface_signature_row",
+    "build_logic_controller_system_bundle",
     "build_logic_compiled_forced_expand_event",
     "build_logic_compiled_invalid_explain_artifact",
 ]

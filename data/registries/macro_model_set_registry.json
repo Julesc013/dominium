@@ -226,6 +226,24 @@
         "extensions": {
           "source": "SYS4-5"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "macro_model_set_id": "macro.logic_controller.compiled",
+        "model_bindings": [],
+        "validity_conditions": {
+          "required_tier_mode": "macro",
+          "requires_interface_template_ids": [
+            "interface.logic_controller_basic"
+          ]
+        },
+        "error_bound_policy_id": "tol.strict",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC6-6",
+          "compiled_model_required": true,
+          "expand_restores_logic_network": true
+        }
       }
     ],
     "extensions": {

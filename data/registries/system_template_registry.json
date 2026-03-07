@@ -4,7 +4,49 @@
   "record": {
     "registry_id": "dominium.registry.system_template_registry",
     "registry_version": "1.0.0",
-    "system_templates": [],
+    "system_templates": [
+      {
+        "schema_version": "1.0.0",
+        "template_id": "template.logic_controller",
+        "version": "1.0.0",
+        "description": "Compiled logic controller template for SYS macro capsule execution of validated LOGIC networks.",
+        "required_domains": [
+          "dom.domain.signals.basic"
+        ],
+        "assembly_graph_spec_ref": "assembly_graph.logic_controller.compiled_stub",
+        "interface_signature_template_id": "interface.logic_controller_basic",
+        "boundary_invariant_template_ids": [],
+        "macro_model_set_id": "macro.logic_controller.compiled",
+        "tier_contract_id": "tier.logic.default",
+        "safety_pattern_instance_templates": [],
+        "spec_bindings": [
+          {
+            "spec_type_id": "spec.logic_interface",
+            "binding_id": "binding.template.logic_controller.spec.logic_interface",
+            "target": "system",
+            "extensions": {
+              "source": "LOGIC6-6"
+            }
+          }
+        ],
+        "nested_template_refs": [],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC6-6",
+          "assembly_graph_spec": {
+            "node_ids": [
+              "assembly.logic.controller.root"
+            ]
+          },
+          "compiled_model_required": true,
+          "forced_expand_triggers": [
+            "logic.compiled_invalid",
+            "logic.timing_anomaly",
+            "inspection_request"
+          ]
+        }
+      }
+    ],
     "extensions": {
       "source": "SYS4-2",
       "null_boot_safe": true,
