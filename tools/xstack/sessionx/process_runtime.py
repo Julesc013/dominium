@@ -481,6 +481,11 @@ from src.signals import (
     process_signal_send,
     tick_signal_transport,
 )
+from src.logic.signal import (
+    normalize_signal_store_state,
+    process_signal_emit_pulse,
+    process_signal_set,
+)
 from src.safety import (
     REFUSAL_SAFETY_INSTANCE_INVALID,
     REFUSAL_SAFETY_PATTERN_INVALID,
@@ -805,6 +810,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.switch_set_state": "entitlement.control.admin",
     "process.switch_lock": "entitlement.control.admin",
     "process.switch_unlock": "entitlement.control.admin",
+    "process.signal_set": "entitlement.control.admin",
+    "process.signal_emit_pulse": "entitlement.control.admin",
     "process.signal_set_aspect": "entitlement.control.admin",
     "process.signal_tick": "session.boot",
     "process.signal_jam_start": "entitlement.control.admin",
@@ -1007,6 +1014,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.switch_set_state": "operator",
     "process.switch_lock": "operator",
     "process.switch_unlock": "operator",
+    "process.signal_set": "operator",
+    "process.signal_emit_pulse": "operator",
     "process.signal_set_aspect": "operator",
     "process.signal_tick": "observer",
     "process.signal_jam_start": "operator",
@@ -1155,6 +1164,8 @@ CONTROL_PROCESS_IDS = {
     "process.switch_set_state",
     "process.switch_lock",
     "process.switch_unlock",
+    "process.signal_set",
+    "process.signal_emit_pulse",
     "process.signal_set_aspect",
     "process.signal_tick",
     "process.signal_jam_start",
@@ -4910,6 +4921,51 @@ def _load_signal_registries(*, policy_context: dict | None) -> Tuple[dict, dict]
             default_payload={"record": {"signal_rule_policies": []}},
         )
     return dict(signal_type_registry), dict(signal_rule_policy_registry)
+
+
+def _load_logic_signal_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict, dict, dict]:
+    carrier_type_registry = dict(_policy_payload(policy_context, "carrier_type_registry") or {})
+    if not carrier_type_registry:
+        carrier_type_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/carrier_type_registry.json",
+            default_payload={"record": {"carrier_types": []}},
+        )
+    bus_encoding_registry = dict(_policy_payload(policy_context, "bus_encoding_registry") or {})
+    if not bus_encoding_registry:
+        bus_encoding_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/bus_encoding_registry.json",
+            default_payload={"record": {"bus_encodings": []}},
+        )
+    protocol_registry = dict(_policy_payload(policy_context, "protocol_registry") or {})
+    if not protocol_registry:
+        protocol_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/protocol_registry.json",
+            default_payload={"record": {"protocols": []}},
+        )
+    signal_noise_policy_registry = dict(_policy_payload(policy_context, "signal_noise_policy_registry") or {})
+    if not signal_noise_policy_registry:
+        signal_noise_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/signal_noise_policy_registry.json",
+            default_payload={"record": {"signal_noise_policies": []}},
+        )
+    signal_delay_policy_registry = dict(_policy_payload(policy_context, "signal_delay_policy_registry") or {})
+    if not signal_delay_policy_registry:
+        signal_delay_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/signal_delay_policy_registry.json",
+            default_payload={"record": {"signal_delay_policies": []}},
+        )
+    return (
+        dict(carrier_type_registry),
+        dict(bus_encoding_registry),
+        dict(protocol_registry),
+        dict(signal_noise_policy_registry),
+        dict(signal_delay_policy_registry),
+    )
 
 
 def _load_vehicle_class_registry(*, policy_context: dict | None) -> dict:
@@ -42753,6 +42809,138 @@ def execute_intent(
         result_metadata = {
             "channel_id": channel_id,
             "stopped_effect_ids": _sorted_tokens(jammed.get("stopped_effect_ids")),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_set":
+        signal_type_registry, _signal_rule_policy_registry = _load_signal_registries(policy_context=policy_context)
+        (
+            carrier_type_registry,
+            bus_encoding_registry,
+            protocol_registry,
+            signal_noise_policy_registry,
+            signal_delay_policy_registry,
+        ) = _load_logic_signal_registries(policy_context=policy_context)
+        signal_store_state = normalize_signal_store_state(
+            state.get("logic_signal_store_state")
+            or {
+                "signal_rows": state.get("logic_signal_rows"),
+                "bus_definition_rows": state.get("logic_bus_definition_rows"),
+                "protocol_definition_rows": state.get("logic_protocol_definition_rows"),
+                "signal_change_record_rows": state.get("logic_signal_change_records"),
+                "signal_trace_artifact_rows": state.get("logic_signal_trace_artifacts"),
+            }
+        )
+        signal_update = dict(inputs.get("signal_update") or inputs.get("signal_request") or {})
+        if not signal_update:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.signal_set requires signal_update",
+                "Provide a LOGIC signal_update payload for the target network/element/port slot.",
+                {"process_id": process_id},
+                "$.intent.inputs.signal_update",
+            )
+        updated = process_signal_set(
+            current_tick=int(current_tick),
+            signal_store_state=signal_store_state,
+            signal_request=signal_update,
+            signal_type_registry_payload=signal_type_registry,
+            carrier_type_registry_payload=carrier_type_registry,
+            signal_delay_policy_registry_payload=signal_delay_policy_registry,
+            signal_noise_policy_registry_payload=signal_noise_policy_registry,
+            bus_encoding_registry_payload=bus_encoding_registry,
+            protocol_registry_payload=protocol_registry,
+        )
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.signal_set refused signal update",
+                "Provide registered signal/carrier/delay/noise definitions and a valid slot binding.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.signal_update",
+            )
+        state["logic_signal_store_state"] = dict(updated.get("signal_store_state") or {})
+        state["logic_signal_rows"] = [dict(row) for row in list(updated.get("signal_rows") or []) if isinstance(row, Mapping)]
+        state["logic_bus_definition_rows"] = [
+            dict(row) for row in list(updated.get("bus_definition_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_protocol_definition_rows"] = [
+            dict(row) for row in list(updated.get("protocol_definition_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_signal_change_records"] = [
+            dict(row) for row in list(updated.get("signal_change_record_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_signal_trace_artifacts"] = [
+            dict(row) for row in list(updated.get("signal_trace_artifact_rows") or []) if isinstance(row, Mapping)
+        ]
+        result_metadata = {
+            "signal_id": str(dict(updated.get("signal_row") or {}).get("signal_id", "")).strip(),
+            "signal_type_id": str(signal_update.get("signal_type_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.signal_emit_pulse":
+        signal_type_registry, _signal_rule_policy_registry = _load_signal_registries(policy_context=policy_context)
+        (
+            carrier_type_registry,
+            bus_encoding_registry,
+            protocol_registry,
+            signal_noise_policy_registry,
+            signal_delay_policy_registry,
+        ) = _load_logic_signal_registries(policy_context=policy_context)
+        signal_store_state = normalize_signal_store_state(
+            state.get("logic_signal_store_state")
+            or {
+                "signal_rows": state.get("logic_signal_rows"),
+                "bus_definition_rows": state.get("logic_bus_definition_rows"),
+                "protocol_definition_rows": state.get("logic_protocol_definition_rows"),
+                "signal_change_record_rows": state.get("logic_signal_change_records"),
+                "signal_trace_artifact_rows": state.get("logic_signal_trace_artifacts"),
+            }
+        )
+        pulse_request = dict(inputs.get("pulse_request") or {})
+        if not pulse_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.signal_emit_pulse requires pulse_request",
+                "Provide a pulse_request payload for the target network/element/port slot.",
+                {"process_id": process_id},
+                "$.intent.inputs.pulse_request",
+            )
+        updated = process_signal_emit_pulse(
+            current_tick=int(current_tick),
+            signal_store_state=signal_store_state,
+            pulse_request=pulse_request,
+            signal_type_registry_payload=signal_type_registry,
+            carrier_type_registry_payload=carrier_type_registry,
+            signal_delay_policy_registry_payload=signal_delay_policy_registry,
+            signal_noise_policy_registry_payload=signal_noise_policy_registry,
+            bus_encoding_registry_payload=bus_encoding_registry,
+            protocol_registry_payload=protocol_registry,
+        )
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.signal_emit_pulse refused pulse update",
+                "Provide registered signal/carrier/delay/noise definitions and a valid pulse payload.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.pulse_request",
+            )
+        state["logic_signal_store_state"] = dict(updated.get("signal_store_state") or {})
+        state["logic_signal_rows"] = [dict(row) for row in list(updated.get("signal_rows") or []) if isinstance(row, Mapping)]
+        state["logic_bus_definition_rows"] = [
+            dict(row) for row in list(updated.get("bus_definition_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_protocol_definition_rows"] = [
+            dict(row) for row in list(updated.get("protocol_definition_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_signal_change_records"] = [
+            dict(row) for row in list(updated.get("signal_change_record_rows") or []) if isinstance(row, Mapping)
+        ]
+        state["logic_signal_trace_artifacts"] = [
+            dict(row) for row in list(updated.get("signal_trace_artifact_rows") or []) if isinstance(row, Mapping)
+        ]
+        result_metadata = {
+            "signal_id": str(dict(updated.get("signal_row") or {}).get("signal_id", "")).strip(),
+            "edge_count": len(list(dict(dict(updated.get("signal_row") or {}).get("value_ref") or {}).get("edges") or [])),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.signal_set_aspect":

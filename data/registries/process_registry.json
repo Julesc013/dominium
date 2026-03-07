@@ -5719,6 +5719,120 @@
       "required_law_checks": [],
       "rng_streams_used": [],
       "version_introduced": 1
+    },
+    {
+      "affected_fields": [
+        "logic.signal_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-1 signal value update process with deterministic slot ordering.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation"
+      ],
+      "failure_modes": [
+        "refusal.logic.signal_invalid",
+        "refusal.logic.signal_type_unregistered",
+        "refusal.logic.carrier_type_unregistered",
+        "refusal.logic.signal_delay_policy_unregistered",
+        "refusal.logic.signal_noise_policy_unregistered",
+        "refusal.logic.bus_definition_invalid",
+        "refusal.logic.protocol_definition_invalid"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "signal_store_state",
+          "ref_id": "dominium.state.logic.signal_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "signal_update",
+          "ref_id": "dominium.schema.logic.signal@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "signal_rows",
+          "ref_id": "dominium.schema.logic.signal@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "signal_change_records",
+          "ref_id": "dominium.state.logic.signal_change_record_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.signal_set",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/signal/signal_store.py::process_signal_set"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.signal_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-1 pulse emission process that records bounded edge lists.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation"
+      ],
+      "failure_modes": [
+        "refusal.logic.signal_invalid",
+        "refusal.logic.signal_type_unregistered",
+        "refusal.logic.carrier_type_unregistered",
+        "refusal.logic.signal_delay_policy_unregistered",
+        "refusal.logic.signal_noise_policy_unregistered",
+        "refusal.logic.bus_definition_invalid",
+        "refusal.logic.protocol_definition_invalid"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "signal_store_state",
+          "ref_id": "dominium.state.logic.signal_store",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "pulse_request",
+          "ref_id": "dominium.schema.logic.signal_value.pulse@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "signal_rows",
+          "ref_id": "dominium.schema.logic.signal@1.0.0",
+          "ref_type": "schema"
+        },
+        {
+          "io_tags": [],
+          "name": "signal_trace_artifacts",
+          "ref_id": "dominium.state.logic.signal_trace_artifact_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.signal_emit_pulse",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/signal/signal_store.py::process_signal_emit_pulse"
+      }
     }
   ],
   "schema_id": "dominium.schema.process_registry",
