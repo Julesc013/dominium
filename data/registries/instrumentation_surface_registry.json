@@ -448,6 +448,72 @@
         "extensions": {
           "source": "META-INSTR0-3"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "owner_kind": "domain",
+        "owner_id": "domain.logic",
+        "control_points": [
+          {
+            "control_point_id": "control.logic.probe.attach",
+            "action_template_id": "action.interaction.execute_process",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.logic_probe_attach"
+            ],
+            "deterministic_fingerprint": ""
+          },
+          {
+            "control_point_id": "control.logic.probe.detach",
+            "action_template_id": "action.formalize.revert",
+            "required_access_policy_id": "access.role_required",
+            "safety_interlock_refs": [
+              "safety.logic_probe_attach"
+            ],
+            "deterministic_fingerprint": ""
+          }
+        ],
+        "measurement_points": [
+          {
+            "measurement_point_id": "measure.logic.signal",
+            "quantity_id": "quantity.logic.signal_state",
+            "instrument_type_id": "instrument.logic_probe",
+            "measurement_model_id": "meas.default_quantized",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "measurement_point_id": "measure.logic.bus",
+            "quantity_id": "quantity.logic.bus_capture",
+            "instrument_type_id": "instrument.logic_analyzer",
+            "measurement_model_id": "meas.lab_high_precision",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.admin_only"
+            }
+          }
+        ],
+        "forensics_points": [
+          {
+            "forensics_point_id": "forensics.logic.trace",
+            "explain_contract_id": "explain.logic_timing_violation",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC1-6"
+        }
       }
     ],
     "extensions": {

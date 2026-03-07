@@ -398,6 +398,8 @@ def _signal_change_row(signal_id: str, slot_key: str, tick: int, prior_hash: str
 
 
 def _signal_trace_row(signal_id: str, tick: int, process_id: str, signal_hash: str, trace_kind: str, extensions: Mapping[str, object] | None = None) -> dict:
+    ext = _as_map(extensions)
+    ext["trace_compactable"] = True
     payload = {
         "schema_version": "1.0.0",
         "artifact_id": "artifact.logic.signal_trace.{}".format(canonical_sha256({"signal_id": signal_id, "tick": tick, "trace_kind": trace_kind, "process_id": process_id})[:16]),
@@ -406,7 +408,7 @@ def _signal_trace_row(signal_id: str, tick: int, process_id: str, signal_hash: s
         "trace_kind": _token(trace_kind),
         "source_process_id": _token(process_id),
         "signal_hash": _token(signal_hash),
-        "extensions": _canon(_as_map(extensions)),
+        "extensions": _canon(ext),
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
     return payload

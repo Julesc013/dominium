@@ -9,6 +9,11 @@ from src.logic.signal.carrier_adapters import (
     sig_receipt_to_message_value_payload,
     sig_receipt_to_signal_request,
 )
+from src.logic.signal.observation import (
+    authorize_logic_probe_control,
+    observe_signal_row,
+    observe_signal_store_slot,
+)
 from src.logic.signal.signal_store import (
     PROCESS_SIGNAL_EMIT_PULSE,
     PROCESS_SIGNAL_SET,
@@ -46,6 +51,7 @@ __all__ = [
     "REFUSAL_SIGNAL_TYPE_UNREGISTERED",
     "adapt_signal_row_to_transducer_write",
     "adapt_transducer_measurement_to_signal_request",
+    "authorize_logic_probe_control",
     "build_transducer_binding_row",
     "build_bus_definition_row",
     "build_protocol_definition_row",
@@ -58,6 +64,8 @@ __all__ = [
     "normalize_protocol_definition_rows",
     "normalize_signal_rows",
     "normalize_signal_store_state",
+    "observe_signal_row",
+    "observe_signal_store_slot",
     "process_signal_emit_pulse",
     "process_signal_set",
     "sig_receipt_to_message_value_payload",
