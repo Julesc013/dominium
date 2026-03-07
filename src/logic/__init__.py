@@ -1,5 +1,15 @@
 """LOGIC domain package exports."""
 
+from src.logic.element import (
+    REFUSAL_LOGIC_INVALID_ELEMENT_DEFINITION,
+    build_logic_behavior_model_row,
+    build_logic_element_definition_row,
+    build_state_machine_definition_row,
+    normalize_logic_behavior_model_rows,
+    normalize_logic_element_definition_rows,
+    normalize_state_machine_definition_rows,
+    validate_logic_element_definitions,
+)
 from src.logic.signal import (
     PROCESS_SIGNAL_EMIT_PULSE,
     PROCESS_SIGNAL_SET,
@@ -31,6 +41,7 @@ from src.logic.signal import (
 )
 
 __all__ = [
+    "REFUSAL_LOGIC_INVALID_ELEMENT_DEFINITION",
     "PROCESS_SIGNAL_EMIT_PULSE",
     "PROCESS_SIGNAL_SET",
     "REFUSAL_BUS_DEFINITION_INVALID",
@@ -44,11 +55,17 @@ __all__ = [
     "adapt_signal_row_to_transducer_write",
     "adapt_transducer_measurement_to_signal_request",
     "authorize_logic_probe_control",
+    "build_logic_behavior_model_row",
+    "build_logic_element_definition_row",
+    "build_state_machine_definition_row",
     "build_transducer_binding_row",
     "canonical_signal_hash",
     "canonical_signal_serialization",
     "canonical_signal_snapshot",
     "deterministic_signal_id",
+    "normalize_logic_behavior_model_rows",
+    "normalize_logic_element_definition_rows",
+    "normalize_state_machine_definition_rows",
     "normalize_transducer_binding_rows",
     "normalize_signal_store_state",
     "observe_signal_row",
@@ -58,4 +75,5 @@ __all__ = [
     "signal_coupling_change_token",
     "sig_receipt_to_message_value_payload",
     "sig_receipt_to_signal_request",
+    "validate_logic_element_definitions",
 ]
