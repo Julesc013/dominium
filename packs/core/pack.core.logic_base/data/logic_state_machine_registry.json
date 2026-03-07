@@ -1,0 +1,253 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.logic_base.state_machines",
+  "registry_version": "1.0.0",
+  "state_machine_definitions": [
+    {
+      "schema_version": "1.0.0",
+      "sm_id": "logic_sm.counter_small",
+      "states": [
+        {
+          "state_id": "counting",
+          "description": "Deterministic bounded count accumulation."
+        }
+      ],
+      "transition_rules": [
+        {
+          "rule_id": "counter.reset",
+          "from_state_id": "counting",
+          "to_state_id": "counting",
+          "guard_expression": "in.reset == 1",
+          "state_assignments": [
+            "count = 0"
+          ]
+        },
+        {
+          "rule_id": "counter.increment",
+          "from_state_id": "counting",
+          "to_state_id": "counting",
+          "guard_expression": "pulse(in.increment)",
+          "state_assignments": [
+            "count = min(count + 1, 15)"
+          ]
+        }
+      ],
+      "output_rules": [
+        {
+          "rule_id": "counter.output",
+          "port_id": "out.value",
+          "expression": "normalize(count,0,15)"
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "sm_id": "logic_sm.flip_flop",
+      "states": [
+        {
+          "state_id": "q0",
+          "description": "Stored output is low."
+        },
+        {
+          "state_id": "q1",
+          "description": "Stored output is high."
+        }
+      ],
+      "transition_rules": [
+        {
+          "rule_id": "flip_flop.capture_zero",
+          "from_state_id": "q1",
+          "to_state_id": "q0",
+          "guard_expression": "pulse(in.clock) and in.data == 0",
+          "state_assignments": [
+            "q = 0",
+            "clock_seen = 1"
+          ]
+        },
+        {
+          "rule_id": "flip_flop.capture_one",
+          "from_state_id": "q0",
+          "to_state_id": "q1",
+          "guard_expression": "pulse(in.clock) and in.data == 1",
+          "state_assignments": [
+            "q = 1",
+            "clock_seen = 1"
+          ]
+        },
+        {
+          "rule_id": "flip_flop.recapture_zero",
+          "from_state_id": "q0",
+          "to_state_id": "q0",
+          "guard_expression": "pulse(in.clock) and in.data == 0",
+          "state_assignments": [
+            "q = 0",
+            "clock_seen = 1"
+          ]
+        },
+        {
+          "rule_id": "flip_flop.recapture_one",
+          "from_state_id": "q1",
+          "to_state_id": "q1",
+          "guard_expression": "pulse(in.clock) and in.data == 1",
+          "state_assignments": [
+            "q = 1",
+            "clock_seen = 1"
+          ]
+        }
+      ],
+      "output_rules": [
+        {
+          "rule_id": "flip_flop.output",
+          "port_id": "out.q",
+          "expression": "q"
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "sm_id": "logic_sm.relay",
+      "states": [
+        {
+          "state_id": "latched_off",
+          "description": "Relay output is low."
+        },
+        {
+          "state_id": "latched_on",
+          "description": "Relay output is high."
+        }
+      ],
+      "transition_rules": [
+        {
+          "rule_id": "relay.set",
+          "from_state_id": "latched_off",
+          "to_state_id": "latched_on",
+          "guard_expression": "in.coil == 1",
+          "state_assignments": [
+            "latched_output = 1"
+          ]
+        },
+        {
+          "rule_id": "relay.hold_on",
+          "from_state_id": "latched_on",
+          "to_state_id": "latched_on",
+          "guard_expression": "in.coil == 1 and in.reset == 0",
+          "state_assignments": [
+            "latched_output = 1"
+          ]
+        },
+        {
+          "rule_id": "relay.reset_from_on",
+          "from_state_id": "latched_on",
+          "to_state_id": "latched_off",
+          "guard_expression": "in.reset == 1",
+          "state_assignments": [
+            "latched_output = 0"
+          ]
+        },
+        {
+          "rule_id": "relay.reset_from_off",
+          "from_state_id": "latched_off",
+          "to_state_id": "latched_off",
+          "guard_expression": "in.reset == 1",
+          "state_assignments": [
+            "latched_output = 0"
+          ]
+        }
+      ],
+      "output_rules": [
+        {
+          "rule_id": "relay.output",
+          "port_id": "out.q",
+          "expression": "latched_output"
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "sm_id": "logic_sm.timer_delay",
+      "states": [
+        {
+          "state_id": "idle",
+          "description": "Timer is disarmed."
+        },
+        {
+          "state_id": "armed",
+          "description": "Timer is counting deterministic delay ticks."
+        },
+        {
+          "state_id": "elapsed",
+          "description": "Timer delay elapsed; output asserted until reset."
+        }
+      ],
+      "transition_rules": [
+        {
+          "rule_id": "timer.arm",
+          "from_state_id": "idle",
+          "to_state_id": "armed",
+          "guard_expression": "pulse(in.start)",
+          "state_assignments": [
+            "armed = 1",
+            "elapsed_ticks = 0",
+            "output_state = 0"
+          ]
+        },
+        {
+          "rule_id": "timer.reset",
+          "from_state_id": "elapsed",
+          "to_state_id": "idle",
+          "guard_expression": "in.reset == 1",
+          "state_assignments": [
+            "armed = 0",
+            "elapsed_ticks = 0",
+            "output_state = 0"
+          ]
+        },
+        {
+          "rule_id": "timer.complete",
+          "from_state_id": "armed",
+          "to_state_id": "elapsed",
+          "guard_expression": "elapsed_ticks >= delay.fixed_ticks",
+          "state_assignments": [
+            "armed = 0",
+            "output_state = 1"
+          ]
+        },
+        {
+          "rule_id": "timer.tick",
+          "from_state_id": "armed",
+          "to_state_id": "armed",
+          "guard_expression": "elapsed_ticks < delay.fixed_ticks",
+          "state_assignments": [
+            "elapsed_ticks = elapsed_ticks + 1"
+          ]
+        }
+      ],
+      "output_rules": [
+        {
+          "rule_id": "timer.output",
+          "port_id": "out.elapsed",
+          "expression": "output_state"
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    }
+  ],
+  "extensions": {
+    "source": "LOGIC2-3"
+  }
+}

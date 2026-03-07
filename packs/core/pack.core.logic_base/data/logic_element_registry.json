@@ -1,0 +1,177 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.logic_base.elements",
+  "registry_version": "1.0.0",
+  "logic_elements": [
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.and",
+      "description": "Two-input boolean conjunction element.",
+      "interface_signature_id": "iface.logic.and",
+      "state_vector_definition_id": "statevec.logic.and",
+      "behavior_model_id": "behavior.logic.and",
+      "compute_cost_units": 1,
+      "timing_policy_id": "delay.none",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.and",
+        "signal_type_ids": [
+          "signal.boolean"
+        ],
+        "behavior_family": "gate"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.comparator_scalar",
+      "description": "Scalar threshold comparison element producing boolean output.",
+      "interface_signature_id": "iface.logic.comparator_scalar",
+      "state_vector_definition_id": "statevec.logic.comparator_scalar",
+      "behavior_model_id": "behavior.logic.comparator_scalar",
+      "compute_cost_units": 1,
+      "timing_policy_id": "delay.none",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.comparator_scalar",
+        "signal_type_ids": [
+          "signal.scalar",
+          "signal.boolean"
+        ],
+        "behavior_family": "threshold"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.counter_small",
+      "description": "Small bounded counter with explicit count state vector.",
+      "interface_signature_id": "iface.logic.counter_small",
+      "state_vector_definition_id": "statevec.logic.counter_small",
+      "behavior_model_id": "behavior.logic.counter_small",
+      "compute_cost_units": 3,
+      "timing_policy_id": "delay.fixed_ticks",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.counter_small",
+        "signal_type_ids": [
+          "signal.pulse",
+          "signal.boolean",
+          "signal.scalar"
+        ],
+        "behavior_family": "counter"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.flip_flop",
+      "description": "D-style flip-flop assembly with explicit memory state.",
+      "interface_signature_id": "iface.logic.flip_flop",
+      "state_vector_definition_id": "statevec.logic.flip_flop",
+      "behavior_model_id": "behavior.logic.flip_flop",
+      "compute_cost_units": 2,
+      "timing_policy_id": "delay.fixed_ticks",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.flip_flop",
+        "signal_type_ids": [
+          "signal.pulse",
+          "signal.boolean"
+        ],
+        "behavior_family": "sequential"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.not",
+      "description": "Boolean inversion element.",
+      "interface_signature_id": "iface.logic.not",
+      "state_vector_definition_id": "statevec.logic.not",
+      "behavior_model_id": "behavior.logic.not",
+      "compute_cost_units": 1,
+      "timing_policy_id": "delay.none",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.not",
+        "signal_type_ids": [
+          "signal.boolean"
+        ],
+        "behavior_family": "gate"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.or",
+      "description": "Two-input boolean disjunction element.",
+      "interface_signature_id": "iface.logic.or",
+      "state_vector_definition_id": "statevec.logic.or",
+      "behavior_model_id": "behavior.logic.or",
+      "compute_cost_units": 1,
+      "timing_policy_id": "delay.none",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.or",
+        "signal_type_ids": [
+          "signal.boolean"
+        ],
+        "behavior_family": "gate"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.relay",
+      "description": "Boolean relay/latch assembly with explicit retained output state.",
+      "interface_signature_id": "iface.logic.relay",
+      "state_vector_definition_id": "statevec.logic.relay",
+      "behavior_model_id": "behavior.logic.relay",
+      "compute_cost_units": 2,
+      "timing_policy_id": "delay.fixed_ticks",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.relay",
+        "signal_type_ids": [
+          "signal.boolean"
+        ],
+        "behavior_family": "sequential"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.timer_delay",
+      "description": "Deterministic timer element using declared delay policy rather than wall-clock time.",
+      "interface_signature_id": "iface.logic.timer_delay",
+      "state_vector_definition_id": "statevec.logic.timer_delay",
+      "behavior_model_id": "behavior.logic.timer_delay",
+      "compute_cost_units": 4,
+      "timing_policy_id": "delay.fixed_ticks",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.timer_delay",
+        "signal_type_ids": [
+          "signal.pulse",
+          "signal.boolean"
+        ],
+        "behavior_family": "timer"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "element_id": "logic.xor",
+      "description": "Two-input boolean exclusive-or element.",
+      "interface_signature_id": "iface.logic.xor",
+      "state_vector_definition_id": "statevec.logic.xor",
+      "behavior_model_id": "behavior.logic.xor",
+      "compute_cost_units": 1,
+      "timing_policy_id": "delay.none",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "assembly_id": "logic.xor",
+        "signal_type_ids": [
+          "signal.boolean"
+        ],
+        "behavior_family": "gate"
+      }
+    }
+  ],
+  "extensions": {
+    "source": "LOGIC2-3"
+  }
+}

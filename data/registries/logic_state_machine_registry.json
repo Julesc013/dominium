@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.registry.logic_state_machine_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logic_state_machine_registry",
+    "registry_version": "1.0.0",
+    "state_machine_definitions": [],
+    "extensions": {
+      "source": "LOGIC2-3",
+      "null_boot_safe": true,
+      "optional_pack_paths": [
+        "packs/core/pack.core.logic_base"
+      ]
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.logic_base.behavior_models",
+  "registry_version": "1.0.0",
+  "logic_behavior_models": [
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.and",
+      "model_kind": "combinational",
+      "model_ref": {
+        "dsl_id": "logic.expression.boolean.v1",
+        "outputs": [
+          {
+            "port_id": "out.q",
+            "expression": "and(in.a,in.b)"
+          }
+        ]
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.comparator_scalar",
+      "model_kind": "combinational",
+      "model_ref": {
+        "dsl_id": "logic.expression.scalar.v1",
+        "outputs": [
+          {
+            "port_id": "out.gte",
+            "expression": "gte(in.value,in.threshold)"
+          }
+        ]
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.counter_small",
+      "model_kind": "counter",
+      "model_ref": {
+        "ref_kind": "state_machine",
+        "ref_id": "logic_sm.counter_small"
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.flip_flop",
+      "model_kind": "sequential",
+      "model_ref": {
+        "ref_kind": "state_machine",
+        "ref_id": "logic_sm.flip_flop"
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.not",
+      "model_kind": "combinational",
+      "model_ref": {
+        "dsl_id": "logic.expression.boolean.v1",
+        "outputs": [
+          {
+            "port_id": "out.q",
+            "expression": "not(in.a)"
+          }
+        ]
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.or",
+      "model_kind": "combinational",
+      "model_ref": {
+        "dsl_id": "logic.expression.boolean.v1",
+        "outputs": [
+          {
+            "port_id": "out.q",
+            "expression": "or(in.a,in.b)"
+          }
+        ]
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.relay",
+      "model_kind": "sequential",
+      "model_ref": {
+        "ref_kind": "state_machine",
+        "ref_id": "logic_sm.relay"
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.timer_delay",
+      "model_kind": "timer",
+      "model_ref": {
+        "ref_kind": "state_machine",
+        "ref_id": "logic_sm.timer_delay"
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "behavior_model_id": "behavior.logic.xor",
+      "model_kind": "combinational",
+      "model_ref": {
+        "dsl_id": "logic.expression.boolean.v1",
+        "outputs": [
+          {
+            "port_id": "out.q",
+            "expression": "xor(in.a,in.b)"
+          }
+        ]
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "source": "LOGIC2-3"
+      }
+    }
+  ],
+  "extensions": {
+    "source": "LOGIC2-3"
+  }
+}

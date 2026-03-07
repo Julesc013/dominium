@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.core.logic_base",
+  "version": "1.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0"
+  ],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "registry.logic_base.assemblies",
+      "path": "data/logic_assemblies.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.logic_base.interfaces",
+      "path": "data/logic_interface_signatures.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.logic_base.state_vectors",
+      "path": "data/logic_state_vectors.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.logic_base.behavior_models",
+      "path": "data/logic_behavior_model_registry.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.logic_base.state_machines",
+      "path": "data/logic_state_machine_registry.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "registry.logic_base.elements",
+      "path": "data/logic_element_registry.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.core.logic_base.v1",
+  "signature_status": "signed"
+}

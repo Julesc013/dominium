@@ -46,6 +46,15 @@
         "description": "Vehicle-facing compatibility contract for infrastructure interfaces.",
         "parameter_schema_id": "dominium.schema.spec.params.vehicle_interface.v1",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "spec_type_id": "spec.logic_interface",
+        "description": "Signal-only compatibility contract for substrate-agnostic logic element interfaces.",
+        "parameter_schema_id": "dominium.schema.spec.params.logic_interface.v1",
+        "extensions": {
+          "source": "LOGIC2-3"
+        }
       }
     ],
     "extensions": {}

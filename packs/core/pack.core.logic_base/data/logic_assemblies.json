@@ -1,0 +1,118 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.logic_base.assemblies",
+  "registry_version": "1.0.0",
+  "assemblies": [
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.and",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.and",
+      "state_vector_definition_id": "statevec.logic.and",
+      "behavior_model_id": "behavior.logic.and",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.comparator_scalar",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.comparator_scalar",
+      "state_vector_definition_id": "statevec.logic.comparator_scalar",
+      "behavior_model_id": "behavior.logic.comparator_scalar",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.counter_small",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.counter_small",
+      "state_vector_definition_id": "statevec.logic.counter_small",
+      "behavior_model_id": "behavior.logic.counter_small",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.flip_flop",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.flip_flop",
+      "state_vector_definition_id": "statevec.logic.flip_flop",
+      "behavior_model_id": "behavior.logic.flip_flop",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.not",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.not",
+      "state_vector_definition_id": "statevec.logic.not",
+      "behavior_model_id": "behavior.logic.not",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.or",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.or",
+      "state_vector_definition_id": "statevec.logic.or",
+      "behavior_model_id": "behavior.logic.or",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.relay",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.relay",
+      "state_vector_definition_id": "statevec.logic.relay",
+      "behavior_model_id": "behavior.logic.relay",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.timer_delay",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.timer_delay",
+      "state_vector_definition_id": "statevec.logic.timer_delay",
+      "behavior_model_id": "behavior.logic.timer_delay",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "assembly_id": "logic.xor",
+      "assembly_type_id": "assembly.logic.element",
+      "interface_signature_id": "iface.logic.xor",
+      "state_vector_definition_id": "statevec.logic.xor",
+      "behavior_model_id": "behavior.logic.xor",
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "pack_id": "pack.core.logic_base"
+      }
+    }
+  ],
+  "extensions": {
+    "source": "LOGIC2-3"
+  }
+}

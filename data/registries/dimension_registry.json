@@ -235,6 +235,30 @@
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.dimensionless",
+        "base_exponents": {},
+        "description": "Dimensionless ratio/state dimension for non-physical logic and policy quantities.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "LOGIC2-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "dimension_id": "dim.compute_units",
+        "base_exponents": {
+          "CU": 1
+        },
+        "description": "Abstract compute budget unit dimension for instruction and memory accounting.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {
+          "source": "LOGIC2-3"
+        }
       }
     ],
     "extensions": {}

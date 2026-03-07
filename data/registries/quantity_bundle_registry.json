@@ -49,6 +49,19 @@
         "description": "Thermal placeholder bundle (heat_flow, heat_loss_stub).",
         "deterministic_fingerprint": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "bundle_id": "bundle.signal_logic",
+        "quantity_ids": [
+          "quantity.logic.signal_state",
+          "quantity.logic.bus_capture"
+        ],
+        "description": "Substrate-agnostic logic signal placeholder bundle for signal-only interfaces.",
+        "deterministic_fingerprint": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "extensions": {
+          "source": "LOGIC2-3"
+        }
       }
     ],
     "extensions": {}

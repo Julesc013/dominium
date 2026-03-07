@@ -1,0 +1,155 @@
+{
+  "artifact_class": "CANONICAL",
+  "registry_id": "registry.logic_base.state_vectors",
+  "registry_version": "1.0.0",
+  "state_vector_definitions": [
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.and",
+      "version": "1.0.0",
+      "state_fields": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.and",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.comparator_scalar",
+      "version": "1.0.0",
+      "state_fields": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.comparator_scalar",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.counter_small",
+      "version": "1.0.0",
+      "state_fields": [
+        {
+          "field_id": "count",
+          "path": "count",
+          "field_kind": "u64",
+          "default": 0
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.counter_small",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.flip_flop",
+      "version": "1.0.0",
+      "state_fields": [
+        {
+          "field_id": "q",
+          "path": "q",
+          "field_kind": "u64",
+          "default": 0
+        },
+        {
+          "field_id": "clock_seen",
+          "path": "clock_seen",
+          "field_kind": "u64",
+          "default": 0
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.flip_flop",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.not",
+      "version": "1.0.0",
+      "state_fields": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.not",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.or",
+      "version": "1.0.0",
+      "state_fields": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.or",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.relay",
+      "version": "1.0.0",
+      "state_fields": [
+        {
+          "field_id": "latched_output",
+          "path": "latched_output",
+          "field_kind": "u64",
+          "default": 0
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.relay",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.timer_delay",
+      "version": "1.0.0",
+      "state_fields": [
+        {
+          "field_id": "armed",
+          "path": "armed",
+          "field_kind": "u64",
+          "default": 0
+        },
+        {
+          "field_id": "elapsed_ticks",
+          "path": "elapsed_ticks",
+          "field_kind": "u64",
+          "default": 0
+        },
+        {
+          "field_id": "output_state",
+          "path": "output_state",
+          "field_kind": "u64",
+          "default": 0
+        }
+      ],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.timer_delay",
+        "source": "LOGIC2-3"
+      }
+    },
+    {
+      "schema_version": "1.0.0",
+      "owner_id": "logic.xor",
+      "version": "1.0.0",
+      "state_fields": [],
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "state_vector_definition_id": "statevec.logic.xor",
+        "source": "LOGIC2-3"
+      }
+    }
+  ],
+  "extensions": {
+    "source": "LOGIC2-3"
+  }
+}
