@@ -610,6 +610,8 @@ def _suite_projection_and_views(
     suite: Mapping[str, object],
     geometry_rows: object,
     scenario_truth_anchor: str,
+    resolution_spec_override: Mapping[str, object] | None = None,
+    defer_derived_views: bool = False,
 ) -> dict:
     from src.geo import (
         build_cctv_view_delivery,
@@ -632,7 +634,7 @@ def _suite_projection_and_views(
         projection_profile_id=str(suite.get("projection_profile_id", "")).strip(),
         origin_position_ref=_as_map(suite.get("camera_position_ref")),
         extent_spec=_as_map(suite.get("projection_extent")),
-        resolution_spec=_as_map(suite.get("resolution_spec")),
+        resolution_spec=_as_map(resolution_spec_override) or _as_map(suite.get("resolution_spec")),
         extensions={
             "view_type_id": str(suite.get("view_type_id", "")).strip(),
             "target_frame_id": str(_as_map(suite.get("camera_position_ref")).get("frame_id", "")).strip(),
@@ -652,6 +654,33 @@ def _suite_projection_and_views(
     )
     projected_cells = [dict(row) for row in list(projection_result.get("projected_cells") or [])]
     terrain_entries = _terrain_entries(projected_cells, suite_id=str(suite.get("suite_id", "")).strip())
+    if bool(defer_derived_views):
+        deferred_artifact = {
+            "schema_version": "1.0.0",
+            "view_id": "view_artifact.{}".format(str(suite.get("suite_id", "")).split(".")[-1]),
+            "projection_request_id": str(projection_request.get("request_id", "")).strip(),
+            "lens_request_id": "",
+            "rendered_cells": [],
+            "extensions": {
+                "deferred": True,
+                "reason_code": "degrade.geo.defer_view",
+                "projected_cell_count": int(len(projected_cells)),
+            },
+            "deterministic_fingerprint": "",
+        }
+        deferred_artifact["deterministic_fingerprint"] = canonical_sha256(
+            dict(deferred_artifact, deterministic_fingerprint="")
+        )
+        return {
+            "projection_request": projection_request,
+            "projection_result": projection_result,
+            "lens_request": {},
+            "view_artifact": deferred_artifact,
+            "cctv_delivery": {},
+            "view_fingerprint": projected_view_fingerprint(deferred_artifact),
+            "redaction_count": 0,
+            "deferred": True,
+        }
     perceived_model = _perceived_model(
         truth_hash_anchor=scenario_truth_anchor,
         allow_geometry=True,
@@ -748,6 +777,7 @@ def _suite_projection_and_views(
         "cctv_delivery": cctv_delivery,
         "view_fingerprint": projected_view_fingerprint(view_artifact),
         "redaction_count": int(redaction_count),
+        "deferred": False,
     }
 
 
@@ -755,6 +785,8 @@ def _suite_metrics_and_pathing(
     *,
     suite: Mapping[str, object],
     scenario: Mapping[str, object],
+    noncritical_neighbor_radius: int = 1,
+    path_max_expansions: int | None = None,
 ) -> dict:
     from src.geo import (
         apply_floating_origin,
@@ -800,7 +832,7 @@ def _suite_metrics_and_pathing(
     neighbor_probe = _metric_cache_probe(
         lambda: geo_neighbors(
             _as_map(suite.get("center_cell_key")),
-            1,
+            int(max(0, _as_int(noncritical_neighbor_radius, 1))),
             str(suite.get("topology_profile_id", "")).strip(),
             str(suite.get("metric_profile_id", "")).strip(),
             str(suite.get("partition_profile_id", "")).strip(),
@@ -838,7 +870,7 @@ def _suite_metrics_and_pathing(
     field_neighborhood_sample = field_sample_neighborhood(
         field_id=_pollution_field_id(),
         center_cell_key=_as_map(suite.get("center_cell_key")),
-        radius=1,
+        radius=int(max(0, _as_int(noncritical_neighbor_radius, 1))),
         field_layer_rows=list(field_fixture.get("field_layers") or []),
         field_cell_rows=list(field_fixture.get("field_cells") or []),
         field_type_registry=_field_type_registry(),
@@ -846,6 +878,11 @@ def _suite_metrics_and_pathing(
         interpolation_policy_registry=_as_map(field_fixture.get("interpolation_policy_registry")) or _interpolation_policy_registry(),
         metric_profile_id=str(suite.get("metric_profile_id", "")).strip(),
     )
+    neighbor_rows_for_pollution = [
+        dict(row) for row in list(_as_map(neighbor_probe.get("first")).get("neighbors") or []) if isinstance(row, Mapping)
+    ]
+    if not neighbor_rows_for_pollution:
+        neighbor_rows_for_pollution = [dict(row) for row in list(suite.get("neighbor_cell_keys") or []) if isinstance(row, Mapping)]
     pollution_fixture = _as_map(suite.get("pollution_fixture"))
     pollution_result = evaluate_pollution_dispersion(
         current_tick=1,
@@ -856,12 +893,21 @@ def _suite_metrics_and_pathing(
         processed_source_event_ids=[],
         field_cell_rows=list(field_fixture.get("field_cells") or []),
         neighbor_map_by_cell={
-            _cell_alias(_as_map(suite.get("center_cell_key"))): [_cell_alias(_as_map(row)) for row in list(suite.get("neighbor_cell_keys") or [])]
+            _cell_alias(_as_map(suite.get("center_cell_key"))): [_cell_alias(_as_map(row)) for row in neighbor_rows_for_pollution]
         },
         wind_field_id="field.wind",
         max_cell_updates_per_tick=32,
     )
-    traversal_registry = _path_policy_registry(int(max(1, _as_int(_as_map(scenario.get("budgets")).get("max_path_expansions", 48), 48))))
+    effective_path_max_expansions = int(
+        max(
+            1,
+            _as_int(
+                path_max_expansions,
+                _as_map(scenario.get("budgets")).get("max_path_expansions", 48),
+            ),
+        )
+    )
+    traversal_registry = _path_policy_registry(effective_path_max_expansions)
     path_request = build_path_request(
         request_id="path_request.{}".format(str(suite.get("suite_id", "")).split(".")[-1]),
         start_ref={"geo_cell_key": dict(_as_map(suite.get("center_cell_key")))},
@@ -872,7 +918,7 @@ def _suite_metrics_and_pathing(
             "topology_profile_id": str(suite.get("topology_profile_id", "")).strip(),
             "metric_profile_id": str(suite.get("metric_profile_id", "")).strip(),
             "partition_profile_id": str(suite.get("partition_profile_id", "")).strip(),
-            "max_expansions": int(max(1, _as_int(_as_map(scenario.get("budgets")).get("max_path_expansions", 48), 48))),
+            "max_expansions": int(effective_path_max_expansions),
         },
     )
     path_result = geo_path_query(
@@ -948,14 +994,44 @@ def _suite_report(
     scenario: Mapping[str, object],
     truth_hash_anchor: str,
 ) -> dict:
-    suite_metrics = _suite_metrics_and_pathing(suite=suite, scenario=scenario)
+    from src.geo import finalize_geo_degradation_report, plan_geo_degradation_actions
+
+    requested_resolution_spec = _as_map(suite.get("resolution_spec"))
+    degradation_plan = plan_geo_degradation_actions(
+        suite_id=str(suite.get("suite_id", "")).strip(),
+        current_tick=1,
+        budget_payload=_as_map(scenario.get("budgets")),
+        requested_resolution_spec=requested_resolution_spec,
+        requested_neighbor_radius=1,
+        requested_path_max_expansions=int(max(1, _as_int(_as_map(scenario.get("budgets")).get("max_path_expansions", 48), 48))),
+        projected_cell_estimate=int(
+            max(
+                1,
+                _as_int(requested_resolution_spec.get("width", 1), 1)
+                * _as_int(requested_resolution_spec.get("height", 1), 1),
+            )
+        ),
+        view_type_id=str(suite.get("view_type_id", "")).strip(),
+    )
+    suite_metrics = _suite_metrics_and_pathing(
+        suite=suite,
+        scenario=scenario,
+        noncritical_neighbor_radius=int(_as_int(degradation_plan.get("effective_neighbor_radius_noncritical", 1), 1)),
+        path_max_expansions=int(_as_int(degradation_plan.get("effective_path_max_expansions", 48), 48)),
+    )
     geometry_data = _suite_geometry_and_compaction(suite=suite, scenario=scenario)
     view_data = _suite_projection_and_views(
         suite=suite,
         geometry_rows=geometry_data.get("geometry_rows"),
         scenario_truth_anchor=truth_hash_anchor,
+        resolution_spec_override=_as_map(degradation_plan.get("effective_resolution_spec")),
+        defer_derived_views=bool(degradation_plan.get("defer_derived_views", False)),
     )
     world_overlay = _suite_worldgen_and_overlay(suite=suite, scenario=scenario)
+    degradation_report = finalize_geo_degradation_report(
+        degradation_plan,
+        path_result=_as_map(suite_metrics.get("path_result")),
+    )
     view_artifact = _as_map(view_data.get("view_artifact"))
     path_result = _as_map(suite_metrics.get("path_result"))
     geometry_surface = _as_map(geometry_data.get("geometry_surface"))
@@ -976,15 +1052,28 @@ def _suite_report(
         "geometry_edit_event_count": int(len(list(geometry_data.get("geometry_edit_events") or []))),
         "overlay_merge_count": 1,
         "compaction_marker_count": int(len(list(_as_map(compaction_result.get("state")).get("compaction_markers") or []))),
+        "degradation_count": int(len(list(degradation_report.get("applied_steps") or []))),
     }
     metrics["metric_cache_hit_rate_permille"] = int((metrics["metric_cache_hits"] * 1000) // max(1, metrics["metric_query_count"]))
+    expected_degradation_order = [str(token).strip() for token in list(scenario.get("degradation_policy_order") or []) if str(token).strip()]
+    observed_degradation_order = [
+        str(_as_map(row).get("action_id", "")).strip()
+        for row in sorted(
+            (dict(row) for row in list(degradation_report.get("decision_log_rows") or []) if isinstance(row, Mapping)),
+            key=lambda row: (int(_as_int(row.get("rank", 0), 0)), str(row.get("decision_id", ""))),
+        )
+        if str(_as_map(row).get("action_id", "")).strip()
+    ]
+    projection_budget = int(max(1, _as_int(_as_map(scenario.get("budgets")).get("max_projection_cells_per_view", 81), 81)))
+    path_budget = int(max(1, _as_int(degradation_report.get("effective_path_max_expansions", 48), 48)))
     assertions = {
-        "bounded_iterations": metrics["projection_view_cell_count"] <= int(max(1, _as_int(_as_map(scenario.get("budgets")).get("max_projection_cells_per_view", 81), 81)))
-        and metrics["path_expansions"] <= int(max(1, _as_int(_as_map(scenario.get("budgets")).get("max_path_expansions", 48), 48))),
+        "bounded_iterations": (bool(view_data.get("deferred", False)) or metrics["projection_view_cell_count"] <= projection_budget)
+        and metrics["path_expansions"] <= path_budget,
         "no_truth_leaks_in_views": "truth_overlay" not in json.dumps(view_artifact, sort_keys=True),
         "stable_ids_under_overlays": bool(world_overlay.get("stable_identity_under_overlay")),
         "replay_from_anchor_matches": str(replay_report.get("result", "")).strip() == "complete",
         "render_rebasing_preserves_truth": str(_as_map(suite_metrics.get("floating_origin_result")).get("result", "")).strip() == "complete",
+        "degradation_order_deterministic": expected_degradation_order == observed_degradation_order,
     }
     proof_summary = {
         "frame_graph_hash_chain": str(suite_metrics.get("graph_hash", "")).strip(),
@@ -999,6 +1088,7 @@ def _suite_report(
         "overlay_manifest_hash": str(_as_map(world_overlay.get("overlay_surface")).get("overlay_manifest_hash", "")).strip(),
         "overlay_merge_result_hash_chain": str(_as_map(world_overlay.get("overlay_surface")).get("overlay_merge_result_hash_chain", "")).strip(),
         "cctv_delivery_fingerprint": str(_as_map(view_data.get("cctv_delivery")).get("deterministic_fingerprint", "")).strip(),
+        "geo_degradation_hash_chain": str(degradation_report.get("deterministic_fingerprint", "")).strip(),
     }
     report = {
         "suite_id": str(suite.get("suite_id", "")).strip(),
@@ -1017,6 +1107,7 @@ def _suite_report(
         },
         "path_result": path_result,
         "view_artifact_fingerprint": str(view_data.get("view_fingerprint", "")).strip(),
+        "degradation_report": degradation_report,
         "property_origin_report": _as_map(world_overlay.get("origin_report")),
         "deterministic_fingerprint": "",
     }
@@ -1058,6 +1149,7 @@ def run_geo_stress_scenario(
         "geometry_edit_event_count": int(sum(int(_as_int(_as_map(row.get("metrics")).get("geometry_edit_event_count", 0), 0)) for row in suite_reports)),
         "overlay_merge_count": int(sum(int(_as_int(_as_map(row.get("metrics")).get("overlay_merge_count", 0), 0)) for row in suite_reports)),
         "compaction_marker_count": int(sum(int(_as_int(_as_map(row.get("metrics")).get("compaction_marker_count", 0), 0)) for row in suite_reports)),
+        "degradation_count": int(sum(int(_as_int(_as_map(row.get("metrics")).get("degradation_count", 0), 0)) for row in suite_reports)),
     }
     aggregate_metrics["metric_cache_hit_rate_permille"] = int(
         (aggregate_metrics["metric_cache_hits"] * 1000) // max(1, aggregate_metrics["metric_query_count"])
@@ -1068,6 +1160,7 @@ def run_geo_stress_scenario(
         "no_truth_leaks_in_views": all(bool(_as_map(row.get("assertions")).get("no_truth_leaks_in_views", False)) for row in suite_reports),
         "stable_ids_under_overlays": all(bool(_as_map(row.get("assertions")).get("stable_ids_under_overlays", False)) for row in suite_reports),
         "replay_from_anchor_matches": all(bool(_as_map(row.get("assertions")).get("replay_from_anchor_matches", False)) for row in suite_reports),
+        "degradation_order_deterministic": all(bool(_as_map(row.get("assertions")).get("degradation_order_deterministic", False)) for row in suite_reports),
     }
     proof_summary = {
         "geo_profile_registry_hashes": _geo_profile_registry_hashes(),
@@ -1092,6 +1185,7 @@ def run_geo_stress_scenario(
         "aggregate_metrics": aggregate_metrics,
         "assertions": assertions,
         "proof_summary": proof_summary,
+        "degradation_policy_order": [str(token).strip() for token in list(payload.get("degradation_policy_order") or []) if str(token).strip()],
         "expected_invariants_summary": _as_map(payload.get("expected_invariants_summary")),
         "deterministic_fingerprint": "",
     }

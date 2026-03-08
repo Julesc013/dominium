@@ -755,6 +755,13 @@ def generate_geo_stress_scenario(
             "max_path_expansions": 48,
             "allow_defer_derived_views": True,
         },
+        "degradation_policy_order": [
+            "reduce_projection_resolution",
+            "reduce_neighbor_radius_noncritical",
+            "reduce_path_expansion_cap",
+            "defer_derived_view_generation",
+            "preserve_canonical_geometry_and_overlay",
+        ],
         "expected_invariants_summary": {
             "must_preserve": [
                 "INV-GEO-BUDGETED",

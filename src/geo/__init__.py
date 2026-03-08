@@ -79,6 +79,14 @@ from .path import (
     resolve_cell_shard_id,
     traversal_policy_registry_hash,
 )
+from .degradation_policy import (
+    REFUSAL_GEO_BUDGET_INVALID,
+    build_path_refused_budget_explain_artifact,
+    build_view_downsample_explain_artifact,
+    finalize_geo_degradation_report,
+    geo_degradation_order_rows,
+    plan_geo_degradation_actions,
+)
 from .edit import (
     REFUSAL_GEO_GEOMETRY_INVALID,
     aggregate_geometry_chunk_to_cell,
@@ -184,6 +192,7 @@ __all__ = [
     "REFUSAL_GEO_PATH_INVALID",
     "REFUSAL_GEO_PATH_NOT_FOUND",
     "REFUSAL_GEO_PATH_BOUNDED",
+    "REFUSAL_GEO_BUDGET_INVALID",
     "REFUSAL_GEO_GEOMETRY_INVALID",
     "build_position_ref",
     "build_projection_request",
@@ -233,6 +242,11 @@ __all__ = [
     "build_shard_route_plan",
     "resolve_cell_shard_id",
     "traversal_policy_registry_hash",
+    "geo_degradation_order_rows",
+    "plan_geo_degradation_actions",
+    "finalize_geo_degradation_report",
+    "build_view_downsample_explain_artifact",
+    "build_path_refused_budget_explain_artifact",
     "build_geometry_cell_state",
     "build_micro_geometry_chunk_from_cell_state",
     "normalize_geometry_cell_state",

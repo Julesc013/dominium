@@ -1812,6 +1812,46 @@
         "extensions": {
           "source": "GEO7-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.view_downsampled",
+        "event_kind_id": "geo.view_downsampled",
+        "explain_artifact_type_id": "artifact.explain.geo_view_downsampled",
+        "required_inputs": [
+          "artifact.record",
+          "section.geo.projection_budget",
+          "section.geo.projection_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.view_extent",
+          "hint.open.minimap",
+          "hint.raise.geo_budget"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO10-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.path_refused_budget",
+        "event_kind_id": "geo.path_refused_budget",
+        "explain_artifact_type_id": "artifact.explain.geo_path_refused_budget",
+        "required_inputs": [
+          "artifact.record",
+          "section.geo.path_budget",
+          "section.geo.path_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.path_scope",
+          "hint.raise.geo_budget",
+          "hint.retry.shorter_route"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO10-3"
+        }
       }
     ],
     "extensions": {
