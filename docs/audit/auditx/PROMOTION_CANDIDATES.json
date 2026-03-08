@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 68,
+  "candidate_count": 69,
   "candidates": [
     {
       "evidence_paths": [
@@ -67,6 +67,7 @@
         ".xstack_cache/anb-omega-random-cwd/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json",
         ".xstack_cache/anb-omega-random-cwd/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json",
         ".xstack_cache/auditx/meta_genre0_probe/FINDINGS.json",
+        ".xstack_cache/auditx/repox_probe/FINDINGS.json",
         ".xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/48146d3b9fa338ea36d7159e9105c8967b254d35769f3d747a2589257ded6427.json",
         ".xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/b3b3517b12b10bb2dc370378ec380f300247d81bb4fd51520e992d0b33b02659.json",
         ".xstack_cache/ws-02321d3a5bfcde66/auditx/entries/38da8cfd45cc21cfbe928be485a3033d7200b8636a923a395acd73e954a7e887.json",
@@ -122,8 +123,7 @@
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/3ded0a2a4bc0f2f3c81125069b18d429c841ee829c31e228964d81fa9023bbfc.json",
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/444be0d459f2924d8cff41f6a2cf85ab0ab675f88da3d41f89d433fe42bbfb47.json",
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/45031f083ec2b40ba6c2213d8bf90ac3a6978f148bbbc95d37c1feccb419a255.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/8c093a0e23a4c121ba52af726588c7c227a107182b9351a19da30133a4fe82a2.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/a5030e5a39c50fdd0e68c298e52f8d817180d178a6ed5b4bb380f3a4b4134ba7.json"
+        ".xstack_cache/ws-311957bee608fa55/auditx/entries/8c093a0e23a4c121ba52af726588c7c227a107182b9351a19da30133a4fe82a2.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
@@ -154,13 +154,26 @@
     },
     {
       "evidence_paths": [
-        "tools/auditx/analyzers/c1_security_boundary.py",
-        "tools/securex/core/boundary_validator.py",
-        "tools/securex/securex.py"
+        "data/registries/generator_version_registry.json",
+        "data/registries/realism_profile_registry.json",
+        "docs/audit/TOPOLOGY_MAP.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.9,
-      "rule_type": "TEST_REGRESSION",
+      "risk_score": 0.6825,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "docs/audit/TOPOLOGY_MAP.json",
+        "schema/geo/generator_version.schema",
+        "schema/geo/realism_profile.schema",
+        "schema/geo/worldgen_request.schema",
+        "schema/geo/worldgen_result.schema"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.6825,
+      "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
     {

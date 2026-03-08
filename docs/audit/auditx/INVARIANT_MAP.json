@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 762,
+      "finding_count": 763,
       "recommended_actions": {
-        "DOC_FIX": 762
+        "DOC_FIX": 763
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 762
+        "WARN": 763
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -1741,6 +1741,58 @@
         "VIOLATION": 1
       }
     },
+    "INV-NO-UNDECLARED-REGISTRY": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_registry_smell",
+          "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0001",
+          "location": "data/registries/generator_version_registry.json"
+        },
+        {
+          "category": "architecture.undeclared_registry_smell",
+          "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0002",
+          "location": "data/registries/realism_profile_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-NO-UNDECLARED-SCHEMA": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "ADD_RULE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
+          "location": "schema/geo/generator_version.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
+          "location": "schema/geo/realism_profile.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
+          "location": "schema/geo/worldgen_request.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0004",
+          "location": "schema/geo/worldgen_result.schema"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
       "finding_count": 1,
       "recommended_actions": {
@@ -1912,78 +1964,6 @@
       ],
       "severities": {
         "WARN": 120
-      }
-    },
-    "INV-SECUREX-PRIVILEGE-MODEL": {
-      "finding_count": 9,
-      "recommended_actions": {
-        "ADD_TEST": 9
-      },
-      "sample_findings": [
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0001",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0002",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0003",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0004",
-          "location": "tools/securex/core/boundary_validator.py"
-        },
-        {
-          "category": "security.privilege_bypass",
-          "finding_id": "C1:0005",
-          "location": "tools/securex/core/boundary_validator.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 9
-      }
-    },
-    "INV-SECUREX-TRUST-POLICY-VALID": {
-      "finding_count": 29,
-      "recommended_actions": {
-        "ADD_RULE": 29
-      },
-      "sample_findings": [
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0010",
-          "location": "client/app/main_client.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0011",
-          "location": "client/core/client_command_bridge.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0012",
-          "location": "client/core/client_state_machine.c"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0013",
-          "location": "client/core/client_state_machine.h"
-        },
-        {
-          "category": "security.boundary_io",
-          "finding_id": "C1:0014",
-          "location": "client/core/session_artifacts.c"
-        }
-      ],
-      "severities": {
-        "WARN": 29
       }
     },
     "INV-SETTINGS-OWNERSHIP": {
