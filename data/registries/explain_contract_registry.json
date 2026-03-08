@@ -1612,6 +1612,106 @@
         "extensions": {
           "source": "LOGIC7-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_fault_open",
+        "event_kind_id": "logic.fault_open",
+        "explain_artifact_type_id": "artifact.explain.logic_fault_open",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_carrier_path",
+          "hint.replace.logic_module",
+          "hint.clear.logic_fault_process"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_fault_short",
+        "event_kind_id": "logic.fault_short",
+        "explain_artifact_type_id": "artifact.explain.logic_fault_short",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_carrier_path",
+          "hint.reduce.emi_exposure",
+          "hint.clear.logic_fault_process"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_stuck_at",
+        "event_kind_id": "logic.stuck_at",
+        "explain_artifact_type_id": "artifact.explain.logic_stuck_at",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.decision",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_threshold",
+          "hint.recalibrate.logic_module",
+          "hint.clear.logic_fault_process"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_noise_effect",
+        "event_kind_id": "logic.noise_effect",
+        "explain_artifact_type_id": "artifact.explain.logic_noise_effect",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.health_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.review.logic_noise_policy",
+          "hint.raise.logic_signal_margin",
+          "hint.inspect.emi_source"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC8-8"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_spoof_detected",
+        "event_kind_id": "logic.spoof_detected",
+        "explain_artifact_type_id": "artifact.explain.logic_spoof_detected",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.decision",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.logic_access",
+          "hint.rotate.logic_credentials",
+          "hint.require.encrypted_protocol"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC8-8"
+        }
       }
     ],
     "extensions": {

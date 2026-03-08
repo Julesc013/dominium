@@ -528,6 +528,19 @@
                 "last_state_transitions"
               ]
             }
+          },
+          {
+            "measurement_point_id": "measure.logic.fault_state",
+            "quantity_id": "quantity.logic.state_vector_capture",
+            "instrument_type_id": "instrument.logic_analyzer",
+            "measurement_model_id": "meas.lab_high_precision",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.admin_only",
+              "trace_compactable": true
+            }
           }
         ],
         "forensics_points": [
@@ -552,6 +565,51 @@
           {
             "forensics_point_id": "forensics.logic.watchdog_timeout",
             "explain_contract_id": "explain.watchdog_timeout",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.fault_open",
+            "explain_contract_id": "explain.logic_fault_open",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.fault_short",
+            "explain_contract_id": "explain.logic_fault_short",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.stuck_at",
+            "explain_contract_id": "explain.logic_stuck_at",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.noise_effect",
+            "explain_contract_id": "explain.logic_noise_effect",
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required"
+            }
+          },
+          {
+            "forensics_point_id": "forensics.logic.spoof_detected",
+            "explain_contract_id": "explain.logic_spoof_detected",
             "redaction_policy_id": "redact.inspector_default",
             "deterministic_fingerprint": "",
             "extensions": {

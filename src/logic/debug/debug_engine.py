@@ -54,6 +54,7 @@ _BOUNDARY_MEASUREMENT_POINTS = {
     "measure.logic.network.compiled_summary",
 }
 _INTERNAL_MEASUREMENT_POINTS = {
+    "measure.logic.fault_state",
     "measure.logic.timing_trace",
     "measure.logic.element.state_vector",
     "measure.logic.network.node",
@@ -643,6 +644,7 @@ def _sample_target(
     signal_store_state: Mapping[str, object] | None,
     logic_network_state: Mapping[str, object] | None,
     logic_eval_state: Mapping[str, object] | None,
+    logic_fault_state_rows: object,
     state_vector_snapshot_rows: object,
     compiled_model_rows: object,
     protocol_registry_payload: Mapping[str, object] | None,
@@ -838,6 +840,78 @@ def _sample_target(
             },
         }
 
+    if measurement_point_id == "measure.logic.fault_state":
+        relevant_fault_rows = []
+        for row in sorted(
+            (dict(item) for item in _as_list(logic_fault_state_rows) if isinstance(item, Mapping)),
+            key=lambda item: (
+                _token(item.get("target_kind")),
+                _token(item.get("target_id")),
+                _token(item.get("fault_id")),
+            ),
+        ):
+            target_kind = _token(row.get("target_kind")).lower()
+            target_ref = _token(row.get("target_id"))
+            if edge_id and target_kind == "edge" and target_ref == edge_id:
+                relevant_fault_rows.append(row)
+            elif node_id and target_kind == "node" and target_ref == node_id:
+                relevant_fault_rows.append(row)
+            elif element_id and target_kind == "element" and target_ref == element_id:
+                relevant_fault_rows.append(row)
+        measurement = generate_measurement_observation(
+            owner_kind="domain",
+            owner_id="domain.logic",
+            measurement_point_id="measure.logic.fault_state",
+            raw_value=int(canonical_sha256(_canon(relevant_fault_rows))[:8], 16),
+            current_tick=current_tick,
+            authority_context=authority_context,
+            has_physical_access=has_physical_access,
+            available_instrument_type_ids=available_instrument_type_ids,
+            instrumentation_surface_registry_payload=instrumentation_surface_registry_payload,
+            access_policy_registry_payload=access_policy_registry_payload,
+            measurement_model_registry_payload=measurement_model_registry_payload,
+        )
+        if _token(measurement.get("result")) != "complete":
+            return dict(measurement)
+        measurement_artifact = _as_map(measurement.get("observation_artifact"))
+        artifact = {
+            "artifact_id": "artifact.logic.fault_state_observation.{}".format(
+                canonical_sha256(
+                    {
+                        "target_key": _sample_target_key(target),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "fault_rows": _canon(relevant_fault_rows[:32]),
+                    }
+                )[:16]
+            ),
+            "artifact_family_id": "OBSERVATION",
+            "artifact_type_id": "artifact.logic.fault_state_observation",
+            "tick": int(max(0, _as_int(current_tick, 0))),
+            "measurement_artifact_id": _token(measurement_artifact.get("artifact_id")),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                "target_key": _sample_target_key(target),
+                "fault_rows": _canon(relevant_fault_rows[:32]),
+                "fault_count": int(len(relevant_fault_rows)),
+                "trace_compactable": True,
+            },
+        }
+        artifact["deterministic_fingerprint"] = canonical_sha256(dict(artifact, deterministic_fingerprint=""))
+        return {
+            "result": "complete",
+            "measurement_observation": dict(measurement),
+            "observation_artifact_rows": [artifact],
+            "measurement_artifact_id": _token(measurement_artifact.get("artifact_id")),
+            "sample_value_row": {
+                "measurement_point_id": measurement_point_id,
+                "target_key": _sample_target_key(target),
+                "measurement_artifact_id": _token(measurement_artifact.get("artifact_id")),
+                "observation_artifact_id": _token(artifact.get("artifact_id")),
+                "value": measurement_artifact.get("value"),
+                "value_hash": canonical_sha256(_canon(artifact)),
+            },
+        }
+
     if measurement_point_id in {"measure.logic.network.node", "measure.logic.network.edge", "measure.logic.network.compiled_summary"}:
         binding_row = dict(_logic_binding_by_network_id(logic_network_state).get(network_id) or {})
         graph_row = dict(_logic_graph_by_id(logic_network_state).get(_token(binding_row.get("graph_id"))) or {})
@@ -949,6 +1023,7 @@ def process_logic_probe(
     signal_store_state: Mapping[str, object] | None,
     logic_network_state: Mapping[str, object] | None,
     logic_eval_state: Mapping[str, object] | None,
+    logic_fault_state_rows: object = None,
     probe_request: Mapping[str, object],
     state_vector_snapshot_rows: object = None,
     compiled_model_rows: object = None,
@@ -1085,6 +1160,7 @@ def process_logic_probe(
         signal_store_state=signal_store_state,
         logic_network_state=logic_network_state,
         logic_eval_state=logic_eval_state,
+        logic_fault_state_rows=logic_fault_state_rows,
         state_vector_snapshot_rows=state_vector_snapshot_rows,
         compiled_model_rows=compiled_model_rows,
         protocol_registry_payload=protocol_registry_payload,
@@ -1390,6 +1466,7 @@ def process_logic_trace_tick(
     signal_store_state: Mapping[str, object] | None,
     logic_network_state: Mapping[str, object] | None,
     logic_eval_state: Mapping[str, object] | None,
+    logic_fault_state_rows: object = None,
     trace_tick_request: Mapping[str, object],
     state_vector_snapshot_rows: object = None,
     compiled_model_rows: object = None,
@@ -1510,6 +1587,7 @@ def process_logic_trace_tick(
             signal_store_state=signal_store_state,
             logic_network_state=logic_network_state,
             logic_eval_state=logic_eval_state,
+            logic_fault_state_rows=logic_fault_state_rows,
             state_vector_snapshot_rows=state_vector_snapshot_rows,
             compiled_model_rows=compiled_model_rows,
             protocol_registry_payload=protocol_registry_payload,
