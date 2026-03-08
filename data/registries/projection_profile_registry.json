@@ -1,0 +1,72 @@
+{
+  "schema_id": "dominium.registry.geo.projection_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.projection_profile_registry",
+    "registry_version": "1.0.0",
+    "projection_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "projection_profile_id": "geo.projection.ortho_2d",
+        "projection_kind": "ortho_2d",
+        "parameters": {
+          "target_dimensions": 2,
+          "axis_order": [
+            "x",
+            "y"
+          ]
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "projection_profile_id": "geo.projection.perspective_3d",
+        "projection_kind": "perspective_3d",
+        "parameters": {
+          "fov_deg": 60,
+          "near_plane_mm": 1,
+          "target_dimensions": 2
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "projection_profile_id": "geo.projection.atlas_unwrap_stub",
+        "projection_kind": "atlas_unwrap",
+        "parameters": {
+          "atlas_id": "atlas.default",
+          "target_dimensions": 2
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "projection_profile_id": "geo.projection.slice_nd_stub",
+        "projection_kind": "slice_nd_stub",
+        "parameters": {
+          "source_dimension_min": 3,
+          "slice_axes": [
+            "z"
+          ],
+          "target_dimensions": 3
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO0-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO0-3"
+    }
+  }
+}

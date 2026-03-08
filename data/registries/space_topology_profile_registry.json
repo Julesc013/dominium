@@ -1,0 +1,229 @@
+{
+  "schema_id": "dominium.registry.geo.space_topology_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.space_topology_profile_registry",
+    "registry_version": "1.0.0",
+    "topology_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.r1_infinite",
+        "dimension_D": 1,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.global.r1",
+            "chart_kind": "cartesian",
+            "transform_refs": [
+              "transform.identity"
+            ],
+            "extensions": {}
+          }
+        ],
+        "boundary_rule_id": "boundary.infinite",
+        "neighbor_policy_id": "neighbor.linear.r1",
+        "portal_identifications_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "radius_cap": 8,
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.r2_infinite",
+        "dimension_D": 2,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.global.r2",
+            "chart_kind": "cartesian",
+            "transform_refs": [
+              "transform.identity"
+            ],
+            "extensions": {}
+          }
+        ],
+        "boundary_rule_id": "boundary.infinite",
+        "neighbor_policy_id": "neighbor.moore.r1",
+        "portal_identifications_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "radius_cap": 8,
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "dimension_D": 3,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.global.r3",
+            "chart_kind": "cartesian",
+            "transform_refs": [
+              "transform.identity"
+            ],
+            "extensions": {}
+          }
+        ],
+        "boundary_rule_id": "boundary.infinite",
+        "neighbor_policy_id": "neighbor.von_neumann.r1",
+        "portal_identifications_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "radius_cap": 8,
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.torus_r2",
+        "dimension_D": 2,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.global.r2",
+            "chart_kind": "cartesian",
+            "transform_refs": [
+              "transform.identity",
+              "transform.wrap.periodic"
+            ],
+            "extensions": {
+              "wrapped_axes": [
+                "x",
+                "y"
+              ]
+            }
+          }
+        ],
+        "boundary_rule_id": "boundary.periodic_wrap",
+        "neighbor_policy_id": "neighbor.moore.r1",
+        "portal_identifications_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "radius_cap": 8,
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.torus_r3",
+        "dimension_D": 3,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.global.r3",
+            "chart_kind": "cartesian",
+            "transform_refs": [
+              "transform.identity",
+              "transform.wrap.periodic"
+            ],
+            "extensions": {
+              "wrapped_axes": [
+                "x",
+                "y",
+                "z"
+              ]
+            }
+          }
+        ],
+        "boundary_rule_id": "boundary.periodic_wrap",
+        "neighbor_policy_id": "neighbor.von_neumann.r1",
+        "portal_identifications_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "radius_cap": 8,
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "dimension_D": 2,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.atlas.north",
+            "chart_kind": "atlas_tile",
+            "transform_refs": [
+              "transform.atlas.north_to_south_stub"
+            ],
+            "extensions": {}
+          },
+          {
+            "chart_id": "chart.atlas.south",
+            "chart_kind": "atlas_tile",
+            "transform_refs": [
+              "transform.atlas.south_to_north_stub"
+            ],
+            "extensions": {}
+          }
+        ],
+        "boundary_rule_id": "boundary.identified_atlas_seams",
+        "neighbor_policy_id": "neighbor.atlas.edge_adjacency",
+        "portal_identifications_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "atlas_kind": "sphere_surface_stub",
+          "radius_cap": 6,
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.cube_identified_stub",
+        "dimension_D": 3,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.cube.volume",
+            "chart_kind": "cartesian",
+            "transform_refs": [
+              "transform.identity",
+              "transform.portal.face_pair_stub"
+            ],
+            "extensions": {
+              "identified_faces": 6
+            }
+          }
+        ],
+        "boundary_rule_id": "boundary.portal_identified_faces",
+        "neighbor_policy_id": "neighbor.portal.face_adjacency",
+        "portal_identifications_ref": "portal.cube.face_pairs.stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "radius_cap": 6,
+          "source": "GEO0-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "topology_profile_id": "geo.topology.r4_stub",
+        "dimension_D": 4,
+        "chart_definitions": [
+          {
+            "chart_id": "chart.global.r4",
+            "chart_kind": "cartesian",
+            "transform_refs": [
+              "transform.identity"
+            ],
+            "extensions": {
+              "axis_labels": [
+                "x",
+                "y",
+                "z",
+                "w"
+              ]
+            }
+          }
+        ],
+        "boundary_rule_id": "boundary.infinite",
+        "neighbor_policy_id": "neighbor.axis_aligned.r1",
+        "portal_identifications_ref": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "radius_cap": 4,
+          "source": "GEO0-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO0-3"
+    }
+  }
+}
