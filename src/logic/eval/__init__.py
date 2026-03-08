@@ -5,6 +5,7 @@ from src.logic.eval.commit_engine import (
     REFUSAL_STATEVEC_UPDATE_INVALID,
     process_statevec_update,
 )
+from src.logic.eval.degradation_policy import logic_degradation_order_rows, plan_logic_degradation_actions
 from src.logic.eval.logic_eval_engine import (
     PROCESS_LOGIC_NETWORK_EVALUATE,
     REFUSAL_LOGIC_EVAL_LOOP_POLICY,
@@ -42,6 +43,7 @@ __all__ = [
     "REFUSAL_STATEVEC_UPDATE_INVALID",
     "build_logic_element_index",
     "build_logic_sense_snapshot",
+    "logic_degradation_order_rows",
     "normalize_arbitration_state_rows",
     "normalize_logic_eval_record_rows",
     "normalize_logic_eval_state",
@@ -57,6 +59,7 @@ __all__ = [
     "normalize_logic_timing_violation_event_rows",
     "normalize_logic_throttle_event_rows",
     "normalize_logic_watchdog_timeout_event_rows",
+    "plan_logic_degradation_actions",
     "process_logic_network_evaluate",
     "process_statevec_update",
 ]

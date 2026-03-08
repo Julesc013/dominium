@@ -14,6 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from src.logic.eval import logic_degradation_order_rows, plan_logic_degradation_actions
 from src.meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
 from tools.logic.logic10_stress_common import _as_int, _write_json, generate_logic_stress_scenario
 from tools.logic.tool_replay_compiled_logic_window import replay_compiled_logic_window_from_payload
@@ -378,6 +379,24 @@ def _run_logic_stress_pass(
         protocol_bus_report=protocol_bus_report,
         debug_compaction_report=debug_compaction_report,
     )
+    degradation_behavior = plan_logic_degradation_actions(
+        compiled_available=bool(compiled_report.get("compiled_path_observed", False)),
+        current_tick=int(max(0, _as_int(scenario.get("tick_count"), 0))),
+        requested_network_ids=[
+            "net.logic.envelope.{:04d}".format(index)
+            for index in range(1, int(max(1, _as_int(scenario.get("network_count"), 1))) + 1)
+        ],
+        low_priority_network_ids=[
+            "net.logic.envelope.{:04d}".format(index)
+            for index in range(3, int(max(3, _as_int(scenario.get("network_count"), 1))) + 1)
+        ],
+        safety_critical_network_ids=["net.logic.envelope.0001"],
+        skipped_network_ids=["net.logic.envelope.0001", "net.logic.envelope.0004"],
+        per_tick_network_cap=3,
+        tick_bucket_stride=2,
+        active_debug_sessions=int(len(_as_list(debug_report.get("trace_session_reports")))),
+        debug_session_capacity=max(1, int(len(_as_list(debug_report.get("trace_session_reports"))) // 2)),
+    )
     assertions = {
         "compute_budget_respected": bool(complete),
         "coupling_budget_respected": bool(metrics["coupling_evaluations_count"] >= 0),
@@ -403,6 +422,7 @@ def _run_logic_stress_pass(
         "metrics": metrics,
         "assertions": assertions,
         "proof_hash_summary": proof_hash_summary,
+        "degradation_order_hash": _token(degradation_behavior.get("plan_hash")),
         "loop_refusal_reason_code": _token(loop_first.get("reason_code")),
         "distributed_control_hash": _token(_as_map(scenario.get("distributed_control")).get("deterministic_fingerprint")),
         "mega_network_hash": _token(_as_map(scenario.get("mega_network")).get("deterministic_fingerprint")),
@@ -413,6 +433,8 @@ def _run_logic_stress_pass(
         "metrics": metrics,
         "assertions": assertions,
         "proof_hash_summary": proof_hash_summary,
+        "degradation_behavior": degradation_behavior,
+        "degradation_order_rows": logic_degradation_order_rows(),
         "core_hash": canonical_sha256(dict(pass_core, thread_count_label=0)),
         "deterministic_fingerprint": canonical_sha256(pass_core),
     }
@@ -459,6 +481,8 @@ def run_logic_stress(
         "assertions": final_assertions,
         "metrics": final_metrics,
         "proof_hash_summary": _as_map(passes[0].get("proof_hash_summary")) if passes else {},
+        "degradation_order_rows": logic_degradation_order_rows(),
+        "degradation_behavior": _as_map(passes[0].get("degradation_behavior")) if passes else {},
         "mega_network": {
             "scenario_id": _token(_as_map(scenario.get("mega_network")).get("scenario_id")),
             "deterministic_source_hash": _token(_as_map(scenario.get("mega_network")).get("deterministic_source_hash")),
