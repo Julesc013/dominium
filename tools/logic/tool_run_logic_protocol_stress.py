@@ -177,8 +177,18 @@ def run_protocol_stress(*, repo_root: str, frame_count: int, tick_count: int, us
                 "queued_frames": int(
                     sum(1 for row in frame_rows if str(dict(row.get("extensions") or {}).get("status", "")).strip() == "queued")
                 ),
+                "event_count": int(len(protocol_event_record_rows)),
                 "delivered_events": int(
                     sum(1 for row in protocol_event_record_rows if str(row.get("result", "")).strip() == "delivered")
+                ),
+                "blocked_events": int(
+                    sum(1 for row in protocol_event_record_rows if str(row.get("result", "")).strip() == "blocked")
+                ),
+                "dropped_events": int(
+                    sum(1 for row in protocol_event_record_rows if str(row.get("result", "")).strip() == "dropped")
+                ),
+                "corrupted_events": int(
+                    sum(1 for row in protocol_event_record_rows if str(row.get("result", "")).strip() == "corrupted")
                 ),
                 "delivery_event_count": int(len(list(signal_transport_state.get("message_delivery_event_rows") or []))),
             }
@@ -194,9 +204,19 @@ def run_protocol_stress(*, repo_root: str, frame_count: int, tick_count: int, us
             sum(1 for row in frame_rows if str(dict(row.get("extensions") or {}).get("status", "")).strip() == "queued")
         ),
         "protocol_event_count": int(len(protocol_event_record_rows)),
+        "blocked_event_count": int(
+            sum(1 for row in protocol_event_record_rows if str(row.get("result", "")).strip() == "blocked")
+        ),
+        "dropped_event_count": int(
+            sum(1 for row in protocol_event_record_rows if str(row.get("result", "")).strip() == "dropped")
+        ),
+        "corrupted_event_count": int(
+            sum(1 for row in protocol_event_record_rows if str(row.get("result", "")).strip() == "corrupted")
+        ),
         "delivery_event_count": int(len(list(signal_transport_state.get("message_delivery_event_rows") or []))),
         "receipt_count": int(len(list(signal_transport_state.get("knowledge_receipt_rows") or []))),
         "delivered_signal_count": int(len(list(signal_store_state.get("signal_rows") or []))),
+        "max_queue_depth": int(max((int(dict(row).get("queued_frames", 0) or 0) for row in tick_reports), default=0)),
         "logic_protocol_frame_hash_chain": canonical_sha256(frame_rows),
         "logic_protocol_event_hash_chain": canonical_sha256(protocol_event_record_rows),
         "message_delivery_event_hash_chain": canonical_sha256(signal_transport_state.get("message_delivery_event_rows") or []),

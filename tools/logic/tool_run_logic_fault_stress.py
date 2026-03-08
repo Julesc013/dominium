@@ -36,7 +36,7 @@ def _load_json(path: str) -> dict:
     return payload if isinstance(payload, dict) else {}
 
 
-def run_fault_stress(*, repo_root: str, tick_count: int) -> dict:
+def build_logic_fault_stress_scenario(*, repo_root: str, tick_count: int) -> dict:
     inputs = load_eval_inputs(repo_root)
     fault_registry = _load_json(os.path.join(repo_root, "data/registries/logic_fault_kind_registry.json"))
 
@@ -153,7 +153,7 @@ def run_fault_stress(*, repo_root: str, tick_count: int) -> dict:
         )
         fault_rows = list(updated.get("logic_fault_state_rows") or fault_rows)
 
-    scenario = {
+    return {
         "logic_network_state": {
             "logic_network_graph_rows": list(chain_state.get("logic_network_graph_rows") or [])
             + list(scalar_state.get("logic_network_graph_rows") or []),
@@ -182,6 +182,10 @@ def run_fault_stress(*, repo_root: str, tick_count: int) -> dict:
             )
         ],
     }
+
+
+def run_fault_stress(*, repo_root: str, tick_count: int) -> dict:
+    scenario = build_logic_fault_stress_scenario(repo_root=repo_root, tick_count=tick_count)
     report = replay_fault_window_from_payload(repo_root=repo_root, payload=scenario)
     if str(report.get("result", "")).strip() != "complete":
         return dict(report)
