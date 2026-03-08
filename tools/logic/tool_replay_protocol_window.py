@@ -15,6 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.logic.tool_replay_logic_window import _load_json, _write_json, replay_logic_window_from_payload
+from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
 def replay_protocol_window_from_payload(*, repo_root: str, payload: dict) -> dict:
@@ -23,10 +24,24 @@ def replay_protocol_window_from_payload(*, repo_root: str, payload: dict) -> dic
 
 def protocol_proof_surface(report: dict) -> dict:
     payload = dict(report or {})
+    transport_state = dict(payload.get("final_signal_transport_state") or {})
     return {
         "logic_protocol_frame_hash_chain": str(payload.get("logic_protocol_frame_hash_chain", "")),
         "logic_arbitration_state_hash_chain": str(payload.get("logic_arbitration_state_hash_chain", "")),
         "logic_protocol_event_hash_chain": str(payload.get("logic_protocol_event_hash_chain", "")),
+        "logic_security_fail_hash_chain": str(payload.get("logic_security_fail_hash_chain", "")),
+        "message_delivery_event_hash_chain": canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                    "receipt_id": str(row.get("receipt_id", "")).strip(),
+                    "status": str(row.get("status", "")).strip(),
+                }
+                for row in list(transport_state.get("message_delivery_event_rows") or [])
+                if isinstance(row, dict)
+            ]
+        ),
     }
 
 
