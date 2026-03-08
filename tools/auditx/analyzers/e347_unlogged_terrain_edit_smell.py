@@ -19,7 +19,7 @@ REQUIRED_FILES = {
         "_append_geometry_edit_event(",
         "_append_geometry_edit_event_artifact(",
         "_refresh_geometry_hash_chains(",
-        '"artifact.geometry_edit_event."',
+        "artifact.geometry_edit_event.",
         "geometry_edit_event_hash_chain",
     ),
     "tools/geo/tool_replay_geometry_window.py": (

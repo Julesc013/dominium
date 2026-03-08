@@ -286,6 +286,26 @@
         "extensions": {
           "source": "LOGIC2-5"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.geo.permeability_proxy",
+        "description": "Geometry-bound permeability proxy quantity emitted for GEO to FLUID coupling surfaces.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.dimensionless.ratio",
+        "extensions": {
+          "source": "GEO7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.geo.conductance_proxy",
+        "description": "Geometry-bound conductance proxy quantity emitted for GEO to THERM coupling surfaces.",
+        "numeric_type": "fixed_point",
+        "units_id": "unit.dimensionless.ratio",
+        "extensions": {
+          "source": "GEO7"
+        }
       }
     ],
     "extensions": {}

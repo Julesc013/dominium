@@ -325,6 +325,32 @@
       },
       {
         "schema_version": "1.0.0",
+        "quantity_id": "quantity.geo.permeability_proxy",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "ea022bb105d3a5c9578390b9ca5e5d7316bbc152db151c4524ee08759b66be50",
+        "extensions": {
+          "source": "GEO7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "quantity_id": "quantity.geo.conductance_proxy",
+        "base_resolution": 1,
+        "tolerance_abs": 1,
+        "tolerance_rel": 0,
+        "rounding_mode": "round_half_to_even",
+        "overflow_policy": "fail",
+        "deterministic_fingerprint": "e8de8cc7926920eea55bb44843ae8e193fba38ca9cb9dc82e1369870c75819fd",
+        "extensions": {
+          "source": "GEO7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "quantity_id": "quantity.radiation_dose",
         "base_resolution": 1,
         "tolerance_abs": 1,
