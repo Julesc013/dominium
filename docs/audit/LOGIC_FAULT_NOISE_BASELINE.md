@@ -22,7 +22,8 @@ Status: in progress
 
 ## Safety Integration
 
-- placeholder
+- fault application can emit deterministic `safety_event_rows` during SENSE when a fault policy declares isolation or shutdown behavior
+- session-runtime integration merges those rows into the authoritative safety event stream instead of bypassing SYS or watchdog governance
 
 ## Readiness
 
