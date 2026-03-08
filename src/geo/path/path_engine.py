@@ -950,7 +950,7 @@ def geo_path_query(
         open_hashes = [token for token in open_hashes if str(token) != current_hash]
         closed_hashes[current_hash] = True
         expansions += 1
-        if expansions > max_expansions:
+        if expansions >= max_expansions:
             best_candidate_hash = current_hash
             break
 
@@ -1057,7 +1057,7 @@ def geo_path_query(
         payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
         return payload
 
-    if expansions > max_expansions and partial_policy == "partial" and best_candidate_hash:
+    if expansions >= max_expansions and partial_policy == "partial" and best_candidate_hash:
         partial_cells = _reconstruct_path(came_from, node_by_hash, best_candidate_hash)
         shard_route_plan = build_shard_route_plan(
             request_id=str(request_row.get("request_id", "")),
@@ -1096,8 +1096,8 @@ def geo_path_query(
         payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
         return payload
 
-    refusal_code = REFUSAL_GEO_PATH_BOUNDED if expansions > max_expansions else REFUSAL_GEO_PATH_NOT_FOUND
-    message = "path search exceeded max_expansions" if expansions > max_expansions else "no path found under traversal policy"
+    refusal_code = REFUSAL_GEO_PATH_BOUNDED if expansions >= max_expansions else REFUSAL_GEO_PATH_NOT_FOUND
+    message = "path search exceeded max_expansions" if expansions >= max_expansions else "no path found under traversal policy"
     return _refusal(
         refusal_code=refusal_code,
         message=message,
