@@ -6169,6 +6169,207 @@
     },
     {
       "affected_fields": [
+        "logic.debug_probe_request_rows",
+        "logic.debug_probe_artifact_rows",
+        "logic.debug_explain_artifact_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-7 process that performs a bounded, instrumentation-gated probe read against a logic measurement point.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "instrumentation-gated"
+      ],
+      "failure_modes": [
+        "refusal.logic.debug_invalid_request",
+        "refusal.logic.debug_access_denied",
+        "refusal.logic.debug_subject_not_found",
+        "refusal.logic.debug_requires_expand"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_state",
+          "ref_id": "dominium.state.logic.debug_state",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "probe_request",
+          "ref_id": "dominium.schema.logic.debug_probe_request@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_probe_artifacts",
+          "ref_id": "dominium.state.logic.debug_probe_artifact_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_probe",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_probe"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.debug_trace_request_rows",
+        "logic.debug_trace_session_rows",
+        "logic.debug_explain_artifact_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-7 process that opens a bounded trace session for deterministic logic analyzer capture.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "bounded-trace"
+      ],
+      "failure_modes": [
+        "refusal.logic.debug_invalid_request",
+        "refusal.logic.debug_sampling_policy_unregistered",
+        "refusal.logic.debug_trace_bounds_exceeded",
+        "refusal.logic.debug_requires_expand"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_state",
+          "ref_id": "dominium.state.logic.debug_state",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "trace_request",
+          "ref_id": "dominium.schema.logic.debug_trace_request@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_trace_sessions",
+          "ref_id": "dominium.state.logic.debug_trace_session_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_trace_start",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_start"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.debug_trace_session_rows",
+        "logic.debug_trace_artifact_rows",
+        "logic.protocol_summary_artifact_rows",
+        "logic.debug_explain_artifact_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-7 process that captures one deterministic logic-analyzer sample tick for an active trace session.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "bounded-trace"
+      ],
+      "failure_modes": [
+        "refusal.logic.debug_trace_session_not_found",
+        "refusal.logic.debug_subject_not_found",
+        "refusal.logic.debug_access_denied",
+        "refusal.logic.debug_protocol_unavailable"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_state",
+          "ref_id": "dominium.state.logic.debug_state",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "trace_tick_request",
+          "ref_id": "dominium.state.logic.debug_trace_session_rows",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_trace_artifacts",
+          "ref_id": "dominium.schema.logic.debug_trace_artifact@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_trace_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_tick"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic.debug_trace_session_rows",
+        "logic.debug_trace_artifact_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-7 process that finalizes a bounded logic trace artifact for provenance-friendly storage and compaction.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "bounded-trace"
+      ],
+      "failure_modes": [
+        "refusal.logic.debug_trace_session_not_found"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_state",
+          "ref_id": "dominium.state.logic.debug_state",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "trace_end_request",
+          "ref_id": "dominium.state.logic.debug_trace_session_rows",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "logic_debug_trace_artifacts",
+          "ref_id": "dominium.schema.logic.debug_trace_artifact@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_trace_end",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/debug/debug_engine.py::process_logic_trace_end"
+      }
+    },
+    {
+      "affected_fields": [
         "logic.network_runtime_state_rows",
         "logic.eval_record_rows",
         "logic.pending_signal_update_rows",
