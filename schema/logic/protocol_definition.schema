@@ -4,11 +4,11 @@ schema_version: 1.0.0
 stability: core
 
 PURPOSE:
-- Declare protocol hooks for LOGIC bus framing, arbitration, and error-detection metadata.
+- Declare protocol hooks for LOGIC bus framing, arbitration, addressing, and security metadata.
 
 NON-SEMANTICS:
-- This schema does not execute a protocol runtime.
-- It does not introduce transport semantics outside declared registries and future SIG/LOGIC engines.
+- This schema does not define a full routing stack.
+- It does not introduce transport semantics outside declared registries and SIG/LOGIC protocol runtime.
 
 REQUIRED SHAPE:
 record logic_protocol_definition
@@ -17,10 +17,12 @@ record logic_protocol_definition
     - bus_id: id
     - framing_rules_ref: text
     - arbitration_policy_id: id
+    - addressing_mode: enum(unicast|multicast|broadcast)
     - error_detection_policy_id: id
+    - security_policy_id: id
     - deterministic_fingerprint: sha256
     - extensions: map
 
 INVARIANTS:
 - `bus_id` must reference a declared bus definition.
-- Protocol hooks are declarative and deterministic only.
+- Addressing and security policy must be explicit and deterministic.

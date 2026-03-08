@@ -7,6 +7,39 @@
     "policies": [
       {
         "schema_version": "1.0.0",
+        "arbitration_policy_id": "arb.fixed_priority",
+        "mode": "fixed_priority",
+        "weight_source": "endpoint_id_ascending",
+        "tie_break_rule_id": "tie.lexicographic",
+        "extensions": {
+          "logic_protocol_ready": true,
+          "source": "LOGIC9-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "arbitration_policy_id": "arb.time_slice",
+        "mode": "time_slice",
+        "weight_source": "tick_mod_contenders",
+        "tie_break_rule_id": "tie.lexicographic",
+        "extensions": {
+          "logic_protocol_ready": true,
+          "source": "LOGIC9-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "arbitration_policy_id": "arb.token",
+        "mode": "token",
+        "weight_source": "token_holder_then_rotate",
+        "tie_break_rule_id": "tie.lexicographic",
+        "extensions": {
+          "logic_protocol_ready": true,
+          "source": "LOGIC9-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "arbitration_policy_id": "arb.equal_share",
         "mode": "equal_share",
         "weight_source": "none",
@@ -30,6 +63,9 @@
         "extensions": {}
       }
     ],
-    "extensions": {}
+    "extensions": {
+      "source": "LOGIC9-2",
+      "registry_driven": true
+    }
   }
 }

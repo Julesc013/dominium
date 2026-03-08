@@ -9,34 +9,55 @@
         "schema_version": "1.0.0",
         "protocol_id": "protocol.none",
         "description": "No framing or arbitration beyond the declared bus definition.",
+        "bus_id": "bus.protocol.none",
+        "framing_rules_ref": "frame.none",
+        "arbitration_policy_id": "arb.fixed_priority",
+        "addressing_mode": "unicast",
+        "error_detection_policy_id": "err.none",
+        "security_policy_id": "sec.none",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "LOGIC1-3"
+          "runtime_status": "operational",
+          "source": "LOGIC9-2"
         }
       },
       {
         "schema_version": "1.0.0",
         "protocol_id": "protocol.simple_frame_stub",
-        "description": "Stub framed-bus declaration with header and payload segmentation only.",
+        "description": "Deterministic framed bus with fixed-priority arbitration and unicast addressing.",
+        "bus_id": "bus.protocol.frame_stub",
+        "framing_rules_ref": "frame.simple.header_address_payload_checksum",
+        "arbitration_policy_id": "arb.fixed_priority",
+        "addressing_mode": "unicast",
+        "error_detection_policy_id": "err.checksum_stub",
+        "security_policy_id": "sec.auth_required_stub",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "LOGIC1-3",
-          "runtime_status": "stub"
+          "default_carrier_type_id": "carrier.electrical",
+          "runtime_status": "operational",
+          "source": "LOGIC9-2"
         }
       },
       {
         "schema_version": "1.0.0",
         "protocol_id": "protocol.bus_arbitration_stub",
-        "description": "Stub shared-bus arbitration declaration without execution runtime.",
+        "description": "Deterministic shared-bus framing with token arbitration and SIG-backed transport defaults.",
+        "bus_id": "bus.protocol.shared_stub",
+        "framing_rules_ref": "frame.shared_bus.header_address_payload_checksum",
+        "arbitration_policy_id": "arb.token",
+        "addressing_mode": "multicast",
+        "error_detection_policy_id": "err.checksum_stub",
+        "security_policy_id": "sec.encrypted_required_stub",
         "deterministic_fingerprint": "",
         "extensions": {
-          "source": "LOGIC1-3",
-          "runtime_status": "stub"
+          "default_carrier_type_id": "carrier.sig",
+          "runtime_status": "operational",
+          "source": "LOGIC9-2"
         }
       }
     ],
     "extensions": {
-      "source": "LOGIC1-3",
+      "source": "LOGIC9-2",
       "registry_driven": true
     }
   }
