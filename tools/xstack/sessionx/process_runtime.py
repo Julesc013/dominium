@@ -715,6 +715,7 @@ from src.geo.overlay import (
     normalize_property_patch_rows,
     overlay_manifest_hash,
     overlay_proof_surface,
+    validate_overlay_manifest_trust,
 )
 from src.meta.compile import (
     REFUSAL_COMPILE_INVALID,
@@ -4063,6 +4064,13 @@ def _ensure_overlay_manifest(state: dict, policy_context: Mapping[str, object] |
         )
     else:
         payload = normalize_overlay_manifest(payload)
+    validation = validate_overlay_manifest_trust(
+        overlay_manifest=payload,
+        resolved_packs=list((dict(policy_context or {})).get("resolved_packs") or []),
+        expected_pack_lock_hash=str((dict(policy_context or {})).get("pack_lock_hash", "")).strip(),
+    )
+    if str(validation.get("result", "")) == "complete":
+        payload = dict(validation.get("overlay_manifest") or payload)
     state["overlay_manifest"] = dict(payload)
     return dict(payload)
 

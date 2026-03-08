@@ -19,7 +19,7 @@ from tools.xstack.registry_compile.bundle_profile import resolve_bundle_selectio
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from worldgen.core.pipeline import run_worldgen_pipeline
 
-from src.geo import build_default_overlay_manifest, overlay_proof_surface
+from src.geo import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
 from src.meta.profile import resolve_effective_profile_snapshot
 
 from .common import (
@@ -1752,12 +1752,20 @@ def create_session_spec(
         activation_policy_id=str(activation_policy.get("policy_id", "")),
         max_compute_units_per_tick=int(budget_policy.get("max_compute_units_per_tick", 0) or 0),
     )
-    state_payload["overlay_manifest"] = build_default_overlay_manifest(
+    overlay_manifest = build_default_overlay_manifest(
         universe_id=calculated_universe_id,
         pack_lock_hash=str(lockfile_payload.get("pack_lock_hash", "")),
         save_id=save_token,
         generator_version_id=str(identity_payload.get("generator_version_id", "")).strip(),
     )
+    overlay_trust = validate_overlay_manifest_trust(
+        overlay_manifest=overlay_manifest,
+        resolved_packs=list(lockfile_payload.get("resolved_packs") or []),
+        expected_pack_lock_hash=str(lockfile_payload.get("pack_lock_hash", "")),
+    )
+    if str(overlay_trust.get("result", "")) != "complete":
+        return overlay_trust
+    state_payload["overlay_manifest"] = dict(overlay_trust.get("overlay_manifest") or {})
     state_payload["save_property_patches"] = []
     state_payload["overlay_merge_results"] = []
     overlay_surface = overlay_proof_surface(
