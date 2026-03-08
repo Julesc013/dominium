@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "geo.full.baseline.v1",
+  "description": "GEO-10 final hardening regression lock for multi-topology stress, replay, overlay identity, projections, geometry edits, pathing, and bounded reference fixtures.",
+  "scenario": {
+    "scenario_id": "scenario.geo10.stress.0615b5464e6f",
+    "scenario_seed": 91017,
+    "stress_report_fingerprint": "f5ae8f33f24e4576e4ec5159193a96cb5ce5819eba6cfe1facb1094306bc1955",
+    "cross_platform_determinism_hash": "c1480f8970a6df0d918ad2718d188901e88160ae91734af70114b5766a5cde39",
+    "aggregate_metrics": {
+      "compaction_marker_count": 6,
+      "degradation_count": 0,
+      "geometry_edit_event_count": 24,
+      "lens_redaction_count": 810,
+      "metric_cache_hit_rate_permille": 500,
+      "metric_cache_hits": 18,
+      "metric_query_count": 36,
+      "neighbor_enumeration_count": 6,
+      "overlay_merge_count": 6,
+      "path_expansions": 140,
+      "projection_view_cell_count": 405
+    },
+    "replay_window_fingerprint": "a92ae5ecb5aa156f2ebcac4bd4e9e2cc93584249cd4c0fce939be31022843572",
+    "replay_window_run_hash": "5149ffd9e0340cdd20b802189a0a9cc2a82a11008c5cfbd7ed6ded0c80d91837",
+    "overlay_identity_fingerprint": "6eba60c59376594d858b2d8aafdb757dcdd07bf9b3e274a7c8a882fe26c1b6b0",
+    "overlay_identity_run_hash": "ab16c693adf0ec58ebec32c6b6bc48e371a7cbaee9f8fff559117407585f3281"
+  },
+  "topology_suite_hashes": {
+    "geo10.suite.cube_portal": {
+      "suite_report_fingerprint": "6b097ae1ed32b645281c10e397e294eb02a0437209a2dfc6224e063a142fd170",
+      "cell_key_hash_chain": "19f4f5f4e21cd8573e5b29a0d81759161f797e10f43bdb8ce8d9ef8868abaa00",
+      "field_sample_hash": "070915b463df47494bc80067b68c894c4c7eaa20647bea3debbc3583b5b033ac",
+      "metric_query_hash_chain": "f605311314ce36bb7840bf1b18f7ba9df937911ca2dd603e30d8254f21edbe66",
+      "path_result_hash_chain": "212ef9aaba60901c5efcb555377056cda87792d047029e1dc90a7c29ebca62b5",
+      "projection_view_fingerprint": "b67d43cb045f017f2d72e5d41f89ebbf7fe7d960cf3d854c0b592fc9bb0561d9",
+      "overlay_manifest_hash": "2a43c83dc608e277b8e7552a2f43c318c76d3f0d63e9b59fcb0877b3161cbe03",
+      "overlay_merge_result_hash_chain": "86f1c0fc35f7d76c2d82b858728cbce8e3e426efbed159870798e85f732d4f68",
+      "overlay_identity_fingerprint": "7766961397c93fa6ef7518482c479e32a267c73c3b8794902937b6a6086b04f9",
+      "geometry_state_hash_chain": "88b9a33f0a46ff388a0d81a9617d37f97ea0519b97d1a01e8c968b6048795c6c",
+      "geometry_edit_event_hash_chain": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "worldgen_result_hash_chain": "0e4e26e07bc79722eed743ad2d2981efcced64a8279f7f99d88ad59723d47b6b",
+      "geo_degradation_hash_chain": "d237c54914e78d4dea24ff25df0035b7f67e24783d94647e56eba09d1f96ca71"
+    },
+    "geo10.suite.r2_factorio": {
+      "suite_report_fingerprint": "12e0fd65fb7d70396242909098c15528e3599e64ee893f6a3ef1a5a8d2c1440f",
+      "cell_key_hash_chain": "79cdec0834c84c28e239d8e742b1138520783b45bf304895ab3f29855ef06fba",
+      "field_sample_hash": "d9da5f84e371c6993854018fc8d6146a2643d5267f70b9cd77140f66b93b5399",
+      "metric_query_hash_chain": "6105eac25392b30d6ab10d5b7bd11d0f7c9c5ed08189127194c2c880f52f99b9",
+      "path_result_hash_chain": "72743ee4568a843fc3ba165dc64c1a575c7af0217ea5a992dffe40b9f88b9641",
+      "projection_view_fingerprint": "2787cb200db66f513cd94ba38fc31b9dcfcd30589025976b578669583fe9d2fd",
+      "overlay_manifest_hash": "e6d44a9e8b82f0d641d679e296cbe70edec9a3974cd5535660736d86c77a9eff",
+      "overlay_merge_result_hash_chain": "4856fafc99b6e20c0d8fa58ec8c2c73419eb9108dee9b1e6e17dd58d8f5aacf3",
+      "overlay_identity_fingerprint": "99ad5a0098cee8d59f5f472d09912cb904ee13ccf5e5e467d8bb64f11d62986f",
+      "geometry_state_hash_chain": "b54b106cd461dc0c3db2f29f30c7719c439de45bec95a6f870d66b2eae58d273",
+      "geometry_edit_event_hash_chain": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "worldgen_result_hash_chain": "23579629089d5a8a641a69d0595265124d6fc9457d8a1cd8c0ea3bf8ca6a0342",
+      "geo_degradation_hash_chain": "ded6299f0567d8ffffa20bd38f68dc27f60e02c0280bd7fa8bb01ef09a16ce32"
+    },
+    "geo10.suite.r3_grid": {
+      "suite_report_fingerprint": "dbd56fffcd3f61f16a0f8eca0470242e7706119a3a5e36374d093ec10dee79ca",
+      "cell_key_hash_chain": "f934c99ae43892245769d357086fc392fe547c1a0b9a022f40222db92a825e48",
+      "field_sample_hash": "c6bb747013851f8dc9c607555f56f8585f329d6e8cd454e1db3a90e10e03444e",
+      "metric_query_hash_chain": "666dd23cb65ac37cb305e840cf7072595b22d42321f0dc9dfcc28e10184dde3b",
+      "path_result_hash_chain": "d2d0258b91e89e54900eb216d8c24677ea857f3a65620652bc1117129ccaf68e",
+      "projection_view_fingerprint": "cc194701854c33d7095f855b7703e8f78b8a7103dd6cc3946db943d52931acdb",
+      "overlay_manifest_hash": "9729e8631456c1189a1f892a22696f85215c43c94842787caae64e84dfc06a61",
+      "overlay_merge_result_hash_chain": "c50f594160e3ec6e65959271be3c405a969d7f4e468566d90a0a1bf5337fc323",
+      "overlay_identity_fingerprint": "a25bde4cdeb60711224ad730a7c0eabc211f47d8aeeb81d03b3e051c28faf02e",
+      "geometry_state_hash_chain": "321e6b22abf756ff654c17fb57a167cd0d500f19035759434ec32ebf6e3d7879",
+      "geometry_edit_event_hash_chain": "5908cef8cd97e0d0466bf6e1703eea3cff07417aa64ebd45d9a4d1df0f81b1ec",
+      "worldgen_result_hash_chain": "ce3ef5d3f7c104a5dc652c41bb9c00b0700c10c02c34793ecea215c01c1b320c",
+      "geo_degradation_hash_chain": "563cd3bf6a4032d8f67a97e1e77edaea52ccca2ff89164fdb79487c8af933611"
+    },
+    "geo10.suite.r4_slice": {
+      "suite_report_fingerprint": "3aebd2e4db254fd32c2cc6c991cff95d61883d57cd994bcc461b2dfa21f447e7",
+      "cell_key_hash_chain": "b7619204dda5aba40fe6f4f1cafa91e703b1ed02402aad4e50fe19cdca0317a6",
+      "field_sample_hash": "e619410d783ca5e681cfc070d0bd93d0c0a11db26f3800c950d91b93ebafe309",
+      "metric_query_hash_chain": "25ce29faf4a8b4130d9f0c2ab34011d94890ce2c826bb1d44ea084e65c093e9f",
+      "path_result_hash_chain": "7e835c4f0dec5735aa40e45bacfb03e81a8a5e0df2d6446a3ae73db0b49787ac",
+      "projection_view_fingerprint": "9fcfea0acbeebec047e4a7f5784bb74e1a037f3f929de748d289aded5cc830d0",
+      "overlay_manifest_hash": "deb2ba6a3dea68704b53e51205a36453bbc4fdefd1e97ef8442c2d251f83204e",
+      "overlay_merge_result_hash_chain": "83e8f6ef7b815fbe27b6f2d035a03febe957239f20b7987057e896b20a168f07",
+      "overlay_identity_fingerprint": "9c875e36be59d6a3d67bec5bd2d57656695039275d39879b09895d699fba47d4",
+      "geometry_state_hash_chain": "607bea136ee171f612a399fcb02f46aec25a8012895fde5cc7573dbd060b7271",
+      "geometry_edit_event_hash_chain": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "worldgen_result_hash_chain": "6b6aedb03a998568756c5318dd4fd921f0e961dfe9958dc46070889b08edc4cf",
+      "geo_degradation_hash_chain": "3894e8802ded35038e947ed3ae2c07ff0f136c23a297b3cc25776f51a68c6362"
+    },
+    "geo10.suite.sphere_atlas": {
+      "suite_report_fingerprint": "f7c171b311e414e5cca30b3b898f2cd50ec27674b4e4b0006eafd2f2379e02b8",
+      "cell_key_hash_chain": "8dffe12ac78d88610fbc76a160f9fed319a937ff8b60bbff9d5a411bd0f2c306",
+      "field_sample_hash": "1fee5831a9990f980939f2eea4775fdd42ad895241c9fa059eaeee4fe39cd288",
+      "metric_query_hash_chain": "1ebf87ad976b807c2d7532f8f1e3598e27e514369118973dcb742fe3467e4662",
+      "path_result_hash_chain": "f2ffeb28abd1acd65d4e0a1af113c3f37699af7337e1cf42efafe0f35f626e51",
+      "projection_view_fingerprint": "8dbbee58c468ba59087a4087620c4cb4a809c35a08f5a59fdd264f16a2fd7407",
+      "overlay_manifest_hash": "6b188b97bf9dd40aa20bba42a8253ab6237c60446701952bbef9118091f7c4d9",
+      "overlay_merge_result_hash_chain": "c9f5b76119df9e2544183e3c376ac28fc35d39f869ee5ceb11d2e793a2d0456c",
+      "overlay_identity_fingerprint": "9d09942cc871fb9c5c9a85f433d38fe7b316c6c03272faac0b048ff2fcf38a6a",
+      "geometry_state_hash_chain": "3748f1a484bc41eb9a2154d0a9b0a2a2d850250f93e38158cc612f2b67e98a23",
+      "geometry_edit_event_hash_chain": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "worldgen_result_hash_chain": "4a6980e1cae12b929e9cd892dbe8cd033be32e07913e4c7e1e2eb22d3b4299d9",
+      "geo_degradation_hash_chain": "64df8ed329f7646d0dcd9a4931447bdb8605a332b716a003892aca3e3f5c96ce"
+    },
+    "geo10.suite.torus_r2": {
+      "suite_report_fingerprint": "e2f8aca0d6d8feb100e62d41b4cad281d6ab90a013ccfff9004758da63924570",
+      "cell_key_hash_chain": "8707656bc8599230e4c410ef3022be5f982cb183af8b93c9468cea704619fb83",
+      "field_sample_hash": "fff022d5902e4d131d9efae794f7125d3423703a4d41e8f154a1f107e23f7746",
+      "metric_query_hash_chain": "805016a21dfb4dcb7daeef38ebcd503c0a33b78ded37d45055381c9482e59e63",
+      "path_result_hash_chain": "bd5df55e2fb6a23269bc31ffab22baa53742d1a4911dd82b684801d1c5f04df8",
+      "projection_view_fingerprint": "664bcc6625703cbe9e527c9bce5f66409e07ab84cc157aefbfcc10fcda3394ac",
+      "overlay_manifest_hash": "0d2e22f0a94693d6ab9963352ba60322949721a052cc6376a8a8af873e883b70",
+      "overlay_merge_result_hash_chain": "48e4f77842e4b9fda05c6996b18ca13b0c6892804055ead31c14a5c611c43b5c",
+      "overlay_identity_fingerprint": "40af9ba6e30fa42543e5bbc28a99a443f787cf2892679570a93ae0a2d49217d2",
+      "geometry_state_hash_chain": "63d2cf900806af1609fa829f4df2805b5a84c17b44d74ab1bb16369eb61472fc",
+      "geometry_edit_event_hash_chain": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "worldgen_result_hash_chain": "9bcba7fd862d9019e267dc5d5014f20b6825e5afd85a4821029454cdf22d747b",
+      "geo_degradation_hash_chain": "95128ec3daa5809840e9ac348b62721ad98baf59bd32ebb1e4ce486ecae92d96"
+    }
+  },
+  "overlay_identity_suite": {
+    "deterministic_fingerprint": "6eba60c59376594d858b2d8aafdb757dcdd07bf9b3e274a7c8a882fe26c1b6b0",
+    "run_hash": "ab16c693adf0ec58ebec32c6b6bc48e371a7cbaee9f8fff559117407585f3281",
+    "suite_fingerprints": {
+      "geo10.suite.cube_portal": "7766961397c93fa6ef7518482c479e32a267c73c3b8794902937b6a6086b04f9",
+      "geo10.suite.r2_factorio": "99ad5a0098cee8d59f5f472d09912cb904ee13ccf5e5e467d8bb64f11d62986f",
+      "geo10.suite.r3_grid": "a25bde4cdeb60711224ad730a7c0eabc211f47d8aeeb81d03b3e051c28faf02e",
+      "geo10.suite.r4_slice": "9c875e36be59d6a3d67bec5bd2d57656695039275d39879b09895d699fba47d4",
+      "geo10.suite.sphere_atlas": "9d09942cc871fb9c5c9a85f433d38fe7b316c6c03272faac0b048ff2fcf38a6a",
+      "geo10.suite.torus_r2": "40af9ba6e30fa42543e5bbc28a99a443f787cf2892679570a93ae0a2d49217d2"
+    }
+  },
+  "geometry_edit_suite": {
+    "replay_window_fingerprint": "a92ae5ecb5aa156f2ebcac4bd4e9e2cc93584249cd4c0fce939be31022843572",
+    "geometry_state_hashes": {
+      "geo10.suite.cube_portal": "88b9a33f0a46ff388a0d81a9617d37f97ea0519b97d1a01e8c968b6048795c6c",
+      "geo10.suite.r2_factorio": "b54b106cd461dc0c3db2f29f30c7719c439de45bec95a6f870d66b2eae58d273",
+      "geo10.suite.r3_grid": "321e6b22abf756ff654c17fb57a167cd0d500f19035759434ec32ebf6e3d7879",
+      "geo10.suite.r4_slice": "607bea136ee171f612a399fcb02f46aec25a8012895fde5cc7573dbd060b7271",
+      "geo10.suite.sphere_atlas": "3748f1a484bc41eb9a2154d0a9b0a2a2d850250f93e38158cc612f2b67e98a23",
+      "geo10.suite.torus_r2": "63d2cf900806af1609fa829f4df2805b5a84c17b44d74ab1bb16369eb61472fc"
+    },
+    "geometry_edit_event_hashes": {
+      "geo10.suite.cube_portal": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "geo10.suite.r2_factorio": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "geo10.suite.r3_grid": "5908cef8cd97e0d0466bf6e1703eea3cff07417aa64ebd45d9a4d1df0f81b1ec",
+      "geo10.suite.r4_slice": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "geo10.suite.sphere_atlas": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a",
+      "geo10.suite.torus_r2": "c9e9394748dad893c6521abf296c6284b23211612b35f914c3f0724030b21e5a"
+    }
+  },
+  "projection_view_suite": {
+    "replay_window_fingerprint": "a92ae5ecb5aa156f2ebcac4bd4e9e2cc93584249cd4c0fce939be31022843572",
+    "projection_view_fingerprints": {
+      "geo10.suite.cube_portal": "b67d43cb045f017f2d72e5d41f89ebbf7fe7d960cf3d854c0b592fc9bb0561d9",
+      "geo10.suite.r2_factorio": "2787cb200db66f513cd94ba38fc31b9dcfcd30589025976b578669583fe9d2fd",
+      "geo10.suite.r3_grid": "cc194701854c33d7095f855b7703e8f78b8a7103dd6cc3946db943d52931acdb",
+      "geo10.suite.r4_slice": "9fcfea0acbeebec047e4a7f5784bb74e1a037f3f929de748d289aded5cc830d0",
+      "geo10.suite.sphere_atlas": "8dbbee58c468ba59087a4087620c4cb4a809c35a08f5a59fdd264f16a2fd7407",
+      "geo10.suite.torus_r2": "664bcc6625703cbe9e527c9bce5f66409e07ab84cc157aefbfcc10fcda3394ac"
+    },
+    "lens_redaction_count": 810
+  },
+  "pathing_suite": {
+    "path_result_hashes": {
+      "geo10.suite.cube_portal": "212ef9aaba60901c5efcb555377056cda87792d047029e1dc90a7c29ebca62b5",
+      "geo10.suite.r2_factorio": "72743ee4568a843fc3ba165dc64c1a575c7af0217ea5a992dffe40b9f88b9641",
+      "geo10.suite.r3_grid": "d2d0258b91e89e54900eb216d8c24677ea857f3a65620652bc1117129ccaf68e",
+      "geo10.suite.r4_slice": "7e835c4f0dec5735aa40e45bacfb03e81a8a5e0df2d6446a3ae73db0b49787ac",
+      "geo10.suite.sphere_atlas": "f2ffeb28abd1acd65d4e0a1af113c3f37699af7337e1cf42efafe0f35f626e51",
+      "geo10.suite.torus_r2": "bd5df55e2fb6a23269bc31ffab22baa53742d1a4911dd82b684801d1c5f04df8"
+    },
+    "aggregate_path_expansions": 140
+  },
+  "reference_suite": {
+    "report_path": "build/meta/geo_reference_suite.json",
+    "deterministic_fingerprint": "4e5891fcec7c014a58b14685eee0b76bcd33d8f5999961f44c6f88733d83d635",
+    "evaluator_ids": [
+      "ref.metric_distance_small",
+      "ref.neighborhood_small",
+      "ref.overlay_merge_small"
+    ],
+    "evaluator_hashes": {
+      "ref.metric_distance_small": {
+        "run_record_fingerprint": "24fc05eaf593e946c69ae0b2bb02cb8db4b2fa9630b7e54617843ea260f35f1d",
+        "runtime_output_hash": "fc9f8540959ae2f250d70c4cac32475dd10551ef8bf0a45717a886c70f631e3d",
+        "reference_output_hash": "fc9f8540959ae2f250d70c4cac32475dd10551ef8bf0a45717a886c70f631e3d"
+      },
+      "ref.neighborhood_small": {
+        "run_record_fingerprint": "5c6fda2d39dc524e4644abee407214464d2204aa6ea4789a272a161d2acec144",
+        "runtime_output_hash": "808778de33649ae72bece4ef7ce2c3bb3c7c90e70642b330f7347bbd194de349",
+        "reference_output_hash": "808778de33649ae72bece4ef7ce2c3bb3c7c90e70642b330f7347bbd194de349"
+      },
+      "ref.overlay_merge_small": {
+        "run_record_fingerprint": "2cefbc7afd2f0b640a1e3936e9bb602f0e8ce7668a6e6592b66190f52472a7e1",
+        "runtime_output_hash": "574fe8b67ae22e751a031a09bbbdb068cf88f60d733dc3be9dcc3fedff3c8dd9",
+        "reference_output_hash": "574fe8b67ae22e751a031a09bbbdb068cf88f60d733dc3be9dcc3fedff3c8dd9"
+      }
+    }
+  },
+  "update_policy": {
+    "required_commit_tag": "GEO-REGRESSION-UPDATE",
+    "notes": "Baseline updates require rerunning GEO-10 stress, replay, overlay identity, and bounded reference fixtures under explicit GEO-REGRESSION-UPDATE review."
+  },
+  "extensions": {
+    "generated_from": {
+      "stress_report": "build/geo/geo10_stress_report.json",
+      "replay_window": "build/geo/geo10_replay_window.json",
+      "overlay_identity": "build/geo/geo10_overlay_identity.json",
+      "reference_suite": "build/meta/geo_reference_suite.json"
+    },
+    "lock_scope": "geo_full_hardening"
+  },
+  "deterministic_fingerprint": "b64f1e15940873bd919f0c7919d752d6b0d4e9b83d6808dd8d8e7486efe6b0ac"
+}
