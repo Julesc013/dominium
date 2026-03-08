@@ -1,0 +1,24 @@
+SCHEMA: geo/cell_refinement_relation.schema
+schema_id: dominium.schema.geo.cell_refinement_relation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic parent-child lineage between coarse and refined GEO cell keys.
+- Preserve explicit refinement ancestry for replay, sharding, and later world detail expansion.
+
+NON-SEMANTICS:
+- This schema does not perform world generation.
+- This schema does not imply a mandatory partition family.
+
+REQUIRED SHAPE:
+record cell_refinement_relation
+  required:
+    - parent_cell_key: map
+    - child_cell_key: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- parent-child mapping must be deterministic and profile-declared
+- child refinement must preserve lineage back to the parent cell

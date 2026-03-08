@@ -1526,7 +1526,21 @@
         "1.0.0"
       ]
     },
+    "geo_cell_key": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "metric_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "object_identity": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
@@ -1541,6 +1555,13 @@
       ]
     },
     "projection_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "cell_refinement_relation": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

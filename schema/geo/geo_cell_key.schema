@@ -1,0 +1,28 @@
+SCHEMA: geo/geo_cell_key.schema
+schema_id: dominium.schema.geo.geo_cell_key
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic partition address for a topology-aware spatial cell.
+- Provide the stable structured key used by GEO-1 indexing and identity derivation.
+
+NON-SEMANTICS:
+- This schema does not generate world content.
+- This schema does not authorize ad hoc string cell keys as canonical identity.
+
+REQUIRED SHAPE:
+record geo_cell_key
+  required:
+    - partition_profile_id: id
+    - topology_profile_id: id
+    - chart_id: id
+    - index_tuple: [i64]
+    - refinement_level: u32
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- key derivation must be deterministic for identical profile inputs and positions
+- index_tuple ordering must be stable and canonical
+- chart_id must remain explicit for multi-chart and atlas spaces

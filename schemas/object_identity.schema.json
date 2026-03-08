@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Object Identity Schema",
+  "version": "1.0.0",
+  "description": "Canonical GEO-1 derived spatial object identity envelope.",
+  "x-doc-ref": [
+    "docs/geo/SPATIAL_INDEX_AND_IDENTITY.md",
+    "docs/geo/GEO_CONSTITUTION.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "$defs": {
+    "geo_cell_key": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "partition_profile_id",
+        "topology_profile_id",
+        "chart_id",
+        "index_tuple",
+        "refinement_level",
+        "deterministic_fingerprint",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "partition_profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topology_profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chart_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "index_tuple": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          }
+        },
+        "refinement_level": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deterministic_fingerprint": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "schema_version",
+    "object_kind_id",
+    "geo_cell_key",
+    "local_subkey",
+    "object_id_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "object_kind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "geo_cell_key": {
+      "$ref": "#/$defs/geo_cell_key"
+    },
+    "local_subkey": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "integer",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807
+        }
+      ]
+    },
+    "object_id_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "object_kind_id": "kind.star_system",
+      "geo_cell_key": {
+        "schema_version": "1.0.0",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "chart_id": "chart.global.r3",
+        "index_tuple": [
+          12,
+          -4,
+          99
+        ],
+        "refinement_level": 1,
+        "deterministic_fingerprint": "4e81c78cd81e5c09af48fd1f47283ca9d131fcdacb40e8d19f9ac55fe3b748f2",
+        "extensions": {}
+      },
+      "local_subkey": "system:0",
+      "object_id_hash": "27ca321e0801bb7cc8d93c1930e744ff111671e9cf807a17057d6f6dcf1a95ff",
+      "deterministic_fingerprint": "8261381f7a22a383d3f0dd3c0f195af4b10bcf6408a0f18f9f2e04fc884f4556",
+      "extensions": {}
+    }
+  ]
+}

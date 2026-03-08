@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cell Refinement Relation Schema",
+  "version": "1.0.0",
+  "description": "Canonical GEO-1 parent-child lineage relation between spatial cell keys.",
+  "x-doc-ref": [
+    "docs/geo/SPATIAL_INDEX_AND_IDENTITY.md",
+    "docs/geo/GEO_CONSTITUTION.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "$defs": {
+    "geo_cell_key": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "partition_profile_id",
+        "topology_profile_id",
+        "chart_id",
+        "index_tuple",
+        "refinement_level",
+        "deterministic_fingerprint",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "partition_profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topology_profile_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chart_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "index_tuple": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          }
+        },
+        "refinement_level": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deterministic_fingerprint": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": [
+    "schema_version",
+    "parent_cell_key",
+    "child_cell_key",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "parent_cell_key": {
+      "$ref": "#/$defs/geo_cell_key"
+    },
+    "child_cell_key": {
+      "$ref": "#/$defs/geo_cell_key"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "parent_cell_key": {
+        "schema_version": "1.0.0",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "chart_id": "chart.global.r3",
+        "index_tuple": [
+          12,
+          -4,
+          99
+        ],
+        "refinement_level": 0,
+        "deterministic_fingerprint": "f6b9e8cc870fdf2e8c48e148cf611dbf6fbc85b3a59ff4c6d947136bb460e973",
+        "extensions": {}
+      },
+      "child_cell_key": {
+        "schema_version": "1.0.0",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "chart_id": "chart.global.r3",
+        "index_tuple": [
+          24,
+          -8,
+          198
+        ],
+        "refinement_level": 1,
+        "deterministic_fingerprint": "3df04ccaa85fc4c60d8022945975d55605cb7ddd4f72d686c0d509b3a9dd7bda",
+        "extensions": {}
+      },
+      "deterministic_fingerprint": "0c40352106c42d0d5b34f8bf25740f4f93359acc8da6987a690377a897ed03b2",
+      "extensions": {}
+    }
+  ]
+}
