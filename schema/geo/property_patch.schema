@@ -17,7 +17,7 @@ record property_patch
     - target_object_id: id
     - property_path: tag
     - operation: enum(set|add|remove|replace)
-    - value: map
+    - value: any
     - originating_layer_id: id
     - deterministic_fingerprint: sha256
     - extensions: map

@@ -706,6 +706,16 @@ from src.geo.worldgen import (
     worldgen_request_hash,
     worldgen_result_proof_surface,
 )
+from src.geo.overlay import (
+    build_default_overlay_manifest,
+    build_property_patch,
+    normalize_effective_object_view_rows,
+    normalize_overlay_manifest,
+    normalize_property_patch,
+    normalize_property_patch_rows,
+    overlay_manifest_hash,
+    overlay_proof_surface,
+)
 from src.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
@@ -877,6 +887,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.geometry_replace": "entitlement.control.admin",
     "process.geometry_cut": "entitlement.control.admin",
     "process.worldgen_request": "entitlement.control.admin",
+    "process.overlay_save_patch": "entitlement.control.admin",
     "process.mobility_network_create_from_formalization": "entitlement.control.admin",
     "process.mobility_network_edit": "entitlement.control.admin",
     "process.switch_set_state": "entitlement.control.admin",
@@ -1100,6 +1111,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.geometry_replace": "operator",
     "process.geometry_cut": "operator",
     "process.worldgen_request": "operator",
+    "process.overlay_save_patch": "operator",
     "process.mobility_network_create_from_formalization": "operator",
     "process.mobility_network_edit": "operator",
     "process.switch_set_state": "operator",
@@ -1269,6 +1281,7 @@ CONTROL_PROCESS_IDS = {
     "process.geometry_replace",
     "process.geometry_cut",
     "process.worldgen_request",
+    "process.overlay_save_patch",
     "process.mobility_network_create_from_formalization",
     "process.mobility_network_edit",
     "process.switch_set_state",
@@ -4036,6 +4049,76 @@ def _refresh_worldgen_hash_chains(state: dict) -> None:
     state["worldgen_request_hash_chain"] = str(surface.get("worldgen_request_hash_chain", "")).strip()
     state["worldgen_result_hash_chain"] = str(surface.get("worldgen_result_hash_chain", "")).strip()
     state["worldgen_spawned_object_hash_chain"] = str(surface.get("worldgen_spawned_object_hash_chain", "")).strip()
+
+
+def _ensure_overlay_manifest(state: dict, policy_context: Mapping[str, object] | None = None) -> dict:
+    payload = dict(state.get("overlay_manifest") or {})
+    if not payload:
+        universe_identity = dict(state.get("universe_identity") or {})
+        payload = build_default_overlay_manifest(
+            universe_id=str(state.get("universe_id", "")).strip() or str(universe_identity.get("universe_id", "")).strip() or "universe.unknown",
+            pack_lock_hash=str((dict(policy_context or {})).get("pack_lock_hash", "")).strip() or "0" * 64,
+            save_id=str(state.get("save_id", "")).strip() or str((dict(policy_context or {})).get("save_id", "")).strip() or "save.default",
+            generator_version_id=str(universe_identity.get("generator_version_id", "")).strip(),
+        )
+    else:
+        payload = normalize_overlay_manifest(payload)
+    state["overlay_manifest"] = dict(payload)
+    return dict(payload)
+
+
+def _ensure_save_property_patch_rows(state: dict) -> List[dict]:
+    rows = normalize_property_patch_rows(state.get("save_property_patches"))
+    state["save_property_patches"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_overlay_merge_result_rows(state: dict) -> List[dict]:
+    rows = normalize_effective_object_view_rows(state.get("overlay_merge_results"))
+    state["overlay_merge_results"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _append_overlay_patch_artifact(state: dict, patch_row: Mapping[str, object]) -> None:
+    row = normalize_property_patch(patch_row)
+    patch_hash = str(row.get("deterministic_fingerprint", "")).strip()
+    if not patch_hash:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.overlay_patch.{}".format(patch_hash[:16]),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.overlay.property_patch",
+            "property_patch": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_save_property_patch(state: dict, patch_row: Mapping[str, object]) -> dict:
+    normalized = normalize_property_patch(patch_row)
+    merged = list(_ensure_save_property_patch_rows(state))
+    patch_hash = str(normalized.get("deterministic_fingerprint", "")).strip()
+    merged = [row for row in merged if str(dict(row).get("deterministic_fingerprint", "")).strip() != patch_hash] + [normalized]
+    merged = normalize_property_patch_rows(merged)
+    state["save_property_patches"] = [dict(row) for row in merged]
+    _append_overlay_patch_artifact(state, normalized)
+    return dict(next((row for row in merged if str(row.get("deterministic_fingerprint", "")).strip() == patch_hash), normalized))
+
+
+def _refresh_overlay_hash_chains(state: dict, policy_context: Mapping[str, object] | None = None) -> None:
+    surface = overlay_proof_surface(
+        overlay_manifest=_ensure_overlay_manifest(state, policy_context=policy_context),
+        property_patches=_ensure_save_property_patch_rows(state),
+        effective_object_views=_ensure_overlay_merge_result_rows(state),
+    )
+    state["overlay_manifest_hash"] = str(surface.get("overlay_manifest_hash", "")).strip()
+    state["property_patch_hash_chain"] = str(surface.get("property_patch_hash_chain", "")).strip()
+    state["overlay_merge_result_hash_chain"] = str(surface.get("overlay_merge_result_hash_chain", "")).strip()
 
 
 def _consume_geometry_material_batches(
@@ -44333,6 +44416,75 @@ def execute_intent(
             "worldgen_request_hash_chain": str(state.get("worldgen_request_hash_chain", "")).strip(),
             "worldgen_result_hash_chain": str(state.get("worldgen_result_hash_chain", "")).strip(),
             "worldgen_spawned_object_hash_chain": str(state.get("worldgen_spawned_object_hash_chain", "")).strip(),
+        }
+    elif process_id == "process.overlay_save_patch":
+        overlay_manifest = _ensure_overlay_manifest(state, policy_context=policy_context)
+        overlay_layers = dict(
+            (
+                str(row.get("layer_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(overlay_manifest.get("layers") or [])
+            if isinstance(row, Mapping) and str(row.get("layer_id", "")).strip()
+        )
+        raw_patch = dict(inputs.get("property_patch") or {}) if isinstance(inputs.get("property_patch"), Mapping) else {}
+        if not raw_patch:
+            try:
+                raw_patch = build_property_patch(
+                    target_object_id=str(inputs.get("target_object_id", "")).strip(),
+                    property_path=str(inputs.get("property_path", "")).strip(),
+                    operation=str(inputs.get("operation", "")).strip() or "set",
+                    value=inputs.get("value"),
+                    originating_layer_id=str(inputs.get("originating_layer_id", "")).strip() or "save.patch",
+                    extensions={
+                        "reason": str(inputs.get("reason", "")).strip(),
+                        **(dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {}),
+                    },
+                )
+            except ValueError:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.overlay_save_patch inputs are invalid",
+                    "Provide a canonical GEO-9 property patch or explicit target_object_id/property_path inputs.",
+                    {"process_id": process_id},
+                    "$.intent.inputs",
+                )
+        try:
+            property_patch = normalize_property_patch(raw_patch)
+        except ValueError:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "property_patch is invalid",
+                "Use the GEO-9 property_patch schema contract.",
+                {"process_id": process_id},
+                "$.intent.inputs.property_patch",
+            )
+        layer_id = str(property_patch.get("originating_layer_id", "")).strip()
+        layer_row = dict(overlay_layers.get(layer_id) or {})
+        if not layer_row:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "save patch references unknown overlay layer",
+                "Use an originating_layer_id declared in overlay_manifest.",
+                {"originating_layer_id": layer_id},
+                "$.intent.inputs.property_patch.originating_layer_id",
+            )
+        if str(layer_row.get("layer_kind", "")).strip() != "save":
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.overlay_save_patch may only write to save overlay layers",
+                "Target a save-kind layer such as save.patch.",
+                {"originating_layer_id": layer_id, "layer_kind": str(layer_row.get("layer_kind", "")).strip()},
+                "$.intent.inputs.property_patch.originating_layer_id",
+            )
+        property_patch = _append_save_property_patch(state, property_patch)
+        _refresh_overlay_hash_chains(state, policy_context=policy_context)
+        result_metadata = {
+            "target_object_id": str(property_patch.get("target_object_id", "")).strip(),
+            "property_path": str(property_patch.get("property_path", "")).strip(),
+            "originating_layer_id": layer_id,
+            "overlay_manifest_hash": str(state.get("overlay_manifest_hash", "")).strip(),
+            "property_patch_hash_chain": str(state.get("property_patch_hash_chain", "")).strip(),
         }
     elif process_id in {
         "process.geometry_remove",
