@@ -349,6 +349,9 @@ from analyzers import e322_unbounded_trace_smell
 from analyzers import e323_random_failure_smell
 from analyzers import e324_silent_noise_smell
 from analyzers import e325_security_bypass_smell
+from analyzers import e326_nondeterministic_arbitration_smell
+from analyzers import e327_protocol_security_bypass_smell
+from analyzers import e328_protocol_bypass_smell
 
 
 ANALYZERS = (
@@ -701,6 +704,9 @@ ANALYZERS = (
     e323_random_failure_smell,
     e324_silent_noise_smell,
     e325_security_bypass_smell,
+    e326_nondeterministic_arbitration_smell,
+    e327_protocol_security_bypass_smell,
+    e328_protocol_bypass_smell,
 )
 
 

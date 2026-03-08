@@ -513,6 +513,9 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-COMPILED-LOGIC-REQUIRES-PROOF",
     "INV-NO-SILENT-FALLBACK",
     "INV-LOGIC-COMPILE-DETERMINISTIC",
+    "INV-PROTOCOL-ARBITRATION-DETERMINISTIC",
+    "INV-PROTOCOL-SECURITY-ENFORCED",
+    "INV-NO-DIRECT-FRAME-DELIVERY",
     "INV-STATE-VECTOR-DECLARED-FOR-SYSTEM",
     "INV-NO-UNDECLARED-STATE-MUTATION",
     "INV-ALL-FAILURES-LOGGED",
@@ -4817,6 +4820,186 @@ def _append_logic_debug_invariant_findings(
                 )
             )
             break
+
+
+def _append_logic_protocol_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    deterministic_rule_id = "INV-PROTOCOL-ARBITRATION-DETERMINISTIC"
+    security_rule_id = "INV-PROTOCOL-SECURITY-ENFORCED"
+    bypass_rule_id = "INV-NO-DIRECT-FRAME-DELIVERY"
+
+    required_files = (
+        ("docs/logic/PROTOCOL_LAYER_MODEL.md", deterministic_rule_id),
+        ("docs/logic/PROTOCOL_SHARD_RULES.md", bypass_rule_id),
+        ("schema/logic/protocol_frame.schema", deterministic_rule_id),
+        ("schema/logic/arbitration_state.schema", deterministic_rule_id),
+        ("schema/logic/protocol_event_record.schema", deterministic_rule_id),
+        ("data/registries/arbitration_policy_registry.json", deterministic_rule_id),
+        ("data/registries/error_detection_policy_registry.json", deterministic_rule_id),
+        ("src/logic/protocol/protocol_engine.py", bypass_rule_id),
+        ("tools/logic/tool_replay_protocol_window.py", deterministic_rule_id),
+        ("tools/logic/tool_run_logic_protocol_stress.py", deterministic_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-9 protocol enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_rel = "docs/logic/PROTOCOL_LAYER_MODEL.md"
+    doctrine_text = _file_text(repo_root, doctrine_rel).lower()
+    for token, rule_id, message in (
+        ("framing", deterministic_rule_id, "protocol doctrine must define framing"),
+        ("arbitration", deterministic_rule_id, "protocol doctrine must define arbitration"),
+        ("addressing", deterministic_rule_id, "protocol doctrine must define addressing"),
+        ("carrier.sig", bypass_rule_id, "protocol doctrine must define SIG-backed transport"),
+        ("checksum", deterministic_rule_id, "protocol doctrine must define checksum stub"),
+        ("security", security_rule_id, "protocol doctrine must define security delegation"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=doctrine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    shard_rel = "docs/logic/PROTOCOL_SHARD_RULES.md"
+    shard_text = _file_text(repo_root, shard_rel).lower()
+    for token, rule_id, message in (
+        ("boundary", bypass_rule_id, "protocol shard rules must require boundary-safe exchange"),
+        ("carrier.sig", bypass_rule_id, "protocol shard rules must allow SIG-backed transport"),
+        ("no direct synchronous", bypass_rule_id, "protocol shard rules must forbid same-tick direct cross-shard delivery"),
+    ):
+        if token in shard_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=shard_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    explain_rel = "data/registries/explain_contract_registry.json"
+    explain_text = _file_text(repo_root, explain_rel)
+    for token in ("explain.protocol_arbitration_loss", "explain.protocol_security_block", "explain.protocol_corruption"):
+        if token in explain_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_rel,
+                line_number=1,
+                snippet=token,
+                message="protocol explain contracts must be registered",
+                rule_id=security_rule_id if "security" in token else deterministic_rule_id,
+            )
+        )
+
+    engine_rel = "src/logic/protocol/protocol_engine.py"
+    engine_text = _file_text(repo_root, engine_rel)
+    for token, rule_id, message in (
+        ("build_protocol_frame_from_delivery(", deterministic_rule_id, "protocol engine must build deterministic frames"),
+        ("arb.fixed_priority", deterministic_rule_id, "protocol engine must implement fixed-priority arbitration"),
+        ("arb.time_slice", deterministic_rule_id, "protocol engine must implement time-slice arbitration"),
+        ("arb.token", deterministic_rule_id, "protocol engine must implement token arbitration"),
+        ("security_policy_id", security_rule_id, "protocol engine must enforce security policies"),
+        ("process_signal_send(", bypass_rule_id, "SIG-backed protocol delivery must route through process_signal_send"),
+        ("logic_protocol_target_slots", bypass_rule_id, "protocol delivery must retain target-slot metadata through SIG transport"),
+    ):
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    eval_rel = "src/logic/eval/logic_eval_engine.py"
+    eval_text = _file_text(repo_root, eval_rel)
+    for token, rule_id, message in (
+        ("transport_logic_sig_receipts(", bypass_rule_id, "logic evaluation must flush SIG-backed protocol receipts through the protocol transport seam"),
+        ("arbitrate_logic_protocol_frames(", deterministic_rule_id, "logic evaluation must arbitrate protocol frames deterministically"),
+    ):
+        if token in eval_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=eval_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, rule_id, message in (
+        ("signal_transport_state=", bypass_rule_id, "session runtime must pass SIG transport state into logic evaluation"),
+        ("arbitration_policy_registry_payload=", deterministic_rule_id, "session runtime must load arbitration policies for logic protocol evaluation"),
+        ("error_detection_policy_registry_payload=", deterministic_rule_id, "session runtime must load error detection policies for logic protocol evaluation"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token.rstrip("="),
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    replay_rel = "tools/logic/tool_replay_protocol_window.py"
+    replay_text = _file_text(repo_root, replay_rel)
+    for token in (
+        "replay_protocol_window_from_payload",
+        "logic_protocol_frame_hash_chain",
+        "logic_protocol_event_hash_chain",
+        "logic_arbitration_state_hash_chain",
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_rel,
+                line_number=1,
+                snippet=token,
+                message="protocol replay tool must expose protocol proof surfaces",
+                rule_id=deterministic_rule_id,
+            )
+        )
 
 
 def _derived_artifact_files(repo_root: str) -> List[str]:
@@ -26700,6 +26883,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_compile_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_protocol_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
