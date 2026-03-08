@@ -114,6 +114,12 @@ def _geo_identity_extensions(
     )
     if geo_object_id_hashes:
         out["geo_object_id_hashes"] = geo_object_id_hashes
+    frame_graph_hash_chain = str(ext.get("frame_graph_hash_chain", surface.get("frame_graph_hash_chain", ""))).strip()
+    if frame_graph_hash_chain:
+        out["frame_graph_hash_chain"] = frame_graph_hash_chain
+    position_ref_hash_chain = str(ext.get("position_ref_hash_chain", surface.get("position_ref_hash_chain", ""))).strip()
+    if position_ref_hash_chain:
+        out["position_ref_hash_chain"] = position_ref_hash_chain
     return out
 
 
