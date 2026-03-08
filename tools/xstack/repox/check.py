@@ -16898,6 +16898,127 @@ def _append_geo_portability_invariant_findings(
         )
 
 
+def _append_geo_identity_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    index_rel = "src/geo/index/geo_index_engine.py"
+    object_rel = "src/geo/index/object_id_engine.py"
+    geo_init_rel = "src/geo/__init__.py"
+    tool_rel = "tools/geo/tool_verify_id_stability.py"
+    registry_rel = "data/registries/object_kind_registry.json"
+
+    index_text = _file_text(repo_root, index_rel)
+    if "geo_cell_key_from_position(" not in index_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=index_rel,
+                line_number=1,
+                snippet="geo_cell_key_from_position(",
+                message="spatial indexing must route through canonical GEO cell-key derivation",
+                rule_id="INV-NO-ADHOC-SPATIAL-KEYS",
+            )
+        )
+    if "geo_refine_cell_key(" not in index_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=index_rel,
+                line_number=1,
+                snippet="geo_refine_cell_key(",
+                message="spatial refinement lineage must route through canonical GEO cell-key refinement",
+                rule_id="INV-NO-ADHOC-SPATIAL-KEYS",
+            )
+        )
+
+    object_text = _file_text(repo_root, object_rel)
+    if "geo_object_id(" not in object_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=object_rel,
+                line_number=1,
+                snippet="geo_object_id(",
+                message="spatial object identity must route through the GEO object-id engine",
+                rule_id="INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS",
+            )
+        )
+    for required_token in (
+        '"universe_identity_hash"',
+        '"topology_profile_id"',
+        '"partition_profile_id"',
+        '"object_kind_id"',
+        '"local_subkey"',
+    ):
+        if required_token in object_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=object_rel,
+                line_number=1,
+                snippet=required_token,
+                message="geo object-id derivation must include canonical lineage token {}".format(required_token),
+                rule_id="INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS",
+            )
+        )
+    if any(token in object_text for token in ('uuid', 'random.', 'time.time(', 'datetime.now(')):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=object_rel,
+                line_number=1,
+                snippet="local_subkey",
+                message="geo local subkeys must not depend on nondeterministic sources",
+                rule_id="INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS",
+            )
+        )
+
+    geo_init_text = _file_text(repo_root, geo_init_rel)
+    if "geo_object_id" not in geo_init_text or "geo_cell_key_from_position" not in geo_init_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=geo_init_rel,
+                line_number=1,
+                snippet="geo_object_id",
+                message="public GEO package must export canonical indexing and identity helpers",
+                rule_id="INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS",
+            )
+        )
+
+    tool_text = _file_text(repo_root, tool_rel)
+    if "verify_id_stability(" not in tool_text or "geo_object_id(" not in tool_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=tool_rel,
+                line_number=1,
+                snippet="verify_id_stability(",
+                message="GEO proof/replay tooling must verify canonical GEO-derived IDs",
+                rule_id="INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS",
+            )
+        )
+
+    registry_text = _file_text(repo_root, registry_rel)
+    for required_kind in ("kind.star_system", "kind.surface_tile", "kind.signal_node"):
+        if required_kind in registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=registry_rel,
+                line_number=1,
+                snippet=required_kind,
+                message="object kind registry must retain canonical spatial kinds for GEO-derived identity",
+                rule_id="INV-SPATIAL-OBJECTS-MUST-USE-GEO_IDS",
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -27105,6 +27226,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_portability_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_identity_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
