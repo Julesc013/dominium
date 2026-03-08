@@ -1,0 +1,28 @@
+SCHEMA: geo/path_request.schema
+schema_id: dominium.schema.geo.path_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic GEO-6 traversal request contract.
+- Normalize path endpoint, traversal policy, and tier selection surfaces.
+
+NON-SEMANTICS:
+- This schema does not commit route adoption by itself.
+- This schema does not permit unbounded path search.
+
+REQUIRED SHAPE:
+record path_request
+  required:
+    - request_id: id
+    - start_ref: map
+    - goal_ref: map
+    - traversal_policy_id: id
+    - tier_mode: enum(macro|meso|micro)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- start_ref and goal_ref must resolve to canonical GEO position or cell references
+- tier_mode must be explicit and deterministic
+- all additional geometry context must be supplied explicitly or through open-map extensions

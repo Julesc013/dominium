@@ -1,0 +1,121 @@
+{
+  "schema_id": "dominium.registry.geo.traversal_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.traversal_policy_registry",
+    "registry_version": "1.0.0",
+    "traversal_policies": [
+      {
+        "schema_version": "1.0.0",
+        "traversal_policy_id": "traverse.default_walk",
+        "allowed_neighbor_kinds": [
+          "neighbor.cardinal",
+          "neighbor.metric_radius"
+        ],
+        "cost_weights": {
+          "base_distance": 1000,
+          "field_cost": 100,
+          "infrastructure_bias": -100,
+          "portal_cost": 250
+        },
+        "infrastructure_preference": {
+          "overlay_kind": "none",
+          "prefer_tags": []
+        },
+        "max_expansions": 256,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "heuristic_policy": "geo.path.safe_metric_distance",
+          "partial_result_policy": "refuse",
+          "source": "GEO6-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "traversal_policy_id": "traverse.vehicle_stub",
+        "allowed_neighbor_kinds": [
+          "neighbor.metric_radius",
+          "neighbor.infrastructure"
+        ],
+        "cost_weights": {
+          "base_distance": 1000,
+          "field_cost": 200,
+          "infrastructure_bias": -300,
+          "portal_cost": 500
+        },
+        "infrastructure_preference": {
+          "overlay_kind": "vehicle_lane",
+          "prefer_tags": [
+            "road",
+            "lane"
+          ]
+        },
+        "max_expansions": 384,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "heuristic_policy": "geo.path.safe_metric_distance",
+          "partial_result_policy": "refuse",
+          "source": "GEO6-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "traversal_policy_id": "traverse.rail_prefer_stub",
+        "allowed_neighbor_kinds": [
+          "neighbor.metric_radius",
+          "neighbor.infrastructure"
+        ],
+        "cost_weights": {
+          "base_distance": 1000,
+          "field_cost": 50,
+          "infrastructure_bias": -500,
+          "portal_cost": 500
+        },
+        "infrastructure_preference": {
+          "overlay_kind": "rail",
+          "prefer_tags": [
+            "rail",
+            "track"
+          ]
+        },
+        "max_expansions": 384,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "heuristic_policy": "geo.path.safe_metric_distance",
+          "partial_result_policy": "refuse",
+          "source": "GEO6-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "traversal_policy_id": "traverse.portal_allowed_stub",
+        "allowed_neighbor_kinds": [
+          "neighbor.metric_radius",
+          "neighbor.portal"
+        ],
+        "cost_weights": {
+          "base_distance": 1000,
+          "field_cost": 100,
+          "infrastructure_bias": -50,
+          "portal_cost": 100
+        },
+        "infrastructure_preference": {
+          "overlay_kind": "portal_graph",
+          "prefer_tags": [
+            "portal"
+          ]
+        },
+        "max_expansions": 512,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "heuristic_policy": "geo.path.safe_metric_distance",
+          "partial_result_policy": "partial",
+          "source": "GEO6-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO6-2"
+    }
+  }
+}
