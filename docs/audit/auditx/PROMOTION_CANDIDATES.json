@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 65,
+  "candidate_count": 66,
   "candidates": [
     {
       "evidence_paths": [
@@ -30,10 +30,20 @@
         "src/logic/compile/logic_compiler.py",
         "src/logic/eval/common.py",
         "src/logic/eval/propagate_engine.py",
+        "src/logic/eval/sense_engine.py",
         "src/logic/network/logic_network_engine.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.95,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "src/logic/noise/noise_engine.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.93,
       "rule_type": "INVARIANT_HARDEN",
       "suggested_ruleset": "core.json"
     },
@@ -210,6 +220,7 @@
         "src/logic/signal/carrier_adapters.py",
         "tools/logic/tool_run_logic_debug_stress.py",
         "tools/logic/tool_run_logic_eval_stress.py",
+        "tools/logic/tool_run_logic_fault_stress.py",
         "tools/logic/tool_run_logic_timing_stress.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",

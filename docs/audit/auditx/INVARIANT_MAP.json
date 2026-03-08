@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 751,
+      "finding_count": 752,
       "recommended_actions": {
-        "DOC_FIX": 751
+        "DOC_FIX": 752
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 751
+        "WARN": 752
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -749,9 +749,9 @@
       }
     },
     "INV-LOGIC-WIRING-USES-NETWORKGRAPH": {
-      "finding_count": 3,
+      "finding_count": 4,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 4
       },
       "sample_findings": [
         {
@@ -768,10 +768,15 @@
           "category": "logic.adhoc_wiring_smell",
           "finding_id": "E314_AD_HOC_WIRING_SMELL:0003",
           "location": "src/logic/eval/propagate_engine.py"
+        },
+        {
+          "category": "logic.adhoc_wiring_smell",
+          "finding_id": "E314_AD_HOC_WIRING_SMELL:0004",
+          "location": "src/logic/eval/sense_engine.py"
         }
       ],
       "severities": {
-        "VIOLATION": 3
+        "VIOLATION": 4
       }
     },
     "INV-LOSS-MAPPED-TO-HEAT": {
@@ -1241,9 +1246,9 @@
       }
     },
     "INV-NO-CARRIER-SEMANTIC-BIAS": {
-      "finding_count": 5,
+      "finding_count": 6,
       "recommended_actions": {
-        "REWRITE": 5
+        "REWRITE": 6
       },
       "sample_findings": [
         {
@@ -1269,11 +1274,11 @@
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
-          "location": "tools/logic/tool_run_logic_timing_stress.py"
+          "location": "tools/logic/tool_run_logic_fault_stress.py"
         }
       ],
       "severities": {
-        "RISK": 5
+        "RISK": 6
       }
     },
     "INV-NO-DIRECT-ARTIFACT-DELIVERY": {
@@ -1678,6 +1683,22 @@
       ],
       "severities": {
         "RISK": 6
+      }
+    },
+    "INV-NO-UNDECLARED-NOISE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.random_failure_smell",
+          "finding_id": "E323_RANDOM_FAILURE_SMELL:0001",
+          "location": "src/logic/noise/noise_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
