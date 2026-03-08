@@ -6,6 +6,7 @@ from typing import Mapping
 
 from src.meta.explain import build_explain_artifact
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.logic.protocol import arbitrate_logic_protocol_frames, transport_logic_sig_receipts
 
 from .common import as_int, as_list, as_map, canon, rows_by_id, token
 from .commit_engine import (
@@ -27,6 +28,9 @@ from .runtime_state import (
     normalize_logic_network_runtime_state_rows,
     normalize_logic_noise_decision_rows,
     normalize_logic_oscillation_record_rows,
+    normalize_logic_protocol_event_record_rows,
+    normalize_logic_protocol_frame_rows,
+    normalize_arbitration_state_rows,
     normalize_logic_security_fail_rows,
     normalize_logic_timing_violation_event_rows,
     normalize_logic_throttle_event_rows,
@@ -225,6 +229,13 @@ def process_logic_network_evaluate(
     serialize_state,
     process_signal_set_fn,
     process_signal_emit_pulse_fn,
+    signal_transport_state: Mapping[str, object] | None = None,
+    arbitration_policy_registry_payload: Mapping[str, object] | None = None,
+    error_detection_policy_registry_payload: Mapping[str, object] | None = None,
+    loss_policy_registry_payload: Mapping[str, object] | None = None,
+    routing_policy_registry_payload: Mapping[str, object] | None = None,
+    attenuation_policy_registry_payload: Mapping[str, object] | None = None,
+    belief_policy_registry_payload: Mapping[str, object] | None = None,
     temporal_domain_registry_payload: Mapping[str, object] | None = None,
     time_mapping_registry_payload: Mapping[str, object] | None = None,
     drift_policy_registry_payload: Mapping[str, object] | None = None,
@@ -269,9 +280,69 @@ def process_logic_network_evaluate(
             "signal_store_state": signal_store_state,
         }
 
-    flush_result = flush_due_logic_signal_updates(
+    effective_signal_transport_state = dict(signal_transport_state or {})
+    if "loss_policy_registry_payload" not in effective_signal_transport_state and loss_policy_registry_payload is not None:
+        effective_signal_transport_state["loss_policy_registry_payload"] = loss_policy_registry_payload
+    if "routing_policy_registry_payload" not in effective_signal_transport_state and routing_policy_registry_payload is not None:
+        effective_signal_transport_state["routing_policy_registry_payload"] = routing_policy_registry_payload
+    if "attenuation_policy_registry_payload" not in effective_signal_transport_state and attenuation_policy_registry_payload is not None:
+        effective_signal_transport_state["attenuation_policy_registry_payload"] = attenuation_policy_registry_payload
+    if "belief_policy_registry_payload" not in effective_signal_transport_state and belief_policy_registry_payload is not None:
+        effective_signal_transport_state["belief_policy_registry_payload"] = belief_policy_registry_payload
+    if "signal_trust_edge_rows" not in effective_signal_transport_state and "trust_edge_rows" in effective_signal_transport_state:
+        effective_signal_transport_state["signal_trust_edge_rows"] = list(as_list(effective_signal_transport_state.get("trust_edge_rows")))
+    if "belief_policy_id" not in effective_signal_transport_state:
+        effective_signal_transport_state["belief_policy_id"] = "belief.default"
+
+    protocol_transport_result = transport_logic_sig_receipts(
         current_tick=tick,
         signal_store_state=signal_store_state,
+        signal_transport_state=effective_signal_transport_state,
+        signal_type_registry_payload=signal_type_registry_payload,
+        carrier_type_registry_payload=carrier_type_registry_payload,
+        signal_delay_policy_registry_payload=signal_delay_policy_registry_payload,
+        signal_noise_policy_registry_payload=signal_noise_policy_registry_payload,
+        bus_encoding_registry_payload=bus_encoding_registry_payload,
+        protocol_registry_payload=protocol_registry_payload,
+        protocol_frame_rows=eval_state.get("logic_protocol_frame_rows"),
+        protocol_event_record_rows=eval_state.get("logic_protocol_event_record_rows"),
+        compute_budget_profile_registry_payload=compute_budget_profile_registry_payload,
+        compute_degrade_policy_registry_payload=compute_degrade_policy_registry_payload,
+        tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        process_signal_set_fn=process_signal_set_fn,
+    )
+    updated_signal_store_state = protocol_transport_result.get("signal_store_state") or signal_store_state
+    updated_signal_transport_state = dict(protocol_transport_result.get("signal_transport_state") or effective_signal_transport_state)
+    eval_state["logic_protocol_frame_rows"] = list(
+        protocol_transport_result.get("logic_protocol_frame_rows") or eval_state.get("logic_protocol_frame_rows") or []
+    )
+    eval_state["logic_protocol_event_record_rows"] = list(
+        protocol_transport_result.get("logic_protocol_event_record_rows")
+        or eval_state.get("logic_protocol_event_record_rows")
+        or []
+    )
+    pre_protocol_runtime = arbitrate_logic_protocol_frames(
+        current_tick=tick,
+        protocol_frame_rows=eval_state.get("logic_protocol_frame_rows"),
+        arbitration_state_rows=eval_state.get("logic_arbitration_state_rows"),
+        protocol_event_record_rows=eval_state.get("logic_protocol_event_record_rows"),
+        pending_signal_update_rows=eval_state.get("logic_pending_signal_update_rows"),
+        signal_transport_state=updated_signal_transport_state,
+        protocol_registry_payload=protocol_registry_payload,
+        arbitration_policy_registry_payload=arbitration_policy_registry_payload,
+        logic_security_policy_registry_payload=logic_security_policy_registry_payload,
+    )
+    pre_protocol_explain_rows = [dict(row) for row in as_list(pre_protocol_runtime.get("explain_artifact_rows")) if isinstance(row, Mapping)]
+    pre_protocol_security_rows = [dict(row) for row in as_list(pre_protocol_runtime.get("logic_security_fail_rows")) if isinstance(row, Mapping)]
+    eval_state["logic_protocol_frame_rows"] = list(pre_protocol_runtime.get("logic_protocol_frame_rows") or [])
+    eval_state["logic_arbitration_state_rows"] = list(pre_protocol_runtime.get("logic_arbitration_state_rows") or [])
+    eval_state["logic_protocol_event_record_rows"] = list(pre_protocol_runtime.get("logic_protocol_event_record_rows") or [])
+    eval_state["logic_pending_signal_update_rows"] = list(pre_protocol_runtime.get("logic_pending_signal_update_rows") or [])
+    updated_signal_transport_state = dict(pre_protocol_runtime.get("signal_transport_state") or updated_signal_transport_state)
+
+    flush_result = flush_due_logic_signal_updates(
+        current_tick=tick,
+        signal_store_state=updated_signal_store_state,
         pending_signal_update_rows=eval_state.get("logic_pending_signal_update_rows"),
         propagation_trace_rows=eval_state.get("logic_propagation_trace_artifact_rows"),
         signal_type_registry_payload=signal_type_registry_payload,
@@ -287,7 +358,7 @@ def process_logic_network_evaluate(
         process_signal_set_fn=process_signal_set_fn,
         process_signal_emit_pulse_fn=process_signal_emit_pulse_fn,
     )
-    updated_signal_store_state = flush_result.get("signal_store_state") or signal_store_state
+    updated_signal_store_state = flush_result.get("signal_store_state") or updated_signal_store_state
     eval_state["logic_pending_signal_update_rows"] = list(flush_result.get("logic_pending_signal_update_rows") or [])
     eval_state["logic_propagation_trace_artifact_rows"] = list(flush_result.get("logic_propagation_trace_artifact_rows") or [])
     eval_state["compute_runtime_state"] = dict(as_map(flush_result.get("compute_runtime_state")))
@@ -314,6 +385,7 @@ def process_logic_network_evaluate(
                 dict(eval_state, logic_network_runtime_state_rows=normalize_logic_network_runtime_state_rows(list(runtime_rows.values())))
             ),
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
             "explain_artifact_rows": [explain],
         }
 
@@ -350,6 +422,7 @@ def process_logic_network_evaluate(
                 dict(eval_state, logic_network_runtime_state_rows=normalize_logic_network_runtime_state_rows(list(runtime_rows.values())))
             ),
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
             "explain_artifact_rows": [explain],
         }
 
@@ -386,6 +459,7 @@ def process_logic_network_evaluate(
             "reason_code": REFUSAL_LOGIC_EVAL_NETWORK_NOT_VALIDATED,
             "logic_eval_state": eval_state,
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
             "explain_artifact_rows": [explain],
         }
 
@@ -409,9 +483,10 @@ def process_logic_network_evaluate(
     )
     security_fail_rows = normalize_logic_security_fail_rows(
         list(eval_state.get("logic_security_fail_rows") or [])
+        + pre_protocol_security_rows
         + [dict(row) for row in as_list(sense_snapshot.get("logic_security_fail_rows")) if isinstance(row, Mapping)]
     )
-    sense_explain_rows = [dict(row) for row in as_list(sense_snapshot.get("explain_artifact_rows")) if isinstance(row, Mapping)]
+    sense_explain_rows = pre_protocol_explain_rows + [dict(row) for row in as_list(sense_snapshot.get("explain_artifact_rows")) if isinstance(row, Mapping)]
     sense_safety_rows = [dict(row) for row in as_list(sense_snapshot.get("safety_event_rows")) if isinstance(row, Mapping)]
     if token(sense_snapshot.get("result")) != "complete":
         return {
@@ -425,6 +500,7 @@ def process_logic_network_evaluate(
                 )
             ),
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
             "sense_snapshot": sense_snapshot,
             "explain_artifact_rows": sense_explain_rows,
             "safety_event_rows": sense_safety_rows,
@@ -455,6 +531,7 @@ def process_logic_network_evaluate(
                 )
             ),
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
             "sense_snapshot": sense_snapshot,
             "explain_artifact_rows": sense_explain_rows,
             "safety_event_rows": sense_safety_rows,
@@ -570,6 +647,7 @@ def process_logic_network_evaluate(
             "reason_code": token(loop_gate.get("reason_code")) or REFUSAL_LOGIC_EVAL_LOOP_POLICY,
             "logic_eval_state": eval_state,
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
             "explain_artifact_rows": list(compiled_explain_rows) + list(loop_gate.get("explain_artifact_rows") or []),
             "forced_expand_event_rows": forced_expand_rows,
             "compiled_introspection_artifact_rows": compiled_introspection_artifact_rows,
@@ -582,6 +660,7 @@ def process_logic_network_evaluate(
             "reason_code": REFUSAL_LOGIC_EVAL_LOOP_POLICY,
             "logic_eval_state": eval_state,
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
             "explain_artifact_rows": compiled_explain_rows,
             "forced_expand_event_rows": forced_expand_rows,
             "compiled_introspection_artifact_rows": compiled_introspection_artifact_rows,
@@ -638,6 +717,7 @@ def process_logic_network_evaluate(
             "reason_code": token(commit_result.get("reason_code")),
             "logic_eval_state": eval_state,
             "signal_store_state": updated_signal_store_state,
+            "signal_transport_state": updated_signal_transport_state,
         }
     propagation_result = schedule_logic_output_propagation(
         current_tick=tick,
@@ -646,7 +726,9 @@ def process_logic_network_evaluate(
         compute_result=compute_result,
         sense_snapshot=sense_snapshot,
         pending_signal_update_rows=eval_state.get("logic_pending_signal_update_rows"),
+        protocol_frame_rows=eval_state.get("logic_protocol_frame_rows"),
         propagation_trace_rows=eval_state.get("logic_propagation_trace_artifact_rows"),
+        protocol_registry_payload=protocol_registry_payload,
         temporal_domain_registry_payload=temporal_domain_registry_payload,
         time_mapping_registry_payload=time_mapping_registry_payload,
         drift_policy_registry_payload=drift_policy_registry_payload,
@@ -654,13 +736,32 @@ def process_logic_network_evaluate(
         constitutive_model_registry_payload=constitutive_model_registry_payload,
         session_scope_id=session_scope_id,
     )
+    post_protocol_runtime = arbitrate_logic_protocol_frames(
+        current_tick=tick,
+        protocol_frame_rows=propagation_result.get("logic_protocol_frame_rows"),
+        arbitration_state_rows=eval_state.get("logic_arbitration_state_rows"),
+        protocol_event_record_rows=eval_state.get("logic_protocol_event_record_rows"),
+        pending_signal_update_rows=propagation_result.get("logic_pending_signal_update_rows"),
+        signal_transport_state=updated_signal_transport_state,
+        protocol_registry_payload=protocol_registry_payload,
+        arbitration_policy_registry_payload=arbitration_policy_registry_payload,
+        logic_security_policy_registry_payload=logic_security_policy_registry_payload,
+    )
+    propagation_result = dict(
+        propagation_result,
+        logic_pending_signal_update_rows=post_protocol_runtime.get("logic_pending_signal_update_rows"),
+        logic_protocol_frame_rows=post_protocol_runtime.get("logic_protocol_frame_rows"),
+    )
+    updated_signal_transport_state = dict(post_protocol_runtime.get("signal_transport_state") or updated_signal_transport_state)
+    post_protocol_explain_rows = [dict(row) for row in as_list(post_protocol_runtime.get("explain_artifact_rows")) if isinstance(row, Mapping)]
+    post_protocol_security_rows = [dict(row) for row in as_list(post_protocol_runtime.get("logic_security_fail_rows")) if isinstance(row, Mapping)]
 
     throttle_event_rows = list(eval_state.get("logic_throttle_event_rows") or [])
     oscillation_record_rows = list(eval_state.get("logic_oscillation_record_rows") or [])
     timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
     watchdog_timeout_event_rows = list(eval_state.get("logic_watchdog_timeout_event_rows") or [])
     network_timing_violation_rows = []
-    explain_rows = list(sense_explain_rows) + list(compiled_explain_rows)
+    explain_rows = list(sense_explain_rows) + list(compiled_explain_rows) + list(post_protocol_explain_rows)
     timing_compute_units_used = 0
     for event in as_list(compute_result.get("throttle_events")):
         if not isinstance(event, Mapping):
@@ -923,6 +1024,8 @@ def process_logic_network_evaluate(
                 }
             )
 
+    security_fail_rows = normalize_logic_security_fail_rows(list(security_fail_rows) + post_protocol_security_rows)
+
     runtime_rows[network_id] = build_logic_network_runtime_state_row(
         network_id=network_id,
         last_evaluated_tick=tick,
@@ -932,6 +1035,8 @@ def process_logic_network_evaluate(
             "snapshot_hash": token(sense_snapshot.get("snapshot_hash")),
             "scheduled_outputs": int(propagation_result.get("scheduled_count", 0)),
             "delivered_inputs": int(flush_result.get("delivered_count", 0)),
+            "protocol_frame_count": int(len(list(propagation_result.get("logic_protocol_frame_rows") or []))),
+            "protocol_event_count": int(len(list(post_protocol_runtime.get("logic_protocol_event_record_rows") or []))),
             "compiled_model_id": compiled_model_id or None,
             "compiled_path_selected": compiled_path_selected,
             "compiled_fallback_logged": compiled_fallback_logged,
@@ -951,6 +1056,8 @@ def process_logic_network_evaluate(
             extensions={
                 "scheduled_outputs": int(propagation_result.get("scheduled_count", 0)),
                 "delivered_inputs": int(flush_result.get("delivered_count", 0)),
+                "protocol_frame_count": int(len(list(propagation_result.get("logic_protocol_frame_rows") or []))),
+                "protocol_event_count": int(len(list(post_protocol_runtime.get("logic_protocol_event_record_rows") or []))),
                 "timing_violation_count": int(len(timing_violation_event_rows)),
                 "timing_compute_units_used": int(timing_compute_units_used),
                 "max_propagation_delay_ticks": int(propagation_result.get("max_propagation_delay_ticks", 0)),
@@ -973,6 +1080,9 @@ def process_logic_network_evaluate(
             "logic_state_update_record_rows": list(commit_result.get("state_update_record_rows") or []),
             "logic_noise_decision_rows": noise_decision_rows,
             "logic_security_fail_rows": security_fail_rows,
+            "logic_protocol_frame_rows": propagation_result.get("logic_protocol_frame_rows"),
+            "logic_arbitration_state_rows": post_protocol_runtime.get("logic_arbitration_state_rows"),
+            "logic_protocol_event_record_rows": post_protocol_runtime.get("logic_protocol_event_record_rows"),
             "logic_pending_signal_update_rows": propagation_result.get("logic_pending_signal_update_rows"),
             "logic_propagation_trace_artifact_rows": propagation_result.get("logic_propagation_trace_artifact_rows"),
             "compute_runtime_state": compute_result.get("compute_runtime_state"),
@@ -983,6 +1093,7 @@ def process_logic_network_evaluate(
         "reason_code": token(compute_result.get("reason_code")),
         "logic_eval_state": next_eval_state,
         "signal_store_state": updated_signal_store_state,
+        "signal_transport_state": updated_signal_transport_state,
         "state_vector_definition_rows": list(commit_result.get("state_vector_definition_rows") or state_vector_definition_rows),
         "state_vector_snapshot_rows": list(commit_result.get("state_vector_snapshot_rows") or state_vector_snapshot_rows),
         "sense_snapshot": sense_snapshot,

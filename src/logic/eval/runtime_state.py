@@ -7,6 +7,11 @@ from typing import Dict, Mapping
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import as_int, as_list, as_map, canon, slot_key, token
+from src.logic.protocol import (
+    normalize_arbitration_state_rows,
+    normalize_protocol_event_record_rows as normalize_logic_protocol_event_record_rows,
+    normalize_protocol_frame_rows as normalize_logic_protocol_frame_rows,
+)
 
 
 def build_logic_network_runtime_state_row(
@@ -692,6 +697,9 @@ def normalize_logic_eval_state(state: Mapping[str, object] | None) -> dict:
         "logic_state_update_record_rows": normalize_logic_state_update_record_rows(src.get("logic_state_update_record_rows")),
         "logic_noise_decision_rows": normalize_logic_noise_decision_rows(src.get("logic_noise_decision_rows")),
         "logic_security_fail_rows": normalize_logic_security_fail_rows(src.get("logic_security_fail_rows")),
+        "logic_protocol_frame_rows": normalize_logic_protocol_frame_rows(src.get("logic_protocol_frame_rows")),
+        "logic_arbitration_state_rows": normalize_arbitration_state_rows(src.get("logic_arbitration_state_rows")),
+        "logic_protocol_event_record_rows": normalize_logic_protocol_event_record_rows(src.get("logic_protocol_event_record_rows")),
         "logic_pending_signal_update_rows": normalize_logic_pending_signal_update_rows(src.get("logic_pending_signal_update_rows")),
         "logic_propagation_trace_artifact_rows": normalize_logic_propagation_trace_artifact_rows(src.get("logic_propagation_trace_artifact_rows")),
         "compute_runtime_state": canon(as_map(src.get("compute_runtime_state"))),
@@ -716,6 +724,9 @@ __all__ = [
     "normalize_logic_network_runtime_state_rows",
     "normalize_logic_noise_decision_rows",
     "normalize_logic_oscillation_record_rows",
+    "normalize_logic_protocol_event_record_rows",
+    "normalize_logic_protocol_frame_rows",
+    "normalize_arbitration_state_rows",
     "normalize_logic_pending_signal_update_rows",
     "normalize_logic_propagation_trace_artifact_rows",
     "normalize_logic_security_fail_rows",

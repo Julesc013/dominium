@@ -59,6 +59,8 @@ def _load_eval_inputs(repo_root: str) -> dict:
         "logic_fault_kind_registry_payload": read("data/registries/logic_fault_kind_registry.json"),
         "bus_encoding_registry_payload": read("data/registries/bus_encoding_registry.json"),
         "protocol_registry_payload": read("data/registries/protocol_registry.json"),
+        "arbitration_policy_registry_payload": read("data/registries/arbitration_policy_registry.json"),
+        "error_detection_policy_registry_payload": read("data/registries/error_detection_policy_registry.json"),
         "logic_policy_registry_payload": read("data/registries/logic_policy_registry.json"),
         "logic_network_policy_registry_payload": read("data/registries/logic_network_policy_registry.json"),
         "logic_element_rows": _registry_rows(read("packs/core/pack.core.logic_base/data/logic_element_registry.json"), "logic_elements"),
@@ -78,6 +80,10 @@ def _load_eval_inputs(repo_root: str) -> dict:
         "drift_policy_registry_payload": read("data/registries/drift_policy_registry.json"),
         "model_type_registry_payload": read("data/registries/model_type_registry.json"),
         "constitutive_model_registry_payload": read("data/registries/constitutive_model_registry.json"),
+        "loss_policy_registry_payload": read("data/registries/loss_policy_registry.json"),
+        "routing_policy_registry_payload": read("data/registries/core_routing_policy_registry.json"),
+        "attenuation_policy_registry_payload": read("data/registries/attenuation_policy_registry.json"),
+        "belief_policy_registry_payload": read("data/registries/belief_policy_registry.json"),
     }
 
 
@@ -94,6 +100,20 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
     logic_network_state = dict(payload.get("logic_network_state") or {})
     signal_store_state = dict(payload.get("signal_store_state") or {})
     logic_eval_state = dict(payload.get("logic_eval_state") or {})
+    signal_transport_state = {
+        "signal_channel_rows": [dict(row) for row in list(payload.get("signal_channel_rows") or []) if isinstance(row, Mapping)],
+        "signal_message_envelope_rows": [dict(row) for row in list(payload.get("signal_message_envelope_rows") or []) if isinstance(row, Mapping)],
+        "signal_transport_queue_rows": [dict(row) for row in list(payload.get("signal_transport_queue_rows") or []) if isinstance(row, Mapping)],
+        "message_delivery_event_rows": [dict(row) for row in list(payload.get("message_delivery_event_rows") or []) if isinstance(row, Mapping)],
+        "knowledge_receipt_rows": [dict(row) for row in list(payload.get("knowledge_receipt_rows") or []) if isinstance(row, Mapping)],
+        "network_graph_rows": [dict(row) for row in list(payload.get("network_graph_rows") or []) if isinstance(row, Mapping)],
+        "signal_trust_edge_rows": [dict(row) for row in list(payload.get("signal_trust_edge_rows") or payload.get("trust_edge_rows") or []) if isinstance(row, Mapping)],
+        "loss_policy_registry_payload": inputs["loss_policy_registry_payload"],
+        "routing_policy_registry_payload": inputs["routing_policy_registry_payload"],
+        "attenuation_policy_registry_payload": inputs["attenuation_policy_registry_payload"],
+        "belief_policy_registry_payload": inputs["belief_policy_registry_payload"],
+        "belief_policy_id": str(payload.get("belief_policy_id", "")).strip() or "belief.default",
+    }
     logic_fault_state_rows = [dict(row) for row in list(payload.get("logic_fault_state_rows") or []) if isinstance(row, Mapping)]
     compile_request_rows = [dict(row) for row in list(payload.get("compile_request_rows") or []) if isinstance(row, Mapping)]
     compile_result_rows = [dict(row) for row in list(payload.get("compile_result_rows") or []) if isinstance(row, Mapping)]
@@ -127,6 +147,7 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
             logic_fault_state_rows=logic_fault_state_rows,
             process_signal_set_fn=process_signal_set,
             process_signal_emit_pulse_fn=process_signal_emit_pulse,
+            signal_transport_state=signal_transport_state,
             build_state_vector_definition_row=build_state_vector_definition_row,
             normalize_state_vector_definition_rows=normalize_state_vector_definition_rows,
             normalize_state_vector_snapshot_rows=normalize_state_vector_snapshot_rows,
@@ -146,6 +167,7 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
                 "network_id": str(request.get("network_id", "")).strip(),
             }
         signal_store_state = dict(result.get("signal_store_state") or signal_store_state)
+        signal_transport_state = dict(result.get("signal_transport_state") or signal_transport_state)
         logic_eval_state = normalize_logic_eval_state(result.get("logic_eval_state"))
         state_vector_definition_rows = normalize_state_vector_definition_rows(
             result.get("state_vector_definition_rows") or state_vector_definition_rows
@@ -231,6 +253,45 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
                     "reason": str(row.get("reason", "")).strip(),
                 }
                 for row in list(logic_eval_state.get("logic_security_fail_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_protocol_frame_hash_chain": canonical_sha256(
+            [
+                {
+                    "frame_id": str(row.get("frame_id", "")).strip(),
+                    "protocol_id": str(row.get("protocol_id", "")).strip(),
+                    "src_endpoint_id": str(row.get("src_endpoint_id", "")).strip(),
+                    "tick_sent": int(row.get("tick_sent", 0) or 0),
+                    "status": str(dict(row.get("extensions") or {}).get("status", "")).strip(),
+                }
+                for row in list(logic_eval_state.get("logic_protocol_frame_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_arbitration_state_hash_chain": canonical_sha256(
+            [
+                {
+                    "bus_id": str(row.get("bus_id", "")).strip(),
+                    "policy_id": str(row.get("policy_id", "")).strip(),
+                    "token_holder": str(row.get("token_holder", "")).strip() or None,
+                    "last_winner": str(row.get("last_winner", "")).strip() or None,
+                }
+                for row in list(logic_eval_state.get("logic_arbitration_state_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_protocol_event_hash_chain": canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "protocol_id": str(row.get("protocol_id", "")).strip(),
+                    "bus_id": str(row.get("bus_id", "")).strip(),
+                    "frame_id": str(row.get("frame_id", "")).strip(),
+                    "result": str(row.get("result", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                }
+                for row in list(logic_eval_state.get("logic_protocol_event_record_rows") or [])
                 if isinstance(row, Mapping)
             ]
         ),
@@ -386,6 +447,9 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
         "logic_fault_state_hash_chain": str(proof_surface.get("logic_fault_state_hash_chain", "")),
         "logic_noise_decision_hash_chain": str(proof_surface.get("logic_noise_decision_hash_chain", "")),
         "logic_security_fail_hash_chain": str(proof_surface.get("logic_security_fail_hash_chain", "")),
+        "logic_protocol_frame_hash_chain": str(proof_surface.get("logic_protocol_frame_hash_chain", "")),
+        "logic_arbitration_state_hash_chain": str(proof_surface.get("logic_arbitration_state_hash_chain", "")),
+        "logic_protocol_event_hash_chain": str(proof_surface.get("logic_protocol_event_hash_chain", "")),
         "logic_output_signal_hash_chain": str(proof_surface.get("logic_output_signal_hash_chain", "")),
         "logic_oscillation_record_hash_chain": str(proof_surface.get("logic_oscillation_record_hash_chain", "")),
         "logic_timing_violation_hash_chain": str(proof_surface.get("logic_timing_violation_hash_chain", "")),
@@ -393,6 +457,7 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
         "proof_surface": proof_surface,
         "final_logic_eval_state": logic_eval_state,
         "final_signal_store_state": signal_store_state,
+        "final_signal_transport_state": signal_transport_state,
         "final_state_vector_snapshot_rows": state_vector_snapshot_rows,
         "final_state_vector_snapshot_hash": canonical_sha256(state_vector_snapshot_rows),
         "forced_expand_event_rows": forced_expand_event_rows,
@@ -413,6 +478,9 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
             "logic_fault_state_hash_chain": report["logic_fault_state_hash_chain"],
             "logic_noise_decision_hash_chain": report["logic_noise_decision_hash_chain"],
             "logic_security_fail_hash_chain": report["logic_security_fail_hash_chain"],
+            "logic_protocol_frame_hash_chain": report["logic_protocol_frame_hash_chain"],
+            "logic_arbitration_state_hash_chain": report["logic_arbitration_state_hash_chain"],
+            "logic_protocol_event_hash_chain": report["logic_protocol_event_hash_chain"],
             "logic_output_signal_hash_chain": report["logic_output_signal_hash_chain"],
             "logic_oscillation_record_hash_chain": report["logic_oscillation_record_hash_chain"],
             "logic_timing_violation_hash_chain": report["logic_timing_violation_hash_chain"],

@@ -5040,6 +5040,61 @@ def _load_logic_signal_registries(*, policy_context: dict | None) -> Tuple[dict,
     )
 
 
+def _load_logic_protocol_registries(*, policy_context: dict | None) -> Tuple[dict, dict]:
+    arbitration_policy_registry = dict(_policy_payload(policy_context, "arbitration_policy_registry") or {})
+    if not arbitration_policy_registry:
+        arbitration_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/arbitration_policy_registry.json",
+            default_payload={"record": {"arbitration_policies": []}},
+        )
+    error_detection_policy_registry = dict(_policy_payload(policy_context, "error_detection_policy_registry") or {})
+    if not error_detection_policy_registry:
+        error_detection_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/error_detection_policy_registry.json",
+            default_payload={"record": {"error_detection_policies": []}},
+        )
+    return dict(arbitration_policy_registry), dict(error_detection_policy_registry)
+
+
+def _load_signal_transport_runtime_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict, dict]:
+    loss_policy_registry = dict(_policy_payload(policy_context, "loss_policy_registry") or {})
+    if not loss_policy_registry:
+        loss_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/loss_policy_registry.json",
+            default_payload={"record": {"loss_policies": []}},
+        )
+    routing_policy_registry = dict(_policy_payload(policy_context, "core_routing_policy_registry") or {})
+    if not routing_policy_registry:
+        routing_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/core_routing_policy_registry.json",
+            default_payload={"record": {"routing_policies": []}},
+        )
+    attenuation_policy_registry = dict(_policy_payload(policy_context, "attenuation_policy_registry") or {})
+    if not attenuation_policy_registry:
+        attenuation_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/attenuation_policy_registry.json",
+            default_payload={"record": {"attenuation_policies": []}},
+        )
+    belief_policy_registry = dict(_policy_payload(policy_context, "belief_policy_registry") or {})
+    if not belief_policy_registry:
+        belief_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/belief_policy_registry.json",
+            default_payload={"record": {"belief_policies": []}},
+        )
+    return (
+        dict(loss_policy_registry),
+        dict(routing_policy_registry),
+        dict(attenuation_policy_registry),
+        dict(belief_policy_registry),
+    )
+
+
 def _load_logic_fault_noise_security_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
     logic_fault_kind_registry = dict(_policy_payload(policy_context, "logic_fault_kind_registry") or {})
     if not logic_fault_kind_registry:
@@ -5261,6 +5316,15 @@ def _persist_logic_eval_state(state: dict, logic_eval_state: Mapping[str, object
     state["logic_security_fail_rows"] = [
         dict(row) for row in list(normalized.get("logic_security_fail_rows") or []) if isinstance(row, Mapping)
     ]
+    state["logic_protocol_frame_rows"] = [
+        dict(row) for row in list(normalized.get("logic_protocol_frame_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_arbitration_state_rows"] = [
+        dict(row) for row in list(normalized.get("logic_arbitration_state_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_protocol_event_record_rows"] = [
+        dict(row) for row in list(normalized.get("logic_protocol_event_record_rows") or []) if isinstance(row, Mapping)
+    ]
     state["logic_pending_signal_update_rows"] = [
         dict(row) for row in list(normalized.get("logic_pending_signal_update_rows") or []) if isinstance(row, Mapping)
     ]
@@ -5462,6 +5526,21 @@ def _refresh_logic_eval_hash_chains(state: dict) -> None:
         for row in list(state.get("logic_security_fail_rows") or [])
         if isinstance(row, Mapping)
     ]
+    protocol_frame_rows = [
+        dict(row)
+        for row in list(state.get("logic_protocol_frame_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    arbitration_rows = [
+        dict(row)
+        for row in list(state.get("logic_arbitration_state_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    protocol_event_rows = [
+        dict(row)
+        for row in list(state.get("logic_protocol_event_record_rows") or [])
+        if isinstance(row, Mapping)
+    ]
     propagation_rows = [
         dict(row)
         for row in list(state.get("logic_propagation_trace_artifacts") or [])
@@ -5641,6 +5720,54 @@ def _refresh_logic_eval_hash_chains(state: dict) -> None:
             }
             for row in sorted(
                 security_fail_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_protocol_frame_hash_chain"] = canonical_sha256(
+        [
+            {
+                "frame_id": str(row.get("frame_id", "")).strip(),
+                "protocol_id": str(row.get("protocol_id", "")).strip(),
+                "src_endpoint_id": str(row.get("src_endpoint_id", "")).strip(),
+                "tick_sent": int(max(0, _as_int(row.get("tick_sent", 0), 0))),
+                "status": str(dict(row.get("extensions") or {}).get("status", "")).strip(),
+            }
+            for row in sorted(
+                protocol_frame_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick_sent", 0), 0))),
+                    str(item.get("frame_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_arbitration_state_hash_chain"] = canonical_sha256(
+        [
+            {
+                "bus_id": str(row.get("bus_id", "")).strip(),
+                "policy_id": str(row.get("policy_id", "")).strip(),
+                "token_holder": str(row.get("token_holder", "")).strip() or None,
+                "last_winner": str(row.get("last_winner", "")).strip() or None,
+            }
+            for row in sorted(arbitration_rows, key=lambda item: str(item.get("bus_id", "")))
+        ]
+    )
+    state["logic_protocol_event_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "protocol_id": str(row.get("protocol_id", "")).strip(),
+                "bus_id": str(row.get("bus_id", "")).strip(),
+                "frame_id": str(row.get("frame_id", "")).strip(),
+                "result": str(row.get("result", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                protocol_event_rows,
                 key=lambda item: (
                     int(max(0, _as_int(item.get("tick", 0), 0))),
                     str(item.get("event_id", "")),
@@ -44629,6 +44756,15 @@ def execute_intent(
             signal_noise_policy_registry,
             signal_delay_policy_registry,
         ) = _load_logic_signal_registries(policy_context=policy_context)
+        arbitration_policy_registry, error_detection_policy_registry = _load_logic_protocol_registries(
+            policy_context=policy_context
+        )
+        (
+            loss_policy_registry,
+            routing_policy_registry,
+            attenuation_policy_registry,
+            belief_policy_registry,
+        ) = _load_signal_transport_runtime_registries(policy_context=policy_context)
         (
             compute_budget_profile_registry,
             compute_degrade_policy_registry,
@@ -44699,6 +44835,9 @@ def execute_intent(
                 "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
                 "logic_noise_decision_rows": state.get("logic_noise_decision_rows"),
                 "logic_security_fail_rows": state.get("logic_security_fail_rows"),
+                "logic_protocol_frame_rows": state.get("logic_protocol_frame_rows"),
+                "logic_arbitration_state_rows": state.get("logic_arbitration_state_rows"),
+                "logic_protocol_event_record_rows": state.get("logic_protocol_event_record_rows"),
                 "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
                 "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
                 "compute_runtime_state": state.get("logic_eval_compute_runtime_state"),
@@ -44732,6 +44871,22 @@ def execute_intent(
             serialize_state=serialize_state,
             process_signal_set_fn=process_signal_set,
             process_signal_emit_pulse_fn=process_signal_emit_pulse,
+            signal_transport_state={
+                "signal_channel_rows": state.get("signal_channel_rows") or state.get("signal_channels") or [],
+                "signal_message_envelope_rows": state.get("signal_message_envelope_rows") or [],
+                "signal_transport_queue_rows": state.get("signal_transport_queue_rows") or [],
+                "message_delivery_event_rows": state.get("message_delivery_event_rows") or [],
+                "knowledge_receipt_rows": state.get("knowledge_receipt_rows") or [],
+                "network_graph_rows": state.get("network_graph_rows") or [],
+                "signal_trust_edge_rows": state.get("signal_trust_edge_rows") or state.get("trust_edge_rows") or [],
+                "loss_policy_registry_payload": loss_policy_registry,
+                "routing_policy_registry_payload": routing_policy_registry,
+                "attenuation_policy_registry_payload": attenuation_policy_registry,
+                "belief_policy_registry_payload": belief_policy_registry,
+                "belief_policy_id": str((dict(policy_context or {})).get("belief_policy_id", "")).strip() or "belief.default",
+            },
+            arbitration_policy_registry_payload=arbitration_policy_registry,
+            error_detection_policy_registry_payload=error_detection_policy_registry,
             temporal_domain_registry_payload=temporal_domain_registry,
             time_mapping_registry_payload=time_mapping_registry,
             drift_policy_registry_payload=drift_policy_registry,
@@ -44795,6 +44950,46 @@ def execute_intent(
             state["logic_signal_compute_runtime_state"] = dict(
                 _as_map(dict(updated.get("signal_store_state") or {}).get("compute_runtime_state"))
             )
+        if updated.get("signal_transport_state") is not None:
+            signal_transport_state = dict(updated.get("signal_transport_state") or {})
+            normalized_channels = normalize_signal_channel_rows(
+                signal_transport_state.get("signal_channel_rows") or state.get("signal_channel_rows") or []
+            )
+            state["signal_channel_rows"] = [dict(row) for row in list(normalized_channels or [])]
+            state["signal_channels"] = [dict(row) for row in list(normalized_channels or [])]
+            state["signal_message_envelope_rows"] = [
+                dict(row)
+                for row in list(normalize_signal_message_envelope_rows(signal_transport_state.get("signal_message_envelope_rows")) or [])
+                if isinstance(row, Mapping)
+            ]
+            state["signal_transport_queue_rows"] = [
+                dict(row)
+                for row in list(normalize_transport_queue_rows(signal_transport_state.get("signal_transport_queue_rows")) or [])
+                if isinstance(row, Mapping)
+            ]
+            state["message_delivery_event_rows"] = [
+                dict(row)
+                for row in list(normalize_message_delivery_event_rows(signal_transport_state.get("message_delivery_event_rows")) or [])
+                if isinstance(row, Mapping)
+            ]
+            state["knowledge_receipt_rows"] = [
+                dict(row)
+                for row in list(normalize_knowledge_receipt_rows(signal_transport_state.get("knowledge_receipt_rows")) or [])
+                if isinstance(row, Mapping)
+            ]
+            state["signal_trust_edge_rows"] = [
+                dict(row)
+                for row in list(signal_transport_state.get("signal_trust_edge_rows") or state.get("signal_trust_edge_rows") or state.get("trust_edge_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+            if state.get("signal_trust_edge_rows"):
+                state["trust_edge_rows"] = [dict(row) for row in list(state.get("signal_trust_edge_rows") or []) if isinstance(row, Mapping)]
+            if signal_transport_state.get("network_graph_rows") is not None:
+                state["network_graph_rows"] = [
+                    dict(row)
+                    for row in list(signal_transport_state.get("network_graph_rows") or [])
+                    if isinstance(row, Mapping)
+                ]
         if updated.get("logic_eval_state") is not None:
             _persist_logic_eval_state(state, updated.get("logic_eval_state"))
         if updated.get("safety_event_rows") is not None:
