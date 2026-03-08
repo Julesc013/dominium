@@ -32,6 +32,8 @@ def load_eval_inputs(repo_root: str) -> dict:
         "carrier_type_registry_payload": _load_json(repo_root, "data/registries/carrier_type_registry.json"),
         "signal_delay_policy_registry_payload": _load_json(repo_root, "data/registries/signal_delay_policy_registry.json"),
         "signal_noise_policy_registry_payload": _load_json(repo_root, "data/registries/signal_noise_policy_registry.json"),
+        "logic_noise_policy_registry_payload": _load_json(repo_root, "data/registries/logic_noise_policy_registry.json"),
+        "logic_security_policy_registry_payload": _load_json(repo_root, "data/registries/logic_security_policy_registry.json"),
         "bus_encoding_registry_payload": _load_json(repo_root, "data/registries/bus_encoding_registry.json"),
         "protocol_registry_payload": _load_json(repo_root, "data/registries/protocol_registry.json"),
         "logic_policy_registry_payload": _load_json(repo_root, "data/registries/logic_policy_registry.json"),
