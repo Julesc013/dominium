@@ -1470,6 +1470,20 @@
         "1.0.0"
       ]
     },
+    "frame_node": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "frame_transform": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "frame_summary": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2479,6 +2493,13 @@
       ]
     },
     "pose_control_binding": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "position_ref": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

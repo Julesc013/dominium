@@ -1,0 +1,31 @@
+SCHEMA: geo/frame_node.schema
+schema_id: dominium.schema.geo.frame_node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic GEO-2 frame node used in the reference-frame graph.
+- Bind a frame to topology, metric, chart, and stable GEO cell anchor context.
+
+NON-SEMANTICS:
+- This schema does not encode orbital simulation or worldgen content.
+- This schema does not authorize render-only rebasing as truth mutation.
+
+REQUIRED SHAPE:
+record frame_node
+  required:
+    - frame_id: id
+    - parent_frame_id: optional_id
+    - topology_profile_id: id
+    - metric_profile_id: id
+    - chart_id: id
+    - anchor_cell_key: map
+    - scale_class_id: enum(galaxy|system|planet|local)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- frame_id must be stable and totally ordered
+- parent chain traversal must be deterministic and acyclic unless an explicit DAG rule exists
+- anchor_cell_key must remain a canonical GEO cell key or compatible open-map extension thereof
+- frame nodes must not depend on render-only rebasing state

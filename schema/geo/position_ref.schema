@@ -1,0 +1,27 @@
+SCHEMA: geo/position_ref.schema
+schema_id: dominium.schema.geo.position_ref
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical GEO-2 authoritative position reference for truth-local coordinates.
+- Bind an object identity to a frame-local fixed-point position.
+
+NON-SEMANTICS:
+- This schema does not prescribe worldgen content.
+- This schema does not permit implicit conversion to global raw XYZ coordinates.
+
+REQUIRED SHAPE:
+record position_ref
+  required:
+    - object_id: id
+    - frame_id: id
+    - local_position: [i64]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- local_position length must match the resolved frame/topology dimension or declared chart dimension
+- local_position values must be fixed-point integers only
+- frame conversion must route through GEO frame APIs rather than ad hoc coordinate math
+- render-only rebasing must never overwrite authoritative local_position
