@@ -5,6 +5,7 @@ from .metric_engine import (
     geo_distance,
     geo_geodesic,
 )
+from .metric_cache import metric_cache_clear, metric_cache_snapshot
 from .neighborhood_engine import geo_neighbors
 
 __all__ = [
@@ -12,4 +13,6 @@ __all__ = [
     "geo_distance",
     "geo_geodesic",
     "geo_neighbors",
+    "metric_cache_clear",
+    "metric_cache_snapshot",
 ]

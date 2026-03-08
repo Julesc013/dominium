@@ -18,6 +18,7 @@ from src.geo.frame.frame_engine import (
     position_ref_hash,
     position_to_frame,
 )
+from src.geo.metric.metric_cache import metric_cache_lookup, metric_cache_store
 from src.geo.kernel.geo_kernel import (
     _DEFAULT_METRIC_PROFILE_ID,
     _DEFAULT_TOPOLOGY_PROFILE_ID,
@@ -39,6 +40,7 @@ _TOLERANCE_POLICY_REGISTRY_REL = "data/registries/tolerance_policy_registry.json
 _METRIC_POLICY_REGISTRY_REL = "data/registries/metric_policy_registry.json"
 _GEODESIC_POLICY_REGISTRY_REL = "data/registries/geodesic_approx_policy_registry.json"
 _METRIC_ENGINE_VERSION = "GEO3-3"
+_METRIC_CACHE_VERSION = "GEO3-5"
 
 
 def _repo_root() -> str:
@@ -384,6 +386,9 @@ def _metric_result(
     position_a_in_frame: Mapping[str, object] | None = None,
     position_b_in_frame: Mapping[str, object] | None = None,
     seed_extensions: Mapping[str, object] | None = None,
+    cache_enabled: bool | None = None,
+    reference_mode: str = "",
+    cache_max_entries: int | None = None,
 ) -> dict:
     del topology_row
     metric_policy_id = _metric_policy_id(metric_row)
@@ -395,6 +400,28 @@ def _metric_result(
         tolerance_policy_id,
         tolerance_policy_registry_payload=tolerance_policy_registry_payload,
     )
+    seed = {
+        "query_kind": str(query_kind),
+        "topology_profile_id": str(topology_profile_id),
+        "metric_profile_id": str(metric_profile_id),
+        "metric_policy_id": metric_policy_id,
+        "geodesic_approx_policy_id": geodesic_policy_id,
+        "tolerance_policy_id": tolerance_policy_id,
+        "coords_a": [int(value) for value in list(coords_a)],
+        "coords_b": [int(value) for value in list(coords_b)],
+        "comparison_frame_id": str(comparison_frame_id),
+        "engine_version": _METRIC_ENGINE_VERSION,
+        **dict(_as_map(seed_extensions)),
+    }
+    cached = metric_cache_lookup(
+        "geo.metric.{}".format(str(query_kind)),
+        seed,
+        cache_enabled=cache_enabled,
+        reference_mode=reference_mode,
+        version=_METRIC_CACHE_VERSION,
+    )
+    if cached is not None:
+        return cached
     raw_value = (
         _metric_geodesic_mm(coords_a=coords_a, coords_b=coords_b, metric_row=metric_row)
         if str(query_kind) == "geodesic"
@@ -410,19 +437,6 @@ def _metric_result(
     )
     algorithm_row = geodesic_policy_row if str(query_kind) == "geodesic" else metric_policy_row
     algorithm_id = str(_as_map(algorithm_row).get("algorithm_id", "")).strip() or "geo.metric.unknown"
-    seed = {
-        "query_kind": str(query_kind),
-        "topology_profile_id": str(topology_profile_id),
-        "metric_profile_id": str(metric_profile_id),
-        "metric_policy_id": metric_policy_id,
-        "geodesic_approx_policy_id": geodesic_policy_id,
-        "tolerance_policy_id": tolerance_policy_id,
-        "coords_a": [int(value) for value in list(coords_a)],
-        "coords_b": [int(value) for value in list(coords_b)],
-        "comparison_frame_id": str(comparison_frame_id),
-        "engine_version": _METRIC_ENGINE_VERSION,
-        **dict(_as_map(seed_extensions)),
-    }
     if str(query_kind) == "geodesic":
         outputs = {"geodesic_mm": int(quantized_value), "error_bound_mm": int(error_bound_mm)}
     else:
@@ -450,7 +464,15 @@ def _metric_result(
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
-    return payload
+    return metric_cache_store(
+        "geo.metric.{}".format(str(query_kind)),
+        seed,
+        payload,
+        cache_enabled=cache_enabled,
+        reference_mode=reference_mode,
+        version=_METRIC_CACHE_VERSION,
+        max_entries=cache_max_entries,
+    )
 
 
 def geo_distance(
@@ -467,6 +489,9 @@ def geo_distance(
     tolerance_policy_registry_payload: Mapping[str, object] | None = None,
     metric_policy_registry_payload: Mapping[str, object] | None = None,
     geodesic_approx_policy_registry_payload: Mapping[str, object] | None = None,
+    cache_enabled: bool | None = None,
+    reference_mode: str = "",
+    cache_max_entries: int | None = None,
 ) -> dict:
     if bool(frame_nodes) and bool(frame_transform_rows):
         context = _frame_context(
@@ -512,6 +537,9 @@ def geo_distance(
                 "position_b_hash": str(context.get("position_b_hash", "")),
                 "graph_version": str(context.get("graph_version", "")),
             },
+            cache_enabled=cache_enabled,
+            reference_mode=reference_mode,
+            cache_max_entries=cache_max_entries,
         )
 
     topology_token = str(topology_profile_id or "").strip() or _DEFAULT_TOPOLOGY_PROFILE_ID
@@ -534,6 +562,9 @@ def geo_distance(
         metric_policy_registry_payload=metric_policy_registry_payload,
         geodesic_policy_registry_payload=geodesic_approx_policy_registry_payload,
         tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        cache_enabled=cache_enabled,
+        reference_mode=reference_mode,
+        cache_max_entries=cache_max_entries,
     )
 
 
@@ -551,6 +582,9 @@ def geo_geodesic(
     tolerance_policy_registry_payload: Mapping[str, object] | None = None,
     metric_policy_registry_payload: Mapping[str, object] | None = None,
     geodesic_approx_policy_registry_payload: Mapping[str, object] | None = None,
+    cache_enabled: bool | None = None,
+    reference_mode: str = "",
+    cache_max_entries: int | None = None,
 ) -> dict:
     if bool(frame_nodes) and bool(frame_transform_rows):
         context = _frame_context(
@@ -596,6 +630,9 @@ def geo_geodesic(
                 "position_b_hash": str(context.get("position_b_hash", "")),
                 "graph_version": str(context.get("graph_version", "")),
             },
+            cache_enabled=cache_enabled,
+            reference_mode=reference_mode,
+            cache_max_entries=cache_max_entries,
         )
 
     topology_token = str(topology_profile_id or "").strip() or _DEFAULT_TOPOLOGY_PROFILE_ID
@@ -618,6 +655,9 @@ def geo_geodesic(
         metric_policy_registry_payload=metric_policy_registry_payload,
         geodesic_policy_registry_payload=geodesic_approx_policy_registry_payload,
         tolerance_policy_registry_payload=tolerance_policy_registry_payload,
+        cache_enabled=cache_enabled,
+        reference_mode=reference_mode,
+        cache_max_entries=cache_max_entries,
     )
 
 

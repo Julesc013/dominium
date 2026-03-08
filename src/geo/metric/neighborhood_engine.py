@@ -32,6 +32,7 @@ from src.geo.kernel.geo_kernel import (
     _query_record,
     _topology_row,
 )
+from src.geo.metric.metric_cache import metric_cache_lookup, metric_cache_store
 
 
 def _refusal(*, message: str, details: Mapping[str, object] | None = None) -> dict:
@@ -330,6 +331,9 @@ def geo_neighbors(
     metric_registry_payload: Mapping[str, object] | None = None,
     partition_registry_payload: Mapping[str, object] | None = None,
     max_neighbors: int | None = None,
+    cache_enabled: bool | None = None,
+    reference_mode: str = "",
+    cache_max_entries: int | None = None,
 ) -> dict:
     del metric_registry_payload
     radius_value = int(max(0, _as_int(radius, 0)))
@@ -391,8 +395,18 @@ def geo_neighbors(
         "partition_profile_id": partition_token,
         "metric_profile_id": metric_token,
         "radius": int(radius_value),
+        "legacy_input": bool(legacy_input),
         "engine_version": "GEO3-4",
     }
+    cached = metric_cache_lookup(
+        "geo.metric.neighbors",
+        seed,
+        cache_enabled=cache_enabled,
+        reference_mode=reference_mode,
+        version="GEO3-5",
+    )
+    if cached is not None:
+        return cached
     outputs = {
         "count": len(canonical_neighbors),
         "neighbor_hashes": [canonical_sha256(_semantic_cell_key(row)) for row in canonical_neighbors],
@@ -413,7 +427,15 @@ def geo_neighbors(
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
-    return payload
+    return metric_cache_store(
+        "geo.metric.neighbors",
+        seed,
+        payload,
+        cache_enabled=cache_enabled,
+        reference_mode=reference_mode,
+        version="GEO3-5",
+        max_entries=cache_max_entries,
+    )
 
 
 __all__ = ["geo_neighbors"]
