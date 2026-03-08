@@ -122,109 +122,109 @@ Superseded By: none
 - `C2_MODE_FLAG_SMELL:0029` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-10d79f66352c8094/auditx/entries/e49cdd59d01a804bc5feadbe6535c273852fdc043e15b05ada806ba3ec6b673d.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0030` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/f7ddfb2c5f0ea093117b03549bf25b0b3a96a99aab4e7883e41450ffe3feb5f2.json)
+- `C2_MODE_FLAG_SMELL:0030` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1108cd54723b1de0/auditx/entries/5c0c756330c8315fd0b80ee51bf32ebc159e9f6ceee7704b594653586475870c.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0031` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/fbbfa1a0a153916e5f877c9e0f23456d37303ed7d41300cc02c481a39ec1cc77.json)
+- `C2_MODE_FLAG_SMELL:0031` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1108cd54723b1de0/auditx/entries/b102a9d32f9acf6c7437a218719bc641717d388d697a63ea20e8d422f17da0a2.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0032` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-14b3387ffda6da72/auditx/entries/387eab0abc7f22a25eb7c5bd93b0f3c8a2eba265ca3dac1e782cee7075e2df63.json)
+- `C2_MODE_FLAG_SMELL:0032` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1108cd54723b1de0/auditx/entries/cc39f787b7425f6948c1eb4711d498a5ee45cbaf27952843858440d172fc6684.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0033` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-14b3387ffda6da72/auditx/entries/61534d78df70251a10d855c02316df41cb50787d36ae341b2db0ee70692523f9.json)
+- `C2_MODE_FLAG_SMELL:0033` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/f7ddfb2c5f0ea093117b03549bf25b0b3a96a99aab4e7883e41450ffe3feb5f2.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0034` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-187b6e1dbdd5a474/auditx/entries/efbd29aec3a5d11462081012fb595f1f31f46e7b9f7ba7b9384dd503cba7585d.json)
+- `C2_MODE_FLAG_SMELL:0034` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-147dfb3ed615ab36/auditx/entries/fbbfa1a0a153916e5f877c9e0f23456d37303ed7d41300cc02c481a39ec1cc77.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0035` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1b048e145d13f0f1/auditx/entries/56480c03046d5012cab630cefed20f381193c0fe7245f76849721b66bc142cd1.json)
+- `C2_MODE_FLAG_SMELL:0035` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-14b3387ffda6da72/auditx/entries/387eab0abc7f22a25eb7c5bd93b0f3c8a2eba265ca3dac1e782cee7075e2df63.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0036` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1cb8685d169db8e9/auditx/entries/ae07252e2e8e9f55bf0e3542cb0a5eee9df8cde738ecffd190faf0eade7f2b4b.json)
+- `C2_MODE_FLAG_SMELL:0036` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-14b3387ffda6da72/auditx/entries/61534d78df70251a10d855c02316df41cb50787d36ae341b2db0ee70692523f9.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0037` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/150cf3995c1f2ce92031265140928b8eeef1c4afabcd33e788af4971c9eb115d.json)
+- `C2_MODE_FLAG_SMELL:0037` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-187b6e1dbdd5a474/auditx/entries/efbd29aec3a5d11462081012fb595f1f31f46e7b9f7ba7b9384dd503cba7585d.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0038` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/63212a8731ae7f4e58c3d9582c5021fd7a2a5029db676e3f1a61d008c5b7115c.json)
+- `C2_MODE_FLAG_SMELL:0038` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1b048e145d13f0f1/auditx/entries/56480c03046d5012cab630cefed20f381193c0fe7245f76849721b66bc142cd1.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0039` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/a3572fe983aeef38eac024a851817d02621c433688d7b6fd403f9a45b9f70890.json)
+- `C2_MODE_FLAG_SMELL:0039` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1cb8685d169db8e9/auditx/entries/ae07252e2e8e9f55bf0e3542cb0a5eee9df8cde738ecffd190faf0eade7f2b4b.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0040` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/a9fb877af6db035a532e2af0bfc9a181c3e827271c7dac434a8332110b0c4173.json)
+- `C2_MODE_FLAG_SMELL:0040` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/150cf3995c1f2ce92031265140928b8eeef1c4afabcd33e788af4971c9eb115d.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0041` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/51550809d66723d1baf7315cf048e76a8a00033d668fdae10496c7989ac05da7.json)
+- `C2_MODE_FLAG_SMELL:0041` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/63212a8731ae7f4e58c3d9582c5021fd7a2a5029db676e3f1a61d008c5b7115c.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0042` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/6c9404ddff1fc762c9b30f0975923b7bf21605c0f0c62c2bfbc64eeb4e8d99fb.json)
+- `C2_MODE_FLAG_SMELL:0042` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/a3572fe983aeef38eac024a851817d02621c433688d7b6fd403f9a45b9f70890.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0043` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/88626ad8ebf704caeda43081207394671d91e494d715465e79875c3359d1a954.json)
+- `C2_MODE_FLAG_SMELL:0043` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1d2ba40c852aff4c/auditx/entries/a9fb877af6db035a532e2af0bfc9a181c3e827271c7dac434a8332110b0c4173.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0044` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/8e1f3e3f60035a14629a343c39f6d632f6423b982f2a38b9cd0d919385752dd0.json)
+- `C2_MODE_FLAG_SMELL:0044` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/51550809d66723d1baf7315cf048e76a8a00033d668fdae10496c7989ac05da7.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0045` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-217746a66e7e5a59/auditx/entries/b3440de93a0cdefa6d03762807dcffee04824231301dcf1dd54e4b0cec07a0f6.json)
+- `C2_MODE_FLAG_SMELL:0045` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/6c9404ddff1fc762c9b30f0975923b7bf21605c0f0c62c2bfbc64eeb4e8d99fb.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0046` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-235e09fbe1418f8c/auditx/entries/bbbeb02c8276f5a49007ace92daf71719add766e617e2ad3f305af3086ac8a26.json)
+- `C2_MODE_FLAG_SMELL:0046` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/88626ad8ebf704caeda43081207394671d91e494d715465e79875c3359d1a954.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0047` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-235e09fbe1418f8c/auditx/entries/ce130a8e427975fa2ebddd093bfe66948a857b30036d6b3ae615612e61713064.json)
+- `C2_MODE_FLAG_SMELL:0047` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-1fb37d8f5cd6ec74/auditx/entries/8e1f3e3f60035a14629a343c39f6d632f6423b982f2a38b9cd0d919385752dd0.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0048` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a1c688a93aaec91/auditx/entries/f087d96b93934c046a28a44876b7cf7b95b99f3eb10ab2834182179310c73ae3.json)
+- `C2_MODE_FLAG_SMELL:0048` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-217746a66e7e5a59/auditx/entries/b3440de93a0cdefa6d03762807dcffee04824231301dcf1dd54e4b0cec07a0f6.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0049` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/30cddff85bef88f5a583f3928ae5660623ab38cd990b351098d93c7606f4fcf6.json)
+- `C2_MODE_FLAG_SMELL:0049` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-235e09fbe1418f8c/auditx/entries/bbbeb02c8276f5a49007ace92daf71719add766e617e2ad3f305af3086ac8a26.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0050` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/8a1c1a45f060b411fa5f0146d6d79c003f00ea8785feeb254b8ff02158da50ff.json)
+- `C2_MODE_FLAG_SMELL:0050` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-235e09fbe1418f8c/auditx/entries/ce130a8e427975fa2ebddd093bfe66948a857b30036d6b3ae615612e61713064.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0051` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/d2214a530e319e62d3970ac49663ac013d7fbdeb351d3866292958d104dd102d.json)
+- `C2_MODE_FLAG_SMELL:0051` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a1c688a93aaec91/auditx/entries/f087d96b93934c046a28a44876b7cf7b95b99f3eb10ab2834182179310c73ae3.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0052` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/d3f6ec5b42b6ae08e092a1fa2028e700a7bd13dc8a98afcd6f2f6e56755ebcbb.json)
+- `C2_MODE_FLAG_SMELL:0052` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/30cddff85bef88f5a583f3928ae5660623ab38cd990b351098d93c7606f4fcf6.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0053` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/e86d9584395777d38e788f83b7ead4872af5434523161cc34a75af7af0f372bf.json)
+- `C2_MODE_FLAG_SMELL:0053` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/8a1c1a45f060b411fa5f0146d6d79c003f00ea8785feeb254b8ff02158da50ff.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0054` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2c48347082dccb08/auditx/entries/93c644decb2aee438ec74bb894c0a1dcc80a5f90003c426bd5dd9692d5e401c4.json)
+- `C2_MODE_FLAG_SMELL:0054` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/d2214a530e319e62d3970ac49663ac013d7fbdeb351d3866292958d104dd102d.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0055` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2e507ebdb8980e60/auditx/entries/0d8be26e6b07eabdd8af3ab2bbc022f424af181c7fccb8c950356dfe7be0a0c0.json)
+- `C2_MODE_FLAG_SMELL:0055` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/d3f6ec5b42b6ae08e092a1fa2028e700a7bd13dc8a98afcd6f2f6e56755ebcbb.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0056` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/75a0a9f1c48f633442d4114c463ddf52a045b148b1e92014a5784f2c7b18d7be.json)
+- `C2_MODE_FLAG_SMELL:0056` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2a858596412010a3/auditx/entries/e86d9584395777d38e788f83b7ead4872af5434523161cc34a75af7af0f372bf.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0057` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/98de96434bb77311aff1183e41bada0c4582813e300a3e667a53a4a8eda188d8.json)
+- `C2_MODE_FLAG_SMELL:0057` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2c48347082dccb08/auditx/entries/93c644decb2aee438ec74bb894c0a1dcc80a5f90003c426bd5dd9692d5e401c4.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0058` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/f26a94dc6d352233e53214e695cb811f27db8eb96d95fcbef6f1e6f57d6f76cf.json)
+- `C2_MODE_FLAG_SMELL:0058` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-2e507ebdb8980e60/auditx/entries/0d8be26e6b07eabdd8af3ab2bbc022f424af181c7fccb8c950356dfe7be0a0c0.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0059` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/34661b2cdd008a873023e2286a6161782debe10cb461b3b4ed44bb4b284eb2ef.json)
+- `C2_MODE_FLAG_SMELL:0059` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/75a0a9f1c48f633442d4114c463ddf52a045b148b1e92014a5784f2c7b18d7be.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0060` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/3974e9e8b5de4afde2714d51360be83bb6168d1140772311ee07c31cab4269ca.json)
+- `C2_MODE_FLAG_SMELL:0060` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/98de96434bb77311aff1183e41bada0c4582813e300a3e667a53a4a8eda188d8.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0061` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/3ded0a2a4bc0f2f3c81125069b18d429c841ee829c31e228964d81fa9023bbfc.json)
+- `C2_MODE_FLAG_SMELL:0061` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-305085697a359476/auditx/entries/f26a94dc6d352233e53214e695cb811f27db8eb96d95fcbef6f1e6f57d6f76cf.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0062` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/444be0d459f2924d8cff41f6a2cf85ab0ab675f88da3d41f89d433fe42bbfb47.json)
+- `C2_MODE_FLAG_SMELL:0062` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/34661b2cdd008a873023e2286a6161782debe10cb461b3b4ed44bb4b284eb2ef.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0063` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/45031f083ec2b40ba6c2213d8bf90ac3a6978f148bbbc95d37c1feccb419a255.json)
+- `C2_MODE_FLAG_SMELL:0063` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/3974e9e8b5de4afde2714d51360be83bb6168d1140772311ee07c31cab4269ca.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `C2_MODE_FLAG_SMELL:0064` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/8c093a0e23a4c121ba52af726588c7c227a107182b9351a19da30133a4fe82a2.json)
+- `C2_MODE_FLAG_SMELL:0064` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/ws-311957bee608fa55/auditx/entries/3ded0a2a4bc0f2f3c81125069b18d429c841ee829c31e228964d81fa9023bbfc.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
 - `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)

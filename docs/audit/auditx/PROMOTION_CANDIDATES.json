@@ -89,6 +89,9 @@
         ".xstack_cache/ws-10d79f66352c8094/auditx/entries/9ac066143272f10df5668a80749bd7566c2598054ee350412ea3bbdb22c33687.json",
         ".xstack_cache/ws-10d79f66352c8094/auditx/entries/9e5de1a3a7e520382c6eb460167ccb41ee6e94b6f23eb66bdefa96d62c5c548f.json",
         ".xstack_cache/ws-10d79f66352c8094/auditx/entries/e49cdd59d01a804bc5feadbe6535c273852fdc043e15b05ada806ba3ec6b673d.json",
+        ".xstack_cache/ws-1108cd54723b1de0/auditx/entries/5c0c756330c8315fd0b80ee51bf32ebc159e9f6ceee7704b594653586475870c.json",
+        ".xstack_cache/ws-1108cd54723b1de0/auditx/entries/b102a9d32f9acf6c7437a218719bc641717d388d697a63ea20e8d422f17da0a2.json",
+        ".xstack_cache/ws-1108cd54723b1de0/auditx/entries/cc39f787b7425f6948c1eb4711d498a5ee45cbaf27952843858440d172fc6684.json",
         ".xstack_cache/ws-147dfb3ed615ab36/auditx/entries/f7ddfb2c5f0ea093117b03549bf25b0b3a96a99aab4e7883e41450ffe3feb5f2.json",
         ".xstack_cache/ws-147dfb3ed615ab36/auditx/entries/fbbfa1a0a153916e5f877c9e0f23456d37303ed7d41300cc02c481a39ec1cc77.json",
         ".xstack_cache/ws-14b3387ffda6da72/auditx/entries/387eab0abc7f22a25eb7c5bd93b0f3c8a2eba265ca3dac1e782cee7075e2df63.json",
@@ -120,10 +123,7 @@
         ".xstack_cache/ws-305085697a359476/auditx/entries/f26a94dc6d352233e53214e695cb811f27db8eb96d95fcbef6f1e6f57d6f76cf.json",
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/34661b2cdd008a873023e2286a6161782debe10cb461b3b4ed44bb4b284eb2ef.json",
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/3974e9e8b5de4afde2714d51360be83bb6168d1140772311ee07c31cab4269ca.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/3ded0a2a4bc0f2f3c81125069b18d429c841ee829c31e228964d81fa9023bbfc.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/444be0d459f2924d8cff41f6a2cf85ab0ab675f88da3d41f89d433fe42bbfb47.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/45031f083ec2b40ba6c2213d8bf90ac3a6978f148bbbc95d37c1feccb419a255.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/8c093a0e23a4c121ba52af726588c7c227a107182b9351a19da30133a4fe82a2.json"
+        ".xstack_cache/ws-311957bee608fa55/auditx/entries/3ded0a2a4bc0f2f3c81125069b18d429c841ee829c31e228964d81fa9023bbfc.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,

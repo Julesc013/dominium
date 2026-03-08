@@ -2,9 +2,9 @@
   "artifact_class": "RUN_META",
   "cache_mode": "full_scan",
   "changed_only": false,
-  "changed_paths_since_last": 12097,
-  "generated_utc": "2026-03-08T20:16:04Z",
-  "graph_hash": "0bf7e2e5ae11db10bf390f1ad9ead49e99fc322999045df0934dc913665c2acb",
+  "changed_paths_since_last": 12098,
+  "generated_utc": "2026-03-08T20:28:25Z",
+  "graph_hash": "16e8dd69ea054adab3d6b2e84bd0f7b4d887fd4ff536ccdfa59485f09b77c7fe",
   "last_reviewed": "2026-03-08",
   "output_format": "both",
   "platform": "windows",
@@ -390,5 +390,5 @@
   "result": "scan_complete",
   "reused_analyzers": [],
   "status": "DERIVED",
-  "workspace_id": "ws-1108cd54723b1de0"
+  "workspace_id": "ws-bd9d4f026eccf75c"
 }
