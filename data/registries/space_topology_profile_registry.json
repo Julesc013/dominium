@@ -24,6 +24,10 @@
         "portal_identifications_ref": null,
         "deterministic_fingerprint": "",
         "extensions": {
+          "period_cell_counts": [
+            100,
+            100
+          ],
           "radius_cap": 8,
           "source": "GEO0-3"
         }
@@ -47,6 +51,11 @@
         "portal_identifications_ref": null,
         "deterministic_fingerprint": "",
         "extensions": {
+          "period_cell_counts": [
+            100,
+            100,
+            100
+          ],
           "radius_cap": 8,
           "source": "GEO0-3"
         }
@@ -70,6 +79,10 @@
         "portal_identifications_ref": null,
         "deterministic_fingerprint": "",
         "extensions": {
+          "period_cell_counts": [
+            100,
+            100
+          ],
           "radius_cap": 8,
           "source": "GEO0-3"
         }
@@ -99,6 +112,11 @@
         "portal_identifications_ref": null,
         "deterministic_fingerprint": "",
         "extensions": {
+          "period_cell_counts": [
+            100,
+            100,
+            100
+          ],
           "radius_cap": 8,
           "source": "GEO0-3"
         }
@@ -161,6 +179,7 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "atlas_kind": "sphere_surface_stub",
+          "atlas_resolution": 4,
           "radius_cap": 6,
           "source": "GEO0-3"
         }
