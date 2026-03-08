@@ -17767,6 +17767,205 @@ def _append_geo_geometry_edit_invariant_findings(
             break
 
 
+def _append_geo_worldgen_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    engine_rel = "src/geo/worldgen/worldgen_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    creator_rel = "tools/xstack/sessionx/creator.py"
+    runner_rel = "tools/xstack/sessionx/runner.py"
+    script_runner_rel = "tools/xstack/sessionx/script_runner.py"
+    projection_rel = "src/geo/projection/projection_engine.py"
+    roi_rel = "src/system/roi/system_roi_scheduler.py"
+    replay_tool_rel = "tools/geo/tool_replay_worldgen_cell.py"
+    geo_init_rel = "src/geo/__init__.py"
+    schema_rel = "schema/universe/universe_identity.schema"
+    schema_json_rel = "schemas/universe_identity.schema.json"
+    realism_registry_rel = "data/registries/realism_profile_registry.json"
+    generator_registry_rel = "data/registries/generator_version_registry.json"
+
+    engine_text = _file_text(repo_root, engine_rel)
+    for required_token, rule_id, message in (
+        (
+            "generate_worldgen_result(",
+            "INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            "canonical GEO-8 worldgen must route through the deterministic worldgen engine",
+        ),
+        (
+            '"geo_cell_key"',
+            "INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            "GEO-8 worldgen must remain addressed by geo_cell_key rather than raw global positions",
+        ),
+        (
+            "geo_object_id(",
+            "INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            "generated objects must derive stable GEO-1 object identities from geo_cell_key lineage",
+        ),
+        (
+            "worldgen_stream_seed(",
+            "INV-WORLDGEN-RNG-NAMED-ONLY",
+            "worldgen RNG seeding must remain centralized in named GEO-8 stream derivation",
+        ),
+        (
+            "_cache_key(",
+            "INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            "worldgen cache keys must remain derived from canonical cell inputs",
+        ),
+    ):
+        if required_token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+    for forbidden_token in ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom("):
+        if forbidden_token not in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=forbidden_token,
+                message="worldgen RNG must remain named and deterministic; nondeterministic sources are forbidden",
+                rule_id="INV-WORLDGEN-RNG-NAMED-ONLY",
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for required_token, rule_id, message in (
+        (
+            '"process.worldgen_request"',
+            "INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            "authoritative GEO-8 world generation must remain process-owned",
+        ),
+        (
+            "generate_worldgen_result(",
+            "INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            "process runtime must delegate worldgen through the canonical GEO-8 worldgen engine",
+        ),
+        (
+            "build_worldgen_request(",
+            "INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            "process runtime must normalize on-demand generation through canonical worldgen requests",
+        ),
+        (
+            "worldgen_result_proof_surface(",
+            "INV-GENERATOR-VERSION-LOCKED",
+            "process runtime must refresh worldgen proof surfaces after canonical generation",
+        ),
+    ):
+        if required_token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    for rel_path in (creator_rel, runner_rel, script_runner_rel, schema_rel, schema_json_rel):
+        text = _file_text(repo_root, rel_path)
+        for required_token in ("generator_version_id", "realism_profile_id"):
+            if required_token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=required_token,
+                    message="worldgen lineage metadata must be locked into universe identity and run metadata",
+                    rule_id="INV-GENERATOR-VERSION-LOCKED",
+                )
+            )
+    for rel_path, required_token in (
+        (runner_rel, "refusal.generator_version_mismatch"),
+        (runner_rel, "refusal.realism_profile_mismatch"),
+    ):
+        text = _file_text(repo_root, rel_path)
+        if required_token in text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=required_token,
+                message="session resume must refuse generator/realism lineage drift explicitly",
+                rule_id="INV-GENERATOR-VERSION-LOCKED",
+            )
+        )
+
+    for rel_path, required_token in (
+        (projection_rel, "build_worldgen_requests_for_projection("),
+        (roi_rel, "build_worldgen_requests_for_roi("),
+        (replay_tool_rel, "verify_worldgen_cell_replay("),
+        (replay_tool_rel, "worldgen_result_hash_chain"),
+        (geo_init_rel, "generate_worldgen_result"),
+        (geo_init_rel, "worldgen_rng_stream_policy"),
+    ):
+        text = _file_text(repo_root, rel_path)
+        if required_token in text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=required_token,
+                message="GEO-8 worldgen integration and proof tooling must remain wired through canonical request/replay surfaces",
+                rule_id="INV-WORLDGEN-ONLY-BY-CELL-KEY",
+            )
+        )
+
+    realism_registry_text = _file_text(repo_root, realism_registry_rel)
+    for required_id in (
+        "realism.realistic_default_milkyway_stub",
+        "realism.flat_world_stub",
+        "realism.torus_world_stub",
+        "realism.fantasy_stub",
+    ):
+        if required_id in realism_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=realism_registry_rel,
+                line_number=1,
+                snippet=required_id,
+                message="required GEO-8 realism profile scaffold is missing from the registry",
+                rule_id="INV-GENERATOR-VERSION-LOCKED",
+            )
+        )
+
+    generator_registry_text = _file_text(repo_root, generator_registry_rel)
+    if "gen.v0_stub" not in generator_registry_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=generator_registry_rel,
+                line_number=1,
+                snippet="gen.v0_stub",
+                message="required GEO-8 generator version scaffold is missing from the registry",
+                rule_id="INV-GENERATOR-VERSION-LOCKED",
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -28009,6 +28208,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_geometry_edit_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_worldgen_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

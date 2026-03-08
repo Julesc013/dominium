@@ -371,6 +371,8 @@ from analyzers import e344_nondeterministic_path_smell
 from analyzers import e345_adhoc_heuristic_smell
 from analyzers import e346_direct_geometry_write_smell
 from analyzers import e347_unlogged_terrain_edit_smell
+from analyzers import e348_unnamed_rng_worldgen_smell
+from analyzers import e349_adhoc_worldgen_smell
 
 
 ANALYZERS = (
@@ -745,6 +747,8 @@ ANALYZERS = (
     e345_adhoc_heuristic_smell,
     e346_direct_geometry_write_smell,
     e347_unlogged_terrain_edit_smell,
+    e348_unnamed_rng_worldgen_smell,
+    e349_adhoc_worldgen_smell,
 )
 
 
