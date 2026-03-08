@@ -4049,6 +4049,127 @@ def _geometry_material_breakdown_rows(transfer_row: Mapping[str, object] | None)
     ]
 
 
+def _apply_geometry_coupling_updates(
+    *,
+    state: dict,
+    prior_geometry_cell_states: object,
+    updated_geometry_cell_states: object,
+    current_tick: int,
+    process_id: str,
+    edit_id: str,
+    material_registry: Mapping[str, object] | None = None,
+) -> dict:
+    prior_by_key = geometry_cell_state_rows_by_key(prior_geometry_cell_states, material_registry=material_registry)
+    updated_rows = normalize_geometry_cell_state_rows(updated_geometry_cell_states, material_registry=material_registry)
+    hazard_rows_by_id = dict(
+        (
+            "{}::{}".format(str(row.get("target_id", "")).strip(), str(row.get("hazard_type_id", "")).strip()),
+            dict(row),
+        )
+        for row in list(_ensure_model_hazard_rows(state) or [])
+        if isinstance(row, Mapping) and str(row.get("target_id", "")).strip() and str(row.get("hazard_type_id", "")).strip()
+    )
+    flow_rows_by_id = dict(
+        (
+            "{}::{}::{}".format(
+                str(row.get("channel_id", "")).strip(),
+                str(row.get("quantity_bundle_id", "")).strip() or "-",
+                str(row.get("component_quantity_id", "")).strip() or str(row.get("quantity_id", "")).strip(),
+            ),
+            dict(row),
+        )
+        for row in list(_ensure_model_flow_adjustment_rows(state) or [])
+        if isinstance(row, Mapping) and str(row.get("channel_id", "")).strip() and str(row.get("quantity_id", "")).strip()
+    )
+    touched_hazard_ids: List[str] = []
+    touched_flow_ids: List[str] = []
+    for row in updated_rows:
+        geo_cell_key = dict(row.get("geo_cell_key") or {})
+        geo_key_hash = canonical_sha256(geo_cell_key)
+        prior_row = dict(prior_by_key.get(geo_key_hash) or {})
+        effect = geometry_coupling_effects_for_cell_state(row, prior_row=prior_row)
+        hazard_key = "{}::hazard.geo.instability".format(geo_key_hash)
+        existing_hazard = dict(hazard_rows_by_id.get(hazard_key) or {})
+        hazard_rows_by_id[hazard_key] = {
+            "schema_version": "1.0.0",
+            "target_id": geo_key_hash,
+            "hazard_type_id": "hazard.geo.instability",
+            "accumulated_value": int(max(0, _as_int(effect.get("stability_hazard", 0), 0))),
+            "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+            "deterministic_fingerprint": "",
+            "extensions": {
+                **(dict(existing_hazard.get("extensions") or {}) if isinstance(existing_hazard.get("extensions"), Mapping) else {}),
+                "geo_cell_key": geo_cell_key,
+                "source_process_id": str(process_id or "").strip() or "process.unknown",
+                "geometry_edit_id": str(edit_id or "").strip(),
+                "coupling_model_id": "model.mech.geometry_excavation_stub",
+                "coupling_contract_id": "coupling.geo_to_mech.instability_stub",
+            },
+        }
+        touched_hazard_ids.append(hazard_key)
+        for channel_id, component_quantity_id, quantity_id, proxy_key, contract_id in (
+            (
+                "channel.fluid.permeability.geo",
+                "permeability_proxy",
+                "quantity.geo.permeability_proxy",
+                "permeability_proxy",
+                "coupling.geo_to_fluid.permeability_stub",
+            ),
+            (
+                "channel.therm.conductance.geo",
+                "conductance_proxy",
+                "quantity.geo.conductance_proxy",
+                "conductance_proxy",
+                "coupling.geo_to_therm.conductance_stub",
+            ),
+        ):
+            existing_row = dict(
+                flow_rows_by_id.get(
+                    "{}::{}::{}".format(channel_id, geo_key_hash, component_quantity_id)
+                )
+                or {}
+            )
+            prior_value = int(max(0, _as_int(prior_row.get(proxy_key, 0), 0)))
+            current_value = int(max(0, _as_int(effect.get(proxy_key, row.get(proxy_key, 0)), 0)))
+            delta = int(current_value - prior_value)
+            row_id = "{}::{}::{}".format(channel_id, geo_key_hash, component_quantity_id)
+            flow_rows_by_id[row_id] = {
+                "schema_version": "1.0.0",
+                "channel_id": channel_id,
+                "quantity_id": quantity_id,
+                "quantity_bundle_id": geo_key_hash,
+                "component_quantity_id": component_quantity_id,
+                "accumulated_delta": int(_as_int(existing_row.get("accumulated_delta", 0), 0) + delta),
+                "last_update_tick": int(max(0, _as_int(current_tick, 0))),
+                "deterministic_fingerprint": "",
+                "extensions": {
+                    **(dict(existing_row.get("extensions") or {}) if isinstance(existing_row.get("extensions"), Mapping) else {}),
+                    "geo_cell_key": geo_cell_key,
+                    "source_process_id": str(process_id or "").strip() or "process.unknown",
+                    "geometry_edit_id": str(edit_id or "").strip(),
+                    "coupling_contract_id": contract_id,
+                    "proxy_value": current_value,
+                },
+            }
+            touched_flow_ids.append(row_id)
+    state["model_hazard_rows"] = [dict(hazard_rows_by_id[key]) for key in sorted(hazard_rows_by_id.keys())]
+    state["model_flow_adjustment_rows"] = [dict(flow_rows_by_id[key]) for key in sorted(flow_rows_by_id.keys())]
+    _ensure_model_hazard_rows(state)
+    _ensure_model_flow_adjustment_rows(state)
+    return {
+        "hazard_count": int(len(set(touched_hazard_ids))),
+        "flow_adjustment_count": int(len(set(touched_flow_ids))),
+        "touched_hazard_ids": _sorted_tokens(touched_hazard_ids),
+        "touched_flow_adjustment_ids": _sorted_tokens(touched_flow_ids),
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "touched_hazard_ids": _sorted_tokens(touched_hazard_ids),
+                "touched_flow_adjustment_ids": _sorted_tokens(touched_flow_ids),
+            }
+        ),
+    }
+
+
 def _build_entropy_effect_snapshot_row(
     *,
     target_id: str,
@@ -43689,6 +43810,7 @@ def execute_intent(
                 {"process_id": process_id, "volume_amount": volume_amount},
                 "$.intent.inputs.volume_amount",
             )
+        prior_geometry_cell_states = [dict(row) for row in list(geometry_cell_states or []) if isinstance(row, Mapping)]
         operator_subject_id = str(
             inputs.get("operator_subject_id", authority_context.get("subject_id", ""))
         ).strip() or "subject.system"
@@ -43872,6 +43994,15 @@ def execute_intent(
             material_registry=material_class_registry,
         )
         geometry_event = _append_geometry_edit_event(state, geometry_result.get("geometry_edit_event") or {})
+        coupling_summary = _apply_geometry_coupling_updates(
+            state=state,
+            prior_geometry_cell_states=prior_geometry_cell_states,
+            updated_geometry_cell_states=list(geometry_result.get("updated_geometry_cell_states") or []),
+            current_tick=int(current_tick),
+            process_id=process_id,
+            edit_id=str(geometry_event.get("edit_id", "")).strip(),
+            material_registry=material_class_registry,
+        )
         _refresh_geometry_hash_chains(state, material_registry=material_class_registry)
         result_metadata = {
             "edit_kind": edit_kind,
@@ -43892,6 +44023,8 @@ def execute_intent(
             "geometry_state_hash_chain": str(state.get("geometry_state_hash_chain", "")).strip(),
             "geometry_cell_state_hash_chain": str(state.get("geometry_cell_state_hash_chain", "")).strip(),
             "geometry_edit_event_hash_chain": str(state.get("geometry_edit_event_hash_chain", "")).strip(),
+            "coupling_hazard_count": int(max(0, _as_int(coupling_summary.get("hazard_count", 0), 0))),
+            "coupling_flow_adjustment_count": int(max(0, _as_int(coupling_summary.get("flow_adjustment_count", 0), 0))),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_network_create_from_formalization":
