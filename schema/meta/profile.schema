@@ -15,7 +15,7 @@ REQUIRED SHAPE:
 record profile
   required:
     - profile_id: id
-    - profile_type: enum(physics|law|process|safety|epistemic|coupling|compute)
+    - profile_type: enum(physics|law|process|safety|epistemic|coupling|compute|topology|metric|partition|projection)
     - version: semver
     - overrides: map
     - deterministic_fingerprint: sha256

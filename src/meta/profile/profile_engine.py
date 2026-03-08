@@ -11,7 +11,19 @@ REFUSAL_PROFILE_INVALID = "refusal.profile.invalid"
 REFUSAL_PROFILE_MISSING = "refusal.profile.missing"
 REFUSAL_PROFILE_OVERRIDE_NOT_ALLOWED = "refusal.profile.override_not_allowed"
 
-_PROFILE_TYPES = {"physics", "law", "process", "safety", "epistemic", "coupling", "compute"}
+_PROFILE_TYPES = {
+    "physics",
+    "law",
+    "process",
+    "safety",
+    "epistemic",
+    "coupling",
+    "compute",
+    "topology",
+    "metric",
+    "partition",
+    "projection",
+}
 _BINDING_SCOPES = ("universe", "session", "authority", "system")
 
 
@@ -525,4 +537,3 @@ def resolve_effective_profile_snapshot(
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
     return payload
-

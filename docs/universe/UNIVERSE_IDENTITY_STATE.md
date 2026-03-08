@@ -20,6 +20,11 @@ Superseded By: none
   - `global_seed`
   - domain binding IDs
   - physics/constants profile reference
+  - default GEO profile references:
+    - `topology_profile_id`
+    - `metric_profile_id`
+    - `partition_profile_id`
+    - `projection_profile_id`
   - base scenario reference
   - compatibility schema refs
 - `immutable_after_create=true` is required.

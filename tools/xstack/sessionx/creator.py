@@ -45,6 +45,10 @@ DEFAULT_PARAMETER_BUNDLE_ID = "params.lab.placeholder"
 DEFAULT_BUDGET_POLICY_ID = "policy.budget.default_lab"
 DEFAULT_FIDELITY_POLICY_ID = "policy.fidelity.default_lab"
 DEFAULT_PHYSICS_PROFILE_ID = NULL_PHYSICS_PROFILE_ID
+DEFAULT_TOPOLOGY_PROFILE_ID = "geo.topology.r3_infinite"
+DEFAULT_METRIC_PROFILE_ID = "geo.metric.euclidean"
+DEFAULT_PARTITION_PROFILE_ID = "geo.partition.grid_zd"
+DEFAULT_PROJECTION_PROFILE_ID = "geo.projection.perspective_3d"
 DEFAULT_TIME_CONTROL_POLICY_ID = "time.policy.null"
 DEFAULT_SCENARIO_ID = "scenario.lab.galaxy_nav"
 DEFAULT_SCOPE_ID = "epistemic.lab.placeholder"
@@ -344,7 +348,11 @@ def _compatibility_schema_refs(repo_root: str) -> List[str]:
         return []
     include = (
         "bundle_lockfile",
+        "metric_profile",
+        "partition_profile",
+        "projection_profile",
         "session_spec",
+        "space_topology_profile",
         "universe_identity",
         "universe_physics_profile",
         "time_model",
@@ -754,6 +762,10 @@ def _universe_identity_from_seed(
     scenario_id: str,
     domain_binding_ids: List[str],
     physics_profile_id: str,
+    topology_profile_id: str,
+    metric_profile_id: str,
+    partition_profile_id: str,
+    projection_profile_id: str,
     initial_pack_set_hash_expectation: str,
     compatibility_schema_refs: List[str],
 ) -> dict:
@@ -763,6 +775,10 @@ def _universe_identity_from_seed(
         "global_seed": str(seed_text),
         "domain_binding_ids": sorted(set(str(item).strip() for item in (domain_binding_ids or []) if str(item).strip())),
         "physics_profile_id": str(physics_profile_id).strip() or NULL_PHYSICS_PROFILE_ID,
+        "topology_profile_id": str(topology_profile_id).strip() or DEFAULT_TOPOLOGY_PROFILE_ID,
+        "metric_profile_id": str(metric_profile_id).strip() or DEFAULT_METRIC_PROFILE_ID,
+        "partition_profile_id": str(partition_profile_id).strip() or DEFAULT_PARTITION_PROFILE_ID,
+        "projection_profile_id": str(projection_profile_id).strip() or DEFAULT_PROJECTION_PROFILE_ID,
         "base_scenario_id": str(scenario_id),
         "initial_pack_set_hash_expectation": str(initial_pack_set_hash_expectation).strip(),
         "compatibility_schema_refs": sorted(
@@ -1112,6 +1128,10 @@ def _default_profile_bindings(
     session_id: str,
     authority_id: str,
     physics_profile_id: str,
+    topology_profile_id: str,
+    metric_profile_id: str,
+    partition_profile_id: str,
+    projection_profile_id: str,
     law_profile_id: str,
     privilege_level: str,
 ) -> List[dict]:
@@ -1120,6 +1140,26 @@ def _default_profile_bindings(
             scope="universe",
             target_id=str(universe_id or "").strip() or "*",
             profile_id=_physics_overlay_profile_id(physics_profile_id),
+        ),
+        _profile_binding_row(
+            scope="universe",
+            target_id=str(universe_id or "").strip() or "*",
+            profile_id=str(topology_profile_id or "").strip() or DEFAULT_TOPOLOGY_PROFILE_ID,
+        ),
+        _profile_binding_row(
+            scope="universe",
+            target_id=str(universe_id or "").strip() or "*",
+            profile_id=str(metric_profile_id or "").strip() or DEFAULT_METRIC_PROFILE_ID,
+        ),
+        _profile_binding_row(
+            scope="universe",
+            target_id=str(universe_id or "").strip() or "*",
+            profile_id=str(partition_profile_id or "").strip() or DEFAULT_PARTITION_PROFILE_ID,
+        ),
+        _profile_binding_row(
+            scope="universe",
+            target_id=str(universe_id or "").strip() or "*",
+            profile_id=str(projection_profile_id or "").strip() or DEFAULT_PROJECTION_PROFILE_ID,
         ),
         _profile_binding_row(
             scope="session",
@@ -1413,6 +1453,10 @@ def create_session_spec(
             scenario_id=str(scenario_id),
             domain_binding_ids=domain_bindings,
             physics_profile_id=str(selected_profile.get("physics_profile_id", "")),
+            topology_profile_id=DEFAULT_TOPOLOGY_PROFILE_ID,
+            metric_profile_id=DEFAULT_METRIC_PROFILE_ID,
+            partition_profile_id=DEFAULT_PARTITION_PROFILE_ID,
+            projection_profile_id=DEFAULT_PROJECTION_PROFILE_ID,
             initial_pack_set_hash_expectation=str(lockfile_payload.get("pack_lock_hash", "")),
             compatibility_schema_refs=_compatibility_schema_refs(repo_root=repo_root),
         )
@@ -1601,13 +1645,20 @@ def create_session_spec(
         network_payload["physics_profile_id"] = str(identity_payload.get("physics_profile_id", "")).strip()
 
     profile_registry_path = os.path.join(repo_root, "data", "registries", "profile_registry.json")
-    profile_registry_payload = read_json_object(profile_registry_path) if os.path.isfile(profile_registry_path) else {}
+    if os.path.isfile(profile_registry_path):
+        profile_registry_payload, _profile_registry_error = read_json_object(profile_registry_path)
+    else:
+        profile_registry_payload = {}
     authority_binding_target = "client"
     session_profile_bindings = _default_profile_bindings(
         universe_id=calculated_universe_id,
         session_id=save_token,
         authority_id=authority_binding_target,
         physics_profile_id=str(identity_payload.get("physics_profile_id", "")).strip(),
+        topology_profile_id=str(identity_payload.get("topology_profile_id", "")).strip() or DEFAULT_TOPOLOGY_PROFILE_ID,
+        metric_profile_id=str(identity_payload.get("metric_profile_id", "")).strip() or DEFAULT_METRIC_PROFILE_ID,
+        partition_profile_id=str(identity_payload.get("partition_profile_id", "")).strip() or DEFAULT_PARTITION_PROFILE_ID,
+        projection_profile_id=str(identity_payload.get("projection_profile_id", "")).strip() or DEFAULT_PROJECTION_PROFILE_ID,
         law_profile_id=str(law_profile_id),
         privilege_level=str(privilege_level),
     )

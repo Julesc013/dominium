@@ -23,3 +23,9 @@ record universe_identity
     - compatibility_schema_refs: [tag]
     - immutable_after_create: bool
     - extensions: map
+
+OPTIONAL:
+  - topology_profile_id: id
+  - metric_profile_id: id
+  - partition_profile_id: id
+  - projection_profile_id: id

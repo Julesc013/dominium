@@ -190,6 +190,8 @@ Tool payload wrapper:
 - `refusal.ep.memory_policy_violation`: ensure memory payload channels/precision comply with active epistemic + retention policy chain.
 - `refusal.physics_profile_missing`: select/install a physics profile and bind `UniverseIdentity.physics_profile_id` before boot/handshake.
 - `refusal.physics_profile_mismatch`: client/server/save lineage `physics_profile_id` values must match exactly for deterministic compatibility.
+- `refusal.geo.profile_missing`: select/install the referenced GEO topology, metric, partition, or projection profile before session bootstrap.
+- `refusal.geo.dimension_change`: restart at a session boundary when a GEO override would change authoritative dimension.
 - `refusal.civ.entitlement_missing`: grant CIV entitlement for faction/affiliation/territory/diplomacy process request.
 - `refusal.civ.law_forbidden`: active law profile forbids requested CIV process; switch profile or update policy pack.
 - `refusal.civ.already_affiliated`: subject must leave current faction before joining another faction.

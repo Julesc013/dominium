@@ -43,6 +43,22 @@ No hidden mode flags are allowed in authoritative runtime behavior.
 - Instruction/memory envelopes
 - Logic/network compute ceilings
 
+8. `topology`
+- Universe topology identity
+- Declared dimension and boundary behavior
+
+9. `metric`
+- Distance and geodesic policy
+- Measure/tolerance policy for GEO queries
+
+10. `partition`
+- Field/world/ROI partition selection
+- Stable cell-key derivation policy
+
+11. `projection`
+- Render/map/slice projection policy
+- Lens-facing geometry projection defaults
+
 ## Deterministic Resolution Order
 Effective profile resolution for a `rule_id` is strict and deterministic:
 

@@ -7,15 +7,23 @@
     "domain.astronomy"
   ],
   "physics_profile_id": "physics.null",
+  "topology_profile_id": "geo.topology.r3_infinite",
+  "metric_profile_id": "geo.metric.euclidean",
+  "partition_profile_id": "geo.partition.grid_zd",
+  "projection_profile_id": "geo.projection.perspective_3d",
   "base_scenario_id": "scenario.lab.galaxy_nav",
   "initial_pack_set_hash_expectation": "d9eb253e069b2ce7fbbdb5f95f98cc28fbf3622f29227cececad2e89d13718a5",
   "compatibility_schema_refs": [
     "bundle_lockfile@1.0.0",
+    "metric_profile@1.0.0",
+    "partition_profile@1.0.0",
+    "projection_profile@1.0.0",
     "session_spec@1.0.0",
+    "space_topology_profile@1.0.0",
     "universe_identity@1.0.0"
   ],
   "immutable_after_create": true,
   "extensions": {},
-  "identity_hash": "5ce1f4975ab8e443664f94f79e4a00c3d54f14ab1ec691e4d8f9f646d159c111"
+  "identity_hash": "de3c1b66f2ff24c1d340e7eb2d9f2fe707bfff8657aab0ec93154c27f486322f"
 }
 
