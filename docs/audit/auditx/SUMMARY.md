@@ -9,9 +9,9 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 682
-- VIOLATION: 99
-- WARN: 1222
+- RISK: 676
+- VIOLATION: 108
+- WARN: 1251
 
 ## Counts By Category
 
@@ -53,8 +53,6 @@ Superseded By: none
 - architecture.substrate_bypass_smell: 13
 - architecture.thermal_bypass_smell: 1
 - architecture.unbounded_spread_smell: 1
-- architecture.undeclared_registry_smell: 2
-- architecture.undeclared_schema_smell: 4
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
 - architecture.unlogged_trust_change_smell: 5
@@ -90,6 +88,8 @@ Superseded By: none
 - reachability: 80
 - reliability.silent_reaction_smell: 3
 - schema_usage: 160
+- security.boundary_io: 29
+- security.privilege_bypass: 9
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120

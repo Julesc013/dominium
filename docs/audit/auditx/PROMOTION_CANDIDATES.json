@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 69,
+  "candidate_count": 68,
   "candidates": [
     {
       "evidence_paths": [
@@ -154,26 +154,13 @@
     },
     {
       "evidence_paths": [
-        "data/registries/generator_version_registry.json",
-        "data/registries/realism_profile_registry.json",
-        "docs/audit/TOPOLOGY_MAP.json"
+        "tools/auditx/analyzers/c1_security_boundary.py",
+        "tools/securex/core/boundary_validator.py",
+        "tools/securex/securex.py"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.6825,
-      "rule_type": "INVARIANT_HARDEN",
-      "suggested_ruleset": "core.json"
-    },
-    {
-      "evidence_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/generator_version.schema",
-        "schema/geo/realism_profile.schema",
-        "schema/geo/worldgen_request.schema",
-        "schema/geo/worldgen_result.schema"
-      ],
-      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
-      "risk_score": 0.6825,
-      "rule_type": "INVARIANT_HARDEN",
+      "risk_score": 0.9,
+      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     },
     {

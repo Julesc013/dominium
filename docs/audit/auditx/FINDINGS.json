@@ -1,7 +1,7 @@
 {
   "artifact_class": "CANONICAL",
   "changed_only": false,
-  "finding_count": 2226,
+  "finding_count": 2258,
   "findings": [
     {
       "analyzer_id": "A4_DERIVED_ARTIFACT_CONTRACT",
@@ -23,6 +23,222 @@
       ],
       "related_paths": [
         "docs/audit/auditx/FINDINGS.json"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "bypass_law_profile"
+      ],
+      "finding_id": "C1:0001",
+      "fingerprint": "014f19cc0f4fb3a07487f3e0675420f76ee6f64cd3ccf6ad2af191aeeac163f1",
+      "location": {
+        "file_path": "tools/auditx/analyzers/c1_security_boundary.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/auditx/analyzers/c1_security_boundary.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "disable_epistemic_guard"
+      ],
+      "finding_id": "C1:0002",
+      "fingerprint": "dafefd16b163745b8e0570e947c470e7cf2c5998e5a0f7f637ba605adde35b1d",
+      "location": {
+        "file_path": "tools/auditx/analyzers/c1_security_boundary.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/auditx/analyzers/c1_security_boundary.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "override_authority_state"
+      ],
+      "finding_id": "C1:0003",
+      "fingerprint": "fbe91f0e440b82672bbc93283d823c8e7d8fe49f11da77d82a64749578e2386a",
+      "location": {
+        "file_path": "tools/auditx/analyzers/c1_security_boundary.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/auditx/analyzers/c1_security_boundary.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "bypass_law_profile"
+      ],
+      "finding_id": "C1:0004",
+      "fingerprint": "9ba6c4d542d1d1e0cd1100bbc3e468b676df5fc277c9a69d985607995b650ea3",
+      "location": {
+        "file_path": "tools/securex/core/boundary_validator.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/securex/core/boundary_validator.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "disable_epistemic_guard"
+      ],
+      "finding_id": "C1:0005",
+      "fingerprint": "2f13b68b5d2cbf77af5aa76c780bed7308a0b3eef7677676da4a0515298e7843",
+      "location": {
+        "file_path": "tools/securex/core/boundary_validator.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/securex/core/boundary_validator.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "override_authority_state"
+      ],
+      "finding_id": "C1:0006",
+      "fingerprint": "f2bda573111f310c2c4de6b6e1310bc899ad4df4249d8c17bf02b7425b77e3a6",
+      "location": {
+        "file_path": "tools/securex/core/boundary_validator.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/securex/core/boundary_validator.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "bypass_law_profile"
+      ],
+      "finding_id": "C1:0007",
+      "fingerprint": "da3893e61e8df593410fe782e2e3631377df2c5c8e0d85e34fb53670755b9d07",
+      "location": {
+        "file_path": "tools/securex/securex.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/securex/securex.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "disable_epistemic_guard"
+      ],
+      "finding_id": "C1:0008",
+      "fingerprint": "330609fd505c5c9f768a5efa8d4116f1d76eda104b5640c509c7e8690b32862d",
+      "location": {
+        "file_path": "tools/securex/securex.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/securex/securex.py"
+      ],
+      "severity": "VIOLATION",
+      "status": "OPEN",
+      "suggested_classification": "INVALID"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.privilege_bypass",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "override_authority_state"
+      ],
+      "finding_id": "C1:0009",
+      "fingerprint": "2c6c3b216ba55bd40d7df511e9d6370593d90ae447e3509cd39b160c874c2206",
+      "location": {
+        "file_path": "tools/securex/securex.py"
+      },
+      "recommended_action": "ADD_TEST",
+      "related_invariants": [
+        "INV-SECUREX-PRIVILEGE-MODEL"
+      ],
+      "related_paths": [
+        "tools/securex/securex.py"
       ],
       "severity": "VIOLATION",
       "status": "OPEN",
@@ -7693,162 +7909,6 @@
       "severity": "RISK",
       "status": "OPEN",
       "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
-      "fingerprint": "447c8bd706cdbdff7f18573720ae5d176b382e8937d5056b8e34eb4e2baa22b1",
-      "location": {
-        "file_path": "schema/geo/generator_version.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/generator_version.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
-      "fingerprint": "fbf55a41aa488b6e3b3416fc08b36c54e30db6383a1a722d89b260f399db1ae1",
-      "location": {
-        "file_path": "schema/geo/realism_profile.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/realism_profile.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
-      "fingerprint": "288048f62b8d9c53f802d31ea4d91e860f0bf4b6e2de667aa7299490f31e52b8",
-      "location": {
-        "file_path": "schema/geo/worldgen_request.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/worldgen_request.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0004",
-      "fingerprint": "dd5d23d7040d34a19ac9a976290172b9472244b9603250056464726d8c716acd",
-      "location": {
-        "file_path": "schema/geo/worldgen_result.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/worldgen_result.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E108_UNDECLARED_REGISTRY_SMELL",
-      "category": "architecture.undeclared_registry_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "registry path missing from topology registry nodes"
-      ],
-      "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0001",
-      "fingerprint": "9e4afcf82328285b61b9b40c30357aa0f4b67176792005a91a399e680b1b418d",
-      "location": {
-        "file_path": "data/registries/generator_version_registry.json",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-REGISTRY"
-      ],
-      "related_paths": [
-        "data/registries/generator_version_registry.json",
-        "docs/audit/TOPOLOGY_MAP.json"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E108_UNDECLARED_REGISTRY_SMELL",
-      "category": "architecture.undeclared_registry_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "registry path missing from topology registry nodes"
-      ],
-      "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0002",
-      "fingerprint": "d3379b864df2b293f6433eeebc4ad30b55165de37e9594989e313a2c2ab65691",
-      "location": {
-        "file_path": "data/registries/realism_profile_registry.json",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-REGISTRY"
-      ],
-      "related_paths": [
-        "data/registries/realism_profile_registry.json",
-        "docs/audit/TOPOLOGY_MAP.json"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
     },
     {
       "analyzer_id": "E113_DEPRECATED_USAGE_SMELL",
@@ -51503,6 +51563,702 @@
       "suggested_classification": "TODO-BLOCKED"
     },
     {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0010",
+      "fingerprint": "92b84ad6828bb494bf5c7de2200ee147f4bb90b0c9448b65da191c39364ec821",
+      "location": {
+        "file_path": "client/app/main_client.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "client/app/main_client.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0011",
+      "fingerprint": "b72af2a3d93ef28a305cfaaa235577e470901ad285c0dd5b88dddd37de9037ff",
+      "location": {
+        "file_path": "client/core/client_command_bridge.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "client/core/client_command_bridge.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0012",
+      "fingerprint": "9a1044b8bd28e6a6fae830402ae53a5c92f3e72c0666f1758ba377d82ec404f3",
+      "location": {
+        "file_path": "client/core/client_state_machine.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "client/core/client_state_machine.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0013",
+      "fingerprint": "0418787a165874dd2f1362375f2942b03cbde27f8ffb6b1cfe5ccbce4de80605",
+      "location": {
+        "file_path": "client/core/client_state_machine.h"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "client/core/client_state_machine.h"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0014",
+      "fingerprint": "b7aafaf64180b72260302b089b9dcbcdfc5a86d561828202142ca259284fdf3c",
+      "location": {
+        "file_path": "client/core/session_artifacts.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "client/core/session_artifacts.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0015",
+      "fingerprint": "0a9a7afe346f2413837d0797f92464dc3eaea20eca1dec59880c84999d22a6e8",
+      "location": {
+        "file_path": "client/core/session_artifacts.h"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "client/core/session_artifacts.h"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0016",
+      "fingerprint": "950891544014a76c4bb02dd3efb896f5f9568504401ba548eee66b238228ad7c",
+      "location": {
+        "file_path": "client/shell/client_shell.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "client/shell/client_shell.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0017",
+      "fingerprint": "398233de8cdfed6b50fb9862083f3d659a5497b4dc8c7da4ebd71fb0192968f5",
+      "location": {
+        "file_path": "launcher/cli/launcher_cli_main.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "launcher/cli/launcher_cli_main.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0018",
+      "fingerprint": "cbe4e70e96b024f73ee9298f4919c30f4994a05b1a72a6201720d7f1409d623e",
+      "location": {
+        "file_path": "launcher/cli/launcher_ui_shell.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "launcher/cli/launcher_ui_shell.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0019",
+      "fingerprint": "3416e08394369dfa0f0dc1944ec2c64108097a7a9d07298bddc8c330e32da28d",
+      "location": {
+        "file_path": "setup/cli/setup_cli_main.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/cli/setup_cli_main.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0020",
+      "fingerprint": "a68528620bc9bcd6ed43a9682b6974a8cf00b97c4f76ffd38ae0f416331a2eef",
+      "location": {
+        "file_path": "setup/gui/dsu_gui_stub.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/gui/dsu_gui_stub.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0021",
+      "fingerprint": "9f4fc37295f27cbf516f4354a0528a994982b91451e3952eb1972688a9f2a2f2",
+      "location": {
+        "file_path": "setup/gui/win32/dsu_gui_stub.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/gui/win32/dsu_gui_stub.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0022",
+      "fingerprint": "b615714c9c32a2f9e075e4010aff1ad89fb6dc3a7b36cdf3e745fb6ec8c51b4f",
+      "location": {
+        "file_path": "setup/packages/scripts/ci/launcher_cli_smoke_matrix.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/ci/launcher_cli_smoke_matrix.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0023",
+      "fingerprint": "011a534b6b5aeca8643d45e557cdb8b060288cf28c4353fbddf7a7589580235a",
+      "location": {
+        "file_path": "setup/packages/scripts/ci/test_support_bundle_determinism.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/ci/test_support_bundle_determinism.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0024",
+      "fingerprint": "b35e0e6af2395f30ea6adfb9ed5d6edfe788509a76dbb15085097b4dfda90d21",
+      "location": {
+        "file_path": "setup/packages/scripts/diagnostics/make_support_bundle.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/diagnostics/make_support_bundle.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0025",
+      "fingerprint": "e7c59ba9e0adb75a518d7df35d762652e715661e462712a8e86a79cb2fd04fdc",
+      "location": {
+        "file_path": "setup/packages/scripts/doc_ratio_check.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/doc_ratio_check.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0026",
+      "fingerprint": "0f66c4809873dc991f29d38c56e34d0b3a9daf6654103df158a88c2666e2cd4a",
+      "location": {
+        "file_path": "setup/packages/scripts/gen_base_demo_mod.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/gen_base_demo_mod.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0027",
+      "fingerprint": "17fb1080640770ce706fb5eac84b2298b52e5a826ccf8ffbc17129cd4836f167",
+      "location": {
+        "file_path": "setup/packages/scripts/gen_launcher_ui_schema_v1.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/gen_launcher_ui_schema_v1.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0028",
+      "fingerprint": "86da2bbc5babe26c8fa5b5215452f628da27f5648b4d33247656de6fa50af8d3",
+      "location": {
+        "file_path": "setup/packages/scripts/gen_tools_demo.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/gen_tools_demo.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0029",
+      "fingerprint": "e06a5943ab1ce68a5b8bbf04fbfde13ea7f7c42cd9bacf05f2bb06648d703a82",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/dsumanifest.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/dsumanifest.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0030",
+      "fingerprint": "4d5ec07e7ee58fa5d1b4791276b3a26bdca53aaba429ae041e35aa70c73d45cd",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/make_deterministic_archive.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/make_deterministic_archive.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0031",
+      "fingerprint": "a731821647252e0b179832fe04e56fcade666fae5595dd9ba5d2ea1e9beeaba7",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/pipeline.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/pipeline.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0032",
+      "fingerprint": "007693af985ca1761193b4aa4ab31291bdd008b260d039219c64761029ad148a",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/tests/macos_validation_test.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/tests/macos_validation_test.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0033",
+      "fingerprint": "384b251efa38edb02cdd2a376edac796e2bc4a4d3d7113fe65534a9bdb480d37",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/tests/msi_validation_test.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/tests/msi_validation_test.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0034",
+      "fingerprint": "2ac190ebdef727271a4c45a82814504504232bea1c5a12a19155733973f98b2a",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/tests/packaging_validation_test.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/tests/packaging_validation_test.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0035",
+      "fingerprint": "afaea013ab7928ee4777e8f62a5c3a12aafbf3a79ce31d5621e52e2615a5e035",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/windows/generate_dominium_setup_wxs.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/windows/generate_dominium_setup_wxs.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0036",
+      "fingerprint": "3089f302c5170a9ed8218a485eb65fcba932b22d43b353504e32bfd831a4b08d",
+      "location": {
+        "file_path": "setup/packages/scripts/packaging/windows/generate_dominium_wxs.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/packaging/windows/generate_dominium_wxs.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0037",
+      "fingerprint": "1278b9148be793ab54dae06c21761100aedac8f7aac94a19b29d4faa038188f0",
+      "location": {
+        "file_path": "setup/packages/scripts/repro/verify_reproducible_builds.py"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/packages/scripts/repro/verify_reproducible_builds.py"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
+      "analyzer_id": "C1",
+      "category": "security.boundary_io",
+      "confidence": 0.6,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "direct file I/O token in client boundary"
+      ],
+      "finding_id": "C1:0038",
+      "fingerprint": "562fdb36d9dbc49cb20d22c89a1b254ed24209397f177f5ad5be06c2e24415e3",
+      "location": {
+        "file_path": "setup/tui/dsu_tui_stub.c"
+      },
+      "recommended_action": "ADD_RULE",
+      "related_invariants": [
+        "INV-SECUREX-TRUST-POLICY-VALID"
+      ],
+      "related_paths": [
+        "setup/tui/dsu_tui_stub.c"
+      ],
+      "severity": "WARN",
+      "status": "OPEN",
+      "suggested_classification": "TODO-BLOCKED"
+    },
+    {
       "analyzer_id": "E124_CAMERA_BYPASS_SMELL",
       "category": "control.camera_bypass_smell",
       "confidence": 0.76,
@@ -57180,7 +57936,7 @@
       "suggested_classification": "TODO-BLOCKED"
     }
   ],
-  "graph_hash": "73c205b3a7fef972e5644e29ef0f2c8f90df46b8027d166a5e6523c923deca35",
+  "graph_hash": "fc4358a90cdb82ea4191a8fb260e827736451a5ca96a4c9c947636e3b00a27e6",
   "result": "scan_complete",
   "schema_id": "dominium.auditx.findings",
   "schema_version": "1.0.0"

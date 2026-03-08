@@ -8,15 +8,33 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 2226
-- Severities: INFO=223, RISK=682, VIOLATION=99, WARN=1222
-- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=5, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_knowledge_mutation_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=3, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=7, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=13, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=3, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=3, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.undeclared_registry_smell=2, architecture.undeclared_schema_smell=4, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=5, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=763, capability_bypass_smell=1, capability_misuse=140, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=131, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, legacy_contamination=11, logic.adhoc_wiring_smell=5, logic.carrier_bias_smell=9, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.hardcoded_blueprint_smell=19, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, mode_flag_smell=64, net.precision_leak_smell=2, net.truth_over_net_smell=6, ownership_boundary=9, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=80, reliability.silent_reaction_smell=3, schema_usage=160, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1, terminology_misuse=1, ui_parity=220
+- Total findings: 2258
+- Severities: INFO=223, RISK=676, VIOLATION=108, WARN=1251
+- Categories: architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=5, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_knowledge_mutation_smell=1, architecture.direct_message_smell=5, architecture.direct_position_mutation_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=3, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=7, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=13, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=3, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=3, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=3, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=1, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=5, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, canon_drift=763, capability_bypass_smell=1, capability_misuse=140, civilisation.nondeterministic_cohort_mapping_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=131, epistemics.hidden_state_leak_smell=6, interaction.interaction_bypass_smell=2, legacy_contamination=11, logic.adhoc_wiring_smell=5, logic.carrier_bias_smell=9, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.hardcoded_blueprint_smell=19, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, mode_flag_smell=64, net.precision_leak_smell=2, net.truth_over_net_smell=6, ownership_boundary=9, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=80, reliability.silent_reaction_smell=3, schema_usage=160, security.boundary_io=29, security.privilege_bypass=9, semantic.capability_drift=5, semantic.derived_artifact_contract=1, semantic.schema_shadowing=120, semantic.workspace_contamination=1, terminology_misuse=1, ui_parity=220
 
 ## Top Findings
 
 - `A4_DERIVED_ARTIFACT_CONTRACT:0001` VIOLATION `A4_DERIVED_ARTIFACT_CONTRACT` `semantic.derived_artifact_contract` (docs/audit/auditx/FINDINGS.json)
   - Canonical artifact contains forbidden run-meta fields.
   - Sample keys: findings[0].created_utc, findings[1].created_utc, findings[2].created_utc, findings[3].created_utc, findings[4].created_utc
+- `C1:0001` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - bypass_law_profile
+- `C1:0002` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - disable_epistemic_guard
+- `C1:0003` VIOLATION `C1` `security.privilege_bypass` (tools/auditx/analyzers/c1_security_boundary.py)
+  - override_authority_state
+- `C1:0004` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - bypass_law_profile
+- `C1:0005` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - disable_epistemic_guard
+- `C1:0006` VIOLATION `C1` `security.privilege_bypass` (tools/securex/core/boundary_validator.py)
+  - override_authority_state
+- `C1:0007` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - bypass_law_profile
+- `C1:0008` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - disable_epistemic_guard
+- `C1:0009` VIOLATION `C1` `security.privilege_bypass` (tools/securex/securex.py)
+  - override_authority_state
 - `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (.xstack_cache/anb-omega-empty-path/artifacts/repox_runner/proof_manifest.json)
   - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
   - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
@@ -344,31 +362,4 @@ Superseded By: none
   - Best-effort heuristic; verify if schema declaration exists.
 - `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/engine_modules_engine/engine/ui_codegen/tests/ui_codegen_tests.cpp)
   - Detected key access without obvious schema anchor: beta.action
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: root_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: root_path
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_install_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_modset_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: preferred_display_mode
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_install_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: default_modset_id
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: preferred_display_mode
-  - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (legacy/launcher_core_launcher/launcher/core/launcher_db.cpp)
-  - Detected key access without obvious schema anchor: modset_id
   - Best-effort heuristic; verify if schema declaration exists.
