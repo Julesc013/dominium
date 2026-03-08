@@ -729,6 +729,7 @@ def _emit_control_proof_bundle(
             "boundary_field_exchange_hash_chain": str(
                 global_state.get("boundary_field_exchange_hash_chain", "")
             ).strip(),
+            "traversal_policy_registry_hash": str(global_state.get("traversal_policy_registry_hash", "")).strip(),
             "field_binding_registry_hash": str(global_state.get("field_binding_registry_hash", "")).strip(),
             "interpolation_policy_registry_hash": str(global_state.get("interpolation_policy_registry_hash", "")).strip(),
             "projection_profile_registry_hash": str(global_state.get("projection_profile_registry_hash", "")).strip(),

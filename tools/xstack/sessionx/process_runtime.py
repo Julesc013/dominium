@@ -18481,6 +18481,16 @@ def _view_type_registry_payload(policy_context: dict | None) -> dict:
 
 
 def _record_geo_field_registry_hashes(state: dict, policy_context: dict | None) -> None:
+    state["traversal_policy_registry_hash"] = canonical_sha256(
+        dict(
+            _field_registry_payload(
+                policy_context=policy_context,
+                key="traversal_policy_registry",
+                registry_rel_path="data/registries/traversal_policy_registry.json",
+                entry_key="traversal_policies",
+            )
+        )
+    )
     state["field_binding_registry_hash"] = canonical_sha256(dict(_field_binding_registry_payload(policy_context)))
     state["interpolation_policy_registry_hash"] = canonical_sha256(dict(_interpolation_policy_registry_payload(policy_context)))
     state["projection_profile_registry_hash"] = canonical_sha256(dict(_projection_profile_registry_payload(policy_context)))

@@ -75,6 +75,7 @@ from .path import (
     geo_path_query,
     normalize_path_request,
     path_request_hash,
+    path_result_proof_surface,
     resolve_cell_shard_id,
     traversal_policy_registry_hash,
 )
@@ -140,6 +141,7 @@ __all__ = [
     "normalize_path_request",
     "path_request_hash",
     "geo_path_query",
+    "path_result_proof_surface",
     "build_shard_route_plan",
     "resolve_cell_shard_id",
     "traversal_policy_registry_hash",

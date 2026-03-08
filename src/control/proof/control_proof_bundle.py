@@ -102,11 +102,12 @@ def _geo_identity_extensions(
         "metric_profile_id",
         "partition_profile_id",
         "projection_profile_id",
+        "traversal_policy_id",
     ):
         token = str(ext.get(key, surface.get(key, ""))).strip()
         if token:
             out[key] = token
-    for key in ("topology_profile_ids", "metric_profile_ids"):
+    for key in ("topology_profile_ids", "metric_profile_ids", "partition_profile_ids", "traversal_policy_ids"):
         values = _sorted_unique_strings(
             list(ext.get(key) or []) or list(surface.get(key) or [])
         )
@@ -139,6 +140,11 @@ def _geo_identity_extensions(
     ).strip()
     if interpolation_policy_registry_hash:
         out["interpolation_policy_registry_hash"] = interpolation_policy_registry_hash
+    traversal_policy_registry_hash = str(
+        ext.get("traversal_policy_registry_hash", surface.get("traversal_policy_registry_hash", ""))
+    ).strip()
+    if traversal_policy_registry_hash:
+        out["traversal_policy_registry_hash"] = traversal_policy_registry_hash
     projection_profile_registry_hash = str(
         ext.get("projection_profile_registry_hash", surface.get("projection_profile_registry_hash", ""))
     ).strip()
@@ -154,6 +160,12 @@ def _geo_identity_extensions(
     ).strip()
     if view_type_registry_hash:
         out["view_type_registry_hash"] = view_type_registry_hash
+    path_request_hash_chain = str(ext.get("path_request_hash_chain", surface.get("path_request_hash_chain", ""))).strip()
+    if path_request_hash_chain:
+        out["path_request_hash_chain"] = path_request_hash_chain
+    path_result_hash_chain = str(ext.get("path_result_hash_chain", surface.get("path_result_hash_chain", ""))).strip()
+    if path_result_hash_chain:
+        out["path_result_hash_chain"] = path_result_hash_chain
     return out
 
 

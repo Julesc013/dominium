@@ -725,6 +725,62 @@ def _path_result_row(
     return payload
 
 
+def path_result_proof_surface(rows: Sequence[Mapping[str, object]] | None) -> dict:
+    normalized_rows = []
+    topology_ids: List[str] = []
+    metric_ids: List[str] = []
+    partition_ids: List[str] = []
+    traversal_ids: List[str] = []
+    traversal_registry_hashes: List[str] = []
+    request_hashes: List[str] = []
+    for row in list(rows or []):
+        payload = _as_map(row)
+        request_row = _as_map(payload.get("path_request"))
+        result_row = _as_map(payload.get("path_result")) if "path_result" in payload else payload
+        ext = _as_map(result_row.get("extensions"))
+        request_hashes.append(path_request_hash(request_row) if request_row else "")
+        topology_id = str(ext.get("topology_profile_id", "")).strip()
+        metric_id = str(ext.get("metric_profile_id", "")).strip()
+        partition_id = str(ext.get("partition_profile_id", "")).strip()
+        traversal_id = str(ext.get("traversal_policy_id", "")).strip()
+        traversal_registry_hash = str(ext.get("traversal_policy_registry_hash", "")).strip()
+        if topology_id:
+            topology_ids.append(topology_id)
+        if metric_id:
+            metric_ids.append(metric_id)
+        if partition_id:
+            partition_ids.append(partition_id)
+        if traversal_id:
+            traversal_ids.append(traversal_id)
+        if traversal_registry_hash:
+            traversal_registry_hashes.append(traversal_registry_hash)
+        normalized_rows.append(
+            {
+                "request_id": str(request_row.get("request_id", result_row.get("request_id", ""))).strip(),
+                "result_id": str(result_row.get("result_id", "")).strip(),
+                "total_cost": int(_as_int(result_row.get("total_cost", 0), 0)),
+                "path_cell_hashes": [_geo_cell_key_hash(cell) for cell in list(result_row.get("path_cells") or [])],
+                "goal_reached": bool(ext.get("goal_reached", False)),
+                "partial": bool(ext.get("partial", False)),
+            }
+        )
+    normalized_rows = sorted(normalized_rows, key=lambda row: (str(row.get("request_id", "")), str(row.get("result_id", ""))))
+    payload = {
+        "topology_profile_ids": sorted(set(token for token in topology_ids if token)),
+        "metric_profile_ids": sorted(set(token for token in metric_ids if token)),
+        "partition_profile_ids": sorted(set(token for token in partition_ids if token)),
+        "traversal_policy_ids": sorted(set(token for token in traversal_ids if token)),
+        "traversal_policy_registry_hash": sorted(set(token for token in traversal_registry_hashes if token))[0]
+        if traversal_registry_hashes
+        else "",
+        "path_request_hash_chain": canonical_sha256([token for token in request_hashes if token]),
+        "path_result_hash_chain": canonical_sha256(normalized_rows),
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
 def geo_path_query(
     path_request: Mapping[str, object] | None,
     *,
@@ -1065,5 +1121,6 @@ __all__ = [
     "geo_path_query",
     "normalize_path_request",
     "path_request_hash",
+    "path_result_proof_surface",
     "traversal_policy_registry_hash",
 ]
