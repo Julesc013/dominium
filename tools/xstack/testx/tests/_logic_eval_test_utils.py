@@ -36,6 +36,8 @@ def load_eval_inputs(repo_root: str) -> dict:
         "logic_security_policy_registry_payload": _load_json(repo_root, "data/registries/logic_security_policy_registry.json"),
         "bus_encoding_registry_payload": _load_json(repo_root, "data/registries/bus_encoding_registry.json"),
         "protocol_registry_payload": _load_json(repo_root, "data/registries/protocol_registry.json"),
+        "arbitration_policy_registry_payload": _load_json(repo_root, "data/registries/arbitration_policy_registry.json"),
+        "error_detection_policy_registry_payload": _load_json(repo_root, "data/registries/error_detection_policy_registry.json"),
         "logic_policy_registry_payload": _load_json(repo_root, "data/registries/logic_policy_registry.json"),
         "logic_network_policy_registry_payload": _load_json(repo_root, "data/registries/logic_network_policy_registry.json"),
         "logic_element_rows": _rows(
@@ -71,6 +73,10 @@ def load_eval_inputs(repo_root: str) -> dict:
         "drift_policy_registry_payload": _load_json(repo_root, "data/registries/drift_policy_registry.json"),
         "model_type_registry_payload": _load_json(repo_root, "data/registries/model_type_registry.json"),
         "constitutive_model_registry_payload": _load_json(repo_root, "data/registries/constitutive_model_registry.json"),
+        "loss_policy_registry_payload": _load_json(repo_root, "data/registries/loss_policy_registry.json"),
+        "routing_policy_registry_payload": _load_json(repo_root, "data/registries/core_routing_policy_registry.json"),
+        "attenuation_policy_registry_payload": _load_json(repo_root, "data/registries/attenuation_policy_registry.json"),
+        "belief_policy_registry_payload": _load_json(repo_root, "data/registries/belief_policy_registry.json"),
     }
 
 
@@ -491,6 +497,92 @@ def make_flip_flop_network(*, network_id: str) -> tuple[dict, dict]:
                 "tick": 0,
                 "network_id": network_id,
                 "validation_hash": "flipflop.validated",
+                "loop_classifications": [],
+            }
+        ],
+        "logic_network_change_records": [],
+        "logic_network_explain_artifact_rows": [],
+        "compute_runtime_state": {},
+    }
+    return binding, logic_network_state
+
+
+def make_protocol_network(
+    *,
+    network_id: str,
+    protocol_id: str = "protocol.bus_arbitration_stub",
+    carrier_type_id: str = "carrier.electrical",
+    delay_policy_id: str = "delay.none",
+    edge_extensions: dict | None = None,
+    binding_extensions: dict | None = None,
+) -> tuple[dict, dict]:
+    binding = binding_row(
+        network_id=network_id,
+        graph_id="graph.{}".format(network_id),
+        policy_id="logic.policy.default",
+        extensions=dict({"validation_status": "validated", "logic_policy_id": "logic.default"}, **dict(binding_extensions or {})),
+    )
+    graph = graph_row(
+        graph_id=binding["graph_id"],
+        nodes=[
+            node_row(
+                node_id="node.and.in.a",
+                node_kind="port_in",
+                element_instance_id="inst.logic.and.1",
+                port_id="in.a",
+                payload_extensions={"element_definition_id": "logic.and"},
+            ),
+            node_row(
+                node_id="node.and.in.b",
+                node_kind="port_in",
+                element_instance_id="inst.logic.and.1",
+                port_id="in.b",
+                payload_extensions={"element_definition_id": "logic.and"},
+            ),
+            node_row(
+                node_id="node.and.out.q",
+                node_kind="port_out",
+                element_instance_id="inst.logic.and.1",
+                port_id="out.q",
+                payload_extensions={"element_definition_id": "logic.and"},
+            ),
+            node_row(
+                node_id="node.not.in.a",
+                node_kind="port_in",
+                element_instance_id="inst.logic.not.1",
+                port_id="in.a",
+                payload_extensions={"element_definition_id": "logic.not"},
+            ),
+            node_row(
+                node_id="node.not.out.q",
+                node_kind="port_out",
+                element_instance_id="inst.logic.not.1",
+                port_id="out.q",
+                payload_extensions={"element_definition_id": "logic.not"},
+            ),
+        ],
+        edges=[
+            edge_row(
+                edge_id="edge.protocol.and.to.not",
+                from_node_id="node.and.out.q",
+                to_node_id="node.not.in.a",
+                edge_kind="protocol_link",
+                signal_type_id="signal.boolean",
+                carrier_type_id=carrier_type_id,
+                delay_policy_id=delay_policy_id,
+                protocol_id=protocol_id,
+                payload_extensions=dict({"bus_id": "bus.logic.protocol.1"}, **dict(edge_extensions or {})),
+            )
+        ],
+    )
+    logic_network_state = {
+        "logic_network_graph_rows": [graph],
+        "logic_network_binding_rows": [binding],
+        "logic_network_validation_records": [
+            {
+                "tick": 0,
+                "network_id": network_id,
+                "validation_hash": "protocol.validated",
                 "loop_classifications": [],
             }
         ],
