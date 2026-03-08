@@ -18453,9 +18453,39 @@ def _interpolation_policy_registry_payload(policy_context: dict | None) -> dict:
     )
 
 
+def _projection_profile_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="projection_profile_registry",
+        registry_rel_path="data/registries/projection_profile_registry.json",
+        entry_key="projection_profiles",
+    )
+
+
+def _lens_layer_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="lens_layer_registry",
+        registry_rel_path="data/registries/lens_layer_registry.json",
+        entry_key="lens_layers",
+    )
+
+
+def _view_type_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="view_type_registry",
+        registry_rel_path="data/registries/view_type_registry.json",
+        entry_key="view_types",
+    )
+
+
 def _record_geo_field_registry_hashes(state: dict, policy_context: dict | None) -> None:
     state["field_binding_registry_hash"] = canonical_sha256(dict(_field_binding_registry_payload(policy_context)))
     state["interpolation_policy_registry_hash"] = canonical_sha256(dict(_interpolation_policy_registry_payload(policy_context)))
+    state["projection_profile_registry_hash"] = canonical_sha256(dict(_projection_profile_registry_payload(policy_context)))
+    state["lens_layer_registry_hash"] = canonical_sha256(dict(_lens_layer_registry_payload(policy_context)))
+    state["view_type_registry_hash"] = canonical_sha256(dict(_view_type_registry_payload(policy_context)))
 
 
 def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:

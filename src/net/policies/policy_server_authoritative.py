@@ -622,6 +622,9 @@ def _emit_control_proof_bundle(
             ).strip(),
             "field_binding_registry_hash": str(universe_state.get("field_binding_registry_hash", "")).strip(),
             "interpolation_policy_registry_hash": str(universe_state.get("interpolation_policy_registry_hash", "")).strip(),
+            "projection_profile_registry_hash": str(universe_state.get("projection_profile_registry_hash", "")).strip(),
+            "lens_layer_registry_hash": str(universe_state.get("lens_layer_registry_hash", "")).strip(),
+            "view_type_registry_hash": str(universe_state.get("view_type_registry_hash", "")).strip(),
             "pollution_field_hash_chain": str(
                 universe_state.get("pollution_field_hash_chain", "")
             ).strip(),

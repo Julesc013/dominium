@@ -139,6 +139,21 @@ def _geo_identity_extensions(
     ).strip()
     if interpolation_policy_registry_hash:
         out["interpolation_policy_registry_hash"] = interpolation_policy_registry_hash
+    projection_profile_registry_hash = str(
+        ext.get("projection_profile_registry_hash", surface.get("projection_profile_registry_hash", ""))
+    ).strip()
+    if projection_profile_registry_hash:
+        out["projection_profile_registry_hash"] = projection_profile_registry_hash
+    lens_layer_registry_hash = str(
+        ext.get("lens_layer_registry_hash", surface.get("lens_layer_registry_hash", ""))
+    ).strip()
+    if lens_layer_registry_hash:
+        out["lens_layer_registry_hash"] = lens_layer_registry_hash
+    view_type_registry_hash = str(
+        ext.get("view_type_registry_hash", surface.get("view_type_registry_hash", ""))
+    ).strip()
+    if view_type_registry_hash:
+        out["view_type_registry_hash"] = view_type_registry_hash
     return out
 
 
