@@ -1,5 +1,15 @@
 """Deterministic GEO kernel helpers."""
 
+from .frame import (
+    REFUSAL_GEO_FRAME_INVALID,
+    REFUSAL_GEO_POSITION_INVALID,
+    build_position_ref,
+    frame_get_transform,
+    frame_graph_hash,
+    position_distance,
+    position_ref_hash,
+    position_to_frame,
+)
 from .index import (
     REFUSAL_GEO_CELL_KEY_INVALID,
     REFUSAL_GEO_OBJECT_KIND_MISSING,
@@ -21,10 +31,15 @@ from .profile_binding import REFUSAL_GEO_DIMENSION_CHANGE, resolve_geo_profile_s
 
 __all__ = [
     "REFUSAL_GEO_CELL_KEY_INVALID",
+    "REFUSAL_GEO_FRAME_INVALID",
     "REFUSAL_GEO_INVALID",
     "REFUSAL_GEO_OBJECT_KIND_MISSING",
+    "REFUSAL_GEO_POSITION_INVALID",
     "REFUSAL_GEO_PROFILE_MISSING",
     "REFUSAL_GEO_DIMENSION_CHANGE",
+    "build_position_ref",
+    "frame_get_transform",
+    "frame_graph_hash",
     "geo_cell_key_from_position",
     "geo_cell_key_neighbors",
     "geo_neighbors",
@@ -34,5 +49,8 @@ __all__ = [
     "geo_project",
     "geo_partition_cell_key",
     "geo_refine_cell_key",
+    "position_distance",
+    "position_ref_hash",
+    "position_to_frame",
     "resolve_geo_profile_set",
 ]
