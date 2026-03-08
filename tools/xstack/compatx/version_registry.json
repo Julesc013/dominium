@@ -1561,6 +1561,13 @@
         "1.0.0"
       ]
     },
+    "generator_version": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "geo_query": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1638,6 +1645,13 @@
         "1.0.0"
       ]
     },
+    "realism_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "cell_refinement_relation": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -1653,6 +1667,20 @@
       ]
     },
     "space_topology_profile": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "worldgen_request": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "worldgen_result": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

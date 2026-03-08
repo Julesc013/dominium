@@ -1,0 +1,30 @@
+{
+  "schema_id": "dominium.registry.geo.generator_version_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.generator_version_registry",
+    "registry_version": "1.0.0",
+    "generator_versions": [
+      {
+        "schema_version": "1.0.0",
+        "generator_version_id": "gen.v0_stub",
+        "description": "Baseline GEO-8 deterministic stub generator for on-demand galaxy to surface anchors.",
+        "compat_version": "1.0.0",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "worldgen_algorithm_family": "geo.worldgen.stub_anchor_v0",
+          "supports_refinement_levels": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "source": "GEO8-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO8-2"
+    }
+  }
+}

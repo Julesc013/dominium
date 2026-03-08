@@ -1,0 +1,65 @@
+{
+  "schema_id": "dominium.registry.geo.realism_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.realism_profile_registry",
+    "registry_version": "1.0.0",
+    "realism_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "realism_profile_id": "realism.realistic_default_milkyway_stub",
+        "galaxy_priors_ref": "priors.galaxy.milkyway.coarse_default",
+        "system_priors_ref": "priors.system.main_sequence.default",
+        "planet_priors_ref": "priors.planet.occurrence.default",
+        "surface_priors_ref": "priors.surface.terrestrial.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Default realistic procedural Milky Way prior set with coarse astrophysical tendencies.",
+          "source": "GEO8-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "realism_profile_id": "realism.flat_world_stub",
+        "galaxy_priors_ref": "priors.galaxy.flat.stub",
+        "system_priors_ref": "priors.system.flat.stub",
+        "planet_priors_ref": "priors.planet.flat.stub",
+        "surface_priors_ref": "priors.surface.flat_world.stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Flat-world-oriented stub priors for non-astronomical experiments.",
+          "source": "GEO8-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "realism_profile_id": "realism.torus_world_stub",
+        "galaxy_priors_ref": "priors.galaxy.torus.stub",
+        "system_priors_ref": "priors.system.torus.stub",
+        "planet_priors_ref": "priors.planet.torus.stub",
+        "surface_priors_ref": "priors.surface.torus.stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Periodic torus-world stub priors for wrapped geometry test universes.",
+          "source": "GEO8-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "realism_profile_id": "realism.fantasy_stub",
+        "galaxy_priors_ref": "priors.galaxy.fantasy.stub",
+        "system_priors_ref": "priors.system.fantasy.stub",
+        "planet_priors_ref": "priors.planet.fantasy.stub",
+        "surface_priors_ref": "priors.surface.fantasy.stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Non-realistic fantasy priors reserved for later pack-driven content.",
+          "source": "GEO8-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO8-2"
+    }
+  }
+}

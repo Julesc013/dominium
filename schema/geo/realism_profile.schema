@@ -1,0 +1,28 @@
+SCHEMA: geo/realism_profile.schema
+schema_id: dominium.schema.geo.realism_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic GEO-8 realism prior contract for procedural world generation.
+- Separate procedural priors from generator-version semantics and later overlay packs.
+
+NON-SEMANTICS:
+- This schema does not encode generated objects directly.
+- This schema does not authorize real-data overlays or authored overrides by itself.
+
+REQUIRED SHAPE:
+record realism_profile
+  required:
+    - realism_profile_id: id
+    - galaxy_priors_ref: string
+    - system_priors_ref: string
+    - planet_priors_ref: string
+    - surface_priors_ref: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- realism priors must remain data-declared and deterministic
+- profile meaning must not drift without explicit registry/version change
+- generator behavior still depends on explicit generator_version_id lock
