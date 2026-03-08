@@ -670,6 +670,25 @@ from src.meta.explain import (
     generate_explain_artifact,
     normalize_explain_artifact_rows,
 )
+from src.geo.edit import (
+    aggregate_geometry_chunk_to_cell,
+    build_geometry_chunk_state,
+    geometry_add_volume,
+    geometry_cell_state_rows_by_key,
+    geometry_chunk_state_rows_by_id,
+    geometry_coupling_effects_for_cell_state,
+    geometry_cut_volume,
+    geometry_edit_event_hash_chain,
+    geometry_edit_policy_registry_hash,
+    geometry_edit_policy_rows_by_id,
+    geometry_remove_volume,
+    geometry_replace_material,
+    geometry_state_hash_surface,
+    normalize_geometry_cell_state_rows,
+    normalize_geometry_chunk_state_rows,
+    normalize_geometry_edit_event,
+    normalize_geometry_edit_event_rows,
+)
 from src.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
@@ -836,6 +855,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.geometry_create": "entitlement.control.admin",
     "process.geometry_edit": "entitlement.control.admin",
     "process.geometry_finalize": "entitlement.control.admin",
+    "process.geometry_remove": "entitlement.control.admin",
+    "process.geometry_add": "entitlement.control.admin",
+    "process.geometry_replace": "entitlement.control.admin",
+    "process.geometry_cut": "entitlement.control.admin",
     "process.mobility_network_create_from_formalization": "entitlement.control.admin",
     "process.mobility_network_edit": "entitlement.control.admin",
     "process.switch_set_state": "entitlement.control.admin",
@@ -1054,6 +1077,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.geometry_create": "operator",
     "process.geometry_edit": "operator",
     "process.geometry_finalize": "operator",
+    "process.geometry_remove": "operator",
+    "process.geometry_add": "operator",
+    "process.geometry_replace": "operator",
+    "process.geometry_cut": "operator",
     "process.mobility_network_create_from_formalization": "operator",
     "process.mobility_network_edit": "operator",
     "process.switch_set_state": "operator",
@@ -1218,6 +1245,10 @@ CONTROL_PROCESS_IDS = {
     "process.geometry_create",
     "process.geometry_edit",
     "process.geometry_finalize",
+    "process.geometry_remove",
+    "process.geometry_add",
+    "process.geometry_replace",
+    "process.geometry_cut",
     "process.mobility_network_create_from_formalization",
     "process.mobility_network_edit",
     "process.switch_set_state",
@@ -3780,6 +3811,242 @@ def _refresh_field_hash_chains(state: dict) -> None:
         ]
     )
     state["boundary_field_exchange_hash_chain"] = canonical_sha256(list(boundary_rows))
+
+
+def _ensure_geometry_cell_state_rows(state: dict, material_registry: Mapping[str, object] | None = None) -> List[dict]:
+    rows = normalize_geometry_cell_state_rows(state.get("geometry_cell_states"), material_registry=material_registry)
+    state["geometry_cell_states"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_geometry_chunk_state_rows(state: dict) -> List[dict]:
+    rows = normalize_geometry_chunk_state_rows(state.get("geometry_chunk_states"))
+    state["geometry_chunk_states"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_geometry_edit_event_rows(state: dict) -> List[dict]:
+    rows = normalize_geometry_edit_event_rows(state.get("geometry_edit_events"))
+    state["geometry_edit_events"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _append_geometry_edit_event_artifact(state: dict, event_row: Mapping[str, object]) -> None:
+    row = dict(event_row or {})
+    edit_id = str(row.get("edit_id", "")).strip()
+    if not edit_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.geometry_edit_event.{}".format(edit_id),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.geometry_edit_event",
+            "geometry_edit_event": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_geometry_edit_event(state: dict, event_row: Mapping[str, object]) -> dict:
+    normalized = normalize_geometry_edit_event(event_row)
+    merged = list(_ensure_geometry_edit_event_rows(state)) + [normalized]
+    state["geometry_edit_events"] = [dict(row) for row in merged]
+    rows = _ensure_geometry_edit_event_rows(state)
+    emitted = dict(rows[-1]) if rows else dict(normalized)
+    _append_geometry_edit_event_artifact(state, emitted)
+    return emitted
+
+
+def _persist_geometry_state(
+    state: dict,
+    *,
+    geometry_cell_states: List[dict],
+    geometry_chunk_states: List[dict] | None = None,
+    geometry_edit_events: List[dict] | None = None,
+    material_registry: Mapping[str, object] | None = None,
+) -> None:
+    state["geometry_cell_states"] = [dict(row) for row in list(geometry_cell_states or []) if isinstance(row, Mapping)]
+    if geometry_chunk_states is not None:
+        state["geometry_chunk_states"] = [dict(row) for row in list(geometry_chunk_states or []) if isinstance(row, Mapping)]
+    if geometry_edit_events is not None:
+        state["geometry_edit_events"] = [dict(row) for row in list(geometry_edit_events or []) if isinstance(row, Mapping)]
+    _ensure_geometry_cell_state_rows(state, material_registry=material_registry)
+    _ensure_geometry_chunk_state_rows(state)
+    _ensure_geometry_edit_event_rows(state)
+    _refresh_geometry_hash_chains(state, material_registry=material_registry)
+
+
+def _refresh_geometry_hash_chains(state: dict, material_registry: Mapping[str, object] | None = None) -> None:
+    surface = geometry_state_hash_surface(
+        geometry_cell_states=_ensure_geometry_cell_state_rows(state, material_registry=material_registry),
+        geometry_chunk_states=_ensure_geometry_chunk_state_rows(state),
+        geometry_edit_events=_ensure_geometry_edit_event_rows(state),
+        material_registry=material_registry,
+    )
+    state["geometry_cell_state_hash_chain"] = str(surface.get("geometry_cell_state_hash", "")).strip()
+    state["geometry_chunk_state_hash_chain"] = str(surface.get("geometry_chunk_state_hash", "")).strip()
+    state["geometry_edit_event_hash_chain"] = str(surface.get("geometry_edit_event_hash_chain", "")).strip()
+    state["geometry_state_hash_chain"] = str(surface.get("deterministic_fingerprint", "")).strip()
+
+
+def _consume_geometry_material_batches(
+    *,
+    state: dict,
+    material_id: str,
+    required_mass: int,
+    input_batch_ids: object = None,
+) -> dict:
+    material_token = str(material_id or "").strip()
+    required = int(max(0, _as_int(required_mass, 0)))
+    if (not material_token) or required <= 0:
+        return {
+            "result": "refused",
+            "message": "geometry material consumption requires material_id and positive required mass",
+            "deterministic_fingerprint": canonical_sha256({"material_id": material_token, "required_mass": required}),
+        }
+    batch_rows_by_id = dict(
+        (
+            str(row.get("batch_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(_ensure_material_batches(state))
+        if isinstance(row, Mapping) and str(row.get("batch_id", "")).strip()
+    )
+    requested_ids = _sorted_tokens(list(input_batch_ids or []))
+    if requested_ids:
+        candidate_rows = [
+            dict(batch_rows_by_id[token])
+            for token in requested_ids
+            if token in batch_rows_by_id and str(batch_rows_by_id[token].get("material_id", "")).strip() == material_token
+        ]
+    else:
+        candidate_rows = [
+            dict(row)
+            for row in list(batch_rows_by_id.values())
+            if str(row.get("material_id", "")).strip() == material_token and int(max(0, _as_int(row.get("quantity_mass_raw", 0), 0))) > 0
+        ]
+        candidate_rows = sorted(candidate_rows, key=lambda row: str(row.get("batch_id", "")))
+    total_available = sum(int(max(0, _as_int(row.get("quantity_mass_raw", 0), 0))) for row in candidate_rows)
+    if total_available < required:
+        return {
+            "result": "refused",
+            "message": "insufficient material batches for geometry add/replace",
+            "details": {"material_id": material_token, "required_mass": required, "available_mass": total_available},
+            "deterministic_fingerprint": canonical_sha256(
+                {"material_id": material_token, "required_mass": required, "available_mass": total_available}
+            ),
+        }
+    consumed_rows: List[dict] = []
+    remaining = int(required)
+    for row in candidate_rows:
+        if remaining <= 0:
+            break
+        batch_id = str(row.get("batch_id", "")).strip()
+        available = int(max(0, _as_int(row.get("quantity_mass_raw", 0), 0)))
+        take = int(min(remaining, available))
+        if (not batch_id) or take <= 0:
+            continue
+        row["quantity_mass_raw"] = int(max(0, available - take))
+        batch_rows_by_id[batch_id] = dict(row)
+        consumed_rows.append(
+            {
+                "batch_id": batch_id,
+                "material_id": material_token,
+                "quantity_mass_raw": int(take),
+            }
+        )
+        remaining -= take
+    state["material_batches"] = [dict(batch_rows_by_id[key]) for key in sorted(batch_rows_by_id.keys())]
+    _ensure_material_batches(state)
+    payload = {
+        "result": "complete",
+        "material_id": material_token,
+        "required_mass": required,
+        "consumed_rows": consumed_rows,
+        "consumed_batch_ids": _sorted_tokens([row.get("batch_id") for row in consumed_rows]),
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _produce_geometry_material_batches(
+    *,
+    state: dict,
+    material_breakdown_rows: object,
+    process_id: str,
+    current_tick: int,
+    edit_id: str,
+) -> List[dict]:
+    batch_rows_by_id = dict(
+        (
+            str(row.get("batch_id", "")).strip(),
+            dict(row),
+        )
+        for row in list(_ensure_material_batches(state))
+        if isinstance(row, Mapping) and str(row.get("batch_id", "")).strip()
+    )
+    produced_rows: List[dict] = []
+    for index, row in enumerate(
+        sorted(
+            (dict(item) for item in list(material_breakdown_rows or []) if isinstance(item, Mapping)),
+            key=lambda item: (str(item.get("material_id", "")), int(max(0, _as_int(item.get("quantity_mass_raw", 0), 0)))),
+        )
+    ):
+        material_id = str(row.get("material_id", "")).strip()
+        quantity_mass_raw = int(max(0, _as_int(row.get("quantity_mass_raw", 0), 0)))
+        if (not material_id) or quantity_mass_raw <= 0:
+            continue
+        batch_row = create_material_batch(
+            material_id=material_id,
+            quantity_mass_raw=quantity_mass_raw,
+            origin_process_id=str(process_id or "").strip() or "process.unknown",
+            origin_tick=int(max(0, _as_int(current_tick, 0))),
+            parent_batch_ids=[],
+            quality_distribution={},
+        )
+        batch_row["batch_id"] = "batch.geo.edit.{}".format(
+            canonical_sha256(
+                {
+                    "edit_id": str(edit_id or "").strip(),
+                    "material_id": material_id,
+                    "quantity_mass_raw": quantity_mass_raw,
+                    "current_tick": int(max(0, _as_int(current_tick, 0))),
+                    "process_id": str(process_id or "").strip(),
+                    "index": int(index),
+                }
+            )[:24]
+        )
+        batch_row["extensions"] = {
+            "geo_edit_id": str(edit_id or "").strip(),
+            "source_process_id": str(process_id or "").strip() or "process.unknown",
+            "artifact_type_id": "artifact.material_batch.geometry_edit",
+        }
+        batch_rows_by_id[str(batch_row.get("batch_id", "")).strip()] = dict(batch_row)
+        produced_rows.append(dict(batch_row))
+    state["material_batches"] = [dict(batch_rows_by_id[key]) for key in sorted(batch_rows_by_id.keys())]
+    _ensure_material_batches(state)
+    return [dict(row) for row in produced_rows]
+
+
+def _geometry_material_breakdown_rows(transfer_row: Mapping[str, object] | None) -> List[dict]:
+    payload = dict(transfer_row or {}) if isinstance(transfer_row, Mapping) else {}
+    ext = dict(payload.get("extensions") or {}) if isinstance(payload.get("extensions"), Mapping) else {}
+    rows = ext.get("material_breakdown")
+    if not isinstance(rows, list):
+        rows = []
+    return [
+        {
+            "material_id": str(item.get("material_id", "")).strip(),
+            "quantity_mass_raw": int(max(0, _as_int(item.get("quantity_mass_raw", 0), 0))),
+        }
+        for item in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("material_id", "")))
+        if str(item.get("material_id", "")).strip() and int(max(0, _as_int(item.get("quantity_mass_raw", 0), 0))) > 0
+    ]
 
 
 def _build_entropy_effect_snapshot_row(
@@ -18453,6 +18720,24 @@ def _interpolation_policy_registry_payload(policy_context: dict | None) -> dict:
     )
 
 
+def _geometry_edit_policy_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="geometry_edit_policy_registry",
+        registry_rel_path="data/registries/geometry_edit_policy_registry.json",
+        entry_key="geometry_edit_policies",
+    )
+
+
+def _material_class_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="material_class_registry",
+        registry_rel_path="data/registries/material_class_registry.json",
+        entry_key="materials",
+    )
+
+
 def _projection_profile_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
@@ -18496,6 +18781,9 @@ def _record_geo_field_registry_hashes(state: dict, policy_context: dict | None) 
     state["projection_profile_registry_hash"] = canonical_sha256(dict(_projection_profile_registry_payload(policy_context)))
     state["lens_layer_registry_hash"] = canonical_sha256(dict(_lens_layer_registry_payload(policy_context)))
     state["view_type_registry_hash"] = canonical_sha256(dict(_view_type_registry_payload(policy_context)))
+    state["geometry_edit_policy_registry_hash"] = geometry_edit_policy_registry_hash(
+        _geometry_edit_policy_registry_payload(policy_context)
+    )
 
 
 def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:
@@ -23144,6 +23432,9 @@ def execute_intent(
     field_layers = _ensure_field_layers(state)
     field_cells = _ensure_field_cells(state)
     field_modifier_rows = _ensure_field_modifier_rows(state)
+    geometry_cell_states = _ensure_geometry_cell_state_rows(state)
+    geometry_chunk_states = _ensure_geometry_chunk_state_rows(state)
+    geometry_edit_events = _ensure_geometry_edit_event_rows(state)
     effect_rows = _ensure_effect_rows(state)
     effect_provenance_events = _ensure_effect_provenance_events(state)
     spec_bindings = _ensure_spec_binding_rows(state)
@@ -43360,6 +43651,247 @@ def execute_intent(
             "spec_id": spec_id,
             "commitment_id": str(commitment_row.get("commitment_id", "")).strip(),
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id in {
+        "process.geometry_remove",
+        "process.geometry_add",
+        "process.geometry_replace",
+        "process.geometry_cut",
+    }:
+        _record_geo_field_registry_hashes(state, policy_context)
+        geometry_edit_policy_registry = _geometry_edit_policy_registry_payload(policy_context)
+        material_class_registry = _material_class_registry_payload(policy_context)
+        geometry_edit_policy_id = str(inputs.get("geometry_edit_policy_id", "geo.edit.default")).strip() or "geo.edit.default"
+        if geometry_edit_policy_id not in geometry_edit_policy_rows_by_id(geometry_edit_policy_registry):
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "geometry_edit_policy_id '{}' is not declared".format(geometry_edit_policy_id),
+                "Use geometry_edit_policy_id from data/registries/geometry_edit_policy_registry.json.",
+                {"geometry_edit_policy_id": geometry_edit_policy_id},
+                "$.intent.inputs.geometry_edit_policy_id",
+            )
+        target_cell_keys = [dict(row) for row in list(inputs.get("target_cell_keys") or []) if isinstance(row, Mapping)]
+        if not target_cell_keys:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "{} requires target_cell_keys".format(process_id),
+                "Provide deterministic GEO cell targets for geometry mutation.",
+                {"process_id": process_id},
+                "$.intent.inputs.target_cell_keys",
+            )
+        volume_amount = int(max(0, _as_int(inputs.get("volume_amount", 0), 0)))
+        if volume_amount <= 0:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "{} requires positive volume_amount".format(process_id),
+                "Provide deterministic bounded volume_amount in GEO occupancy units.",
+                {"process_id": process_id, "volume_amount": volume_amount},
+                "$.intent.inputs.volume_amount",
+            )
+        operator_subject_id = str(
+            inputs.get("operator_subject_id", authority_context.get("subject_id", ""))
+        ).strip() or "subject.system"
+        material_in_payload = dict(inputs.get("material_in") or {}) if isinstance(inputs.get("material_in"), Mapping) else {}
+        material_id = str(inputs.get("material_id", material_in_payload.get("material_id", ""))).strip()
+        input_batch_ids = _sorted_tokens(list(inputs.get("input_batch_ids") or material_in_payload.get("batch_ids") or []))
+        geometry_result: dict
+        consumed_rows: List[dict] = []
+        consumed_batch_ids: List[str] = []
+        produced_rows: List[dict] = []
+        edit_kind = {
+            "process.geometry_remove": "remove",
+            "process.geometry_add": "add",
+            "process.geometry_replace": "replace",
+            "process.geometry_cut": "cut",
+        }[process_id]
+        if process_id == "process.geometry_remove":
+            geometry_result = geometry_remove_volume(
+                geometry_cell_states=geometry_cell_states,
+                target_cell_keys=target_cell_keys,
+                volume_amount=volume_amount,
+                tick=int(current_tick),
+                operator_subject_id=operator_subject_id,
+                geometry_edit_policy_id=geometry_edit_policy_id,
+                geometry_edit_policy_registry=geometry_edit_policy_registry,
+                material_registry=material_class_registry,
+                extensions={"intent_id": str(intent_id), "source_process_id": process_id},
+            )
+        elif process_id == "process.geometry_cut":
+            geometry_result = geometry_cut_volume(
+                geometry_cell_states=geometry_cell_states,
+                target_cell_keys=target_cell_keys,
+                volume_amount=volume_amount,
+                tick=int(current_tick),
+                operator_subject_id=operator_subject_id,
+                geometry_edit_policy_id=geometry_edit_policy_id,
+                geometry_edit_policy_registry=geometry_edit_policy_registry,
+                material_registry=material_class_registry,
+                extensions={"intent_id": str(intent_id), "source_process_id": process_id},
+            )
+        elif process_id == "process.geometry_add":
+            if not material_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.geometry_add requires material_id or material_in.material_id",
+                    "Provide deterministic material batch source material for fill/build edits.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.material_id",
+                )
+            geometry_result = geometry_add_volume(
+                geometry_cell_states=geometry_cell_states,
+                target_cell_keys=target_cell_keys,
+                volume_amount=volume_amount,
+                material_id=material_id,
+                tick=int(current_tick),
+                operator_subject_id=operator_subject_id,
+                geometry_edit_policy_id=geometry_edit_policy_id,
+                geometry_edit_policy_registry=geometry_edit_policy_registry,
+                material_registry=material_class_registry,
+                extensions={"intent_id": str(intent_id), "source_process_id": process_id},
+                material_in={"material_id": material_id, "quantity_mass_raw": volume_amount, "batch_ids": input_batch_ids},
+            )
+            added_volume = int(max(0, _as_int(geometry_result.get("added_volume_amount", 0), 0)))
+            if added_volume > 0:
+                consume_result = _consume_geometry_material_batches(
+                    state=state,
+                    material_id=material_id,
+                    required_mass=added_volume,
+                    input_batch_ids=input_batch_ids,
+                )
+                if str(consume_result.get("result", "")) != "complete":
+                    return refusal(
+                        REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL,
+                        str(consume_result.get("message", "insufficient material batches")),
+                        "Provide sufficient MAT batches or reduce volume_amount.",
+                        dict(consume_result.get("details") or {}),
+                        "$.intent.inputs.input_batch_ids",
+                    )
+                consumed_rows = [dict(row) for row in list(consume_result.get("consumed_rows") or []) if isinstance(row, Mapping)]
+                consumed_batch_ids = _sorted_tokens(list(consume_result.get("consumed_batch_ids") or []))
+                geometry_result = geometry_add_volume(
+                    geometry_cell_states=geometry_cell_states,
+                    target_cell_keys=target_cell_keys,
+                    volume_amount=volume_amount,
+                    material_id=material_id,
+                    tick=int(current_tick),
+                    operator_subject_id=operator_subject_id,
+                    geometry_edit_policy_id=geometry_edit_policy_id,
+                    geometry_edit_policy_registry=geometry_edit_policy_registry,
+                    material_registry=material_class_registry,
+                    extensions={"intent_id": str(intent_id), "source_process_id": process_id},
+                    material_in={
+                        "material_id": material_id,
+                        "quantity_mass_raw": added_volume,
+                        "batch_ids": consumed_batch_ids,
+                        "extensions": {"consumed_rows": [dict(row) for row in consumed_rows]},
+                    },
+                )
+        else:
+            if not material_id:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.geometry_replace requires material_id or material_in.material_id",
+                    "Provide deterministic replacement material batch source.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.material_id",
+                )
+            geometry_result = geometry_replace_material(
+                geometry_cell_states=geometry_cell_states,
+                target_cell_keys=target_cell_keys,
+                material_id=material_id,
+                tick=int(current_tick),
+                operator_subject_id=operator_subject_id,
+                volume_amount=volume_amount,
+                geometry_edit_policy_id=geometry_edit_policy_id,
+                geometry_edit_policy_registry=geometry_edit_policy_registry,
+                material_registry=material_class_registry,
+                extensions={"intent_id": str(intent_id), "source_process_id": process_id},
+                material_in={"material_id": material_id, "quantity_mass_raw": volume_amount, "batch_ids": input_batch_ids},
+            )
+            replaced_volume = int(max(0, _as_int(geometry_result.get("replaced_volume_amount", 0), 0)))
+            if replaced_volume > 0:
+                consume_result = _consume_geometry_material_batches(
+                    state=state,
+                    material_id=material_id,
+                    required_mass=replaced_volume,
+                    input_batch_ids=input_batch_ids,
+                )
+                if str(consume_result.get("result", "")) != "complete":
+                    return refusal(
+                        REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL,
+                        str(consume_result.get("message", "insufficient material batches")),
+                        "Provide sufficient MAT batches or reduce volume_amount.",
+                        dict(consume_result.get("details") or {}),
+                        "$.intent.inputs.input_batch_ids",
+                    )
+                consumed_rows = [dict(row) for row in list(consume_result.get("consumed_rows") or []) if isinstance(row, Mapping)]
+                consumed_batch_ids = _sorted_tokens(list(consume_result.get("consumed_batch_ids") or []))
+                geometry_result = geometry_replace_material(
+                    geometry_cell_states=geometry_cell_states,
+                    target_cell_keys=target_cell_keys,
+                    material_id=material_id,
+                    tick=int(current_tick),
+                    operator_subject_id=operator_subject_id,
+                    volume_amount=volume_amount,
+                    geometry_edit_policy_id=geometry_edit_policy_id,
+                    geometry_edit_policy_registry=geometry_edit_policy_registry,
+                    material_registry=material_class_registry,
+                    extensions={"intent_id": str(intent_id), "source_process_id": process_id},
+                    material_in={
+                        "material_id": material_id,
+                        "quantity_mass_raw": replaced_volume,
+                        "batch_ids": consumed_batch_ids,
+                        "extensions": {"consumed_rows": [dict(row) for row in consumed_rows]},
+                    },
+                )
+        if str(geometry_result.get("result", "")) != "complete":
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                str(geometry_result.get("message", "geometry edit refused")),
+                "Adjust GEO target cells, material inputs, or volume bounds.",
+                dict(geometry_result.get("details") or {}),
+                "$.intent.inputs",
+            )
+        produced_rows = _produce_geometry_material_batches(
+            state=state,
+            material_breakdown_rows=_geometry_material_breakdown_rows(geometry_result.get("material_out")),
+            process_id=process_id,
+            current_tick=int(current_tick),
+            edit_id=str(dict(geometry_result.get("geometry_edit_event") or {}).get("edit_id", "")).strip(),
+        )
+        produced_batch_ids = _sorted_tokens([row.get("batch_id") for row in produced_rows])
+        geometry_cell_states = normalize_geometry_cell_state_rows(
+            geometry_result.get("geometry_cell_states"),
+            material_registry=material_class_registry,
+        )
+        _persist_geometry_state(
+            state,
+            geometry_cell_states=geometry_cell_states,
+            geometry_chunk_states=geometry_chunk_states,
+            material_registry=material_class_registry,
+        )
+        geometry_event = _append_geometry_edit_event(state, geometry_result.get("geometry_edit_event") or {})
+        _refresh_geometry_hash_chains(state, material_registry=material_class_registry)
+        result_metadata = {
+            "edit_kind": edit_kind,
+            "edit_id": str(geometry_event.get("edit_id", "")).strip(),
+            "edited_cell_count": int(len(list(geometry_result.get("updated_geometry_cell_states") or []))),
+            "volume_amount_applied": int(
+                max(
+                    0,
+                    _as_int(
+                        geometry_result.get("removed_volume_amount", geometry_result.get("added_volume_amount", geometry_result.get("replaced_volume_amount", 0))),
+                        0,
+                    ),
+                )
+            ),
+            "volume_amount_unapplied": int(max(0, _as_int(geometry_result.get("unapplied_volume_amount", 0), 0))),
+            "material_in_batch_ids": list(consumed_batch_ids),
+            "material_out_batch_ids": list(produced_batch_ids),
+            "geometry_state_hash_chain": str(state.get("geometry_state_hash_chain", "")).strip(),
+            "geometry_cell_state_hash_chain": str(state.get("geometry_cell_state_hash_chain", "")).strip(),
+            "geometry_edit_event_hash_chain": str(state.get("geometry_edit_event_hash_chain", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_network_create_from_formalization":
