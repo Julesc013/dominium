@@ -2699,6 +2699,98 @@ def _git_tracked_paths(repo_root: str) -> List[str]:
     return sorted(set(rows))
 
 
+def _git_resolve_ref(repo_root: str, ref: str) -> str:
+    try:
+        proc = subprocess.run(
+            ["git", "rev-parse", "--verify", "-q", ref],
+            cwd=repo_root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except OSError:
+        return ""
+    if int(proc.returncode) != 0:
+        return ""
+    return str(proc.stdout or "").splitlines()[0].strip()
+
+
+def _git_hosted_history_scope(repo_root: str) -> Tuple[str, str]:
+    head = _git_resolve_ref(repo_root, "HEAD")
+    if not head:
+        return "", ""
+    for candidate in ("@{upstream}", "origin/main"):
+        resolved = _git_resolve_ref(repo_root, candidate)
+        if resolved:
+            return "{}..HEAD".format(candidate), candidate
+    return "HEAD", "HEAD"
+
+
+def _git_large_blob_rows(
+    repo_root: str,
+    rev_spec: str,
+    budget_bytes: int,
+) -> List[Tuple[str, int, str]]:
+    if not rev_spec:
+        return []
+    try:
+        rev_proc = subprocess.run(
+            ["git", "rev-list", "--objects", rev_spec],
+            cwd=repo_root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except OSError:
+        return []
+    if int(rev_proc.returncode) != 0:
+        return []
+    object_rows = str(rev_proc.stdout or "")
+    if not object_rows.strip():
+        return []
+    try:
+        cat_proc = subprocess.run(
+            [
+                "git",
+                "cat-file",
+                "--batch-check=%(objectname) %(objecttype) %(objectsize) %(rest)",
+            ],
+            cwd=repo_root,
+            input=object_rows,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+    except OSError:
+        return []
+    if int(cat_proc.returncode) != 0:
+        return []
+    rows_by_oid: Dict[str, Tuple[str, int, str]] = {}
+    for line in str(cat_proc.stdout or "").splitlines():
+        parts = str(line).split(" ", 3)
+        if len(parts) < 3:
+            continue
+        object_id = str(parts[0]).strip()
+        object_type = str(parts[1]).strip()
+        size_token = str(parts[2]).strip()
+        rel_path = _norm(str(parts[3]).strip()) if len(parts) >= 4 and str(parts[3]).strip() else "<unknown>"
+        if object_type != "blob":
+            continue
+        try:
+            size_bytes = int(size_token)
+        except ValueError:
+            continue
+        if size_bytes <= int(budget_bytes):
+            continue
+        current = rows_by_oid.get(object_id)
+        if current is None or rel_path < current[0]:
+            rows_by_oid[object_id] = (rel_path, size_bytes, object_id)
+    return sorted(rows_by_oid.values(), key=lambda row: (row[0], row[1], row[2]))
+
+
 def _runtime_status_paths(repo_root: str) -> List[str]:
     return sorted(path for path in _git_status_paths(repo_root) if path.startswith(RUNTIME_PATH_PREFIXES))
 
@@ -12063,6 +12155,42 @@ def _append_git_hosted_file_size_invariant_findings(
                 snippet="size_bytes={}".format(size_bytes),
                 message="{} (size_bytes={}, budget_bytes={})".format(message, size_bytes, budget_bytes),
                 rule_id=rule_id,
+            )
+        )
+
+
+def _append_git_hosted_history_size_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    rev_spec, scope_label = _git_hosted_history_scope(repo_root)
+    if not rev_spec:
+        return
+    scope_kind = "outgoing history" if scope_label != "HEAD" else "reachable history"
+    for rel_path, size_bytes, object_id in _git_large_blob_rows(
+        repo_root=repo_root,
+        rev_spec=rev_spec,
+        budget_bytes=GIT_HOSTED_BLOB_HARD_LIMIT_BYTES,
+    ):
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path if rel_path != "<unknown>" else ".git",
+                line_number=1,
+                snippet="object_id={}".format(object_id),
+                message=(
+                    "{} contains blob above Git-hosted hard limit and push will be rejected by standard remotes "
+                    "(object_id={}, size_bytes={}, budget_bytes={}, scope={})"
+                ).format(
+                    scope_kind,
+                    object_id,
+                    size_bytes,
+                    GIT_HOSTED_BLOB_HARD_LIMIT_BYTES,
+                    scope_label,
+                ),
+                rule_id="INV-GIT-HOSTED-HISTORY-BLOB-SIZE",
             )
         )
 
@@ -26752,6 +26880,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_git_hosted_file_size_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_git_hosted_history_size_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

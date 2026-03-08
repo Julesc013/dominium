@@ -291,7 +291,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-GIT-HOSTED-BLOB-SIZE
 
 - Fails when a tracked file exceeds the standard Git-hosted hard blob limit (`100 MiB`).
-- Prevents local history from accumulating blobs that standard remotes will reject during push.
+- Keeps the current tracked tree below hosted-remote hard blob rejection limits.
+
+### INV-GIT-HOSTED-HISTORY-BLOB-SIZE
+
+- Fails when outgoing history (`@{upstream}..HEAD`, `origin/main..HEAD`, or `HEAD` when no upstream exists) contains a blob above the standard Git-hosted hard blob limit (`100 MiB`).
+- Prevents later-deleted oversized artifacts from remaining latent push blockers in local history.
 
 ### INV-TOPOLOGY-MAP-SIZE-BUDGET
 
