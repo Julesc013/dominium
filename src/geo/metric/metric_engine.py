@@ -661,8 +661,69 @@ def geo_geodesic(
     )
 
 
+def metric_query_proof_surface(query_rows: object) -> dict:
+    rows = []
+    topology_profile_ids: List[str] = []
+    metric_profile_ids: List[str] = []
+    for row in list(query_rows or []):
+        payload = _as_map(row)
+        if str(payload.get("result", "")).strip() != "complete":
+            continue
+        topology_profile_id = str(payload.get("topology_profile_id", "")).strip()
+        metric_profile_id = str(payload.get("metric_profile_id", "")).strip()
+        if topology_profile_id:
+            topology_profile_ids.append(topology_profile_id)
+        if metric_profile_id:
+            metric_profile_ids.append(metric_profile_id)
+        query_record = _as_map(payload.get("query_record"))
+        rows.append(
+            {
+                "query_kind": str(payload.get("query_kind", "")).strip(),
+                "topology_profile_id": topology_profile_id,
+                "metric_profile_id": metric_profile_id,
+                "metric_policy_id": str(payload.get("metric_policy_id", "")).strip(),
+                "geodesic_approx_policy_id": str(payload.get("geodesic_approx_policy_id", "")).strip(),
+                "comparison_frame_id": str(payload.get("comparison_frame_id", "") or "").strip(),
+                "distance_mm": int(max(0, _as_int(payload.get("distance_mm", 0), 0))),
+                "geodesic_mm": int(max(0, _as_int(payload.get("geodesic_mm", 0), 0))),
+                "error_bound_mm": int(max(0, _as_int(payload.get("error_bound_mm", 0), 0))),
+                "query_inputs_hash": str(query_record.get("inputs_hash", "")).strip(),
+                "query_outputs_hash": str(query_record.get("outputs_hash", "")).strip(),
+                "query_fingerprint": str(payload.get("deterministic_fingerprint", "")).strip(),
+            }
+        )
+    normalized_rows = sorted(
+        rows,
+        key=lambda item: (
+            str(item.get("query_kind", "")),
+            str(item.get("topology_profile_id", "")),
+            str(item.get("metric_profile_id", "")),
+            str(item.get("comparison_frame_id", "")),
+            str(item.get("query_inputs_hash", "")),
+            str(item.get("query_outputs_hash", "")),
+            str(item.get("query_fingerprint", "")),
+        ),
+    )
+    topology_ids = sorted(set(str(token).strip() for token in topology_profile_ids if str(token).strip()))
+    metric_ids = sorted(set(str(token).strip() for token in metric_profile_ids if str(token).strip()))
+    payload = {
+        "query_count": int(len(normalized_rows)),
+        "topology_profile_ids": topology_ids,
+        "metric_profile_ids": metric_ids,
+        "metric_query_hash_chain": canonical_sha256(normalized_rows),
+        "deterministic_fingerprint": "",
+    }
+    if len(topology_ids) == 1:
+        payload["topology_profile_id"] = str(topology_ids[0])
+    if len(metric_ids) == 1:
+        payload["metric_profile_id"] = str(metric_ids[0])
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
 __all__ = [
     "REFUSAL_GEO_METRIC_INVALID",
     "geo_distance",
     "geo_geodesic",
+    "metric_query_proof_surface",
 ]

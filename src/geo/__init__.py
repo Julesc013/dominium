@@ -34,6 +34,7 @@ from .metric import (
     geo_geodesic,
     geo_neighbors,
     metric_cache_clear,
+    metric_query_proof_surface,
     metric_cache_snapshot,
 )
 from .profile_binding import REFUSAL_GEO_DIMENSION_CHANGE, resolve_geo_profile_set
@@ -71,6 +72,7 @@ __all__ = [
     "geo_transform",
     "geo_project",
     "metric_cache_clear",
+    "metric_query_proof_surface",
     "metric_cache_snapshot",
     "geo_partition_cell_key",
     "geo_refine_cell_key",

@@ -106,6 +106,12 @@ def _geo_identity_extensions(
         token = str(ext.get(key, surface.get(key, ""))).strip()
         if token:
             out[key] = token
+    for key in ("topology_profile_ids", "metric_profile_ids"):
+        values = _sorted_unique_strings(
+            list(ext.get(key) or []) or list(surface.get(key) or [])
+        )
+        if values:
+            out[key] = values
     geo_cell_key = _as_map(ext.get("geo_cell_key")) or _as_map(surface.get("geo_cell_key"))
     if geo_cell_key:
         out["geo_cell_key_hash"] = canonical_sha256(geo_cell_key)
@@ -120,6 +126,9 @@ def _geo_identity_extensions(
     position_ref_hash_chain = str(ext.get("position_ref_hash_chain", surface.get("position_ref_hash_chain", ""))).strip()
     if position_ref_hash_chain:
         out["position_ref_hash_chain"] = position_ref_hash_chain
+    metric_query_hash_chain = str(ext.get("metric_query_hash_chain", surface.get("metric_query_hash_chain", ""))).strip()
+    if metric_query_hash_chain:
+        out["metric_query_hash_chain"] = metric_query_hash_chain
     return out
 
 
