@@ -375,6 +375,7 @@ from analyzers import e348_unnamed_rng_worldgen_smell
 from analyzers import e349_adhoc_worldgen_smell
 from analyzers import e350_silent_identity_change_smell
 from analyzers import e351_nondeterministic_merge_smell
+from analyzers import e352_nondeterministic_distance_smell
 
 
 ANALYZERS = (
@@ -753,6 +754,7 @@ ANALYZERS = (
     e349_adhoc_worldgen_smell,
     e350_silent_identity_change_smell,
     e351_nondeterministic_merge_smell,
+    e352_nondeterministic_distance_smell,
 )
 
 

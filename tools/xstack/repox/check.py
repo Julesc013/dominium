@@ -18240,6 +18240,248 @@ def _append_geo_overlay_invariant_findings(
             )
             break
 
+def _append_geo_envelope_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    budget_rule_id = "INV-GEO-BUDGETED"
+    identity_rule_id = "INV-GEO-ID-STABLE"
+
+    scenario_tool_rel = "tools/geo/tool_generate_geo_stress.py"
+    runtime_rel = "tools/geo/geo10_stress_runtime.py"
+    stress_tool_rel = "tools/geo/tool_run_geo_stress.py"
+    replay_tool_rel = "tools/geo/tool_replay_geo_window.py"
+    overlay_tool_rel = "tools/geo/tool_verify_overlay_identity.py"
+    degradation_rel = "src/geo/degradation_policy.py"
+    regression_rel = "data/regression/geo_full_baseline.json"
+
+    for rel_path in (
+        scenario_tool_rel,
+        runtime_rel,
+        stress_tool_rel,
+        replay_tool_rel,
+        overlay_tool_rel,
+        degradation_rel,
+        regression_rel,
+    ):
+        abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if os.path.isfile(abs_path):
+            continue
+        rule_id = budget_rule_id if rel_path != overlay_tool_rel else identity_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="GEO-10 envelope artifact is missing",
+                rule_id=rule_id,
+            )
+        )
+
+    scenario_text = _file_text(repo_root, scenario_tool_rel)
+    for token in (
+        "generate_geo_stress_scenario(",
+        "geo10.suite.r3_grid",
+        "geo10.suite.sphere_atlas",
+        "geo10.suite.r4_slice",
+        "degradation_policy_order",
+        "expected_invariants_summary",
+    ):
+        if token in scenario_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=scenario_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="GEO-10 stress scenario generation must cover the full topology/degradation envelope",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token in (
+        "run_geo_stress_scenario(",
+        "verify_geo_stress_scenario(",
+        "cross_platform_determinism_hash",
+        "degradation_order_deterministic",
+        "stable_ids_under_overlays",
+        "lens_redaction_count",
+        "projection_view_cell_count",
+        "path_expansions",
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token,
+                message="GEO-10 stress runtime must preserve explicit metric/view/path/overlay proof surfaces",
+                rule_id=budget_rule_id,
+            )
+        )
+    for forbidden_token in ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom("):
+        if forbidden_token not in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=forbidden_token,
+                message="GEO-10 envelope runtime must remain deterministic; nondeterministic sources are forbidden",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    degradation_text = _file_text(repo_root, degradation_rel)
+    for token in (
+        "plan_geo_degradation_actions(",
+        "finalize_geo_degradation_report(",
+        "build_view_downsample_explain_artifact(",
+        "build_path_refused_budget_explain_artifact(",
+    ):
+        if token in degradation_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=degradation_rel,
+                line_number=1,
+                snippet=token,
+                message="GEO degradation policy must remain explicit, ordered, and explainable",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    replay_text = _file_text(repo_root, replay_tool_rel)
+    for token in (
+        "replay_geo_window(",
+        "cell_key_hash_chain",
+        "distance_query_fingerprint",
+        "field_sample_hash",
+        "overlay_merge_result_hash_chain",
+        "geometry_edit_event_hash_chain",
+        "worldgen_result_hash_chain",
+        "stable_across_repeated_runs",
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="GEO replay verifier must cover the full GEO proof window surface",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    overlay_text = _file_text(repo_root, overlay_tool_rel)
+    for token in (
+        "verify_overlay_identity(",
+        "stable_identity_under_overlay",
+        "overlay_manifest_hash",
+        "overlay_merge_result_hash_chain",
+        "stable_across_repeated_runs",
+    ):
+        if token in overlay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=overlay_tool_rel,
+                line_number=1,
+                snippet=token,
+                message="GEO overlay identity verification must remain explicit and deterministic",
+                rule_id=identity_rule_id,
+            )
+        )
+
+    regression_payload, regression_err = _load_json_object(repo_root, regression_rel)
+    if regression_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=regression_rel,
+                message="GEO regression lock baseline is required for GEO-10 envelope stability",
+                rule_id=budget_rule_id,
+            )
+        )
+        return
+    required_fields = (
+        "baseline_id",
+        "schema_version",
+        "description",
+        "scenario",
+        "topology_suite_hashes",
+        "overlay_identity_suite",
+        "geometry_edit_suite",
+        "projection_view_suite",
+        "pathing_suite",
+        "reference_suite",
+        "update_policy",
+        "deterministic_fingerprint",
+    )
+    for token in required_fields:
+        if token in regression_payload:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=token,
+                message="GEO regression lock missing required baseline field",
+                rule_id=budget_rule_id,
+            )
+        )
+    update_policy = dict(regression_payload.get("update_policy") or {})
+    if str(update_policy.get("required_commit_tag", "")).strip() != "GEO-REGRESSION-UPDATE":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="required_commit_tag",
+                message="GEO regression lock updates must require GEO-REGRESSION-UPDATE tag",
+                rule_id=budget_rule_id,
+            )
+        )
+    scenario_row = dict(regression_payload.get("scenario") or {})
+    if not str(scenario_row.get("cross_platform_determinism_hash", "")).strip():
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="cross_platform_determinism_hash",
+                message="GEO regression lock must pin the cross-platform determinism hash",
+                rule_id=budget_rule_id,
+            )
+        )
+    overlay_row = dict(regression_payload.get("overlay_identity_suite") or {})
+    if not str(overlay_row.get("deterministic_fingerprint", "")).strip():
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="overlay_identity_suite.deterministic_fingerprint",
+                message="GEO regression lock must pin overlay identity proof fingerprints",
+                rule_id=identity_rule_id,
+            )
+        )
+
 
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
@@ -28493,6 +28735,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_overlay_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_envelope_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
