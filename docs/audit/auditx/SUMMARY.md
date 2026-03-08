@@ -10,8 +10,8 @@ Superseded By: none
 
 - INFO: 223
 - RISK: 674
-- VIOLATION: 99
-- WARN: 1214
+- VIOLATION: 108
+- WARN: 1245
 
 ## Counts By Category
 
@@ -58,7 +58,7 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 755
+- canon_drift: 757
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
@@ -87,6 +87,8 @@ Superseded By: none
 - reachability: 80
 - reliability.silent_reaction_smell: 3
 - schema_usage: 160
+- security.boundary_io: 29
+- security.privilege_bypass: 9
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120

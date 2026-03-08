@@ -44,7 +44,7 @@
     "architecture.vehicle_interior_special_case_smell": 1,
     "architecture.weather_hack_smell": 1,
     "authority.fault_bypass_smell": 3,
-    "canon_drift": 755,
+    "canon_drift": 757,
     "capability_bypass_smell": 1,
     "capability_misuse": 140,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
@@ -73,6 +73,8 @@
     "reachability": 80,
     "reliability.silent_reaction_smell": 3,
     "schema_usage": 160,
+    "security.boundary_io": 29,
+    "security.privilege_bypass": 9,
     "semantic.capability_drift": 5,
     "semantic.derived_artifact_contract": 1,
     "semantic.schema_shadowing": 120,
@@ -153,7 +155,9 @@
       "performance.unbudgeted_reaction_loop_smell": 0,
       "reachability": 80,
       "reliability.silent_reaction_smell": 0,
-      "schema_usage": 157,
+      "schema_usage": 160,
+      "security.boundary_io": 0,
+      "security.privilege_bypass": 0,
       "semantic.capability_drift": 0,
       "semantic.derived_artifact_contract": 0,
       "semantic.schema_shadowing": 0,
@@ -165,20 +169,20 @@
       "INFO": 223,
       "RISK": 189,
       "VIOLATION": 83,
-      "WARN": 326
+      "WARN": 329
     }
   },
-  "findings_hash": "745836e65765086d9179fa97975015b63daa59bca6ae971fe74efee580602e1d",
+  "findings_hash": "cd18985084e4f6f38833a46510046988bb9d9600cc3661768fc76a94f137c870",
   "history_reference": {
-    "previous_distinct_hash": "f0f77fda2117fe5657993e057b8f02348a057703b0033d1498c470a98157dca8"
+    "previous_distinct_hash": "38e45ca56c9310751b6a584df86c67e17fdd79222e1c75acc8ba726e022e78c3"
   },
   "schema_id": "dominium.auditx.trends",
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 223,
     "RISK": 674,
-    "VIOLATION": 99,
-    "WARN": 1214
+    "VIOLATION": 108,
+    "WARN": 1245
   },
-  "total_findings": 2210
+  "total_findings": 2250
 }

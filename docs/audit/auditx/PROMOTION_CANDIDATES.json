@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 66,
+  "candidate_count": 67,
   "candidates": [
     {
       "evidence_paths": [
@@ -150,6 +150,17 @@
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
       "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "tools/auditx/analyzers/c1_security_boundary.py",
+        "tools/securex/core/boundary_validator.py",
+        "tools/securex/securex.py"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.9,
+      "rule_type": "TEST_REGRESSION",
       "suggested_ruleset": "core.json"
     },
     {
