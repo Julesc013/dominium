@@ -1,0 +1,1161 @@
+{
+  "assertions": {
+    "compiled_preference_under_pressure": true,
+    "compute_budget_respected": true,
+    "coupling_budget_respected": true,
+    "debug_trace_compaction_stable": true,
+    "determinism_across_thread_counts": true,
+    "loop_refusal_deterministic": true,
+    "no_unbounded_loops": true,
+    "security_blocks_deterministic": true
+  },
+  "degradation_behavior": {
+    "current_tick": 8,
+    "deterministic_fingerprint": "a2a30292ed705fdeb7faff5acd5d461cb57747797b74fdf2338a063bd803ec18",
+    "plan_hash": "a64c18798998d02fd1e4757e602b5ba3421e3b380d23505c95b9df84c1ac2a8e",
+    "plan_rows": [
+      {
+        "action_id": "prefer_compiled_execution",
+        "affected_ids": [
+          "net.logic.envelope.0001",
+          "net.logic.envelope.0002",
+          "net.logic.envelope.0003",
+          "net.logic.envelope.0004",
+          "net.logic.envelope.0005",
+          "net.logic.envelope.0006",
+          "net.logic.envelope.0007",
+          "net.logic.envelope.0008",
+          "net.logic.envelope.0009",
+          "net.logic.envelope.0010",
+          "net.logic.envelope.0011",
+          "net.logic.envelope.0012"
+        ],
+        "rank": 1,
+        "reason_code": "degrade.logic.prefer_compiled",
+        "status": "applied"
+      },
+      {
+        "action_id": "reduce_low_priority_eval_frequency",
+        "affected_ids": [],
+        "rank": 2,
+        "reason_code": "degrade.logic.tick_bucket",
+        "status": "noop",
+        "tick_bucket_stride": 2
+      },
+      {
+        "action_id": "cap_networks_per_tick",
+        "affected_ids": [
+          "net.logic.envelope.0004",
+          "net.logic.envelope.0005",
+          "net.logic.envelope.0006",
+          "net.logic.envelope.0007",
+          "net.logic.envelope.0008",
+          "net.logic.envelope.0009",
+          "net.logic.envelope.0010",
+          "net.logic.envelope.0011",
+          "net.logic.envelope.0012"
+        ],
+        "network_eval_cap": 3,
+        "rank": 3,
+        "reason_code": "degrade.logic.network_cap",
+        "status": "applied"
+      },
+      {
+        "action_id": "reduce_debug_sampling_rate",
+        "affected_count": 11,
+        "rank": 4,
+        "reason_code": "degrade.logic.debug_subsample",
+        "status": "applied",
+        "throttle_strategy": "deterministic_subsample"
+      },
+      {
+        "action_id": "refuse_new_debug_sessions",
+        "affected_count": 11,
+        "rank": 5,
+        "reason_code": "degrade.logic.debug_refusal",
+        "status": "applied"
+      },
+      {
+        "action_id": "apply_fail_safe_outputs",
+        "affected_ids": [
+          "net.logic.envelope.0001"
+        ],
+        "rank": 6,
+        "reason_code": "degrade.logic.fail_safe",
+        "status": "applied"
+      }
+    ]
+  },
+  "degradation_order_rows": [
+    {
+      "action_id": "prefer_compiled_execution",
+      "decision_target": "compiled_model",
+      "deterministic_fingerprint": "415636386c05c5c458414593ead21222286ed6951296c4cb4d9bacb88538dd8d",
+      "log_targets": [
+        "logic_throttle_event",
+        "compute_consumption_record"
+      ],
+      "rank": 1
+    },
+    {
+      "action_id": "reduce_low_priority_eval_frequency",
+      "decision_target": "tick_bucket_stride",
+      "deterministic_fingerprint": "1667f4d6b3006dafd5adb66870ca43cc140dac9554c74f379eec30cfeb0afc87",
+      "log_targets": [
+        "logic_throttle_event",
+        "explain.logic_compute_throttle"
+      ],
+      "rank": 2
+    },
+    {
+      "action_id": "cap_networks_per_tick",
+      "decision_target": "network_eval_cap",
+      "deterministic_fingerprint": "0a2e02f1761a94b8d0dcadad21198165f2f8c4691b6dc477f9f0a26147208767",
+      "log_targets": [
+        "logic_throttle_event",
+        "compute_consumption_record"
+      ],
+      "rank": 3
+    },
+    {
+      "action_id": "reduce_debug_sampling_rate",
+      "decision_target": "debug_sampling_policy",
+      "deterministic_fingerprint": "2aa04b4778b7bf81d1eaf779e265cff8eb8ac8898c4c6012ffc70b18a7f98787",
+      "log_targets": [
+        "logic_throttle_event",
+        "explain.logic_debug_throttled"
+      ],
+      "rank": 4
+    },
+    {
+      "action_id": "refuse_new_debug_sessions",
+      "decision_target": "debug_session_admission",
+      "deterministic_fingerprint": "ddaf22a77fb14ea60c765f76b32cd990789475904beee087fd604c391318cbca",
+      "log_targets": [
+        "logic_throttle_event",
+        "explain.logic_debug_refused"
+      ],
+      "rank": 5
+    },
+    {
+      "action_id": "apply_fail_safe_outputs",
+      "decision_target": "safety_pattern",
+      "deterministic_fingerprint": "938bf624493610ce9fc1c3e72fd5923b3100df73c5c3e39c381e5d42b89b2569",
+      "log_targets": [
+        "logic_throttle_event",
+        "explain.logic_command_refused"
+      ],
+      "rank": 6
+    }
+  ],
+  "deterministic_fingerprint": "769b2c1648413004d4453e117cbf75c1308e82272dd3a1e467622cda406f3d11",
+  "distributed_control_fingerprint": "635382e5be928e92f1d69e9d10b114c22a8fa86d911fa7bbb5e9879401352837",
+  "mega_network": {
+    "compile_eligibility_hash": "13cf4809621e4ebfcdadff05952e7ef8d0764084bdcfa9273623436227a2025c",
+    "deterministic_fingerprint": "9706ab6519ae65bb2fbcf1040a33038ea75b640c580f8c0914642041d38157fb",
+    "deterministic_source_hash": "6332c209ca89a80b32bac8925ac7232cf0dc1959e94d3e258fb9b0ab0cc2cd18",
+    "scenario_id": "scenario.logic10.mega.fa6fec961df1"
+  },
+  "mega_node_count": 1000000,
+  "metrics": {
+    "arbitration_queue_depths": {
+      "carrier.bus": 23,
+      "carrier.sig": 23
+    },
+    "compaction_marker_count": 1,
+    "compiled_execution_ratio": 1.0,
+    "compute_units_used_per_tick": [
+      {
+        "compute_units_used": 385,
+        "tick": 1
+      },
+      {
+        "compute_units_used": 385,
+        "tick": 2
+      },
+      {
+        "compute_units_used": 385,
+        "tick": 3
+      },
+      {
+        "compute_units_used": 385,
+        "tick": 4
+      },
+      {
+        "compute_units_used": 385,
+        "tick": 5
+      },
+      {
+        "compute_units_used": 385,
+        "tick": 6
+      },
+      {
+        "compute_units_used": 385,
+        "tick": 7
+      },
+      {
+        "compute_units_used": 385,
+        "tick": 8
+      }
+    ],
+    "coupling_evaluations_count": 1282,
+    "debug_trace_sample_count": 352,
+    "debug_trace_session_count": 22,
+    "fault_impact_count": 42,
+    "forced_expand_count": 0,
+    "mega_network_compile_eligibility_hash": "13cf4809621e4ebfcdadff05952e7ef8d0764084bdcfa9273623436227a2025c",
+    "mega_network_source_hash": "6332c209ca89a80b32bac8925ac7232cf0dc1959e94d3e258fb9b0ab0cc2cd18",
+    "networks_evaluated_per_tick": [
+      {
+        "network_count": 5,
+        "tick": 1
+      },
+      {
+        "network_count": 5,
+        "tick": 2
+      },
+      {
+        "network_count": 5,
+        "tick": 3
+      },
+      {
+        "network_count": 5,
+        "tick": 4
+      },
+      {
+        "network_count": 5,
+        "tick": 5
+      },
+      {
+        "network_count": 5,
+        "tick": 6
+      },
+      {
+        "network_count": 5,
+        "tick": 7
+      },
+      {
+        "network_count": 5,
+        "tick": 8
+      }
+    ],
+    "protocol_frames_processed_per_tick": {
+      "carrier.bus": [
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 23,
+          "tick": 0
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 22,
+          "tick": 1
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 21,
+          "tick": 2
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 20,
+          "tick": 3
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 19,
+          "tick": 4
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 18,
+          "tick": 5
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 17,
+          "tick": 6
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 16,
+          "tick": 7
+        }
+      ],
+      "carrier.sig": [
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 23,
+          "tick": 0
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 22,
+          "tick": 1
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 21,
+          "tick": 2
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 20,
+          "tick": 3
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 19,
+          "tick": 4
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 18,
+          "tick": 5
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 17,
+          "tick": 6
+        },
+        {
+          "blocked_events": 0,
+          "corrupted_events": 0,
+          "processed_frames": 1,
+          "queued_frames": 16,
+          "tick": 7
+        }
+      ]
+    },
+    "security_block_count": 8,
+    "throttle_event_count": 0
+  },
+  "network_count": 12,
+  "proof_hash_summary": {
+    "aggregate_hash": "b230ef8e6bb969c02d2c71b8d0363aa58da3f0c82975a8d20d62604c1ac40c76",
+    "compiled_model_hash_chain": "91553492862a084999855b83c0f49a3d5b72e4df26fb28ead6e9f3911cb686e4",
+    "debug_compaction_marker_hash_chain": "d55fbfdf2aa8b269e3d74b91bba5c428cf240b5ef7ad3d8cacb3d1c4f474277c",
+    "equivalence_proof_hash_chain": "01e4e5c59f48971bd4992cca93ac531a716bfdbd5679c6414864512e246e8680",
+    "forced_expand_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "logic_compile_policy_hash_chain": "131f92331d7f3bfd339bce78fe2fae506db382e07fb4702b0927b9fbff4ad8d1",
+    "logic_debug_request_hash_chain": "50b688c7fb2703e1a5eb02979eebb65f56f915fd03cae36f8f2cf146da505a8d",
+    "logic_debug_trace_hash_chain": "36859d60e0b4a51e03a225b635937beb8eb54132dff0a3863e9b8ebfaa6e11fd",
+    "logic_eval_record_hash_chain": "6ac7297d16aa81259ecc6279ff67c6eb06c589b6eb0c823c088eaa065af89e60",
+    "logic_fault_state_hash_chain": "be6113523b4c303d07282fcd62974fbe22947ade408807c1e7d66e5c2dc288e8",
+    "logic_noise_decision_hash_chain": "351169892d1c1dab1190f1e69f9ccdaa62ab0608d6e74d3f12faa9a8707b3070",
+    "logic_oscillation_record_hash_chain": "93ddea66669718d2656093482eaea9a1de25b5133befee67f94610935af59953",
+    "logic_protocol_summary_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "logic_security_fail_hash_chain": "ad762f129138439d2c9959fbd6dd5cf8f92dafa7d78f78777e3cfec4192375cf",
+    "logic_state_update_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "logic_throttle_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "logic_timing_violation_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "logic_watchdog_timeout_hash_chain": "0e514c8c93d95f41b4d39b90cc9fec0896505dad9336c0fe9ecd9afa217b9059",
+    "protocol_bus_event_hash_chain": "2c830f2469081a079b5d221f5e429e120252dd49b3f2932fd02b1646082a069d",
+    "protocol_bus_frame_hash_chain": "623ef28bc3f55ad2c05290e299cc142d91fc8a42cde0f1cfe7da249465559e63",
+    "protocol_sig_delivery_hash_chain": "b1d6e62998534394122041a7d21355d33143ad841b6d4ba4a917557421db75c9",
+    "protocol_sig_event_hash_chain": "789513fdbf345157139b2f5cf2115d2acbcad4d6265291f7885c698e65cb80d9"
+  },
+  "result": "complete",
+  "scenario_fingerprint": "516c2612ee8066128a96e799f1ee53dda76b6686cfa925331feffc3c3f1c8b87",
+  "scenario_id": "scenario.logic10.envelope.9c32793a79cc",
+  "seed": 1010,
+  "stress_passes": [
+    {
+      "assertions": {
+        "compiled_preference_under_pressure": true,
+        "compute_budget_respected": true,
+        "coupling_budget_respected": true,
+        "debug_trace_compaction_stable": true,
+        "loop_refusal_deterministic": true,
+        "no_unbounded_loops": true,
+        "security_blocks_deterministic": true
+      },
+      "core_hash": "d10d1618fc490f799489bcb9f1e8f06bcc4b689f5f04a50e616fd59e103d45bc",
+      "degradation_behavior": {
+        "current_tick": 8,
+        "deterministic_fingerprint": "a2a30292ed705fdeb7faff5acd5d461cb57747797b74fdf2338a063bd803ec18",
+        "plan_hash": "a64c18798998d02fd1e4757e602b5ba3421e3b380d23505c95b9df84c1ac2a8e",
+        "plan_rows": [
+          {
+            "action_id": "prefer_compiled_execution",
+            "affected_ids": [
+              "net.logic.envelope.0001",
+              "net.logic.envelope.0002",
+              "net.logic.envelope.0003",
+              "net.logic.envelope.0004",
+              "net.logic.envelope.0005",
+              "net.logic.envelope.0006",
+              "net.logic.envelope.0007",
+              "net.logic.envelope.0008",
+              "net.logic.envelope.0009",
+              "net.logic.envelope.0010",
+              "net.logic.envelope.0011",
+              "net.logic.envelope.0012"
+            ],
+            "rank": 1,
+            "reason_code": "degrade.logic.prefer_compiled",
+            "status": "applied"
+          },
+          {
+            "action_id": "reduce_low_priority_eval_frequency",
+            "affected_ids": [],
+            "rank": 2,
+            "reason_code": "degrade.logic.tick_bucket",
+            "status": "noop",
+            "tick_bucket_stride": 2
+          },
+          {
+            "action_id": "cap_networks_per_tick",
+            "affected_ids": [
+              "net.logic.envelope.0004",
+              "net.logic.envelope.0005",
+              "net.logic.envelope.0006",
+              "net.logic.envelope.0007",
+              "net.logic.envelope.0008",
+              "net.logic.envelope.0009",
+              "net.logic.envelope.0010",
+              "net.logic.envelope.0011",
+              "net.logic.envelope.0012"
+            ],
+            "network_eval_cap": 3,
+            "rank": 3,
+            "reason_code": "degrade.logic.network_cap",
+            "status": "applied"
+          },
+          {
+            "action_id": "reduce_debug_sampling_rate",
+            "affected_count": 11,
+            "rank": 4,
+            "reason_code": "degrade.logic.debug_subsample",
+            "status": "applied",
+            "throttle_strategy": "deterministic_subsample"
+          },
+          {
+            "action_id": "refuse_new_debug_sessions",
+            "affected_count": 11,
+            "rank": 5,
+            "reason_code": "degrade.logic.debug_refusal",
+            "status": "applied"
+          },
+          {
+            "action_id": "apply_fail_safe_outputs",
+            "affected_ids": [
+              "net.logic.envelope.0001"
+            ],
+            "rank": 6,
+            "reason_code": "degrade.logic.fail_safe",
+            "status": "applied"
+          }
+        ]
+      },
+      "degradation_order_rows": [
+        {
+          "action_id": "prefer_compiled_execution",
+          "decision_target": "compiled_model",
+          "deterministic_fingerprint": "415636386c05c5c458414593ead21222286ed6951296c4cb4d9bacb88538dd8d",
+          "log_targets": [
+            "logic_throttle_event",
+            "compute_consumption_record"
+          ],
+          "rank": 1
+        },
+        {
+          "action_id": "reduce_low_priority_eval_frequency",
+          "decision_target": "tick_bucket_stride",
+          "deterministic_fingerprint": "1667f4d6b3006dafd5adb66870ca43cc140dac9554c74f379eec30cfeb0afc87",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_compute_throttle"
+          ],
+          "rank": 2
+        },
+        {
+          "action_id": "cap_networks_per_tick",
+          "decision_target": "network_eval_cap",
+          "deterministic_fingerprint": "0a2e02f1761a94b8d0dcadad21198165f2f8c4691b6dc477f9f0a26147208767",
+          "log_targets": [
+            "logic_throttle_event",
+            "compute_consumption_record"
+          ],
+          "rank": 3
+        },
+        {
+          "action_id": "reduce_debug_sampling_rate",
+          "decision_target": "debug_sampling_policy",
+          "deterministic_fingerprint": "2aa04b4778b7bf81d1eaf779e265cff8eb8ac8898c4c6012ffc70b18a7f98787",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_debug_throttled"
+          ],
+          "rank": 4
+        },
+        {
+          "action_id": "refuse_new_debug_sessions",
+          "decision_target": "debug_session_admission",
+          "deterministic_fingerprint": "ddaf22a77fb14ea60c765f76b32cd990789475904beee087fd604c391318cbca",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_debug_refused"
+          ],
+          "rank": 5
+        },
+        {
+          "action_id": "apply_fail_safe_outputs",
+          "decision_target": "safety_pattern",
+          "deterministic_fingerprint": "938bf624493610ce9fc1c3e72fd5923b3100df73c5c3e39c381e5d42b89b2569",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_command_refused"
+          ],
+          "rank": 6
+        }
+      ],
+      "deterministic_fingerprint": "f53e87d9e930a6b56247f6a6f5cc003ef1d1a895d223dffcdb4f38663e170415",
+      "metrics": {
+        "arbitration_queue_depths": {
+          "carrier.bus": 23,
+          "carrier.sig": 23
+        },
+        "compaction_marker_count": 1,
+        "compiled_execution_ratio": 1.0,
+        "compute_units_used_per_tick": [
+          {
+            "compute_units_used": 385,
+            "tick": 1
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 2
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 3
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 4
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 5
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 6
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 7
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 8
+          }
+        ],
+        "coupling_evaluations_count": 1282,
+        "debug_trace_sample_count": 352,
+        "debug_trace_session_count": 22,
+        "fault_impact_count": 42,
+        "forced_expand_count": 0,
+        "mega_network_compile_eligibility_hash": "13cf4809621e4ebfcdadff05952e7ef8d0764084bdcfa9273623436227a2025c",
+        "mega_network_source_hash": "6332c209ca89a80b32bac8925ac7232cf0dc1959e94d3e258fb9b0ab0cc2cd18",
+        "networks_evaluated_per_tick": [
+          {
+            "network_count": 5,
+            "tick": 1
+          },
+          {
+            "network_count": 5,
+            "tick": 2
+          },
+          {
+            "network_count": 5,
+            "tick": 3
+          },
+          {
+            "network_count": 5,
+            "tick": 4
+          },
+          {
+            "network_count": 5,
+            "tick": 5
+          },
+          {
+            "network_count": 5,
+            "tick": 6
+          },
+          {
+            "network_count": 5,
+            "tick": 7
+          },
+          {
+            "network_count": 5,
+            "tick": 8
+          }
+        ],
+        "protocol_frames_processed_per_tick": {
+          "carrier.bus": [
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 23,
+              "tick": 0
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 22,
+              "tick": 1
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 21,
+              "tick": 2
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 20,
+              "tick": 3
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 19,
+              "tick": 4
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 18,
+              "tick": 5
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 17,
+              "tick": 6
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 16,
+              "tick": 7
+            }
+          ],
+          "carrier.sig": [
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 23,
+              "tick": 0
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 22,
+              "tick": 1
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 21,
+              "tick": 2
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 20,
+              "tick": 3
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 19,
+              "tick": 4
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 18,
+              "tick": 5
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 17,
+              "tick": 6
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 16,
+              "tick": 7
+            }
+          ]
+        },
+        "security_block_count": 8,
+        "throttle_event_count": 0
+      },
+      "proof_hash_summary": {
+        "aggregate_hash": "b230ef8e6bb969c02d2c71b8d0363aa58da3f0c82975a8d20d62604c1ac40c76",
+        "compiled_model_hash_chain": "91553492862a084999855b83c0f49a3d5b72e4df26fb28ead6e9f3911cb686e4",
+        "debug_compaction_marker_hash_chain": "d55fbfdf2aa8b269e3d74b91bba5c428cf240b5ef7ad3d8cacb3d1c4f474277c",
+        "equivalence_proof_hash_chain": "01e4e5c59f48971bd4992cca93ac531a716bfdbd5679c6414864512e246e8680",
+        "forced_expand_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_compile_policy_hash_chain": "131f92331d7f3bfd339bce78fe2fae506db382e07fb4702b0927b9fbff4ad8d1",
+        "logic_debug_request_hash_chain": "50b688c7fb2703e1a5eb02979eebb65f56f915fd03cae36f8f2cf146da505a8d",
+        "logic_debug_trace_hash_chain": "36859d60e0b4a51e03a225b635937beb8eb54132dff0a3863e9b8ebfaa6e11fd",
+        "logic_eval_record_hash_chain": "6ac7297d16aa81259ecc6279ff67c6eb06c589b6eb0c823c088eaa065af89e60",
+        "logic_fault_state_hash_chain": "be6113523b4c303d07282fcd62974fbe22947ade408807c1e7d66e5c2dc288e8",
+        "logic_noise_decision_hash_chain": "351169892d1c1dab1190f1e69f9ccdaa62ab0608d6e74d3f12faa9a8707b3070",
+        "logic_oscillation_record_hash_chain": "93ddea66669718d2656093482eaea9a1de25b5133befee67f94610935af59953",
+        "logic_protocol_summary_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_security_fail_hash_chain": "ad762f129138439d2c9959fbd6dd5cf8f92dafa7d78f78777e3cfec4192375cf",
+        "logic_state_update_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_throttle_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_timing_violation_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_watchdog_timeout_hash_chain": "0e514c8c93d95f41b4d39b90cc9fec0896505dad9336c0fe9ecd9afa217b9059",
+        "protocol_bus_event_hash_chain": "2c830f2469081a079b5d221f5e429e120252dd49b3f2932fd02b1646082a069d",
+        "protocol_bus_frame_hash_chain": "623ef28bc3f55ad2c05290e299cc142d91fc8a42cde0f1cfe7da249465559e63",
+        "protocol_sig_delivery_hash_chain": "b1d6e62998534394122041a7d21355d33143ad841b6d4ba4a917557421db75c9",
+        "protocol_sig_event_hash_chain": "789513fdbf345157139b2f5cf2115d2acbcad4d6265291f7885c698e65cb80d9"
+      },
+      "result": "complete",
+      "thread_count_label": 1
+    },
+    {
+      "assertions": {
+        "compiled_preference_under_pressure": true,
+        "compute_budget_respected": true,
+        "coupling_budget_respected": true,
+        "debug_trace_compaction_stable": true,
+        "loop_refusal_deterministic": true,
+        "no_unbounded_loops": true,
+        "security_blocks_deterministic": true
+      },
+      "core_hash": "d10d1618fc490f799489bcb9f1e8f06bcc4b689f5f04a50e616fd59e103d45bc",
+      "degradation_behavior": {
+        "current_tick": 8,
+        "deterministic_fingerprint": "a2a30292ed705fdeb7faff5acd5d461cb57747797b74fdf2338a063bd803ec18",
+        "plan_hash": "a64c18798998d02fd1e4757e602b5ba3421e3b380d23505c95b9df84c1ac2a8e",
+        "plan_rows": [
+          {
+            "action_id": "prefer_compiled_execution",
+            "affected_ids": [
+              "net.logic.envelope.0001",
+              "net.logic.envelope.0002",
+              "net.logic.envelope.0003",
+              "net.logic.envelope.0004",
+              "net.logic.envelope.0005",
+              "net.logic.envelope.0006",
+              "net.logic.envelope.0007",
+              "net.logic.envelope.0008",
+              "net.logic.envelope.0009",
+              "net.logic.envelope.0010",
+              "net.logic.envelope.0011",
+              "net.logic.envelope.0012"
+            ],
+            "rank": 1,
+            "reason_code": "degrade.logic.prefer_compiled",
+            "status": "applied"
+          },
+          {
+            "action_id": "reduce_low_priority_eval_frequency",
+            "affected_ids": [],
+            "rank": 2,
+            "reason_code": "degrade.logic.tick_bucket",
+            "status": "noop",
+            "tick_bucket_stride": 2
+          },
+          {
+            "action_id": "cap_networks_per_tick",
+            "affected_ids": [
+              "net.logic.envelope.0004",
+              "net.logic.envelope.0005",
+              "net.logic.envelope.0006",
+              "net.logic.envelope.0007",
+              "net.logic.envelope.0008",
+              "net.logic.envelope.0009",
+              "net.logic.envelope.0010",
+              "net.logic.envelope.0011",
+              "net.logic.envelope.0012"
+            ],
+            "network_eval_cap": 3,
+            "rank": 3,
+            "reason_code": "degrade.logic.network_cap",
+            "status": "applied"
+          },
+          {
+            "action_id": "reduce_debug_sampling_rate",
+            "affected_count": 11,
+            "rank": 4,
+            "reason_code": "degrade.logic.debug_subsample",
+            "status": "applied",
+            "throttle_strategy": "deterministic_subsample"
+          },
+          {
+            "action_id": "refuse_new_debug_sessions",
+            "affected_count": 11,
+            "rank": 5,
+            "reason_code": "degrade.logic.debug_refusal",
+            "status": "applied"
+          },
+          {
+            "action_id": "apply_fail_safe_outputs",
+            "affected_ids": [
+              "net.logic.envelope.0001"
+            ],
+            "rank": 6,
+            "reason_code": "degrade.logic.fail_safe",
+            "status": "applied"
+          }
+        ]
+      },
+      "degradation_order_rows": [
+        {
+          "action_id": "prefer_compiled_execution",
+          "decision_target": "compiled_model",
+          "deterministic_fingerprint": "415636386c05c5c458414593ead21222286ed6951296c4cb4d9bacb88538dd8d",
+          "log_targets": [
+            "logic_throttle_event",
+            "compute_consumption_record"
+          ],
+          "rank": 1
+        },
+        {
+          "action_id": "reduce_low_priority_eval_frequency",
+          "decision_target": "tick_bucket_stride",
+          "deterministic_fingerprint": "1667f4d6b3006dafd5adb66870ca43cc140dac9554c74f379eec30cfeb0afc87",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_compute_throttle"
+          ],
+          "rank": 2
+        },
+        {
+          "action_id": "cap_networks_per_tick",
+          "decision_target": "network_eval_cap",
+          "deterministic_fingerprint": "0a2e02f1761a94b8d0dcadad21198165f2f8c4691b6dc477f9f0a26147208767",
+          "log_targets": [
+            "logic_throttle_event",
+            "compute_consumption_record"
+          ],
+          "rank": 3
+        },
+        {
+          "action_id": "reduce_debug_sampling_rate",
+          "decision_target": "debug_sampling_policy",
+          "deterministic_fingerprint": "2aa04b4778b7bf81d1eaf779e265cff8eb8ac8898c4c6012ffc70b18a7f98787",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_debug_throttled"
+          ],
+          "rank": 4
+        },
+        {
+          "action_id": "refuse_new_debug_sessions",
+          "decision_target": "debug_session_admission",
+          "deterministic_fingerprint": "ddaf22a77fb14ea60c765f76b32cd990789475904beee087fd604c391318cbca",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_debug_refused"
+          ],
+          "rank": 5
+        },
+        {
+          "action_id": "apply_fail_safe_outputs",
+          "decision_target": "safety_pattern",
+          "deterministic_fingerprint": "938bf624493610ce9fc1c3e72fd5923b3100df73c5c3e39c381e5d42b89b2569",
+          "log_targets": [
+            "logic_throttle_event",
+            "explain.logic_command_refused"
+          ],
+          "rank": 6
+        }
+      ],
+      "deterministic_fingerprint": "a00b70a2dc12f22af0d1d3f895a0aceb042239df51e97ed0af765419de4e90d1",
+      "metrics": {
+        "arbitration_queue_depths": {
+          "carrier.bus": 23,
+          "carrier.sig": 23
+        },
+        "compaction_marker_count": 1,
+        "compiled_execution_ratio": 1.0,
+        "compute_units_used_per_tick": [
+          {
+            "compute_units_used": 385,
+            "tick": 1
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 2
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 3
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 4
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 5
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 6
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 7
+          },
+          {
+            "compute_units_used": 385,
+            "tick": 8
+          }
+        ],
+        "coupling_evaluations_count": 1282,
+        "debug_trace_sample_count": 352,
+        "debug_trace_session_count": 22,
+        "fault_impact_count": 42,
+        "forced_expand_count": 0,
+        "mega_network_compile_eligibility_hash": "13cf4809621e4ebfcdadff05952e7ef8d0764084bdcfa9273623436227a2025c",
+        "mega_network_source_hash": "6332c209ca89a80b32bac8925ac7232cf0dc1959e94d3e258fb9b0ab0cc2cd18",
+        "networks_evaluated_per_tick": [
+          {
+            "network_count": 5,
+            "tick": 1
+          },
+          {
+            "network_count": 5,
+            "tick": 2
+          },
+          {
+            "network_count": 5,
+            "tick": 3
+          },
+          {
+            "network_count": 5,
+            "tick": 4
+          },
+          {
+            "network_count": 5,
+            "tick": 5
+          },
+          {
+            "network_count": 5,
+            "tick": 6
+          },
+          {
+            "network_count": 5,
+            "tick": 7
+          },
+          {
+            "network_count": 5,
+            "tick": 8
+          }
+        ],
+        "protocol_frames_processed_per_tick": {
+          "carrier.bus": [
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 23,
+              "tick": 0
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 22,
+              "tick": 1
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 21,
+              "tick": 2
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 20,
+              "tick": 3
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 19,
+              "tick": 4
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 18,
+              "tick": 5
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 17,
+              "tick": 6
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 16,
+              "tick": 7
+            }
+          ],
+          "carrier.sig": [
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 23,
+              "tick": 0
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 22,
+              "tick": 1
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 21,
+              "tick": 2
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 20,
+              "tick": 3
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 19,
+              "tick": 4
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 18,
+              "tick": 5
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 17,
+              "tick": 6
+            },
+            {
+              "blocked_events": 0,
+              "corrupted_events": 0,
+              "processed_frames": 1,
+              "queued_frames": 16,
+              "tick": 7
+            }
+          ]
+        },
+        "security_block_count": 8,
+        "throttle_event_count": 0
+      },
+      "proof_hash_summary": {
+        "aggregate_hash": "b230ef8e6bb969c02d2c71b8d0363aa58da3f0c82975a8d20d62604c1ac40c76",
+        "compiled_model_hash_chain": "91553492862a084999855b83c0f49a3d5b72e4df26fb28ead6e9f3911cb686e4",
+        "debug_compaction_marker_hash_chain": "d55fbfdf2aa8b269e3d74b91bba5c428cf240b5ef7ad3d8cacb3d1c4f474277c",
+        "equivalence_proof_hash_chain": "01e4e5c59f48971bd4992cca93ac531a716bfdbd5679c6414864512e246e8680",
+        "forced_expand_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_compile_policy_hash_chain": "131f92331d7f3bfd339bce78fe2fae506db382e07fb4702b0927b9fbff4ad8d1",
+        "logic_debug_request_hash_chain": "50b688c7fb2703e1a5eb02979eebb65f56f915fd03cae36f8f2cf146da505a8d",
+        "logic_debug_trace_hash_chain": "36859d60e0b4a51e03a225b635937beb8eb54132dff0a3863e9b8ebfaa6e11fd",
+        "logic_eval_record_hash_chain": "6ac7297d16aa81259ecc6279ff67c6eb06c589b6eb0c823c088eaa065af89e60",
+        "logic_fault_state_hash_chain": "be6113523b4c303d07282fcd62974fbe22947ade408807c1e7d66e5c2dc288e8",
+        "logic_noise_decision_hash_chain": "351169892d1c1dab1190f1e69f9ccdaa62ab0608d6e74d3f12faa9a8707b3070",
+        "logic_oscillation_record_hash_chain": "93ddea66669718d2656093482eaea9a1de25b5133befee67f94610935af59953",
+        "logic_protocol_summary_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_security_fail_hash_chain": "ad762f129138439d2c9959fbd6dd5cf8f92dafa7d78f78777e3cfec4192375cf",
+        "logic_state_update_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_throttle_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_timing_violation_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "logic_watchdog_timeout_hash_chain": "0e514c8c93d95f41b4d39b90cc9fec0896505dad9336c0fe9ecd9afa217b9059",
+        "protocol_bus_event_hash_chain": "2c830f2469081a079b5d221f5e429e120252dd49b3f2932fd02b1646082a069d",
+        "protocol_bus_frame_hash_chain": "623ef28bc3f55ad2c05290e299cc142d91fc8a42cde0f1cfe7da249465559e63",
+        "protocol_sig_delivery_hash_chain": "b1d6e62998534394122041a7d21355d33143ad841b6d4ba4a917557421db75c9",
+        "protocol_sig_event_hash_chain": "789513fdbf345157139b2f5cf2115d2acbcad4d6265291f7885c698e65cb80d9"
+      },
+      "result": "complete",
+      "thread_count_label": 8
+    }
+  ],
+  "thread_count_labels": [
+    1,
+    8
+  ],
+  "tick_count": 8
+}

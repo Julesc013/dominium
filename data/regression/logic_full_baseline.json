@@ -1,0 +1,172 @@
+{
+  "baseline_id": "logic.full.baseline.v1",
+  "composite_logic_hash_anchor": "769b2c1648413004d4453e117cbf75c1308e82272dd3a1e467622cda406f3d11",
+  "description": "LOGIC-10 deterministic stress, proof, protocol, debug, and degradation regression envelope.",
+  "deterministic_fingerprint": "f19eb6fafed73a1f2b8244cfbf73b274b75d3c4ca5ccb0b269da258aca7e4c17",
+  "extensions": {
+    "assertions": {
+      "compiled_preference_under_pressure": true,
+      "compute_budget_respected": true,
+      "coupling_budget_respected": true,
+      "debug_trace_compaction_stable": true,
+      "determinism_across_thread_counts": true,
+      "loop_refusal_deterministic": true,
+      "no_unbounded_loops": true,
+      "security_blocks_deterministic": true
+    },
+    "debug_case": {
+      "debug_compaction_marker_hash_chain": "d55fbfdf2aa8b269e3d74b91bba5c428cf240b5ef7ad3d8cacb3d1c4f474277c",
+      "debug_trace_sample_count": 352,
+      "debug_trace_session_count": 22,
+      "forced_expand_count": 0,
+      "logic_debug_request_hash_chain": "50b688c7fb2703e1a5eb02979eebb65f56f915fd03cae36f8f2cf146da505a8d",
+      "logic_debug_trace_hash_chain": "36859d60e0b4a51e03a225b635937beb8eb54132dff0a3863e9b8ebfaa6e11fd"
+    },
+    "degradation_case": {
+      "plan_hash": "a64c18798998d02fd1e4757e602b5ba3421e3b380d23505c95b9df84c1ac2a8e",
+      "plan_rows": [
+        {
+          "action_id": "prefer_compiled_execution",
+          "affected_ids": [
+            "net.logic.envelope.0001",
+            "net.logic.envelope.0002",
+            "net.logic.envelope.0003",
+            "net.logic.envelope.0004",
+            "net.logic.envelope.0005",
+            "net.logic.envelope.0006",
+            "net.logic.envelope.0007",
+            "net.logic.envelope.0008",
+            "net.logic.envelope.0009",
+            "net.logic.envelope.0010",
+            "net.logic.envelope.0011",
+            "net.logic.envelope.0012"
+          ],
+          "rank": 1,
+          "reason_code": "degrade.logic.prefer_compiled",
+          "status": "applied"
+        },
+        {
+          "action_id": "reduce_low_priority_eval_frequency",
+          "affected_ids": [],
+          "rank": 2,
+          "reason_code": "degrade.logic.tick_bucket",
+          "status": "noop",
+          "tick_bucket_stride": 2
+        },
+        {
+          "action_id": "cap_networks_per_tick",
+          "affected_ids": [
+            "net.logic.envelope.0004",
+            "net.logic.envelope.0005",
+            "net.logic.envelope.0006",
+            "net.logic.envelope.0007",
+            "net.logic.envelope.0008",
+            "net.logic.envelope.0009",
+            "net.logic.envelope.0010",
+            "net.logic.envelope.0011",
+            "net.logic.envelope.0012"
+          ],
+          "network_eval_cap": 3,
+          "rank": 3,
+          "reason_code": "degrade.logic.network_cap",
+          "status": "applied"
+        },
+        {
+          "action_id": "reduce_debug_sampling_rate",
+          "affected_count": 11,
+          "rank": 4,
+          "reason_code": "degrade.logic.debug_subsample",
+          "status": "applied",
+          "throttle_strategy": "deterministic_subsample"
+        },
+        {
+          "action_id": "refuse_new_debug_sessions",
+          "affected_count": 11,
+          "rank": 5,
+          "reason_code": "degrade.logic.debug_refusal",
+          "status": "applied"
+        },
+        {
+          "action_id": "apply_fail_safe_outputs",
+          "affected_ids": [
+            "net.logic.envelope.0001"
+          ],
+          "rank": 6,
+          "reason_code": "degrade.logic.fail_safe",
+          "status": "applied"
+        }
+      ]
+    },
+    "fault_case": {
+      "fault_impact_count": 42,
+      "logic_fault_state_hash_chain": "be6113523b4c303d07282fcd62974fbe22947ade408807c1e7d66e5c2dc288e8",
+      "logic_noise_decision_hash_chain": "351169892d1c1dab1190f1e69f9ccdaa62ab0608d6e74d3f12faa9a8707b3070",
+      "logic_security_fail_hash_chain": "ad762f129138439d2c9959fbd6dd5cf8f92dafa7d78f78777e3cfec4192375cf",
+      "security_block_count": 8
+    },
+    "metrics_snapshot": {
+      "compaction_marker_count": 1,
+      "compiled_execution_ratio": 1.0,
+      "coupling_evaluations_count": 1282,
+      "debug_trace_sample_count": 352,
+      "debug_trace_session_count": 22,
+      "fault_impact_count": 42,
+      "forced_expand_count": 0,
+      "mega_network_compile_eligibility_hash": "13cf4809621e4ebfcdadff05952e7ef8d0764084bdcfa9273623436227a2025c",
+      "mega_network_source_hash": "6332c209ca89a80b32bac8925ac7232cf0dc1959e94d3e258fb9b0ab0cc2cd18",
+      "security_block_count": 8,
+      "throttle_event_count": 0
+    },
+    "protocol_case": {
+      "arbitration_queue_depths": {
+        "carrier.bus": 23,
+        "carrier.sig": 23
+      },
+      "carrier_bus_event_hash_chain": "2c830f2469081a079b5d221f5e429e120252dd49b3f2932fd02b1646082a069d",
+      "carrier_bus_frame_hash_chain": "623ef28bc3f55ad2c05290e299cc142d91fc8a42cde0f1cfe7da249465559e63",
+      "carrier_sig_delivery_hash_chain": "b1d6e62998534394122041a7d21355d33143ad841b6d4ba4a917557421db75c9",
+      "carrier_sig_event_hash_chain": "789513fdbf345157139b2f5cf2115d2acbcad4d6265291f7885c698e65cb80d9"
+    }
+  },
+  "fixed_seed_scenario": {
+    "mega_node_count": 1000000,
+    "network_count": 12,
+    "scenario_id": "scenario.logic10.envelope.9c32793a79cc",
+    "scenario_seed": 1010,
+    "stress_report_path": "docs/audit/LOGIC10_STRESS_RESULTS.json",
+    "thread_count_labels": [
+      1,
+      8
+    ],
+    "tick_count": 8
+  },
+  "proof_hashes": {
+    "compiled_model_hash_chain": "91553492862a084999855b83c0f49a3d5b72e4df26fb28ead6e9f3911cb686e4",
+    "equivalence_proof_hash_chain": "01e4e5c59f48971bd4992cca93ac531a716bfdbd5679c6414864512e246e8680",
+    "logic_compile_policy_hash_chain": "131f92331d7f3bfd339bce78fe2fae506db382e07fb4702b0927b9fbff4ad8d1",
+    "logic_debug_trace_hash_chain": "36859d60e0b4a51e03a225b635937beb8eb54132dff0a3863e9b8ebfaa6e11fd",
+    "logic_eval_record_hash_chain": "6ac7297d16aa81259ecc6279ff67c6eb06c589b6eb0c823c088eaa065af89e60",
+    "logic_fault_state_hash_chain": "be6113523b4c303d07282fcd62974fbe22947ade408807c1e7d66e5c2dc288e8",
+    "logic_security_fail_hash_chain": "ad762f129138439d2c9959fbd6dd5cf8f92dafa7d78f78777e3cfec4192375cf",
+    "logic_state_update_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "logic_throttle_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "proof_hash_summary": "b230ef8e6bb969c02d2c71b8d0363aa58da3f0c82975a8d20d62604c1ac40c76",
+    "protocol_bus_event_hash_chain": "2c830f2469081a079b5d221f5e429e120252dd49b3f2932fd02b1646082a069d",
+    "protocol_sig_event_hash_chain": "789513fdbf345157139b2f5cf2115d2acbcad4d6265291f7885c698e65cb80d9"
+  },
+  "scenario_fingerprints": {
+    "compiled_mega_network_fingerprint": "9706ab6519ae65bb2fbcf1040a33038ea75b640c580f8c0914642041d38157fb",
+    "debug_throttling_fingerprint": "d9ee113edfb2ce9e6616d0e55adebe69bb18c9a6e214095bdc431b13e34e375f",
+    "degradation_fingerprint": "ccb1b7c430a262fdebff5f0a3bb248ba53dcf3ff20df7b1ef212e249350757d0",
+    "distributed_controller_fingerprint": "635382e5be928e92f1d69e9d10b114c22a8fa86d911fa7bbb5e9879401352837",
+    "fault_injection_fingerprint": "012e7a3f3f3d58965d0772a885514717d61f2be7eeee3e563ddde0072d64af20",
+    "main_report_fingerprint": "769b2c1648413004d4453e117cbf75c1308e82272dd3a1e467622cda406f3d11",
+    "main_scenario_fingerprint": "516c2612ee8066128a96e799f1ee53dda76b6686cfa925331feffc3c3f1c8b87",
+    "protocol_contention_fingerprint": "3611fb03769824b054ad9ff76bf8ac3dd96004c2e6827bcb56c7844d977b0b37"
+  },
+  "schema_version": "1.0.0",
+  "update_policy": {
+    "notes": "Baseline updates require deterministic LOGIC stress/proof/reference reruns and explicit LOGIC-REGRESSION-UPDATE tag.",
+    "required_commit_tag": "LOGIC-REGRESSION-UPDATE"
+  }
+}
