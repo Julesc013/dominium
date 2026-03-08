@@ -9,9 +9,9 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 676
+- RISK: 681
 - VIOLATION: 108
-- WARN: 1251
+- WARN: 1252
 
 ## Counts By Category
 
@@ -34,7 +34,7 @@ Superseded By: none
 - architecture.inline_friction_smell: 2
 - architecture.inline_phase_change_smell: 7
 - architecture.inline_power_loss_smell: 1
-- architecture.inline_protection_smell: 13
+- architecture.inline_protection_smell: 14
 - architecture.inline_strength_check_smell: 1
 - architecture.ir_nondeterminism_smell: 2
 - architecture.magic_silent_violation_smell: 2
@@ -53,13 +53,15 @@ Superseded By: none
 - architecture.substrate_bypass_smell: 13
 - architecture.thermal_bypass_smell: 1
 - architecture.unbounded_spread_smell: 1
+- architecture.undeclared_registry_smell: 1
+- architecture.undeclared_schema_smell: 3
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
 - architecture.unlogged_trust_change_smell: 5
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 763
+- canon_drift: 764
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1

@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 763,
+      "finding_count": 764,
       "recommended_actions": {
-        "DOC_FIX": 763
+        "DOC_FIX": 764
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 763
+        "WARN": 764
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -1166,10 +1166,10 @@
       }
     },
     "INV-NO-ADHOC-SAFETY-LOGIC": {
-      "finding_count": 14,
+      "finding_count": 15,
       "recommended_actions": {
         "ADD_RULE": 1,
-        "REWRITE": 13
+        "REWRITE": 14
       },
       "sample_findings": [
         {
@@ -1185,21 +1185,21 @@
         {
           "category": "architecture.inline_protection_smell",
           "finding_id": "E177_INLINE_PROTECTION_SMELL:0003",
-          "location": "src/interaction/task/task_engine.py"
+          "location": "src/geo/overlay/overlay_merge_engine.py"
         },
         {
           "category": "architecture.inline_protection_smell",
           "finding_id": "E177_INLINE_PROTECTION_SMELL:0004",
-          "location": "src/materials/blueprint_engine.py"
+          "location": "src/interaction/task/task_engine.py"
         },
         {
           "category": "architecture.inline_protection_smell",
           "finding_id": "E177_INLINE_PROTECTION_SMELL:0005",
-          "location": "src/meta/profile/profile_engine.py"
+          "location": "src/materials/blueprint_engine.py"
         }
       ],
       "severities": {
-        "RISK": 14
+        "RISK": 15
       }
     },
     "INV-NO-ADHOC-STATE-FLAGS": {
@@ -1739,6 +1739,48 @@
       ],
       "severities": {
         "VIOLATION": 1
+      }
+    },
+    "INV-NO-UNDECLARED-REGISTRY": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_registry_smell",
+          "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0001",
+          "location": "data/registries/overlay_policy_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-NO-UNDECLARED-SCHEMA": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
+          "location": "schema/geo/overlay_layer.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
+          "location": "schema/geo/overlay_manifest.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
+          "location": "schema/geo/property_patch.schema"
+        }
+      ],
+      "severities": {
+        "RISK": 3
       }
     },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {

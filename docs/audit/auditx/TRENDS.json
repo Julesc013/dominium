@@ -20,7 +20,7 @@
     "architecture.inline_friction_smell": 2,
     "architecture.inline_phase_change_smell": 7,
     "architecture.inline_power_loss_smell": 1,
-    "architecture.inline_protection_smell": 13,
+    "architecture.inline_protection_smell": 14,
     "architecture.inline_strength_check_smell": 1,
     "architecture.ir_nondeterminism_smell": 2,
     "architecture.magic_silent_violation_smell": 2,
@@ -39,13 +39,15 @@
     "architecture.substrate_bypass_smell": 13,
     "architecture.thermal_bypass_smell": 1,
     "architecture.unbounded_spread_smell": 1,
+    "architecture.undeclared_registry_smell": 1,
+    "architecture.undeclared_schema_smell": 3,
     "architecture.unlogged_refusal_smell": 3,
     "architecture.unlogged_trip_smell": 1,
     "architecture.unlogged_trust_change_smell": 5,
     "architecture.vehicle_interior_special_case_smell": 1,
     "architecture.weather_hack_smell": 1,
     "authority.fault_bypass_smell": 3,
-    "canon_drift": 763,
+    "canon_drift": 764,
     "capability_bypass_smell": 1,
     "capability_misuse": 140,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
@@ -104,7 +106,7 @@
       "architecture.inline_friction_smell": 2,
       "architecture.inline_phase_change_smell": 7,
       "architecture.inline_power_loss_smell": 1,
-      "architecture.inline_protection_smell": 13,
+      "architecture.inline_protection_smell": 14,
       "architecture.inline_strength_check_smell": 1,
       "architecture.ir_nondeterminism_smell": 2,
       "architecture.magic_silent_violation_smell": 2,
@@ -123,13 +125,15 @@
       "architecture.substrate_bypass_smell": 13,
       "architecture.thermal_bypass_smell": 1,
       "architecture.unbounded_spread_smell": 1,
+      "architecture.undeclared_registry_smell": 1,
+      "architecture.undeclared_schema_smell": 3,
       "architecture.unlogged_refusal_smell": 3,
       "architecture.unlogged_trip_smell": 1,
       "architecture.unlogged_trust_change_smell": 5,
       "architecture.vehicle_interior_special_case_smell": 1,
       "architecture.weather_hack_smell": 1,
       "authority.fault_bypass_smell": 3,
-      "canon_drift": 763,
+      "canon_drift": 764,
       "capability_bypass_smell": 1,
       "capability_misuse": 140,
       "civilisation.nondeterministic_cohort_mapping_smell": 1,
@@ -169,12 +173,12 @@
     },
     "severity_distribution": {
       "INFO": 223,
-      "RISK": 676,
+      "RISK": 681,
       "VIOLATION": 108,
-      "WARN": 1251
+      "WARN": 1252
     }
   },
-  "findings_hash": "c9bb9ea3981eaf8fd57b1681bd0ce08e28d9bf7707a803da7eaf46145b4a1604",
+  "findings_hash": "316ec42a20f22c7f9e6a75e2bf2884abab1cffb35241d09f674680e74d8fd94b",
   "history_reference": {
     "previous_distinct_hash": ""
   },
@@ -182,9 +186,9 @@
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 223,
-    "RISK": 676,
+    "RISK": 681,
     "VIOLATION": 108,
-    "WARN": 1251
+    "WARN": 1252
   },
-  "total_findings": 2258
+  "total_findings": 2264
 }
