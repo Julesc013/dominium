@@ -373,6 +373,8 @@ from analyzers import e346_direct_geometry_write_smell
 from analyzers import e347_unlogged_terrain_edit_smell
 from analyzers import e348_unnamed_rng_worldgen_smell
 from analyzers import e349_adhoc_worldgen_smell
+from analyzers import e350_silent_identity_change_smell
+from analyzers import e351_nondeterministic_merge_smell
 
 
 ANALYZERS = (
@@ -749,6 +751,8 @@ ANALYZERS = (
     e347_unlogged_terrain_edit_smell,
     e348_unnamed_rng_worldgen_smell,
     e349_adhoc_worldgen_smell,
+    e350_silent_identity_change_smell,
+    e351_nondeterministic_merge_smell,
 )
 
 

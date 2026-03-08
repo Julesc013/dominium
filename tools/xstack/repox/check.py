@@ -17966,6 +17966,281 @@ def _append_geo_worldgen_invariant_findings(
         )
 
 
+def _append_geo_overlay_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    engine_rel = "src/geo/overlay/overlay_merge_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    creator_rel = "tools/xstack/sessionx/creator.py"
+    replay_tool_rel = "tools/geo/tool_replay_overlay_merge.py"
+    explain_tool_rel = "tools/geo/tool_explain_property_origin.py"
+    geo_init_rel = "src/geo/__init__.py"
+    control_proof_rel = "src/control/proof/control_proof_bundle.py"
+    server_proof_rel = "src/net/policies/policy_server_authoritative.py"
+    shard_proof_rel = "src/net/srz/shard_coordinator.py"
+    overlay_policy_registry_rel = "data/registries/overlay_policy_registry.json"
+
+    engine_text = _file_text(repo_root, engine_rel)
+    for required_token, rule_id, message in (
+        (
+            "merge_overlay_view(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "GEO-9 overlay application must remain centralized in the deterministic merge engine",
+        ),
+        (
+            "validate_overlay_manifest_trust(",
+            "INV-PACK-LOCK-HASH-REQUIRED",
+            "overlay manifests must remain validated against lockfile/trust inputs",
+        ),
+        (
+            "_IMMUTABLE_PROPERTY_PATHS",
+            "INV-NO-IDENTITY-OVERRIDE-WITHOUT-MIGRATION",
+            "overlay merge must protect immutable identity and universe-lineage fields from silent override",
+        ),
+        (
+            "_ordered_patches_for_manifest(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "overlay merge ordering must stay stable and explicit",
+        ),
+        (
+            "explain_property_origin(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "overlay merge must preserve explainable property provenance",
+        ),
+        (
+            "overlay_proof_surface(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "overlay merge proof surfaces must remain derived from canonical manifest and patch hashes",
+        ),
+    ):
+        if required_token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+    for forbidden_token in ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom("):
+        if forbidden_token not in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=forbidden_token,
+                message="overlay merge must remain deterministic; nondeterministic sources are forbidden",
+                rule_id="INV-OVERLAY-MERGE-DETERMINISTIC",
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for required_token, rule_id, message in (
+        (
+            '"process.overlay_save_patch"',
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "save-layer overlay edits must remain process-owned",
+        ),
+        (
+            "_append_save_property_patch(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "save overlay patches must remain normalized and appended through deterministic runtime helpers",
+        ),
+        (
+            "_append_overlay_patch_artifact(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "save overlay patches must remain attached to canonical RECORD artifacts",
+        ),
+        (
+            "_refresh_overlay_hash_chains(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "save overlay patch commits must refresh deterministic overlay proof hashes",
+        ),
+    ):
+        if required_token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    creator_text = _file_text(repo_root, creator_rel)
+    for required_token, rule_id, message in (
+        (
+            "build_default_overlay_manifest(",
+            "INV-PACK-LOCK-HASH-REQUIRED",
+            "session creation must seed a deterministic default overlay manifest",
+        ),
+        (
+            "validate_overlay_manifest_trust(",
+            "INV-PACK-LOCK-HASH-REQUIRED",
+            "session creation must validate overlay manifests against lockfile trust inputs",
+        ),
+        (
+            "overlay_proof_surface(",
+            "INV-OVERLAY-MERGE-DETERMINISTIC",
+            "session creation must seed overlay proof surfaces deterministically",
+        ),
+        (
+            "pack_lock_hash",
+            "INV-PACK-LOCK-HASH-REQUIRED",
+            "overlay manifests must carry pack_lock_hash during session creation",
+        ),
+    ):
+        if required_token in creator_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=creator_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    for rel_path in (control_proof_rel, server_proof_rel, shard_proof_rel):
+        proof_text = _file_text(repo_root, rel_path)
+        for required_token in (
+            "overlay_manifest_hash",
+            "property_patch_hash_chain",
+            "overlay_merge_result_hash_chain",
+        ):
+            if required_token in proof_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=required_token,
+                    message="overlay proof surfaces must carry manifest, patch, and merge-result hash lineage",
+                    rule_id="INV-OVERLAY-MERGE-DETERMINISTIC",
+                )
+            )
+
+    for rel_path, required_tokens in (
+        (
+            replay_tool_rel,
+            (
+                "verify_overlay_merge_replay(",
+                "overlay_manifest_hash",
+                "property_patch_hash_chain",
+                "overlay_merge_result_hash_chain",
+                "stable_across_repeated_runs",
+            ),
+        ),
+        (
+            explain_tool_rel,
+            (
+                "explain_property_origin_report(",
+                "explain.property_origin",
+                "explain.overlay_conflict",
+            ),
+        ),
+        (
+            geo_init_rel,
+            (
+                "merge_overlay_view",
+                "explain_property_origin",
+                "overlay_proof_surface",
+            ),
+        ),
+    ):
+        text = _file_text(repo_root, rel_path)
+        for required_token in required_tokens:
+            if required_token in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=required_token,
+                    message="GEO-9 overlay merge integration/proof tooling is missing a required canonical surface",
+                    rule_id="INV-OVERLAY-MERGE-DETERMINISTIC",
+                )
+            )
+
+    overlay_policy_text = _file_text(repo_root, overlay_policy_registry_rel)
+    for required_id in ("overlay.default", "overlay.rank_strict", "overlay.lab_freeform"):
+        if required_id in overlay_policy_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=overlay_policy_registry_rel,
+                line_number=1,
+                snippet=required_id,
+                message="required GEO-9 overlay policy scaffold is missing from the registry",
+                rule_id="INV-PACK-LOCK-HASH-REQUIRED",
+            )
+        )
+
+    identity_override_patterns = (
+        re.compile(
+            r"property_path\s*=\s*[\"'](?:object_id|identity_hash|generator_version_id|topology_profile_id|metric_profile_id|partition_profile_id|projection_profile_id)[\"']",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"[\"']property_path[\"']\s*:\s*[\"'](?:object_id|identity_hash|generator_version_id|topology_profile_id|metric_profile_id|partition_profile_id|projection_profile_id)[\"']",
+            re.IGNORECASE,
+        ),
+    )
+    scan_prefixes = ("src/", "tools/")
+    skip_prefixes = ("tools/xstack/testx/tests/", "tools/auditx/analyzers/", "docs/")
+    allowed_files = {
+        engine_rel,
+        runtime_rel,
+        creator_rel,
+        replay_tool_rel,
+        explain_tool_rel,
+        "tools/xstack/repox/check.py",
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in identity_override_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="overlay/property patch code appears to target immutable identity or lineage fields without explicit migration",
+                    rule_id="INV-NO-IDENTITY-OVERRIDE-WITHOUT-MIGRATION",
+                )
+            )
+            break
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -28213,6 +28488,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_worldgen_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_overlay_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
