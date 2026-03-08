@@ -214,6 +214,175 @@ def fixture_state(seed: int = 1107, tick_start: int = 0, tick_end: int = 3) -> d
     }
 
 
+def _logic_reference_fixture_state(repo_root: str) -> dict:
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+
+    from tools.logic.tool_replay_logic_window import replay_logic_window_from_payload
+    from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, seed_signal_requests
+    from tools.xstack.testx.tests._logic_network_test_utils import binding_row, edge_row, graph_row, node_row
+
+    network_id = "net.logic.reference.small"
+    binding = binding_row(
+        network_id=network_id,
+        graph_id="graph.{}".format(network_id),
+        policy_id="logic.policy.default",
+        extensions={"validation_status": "validated", "logic_policy_id": "logic.default"},
+    )
+    graph = graph_row(
+        graph_id=binding["graph_id"],
+        nodes=[
+            node_row(
+                node_id="node.and.in.a",
+                node_kind="port_in",
+                element_instance_id="inst.logic.and.1",
+                port_id="in.a",
+                payload_extensions={"element_definition_id": "logic.and"},
+            ),
+            node_row(
+                node_id="node.and.in.b",
+                node_kind="port_in",
+                element_instance_id="inst.logic.and.1",
+                port_id="in.b",
+                payload_extensions={"element_definition_id": "logic.and"},
+            ),
+            node_row(
+                node_id="node.and.out.q",
+                node_kind="port_out",
+                element_instance_id="inst.logic.and.1",
+                port_id="out.q",
+                payload_extensions={"element_definition_id": "logic.and"},
+            ),
+            node_row(
+                node_id="node.not.in.a",
+                node_kind="port_in",
+                element_instance_id="inst.logic.not.1",
+                port_id="in.a",
+                payload_extensions={"element_definition_id": "logic.not"},
+            ),
+            node_row(
+                node_id="node.not.out.q",
+                node_kind="port_out",
+                element_instance_id="inst.logic.not.1",
+                port_id="out.q",
+                payload_extensions={"element_definition_id": "logic.not"},
+            ),
+            node_row(
+                node_id="node.sink.in.a",
+                node_kind="port_in",
+                element_instance_id="inst.logic.or.sink",
+                port_id="in.a",
+                payload_extensions={"element_definition_id": "logic.or"},
+            ),
+            node_row(
+                node_id="node.sink.out.q",
+                node_kind="port_out",
+                element_instance_id="inst.logic.or.sink",
+                port_id="out.q",
+                payload_extensions={"element_definition_id": "logic.or"},
+            ),
+        ],
+        edges=[
+            edge_row(
+                edge_id="edge.and.to.not",
+                from_node_id="node.and.out.q",
+                to_node_id="node.not.in.a",
+                edge_kind="link",
+                signal_type_id="signal.boolean",
+                delay_policy_id="delay.none",
+            ),
+            edge_row(
+                edge_id="edge.not.to.sink",
+                from_node_id="node.not.out.q",
+                to_node_id="node.sink.in.a",
+                edge_kind="link",
+                signal_type_id="signal.boolean",
+                delay_policy_id="delay.none",
+            ),
+        ],
+    )
+    logic_network_state = {
+        "logic_network_graph_rows": [graph],
+        "logic_network_binding_rows": [binding],
+        "logic_network_validation_records": [
+            {
+                "tick": 0,
+                "network_id": network_id,
+                "validation_hash": "validated",
+                "loop_classifications": [],
+            }
+        ],
+        "logic_network_change_records": [],
+        "logic_network_explain_artifact_rows": [],
+        "compute_runtime_state": {},
+    }
+    inputs = load_eval_inputs(repo_root)
+    signal_store_state = seed_signal_requests(
+        signal_store_state=None,
+        signal_requests=[
+            {
+                "tick": 0,
+                "network_id": network_id,
+                "element_id": "inst.logic.and.1",
+                "port_id": "in.a",
+                "signal_type_id": "signal.boolean",
+                "carrier_type_id": "carrier.electrical",
+                "value_payload": {"value": 1},
+            },
+            {
+                "tick": 0,
+                "network_id": network_id,
+                "element_id": "inst.logic.and.1",
+                "port_id": "in.b",
+                "signal_type_id": "signal.boolean",
+                "carrier_type_id": "carrier.electrical",
+                "value_payload": {"value": 1},
+            },
+        ],
+        inputs=inputs,
+    )
+    scenario_payload = {
+        "logic_network_state": logic_network_state,
+        "signal_store_state": signal_store_state,
+        "logic_eval_state": {},
+        "state_vector_snapshot_rows": [],
+        "evaluation_requests": [
+            {"tick": 1, "network_id": network_id},
+            {"tick": 2, "network_id": network_id},
+            {"tick": 3, "network_id": network_id},
+        ],
+    }
+    runtime_report = replay_logic_window_from_payload(repo_root=repo_root, payload=scenario_payload)
+    fixture_state = {
+        "logic_reference_fixture_payload": {
+            "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+            "network_id": network_id,
+            "scenario_payload": scenario_payload,
+            "deterministic_fingerprint": canonical_sha256(
+                {
+                    "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+                    "network_id": network_id,
+                    "scenario_payload": scenario_payload,
+                }
+            ),
+        },
+        "logic_eval_small_runtime_report": runtime_report,
+    }
+    for key in (
+        "signal_type_registry_payload",
+        "carrier_type_registry_payload",
+        "signal_delay_policy_registry_payload",
+        "signal_noise_policy_registry_payload",
+        "bus_encoding_registry_payload",
+        "protocol_registry_payload",
+        "compute_budget_profile_registry_payload",
+        "compute_degrade_policy_registry_payload",
+        "tolerance_policy_registry_payload",
+    ):
+        fixture_state[key] = inputs[key]
+    return fixture_state
+
+
 def run_reference_suite_case(
     *,
     repo_root: str,
@@ -229,6 +398,7 @@ def run_reference_suite_case(
 
     selected = _sorted_tokens(evaluator_ids or active_evaluator_ids(repo_root))
     payload = dict(state_payload or fixture_state(seed=seed, tick_start=tick_start, tick_end=tick_end))
+    payload.update(_logic_reference_fixture_state(repo_root))
     current_tick = int(max(_as_int(tick_start, 0), _as_int(tick_end, 0)))
     return evaluate_reference_suite(
         evaluator_ids=selected,
@@ -255,6 +425,8 @@ def run_reference_evaluator_case(
     from src.meta.reference import evaluate_reference_evaluator
 
     payload = dict(state_payload or fixture_state(seed=seed, tick_start=tick_start, tick_end=tick_end))
+    if str(evaluator_id).strip() == "ref.logic_eval_small":
+        payload.update(_logic_reference_fixture_state(repo_root))
     current_tick = int(max(_as_int(tick_start, 0), _as_int(tick_end, 0)))
     return evaluate_reference_evaluator(
         evaluator_id=str(evaluator_id),

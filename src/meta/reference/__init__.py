@@ -6,6 +6,7 @@ from src.meta.reference.reference_engine import (
     evaluate_reference_compiled_model_verify,
     evaluate_reference_coupling_scheduler,
     evaluate_reference_energy_ledger,
+    evaluate_reference_logic_eval_small,
     evaluate_reference_evaluator,
     evaluate_reference_suite,
     evaluate_reference_system_invariant_check,
@@ -22,6 +23,7 @@ __all__ = [
     "evaluate_reference_coupling_scheduler",
     "evaluate_reference_system_invariant_check",
     "evaluate_reference_compiled_model_verify",
+    "evaluate_reference_logic_eval_small",
     "evaluate_reference_evaluator",
     "evaluate_reference_suite",
 ]

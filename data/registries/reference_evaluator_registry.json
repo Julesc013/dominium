@@ -89,6 +89,21 @@
           "status": "stub",
           "next_series": "LOGIC-4"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.logic_eval_small",
+        "subsystem_id": "logic.eval_engine",
+        "input_signature_ref": "signature.ref.logic_eval_small.input.v1",
+        "output_signature_ref": "signature.ref.logic_eval_small.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "LOGIC10-5",
+          "scope": "bounded_fixture_only"
+        }
       }
     ],
     "extensions": {
