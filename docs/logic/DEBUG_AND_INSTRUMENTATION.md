@@ -57,6 +57,7 @@ LOGIC-7 defines bounded, deterministic, epistemically constrained debugging for 
   - `max_points`
   - `max_ticks`
   - `max_samples`
+- Trace capture always has a bounded length.
 - Sampling is deterministic under budget pressure.
 - If a controller remains compiled/collapsed, default trace scope is boundary I/O only.
 
