@@ -4,11 +4,14 @@ from .frame import (
     REFUSAL_GEO_FRAME_INVALID,
     REFUSAL_GEO_POSITION_INVALID,
     build_position_ref,
+    field_sampling_cell_key,
+    field_sampling_position,
     frame_get_transform,
     frame_graph_hash,
     position_distance,
     position_ref_hash,
     position_to_frame,
+    roi_distance_mm,
 )
 from .index import (
     REFUSAL_GEO_CELL_KEY_INVALID,
@@ -46,6 +49,8 @@ __all__ = [
     "REFUSAL_GEO_RENDER_REBASE_INVALID",
     "REFUSAL_GEO_RENDER_TRUTH_MUTATION",
     "build_position_ref",
+    "field_sampling_cell_key",
+    "field_sampling_position",
     "frame_get_transform",
     "frame_graph_hash",
     "apply_floating_origin",
@@ -62,5 +67,6 @@ __all__ = [
     "position_distance",
     "position_ref_hash",
     "position_to_frame",
+    "roi_distance_mm",
     "resolve_geo_profile_set",
 ]
