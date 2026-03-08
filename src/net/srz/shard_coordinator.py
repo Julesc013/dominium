@@ -735,6 +735,11 @@ def _emit_control_proof_bundle(
             "projection_profile_registry_hash": str(global_state.get("projection_profile_registry_hash", "")).strip(),
             "lens_layer_registry_hash": str(global_state.get("lens_layer_registry_hash", "")).strip(),
             "view_type_registry_hash": str(global_state.get("view_type_registry_hash", "")).strip(),
+            "geometry_edit_policy_registry_hash": str(global_state.get("geometry_edit_policy_registry_hash", "")).strip(),
+            "geometry_state_hash_chain": str(global_state.get("geometry_state_hash_chain", "")).strip(),
+            "geometry_cell_state_hash_chain": str(global_state.get("geometry_cell_state_hash_chain", "")).strip(),
+            "geometry_chunk_state_hash_chain": str(global_state.get("geometry_chunk_state_hash_chain", "")).strip(),
+            "geometry_edit_event_hash_chain": str(global_state.get("geometry_edit_event_hash_chain", "")).strip(),
             "pollution_field_hash_chain": str(
                 global_state.get("pollution_field_hash_chain", "")
             ).strip(),

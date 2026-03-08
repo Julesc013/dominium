@@ -160,6 +160,29 @@ def _geo_identity_extensions(
     ).strip()
     if view_type_registry_hash:
         out["view_type_registry_hash"] = view_type_registry_hash
+    geometry_edit_policy_registry_hash = str(
+        ext.get("geometry_edit_policy_registry_hash", surface.get("geometry_edit_policy_registry_hash", ""))
+    ).strip()
+    if geometry_edit_policy_registry_hash:
+        out["geometry_edit_policy_registry_hash"] = geometry_edit_policy_registry_hash
+    geometry_state_hash_chain = str(ext.get("geometry_state_hash_chain", surface.get("geometry_state_hash_chain", ""))).strip()
+    if geometry_state_hash_chain:
+        out["geometry_state_hash_chain"] = geometry_state_hash_chain
+    geometry_cell_state_hash_chain = str(
+        ext.get("geometry_cell_state_hash_chain", surface.get("geometry_cell_state_hash_chain", ""))
+    ).strip()
+    if geometry_cell_state_hash_chain:
+        out["geometry_cell_state_hash_chain"] = geometry_cell_state_hash_chain
+    geometry_chunk_state_hash_chain = str(
+        ext.get("geometry_chunk_state_hash_chain", surface.get("geometry_chunk_state_hash_chain", ""))
+    ).strip()
+    if geometry_chunk_state_hash_chain:
+        out["geometry_chunk_state_hash_chain"] = geometry_chunk_state_hash_chain
+    geometry_edit_event_hash_chain = str(
+        ext.get("geometry_edit_event_hash_chain", surface.get("geometry_edit_event_hash_chain", ""))
+    ).strip()
+    if geometry_edit_event_hash_chain:
+        out["geometry_edit_event_hash_chain"] = geometry_edit_event_hash_chain
     path_request_hash_chain = str(ext.get("path_request_hash_chain", surface.get("path_request_hash_chain", ""))).strip()
     if path_request_hash_chain:
         out["path_request_hash_chain"] = path_request_hash_chain
