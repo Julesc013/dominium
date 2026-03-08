@@ -453,8 +453,87 @@ def _field_cost_modifier(
     policy_row: Mapping[str, object],
     field_cost_data: Mapping[str, object] | None,
 ) -> tuple[int, dict]:
-    del current_cell, neighbor_cell, policy_row, field_cost_data
-    return (0, {})
+    payload = _as_map(field_cost_data)
+    field_scale = int(max(0, _as_int(_as_map(policy_row.get("cost_weights")).get("field_cost", 0), 0)))
+    if (not payload) or field_scale <= 0:
+        return (0, {})
+    terms = list(payload.get("field_terms") or [])
+    if not terms:
+        terms = [{"field_id": token, "weight": 1, "sample_from": "neighbor"} for token in _sorted_unique_strings(payload.get("field_ids"))]
+    normalized_terms = []
+    for row in sorted((dict(item) for item in terms if isinstance(item, Mapping)), key=lambda item: str(item.get("field_id", ""))):
+        field_id = str(row.get("field_id", "")).strip()
+        if not field_id:
+            continue
+        normalized_terms.append(
+            {
+                "field_id": field_id,
+                "weight": int(max(1, _as_int(row.get("weight", 1), 1))),
+                "sample_from": str(row.get("sample_from", "neighbor")).strip().lower() or "neighbor",
+            }
+        )
+    if not normalized_terms:
+        return (0, {})
+
+    def _scalar_value(value: object) -> int:
+        if isinstance(value, (int, float)):
+            return int(value)
+        if isinstance(value, list):
+            return int(sum(abs(_as_int(item, 0)) for item in value))
+        if isinstance(value, Mapping):
+            coords = _as_list(_as_map(value).get("coords"))
+            if coords:
+                return int(sum(abs(_as_int(item, 0)) for item in coords))
+            return int(sum(abs(_as_int(item, 0)) for item in _as_map(value).values() if isinstance(item, (int, float))))
+        return int(_as_int(value, 0))
+
+    def _direct_value(field_id: str, cell_key: Mapping[str, object]) -> object:
+        values_by_field_id = _as_map(payload.get("values_by_field_id"))
+        by_field = _as_map(values_by_field_id.get(field_id))
+        cell_hash = _geo_cell_key_hash(cell_key)
+        if cell_hash and cell_hash in by_field:
+            return by_field.get(cell_hash)
+        values_by_cell_hash = _as_map(payload.get("values_by_cell_hash"))
+        return values_by_cell_hash.get(cell_hash)
+
+    def _field_value(field_id: str, cell_key: Mapping[str, object]) -> int:
+        direct = _direct_value(field_id, cell_key)
+        if direct is not None:
+            return _scalar_value(direct)
+        try:
+            from src.fields.field_engine import field_get_value
+        except Exception:
+            return 0
+        sample = field_get_value(
+            field_id=field_id,
+            geo_cell_key=cell_key,
+            field_layer_rows=payload.get("field_layer_rows"),
+            field_cell_rows=payload.get("field_cell_rows"),
+            field_type_registry=_as_map(payload.get("field_type_registry")),
+            field_binding_registry=_as_map(payload.get("field_binding_registry")),
+            interpolation_policy_registry=_as_map(payload.get("interpolation_policy_registry")),
+        )
+        return _scalar_value(sample.get("value"))
+
+    total = 0
+    breakdown: Dict[str, int] = {}
+    for row in normalized_terms:
+        field_id = str(row.get("field_id", ""))
+        current_value = _field_value(field_id, current_cell)
+        neighbor_value = _field_value(field_id, neighbor_cell)
+        sample_from = str(row.get("sample_from", "neighbor"))
+        if sample_from == "current":
+            sample_value = current_value
+        elif sample_from == "max":
+            sample_value = max(current_value, neighbor_value)
+        elif sample_from == "delta":
+            sample_value = abs(neighbor_value - current_value)
+        else:
+            sample_value = neighbor_value
+        term_cost = int((abs(sample_value) * int(row.get("weight", 1)) * field_scale) // 1000)
+        breakdown[field_id] = term_cost
+        total += term_cost
+    return (int(total), {"field_breakdown": dict((key, breakdown[key]) for key in sorted(breakdown.keys()))})
 
 
 def _infrastructure_cost_modifier(
@@ -464,8 +543,44 @@ def _infrastructure_cost_modifier(
     policy_row: Mapping[str, object],
     infrastructure_overlay: Mapping[str, object] | None,
 ) -> tuple[int, dict]:
-    del current_cell, neighbor_cell, policy_row, infrastructure_overlay
-    return (0, {})
+    overlay = _as_map(infrastructure_overlay)
+    if not overlay:
+        return (0, {})
+    policy_pref = _as_map(policy_row.get("infrastructure_preference"))
+    preferred_tags = _sorted_unique_strings(policy_pref.get("prefer_tags"))
+    default_bias = int(_as_int(_as_map(policy_row.get("cost_weights")).get("infrastructure_bias", 0), 0))
+    overlay_kind = str(policy_pref.get("overlay_kind", "")).strip().lower()
+    entries = list(overlay.get("entries") or overlay.get("edges") or [])
+    current_hash = _geo_cell_key_hash(current_cell)
+    neighbor_hash = _geo_cell_key_hash(neighbor_cell)
+    pair_hash = tuple(sorted((current_hash, neighbor_hash)))
+    matched: List[dict] = []
+    for row in sorted((dict(item) for item in entries if isinstance(item, Mapping)), key=lambda item: canonical_sha256(item)):
+        row_kind = str(row.get("overlay_kind", overlay.get("overlay_kind", ""))).strip().lower()
+        if overlay_kind and overlay_kind not in {"none", row_kind} and row_kind:
+            continue
+        from_key = _coerce_cell_key(row.get("from_geo_cell_key")) or _coerce_cell_key(row.get("from_cell_key"))
+        to_key = _coerce_cell_key(row.get("to_geo_cell_key")) or _coerce_cell_key(row.get("to_cell_key"))
+        if not from_key or not to_key:
+            continue
+        row_pair = tuple(sorted((_geo_cell_key_hash(from_key), _geo_cell_key_hash(to_key))))
+        if row_pair != pair_hash:
+            continue
+        matched.append(row)
+    if not matched:
+        return (0, {})
+    matched_row = dict(sorted(matched, key=lambda item: (str(item.get("overlay_kind", "")), canonical_sha256(item)))[0])
+    entry_tags = _sorted_unique_strings(matched_row.get("tags"))
+    if preferred_tags and not any(tag in entry_tags for tag in preferred_tags):
+        return (0, {})
+    cost_delta = int(_as_int(matched_row.get("cost_delta", default_bias), default_bias))
+    return (
+        cost_delta,
+        {
+            "infrastructure_overlay_kind": str(matched_row.get("overlay_kind", overlay.get("overlay_kind", ""))).strip(),
+            "infrastructure_tags": entry_tags,
+        },
+    )
 
 
 def _portal_cost_modifier(
@@ -501,7 +616,8 @@ def _step_cost(
     )
     if str(base_distance.get("result", "")).strip() != "complete":
         return {"cost": 0, "components": {"base_distance_mm": 0}}
-    base_cost = int(max(0, _as_int(base_distance.get("distance_mm", 0), 0)))
+    base_weight = int(max(0, _as_int(_as_map(policy_row.get("cost_weights")).get("base_distance", 1000), 1000)))
+    base_cost = int((int(max(0, _as_int(base_distance.get("distance_mm", 0), 0))) * base_weight) // 1000)
     field_cost, field_meta = _field_cost_modifier(
         current_cell=current_cell,
         neighbor_cell=neighbor_cell,
