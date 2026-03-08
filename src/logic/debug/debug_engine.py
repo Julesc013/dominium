@@ -261,6 +261,55 @@ def _latest_network_events(
     return filtered
 
 
+def _select_protocol_frame_context(
+    *,
+    logic_eval_state: Mapping[str, object] | None,
+    target: Mapping[str, object],
+    current_tick: int,
+) -> dict:
+    network_id = _token(target.get("network_id")) or _token(target.get("subject_id"))
+    element_id = _token(target.get("element_id"))
+    port_id = _token(target.get("port_id"))
+    bus_id = _token(target.get("bus_id"))
+    selected_frame = {}
+    selected_event = {}
+    frame_rows = [
+        dict(row)
+        for row in _as_list(_as_map(logic_eval_state).get("logic_protocol_frame_rows"))
+        if isinstance(row, Mapping)
+    ]
+    event_rows = _rows_by_id(_as_map(logic_eval_state).get("logic_protocol_event_record_rows"), "frame_id")
+    for row in sorted(
+        frame_rows,
+        key=lambda item: (_as_int(item.get("tick_sent"), 0), _token(item.get("frame_id"))),
+    ):
+        if _as_int(row.get("tick_sent"), 0) > int(max(0, _as_int(current_tick, 0))):
+            continue
+        extensions = _as_map(row.get("extensions"))
+        if network_id and _token(extensions.get("network_id")) != network_id:
+            continue
+        if bus_id:
+            row_bus_id = _token(extensions.get("bus_id"))
+            if row_bus_id != bus_id:
+                continue
+        if element_id or port_id:
+            slots = [
+                dict(item)
+                for item in _as_list(extensions.get("target_slots"))
+                if isinstance(item, Mapping)
+            ]
+            if not any(
+                (not element_id or _token(slot.get("element_id")) == element_id)
+                and (not port_id or _token(slot.get("port_id")) == port_id)
+                for slot in slots
+            ):
+                continue
+        selected_frame = dict(row)
+    if selected_frame:
+        selected_event = dict(event_rows.get(_token(selected_frame.get("frame_id"))) or {})
+    return {"frame_row": selected_frame, "event_row": selected_event}
+
+
 def _timing_summary_artifact(
     *,
     network_id: str,
@@ -362,42 +411,30 @@ def _timing_summary_artifact(
 
 def _build_protocol_summary_artifact(
     *,
-    signal_row: Mapping[str, object],
-    signal_store_state: Mapping[str, object] | None,
+    frame_row: Mapping[str, object],
+    event_row: Mapping[str, object] | None,
     protocol_registry_payload: Mapping[str, object] | None,
     current_tick: int,
 ) -> dict:
-    row = dict(signal_row)
-    signal_ext = _as_map(row.get("extensions"))
-    protocol_id = _token(signal_ext.get("protocol_id"))
-    bus_id = _token(signal_ext.get("bus_id"))
+    row = dict(frame_row)
+    event = dict(event_row or {})
+    frame_ext = _as_map(row.get("extensions"))
+    protocol_id = _token(row.get("protocol_id"))
+    bus_id = _token(frame_ext.get("bus_id"))
     if (not protocol_id) or (not bus_id):
         return {}
     protocol_registry = _rows_by_id(_rows_from_registry(protocol_registry_payload, ("protocols",)), "protocol_id")
     protocol_row = dict(protocol_registry.get(protocol_id) or {})
-    bus_rows = _rows_by_id(normalize_signal_store_state(signal_store_state).get("bus_definition_rows"), "bus_id")
-    bus_row = dict(bus_rows.get(bus_id) or {})
-    if not protocol_row or not bus_row:
+    if not protocol_row:
         return {}
-    value_ref = _as_map(row.get("value_ref"))
-    if _token(value_ref.get("value_kind")) != "bus":
-        return {}
-    fields = [
-        _canon(dict(item))
-        for item in sorted(
-            (dict(item) for item in _as_list(bus_row.get("fields")) if isinstance(item, Mapping)),
-            key=lambda item: _token(item.get("field_id")),
-        )
-    ]
-    sub_signals = [
-        _canon(dict(item) if isinstance(item, Mapping) else {"value": item})
-        for item in _as_list(value_ref.get("sub_signals"))[:16]
-    ]
+    payload_ref = _as_map(row.get("payload_ref"))
+    value_payload = _as_map(payload_ref.get("value_payload"))
+    addressing_mode = _token(protocol_row.get("addressing_mode")) or _token(_as_map(row.get("dst_address")).get("kind")) or "unicast"
     artifact = {
         "artifact_id": "artifact.logic.protocol_summary.{}".format(
             canonical_sha256(
                 {
-                    "signal_id": _token(row.get("signal_id")),
+                    "frame_id": _token(row.get("frame_id")),
                     "protocol_id": protocol_id,
                     "tick": int(max(0, _as_int(current_tick, 0))),
                 }
@@ -405,17 +442,26 @@ def _build_protocol_summary_artifact(
         ),
         "artifact_family_id": "OBSERVATION",
         "artifact_type_id": "artifact.logic.protocol_summary",
-        "signal_id": _token(row.get("signal_id")),
+        "frame_id": _token(row.get("frame_id")),
         "protocol_id": protocol_id,
         "bus_id": bus_id,
         "tick": int(max(0, _as_int(current_tick, 0))),
         "deterministic_fingerprint": "",
         "extensions": {
             "protocol_description": _token(protocol_row.get("description")),
-            "encoding_id": _token(bus_row.get("encoding_id")),
-            "fields": fields[:16],
-            "frame_excerpt": sub_signals,
-            "packed_fixed": value_ref.get("packed_fixed"),
+            "addressing_mode": addressing_mode,
+            "arbitration_policy_id": _token(protocol_row.get("arbitration_policy_id")),
+            "error_detection_policy_id": _token(protocol_row.get("error_detection_policy_id")),
+            "security_policy_id": _token(protocol_row.get("security_policy_id")) or _token(frame_ext.get("security_policy_id")),
+            "src_endpoint_id": _token(row.get("src_endpoint_id")),
+            "dst_address": _canon(_as_map(row.get("dst_address"))),
+            "payload_ref": _canon(payload_ref),
+            "value_excerpt": _canon(value_payload),
+            "checksum": _token(row.get("checksum")),
+            "carrier_type_id": _token(frame_ext.get("carrier_type_id")),
+            "frame_status": _token(frame_ext.get("status")),
+            "protocol_event_result": _token(event.get("result")),
+            "protocol_event_id": _token(event.get("event_id")),
             "trace_compactable": True,
         },
     }
@@ -663,7 +709,58 @@ def _sample_target(
     node_id = _token(target.get("node_id"))
     edge_id = _token(target.get("edge_id"))
 
-    if measurement_point_id in {"measure.logic.signal", "measure.logic.bus", "measure.logic.protocol_frame"}:
+    if measurement_point_id == "measure.logic.protocol_frame":
+        protocol_context = _select_protocol_frame_context(
+            logic_eval_state=logic_eval_state,
+            target=target,
+            current_tick=current_tick,
+        )
+        frame_row = dict(protocol_context.get("frame_row") or {})
+        if not frame_row:
+            return {"result": "refused", "reason_code": REFUSAL_LOGIC_DEBUG_PROTOCOL_UNAVAILABLE}
+        protocol_artifact = _build_protocol_summary_artifact(
+            frame_row=frame_row,
+            event_row=protocol_context.get("event_row"),
+            protocol_registry_payload=protocol_registry_payload,
+            current_tick=current_tick,
+        )
+        if not protocol_artifact:
+            return {"result": "refused", "reason_code": REFUSAL_LOGIC_DEBUG_PROTOCOL_UNAVAILABLE}
+        measurement = generate_measurement_observation(
+            owner_kind="domain",
+            owner_id="domain.logic",
+            measurement_point_id="measure.logic.protocol_frame",
+            raw_value=int(canonical_sha256(_canon(protocol_artifact))[:8], 16),
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            authority_context=authority_context,
+            has_physical_access=has_physical_access,
+            available_instrument_type_ids=available_instrument_type_ids,
+            instrumentation_surface_registry_payload=instrumentation_surface_registry_payload,
+            access_policy_registry_payload=access_policy_registry_payload,
+            measurement_model_registry_payload=measurement_model_registry_payload,
+        )
+        if _token(measurement.get("result")) != "complete":
+            return dict(measurement)
+        measurement_artifact = _as_map(measurement.get("observation_artifact"))
+        sample_value = {
+            "measurement_point_id": measurement_point_id,
+            "target_key": _sample_target_key(target),
+            "measurement_artifact_id": _token(measurement_artifact.get("artifact_id")),
+            "observation_artifact_id": _token(protocol_artifact.get("artifact_id")),
+            "value": measurement_artifact.get("value"),
+            "frame_id": _token(frame_row.get("frame_id")),
+            "value_hash": canonical_sha256(_canon(protocol_artifact)),
+        }
+        return {
+            "result": "complete",
+            "measurement_observation": dict(measurement),
+            "observation_artifact_rows": [protocol_artifact],
+            "protocol_summary_artifact_rows": [protocol_artifact],
+            "measurement_artifact_id": _token(measurement_artifact.get("artifact_id")),
+            "sample_value_row": sample_value,
+        }
+
+    if measurement_point_id in {"measure.logic.signal", "measure.logic.bus"}:
         signal_row = _select_active_signal_row(
             signal_store_state=signal_store_state,
             network_id=network_id,
@@ -698,23 +795,11 @@ def _sample_target(
             "value": measurement_artifact.get("value"),
             "value_hash": canonical_sha256(_canon(signal_artifact)),
         }
-        protocol_artifact = {}
-        if measurement_point_id == "measure.logic.protocol_frame":
-            protocol_artifact = _build_protocol_summary_artifact(
-                signal_row=signal_row,
-                signal_store_state=signal_store_state,
-                protocol_registry_payload=protocol_registry_payload,
-                current_tick=current_tick,
-            )
-            if not protocol_artifact:
-                return {"result": "refused", "reason_code": REFUSAL_LOGIC_DEBUG_PROTOCOL_UNAVAILABLE}
-            sample_value["protocol_summary_artifact_id"] = _token(protocol_artifact.get("artifact_id"))
-            sample_value["value_hash"] = canonical_sha256(_canon(protocol_artifact))
         return {
             "result": "complete",
             "measurement_observation": dict(observation.get("measurement_observation") or {}),
             "observation_artifact_rows": [signal_artifact],
-            "protocol_summary_artifact_rows": [protocol_artifact] if protocol_artifact else [],
+            "protocol_summary_artifact_rows": [],
             "measurement_artifact_id": _token(measurement_artifact.get("artifact_id")),
             "sample_value_row": sample_value,
         }

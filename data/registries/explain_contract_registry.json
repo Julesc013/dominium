@@ -1712,6 +1712,66 @@
         "extensions": {
           "source": "LOGIC8-8"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.protocol_arbitration_loss",
+        "event_kind_id": "logic.protocol_arbitration_loss",
+        "explain_artifact_type_id": "artifact.explain.protocol_arbitration_loss",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.bus_contention",
+          "hint.review.protocol_priority",
+          "hint.inspect.logic_trace"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC9-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.protocol_security_block",
+        "event_kind_id": "logic.protocol_security_block",
+        "explain_artifact_type_id": "artifact.explain.protocol_security_block",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.decision",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.logic_access",
+          "hint.rotate.logic_credentials",
+          "hint.require.encrypted_protocol"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC9-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.protocol_corruption",
+        "event_kind_id": "logic.protocol_corruption",
+        "explain_artifact_type_id": "artifact.explain.protocol_corruption",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.health_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.inspect.logic_noise_policy",
+          "hint.inspect.emi_source",
+          "hint.retry.protocol_window"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC9-6"
+        }
       }
     ],
     "extensions": {
