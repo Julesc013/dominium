@@ -1,0 +1,25 @@
+SCHEMA: logic/security_policy.schema
+schema_id: dominium.schema.logic.security_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define LOGIC-8 protocol-link security policy rows for verification and encryption stubs.
+
+NON-SEMANTICS:
+- This schema does not implement a full cyber-security stack.
+- It does not grant authority bypass.
+
+REQUIRED SHAPE:
+record security_policy
+  required:
+    - security_policy_id: id
+    - requires_auth: bool
+    - requires_encryption: bool
+    - allowed_credential_types: list
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Policy interpretation must remain deterministic.
+- Security policy effects must be explicit on protocol-link propagation/refusal.

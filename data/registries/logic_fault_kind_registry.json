@@ -1,0 +1,63 @@
+{
+  "schema_id": "dominium.registry.logic_fault_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.logic_fault_kind_registry",
+    "registry_version": "1.0.0",
+    "logic_fault_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "fault_kind_id": "fault.open",
+        "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
+        "extensions": {
+          "description": "Edge transmits no signal during SENSE."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "fault_kind_id": "fault.short",
+        "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
+        "extensions": {
+          "description": "Path forces a fault value or refuses per policy."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "fault_kind_id": "fault.stuck_at_0",
+        "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
+        "extensions": {
+          "description": "Target snapshot is overridden to boolean zero."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "fault_kind_id": "fault.stuck_at_1",
+        "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
+        "extensions": {
+          "description": "Target snapshot is overridden to boolean one."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "fault_kind_id": "fault.threshold_drift",
+        "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
+        "extensions": {
+          "description": "Comparator threshold or sampled scalar is shifted deterministically."
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "fault_kind_id": "fault.bounce",
+        "schema_ref": "dominium.schema.logic.logic_fault_state@1.0.0",
+        "extensions": {
+          "description": "ROI-only deterministic pulse bounce perturbation.",
+          "roi_only": true
+        }
+      }
+    ],
+    "extensions": {
+      "source": "LOGIC8-2",
+      "registry_driven": true
+    }
+  }
+}

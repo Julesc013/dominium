@@ -1,0 +1,27 @@
+SCHEMA: logic/noise_policy.schema
+schema_id: dominium.schema.logic.noise_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define LOGIC-8 deterministic noise policy rows for sampling and threshold shaping.
+
+NON-SEMANTICS:
+- This schema does not authorize undeclared stochastic behavior.
+- It does not redefine logic semantics.
+
+REQUIRED SHAPE:
+record noise_policy
+  required:
+    - noise_policy_id: id
+    - kind: text
+    - magnitude: i64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - rng_stream_name: id
+
+INVARIANTS:
+- `kind` must be `none`, `quantize`, or `named_rng`.
+- `rng_stream_name` is required when `kind == named_rng`.
+- Named RNG usage must be policy-gated and replayable.

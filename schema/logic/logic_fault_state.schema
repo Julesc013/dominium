@@ -1,0 +1,31 @@
+SCHEMA: logic/logic_fault_state.schema
+schema_id: dominium.schema.logic.logic_fault_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical LOGIC-8 fault state rows for element, node, and edge targets.
+- Keep logic-fault activation explicit and replayable.
+
+NON-SEMANTICS:
+- This schema does not authorize direct mutation outside Processes.
+- It does not define electrical solver behavior.
+
+REQUIRED SHAPE:
+record logic_fault_state
+  required:
+    - fault_id: id
+    - fault_kind_id: id
+    - target_kind: text
+    - target_id: id
+    - active: bool
+    - tick_set: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - parameters: map
+
+INVARIANTS:
+- `target_kind` must be `edge`, `node`, or `element`.
+- `fault_kind_id` must resolve to the logic fault kind registry.
+- Fault changes that affect behavior must be canonical and process-originated.
