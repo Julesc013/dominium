@@ -9,9 +9,9 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 675
-- VIOLATION: 108
-- WARN: 1242
+- RISK: 674
+- VIOLATION: 99
+- WARN: 1214
 
 ## Counts By Category
 
@@ -26,7 +26,6 @@ Superseded By: none
 - architecture.derailment_bypass_smell: 1
 - architecture.direct_knowledge_mutation_smell: 1
 - architecture.direct_message_smell: 5
-- architecture.direct_position_mutation_smell: 1
 - architecture.direct_schedule_mutation_smell: 1
 - architecture.heat_loss_bypass_smell: 3
 - architecture.implicit_system_collapse_smell: 3
@@ -59,7 +58,7 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 754
+- canon_drift: 755
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
@@ -88,8 +87,6 @@ Superseded By: none
 - reachability: 80
 - reliability.silent_reaction_smell: 3
 - schema_usage: 160
-- security.boundary_io: 29
-- security.privilege_bypass: 9
 - semantic.capability_drift: 5
 - semantic.derived_artifact_contract: 1
 - semantic.schema_shadowing: 120

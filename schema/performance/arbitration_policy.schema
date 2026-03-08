@@ -11,7 +11,7 @@ record arbitration_policy
   required:
     - schema_version: semver
     - arbitration_policy_id: id
-    - mode: enum(equal_share|weighted|server_authoritative_priority)
+    - mode: enum(equal_share|weighted|server_authoritative_priority|fixed_priority|time_slice|token)
     - weight_source: text
     - tie_break_rule_id: id
     - extensions: map

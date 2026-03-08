@@ -30,7 +30,10 @@
       "enum": [
         "equal_share",
         "weighted",
-        "server_authoritative_priority"
+        "server_authoritative_priority",
+        "fixed_priority",
+        "time_slice",
+        "token"
       ]
     },
     "weight_source": {

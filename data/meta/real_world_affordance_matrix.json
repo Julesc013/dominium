@@ -513,6 +513,19 @@
       ]
     },
     {
+      "series_id": "GEO",
+      "affordance_ids": [
+        "motion_force_transmission",
+        "measurement_verification",
+        "time_synchronization"
+      ],
+      "tiers": [
+        "macro",
+        "meso",
+        "micro"
+      ]
+    },
+    {
       "series_id": "PROC",
       "affordance_ids": [
         "matter_transformation",

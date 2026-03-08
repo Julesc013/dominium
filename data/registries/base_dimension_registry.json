@@ -52,6 +52,14 @@
         "version_introduced": "1.0.0",
         "deprecated": false,
         "extensions": {}
+      },
+      {
+        "schema_version": "1.0.0",
+        "base_dimension_id": "CU",
+        "description": "Deterministic compute-unit accounting base dimension.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {}
       }
     ],
     "extensions": {}
