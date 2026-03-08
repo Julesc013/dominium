@@ -28,6 +28,12 @@ from .kernel import (
     geo_transform,
 )
 from .profile_binding import REFUSAL_GEO_DIMENSION_CHANGE, resolve_geo_profile_set
+from .render import (
+    REFUSAL_GEO_RENDER_REBASE_INVALID,
+    REFUSAL_GEO_RENDER_TRUTH_MUTATION,
+    apply_floating_origin,
+    choose_floating_origin_offset,
+)
 
 __all__ = [
     "REFUSAL_GEO_CELL_KEY_INVALID",
@@ -37,9 +43,13 @@ __all__ = [
     "REFUSAL_GEO_POSITION_INVALID",
     "REFUSAL_GEO_PROFILE_MISSING",
     "REFUSAL_GEO_DIMENSION_CHANGE",
+    "REFUSAL_GEO_RENDER_REBASE_INVALID",
+    "REFUSAL_GEO_RENDER_TRUTH_MUTATION",
     "build_position_ref",
     "frame_get_transform",
     "frame_graph_hash",
+    "apply_floating_origin",
+    "choose_floating_origin_offset",
     "geo_cell_key_from_position",
     "geo_cell_key_neighbors",
     "geo_neighbors",
