@@ -365,6 +365,8 @@ from analyzers import e338_raw_sqrt_usage_smell
 from analyzers import e339_hardcoded_distance_smell
 from analyzers import e340_raw_field_grid_smell
 from analyzers import e341_field_sample_bypass_smell
+from analyzers import e342_map_truth_leak_smell
+from analyzers import e343_uninstrumented_map_access_smell
 
 
 ANALYZERS = (
@@ -733,6 +735,8 @@ ANALYZERS = (
     e339_hardcoded_distance_smell,
     e340_raw_field_grid_smell,
     e341_field_sample_bypass_smell,
+    e342_map_truth_leak_smell,
+    e343_uninstrumented_map_access_smell,
 )
 
 

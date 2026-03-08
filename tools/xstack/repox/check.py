@@ -17367,6 +17367,131 @@ def _append_geo_field_binding_invariant_findings(
         )
 
 
+def _append_geo_projection_lens_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    projection_rel = "src/geo/projection/projection_engine.py"
+    adapter_rel = "src/geo/projection/view_adapters.py"
+    lens_rel = "src/geo/lens/lens_engine.py"
+    cctv_rel = "src/geo/lens/cctv_engine.py"
+    proof_tool_rel = "tools/geo/tool_replay_view_window.py"
+
+    projection_text = _file_text(repo_root, projection_rel)
+    for required_token in ("build_projection_request(", "project_view_cells(", "projection_request_hash("):
+        if required_token in projection_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=projection_rel,
+                line_number=1,
+                snippet=required_token,
+                message="projection requests must route through canonical GEO projection request and cell enumeration helpers",
+                rule_id="INV-VIEWS-MUST-USE-LENS",
+            )
+        )
+
+    lens_text = _file_text(repo_root, lens_rel)
+    for required_token, rule_id, message in (
+        ("build_lens_request(", "INV-VIEWS-MUST-USE-LENS", "view layers must be declared through canonical GEO lens requests"),
+        (
+            "build_projected_view_artifact(",
+            "INV-VIEWS-MUST-USE-LENS",
+            "projected views must be derived through the GEO lens engine rather than direct UI reads",
+        ),
+        (
+            "allow_omniscient_debug",
+            "INV-OMNISCIENCE-PROFILED",
+            "omniscient projection access must remain explicitly profiled and logged",
+        ),
+        (
+            "map_instrument_required",
+            "INV-VIEWS-MUST-USE-LENS",
+            "diegetic terrain/map layers must remain instrument-gated",
+        ),
+    ):
+        if required_token in lens_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=lens_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    adapter_text = _file_text(repo_root, adapter_rel)
+    for required_token in ("render_projected_view_ascii(", "build_projected_view_layer_buffers("):
+        if required_token in adapter_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=adapter_rel,
+                line_number=1,
+                snippet=required_token,
+                message="UI adapters must consume projected view artifacts rather than bypassing the GEO view model",
+                rule_id="INV-VIEWS-MUST-USE-LENS",
+            )
+        )
+    for forbidden_token in ("truth_model", "universe_state"):
+        if forbidden_token not in adapter_text.lower():
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=adapter_rel,
+                line_number=1,
+                snippet=forbidden_token,
+                message="projection adapters must not read truth directly",
+                rule_id="INV-NO-TRUTH-IN-UI",
+            )
+        )
+        break
+
+    cctv_text = _file_text(repo_root, cctv_rel)
+    for required_token in ("build_signal_channel(", "build_signal_message_envelope(", "build_knowledge_receipt("):
+        if required_token in cctv_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=cctv_rel,
+                line_number=1,
+                snippet=required_token,
+                message="remote CCTV views must remain SIG-delivered derived observations",
+                rule_id="INV-VIEWS-MUST-USE-LENS",
+            )
+        )
+
+    proof_tool_text = _file_text(repo_root, proof_tool_rel)
+    for required_token, rule_id in (
+        ("verify_view_window(", "INV-VIEWS-MUST-USE-LENS"),
+        ("projection_profile_registry_hash", "INV-VIEWS-MUST-USE-LENS"),
+        ("lens_layer_registry_hash", "INV-VIEWS-MUST-USE-LENS"),
+        ("view_type_registry_hash", "INV-VIEWS-MUST-USE-LENS"),
+        ("stable_across_repeated_runs", "INV-OMNISCIENCE-PROFILED"),
+    ):
+        if required_token in proof_tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proof_tool_rel,
+                line_number=1,
+                snippet=required_token,
+                message="view replay proof tooling must capture deterministic lens and projection registry surfaces",
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -27594,6 +27719,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_field_binding_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_projection_lens_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
