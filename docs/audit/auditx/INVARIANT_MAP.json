@@ -116,9 +116,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 757,
+      "finding_count": 758,
       "recommended_actions": {
-        "DOC_FIX": 757
+        "DOC_FIX": 758
       },
       "sample_findings": [
         {
@@ -148,7 +148,7 @@
         }
       ],
       "severities": {
-        "WARN": 757
+        "WARN": 758
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {

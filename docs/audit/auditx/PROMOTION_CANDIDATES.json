@@ -67,6 +67,7 @@
         ".xstack_cache/anb-omega-random-cwd/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json",
         ".xstack_cache/anb-omega-random-cwd/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json",
         ".xstack_cache/auditx/meta_genre0_probe/FINDINGS.json",
+        ".xstack_cache/auditx/repox_probe/FINDINGS.json",
         ".xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/48146d3b9fa338ea36d7159e9105c8967b254d35769f3d747a2589257ded6427.json",
         ".xstack_cache/ws-01e2c135cf6f81ac/auditx/entries/b3b3517b12b10bb2dc370378ec380f300247d81bb4fd51520e992d0b33b02659.json",
         ".xstack_cache/ws-02afd0d6484c1ab2/auditx/entries/da6879864b5c2e0bd0ec606fecab77747fcec23390611cfd5ec6f0a6a78332d8.json",
@@ -122,8 +123,7 @@
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/8c093a0e23a4c121ba52af726588c7c227a107182b9351a19da30133a4fe82a2.json",
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/a5030e5a39c50fdd0e68c298e52f8d817180d178a6ed5b4bb380f3a4b4134ba7.json",
         ".xstack_cache/ws-311957bee608fa55/auditx/entries/bd11adf978a737bd93cb38c6818e376bd58be843990b73ebd99d2e04ff005d7e.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/eac11858bb5d04441712cee1d217a5f2d0f661f74cee9433862802ba5122ec07.json",
-        ".xstack_cache/ws-311957bee608fa55/auditx/entries/eca77cc6ddeac042ab8ea32f53cbeb336ef75d9c17a4c98535d7860cdc04e3f8.json"
+        ".xstack_cache/ws-311957bee608fa55/auditx/entries/eac11858bb5d04441712cee1d217a5f2d0f661f74cee9433862802ba5122ec07.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,

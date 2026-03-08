@@ -11,7 +11,7 @@ Superseded By: none
 - INFO: 223
 - RISK: 674
 - VIOLATION: 108
-- WARN: 1245
+- WARN: 1246
 
 ## Counts By Category
 
@@ -58,7 +58,7 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 757
+- canon_drift: 758
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
