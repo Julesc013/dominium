@@ -1993,24 +1993,19 @@
       }
     },
     "INV-TRACE-BOUNDED": {
-      "finding_count": 2,
+      "finding_count": 1,
       "recommended_actions": {
-        "DOC_FIX": 2
+        "DOC_FIX": 1
       },
       "sample_findings": [
         {
           "category": "logic.unbounded_trace_smell",
           "finding_id": "E322_UNBOUNDED_TRACE_SMELL:0001",
           "location": "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
-        },
-        {
-          "category": "logic.unbounded_trace_smell",
-          "finding_id": "E322_UNBOUNDED_TRACE_SMELL:0002",
-          "location": "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
         }
       ],
       "severities": {
-        "RISK": 2
+        "RISK": 1
       }
     },
     "INV-UI-ENTITLEMENT-GATING": {

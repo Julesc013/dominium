@@ -9,7 +9,7 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 665
+- RISK: 664
 - VIOLATION: 104
 - WARN: 1239
 
@@ -71,7 +71,7 @@ Superseded By: none
 - logic.adhoc_wiring_smell: 3
 - logic.carrier_bias_smell: 5
 - logic.truth_leak_via_debug_smell: 1
-- logic.unbounded_trace_smell: 2
+- logic.unbounded_trace_smell: 1
 - materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1
