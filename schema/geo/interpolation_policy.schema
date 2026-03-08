@@ -1,0 +1,21 @@
+SCHEMA: geo/interpolation_policy.schema
+schema_id: dominium.schema.geo.interpolation_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the deterministic interpolation policy used by GEO-bound field sampling.
+- Freeze the compatibility baseline that nearest-cell is the default when no richer lawful interpolation is required.
+
+REQUIRED SHAPE:
+record interpolation_policy
+  required:
+    - policy_id: id
+    - kind: enum(nearest|bilinear_stub|trilinear_stub|atlas_stub)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- interpolation kind must imply a deterministic algorithm
+- any bounded approximation must declare explicit error or stub semantics in extensions
+- interpolation policy must not bypass GEO partition or chart identity

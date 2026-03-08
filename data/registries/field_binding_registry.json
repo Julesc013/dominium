@@ -1,0 +1,236 @@
+{
+  "schema_id": "dominium.registry.geo.field_binding_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.field_binding_registry",
+    "registry_version": "1.0.0",
+    "field_bindings": [
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.temperature",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "default_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.moisture",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "default_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.friction",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "default_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.visibility",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "default_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.wind",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "default_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.gravity_vector",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "physics_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.radiation_intensity",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "physics_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.radiation",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "physics_r3",
+          "deprecated": true,
+          "alias_of": "field.radiation_intensity"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.irradiance",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "physics_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.pollution.smoke_particulate_concentration",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "pollution_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.pollution.co2_stub_concentration",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "pollution_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.pollution.toxic_gas_stub_concentration",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "pollution_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.pollution.oil_spill_stub_concentration",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "pollution_r3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.temperature",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "storage_kind": "tile",
+        "interpolation_policy_id": "interp.atlas_nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.spherical_geodesic_stub",
+          "binding_scope": "surface_s2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.moisture",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "storage_kind": "tile",
+        "interpolation_policy_id": "interp.atlas_nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.spherical_geodesic_stub",
+          "binding_scope": "surface_s2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.visibility",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "storage_kind": "tile",
+        "interpolation_policy_id": "interp.atlas_nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.spherical_geodesic_stub",
+          "binding_scope": "surface_s2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.wind",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "storage_kind": "tile",
+        "interpolation_policy_id": "interp.atlas_nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.spherical_geodesic_stub",
+          "binding_scope": "surface_s2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO4-2"
+    }
+  }
+}
