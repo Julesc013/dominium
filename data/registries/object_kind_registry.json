@@ -1,0 +1,123 @@
+{
+  "schema_id": "dominium.registry.geo.object_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.object_kind_registry",
+    "registry_version": "1.0.0",
+    "object_kinds": [
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.galaxy_cell",
+        "description": "Deterministic coarse spatial partition object representing a galaxy-scale generation cell.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "spatial_partition",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.star_system",
+        "description": "Deterministic star-system scale procedural or authored object anchored to a GEO cell lineage.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "celestial_system",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.star",
+        "description": "Deterministic stellar object anchored to a GEO cell lineage and local subkey ordering.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "celestial_body",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.planet",
+        "description": "Deterministic planetary object anchored to a GEO cell lineage and local subkey ordering.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "celestial_body",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.moon",
+        "description": "Deterministic satellite body anchored to a GEO cell lineage and local subkey ordering.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "celestial_body",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.surface_tile",
+        "description": "Deterministic surface or atlas tile object derived from a GEO partition cell.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "surface_partition",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.interior_cell",
+        "description": "Deterministic interior-space partition object derived from a GEO partition cell.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "interior_partition",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.structure",
+        "description": "Deterministic built or authored structure object anchored to a GEO cell lineage.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "artifact",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.vehicle",
+        "description": "Deterministic vehicle or mobile assembly object anchored to a GEO cell lineage when spatially indexed.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "artifact_mobile",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.signal_node",
+        "description": "Deterministic logic or signaling node anchored to a GEO cell lineage when spatialized.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "network_node",
+          "source": "GEO1-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.logic_network",
+        "description": "Deterministic logic network aggregate anchored to a GEO cell lineage and stable local subkey.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "network_aggregate",
+          "source": "GEO1-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO1-3"
+    }
+  }
+}
