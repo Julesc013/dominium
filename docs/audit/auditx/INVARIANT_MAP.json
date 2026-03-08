@@ -1741,48 +1741,6 @@
         "VIOLATION": 1
       }
     },
-    "INV-NO-UNDECLARED-REGISTRY": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.undeclared_registry_smell",
-          "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0001",
-          "location": "data/registries/overlay_policy_registry.json"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
-    "INV-NO-UNDECLARED-SCHEMA": {
-      "finding_count": 3,
-      "recommended_actions": {
-        "ADD_RULE": 3
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
-          "location": "schema/geo/overlay_layer.schema"
-        },
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
-          "location": "schema/geo/overlay_manifest.schema"
-        },
-        {
-          "category": "architecture.undeclared_schema_smell",
-          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
-          "location": "schema/geo/property_patch.schema"
-        }
-      ],
-      "severities": {
-        "RISK": 3
-      }
-    },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
       "finding_count": 1,
       "recommended_actions": {

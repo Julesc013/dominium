@@ -9,7 +9,7 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 681
+- RISK: 677
 - VIOLATION: 108
 - WARN: 1252
 
@@ -53,8 +53,6 @@ Superseded By: none
 - architecture.substrate_bypass_smell: 13
 - architecture.thermal_bypass_smell: 1
 - architecture.unbounded_spread_smell: 1
-- architecture.undeclared_registry_smell: 1
-- architecture.undeclared_schema_smell: 3
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
 - architecture.unlogged_trust_change_smell: 5

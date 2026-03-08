@@ -18250,6 +18250,7 @@ def _append_geo_envelope_invariant_findings(
     identity_rule_id = "INV-GEO-ID-STABLE"
 
     scenario_tool_rel = "tools/geo/tool_generate_geo_stress.py"
+    scenario_common_rel = "tools/geo/geo10_stress_common.py"
     runtime_rel = "tools/geo/geo10_stress_runtime.py"
     stress_tool_rel = "tools/geo/tool_run_geo_stress.py"
     replay_tool_rel = "tools/geo/tool_replay_geo_window.py"
@@ -18259,6 +18260,7 @@ def _append_geo_envelope_invariant_findings(
 
     for rel_path in (
         scenario_tool_rel,
+        scenario_common_rel,
         runtime_rel,
         stress_tool_rel,
         replay_tool_rel,
@@ -18281,9 +18283,21 @@ def _append_geo_envelope_invariant_findings(
             )
         )
 
-    scenario_text = _file_text(repo_root, scenario_tool_rel)
+    scenario_tool_text = _file_text(repo_root, scenario_tool_rel)
+    if "generate_geo_stress_scenario(" not in scenario_tool_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=scenario_tool_rel,
+                line_number=1,
+                snippet="generate_geo_stress_scenario(",
+                message="GEO-10 stress scenario tool must route through the canonical scenario generator",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    scenario_text = _file_text(repo_root, scenario_common_rel)
     for token in (
-        "generate_geo_stress_scenario(",
         "geo10.suite.r3_grid",
         "geo10.suite.sphere_atlas",
         "geo10.suite.r4_slice",
@@ -18295,7 +18309,7 @@ def _append_geo_envelope_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path=scenario_tool_rel,
+                file_path=scenario_common_rel,
                 line_number=1,
                 snippet=token,
                 message="GEO-10 stress scenario generation must cover the full topology/degradation envelope",

@@ -1,7 +1,7 @@
 {
   "artifact_class": "CANONICAL",
   "changed_only": false,
-  "finding_count": 2264,
+  "finding_count": 2260,
   "findings": [
     {
       "analyzer_id": "A4_DERIVED_ARTIFACT_CONTRACT",
@@ -7909,110 +7909,6 @@
       "severity": "RISK",
       "status": "OPEN",
       "suggested_classification": "TODO-BLOCKED"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
-      "fingerprint": "6c6fee67b70580a60ea7528822c543ecf14148056da97add8fc613e28ba9b712",
-      "location": {
-        "file_path": "schema/geo/overlay_layer.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/overlay_layer.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
-      "fingerprint": "70922c0768b4ca1246e1f18cd49e3b3e65de2d27273eee93482c796d6ccbc807",
-      "location": {
-        "file_path": "schema/geo/overlay_manifest.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/overlay_manifest.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E107_UNDECLARED_SCHEMA_SMELL",
-      "category": "architecture.undeclared_schema_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "schema path missing from topology schema nodes"
-      ],
-      "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
-      "fingerprint": "bb7d7eecca0dcbb4e3257f9bb0334c5ba5c02e04e303c14d6174b0b9d4ffb6c3",
-      "location": {
-        "file_path": "schema/geo/property_patch.schema",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-SCHEMA"
-      ],
-      "related_paths": [
-        "docs/audit/TOPOLOGY_MAP.json",
-        "schema/geo/property_patch.schema"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
-    },
-    {
-      "analyzer_id": "E108_UNDECLARED_REGISTRY_SMELL",
-      "category": "architecture.undeclared_registry_smell",
-      "confidence": 0.91,
-      "created_utc": "1970-01-01T00:00:00Z",
-      "evidence": [
-        "registry path missing from topology registry nodes"
-      ],
-      "finding_id": "E108_UNDECLARED_REGISTRY_SMELL:0001",
-      "fingerprint": "28b50d39f3fbece8d9ea9fe41b506b59f2aac5183b0bd6684419f666eb604ef8",
-      "location": {
-        "file_path": "data/registries/overlay_policy_registry.json",
-        "line_start": 1
-      },
-      "recommended_action": "ADD_RULE",
-      "related_invariants": [
-        "INV-NO-UNDECLARED-REGISTRY"
-      ],
-      "related_paths": [
-        "data/registries/overlay_policy_registry.json",
-        "docs/audit/TOPOLOGY_MAP.json"
-      ],
-      "severity": "RISK",
-      "status": "OPEN",
-      "suggested_classification": "NEEDS_REVIEW"
     },
     {
       "analyzer_id": "E113_DEPRECATED_USAGE_SMELL",
@@ -58093,7 +57989,7 @@
       "suggested_classification": "TODO-BLOCKED"
     }
   ],
-  "graph_hash": "8826926a56084339b3cd88f2da03779de171ba3abf405f6da9f33713ee737464",
+  "graph_hash": "0bf7e2e5ae11db10bf390f1ad9ead49e99fc322999045df0934dc913665c2acb",
   "result": "scan_complete",
   "schema_id": "dominium.auditx.findings",
   "schema_version": "1.0.0"

@@ -2,9 +2,9 @@
   "artifact_class": "RUN_META",
   "cache_mode": "full_scan",
   "changed_only": false,
-  "changed_paths_since_last": 12078,
-  "generated_utc": "2026-03-08T19:03:38Z",
-  "graph_hash": "8826926a56084339b3cd88f2da03779de171ba3abf405f6da9f33713ee737464",
+  "changed_paths_since_last": 12097,
+  "generated_utc": "2026-03-08T20:16:04Z",
+  "graph_hash": "0bf7e2e5ae11db10bf390f1ad9ead49e99fc322999045df0934dc913665c2acb",
   "last_reviewed": "2026-03-08",
   "output_format": "both",
   "platform": "windows",
@@ -313,6 +313,7 @@
     "E34_ORDER_BYPASS_SMELL",
     "E350_SILENT_IDENTITY_CHANGE_SMELL",
     "E351_NONDETERMINISTIC_MERGE_SMELL",
+    "E352_NONDETERMINISTIC_DISTANCE_SMELL",
     "E35_ROLE_ESCALATION_SMELL",
     "E36_RENDER_TRUTH_LEAK_SMELL",
     "E37_HARDCODED_REPRESENTATION_SMELL",
@@ -389,5 +390,5 @@
   "result": "scan_complete",
   "reused_analyzers": [],
   "status": "DERIVED",
-  "workspace_id": "ws-a864d33ae2aa410b"
+  "workspace_id": "ws-1108cd54723b1de0"
 }
