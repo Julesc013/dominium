@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence
 
-from src.geo import geo_partition_cell_key
+from src.geo import field_sampling_cell_key, field_sampling_position, geo_distance, geo_partition_cell_key
 from src.models.model_engine import evaluate_field_modifier_curve
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -347,6 +347,63 @@ def _field_cell_id_for_position(*, layer_row: Mapping[str, object], spatial_posi
         or "geo.topology.r3_infinite",
     )
     return str(partition_result.get("cell_key", "")).strip()
+
+
+def geo_field_sample_position(
+    position_ref: Mapping[str, object] | None,
+    target_frame_id: str,
+    *,
+    frame_nodes: object,
+    frame_transform_rows: object,
+    graph_version: str = "",
+    topology_registry_payload: Mapping[str, object] | None = None,
+) -> dict:
+    return field_sampling_position(
+        position_ref,
+        target_frame_id,
+        frame_nodes=frame_nodes,
+        frame_transform_rows=frame_transform_rows,
+        graph_version=graph_version,
+        topology_registry_payload=topology_registry_payload,
+    )
+
+
+def geo_field_sample_cell_key(
+    position_ref: Mapping[str, object] | None,
+    target_frame_id: str,
+    partition_profile_id: str,
+    *,
+    frame_nodes: object,
+    frame_transform_rows: object,
+    graph_version: str = "",
+    topology_registry_payload: Mapping[str, object] | None = None,
+    partition_registry_payload: Mapping[str, object] | None = None,
+) -> dict:
+    return field_sampling_cell_key(
+        position_ref,
+        target_frame_id,
+        partition_profile_id,
+        frame_nodes=frame_nodes,
+        frame_transform_rows=frame_transform_rows,
+        graph_version=graph_version,
+        topology_registry_payload=topology_registry_payload,
+        partition_registry_payload=partition_registry_payload,
+    )
+
+
+def geo_field_distance_mm(
+    pos_a: Mapping[str, object] | None,
+    pos_b: Mapping[str, object] | None,
+    *,
+    topology_profile_id: str = "geo.topology.r3_infinite",
+    metric_profile_id: str = "geo.metric.euclidean",
+) -> dict:
+    return geo_distance(
+        pos_a,
+        pos_b,
+        topology_profile_id=topology_profile_id,
+        metric_profile_id=metric_profile_id,
+    )
 
 
 def _default_value_for_field(
@@ -956,6 +1013,9 @@ __all__ = [
     "field_modifier_snapshot",
     "field_type_rows_by_id",
     "field_update_policy_rows_by_id",
+    "geo_field_distance_mm",
+    "geo_field_sample_cell_key",
+    "geo_field_sample_position",
     "get_field_value",
     "normalize_field_cell_rows",
     "normalize_field_layer_rows",

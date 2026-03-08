@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence
 
+from src.geo import roi_distance_mm
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -199,6 +200,27 @@ def _transition_kind(current_tier: str, target_tier: str) -> str:
     if current in {"micro", "meso"} and target == "macro":
         return "collapse"
     return "unsupported"
+
+
+def system_roi_distance_query(
+    pos_a_ref: Mapping[str, object] | None,
+    pos_b_ref: Mapping[str, object] | None,
+    *,
+    frame_nodes: object,
+    frame_transform_rows: object,
+    graph_version: str = "",
+    topology_registry_payload: Mapping[str, object] | None = None,
+    metric_registry_payload: Mapping[str, object] | None = None,
+) -> dict:
+    return roi_distance_mm(
+        pos_a_ref,
+        pos_b_ref,
+        frame_nodes=frame_nodes,
+        frame_transform_rows=frame_transform_rows,
+        graph_version=graph_version,
+        topology_registry_payload=topology_registry_payload,
+        metric_registry_payload=metric_registry_payload,
+    )
 
 
 def evaluate_system_roi_tick(
@@ -541,5 +563,5 @@ __all__ = [
     "REFUSAL_SYSTEM_TIER_UNSUPPORTED",
     "REFUSAL_SYSTEM_TIER_INVALID",
     "evaluate_system_roi_tick",
+    "system_roi_distance_query",
 ]
-

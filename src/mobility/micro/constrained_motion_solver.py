@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 from typing import Dict, List, Mapping
 
+from src.geo import geo_distance
 from src.models.model_engine import compute_derailment_threshold_units, compute_lateral_accel_units
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -52,6 +53,11 @@ def _point_mm(value: object) -> dict | None:
     }
 
 
+def _geo_distance_mm(a: Mapping[str, object], b: Mapping[str, object]) -> int:
+    distance_row = geo_distance(a, b, "geo.topology.r3_infinite", "geo.metric.euclidean")
+    return int(max(0, _as_int(distance_row.get("distance_mm", 0), 0)))
+
+
 def _normalize_direction(value: object) -> str:
     token = str(value or "").strip()
     if token in _VALID_DIRECTIONS:
@@ -82,10 +88,7 @@ def _length_from_points_mm(points: List[Mapping[str, object]]) -> int:
     for idx in range(1, len(points)):
         prev = dict(points[idx - 1])
         cur = dict(points[idx])
-        dx = int(_as_int(cur.get("x", 0), 0)) - int(_as_int(prev.get("x", 0), 0))
-        dy = int(_as_int(cur.get("y", 0), 0)) - int(_as_int(prev.get("y", 0), 0))
-        dz = int(_as_int(cur.get("z", 0), 0)) - int(_as_int(prev.get("z", 0), 0))
-        total += int(round(math.sqrt(float(dx * dx + dy * dy + dz * dz))))
+        total += _geo_distance_mm(prev, cur)
     return int(max(1, total))
 
 

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import math
 from typing import Dict, List, Mapping, Sequence, Tuple
 
+from src.geo import geo_distance
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -64,6 +64,11 @@ def _point3(value: object) -> dict:
         "y": int(_as_int(payload.get("y", 0), 0)),
         "z": int(_as_int(payload.get("z", 0), 0)),
     }
+
+
+def _geo_distance_mm(a: Mapping[str, object], b: Mapping[str, object]) -> int:
+    distance_row = geo_distance(a, b, "geo.topology.r3_infinite", "geo.metric.euclidean")
+    return int(max(0, _as_int(distance_row.get("distance_mm", 0), 0)))
 
 
 def _normalize_geometry_type_id(value: object) -> str:
@@ -362,28 +367,19 @@ def _endpoint_candidates(existing_geometry_rows: object) -> List[Tuple[str, int,
     return sorted(out, key=lambda item: (item[0], item[1], item[2]["x"], item[2]["y"], item[2]["z"]))
 
 
-def _dist_sq(a: Mapping[str, object], b: Mapping[str, object]) -> int:
-    pa = _point3(a)
-    pb = _point3(b)
-    dx = int(pa["x"]) - int(pb["x"])
-    dy = int(pa["y"]) - int(pb["y"])
-    dz = int(pa["z"]) - int(pb["z"])
-    return int(dx * dx + dy * dy + dz * dz)
-
-
 def _snap_to_endpoint(point: Mapping[str, object], endpoints: Sequence[Tuple[str, int, dict]], tolerance_mm: int) -> dict:
     tol = max(0, _as_int(tolerance_mm, 0))
     if tol <= 0 or not endpoints:
         return _point3(point)
     best = None
     for geometry_id, endpoint_index, endpoint_point in endpoints:
-        dist = _dist_sq(point, endpoint_point)
-        candidate = (int(dist), str(geometry_id), int(endpoint_index), _point3(endpoint_point))
+        distance_mm = _geo_distance_mm(point, endpoint_point)
+        candidate = (int(distance_mm), str(geometry_id), int(endpoint_index), _point3(endpoint_point))
         if (best is None) or (candidate < best):
             best = candidate
     if best is None:
         return _point3(point)
-    if int(best[0]) <= int(tol * tol):
+    if int(best[0]) <= int(tol):
         return _point3(best[3])
     return _point3(point)
 
@@ -429,10 +425,7 @@ def _length_mm(points: Sequence[Mapping[str, object]]) -> int:
     for idx in range(len(rows) - 1):
         a = rows[idx]
         b = rows[idx + 1]
-        dx = int(b["x"]) - int(a["x"])
-        dy = int(b["y"]) - int(a["y"])
-        dz = int(b["z"]) - int(a["z"])
-        total += int(math.isqrt(dx * dx + dy * dy + dz * dz))
+        total += _geo_distance_mm(a, b)
     return int(max(0, total))
 
 
@@ -455,15 +448,15 @@ def _curvature_summary(points: Sequence[Mapping[str, object]]) -> dict:
         c = rows[idx + 2]
         v1 = (int(b["x"]) - int(a["x"]), int(b["y"]) - int(a["y"]), int(b["z"]) - int(a["z"]))
         v2 = (int(c["x"]) - int(b["x"]), int(c["y"]) - int(b["y"]), int(c["z"]) - int(b["z"]))
-        len1_sq = int(v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2])
-        len2_sq = int(v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2])
-        if len1_sq <= 0 or len2_sq <= 0:
+        len1 = _geo_distance_mm({"x": 0, "y": 0, "z": 0}, {"x": v1[0], "y": v1[1], "z": v1[2]})
+        len2 = _geo_distance_mm({"x": 0, "y": 0, "z": 0}, {"x": v2[0], "y": v2[1], "z": v2[2]})
+        if len1 <= 0 or len2 <= 0:
             continue
         cross_x = int(v1[1] * v2[2] - v1[2] * v2[1])
         cross_y = int(v1[2] * v2[0] - v1[0] * v2[2])
         cross_z = int(v1[0] * v2[1] - v1[1] * v2[0])
-        cross_mag = int(math.isqrt(cross_x * cross_x + cross_y * cross_y + cross_z * cross_z))
-        denom = int(max(1, math.isqrt(len1_sq) + math.isqrt(len2_sq)))
+        cross_mag = _geo_distance_mm({"x": 0, "y": 0, "z": 0}, {"x": cross_x, "y": cross_y, "z": cross_z})
+        denom = int(max(1, len1 + len2))
         turn_permille = int(min(1000, (cross_mag * 1000) // max(1, denom)))
         if turn_permille <= 150:
             low += 1
@@ -471,7 +464,7 @@ def _curvature_summary(points: Sequence[Mapping[str, object]]) -> dict:
             medium += 1
         else:
             high += 1
-        seg_len = int(min(math.isqrt(len1_sq), math.isqrt(len2_sq)))
+        seg_len = int(min(len1, len2))
         radius = int(max(1, (seg_len * 1000) // max(1, turn_permille)))
         if min_radius is None or radius < min_radius:
             min_radius = radius

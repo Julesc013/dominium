@@ -459,6 +459,27 @@ def _split_cell_work(
     return selected[:limit], deferred
 
 
+def _neighbor_ids_for_cell(
+    *,
+    cell_id: str,
+    topology_profile_id: str,
+    metric_profile_id: str,
+    partition_profile_id: str,
+    radius: int,
+    neighbor_map: Mapping[str, object],
+) -> List[str]:
+    neighbor_result = geo_neighbors(
+        cell_id,
+        int(max(0, _as_int(radius, 0))),
+        topology_profile_id=topology_profile_id,
+        metric_profile_id=metric_profile_id,
+        partition_profile_id=partition_profile_id,
+    )
+    if str(neighbor_result.get("result", "")).strip() == "complete" and list(neighbor_result.get("neighbors") or []):
+        return _sorted_tokens(list(neighbor_result.get("neighbors") or []))
+    return _sorted_tokens(list(neighbor_map.get(cell_id) or []))
+
+
 def evaluate_pollution_dispersion(
     *,
     current_tick: int,
@@ -551,21 +572,20 @@ def evaluate_pollution_dispersion(
         policy_ext = _as_map(policy_row.get("extensions"))
         topology_profile_id = str(policy_ext.get("topology_profile_id", "geo.topology.r3_infinite")).strip() or "geo.topology.r3_infinite"
         metric_profile_id = str(policy_ext.get("metric_profile_id", "geo.metric.euclidean")).strip() or "geo.metric.euclidean"
+        partition_profile_id = str(policy_ext.get("partition_profile_id", "geo.partition.grid_zd")).strip() or "geo.partition.grid_zd"
         neighbor_radius = max(1, _as_int(policy_ext.get("neighbor_radius", 1), 1))
 
         for cell_id in selected_cells:
             current_value = int(max(0, _as_int(concentration_by_cell.get(cell_id, 0), 0)))
             injected = int(max(0, _as_int(injections_by_cell.get(cell_id, 0), 0)))
-            neighbor_result = geo_neighbors(
-                cell_id,
-                topology_profile_id,
-                neighbor_radius,
-                metric_profile_id,
+            neighbor_ids = _neighbor_ids_for_cell(
+                cell_id=cell_id,
+                topology_profile_id=topology_profile_id,
+                metric_profile_id=metric_profile_id,
+                partition_profile_id=partition_profile_id,
+                radius=neighbor_radius,
+                neighbor_map=neighbor_map,
             )
-            if str(neighbor_result.get("result", "")).strip() == "complete" and list(neighbor_result.get("neighbors") or []):
-                neighbor_ids = _sorted_tokens(list(neighbor_result.get("neighbors") or []))
-            else:
-                neighbor_ids = _sorted_tokens(list(neighbor_map.get(cell_id) or []))
             neighbor_values = [
                 int(max(0, _as_int(concentration_by_cell.get(neighbor_id, 0), 0)))
                 for neighbor_id in neighbor_ids

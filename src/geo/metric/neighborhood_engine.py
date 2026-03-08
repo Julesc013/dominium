@@ -149,6 +149,28 @@ def _canonical_cell_key(
     )
 
 
+def _neighbor_args(
+    radius: object,
+    topology_profile_id: object,
+    metric_profile_id: object,
+    partition_profile_id: object,
+) -> tuple[int, str, str, str]:
+    radius_token = str(radius or "").strip()
+    if radius_token.startswith("geo.topology."):
+        return (
+            int(max(0, _as_int(topology_profile_id, 0))),
+            radius_token,
+            str(metric_profile_id or "").strip(),
+            str(partition_profile_id or "").strip(),
+        )
+    return (
+        int(max(0, _as_int(radius, 0))),
+        str(topology_profile_id or "").strip(),
+        str(metric_profile_id or "").strip(),
+        str(partition_profile_id or "").strip(),
+    )
+
+
 def _grid_distance_sq(offset: Sequence[int]) -> int:
     return int(sum(int(value) * int(value) for value in offset))
 
@@ -336,12 +358,17 @@ def geo_neighbors(
     cache_max_entries: int | None = None,
 ) -> dict:
     del metric_registry_payload
-    radius_value = int(max(0, _as_int(radius, 0)))
+    radius_value, topology_arg, metric_arg, partition_arg = _neighbor_args(
+        radius,
+        topology_profile_id,
+        metric_profile_id,
+        partition_profile_id,
+    )
     legacy_input = isinstance(cell_key, str)
     key_row = _canonical_cell_key(
         cell_key=cell_key,
-        topology_profile_id=str(topology_profile_id or "").strip(),
-        partition_profile_id=str(partition_profile_id or "").strip(),
+        topology_profile_id=topology_arg,
+        partition_profile_id=partition_arg,
         topology_registry_payload=topology_registry_payload,
         partition_registry_payload=partition_registry_payload,
     )
@@ -353,9 +380,9 @@ def geo_neighbors(
                 "chart_id": str(chart_id),
             },
         )
-    topology_token = str(topology_profile_id or _as_map(key_row).get("topology_profile_id", "")).strip() or _DEFAULT_TOPOLOGY_PROFILE_ID
-    partition_token = str(partition_profile_id or _as_map(key_row).get("partition_profile_id", "")).strip() or _DEFAULT_PARTITION_PROFILE_ID
-    metric_token = str(metric_profile_id or "").strip() or _DEFAULT_METRIC_PROFILE_ID
+    topology_token = str(topology_arg or _as_map(key_row).get("topology_profile_id", "")).strip() or _DEFAULT_TOPOLOGY_PROFILE_ID
+    partition_token = str(partition_arg or _as_map(key_row).get("partition_profile_id", "")).strip() or _DEFAULT_PARTITION_PROFILE_ID
+    metric_token = str(metric_arg or "").strip() or _DEFAULT_METRIC_PROFILE_ID
     topology_row = _topology_row(topology_token, registry_payload=topology_registry_payload)
     if not topology_row:
         return _refusal(message="topology_profile_id is missing", details={"topology_profile_id": topology_token})
