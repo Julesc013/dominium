@@ -6370,6 +6370,86 @@
     },
     {
       "affected_fields": [
+        "logic_fault_state_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-8 process that activates a declared deterministic fault on a logic edge, node, or element.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "canonical-fault-state"
+      ],
+      "failure_modes": [
+        "refusal.logic.fault_invalid"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "fault_request",
+          "ref_id": "dominium.schema.logic.logic_fault_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "logic_fault_state_rows",
+          "ref_id": "dominium.schema.logic.logic_fault_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_fault_set",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/fault/fault_engine.py::process_logic_fault_set"
+      }
+    },
+    {
+      "affected_fields": [
+        "logic_fault_state_rows"
+      ],
+      "coupling_budget_id": "budget.coupling.process.default",
+      "description": "Canonical LOGIC-8 process that deactivates a deterministic logic fault without mutating runtime state directly.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "canonical-fault-state"
+      ],
+      "failure_modes": [
+        "refusal.logic.fault_invalid"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "fault_request",
+          "ref_id": "dominium.schema.logic.logic_fault_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "logic_fault_state_rows",
+          "ref_id": "dominium.schema.logic.logic_fault_state@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.logic_fault_clear",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1,
+      "extensions": {
+        "implementation_ref": "src/logic/fault/fault_engine.py::process_logic_fault_clear"
+      }
+    },
+    {
+      "affected_fields": [
         "logic.network_runtime_state_rows",
         "logic.eval_record_rows",
         "logic.pending_signal_update_rows",

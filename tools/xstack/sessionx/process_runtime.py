@@ -486,6 +486,11 @@ from src.logic.signal import (
     process_signal_emit_pulse,
     process_signal_set,
 )
+from src.logic.fault import (
+    normalize_logic_fault_state_rows,
+    process_logic_fault_clear,
+    process_logic_fault_set,
+)
 from src.logic.eval import (
     normalize_logic_state_update_record_rows,
     normalize_logic_eval_state,
@@ -842,6 +847,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.logic_network_add_edge": "entitlement.control.admin",
     "process.logic_network_remove_edge": "entitlement.control.admin",
     "process.logic_network_validate": "entitlement.control.admin",
+    "process.logic_fault_set": "entitlement.control.admin",
+    "process.logic_fault_clear": "entitlement.control.admin",
     "process.logic_compile_request": "entitlement.inspect",
     "process.logic_network_evaluate": "session.boot",
     "process.logic_probe": "entitlement.inspect",
@@ -1058,6 +1065,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.logic_network_add_edge": "operator",
     "process.logic_network_remove_edge": "operator",
     "process.logic_network_validate": "operator",
+    "process.logic_fault_set": "operator",
+    "process.logic_fault_clear": "operator",
     "process.logic_compile_request": "observer",
     "process.logic_network_evaluate": "observer",
     "process.logic_probe": "observer",
@@ -1220,6 +1229,8 @@ CONTROL_PROCESS_IDS = {
     "process.logic_network_add_edge",
     "process.logic_network_remove_edge",
     "process.logic_network_validate",
+    "process.logic_fault_set",
+    "process.logic_fault_clear",
     "process.logic_compile_request",
     "process.logic_network_evaluate",
     "process.logic_probe",
@@ -5029,6 +5040,35 @@ def _load_logic_signal_registries(*, policy_context: dict | None) -> Tuple[dict,
     )
 
 
+def _load_logic_fault_noise_security_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
+    logic_fault_kind_registry = dict(_policy_payload(policy_context, "logic_fault_kind_registry") or {})
+    if not logic_fault_kind_registry:
+        logic_fault_kind_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/logic_fault_kind_registry.json",
+            default_payload={"record": {"logic_fault_kinds": []}},
+        )
+    logic_noise_policy_registry = dict(_policy_payload(policy_context, "logic_noise_policy_registry") or {})
+    if not logic_noise_policy_registry:
+        logic_noise_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/logic_noise_policy_registry.json",
+            default_payload={"record": {"logic_noise_policies": []}},
+        )
+    logic_security_policy_registry = dict(_policy_payload(policy_context, "logic_security_policy_registry") or {})
+    if not logic_security_policy_registry:
+        logic_security_policy_registry = _read_registry_fallback(
+            repo_root=REPO_ROOT_HINT,
+            registry_rel_path="data/registries/logic_security_policy_registry.json",
+            default_payload={"record": {"logic_security_policies": []}},
+        )
+    return (
+        dict(logic_fault_kind_registry),
+        dict(logic_noise_policy_registry),
+        dict(logic_security_policy_registry),
+    )
+
+
 def _load_logic_signal_budget_registries(*, policy_context: dict | None) -> Tuple[dict, dict, dict]:
     compute_budget_profile_registry = dict(_policy_payload(policy_context, "compute_budget_profile_registry") or {})
     if not compute_budget_profile_registry:
@@ -5215,6 +5255,12 @@ def _persist_logic_eval_state(state: dict, logic_eval_state: Mapping[str, object
     state["logic_state_update_record_rows"] = [
         dict(row) for row in list(normalized.get("logic_state_update_record_rows") or []) if isinstance(row, Mapping)
     ]
+    state["logic_noise_decision_rows"] = [
+        dict(row) for row in list(normalized.get("logic_noise_decision_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_security_fail_rows"] = [
+        dict(row) for row in list(normalized.get("logic_security_fail_rows") or []) if isinstance(row, Mapping)
+    ]
     state["logic_pending_signal_update_rows"] = [
         dict(row) for row in list(normalized.get("logic_pending_signal_update_rows") or []) if isinstance(row, Mapping)
     ]
@@ -5366,6 +5412,11 @@ def _refresh_logic_debug_hash_chains(state: dict) -> None:
 
 
 def _refresh_logic_eval_hash_chains(state: dict) -> None:
+    logic_fault_rows = [
+        dict(row)
+        for row in list(state.get("logic_fault_state_rows") or [])
+        if isinstance(row, Mapping)
+    ]
     runtime_rows = [
         dict(row)
         for row in list(state.get("logic_network_runtime_state_rows") or [])
@@ -5401,11 +5452,42 @@ def _refresh_logic_eval_hash_chains(state: dict) -> None:
         for row in list(state.get("logic_state_update_record_rows") or [])
         if isinstance(row, Mapping)
     ]
+    noise_decision_rows = [
+        dict(row)
+        for row in list(state.get("logic_noise_decision_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    security_fail_rows = [
+        dict(row)
+        for row in list(state.get("logic_security_fail_rows") or [])
+        if isinstance(row, Mapping)
+    ]
     propagation_rows = [
         dict(row)
         for row in list(state.get("logic_propagation_trace_artifacts") or [])
         if isinstance(row, Mapping)
     ]
+    state["logic_fault_state_hash_chain"] = canonical_sha256(
+        [
+            {
+                "fault_id": str(row.get("fault_id", "")).strip(),
+                "fault_kind_id": str(row.get("fault_kind_id", "")).strip(),
+                "target_kind": str(row.get("target_kind", "")).strip(),
+                "target_id": str(row.get("target_id", "")).strip(),
+                "active": bool(row.get("active", False)),
+                "tick_set": int(max(0, _as_int(row.get("tick_set", 0), 0))),
+                "parameters_hash": canonical_sha256(dict(row.get("parameters") or {})),
+            }
+            for row in sorted(
+                logic_fault_rows,
+                key=lambda item: (
+                    str(item.get("target_kind", "")),
+                    str(item.get("target_id", "")),
+                    str(item.get("fault_id", "")),
+                ),
+            )
+        ]
+    )
     state["logic_network_runtime_state_hash_chain"] = canonical_sha256(
         [
             {
@@ -5520,6 +5602,48 @@ def _refresh_logic_eval_hash_chains(state: dict) -> None:
                 key=lambda item: (
                     int(max(0, _as_int(item.get("tick", 0), 0))),
                     str(item.get("update_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_noise_decision_hash_chain"] = canonical_sha256(
+        [
+            {
+                "decision_id": str(row.get("decision_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "slot_key": str(row.get("slot_key", "")).strip(),
+                "noise_policy_id": str(row.get("noise_policy_id", "")).strip(),
+                "reason": str(row.get("reason", "")).strip(),
+                "rng_stream_name": str(row.get("rng_stream_name", "")).strip() or None,
+                "input_value_hash": str(row.get("input_value_hash", "")).strip(),
+                "output_value_hash": str(row.get("output_value_hash", "")).strip(),
+            }
+            for row in sorted(
+                noise_decision_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("decision_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_security_fail_hash_chain"] = canonical_sha256(
+        [
+            {
+                "event_id": str(row.get("event_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                "network_id": str(row.get("network_id", "")).strip(),
+                "edge_id": str(row.get("edge_id", "")).strip(),
+                "security_policy_id": str(row.get("security_policy_id", "")).strip(),
+                "reason": str(row.get("reason", "")).strip(),
+                "signal_id": str(row.get("signal_id", "")).strip() or None,
+            }
+            for row in sorted(
+                security_fail_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("event_id", "")),
                 ),
             )
         ]
@@ -43572,6 +43696,9 @@ def execute_intent(
             signal_noise_policy_registry,
             signal_delay_policy_registry,
         ) = _load_logic_signal_registries(policy_context=policy_context)
+        _logic_fault_kind_registry, logic_noise_policy_registry, logic_security_policy_registry = _load_logic_fault_noise_security_registries(
+            policy_context=policy_context
+        )
         (
             compute_budget_profile_registry,
             compute_degrade_policy_registry,
@@ -44027,6 +44154,74 @@ def execute_intent(
             "requires_l2_roi": bool(dict(updated.get("validation_result") or {}).get("requires_l2_roi", False)),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_fault_set":
+        logic_fault_kind_registry, _logic_noise_policy_registry, _logic_security_policy_registry = _load_logic_fault_noise_security_registries(
+            policy_context=policy_context
+        )
+        fault_request = dict(inputs.get("fault_request") or {})
+        if not fault_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_fault_set requires fault_request",
+                "Provide fault_request with fault_kind_id, target_kind, and target_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.fault_request",
+            )
+        updated = process_logic_fault_set(
+            current_tick=int(current_tick),
+            logic_fault_state_rows=state.get("logic_fault_state_rows") or [],
+            fault_request=fault_request,
+            logic_fault_kind_registry_payload=logic_fault_kind_registry,
+        )
+        state["logic_fault_state_rows"] = normalize_logic_fault_state_rows(updated.get("logic_fault_state_rows") or [])
+        _refresh_logic_eval_hash_chains(state)
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_fault_set refused fault injection",
+                "Provide a registered fault kind and a valid logic target.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.fault_request",
+            )
+        result_metadata = {
+            "fault_id": str(dict(updated.get("fault_state_row") or {}).get("fault_id", "")).strip(),
+            "fault_kind_id": str(dict(updated.get("fault_state_row") or {}).get("fault_kind_id", "")).strip(),
+            "target_kind": str(dict(updated.get("fault_state_row") or {}).get("target_kind", "")).strip(),
+            "target_id": str(dict(updated.get("fault_state_row") or {}).get("target_id", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_fault_clear":
+        fault_request = dict(inputs.get("fault_request") or {})
+        if not fault_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_fault_clear requires fault_request",
+                "Provide fault_request with fault_id or target identifiers.",
+                {"process_id": process_id},
+                "$.intent.inputs.fault_request",
+            )
+        updated = process_logic_fault_clear(
+            current_tick=int(current_tick),
+            logic_fault_state_rows=state.get("logic_fault_state_rows") or [],
+            fault_request=fault_request,
+        )
+        state["logic_fault_state_rows"] = normalize_logic_fault_state_rows(updated.get("logic_fault_state_rows") or [])
+        _refresh_logic_eval_hash_chains(state)
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_fault_clear refused fault clearing",
+                "Provide an existing fault_id or matching target identifiers.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.fault_request",
+            )
+        result_metadata = {
+            "fault_id": str(dict(updated.get("fault_state_row") or {}).get("fault_id", "")).strip(),
+            "target_kind": str(dict(updated.get("fault_state_row") or {}).get("target_kind", "")).strip(),
+            "target_id": str(dict(updated.get("fault_state_row") or {}).get("target_id", "")).strip(),
+            "active": bool(dict(updated.get("fault_state_row") or {}).get("active", False)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.logic_probe":
         (
             carrier_type_registry,
@@ -44103,10 +44298,13 @@ def execute_intent(
                 "logic_timing_violation_event_rows": state.get("logic_timing_violation_event_rows"),
                 "logic_watchdog_timeout_event_rows": state.get("logic_watchdog_timeout_event_rows"),
                 "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
+                "logic_noise_decision_rows": state.get("logic_noise_decision_rows"),
+                "logic_security_fail_rows": state.get("logic_security_fail_rows"),
                 "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
                 "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
                 "compute_runtime_state": state.get("logic_eval_compute_runtime_state"),
             },
+            logic_fault_state_rows=state.get("logic_fault_state_rows") or [],
             probe_request=probe_request,
             state_vector_snapshot_rows=_ensure_state_vector_snapshot_rows(state),
             compiled_model_rows=state.get("compiled_model_rows") or [],
@@ -44333,10 +44531,13 @@ def execute_intent(
                 "logic_timing_violation_event_rows": state.get("logic_timing_violation_event_rows"),
                 "logic_watchdog_timeout_event_rows": state.get("logic_watchdog_timeout_event_rows"),
                 "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
+                "logic_noise_decision_rows": state.get("logic_noise_decision_rows"),
+                "logic_security_fail_rows": state.get("logic_security_fail_rows"),
                 "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
                 "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
                 "compute_runtime_state": state.get("logic_eval_compute_runtime_state"),
             },
+            logic_fault_state_rows=state.get("logic_fault_state_rows") or [],
             trace_tick_request=trace_tick_request,
             state_vector_snapshot_rows=_ensure_state_vector_snapshot_rows(state),
             compiled_model_rows=state.get("compiled_model_rows") or [],
@@ -44496,6 +44697,8 @@ def execute_intent(
                 "logic_timing_violation_event_rows": state.get("logic_timing_violation_event_rows"),
                 "logic_watchdog_timeout_event_rows": state.get("logic_watchdog_timeout_event_rows"),
                 "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
+                "logic_noise_decision_rows": state.get("logic_noise_decision_rows"),
+                "logic_security_fail_rows": state.get("logic_security_fail_rows"),
                 "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
                 "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
                 "compute_runtime_state": state.get("logic_eval_compute_runtime_state"),
@@ -44505,16 +44708,19 @@ def execute_intent(
             carrier_type_registry_payload=carrier_type_registry,
             signal_delay_policy_registry_payload=signal_delay_policy_registry,
             signal_noise_policy_registry_payload=signal_noise_policy_registry,
+            logic_noise_policy_registry_payload=logic_noise_policy_registry,
             bus_encoding_registry_payload=bus_encoding_registry,
             protocol_registry_payload=protocol_registry,
             logic_policy_registry_payload=logic_policy_registry,
             logic_network_policy_registry_payload=logic_network_policy_registry,
+            logic_security_policy_registry_payload=logic_security_policy_registry,
             logic_element_rows=logic_element_rows,
             logic_behavior_model_rows=logic_behavior_model_rows,
             logic_interface_signature_rows=logic_interface_signature_rows,
             logic_state_machine_rows=logic_state_machine_rows,
             state_vector_definition_rows=seeded_state_vector_rows,
             state_vector_snapshot_rows=_ensure_state_vector_snapshot_rows(state),
+            logic_fault_state_rows=state.get("logic_fault_state_rows") or [],
             compute_budget_profile_registry_payload=compute_budget_profile_registry,
             compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
             tolerance_policy_registry_payload=tolerance_policy_registry,
@@ -44591,6 +44797,11 @@ def execute_intent(
             )
         if updated.get("logic_eval_state") is not None:
             _persist_logic_eval_state(state, updated.get("logic_eval_state"))
+        if updated.get("safety_event_rows") is not None:
+            state["safety_events"] = normalize_safety_event_rows(
+                list(_ensure_safety_event_rows(state))
+                + [dict(row) for row in list(updated.get("safety_event_rows") or []) if isinstance(row, Mapping)]
+            )
         if updated.get("state_vector_definition_rows") is not None:
             state["state_vector_definition_rows"] = normalize_state_vector_definition_rows(
                 updated.get("state_vector_definition_rows")

@@ -374,6 +374,150 @@ def normalize_logic_state_update_record_rows(rows: object) -> list[dict]:
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
+def build_logic_noise_decision_row(
+    *,
+    tick: int,
+    network_id: str,
+    slot_key_value: str,
+    noise_policy_id: str,
+    signal_type_id: str,
+    reason: str,
+    input_value_hash: str,
+    output_value_hash: str,
+    decision_id: str = "",
+    rng_stream_name: str | None = None,
+    rng_seed_hash: str | None = None,
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "decision_id": token(decision_id)
+        or "decision.logic.noise.{}".format(
+            canonical_sha256(
+                {
+                    "tick": int(max(0, as_int(tick, 0))),
+                    "network_id": token(network_id),
+                    "slot_key": token(slot_key_value),
+                    "noise_policy_id": token(noise_policy_id),
+                    "reason": token(reason),
+                }
+            )[:16]
+        ),
+        "tick": int(max(0, as_int(tick, 0))),
+        "network_id": token(network_id),
+        "slot_key": token(slot_key_value),
+        "noise_policy_id": token(noise_policy_id),
+        "signal_type_id": token(signal_type_id),
+        "reason": token(reason),
+        "rng_stream_name": None if rng_stream_name is None else token(rng_stream_name) or None,
+        "rng_seed_hash": None if rng_seed_hash is None else token(rng_seed_hash) or None,
+        "input_value_hash": token(input_value_hash),
+        "output_value_hash": token(output_value_hash),
+        "deterministic_fingerprint": token(deterministic_fingerprint),
+        "extensions": canon(as_map(extensions)),
+    }
+    required = (
+        payload["network_id"],
+        payload["slot_key"],
+        payload["noise_policy_id"],
+        payload["signal_type_id"],
+        payload["reason"],
+        payload["input_value_hash"],
+        payload["output_value_hash"],
+    )
+    if any(not item for item in required):
+        return {}
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_logic_noise_decision_rows(rows: object) -> list[dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in as_list(rows) if isinstance(item, Mapping)), key=lambda item: (as_int(item.get("tick"), 0), token(item.get("decision_id")))):
+        normalized = build_logic_noise_decision_row(
+            tick=as_int(row.get("tick"), 0),
+            network_id=token(row.get("network_id")),
+            slot_key_value=token(row.get("slot_key")),
+            noise_policy_id=token(row.get("noise_policy_id")),
+            signal_type_id=token(row.get("signal_type_id")),
+            reason=token(row.get("reason")),
+            input_value_hash=token(row.get("input_value_hash")),
+            output_value_hash=token(row.get("output_value_hash")),
+            decision_id=token(row.get("decision_id")),
+            rng_stream_name=(None if row.get("rng_stream_name") is None else token(row.get("rng_stream_name")) or None),
+            rng_seed_hash=(None if row.get("rng_seed_hash") is None else token(row.get("rng_seed_hash")) or None),
+            deterministic_fingerprint=token(row.get("deterministic_fingerprint")),
+            extensions=as_map(row.get("extensions")),
+        )
+        if normalized:
+            out[token(normalized.get("decision_id"))] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def build_logic_security_fail_row(
+    *,
+    tick: int,
+    network_id: str,
+    edge_id: str,
+    security_policy_id: str,
+    reason: str,
+    signal_id: str | None = None,
+    event_id: str = "",
+    deterministic_fingerprint: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    payload = {
+        "schema_version": "1.0.0",
+        "event_id": token(event_id)
+        or "event.logic.security_fail.{}".format(
+            canonical_sha256(
+                {
+                    "tick": int(max(0, as_int(tick, 0))),
+                    "network_id": token(network_id),
+                    "edge_id": token(edge_id),
+                    "security_policy_id": token(security_policy_id),
+                    "reason": token(reason),
+                    "signal_id": None if signal_id is None else token(signal_id) or None,
+                }
+            )[:16]
+        ),
+        "tick": int(max(0, as_int(tick, 0))),
+        "network_id": token(network_id),
+        "edge_id": token(edge_id),
+        "security_policy_id": token(security_policy_id),
+        "reason": token(reason),
+        "signal_id": None if signal_id is None else token(signal_id) or None,
+        "deterministic_fingerprint": token(deterministic_fingerprint),
+        "extensions": canon(as_map(extensions)),
+    }
+    if (not payload["network_id"]) or (not payload["edge_id"]) or (not payload["security_policy_id"]) or (not payload["reason"]):
+        return {}
+    if not payload["deterministic_fingerprint"]:
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_logic_security_fail_rows(rows: object) -> list[dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted((dict(item) for item in as_list(rows) if isinstance(item, Mapping)), key=lambda item: (as_int(item.get("tick"), 0), token(item.get("event_id")))):
+        normalized = build_logic_security_fail_row(
+            tick=as_int(row.get("tick"), 0),
+            network_id=token(row.get("network_id")),
+            edge_id=token(row.get("edge_id")),
+            security_policy_id=token(row.get("security_policy_id")),
+            reason=token(row.get("reason")),
+            signal_id=(None if row.get("signal_id") is None else token(row.get("signal_id")) or None),
+            event_id=token(row.get("event_id")),
+            deterministic_fingerprint=token(row.get("deterministic_fingerprint")),
+            extensions=as_map(row.get("extensions")),
+        )
+        if normalized:
+            out[token(normalized.get("event_id"))] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
 def build_logic_pending_signal_update_row(
     *,
     network_id: str,
@@ -546,6 +690,8 @@ def normalize_logic_eval_state(state: Mapping[str, object] | None) -> dict:
         "logic_timing_violation_event_rows": normalize_logic_timing_violation_event_rows(src.get("logic_timing_violation_event_rows")),
         "logic_watchdog_timeout_event_rows": normalize_logic_watchdog_timeout_event_rows(src.get("logic_watchdog_timeout_event_rows")),
         "logic_state_update_record_rows": normalize_logic_state_update_record_rows(src.get("logic_state_update_record_rows")),
+        "logic_noise_decision_rows": normalize_logic_noise_decision_rows(src.get("logic_noise_decision_rows")),
+        "logic_security_fail_rows": normalize_logic_security_fail_rows(src.get("logic_security_fail_rows")),
         "logic_pending_signal_update_rows": normalize_logic_pending_signal_update_rows(src.get("logic_pending_signal_update_rows")),
         "logic_propagation_trace_artifact_rows": normalize_logic_propagation_trace_artifact_rows(src.get("logic_propagation_trace_artifact_rows")),
         "compute_runtime_state": canon(as_map(src.get("compute_runtime_state"))),
@@ -556,9 +702,11 @@ def normalize_logic_eval_state(state: Mapping[str, object] | None) -> dict:
 __all__ = [
     "build_logic_eval_record_row",
     "build_logic_network_runtime_state_row",
+    "build_logic_noise_decision_row",
     "build_logic_oscillation_record_row",
     "build_logic_pending_signal_update_row",
     "build_logic_propagation_trace_artifact_row",
+    "build_logic_security_fail_row",
     "build_logic_state_update_record_row",
     "build_logic_timing_violation_event_row",
     "build_logic_throttle_event_row",
@@ -566,9 +714,11 @@ __all__ = [
     "normalize_logic_eval_record_rows",
     "normalize_logic_eval_state",
     "normalize_logic_network_runtime_state_rows",
+    "normalize_logic_noise_decision_rows",
     "normalize_logic_oscillation_record_rows",
     "normalize_logic_pending_signal_update_rows",
     "normalize_logic_propagation_trace_artifact_rows",
+    "normalize_logic_security_fail_rows",
     "normalize_logic_state_update_record_rows",
     "normalize_logic_timing_violation_event_rows",
     "normalize_logic_throttle_event_rows",

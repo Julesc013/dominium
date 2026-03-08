@@ -25,7 +25,9 @@ from .runtime_state import (
     build_logic_watchdog_timeout_event_row,
     normalize_logic_eval_state,
     normalize_logic_network_runtime_state_rows,
+    normalize_logic_noise_decision_rows,
     normalize_logic_oscillation_record_rows,
+    normalize_logic_security_fail_rows,
     normalize_logic_timing_violation_event_rows,
     normalize_logic_throttle_event_rows,
     normalize_logic_watchdog_timeout_event_rows,
@@ -199,16 +201,19 @@ def process_logic_network_evaluate(
     carrier_type_registry_payload: Mapping[str, object] | None,
     signal_delay_policy_registry_payload: Mapping[str, object] | None,
     signal_noise_policy_registry_payload: Mapping[str, object] | None,
+    logic_noise_policy_registry_payload: Mapping[str, object] | None,
     bus_encoding_registry_payload: Mapping[str, object] | None,
     protocol_registry_payload: Mapping[str, object] | None,
     logic_policy_registry_payload: Mapping[str, object] | None,
     logic_network_policy_registry_payload: Mapping[str, object] | None,
+    logic_security_policy_registry_payload: Mapping[str, object] | None,
     logic_element_rows: object,
     logic_behavior_model_rows: object,
     logic_interface_signature_rows: object,
     logic_state_machine_rows: object,
     state_vector_definition_rows: object,
     state_vector_snapshot_rows: object,
+    logic_fault_state_rows: object = None,
     compute_budget_profile_registry_payload: Mapping[str, object] | None,
     compute_degrade_policy_registry_payload: Mapping[str, object] | None,
     tolerance_policy_registry_payload: Mapping[str, object] | None,
@@ -393,7 +398,67 @@ def process_logic_network_evaluate(
         logic_behavior_model_rows=logic_behavior_model_rows,
         interface_signature_rows=logic_interface_signature_rows,
         state_machine_rows=logic_state_machine_rows,
+        logic_fault_state_rows=logic_fault_state_rows,
+        logic_noise_policy_registry_payload=logic_noise_policy_registry_payload,
+        logic_security_policy_registry_payload=logic_security_policy_registry_payload,
+        evaluation_request=request,
     )
+    noise_decision_rows = normalize_logic_noise_decision_rows(
+        list(eval_state.get("logic_noise_decision_rows") or [])
+        + [dict(row) for row in as_list(sense_snapshot.get("logic_noise_decision_rows")) if isinstance(row, Mapping)]
+    )
+    security_fail_rows = normalize_logic_security_fail_rows(
+        list(eval_state.get("logic_security_fail_rows") or [])
+        + [dict(row) for row in as_list(sense_snapshot.get("logic_security_fail_rows")) if isinstance(row, Mapping)]
+    )
+    sense_explain_rows = [dict(row) for row in as_list(sense_snapshot.get("explain_artifact_rows")) if isinstance(row, Mapping)]
+    sense_safety_rows = [dict(row) for row in as_list(sense_snapshot.get("safety_event_rows")) if isinstance(row, Mapping)]
+    if token(sense_snapshot.get("result")) != "complete":
+        return {
+            "result": "refused",
+            "reason_code": token(sense_snapshot.get("reason_code")) or "refusal.logic.fault_invalid",
+            "logic_eval_state": normalize_logic_eval_state(
+                dict(
+                    eval_state,
+                    logic_noise_decision_rows=noise_decision_rows,
+                    logic_security_fail_rows=security_fail_rows,
+                )
+            ),
+            "signal_store_state": updated_signal_store_state,
+            "sense_snapshot": sense_snapshot,
+            "explain_artifact_rows": sense_explain_rows,
+            "safety_event_rows": sense_safety_rows,
+        }
+    if bool(sense_snapshot.get("requires_l2_timing", False)):
+        runtime_rows[network_id] = build_logic_network_runtime_state_row(
+            network_id=network_id,
+            last_evaluated_tick=as_int(prior_runtime.get("last_evaluated_tick"), 0),
+            throttled=False,
+            deterministic_fingerprint="",
+            extensions={
+                **as_map(prior_runtime.get("extensions")),
+                "l1_timing_refused": True,
+                "requires_l2_timing": bool(token(logic_policy_row.get("timing_mode")) == "roi_micro_optional"),
+                "timing_gate_reason": "fault_requires_roi",
+                "timing_status": "requires_l2" if token(logic_policy_row.get("timing_mode")) == "roi_micro_optional" else "l1_refused",
+            },
+        )
+        return {
+            "result": "refused",
+            "reason_code": REFUSAL_LOGIC_EVAL_TIMING_VIOLATION,
+            "logic_eval_state": normalize_logic_eval_state(
+                dict(
+                    eval_state,
+                    logic_network_runtime_state_rows=normalize_logic_network_runtime_state_rows(list(runtime_rows.values())),
+                    logic_noise_decision_rows=noise_decision_rows,
+                    logic_security_fail_rows=security_fail_rows,
+                )
+            ),
+            "signal_store_state": updated_signal_store_state,
+            "sense_snapshot": sense_snapshot,
+            "explain_artifact_rows": sense_explain_rows,
+            "safety_event_rows": sense_safety_rows,
+        }
     from src.logic.compile.logic_compiler import (
         REFUSAL_LOGIC_COMPILED_INVALID,
         build_logic_compiled_introspection_artifact,
@@ -595,7 +660,7 @@ def process_logic_network_evaluate(
     timing_violation_event_rows = list(eval_state.get("logic_timing_violation_event_rows") or [])
     watchdog_timeout_event_rows = list(eval_state.get("logic_watchdog_timeout_event_rows") or [])
     network_timing_violation_rows = []
-    explain_rows = list(compiled_explain_rows)
+    explain_rows = list(sense_explain_rows) + list(compiled_explain_rows)
     timing_compute_units_used = 0
     for event in as_list(compute_result.get("throttle_events")):
         if not isinstance(event, Mapping):
@@ -906,6 +971,8 @@ def process_logic_network_evaluate(
             "logic_timing_violation_event_rows": normalize_logic_timing_violation_event_rows(timing_violation_event_rows),
             "logic_watchdog_timeout_event_rows": normalize_logic_watchdog_timeout_event_rows(watchdog_timeout_event_rows),
             "logic_state_update_record_rows": list(commit_result.get("state_update_record_rows") or []),
+            "logic_noise_decision_rows": noise_decision_rows,
+            "logic_security_fail_rows": security_fail_rows,
             "logic_pending_signal_update_rows": propagation_result.get("logic_pending_signal_update_rows"),
             "logic_propagation_trace_artifact_rows": propagation_result.get("logic_propagation_trace_artifact_rows"),
             "compute_runtime_state": compute_result.get("compute_runtime_state"),
@@ -925,6 +992,7 @@ def process_logic_network_evaluate(
         "explain_artifact_rows": explain_rows,
         "forced_expand_event_rows": forced_expand_rows,
         "compiled_introspection_artifact_rows": compiled_introspection_artifact_rows,
+        "safety_event_rows": sense_safety_rows,
     }
 
 
