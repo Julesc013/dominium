@@ -2,9 +2,9 @@
   "artifact_class": "RUN_META",
   "cache_mode": "full_scan",
   "changed_only": false,
-  "changed_paths_since_last": 11833,
-  "generated_utc": "2026-03-08T03:17:35Z",
-  "graph_hash": "1d39f4f1cf31cea85a8f716847aec0438fe340e2a196d48756160cbbaa6cc58b",
+  "changed_paths_since_last": 11852,
+  "generated_utc": "2026-03-08T04:21:31Z",
+  "graph_hash": "013bc75450cba6da07e045e33e8dec40b9f64e21b18f193482f1f9e2edd231ad",
   "last_reviewed": "2026-03-08",
   "output_format": "both",
   "platform": "windows",
@@ -287,7 +287,9 @@
     "E326_NONDETERMINISTIC_ARBITRATION_SMELL",
     "E327_PROTOCOL_SECURITY_BYPASS_SMELL",
     "E328_PROTOCOL_BYPASS_SMELL",
+    "E329_UNBOUNDED_LOGIC_LOOP_SMELL",
     "E32_COHORT_LEAK_SMELL",
+    "E330_SILENT_LOGIC_THROTTLE_SMELL",
     "E33_NONDETERMINISTIC_COHORT_MAPPING_SMELL",
     "E34_ORDER_BYPASS_SMELL",
     "E35_ROLE_ESCALATION_SMELL",
@@ -366,5 +368,5 @@
   "result": "scan_complete",
   "reused_analyzers": [],
   "status": "DERIVED",
-  "workspace_id": "ws-ac011a4a19da6dc8"
+  "workspace_id": "ws-06c1b301ced1b5e3"
 }

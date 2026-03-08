@@ -56,7 +56,7 @@
     "interaction.interaction_bypass_smell": 2,
     "legacy_contamination": 11,
     "logic.adhoc_wiring_smell": 5,
-    "logic.carrier_bias_smell": 8,
+    "logic.carrier_bias_smell": 9,
     "logic.protocol_security_bypass_smell": 1,
     "logic.random_failure_smell": 1,
     "logic.truth_leak_via_debug_smell": 1,
@@ -140,7 +140,7 @@
       "interaction.interaction_bypass_smell": 2,
       "legacy_contamination": 11,
       "logic.adhoc_wiring_smell": 5,
-      "logic.carrier_bias_smell": 8,
+      "logic.carrier_bias_smell": 9,
       "logic.protocol_security_bypass_smell": 1,
       "logic.random_failure_smell": 1,
       "logic.truth_leak_via_debug_smell": 1,
@@ -169,12 +169,12 @@
     },
     "severity_distribution": {
       "INFO": 223,
-      "RISK": 674,
+      "RISK": 675,
       "VIOLATION": 108,
       "WARN": 1242
     }
   },
-  "findings_hash": "50e6600919e7e41963afa4961b6f137c6cd8210afb3664e4e39391cdeff4a4f4",
+  "findings_hash": "c3e8bfdb2d2d20db4e19e06bb3523fd829a0efe9e00ce06775dffaa583a898be",
   "history_reference": {
     "previous_distinct_hash": ""
   },
@@ -182,9 +182,9 @@
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 223,
-    "RISK": 674,
+    "RISK": 675,
     "VIOLATION": 108,
     "WARN": 1242
   },
-  "total_findings": 2247
+  "total_findings": 2248
 }

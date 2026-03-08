@@ -230,6 +230,7 @@
         "src/logic/eval/propagate_engine.py",
         "src/logic/protocol/protocol_engine.py",
         "src/logic/signal/carrier_adapters.py",
+        "tools/logic/logic10_stress_common.py",
         "tools/logic/tool_run_logic_debug_stress.py",
         "tools/logic/tool_run_logic_eval_stress.py",
         "tools/logic/tool_run_logic_fault_stress.py",

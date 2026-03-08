@@ -1,7 +1,7 @@
 {
   "artifact_class": "CANONICAL",
   "changed_only": false,
-  "finding_count": 2247,
+  "finding_count": 2248,
   "findings": [
     {
       "analyzer_id": "A4_DERIVED_ARTIFACT_CONTRACT",
@@ -20378,10 +20378,10 @@
         "r\"(truthmodel|truth_model).*(serialize|json|packet|socket|network|replication|delta|snapshot)\""
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0001",
-      "fingerprint": "521e0e2c4a1bbe098aded7334d8324e063ccd9f9752af4855ee4b5c2ad5ff70b",
+      "fingerprint": "0d848275dd07a0c8e2e07103a9ec063b9249e609696dec080946c952b207fcd9",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1884
+        "line_start": 1888
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -20404,10 +20404,10 @@
         "r\"(serialize|json|packet|socket|network|replication|delta|snapshot).*(truthmodel|truth_model)\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0002",
-      "fingerprint": "6de84daebb6acd9917f2042b298d0848f6f4ce4a67293f8eda892559a79a88dd",
+      "fingerprint": "90bfd1b00d2f69bffea367c717c88c96c066d6c5670dc3ede95bd1dd618c3580",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1886
+        "line_start": 1890
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -20430,10 +20430,10 @@
         "message=\"TruthModel network serialization smell detected; transmit PerceivedModel/snapshot hashes only\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0003",
-      "fingerprint": "c5141a34f4c25e97d73d630370e9553ed1cf0e69b65e8a311afeea4d5a71b3de",
+      "fingerprint": "a9a796fe8133fcd5f536e0263bb70038029f91808026e944f3e9642d301621b4",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1906
+        "line_start": 1910
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -20456,10 +20456,10 @@
         "message=\"network payload path must remain PerceivedModel-only and avoid TruthModel serialization\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0004",
-      "fingerprint": "e6d7925ecdac53d89e2e1482b282d8f52a653e5deb035717bc206ab3c2a8d04f",
+      "fingerprint": "df9e9ecee55e907f3677c98a4269eab9afea888509f6c058a9143d7d4e7bc3b0",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 1916
+        "line_start": 1920
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -20482,10 +20482,10 @@
         "r\"(send|socket|packet|transport|wire|payload_ref).*(truth_model|truthmodel|universe_state)\""
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0005",
-      "fingerprint": "2267040752622979f8721dcfd814cf7be7ba70f135f247fbbc6ef9d1bb31e290",
+      "fingerprint": "6150fe0ac5ac75e98d9806c8db2141324e2534c3f9dd50f549af8db9db24ce86",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 2066
+        "line_start": 2070
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -20508,10 +20508,10 @@
         "r\"(truth_model|truthmodel|universe_state).*(send|socket|packet|transport|wire)\","
       ],
       "finding_id": "E2_TRUTH_OVER_NET_SMELL:0006",
-      "fingerprint": "9bb556ac666a951a555dea5be230109cd41857bd32736860a35192b7c94f6fb6",
+      "fingerprint": "b64cee81b9ec26d15656c835888f9a398add914c7f568e1d1c460626c86ea3cc",
       "location": {
         "file_path": "tools/xstack/repox/check.py",
-        "line_start": 2068
+        "line_start": 2072
       },
       "recommended_action": "ADD_RULE",
       "related_invariants": [
@@ -20615,6 +20615,33 @@
         "carrier.electrical"
       ],
       "finding_id": "E311_CARRIER_BIAS_SMELL:0004",
+      "fingerprint": "93045bfbf3b760d88b9b9821c89eda0e04ad3b71f866f3ff8bcb35bfac5e776e",
+      "location": {
+        "file_path": "tools/logic/logic10_stress_common.py",
+        "line_start": 1
+      },
+      "recommended_action": "REWRITE",
+      "related_invariants": [
+        "INV-NO-CARRIER-SEMANTIC-BIAS"
+      ],
+      "related_paths": [
+        "src/logic/signal/carrier_adapters.py",
+        "tools/logic/logic10_stress_common.py"
+      ],
+      "severity": "RISK",
+      "status": "OPEN",
+      "suggested_classification": "NEEDS_REVIEW"
+    },
+    {
+      "analyzer_id": "E311_CARRIER_BIAS_SMELL",
+      "category": "logic.carrier_bias_smell",
+      "confidence": 0.9,
+      "created_utc": "1970-01-01T00:00:00Z",
+      "evidence": [
+        "logic runtime references carrier-specific semantic token outside adapter seam",
+        "carrier.electrical"
+      ],
+      "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
       "fingerprint": "b8d9251d5aaba27fe071854ce208ea4441f49c9476532294fbf5cbfcd117b319",
       "location": {
         "file_path": "tools/logic/tool_run_logic_debug_stress.py",
@@ -20641,7 +20668,7 @@
         "logic runtime references carrier-specific semantic token outside adapter seam",
         "carrier.electrical"
       ],
-      "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
+      "finding_id": "E311_CARRIER_BIAS_SMELL:0006",
       "fingerprint": "405c9a9125f8ba9543e20b0495659b3b22f964db0cde8a547ecf782affd6e05b",
       "location": {
         "file_path": "tools/logic/tool_run_logic_eval_stress.py",
@@ -20668,7 +20695,7 @@
         "logic runtime references carrier-specific semantic token outside adapter seam",
         "carrier.electrical"
       ],
-      "finding_id": "E311_CARRIER_BIAS_SMELL:0006",
+      "finding_id": "E311_CARRIER_BIAS_SMELL:0007",
       "fingerprint": "65a674ebf51254389f8d2deb3e23950e7642621ae78c2819425dfa66b7e15507",
       "location": {
         "file_path": "tools/logic/tool_run_logic_fault_stress.py",
@@ -20695,7 +20722,7 @@
         "logic runtime references carrier-specific semantic token outside adapter seam",
         "carrier.electrical"
       ],
-      "finding_id": "E311_CARRIER_BIAS_SMELL:0007",
+      "finding_id": "E311_CARRIER_BIAS_SMELL:0008",
       "fingerprint": "48215026ea2dfdb1a5381f3c457bf3909d2c5a248f94f0fc3e58f6414865ee4d",
       "location": {
         "file_path": "tools/logic/tool_run_logic_protocol_stress.py",
@@ -20722,7 +20749,7 @@
         "logic runtime references carrier-specific semantic token outside adapter seam",
         "carrier.electrical"
       ],
-      "finding_id": "E311_CARRIER_BIAS_SMELL:0008",
+      "finding_id": "E311_CARRIER_BIAS_SMELL:0009",
       "fingerprint": "c27049e152ad077a8fc3587f94f8d17a465934d463900c8cafa9caaf1dfcac15",
       "location": {
         "file_path": "tools/logic/tool_run_logic_timing_stress.py",
@@ -57657,7 +57684,7 @@
       "suggested_classification": "TODO-BLOCKED"
     }
   ],
-  "graph_hash": "1d39f4f1cf31cea85a8f716847aec0438fe340e2a196d48756160cbbaa6cc58b",
+  "graph_hash": "013bc75450cba6da07e045e33e8dec40b9f64e21b18f193482f1f9e2edd231ad",
   "result": "scan_complete",
   "schema_id": "dominium.auditx.findings",
   "schema_version": "1.0.0"

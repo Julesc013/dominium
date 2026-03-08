@@ -1266,9 +1266,9 @@
       }
     },
     "INV-NO-CARRIER-SEMANTIC-BIAS": {
-      "finding_count": 8,
+      "finding_count": 9,
       "recommended_actions": {
-        "REWRITE": 8
+        "REWRITE": 9
       },
       "sample_findings": [
         {
@@ -1289,16 +1289,16 @@
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0004",
-          "location": "tools/logic/tool_run_logic_debug_stress.py"
+          "location": "tools/logic/logic10_stress_common.py"
         },
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
-          "location": "tools/logic/tool_run_logic_eval_stress.py"
+          "location": "tools/logic/tool_run_logic_debug_stress.py"
         }
       ],
       "severities": {
-        "RISK": 8
+        "RISK": 9
       }
     },
     "INV-NO-DIRECT-ARTIFACT-DELIVERY": {

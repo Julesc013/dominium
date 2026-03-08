@@ -9,7 +9,7 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 674
+- RISK: 675
 - VIOLATION: 108
 - WARN: 1242
 
@@ -70,7 +70,7 @@ Superseded By: none
 - interaction.interaction_bypass_smell: 2
 - legacy_contamination: 11
 - logic.adhoc_wiring_smell: 5
-- logic.carrier_bias_smell: 8
+- logic.carrier_bias_smell: 9
 - logic.protocol_security_bypass_smell: 1
 - logic.random_failure_smell: 1
 - logic.truth_leak_via_debug_smell: 1

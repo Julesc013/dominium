@@ -1,0 +1,1796 @@
+{
+  "deterministic_fingerprint": "157ebf8dbc1920df6ebcec498ca1bbdf6add91b2efb7d3fef365f32ce184656a",
+  "evaluations": [
+    {
+      "deterministic_fingerprint": "50b94e4d674d2070cce190aae931b01772840bcbb09e06523852ebc0f8114916",
+      "discrepancy_summary": "",
+      "evaluator_id": "ref.compiled_model_verify",
+      "match": true,
+      "reference_output": {
+        "compiled_model_id": "compiled_model.ref.alpha",
+        "equivalence_proof_ref": "proof.ref.alpha",
+        "output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+        "proof_hash": "cc800aedb1e691dd8853e6bd547c1e64bdcf9c0de03c5e8858816ceaf47d2fec"
+      },
+      "result": "complete",
+      "run_record": {
+        "deterministic_fingerprint": "50b94e4d674d2070cce190aae931b01772840bcbb09e06523852ebc0f8114916",
+        "discrepancy_summary": null,
+        "evaluator_id": "ref.compiled_model_verify",
+        "extensions": {
+          "current_tick": 3,
+          "reference_output": {
+            "compiled_model_id": "compiled_model.ref.alpha",
+            "equivalence_proof_ref": "proof.ref.alpha",
+            "output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+            "proof_hash": "cc800aedb1e691dd8853e6bd547c1e64bdcf9c0de03c5e8858816ceaf47d2fec"
+          },
+          "runtime_output": {
+            "compiled_model_id": "compiled_model.ref.alpha",
+            "equivalence_proof_ref": "proof.ref.alpha",
+            "output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+            "proof_hash": "cc800aedb1e691dd8853e6bd547c1e64bdcf9c0de03c5e8858816ceaf47d2fec"
+          }
+        },
+        "match": true,
+        "reference_output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+        "run_id": "reference_run.dd4b217acfc34850",
+        "runtime_output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+        "schema_version": "1.0.0",
+        "seed": 1731,
+        "tick_range": {
+          "end": 3,
+          "start": 0
+        }
+      },
+      "runtime_output": {
+        "compiled_model_id": "compiled_model.ref.alpha",
+        "equivalence_proof_ref": "proof.ref.alpha",
+        "output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+        "proof_hash": "cc800aedb1e691dd8853e6bd547c1e64bdcf9c0de03c5e8858816ceaf47d2fec"
+      }
+    },
+    {
+      "deterministic_fingerprint": "bad81445373038cb1a75f4cd4ee5a7de6d9c431980d32eae556d9eb966f5d779",
+      "discrepancy_summary": "",
+      "evaluator_id": "ref.coupling_scheduler",
+      "match": true,
+      "reference_output": {
+        "budget_outcome": "complete",
+        "cost_units": 9,
+        "deferred_rows": [],
+        "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+        "processed_binding_ids": [
+          "binding.ref.alpha",
+          "binding.ref.beta"
+        ]
+      },
+      "result": "complete",
+      "run_record": {
+        "deterministic_fingerprint": "bad81445373038cb1a75f4cd4ee5a7de6d9c431980d32eae556d9eb966f5d779",
+        "discrepancy_summary": null,
+        "evaluator_id": "ref.coupling_scheduler",
+        "extensions": {
+          "current_tick": 3,
+          "reference_output": {
+            "budget_outcome": "complete",
+            "cost_units": 9,
+            "deferred_rows": [],
+            "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+            "processed_binding_ids": [
+              "binding.ref.alpha",
+              "binding.ref.beta"
+            ]
+          },
+          "runtime_output": {
+            "budget_outcome": "complete",
+            "cost_units": 9,
+            "deferred_rows": [],
+            "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+            "processed_binding_ids": [
+              "binding.ref.alpha",
+              "binding.ref.beta"
+            ]
+          }
+        },
+        "match": true,
+        "reference_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+        "run_id": "reference_run.3e321f7cb89d78a2",
+        "runtime_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+        "schema_version": "1.0.0",
+        "seed": 1731,
+        "tick_range": {
+          "end": 3,
+          "start": 0
+        }
+      },
+      "runtime_output": {
+        "budget_outcome": "complete",
+        "cost_units": 9,
+        "deferred_rows": [],
+        "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+        "processed_binding_ids": [
+          "binding.ref.alpha",
+          "binding.ref.beta"
+        ]
+      }
+    },
+    {
+      "deterministic_fingerprint": "e8c78224ee24cb24799466eb1fb8732805261fd27d135f44683c85a2e1772cfe",
+      "discrepancy_summary": "",
+      "evaluator_id": "ref.energy_ledger",
+      "match": true,
+      "reference_output": {
+        "entry_count": 6,
+        "entry_delta_mismatch": 0,
+        "output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+        "per_tick": [
+          {
+            "entry_count": 2,
+            "input_total": 211,
+            "output_total": 191,
+            "recorded_delta_total": -20,
+            "runtime_delta_total": -20,
+            "tick": 0
+          },
+          {
+            "entry_count": 2,
+            "input_total": 213,
+            "output_total": 193,
+            "recorded_delta_total": -20,
+            "runtime_delta_total": -20,
+            "tick": 1
+          },
+          {
+            "entry_count": 2,
+            "input_total": 215,
+            "output_total": 195,
+            "recorded_delta_total": -20,
+            "runtime_delta_total": -20,
+            "tick": 2
+          }
+        ]
+      },
+      "result": "complete",
+      "run_record": {
+        "deterministic_fingerprint": "e8c78224ee24cb24799466eb1fb8732805261fd27d135f44683c85a2e1772cfe",
+        "discrepancy_summary": null,
+        "evaluator_id": "ref.energy_ledger",
+        "extensions": {
+          "current_tick": 3,
+          "reference_output": {
+            "entry_count": 6,
+            "entry_delta_mismatch": 0,
+            "output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+            "per_tick": [
+              {
+                "entry_count": 2,
+                "input_total": 211,
+                "output_total": 191,
+                "recorded_delta_total": -20,
+                "runtime_delta_total": -20,
+                "tick": 0
+              },
+              {
+                "entry_count": 2,
+                "input_total": 213,
+                "output_total": 193,
+                "recorded_delta_total": -20,
+                "runtime_delta_total": -20,
+                "tick": 1
+              },
+              {
+                "entry_count": 2,
+                "input_total": 215,
+                "output_total": 195,
+                "recorded_delta_total": -20,
+                "runtime_delta_total": -20,
+                "tick": 2
+              }
+            ]
+          },
+          "runtime_output": {
+            "entry_count": 6,
+            "entry_delta_mismatch": 0,
+            "output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+            "per_tick": [
+              {
+                "entry_count": 2,
+                "input_total": 211,
+                "output_total": 191,
+                "recorded_delta_total": -20,
+                "runtime_delta_total": -20,
+                "tick": 0
+              },
+              {
+                "entry_count": 2,
+                "input_total": 213,
+                "output_total": 193,
+                "recorded_delta_total": -20,
+                "runtime_delta_total": -20,
+                "tick": 1
+              },
+              {
+                "entry_count": 2,
+                "input_total": 215,
+                "output_total": 195,
+                "recorded_delta_total": -20,
+                "runtime_delta_total": -20,
+                "tick": 2
+              }
+            ]
+          }
+        },
+        "match": true,
+        "reference_output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+        "run_id": "reference_run.d29ebb8b89509e1c",
+        "runtime_output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+        "schema_version": "1.0.0",
+        "seed": 1731,
+        "tick_range": {
+          "end": 3,
+          "start": 0
+        }
+      },
+      "runtime_output": {
+        "entry_count": 6,
+        "entry_delta_mismatch": 0,
+        "output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+        "per_tick": [
+          {
+            "entry_count": 2,
+            "input_total": 211,
+            "output_total": 191,
+            "recorded_delta_total": -20,
+            "runtime_delta_total": -20,
+            "tick": 0
+          },
+          {
+            "entry_count": 2,
+            "input_total": 213,
+            "output_total": 193,
+            "recorded_delta_total": -20,
+            "runtime_delta_total": -20,
+            "tick": 1
+          },
+          {
+            "entry_count": 2,
+            "input_total": 215,
+            "output_total": 195,
+            "recorded_delta_total": -20,
+            "runtime_delta_total": -20,
+            "tick": 2
+          }
+        ]
+      }
+    },
+    {
+      "deterministic_fingerprint": "f5eb014d15a1e8bbd7ba0bf1f41d1e261ea61de2b74510b4d90fcea56060f2ca",
+      "discrepancy_summary": "",
+      "evaluator_id": "ref.logic_eval_small",
+      "match": true,
+      "reference_output": {
+        "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+        "output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+        "signal_windows": [
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+            "valid_from_tick": 0,
+            "valid_until_tick": null,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+            "valid_from_tick": 0,
+            "valid_until_tick": null,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+            "valid_from_tick": 2,
+            "valid_until_tick": 3,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+            "valid_from_tick": 3,
+            "valid_until_tick": null,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+            "valid_from_tick": 2,
+            "valid_until_tick": 3,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+            "valid_from_tick": 3,
+            "valid_until_tick": null,
+            "value": 0,
+            "value_kind": "boolean"
+          }
+        ],
+        "tick_reports": [
+          {
+            "signals": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "value": 1,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick": 1
+          },
+          {
+            "signals": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick": 2
+          },
+          {
+            "signals": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "value": 0,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick": 3
+          }
+        ]
+      },
+      "result": "complete",
+      "run_record": {
+        "deterministic_fingerprint": "f5eb014d15a1e8bbd7ba0bf1f41d1e261ea61de2b74510b4d90fcea56060f2ca",
+        "discrepancy_summary": null,
+        "evaluator_id": "ref.logic_eval_small",
+        "extensions": {
+          "current_tick": 3,
+          "reference_output": {
+            "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+            "output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+            "signal_windows": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "valid_from_tick": 0,
+                "valid_until_tick": null,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "valid_from_tick": 0,
+                "valid_until_tick": null,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "valid_from_tick": 2,
+                "valid_until_tick": 3,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "valid_from_tick": 3,
+                "valid_until_tick": null,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "valid_from_tick": 2,
+                "valid_until_tick": 3,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "valid_from_tick": 3,
+                "valid_until_tick": null,
+                "value": 0,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick_reports": [
+              {
+                "signals": [
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  }
+                ],
+                "tick": 1
+              },
+              {
+                "signals": [
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  }
+                ],
+                "tick": 2
+              },
+              {
+                "signals": [
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                    "value": 0,
+                    "value_kind": "boolean"
+                  }
+                ],
+                "tick": 3
+              }
+            ]
+          },
+          "runtime_output": {
+            "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+            "output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+            "signal_windows": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "valid_from_tick": 0,
+                "valid_until_tick": null,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "valid_from_tick": 0,
+                "valid_until_tick": null,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "valid_from_tick": 2,
+                "valid_until_tick": 3,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "valid_from_tick": 3,
+                "valid_until_tick": null,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "valid_from_tick": 2,
+                "valid_until_tick": 3,
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "valid_from_tick": 3,
+                "valid_until_tick": null,
+                "value": 0,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick_reports": [
+              {
+                "signals": [
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  }
+                ],
+                "tick": 1
+              },
+              {
+                "signals": [
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  }
+                ],
+                "tick": 2
+              },
+              {
+                "signals": [
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                    "value": 1,
+                    "value_kind": "boolean"
+                  },
+                  {
+                    "signal_type_id": "signal.boolean",
+                    "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                    "value": 0,
+                    "value_kind": "boolean"
+                  }
+                ],
+                "tick": 3
+              }
+            ]
+          }
+        },
+        "match": true,
+        "reference_output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+        "run_id": "reference_run.fd908adf74cf7e58",
+        "runtime_output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+        "schema_version": "1.0.0",
+        "seed": 1731,
+        "tick_range": {
+          "end": 3,
+          "start": 0
+        }
+      },
+      "runtime_output": {
+        "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+        "output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+        "signal_windows": [
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+            "valid_from_tick": 0,
+            "valid_until_tick": null,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+            "valid_from_tick": 0,
+            "valid_until_tick": null,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+            "valid_from_tick": 2,
+            "valid_until_tick": 3,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+            "valid_from_tick": 3,
+            "valid_until_tick": null,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+            "valid_from_tick": 2,
+            "valid_until_tick": 3,
+            "value": 1,
+            "value_kind": "boolean"
+          },
+          {
+            "signal_type_id": "signal.boolean",
+            "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+            "valid_from_tick": 3,
+            "valid_until_tick": null,
+            "value": 0,
+            "value_kind": "boolean"
+          }
+        ],
+        "tick_reports": [
+          {
+            "signals": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "value": 1,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick": 1
+          },
+          {
+            "signals": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick": 2
+          },
+          {
+            "signals": [
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                "value": 1,
+                "value_kind": "boolean"
+              },
+              {
+                "signal_type_id": "signal.boolean",
+                "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                "value": 0,
+                "value_kind": "boolean"
+              }
+            ],
+            "tick": 3
+          }
+        ]
+      }
+    },
+    {
+      "deterministic_fingerprint": "b6e4be95e1328ac124bbb2afafc42a635c650f48bd31ce835e125240909d836f",
+      "discrepancy_summary": "",
+      "evaluator_id": "ref.system_invariant_check",
+      "match": true,
+      "reference_output": {
+        "checks": [
+          {
+            "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.ids.present",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.kind.valid.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.kind.valid.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.row.present.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.row.present.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.system.present",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.template.present.inv.ref.mass_energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.templates.declared",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+            "status": "pass"
+          }
+        ],
+        "failed_check_ids": [],
+        "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+        "reason_code": "",
+        "result": "complete"
+      },
+      "result": "complete",
+      "run_record": {
+        "deterministic_fingerprint": "b6e4be95e1328ac124bbb2afafc42a635c650f48bd31ce835e125240909d836f",
+        "discrepancy_summary": null,
+        "evaluator_id": "ref.system_invariant_check",
+        "extensions": {
+          "current_tick": 3,
+          "reference_output": {
+            "checks": [
+              {
+                "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.ids.present",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.kind.valid.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.kind.valid.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.row.present.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.row.present.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.system.present",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.template.present.inv.ref.mass_energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.templates.declared",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+                "status": "pass"
+              }
+            ],
+            "failed_check_ids": [],
+            "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+            "reason_code": "",
+            "result": "complete"
+          },
+          "runtime_output": {
+            "checks": [
+              {
+                "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.ids.present",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.kind.valid.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.kind.valid.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.row.present.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.row.present.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.system.present",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.template.present.inv.ref.mass_energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.templates.declared",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+                "status": "pass"
+              },
+              {
+                "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+                "status": "pass"
+              }
+            ],
+            "failed_check_ids": [],
+            "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+            "reason_code": "",
+            "result": "complete"
+          }
+        },
+        "match": true,
+        "reference_output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+        "run_id": "reference_run.0086d9dae50200d7",
+        "runtime_output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+        "schema_version": "1.0.0",
+        "seed": 1731,
+        "tick_range": {
+          "end": 3,
+          "start": 0
+        }
+      },
+      "runtime_output": {
+        "checks": [
+          {
+            "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.ids.present",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.kind.valid.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.kind.valid.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.row.present.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.row.present.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.system.present",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.template.present.inv.ref.mass_energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.templates.declared",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+            "status": "pass"
+          },
+          {
+            "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+            "status": "pass"
+          }
+        ],
+        "failed_check_ids": [],
+        "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+        "reason_code": "",
+        "result": "complete"
+      }
+    }
+  ],
+  "mismatches": [],
+  "reference_run_record_rows": [
+    {
+      "deterministic_fingerprint": "b6e4be95e1328ac124bbb2afafc42a635c650f48bd31ce835e125240909d836f",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.system_invariant_check",
+      "extensions": {
+        "current_tick": 3,
+        "reference_output": {
+          "checks": [
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ids.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.system.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.present.inv.ref.mass_energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.templates.declared",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+              "status": "pass"
+            }
+          ],
+          "failed_check_ids": [],
+          "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+          "reason_code": "",
+          "result": "complete"
+        },
+        "runtime_output": {
+          "checks": [
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.boundary_flux_allowed.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.energy.requires_ledger.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ids.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.kind.valid.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.ledger_transform_required.typed.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.present.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.required_safety_pattern.registered.safety.ref.fail_safe",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.row.present.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.system.present",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.present.inv.ref.mass_energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.template.required.inv.ref.mass_energy.invariant.ref.mass",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.templates.declared",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.energy",
+              "status": "pass"
+            },
+            {
+              "check_id": "invariant.tolerance.registered.invariant.ref.mass",
+              "status": "pass"
+            }
+          ],
+          "failed_check_ids": [],
+          "output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+          "reason_code": "",
+          "result": "complete"
+        }
+      },
+      "match": true,
+      "reference_output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+      "run_id": "reference_run.0086d9dae50200d7",
+      "runtime_output_hash": "75fcd475f27b45133310dc1e09b914330c661c44d288115fe2a642f3d9ad76f8",
+      "schema_version": "1.0.0",
+      "seed": 1731,
+      "tick_range": {
+        "end": 3,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "bad81445373038cb1a75f4cd4ee5a7de6d9c431980d32eae556d9eb966f5d779",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.coupling_scheduler",
+      "extensions": {
+        "current_tick": 3,
+        "reference_output": {
+          "budget_outcome": "complete",
+          "cost_units": 9,
+          "deferred_rows": [],
+          "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+          "processed_binding_ids": [
+            "binding.ref.alpha",
+            "binding.ref.beta"
+          ]
+        },
+        "runtime_output": {
+          "budget_outcome": "complete",
+          "cost_units": 9,
+          "deferred_rows": [],
+          "output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+          "processed_binding_ids": [
+            "binding.ref.alpha",
+            "binding.ref.beta"
+          ]
+        }
+      },
+      "match": true,
+      "reference_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+      "run_id": "reference_run.3e321f7cb89d78a2",
+      "runtime_output_hash": "2de0fa58279ca4f6bab134171335c978fb800370df5eeab4ea7763a3ba23bd2e",
+      "schema_version": "1.0.0",
+      "seed": 1731,
+      "tick_range": {
+        "end": 3,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "e8c78224ee24cb24799466eb1fb8732805261fd27d135f44683c85a2e1772cfe",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.energy_ledger",
+      "extensions": {
+        "current_tick": 3,
+        "reference_output": {
+          "entry_count": 6,
+          "entry_delta_mismatch": 0,
+          "output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+          "per_tick": [
+            {
+              "entry_count": 2,
+              "input_total": 211,
+              "output_total": 191,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 0
+            },
+            {
+              "entry_count": 2,
+              "input_total": 213,
+              "output_total": 193,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 1
+            },
+            {
+              "entry_count": 2,
+              "input_total": 215,
+              "output_total": 195,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 2
+            }
+          ]
+        },
+        "runtime_output": {
+          "entry_count": 6,
+          "entry_delta_mismatch": 0,
+          "output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+          "per_tick": [
+            {
+              "entry_count": 2,
+              "input_total": 211,
+              "output_total": 191,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 0
+            },
+            {
+              "entry_count": 2,
+              "input_total": 213,
+              "output_total": 193,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 1
+            },
+            {
+              "entry_count": 2,
+              "input_total": 215,
+              "output_total": 195,
+              "recorded_delta_total": -20,
+              "runtime_delta_total": -20,
+              "tick": 2
+            }
+          ]
+        }
+      },
+      "match": true,
+      "reference_output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+      "run_id": "reference_run.d29ebb8b89509e1c",
+      "runtime_output_hash": "53ab9c1e91290d051adf2fdcdca5641ce291f7864afbc57a735d70c20e79b59a",
+      "schema_version": "1.0.0",
+      "seed": 1731,
+      "tick_range": {
+        "end": 3,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "50b94e4d674d2070cce190aae931b01772840bcbb09e06523852ebc0f8114916",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.compiled_model_verify",
+      "extensions": {
+        "current_tick": 3,
+        "reference_output": {
+          "compiled_model_id": "compiled_model.ref.alpha",
+          "equivalence_proof_ref": "proof.ref.alpha",
+          "output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+          "proof_hash": "cc800aedb1e691dd8853e6bd547c1e64bdcf9c0de03c5e8858816ceaf47d2fec"
+        },
+        "runtime_output": {
+          "compiled_model_id": "compiled_model.ref.alpha",
+          "equivalence_proof_ref": "proof.ref.alpha",
+          "output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+          "proof_hash": "cc800aedb1e691dd8853e6bd547c1e64bdcf9c0de03c5e8858816ceaf47d2fec"
+        }
+      },
+      "match": true,
+      "reference_output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+      "run_id": "reference_run.dd4b217acfc34850",
+      "runtime_output_hash": "434c4541135d4573bf6124fe1a3665145d5eb65d551d3cece85d6102ab90917b",
+      "schema_version": "1.0.0",
+      "seed": 1731,
+      "tick_range": {
+        "end": 3,
+        "start": 0
+      }
+    },
+    {
+      "deterministic_fingerprint": "f5eb014d15a1e8bbd7ba0bf1f41d1e261ea61de2b74510b4d90fcea56060f2ca",
+      "discrepancy_summary": null,
+      "evaluator_id": "ref.logic_eval_small",
+      "extensions": {
+        "current_tick": 3,
+        "reference_output": {
+          "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+          "output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+          "signal_windows": [
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+              "valid_from_tick": 0,
+              "valid_until_tick": null,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+              "valid_from_tick": 0,
+              "valid_until_tick": null,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+              "valid_from_tick": 2,
+              "valid_until_tick": 3,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+              "valid_from_tick": 3,
+              "valid_until_tick": null,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+              "valid_from_tick": 2,
+              "valid_until_tick": 3,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+              "valid_from_tick": 3,
+              "valid_until_tick": null,
+              "value": 0,
+              "value_kind": "boolean"
+            }
+          ],
+          "tick_reports": [
+            {
+              "signals": [
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                  "value": 1,
+                  "value_kind": "boolean"
+                }
+              ],
+              "tick": 1
+            },
+            {
+              "signals": [
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                }
+              ],
+              "tick": 2
+            },
+            {
+              "signals": [
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                  "value": 0,
+                  "value_kind": "boolean"
+                }
+              ],
+              "tick": 3
+            }
+          ]
+        },
+        "runtime_output": {
+          "fixture_kind": "fixture.logic.chain_and_not_sink_boolean.v1",
+          "output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+          "signal_windows": [
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+              "valid_from_tick": 0,
+              "valid_until_tick": null,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+              "valid_from_tick": 0,
+              "valid_until_tick": null,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+              "valid_from_tick": 2,
+              "valid_until_tick": 3,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+              "valid_from_tick": 3,
+              "valid_until_tick": null,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+              "valid_from_tick": 2,
+              "valid_until_tick": 3,
+              "value": 1,
+              "value_kind": "boolean"
+            },
+            {
+              "signal_type_id": "signal.boolean",
+              "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+              "valid_from_tick": 3,
+              "valid_until_tick": null,
+              "value": 0,
+              "value_kind": "boolean"
+            }
+          ],
+          "tick_reports": [
+            {
+              "signals": [
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                  "value": 1,
+                  "value_kind": "boolean"
+                }
+              ],
+              "tick": 1
+            },
+            {
+              "signals": [
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                }
+              ],
+              "tick": 2
+            },
+            {
+              "signals": [
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.and.1|in.b",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.not.1|in.a",
+                  "value": 1,
+                  "value_kind": "boolean"
+                },
+                {
+                  "signal_type_id": "signal.boolean",
+                  "slot_key": "net.logic.reference.small|inst.logic.or.sink|in.a",
+                  "value": 0,
+                  "value_kind": "boolean"
+                }
+              ],
+              "tick": 3
+            }
+          ]
+        }
+      },
+      "match": true,
+      "reference_output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+      "run_id": "reference_run.fd908adf74cf7e58",
+      "runtime_output_hash": "104d9766f53c513a2d0365712b55d2dced59f0ee97b8d88297a516cf6a9564cd",
+      "schema_version": "1.0.0",
+      "seed": 1731,
+      "tick_range": {
+        "end": 3,
+        "start": 0
+      }
+    }
+  ],
+  "result": "complete"
+}
