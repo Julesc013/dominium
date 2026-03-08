@@ -1,0 +1,29 @@
+SCHEMA: geo/property_patch.schema
+schema_id: dominium.schema.geo.property_patch
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a canonical GEO-9 property-level patch row targeting stable object identity.
+- Preserve save/offical/mod provenance for deterministic merge and replay.
+
+NON-SEMANTICS:
+- This schema does not permit silent object deletion.
+- This schema does not redefine object identity.
+
+REQUIRED SHAPE:
+record property_patch
+  required:
+    - target_object_id: id
+    - property_path: tag
+    - operation: enum(set|add|remove|replace)
+    - value: map
+    - originating_layer_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `target_object_id` must be stable and canonical
+- `property_path` must be a canonical merge path, not an ad hoc runtime pointer
+- `object_id` override/removal requires migration and is not a lawful GEO-9 property patch
+- `remove` must carry explicit reason metadata in `extensions`

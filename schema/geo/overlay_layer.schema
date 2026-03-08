@@ -1,0 +1,27 @@
+SCHEMA: geo/overlay_layer.schema
+schema_id: dominium.schema.geo.overlay_layer
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a canonical ordered overlay layer descriptor for GEO-9 merge.
+- Bind layer precedence to pack/save provenance rather than implicit runtime ordering.
+
+NON-SEMANTICS:
+- This schema does not itself merge properties.
+- This schema does not authorize identity migration.
+
+REQUIRED SHAPE:
+record overlay_layer
+  required:
+    - layer_id: id
+    - layer_kind: enum(base|official|mod|save)
+    - precedence_order: int
+    - source_ref: tag
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `(precedence_order, layer_kind, source_ref, layer_id)` must admit deterministic ordering
+- official and mod layers should carry pack hash / trust metadata in `extensions`
+- save layers should carry canonical save identifiers in `source_ref` or `extensions`

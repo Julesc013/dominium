@@ -1,0 +1,27 @@
+SCHEMA: geo/overlay_manifest.schema
+schema_id: dominium.schema.geo.overlay_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical ordered GEO-9 overlay manifest for a universe/save lineage.
+- Bind overlay merge inputs to pack-lock lineage and deterministic layer ordering.
+
+NON-SEMANTICS:
+- This schema does not include merged object outputs.
+- This schema does not bypass SecureX trust validation.
+
+REQUIRED SHAPE:
+record overlay_manifest
+  required:
+    - universe_id: id
+    - layers: [map]
+    - pack_lock_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- layers must already be ordered deterministically when persisted
+- pack-backed layers must be explainable against `pack_lock_hash`
+- save patch precedence must remain above official/mod/base layers
+- generator and topology lineage changes remain outside overlay semantics
