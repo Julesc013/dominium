@@ -1,0 +1,28 @@
+SCHEMA: geo/projection_request.schema
+schema_id: dominium.schema.geo.projection_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic GEO-5 projection request contract.
+- Separate cell selection and coordinate mapping from any renderer-specific implementation.
+
+NON-SEMANTICS:
+- This schema does not authorize truth access.
+- This schema does not mutate frames, truth, or render state.
+
+REQUIRED SHAPE:
+record projection_request
+  required:
+    - request_id: id
+    - projection_profile_id: id
+    - origin_position_ref: map
+    - extent_spec: map
+    - resolution_spec: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- projection requests must be deterministic for identical inputs
+- extent and resolution must imply bounded work
+- topology and partition context must be supplied explicitly or through open-map extensions

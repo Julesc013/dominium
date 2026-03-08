@@ -1,0 +1,65 @@
+{
+  "schema_id": "dominium.registry.geo.lens_layer_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.lens_layer_registry",
+    "registry_version": "1.0.0",
+    "lens_layers": [
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.terrain_stub",
+        "description": "Deterministic terrain or atlas-terrain surface derived from lawful perceived map or tile sources.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "terrain",
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.temperature",
+        "description": "Deterministic temperature layer rendered from lawful perceived field samples.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "field",
+          "field_id": "field.temperature",
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.pollution",
+        "description": "Deterministic pollution overlay rendered from lawful perceived pollution field samples.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "field",
+          "field_family": "field.pollution",
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.infrastructure_stub",
+        "description": "Deterministic infrastructure overlay derived from lawful process or site artifacts when entitled.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "infrastructure",
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.entity_markers_stub",
+        "description": "Deterministic entity marker overlay derived from lawful known-entity observations only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "entities",
+          "source": "GEO5-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO5-2"
+    }
+  }
+}

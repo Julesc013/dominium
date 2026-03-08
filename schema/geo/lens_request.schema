@@ -1,0 +1,26 @@
+SCHEMA: geo/lens_request.schema
+schema_id: dominium.schema.geo.lens_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic GEO-5 lens request used to derive projected view artifacts from lawful perceived sources.
+- Keep included layers explicit and profile-driven.
+
+NON-SEMANTICS:
+- This schema does not bypass LawProfile, EpistemicProfile, or instrumentation requirements.
+- This schema does not imply omniscience by itself.
+
+REQUIRED SHAPE:
+record lens_request
+  required:
+    - lens_request_id: id
+    - lens_profile_id: id
+    - included_layers: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- included layers must be deterministic and totally ordered
+- lawful epistemic gating remains external and mandatory
+- unknown layers must degrade deterministically, never silently escalate

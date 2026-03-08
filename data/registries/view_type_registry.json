@@ -1,0 +1,84 @@
+{
+  "schema_id": "dominium.registry.geo.view_type_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.view_type_registry",
+    "registry_version": "1.0.0",
+    "view_types": [
+      {
+        "schema_version": "1.0.0",
+        "view_type_id": "view.map_ortho",
+        "description": "Deterministic ortho map view over a bounded GEO partition window.",
+        "projection_profile_id": "geo.projection.ortho_2d",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "default_resolution": {
+            "width": 17,
+            "height": 17
+          },
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_type_id": "view.minimap",
+        "description": "Deterministic reduced-resolution ROI map view.",
+        "projection_profile_id": "geo.projection.ortho_2d",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "default_resolution": {
+            "width": 9,
+            "height": 9
+          },
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_type_id": "view.atlas_unwrap",
+        "description": "Deterministic sphere-surface atlas unwrap view.",
+        "projection_profile_id": "geo.projection.atlas_unwrap_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "default_resolution": {
+            "width": 16,
+            "height": 16
+          },
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_type_id": "view.slice_nd_stub",
+        "description": "Deterministic higher-dimensional slice view stub.",
+        "projection_profile_id": "geo.projection.slice_nd_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "default_resolution": {
+            "width": 11,
+            "height": 11
+          },
+          "source": "GEO5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "view_type_id": "view.cctv_stub",
+        "description": "Deterministic remote CCTV snapshot lens transported as a SIG observation artifact.",
+        "projection_profile_id": "geo.projection.ortho_2d",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "transport_kind": "sig_snapshot",
+          "default_resolution": {
+            "width": 7,
+            "height": 7
+          },
+          "source": "GEO5-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO5-2"
+    }
+  }
+}

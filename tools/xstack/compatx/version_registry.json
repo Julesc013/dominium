@@ -1582,7 +1582,28 @@
         "1.0.0"
       ]
     },
+    "projection_request": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "projected_view_artifact": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "cell_refinement_relation": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "lens_request": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [
