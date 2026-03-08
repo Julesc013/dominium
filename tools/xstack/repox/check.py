@@ -17019,6 +17019,100 @@ def _append_geo_identity_invariant_findings(
         )
 
 
+def _append_geo_frame_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    frame_engine_rel = "src/geo/frame/frame_engine.py"
+    adapters_rel = "src/geo/frame/domain_adapters.py"
+    render_rel = "src/geo/render/floating_origin_policy.py"
+    geo_init_rel = "src/geo/__init__.py"
+
+    frame_engine_text = _file_text(repo_root, frame_engine_rel)
+    for required_token in ("frame_get_transform(", "position_to_frame(", "position_distance("):
+        if required_token in frame_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=frame_engine_rel,
+                line_number=1,
+                snippet=required_token,
+                message="GEO frame engine must provide canonical frame conversion APIs instead of raw global coordinate assumptions",
+                rule_id="INV-NO-RAW-GLOBAL-COORDS",
+            )
+        )
+
+    adapters_text = _file_text(repo_root, adapters_rel)
+    for required_token in ("field_sampling_position(", "field_sampling_cell_key(", "roi_distance_mm("):
+        if required_token in adapters_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=adapters_rel,
+                line_number=1,
+                snippet=required_token,
+                message="domain-facing GEO frame adapters must exist for frame-based sampling and ROI distance queries",
+                rule_id="INV-NO-RAW-GLOBAL-COORDS",
+            )
+        )
+    if "position_to_frame(" not in adapters_text or "position_distance(" not in adapters_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=adapters_rel,
+                line_number=1,
+                snippet="position_to_frame(",
+                message="domain-facing GEO frame adapters must delegate through the canonical GEO frame engine",
+                rule_id="INV-NO-RAW-GLOBAL-COORDS",
+            )
+        )
+
+    render_text = _file_text(repo_root, render_rel)
+    for required_token in ("apply_floating_origin(", "choose_floating_origin_offset(", "position_ref_hash("):
+        if required_token in render_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=render_rel,
+                line_number=1,
+                snippet=required_token,
+                message="render rebasing policy must be explicit, deterministic, and guarded against truth mutation",
+                rule_id="INV-RENDER-REBASING-NO-TRUTH-MUTATION",
+            )
+        )
+    if "REFUSAL_GEO_RENDER_TRUTH_MUTATION" not in render_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=render_rel,
+                line_number=1,
+                snippet="REFUSAL_GEO_RENDER_TRUTH_MUTATION",
+                message="render rebasing policy must surface a dedicated truth-mutation refusal guard",
+                rule_id="INV-RENDER-REBASING-NO-TRUTH-MUTATION",
+            )
+        )
+
+    geo_init_text = _file_text(repo_root, geo_init_rel)
+    for required_token in ("apply_floating_origin", "position_to_frame", "roi_distance_mm"):
+        if required_token in geo_init_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=geo_init_rel,
+                line_number=1,
+                snippet=required_token,
+                message="public GEO package must export canonical frame and render rebasing helpers",
+                rule_id="INV-NO-RAW-GLOBAL-COORDS",
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -27231,6 +27325,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_identity_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_frame_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
