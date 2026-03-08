@@ -682,7 +682,13 @@ def _ambient_temperature_by_node_id(
     for node_id in sorted(out.keys()):
         if node_id in direct_map:
             out[node_id] = int(_ambient_temperature_value(direct_map.get(node_id), out[node_id]))
-    for row in sorted((dict(item) for item in list(ambient_field_rows or []) if isinstance(item, Mapping)), key=lambda item: str(item.get("cell_id", ""))):
+    for row in sorted(
+        (dict(item) for item in list(ambient_field_rows or []) if isinstance(item, Mapping)),
+        key=lambda item: (
+            canonical_sha256(dict((dict(item.get("extensions") or {})).get("geo_cell_key") or {})),
+            str(item.get("cell_id", "")),
+        ),
+    ):
         value = int(_ambient_temperature_value(row.get("value", ambient_temperature), ambient_temperature))
         ext = _as_map(row.get("extensions"))
         node_id = str(ext.get("node_id", "")).strip()

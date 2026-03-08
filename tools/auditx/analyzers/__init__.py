@@ -363,6 +363,8 @@ from analyzers import e336_raw_global_coord_smell
 from analyzers import e337_render_writes_truth_smell
 from analyzers import e338_raw_sqrt_usage_smell
 from analyzers import e339_hardcoded_distance_smell
+from analyzers import e340_raw_field_grid_smell
+from analyzers import e341_field_sample_bypass_smell
 
 
 ANALYZERS = (
@@ -729,6 +731,8 @@ ANALYZERS = (
     e337_render_writes_truth_smell,
     e338_raw_sqrt_usage_smell,
     e339_hardcoded_distance_smell,
+    e340_raw_field_grid_smell,
+    e341_field_sample_bypass_smell,
 )
 
 

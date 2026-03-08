@@ -17281,6 +17281,92 @@ def _append_geo_metric_invariant_findings(
         )
 
 
+def _append_geo_field_binding_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    field_rel = "src/fields/field_engine.py"
+    field_wrapper_rel = "src/field/field_engine.py"
+    boundary_rel = "src/field/field_boundary_exchange.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    proof_tool_rel = "tools/geo/tool_replay_field_geo_window.py"
+
+    field_text = _file_text(repo_root, field_rel)
+    for required_token in ("geo_cell_key", "def field_get_value(", "def field_sample_position_ref(", "def field_sample_neighborhood("):
+        if required_token in field_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=field_rel,
+                line_number=1,
+                snippet=required_token,
+                message="FIELD storage and sampling must be GEO-keyed and expose canonical GEO sampling helpers",
+                rule_id="INV-FIELD-STORAGE-GEO-KEYED",
+            )
+        )
+
+    wrapper_text = _file_text(repo_root, field_wrapper_rel)
+    if "src.fields.field_engine" not in wrapper_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=field_wrapper_rel,
+                line_number=1,
+                snippet="src.fields.field_engine",
+                message="singular field package compatibility wrapper must route through canonical GEO-bound field engine",
+                rule_id="INV-FIELD-STORAGE-GEO-KEYED",
+            )
+        )
+
+    boundary_text = _file_text(repo_root, boundary_rel)
+    for required_token in ("exchange_field_boundary_values(", "get_field_value(", '"field_sampled_geo_cell_keys"'):
+        if required_token in boundary_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=boundary_rel,
+                line_number=1,
+                snippet=required_token,
+                message="field shard boundary exchange must be keyed by GEO field samples and deterministic boundary artifacts",
+                rule_id="INV-FIELD-STORAGE-GEO-KEYED",
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for required_token in ("field_binding_registry_hash", "exchange_field_boundary_values(", "field_binding_registry=", "update_field_layers("):
+        if required_token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=required_token,
+                message="runtime FIELD integration must route through GEO field bindings rather than raw field grid assumptions",
+                rule_id="INV-NO-RAW-FIELD-GRID-ASSUMPTION",
+            )
+        )
+
+    proof_tool_text = _file_text(repo_root, proof_tool_rel)
+    for required_token in ("verify_geo_field_replay_window(", "field_binding_registry_hash", "verify_field_replay_window("):
+        if required_token in proof_tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proof_tool_rel,
+                line_number=1,
+                snippet=required_token,
+                message="GEO field replay proof tooling must verify GEO-bound field hash surfaces",
+                rule_id="INV-FIELD-STORAGE-GEO-KEYED",
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -27503,6 +27589,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_metric_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_field_binding_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

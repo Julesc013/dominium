@@ -129,6 +129,16 @@ def _geo_identity_extensions(
     metric_query_hash_chain = str(ext.get("metric_query_hash_chain", surface.get("metric_query_hash_chain", ""))).strip()
     if metric_query_hash_chain:
         out["metric_query_hash_chain"] = metric_query_hash_chain
+    field_binding_registry_hash = str(
+        ext.get("field_binding_registry_hash", surface.get("field_binding_registry_hash", ""))
+    ).strip()
+    if field_binding_registry_hash:
+        out["field_binding_registry_hash"] = field_binding_registry_hash
+    interpolation_policy_registry_hash = str(
+        ext.get("interpolation_policy_registry_hash", surface.get("interpolation_policy_registry_hash", ""))
+    ).strip()
+    if interpolation_policy_registry_hash:
+        out["interpolation_policy_registry_hash"] = interpolation_policy_registry_hash
     return out
 
 

@@ -729,6 +729,8 @@ def _emit_control_proof_bundle(
             "boundary_field_exchange_hash_chain": str(
                 global_state.get("boundary_field_exchange_hash_chain", "")
             ).strip(),
+            "field_binding_registry_hash": str(global_state.get("field_binding_registry_hash", "")).strip(),
+            "interpolation_policy_registry_hash": str(global_state.get("interpolation_policy_registry_hash", "")).strip(),
             "pollution_field_hash_chain": str(
                 global_state.get("pollution_field_hash_chain", "")
             ).strip(),

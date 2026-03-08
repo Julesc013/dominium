@@ -34,6 +34,14 @@ def _sanitize_token(value: object) -> str:
     return token.strip("_")
 
 
+def _field_row_sort_token(row: Mapping[str, object]) -> str:
+    ext = _as_map(row.get("extensions"))
+    geo_cell_key = _as_map(ext.get("geo_cell_key"))
+    if geo_cell_key:
+        return canonical_sha256(geo_cell_key)
+    return str(row.get("cell_id", "")).strip()
+
+
 def concentration_field_id_for_pollutant(pollutant_id: object) -> str:
     token = str(pollutant_id or "").strip()
     if not token:
@@ -373,7 +381,7 @@ def _wind_by_cell(field_cell_rows: object, *, field_id: str) -> Dict[str, dict]:
     out: Dict[str, dict] = {}
     for row in sorted(
         (dict(item) for item in field_cell_rows if isinstance(item, Mapping)),
-        key=lambda item: str(item.get("cell_id", "")),
+        key=_field_row_sort_token,
     ):
         if str(row.get("field_id", "")).strip() != str(field_id).strip():
             continue
@@ -395,7 +403,7 @@ def _scalar_by_cell(field_cell_rows: object, *, field_id: str) -> Dict[str, int]
     out: Dict[str, int] = {}
     for row in sorted(
         (dict(item) for item in field_cell_rows if isinstance(item, Mapping)),
-        key=lambda item: str(item.get("cell_id", "")),
+        key=_field_row_sort_token,
     ):
         if str(row.get("field_id", "")).strip() != str(field_id).strip():
             continue

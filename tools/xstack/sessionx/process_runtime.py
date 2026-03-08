@@ -445,6 +445,7 @@ from src.mechanics import (
     normalize_structural_node_rows,
     summarize_stress_for_target,
 )
+from src.field import exchange_field_boundary_values
 from src.fields import (
     build_field_cell,
     build_field_layer,
@@ -2001,6 +2002,7 @@ def _apply_field_updates(
     field_layers: object,
     field_cells: object,
     field_type_registry: Mapping[str, object] | None,
+    field_binding_registry: Mapping[str, object] | None,
     field_update_policy_registry: Mapping[str, object] | None,
     requested_updates: object,
     source_process_id: str,
@@ -2013,6 +2015,7 @@ def _apply_field_updates(
         field_cells,
         field_layer_rows=normalized_layers,
         field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
     )
     layer_by_field_id = dict(
         (str(row.get("field_id", "")).strip(), dict(row))
@@ -2111,6 +2114,7 @@ def _apply_field_updates(
             value=value_payload,
             value_kind=value_kind,
             last_updated_tick=tick,
+            geo_cell_key=(dict(update_row.get("geo_cell_key") or {}) if isinstance(update_row.get("geo_cell_key"), Mapping) else None),
             extensions={
                 **(dict(existing_cell.get("extensions") or {}) if isinstance(existing_cell.get("extensions"), Mapping) else {}),
                 "source_process_id": str(source_process_id or "").strip(),
@@ -2125,6 +2129,7 @@ def _apply_field_updates(
                 sampled_value=updated_row.get("value"),
                 has_cell=True,
                 sampled_cell_id=spatial_node_id,
+                sampled_geo_cell_key=(dict((dict(updated_row.get("extensions") or {})).get("geo_cell_key") or {})),
                 extensions={"source_process_id": str(source_process_id or "").strip()},
             )
         )
@@ -2142,6 +2147,7 @@ def _apply_field_updates(
         [dict(cell_by_key[key]) for key in sorted(cell_by_key.keys())],
         field_layer_rows=normalized_layers_out,
         field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
     )
     normalized_samples = normalize_field_sample_rows(sample_rows)
     result = {
@@ -3705,6 +3711,7 @@ def _refresh_field_hash_chains(state: dict) -> None:
         if not boundary:
             continue
         wind_vector = dict(boundary.get("wind_vector") or {})
+        sampled_geo_cell_keys = dict(boundary.get("field_sampled_geo_cell_keys") or {})
         boundary_rows.append(
             {
                 "portal_id": portal_id,
@@ -3719,6 +3726,15 @@ def _refresh_field_hash_chains(state: dict) -> None:
                 "wind_magnitude": int(max(0, _as_int(boundary.get("wind_magnitude", 0), 0))),
                 "wind_boost_air_conductance": int(max(0, _as_int(boundary.get("wind_boost_air_conductance", 0), 0))),
                 "ram_air_boost_air_conductance": int(max(0, _as_int(boundary.get("ram_air_boost_air_conductance", 0), 0))),
+                "field_sampled_cell_ids": dict(boundary.get("field_sampled_cell_ids") or {}),
+                "field_sampled_geo_cell_key_hashes": dict(
+                    (
+                        str(field_id).strip(),
+                        canonical_sha256(dict(sampled_geo_cell_keys.get(field_id) or {})),
+                    )
+                    for field_id in sorted(sampled_geo_cell_keys.keys())
+                    if str(field_id).strip()
+                ),
                 "source_tick": int(max(0, _as_int(boundary.get("source_tick", 0), 0))),
                 "source_process_id": str(boundary.get("source_process_id", "")).strip() or None,
                 "deterministic_fingerprint": canonical_sha256(
@@ -3755,6 +3771,9 @@ def _refresh_field_hash_chains(state: dict) -> None:
                 "sampled_value": row.get("sampled_value"),
                 "has_cell": bool(row.get("has_cell", False)),
                 "sampled_cell_id": str(row.get("sampled_cell_id", "")).strip(),
+                "sampled_geo_cell_key_hash": canonical_sha256(
+                    dict((dict(row.get("extensions") or {})).get("geo_cell_key") or {})
+                ),
                 "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
             }
             for row in field_sample_rows
@@ -5974,11 +5993,14 @@ def _evaluate_time_mappings_for_tick(
         registry_rel_path="data/registries/field_type_registry.json",
         entry_key="field_types",
     )
+    _record_geo_field_registry_hashes(state, policy_context)
+    field_binding_registry = _field_binding_registry_payload(policy_context)
     normalized_field_layers = normalize_field_layer_rows(state.get("field_layers") or [])
     normalized_field_cells = normalize_field_cell_rows(
         state.get("field_cells") or [],
         field_layer_rows=normalized_field_layers,
         field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
     )
     quantity_tolerance_registry = _quantity_tolerance_registry_payload(policy_context)
     session_scope_id = str((dict(policy_context or {})).get("session_id", "")).strip() or "session.default"
@@ -6002,6 +6024,7 @@ def _evaluate_time_mappings_for_tick(
             field_layer_rows=normalized_field_layers,
             field_cell_rows=normalized_field_cells,
             field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
         )
         gravity_value = gravity_sample.get("vector")
         if not isinstance(gravity_value, Mapping):
@@ -18410,6 +18433,29 @@ def _field_registry_payload(
         registry_rel_path=registry_rel_path,
         default_payload={entry_key: []},
     )
+
+
+def _field_binding_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="field_binding_registry",
+        registry_rel_path="data/registries/field_binding_registry.json",
+        entry_key="field_bindings",
+    )
+
+
+def _interpolation_policy_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="interpolation_policy_registry",
+        registry_rel_path="data/registries/interpolation_policy_registry.json",
+        entry_key="interpolation_policies",
+    )
+
+
+def _record_geo_field_registry_hashes(state: dict, policy_context: dict | None) -> None:
+    state["field_binding_registry_hash"] = canonical_sha256(dict(_field_binding_registry_payload(policy_context)))
+    state["interpolation_policy_registry_hash"] = canonical_sha256(dict(_interpolation_policy_registry_payload(policy_context)))
 
 
 def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:
@@ -31507,6 +31553,7 @@ def execute_intent(
             }
             _advance_time(state, steps=1, policy_context=policy_context)
         else:
+            _record_geo_field_registry_hashes(state, policy_context)
             field_type_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_type_registry",
@@ -31519,6 +31566,7 @@ def execute_intent(
                 registry_rel_path="data/registries/field_update_policy_registry.json",
                 entry_key="policies",
             )
+            field_binding_registry = _field_binding_registry_payload(policy_context)
             incoming_layers = inputs.get("field_layers")
             incoming_cells = inputs.get("field_cells")
             if isinstance(incoming_layers, list):
@@ -31530,12 +31578,14 @@ def execute_intent(
                     incoming_cells,
                     field_layer_rows=normalized_field_layers,
                     field_type_registry=field_type_registry,
+                    field_binding_registry=field_binding_registry,
                 )
             else:
                 normalized_field_cells = normalize_field_cell_rows(
                     field_cells,
                     field_layer_rows=normalized_field_layers,
                     field_type_registry=field_type_registry,
+                    field_binding_registry=field_binding_registry,
                 )
 
             source_rows = _ensure_pollution_source_event_rows(state)
@@ -31742,6 +31792,7 @@ def execute_intent(
                 field_layers=normalized_field_layers,
                 field_cells=normalized_field_cells,
                 field_type_registry=field_type_registry,
+                field_binding_registry=_field_binding_registry_payload(policy_context),
                 field_update_policy_registry=field_update_policy_registry,
                 requested_updates=list(dispersion_eval.get("field_updates") or []),
                 source_process_id=process_id,
@@ -31751,6 +31802,7 @@ def execute_intent(
                 field_update_result.get("field_cell_rows"),
                 field_layer_rows=normalized_field_layers,
                 field_type_registry=field_type_registry,
+                field_binding_registry=_field_binding_registry_payload(policy_context),
             )
             _persist_field_state(
                 state,
@@ -49651,6 +49703,8 @@ def execute_intent(
             field_layer_rows=field_layers,
             field_cell_rows=field_cells,
             field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
+            interpolation_policy_registry=_interpolation_policy_registry_payload(policy_context),
             sample_rows=sample_rows,
         )
         modifier_rows_by_vehicle = dict(
@@ -56201,11 +56255,14 @@ def execute_intent(
                 registry_rel_path="data/registries/field_update_policy_registry.json",
                 entry_key="policies",
             )
+            field_binding_registry = _field_binding_registry_payload(policy_context)
+            interpolation_policy_registry = _interpolation_policy_registry_payload(policy_context)
             normalized_field_layers = normalize_field_layer_rows(field_layers)
             normalized_field_cells = normalize_field_cell_rows(
                 field_cells,
                 field_layer_rows=normalized_field_layers,
                 field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
             )
             flow_quantity_map = dict(inputs.get("flow_quantities") or {}) if isinstance(inputs.get("flow_quantities"), Mapping) else {}
             material_property_map = dict(inputs.get("material_properties") or {}) if isinstance(inputs.get("material_properties"), Mapping) else {}
@@ -56255,6 +56312,8 @@ def execute_intent(
                         field_layer_rows=normalized_field_layers,
                         field_cell_rows=normalized_field_cells,
                         field_type_registry=field_type_registry,
+                        field_binding_registry=field_binding_registry,
+                        interpolation_policy_registry=interpolation_policy_registry,
                     )
                     value = sample.get("value")
                     if value is None:
@@ -56622,6 +56681,7 @@ def execute_intent(
                         field_layers=normalized_field_layers,
                         field_cells=normalized_field_cells,
                         field_type_registry=field_type_registry,
+                        field_binding_registry=_field_binding_registry_payload(policy_context),
                         field_update_policy_registry=field_update_policy_registry,
                         requested_updates=update_rows,
                         source_process_id="process.model_evaluate_tick",
@@ -57057,12 +57117,14 @@ def execute_intent(
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.field_update":
+        _record_geo_field_registry_hashes(state, policy_context)
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
             registry_rel_path="data/registries/field_type_registry.json",
             entry_key="field_types",
         )
+        field_binding_registry = _field_binding_registry_payload(policy_context)
         field_update_policy_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_update_policy_registry",
@@ -57080,18 +57142,21 @@ def execute_intent(
                 incoming_cells,
                 field_layer_rows=field_layers,
                 field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
             )
         else:
             field_cells = normalize_field_cell_rows(
                 field_cells,
                 field_layer_rows=field_layers,
                 field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
             )
         field_update_result = _apply_field_updates(
             current_tick=int(current_tick),
             field_layers=field_layers,
             field_cells=field_cells,
             field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
             field_update_policy_registry=field_update_policy_registry,
             requested_updates=list(inputs.get("field_updates") or []),
             source_process_id=process_id,
@@ -57101,6 +57166,7 @@ def execute_intent(
             field_update_result.get("field_cell_rows"),
             field_layer_rows=field_layers,
             field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
         )
         _persist_field_state(
             state,
@@ -57146,6 +57212,7 @@ def execute_intent(
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.field_tick":
+        _record_geo_field_registry_hashes(state, policy_context)
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
@@ -57162,6 +57229,7 @@ def execute_intent(
         field_policy_rows = field_update_policy_rows_by_id(field_update_policy_registry)
         del field_type_rows
         del field_policy_rows
+        field_binding_registry = _field_binding_registry_payload(policy_context)
 
         incoming_layers = inputs.get("field_layers")
         incoming_cells = inputs.get("field_cells")
@@ -57174,12 +57242,14 @@ def execute_intent(
                 incoming_cells,
                 field_layer_rows=field_layers,
                 field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
             )
         else:
             field_cells = normalize_field_cell_rows(
                 field_cells,
                 field_layer_rows=field_layers,
                 field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
             )
 
         flow_quantities = dict(inputs.get("flow_quantities") or {}) if isinstance(inputs.get("flow_quantities"), dict) else {}
@@ -57232,6 +57302,7 @@ def execute_intent(
             field_cell_rows=field_cells,
             field_update_policy_registry=field_update_policy_registry,
             field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
             flow_quantities=flow_quantities,
             hazard_states=hazard_states,
             max_cost_units=int(field_budget),
@@ -57243,6 +57314,7 @@ def execute_intent(
             field_update.get("field_cell_rows"),
             field_layer_rows=field_layers,
             field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
         )
 
         sample_rows = []
@@ -57538,6 +57610,7 @@ def execute_intent(
             }
             _advance_time(state, steps=1, policy_context=policy_context)
         else:
+            _record_geo_field_registry_hashes(state, policy_context)
             flow_policy_row = resolve_compartment_flow_policy_row(
                 policy_id=policy_id,
                 policy_registry_payload=_policy_payload(policy_context, "compartment_flow_policy_registry"),
@@ -57575,196 +57648,48 @@ def execute_intent(
                 registry_rel_path="data/registries/field_type_registry.json",
                 entry_key="field_types",
             )
+            field_binding_registry = _field_binding_registry_payload(policy_context)
+            interpolation_policy_registry = _interpolation_policy_registry_payload(policy_context)
             normalized_field_layers = normalize_field_layer_rows(field_layers)
             normalized_field_cells = normalize_field_cell_rows(
                 field_cells,
                 field_layer_rows=normalized_field_layers,
                 field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
             )
-            portal_param_by_id = dict(
-                (
-                    str(row.get("portal_id", "")).strip(),
-                    dict(row),
-                )
-                for row in list(portal_flow_params or [])
-                if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
+            boundary_exchange = exchange_field_boundary_values(
+                current_tick=int(current_tick),
+                process_id=process_id,
+                selected_graph=selected_graph,
+                portal_rows=interior_portal_rows,
+                portal_flow_params=portal_flow_params,
+                field_layers=normalized_field_layers,
+                field_cells=normalized_field_cells,
+                field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
+                interpolation_policy_registry=interpolation_policy_registry,
+                owner_vehicle_id=owner_vehicle_id,
+                owner_vehicle_position_mm=owner_vehicle_position_mm,
+                owner_motion_tier=owner_motion_tier,
+                owner_vehicle_speed_mm_per_tick=int(owner_vehicle_speed),
+                field_boundary_by_portal=dict(inputs.get("field_boundary_by_portal") or {}),
             )
-            portal_rows_by_id_for_boundary = dict(
-                (
-                    str(row.get("portal_id", "")).strip(),
-                    dict(row),
-                )
-                for row in list(interior_portal_rows or [])
-                if isinstance(row, dict) and str(row.get("portal_id", "")).strip()
-            )
-            boundary_field_sample_cache: Dict[str, dict] = {}
-            for portal_id in sorted(
-                set(str(item).strip() for item in list(selected_graph.get("portals") or []) if str(item).strip())
-            ):
-                portal_row = dict(portal_rows_by_id_for_boundary.get(portal_id) or {})
-                portal_ext = dict(portal_row.get("extensions") or {})
-                sample_position = {}
-                field_cell_id = str(
-                    portal_ext.get("field_cell_id", "")
-                    or (dict(inputs.get("field_boundary_by_portal") or {}).get(portal_id) or {}).get("field_cell_id", "")
-                ).strip()
-                if field_cell_id:
-                    sample_position["cell_id"] = field_cell_id
-                position_mm = _vector3_int(portal_ext.get("position_mm"), "position_mm")
-                if position_mm:
-                    if isinstance(owner_vehicle_position_mm, dict):
-                        sample_position["position_mm"] = {
-                            "x": int(_as_int(owner_vehicle_position_mm.get("x", 0), 0))
-                            + int(_as_int(position_mm.get("x", 0), 0)),
-                            "y": int(_as_int(owner_vehicle_position_mm.get("y", 0), 0))
-                            + int(_as_int(position_mm.get("y", 0), 0)),
-                            "z": int(_as_int(owner_vehicle_position_mm.get("z", 0), 0))
-                            + int(_as_int(position_mm.get("z", 0), 0)),
-                        }
-                    else:
-                        sample_position["position_mm"] = dict(position_mm)
-                elif isinstance(owner_vehicle_position_mm, dict):
-                    sample_position["position_mm"] = dict(owner_vehicle_position_mm)
-
-                temperature_sample = get_field_value(
-                    spatial_position=sample_position,
-                    field_id="field.temperature",
-                    field_layer_rows=normalized_field_layers,
-                    field_cell_rows=normalized_field_cells,
-                    field_type_registry=field_type_registry,
-                    tick=int(current_tick),
-                    spatial_node_id=portal_id,
-                    sample_cache=boundary_field_sample_cache,
-                )
-                moisture_sample = get_field_value(
-                    spatial_position=sample_position,
-                    field_id="field.moisture",
-                    field_layer_rows=normalized_field_layers,
-                    field_cell_rows=normalized_field_cells,
-                    field_type_registry=field_type_registry,
-                    tick=int(current_tick),
-                    spatial_node_id=portal_id,
-                    sample_cache=boundary_field_sample_cache,
-                )
-                wind_sample = get_field_value(
-                    spatial_position=sample_position,
-                    field_id="field.wind",
-                    field_layer_rows=normalized_field_layers,
-                    field_cell_rows=normalized_field_cells,
-                    field_type_registry=field_type_registry,
-                    tick=int(current_tick),
-                    spatial_node_id=portal_id,
-                    sample_cache=boundary_field_sample_cache,
-                )
-                visibility_sample = get_field_value(
-                    spatial_position=sample_position,
-                    field_id="field.visibility",
-                    field_layer_rows=normalized_field_layers,
-                    field_cell_rows=normalized_field_cells,
-                    field_type_registry=field_type_registry,
-                    tick=int(current_tick),
-                    spatial_node_id=portal_id,
-                    sample_cache=boundary_field_sample_cache,
-                )
-
-                boundary_temperature = int(_as_int(temperature_sample.get("value", 20), 20))
-                boundary_moisture = int(max(0, _as_int(moisture_sample.get("value", 0), 0)))
-                boundary_visibility = int(max(0, _as_int(visibility_sample.get("value", 1000), 1000)))
-                wind_vector = _vector3_int(wind_sample.get("value"), "wind") or {"x": 0, "y": 0, "z": 0}
-                wind_magnitude = int(
-                    abs(int(_as_int(wind_vector.get("x", 0), 0)))
-                    + abs(int(_as_int(wind_vector.get("y", 0), 0)))
-                    + abs(int(_as_int(wind_vector.get("z", 0), 0)))
-                )
-                ram_air_boost = 0
-                if owner_vehicle_id and owner_motion_tier == "micro":
-                    ram_air_boost = int(min(2000, max(0, int(owner_vehicle_speed) // 4)))
-                wind_boost = int(min(2000, max(0, (wind_magnitude // 2) + int(ram_air_boost))))
-
-                base_row = dict(
-                    portal_param_by_id.get(portal_id)
-                    or {
-                        "schema_version": "1.0.0",
-                        "portal_id": portal_id,
-                        "conductance_air": 0,
-                        "conductance_water": 0,
-                        "conductance_smoke": 0,
-                        "sealing_coefficient": 0,
-                        "open_state_multiplier": 1000,
-                        "extensions": {},
-                    }
-                )
-                base_ext = dict(base_row.get("extensions") or {})
-                existing_boundary = dict(base_ext.get("field_boundary") or {})
-                base_conductance_air = int(
-                    max(
-                        0,
-                        _as_int(
-                            existing_boundary.get("base_conductance_air", base_row.get("conductance_air", 0)),
-                            _as_int(base_row.get("conductance_air", 0), 0),
-                        ),
-                    )
-                )
-                base_row["conductance_air"] = int(base_conductance_air + wind_boost)
-                base_ext["field_boundary"] = {
-                    "temperature": int(boundary_temperature),
-                    "moisture": int(boundary_moisture),
-                    "visibility": int(boundary_visibility),
-                    "wind_vector": {
-                        "x": int(_as_int(wind_vector.get("x", 0), 0)),
-                        "y": int(_as_int(wind_vector.get("y", 0), 0)),
-                        "z": int(_as_int(wind_vector.get("z", 0), 0)),
-                    },
-                    "wind_magnitude": int(wind_magnitude),
-                    "wind_boost_air_conductance": int(wind_boost),
-                    "ram_air_boost_air_conductance": int(ram_air_boost),
-                    "vehicle_id": owner_vehicle_id or None,
-                    "vehicle_motion_tier": owner_motion_tier if owner_vehicle_id else None,
-                    "vehicle_speed_mm_per_tick": int(owner_vehicle_speed) if owner_vehicle_id else None,
-                    "sample_position_mm": (
-                        dict(sample_position.get("position_mm") or {})
-                        if isinstance(sample_position.get("position_mm"), Mapping)
-                        else None
-                    ),
-                    "base_conductance_air": int(base_conductance_air),
-                    "source_process_id": process_id,
-                    "source_tick": int(current_tick),
-                }
-                base_row["extensions"] = base_ext
-                portal_param_by_id[portal_id] = normalize_portal_flow_params(base_row)
-            portal_flow_params = [
-                dict(portal_param_by_id[key])
-                for key in sorted(portal_param_by_id.keys())
-            ]
+            portal_flow_params = [dict(row) for row in list(boundary_exchange.get("portal_flow_params") or []) if isinstance(row, Mapping)]
             state["portal_flow_params"] = [dict(row) for row in list(portal_flow_params or []) if isinstance(row, dict)]
-            boundary_field_sample_rows = normalize_field_sample_rows(
-                [
-                    dict(row)
-                    for row in list(boundary_field_sample_cache.values())
-                    if isinstance(row, Mapping)
-                ]
-            )
+            boundary_field_sample_rows = normalize_field_sample_rows(boundary_exchange.get("field_sample_rows") or [])
             if boundary_field_sample_rows:
                 state["field_sample_rows"] = normalize_field_sample_rows(
                     list(state.get("field_sample_rows") or [])
                     + [dict(row) for row in list(boundary_field_sample_rows or []) if isinstance(row, Mapping)]
                 )
-            boundary_portal_count = int(
-                len([token for token in list(selected_graph.get("portals") or []) if str(token).strip()])
-            )
+            boundary_portal_count = int(max(0, _as_int(boundary_exchange.get("boundary_portal_count", 0), 0)))
             if boundary_portal_count or boundary_field_sample_rows:
                 _append_field_update_event(
                     state,
                     source_process_id=process_id,
                     tick=int(current_tick),
                     update_kind="boundary_exchange",
-                    updated_field_ids=sorted(
-                        set(
-                            str(row.get("field_id", "")).strip()
-                            for row in list(boundary_field_sample_rows or [])
-                            if isinstance(row, Mapping) and str(row.get("field_id", "")).strip()
-                        )
-                    ),
+                    updated_field_ids=sorted(set(str(token).strip() for token in list(boundary_exchange.get("updated_field_ids") or []) if str(token).strip())),
                     applied_update_count=0,
                     skipped_update_count=0,
                     field_sample_count=int(len(boundary_field_sample_rows)),

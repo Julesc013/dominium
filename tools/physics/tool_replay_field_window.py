@@ -89,6 +89,7 @@ def _boundary_rows(payload: Mapping[str, object]) -> List[dict]:
         if not boundary:
             continue
         wind = dict(boundary.get("wind_vector") or {})
+        sampled_geo_cell_keys = dict(boundary.get("field_sampled_geo_cell_keys") or {})
         out.append(
             {
                 "portal_id": portal_id,
@@ -104,6 +105,15 @@ def _boundary_rows(payload: Mapping[str, object]) -> List[dict]:
                 "wind_boost_air_conductance": int(max(0, _as_int(boundary.get("wind_boost_air_conductance", 0), 0))),
                 "ram_air_boost_air_conductance": int(
                     max(0, _as_int(boundary.get("ram_air_boost_air_conductance", 0), 0))
+                ),
+                "field_sampled_cell_ids": dict(boundary.get("field_sampled_cell_ids") or {}),
+                "field_sampled_geo_cell_key_hashes": dict(
+                    (
+                        str(field_id).strip(),
+                        canonical_sha256(dict(sampled_geo_cell_keys.get(field_id) or {})),
+                    )
+                    for field_id in sorted(sampled_geo_cell_keys.keys())
+                    if str(field_id).strip()
                 ),
                 "source_tick": int(max(0, _as_int(boundary.get("source_tick", 0), 0))),
                 "source_process_id": str(boundary.get("source_process_id", "")).strip() or None,
@@ -133,6 +143,9 @@ def _field_hash_chains(payload: Mapping[str, object]) -> Dict[str, str]:
                     "sampled_value": row.get("sampled_value"),
                     "has_cell": bool(row.get("has_cell", False)),
                     "sampled_cell_id": str(row.get("sampled_cell_id", "")).strip(),
+                    "sampled_geo_cell_key_hash": canonical_sha256(
+                        dict((dict(row.get("extensions") or {})).get("geo_cell_key") or {})
+                    ),
                     "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
                 }
                 for row in sample_rows
@@ -240,4 +253,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

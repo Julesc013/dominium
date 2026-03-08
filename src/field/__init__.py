@@ -1,6 +1,6 @@
-"""FIELD-1 deterministic field layer exports."""
+"""FIELD-1 / GEO-4 compatibility exports for singular field package paths."""
 
-from .field_engine import (
+from src.fields import (
     build_field_cell,
     build_field_layer,
     build_field_sample,
@@ -20,10 +20,13 @@ from .field_engine import (
     update_field_layers,
 )
 
+from .field_boundary_exchange import exchange_field_boundary_values
+
 __all__ = [
     "build_field_cell",
     "build_field_layer",
     "build_field_sample",
+    "exchange_field_boundary_values",
     "field_binding_rows_by_field_id",
     "field_get_value",
     "field_modifier_snapshot",
