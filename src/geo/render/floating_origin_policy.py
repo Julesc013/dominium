@@ -36,7 +36,7 @@ def _refusal(*, refusal_code: str, message: str, details: Mapping[str, object] |
 
 
 def _snap_offset(coords: List[int], quantum_mm: int) -> List[int]:
-    quantum = max(1, int(_as_int(quantum_mm, 1000), 1000))
+    quantum = max(1, int(_as_int(quantum_mm, 1000)))
     return [int((int(value) // quantum) * quantum) for value in coords]
 
 
@@ -82,7 +82,7 @@ def choose_floating_origin_offset(
         "result": "complete",
         "graph_version": version,
         "target_frame_id": target_token,
-        "rebase_quantum_mm": int(max(1, int(_as_int(rebase_quantum_mm, 1000), 1000))),
+        "rebase_quantum_mm": int(max(1, int(_as_int(rebase_quantum_mm, 1000)))),
         "camera_position_ref": _as_map(camera_in_target.get("target_position_ref")),
         "rebase_offset": offset,
         "deterministic_fingerprint": "",
