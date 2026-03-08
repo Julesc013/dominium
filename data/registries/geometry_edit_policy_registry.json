@@ -1,0 +1,54 @@
+{
+  "schema_id": "dominium.registry.geo.geometry_edit_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.geometry_edit_policy_registry",
+    "registry_version": "1.0.0",
+    "geometry_edit_policies": [
+      {
+        "schema_version": "1.0.0",
+        "geometry_edit_policy_id": "geo.edit.default",
+        "description": "Deterministic baseline geometry edit policy for ordinary excavation and fill.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "max_target_cells": 64,
+          "max_volume_per_cell": 1000,
+          "allow_micro_chunks": true,
+          "micro_chunk_budget": 64,
+          "source": "GEO7-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "geometry_edit_policy_id": "geo.edit.rank_strict",
+        "description": "Strict ranked policy with tighter bounded geometry edit budgets and refusal bias.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "max_target_cells": 16,
+          "max_volume_per_cell": 500,
+          "allow_micro_chunks": true,
+          "micro_chunk_budget": 16,
+          "partial_chunk_policy": "refuse",
+          "source": "GEO7-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "geometry_edit_policy_id": "geo.edit.lab_aggressive",
+        "description": "Lab policy with broader but still deterministic bounded edit ranges.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "max_target_cells": 256,
+          "max_volume_per_cell": 4000,
+          "allow_micro_chunks": true,
+          "micro_chunk_budget": 256,
+          "partial_chunk_policy": "aggregate_macro",
+          "source": "GEO7-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GEO7-2"
+    }
+  }
+}

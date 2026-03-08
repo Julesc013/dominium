@@ -1,0 +1,30 @@
+SCHEMA: geo/geometry_cell_state.schema
+schema_id: dominium.schema.geo.geometry_cell_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical GEO-7 macro solid occupancy state per GEO cell.
+- Freeze deterministic material and coupling proxy storage over `geo_cell_key`.
+
+NON-SEMANTICS:
+- This schema does not define excavation algorithms by itself.
+- This schema does not require ROI micro detail to be present.
+
+REQUIRED SHAPE:
+record geometry_cell_state
+  required:
+    - geo_cell_key: map
+    - material_id: id
+    - occupancy_fraction: int
+    - permeability_proxy: int
+    - conductance_proxy: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - height_proxy: int
+
+INVARIANTS:
+- one authoritative macro state row exists per canonical `geo_cell_key`
+- occupancy values must remain deterministically quantized
+- coupling proxy values must be derived deterministically from material and occupancy state

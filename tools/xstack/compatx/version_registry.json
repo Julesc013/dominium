@@ -1540,6 +1540,27 @@
         "1.0.0"
       ]
     },
+    "geometry_cell_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "geometry_chunk_state": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "geometry_edit_event": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "geo_query": {
       "current_version": "1.0.0",
       "migrations": {},

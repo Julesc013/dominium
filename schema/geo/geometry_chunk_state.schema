@@ -1,0 +1,26 @@
+SCHEMA: geo/geometry_chunk_state.schema
+schema_id: dominium.schema.geo.geometry_chunk_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define optional GEO-7 ROI micro geometry chunk state beneath a macro parent cell.
+- Preserve deterministic compaction and expansion references for derived chunk payloads.
+
+NON-SEMANTICS:
+- This schema does not require mesh generation.
+- This schema does not imply a specific chunk payload format.
+
+REQUIRED SHAPE:
+record geometry_chunk_state
+  required:
+    - chunk_id: id
+    - parent_cell_key: map
+    - chunk_payload_ref: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `chunk_id` must be deterministic for equivalent parent cell and refinement inputs
+- micro chunk state must aggregate deterministically back into macro `geometry_cell_state`
+- chunk payload references must remain versioned and replay-safe
