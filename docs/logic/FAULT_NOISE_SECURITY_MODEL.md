@@ -45,6 +45,8 @@ Fault state changes are canonical and process-only:
 
 Default noise behavior is deterministic and policy-driven.
 
+The default is deterministic quantization at the sampling boundary.
+
 Kinds:
 
 - `none`
