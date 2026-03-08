@@ -1,0 +1,65 @@
+{
+  "delivered_signal_count": 8,
+  "delivery_event_count": 8,
+  "deterministic_fingerprint": "b7b8d500dff48ae2a050bfbfb4f734717767861c7b8db27122f937988b726ebe",
+  "final_queued_frame_count": 8,
+  "frame_count": 16,
+  "logic_protocol_event_hash_chain": "789513fdbf345157139b2f5cf2115d2acbcad4d6265291f7885c698e65cb80d9",
+  "logic_protocol_frame_hash_chain": "a2d2edda0f3b650e7b5d4715414a37ddc68fe4ad10c95e7f5c8188c5cdf8fa91",
+  "message_delivery_event_hash_chain": "b1d6e62998534394122041a7d21355d33143ad841b6d4ba4a917557421db75c9",
+  "protocol_event_count": 8,
+  "receipt_count": 8,
+  "result": "complete",
+  "tick_count": 8,
+  "tick_reports": [
+    {
+      "delivered_events": 1,
+      "delivery_event_count": 1,
+      "queued_frames": 15,
+      "tick": 0
+    },
+    {
+      "delivered_events": 2,
+      "delivery_event_count": 2,
+      "queued_frames": 14,
+      "tick": 1
+    },
+    {
+      "delivered_events": 3,
+      "delivery_event_count": 3,
+      "queued_frames": 13,
+      "tick": 2
+    },
+    {
+      "delivered_events": 4,
+      "delivery_event_count": 4,
+      "queued_frames": 12,
+      "tick": 3
+    },
+    {
+      "delivered_events": 5,
+      "delivery_event_count": 5,
+      "queued_frames": 11,
+      "tick": 4
+    },
+    {
+      "delivered_events": 6,
+      "delivery_event_count": 6,
+      "queued_frames": 10,
+      "tick": 5
+    },
+    {
+      "delivered_events": 7,
+      "delivery_event_count": 7,
+      "queued_frames": 9,
+      "tick": 6
+    },
+    {
+      "delivered_events": 8,
+      "delivery_event_count": 8,
+      "queued_frames": 8,
+      "tick": 7
+    }
+  ],
+  "use_sig": true
+}

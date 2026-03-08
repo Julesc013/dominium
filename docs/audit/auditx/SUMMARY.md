@@ -9,9 +9,9 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 665
-- VIOLATION: 106
-- WARN: 1240
+- RISK: 674
+- VIOLATION: 108
+- WARN: 1242
 
 ## Counts By Category
 
@@ -21,13 +21,14 @@ Superseded By: none
 - architecture.adhoc_state_flag_smell: 2
 - architecture.adhoc_valve_smell: 3
 - architecture.affordance_gap_smell: 317
-- architecture.broadcast_bypass_smell: 4
+- architecture.broadcast_bypass_smell: 5
 - architecture.deprecated_usage_smell: 1
 - architecture.derailment_bypass_smell: 1
+- architecture.direct_knowledge_mutation_smell: 1
 - architecture.direct_message_smell: 5
 - architecture.direct_position_mutation_smell: 1
 - architecture.direct_schedule_mutation_smell: 1
-- architecture.heat_loss_bypass_smell: 2
+- architecture.heat_loss_bypass_smell: 3
 - architecture.implicit_system_collapse_smell: 3
 - architecture.inline_cure_smell: 5
 - architecture.inline_friction_smell: 2
@@ -41,10 +42,10 @@ Superseded By: none
 - architecture.missing_failsafe_smell: 1
 - architecture.missing_ledger_entry_smell: 4
 - architecture.mobility_graph_duplication_smell: 1
-- architecture.mobility_special_case_smell: 2
+- architecture.mobility_special_case_smell: 3
 - architecture.model_bypass_smell: 7
 - architecture.nondeterministic_queue_order_smell: 1
-- architecture.silent_corruption_smell: 1
+- architecture.silent_corruption_smell: 3
 - architecture.silent_degrade_smell: 10
 - architecture.silent_downgrade_smell: 3
 - architecture.silent_therm_degrade_smell: 3
@@ -54,11 +55,11 @@ Superseded By: none
 - architecture.unbounded_spread_smell: 1
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
-- architecture.unlogged_trust_change_smell: 3
+- architecture.unlogged_trust_change_smell: 4
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 752
+- canon_drift: 754
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
@@ -68,8 +69,9 @@ Superseded By: none
 - epistemics.hidden_state_leak_smell: 6
 - interaction.interaction_bypass_smell: 2
 - legacy_contamination: 11
-- logic.adhoc_wiring_smell: 4
-- logic.carrier_bias_smell: 6
+- logic.adhoc_wiring_smell: 5
+- logic.carrier_bias_smell: 8
+- logic.protocol_security_bypass_smell: 1
 - logic.random_failure_smell: 1
 - logic.truth_leak_via_debug_smell: 1
 - logic.unbounded_trace_smell: 1

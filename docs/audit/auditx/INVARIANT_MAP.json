@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 752,
+      "finding_count": 754,
       "recommended_actions": {
-        "DOC_FIX": 752
+        "DOC_FIX": 754
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 752
+        "WARN": 754
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -749,9 +749,9 @@
       }
     },
     "INV-LOGIC-WIRING-USES-NETWORKGRAPH": {
-      "finding_count": 4,
+      "finding_count": 5,
       "recommended_actions": {
-        "REWRITE": 4
+        "REWRITE": 5
       },
       "sample_findings": [
         {
@@ -773,16 +773,21 @@
           "category": "logic.adhoc_wiring_smell",
           "finding_id": "E314_AD_HOC_WIRING_SMELL:0004",
           "location": "src/logic/eval/sense_engine.py"
+        },
+        {
+          "category": "logic.adhoc_wiring_smell",
+          "finding_id": "E314_AD_HOC_WIRING_SMELL:0005",
+          "location": "src/logic/protocol/protocol_engine.py"
         }
       ],
       "severities": {
-        "VIOLATION": 4
+        "VIOLATION": 5
       }
     },
     "INV-LOSS-MAPPED-TO-HEAT": {
-      "finding_count": 2,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 2
+        "REWRITE": 3
       },
       "sample_findings": [
         {
@@ -793,11 +798,16 @@
         {
           "category": "architecture.heat_loss_bypass_smell",
           "finding_id": "E195_HEAT_LOSS_BYPASS_SMELL:0002",
+          "location": "src/logic/protocol/protocol_engine.py"
+        },
+        {
+          "category": "architecture.heat_loss_bypass_smell",
+          "finding_id": "E195_HEAT_LOSS_BYPASS_SMELL:0003",
           "location": "src/signals/transport/transport_engine.py"
         }
       ],
       "severities": {
-        "RISK": 2
+        "RISK": 3
       }
     },
     "INV-LOSS-POLICY-REGISTERED": {
@@ -875,45 +885,55 @@
       }
     },
     "INV-MOB-USES-GUIDEGEOMETRY": {
-      "finding_count": 2,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 2
+        "REWRITE": 3
       },
       "sample_findings": [
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
-          "location": "src/specs/spec_engine.py"
+          "location": "src/logic/protocol/protocol_engine.py"
         },
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
+          "location": "src/specs/spec_engine.py"
+        },
+        {
+          "category": "architecture.mobility_special_case_smell",
+          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0003",
           "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 2
+        "RISK": 3
       }
     },
     "INV-MOB-USES-NETWORKGRAPH": {
-      "finding_count": 2,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 2
+        "REWRITE": 3
       },
       "sample_findings": [
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
-          "location": "src/specs/spec_engine.py"
+          "location": "src/logic/protocol/protocol_engine.py"
         },
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
+          "location": "src/specs/spec_engine.py"
+        },
+        {
+          "category": "architecture.mobility_special_case_smell",
+          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0003",
           "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 2
+        "RISK": 3
       }
     },
     "INV-MODE-AS-PROFILES": {
@@ -1246,9 +1266,9 @@
       }
     },
     "INV-NO-CARRIER-SEMANTIC-BIAS": {
-      "finding_count": 6,
+      "finding_count": 8,
       "recommended_actions": {
-        "REWRITE": 6
+        "REWRITE": 8
       },
       "sample_findings": [
         {
@@ -1264,27 +1284,27 @@
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0003",
-          "location": "tools/logic/tool_run_logic_debug_stress.py"
+          "location": "src/logic/protocol/protocol_engine.py"
         },
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0004",
-          "location": "tools/logic/tool_run_logic_eval_stress.py"
+          "location": "tools/logic/tool_run_logic_debug_stress.py"
         },
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
-          "location": "tools/logic/tool_run_logic_fault_stress.py"
+          "location": "tools/logic/tool_run_logic_eval_stress.py"
         }
       ],
       "severities": {
-        "RISK": 6
+        "RISK": 8
       }
     },
     "INV-NO-DIRECT-ARTIFACT-DELIVERY": {
-      "finding_count": 4,
+      "finding_count": 5,
       "recommended_actions": {
-        "REWRITE": 4
+        "REWRITE": 5
       },
       "sample_findings": [
         {
@@ -1295,21 +1315,26 @@
         {
           "category": "architecture.broadcast_bypass_smell",
           "finding_id": "E169_BROADCAST_BYPASS_SMELL:0002",
-          "location": "src/signals/institutions/bulletin_engine.py"
+          "location": "src/logic/protocol/protocol_engine.py"
         },
         {
           "category": "architecture.broadcast_bypass_smell",
           "finding_id": "E169_BROADCAST_BYPASS_SMELL:0003",
-          "location": "src/signals/institutions/dispatch_engine.py"
+          "location": "src/signals/institutions/bulletin_engine.py"
         },
         {
           "category": "architecture.broadcast_bypass_smell",
           "finding_id": "E169_BROADCAST_BYPASS_SMELL:0004",
+          "location": "src/signals/institutions/dispatch_engine.py"
+        },
+        {
+          "category": "architecture.broadcast_bypass_smell",
+          "finding_id": "E169_BROADCAST_BYPASS_SMELL:0005",
           "location": "src/signals/institutions/standards_engine.py"
         }
       ],
       "severities": {
-        "RISK": 4
+        "RISK": 5
       }
     },
     "INV-NO-DIRECT-CAMERA-TOGGLE": {
@@ -1329,19 +1354,29 @@
       }
     },
     "INV-NO-DIRECT-MESSAGE-DROP": {
-      "finding_count": 1,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 1
+        "REWRITE": 3
       },
       "sample_findings": [
         {
           "category": "architecture.silent_corruption_smell",
           "finding_id": "E171_SILENT_CORRUPTION_SMELL:0001",
           "location": "src/inspection/inspection_engine.py"
+        },
+        {
+          "category": "architecture.silent_corruption_smell",
+          "finding_id": "E171_SILENT_CORRUPTION_SMELL:0002",
+          "location": "src/logic/protocol/protocol_engine.py"
+        },
+        {
+          "category": "architecture.silent_corruption_smell",
+          "finding_id": "E171_SILENT_CORRUPTION_SMELL:0003",
+          "location": "src/logic/protocol/rows.py"
         }
       ],
       "severities": {
-        "RISK": 1
+        "RISK": 3
       }
     },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
@@ -1603,19 +1638,24 @@
       }
     },
     "INV-NO-TRAIN-SPECIALCASE": {
-      "finding_count": 4,
+      "finding_count": 5,
       "recommended_actions": {
-        "REWRITE": 4
+        "REWRITE": 5
       },
       "sample_findings": [
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
-          "location": "src/specs/spec_engine.py"
+          "location": "src/logic/protocol/protocol_engine.py"
         },
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
+          "location": "src/specs/spec_engine.py"
+        },
+        {
+          "category": "architecture.mobility_special_case_smell",
+          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0003",
           "location": "tools/xstack/sessionx/process_runtime.py"
         },
         {
@@ -1630,7 +1670,7 @@
         }
       ],
       "severities": {
-        "RISK": 4
+        "RISK": 5
       }
     },
     "INV-NO-TRUTH-LEAK-VIA-INSPECTION": {
@@ -1804,6 +1844,38 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-PROTOCOL-SECURITY-ENFORCED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.protocol_security_bypass_smell",
+          "finding_id": "E327_PROTOCOL_SECURITY_BYPASS_SMELL:0001",
+          "location": "docs/logic/PROTOCOL_LAYER_MODEL.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-RECEIPT-REQUIRED-FOR-KNOWLEDGE": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.direct_knowledge_mutation_smell",
+          "finding_id": "E168_DIRECT_KNOWLEDGE_MUTATION_SMELL:0001",
+          "location": "src/logic/protocol/protocol_engine.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 1
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {
@@ -2046,9 +2118,9 @@
       }
     },
     "INV-VERIFICATION-PROCESS-ONLY": {
-      "finding_count": 3,
+      "finding_count": 4,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 4
       },
       "sample_findings": [
         {
@@ -2059,16 +2131,21 @@
         {
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0002",
-          "location": "src/signals/transport/transport_engine.py"
+          "location": "src/logic/protocol/protocol_engine.py"
         },
         {
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0003",
+          "location": "src/signals/transport/transport_engine.py"
+        },
+        {
+          "category": "architecture.unlogged_trust_change_smell",
+          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0004",
           "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 4
       }
     },
     "INV-WORKSPACE-ISOLATION": {
