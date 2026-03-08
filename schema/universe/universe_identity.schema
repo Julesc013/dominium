@@ -29,3 +29,5 @@ OPTIONAL:
   - metric_profile_id: id
   - partition_profile_id: id
   - projection_profile_id: id
+  - generator_version_id: id
+  - realism_profile_id: id

@@ -35,6 +35,10 @@ from .render_model import build_render_model
 from .universe_physics import select_physics_profile
 
 
+DEFAULT_GENERATOR_VERSION_ID = "gen.v0_stub"
+DEFAULT_REALISM_PROFILE_ID = "realism.realistic_default_milkyway_stub"
+
+
 REGISTRY_HASH_KEY_MAP = {
     "universe_physics_profile_registry_hash": "universe_physics_profile_registry",
     "time_control_policy_registry_hash": "time_control_policy_registry",
@@ -1973,6 +1977,12 @@ def boot_session_spec(
             {"save_id": save_id},
             "$.physics_profile_id",
         )
+    identity_generator_version_id = (
+        str(universe_identity.get("generator_version_id", "")).strip() or DEFAULT_GENERATOR_VERSION_ID
+    )
+    identity_realism_profile_id = (
+        str(universe_identity.get("realism_profile_id", "")).strip() or DEFAULT_REALISM_PROFILE_ID
+    )
     selected_physics_profile, selected_physics_profile_error = select_physics_profile(
         physics_profile_id=identity_physics_profile_id,
         profile_registry=universe_physics_profile_registry,
@@ -1991,6 +2001,32 @@ def boot_session_spec(
                 "identity_physics_profile_id": identity_physics_profile_id,
             },
             "$.physics_profile_id",
+        )
+    previous_generator_version_id = str((previous_run_meta or {}).get("generator_version_id", "")).strip()
+    if previous_generator_version_id and previous_generator_version_id != identity_generator_version_id:
+        return refusal(
+            "refusal.generator_version_mismatch",
+            "generator_version_id does not match the previously booted universe lineage for this save",
+            "Create a new save id for a new generator lineage or restore the original identity.",
+            {
+                "save_id": save_id,
+                "previous_generator_version_id": previous_generator_version_id,
+                "identity_generator_version_id": identity_generator_version_id,
+            },
+            "$.generator_version_id",
+        )
+    previous_realism_profile_id = str((previous_run_meta or {}).get("realism_profile_id", "")).strip()
+    if previous_realism_profile_id and previous_realism_profile_id != identity_realism_profile_id:
+        return refusal(
+            "refusal.realism_profile_mismatch",
+            "realism_profile_id does not match the previously booted universe lineage for this save",
+            "Create a new save id for a new realism lineage or restore the original identity.",
+            {
+                "save_id": save_id,
+                "previous_realism_profile_id": previous_realism_profile_id,
+                "identity_realism_profile_id": identity_realism_profile_id,
+            },
+            "$.realism_profile_id",
         )
     identity_conservation_contract_set_id = (
         str(selected_physics_profile.get("conservation_contract_set_id", "")).strip() or "contracts.null"
@@ -2904,6 +2940,8 @@ def boot_session_spec(
         "last_stage_id": str(final_stage_id),
         "universe_identity_hash": str(universe_identity.get("identity_hash", "")),
         "physics_profile_id": identity_physics_profile_id,
+        "generator_version_id": identity_generator_version_id,
+        "realism_profile_id": identity_realism_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "dt_quantization_rule_id": str(selected_dt_quantization_rule.get("dt_rule_id", "")),

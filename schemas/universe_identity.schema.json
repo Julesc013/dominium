@@ -66,6 +66,14 @@
       "type": "string",
       "minLength": 1
     },
+    "generator_version_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "realism_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "base_scenario_id": {
       "type": "string"
     },
@@ -106,20 +114,24 @@
       "metric_profile_id": "geo.metric.euclidean",
       "partition_profile_id": "geo.partition.grid_zd",
       "projection_profile_id": "geo.projection.perspective_3d",
+      "generator_version_id": "gen.v0_stub",
+      "realism_profile_id": "realism.realistic_default_milkyway_stub",
       "base_scenario_id": "scenario.lab.galaxy_nav",
       "initial_pack_set_hash_expectation": "d9eb253e069b2ce7fbbdb5f95f98cc28fbf3622f29227cececad2e89d13718a5",
       "compatibility_schema_refs": [
         "bundle_lockfile@1.0.0",
+        "generator_version@1.0.0",
         "metric_profile@1.0.0",
         "partition_profile@1.0.0",
         "projection_profile@1.0.0",
+        "realism_profile@1.0.0",
         "session_spec@1.0.0",
         "space_topology_profile@1.0.0",
         "universe_identity@1.0.0"
       ],
       "immutable_after_create": true,
       "extensions": {},
-      "identity_hash": "de3c1b66f2ff24c1d340e7eb2d9f2fe707bfff8657aab0ec93154c27f486322f"
+      "identity_hash": "864f1b17ae07540760057de4cbaec28ea2f3db9271af1ce5cc3560aafce84d0a"
     }
   ]
 }

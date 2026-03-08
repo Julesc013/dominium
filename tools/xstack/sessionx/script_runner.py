@@ -30,6 +30,10 @@ from .scheduler import replay_intent_script_srz
 from .universe_physics import select_physics_profile
 
 
+DEFAULT_GENERATOR_VERSION_ID = "gen.v0_stub"
+DEFAULT_REALISM_PROFILE_ID = "realism.realistic_default_milkyway_stub"
+
+
 def _is_sha256_hex(token: str) -> bool:
     value = str(token or "").strip()
     if len(value) != 64:
@@ -1026,6 +1030,12 @@ def run_intent_script(
             {"save_id": save_id},
             "$.physics_profile_id",
         )
+    identity_generator_version_id = (
+        str(universe_identity.get("generator_version_id", "")).strip() or DEFAULT_GENERATOR_VERSION_ID
+    )
+    identity_realism_profile_id = (
+        str(universe_identity.get("realism_profile_id", "")).strip() or DEFAULT_REALISM_PROFILE_ID
+    )
     selected_physics_profile, selected_physics_profile_error = select_physics_profile(
         physics_profile_id=identity_physics_profile_id,
         profile_registry=universe_physics_profile_registry,
@@ -1401,6 +1411,8 @@ def run_intent_script(
         "composite_hash": composite_hash,
         "final_state_hash": final_state_hash,
         "physics_profile_id": identity_physics_profile_id,
+        "generator_version_id": identity_generator_version_id,
+        "realism_profile_id": identity_realism_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "dt_quantization_rule_id": str(selected_dt_quantization_rule.get("dt_rule_id", "")),
@@ -1453,6 +1465,8 @@ def run_intent_script(
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
+        "generator_version_id": identity_generator_version_id,
+        "realism_profile_id": identity_realism_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "state_hash_anchors": state_hash_anchors,

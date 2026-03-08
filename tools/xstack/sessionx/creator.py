@@ -49,6 +49,8 @@ DEFAULT_TOPOLOGY_PROFILE_ID = "geo.topology.r3_infinite"
 DEFAULT_METRIC_PROFILE_ID = "geo.metric.euclidean"
 DEFAULT_PARTITION_PROFILE_ID = "geo.partition.grid_zd"
 DEFAULT_PROJECTION_PROFILE_ID = "geo.projection.perspective_3d"
+DEFAULT_GENERATOR_VERSION_ID = "gen.v0_stub"
+DEFAULT_REALISM_PROFILE_ID = "realism.realistic_default_milkyway_stub"
 DEFAULT_TIME_CONTROL_POLICY_ID = "time.policy.null"
 DEFAULT_SCENARIO_ID = "scenario.lab.galaxy_nav"
 DEFAULT_SCOPE_ID = "epistemic.lab.placeholder"
@@ -351,6 +353,8 @@ def _compatibility_schema_refs(repo_root: str) -> List[str]:
         "metric_profile",
         "partition_profile",
         "projection_profile",
+        "generator_version",
+        "realism_profile",
         "session_spec",
         "space_topology_profile",
         "universe_identity",
@@ -766,6 +770,8 @@ def _universe_identity_from_seed(
     metric_profile_id: str,
     partition_profile_id: str,
     projection_profile_id: str,
+    generator_version_id: str,
+    realism_profile_id: str,
     initial_pack_set_hash_expectation: str,
     compatibility_schema_refs: List[str],
 ) -> dict:
@@ -779,6 +785,8 @@ def _universe_identity_from_seed(
         "metric_profile_id": str(metric_profile_id).strip() or DEFAULT_METRIC_PROFILE_ID,
         "partition_profile_id": str(partition_profile_id).strip() or DEFAULT_PARTITION_PROFILE_ID,
         "projection_profile_id": str(projection_profile_id).strip() or DEFAULT_PROJECTION_PROFILE_ID,
+        "generator_version_id": str(generator_version_id).strip() or DEFAULT_GENERATOR_VERSION_ID,
+        "realism_profile_id": str(realism_profile_id).strip() or DEFAULT_REALISM_PROFILE_ID,
         "base_scenario_id": str(scenario_id),
         "initial_pack_set_hash_expectation": str(initial_pack_set_hash_expectation).strip(),
         "compatibility_schema_refs": sorted(
@@ -1457,6 +1465,8 @@ def create_session_spec(
             metric_profile_id=DEFAULT_METRIC_PROFILE_ID,
             partition_profile_id=DEFAULT_PARTITION_PROFILE_ID,
             projection_profile_id=DEFAULT_PROJECTION_PROFILE_ID,
+            generator_version_id=DEFAULT_GENERATOR_VERSION_ID,
+            realism_profile_id=DEFAULT_REALISM_PROFILE_ID,
             initial_pack_set_hash_expectation=str(lockfile_payload.get("pack_lock_hash", "")),
             compatibility_schema_refs=_compatibility_schema_refs(repo_root=repo_root),
         )

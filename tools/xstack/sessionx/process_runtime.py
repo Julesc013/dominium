@@ -450,6 +450,7 @@ from src.fields import (
     build_field_cell,
     build_field_layer,
     build_field_sample,
+    field_set_value,
     field_modifier_snapshot,
     field_type_rows_by_id,
     field_update_policy_rows_by_id,
@@ -691,6 +692,20 @@ from src.geo.edit import (
     normalize_geometry_edit_event,
     normalize_geometry_edit_event_rows,
 )
+from src.geo.worldgen import (
+    DEFAULT_GENERATOR_VERSION_ID,
+    DEFAULT_REALISM_PROFILE_ID,
+    build_worldgen_request,
+    generate_worldgen_result,
+    generator_version_registry_hash,
+    normalize_worldgen_request,
+    normalize_worldgen_request_rows,
+    normalize_worldgen_result,
+    normalize_worldgen_result_rows,
+    realism_profile_registry_hash,
+    worldgen_request_hash,
+    worldgen_result_proof_surface,
+)
 from src.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
@@ -861,6 +876,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.geometry_add": "entitlement.control.admin",
     "process.geometry_replace": "entitlement.control.admin",
     "process.geometry_cut": "entitlement.control.admin",
+    "process.worldgen_request": "entitlement.control.admin",
     "process.mobility_network_create_from_formalization": "entitlement.control.admin",
     "process.mobility_network_edit": "entitlement.control.admin",
     "process.switch_set_state": "entitlement.control.admin",
@@ -1083,6 +1099,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.geometry_add": "operator",
     "process.geometry_replace": "operator",
     "process.geometry_cut": "operator",
+    "process.worldgen_request": "operator",
     "process.mobility_network_create_from_formalization": "operator",
     "process.mobility_network_edit": "operator",
     "process.switch_set_state": "operator",
@@ -1251,6 +1268,7 @@ CONTROL_PROCESS_IDS = {
     "process.geometry_add",
     "process.geometry_replace",
     "process.geometry_cut",
+    "process.worldgen_request",
     "process.mobility_network_create_from_formalization",
     "process.mobility_network_edit",
     "process.switch_set_state",
@@ -3893,6 +3911,131 @@ def _refresh_geometry_hash_chains(state: dict, material_registry: Mapping[str, o
     state["geometry_chunk_state_hash_chain"] = str(surface.get("geometry_chunk_state_hash", "")).strip()
     state["geometry_edit_event_hash_chain"] = str(surface.get("geometry_edit_event_hash_chain", "")).strip()
     state["geometry_state_hash_chain"] = str(surface.get("deterministic_fingerprint", "")).strip()
+
+
+def _ensure_worldgen_request_rows(state: dict) -> List[dict]:
+    rows = normalize_worldgen_request_rows(state.get("worldgen_requests"))
+    state["worldgen_requests"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_worldgen_result_rows(state: dict) -> List[dict]:
+    rows = normalize_worldgen_result_rows(state.get("worldgen_results"))
+    state["worldgen_results"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_worldgen_spawned_object_rows(state: dict) -> List[dict]:
+    rows = [
+        {
+            "object_id_hash": str(dict(row).get("object_id_hash", "")).strip(),
+            "object_kind_id": str(dict(row).get("object_kind_id", "")).strip(),
+            "local_subkey": str(dict(row).get("local_subkey", "")).strip(),
+            "geo_cell_key": dict(dict(row).get("geo_cell_key") or {}),
+        }
+        for row in list(state.get("worldgen_spawned_objects") or [])
+        if isinstance(row, Mapping) and str(dict(row).get("object_id_hash", "")).strip()
+    ]
+    rows = sorted(
+        rows,
+        key=lambda row: (
+            str(row.get("object_id_hash", "")),
+            str(row.get("object_kind_id", "")),
+            str(row.get("local_subkey", "")),
+        ),
+    )
+    state["worldgen_spawned_objects"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _append_worldgen_request_artifact(state: dict, request_row: Mapping[str, object]) -> None:
+    row = normalize_worldgen_request(request_row)
+    request_id = str(row.get("request_id", "")).strip()
+    if not request_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.worldgen_request.{}".format(request_id),
+        "artifact_family_id": "RECORD",
+        "extensions": {
+            "artifact_type_id": "artifact.worldgen_request",
+            "worldgen_request": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_worldgen_result_artifact(state: dict, result_row: Mapping[str, object]) -> None:
+    row = normalize_worldgen_result(result_row)
+    result_id = str(row.get("result_id", "")).strip()
+    if not result_id:
+        return
+    artifact_row = {
+        "artifact_id": "artifact.worldgen_result.{}".format(result_id),
+        "artifact_family_id": "MODEL",
+        "extensions": {
+            "artifact_type_id": "artifact.worldgen_result",
+            "worldgen_result": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_row]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_worldgen_request(state: dict, request_row: Mapping[str, object]) -> dict:
+    normalized = normalize_worldgen_request(request_row)
+    merged = list(_ensure_worldgen_request_rows(state))
+    request_id = str(normalized.get("request_id", "")).strip()
+    merged = [row for row in merged if str(dict(row).get("request_id", "")).strip() != request_id] + [normalized]
+    merged = normalize_worldgen_request_rows(merged)
+    state["worldgen_requests"] = [dict(row) for row in merged]
+    emitted = dict(next((row for row in merged if str(row.get("request_id", "")).strip() == request_id), normalized))
+    _append_worldgen_request_artifact(state, emitted)
+    return emitted
+
+
+def _append_worldgen_result(state: dict, result_row: Mapping[str, object], spawned_object_rows: object = None) -> dict:
+    normalized = normalize_worldgen_result(result_row)
+    merged = list(_ensure_worldgen_result_rows(state))
+    result_id = str(normalized.get("result_id", "")).strip()
+    merged = [row for row in merged if str(dict(row).get("result_id", "")).strip() != result_id] + [normalized]
+    merged = normalize_worldgen_result_rows(merged)
+    state["worldgen_results"] = [dict(row) for row in merged]
+    if isinstance(spawned_object_rows, list):
+        current_rows = list(_ensure_worldgen_spawned_object_rows(state))
+        current_by_id = dict((str(dict(row).get("object_id_hash", "")).strip(), dict(row)) for row in current_rows)
+        for row in spawned_object_rows:
+            if not isinstance(row, Mapping):
+                continue
+            object_id_hash = str(dict(row).get("object_id_hash", "")).strip()
+            if not object_id_hash:
+                continue
+            current_by_id[object_id_hash] = {
+                "object_id_hash": object_id_hash,
+                "object_kind_id": str(dict(row).get("object_kind_id", "")).strip(),
+                "local_subkey": str(dict(row).get("local_subkey", "")).strip(),
+                "geo_cell_key": dict(dict(row).get("geo_cell_key") or {}),
+            }
+        state["worldgen_spawned_objects"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
+    _append_worldgen_result_artifact(state, normalized)
+    return dict(next((row for row in merged if str(row.get("result_id", "")).strip() == result_id), normalized))
+
+
+def _refresh_worldgen_hash_chains(state: dict) -> None:
+    surface = worldgen_result_proof_surface(
+        worldgen_requests=_ensure_worldgen_request_rows(state),
+        worldgen_results=_ensure_worldgen_result_rows(state),
+        worldgen_spawned_objects=_ensure_worldgen_spawned_object_rows(state),
+    )
+    state["worldgen_request_hash_chain"] = str(surface.get("worldgen_request_hash_chain", "")).strip()
+    state["worldgen_result_hash_chain"] = str(surface.get("worldgen_result_hash_chain", "")).strip()
+    state["worldgen_spawned_object_hash_chain"] = str(surface.get("worldgen_spawned_object_hash_chain", "")).strip()
 
 
 def _consume_geometry_material_batches(
@@ -19098,6 +19241,24 @@ def _view_type_registry_payload(policy_context: dict | None) -> dict:
     )
 
 
+def _realism_profile_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="realism_profile_registry",
+        registry_rel_path="data/registries/realism_profile_registry.json",
+        entry_key="realism_profiles",
+    )
+
+
+def _generator_version_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="generator_version_registry",
+        registry_rel_path="data/registries/generator_version_registry.json",
+        entry_key="generator_versions",
+    )
+
+
 def _record_geo_field_registry_hashes(state: dict, policy_context: dict | None) -> None:
     state["traversal_policy_registry_hash"] = canonical_sha256(
         dict(
@@ -19116,6 +19277,12 @@ def _record_geo_field_registry_hashes(state: dict, policy_context: dict | None) 
     state["view_type_registry_hash"] = canonical_sha256(dict(_view_type_registry_payload(policy_context)))
     state["geometry_edit_policy_registry_hash"] = geometry_edit_policy_registry_hash(
         _geometry_edit_policy_registry_payload(policy_context)
+    )
+    state["realism_profile_registry_hash"] = realism_profile_registry_hash(
+        _realism_profile_registry_payload(policy_context)
+    )
+    state["generator_version_registry_hash"] = generator_version_registry_hash(
+        _generator_version_registry_payload(policy_context)
     )
 
 
@@ -23911,6 +24078,7 @@ def execute_intent(
     _refresh_system_forensics_hash_chains(state)
     _refresh_compile_hash_chains(state)
     _refresh_state_vector_hash_chains(state)
+    _refresh_worldgen_hash_chains(state)
     elec_flow_channels = []
     for _row in list(state.get("elec_flow_channels") or []):
         if not isinstance(_row, Mapping):
@@ -43986,6 +44154,186 @@ def execute_intent(
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.worldgen_request":
+        _record_geo_field_registry_hashes(state, policy_context)
+        universe_identity = dict(state.get("universe_identity") or {})
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        realism_profile_registry = _realism_profile_registry_payload(policy_context)
+        generator_version_registry = _generator_version_registry_payload(policy_context)
+        raw_request = dict(inputs.get("worldgen_request") or {}) if isinstance(inputs.get("worldgen_request"), Mapping) else {}
+        if not raw_request:
+            geo_cell_key = dict(inputs.get("geo_cell_key") or {}) if isinstance(inputs.get("geo_cell_key"), Mapping) else {}
+            if not geo_cell_key:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.worldgen_request requires worldgen_request or geo_cell_key",
+                    "Provide a deterministic GEO cell target for on-demand world generation.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.geo_cell_key",
+                )
+            try:
+                raw_request = build_worldgen_request(
+                    request_id=str(inputs.get("request_id", "")).strip()
+                    or "worldgen.request.{}".format(
+                        canonical_sha256(
+                            {
+                                "intent_id": str(intent_id),
+                                "geo_cell_key": geo_cell_key,
+                                "refinement_level": int(max(0, _as_int(inputs.get("refinement_level", 0), 0))),
+                                "reason": str(inputs.get("reason", "query")).strip(),
+                            }
+                        )[:16]
+                    ),
+                    geo_cell_key=geo_cell_key,
+                    refinement_level=int(max(0, _as_int(inputs.get("refinement_level", 0), 0))),
+                    reason=str(inputs.get("reason", "query")).strip() or "query",
+                    extensions={
+                        "source_process_id": process_id,
+                        "intent_id": str(intent_id),
+                        **(dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {}),
+                    },
+                )
+            except ValueError:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.worldgen_request inputs are invalid",
+                    "Use a declared worldgen reason and a valid GEO cell key.",
+                    {"process_id": process_id},
+                    "$.intent.inputs",
+                )
+        try:
+            request_row = normalize_worldgen_request(raw_request)
+        except ValueError:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "worldgen_request is invalid",
+                "Use the GEO-8 worldgen request schema contract.",
+                {"process_id": process_id},
+                "$.intent.inputs.worldgen_request",
+            )
+        request_row = _append_worldgen_request(state, request_row)
+        generated = generate_worldgen_result(
+            universe_identity=universe_identity,
+            worldgen_request=request_row,
+            generator_version_id=str(inputs.get("generator_version_id", "")).strip(),
+            realism_profile_id=str(inputs.get("realism_profile_id", "")).strip(),
+            realism_profile_registry_payload=realism_profile_registry,
+            generator_version_registry_payload=generator_version_registry,
+            cache_enabled=True,
+        )
+        if str(generated.get("result", "")) != "complete":
+            return refusal(
+                str(generated.get("refusal_code", "PROCESS_INPUT_INVALID")),
+                str(generated.get("message", "worldgen request refused")),
+                "Use the locked generator_version_id / realism_profile_id for this universe lineage.",
+                dict(generated.get("details") or {}),
+                "$.intent.inputs",
+            )
+        cache_key = str(generated.get("cache_key", "")).strip()
+        existing_result = next(
+            (
+                dict(row)
+                for row in list(_ensure_worldgen_result_rows(state))
+                if str(dict(dict(row).get("extensions") or {}).get("cache_key", "")).strip() == cache_key
+            ),
+            {},
+        )
+        worldgen_result_row = dict(generated.get("worldgen_result") or {})
+        generated_object_rows = [dict(row) for row in list(generated.get("generated_object_rows") or []) if isinstance(row, Mapping)]
+        field_layer_rows = [dict(row) for row in list(generated.get("field_layers") or []) if isinstance(row, Mapping)]
+        field_initializations = [dict(row) for row in list(generated.get("field_initializations") or []) if isinstance(row, Mapping)]
+        geometry_initializations = [dict(row) for row in list(generated.get("geometry_initializations") or []) if isinstance(row, Mapping)]
+        field_layers_by_id = dict((str(row.get("field_id", "")).strip(), dict(row)) for row in list(field_layers or []) if isinstance(row, Mapping))
+        for row in field_layer_rows:
+            field_id = str(row.get("field_id", "")).strip()
+            if field_id:
+                field_layers_by_id[field_id] = dict(row)
+        field_layers = normalize_field_layer_rows(list(field_layers_by_id.values()))
+        field_cell_keys = set()
+        for row in list(field_cells or []):
+            if not isinstance(row, Mapping):
+                continue
+            extensions = dict(dict(row).get("extensions") or {})
+            field_cell_keys.add(
+                "{}::{}".format(
+                    str(dict(row).get("field_id", "")).strip(),
+                    canonical_sha256(dict(extensions.get("geo_cell_key") or {})),
+                )
+            )
+        field_initializations_applied = 0
+        if not existing_result:
+            for row in field_initializations:
+                geo_cell_key = dict((dict(row.get("extensions") or {})).get("geo_cell_key") or {})
+                field_id = str(row.get("field_id", "")).strip()
+                field_key = "{}::{}".format(field_id, canonical_sha256(geo_cell_key))
+                if (not field_id) or (not geo_cell_key) or field_key in field_cell_keys:
+                    continue
+                field_cells.append(
+                    field_set_value(
+                        field_id=field_id,
+                        geo_cell_key=geo_cell_key,
+                        value=row.get("value"),
+                        last_updated_tick=int(current_tick),
+                        field_layer_rows=field_layers,
+                        field_type_registry=field_type_registry,
+                        extensions=dict(row.get("extensions") or {}),
+                    )
+                )
+                field_cell_keys.add(field_key)
+                field_initializations_applied += 1
+            field_cells = normalize_field_cell_rows(
+                field_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+                field_binding_registry=_field_binding_registry_payload(policy_context),
+            )
+            geometry_by_key = geometry_cell_state_rows_by_key(geometry_cell_states)
+            geometry_initializations_applied = 0
+            for row in geometry_initializations:
+                cell_key = dict(row.get("geo_cell_key") or {})
+                cell_hash = canonical_sha256(cell_key)
+                if (not cell_key) or cell_hash in geometry_by_key:
+                    continue
+                geometry_cell_states.append(dict(row))
+                geometry_initializations_applied += 1
+            geometry_cell_states = normalize_geometry_cell_state_rows(geometry_cell_states)
+            state["field_layers"] = [dict(row) for row in field_layers]
+            state["field_cells"] = [dict(row) for row in field_cells]
+            _persist_geometry_state(
+                state,
+                geometry_cell_states=geometry_cell_states,
+                geometry_chunk_states=geometry_chunk_states,
+                geometry_edit_events=geometry_edit_events,
+            )
+            _refresh_field_hash_chains(state)
+        else:
+            geometry_initializations_applied = 0
+            field_initializations_applied = 0
+            worldgen_result_row = existing_result
+        worldgen_result_row = _append_worldgen_result(state, worldgen_result_row, generated_object_rows)
+        _refresh_worldgen_hash_chains(state)
+        result_metadata = {
+            "request_id": str(request_row.get("request_id", "")).strip(),
+            "request_reason": str(request_row.get("reason", "")).strip(),
+            "request_hash": worldgen_request_hash(request_row),
+            "result_id": str(worldgen_result_row.get("result_id", "")).strip(),
+            "cache_hit": bool(existing_result or generated.get("cache_hit", False)),
+            "generator_version_id": str(generated.get("generator_version_id", "")).strip(),
+            "realism_profile_id": str(generated.get("realism_profile_id", "")).strip(),
+            "spawned_object_count": int(len(list(generated_object_rows or []))),
+            "field_initialization_count": int(len(list(field_initializations or []))),
+            "geometry_initialization_count": int(len(list(geometry_initializations or []))),
+            "field_initializations_applied": int(field_initializations_applied),
+            "geometry_initializations_applied": int(geometry_initializations_applied),
+            "worldgen_request_hash_chain": str(state.get("worldgen_request_hash_chain", "")).strip(),
+            "worldgen_result_hash_chain": str(state.get("worldgen_result_hash_chain", "")).strip(),
+            "worldgen_spawned_object_hash_chain": str(state.get("worldgen_spawned_object_hash_chain", "")).strip(),
+        }
     elif process_id in {
         "process.geometry_remove",
         "process.geometry_add",
