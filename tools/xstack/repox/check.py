@@ -17583,6 +17583,190 @@ def _append_geo_pathing_invariant_findings(
         )
 
 
+def _append_geo_geometry_edit_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    engine_rel = "src/geo/edit/geometry_state_engine.py"
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    proof_tool_rel = "tools/geo/tool_replay_geometry_window.py"
+    control_proof_rel = "src/control/proof/control_proof_bundle.py"
+    server_proof_rel = "src/net/policies/policy_server_authoritative.py"
+    shard_proof_rel = "src/net/srz/shard_coordinator.py"
+
+    engine_text = _file_text(repo_root, engine_rel)
+    for required_token in (
+        "def geometry_get_occupancy(",
+        "def geometry_get_permeability_proxy(",
+        "def geometry_get_conductance_proxy(",
+        "def geometry_remove_volume(",
+        "def geometry_add_volume(",
+        "def geometry_replace_material(",
+        "def geometry_cut_volume(",
+        "def geometry_state_hash_surface(",
+    ):
+        if required_token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=required_token,
+                message="geometry state access and edit helpers must remain centralized in the GEO-7 geometry engine",
+                rule_id="INV-GEOMETRY-MUTATION-PROCESS-ONLY",
+            )
+        )
+
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for required_token, rule_id, message in (
+        (
+            '"process.geometry_remove"',
+            "INV-GEOMETRY-MUTATION-PROCESS-ONLY",
+            "geometry removal must remain routed through the canonical process runtime path",
+        ),
+        (
+            '"process.geometry_add"',
+            "INV-GEOMETRY-MUTATION-PROCESS-ONLY",
+            "geometry fill/build must remain routed through the canonical process runtime path",
+        ),
+        (
+            '"process.geometry_replace"',
+            "INV-GEOMETRY-MUTATION-PROCESS-ONLY",
+            "geometry material replacement must remain routed through the canonical process runtime path",
+        ),
+        (
+            '"process.geometry_cut"',
+            "INV-GEOMETRY-MUTATION-PROCESS-ONLY",
+            "geometry cut edits must remain routed through the canonical process runtime path",
+        ),
+        (
+            "_persist_geometry_state(",
+            "INV-GEOMETRY-MUTATION-PROCESS-ONLY",
+            "geometry state persistence must remain process-owned and deterministic",
+        ),
+        (
+            "_append_geometry_edit_event(",
+            "INV-GEOMETRY-EDIT-RECORDED",
+            "geometry edits must append canonical geometry_edit_event records",
+        ),
+        (
+            "_append_geometry_edit_event_artifact(",
+            "INV-GEOMETRY-EDIT-RECORDED",
+            "geometry edit events must remain attached to canonical artifacts",
+        ),
+        (
+            "_refresh_geometry_hash_chains(",
+            "INV-GEOMETRY-EDIT-RECORDED",
+            "geometry edits must refresh deterministic geometry hash chains after commit",
+        ),
+        (
+            "_produce_geometry_material_batches(",
+            "INV-GEOMETRY-EDIT-RECORDED",
+            "geometry excavation must preserve MAT provenance through produced debris batches",
+        ),
+        (
+            "_consume_geometry_material_batches(",
+            "INV-GEOMETRY-EDIT-RECORDED",
+            "geometry fill/build must consume MAT provenance through deterministic batch accounting",
+        ),
+    ):
+        if required_token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    for rel_path in (control_proof_rel, server_proof_rel, shard_proof_rel):
+        proof_text = _file_text(repo_root, rel_path)
+        for required_token in (
+            "geometry_edit_policy_registry_hash",
+            "geometry_state_hash_chain",
+            "geometry_cell_state_hash_chain",
+            "geometry_chunk_state_hash_chain",
+            "geometry_edit_event_hash_chain",
+        ):
+            if required_token in proof_text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=required_token,
+                    message="geometry edit proof surfaces must carry deterministic registry and hash-chain fields",
+                    rule_id="INV-GEOMETRY-EDIT-RECORDED",
+                )
+            )
+
+    proof_tool_text = _file_text(repo_root, proof_tool_rel)
+    for required_token in (
+        "verify_geometry_replay_window(",
+        "geometry_edit_policy_registry_hash",
+        "geometry_state_hash_chain",
+        "geometry_edit_event_hash_chain",
+        "stable_across_repeated_runs",
+    ):
+        if required_token in proof_tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proof_tool_rel,
+                line_number=1,
+                snippet=required_token,
+                message="geometry replay tooling must verify deterministic geometry state and edit-event proof surfaces",
+                rule_id="INV-GEOMETRY-EDIT-RECORDED",
+            )
+        )
+
+    geometry_write_patterns = (
+        re.compile(r"\bstate\s*\[\s*[\"']geometry_cell_states[\"']\s*\]\s*=", re.IGNORECASE),
+        re.compile(r"\bstate\s*\[\s*[\"']geometry_chunk_states[\"']\s*\]\s*=", re.IGNORECASE),
+    )
+    scan_prefixes = ("src/", "tools/xstack/sessionx/")
+    skip_prefixes = ("tools/xstack/testx/tests/", "tools/auditx/analyzers/", "docs/")
+    allowed_files = {
+        runtime_rel,
+    }
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(scan_prefixes):
+            continue
+        if rel_norm.startswith(skip_prefixes):
+            continue
+        if rel_norm in allowed_files:
+            continue
+        for line_no, line in _iter_lines(repo_root, rel_norm):
+            snippet = str(line).strip()
+            if (not snippet) or snippet.startswith("#"):
+                continue
+            if not any(pattern.search(snippet) for pattern in geometry_write_patterns):
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=line_no,
+                    snippet=snippet[:140],
+                    message="direct authoritative terrain writes detected; geometry state mutation must stay inside process runtime commit paths",
+                    rule_id="INV-NO-DIRECT-TERRAIN-WRITES",
+                )
+            )
+            break
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -27820,6 +28004,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_projection_lens_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_geometry_edit_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

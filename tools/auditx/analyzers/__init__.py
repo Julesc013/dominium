@@ -369,6 +369,8 @@ from analyzers import e342_map_truth_leak_smell
 from analyzers import e343_uninstrumented_map_access_smell
 from analyzers import e344_nondeterministic_path_smell
 from analyzers import e345_adhoc_heuristic_smell
+from analyzers import e346_direct_geometry_write_smell
+from analyzers import e347_unlogged_terrain_edit_smell
 
 
 ANALYZERS = (
@@ -741,6 +743,8 @@ ANALYZERS = (
     e343_uninstrumented_map_access_smell,
     e344_nondeterministic_path_smell,
     e345_adhoc_heuristic_smell,
+    e346_direct_geometry_write_smell,
+    e347_unlogged_terrain_edit_smell,
 )
 
 
