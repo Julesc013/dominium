@@ -134,7 +134,9 @@ def build_protocol_definition_row(
     bus_id: str,
     framing_rules_ref: str | None,
     arbitration_policy_id: str | None,
+    addressing_mode: str | None,
     error_detection_policy_id: str | None,
+    security_policy_id: str | None,
     extensions: Mapping[str, object] | None = None,
     deterministic_fingerprint: str = "",
 ) -> dict:
@@ -144,7 +146,9 @@ def build_protocol_definition_row(
         "bus_id": _token(bus_id),
         "framing_rules_ref": None if framing_rules_ref is None else _token(framing_rules_ref) or None,
         "arbitration_policy_id": None if arbitration_policy_id is None else _token(arbitration_policy_id) or None,
+        "addressing_mode": _token(addressing_mode).lower() or "unicast",
         "error_detection_policy_id": None if error_detection_policy_id is None else _token(error_detection_policy_id) or None,
+        "security_policy_id": None if security_policy_id is None else _token(security_policy_id) or None,
         "extensions": _canon(_as_map(extensions)),
         "deterministic_fingerprint": _token(deterministic_fingerprint),
     }
@@ -163,7 +167,9 @@ def normalize_protocol_definition_rows(rows: object) -> List[dict]:
             bus_id=_token(row.get("bus_id")),
             framing_rules_ref=(None if row.get("framing_rules_ref") is None else _token(row.get("framing_rules_ref"))),
             arbitration_policy_id=(None if row.get("arbitration_policy_id") is None else _token(row.get("arbitration_policy_id"))),
+            addressing_mode=(None if row.get("addressing_mode") is None else _token(row.get("addressing_mode"))),
             error_detection_policy_id=(None if row.get("error_detection_policy_id") is None else _token(row.get("error_detection_policy_id"))),
+            security_policy_id=(None if row.get("security_policy_id") is None else _token(row.get("security_policy_id"))),
             extensions=_as_map(row.get("extensions")),
             deterministic_fingerprint=_token(row.get("deterministic_fingerprint")),
         )

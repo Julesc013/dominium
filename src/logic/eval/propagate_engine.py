@@ -9,6 +9,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from src.models import constitutive_model_rows_by_id, model_type_rows_by_id
 from src.time import evaluate_time_mappings
+from src.logic.protocol import build_protocol_frame_from_delivery, normalize_protocol_frame_rows
 
 from .common import as_int, as_list, as_map, slot_key, token
 from .runtime_state import (
@@ -25,6 +26,15 @@ def _registry_rows(payload: Mapping[str, object] | None, key: str) -> list[dict]
     if not isinstance(rows, list):
         rows = as_map(body.get("record")).get(key)
     return [dict(item) for item in list(rows or []) if isinstance(item, Mapping)]
+
+
+def _registry_rows_by_id(payload: Mapping[str, object] | None, key: str, id_key: str) -> Dict[str, dict]:
+    out: Dict[str, dict] = {}
+    for row in sorted(_registry_rows(payload, key), key=lambda item: token(item.get(id_key))):
+        row_id = token(row.get(id_key))
+        if row_id:
+            out[row_id] = dict(row)
+    return dict((name, dict(out[name])) for name in sorted(out.keys()))
 
 
 def _select_time_mapping_rows(
@@ -170,6 +180,7 @@ def _route_output_targets(
                     {
                         "target_element_id": token(next_payload.get("element_instance_id")),
                         "target_port_id": token(next_payload.get("port_id")),
+                        "target_node_id": next_node_id,
                         "edge_path": next_path,
                         "deliver_delay_ticks": int(max(1, next_delay)),
                         "carrier_type_id": token(payload.get("carrier_type_id")),
@@ -195,7 +206,9 @@ def schedule_logic_output_propagation(
     compute_result: Mapping[str, object],
     sense_snapshot: Mapping[str, object],
     pending_signal_update_rows: object,
+    protocol_frame_rows: object,
     propagation_trace_rows: object,
+    protocol_registry_payload: Mapping[str, object] | None = None,
     temporal_domain_registry_payload: Mapping[str, object] | None = None,
     time_mapping_registry_payload: Mapping[str, object] | None = None,
     drift_policy_registry_payload: Mapping[str, object] | None = None,
@@ -210,10 +223,12 @@ def schedule_logic_output_propagation(
         if isinstance(row, Mapping)
     }
     pending_rows = list(pending_signal_update_rows or [])
+    frame_rows = list(protocol_frame_rows or [])
     trace_rows = list(propagation_trace_rows or [])
     scheduled_count = 0
     max_propagation_delay_ticks = 0
     max_deliver_tick = int(current_tick)
+    protocol_rows = _registry_rows_by_id(protocol_registry_payload, "protocols", "protocol_id")
     for row in (dict(item) for item in as_list(as_map(compute_result).get("element_results")) if isinstance(item, Mapping)):
         element_instance_id = token(row.get("element_instance_id"))
         output_nodes = dict(element_nodes.get(element_instance_id) or {})
@@ -247,6 +262,29 @@ def schedule_logic_output_propagation(
             )
             for delivery in deliveries:
                 scheduled_count += 1
+                if token(delivery.get("protocol_id")):
+                    protocol_row = dict(protocol_rows.get(token(delivery.get("protocol_id"))) or {})
+                    if protocol_row:
+                        frame_rows.append(
+                            build_protocol_frame_from_delivery(
+                                current_tick=int(current_tick),
+                                network_id=network_id,
+                                source_element_id=element_instance_id,
+                                source_port_id=port_id,
+                                delivery=delivery,
+                                value_payload=value_payload,
+                                protocol_row=protocol_row,
+                            )
+                        )
+                        max_propagation_delay_ticks = max(
+                            int(max_propagation_delay_ticks),
+                            int(max(1, as_int(delivery.get("deliver_delay_ticks"), 1))),
+                        )
+                        max_deliver_tick = max(
+                            int(max_deliver_tick),
+                            int(current_tick) + int(max(1, as_int(delivery.get("deliver_delay_ticks"), 1))),
+                        )
+                        continue
                 deliver_tick = int(max(int(current_tick) + 1, int(current_tick) + as_int(delivery.get("deliver_delay_ticks"), 1)))
                 max_propagation_delay_ticks = max(
                     int(max_propagation_delay_ticks),
@@ -299,6 +337,7 @@ def schedule_logic_output_propagation(
                 )
     return {
         "logic_pending_signal_update_rows": normalize_logic_pending_signal_update_rows(pending_rows),
+        "logic_protocol_frame_rows": normalize_protocol_frame_rows(frame_rows),
         "logic_propagation_trace_artifact_rows": normalize_logic_propagation_trace_artifact_rows(trace_rows),
         "scheduled_count": int(scheduled_count),
         "max_propagation_delay_ticks": int(max_propagation_delay_ticks),
