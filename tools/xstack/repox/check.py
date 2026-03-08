@@ -513,9 +513,13 @@ BOUNDARY_BLOCKER_RULE_IDS = (
     "INV-COMPILED-LOGIC-REQUIRES-PROOF",
     "INV-NO-SILENT-FALLBACK",
     "INV-LOGIC-COMPILE-DETERMINISTIC",
+    "INV-LOGIC-BUDGETED",
+    "INV-LOGIC-DEGRADE-LOGGED",
+    "INV-LOGIC-LOOP-REFUSAL-STABLE",
     "INV-PROTOCOL-ARBITRATION-DETERMINISTIC",
     "INV-PROTOCOL-SECURITY-ENFORCED",
     "INV-NO-DIRECT-FRAME-DELIVERY",
+    "INV-SECURITY-BLOCK-LOGGED",
     "INV-STATE-VECTOR-DECLARED-FOR-SYSTEM",
     "INV-NO-UNDECLARED-STATE-MUTATION",
     "INV-ALL-FAILURES-LOGGED",
@@ -4998,6 +5002,151 @@ def _append_logic_protocol_invariant_findings(
                 snippet=token,
                 message="protocol replay tool must expose protocol proof surfaces",
                 rule_id=deterministic_rule_id,
+            )
+        )
+
+
+def _append_logic_envelope_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    budget_rule_id = "INV-LOGIC-BUDGETED"
+    degrade_rule_id = "INV-LOGIC-DEGRADE-LOGGED"
+    loop_rule_id = "INV-LOGIC-LOOP-REFUSAL-STABLE"
+    security_rule_id = "INV-SECURITY-BLOCK-LOGGED"
+
+    required_files = (
+        ("docs/audit/LOGIC10_RETRO_AUDIT.md", loop_rule_id),
+        ("tools/logic/tool_generate_logic_stress.py", budget_rule_id),
+        ("tools/logic/tool_run_logic_stress.py", degrade_rule_id),
+        ("tools/logic/tool_verify_compiled_vs_l1.py", budget_rule_id),
+        ("data/regression/logic_full_baseline.json", degrade_rule_id),
+        ("docs/audit/LOGIC10_STRESS_RESULTS.json", budget_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-10 envelope enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    stress_rel = "tools/logic/tool_run_logic_stress.py"
+    stress_text = _file_text(repo_root, stress_rel)
+    for token, rule_id, message in (
+        ("run_logic_stress(", budget_rule_id, "logic envelope must expose a deterministic stress harness"),
+        ("determinism_across_thread_counts", loop_rule_id, "logic stress must verify determinism across thread counts"),
+        ("compiled_execution_ratio", budget_rule_id, "logic stress must report compiled execution preference under pressure"),
+        ("throttle_event_count", degrade_rule_id, "logic stress must report throttle counts"),
+        ("security_block_count", security_rule_id, "logic stress must report deterministic security blocks"),
+        ("loop_refusal_deterministic", loop_rule_id, "logic stress must verify stable loop refusal"),
+        ("no_unbounded_loops", loop_rule_id, "logic stress must verify no unbounded loops"),
+        ("debug_trace_compaction_stable", degrade_rule_id, "logic stress must verify bounded debug compaction"),
+        ("plan_logic_degradation_actions(", degrade_rule_id, "logic stress must materialize deterministic degradation planning"),
+    ):
+        if token in stress_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=stress_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    degrade_rel = "src/logic/eval/degradation_policy.py"
+    degrade_text = _file_text(repo_root, degrade_rel)
+    for token, rule_id, message in (
+        ("prefer_compiled_execution", budget_rule_id, "logic degradation order must prefer compiled execution first"),
+        ("reduce_low_priority_eval_frequency", degrade_rule_id, "logic degradation order must bucket low-priority networks deterministically"),
+        ("cap_networks_per_tick", degrade_rule_id, "logic degradation order must cap networks per tick deterministically"),
+        ("reduce_debug_sampling_rate", degrade_rule_id, "logic degradation order must throttle debug sampling deterministically"),
+        ("refuse_new_debug_sessions", degrade_rule_id, "logic degradation order must refuse new debug sessions when required"),
+        ("apply_fail_safe_outputs", degrade_rule_id, "logic degradation order must apply fail-safe outputs when safety-critical controllers miss evaluation"),
+    ):
+        if token in degrade_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=degrade_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    replay_rel = "tools/logic/tool_replay_logic_window.py"
+    replay_text = _file_text(repo_root, replay_rel)
+    for token, rule_id, message in (
+        ("logic_throttle_event_hash_chain", degrade_rule_id, "logic replay proof bundle must expose throttle hash chains"),
+        ("logic_security_fail_hash_chain", security_rule_id, "logic replay proof bundle must expose security block hash chains"),
+        ("forced_expand_event_hash_chain", degrade_rule_id, "logic replay proof bundle must expose forced-expand chains"),
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    protocol_replay_rel = "tools/logic/tool_replay_protocol_window.py"
+    protocol_replay_text = _file_text(repo_root, protocol_replay_rel)
+    for token, rule_id, message in (
+        ("logic_protocol_event_hash_chain", security_rule_id, "protocol replay proof surface must expose protocol event chains"),
+        ("message_delivery_event_hash_chain", security_rule_id, "protocol replay proof surface must expose SIG delivery chains"),
+        ("logic_security_fail_hash_chain", security_rule_id, "protocol replay proof surface must expose security block chains"),
+    ):
+        if token in protocol_replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=protocol_replay_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    baseline_rel = "data/regression/logic_full_baseline.json"
+    baseline_text = _file_text(repo_root, baseline_rel)
+    for token, rule_id, message in (
+        ("LOGIC-REGRESSION-UPDATE", degrade_rule_id, "logic regression baseline must declare explicit update tag gating"),
+        ("compiled_mega_network_fingerprint", budget_rule_id, "logic regression baseline must lock the compiled mega-network fingerprint"),
+        ("protocol_contention_fingerprint", security_rule_id, "logic regression baseline must lock protocol contention fingerprints"),
+        ("debug_throttling_fingerprint", degrade_rule_id, "logic regression baseline must lock debug throttling fingerprints"),
+        ("degradation_fingerprint", degrade_rule_id, "logic regression baseline must lock degradation fingerprints"),
+    ):
+        if token in baseline_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=baseline_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
             )
         )
 
@@ -26888,6 +27037,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_protocol_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_envelope_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

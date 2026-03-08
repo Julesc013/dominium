@@ -352,6 +352,8 @@ from analyzers import e325_security_bypass_smell
 from analyzers import e326_nondeterministic_arbitration_smell
 from analyzers import e327_protocol_security_bypass_smell
 from analyzers import e328_protocol_bypass_smell
+from analyzers import e329_unbounded_logic_loop_smell
+from analyzers import e330_silent_logic_throttle_smell
 
 
 ANALYZERS = (
@@ -707,6 +709,8 @@ ANALYZERS = (
     e326_nondeterministic_arbitration_smell,
     e327_protocol_security_bypass_smell,
     e328_protocol_bypass_smell,
+    e329_unbounded_logic_loop_smell,
+    e330_silent_logic_throttle_smell,
 )
 
 
