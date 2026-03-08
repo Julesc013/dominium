@@ -191,6 +191,19 @@ def _geo_identity_extensions(
     ).strip()
     if worldgen_spawned_object_hash_chain:
         out["worldgen_spawned_object_hash_chain"] = worldgen_spawned_object_hash_chain
+    overlay_manifest_hash = str(ext.get("overlay_manifest_hash", surface.get("overlay_manifest_hash", ""))).strip()
+    if overlay_manifest_hash:
+        out["overlay_manifest_hash"] = overlay_manifest_hash
+    property_patch_hash_chain = str(
+        ext.get("property_patch_hash_chain", surface.get("property_patch_hash_chain", ""))
+    ).strip()
+    if property_patch_hash_chain:
+        out["property_patch_hash_chain"] = property_patch_hash_chain
+    overlay_merge_result_hash_chain = str(
+        ext.get("overlay_merge_result_hash_chain", surface.get("overlay_merge_result_hash_chain", ""))
+    ).strip()
+    if overlay_merge_result_hash_chain:
+        out["overlay_merge_result_hash_chain"] = overlay_merge_result_hash_chain
     geometry_edit_policy_registry_hash = str(
         ext.get("geometry_edit_policy_registry_hash", surface.get("geometry_edit_policy_registry_hash", ""))
     ).strip()
