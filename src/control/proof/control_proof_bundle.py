@@ -7,6 +7,10 @@ from typing import Iterable, List, Mapping
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
+def _as_map(value: object) -> dict:
+    return dict(value or {}) if isinstance(value, Mapping) else {}
+
+
 def _to_int(value: object, default_value: int = 0) -> int:
     try:
         return int(value)
@@ -83,6 +87,34 @@ def _signal_surface_hash(
             "surface_kind": "signals",
         },
     )
+
+
+def _geo_identity_extensions(
+    *,
+    mobility_proof_surface: Mapping[str, object] | None,
+    extensions: Mapping[str, object] | None,
+) -> dict:
+    surface = _as_map(mobility_proof_surface)
+    ext = _as_map(extensions)
+    out = {}
+    for key in (
+        "topology_profile_id",
+        "metric_profile_id",
+        "partition_profile_id",
+        "projection_profile_id",
+    ):
+        token = str(ext.get(key, surface.get(key, ""))).strip()
+        if token:
+            out[key] = token
+    geo_cell_key = _as_map(ext.get("geo_cell_key")) or _as_map(surface.get("geo_cell_key"))
+    if geo_cell_key:
+        out["geo_cell_key_hash"] = canonical_sha256(geo_cell_key)
+    geo_object_id_hashes = _sorted_unique_strings(
+        list(ext.get("geo_object_id_hashes") or []) or list(surface.get("geo_object_id_hashes") or [])
+    )
+    if geo_object_id_hashes:
+        out["geo_object_id_hashes"] = geo_object_id_hashes
+    return out
 
 
 def collect_control_decision_markers(envelopes: Iterable[Mapping[str, object]]) -> List[dict]:
@@ -1107,6 +1139,12 @@ def build_control_proof_bundle_from_markers(
             )
         )
     )
+    geo_identity = _geo_identity_extensions(
+        mobility_proof_surface=mobility_proof_surface,
+        extensions=extensions,
+    )
+    if geo_identity:
+        ext["geo_identity_context"] = geo_identity
     payload["extensions"] = ext
     if not str(payload.get("proof_id", "")).strip():
         payload["proof_id"] = "control.proof.{}".format(
