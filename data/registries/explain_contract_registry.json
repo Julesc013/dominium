@@ -1552,6 +1552,66 @@
         "extensions": {
           "source": "LOGIC6-7"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_debug_refused",
+        "event_kind_id": "logic.debug_refused",
+        "explain_artifact_type_id": "artifact.explain.logic_debug_refused",
+        "required_inputs": [
+          "artifact.record",
+          "artifact.decision",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.verify.logic_access",
+          "hint.attach.logic_instrument",
+          "hint.review.debug_policy"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC7-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_debug_throttled",
+        "event_kind_id": "logic.debug_throttled",
+        "explain_artifact_type_id": "artifact.explain.logic_debug_throttled",
+        "required_inputs": [
+          "artifact.record",
+          "section.system.health_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.trace_scope",
+          "hint.retry.debug_window",
+          "hint.raise.logic_compute_budget"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC7-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.logic_debug_forced_expand",
+        "event_kind_id": "logic.debug_forced_expand",
+        "explain_artifact_type_id": "artifact.explain.logic_debug_forced_expand",
+        "required_inputs": [
+          "artifact.record",
+          "section.signal.network_summary",
+          "section.system.forensics_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.review.compiled_controller_boundary",
+          "hint.inspect.logic_expand_cost",
+          "hint.attach.logic_analyzer"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "LOGIC7-7"
+        }
       }
     ],
     "extensions": {
