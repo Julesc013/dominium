@@ -1772,6 +1772,46 @@
         "extensions": {
           "source": "LOGIC9-6"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.geometry_edit_refused",
+        "event_kind_id": "geo.geometry_edit_refused",
+        "explain_artifact_type_id": "artifact.explain.geo_geometry_edit_refused",
+        "required_inputs": [
+          "artifact.record",
+          "section.geo.geometry_edit_summary",
+          "section.geo.policy_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.edit_scope",
+          "hint.provide.material_batches",
+          "hint.use.authorized.tooling"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO7-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "contract_id": "explain.collapse_due_to_instability",
+        "event_kind_id": "geo.collapse_due_to_instability",
+        "explain_artifact_type_id": "artifact.explain.geo_collapse_due_to_instability",
+        "required_inputs": [
+          "artifact.record",
+          "section.structural.summary",
+          "section.geo.geometry_edit_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.reduce.load",
+          "hint.reinforce.excavation",
+          "hint.expand.roi_for_stability"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GEO7-7"
+        }
       }
     ],
     "extensions": {

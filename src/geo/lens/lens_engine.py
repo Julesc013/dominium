@@ -10,6 +10,7 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from src.fields import field_get_value
+from src.geo.edit import geometry_get_cell_state
 from src.geo.kernel.geo_kernel import _as_int, _as_map
 from src.geo.projection.projection_engine import normalize_projection_request, project_view_cells, projection_request_hash
 
@@ -136,6 +137,16 @@ def _map_instrument_available(perceived_model: Mapping[str, object]) -> bool:
     return ("ch.diegetic.map_local" in channels) or bool(_as_map(instruments.get("instrument.map_local")))
 
 
+def _ground_scanner_available(perceived_model: Mapping[str, object]) -> bool:
+    channels = set(_channels(perceived_model))
+    instruments = _as_map(_as_map(perceived_model).get("diegetic_instruments"))
+    return (
+        "ch.diegetic.ground_scanner" in channels
+        or bool(_as_map(instruments.get("instrument.ground_scanner")))
+        or bool(_as_map(instruments.get("instrument.survey_level")))
+    )
+
+
 def _omniscient_allowed(
     *,
     lens_request: Mapping[str, object],
@@ -247,6 +258,44 @@ def _marker_layer_value(
     if not matched:
         return _layer_state(visible=False, value=None, hidden_reason="no_marker")
     return _layer_state(visible=True, value=matched)
+
+
+def _geometry_layer_value(
+    *,
+    cell_key: Mapping[str, object],
+    source: Mapping[str, object],
+    perceived_model: Mapping[str, object],
+    diegetic: bool,
+    omniscient_allowed: bool,
+    quantization_step: int,
+) -> dict:
+    if not omniscient_allowed and not (_map_instrument_available(perceived_model) or _ground_scanner_available(perceived_model)):
+        return _layer_state(visible=False, value=None, hidden_reason="ground_scanner_required")
+    rows = [dict(item) for item in list(_as_map(source).get("geometry_cell_states") or _as_map(source).get("rows") or []) if isinstance(item, Mapping)]
+    if not rows:
+        instrument = _as_map(_as_map(_as_map(perceived_model).get("diegetic_instruments")).get("instrument.ground_scanner"))
+        reading = _as_map(instrument.get("reading"))
+        rows = [dict(item) for item in list(reading.get("geometry_cell_states") or reading.get("rows") or []) if isinstance(item, Mapping)]
+    if not rows and not omniscient_allowed:
+        return _layer_state(visible=False, value=None, hidden_reason="geometry_unavailable")
+    state_row = geometry_get_cell_state(cell_key, rows or [{"geo_cell_key": cell_key, "material_id": "material.air", "occupancy_fraction": 0}])
+    occupancy_fraction = int(max(0, _as_int(state_row.get("occupancy_fraction", 0), 0)))
+    quantized = False
+    if diegetic:
+        occupancy_fraction = _quantize_scalar(occupancy_fraction, int(max(1, quantization_step)))
+        quantized = True
+    material_id = str(state_row.get("material_id", "")).strip() or "material.air"
+    scanner_available = omniscient_allowed or _ground_scanner_available(perceived_model)
+    return _layer_state(
+        visible=True,
+        value={
+            "occupancy_fraction": occupancy_fraction,
+            "material_id": material_id if scanner_available else None,
+            "excavated": bool(occupancy_fraction < 1000),
+            "tunnel_stub": bool(occupancy_fraction <= 250),
+        },
+        quantized=quantized,
+    )
 
 
 def normalize_projected_view_artifact(row: Mapping[str, object] | None) -> dict:
@@ -362,6 +411,15 @@ def build_projected_view_artifact(
                 layers[layer_token] = _field_layer_value(cell_key=cell_key, source=source, diegetic=diegetic, quantization_step=quantization_step)
             elif layer_token == "layer.terrain_stub" or source_kind == "terrain":
                 layers[layer_token] = _terrain_layer_value(cell_key=cell_key, source=source, perceived_model=perceived, omniscient_allowed=omniscient)
+            elif layer_token == "layer.geometry_occupancy" or source_kind == "geometry_occupancy":
+                layers[layer_token] = _geometry_layer_value(
+                    cell_key=cell_key,
+                    source=source,
+                    perceived_model=perceived,
+                    diegetic=diegetic,
+                    omniscient_allowed=omniscient,
+                    quantization_step=quantization_step,
+                )
             elif layer_token in {"layer.infrastructure_stub", "layer.entity_markers_stub"} or source_kind in {"infrastructure", "entities"}:
                 layers[layer_token] = _marker_layer_value(cell_key=cell_key, source=source, perceived_model=perceived, authority_context=authority_context)
             else:

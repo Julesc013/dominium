@@ -4085,6 +4085,7 @@ def _apply_geometry_coupling_updates(
     )
     touched_hazard_ids: List[str] = []
     touched_flow_ids: List[str] = []
+    max_hazard_value = 0
     for row in updated_rows:
         geo_cell_key = dict(row.get("geo_cell_key") or {})
         geo_key_hash = canonical_sha256(geo_cell_key)
@@ -4108,6 +4109,7 @@ def _apply_geometry_coupling_updates(
                 "coupling_contract_id": "coupling.geo_to_mech.instability_stub",
             },
         }
+        max_hazard_value = max(max_hazard_value, int(max(0, _as_int(effect.get("stability_hazard", 0), 0))))
         touched_hazard_ids.append(hazard_key)
         for channel_id, component_quantity_id, quantity_id, proxy_key, contract_id in (
             (
@@ -4161,12 +4163,14 @@ def _apply_geometry_coupling_updates(
     return {
         "hazard_count": int(len(set(touched_hazard_ids))),
         "flow_adjustment_count": int(len(set(touched_flow_ids))),
+        "max_hazard_value": int(max_hazard_value),
         "touched_hazard_ids": _sorted_tokens(touched_hazard_ids),
         "touched_flow_adjustment_ids": _sorted_tokens(touched_flow_ids),
         "deterministic_fingerprint": canonical_sha256(
             {
                 "touched_hazard_ids": _sorted_tokens(touched_hazard_ids),
                 "touched_flow_adjustment_ids": _sorted_tokens(touched_flow_ids),
+                "max_hazard_value": int(max_hazard_value),
             }
         ),
     }
@@ -4334,6 +4338,48 @@ def _apply_geometry_micro_chunk_hooks(
             }
         ),
     }
+
+
+def _append_geometry_explain_artifact(
+    *,
+    state: dict,
+    policy_context: dict | None,
+    event_kind_id: str,
+    event_id: str,
+    target_id: str,
+    process_id: str,
+    current_tick: int,
+    hazard_rows: object = None,
+    cause_chain_keys: object = None,
+    referenced_artifacts: object = None,
+) -> dict:
+    explain_registry = _load_explain_contract_registry(policy_context=policy_context)
+    contract_row = dict(_explain_contract_rows_by_event_kind(explain_registry).get(str(event_kind_id or "").strip()) or {})
+    if not contract_row:
+        return {}
+    explain_row = generate_explain_artifact(
+        event_id=str(event_id or "").strip(),
+        target_id=str(target_id or "").strip() or "geo.geometry",
+        event_kind_id=str(event_kind_id or "").strip(),
+        truth_hash_anchor=str(state.get("geometry_edit_event_hash_chain", "")).strip()
+        or str(state.get("geometry_state_hash_chain", "")).strip(),
+        epistemic_policy_id="policy.epistemic.observer",
+        explain_contract_row=contract_row,
+        decision_log_rows=state.get("control_decision_log") or [],
+        safety_event_rows=[],
+        hazard_rows=hazard_rows or [],
+        compliance_rows=[],
+        model_result_rows=[],
+        cause_chain_keys=list(cause_chain_keys or []) + ["cause.geo.process.{}".format(str(process_id or "").strip() or "unknown")],
+        remediation_hint_keys=[],
+        referenced_artifacts=list(referenced_artifacts or []),
+    )
+    if not explain_row:
+        return {}
+    explain_rows = [dict(row) for row in list(state.get("explain_artifact_rows") or []) if isinstance(row, Mapping)]
+    explain_rows.append(dict(explain_row))
+    state["explain_artifact_rows"] = normalize_explain_artifact_rows(explain_rows)
+    return dict(explain_row)
 
 
 def _build_entropy_effect_snapshot_row(
@@ -44048,6 +44094,28 @@ def execute_intent(
                     input_batch_ids=input_batch_ids,
                 )
                 if str(consume_result.get("result", "")) != "complete":
+                    target_ref = canonical_sha256(dict(target_cell_keys[0] or {})) if target_cell_keys else "geo.geometry"
+                    _append_geometry_explain_artifact(
+                        state=state,
+                        policy_context=policy_context,
+                        event_kind_id="geo.geometry_edit_refused",
+                        event_id="event.geo.refused.{}".format(
+                            canonical_sha256(
+                                {
+                                    "process_id": process_id,
+                                    "current_tick": int(current_tick),
+                                    "target_ref": target_ref,
+                                    "reason": dict(consume_result),
+                                }
+                            )[:16]
+                        ),
+                        target_id=target_ref,
+                        process_id=process_id,
+                        current_tick=int(current_tick),
+                        hazard_rows=[],
+                        cause_chain_keys=["cause.geo.material_insufficient"],
+                        referenced_artifacts=[],
+                    )
                     return refusal(
                         REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL,
                         str(consume_result.get("message", "insufficient material batches")),
@@ -44106,6 +44174,28 @@ def execute_intent(
                     input_batch_ids=input_batch_ids,
                 )
                 if str(consume_result.get("result", "")) != "complete":
+                    target_ref = canonical_sha256(dict(target_cell_keys[0] or {})) if target_cell_keys else "geo.geometry"
+                    _append_geometry_explain_artifact(
+                        state=state,
+                        policy_context=policy_context,
+                        event_kind_id="geo.geometry_edit_refused",
+                        event_id="event.geo.refused.{}".format(
+                            canonical_sha256(
+                                {
+                                    "process_id": process_id,
+                                    "current_tick": int(current_tick),
+                                    "target_ref": target_ref,
+                                    "reason": dict(consume_result),
+                                }
+                            )[:16]
+                        ),
+                        target_id=target_ref,
+                        process_id=process_id,
+                        current_tick=int(current_tick),
+                        hazard_rows=[],
+                        cause_chain_keys=["cause.geo.material_insufficient"],
+                        referenced_artifacts=[],
+                    )
                     return refusal(
                         REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL,
                         str(consume_result.get("message", "insufficient material batches")),
@@ -44134,6 +44224,28 @@ def execute_intent(
                     },
                 )
         if str(geometry_result.get("result", "")) != "complete":
+            target_ref = canonical_sha256(dict(target_cell_keys[0] or {})) if target_cell_keys else "geo.geometry"
+            _append_geometry_explain_artifact(
+                state=state,
+                policy_context=policy_context,
+                event_kind_id="geo.geometry_edit_refused",
+                event_id="event.geo.refused.{}".format(
+                    canonical_sha256(
+                        {
+                            "process_id": process_id,
+                            "current_tick": int(current_tick),
+                            "target_ref": target_ref,
+                            "reason": dict(geometry_result),
+                        }
+                    )[:16]
+                ),
+                target_id=target_ref,
+                process_id=process_id,
+                current_tick=int(current_tick),
+                hazard_rows=[],
+                cause_chain_keys=["cause.geo.policy_or_bounds_refusal"],
+                referenced_artifacts=[],
+            )
             return refusal(
                 "PROCESS_INPUT_INVALID",
                 str(geometry_result.get("message", "geometry edit refused")),
@@ -44195,6 +44307,29 @@ def execute_intent(
             edit_id=str(geometry_event.get("edit_id", "")).strip(),
             material_registry=material_class_registry,
         )
+        collapse_explain = {}
+        if int(max(0, _as_int(coupling_summary.get("max_hazard_value", 0), 0))) >= 500:
+            collapse_explain = _append_geometry_explain_artifact(
+                state=state,
+                policy_context=policy_context,
+                event_kind_id="geo.collapse_due_to_instability",
+                event_id="event.geo.instability.{}".format(
+                    canonical_sha256(
+                        {
+                            "edit_id": str(geometry_event.get("edit_id", "")).strip(),
+                            "max_hazard_value": int(max(0, _as_int(coupling_summary.get("max_hazard_value", 0), 0))),
+                        }
+                    )[:16]
+                ),
+                target_id=str(geometry_event.get("edit_id", "")).strip() or "geo.geometry",
+                process_id=process_id,
+                current_tick=int(current_tick),
+                hazard_rows=list(state.get("model_hazard_rows") or []),
+                cause_chain_keys=["cause.geo.instability_threshold_exceeded"],
+                referenced_artifacts=[
+                    "artifact.geometry_edit_event.{}".format(str(geometry_event.get("edit_id", "")).strip())
+                ],
+            )
         _refresh_geometry_hash_chains(state, material_registry=material_class_registry)
         result_metadata = {
             "edit_kind": edit_kind,
@@ -44217,11 +44352,17 @@ def execute_intent(
             "geometry_edit_event_hash_chain": str(state.get("geometry_edit_event_hash_chain", "")).strip(),
             "coupling_hazard_count": int(max(0, _as_int(coupling_summary.get("hazard_count", 0), 0))),
             "coupling_flow_adjustment_count": int(max(0, _as_int(coupling_summary.get("flow_adjustment_count", 0), 0))),
+            "max_instability_hazard": int(max(0, _as_int(coupling_summary.get("max_hazard_value", 0), 0))),
             "micro_chunk_count": int(max(0, _as_int(micro_chunk_result.get("micro_chunk_count", 0), 0))),
             "compaction_marker_id": (
                 None
                 if micro_chunk_result.get("compaction_marker_id") is None
                 else str(micro_chunk_result.get("compaction_marker_id", "")).strip() or None
+            ),
+            "collapse_explain_id": (
+                None
+                if not collapse_explain
+                else str(collapse_explain.get("explain_id", "")).strip() or None
             ),
         }
         _advance_time(state, steps=1, policy_context=policy_context)

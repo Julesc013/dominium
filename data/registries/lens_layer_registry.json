@@ -56,6 +56,19 @@
           "source_kind": "entities",
           "source": "GEO5-2"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.geometry_occupancy",
+        "description": "Deterministic excavation, fill, and tunnel occupancy overlay derived from lawful GEO-7 geometry cell perception only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "geometry_occupancy",
+          "required_channels": [
+            "ch.diegetic.ground_scanner"
+          ],
+          "source": "GEO7-7"
+        }
       }
     ],
     "extensions": {
