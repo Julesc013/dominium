@@ -12,6 +12,7 @@
     "architecture.derailment_bypass_smell": 1,
     "architecture.direct_knowledge_mutation_smell": 1,
     "architecture.direct_message_smell": 5,
+    "architecture.direct_position_mutation_smell": 1,
     "architecture.direct_schedule_mutation_smell": 1,
     "architecture.heat_loss_bypass_smell": 3,
     "architecture.implicit_system_collapse_smell": 3,
@@ -44,7 +45,7 @@
     "architecture.vehicle_interior_special_case_smell": 1,
     "architecture.weather_hack_smell": 1,
     "authority.fault_bypass_smell": 3,
-    "canon_drift": 758,
+    "canon_drift": 759,
     "capability_bypass_smell": 1,
     "capability_misuse": 140,
     "civilisation.nondeterministic_cohort_mapping_smell": 1,
@@ -95,6 +96,7 @@
       "architecture.derailment_bypass_smell": 1,
       "architecture.direct_knowledge_mutation_smell": 1,
       "architecture.direct_message_smell": 5,
+      "architecture.direct_position_mutation_smell": 1,
       "architecture.direct_schedule_mutation_smell": 1,
       "architecture.heat_loss_bypass_smell": 3,
       "architecture.implicit_system_collapse_smell": 3,
@@ -127,7 +129,7 @@
       "architecture.vehicle_interior_special_case_smell": 1,
       "architecture.weather_hack_smell": 1,
       "authority.fault_bypass_smell": 3,
-      "canon_drift": 758,
+      "canon_drift": 759,
       "capability_bypass_smell": 1,
       "capability_misuse": 140,
       "civilisation.nondeterministic_cohort_mapping_smell": 1,
@@ -167,12 +169,12 @@
     },
     "severity_distribution": {
       "INFO": 223,
-      "RISK": 674,
+      "RISK": 675,
       "VIOLATION": 108,
-      "WARN": 1246
+      "WARN": 1247
     }
   },
-  "findings_hash": "6f95595e573ef9a5a2d3560cd7cc273327d8da282245cd4774f711d530a5e821",
+  "findings_hash": "7751e933a6fdfe67efb2945cbd9ecf7e7077652bc4a6e94fb7536e634a8b1979",
   "history_reference": {
     "previous_distinct_hash": ""
   },
@@ -180,9 +182,9 @@
   "schema_version": "1.0.0",
   "severity_distribution": {
     "INFO": 223,
-    "RISK": 674,
+    "RISK": 675,
     "VIOLATION": 108,
-    "WARN": 1246
+    "WARN": 1247
   },
-  "total_findings": 2251
+  "total_findings": 2253
 }

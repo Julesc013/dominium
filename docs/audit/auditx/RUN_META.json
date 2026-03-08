@@ -2,9 +2,9 @@
   "artifact_class": "RUN_META",
   "cache_mode": "full_scan",
   "changed_only": false,
-  "changed_paths_since_last": 11960,
-  "generated_utc": "2026-03-08T14:07:03Z",
-  "graph_hash": "c87c7319dd7b8cea26c04758f363d03311fc87b674db767485ed558ecb54a8f1",
+  "changed_paths_since_last": 11980,
+  "generated_utc": "2026-03-08T14:49:04Z",
+  "graph_hash": "fa2edfa02242b3106c9cdd3e739916a74550d304e46f6d8bc256fb82de7a9ee9",
   "last_reviewed": "2026-03-08",
   "output_format": "both",
   "platform": "windows",
@@ -300,6 +300,8 @@
     "E338_RAW_SQRT_USAGE_SMELL",
     "E339_HARDCODED_DISTANCE_SMELL",
     "E33_NONDETERMINISTIC_COHORT_MAPPING_SMELL",
+    "E340_RAW_FIELD_GRID_SMELL",
+    "E341_FIELD_SAMPLE_BYPASS_SMELL",
     "E34_ORDER_BYPASS_SMELL",
     "E35_ROLE_ESCALATION_SMELL",
     "E36_RENDER_TRUTH_LEAK_SMELL",
@@ -377,5 +379,5 @@
   "result": "scan_complete",
   "reused_analyzers": [],
   "status": "DERIVED",
-  "workspace_id": "ws-02321d3a5bfcde66"
+  "workspace_id": "ws-49dd73e03e1fa65d"
 }

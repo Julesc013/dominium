@@ -115,10 +115,26 @@
         "RISK": 3
       }
     },
-    "INV-CANON-INDEX": {
-      "finding_count": 758,
+    "INV-BODY-MUTATION-PROCESS-ONLY": {
+      "finding_count": 1,
       "recommended_actions": {
-        "DOC_FIX": 758
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.direct_position_mutation_smell",
+          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0001",
+          "location": "src/field/field_boundary_exchange.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-CANON-INDEX": {
+      "finding_count": 759,
+      "recommended_actions": {
+        "DOC_FIX": 759
       },
       "sample_findings": [
         {
@@ -148,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 758
+        "WARN": 759
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -843,11 +859,16 @@
       }
     },
     "INV-MOB-THROUGH-CONTROL": {
-      "finding_count": 2,
+      "finding_count": 3,
       "recommended_actions": {
-        "REWRITE": 2
+        "REWRITE": 3
       },
       "sample_findings": [
+        {
+          "category": "architecture.direct_position_mutation_smell",
+          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0001",
+          "location": "src/field/field_boundary_exchange.py"
+        },
         {
           "category": "architecture.adhoc_speed_limit_smell",
           "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0001",
@@ -860,7 +881,7 @@
         }
       ],
       "severities": {
-        "RISK": 2
+        "RISK": 3
       }
     },
     "INV-MOB-USES-GUIDEGEOMETRY": {

@@ -4,29 +4,29 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:535fbbdaa07812f9b2b43c6e8227df365a72b7b8`
+- repository_hash: `HEAD:44c2a60f1fcd3fd681df8acc68fdf9cba343a776`
 - generated_tick: `0`
-- deterministic_fingerprint: `6633e1dbc5b515c26b81e342152324b88214ef5f9d8423307b231c71aed7cdca`
+- deterministic_fingerprint: `0b467281a694e45a6b21417a488e0ee554cdf3f305ef9acd65b2af0cdcaf93d3`
 
 ## Counts
-- node_count: 4187
-- edge_count: 8765
+- node_count: 4203
+- edge_count: 8831
 
 ## Node Kinds
 - contract_set: 142
-- module: 86
-- policy_set: 283
+- module: 87
+- policy_set: 286
 - process_family: 374
-- registry: 313
-- schema: 1168
-- tool: 1821
+- registry: 315
+- schema: 1170
+- tool: 1829
 
 ## Edge Kinds
-- consumes: 4022
-- depends_on: 2254
-- enforces: 895
+- consumes: 4065
+- depends_on: 2266
+- enforces: 901
 - produces: 1
-- validates: 1593
+- validates: 1598
 
 ## Major Runtime Modules
 - `module:client`
@@ -87,12 +87,12 @@ Version: 1.0.0
 - `module:src/diegetics`
 - `module:src/electric`
 - `module:src/epistemics`
+- `module:src/field`
 - `module:src/fields`
 - `module:src/fluid`
 - `module:src/geo`
 - `module:src/infrastructure`
 - `module:src/inspection`
-- `module:src/interaction`
 
 ## Control Subsystem Nodes
 - `module:src/control/control_plane_engine.py`
