@@ -54,6 +54,9 @@ def _load_eval_inputs(repo_root: str) -> dict:
         "carrier_type_registry_payload": read("data/registries/carrier_type_registry.json"),
         "signal_delay_policy_registry_payload": read("data/registries/signal_delay_policy_registry.json"),
         "signal_noise_policy_registry_payload": read("data/registries/signal_noise_policy_registry.json"),
+        "logic_noise_policy_registry_payload": read("data/registries/logic_noise_policy_registry.json"),
+        "logic_security_policy_registry_payload": read("data/registries/logic_security_policy_registry.json"),
+        "logic_fault_kind_registry_payload": read("data/registries/logic_fault_kind_registry.json"),
         "bus_encoding_registry_payload": read("data/registries/bus_encoding_registry.json"),
         "protocol_registry_payload": read("data/registries/protocol_registry.json"),
         "logic_policy_registry_payload": read("data/registries/logic_policy_registry.json"),
@@ -85,11 +88,13 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
         "compiled_type_registry_payload",
         "verification_procedure_registry_payload",
         "logic_compile_policy_registry_payload",
+        "logic_fault_kind_registry_payload",
     ):
         eval_inputs.pop(key, None)
     logic_network_state = dict(payload.get("logic_network_state") or {})
     signal_store_state = dict(payload.get("signal_store_state") or {})
     logic_eval_state = dict(payload.get("logic_eval_state") or {})
+    logic_fault_state_rows = [dict(row) for row in list(payload.get("logic_fault_state_rows") or []) if isinstance(row, Mapping)]
     compile_request_rows = [dict(row) for row in list(payload.get("compile_request_rows") or []) if isinstance(row, Mapping)]
     compile_result_rows = [dict(row) for row in list(payload.get("compile_result_rows") or []) if isinstance(row, Mapping)]
     compiled_model_rows = [dict(row) for row in list(payload.get("compiled_model_rows") or []) if isinstance(row, Mapping)]
@@ -119,6 +124,7 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
             logic_eval_state=logic_eval_state,
             evaluation_request=dict(request),
             state_vector_snapshot_rows=state_vector_snapshot_rows,
+            logic_fault_state_rows=logic_fault_state_rows,
             process_signal_set_fn=process_signal_set,
             process_signal_emit_pulse_fn=process_signal_emit_pulse,
             build_state_vector_definition_row=build_state_vector_definition_row,
@@ -183,6 +189,48 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
                     "next_snapshot_hash": str(row.get("next_snapshot_hash", "")).strip(),
                 }
                 for row in list(logic_eval_state.get("logic_state_update_record_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_fault_state_hash_chain": canonical_sha256(
+            [
+                {
+                    "fault_id": str(row.get("fault_id", "")).strip(),
+                    "fault_kind_id": str(row.get("fault_kind_id", "")).strip(),
+                    "target_kind": str(row.get("target_kind", "")).strip(),
+                    "target_id": str(row.get("target_id", "")).strip(),
+                    "active": bool(row.get("active", False)),
+                    "tick_set": int(row.get("tick_set", 0) or 0),
+                }
+                for row in list(logic_fault_state_rows or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_noise_decision_hash_chain": canonical_sha256(
+            [
+                {
+                    "decision_id": str(row.get("decision_id", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                    "network_id": str(row.get("network_id", "")).strip(),
+                    "slot_key": str(row.get("slot_key", "")).strip(),
+                    "noise_policy_id": str(row.get("noise_policy_id", "")).strip(),
+                    "reason": str(row.get("reason", "")).strip(),
+                }
+                for row in list(logic_eval_state.get("logic_noise_decision_rows") or [])
+                if isinstance(row, Mapping)
+            ]
+        ),
+        "logic_security_fail_hash_chain": canonical_sha256(
+            [
+                {
+                    "event_id": str(row.get("event_id", "")).strip(),
+                    "tick": int(row.get("tick", 0) or 0),
+                    "network_id": str(row.get("network_id", "")).strip(),
+                    "edge_id": str(row.get("edge_id", "")).strip(),
+                    "security_policy_id": str(row.get("security_policy_id", "")).strip(),
+                    "reason": str(row.get("reason", "")).strip(),
+                }
+                for row in list(logic_eval_state.get("logic_security_fail_rows") or [])
                 if isinstance(row, Mapping)
             ]
         ),
@@ -335,6 +383,9 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
         "forced_expand_event_hash_chain": str(proof_surface.get("forced_expand_event_hash_chain", "")),
         "logic_throttle_event_hash_chain": str(proof_surface.get("logic_throttle_event_hash_chain", "")),
         "logic_state_update_hash_chain": str(proof_surface.get("logic_state_update_hash_chain", "")),
+        "logic_fault_state_hash_chain": str(proof_surface.get("logic_fault_state_hash_chain", "")),
+        "logic_noise_decision_hash_chain": str(proof_surface.get("logic_noise_decision_hash_chain", "")),
+        "logic_security_fail_hash_chain": str(proof_surface.get("logic_security_fail_hash_chain", "")),
         "logic_output_signal_hash_chain": str(proof_surface.get("logic_output_signal_hash_chain", "")),
         "logic_oscillation_record_hash_chain": str(proof_surface.get("logic_oscillation_record_hash_chain", "")),
         "logic_timing_violation_hash_chain": str(proof_surface.get("logic_timing_violation_hash_chain", "")),
@@ -359,6 +410,9 @@ def replay_logic_window_from_payload(*, repo_root: str, payload: Mapping[str, ob
             "forced_expand_event_hash_chain": report["forced_expand_event_hash_chain"],
             "logic_throttle_event_hash_chain": report["logic_throttle_event_hash_chain"],
             "logic_state_update_hash_chain": report["logic_state_update_hash_chain"],
+            "logic_fault_state_hash_chain": report["logic_fault_state_hash_chain"],
+            "logic_noise_decision_hash_chain": report["logic_noise_decision_hash_chain"],
+            "logic_security_fail_hash_chain": report["logic_security_fail_hash_chain"],
             "logic_output_signal_hash_chain": report["logic_output_signal_hash_chain"],
             "logic_oscillation_record_hash_chain": report["logic_oscillation_record_hash_chain"],
             "logic_timing_violation_hash_chain": report["logic_timing_violation_hash_chain"],

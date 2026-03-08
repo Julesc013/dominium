@@ -861,6 +861,33 @@ def build_control_proof_bundle_from_markers(
             "decision_log_hashes": list(decision_log_hashes),
         },
     )
+    logic_fault_state_hash_chain = _hash64(
+        str(surface_payload.get("logic_fault_state_hash_chain", "")).strip(),
+        {
+            "key": "logic_fault_state_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+    logic_noise_decision_hash_chain = _hash64(
+        str(surface_payload.get("logic_noise_decision_hash_chain", "")).strip(),
+        {
+            "key": "logic_noise_decision_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
+    logic_security_fail_hash_chain = _hash64(
+        str(surface_payload.get("logic_security_fail_hash_chain", "")).strip(),
+        {
+            "key": "logic_security_fail_hash_chain",
+            "tick_start": int(max(0, _to_int(start_tick, 0))),
+            "tick_end": int(max(0, _to_int(end_tick, 0))),
+            "decision_log_hashes": list(decision_log_hashes),
+        },
+    )
     logic_output_signal_hash_chain = _hash64(
         str(surface_payload.get("logic_output_signal_hash_chain", "")).strip(),
         {
@@ -1025,6 +1052,9 @@ def build_control_proof_bundle_from_markers(
         ),
         "logic_throttle_event_hash_chain": str(logic_throttle_event_hash_chain),
         "logic_state_update_hash_chain": str(logic_state_update_hash_chain),
+        "logic_fault_state_hash_chain": str(logic_fault_state_hash_chain),
+        "logic_noise_decision_hash_chain": str(logic_noise_decision_hash_chain),
+        "logic_security_fail_hash_chain": str(logic_security_fail_hash_chain),
         "logic_output_signal_hash_chain": str(logic_output_signal_hash_chain),
         "logic_oscillation_record_hash_chain": str(logic_oscillation_record_hash_chain),
         "logic_timing_violation_hash_chain": str(logic_timing_violation_hash_chain),
@@ -1154,6 +1184,15 @@ def build_control_proof_bundle_from_markers(
                     ),
                     "logic_state_update_hash_chain": str(
                         payload.get("logic_state_update_hash_chain", "")
+                    ),
+                    "logic_fault_state_hash_chain": str(
+                        payload.get("logic_fault_state_hash_chain", "")
+                    ),
+                    "logic_noise_decision_hash_chain": str(
+                        payload.get("logic_noise_decision_hash_chain", "")
+                    ),
+                    "logic_security_fail_hash_chain": str(
+                        payload.get("logic_security_fail_hash_chain", "")
                     ),
                     "logic_output_signal_hash_chain": str(
                         payload.get("logic_output_signal_hash_chain", "")
