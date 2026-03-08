@@ -492,6 +492,13 @@ from src.logic.eval import (
     process_logic_network_evaluate,
     process_statevec_update,
 )
+from src.logic.debug import (
+    normalize_logic_debug_state,
+    process_logic_probe,
+    process_logic_trace_end,
+    process_logic_trace_start,
+    process_logic_trace_tick,
+)
 from src.logic.compile import (
     compile_logic_network,
 )
@@ -837,6 +844,10 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.logic_network_validate": "entitlement.control.admin",
     "process.logic_compile_request": "entitlement.inspect",
     "process.logic_network_evaluate": "session.boot",
+    "process.logic_probe": "entitlement.inspect",
+    "process.logic_trace_start": "entitlement.inspect",
+    "process.logic_trace_tick": "entitlement.inspect",
+    "process.logic_trace_end": "entitlement.inspect",
     "process.statevec_update": "entitlement.control.admin",
     "process.signal_set_aspect": "entitlement.control.admin",
     "process.signal_tick": "session.boot",
@@ -1049,6 +1060,10 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.logic_network_validate": "operator",
     "process.logic_compile_request": "observer",
     "process.logic_network_evaluate": "observer",
+    "process.logic_probe": "observer",
+    "process.logic_trace_start": "observer",
+    "process.logic_trace_tick": "observer",
+    "process.logic_trace_end": "observer",
     "process.statevec_update": "system",
     "process.signal_set_aspect": "operator",
     "process.signal_tick": "observer",
@@ -1207,6 +1222,10 @@ CONTROL_PROCESS_IDS = {
     "process.logic_network_validate",
     "process.logic_compile_request",
     "process.logic_network_evaluate",
+    "process.logic_probe",
+    "process.logic_trace_start",
+    "process.logic_trace_tick",
+    "process.logic_trace_end",
     "process.statevec_update",
     "process.signal_set_aspect",
     "process.signal_tick",
@@ -5205,6 +5224,147 @@ def _persist_logic_eval_state(state: dict, logic_eval_state: Mapping[str, object
     state["logic_eval_compute_runtime_state"] = dict(_as_map(normalized.get("compute_runtime_state")))
 
 
+def _persist_logic_debug_state(state: dict, logic_debug_state: Mapping[str, object] | None) -> None:
+    normalized = normalize_logic_debug_state(logic_debug_state)
+    state["logic_debug_state"] = dict(normalized)
+    state["logic_debug_probe_request_rows"] = [
+        dict(row) for row in list(normalized.get("logic_debug_probe_request_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_debug_trace_request_rows"] = [
+        dict(row) for row in list(normalized.get("logic_debug_trace_request_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_debug_trace_session_rows"] = [
+        dict(row) for row in list(normalized.get("logic_debug_trace_session_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_debug_probe_artifacts"] = [
+        dict(row) for row in list(normalized.get("logic_debug_probe_artifact_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_debug_trace_artifacts"] = [
+        dict(row) for row in list(normalized.get("logic_debug_trace_artifact_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_protocol_summary_artifacts"] = [
+        dict(row) for row in list(normalized.get("logic_protocol_summary_artifact_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_debug_explain_artifacts"] = [
+        dict(row) for row in list(normalized.get("logic_debug_explain_artifact_rows") or []) if isinstance(row, Mapping)
+    ]
+    state["logic_debug_compute_runtime_state"] = dict(_as_map(normalized.get("compute_runtime_state")))
+
+
+def _refresh_logic_debug_hash_chains(state: dict) -> None:
+    probe_request_rows = [
+        dict(row)
+        for row in list(state.get("logic_debug_probe_request_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    trace_request_rows = [
+        dict(row)
+        for row in list(state.get("logic_debug_trace_request_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    trace_artifact_rows = [
+        dict(row)
+        for row in list(state.get("logic_debug_trace_artifacts") or [])
+        if isinstance(row, Mapping)
+    ]
+    protocol_rows = [
+        dict(row)
+        for row in list(state.get("logic_protocol_summary_artifacts") or [])
+        if isinstance(row, Mapping)
+    ]
+    state["logic_debug_request_hash_chain"] = canonical_sha256(
+        [
+            {
+                "request_id": str(row.get("request_id", "")).strip(),
+                "subject_id": str(row.get("subject_id", "")).strip(),
+                "measurement_point_id": str(row.get("measurement_point_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                probe_request_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("request_id", "")),
+                ),
+            )
+        ]
+        + [
+            {
+                "request_id": str(row.get("request_id", "")).strip(),
+                "subject_id": str(row.get("subject_id", "")).strip(),
+                "measurement_point_ids": [
+                    str(item).strip()
+                    for item in list(row.get("measurement_point_ids") or [])
+                    if str(item).strip()
+                ],
+                "tick_start": int(max(0, _as_int(row.get("tick_start", 0), 0))),
+                "tick_end": int(max(0, _as_int(row.get("tick_end", 0), 0))),
+                "sampling_policy_id": str(row.get("sampling_policy_id", "")).strip(),
+            }
+            for row in sorted(
+                trace_request_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick_start", 0), 0))),
+                    str(item.get("request_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_debug_trace_hash_chain"] = canonical_sha256(
+        [
+            {
+                "trace_id": str(row.get("trace_id", "")).strip(),
+                "request_id": str(row.get("request_id", "")).strip(),
+                "sample_count": int(
+                    sum(len(list(dict(sample).get("values") or [])) for sample in list(row.get("samples") or []) if isinstance(sample, Mapping))
+                ),
+                "samples_hash": canonical_sha256(
+                    [
+                        {
+                            "tick": int(max(0, _as_int(dict(sample).get("tick", 0), 0))),
+                            "values": [
+                                {
+                                    "measurement_point_id": str(dict(value).get("measurement_point_id", "")).strip(),
+                                    "target_key": str(dict(value).get("target_key", "")).strip(),
+                                    "value_hash": str(dict(value).get("value_hash", "")).strip(),
+                                }
+                                for value in list(dict(sample).get("values") or [])
+                                if isinstance(value, Mapping)
+                            ],
+                        }
+                        for sample in list(row.get("samples") or [])
+                        if isinstance(sample, Mapping)
+                    ]
+                ),
+            }
+            for row in sorted(
+                trace_artifact_rows,
+                key=lambda item: (
+                    str(item.get("request_id", "")),
+                    str(item.get("trace_id", "")),
+                ),
+            )
+        ]
+    )
+    state["logic_protocol_summary_hash_chain"] = canonical_sha256(
+        [
+            {
+                "artifact_id": str(row.get("artifact_id", "")).strip(),
+                "signal_id": str(row.get("signal_id", "")).strip(),
+                "protocol_id": str(row.get("protocol_id", "")).strip(),
+                "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+            }
+            for row in sorted(
+                protocol_rows,
+                key=lambda item: (
+                    int(max(0, _as_int(item.get("tick", 0), 0))),
+                    str(item.get("artifact_id", "")),
+                ),
+            )
+        ]
+    )
+
+
 def _refresh_logic_eval_hash_chains(state: dict) -> None:
     runtime_rows = [
         dict(row)
@@ -6017,6 +6177,17 @@ def _load_measurement_model_registry(*, policy_context: dict | None) -> dict:
         repo_root=REPO_ROOT_HINT,
         registry_rel_path="data/registries/measurement_model_registry.json",
         default_payload={"record": {"measurement_models": []}},
+    )
+
+
+def _load_debug_sampling_policy_registry(*, policy_context: dict | None) -> dict:
+    registry = dict(_policy_payload(policy_context, "debug_sampling_policy_registry") or {})
+    if registry:
+        return dict(registry)
+    return _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/debug_sampling_policy_registry.json",
+        default_payload={"record": {"debug_sampling_policies": []}},
     )
 
 
@@ -43854,6 +44025,398 @@ def execute_intent(
             "network_id": str(validation_request.get("network_id", "")).strip(),
             "validation_hash": str(dict(updated.get("validation_result") or {}).get("validation_hash", "")).strip(),
             "requires_l2_roi": bool(dict(updated.get("validation_result") or {}).get("requires_l2_roi", False)),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_probe":
+        (
+            carrier_type_registry,
+            bus_encoding_registry,
+            protocol_registry,
+            _signal_noise_policy_registry,
+            _signal_delay_policy_registry,
+        ) = _load_logic_signal_registries(policy_context=policy_context)
+        compute_budget_profile_registry, compute_degrade_policy_registry, _tolerance_policy_registry = _load_logic_signal_budget_registries(
+            policy_context=policy_context
+        )
+        instrumentation_surface_registry = _load_instrumentation_surface_registry(policy_context=policy_context)
+        access_policy_registry = _load_access_policy_registry(policy_context=policy_context)
+        measurement_model_registry = _load_measurement_model_registry(policy_context=policy_context)
+        probe_request = dict(inputs.get("probe_request") or {})
+        if not probe_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_probe requires probe_request",
+                "Provide probe_request with subject_id and measurement_point_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.probe_request",
+            )
+        available_instrument_type_ids = [
+            str(item).strip()
+            for item in list(
+                (
+                    dict(probe_request.get("extensions") or {})
+                    if isinstance(probe_request.get("extensions"), Mapping)
+                    else {}
+                ).get("available_instrument_type_ids")
+                or [str(probe_request.get("debug_instrument_id", "")).strip()]
+            )
+            if str(item).strip()
+        ]
+        updated = process_logic_probe(
+            current_tick=int(current_tick),
+            logic_debug_state=state.get("logic_debug_state")
+            or {
+                "logic_debug_probe_request_rows": state.get("logic_debug_probe_request_rows"),
+                "logic_debug_trace_request_rows": state.get("logic_debug_trace_request_rows"),
+                "logic_debug_trace_session_rows": state.get("logic_debug_trace_session_rows"),
+                "logic_debug_probe_artifact_rows": state.get("logic_debug_probe_artifacts"),
+                "logic_debug_trace_artifact_rows": state.get("logic_debug_trace_artifacts"),
+                "logic_protocol_summary_artifact_rows": state.get("logic_protocol_summary_artifacts"),
+                "logic_debug_explain_artifact_rows": state.get("logic_debug_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_debug_compute_runtime_state"),
+            },
+            signal_store_state=state.get("logic_signal_store_state")
+            or {
+                "signal_rows": state.get("logic_signal_rows"),
+                "bus_definition_rows": state.get("logic_bus_definition_rows"),
+                "protocol_definition_rows": state.get("logic_protocol_definition_rows"),
+                "signal_change_record_rows": state.get("logic_signal_change_records"),
+                "signal_trace_artifact_rows": state.get("logic_signal_trace_artifacts"),
+                "coupling_change_rows": state.get("logic_signal_coupling_change_rows"),
+                "compute_runtime_state": state.get("logic_signal_compute_runtime_state"),
+            },
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            logic_eval_state=state.get("logic_eval_state")
+            or {
+                "logic_network_runtime_state_rows": state.get("logic_network_runtime_state_rows"),
+                "logic_eval_record_rows": state.get("logic_eval_record_rows"),
+                "logic_throttle_event_rows": state.get("logic_throttle_event_rows"),
+                "logic_oscillation_record_rows": state.get("logic_oscillation_record_rows"),
+                "logic_timing_violation_event_rows": state.get("logic_timing_violation_event_rows"),
+                "logic_watchdog_timeout_event_rows": state.get("logic_watchdog_timeout_event_rows"),
+                "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
+                "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
+                "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
+                "compute_runtime_state": state.get("logic_eval_compute_runtime_state"),
+            },
+            probe_request=probe_request,
+            state_vector_snapshot_rows=_ensure_state_vector_snapshot_rows(state),
+            compiled_model_rows=state.get("compiled_model_rows") or [],
+            protocol_registry_payload=protocol_registry,
+            instrumentation_surface_registry_payload=instrumentation_surface_registry,
+            access_policy_registry_payload=access_policy_registry,
+            measurement_model_registry_payload=measurement_model_registry,
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+            compute_budget_profile_id=str(probe_request.get("compute_profile_id", "")).strip() or "compute.default",
+            authority_context=authority_context,
+            has_physical_access=bool(probe_request.get("has_physical_access", False)),
+            available_instrument_type_ids=available_instrument_type_ids,
+        )
+        if updated.get("logic_debug_state") is not None:
+            _persist_logic_debug_state(state, updated.get("logic_debug_state"))
+        if updated.get("compiled_introspection_artifact_rows") is not None:
+            state["logic_compiled_introspection_artifacts"] = sorted(
+                list(state.get("logic_compiled_introspection_artifacts") or [])
+                + [
+                    dict(row)
+                    for row in list(updated.get("compiled_introspection_artifact_rows") or [])
+                    if isinstance(row, Mapping)
+                ],
+                key=lambda item: str(dict(item).get("artifact_id", "")),
+            )
+        if updated.get("forced_expand_event_rows") is not None:
+            forced_before = [dict(row) for row in list(state.get("system_forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+            forced_added = [dict(row) for row in list(updated.get("forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+            state["system_forced_expand_event_rows"] = normalize_forced_expand_event_rows(forced_before + forced_added)
+            state["system_forced_expand_event_hash_chain"] = canonical_sha256(
+                [
+                    {
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "capsule_id": str(row.get("capsule_id", "")).strip(),
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "reason_code": str(row.get("reason_code", "")).strip(),
+                        "requested_fidelity": str(row.get("requested_fidelity", "")).strip(),
+                    }
+                    for row in sorted(
+                        (dict(item) for item in list(state.get("system_forced_expand_event_rows") or []) if isinstance(item, Mapping)),
+                        key=lambda item: (
+                            int(max(0, _as_int(item.get("tick", 0), 0))),
+                            str(item.get("capsule_id", "")),
+                            str(item.get("event_id", "")),
+                        ),
+                    )
+                ]
+            )
+            state["forced_expand_event_hash_chain"] = str(state.get("system_forced_expand_event_hash_chain", "")).strip()
+        _refresh_logic_debug_hash_chains(state)
+        if str(updated.get("result", "")) not in {"complete", "throttled"}:
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_probe refused logic debug probe",
+                "Verify access, instrumentation, or compiled expand policy.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.probe_request",
+            )
+        result_metadata = {
+            "subject_id": str(probe_request.get("subject_id", "")).strip(),
+            "measurement_point_id": str(probe_request.get("measurement_point_id", "")).strip(),
+            "throttled": bool(str(updated.get("result", "")) == "throttled"),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_trace_start":
+        debug_sampling_policy_registry = _load_debug_sampling_policy_registry(policy_context=policy_context)
+        compute_budget_profile_registry, compute_degrade_policy_registry, _tolerance_policy_registry = _load_logic_signal_budget_registries(
+            policy_context=policy_context
+        )
+        trace_request = dict(inputs.get("trace_request") or {})
+        if not trace_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_trace_start requires trace_request",
+                "Provide trace_request with subject_id, measurement_point_ids, and sampling_policy_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.trace_request",
+            )
+        updated = process_logic_trace_start(
+            current_tick=int(current_tick),
+            logic_debug_state=state.get("logic_debug_state")
+            or {
+                "logic_debug_probe_request_rows": state.get("logic_debug_probe_request_rows"),
+                "logic_debug_trace_request_rows": state.get("logic_debug_trace_request_rows"),
+                "logic_debug_trace_session_rows": state.get("logic_debug_trace_session_rows"),
+                "logic_debug_probe_artifact_rows": state.get("logic_debug_probe_artifacts"),
+                "logic_debug_trace_artifact_rows": state.get("logic_debug_trace_artifacts"),
+                "logic_protocol_summary_artifact_rows": state.get("logic_protocol_summary_artifacts"),
+                "logic_debug_explain_artifact_rows": state.get("logic_debug_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_debug_compute_runtime_state"),
+            },
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            trace_request=trace_request,
+            compiled_model_rows=state.get("compiled_model_rows") or [],
+            debug_sampling_policy_registry_payload=debug_sampling_policy_registry,
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+            compute_budget_profile_id=str(trace_request.get("compute_profile_id", "")).strip() or "compute.default",
+            has_physical_access=bool(trace_request.get("has_physical_access", False)),
+        )
+        if updated.get("logic_debug_state") is not None:
+            _persist_logic_debug_state(state, updated.get("logic_debug_state"))
+        if updated.get("forced_expand_event_rows") is not None:
+            forced_before = [dict(row) for row in list(state.get("system_forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+            forced_added = [dict(row) for row in list(updated.get("forced_expand_event_rows") or []) if isinstance(row, Mapping)]
+            state["system_forced_expand_event_rows"] = normalize_forced_expand_event_rows(forced_before + forced_added)
+            state["system_forced_expand_event_hash_chain"] = canonical_sha256(
+                [
+                    {
+                        "event_id": str(row.get("event_id", "")).strip(),
+                        "capsule_id": str(row.get("capsule_id", "")).strip(),
+                        "tick": int(max(0, _as_int(row.get("tick", 0), 0))),
+                        "reason_code": str(row.get("reason_code", "")).strip(),
+                        "requested_fidelity": str(row.get("requested_fidelity", "")).strip(),
+                    }
+                    for row in sorted(
+                        (dict(item) for item in list(state.get("system_forced_expand_event_rows") or []) if isinstance(item, Mapping)),
+                        key=lambda item: (
+                            int(max(0, _as_int(item.get("tick", 0), 0))),
+                            str(item.get("capsule_id", "")),
+                            str(item.get("event_id", "")),
+                        ),
+                    )
+                ]
+            )
+            state["forced_expand_event_hash_chain"] = str(state.get("system_forced_expand_event_hash_chain", "")).strip()
+        _refresh_logic_debug_hash_chains(state)
+        if str(updated.get("result", "")) not in {"complete", "throttled"}:
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_trace_start refused logic trace start",
+                "Reduce trace bounds or verify remote/compiled debug access.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.trace_request",
+            )
+        result_metadata = {
+            "subject_id": str(trace_request.get("subject_id", "")).strip(),
+            "trace_session_id": str(dict(updated.get("trace_session_row") or {}).get("session_id", "")).strip(),
+            "throttled": bool(str(updated.get("result", "")) == "throttled"),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_trace_tick":
+        (
+            _carrier_type_registry,
+            _bus_encoding_registry,
+            protocol_registry,
+            _signal_noise_policy_registry,
+            _signal_delay_policy_registry,
+        ) = _load_logic_signal_registries(policy_context=policy_context)
+        compute_budget_profile_registry, compute_degrade_policy_registry, _tolerance_policy_registry = _load_logic_signal_budget_registries(
+            policy_context=policy_context
+        )
+        instrumentation_surface_registry = _load_instrumentation_surface_registry(policy_context=policy_context)
+        access_policy_registry = _load_access_policy_registry(policy_context=policy_context)
+        measurement_model_registry = _load_measurement_model_registry(policy_context=policy_context)
+        trace_tick_request = dict(inputs.get("trace_tick_request") or {})
+        if not trace_tick_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_trace_tick requires trace_tick_request",
+                "Provide trace_tick_request with session_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.trace_tick_request",
+            )
+        available_instrument_type_ids = [
+            str(item).strip()
+            for item in list(
+                (
+                    dict(trace_tick_request.get("extensions") or {})
+                    if isinstance(trace_tick_request.get("extensions"), Mapping)
+                    else {}
+                ).get("available_instrument_type_ids")
+                or [str(trace_tick_request.get("debug_instrument_id", "")).strip()]
+            )
+            if str(item).strip()
+        ]
+        updated = process_logic_trace_tick(
+            current_tick=int(current_tick),
+            logic_debug_state=state.get("logic_debug_state")
+            or {
+                "logic_debug_probe_request_rows": state.get("logic_debug_probe_request_rows"),
+                "logic_debug_trace_request_rows": state.get("logic_debug_trace_request_rows"),
+                "logic_debug_trace_session_rows": state.get("logic_debug_trace_session_rows"),
+                "logic_debug_probe_artifact_rows": state.get("logic_debug_probe_artifacts"),
+                "logic_debug_trace_artifact_rows": state.get("logic_debug_trace_artifacts"),
+                "logic_protocol_summary_artifact_rows": state.get("logic_protocol_summary_artifacts"),
+                "logic_debug_explain_artifact_rows": state.get("logic_debug_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_debug_compute_runtime_state"),
+            },
+            signal_store_state=state.get("logic_signal_store_state")
+            or {
+                "signal_rows": state.get("logic_signal_rows"),
+                "bus_definition_rows": state.get("logic_bus_definition_rows"),
+                "protocol_definition_rows": state.get("logic_protocol_definition_rows"),
+                "signal_change_record_rows": state.get("logic_signal_change_records"),
+                "signal_trace_artifact_rows": state.get("logic_signal_trace_artifacts"),
+                "coupling_change_rows": state.get("logic_signal_coupling_change_rows"),
+                "compute_runtime_state": state.get("logic_signal_compute_runtime_state"),
+            },
+            logic_network_state=state.get("logic_network_state")
+            or {
+                "logic_network_graph_rows": state.get("logic_network_graph_rows"),
+                "logic_network_binding_rows": state.get("logic_network_binding_rows"),
+                "logic_network_validation_records": state.get("logic_network_validation_records"),
+                "logic_network_change_records": state.get("logic_network_change_records"),
+                "logic_network_explain_artifact_rows": state.get("logic_network_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_network_compute_runtime_state"),
+            },
+            logic_eval_state=state.get("logic_eval_state")
+            or {
+                "logic_network_runtime_state_rows": state.get("logic_network_runtime_state_rows"),
+                "logic_eval_record_rows": state.get("logic_eval_record_rows"),
+                "logic_throttle_event_rows": state.get("logic_throttle_event_rows"),
+                "logic_oscillation_record_rows": state.get("logic_oscillation_record_rows"),
+                "logic_timing_violation_event_rows": state.get("logic_timing_violation_event_rows"),
+                "logic_watchdog_timeout_event_rows": state.get("logic_watchdog_timeout_event_rows"),
+                "logic_state_update_record_rows": state.get("logic_state_update_record_rows"),
+                "logic_pending_signal_update_rows": state.get("logic_pending_signal_update_rows"),
+                "logic_propagation_trace_artifact_rows": state.get("logic_propagation_trace_artifacts"),
+                "compute_runtime_state": state.get("logic_eval_compute_runtime_state"),
+            },
+            trace_tick_request=trace_tick_request,
+            state_vector_snapshot_rows=_ensure_state_vector_snapshot_rows(state),
+            compiled_model_rows=state.get("compiled_model_rows") or [],
+            protocol_registry_payload=protocol_registry,
+            instrumentation_surface_registry_payload=instrumentation_surface_registry,
+            access_policy_registry_payload=access_policy_registry,
+            measurement_model_registry_payload=measurement_model_registry,
+            compute_budget_profile_registry_payload=compute_budget_profile_registry,
+            compute_degrade_policy_registry_payload=compute_degrade_policy_registry,
+            compute_budget_profile_id=str(trace_tick_request.get("compute_profile_id", "")).strip() or "compute.default",
+            authority_context=authority_context,
+            has_physical_access=bool(trace_tick_request.get("has_physical_access", False)),
+            available_instrument_type_ids=available_instrument_type_ids,
+        )
+        if updated.get("logic_debug_state") is not None:
+            _persist_logic_debug_state(state, updated.get("logic_debug_state"))
+        if updated.get("compiled_introspection_artifact_rows") is not None:
+            state["logic_compiled_introspection_artifacts"] = sorted(
+                list(state.get("logic_compiled_introspection_artifacts") or [])
+                + [
+                    dict(row)
+                    for row in list(updated.get("compiled_introspection_artifact_rows") or [])
+                    if isinstance(row, Mapping)
+                ],
+                key=lambda item: str(dict(item).get("artifact_id", "")),
+            )
+        _refresh_logic_debug_hash_chains(state)
+        if str(updated.get("result", "")) not in {"complete", "throttled"}:
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_trace_tick refused logic trace tick",
+                "Verify the trace session and active instrumentation access.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.trace_tick_request",
+            )
+        result_metadata = {
+            "trace_session_id": str(trace_tick_request.get("session_id", "")).strip(),
+            "trace_artifact_count": int(len(list(updated.get("trace_artifact_rows") or []))),
+            "throttled": bool(str(updated.get("result", "")) == "throttled"),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.logic_trace_end":
+        trace_end_request = dict(inputs.get("trace_end_request") or {})
+        if not trace_end_request:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.logic_trace_end requires trace_end_request",
+                "Provide trace_end_request with session_id.",
+                {"process_id": process_id},
+                "$.intent.inputs.trace_end_request",
+            )
+        updated = process_logic_trace_end(
+            current_tick=int(current_tick),
+            logic_debug_state=state.get("logic_debug_state")
+            or {
+                "logic_debug_probe_request_rows": state.get("logic_debug_probe_request_rows"),
+                "logic_debug_trace_request_rows": state.get("logic_debug_trace_request_rows"),
+                "logic_debug_trace_session_rows": state.get("logic_debug_trace_session_rows"),
+                "logic_debug_probe_artifact_rows": state.get("logic_debug_probe_artifacts"),
+                "logic_debug_trace_artifact_rows": state.get("logic_debug_trace_artifacts"),
+                "logic_protocol_summary_artifact_rows": state.get("logic_protocol_summary_artifacts"),
+                "logic_debug_explain_artifact_rows": state.get("logic_debug_explain_artifacts"),
+                "compute_runtime_state": state.get("logic_debug_compute_runtime_state"),
+            },
+            trace_end_request=trace_end_request,
+        )
+        if updated.get("logic_debug_state") is not None:
+            _persist_logic_debug_state(state, updated.get("logic_debug_state"))
+        _refresh_logic_debug_hash_chains(state)
+        if str(updated.get("result", "")) != "complete":
+            return refusal(
+                str(updated.get("reason_code", "PROCESS_INPUT_INVALID")),
+                "process.logic_trace_end refused logic trace end",
+                "Verify the trace session exists before finalizing it.",
+                {"process_id": process_id, "reason_code": str(updated.get("reason_code", ""))},
+                "$.intent.inputs.trace_end_request",
+            )
+        result_metadata = {
+            "trace_session_id": str(trace_end_request.get("session_id", "")).strip(),
+            "trace_id": str(dict(updated.get("trace_artifact_row") or {}).get("trace_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.logic_network_evaluate":
