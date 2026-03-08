@@ -354,6 +354,9 @@ from analyzers import e327_protocol_security_bypass_smell
 from analyzers import e328_protocol_bypass_smell
 from analyzers import e329_unbounded_logic_loop_smell
 from analyzers import e330_silent_logic_throttle_smell
+from analyzers import e331_raw_xyz_distance_smell
+from analyzers import e332_hardcoded_dimension_smell
+from analyzers import e333_projection_truth_leak_smell
 
 
 ANALYZERS = (
@@ -711,6 +714,9 @@ ANALYZERS = (
     e328_protocol_bypass_smell,
     e329_unbounded_logic_loop_smell,
     e330_silent_logic_throttle_smell,
+    e331_raw_xyz_distance_smell,
+    e332_hardcoded_dimension_smell,
+    e333_projection_truth_leak_smell,
 )
 
 

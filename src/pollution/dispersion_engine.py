@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from typing import Dict, Iterable, List, Mapping, Tuple
 
+from src.geo import geo_neighbors
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -547,11 +548,24 @@ def evaluate_pollution_dispersion(
         diffusion_permille = int(max(0, min(1000, _as_int(profile.get("diffusion_permille", 120), 120))))
         wind_bias_permille = int(max(0, min(1000, _as_int(profile.get("wind_bias_permille", 80), 80))))
         wind_enabled = bool(policy_row.get("wind_modifier_enabled", False))
+        policy_ext = _as_map(policy_row.get("extensions"))
+        topology_profile_id = str(policy_ext.get("topology_profile_id", "geo.topology.r3_infinite")).strip() or "geo.topology.r3_infinite"
+        metric_profile_id = str(policy_ext.get("metric_profile_id", "geo.metric.euclidean")).strip() or "geo.metric.euclidean"
+        neighbor_radius = max(1, _as_int(policy_ext.get("neighbor_radius", 1), 1))
 
         for cell_id in selected_cells:
             current_value = int(max(0, _as_int(concentration_by_cell.get(cell_id, 0), 0)))
             injected = int(max(0, _as_int(injections_by_cell.get(cell_id, 0), 0)))
-            neighbor_ids = _sorted_tokens(list(neighbor_map.get(cell_id) or []))
+            neighbor_result = geo_neighbors(
+                cell_id,
+                topology_profile_id,
+                neighbor_radius,
+                metric_profile_id,
+            )
+            if str(neighbor_result.get("result", "")).strip() == "complete" and list(neighbor_result.get("neighbors") or []):
+                neighbor_ids = _sorted_tokens(list(neighbor_result.get("neighbors") or []))
+            else:
+                neighbor_ids = _sorted_tokens(list(neighbor_map.get(cell_id) or []))
             neighbor_values = [
                 int(max(0, _as_int(concentration_by_cell.get(neighbor_id, 0), 0)))
                 for neighbor_id in neighbor_ids

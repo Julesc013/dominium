@@ -8,6 +8,7 @@ import math
 import os
 from typing import Dict, List, Tuple
 
+from src.geo import geo_project
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .null_renderer import build_frame_summary
@@ -274,8 +275,14 @@ def render_software_snapshot(
 
     rows = _normalized_renderables(model)
     materials = _material_map(model)
-    camera = dict((dict(model.get("extensions") or {})).get("camera_viewpoint") or {})
-    fov_deg = float(_to_int((dict(model.get("extensions") or {})).get("fov_deg", 60), 60))
+    model_extensions = dict(model.get("extensions") or {})
+    camera = dict(model_extensions.get("camera_viewpoint") or {})
+    fov_deg = float(_to_int(model_extensions.get("fov_deg", 60), 60))
+    topology_profile_id = str(model_extensions.get("topology_profile_id", "geo.topology.r3_infinite")).strip() or "geo.topology.r3_infinite"
+    projection_profile_id = (
+        str(model_extensions.get("projection_profile_id", "geo.projection.perspective_3d")).strip()
+        or "geo.projection.perspective_3d"
+    )
 
     pixels = bytearray(width * height * 3)
     depth = [1e18] * (width * height)
@@ -284,12 +291,24 @@ def render_software_snapshot(
         transform = dict(row.get("transform") or {})
         position = dict(transform.get("position_mm") or {})
         scale_permille = _to_int(transform.get("scale_permille", 1000), 1000)
-        x, y, z = _camera_space(position_mm=position, camera_row=camera)
-        if z <= 5.0:
+        projection_result = geo_project(
+            position,
+            topology_profile_id,
+            projection_profile_id,
+            projection_request={
+                "camera_position_mm": dict(camera.get("position_mm") or {}),
+                "camera_orientation_mdeg": dict(camera.get("orientation_mdeg") or {}),
+                "viewport_width": int(width),
+                "viewport_height": int(height),
+                "fov_deg": int(fov_deg),
+            },
+        )
+        projected = dict(projection_result.get("projected_position") or {})
+        zf = float(_to_int(projected.get("depth_mm", 0), 0))
+        if zf <= 5.0:
             continue
-        sx_f, sy_f, zf = _project_point(x=x, y=y, z=z, width=width, height=height, fov_deg=fov_deg)
-        sx = int(round(sx_f))
-        sy = int(round(sy_f))
+        sx = int(_to_int(projected.get("x_px", 0), 0))
+        sy = int(_to_int(projected.get("y_px", 0), 0))
         if sx < -32 or sy < -32 or sx > width + 32 or sy > height + 32:
             continue
         primitive = _primitive_token(str(row.get("primitive_id", "")))

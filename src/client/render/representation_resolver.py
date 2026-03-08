@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 from typing import Dict, List, Tuple
 
+from src.geo import geo_distance
+
 
 DEFAULT_PRIMITIVE_ID = "prim.box.default"
 DEFAULT_TEMPLATE_ID = "mat.template.default_by_id_hash"
@@ -478,7 +480,14 @@ def _lod_hint_for_candidate(candidate: dict, lod_policy_id: str, registry_payloa
     if not bands:
         return default_hint
     transform = dict(entity_row.get("transform_mm") or {})
-    distance_mm = abs(_to_int(transform.get("x", 0), 0)) + abs(_to_int(transform.get("y", 0), 0)) + abs(_to_int(transform.get("z", 0), 0))
+    entity_ext = dict(entity_row.get("extensions") or {})
+    distance_result = geo_distance(
+        {"x": 0, "y": 0, "z": 0},
+        transform,
+        str(entity_ext.get("topology_profile_id", "geo.topology.r3_infinite")).strip() or "geo.topology.r3_infinite",
+        str(entity_ext.get("metric_profile_id", "geo.metric.euclidean")).strip() or "geo.metric.euclidean",
+    )
+    distance_mm = int(_to_int(distance_result.get("distance_mm", 0), 0))
     hints = _sorted_unique_strings((dict(policy.get("extensions") or {}).get("hints") or []))
     if not hints:
         hints = ["lod.band.near", "lod.band.mid", "lod.band.far", "lod.band.extreme"]

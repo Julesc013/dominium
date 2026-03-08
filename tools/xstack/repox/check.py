@@ -16788,6 +16788,116 @@ def _append_field_generalization_invariant_findings(
             break
 
 
+def _append_geo_portability_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    field_engine_rel = "src/fields/field_engine.py"
+    pollution_rel = "src/pollution/dispersion_engine.py"
+    representation_rel = "src/client/render/representation_resolver.py"
+    renderer_rel = "src/client/render/renderers/software_renderer.py"
+
+    field_text = _file_text(repo_root, field_engine_rel)
+    if "geo_partition_cell_key(" not in field_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=field_engine_rel,
+                line_number=1,
+                snippet="geo_partition_cell_key(",
+                message="field cell addressing must route through GEO partition APIs",
+                rule_id="INV-NO-HARDCODED-DIMENSION-ASSUMPTIONS",
+            )
+        )
+    if 'return "cell.{}.{}.{}".format(' in field_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=field_engine_rel,
+                line_number=1,
+                snippet='return "cell.{}.{}.{}".format(',
+                message="domain code must not hardcode 3-axis cell-key generation outside GEO kernel",
+                rule_id="INV-NO-HARDCODED-DIMENSION-ASSUMPTIONS",
+            )
+        )
+
+    pollution_text = _file_text(repo_root, pollution_rel)
+    if "geo_neighbors(" not in pollution_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=pollution_rel,
+                line_number=1,
+                snippet="geo_neighbors(",
+                message="domain neighbor iteration must route through GEO APIs",
+                rule_id="INV-GEO-API-ONLY-FOR-DOMAIN-DISTANCE",
+            )
+        )
+
+    representation_text = _file_text(repo_root, representation_rel)
+    if "geo_distance(" not in representation_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=representation_rel,
+                line_number=1,
+                snippet="geo_distance(",
+                message="presentation LOD distance must route through GEO distance queries",
+                rule_id="INV-GEO-API-ONLY-FOR-DOMAIN-DISTANCE",
+            )
+        )
+    if 'abs(_to_int(transform.get("x", 0), 0))' in representation_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=representation_rel,
+                line_number=1,
+                snippet='abs(_to_int(transform.get("x", 0), 0))',
+                message="direct XYZ distance heuristics are forbidden outside GEO kernel and local micro charts",
+                rule_id="INV-NO-HARDCODED-DIMENSION-ASSUMPTIONS",
+            )
+        )
+
+    renderer_text = _file_text(repo_root, renderer_rel)
+    if "geo_project(" not in renderer_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=renderer_rel,
+                line_number=1,
+                snippet="geo_project(",
+                message="render projection must route through GEO projection APIs",
+                rule_id="INV-PROJECTION-EPITEMIC-GATED",
+            )
+        )
+    if "camera_viewpoint" not in renderer_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=renderer_rel,
+                line_number=1,
+                snippet="camera_viewpoint",
+                message="projection requests must consume lens-rendered camera viewpoint payloads",
+                rule_id="INV-PROJECTION-EPITEMIC-GATED",
+            )
+        )
+    for forbidden_token in ("x, y, z = _camera_space(", "sx_f, sy_f, zf = _project_point("):
+        if forbidden_token not in renderer_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=renderer_rel,
+                line_number=1,
+                snippet=forbidden_token,
+                message="renderer must not bypass GEO projection with direct camera-space/project-point calls",
+                rule_id="INV-PROJECTION-EPITEMIC-GATED",
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -26990,6 +27100,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_field_generalization_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_portability_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

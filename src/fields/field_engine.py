@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence
 
+from src.geo import geo_partition_cell_key
 from src.models.model_engine import evaluate_field_modifier_curve
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -338,17 +339,14 @@ def _field_cell_id_for_position(*, layer_row: Mapping[str, object], spatial_posi
     explicit = str(payload.get("cell_id", "")).strip()
     if explicit:
         return explicit
-    if isinstance(payload.get("position_mm"), Mapping):
-        payload = _as_map(payload.get("position_mm"))
-    x = int(_as_int(payload.get("x", 0), 0))
-    y = int(_as_int(payload.get("y", 0), 0))
-    z = int(_as_int(payload.get("z", 0), 0))
     layer_ext = _as_map(layer_row.get("extensions"))
-    cell_size_mm = max(1, _as_int(layer_ext.get("cell_size_mm", 10000), 10000))
-    cx = int(x // cell_size_mm)
-    cy = int(y // cell_size_mm)
-    cz = int(z // cell_size_mm)
-    return "cell.{}.{}.{}".format(cx, cy, cz)
+    partition_result = geo_partition_cell_key(
+        payload,
+        str(layer_ext.get("partition_profile_id", "geo.partition.grid_zd")).strip() or "geo.partition.grid_zd",
+        topology_profile_id=str(layer_ext.get("topology_profile_id", "geo.topology.r3_infinite")).strip()
+        or "geo.topology.r3_infinite",
+    )
+    return str(partition_result.get("cell_key", "")).strip()
 
 
 def _default_value_for_field(
