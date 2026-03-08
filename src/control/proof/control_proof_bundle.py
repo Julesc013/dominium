@@ -160,6 +160,37 @@ def _geo_identity_extensions(
     ).strip()
     if view_type_registry_hash:
         out["view_type_registry_hash"] = view_type_registry_hash
+    generator_version_id = str(ext.get("generator_version_id", surface.get("generator_version_id", ""))).strip()
+    if generator_version_id:
+        out["generator_version_id"] = generator_version_id
+    realism_profile_id = str(ext.get("realism_profile_id", surface.get("realism_profile_id", ""))).strip()
+    if realism_profile_id:
+        out["realism_profile_id"] = realism_profile_id
+    generator_version_registry_hash = str(
+        ext.get("generator_version_registry_hash", surface.get("generator_version_registry_hash", ""))
+    ).strip()
+    if generator_version_registry_hash:
+        out["generator_version_registry_hash"] = generator_version_registry_hash
+    realism_profile_registry_hash = str(
+        ext.get("realism_profile_registry_hash", surface.get("realism_profile_registry_hash", ""))
+    ).strip()
+    if realism_profile_registry_hash:
+        out["realism_profile_registry_hash"] = realism_profile_registry_hash
+    worldgen_request_hash_chain = str(
+        ext.get("worldgen_request_hash_chain", surface.get("worldgen_request_hash_chain", ""))
+    ).strip()
+    if worldgen_request_hash_chain:
+        out["worldgen_request_hash_chain"] = worldgen_request_hash_chain
+    worldgen_result_hash_chain = str(
+        ext.get("worldgen_result_hash_chain", surface.get("worldgen_result_hash_chain", ""))
+    ).strip()
+    if worldgen_result_hash_chain:
+        out["worldgen_result_hash_chain"] = worldgen_result_hash_chain
+    worldgen_spawned_object_hash_chain = str(
+        ext.get("worldgen_spawned_object_hash_chain", surface.get("worldgen_spawned_object_hash_chain", ""))
+    ).strip()
+    if worldgen_spawned_object_hash_chain:
+        out["worldgen_spawned_object_hash_chain"] = worldgen_spawned_object_hash_chain
     geometry_edit_policy_registry_hash = str(
         ext.get("geometry_edit_policy_registry_hash", surface.get("geometry_edit_policy_registry_hash", ""))
     ).strip()
