@@ -1,0 +1,25 @@
+SCHEMA: geo/partition_profile.schema
+schema_id: dominium.schema.geo.partition_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic space partitioning for field grids, world cells, and ROI refinement.
+- Provide stable partition identifiers and parameters for GEO consumers.
+
+NON-SEMANTICS:
+- This schema does not perform worldgen.
+- This schema does not imply any mandatory topology.
+
+REQUIRED SHAPE:
+record partition_profile
+  required:
+    - partition_profile_id: id
+    - partition_kind: enum(grid|quadtree|octree|sphere_tiles|atlas)
+    - parameters: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- partition cell-key derivation must be deterministic
+- partition semantics must remain stable for identical profile parameters

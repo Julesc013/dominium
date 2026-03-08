@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Partition Profile Schema",
+  "version": "1.0.0",
+  "description": "Canonical GEO-0 partition and cell-key derivation contract.",
+  "x-doc-ref": [
+    "docs/geo/GEO_CONSTITUTION.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "partition_profile_id",
+    "partition_kind",
+    "parameters",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "partition_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "partition_kind": {
+      "type": "string",
+      "enum": [
+        "grid",
+        "quadtree",
+        "octree",
+        "sphere_tiles",
+        "atlas"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "partition_profile_id": "geo.partition.grid_zd",
+      "partition_kind": "grid",
+      "parameters": {
+        "cell_size_mm": 10000,
+        "dimension_D": 3
+      },
+      "deterministic_fingerprint": "9f4c4f3dfe1e3722cae64f4f7d1c4fdb62f06a2d77272ad5708462b6b3c2cf4a",
+      "extensions": {}
+    }
+  ]
+}
