@@ -6,6 +6,11 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 
 from src.meta.compile import compiled_model_rows_by_id, equivalence_proof_rows_by_id
 from src.meta.numeric import tolerance_abs_for_quantity
+from src.meta.reference.geo_small_reference import (
+    evaluate_reference_metric_distance_small,
+    evaluate_reference_neighborhood_small,
+    evaluate_reference_overlay_merge_small,
+)
 from src.meta.reference.logic_small_reference import evaluate_reference_logic_eval_small
 from src.models import (
     evaluate_model_bindings,
@@ -876,6 +881,30 @@ def evaluate_reference_evaluator(
         reference_output_hash = str(reference_out.get("output_hash", "")).strip()
         match = bool(report.get("match", False))
         discrepancy_summary = str(report.get("discrepancy_summary", "")).strip()
+    elif evaluator_token == "ref.metric_distance_small":
+        report = evaluate_reference_metric_distance_small(state_payload=state)
+        runtime_out = dict(report.get("runtime") or {})
+        reference_out = dict(report.get("reference") or {})
+        runtime_output_hash = str(runtime_out.get("output_hash", "")).strip()
+        reference_output_hash = str(reference_out.get("output_hash", "")).strip()
+        match = bool(report.get("match", False))
+        discrepancy_summary = str(report.get("discrepancy_summary", "")).strip()
+    elif evaluator_token == "ref.neighborhood_small":
+        report = evaluate_reference_neighborhood_small(state_payload=state)
+        runtime_out = dict(report.get("runtime") or {})
+        reference_out = dict(report.get("reference") or {})
+        runtime_output_hash = str(runtime_out.get("output_hash", "")).strip()
+        reference_output_hash = str(reference_out.get("output_hash", "")).strip()
+        match = bool(report.get("match", False))
+        discrepancy_summary = str(report.get("discrepancy_summary", "")).strip()
+    elif evaluator_token == "ref.overlay_merge_small":
+        report = evaluate_reference_overlay_merge_small(state_payload=state)
+        runtime_out = dict(report.get("runtime") or {})
+        reference_out = dict(report.get("reference") or {})
+        runtime_output_hash = str(runtime_out.get("output_hash", "")).strip()
+        reference_output_hash = str(reference_out.get("output_hash", "")).strip()
+        match = bool(report.get("match", False))
+        discrepancy_summary = str(report.get("discrepancy_summary", "")).strip()
     else:
         runtime_output_hash = canonical_sha256({"evaluator_id": evaluator_token, "runtime": "unknown"})
         reference_output_hash = canonical_sha256({"evaluator_id": evaluator_token, "reference": "unknown"})
@@ -985,6 +1014,9 @@ __all__ = [
     "evaluate_reference_coupling_scheduler",
     "evaluate_reference_system_invariant_check",
     "evaluate_reference_compiled_model_verify",
+    "evaluate_reference_metric_distance_small",
+    "evaluate_reference_neighborhood_small",
+    "evaluate_reference_overlay_merge_small",
     "evaluate_reference_logic_eval_small",
     "evaluate_reference_evaluator",
     "evaluate_reference_suite",

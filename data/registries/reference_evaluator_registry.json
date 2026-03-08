@@ -104,6 +104,51 @@
           "source": "LOGIC10-5",
           "scope": "bounded_fixture_only"
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.metric_distance_small",
+        "subsystem_id": "geo.metric_engine",
+        "input_signature_ref": "signature.ref.metric_distance_small.input.v1",
+        "output_signature_ref": "signature.ref.metric_distance_small.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "GEO10-5",
+          "scope": "bounded_fixture_only"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.neighborhood_small",
+        "subsystem_id": "geo.neighborhood_engine",
+        "input_signature_ref": "signature.ref.neighborhood_small.input.v1",
+        "output_signature_ref": "signature.ref.neighborhood_small.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "GEO10-5",
+          "scope": "bounded_fixture_only"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "evaluator_id": "ref.overlay_merge_small",
+        "subsystem_id": "geo.overlay_merge_engine",
+        "input_signature_ref": "signature.ref.overlay_merge_small.input.v1",
+        "output_signature_ref": "signature.ref.overlay_merge_small.output.v1",
+        "equivalence_kind": "exact",
+        "tolerance_policy_id": null,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "status": "active",
+          "source": "GEO10-5",
+          "scope": "bounded_fixture_only"
+        }
       }
     ],
     "extensions": {
