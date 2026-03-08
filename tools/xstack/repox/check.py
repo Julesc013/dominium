@@ -4602,6 +4602,223 @@ def _append_logic_compile_invariant_findings(
         )
 
 
+def _append_logic_debug_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    omniscient_rule_id = "INV-NO-OMNISCIENT-DEBUG"
+    budget_rule_id = "INV-DEBUG-BUDGETED"
+    bounded_rule_id = "INV-TRACE-BOUNDED"
+
+    required_files = (
+        ("docs/logic/DEBUG_AND_INSTRUMENTATION.md", omniscient_rule_id),
+        ("schema/logic/debug_probe_request.schema", bounded_rule_id),
+        ("schema/logic/debug_trace_request.schema", bounded_rule_id),
+        ("schema/logic/debug_trace_artifact.schema", bounded_rule_id),
+        ("schema/logic/debug_sampling_policy.schema", bounded_rule_id),
+        ("data/registries/debug_sampling_policy_registry.json", bounded_rule_id),
+        ("src/logic/debug/debug_engine.py", budget_rule_id),
+        ("src/logic/debug/runtime_state.py", bounded_rule_id),
+        ("tools/logic/tool_replay_trace_window.py", bounded_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-7 debug enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_rel = "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+    doctrine_text = _file_text(repo_root, doctrine_rel).lower()
+    for token, rule_id, message in (
+        ("logic probe", omniscient_rule_id, "debug doctrine must define the logic probe"),
+        ("logic analyzer", bounded_rule_id, "debug doctrine must define bounded trace capture"),
+        ("protocol sniffer", omniscient_rule_id, "debug doctrine must define the protocol sniffer stub"),
+        ("physical access", omniscient_rule_id, "debug doctrine must enforce physical access for logic debug"),
+        ("remote monitoring", omniscient_rule_id, "debug doctrine must constrain remote monitoring"),
+        ("bounded length", bounded_rule_id, "debug doctrine must require bounded trace length"),
+        ("bounded sampling rate", bounded_rule_id, "debug doctrine must require bounded sampling rate"),
+        ("force expand", budget_rule_id, "debug doctrine must explain debug-driven forced expand"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=doctrine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    instrument_rel = "data/registries/instrument_type_registry.json"
+    instrument_text = _file_text(repo_root, instrument_rel)
+    for token in ("instrument.logic_probe", "instrument.logic_analyzer", "instrument.protocol_sniffer_stub"):
+        if token in instrument_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=instrument_rel,
+                line_number=1,
+                snippet=token,
+                message="logic debug instrumentation types must be registered",
+                rule_id=omniscient_rule_id,
+            )
+        )
+
+    surface_rel = "data/registries/instrumentation_surface_registry.json"
+    surface_text = _file_text(repo_root, surface_rel)
+    for token, rule_id, message in (
+        ("measure.logic.signal", omniscient_rule_id, "logic signal measurement point must be registered"),
+        ("measure.logic.protocol_frame", omniscient_rule_id, "protocol frame measurement point must be registered"),
+        ("measure.logic.timing_trace", bounded_rule_id, "timing trace measurement point must be registered"),
+    ):
+        if token in surface_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=surface_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    explain_rel = "data/registries/explain_contract_registry.json"
+    explain_text = _file_text(repo_root, explain_rel)
+    for token in ("explain.logic_debug_refused", "explain.logic_debug_throttled", "explain.logic_debug_forced_expand"):
+        if token in explain_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_rel,
+                line_number=1,
+                snippet=token,
+                message="logic debug explain contracts must be registered",
+                rule_id=omniscient_rule_id,
+            )
+        )
+
+    process_rel = "data/registries/process_registry.json"
+    process_text = _file_text(repo_root, process_rel)
+    for token in ("process.logic_probe", "process.logic_trace_start", "process.logic_trace_tick", "process.logic_trace_end"):
+        if token in process_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_rel,
+                line_number=1,
+                snippet=token,
+                message="logic debug processes must be registered",
+                rule_id=budget_rule_id,
+            )
+        )
+
+    engine_rel = "src/logic/debug/debug_engine.py"
+    engine_text = _file_text(repo_root, engine_rel)
+    for token, rule_id, message in (
+        ("request_logic_debug_compute(", budget_rule_id, "logic debug operations must meter compute"),
+        ("build_logic_compiled_forced_expand_event(", omniscient_rule_id, "compiled debug inspection must force expand explicitly"),
+        ("max_points", bounded_rule_id, "trace start must enforce max_points"),
+        ("max_ticks", bounded_rule_id, "trace start must enforce max_ticks"),
+        ("max_samples", bounded_rule_id, "trace start must enforce max_samples"),
+        ("throttle_strategy", bounded_rule_id, "trace capture must declare a deterministic throttle strategy"),
+        ("REFUSAL_LOGIC_DEBUG_REQUIRES_EXPAND", omniscient_rule_id, "internal compiled debug paths must refuse without explicit expand"),
+    ):
+        if token in engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=engine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, rule_id, message in (
+        ('"process.logic_probe"', budget_rule_id, "session runtime must dispatch process.logic_probe"),
+        ('"process.logic_trace_start"', budget_rule_id, "session runtime must dispatch process.logic_trace_start"),
+        ('"process.logic_trace_tick"', budget_rule_id, "session runtime must dispatch process.logic_trace_tick"),
+        ('"process.logic_trace_end"', budget_rule_id, "session runtime must dispatch process.logic_trace_end"),
+        ("_refresh_logic_debug_hash_chains(", bounded_rule_id, "session runtime must refresh logic debug proof chains"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token.strip('"'),
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    replay_rel = "tools/logic/tool_replay_trace_window.py"
+    replay_text = _file_text(repo_root, replay_rel)
+    for token, rule_id, message in (
+        ("logic_debug_request_hash_chain", bounded_rule_id, "trace replay must include request proof surface"),
+        ("logic_debug_trace_hash_chain", bounded_rule_id, "trace replay must include trace proof surface"),
+        ("logic_protocol_summary_hash_chain", bounded_rule_id, "trace replay must include protocol summary proof surface"),
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    for rel_path in _scan_files(repo_root):
+        rel_norm = _norm(rel_path)
+        if not rel_norm.endswith(".py"):
+            continue
+        if not rel_norm.startswith(("src/logic/debug/", "tools/logic/tool_replay_trace_window.py")):
+            continue
+        text = _file_text(repo_root, rel_norm).lower()
+        for token in ("truth_model", "render_model", "universe_state"):
+            if token not in text:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_norm,
+                    line_number=1,
+                    snippet=token,
+                    message="logic debug paths must not reference omniscient truth or render-model symbols",
+                    rule_id=omniscient_rule_id,
+                )
+            )
+            break
+
+
 def _derived_artifact_files(repo_root: str) -> List[str]:
     root = os.path.join(repo_root, "packs", "derived")
     rows: List[str] = []
@@ -26225,6 +26442,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_compile_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_debug_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

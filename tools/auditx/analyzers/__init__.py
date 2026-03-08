@@ -344,6 +344,8 @@ from analyzers import e317_commit_phase_bypass_smell
 from analyzers import e318_implicit_timing_assumption_smell
 from analyzers import e319_silent_compiled_invalidation_smell
 from analyzers import e320_missing_logic_equivalence_proof_smell
+from analyzers import e321_truth_leak_via_debug_smell
+from analyzers import e322_unbounded_trace_smell
 
 
 ANALYZERS = (
@@ -691,6 +693,8 @@ ANALYZERS = (
     e318_implicit_timing_assumption_smell,
     e319_silent_compiled_invalidation_smell,
     e320_missing_logic_equivalence_proof_smell,
+    e321_truth_leak_via_debug_smell,
+    e322_unbounded_trace_smell,
 )
 
 

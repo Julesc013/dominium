@@ -113,7 +113,7 @@ def run(graph, repo_root, changed_files=None):
         for row in instrument_rows
         if isinstance(row, dict) and str(row.get("instrument_type_id", "")).strip()
     }
-    for instrument_id in ("instrument.logic_probe", "instrument.logic_analyzer"):
+    for instrument_id in ("instrument.logic_probe", "instrument.logic_analyzer", "instrument.protocol_sniffer_stub"):
         if (not instrument_err) and instrument_id in known_instrument_ids:
             continue
         findings.append(
