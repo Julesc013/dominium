@@ -66,6 +66,16 @@ from .render import (
     apply_floating_origin,
     choose_floating_origin_offset,
 )
+from .path import (
+    REFUSAL_GEO_PATH_BOUNDED,
+    REFUSAL_GEO_PATH_INVALID,
+    REFUSAL_GEO_PATH_NOT_FOUND,
+    build_path_request,
+    geo_path_query,
+    normalize_path_request,
+    path_request_hash,
+    traversal_policy_registry_hash,
+)
 
 __all__ = [
     "REFUSAL_GEO_CELL_KEY_INVALID",
@@ -81,6 +91,9 @@ __all__ = [
     "REFUSAL_GEO_DIMENSION_CHANGE",
     "REFUSAL_GEO_RENDER_REBASE_INVALID",
     "REFUSAL_GEO_RENDER_TRUTH_MUTATION",
+    "REFUSAL_GEO_PATH_INVALID",
+    "REFUSAL_GEO_PATH_NOT_FOUND",
+    "REFUSAL_GEO_PATH_BOUNDED",
     "build_position_ref",
     "build_projection_request",
     "normalize_projection_request",
@@ -121,4 +134,9 @@ __all__ = [
     "position_to_frame",
     "roi_distance_mm",
     "resolve_geo_profile_set",
+    "build_path_request",
+    "normalize_path_request",
+    "path_request_hash",
+    "geo_path_query",
+    "traversal_policy_registry_hash",
 ]
