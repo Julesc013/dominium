@@ -499,6 +499,20 @@
             }
           },
           {
+            "measurement_point_id": "measure.logic.protocol_frame",
+            "quantity_id": "quantity.logic.bus_capture",
+            "instrument_type_id": "instrument.protocol_sniffer_stub",
+            "measurement_model_id": "meas.lab_high_precision",
+            "destructive": false,
+            "redaction_policy_id": "redact.inspector_default",
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "required_access_policy_id": "access.role_required",
+              "trace_compactable": true,
+              "decoded_view": "protocol.local_frame_stub"
+            }
+          },
+          {
             "measurement_point_id": "measure.logic.timing_trace",
             "quantity_id": "quantity.logic.bus_capture",
             "instrument_type_id": "instrument.logic_analyzer",

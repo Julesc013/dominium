@@ -668,7 +668,7 @@
       },
       {
         "instrument_type_id": "instrument.logic_probe",
-        "description": "Future logic probe instrumentation surface for circuit/state point reads.",
+        "description": "Deterministic logic probe for bounded single-point signal and port inspection.",
         "required_channels_in": [
           "ch.core.entities"
         ],
@@ -678,14 +678,14 @@
         "update_process_id": "process.instrument_tick",
         "calibration_model_id": "calib.none",
         "extensions": {
-          "runtime_status": "stub",
-          "next_series": "LOGIC-4",
-          "source": "META-INSTR0"
+          "runtime_status": "active",
+          "next_series": "LOGIC-7",
+          "source": "LOGIC7-2"
         }
       },
       {
         "instrument_type_id": "instrument.logic_analyzer",
-        "description": "Future logic analyzer instrumentation surface for temporal trace diagnostics.",
+        "description": "Deterministic logic analyzer for bounded trace capture over declared logic measurement points.",
         "required_channels_in": [
           "ch.core.entities"
         ],
@@ -695,9 +695,26 @@
         "update_process_id": "process.instrument_tick",
         "calibration_model_id": "calib.none",
         "extensions": {
-          "runtime_status": "stub",
-          "next_series": "LOGIC-4",
-          "source": "META-INSTR0"
+          "runtime_status": "active",
+          "next_series": "LOGIC-7",
+          "source": "LOGIC7-2"
+        }
+      },
+      {
+        "instrument_type_id": "instrument.protocol_sniffer_stub",
+        "description": "Deterministic protocol sniffer stub for bounded local bus-frame interpretation without stack emulation.",
+        "required_channels_in": [
+          "ch.core.entities"
+        ],
+        "produced_channels_out": [
+          "ch.diegetic.instrument.logic_protocol_sniffer"
+        ],
+        "update_process_id": "process.instrument_tick",
+        "calibration_model_id": "calib.none",
+        "extensions": {
+          "runtime_status": "active",
+          "next_series": "LOGIC-9",
+          "source": "LOGIC7-5"
         }
       },
       {
