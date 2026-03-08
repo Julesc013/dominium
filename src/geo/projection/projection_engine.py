@@ -27,6 +27,7 @@ from src.geo.kernel.geo_kernel import (
     _topology_row,
 )
 from src.geo.metric.neighborhood_engine import geo_neighbors
+from src.geo.worldgen import build_worldgen_requests_for_projection
 
 
 REFUSAL_GEO_PROJECTION_REQUEST_INVALID = "refusal.geo.projection_request_invalid"
@@ -481,6 +482,15 @@ def project_view_cells(
         "mapping_descriptor": mapping_descriptor,
         "projected_cells": [dict(row) for row in list(projected_cells or [])],
         "projected_cell_keys": [dict(_as_map(row.get("geo_cell_key"))) for row in list(projected_cells or [])],
+        "worldgen_requests": build_worldgen_requests_for_projection(
+            projected_cells=projected_cells,
+            refinement_level=int(max(0, _as_int(_as_map(request.get("extensions")).get("worldgen_refinement_level", 0), 0))),
+            reason=str(_as_map(request.get("extensions")).get("worldgen_reason", "roi")).strip() or "roi",
+            extensions={
+                "projection_request_id": str(request.get("request_id", "")).strip(),
+                "projection_request_hash": projection_request_hash(request),
+            },
+        ),
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))

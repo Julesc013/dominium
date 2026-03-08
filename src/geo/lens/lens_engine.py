@@ -447,6 +447,11 @@ def build_projected_view_artifact(
                 "projection_profile_registry_hash": projection_profile_registry_hash(),
                 "lens_layer_registry_hash": lens_layer_registry_hash(),
                 "view_type_registry_hash": view_type_registry_hash(),
+                "worldgen_request_ids": sorted(
+                    str(dict(row).get("request_id", "")).strip()
+                    for row in list(projection_payload.get("worldgen_requests") or [])
+                    if isinstance(row, Mapping) and str(dict(row).get("request_id", "")).strip()
+                ),
             },
         }
     )

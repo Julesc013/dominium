@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Dict, Iterable, List, Mapping, Sequence
 
 from src.geo import roi_distance_mm
+from src.geo.worldgen import build_worldgen_requests_for_roi
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -211,7 +212,7 @@ def system_roi_distance_query(
     graph_version: str = "",
     topology_registry_payload: Mapping[str, object] | None = None,
     metric_registry_payload: Mapping[str, object] | None = None,
-) -> dict:
+    ) -> dict:
     return roi_distance_mm(
         pos_a_ref,
         pos_b_ref,
@@ -220,6 +221,20 @@ def system_roi_distance_query(
         graph_version=graph_version,
         topology_registry_payload=topology_registry_payload,
         metric_registry_payload=metric_registry_payload,
+    )
+
+
+def system_roi_worldgen_requests(
+    *,
+    roi_geo_cell_keys: object,
+    refinement_level: int = 0,
+    reason: str = "roi",
+) -> List[dict]:
+    return build_worldgen_requests_for_roi(
+        geo_cell_keys=list(roi_geo_cell_keys or []),
+        refinement_level=int(max(0, _as_int(refinement_level, 0))),
+        reason=str(reason or "").strip() or "roi",
+        extensions={"source": "GEO8-5"},
     )
 
 
