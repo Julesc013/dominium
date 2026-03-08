@@ -1,6 +1,6 @@
 {
   "artifact_class": "CANONICAL",
-  "candidate_count": 63,
+  "candidate_count": 65,
   "candidates": [
     {
       "evidence_paths": [
@@ -46,7 +46,6 @@
         ".xstack_cache/anb-omega-random-cwd/repox/repox.docs.canon/c80c42c8567de5fb6c1bfec9264a6f4ffbff844999e9200ca1001497e6022ec0.json",
         ".xstack_cache/anb-omega-random-cwd/repox_runner/244e5132c642f335ac9605dc13fb7b85e3afc04a9e12e3c987ea05af57fbfb21.json",
         ".xstack_cache/auditx/meta_genre0_probe/FINDINGS.json",
-        ".xstack_cache/auditx/repox_probe/FINDINGS.json",
         ".xstack_cache/ws-02afd0d6484c1ab2/auditx/entries/da6879864b5c2e0bd0ec606fecab77747fcec23390611cfd5ec6f0a6a78332d8.json",
         ".xstack_cache/ws-0e62fd3b0a5ad5c6/auditx/entries/dd11229589367f55a2d3800b5384e3fa4269a97ff8d1c4e5de39b1746ecf0a12.json",
         ".xstack_cache/ws-10082fc7e6cd6d6b/auditx/entries/0a2c4c992f0af2a9c95f42cd93d5cc1b32b4db83eefb9b6ee4405b7a35613a78.json",
@@ -102,7 +101,8 @@
         ".xstack_cache/ws-320def716a9fc77c/auditx/entries/205a04d847b34293ee63fd4b86747b88a18e4500af8d050f630a517685a1578e.json",
         ".xstack_cache/ws-34eac4eaf5bc3ee9/auditx/entries/2bdb374d57c6e10320a03c425b3951ed563a082226195c17239eb12f4f262def.json",
         ".xstack_cache/ws-36e181e31ad2c3c7/auditx/entries/454fee6f8aa6be1a0ddd2e4f1c172eedecdf2c0ae0d2270d708b46ad9da627c2.json",
-        ".xstack_cache/ws-3bf4a9a3a0c8abdd/auditx/entries/597b724d047d44232f12c70353534a871ae5dbfd72ee296fbbbe586d1894f373.json"
+        ".xstack_cache/ws-3bf4a9a3a0c8abdd/auditx/entries/597b724d047d44232f12c70353534a871ae5dbfd72ee296fbbbe586d1894f373.json",
+        ".xstack_cache/ws-3c94c75e801de106/auditx/entries/37d722405c242d4e88ddf3ed695aae9fceeb663a26bfb0a1cc66c943237c4f68.json"
       ],
       "rationale": "Promote repeated high-confidence semantic risk into static governance.",
       "risk_score": 0.9,
@@ -208,6 +208,7 @@
         "src/logic/element/logic_element_validator.py",
         "src/logic/eval/propagate_engine.py",
         "src/logic/signal/carrier_adapters.py",
+        "tools/logic/tool_run_logic_debug_stress.py",
         "tools/logic/tool_run_logic_eval_stress.py",
         "tools/logic/tool_run_logic_timing_stress.py"
       ],
@@ -488,6 +489,24 @@
     },
     {
       "evidence_paths": [
+        "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.63,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
+        "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+      ],
+      "rationale": "Promote repeated high-confidence semantic risk into static governance.",
+      "risk_score": 0.63,
+      "rule_type": "INVARIANT_HARDEN",
+      "suggested_ruleset": "core.json"
+    },
+    {
+      "evidence_paths": [
         "docs/physics/PHYSICS_CONSTITUTION.md",
         "src/physics/energy/energy_ledger_engine.py",
         "src/reality/ledger/ledger_engine.py"
@@ -541,6 +560,8 @@
       "evidence_paths": [
         "src/control/fidelity/fidelity_engine.py",
         "src/inspection/inspection_engine.py",
+        "src/logic/debug/compute_hooks.py",
+        "src/logic/debug/debug_engine.py",
         "src/logic/eval/logic_eval_engine.py",
         "src/logic/timing/compute_hooks.py",
         "src/models/model_engine.py",

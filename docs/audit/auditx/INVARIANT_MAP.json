@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 750,
+      "finding_count": 751,
       "recommended_actions": {
-        "DOC_FIX": 750
+        "DOC_FIX": 751
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 750
+        "WARN": 751
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -1241,9 +1241,9 @@
       }
     },
     "INV-NO-CARRIER-SEMANTIC-BIAS": {
-      "finding_count": 4,
+      "finding_count": 5,
       "recommended_actions": {
-        "REWRITE": 4
+        "REWRITE": 5
       },
       "sample_findings": [
         {
@@ -1259,16 +1259,21 @@
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0003",
-          "location": "tools/logic/tool_run_logic_eval_stress.py"
+          "location": "tools/logic/tool_run_logic_debug_stress.py"
         },
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0004",
+          "location": "tools/logic/tool_run_logic_eval_stress.py"
+        },
+        {
+          "category": "logic.carrier_bias_smell",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
           "location": "tools/logic/tool_run_logic_timing_stress.py"
         }
       ],
       "severities": {
-        "RISK": 4
+        "RISK": 5
       }
     },
     "INV-NO-DIRECT-ARTIFACT-DELIVERY": {
@@ -1555,6 +1560,22 @@
         "RISK": 1
       }
     },
+    "INV-NO-OMNISCIENT-DEBUG": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "logic.truth_leak_via_debug_smell",
+          "finding_id": "E321_TRUTH_LEAK_VIA_DEBUG_SMELL:0001",
+          "location": "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-NO-SILENT-VIOLATIONS": {
       "finding_count": 2,
       "recommended_actions": {
@@ -1692,9 +1713,9 @@
       }
     },
     "INV-PHASE-CHANGE-MODEL-ONLY": {
-      "finding_count": 5,
+      "finding_count": 7,
       "recommended_actions": {
-        "REWRITE": 5
+        "REWRITE": 7
       },
       "sample_findings": [
         {
@@ -1710,21 +1731,21 @@
         {
           "category": "architecture.inline_phase_change_smell",
           "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0003",
-          "location": "src/logic/eval/logic_eval_engine.py"
+          "location": "src/logic/debug/compute_hooks.py"
         },
         {
           "category": "architecture.inline_phase_change_smell",
           "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0004",
-          "location": "src/logic/timing/compute_hooks.py"
+          "location": "src/logic/debug/debug_engine.py"
         },
         {
           "category": "architecture.inline_phase_change_smell",
           "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0005",
-          "location": "tools/xstack/sessionx/scheduler.py"
+          "location": "src/logic/eval/logic_eval_engine.py"
         }
       ],
       "severities": {
-        "RISK": 5
+        "RISK": 7
       }
     },
     "INV-PHYS-PROFILE-DECLARED": {
@@ -1969,6 +1990,27 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-TRACE-BOUNDED": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "DOC_FIX": 2
+      },
+      "sample_findings": [
+        {
+          "category": "logic.unbounded_trace_smell",
+          "finding_id": "E322_UNBOUNDED_TRACE_SMELL:0001",
+          "location": "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+        },
+        {
+          "category": "logic.unbounded_trace_smell",
+          "finding_id": "E322_UNBOUNDED_TRACE_SMELL:0002",
+          "location": "docs/logic/DEBUG_AND_INSTRUMENTATION.md"
+        }
+      ],
+      "severities": {
+        "RISK": 2
       }
     },
     "INV-UI-ENTITLEMENT-GATING": {

@@ -811,6 +811,12 @@ def _channel_payload(perceived_model: dict, channel_id: str) -> dict:
         return {"instrument.elec.pf_meter": dict(instruments.get("instrument.elec.pf_meter") or {})}
     if channel_id == "ch.diegetic.elec.trip_warning":
         return {"instrument.elec.trip_warning": dict(instruments.get("instrument.elec.trip_warning") or {})}
+    if channel_id == "ch.diegetic.instrument.logic_probe":
+        return {"instrument.logic_probe": dict(instruments.get("instrument.logic_probe") or {})}
+    if channel_id == "ch.diegetic.instrument.logic_analyzer":
+        return {"instrument.logic_analyzer": dict(instruments.get("instrument.logic_analyzer") or {})}
+    if channel_id == "ch.diegetic.instrument.logic_protocol_sniffer":
+        return {"instrument.protocol_sniffer_stub": dict(instruments.get("instrument.protocol_sniffer_stub") or {})}
     truth_overlay = dict(perceived_model.get("truth_overlay") or {})
     if channel_id == "ch.truth.overlay.terrain_height":
         return {"terrain_height_mm": truth_overlay.get("terrain_height_mm")}
@@ -898,6 +904,9 @@ def _apply_channel_filter(perceived_model: dict, requested_channels: List[str]) 
         "instrument.elec.current_proxy_meter": "ch.diegetic.elec.current_proxy",
         "instrument.elec.pf_meter": "ch.diegetic.elec.pf",
         "instrument.elec.trip_warning": "ch.diegetic.elec.trip_warning",
+        "instrument.logic_probe": "ch.diegetic.instrument.logic_probe",
+        "instrument.logic_analyzer": "ch.diegetic.instrument.logic_analyzer",
+        "instrument.protocol_sniffer_stub": "ch.diegetic.instrument.logic_protocol_sniffer",
     }
     for instrument_id, channel_spec in sorted(instrument_channels.items()):
         allowed_channels = (

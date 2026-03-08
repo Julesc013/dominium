@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-07
+Last Reviewed: 2026-03-08
 Supersedes: none
 Superseded By: none
 
@@ -9,9 +9,9 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 659
+- RISK: 665
 - VIOLATION: 104
-- WARN: 1238
+- WARN: 1239
 
 ## Counts By Category
 
@@ -31,7 +31,7 @@ Superseded By: none
 - architecture.implicit_system_collapse_smell: 3
 - architecture.inline_cure_smell: 5
 - architecture.inline_friction_smell: 2
-- architecture.inline_phase_change_smell: 5
+- architecture.inline_phase_change_smell: 7
 - architecture.inline_power_loss_smell: 1
 - architecture.inline_protection_smell: 13
 - architecture.inline_strength_check_smell: 1
@@ -58,7 +58,7 @@ Superseded By: none
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 750
+- canon_drift: 751
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1
@@ -69,7 +69,9 @@ Superseded By: none
 - interaction.interaction_bypass_smell: 2
 - legacy_contamination: 11
 - logic.adhoc_wiring_smell: 3
-- logic.carrier_bias_smell: 4
+- logic.carrier_bias_smell: 5
+- logic.truth_leak_via_debug_smell: 1
+- logic.unbounded_trace_smell: 2
 - materials.hardcoded_blueprint_smell: 19
 - materials.inspection_leak_smell: 1
 - materials.reenactment_leak_smell: 1

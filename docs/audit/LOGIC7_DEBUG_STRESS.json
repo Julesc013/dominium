@@ -1,0 +1,19 @@
+{
+  "compiled_introspection_count": 36,
+  "deterministic_fingerprint": "d4754e86087240b596ecf602d16a56888c6d1725cebd1aa40b5d1bbf0b60a850",
+  "forced_expand_event_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "logic_debug_request_hash_chain": "570f4a7234b0cb8a1c6de45f5131a0a0bc7cf7481dc0d93fd9e90c2876705cd2",
+  "logic_debug_trace_hash_chain": "7d3cb422a519aa48ee75d40de799175743b4169138c2f540792d6c3fd9cdc937",
+  "logic_protocol_summary_hash_chain": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "network_id": "net.logic.debug.stress",
+  "probe_artifact_count": 0,
+  "protocol_summary_count": 0,
+  "result": "complete",
+  "scenario_id": "logic.debug.stress",
+  "session_count": 12,
+  "throttled_tick_count": 0,
+  "tick_count": 6,
+  "tick_report_count": 72,
+  "trace_artifact_count": 84,
+  "trace_session_count": 12
+}

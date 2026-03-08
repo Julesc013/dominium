@@ -9,6 +9,7 @@ LOGIC-7 defines bounded, deterministic, epistemically constrained debugging for 
 ### `instrument.logic_probe`
 
 - Reads one measurement point at a time.
+- The logic probe is the single-point diegetic instrument for signal inspection.
 - Intended for direct signal/port inspection.
 - Uses instrumentation surfaces and access policies.
 - Does not expose hidden state unless the target measurement point explicitly permits it.
@@ -16,12 +17,15 @@ LOGIC-7 defines bounded, deterministic, epistemically constrained debugging for 
 ### `instrument.logic_analyzer`
 
 - Records bounded traces over a declared tick window.
+- The logic analyzer is the bounded trace capture instrument.
 - Samples only declared measurement points.
 - Sampling rate and span are capped by policy.
+- The analyzer always operates at a bounded sampling rate.
 - Throttling is deterministic and explainable.
 
 ### `instrument.protocol_sniffer_stub`
 
+- The protocol sniffer stub is the local framed-bus inspection instrument.
 - Interprets local bus/frame payloads through `protocol_definition`.
 - Produces a derived frame summary only.
 - Does not implement a transport stack or remote protocol execution.
