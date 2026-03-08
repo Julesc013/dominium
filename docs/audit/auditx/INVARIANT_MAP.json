@@ -132,9 +132,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 759,
+      "finding_count": 760,
       "recommended_actions": {
-        "DOC_FIX": 759
+        "DOC_FIX": 760
       },
       "sample_findings": [
         {
@@ -164,7 +164,7 @@
         }
       ],
       "severities": {
-        "WARN": 759
+        "WARN": 760
       }
     },
     "INV-CAPABILITY-GATED-RUNTIME": {
@@ -2118,34 +2118,39 @@
       }
     },
     "INV-VERIFICATION-PROCESS-ONLY": {
-      "finding_count": 4,
+      "finding_count": 5,
       "recommended_actions": {
-        "REWRITE": 4
+        "REWRITE": 5
       },
       "sample_findings": [
         {
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0001",
-          "location": "src/inspection/inspection_engine.py"
+          "location": "src/geo/lens/cctv_engine.py"
         },
         {
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0002",
-          "location": "src/logic/protocol/protocol_engine.py"
+          "location": "src/inspection/inspection_engine.py"
         },
         {
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0003",
-          "location": "src/signals/transport/transport_engine.py"
+          "location": "src/logic/protocol/protocol_engine.py"
         },
         {
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0004",
+          "location": "src/signals/transport/transport_engine.py"
+        },
+        {
+          "category": "architecture.unlogged_trust_change_smell",
+          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0005",
           "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 4
+        "RISK": 5
       }
     },
     "INV-WORKSPACE-ISOLATION": {

@@ -9,9 +9,9 @@ Superseded By: none
 ## Counts By Severity
 
 - INFO: 223
-- RISK: 675
+- RISK: 676
 - VIOLATION: 108
-- WARN: 1247
+- WARN: 1248
 
 ## Counts By Category
 
@@ -55,11 +55,11 @@ Superseded By: none
 - architecture.unbounded_spread_smell: 1
 - architecture.unlogged_refusal_smell: 3
 - architecture.unlogged_trip_smell: 1
-- architecture.unlogged_trust_change_smell: 4
+- architecture.unlogged_trust_change_smell: 5
 - architecture.vehicle_interior_special_case_smell: 1
 - architecture.weather_hack_smell: 1
 - authority.fault_bypass_smell: 3
-- canon_drift: 759
+- canon_drift: 760
 - capability_bypass_smell: 1
 - capability_misuse: 140
 - civilisation.nondeterministic_cohort_mapping_smell: 1

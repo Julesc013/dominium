@@ -445,6 +445,7 @@
     },
     {
       "evidence_paths": [
+        "src/geo/lens/cctv_engine.py",
         "src/inspection/inspection_engine.py",
         "src/logic/protocol/protocol_engine.py",
         "src/signals/transport/transport_engine.py",
