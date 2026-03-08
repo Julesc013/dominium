@@ -1019,13 +1019,129 @@ def aggregate_geometry_chunk_to_cell(
     )
 
 
+def build_micro_geometry_chunk_from_cell_state(
+    cell_state: Mapping[str, object] | None,
+    *,
+    subcell_count: int = 8,
+    chunk_id: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    row = normalize_geometry_cell_state(cell_state)
+    count = int(max(1, _as_int(subcell_count, 8)))
+    occupancy = int(max(0, _as_int(row.get("occupancy_fraction", 0), 0)))
+    remaining_units = int(occupancy * count)
+    subcells: List[dict] = []
+    for index in range(count):
+        slot_value = int(min(_OCCUPANCY_SCALE, max(0, remaining_units)))
+        remaining_units -= slot_value
+        subcells.append(
+            {
+                "subcell_index": int(index),
+                "material_id": str(row.get("material_id", _DEFAULT_MATERIAL_ID)).strip() or _DEFAULT_MATERIAL_ID,
+                "occupancy_fraction": int(slot_value),
+            }
+        )
+    return build_geometry_chunk_state(
+        parent_cell_key=_as_map(row.get("geo_cell_key")),
+        chunk_payload_ref={
+            "schema_id": "dominium.geo.chunk.inline.v1",
+            "subcell_count": count,
+            "source_cell_occupancy_fraction": occupancy,
+            "subcells": subcells,
+        },
+        chunk_id=chunk_id,
+        extensions={"source": "micro_from_macro", **_as_map(extensions)},
+    )
+
+
+def geometry_apply_micro_chunk_edit(
+    chunk_row: Mapping[str, object] | None,
+    *,
+    edit_kind: str,
+    volume_amount: int,
+    material_id: str = "",
+    extensions: Mapping[str, object] | None = None,
+    material_registry: Mapping[str, object] | None = None,
+) -> dict:
+    row = normalize_geometry_chunk_state(chunk_row)
+    kind = str(edit_kind or "").strip().lower()
+    if kind not in {"remove", "add", "replace", "cut"}:
+        raise ValueError("edit_kind is required")
+    payload_ref = _as_map(row.get("chunk_payload_ref"))
+    subcells = [dict(item) for item in _as_list(payload_ref.get("subcells")) if isinstance(item, Mapping)]
+    if not subcells:
+        raise ValueError("chunk_row.chunk_payload_ref.subcells is required")
+    prior_macro = aggregate_geometry_chunk_to_cell(row, material_registry=material_registry)
+    subcell_count = int(max(1, len(subcells)))
+    remaining_units = int(max(0, _as_int(volume_amount, 0))) * subcell_count
+    material_token = str(material_id or "").strip()
+    updated_subcells: List[dict] = []
+    for subcell in sorted(subcells, key=lambda item: int(_as_int(item.get("subcell_index", 0), 0))):
+        existing = dict(subcell)
+        occupancy = int(max(0, _as_int(existing.get("occupancy_fraction", 0), 0)))
+        if kind in {"remove", "cut"}:
+            delta = int(min(remaining_units, occupancy))
+            if delta > 0:
+                existing["occupancy_fraction"] = int(max(0, occupancy - delta))
+                if int(existing["occupancy_fraction"]) <= 0:
+                    existing["material_id"] = _DEFAULT_MATERIAL_ID
+                remaining_units -= delta
+        elif kind == "add":
+            delta = int(min(remaining_units, max(0, _OCCUPANCY_SCALE - occupancy)))
+            if delta > 0:
+                existing["occupancy_fraction"] = int(min(_OCCUPANCY_SCALE, occupancy + delta))
+                if material_token:
+                    existing["material_id"] = material_token
+                remaining_units -= delta
+        else:
+            delta = int(min(remaining_units, occupancy))
+            if delta > 0 and material_token:
+                existing["material_id"] = material_token
+                remaining_units -= delta
+        updated_subcells.append(existing)
+    updated_chunk = build_geometry_chunk_state(
+        parent_cell_key=_as_map(row.get("parent_cell_key")),
+        chunk_payload_ref={
+            **payload_ref,
+            "subcells": updated_subcells,
+            "last_edit_kind": kind,
+        },
+        chunk_id=str(row.get("chunk_id", "")).strip(),
+        extensions={**_as_map(row.get("extensions")), **_as_map(extensions)},
+    )
+    aggregated = aggregate_geometry_chunk_to_cell(updated_chunk, material_registry=material_registry)
+    applied_volume_amount = int(
+        max(
+            0,
+            abs(
+                _as_int(aggregated.get("occupancy_fraction", 0), 0)
+                - _as_int(prior_macro.get("occupancy_fraction", 0), 0)
+            ),
+        )
+    )
+    return {
+        "chunk_state": updated_chunk,
+        "aggregated_cell_state": aggregated,
+        "applied_volume_amount": applied_volume_amount,
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "chunk_id": str(updated_chunk.get("chunk_id", "")).strip(),
+                "aggregated_cell_state": aggregated,
+                "applied_volume_amount": applied_volume_amount,
+            }
+        ),
+    }
+
+
 __all__ = [
     "REFUSAL_GEO_GEOMETRY_INVALID",
     "aggregate_geometry_chunk_to_cell",
+    "build_micro_geometry_chunk_from_cell_state",
     "build_geometry_cell_state",
     "build_geometry_chunk_state",
     "build_geometry_edit_event",
     "geometry_add_volume",
+    "geometry_apply_micro_chunk_edit",
     "geometry_cell_state_rows_by_key",
     "geometry_chunk_state_rows_by_id",
     "geometry_coupling_effects_for_cell_state",

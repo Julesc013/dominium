@@ -672,8 +672,10 @@ from src.meta.explain import (
 )
 from src.geo.edit import (
     aggregate_geometry_chunk_to_cell,
+    build_micro_geometry_chunk_from_cell_state,
     build_geometry_chunk_state,
     geometry_add_volume,
+    geometry_apply_micro_chunk_edit,
     geometry_cell_state_rows_by_key,
     geometry_chunk_state_rows_by_id,
     geometry_coupling_effects_for_cell_state,
@@ -742,7 +744,7 @@ from src.process.software import (
     normalize_software_pipeline_profile_rows,
 )
 from src.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
-from src.meta.provenance import normalize_compaction_marker_rows
+from src.meta.provenance import build_compaction_marker, normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -4165,6 +4167,170 @@ def _apply_geometry_coupling_updates(
             {
                 "touched_hazard_ids": _sorted_tokens(touched_hazard_ids),
                 "touched_flow_adjustment_ids": _sorted_tokens(touched_flow_ids),
+            }
+        ),
+    }
+
+
+def _apply_geometry_micro_chunk_hooks(
+    *,
+    state: dict,
+    enabled: bool,
+    edit_kind: str,
+    target_cell_keys: object,
+    geometry_result: Mapping[str, object],
+    prior_geometry_cell_states: object,
+    geometry_chunk_states: object,
+    geometry_edit_policy_id: str,
+    geometry_edit_policy_registry: Mapping[str, object] | None,
+    material_id: str,
+    current_tick: int,
+    process_id: str,
+    material_registry: Mapping[str, object] | None = None,
+) -> dict:
+    def _cell_key_tuple(value: object) -> tuple:
+        payload = dict(value or {}) if isinstance(value, Mapping) else {}
+        return (
+            str(payload.get("chart_id", "")).strip(),
+            tuple(int(_as_int(item, 0)) for item in list(payload.get("index_tuple") or [])),
+            int(max(0, _as_int(payload.get("refinement_level", 0), 0))),
+            str(payload.get("partition_profile_id", "")).strip(),
+            str(payload.get("topology_profile_id", "")).strip(),
+        )
+
+    if not bool(enabled):
+        return {
+            "result": "complete",
+            "geometry_cell_states": normalize_geometry_cell_state_rows(geometry_result.get("geometry_cell_states"), material_registry=material_registry),
+            "geometry_chunk_states": normalize_geometry_chunk_state_rows(geometry_chunk_states),
+            "micro_chunk_count": 0,
+            "compaction_marker_id": None,
+            "deterministic_fingerprint": canonical_sha256({"enabled": False}),
+        }
+    policy_row = dict(geometry_edit_policy_rows_by_id(geometry_edit_policy_registry).get(str(geometry_edit_policy_id or "").strip()) or {})
+    policy_ext = dict(policy_row.get("extensions") or {}) if isinstance(policy_row.get("extensions"), Mapping) else {}
+    if not bool(policy_ext.get("allow_micro_chunks", False)):
+        return {
+            "result": "refused",
+            "message": "geometry edit policy does not allow ROI micro chunks",
+            "details": {"geometry_edit_policy_id": geometry_edit_policy_id},
+            "deterministic_fingerprint": canonical_sha256({"geometry_edit_policy_id": geometry_edit_policy_id, "enabled": True}),
+        }
+    micro_budget = int(max(0, _as_int(policy_ext.get("micro_chunk_budget", 0), 0)))
+    sorted_targets = [dict(row) for row in list(target_cell_keys or []) if isinstance(row, Mapping)]
+    if micro_budget > 0 and len(sorted_targets) > micro_budget:
+        return {
+            "result": "refused",
+            "message": "ROI micro chunk budget exceeded",
+            "details": {"geometry_edit_policy_id": geometry_edit_policy_id, "micro_chunk_budget": micro_budget},
+            "deterministic_fingerprint": canonical_sha256({"geometry_edit_policy_id": geometry_edit_policy_id, "micro_chunk_budget": micro_budget}),
+        }
+    prior_by_key = dict(
+        (
+            _cell_key_tuple(row.get("geo_cell_key")),
+            dict(row),
+        )
+        for row in normalize_geometry_cell_state_rows(prior_geometry_cell_states, material_registry=material_registry)
+        if isinstance(row, Mapping) and dict(row.get("geo_cell_key") or {})
+    )
+    current_by_key = dict(
+        (
+            _cell_key_tuple(row.get("geo_cell_key")),
+            dict(row),
+        )
+        for row in normalize_geometry_cell_state_rows(geometry_result.get("geometry_cell_states"), material_registry=material_registry)
+        if isinstance(row, Mapping) and dict(row.get("geo_cell_key") or {})
+    )
+    chunk_rows = normalize_geometry_chunk_state_rows(geometry_chunk_states)
+    chunk_by_parent_hash = dict(
+        (
+            _cell_key_tuple(row.get("parent_cell_key")),
+            dict(row),
+        )
+        for row in chunk_rows
+        if isinstance(row, Mapping) and dict(row.get("parent_cell_key") or {})
+    )
+    updated_parents: List[str] = []
+    for target_cell_key in sorted_targets:
+        cell_hash = _cell_key_tuple(target_cell_key)
+        prior_row = dict(prior_by_key.get(cell_hash) or current_by_key.get(cell_hash) or {})
+        current_row = dict(current_by_key.get(cell_hash) or prior_row)
+        if not prior_row and not current_row:
+            continue
+        delta = int(
+            max(
+                0,
+                abs(
+                    _as_int(current_row.get("occupancy_fraction", 0), 0)
+                    - _as_int(prior_row.get("occupancy_fraction", current_row.get("occupancy_fraction", 0)), 0)
+                ),
+            )
+        )
+        if delta <= 0 and edit_kind != "replace":
+            continue
+        existing_chunk = dict(chunk_by_parent_hash.get(cell_hash) or {})
+        if not existing_chunk:
+            seed_row = prior_row or current_row
+            existing_chunk = build_micro_geometry_chunk_from_cell_state(
+                seed_row,
+                subcell_count=int(max(1, _as_int(policy_ext.get("micro_subcell_count", 8), 8))),
+                extensions={"geometry_edit_policy_id": geometry_edit_policy_id, "source_process_id": process_id},
+            )
+        micro_result = geometry_apply_micro_chunk_edit(
+            existing_chunk,
+            edit_kind=edit_kind,
+            volume_amount=max(1, delta) if edit_kind == "replace" else delta,
+            material_id=material_id,
+            extensions={"source_process_id": process_id, "geometry_edit_policy_id": geometry_edit_policy_id},
+            material_registry=material_registry,
+        )
+        updated_chunk = dict(micro_result.get("chunk_state") or {})
+        aggregated_row = dict(micro_result.get("aggregated_cell_state") or {})
+        if updated_chunk:
+            chunk_by_parent_hash[cell_hash] = updated_chunk
+        if aggregated_row:
+            current_by_key[cell_hash] = aggregated_row
+            updated_parents.append(canonical_sha256(dict(aggregated_row.get("geo_cell_key") or {})))
+    updated_geometry_cell_states = [dict(current_by_key[key]) for key in sorted(current_by_key.keys())]
+    updated_geometry_chunk_states = [dict(chunk_by_parent_hash[key]) for key in sorted(chunk_by_parent_hash.keys())]
+    marker = build_compaction_marker(
+        marker_id="compaction.marker.geo.micro.{}".format(
+            canonical_sha256(
+                {
+                    "process_id": str(process_id or "").strip(),
+                    "current_tick": int(max(0, _as_int(current_tick, 0))),
+                    "updated_parent_hashes": _sorted_tokens(updated_parents),
+                }
+            )[:16]
+        ),
+        shard_id=(
+            str((dict(state.get("shard_clock") or {}) if isinstance(state.get("shard_clock"), Mapping) else {}).get("shard_id", "shard.unknown")).strip()
+            or "shard.unknown"
+        ),
+        start_tick=int(max(0, _as_int(current_tick, 0))),
+        end_tick=int(max(0, _as_int(current_tick, 0))),
+        pre_compaction_hash=canonical_sha256(normalize_geometry_chunk_state_rows(geometry_chunk_states)),
+        post_compaction_hash=canonical_sha256(updated_geometry_chunk_states),
+        extensions={
+            "source_process_id": str(process_id or "").strip() or "process.unknown",
+            "geometry_edit_policy_id": geometry_edit_policy_id,
+            "updated_parent_hashes": _sorted_tokens(updated_parents),
+            "derived": True,
+        },
+    )
+    state["compaction_markers"] = normalize_compaction_marker_rows(
+        list(state.get("compaction_markers") or []) + [marker]
+    )
+    return {
+        "result": "complete",
+        "geometry_cell_states": updated_geometry_cell_states,
+        "geometry_chunk_states": updated_geometry_chunk_states,
+        "micro_chunk_count": int(len(set(updated_parents))),
+        "compaction_marker_id": str(marker.get("marker_id", "")).strip(),
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "updated_parent_hashes": _sorted_tokens(updated_parents),
+                "compaction_marker_id": str(marker.get("marker_id", "")).strip(),
             }
         ),
     }
@@ -43983,9 +44149,35 @@ def execute_intent(
             edit_id=str(dict(geometry_result.get("geometry_edit_event") or {}).get("edit_id", "")).strip(),
         )
         produced_batch_ids = _sorted_tokens([row.get("batch_id") for row in produced_rows])
-        geometry_cell_states = normalize_geometry_cell_state_rows(
-            geometry_result.get("geometry_cell_states"),
+        micro_chunk_result = _apply_geometry_micro_chunk_hooks(
+            state=state,
+            enabled=bool(inputs.get("roi_micro", False)),
+            edit_kind=edit_kind,
+            target_cell_keys=target_cell_keys,
+            geometry_result=geometry_result,
+            prior_geometry_cell_states=prior_geometry_cell_states,
+            geometry_chunk_states=geometry_chunk_states,
+            geometry_edit_policy_id=geometry_edit_policy_id,
+            geometry_edit_policy_registry=geometry_edit_policy_registry,
+            material_id=material_id,
+            current_tick=int(current_tick),
+            process_id=process_id,
             material_registry=material_class_registry,
+        )
+        if str(micro_chunk_result.get("result", "")) != "complete":
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                str(micro_chunk_result.get("message", "geometry ROI micro edit refused")),
+                "Reduce ROI micro scope or use a policy that allows micro chunks.",
+                dict(micro_chunk_result.get("details") or {}),
+                "$.intent.inputs.roi_micro",
+            )
+        geometry_cell_states = normalize_geometry_cell_state_rows(
+            micro_chunk_result.get("geometry_cell_states", geometry_result.get("geometry_cell_states")),
+            material_registry=material_class_registry,
+        )
+        geometry_chunk_states = normalize_geometry_chunk_state_rows(
+            micro_chunk_result.get("geometry_chunk_states", geometry_chunk_states)
         )
         _persist_geometry_state(
             state,
@@ -44025,6 +44217,12 @@ def execute_intent(
             "geometry_edit_event_hash_chain": str(state.get("geometry_edit_event_hash_chain", "")).strip(),
             "coupling_hazard_count": int(max(0, _as_int(coupling_summary.get("hazard_count", 0), 0))),
             "coupling_flow_adjustment_count": int(max(0, _as_int(coupling_summary.get("flow_adjustment_count", 0), 0))),
+            "micro_chunk_count": int(max(0, _as_int(micro_chunk_result.get("micro_chunk_count", 0), 0))),
+            "compaction_marker_id": (
+                None
+                if micro_chunk_result.get("compaction_marker_id") is None
+                else str(micro_chunk_result.get("compaction_marker_id", "")).strip() or None
+            ),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.mobility_network_create_from_formalization":
