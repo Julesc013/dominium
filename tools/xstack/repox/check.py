@@ -24705,6 +24705,264 @@ def _append_process_constitution_invariant_findings(
             )
             break
 
+def _append_logic_fault_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    process_rule_id = "INV-FAULTS-PROCESS-ONLY"
+    noise_rule_id = "INV-NO-UNDECLARED-NOISE"
+    security_rule_id = "INV-SECURITY-POLICY-ENFORCED"
+
+    required_files = (
+        ("docs/logic/FAULT_NOISE_SECURITY_MODEL.md", process_rule_id),
+        ("schema/logic/logic_fault_state.schema", process_rule_id),
+        ("schema/logic/noise_policy.schema", noise_rule_id),
+        ("schema/logic/security_policy.schema", security_rule_id),
+        ("data/registries/logic_fault_kind_registry.json", process_rule_id),
+        ("data/registries/logic_noise_policy_registry.json", noise_rule_id),
+        ("data/registries/logic_security_policy_registry.json", security_rule_id),
+        ("src/logic/fault/fault_engine.py", process_rule_id),
+        ("src/logic/noise/noise_engine.py", noise_rule_id),
+        ("tools/logic/tool_replay_fault_window.py", security_rule_id),
+    )
+    for rel_path, rule_id in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message="LOGIC-8 fault/noise/security enforcement requires this artifact",
+                rule_id=rule_id,
+            )
+        )
+
+    doctrine_rel = "docs/logic/FAULT_NOISE_SECURITY_MODEL.md"
+    doctrine_text = _file_text(repo_root, doctrine_rel).lower()
+    for token, rule_id, message in (
+        ("fault.open", process_rule_id, "fault doctrine must define open-circuit behavior"),
+        ("fault.short", process_rule_id, "fault doctrine must define short-circuit behavior"),
+        ("fault.stuck_at_0", process_rule_id, "fault doctrine must define stuck-at overrides"),
+        ("fault.threshold_drift", noise_rule_id, "fault doctrine must define threshold drift behavior"),
+        ("fault.bounce", process_rule_id, "fault doctrine must define ROI-only bounce behavior"),
+        ("deterministic quantization", noise_rule_id, "noise doctrine must require deterministic quantization by default"),
+        ("named rng", noise_rule_id, "noise doctrine must describe named RNG gating"),
+        ("field.magnetic_flux_stub", noise_rule_id, "fault doctrine must describe magnetic EMI stubs"),
+        ("field.radiation_intensity", noise_rule_id, "fault doctrine must describe radiation EMI stubs"),
+        ("credential verification", security_rule_id, "security doctrine must require credential verification hooks"),
+        ("explain.logic_spoof_detected", security_rule_id, "security doctrine must declare spoof-detection explain artifacts"),
+    ):
+        if token in doctrine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=doctrine_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    process_rel = "data/registries/process_registry.json"
+    process_text = _file_text(repo_root, process_rel)
+    for token in ('"process.logic_fault_set"', '"process.logic_fault_clear"'):
+        if token in process_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=process_rel,
+                line_number=1,
+                snippet=token.strip('"'),
+                message="logic fault mutation must be exposed only through canonical processes",
+                rule_id=process_rule_id,
+            )
+        )
+
+    explain_rel = "data/registries/explain_contract_registry.json"
+    explain_text = _file_text(repo_root, explain_rel)
+    for token, rule_id in (
+        ("explain.logic_fault_open", process_rule_id),
+        ("explain.logic_fault_short", process_rule_id),
+        ("explain.logic_stuck_at", process_rule_id),
+        ("explain.logic_noise_effect", noise_rule_id),
+        ("explain.logic_spoof_detected", security_rule_id),
+    ):
+        if token in explain_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=explain_rel,
+                line_number=1,
+                snippet=token,
+                message="logic fault/noise/security explain contracts must be registered",
+                rule_id=rule_id,
+            )
+        )
+
+    surface_rel = "data/registries/instrumentation_surface_registry.json"
+    surface_text = _file_text(repo_root, surface_rel)
+    for token, rule_id, message in (
+        ("measure.logic.fault_state", process_rule_id, "logic fault state must be observable only through instrumentation"),
+        ("forensics.logic.fault_open", process_rule_id, "logic fault forensics surface must be registered"),
+        ("forensics.logic.noise_effect", noise_rule_id, "logic noise forensics surface must be registered"),
+        ("forensics.logic.spoof_detected", security_rule_id, "logic security forensics surface must be registered"),
+    ):
+        if token in surface_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=surface_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    fault_rel = "src/logic/fault/fault_engine.py"
+    fault_text = _file_text(repo_root, fault_rel)
+    for token, message in (
+        ("PROCESS_LOGIC_FAULT_SET", "fault engine must declare the canonical fault-set process"),
+        ("PROCESS_LOGIC_FAULT_CLEAR", "fault engine must declare the canonical fault-clear process"),
+        ("process_logic_fault_set(", "fault engine must expose process-only fault injection"),
+        ("process_logic_fault_clear(", "fault engine must expose process-only fault clearing"),
+        ("select_active_logic_fault_rows(", "fault engine must classify active faults deterministically"),
+        ("apply_faults_to_signal_value(", "fault engine must modify SENSE values through the canonical helper"),
+    ):
+        if token in fault_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=fault_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=process_rule_id,
+            )
+        )
+
+    noise_rel = "src/logic/noise/noise_engine.py"
+    noise_text = _file_text(repo_root, noise_rel)
+    for token, message in (
+        ("kind == \"quantize\"", "noise engine must implement deterministic quantization"),
+        ("kind == \"named_rng\"", "noise engine must gate named-RNG noise explicitly"),
+        ("rng_stream_name", "named-RNG noise must declare a stream name"),
+    ):
+        if token in noise_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=noise_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=noise_rule_id,
+            )
+        )
+
+    sense_rel = "src/logic/eval/sense_engine.py"
+    sense_text = _file_text(repo_root, sense_rel)
+    for token, rule_id, message in (
+        ("apply_faults_to_signal_value(", process_rule_id, "LOGIC SENSE must apply fault overlays through the fault engine"),
+        ("apply_noise_policy_to_value(", noise_rule_id, "LOGIC SENSE must apply declared noise policies explicitly"),
+        ("_security_gate(", security_rule_id, "LOGIC SENSE must enforce security policy before propagation"),
+        ("build_logic_security_fail_row(", security_rule_id, "security failures must be recorded deterministically"),
+        ("explain.logic_noise_effect", noise_rule_id, "noise effects must emit explain artifacts when they affect behavior"),
+        ("explain.logic_spoof_detected", security_rule_id, "security policy failures must emit spoof-detection explains"),
+    ):
+        if token in sense_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=sense_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    runtime_rel = "tools/xstack/sessionx/process_runtime.py"
+    runtime_text = _file_text(repo_root, runtime_rel)
+    for token, rule_id, message in (
+        ('"process.logic_fault_set"', process_rule_id, "session runtime must dispatch process.logic_fault_set"),
+        ('"process.logic_fault_clear"', process_rule_id, "session runtime must dispatch process.logic_fault_clear"),
+        ("process_logic_fault_set(", process_rule_id, "session runtime must use the canonical fault-set process"),
+        ("process_logic_fault_clear(", process_rule_id, "session runtime must use the canonical fault-clear process"),
+        ("logic_noise_decision_hash_chain", noise_rule_id, "session runtime must refresh logic noise proof chains"),
+        ("logic_security_fail_hash_chain", security_rule_id, "session runtime must refresh logic security proof chains"),
+    ):
+        if token in runtime_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=runtime_rel,
+                line_number=1,
+                snippet=token.strip('"'),
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    replay_rel = "tools/logic/tool_replay_fault_window.py"
+    replay_text = _file_text(repo_root, replay_rel)
+    for token, rule_id, message in (
+        ("logic_fault_state_hash_chain", process_rule_id, "fault replay must include fault proof surfaces"),
+        ("logic_noise_decision_hash_chain", noise_rule_id, "fault replay must include noise proof surfaces"),
+        ("logic_security_fail_hash_chain", security_rule_id, "fault replay must include security proof surfaces"),
+    ):
+        if token in replay_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=replay_rel,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    forbidden_fault_patterns = (
+        re.compile(r'\["logic_fault_state_rows"\]\s*=', re.IGNORECASE),
+        re.compile(r"\blogic_fault_state_hash_chain\b\s*=", re.IGNORECASE),
+    )
+    for rel_path in (
+        "src/logic/fault/fault_engine.py",
+        "src/logic/eval/sense_engine.py",
+        "src/logic/eval/logic_eval_engine.py",
+    ):
+        text = _file_text(repo_root, rel_path)
+        for pattern in forbidden_fault_patterns:
+            match = pattern.search(text)
+            if not match:
+                continue
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=rel_path,
+                    line_number=1,
+                    snippet=match.group(0),
+                    message="logic fault state mutation must remain in canonical process runtime paths",
+                    rule_id=process_rule_id,
+                )
+            )
+            break
+
 
 def _append_chem_degradation_invariant_findings(
     findings: List[Dict[str, object]],
@@ -26447,6 +26705,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_logic_debug_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_logic_fault_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -346,6 +346,9 @@ from analyzers import e319_silent_compiled_invalidation_smell
 from analyzers import e320_missing_logic_equivalence_proof_smell
 from analyzers import e321_truth_leak_via_debug_smell
 from analyzers import e322_unbounded_trace_smell
+from analyzers import e323_random_failure_smell
+from analyzers import e324_silent_noise_smell
+from analyzers import e325_security_bypass_smell
 
 
 ANALYZERS = (
@@ -695,6 +698,9 @@ ANALYZERS = (
     e320_missing_logic_equivalence_proof_smell,
     e321_truth_leak_via_debug_smell,
     e322_unbounded_trace_smell,
+    e323_random_failure_smell,
+    e324_silent_noise_smell,
+    e325_security_bypass_smell,
 )
 
 
