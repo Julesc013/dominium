@@ -367,6 +367,8 @@ from analyzers import e340_raw_field_grid_smell
 from analyzers import e341_field_sample_bypass_smell
 from analyzers import e342_map_truth_leak_smell
 from analyzers import e343_uninstrumented_map_access_smell
+from analyzers import e344_nondeterministic_path_smell
+from analyzers import e345_adhoc_heuristic_smell
 
 
 ANALYZERS = (
@@ -737,6 +739,8 @@ ANALYZERS = (
     e341_field_sample_bypass_smell,
     e342_map_truth_leak_smell,
     e343_uninstrumented_map_access_smell,
+    e344_nondeterministic_path_smell,
+    e345_adhoc_heuristic_smell,
 )
 
 

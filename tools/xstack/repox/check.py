@@ -17492,6 +17492,97 @@ def _append_geo_projection_lens_invariant_findings(
         )
 
 
+def _append_geo_pathing_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    path_rel = "src/geo/path/path_engine.py"
+    shard_rel = "src/geo/path/shard_route_planner.py"
+    proof_tool_rel = "tools/geo/tool_replay_path_request.py"
+
+    path_text = _file_text(repo_root, path_rel)
+    for required_token, rule_id, message in (
+        (
+            "geo_path_query(",
+            "INV-PATHING-DETERMINISTIC",
+            "GEO path queries must route through the canonical deterministic GEO-6 path engine",
+        ),
+        (
+            "_best_open_candidate(",
+            "INV-PATHING-DETERMINISTIC",
+            "GEO path tie-breaking must remain explicit and deterministic",
+        ),
+        (
+            "max_expansions",
+            "INV-PATHING-DETERMINISTIC",
+            "GEO path search must remain explicitly bounded",
+        ),
+        (
+            "geo_neighbors(",
+            "INV-NO-ADHOC-NEIGHBOR-ENUMERATION",
+            "GEO path expansion must consume canonical GEO neighbors rather than ad hoc adjacency scans",
+        ),
+        (
+            "_heuristic_cost(",
+            "INV-PATHING-DETERMINISTIC",
+            "GEO path heuristics must remain centralized and deterministic",
+        ),
+    ):
+        if required_token in path_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=path_rel,
+                line_number=1,
+                snippet=required_token,
+                message=message,
+                rule_id=rule_id,
+            )
+        )
+
+    shard_text = _file_text(repo_root, shard_rel)
+    for required_token, rule_id in (
+        ("build_shard_route_plan(", "INV-PATHING-DETERMINISTIC"),
+        ("resolve_cell_shard_id(", "INV-PATHING-DETERMINISTIC"),
+        ("boundary_hops", "INV-PATHING-DETERMINISTIC"),
+    ):
+        if required_token in shard_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=shard_rel,
+                line_number=1,
+                snippet=required_token,
+                message="cross-shard routing must remain staged through deterministic shard route planning",
+                rule_id=rule_id,
+            )
+        )
+
+    proof_tool_text = _file_text(repo_root, proof_tool_rel)
+    for required_token, rule_id in (
+        ("verify_path_request_replay(", "INV-PATHING-DETERMINISTIC"),
+        ("path_result_hash_chain", "INV-PATHING-DETERMINISTIC"),
+        ("traversal_policy_registry_hash", "INV-PATHING-DETERMINISTIC"),
+        ("stable_across_repeated_runs", "INV-PATHING-DETERMINISTIC"),
+    ):
+        if required_token in proof_tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=proof_tool_rel,
+                line_number=1,
+                snippet=required_token,
+                message="GEO path replay tooling must verify deterministic path hash surfaces and traversal policy hashes",
+                rule_id=rule_id,
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -27719,6 +27810,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_field_binding_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_pathing_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

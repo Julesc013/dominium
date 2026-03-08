@@ -137,11 +137,14 @@ def verify_path_request_replay() -> dict:
     first = _run_once()
     second = _run_once()
     stable = first == second
+    proof_surface = dict(first.get("proof_surface") or {})
     report = {
         "result": "complete" if stable else "violation",
         "observed": dict(first.get("observed") or {}) if isinstance(first.get("observed"), dict) else list(first.get("observed") or []),
-        "proof_surface": dict(first.get("proof_surface") or {}),
+        "proof_surface": proof_surface,
         "traversal_policy_registry_hash": str(first.get("traversal_policy_registry_hash", "")),
+        "path_request_hash_chain": str(proof_surface.get("path_request_hash_chain", "")),
+        "path_result_hash_chain": str(proof_surface.get("path_result_hash_chain", "")),
         "run_hash": str(first.get("run_hash", "")),
         "stable_across_repeated_runs": bool(stable),
         "deterministic_fingerprint": "",
