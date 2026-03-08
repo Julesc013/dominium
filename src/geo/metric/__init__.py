@@ -5,9 +5,11 @@ from .metric_engine import (
     geo_distance,
     geo_geodesic,
 )
+from .neighborhood_engine import geo_neighbors
 
 __all__ = [
     "REFUSAL_GEO_METRIC_INVALID",
     "geo_distance",
     "geo_geodesic",
+    "geo_neighbors",
 ]

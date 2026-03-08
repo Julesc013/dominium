@@ -24,12 +24,11 @@ from .index import (
 from .kernel import (
     REFUSAL_GEO_INVALID,
     REFUSAL_GEO_PROFILE_MISSING,
-    geo_neighbors,
     geo_partition_cell_key,
     geo_project,
     geo_transform,
 )
-from .metric import REFUSAL_GEO_METRIC_INVALID, geo_distance, geo_geodesic
+from .metric import REFUSAL_GEO_METRIC_INVALID, geo_distance, geo_geodesic, geo_neighbors
 from .profile_binding import REFUSAL_GEO_DIMENSION_CHANGE, resolve_geo_profile_set
 from .render import (
     REFUSAL_GEO_RENDER_REBASE_INVALID,

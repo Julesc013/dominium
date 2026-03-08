@@ -15,6 +15,7 @@
         },
         "deterministic_fingerprint": "",
         "extensions": {
+          "max_neighbors": 4096,
           "supports_dimension_param": true,
           "source": "GEO0-3"
         }
@@ -29,6 +30,7 @@
         },
         "deterministic_fingerprint": "",
         "extensions": {
+          "max_neighbors": 256,
           "source": "GEO0-3"
         }
       },
@@ -42,6 +44,7 @@
         },
         "deterministic_fingerprint": "",
         "extensions": {
+          "max_neighbors": 128,
           "source": "GEO0-3"
         }
       },
@@ -55,6 +58,7 @@
         },
         "deterministic_fingerprint": "",
         "extensions": {
+          "max_neighbors": 128,
           "source": "GEO0-3"
         }
       }
