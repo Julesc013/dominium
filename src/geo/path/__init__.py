@@ -10,6 +10,7 @@ from .path_engine import (
     path_request_hash,
     traversal_policy_registry_hash,
 )
+from .shard_route_planner import build_shard_route_plan, resolve_cell_shard_id
 
 __all__ = [
     "REFUSAL_GEO_PATH_BOUNDED",
@@ -20,4 +21,6 @@ __all__ = [
     "normalize_path_request",
     "path_request_hash",
     "traversal_policy_registry_hash",
+    "build_shard_route_plan",
+    "resolve_cell_shard_id",
 ]

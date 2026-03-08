@@ -26,6 +26,7 @@ from src.geo.kernel.geo_kernel import (
 )
 from src.geo.metric.metric_engine import geo_distance
 from src.geo.metric.neighborhood_engine import geo_neighbors
+from src.geo.path.shard_route_planner import build_shard_route_plan
 
 
 REFUSAL_GEO_PATH_INVALID = "refusal.geo.path_invalid"
@@ -739,6 +740,7 @@ def geo_path_query(
     graph_version: str = "",
     field_cost_data: Mapping[str, object] | None = None,
     infrastructure_overlay: Mapping[str, object] | None = None,
+    shard_assignment: Mapping[str, object] | None = None,
 ) -> dict:
     del metric_registry_payload
     try:
@@ -824,6 +826,11 @@ def geo_path_query(
     goal_hash = _geo_cell_key_hash(goal_cell)
     node_by_hash = {start_hash: dict(start_cell), goal_hash: dict(goal_cell)}
     if start_hash == goal_hash:
+        shard_route_plan = build_shard_route_plan(
+            request_id=str(request_row.get("request_id", "")),
+            path_cells=[start_cell],
+            shard_assignment=shard_assignment,
+        )
         result_row = _path_result_row(
             request_row=request_row,
             path_cells=[start_cell],
@@ -839,6 +846,7 @@ def geo_path_query(
                 "traversal_policy_id": str(policy_row.get("traversal_policy_id", "")),
                 "tier_mode": str(request_row.get("tier_mode", "")),
                 "traversal_policy_registry_hash": traversal_policy_registry_hash(traversal_policy_registry_payload),
+                "shard_route_plan": shard_route_plan,
             },
         )
         outputs = {"path_result_hash": canonical_sha256(result_row), "goal_reached": True, "expanded_count": 0}
@@ -957,6 +965,11 @@ def geo_path_query(
     if goal_reached:
         path_cells = _reconstruct_path(came_from, node_by_hash, goal_hash)
         total_cost = int(g_score.get(goal_hash, 0))
+        shard_route_plan = build_shard_route_plan(
+            request_id=str(request_row.get("request_id", "")),
+            path_cells=path_cells,
+            shard_assignment=shard_assignment,
+        )
         result_row = _path_result_row(
             request_row=request_row,
             path_cells=path_cells,
@@ -972,6 +985,7 @@ def geo_path_query(
                 "traversal_policy_id": str(policy_row.get("traversal_policy_id", "")),
                 "tier_mode": str(request_row.get("tier_mode", "")),
                 "traversal_policy_registry_hash": traversal_policy_registry_hash(traversal_policy_registry_payload),
+                "shard_route_plan": shard_route_plan,
             },
         )
         outputs = {"path_result_hash": canonical_sha256(result_row), "goal_reached": True, "expanded_count": expansions}
@@ -989,6 +1003,11 @@ def geo_path_query(
 
     if expansions > max_expansions and partial_policy == "partial" and best_candidate_hash:
         partial_cells = _reconstruct_path(came_from, node_by_hash, best_candidate_hash)
+        shard_route_plan = build_shard_route_plan(
+            request_id=str(request_row.get("request_id", "")),
+            path_cells=partial_cells,
+            shard_assignment=shard_assignment,
+        )
         result_row = _path_result_row(
             request_row=request_row,
             path_cells=partial_cells,
@@ -1005,6 +1024,7 @@ def geo_path_query(
                 "traversal_policy_id": str(policy_row.get("traversal_policy_id", "")),
                 "tier_mode": str(request_row.get("tier_mode", "")),
                 "traversal_policy_registry_hash": traversal_policy_registry_hash(traversal_policy_registry_payload),
+                "shard_route_plan": shard_route_plan,
             },
         )
         outputs = {"path_result_hash": canonical_sha256(result_row), "goal_reached": False, "expanded_count": expansions}
