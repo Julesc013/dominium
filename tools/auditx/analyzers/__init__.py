@@ -357,6 +357,12 @@ from analyzers import e330_silent_logic_throttle_smell
 from analyzers import e331_raw_xyz_distance_smell
 from analyzers import e332_hardcoded_dimension_smell
 from analyzers import e333_projection_truth_leak_smell
+from analyzers import e334_adhoc_spatial_key_smell
+from analyzers import e335_nondeterministic_local_index_smell
+from analyzers import e336_raw_global_coord_smell
+from analyzers import e337_render_writes_truth_smell
+from analyzers import e338_raw_sqrt_usage_smell
+from analyzers import e339_hardcoded_distance_smell
 
 
 ANALYZERS = (
@@ -717,6 +723,12 @@ ANALYZERS = (
     e331_raw_xyz_distance_smell,
     e332_hardcoded_dimension_smell,
     e333_projection_truth_leak_smell,
+    e334_adhoc_spatial_key_smell,
+    e335_nondeterministic_local_index_smell,
+    e336_raw_global_coord_smell,
+    e337_render_writes_truth_smell,
+    e338_raw_sqrt_usage_smell,
+    e339_hardcoded_distance_smell,
 )
 
 

@@ -17113,6 +17113,174 @@ def _append_geo_frame_invariant_findings(
         )
 
 
+def _append_geo_metric_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _strict_only_severity(profile)
+    metric_registry_rel = "data/registries/metric_profile_registry.json"
+    metric_engine_rel = "src/geo/metric/metric_engine.py"
+    neighborhood_rel = "src/geo/metric/neighborhood_engine.py"
+    field_rel = "src/fields/field_engine.py"
+    pollution_rel = "src/pollution/dispersion_engine.py"
+    mobility_geometry_rel = "src/mobility/geometry/geometry_engine.py"
+    mobility_micro_rel = "src/mobility/micro/constrained_motion_solver.py"
+    roi_rel = "src/system/roi/system_roi_scheduler.py"
+    tool_rel = "tools/geo/tool_verify_metric_stability.py"
+
+    metric_registry_text = _file_text(repo_root, metric_registry_rel)
+    for required_token in ('"metric_policy_id"', '"geodesic_approx_policy_id"'):
+        if required_token in metric_registry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=metric_registry_rel,
+                line_number=1,
+                snippet=required_token,
+                message="metric profiles must declare metric and geodesic policy bindings",
+                rule_id="INV-METRIC-PROFILE-DECLARED",
+            )
+        )
+
+    metric_engine_text = _file_text(repo_root, metric_engine_rel)
+    for required_token in ("geo_distance(", "geo_geodesic(", "metric_query_proof_surface("):
+        if required_token in metric_engine_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=metric_engine_rel,
+                line_number=1,
+                snippet=required_token,
+                message="metric engine must expose deterministic distance, geodesic, and proof-surface APIs",
+                rule_id="INV-METRIC-PROFILE-DECLARED",
+            )
+        )
+
+    neighborhood_text = _file_text(repo_root, neighborhood_rel)
+    if "geo_neighbors(" not in neighborhood_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=neighborhood_rel,
+                line_number=1,
+                snippet="geo_neighbors(",
+                message="metric neighborhood engine must expose deterministic GEO neighbor enumeration",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+
+    field_text = _file_text(repo_root, field_rel)
+    for required_token in ("geo_field_distance_mm(", "geo_field_sample_cell_key(", "geo_field_sample_position("):
+        if required_token in field_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=field_rel,
+                line_number=1,
+                snippet=required_token,
+                message="FIELD adapters must route sampling and distance through GEO metric/frame APIs",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+
+    pollution_text = _file_text(repo_root, pollution_rel)
+    for required_token in ("geo_neighbors(", "_neighbor_ids_for_cell("):
+        if required_token in pollution_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=pollution_rel,
+                line_number=1,
+                snippet=required_token,
+                message="POLL dispersion must route neighborhood iteration through GEO metric APIs",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+
+    mobility_geometry_text = _file_text(repo_root, mobility_geometry_rel)
+    if "geo_distance(" not in mobility_geometry_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=mobility_geometry_rel,
+                line_number=1,
+                snippet="geo_distance(",
+                message="MOB geometry metrics must route segment distance through GEO distance queries",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+    for forbidden_token in ("math.sqrt(", "math.isqrt("):
+        if forbidden_token not in mobility_geometry_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=mobility_geometry_rel,
+                line_number=1,
+                snippet=forbidden_token,
+                message="MOB geometry must not compute raw Euclidean sqrt distance outside GEO metric APIs",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+
+    mobility_micro_text = _file_text(repo_root, mobility_micro_rel)
+    if "geo_distance(" not in mobility_micro_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=mobility_micro_rel,
+                line_number=1,
+                snippet="geo_distance(",
+                message="micro motion geometry length queries must route through GEO distance APIs",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+    if "math.sqrt(" in mobility_micro_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=mobility_micro_rel,
+                line_number=1,
+                snippet="math.sqrt(",
+                message="micro motion length helpers must not compute raw Euclidean sqrt distance outside GEO metric APIs",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+
+    roi_text = _file_text(repo_root, roi_rel)
+    if "system_roi_distance_query(" not in roi_text or "roi_distance_mm(" not in roi_text:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=roi_rel,
+                line_number=1,
+                snippet="system_roi_distance_query(",
+                message="ROI scheduling must expose GEO-routed distance helpers for radius gating",
+                rule_id="INV-NO-RAW-DISTANCE-CALCULATION",
+            )
+        )
+
+    tool_text = _file_text(repo_root, tool_rel)
+    for required_token in ("geo_distance(", "geo_geodesic(", "geo_neighbors(", "metric_query_proof_surface("):
+        if required_token in tool_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=tool_rel,
+                line_number=1,
+                snippet=required_token,
+                message="metric stability proof tool must exercise canonical GEO metric and neighborhood queries",
+                rule_id="INV-METRIC-PROFILE-DECLARED",
+            )
+        )
+
+
 def _append_mobility_invariant_findings(
     findings: List[Dict[str, object]],
     repo_root: str,
@@ -27330,6 +27498,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_geo_frame_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_geo_metric_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
