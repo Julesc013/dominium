@@ -24,12 +24,12 @@ from .index import (
 from .kernel import (
     REFUSAL_GEO_INVALID,
     REFUSAL_GEO_PROFILE_MISSING,
-    geo_distance,
     geo_neighbors,
     geo_partition_cell_key,
     geo_project,
     geo_transform,
 )
+from .metric import REFUSAL_GEO_METRIC_INVALID, geo_distance, geo_geodesic
 from .profile_binding import REFUSAL_GEO_DIMENSION_CHANGE, resolve_geo_profile_set
 from .render import (
     REFUSAL_GEO_RENDER_REBASE_INVALID,
@@ -42,6 +42,7 @@ __all__ = [
     "REFUSAL_GEO_CELL_KEY_INVALID",
     "REFUSAL_GEO_FRAME_INVALID",
     "REFUSAL_GEO_INVALID",
+    "REFUSAL_GEO_METRIC_INVALID",
     "REFUSAL_GEO_OBJECT_KIND_MISSING",
     "REFUSAL_GEO_POSITION_INVALID",
     "REFUSAL_GEO_PROFILE_MISSING",
@@ -59,6 +60,7 @@ __all__ = [
     "geo_cell_key_neighbors",
     "geo_neighbors",
     "geo_distance",
+    "geo_geodesic",
     "geo_object_id",
     "geo_transform",
     "geo_project",
