@@ -19,6 +19,13 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
 DEFAULT_REPORT_REL = "build/geo/geo10_stress_report.json"
+_DEFAULT_GEO10_DEGRADATION_ORDER = [
+    "reduce_projection_resolution",
+    "reduce_neighbor_radius_noncritical",
+    "reduce_path_expansion_cap",
+    "defer_derived_view_generation",
+    "preserve_canonical_geometry_and_overlay",
+]
 
 
 def _load_json(path: str) -> dict:
@@ -29,11 +36,18 @@ def _load_json(path: str) -> dict:
     return dict(payload) if isinstance(payload, Mapping) else {}
 
 
+def _with_default_degradation_order(payload: Mapping[str, object] | None) -> dict:
+    result = dict(payload or {}) if isinstance(payload, Mapping) else {}
+    if not list(result.get("degradation_policy_order") or []):
+        result["degradation_policy_order"] = list(_DEFAULT_GEO10_DEGRADATION_ORDER)
+    return result
+
+
 def load_geo_stress_scenario(path: str = "") -> dict:
     token = str(path or "").strip()
     if token:
-        return _load_json(os.path.normpath(os.path.abspath(token)))
-    return generate_geo_stress_scenario(seed=DEFAULT_GEO10_SEED, include_cctv=True)
+        return _with_default_degradation_order(_load_json(os.path.normpath(os.path.abspath(token))))
+    return _with_default_degradation_order(generate_geo_stress_scenario(seed=DEFAULT_GEO10_SEED, include_cctv=True))
 
 
 def _registry_hash(rel_path: str) -> str:
@@ -1120,9 +1134,11 @@ def run_geo_stress_scenario(
     *,
     seed: int = DEFAULT_GEO10_SEED,
 ) -> dict:
-    payload = dict(scenario or {})
+    payload = _with_default_degradation_order(dict(scenario or {}))
     if not payload:
-        payload = generate_geo_stress_scenario(seed=int(max(1, _as_int(seed, DEFAULT_GEO10_SEED))), include_cctv=True)
+        payload = _with_default_degradation_order(
+            generate_geo_stress_scenario(seed=int(max(1, _as_int(seed, DEFAULT_GEO10_SEED))), include_cctv=True)
+        )
     suites = [dict(row) for row in list(payload.get("topology_suites") or []) if isinstance(row, Mapping)]
     truth_hash_anchor = canonical_sha256(
         {
