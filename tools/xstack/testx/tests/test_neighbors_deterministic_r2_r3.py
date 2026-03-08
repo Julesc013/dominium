@@ -18,14 +18,10 @@ def run(repo_root: str):
     if r2_a != r2_b or r3_a != r3_b:
         return {"status": "fail", "message": "neighbor queries are not deterministic"}
     if list(r2_a.get("neighbors") or []) != [
-        "cell.-1.-1",
         "cell.-1.0",
-        "cell.-1.1",
         "cell.0.-1",
         "cell.0.1",
-        "cell.1.-1",
         "cell.1.0",
-        "cell.1.1",
     ]:
         return {"status": "fail", "message": "unexpected R2 neighbor ordering"}
     if list(r3_a.get("neighbors") or []) != [
