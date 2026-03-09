@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import copy
+import json
+import os
+from functools import lru_cache
 from typing import Mapping
 
 from src.geo import (
@@ -10,15 +14,18 @@ from src.geo import (
     build_projected_view_artifact,
     build_projected_view_layer_buffers,
     build_projection_request,
+    plan_geo_degradation_actions,
     project_view_cells,
     render_projected_view_ascii,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
+COMPUTE_BUDGET_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "compute_budget_profile_registry.json")
 DEFAULT_TOPOLOGY_PROFILE_ID = "geo.topology.r3_infinite"
 DEFAULT_PARTITION_PROFILE_ID = "geo.partition.grid_zd"
 DEFAULT_METRIC_PROFILE_ID = "geo.metric.euclidean"
+DEFAULT_COMPUTE_PROFILE_ID = "compute.default"
 DEFAULT_MAP_VIEW_TYPE_ID = "view.map_ortho"
 DEFAULT_MINIMAP_VIEW_TYPE_ID = "view.minimap"
 DEFAULT_MAP_LAYERS = [
@@ -34,6 +41,8 @@ DEFAULT_MINIMAP_LAYERS = [
     "layer.temperature",
     "layer.geometry_occupancy",
 ]
+_MAP_VIEW_CACHE: dict[str, dict] = {}
+_MAP_VIEW_CACHE_MAX = 128
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -49,6 +58,66 @@ def _as_map(value: object) -> dict:
 
 def _sorted_strings(values: object) -> list[str]:
     return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
+
+
+def _repo_root() -> str:
+    here = os.path.dirname(os.path.abspath(__file__))
+    return os.path.normpath(os.path.join(here, "..", "..", ".."))
+
+
+@lru_cache(maxsize=None)
+def _registry_payload(rel_path: str) -> dict:
+    abs_path = os.path.join(_repo_root(), str(rel_path).replace("/", os.sep))
+    try:
+        return json.load(open(abs_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def _compute_profile_rows() -> dict[str, dict]:
+    payload = _as_map(_registry_payload(COMPUTE_BUDGET_PROFILE_REGISTRY_REL))
+    rows = list(payload.get("compute_budget_profiles") or _as_map(payload.get("record")).get("compute_budget_profiles") or [])
+    out = {}
+    for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get("compute_profile_id", ""))):
+        token = str(row.get("compute_profile_id", "")).strip()
+        if token:
+            out[token] = dict(row)
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def debug_view_limit_for_compute_profile(compute_profile_id: str) -> int:
+    row = dict(_compute_profile_rows().get(str(compute_profile_id or DEFAULT_COMPUTE_PROFILE_ID).strip()) or {})
+    evaluation_cap = int(max(1, _as_int(row.get("evaluation_cap_per_tick", 256), 256)))
+    return int(max(1, min(4, evaluation_cap // 128)))
+
+
+def _view_budget_payload(*, compute_profile_id: str, view_type_id: str) -> dict:
+    row = dict(_compute_profile_rows().get(str(compute_profile_id or DEFAULT_COMPUTE_PROFILE_ID).strip()) or {})
+    evaluation_cap = int(max(1, _as_int(row.get("evaluation_cap_per_tick", 256), 256)))
+    max_projection_cells = int(max(9, min(144, evaluation_cap // 2)))
+    if str(view_type_id or "").strip() == DEFAULT_MINIMAP_VIEW_TYPE_ID:
+        max_projection_cells = int(max(9, min(49, max_projection_cells // 2)))
+    return {
+        "max_projection_cells_per_view": int(max_projection_cells),
+        "max_neighbor_radius_noncritical": 4 if str(view_type_id or "").strip() == DEFAULT_MAP_VIEW_TYPE_ID else 2,
+        "max_path_expansions": int(max(16, min(128, evaluation_cap))),
+        "allow_defer_derived_views": False,
+    }
+
+
+def _cache_lookup(cache_key: str) -> dict | None:
+    cached = _MAP_VIEW_CACHE.get(str(cache_key))
+    if not isinstance(cached, dict):
+        return None
+    return copy.deepcopy(dict(cached))
+
+
+def _cache_store(cache_key: str, payload: Mapping[str, object]) -> dict:
+    _MAP_VIEW_CACHE[str(cache_key)] = copy.deepcopy(dict(payload))
+    if len(_MAP_VIEW_CACHE) > _MAP_VIEW_CACHE_MAX:
+        for stale_key in sorted(_MAP_VIEW_CACHE.keys())[:-_MAP_VIEW_CACHE_MAX]:
+            _MAP_VIEW_CACHE.pop(stale_key, None)
+    return copy.deepcopy(dict(payload))
 
 
 def _default_position_ref(role: str) -> dict:
@@ -149,6 +218,7 @@ def build_map_view_surface(
     perceived_model: Mapping[str, object] | None,
     authority_context: Mapping[str, object] | None = None,
     layer_source_payloads: Mapping[str, object] | None = None,
+    compute_profile_id: str = DEFAULT_COMPUTE_PROFILE_ID,
     topology_profile_id: str = DEFAULT_TOPOLOGY_PROFILE_ID,
     partition_profile_id: str = DEFAULT_PARTITION_PROFILE_ID,
     metric_profile_id: str = DEFAULT_METRIC_PROFILE_ID,
@@ -162,12 +232,51 @@ def build_map_view_surface(
     layers = _sorted_strings(included_layers)
     if not layers:
         layers = list(DEFAULT_MAP_LAYERS if str(view_type_id) != DEFAULT_MINIMAP_VIEW_TYPE_ID else DEFAULT_MINIMAP_LAYERS)
+    requested_resolution_spec = {**_default_resolution_spec(view_type_id), **_as_map(resolution_spec)}
+    requested_extent_spec = {**_default_extent_spec(view_type_id), **_as_map(extent_spec), "axis_order": ["x", "y"]}
+    normalized_perceived = _normalized_perceived_model(perceived_model, lens_id=str(lens_id or "").strip())
+    current_tick = int(max(0, _as_int(_as_map(_as_map(normalized_perceived).get("time_state")).get("tick", 0), 0)))
+    budget_plan = plan_geo_degradation_actions(
+        suite_id="ux0.{}".format(role),
+        current_tick=current_tick,
+        budget_payload=_view_budget_payload(
+            compute_profile_id=str(compute_profile_id or DEFAULT_COMPUTE_PROFILE_ID).strip() or DEFAULT_COMPUTE_PROFILE_ID,
+            view_type_id=view_type_id,
+        ),
+        requested_resolution_spec=requested_resolution_spec,
+        requested_neighbor_radius=int(max(0, _as_int(requested_extent_spec.get("radius_cells", 0), 0))),
+        requested_path_max_expansions=64,
+        projected_cell_estimate=int(
+            max(1, _as_int(requested_resolution_spec.get("width", 1), 1) * _as_int(requested_resolution_spec.get("height", 1), 1))
+        ),
+        view_type_id=str(view_type_id or DEFAULT_MAP_VIEW_TYPE_ID).strip() or DEFAULT_MAP_VIEW_TYPE_ID,
+    )
+    effective_resolution_spec = {**requested_resolution_spec, **_as_map(budget_plan.get("effective_resolution_spec"))}
+    cache_key = canonical_sha256(
+        {
+            "truth_hash_anchor": str(truth_hash_anchor or "").strip(),
+            "role": role,
+            "view_type_id": str(view_type_id or DEFAULT_MAP_VIEW_TYPE_ID).strip() or DEFAULT_MAP_VIEW_TYPE_ID,
+            "origin_position_ref": dict(origin),
+            "lens_id": str(lens_id or "").strip(),
+            "selected_layer_ids": list(layers),
+            "compute_profile_id": str(compute_profile_id or DEFAULT_COMPUTE_PROFILE_ID).strip() or DEFAULT_COMPUTE_PROFILE_ID,
+            "effective_resolution_spec": dict(effective_resolution_spec),
+            "extent_spec": dict(requested_extent_spec),
+            "perceived_model_hash": canonical_sha256(normalized_perceived),
+            "authority_context_hash": canonical_sha256(dict(authority_context or {})),
+            "layer_source_hash": canonical_sha256(dict(layer_source_payloads or {})),
+        }
+    )
+    cached = _cache_lookup(cache_key)
+    if cached is not None:
+        return cached
     projection_request = build_projection_request(
         request_id="projection_request.{}".format(role),
         projection_profile_id="geo.projection.ortho_2d",
         origin_position_ref=origin,
-        extent_spec={**_default_extent_spec(view_type_id), **_as_map(extent_spec), "axis_order": ["x", "y"]},
-        resolution_spec={**_default_resolution_spec(view_type_id), **_as_map(resolution_spec)},
+        extent_spec=dict(requested_extent_spec),
+        resolution_spec=dict(effective_resolution_spec),
         extensions={
             "view_type_id": str(view_type_id or DEFAULT_MAP_VIEW_TYPE_ID).strip() or DEFAULT_MAP_VIEW_TYPE_ID,
             "topology_profile_id": str(topology_profile_id or DEFAULT_TOPOLOGY_PROFILE_ID).strip() or DEFAULT_TOPOLOGY_PROFILE_ID,
@@ -185,7 +294,6 @@ def build_map_view_surface(
         partition_profile_id=str(partition_profile_id or DEFAULT_PARTITION_PROFILE_ID).strip() or DEFAULT_PARTITION_PROFILE_ID,
         metric_profile_id=str(metric_profile_id or DEFAULT_METRIC_PROFILE_ID).strip() or DEFAULT_METRIC_PROFILE_ID,
     )
-    normalized_perceived = _normalized_perceived_model(perceived_model, lens_id=str(lens_id or "").strip())
     lens_request = build_lens_request(
         lens_request_id="lens_request.{}".format(role),
         lens_profile_id=str(lens_id or "").strip() or "lens.diegetic.sensor",
@@ -216,6 +324,9 @@ def build_map_view_surface(
         "projected_view_artifact": dict(projected_view_artifact),
         "display": dict(display),
         "selected_layer_ids": list(layers),
+        "budget_plan": dict(budget_plan),
+        "cache_key": cache_key,
+        "cache_policy_id": "cache.truth_anchor_keyed",
         "worldgen_requests": [
             dict(row)
             for row in list(_as_map(projection_result).get("worldgen_requests") or [])
@@ -224,7 +335,7 @@ def build_map_view_surface(
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
-    return payload
+    return _cache_store(cache_key, payload)
 
 
 def build_map_view_set(
@@ -237,6 +348,7 @@ def build_map_view_set(
     map_layer_ids: object = None,
     minimap_layer_ids: object = None,
     lens_id: str = "lens.diegetic.sensor",
+    compute_profile_id: str = DEFAULT_COMPUTE_PROFILE_ID,
     topology_profile_id: str = DEFAULT_TOPOLOGY_PROFILE_ID,
     partition_profile_id: str = DEFAULT_PARTITION_PROFILE_ID,
     metric_profile_id: str = DEFAULT_METRIC_PROFILE_ID,
@@ -256,6 +368,7 @@ def build_map_view_set(
         perceived_model=perceived_model,
         authority_context=authority_context,
         layer_source_payloads=layer_source_payloads,
+        compute_profile_id=compute_profile_id,
         topology_profile_id=topology_profile_id,
         partition_profile_id=partition_profile_id,
         metric_profile_id=metric_profile_id,
@@ -273,6 +386,7 @@ def build_map_view_set(
         perceived_model=perceived_model,
         authority_context=authority_context,
         layer_source_payloads=layer_source_payloads,
+        compute_profile_id=compute_profile_id,
         topology_profile_id=topology_profile_id,
         partition_profile_id=partition_profile_id,
         metric_profile_id=metric_profile_id,
@@ -294,8 +408,10 @@ def build_map_view_set(
 __all__ = [
     "DEFAULT_MAP_LAYERS",
     "DEFAULT_MAP_VIEW_TYPE_ID",
+    "DEFAULT_COMPUTE_PROFILE_ID",
     "DEFAULT_MINIMAP_LAYERS",
     "DEFAULT_MINIMAP_VIEW_TYPE_ID",
     "build_map_view_set",
     "build_map_view_surface",
+    "debug_view_limit_for_compute_profile",
 ]

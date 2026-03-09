@@ -7,7 +7,7 @@ from typing import Mapping
 from src.client.render import build_render_model
 from src.embodiment import resolve_authorized_lens_profile, resolve_lens_camera_state
 from src.client.ui.inspect_panels import build_inspection_panel_set
-from src.client.ui.map_views import build_map_view_set
+from src.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
 from src.client.ui.teleport_controller import build_teleport_plan
 from src.geo import build_position_ref
 from tools.mvp.runtime_bundle import (
@@ -231,6 +231,7 @@ def _debug_controls(
     *,
     authority_context: Mapping[str, object] | None,
     requested_debug_view_ids: object,
+    compute_profile_id: str,
 ) -> dict:
     entitlements = _entitlements(authority_context)
     allowed = []
@@ -245,10 +246,14 @@ def _debug_controls(
                 "viewer.truth_anchor_hash",
             ]
         )
-    active = [token for token in _ordered_strings(requested_debug_view_ids) if token in set(allowed)]
+    requested = [token for token in _ordered_strings(requested_debug_view_ids) if token in set(allowed)]
+    max_active = int(debug_view_limit_for_compute_profile(str(compute_profile_id or "compute.default").strip() or "compute.default"))
+    active = list(requested[:max_active])
     payload = {
         "allowed_debug_view_ids": list(allowed),
         "active_debug_view_ids": list(active),
+        "throttled_debug_view_ids": list(requested[max_active:]),
+        "compute_profile_id": str(compute_profile_id or "compute.default").strip() or "compute.default",
         "profile_gated": True,
         "deterministic_fingerprint": "",
     }
@@ -269,6 +274,7 @@ def _build_control_surface(
     look_vector: Mapping[str, object] | None,
     toggle_lens: bool,
     requested_debug_view_ids: object,
+    compute_profile_id: str,
 ) -> dict:
     bootstrap_payload = _as_map(bootstrap)
     embodiment = _as_map(bootstrap_payload.get("embodiment"))
@@ -376,6 +382,7 @@ def _build_control_surface(
         "debug_controls": _debug_controls(
             authority_context=authority_context,
             requested_debug_view_ids=requested_debug_view_ids,
+            compute_profile_id=compute_profile_id,
         ),
         "deterministic_fingerprint": "",
     }
@@ -523,6 +530,7 @@ def build_viewer_shell_state(
     toggle_lens: bool = False,
     controller_id: str = "",
     requested_debug_view_ids: object = None,
+    compute_profile_id: str = "compute.default",
     map_origin_position_ref: Mapping[str, object] | None = None,
     minimap_origin_position_ref: Mapping[str, object] | None = None,
     layer_source_payloads: Mapping[str, object] | None = None,
@@ -589,6 +597,7 @@ def build_viewer_shell_state(
         look_vector=look_vector,
         toggle_lens=bool(toggle_lens),
         requested_debug_view_ids=requested_debug_view_ids,
+        compute_profile_id=str(compute_profile_id or "compute.default").strip() or "compute.default",
     )
     inspection_surfaces = build_inspection_panel_set(
         perceived_model=perceived_model,
@@ -616,6 +625,7 @@ def build_viewer_shell_state(
         minimap_layer_ids=minimap_layer_ids,
         lens_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
         or "lens.diegetic.sensor",
+        compute_profile_id=str(compute_profile_id or "compute.default").strip() or "compute.default",
         ui_mode=str(ui_mode),
         truth_hash_anchor=_truth_hash_anchor(perceived_model),
     )
