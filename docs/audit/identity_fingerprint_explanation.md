@@ -22,3 +22,4 @@ Superseded By: none
   - 2026-03-09: refreshed for MW-0 Milky Way constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX runtime worldgen ruleset additions, and MW TestX additions
   - 2026-03-09: refreshed for MW-1 star system seed model registration in `docs/architecture/CANON_INDEX.md`, RepoX worldgen rule additions, and MW-1 TestX additions
   - 2026-03-09: refreshed for MW-2 star/orbital priors registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX worldgen discipline additions, and MW-2 TestX additions
+  - 2026-03-09: refreshed for MW-3 planet surface macro model registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX surface discipline additions, and MW-3 TestX additions
