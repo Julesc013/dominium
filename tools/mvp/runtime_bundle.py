@@ -574,6 +574,31 @@ def build_runtime_bootstrap(
     }
 
 
+def build_star_system_teleport_runtime_contract(system_row: Dict[str, object]) -> Dict[str, object]:
+    from src.worldgen.mw import build_system_teleport_plan
+
+    plan = build_system_teleport_plan(system_row)
+    if str(plan.get("result", "")) != "complete":
+        return dict(plan)
+    payload = {
+        "result": "complete",
+        "target_object_id": str(plan.get("target_object_id", "")).strip(),
+        "process_sequence": [
+            {
+                "process_id": "process.worldgen_request",
+                "inputs": {"worldgen_request": dict(plan.get("worldgen_request") or {})},
+            },
+            {
+                "process_id": "process.camera_teleport",
+                "inputs": dict(plan.get("camera_teleport_inputs") or {}),
+            },
+        ],
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = _payload_hash(payload)
+    return payload
+
+
 def write_runtime_artifacts(repo_root: str) -> Dict[str, object]:
     profile_bundle = build_profile_bundle_payload()
     pack_lock = build_pack_lock_payload(repo_root=repo_root, profile_bundle_payload=profile_bundle)
