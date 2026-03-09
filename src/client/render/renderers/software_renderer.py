@@ -448,6 +448,217 @@ def _apply_illumination(
     return lit
 
 
+def _water_cell_sort_key(row: dict) -> tuple:
+    key_row = dict(row.get("geo_cell_key") or row.get("tile_cell_key") or {})
+    index_tuple = [int(_to_int(item, 0)) for item in list(key_row.get("index_tuple") or [])]
+    while len(index_tuple) < 3:
+        index_tuple.append(0)
+    return (
+        str(key_row.get("chart_id", "")),
+        int(index_tuple[1]),
+        int(index_tuple[0]),
+        int(index_tuple[2]),
+        str(row.get("tile_object_id", "")),
+    )
+
+
+def _water_patch_bounds(
+    *,
+    row: dict,
+    bounds: dict,
+    width: int,
+    height: int,
+    tide_offset_value: int,
+) -> tuple[int, int, int, int]:
+    key_row = dict(row.get("geo_cell_key") or row.get("tile_cell_key") or {})
+    index_tuple = [int(_to_int(item, 0)) for item in list(key_row.get("index_tuple") or [])]
+    while len(index_tuple) < 2:
+        index_tuple.append(0)
+    min_u = int(bounds.get("min_u", 0))
+    max_u = int(bounds.get("max_u", min_u))
+    min_v = int(bounds.get("min_v", 0))
+    max_v = int(bounds.get("max_v", min_v))
+    span_u = max(1, max_u - min_u + 1)
+    span_v = max(1, max_v - min_v + 1)
+    patch_w = max(2, width // max(2, span_u + 1))
+    patch_h = max(2, height // max(6, (span_v * 2) + 2))
+    base_left = (width * (index_tuple[0] - min_u)) // span_u
+    base_top = (height * 5) // 9 + (((index_tuple[1] - min_v) * ((height * 7) // 20)) // span_v)
+    tide_shift = _clamp(_to_int(tide_offset_value, 0) // 6, -4, 4)
+    left = _clamp(base_left, 0, max(0, width - patch_w - 1))
+    top = _clamp(base_top - tide_shift, 0, max(0, height - patch_h - 1))
+    return left, top, patch_w, patch_h
+
+
+def _water_base_color(
+    *,
+    water_kind: str,
+    tide_offset_value: int,
+    sky_artifact: dict,
+    illumination_artifact: dict,
+) -> tuple[int, int, int]:
+    sky_colors = dict(dict(sky_artifact or {}).get("sky_colors_ref") or {})
+    illumination_ext = dict(dict(illumination_artifact or {}).get("extensions") or {})
+    horizon = _tuple_color(sky_colors.get("horizon_color"), (42, 78, 110))
+    sky_light = _tuple_color(illumination_ext.get("sky_light_color"), horizon)
+    sun_color = _tuple_color(sky_colors.get("sun_color"), (240, 232, 220))
+    if str(water_kind or "") == "river":
+        base = (36, 98, 146)
+        reflect_factor = 260
+    elif str(water_kind or "") == "lake":
+        base = (44, 112, 162)
+        reflect_factor = 340
+    else:
+        base = (28, 88, 134)
+        reflect_factor = 460
+    shimmer = _clamp(260 + abs(int(_to_int(tide_offset_value, 0))), 0, 1000)
+    mixed = _mix_tuple_color(base, sky_light, reflect_factor)
+    return _mix_tuple_color(mixed, sun_color, shimmer // 3)
+
+
+def _draw_water_surface_overlay(
+    *,
+    pixels: bytearray,
+    depth: List[float],
+    width: int,
+    height: int,
+    water_artifact: dict,
+    sky_artifact: dict,
+    illumination_artifact: dict,
+) -> None:
+    artifact = dict(water_artifact or {})
+    ocean_rows = [dict(row) for row in list(artifact.get("ocean_mask_ref") or []) if isinstance(row, dict)]
+    river_rows = [dict(row) for row in list(artifact.get("river_mask_ref") or []) if isinstance(row, dict)]
+    lake_rows = [dict(row) for row in list(artifact.get("lake_mask_ref") or []) if isinstance(row, dict)]
+    if not ocean_rows and not river_rows and not lake_rows:
+        return
+    all_rows = sorted(ocean_rows + river_rows + lake_rows, key=_water_cell_sort_key)
+    us = []
+    vs = []
+    centers = {}
+    for row in all_rows:
+        key_row = dict(row.get("geo_cell_key") or row.get("tile_cell_key") or {})
+        index_tuple = [int(_to_int(item, 0)) for item in list(key_row.get("index_tuple") or [])]
+        while len(index_tuple) < 2:
+            index_tuple.append(0)
+        us.append(int(index_tuple[0]))
+        vs.append(int(index_tuple[1]))
+    bounds = {
+        "min_u": min(us) if us else 0,
+        "max_u": max(us) if us else 0,
+        "min_v": min(vs) if vs else 0,
+        "max_v": max(vs) if vs else 0,
+    }
+    for idx, row in enumerate(ocean_rows):
+        tide_offset_value = int(_to_int(row.get("tide_offset_value", 0), 0))
+        left, top, patch_w, patch_h = _water_patch_bounds(
+            row=row,
+            bounds=bounds,
+            width=width,
+            height=height,
+            tide_offset_value=tide_offset_value,
+        )
+        centers[canonical_sha256(dict(row.get("geo_cell_key") or row.get("tile_cell_key") or {}))] = (left + (patch_w // 2), top + (patch_h // 2))
+        color = _water_base_color(
+            water_kind="ocean",
+            tide_offset_value=tide_offset_value,
+            sky_artifact=sky_artifact,
+            illumination_artifact=illumination_artifact,
+        )
+        _draw_rect(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            cx=left + (patch_w // 2),
+            cy=top + (patch_h // 2),
+            half_w=max(1, patch_w // 2),
+            half_h=max(1, patch_h // 2),
+            z_value=1.0e17 + (idx * 0.0001),
+            color=color,
+            wireframe=False,
+        )
+    for idx, row in enumerate(lake_rows):
+        tide_offset_value = int(_to_int(row.get("tide_offset_value", 0), 0))
+        left, top, patch_w, patch_h = _water_patch_bounds(
+            row=row,
+            bounds=bounds,
+            width=width,
+            height=height,
+            tide_offset_value=tide_offset_value,
+        )
+        centers[canonical_sha256(dict(row.get("geo_cell_key") or row.get("tile_cell_key") or {}))] = (left + (patch_w // 2), top + (patch_h // 2))
+        color = _water_base_color(
+            water_kind="lake",
+            tide_offset_value=tide_offset_value,
+            sky_artifact=sky_artifact,
+            illumination_artifact=illumination_artifact,
+        )
+        _draw_circle(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            cx=left + (patch_w // 2),
+            cy=top + (patch_h // 2),
+            radius=max(2, min(patch_w, patch_h) // 2),
+            z_value=1.0e17 + 50 + (idx * 0.0001),
+            color=color,
+            wireframe=False,
+        )
+    for idx, row in enumerate(river_rows):
+        tide_offset_value = int(_to_int(row.get("tide_offset_value", 0), 0))
+        left, top, patch_w, patch_h = _water_patch_bounds(
+            row=row,
+            bounds=bounds,
+            width=width,
+            height=height,
+            tide_offset_value=tide_offset_value,
+        )
+        center_x = left + (patch_w // 2)
+        center_y = top + (patch_h // 2)
+        current_hash = canonical_sha256(dict(row.get("geo_cell_key") or row.get("tile_cell_key") or {}))
+        centers[current_hash] = (center_x, center_y)
+        color = _water_base_color(
+            water_kind="river",
+            tide_offset_value=tide_offset_value,
+            sky_artifact=sky_artifact,
+            illumination_artifact=illumination_artifact,
+        )
+        target_hash = canonical_sha256(dict(row.get("flow_target_tile_key") or {})) if dict(row.get("flow_target_tile_key") or {}) else ""
+        target = centers.get(target_hash)
+        if target:
+            span_w = max(1, abs(int(target[0]) - int(center_x)) // 2)
+            span_h = max(1, abs(int(target[1]) - int(center_y)) // 2)
+            _draw_rect(
+                pixels=pixels,
+                depth=depth,
+                width=width,
+                height=height,
+                cx=(center_x + int(target[0])) // 2,
+                cy=(center_y + int(target[1])) // 2,
+                half_w=max(1, span_w),
+                half_h=max(1, min(2, span_h)),
+                z_value=1.0e17 + 100 + (idx * 0.0001),
+                color=color,
+                wireframe=False,
+            )
+        else:
+            _draw_rect(
+                pixels=pixels,
+                depth=depth,
+                width=width,
+                height=height,
+                cx=center_x,
+                cy=center_y,
+                half_w=max(1, min(3, patch_w // 5)),
+                half_h=max(2, patch_h // 2),
+                z_value=1.0e17 + 100 + (idx * 0.0001),
+                color=color,
+                wireframe=False,
+            )
+
+
 def render_software_snapshot(
     *,
     render_model: dict,
@@ -482,6 +693,7 @@ def render_software_snapshot(
     depth = [1e18] * (width * height)
     sky_artifact = dict(model_extensions.get("sky_view_artifact") or {})
     illumination_artifact = dict(model_extensions.get("illumination_view_artifact") or {})
+    water_artifact = dict(model_extensions.get("water_view_artifact") or {})
     if sky_artifact:
         _draw_sky_background(
             pixels=pixels,
@@ -532,6 +744,16 @@ def render_software_snapshot(
             width=width,
             height=height,
             star_rows=[dict(row) for row in list(sky_artifact.get("star_points_ref") or []) if isinstance(row, dict)],
+        )
+    if water_artifact:
+        _draw_water_surface_overlay(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            water_artifact=water_artifact,
+            sky_artifact=sky_artifact,
+            illumination_artifact=illumination_artifact,
         )
 
     for idx, row in enumerate(rows):

@@ -126,6 +126,7 @@ def render_null_snapshot(
     physics_profile_id = str(model.get("physics_profile_id", "")).strip() or "physics.null"
     model_extensions = dict(model.get("extensions") or {})
     illumination_artifact_ignored = bool(dict(model_extensions.get("illumination_view_artifact") or {}))
+    water_artifact_ignored = bool(dict(model_extensions.get("water_view_artifact") or {}))
 
     summary, frame_layers = build_frame_summary(model)
     summary_hash = str(canonical_sha256(summary))
@@ -175,6 +176,7 @@ def render_null_snapshot(
         "extensions": {
             "snapshot_dir": snapshot_dir.replace("\\", "/"),
             "illumination_artifact_ignored": illumination_artifact_ignored,
+            "water_artifact_ignored": water_artifact_ignored,
         },
     }
     with open(snapshot_path, "w", encoding="utf-8", newline="\n") as handle:
