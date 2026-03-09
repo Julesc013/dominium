@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "b8ff56e7f8b8251fe5045424dd985f82a03ea9b2a26d8d167638f37f26b771f9"
+      "sha256": "4f12c1192cf48541695a91acac224610a1854f7edc32ed0ea41f4d1bdf02d5c6"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
@@ -201,5 +201,5 @@
       "sha256": "d5099fd76d8ffa4680d75528af01192063fb4f7e9f74fe6fbcc26840a24a8df5"
     }
   ],
-  "generated_at": "2026-02-06T00:00:00.000000Z"
+  "generated_at": "2026-03-09T00:00:00.000000Z"
 }

@@ -19,3 +19,4 @@ Superseded By: none
   - include this explanation artifact in the same change.
 - Current change note:
   - 2026-03-09: refreshed for MVP-0 scope constitution registration in `docs/architecture/CANON_INDEX.md`
+  - 2026-03-09: refreshed for MW-0 Milky Way constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX runtime worldgen ruleset additions, and MW TestX additions
