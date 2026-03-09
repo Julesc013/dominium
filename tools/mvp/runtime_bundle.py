@@ -14,13 +14,24 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
-from tools.xstack.sessionx.common import deterministic_seed_hex
+from tools.xstack.sessionx.common import deterministic_seed_hex, identity_hash_for_payload
 
 
 MVP_RUNTIME_VERSION = "0.0.0"
 MVP_PROFILE_BUNDLE_ID = "profile.bundle.mvp_default"
 MVP_PACK_LOCK_ID = "pack_lock.mvp_default"
 MVP_SESSION_TEMPLATE_ID = "session.mvp_default"
+MVP_BASE_SCENARIO_ID = "scenario.lab.galaxy_nav"
+MVP_DOMAIN_BINDING_IDS = ("domain.astronomy", "domain.navigation")
+MVP_COMPATIBILITY_SCHEMA_REFS = (
+    "generator_version@1.0.0",
+    "metric_profile@1.0.0",
+    "partition_profile@1.0.0",
+    "projection_profile@1.0.0",
+    "realism_profile@1.0.0",
+    "space_topology_profile@1.0.0",
+    "universe_identity@1.0.0",
+)
 MVP_PROFILE_BUNDLE_REL = os.path.join("profiles", "bundles", "bundle.mvp_default.json")
 MVP_PACK_LOCK_REL = os.path.join("locks", "pack_lock.mvp_default.json")
 MVP_SESSION_TEMPLATE_REL = os.path.join("data", "session_templates", "session.mvp_default.json")
@@ -50,8 +61,8 @@ MVP_SOURCE_PACKS = (
         "distribution_rel": os.path.join("packs", "official", "pack.sol.pin_minimal"),
         "source_packs": (
             {
-                "pack_id": "astronomy.sol",
-                "manifest_rel": os.path.join("packs", "domain", "astronomy.sol", "pack.json"),
+                "pack_id": "pack.sol.pin_minimal",
+                "manifest_rel": os.path.join("packs", "official", "pack.sol.pin_minimal", "pack.json"),
             },
         ),
     },
@@ -329,6 +340,56 @@ def build_session_template_payload(repo_root: str, pack_lock_payload: Dict[str, 
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = _payload_hash(payload)
+    return payload
+
+
+def build_default_universe_identity(
+    repo_root: str,
+    *,
+    seed: str = "",
+    authority_mode: str = "dev",
+    pack_lock_payload: Dict[str, object] | None = None,
+    profile_bundle_payload: Dict[str, object] | None = None,
+) -> Dict[str, object]:
+    profile_bundle = dict(profile_bundle_payload or build_profile_bundle_payload())
+    pack_lock = dict(pack_lock_payload or build_pack_lock_payload(repo_root=repo_root, profile_bundle_payload=profile_bundle))
+    universe_seed, _warnings = _resolve_seed(seed=seed, authority_mode=authority_mode)
+    generator_version_id = str(profile_bundle.get("generator_version_lock", "")).strip() or "gen.v0_stub"
+    realism_profile_id = str(_norm(profile_bundle.get("profiles", {}).get("realism", {}).get("profile_id", ""))).strip() or "realism.realistic_default_milkyway_stub"
+    topology_profile_id = str(_norm(profile_bundle.get("profiles", {}).get("geo", {}).get("topology", {}).get("profile_id", ""))).strip() or "geo.topology.r3_infinite"
+    metric_profile_id = str(_norm(profile_bundle.get("profiles", {}).get("geo", {}).get("metric", {}).get("profile_id", ""))).strip() or "geo.metric.euclidean"
+    partition_profile_id = str(_norm(profile_bundle.get("profiles", {}).get("geo", {}).get("partition", {}).get("profile_id", ""))).strip() or "geo.partition.grid_zd"
+    projection_rows = list(((profile_bundle.get("profiles") or {}).get("geo") or {}).get("projections") or [])
+    projection_profile_id = str(_norm(dict(projection_rows[0]).get("profile_id", ""))).strip() if projection_rows else "geo.projection.perspective_3d"
+    pack_lock_hash = str(pack_lock.get("pack_lock_hash", "")).strip()
+    payload = {
+        "schema_version": "1.0.0",
+        "universe_id": derive_universe_id(
+            universe_seed=universe_seed,
+            generator_version_id=generator_version_id,
+            profile_bundle_id=str(profile_bundle.get("profile_bundle_id", "")).strip(),
+            pack_lock_hash=pack_lock_hash,
+        ),
+        "global_seed": universe_seed,
+        "domain_binding_ids": sorted(MVP_DOMAIN_BINDING_IDS),
+        "physics_profile_id": str(_norm(profile_bundle.get("profiles", {}).get("physics", {}).get("profile_id", ""))).strip() or "physics.default_realistic",
+        "topology_profile_id": topology_profile_id,
+        "metric_profile_id": metric_profile_id,
+        "partition_profile_id": partition_profile_id,
+        "projection_profile_id": projection_profile_id,
+        "generator_version_id": generator_version_id,
+        "realism_profile_id": realism_profile_id,
+        "base_scenario_id": MVP_BASE_SCENARIO_ID,
+        "initial_pack_set_hash_expectation": pack_lock_hash,
+        "compatibility_schema_refs": sorted(MVP_COMPATIBILITY_SCHEMA_REFS),
+        "immutable_after_create": True,
+        "extensions": {
+            "profile_bundle_id": str(profile_bundle.get("profile_bundle_id", "")).strip(),
+            "source": "MVP1-4",
+        },
+        "identity_hash": "",
+    }
+    payload["identity_hash"] = identity_hash_for_payload(payload)
     return payload
 
 

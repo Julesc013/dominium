@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "pack.sol.pin_minimal",
+  "version": "0.0.0",
+  "compatibility": {
+    "session_spec_min": "1.0.0",
+    "session_spec_max": "1.0.0"
+  },
+  "dependencies": [
+    "pack.core.runtime@1.0.0",
+    "astronomy.milky_way@1.0.0"
+  ],
+  "contribution_types": [
+    "registry_entries"
+  ],
+  "contributions": [
+    {
+      "type": "registry_entries",
+      "id": "overlay.layer.pack.sol.pin_minimal",
+      "path": "data/overlay/overlay.layer.sol_pin_minimal.json"
+    },
+    {
+      "type": "registry_entries",
+      "id": "overlay.property_patches.pack.sol.pin_minimal",
+      "path": "data/overlay/sol_pin_patches.json"
+    }
+  ],
+  "canonical_hash": "placeholder.pack.sol.pin_minimal.v0",
+  "signature_status": "signed"
+}

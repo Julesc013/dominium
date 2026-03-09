@@ -16,6 +16,9 @@ _EXPORT_MODULES = {
     "normalize_star_system_artifact_rows": ".mw_cell_generator",
     "normalize_star_system_seed_rows": ".mw_cell_generator",
     "star_system_artifact_hash_chain": ".mw_cell_generator",
+    "SOL_ANCHOR_BODY_SLOTS": ".sol_anchor",
+    "SOL_ANCHOR_CELL_INDEX_TUPLE": ".sol_anchor",
+    "SOL_ANCHOR_ID": ".sol_anchor",
     "DEFAULT_QUERY_MAX_CELLS": ".system_query_engine",
     "build_procedural_astronomy_index": ".system_query_engine",
     "build_system_teleport_plan": ".system_query_engine",
@@ -45,6 +48,12 @@ _EXPORT_MODULES = {
     "insolation_proxy_permille": ".insolation_proxy",
     "orbital_period_proxy_ticks": ".insolation_proxy",
     "season_phase_permille": ".insolation_proxy",
+    "resolve_sol_anchor_cell_key": ".sol_anchor",
+    "sol_anchor_body_slots": ".sol_anchor",
+    "sol_anchor_body_slots_by_id": ".sol_anchor",
+    "sol_anchor_matches_cell": ".sol_anchor",
+    "sol_anchor_object_ids": ".sol_anchor",
+    "sol_anchor_object_rows": ".sol_anchor",
 }
 
 
