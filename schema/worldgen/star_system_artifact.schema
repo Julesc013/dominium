@@ -1,0 +1,28 @@
+SCHEMA: worldgen/star_system_artifact.schema
+schema_id: dominium.schema.worldgen.star_system_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical MW-1 star-system artifact model emitted at refinement `L1`.
+- Preserve deterministic object identity, galaxy-frame anchoring, and procedural discovery metadata.
+
+NON-SEMANTICS:
+- This schema does not encode full stellar or orbital generation.
+- This schema does not replace GEO object identity derivation.
+- This schema does not imply authored catalogs or names.
+
+REQUIRED SHAPE:
+record star_system_artifact
+  required:
+    - object_id: sha256
+    - system_seed_value: sha256
+    - metallicity_proxy: map
+    - galaxy_position_ref: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `object_id` must remain the stable GEO-derived `kind.star_system` identity
+- artifact position is a deterministic galaxy-frame reference derived from the seed and cell
+- artifact rows remain replay-stable and overlay-safe

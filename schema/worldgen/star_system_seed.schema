@@ -1,0 +1,27 @@
+SCHEMA: worldgen/star_system_seed.schema
+schema_id: dominium.schema.worldgen.star_system_seed
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical MW-1 deterministic star-system seed row.
+- Preserve discovery-level star-system lineage before deeper MW astrophysical expansion.
+
+NON-SEMANTICS:
+- This schema does not encode star mass or stellar classification.
+- This schema does not encode planet or orbit inventories.
+- This schema does not authorize authoritative mutation by itself.
+
+REQUIRED SHAPE:
+record star_system_seed
+  required:
+    - cell_key: map
+    - local_index: integer
+    - system_seed_value: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- seed rows are deterministic derived views scoped to one GEO cell
+- `local_index` ordering is canonical within the cell
+- seed rows remain stable for the same universe lineage and generator version
