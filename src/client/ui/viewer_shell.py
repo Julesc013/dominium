@@ -5,10 +5,11 @@ from __future__ import annotations
 from typing import Mapping
 
 from src.client.render import build_render_model
-from src.embodiment import resolve_authorized_lens_profile
+from src.embodiment import resolve_authorized_lens_profile, resolve_lens_camera_state
 from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set
 from src.client.ui.teleport_controller import build_teleport_plan
+from src.geo import build_position_ref
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
@@ -40,8 +41,42 @@ def _as_bool(value: object, default_value: bool = False) -> bool:
     return bool(default_value)
 
 
+def _as_int(value: object, default_value: int = 0) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return int(default_value)
+
+
 def _sorted_strings(values: object) -> list[str]:
     return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
+
+
+def _ordered_strings(values: object) -> list[str]:
+    out: list[str] = []
+    for item in list(values or []):
+        token = str(item).strip()
+        if token and token not in out:
+            out.append(token)
+    return out
+
+
+def _vector3_int(value: object) -> dict:
+    payload = _as_map(value)
+    return {
+        "x": int(_as_int(payload.get("x", 0), 0)),
+        "y": int(_as_int(payload.get("y", 0), 0)),
+        "z": int(_as_int(payload.get("z", 0), 0)),
+    }
+
+
+def _has_signal(value: object) -> bool:
+    vector = _vector3_int(value)
+    return bool(int(vector["x"]) or int(vector["y"]) or int(vector["z"]))
+
+
+def _entitlements(authority_context: Mapping[str, object] | None) -> set[str]:
+    return set(_ordered_strings(_as_map(authority_context).get("entitlements")))
 
 
 def _truth_hash_anchor(perceived_model: Mapping[str, object] | None) -> str:
@@ -65,7 +100,7 @@ def _preferred_position_ref(
 
 def _default_authority_context(authority_mode: str) -> dict:
     mode = str(authority_mode or "").strip().lower() or "dev"
-    entitlements = ["session.boot", "entitlement.control.camera"]
+    entitlements = ["session.boot", "entitlement.control.camera", "entitlement.control.possess"]
     if mode == "dev":
         entitlements.extend(
             [
@@ -87,6 +122,300 @@ def _default_authority_context(authority_mode: str) -> dict:
         },
         "privilege_level": "observer" if mode == "release" else "operator",
     }
+
+
+def _resolve_active_lens_resolution(
+    *,
+    requested_lens_profile_id: str,
+    authority_context: Mapping[str, object] | None,
+    available_lens_profile_ids: object,
+) -> dict:
+    requested = str(requested_lens_profile_id or "").strip() or DEFAULT_VIEWER_LENS_PROFILE_ID
+    attempts = []
+    for candidate in _ordered_strings([requested] + list(available_lens_profile_ids or [])):
+        result = resolve_authorized_lens_profile(
+            requested_lens_profile_id=str(candidate),
+            authority_context=authority_context,
+        )
+        attempts.append(
+            {
+                "lens_profile_id": str(candidate),
+                "result": str(result.get("result", "")).strip() or "refused",
+                "reason_code": str(result.get("reason_code", "")).strip(),
+            }
+        )
+        if str(result.get("result", "")).strip() == "complete":
+            payload = {
+                "result": "complete",
+                "requested_lens_profile_id": requested,
+                "active_lens_profile_id": str(candidate),
+                "fallback_applied": bool(str(candidate) != requested),
+                "lens_profile": dict(result.get("lens_profile") or {}),
+                "attempt_trace": list(attempts),
+                "deterministic_fingerprint": "",
+            }
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+            return payload
+    payload = {
+        "result": "refused",
+        "requested_lens_profile_id": requested,
+        "active_lens_profile_id": "",
+        "fallback_applied": False,
+        "attempt_trace": list(attempts),
+        "reason_code": "refusal.view.lens_profile_invalid",
+        "message": "no authorized lens profile is available",
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _camera_position_ref(
+    *,
+    camera_state: Mapping[str, object] | None,
+    body_state: Mapping[str, object] | None,
+    lens_id: str,
+) -> dict:
+    state = _as_map(camera_state)
+    if "position_mm" not in state:
+        return {}
+    position_mm = _vector3_int(state.get("position_mm"))
+    return build_position_ref(
+        object_id="camera.main",
+        frame_id=str(_as_map(body_state).get("frame_id", "")).strip() or "frame.surface_local",
+        local_position=[int(position_mm["x"]), int(position_mm["y"]), int(position_mm["z"])],
+        extensions={"source": "UX0-6", "lens_id": str(lens_id or "").strip() or None},
+    )
+
+
+def _next_authorized_lens(
+    *,
+    current_lens_profile_id: str,
+    toggle_sequence: object,
+    authority_context: Mapping[str, object] | None,
+) -> dict:
+    sequence = _ordered_strings(toggle_sequence)
+    current = str(current_lens_profile_id or "").strip() or DEFAULT_VIEWER_LENS_PROFILE_ID
+    if not sequence:
+        sequence = [current]
+    if current not in sequence:
+        sequence = [current] + sequence
+    start_index = sequence.index(current)
+    for offset in range(1, len(sequence) + 1):
+        candidate = sequence[(start_index + offset) % len(sequence)]
+        resolution = resolve_authorized_lens_profile(
+            requested_lens_profile_id=candidate,
+            authority_context=authority_context,
+        )
+        if str(resolution.get("result", "")).strip() == "complete":
+            payload = {
+                "result": "complete",
+                "target_lens_profile_id": candidate,
+                "lens_profile": dict(resolution.get("lens_profile") or {}),
+                "deterministic_fingerprint": "",
+            }
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+            return payload
+    payload = {
+        "result": "refused",
+        "target_lens_profile_id": current,
+        "reason_code": "refusal.view.lens_profile_invalid",
+        "message": "no authorized lens is available in toggle sequence",
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _debug_controls(
+    *,
+    authority_context: Mapping[str, object] | None,
+    requested_debug_view_ids: object,
+) -> dict:
+    entitlements = _entitlements(authority_context)
+    allowed = []
+    if "entitlement.inspect" in entitlements:
+        allowed.append("inspect.overlay_provenance")
+    if "entitlement.debug_view" in entitlements:
+        allowed.extend(
+            [
+                "viewer.object_ids",
+                "viewer.field_layers",
+                "viewer.geometry_layer",
+                "viewer.truth_anchor_hash",
+            ]
+        )
+    active = [token for token in _ordered_strings(requested_debug_view_ids) if token in set(allowed)]
+    payload = {
+        "allowed_debug_view_ids": list(allowed),
+        "active_debug_view_ids": list(active),
+        "profile_gated": True,
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _build_control_surface(
+    *,
+    bootstrap: Mapping[str, object] | None,
+    authority_context: Mapping[str, object] | None,
+    lens_resolution: Mapping[str, object] | None,
+    body_state: Mapping[str, object] | None,
+    body_row: Mapping[str, object] | None,
+    previous_camera_state: Mapping[str, object] | None,
+    controller_id: str,
+    move_vector_local: Mapping[str, object] | None,
+    look_vector: Mapping[str, object] | None,
+    toggle_lens: bool,
+    requested_debug_view_ids: object,
+) -> dict:
+    bootstrap_payload = _as_map(bootstrap)
+    embodiment = _as_map(bootstrap_payload.get("embodiment"))
+    lens_profile = _as_map(_as_map(lens_resolution).get("lens_profile"))
+    lens_id = str(lens_profile.get("lens_id", "")).strip()
+    entitlements = _entitlements(authority_context)
+    camera_state_result = (
+        resolve_lens_camera_state(
+            body_state_row=body_state,
+            body_row=body_row,
+            lens_profile_row=lens_profile,
+            previous_camera_state=previous_camera_state,
+        )
+        if lens_profile
+        else {"result": "complete", "camera_state": dict(_as_map(previous_camera_state))}
+    )
+    camera_state = _as_map(camera_state_result.get("camera_state"))
+    resolved_controller_id = str(controller_id or "").strip() or str(_as_map(authority_context).get("controller_id", "")).strip()
+    resolved_controller_id = resolved_controller_id or "controller.local"
+    body_id = str(_as_map(body_row).get("assembly_id", "")).strip() or str(_as_map(body_row).get("body_id", "")).strip()
+    process_sequence = []
+    if body_id and "entitlement.control.possess" in entitlements and (_has_signal(move_vector_local) or _has_signal(look_vector)):
+        process_sequence.append(
+            {
+                "process_id": "process.body_apply_input",
+                "inputs": {
+                    "body_id": body_id,
+                    "controller_id": resolved_controller_id,
+                    "move_vector_local": _vector3_int(move_vector_local),
+                    "look_vector": _vector3_int(look_vector),
+                    "dt_ticks": 1,
+                },
+            }
+        )
+    toggle_plan = {"result": "complete", "process_sequence": [], "target_lens_profile_id": ""}
+    if bool(toggle_lens):
+        next_lens = _next_authorized_lens(
+            current_lens_profile_id=str(_as_map(lens_resolution).get("active_lens_profile_id", "")).strip()
+            or str(lens_profile.get("lens_profile_id", "")).strip(),
+            toggle_sequence=_as_map(bootstrap_payload.get("embodiment")).get("toggle_lens_sequence"),
+            authority_context=authority_context,
+        )
+        target_profile = _as_map(next_lens.get("lens_profile"))
+        if str(next_lens.get("result", "")).strip() == "complete" and target_profile:
+            toggle_processes = [
+                {
+                    "process_id": "process.camera_set_view_mode",
+                    "inputs": {
+                        "controller_id": resolved_controller_id,
+                        "camera_id": "camera.main",
+                        "view_mode_id": str(target_profile.get("view_mode_id", "")).strip(),
+                    },
+                }
+            ]
+            target_lens_id = str(target_profile.get("lens_id", "")).strip()
+            if target_lens_id and target_lens_id != lens_id:
+                if "entitlement.control.lens_override" not in entitlements:
+                    toggle_plan = {
+                        "result": "refused",
+                        "reason_code": "refusal.view.entitlement_missing",
+                        "message": "lens override entitlement is required for nondiegetic lens changes",
+                        "target_lens_profile_id": str(next_lens.get("target_lens_profile_id", "")).strip(),
+                        "process_sequence": [],
+                    }
+                else:
+                    toggle_processes.append(
+                        {
+                            "process_id": "process.camera_set_lens",
+                            "inputs": {
+                                "controller_id": resolved_controller_id,
+                                "camera_id": "camera.main",
+                                "lens_id": target_lens_id,
+                            },
+                        }
+                    )
+            if not toggle_plan.get("reason_code"):
+                toggle_plan = {
+                    "result": "complete",
+                    "target_lens_profile_id": str(next_lens.get("target_lens_profile_id", "")).strip(),
+                    "process_sequence": toggle_processes,
+                }
+        else:
+            toggle_plan = {
+                "result": "refused",
+                "reason_code": str(next_lens.get("reason_code", "")).strip() or "refusal.view.lens_profile_invalid",
+                "message": str(next_lens.get("message", "")).strip() or "no authorized target lens is available",
+                "target_lens_profile_id": str(next_lens.get("target_lens_profile_id", "")).strip(),
+                "process_sequence": [],
+            }
+    payload = {
+        "result": "complete",
+        "controller_id": resolved_controller_id,
+        "camera_state": dict(camera_state),
+        "camera_position_ref": _camera_position_ref(
+            camera_state=camera_state,
+            body_state=body_state,
+            lens_id=lens_id,
+        ),
+        "input_bindings": dict(embodiment.get("input_bindings") or {}),
+        "active_lens_profile_id": str(_as_map(lens_resolution).get("active_lens_profile_id", "")).strip()
+        or str(lens_profile.get("lens_profile_id", "")).strip(),
+        "active_lens_id": lens_id,
+        "process_sequence": list(process_sequence),
+        "lens_toggle_plan": dict(toggle_plan),
+        "debug_controls": _debug_controls(
+            authority_context=authority_context,
+            requested_debug_view_ids=requested_debug_view_ids,
+        ),
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _build_selection_controls(
+    *,
+    selection: Mapping[str, object] | None,
+    map_views: Mapping[str, object] | None,
+    authority_context: Mapping[str, object] | None,
+) -> dict:
+    entitlements = _entitlements(authority_context)
+    candidate_geo_cell_keys = []
+    seen = set()
+    for view_key in ("minimap_view", "map_view"):
+        rendered = list(_as_map(_as_map(_as_map(map_views).get(view_key)).get("projected_view_artifact")).get("rendered_cells") or [])
+        for row in rendered:
+            cell_key = _as_map(_as_map(row).get("geo_cell_key"))
+            if not cell_key:
+                continue
+            cell_hash = canonical_sha256(cell_key)
+            if cell_hash in seen:
+                continue
+            seen.add(cell_hash)
+            candidate_geo_cell_keys.append(dict(cell_key))
+    selected = _as_map(selection)
+    payload = {
+        "result": "complete",
+        "selection_mode": "cell_list_stub",
+        "inspect_allowed": bool("entitlement.inspect" in entitlements),
+        "selected_object_id": str(selected.get("object_id", "")).strip() or str(selected.get("target_id", "")).strip(),
+        "selected_geo_cell_key": dict(_as_map(selected.get("geo_cell_key"))),
+        "candidate_geo_cell_keys": [dict(row) for row in candidate_geo_cell_keys[:32]],
+        "raycast_stub_enabled": False,
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
 
 
 def _stage_trace(*, start_session: bool, seed: str, bundle_id: str) -> list[dict]:
@@ -186,6 +515,14 @@ def build_viewer_shell_state(
     property_origin_request: Mapping[str, object] | None = None,
     property_origin_result: Mapping[str, object] | None = None,
     field_values: Mapping[str, object] | None = None,
+    body_state: Mapping[str, object] | None = None,
+    body_row: Mapping[str, object] | None = None,
+    previous_camera_state: Mapping[str, object] | None = None,
+    move_vector_local: Mapping[str, object] | None = None,
+    look_vector: Mapping[str, object] | None = None,
+    toggle_lens: bool = False,
+    controller_id: str = "",
+    requested_debug_view_ids: object = None,
     map_origin_position_ref: Mapping[str, object] | None = None,
     minimap_origin_position_ref: Mapping[str, object] | None = None,
     layer_source_payloads: Mapping[str, object] | None = None,
@@ -210,9 +547,10 @@ def build_viewer_shell_state(
     requested_lens = str(requested_lens_profile_id or "").strip() or str(
         _as_map(bootstrap.get("embodiment")).get("default_lens_profile_id", DEFAULT_VIEWER_LENS_PROFILE_ID)
     ).strip()
-    lens_resolution = resolve_authorized_lens_profile(
+    lens_resolution = _resolve_active_lens_resolution(
         requested_lens_profile_id=requested_lens,
         authority_context=runtime_authority,
+        available_lens_profile_ids=_as_map(bootstrap.get("embodiment")).get("available_lens_profile_ids"),
     )
     stage_trace = _stage_trace(
         start_session=bool(_as_bool(start_session, True)),
@@ -239,6 +577,19 @@ def build_viewer_shell_state(
         if str(teleport_command or "").strip()
         else {"result": "complete", "process_sequence": [], "target_object_id": ""}
     )
+    control_surface = _build_control_surface(
+        bootstrap=bootstrap,
+        authority_context=runtime_authority,
+        lens_resolution=lens_resolution,
+        body_state=body_state,
+        body_row=body_row,
+        previous_camera_state=previous_camera_state,
+        controller_id=str(controller_id or "").strip(),
+        move_vector_local=move_vector_local,
+        look_vector=look_vector,
+        toggle_lens=bool(toggle_lens),
+        requested_debug_view_ids=requested_debug_view_ids,
+    )
     inspection_surfaces = build_inspection_panel_set(
         perceived_model=perceived_model,
         target_semantic_id=str(_as_map(selection).get("object_id", "")).strip()
@@ -253,11 +604,11 @@ def build_viewer_shell_state(
         perceived_model=perceived_model,
         authority_context=runtime_authority,
         map_origin_position_ref=_preferred_position_ref(
-            explicit_position_ref=map_origin_position_ref,
+            explicit_position_ref=_as_map(map_origin_position_ref) or _as_map(control_surface.get("camera_position_ref")),
             selection=selection,
         ),
         minimap_origin_position_ref=_preferred_position_ref(
-            explicit_position_ref=minimap_origin_position_ref,
+            explicit_position_ref=_as_map(minimap_origin_position_ref) or _as_map(control_surface.get("camera_position_ref")),
             selection=selection,
         ),
         layer_source_payloads=layer_source_payloads,
@@ -267,6 +618,11 @@ def build_viewer_shell_state(
         or "lens.diegetic.sensor",
         ui_mode=str(ui_mode),
         truth_hash_anchor=_truth_hash_anchor(perceived_model),
+    )
+    selection_controls = _build_selection_controls(
+        selection=selection,
+        map_views=map_views,
+        authority_context=runtime_authority,
     )
     payload = {
         "result": "complete",
@@ -279,10 +635,12 @@ def build_viewer_shell_state(
         "bootstrap": dict(bootstrap),
         "authority_context": runtime_authority,
         "lens_resolution": dict(lens_resolution),
+        "control_surface": dict(control_surface),
         "render_contract": render_contract,
         "teleport_plan": dict(teleport_plan),
         "inspection_surfaces": dict(inspection_surfaces),
         "map_views": dict(map_views),
+        "selection_controls": dict(selection_controls),
         "selection": dict(selection or {}),
         "panels": _viewer_panels(current_stage),
         "ui_contract": {
