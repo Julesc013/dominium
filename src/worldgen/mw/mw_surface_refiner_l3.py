@@ -996,6 +996,14 @@ def generate_mw_surface_l3_payload(
             "drainage_accumulation_proxy": int(tile_artifact_row.get("drainage_accumulation_proxy", 1)),
             "river_flag": bool(tile_artifact_row.get("river_flag", False)),
             "lake_flag": bool(_as_map(tile_artifact_row.get("extensions")).get("lake_flag", False)),
+            "hydrology_structure_kind": str(
+                _as_map(tile_artifact_row.get("extensions")).get("hydrology_structure_kind", "")
+            ).strip(),
+            "biome_overlay_tags": [
+                str(tag).strip()
+                for tag in list(_as_map(tile_artifact_row.get("extensions")).get("biome_overlay_tags") or [])
+                if str(tag).strip()
+            ],
             "hydrology_window_fingerprint": str(hydrology_payload.get("window_fingerprint", "")).strip(),
             "current_tick": int(max(0, _as_int(current_tick, 0))),
             "deterministic_fingerprint": "",

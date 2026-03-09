@@ -388,6 +388,9 @@ def apply_hydrology_to_surface_tile_artifact(
             "hydrology_effective_height_proxy": int(max(0, _as_int(center.get("effective_height_proxy", 0), 0))),
             "lake_flag": bool(center.get("lake_flag", False)),
             "hydrology_exit_window": bool(center.get("exit_window", False)),
+            "hydrology_structure_kind": (
+                "river" if bool(center.get("river_flag", False)) else ("lake" if bool(center.get("lake_flag", False)) else "none")
+            ),
             "biome_overlay_tags": biome_overlay_tags,
             "source": HYDROLOGY_ENGINE_VERSION,
         },
