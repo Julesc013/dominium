@@ -12,8 +12,8 @@
         "ocean_fraction_target": 700,
         "mountain_intensity": 620,
         "biome_thresholds": {
-          "polar_latitude_mdeg": 70000,
-          "ice_temperature_kelvin": 255,
+          "polar_latitude_mdeg": 78000,
+          "ice_temperature_kelvin": 238,
           "tropical_latitude_mdeg": 23500,
           "arid_band_min_mdeg": 18000,
           "arid_band_max_mdeg": 36000,

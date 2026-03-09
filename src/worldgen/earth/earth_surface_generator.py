@@ -176,7 +176,7 @@ def generate_earth_surface_tile_plan(
         0,
         1000,
     )
-    land_threshold = int(ocean_fraction_target)
+    land_threshold = _clamp(int(ocean_fraction_target) - 120, 350, 850)
     is_land = continent_score >= land_threshold
     coastal_proximity_permille = _clamp(1000 - (abs(continent_score - land_threshold) * 4), 0, 1000)
 
@@ -213,9 +213,16 @@ def generate_earth_surface_tile_plan(
     temperate_min_kelvin = _clamp(_as_int(biome_thresholds.get("temperate_min_kelvin", 265), 265), 220, 320)
     tropical_min_kelvin = _clamp(_as_int(biome_thresholds.get("tropical_min_kelvin", 295), 295), temperate_min_kelvin, 340)
     is_ice = bool(
-        abs(int(latitude_mdeg)) >= polar_latitude_mdeg
-        or int(temperature_value) <= ice_temperature_kelvin
-        or (abs(int(latitude_mdeg)) >= (polar_latitude_mdeg - 4_000) and not is_land and coastal_proximity_permille >= (820 - polar_ice_bonus))
+        (
+            abs(int(latitude_mdeg)) >= polar_latitude_mdeg
+            and int(temperature_value) <= (ice_temperature_kelvin + 24)
+        )
+        or (
+            abs(int(latitude_mdeg)) >= (polar_latitude_mdeg - 2_000)
+            and not is_land
+            and int(temperature_value) <= ice_temperature_kelvin
+            and coastal_proximity_permille >= (860 - polar_ice_bonus)
+        )
     )
 
     if is_ice:
