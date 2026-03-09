@@ -133,6 +133,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-EAGER-SYSTEM-GENERATION`
 - `INV-L2-OBJECTS-ID-STABLE`
 - `INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN`
+- `INV-SURFACE-GEN-ROUTED`
+- `INV-TILES-ON-DEMAND-ONLY`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -439,6 +441,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when MW-2 orbit generation loses the deterministic push-out and periapsis-clamp markers that replace retry sampling.
 - Fails when retry-loop tokens are introduced into the governed L2 refinement surface.
 - Preserves bounded deterministic orbital-spacing adjustment with no random retry behavior.
+
+### INV-SURFACE-GEN-ROUTED
+
+- Fails when MW-3 surface generation loses the explicit routing and delegation markers from the governed runtime surface.
+- Fails when Earth-specific generator selection drifts into runtime code instead of remaining registry-driven.
+- Preserves overlay-safe Earth delegation and pack-driven surface specialization.
+
+### INV-TILES-ON-DEMAND-ONLY
+
+- Fails when MW-3 surface refinement loses the explicit tile-scoped generation markers in the canonical runtime path.
+- Fails when eager planet-surface expansion tokens appear in the governed MW-3 files.
+- Preserves L3 as a single-tile on-demand refinement path with bounded field and geometry initialization.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

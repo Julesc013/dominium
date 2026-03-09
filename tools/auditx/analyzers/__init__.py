@@ -384,6 +384,8 @@ from analyzers import e357_direct_system_spawn_smell
 from analyzers import e358_nondeterministic_query_smell
 from analyzers import e359_nondeterministic_orbit_smell
 from analyzers import e360_unbounded_generation_smell
+from analyzers import e361_hardcoded_earth_gen_smell
+from analyzers import e362_eager_tile_generation_smell
 
 
 ANALYZERS = (
@@ -771,6 +773,8 @@ ANALYZERS = (
     e358_nondeterministic_query_smell,
     e359_nondeterministic_orbit_smell,
     e360_unbounded_generation_smell,
+    e361_hardcoded_earth_gen_smell,
+    e362_eager_tile_generation_smell,
 )
 
 

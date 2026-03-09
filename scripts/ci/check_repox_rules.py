@@ -278,7 +278,12 @@ MW_CELL_GENERATOR_REL = os.path.join("src", "worldgen", "mw", "mw_cell_generator
 MW_WORLDGEN_ENGINE_REL = os.path.join("src", "geo", "worldgen", "worldgen_engine.py")
 MW_SYSTEM_QUERY_ENGINE_REL = os.path.join("src", "worldgen", "mw", "system_query_engine.py")
 MW_SYSTEM_REFINER_L2_REL = os.path.join("src", "worldgen", "mw", "mw_system_refiner_l2.py")
+MW_SURFACE_REFINER_L3_REL = os.path.join("src", "worldgen", "mw", "mw_surface_refiner_l3.py")
+MW_INSOLATION_PROXY_REL = os.path.join("src", "worldgen", "mw", "insolation_proxy.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
+MW_SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
+MW_SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
+MW_SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_routing_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
 MW_CATALOG_PATH_TOKENS = (
@@ -303,6 +308,21 @@ MW_SYSTEM_EAGER_TOKENS = (
     "generate_all_star_systems",
     "discover_entire_galaxy",
     "list_all_galaxy_systems",
+)
+MW_SURFACE_EAGER_TOKENS = (
+    "generate_all_surface_tiles",
+    "instantiate_all_surface_tiles",
+    "precompute_surface_tiles",
+    "expand_entire_surface",
+    "planet_surface_full_pass",
+    "for tile_index in range(",
+    "for latitude_band in range(",
+    "for longitude_band in range(",
+)
+MW_SURFACE_RUNTIME_EARTH_TOKENS = (
+    "planet.earth",
+    "gen.surface.earth_stub",
+    "earth_surface_generator",
 )
 MVP_DIST_ALIAS_RELS = (
     os.path.join("dist", "packs", "base", "pack.base.procedural", "pack.alias.json"),
@@ -4054,6 +4074,163 @@ def check_no_random_retry_loops_in_worldgen(repo_root):
     return violations
 
 
+def check_surface_gen_routed(repo_root):
+    invariant_id = "INV-SURFACE-GEN-ROUTED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    process_runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    doc_rel = os.path.join("docs", "worldgen", "PLANET_SURFACE_MACRO_MODEL.md")
+    violations = []
+    required_tokens = {
+        MW_SURFACE_REFINER_L3_REL: (
+            "_select_surface_route(",
+            "_resolve_generator(",
+            "surface_generator_routing_rows(",
+            "surface_generator_rows(",
+            "selected_generator_row",
+            "handler_row",
+        ),
+        MW_WORLDGEN_ENGINE_REL: (
+            "generate_mw_surface_l3_payload(",
+            "surface_routing_id",
+            "surface_generator_id",
+            "surface_handler_id",
+        ),
+        process_runtime_rel: (
+            "worldgen_surface_tile_artifacts",
+            "artifact.surface_tile_artifact",
+            "surface_tile_artifact_count",
+        ),
+        MW_SURFACE_GENERATOR_REGISTRY_REL: (
+            "gen.surface.default_stub",
+            "gen.surface.earth_stub",
+            "delegate_generator_id",
+        ),
+        MW_SURFACE_GENERATOR_ROUTING_REGISTRY_REL: (
+            "route.default",
+            "route.earth",
+            "gen.surface.default_stub",
+            "gen.surface.earth_stub",
+            "planet.earth",
+        ),
+        doc_rel: (
+            "Generator Routing",
+            "runtime code must not branch on",
+            "earth_surface_generator",
+            "planet.earth",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing surface-routing marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (MW_SURFACE_REFINER_L3_REL, MW_WORLDGEN_ENGINE_REL, process_runtime_rel):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in MW_SURFACE_RUNTIME_EARTH_TOKENS if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: hardcoded Earth-routing token '{}' forbidden in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
+def check_tiles_on_demand_only(repo_root):
+    invariant_id = "INV-TILES-ON-DEMAND-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    process_runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    doc_rel = os.path.join("docs", "worldgen", "PLANET_SURFACE_MACRO_MODEL.md")
+    violations = []
+    required_tokens = {
+        MW_SURFACE_REFINER_L3_REL: (
+            "surface_geo_cell_key",
+            "kind.surface_tile",
+            "generated_surface_tile_artifact_rows",
+            "field_initializations",
+            "geometry_initializations",
+        ),
+        MW_WORLDGEN_ENGINE_REL: (
+            "_surface_request_context(",
+            "ancestor_world_cell_key",
+            "generate_mw_surface_l3_payload(",
+            "generated_surface_tile_artifact_rows",
+        ),
+        process_runtime_rel: (
+            "worldgen_surface_tile_artifacts",
+            "surface_tile_artifact_count",
+            "geometry_initializations",
+            "field_initializations",
+        ),
+        MW_INSOLATION_PROXY_REL: (
+            "daylight_proxy_permille(",
+            "insolation_proxy_permille(",
+            "season_phase_permille(",
+        ),
+        doc_rel: (
+            "requested tile only",
+            "never eagerly expands all surface tiles",
+            "no eager neighboring tile generation is permitted",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing on-demand tile marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (MW_SURFACE_REFINER_L3_REL, MW_WORLDGEN_ENGINE_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in MW_SURFACE_EAGER_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: eager tile-generation token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -6949,6 +7126,8 @@ def main() -> int:
                 lambda: check_no_eager_system_generation(repo_root),
                 lambda: check_l2_objects_id_stable(repo_root),
                 lambda: check_no_random_retry_loops_in_worldgen(repo_root),
+                lambda: check_surface_gen_routed(repo_root),
+                lambda: check_tiles_on_demand_only(repo_root),
             ],
         },
         {

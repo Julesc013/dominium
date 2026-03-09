@@ -147,6 +147,9 @@ Routing surfaces:
 
 - default generator: `gen.surface.default_stub`
 - Earth placeholder generator: `gen.surface.earth_stub`
+- selector aliases:
+  - `planet_default_surface_generator` -> `gen.surface.default_stub`
+  - `earth_surface_generator` -> `gen.surface.earth_stub`
 
 Allowed selector kinds:
 

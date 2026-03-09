@@ -575,6 +575,33 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SURFACE-GEN-ROUTED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/mw_surface_refiner_l3.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "data/registries/surface_generator_registry.json",
+        "data/registries/surface_generator_routing_registry.json",
+        "docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-surface-gen-routed",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TILES-ON-DEMAND-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/mw_surface_refiner_l3.py",
+        "src/worldgen/mw/insolation_proxy.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tiles-on-demand-only",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [
