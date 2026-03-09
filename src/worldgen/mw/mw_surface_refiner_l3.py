@@ -16,14 +16,17 @@ from src.geo.index.object_id_engine import geo_object_id
 from src.worldgen.earth import (
     DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     DEFAULT_HYDROLOGY_PARAMS_ID,
+    DEFAULT_TIDE_PARAMS_ID,
     apply_hydrology_to_surface_tile_artifact,
     build_fluid_channel_guidance,
     build_poll_transport_stub,
     compute_hydrology_window,
     earth_climate_params_rows,
     evaluate_earth_tile_climate,
+    evaluate_earth_tile_tide,
     generate_earth_surface_tile_plan,
     hydrology_params_rows,
+    tide_params_rows,
 )
 
 from .insolation_proxy import daylight_proxy_permille, insolation_proxy_permille, orbital_period_proxy_ticks, season_phase_permille
@@ -622,6 +625,7 @@ def generate_mw_surface_l3_payload(
     earth_surface_params_registry_payload: Mapping[str, object] | None = None,
     earth_climate_params_registry_payload: Mapping[str, object] | None = None,
     hydrology_params_registry_payload: Mapping[str, object] | None = None,
+    tide_params_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     surface_cell_key = _coerce_cell_key(surface_geo_cell_key)
     ancestor_key = _coerce_cell_key(ancestor_world_cell_key)
@@ -697,6 +701,8 @@ def generate_mw_surface_l3_payload(
     earth_surface_params_row = {}
     earth_climate_params_row = {}
     earth_climate_params_id = ""
+    tide_params_id = ""
+    tide_params_row = {}
     if handler_id == "earth.surface.stub":
         earth_surface_params_id = str(_as_map(_as_map(selected_generator_row).get("extensions")).get("earth_surface_params_id", "")).strip()
         earth_surface_params_row = _as_map(earth_surface_params_rows(earth_surface_params_registry_payload).get(earth_surface_params_id))
@@ -722,6 +728,20 @@ def generate_mw_surface_l3_payload(
                 "details": {
                     "surface_priors_id": surface_priors_id,
                     "earth_climate_params_id": earth_climate_params_id,
+                },
+                "deterministic_fingerprint": "",
+            }
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+            return payload
+        tide_params_id = str(surface_priors_row.get("tide_params_ref", "")).strip() or DEFAULT_TIDE_PARAMS_ID
+        tide_params_row = _as_map(tide_params_rows(tide_params_registry_payload).get(tide_params_id))
+        if not tide_params_row:
+            payload = {
+                "result": "refused",
+                "message": "earth surface generator route is missing declared tide parameters",
+                "details": {
+                    "surface_priors_id": surface_priors_id,
+                    "tide_params_id": tide_params_id,
                 },
                 "deterministic_fingerprint": "",
             }
@@ -844,6 +864,7 @@ def generate_mw_surface_l3_payload(
             "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
             "handler_id": handler_id,
             "earth_climate_params_id": earth_climate_params_id,
+            "tide_params_id": tide_params_id,
             "orbital_period_ticks": int(orbital_period_ticks),
             "season_phase_permille": int(season_phase_value),
             "insolation_permille": int(insolation_value),
@@ -877,6 +898,7 @@ def generate_mw_surface_l3_payload(
         "source": MW_SURFACE_REFINER_L3_VERSION,
     }
     climate_evaluation = {}
+    tide_evaluation = {}
     if handler_id == "earth.surface.stub" and earth_climate_params_row:
         climate_evaluation = evaluate_earth_tile_climate(
             artifact_row=tile_artifact_row,
@@ -897,6 +919,12 @@ def generate_mw_surface_l3_payload(
             ],
             "source": MW_SURFACE_REFINER_L3_VERSION,
         }
+    if handler_id == "earth.surface.stub" and tide_params_row:
+        tide_evaluation = evaluate_earth_tile_tide(
+            artifact_row=tile_artifact_row,
+            tide_params_row=tide_params_row,
+            current_tick=max(0, _as_int(current_tick, 0)),
+        )
     tile_artifact_row["deterministic_fingerprint"] = canonical_sha256(dict(tile_artifact_row, deterministic_fingerprint=""))
 
     field_layers = [
@@ -937,6 +965,27 @@ def generate_mw_surface_l3_payload(
             },
         ),
     ]
+    if handler_id == "earth.surface.stub" and tide_params_row:
+        field_layers.append(
+            build_field_layer(
+                field_id="field.tide_height_proxy.surface.{}".format(planet_object_token),
+                field_type_id="field.tide_height_proxy",
+                spatial_scope_id="spatial.surface.{}".format(planet_object_token),
+                resolution_level="macro",
+                update_policy_id="field.profile_defined",
+                extensions={
+                    "topology_profile_id": str(surface_cell_key.get("topology_profile_id", "")).strip(),
+                    "partition_profile_id": str(surface_cell_key.get("partition_profile_id", "")).strip(),
+                    "chart_id": str(surface_cell_key.get("chart_id", "")).strip(),
+                    "storage_kind": "tile",
+                    "interpolation_policy_id": "interp.atlas_nearest",
+                    "planet_object_id": planet_object_token,
+                    "field_domain": "surface_macro",
+                    "tide_params_id": tide_params_id,
+                    "source": "EARTH3-4",
+                },
+            )
+        )
     field_initializations = [
         build_field_cell(
             field_id="field.temperature.surface.{}".format(planet_object_token),
@@ -965,6 +1014,22 @@ def generate_mw_surface_l3_payload(
                 },
             ),
     ]
+    if handler_id == "earth.surface.stub" and tide_params_row:
+        field_initializations.append(
+            build_field_cell(
+                field_id="field.tide_height_proxy.surface.{}".format(planet_object_token),
+                value=int(_as_int(tide_evaluation.get("tide_height_value", 0), 0)),
+                last_updated_tick=max(0, _as_int(current_tick, 0)),
+                geo_cell_key=surface_cell_key,
+                extensions={
+                    "field_type_id": "field.tide_height_proxy",
+                    "planet_object_id": planet_object_token,
+                    "tide_params_id": tide_params_id,
+                    "initialization_kind": "earth3_surface_tide",
+                    "source": "EARTH3-4",
+                },
+            )
+        )
     if atmosphere_class_id and atmosphere_class_id != "atmo.none":
         field_layers.append(
             build_field_layer(
@@ -1019,6 +1084,7 @@ def generate_mw_surface_l3_payload(
         "surface_priors_id": surface_priors_id,
         "earth_climate_params_id": earth_climate_params_id,
         "hydrology_params_id": hydrology_params_id,
+        "tide_params_id": tide_params_id,
         "routing_id": str(route_row.get("routing_id", "")).strip(),
         "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
         "handler_id": handler_id,
@@ -1038,6 +1104,7 @@ def generate_mw_surface_l3_payload(
             "insolation_value": int(insolation_value),
             "earth_orbit_phase": int(_as_int(climate_evaluation.get("orbit_phase", 0), 0)),
             "earth_climate_params_id": earth_climate_params_id,
+            "tide_params_id": tide_params_id,
             "material_baseline_id": material_baseline_id,
             "biome_stub_id": biome_stub_id,
             "latitude_mdeg": int(latitude_mdeg),
@@ -1064,6 +1131,9 @@ def generate_mw_surface_l3_payload(
             ],
             "poll_transport_stub": _as_map(_as_map(tile_artifact_row.get("extensions")).get("poll_transport_stub")),
             "fluid_channel_guidance": _as_map(_as_map(tile_artifact_row.get("extensions")).get("fluid_channel_guidance")),
+            "tide_height_value": int(_as_int(tide_evaluation.get("tide_height_value", 0), 0)),
+            "lunar_phase": int(_as_int(tide_evaluation.get("lunar_phase", 0), 0)),
+            "rotation_phase": int(_as_int(tide_evaluation.get("rotation_phase", 0), 0)),
             "hydrology_window_fingerprint": str(hydrology_payload.get("window_fingerprint", "")).strip(),
             "current_tick": int(max(0, _as_int(current_tick, 0))),
             "deterministic_fingerprint": "",
