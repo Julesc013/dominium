@@ -1006,6 +1006,8 @@ def generate_mw_surface_l3_payload(
                 for tag in list(_as_map(tile_artifact_row.get("extensions")).get("biome_overlay_tags") or [])
                 if str(tag).strip()
             ],
+            "poll_transport_stub": _as_map(_as_map(tile_artifact_row.get("extensions")).get("poll_transport_stub")),
+            "fluid_channel_guidance": _as_map(_as_map(tile_artifact_row.get("extensions")).get("fluid_channel_guidance")),
             "hydrology_window_fingerprint": str(hydrology_payload.get("window_fingerprint", "")).strip(),
             "current_tick": int(max(0, _as_int(current_tick, 0))),
             "deterministic_fingerprint": "",
