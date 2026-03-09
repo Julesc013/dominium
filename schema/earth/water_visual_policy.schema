@@ -1,0 +1,28 @@
+SCHEMA: earth/water_visual_policy.schema
+schema_id: dominium.schema.earth.water_visual_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic EARTH-8 water-visual policy rows.
+- Bound derived river width, lake fill heuristics, reflection strength, and tide-offset visual influence.
+
+NON-SEMANTICS:
+- This schema does not encode fluid simulation state.
+- This schema does not authorize authoritative shoreline mutation.
+
+REQUIRED SHAPE:
+record water_visual_policy
+  required:
+    - policy_id: id
+    - river_width_scale: integer
+    - lake_fill_threshold: integer
+    - reflection_strength: integer
+    - tide_visual_strength: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- water visuals remain derived-only and compactable
+- tide visual influence is bounded by policy, not ad hoc renderer logic
+- fluid simulation must remain absent from MVP water presentation
