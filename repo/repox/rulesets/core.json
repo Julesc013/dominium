@@ -663,6 +663,32 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-HYDROLOGY-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/hydrology_engine.py",
+        "src/worldgen/mw/mw_surface_refiner_l3.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/worldgen/earth1_probe.py",
+        "tools/worldgen/tool_replay_hydrology_window.py",
+        "docs/worldgen/EARTH_HYDROLOGY_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-hydrology-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-RANDOM-FLOW",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/hydrology_engine.py",
+        "tools/worldgen/earth1_probe.py",
+        "tools/worldgen/tool_replay_hydrology_window.py",
+        "docs/worldgen/EARTH_HYDROLOGY_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-random-flow",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-ASSET-DEPENDENCY-FOR-EMB",
       "severity": "FAIL",
       "scope_paths": [

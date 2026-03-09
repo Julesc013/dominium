@@ -281,16 +281,21 @@ MW_SYSTEM_REFINER_L2_REL = os.path.join("src", "worldgen", "mw", "mw_system_refi
 MW_SURFACE_REFINER_L3_REL = os.path.join("src", "worldgen", "mw", "mw_surface_refiner_l3.py")
 MW_INSOLATION_PROXY_REL = os.path.join("src", "worldgen", "mw", "insolation_proxy.py")
 EARTH_SURFACE_GENERATOR_REL = os.path.join("src", "worldgen", "earth", "earth_surface_generator.py")
+EARTH_HYDROLOGY_ENGINE_REL = os.path.join("src", "worldgen", "earth", "hydrology_engine.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
 MW_SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
 MW_SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
 MW_SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_routing_registry.json")
 EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_surface_params_registry.json")
+EARTH_HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "hydrology_params_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
 EARTH_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth0_probe.py")
+EARTH_HYDROLOGY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth1_probe.py")
 EARTH_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_earth_surface.py")
+EARTH_HYDROLOGY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_hydrology_window.py")
 EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
+EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -341,6 +346,7 @@ EARTH_REAL_DATA_FORBIDDEN_TOKENS = (
     "dem_source",
 )
 EARTH_NONDETERMINISTIC_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
+EARTH_HYDROLOGY_FORBIDDEN_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(", "random.seed(")
 EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
 EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
 EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
@@ -4672,6 +4678,144 @@ def check_earth_gen_deterministic(repo_root):
     return violations
 
 
+def check_hydrology_deterministic(repo_root):
+    invariant_id = "INV-HYDROLOGY-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_HYDROLOGY_ENGINE_REL: (
+            "compute_hydrology_window(",
+            "analysis_radius",
+            "max_window_tiles",
+            "sorted_for_accumulation",
+            "drainage_accumulation_proxy",
+            "river_flag",
+        ),
+        MW_SURFACE_REFINER_L3_REL: (
+            "hydrology_params_id",
+            "compute_hydrology_window(",
+            "apply_hydrology_to_surface_tile_artifact(",
+            "poll_transport_stub",
+            "fluid_channel_guidance",
+        ),
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"): (
+            "_recompute_surface_tile_hydrology(",
+            "hydrology_dirty_tile_count",
+            "hydrology_recomputed_tile_count",
+        ),
+        EARTH_HYDROLOGY_PROBE_TOOL_REL: (
+            "verify_hydrology_window_replay",
+            "verify_local_edit_hydrology_update",
+            "verify_river_threshold_fixture",
+        ),
+        EARTH_HYDROLOGY_REPLAY_TOOL_REL: (
+            "verify_hydrology_window_replay",
+            "EARTH-1 hydrology window replay determinism",
+        ),
+        EARTH_HYDROLOGY_DOC_REL: (
+            "bounded local recompute after geometry edits",
+            "no recursion is allowed",
+            "POLL transport stubs may follow `flow_target_tile_key` chains",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing hydrology marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EARTH_HYDROLOGY_ENGINE_REL, EARTH_HYDROLOGY_PROBE_TOOL_REL, EARTH_HYDROLOGY_REPLAY_TOOL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EARTH_HYDROLOGY_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: nondeterministic token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_random_flow(repo_root):
+    invariant_id = "INV-NO-RANDOM-FLOW"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_HYDROLOGY_ENGINE_REL: (
+            "lower_neighbors.sort(",
+            "_geo_cell_key_sort_tuple(",
+            "sorted_for_accumulation",
+            "accumulation_by_hash",
+            "flow_target_by_hash",
+        ),
+        EARTH_HYDROLOGY_PROBE_TOOL_REL: (
+            "build_synthetic_river_fixture",
+            "verify_river_threshold_fixture",
+            "verify_window_monotonicity",
+        ),
+        EARTH_HYDROLOGY_DOC_REL: (
+            "no random tie-breaking is allowed",
+            "GEO neighbor iteration order must remain canonical",
+            "Hydrology may inspect the center tile plus its immediate neighbors only",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing deterministic-flow marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EARTH_HYDROLOGY_ENGINE_REL, EARTH_HYDROLOGY_PROBE_TOOL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in EARTH_HYDROLOGY_FORBIDDEN_TOKENS if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: forbidden random-flow token '{}' present in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_asset_dependency_for_emb(repo_root):
     invariant_id = "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
     if is_override_active(repo_root, invariant_id):
@@ -7912,6 +8056,8 @@ def main() -> int:
                 lambda: check_tiles_on_demand_only(repo_root),
                 lambda: check_no_real_data_in_earth_stub(repo_root),
                 lambda: check_earth_gen_deterministic(repo_root),
+                lambda: check_hydrology_deterministic(repo_root),
+                lambda: check_no_random_flow(repo_root),
             ],
         },
         {

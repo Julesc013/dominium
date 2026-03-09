@@ -140,6 +140,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-TILES-ON-DEMAND-ONLY`
 - `INV-NO-REAL-DATA-IN-EARTH-STUB`
 - `INV-EARTH-GEN-DETERMINISTIC`
+- `INV-HYDROLOGY-DETERMINISTIC`
+- `INV-NO-RANDOM-FLOW`
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
 - `INV-LENS-PROFILED`
 - `INV-BODY-MOTION-PROCESS-ONLY`
@@ -475,6 +477,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the governed EARTH-0 generator surfaces lose the explicit named-seed, interpolated-noise, and routed-handler markers.
 - Fails when nondeterministic RNG or wall-clock style tokens appear in the EARTH-0 runtime or verification path.
 - Preserves replay-stable Earth macro generation and cross-platform hash expectations.
+
+### INV-HYDROLOGY-DETERMINISTIC
+
+- Fails when the governed EARTH-1 hydrology runtime surface loses the explicit bounded-window, accumulation-order, and local-recompute markers.
+- Fails when replay/probe tooling or process-runtime integration drifts away from the canonical hydrology proof path.
+- Preserves replay-stable flow routing, drainage accumulation, and geometry-edit recompute behavior for EARTH-1.
+
+### INV-NO-RANDOM-FLOW
+
+- Fails when the EARTH-1 hydrology runtime path loses the explicit canonical tie-break and sorted accumulation markers.
+- Fails when random, time-seeded, or other nondeterministic flow-selection tokens appear in the hydrology runtime or probe surface.
+- Preserves deterministic downhill selection and river-threshold behavior with no random flow arbitration.
 
 ### INV-NO-ASSET-DEPENDENCY-FOR-EMB
 

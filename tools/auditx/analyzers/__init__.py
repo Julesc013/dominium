@@ -394,6 +394,8 @@ from analyzers import e367_asset_dependency_smell
 from analyzers import e368_direct_position_write_smell
 from analyzers import e369_ui_truth_leak_smell
 from analyzers import e370_uninstrumented_inspect_smell
+from analyzers import e371_random_river_smell
+from analyzers import e372_recursion_without_bound_smell
 
 
 ANALYZERS = (
@@ -791,6 +793,8 @@ ANALYZERS = (
     e368_direct_position_write_smell,
     e369_ui_truth_leak_smell,
     e370_uninstrumented_inspect_smell,
+    e371_random_river_smell,
+    e372_recursion_without_bound_smell,
 )
 
 
