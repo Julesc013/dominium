@@ -498,7 +498,7 @@ def evaluate_pollution_dispersion(
     processed_source_event_ids: object,
     field_cell_rows: object,
     neighbor_map_by_cell: Mapping[str, object] | None = None,
-    wind_field_id: str = "field.wind",
+    wind_field_id: str = "field.wind_vector",
     max_cell_updates_per_tick: int = 0,
 ) -> dict:
     tick = int(max(0, _as_int(current_tick, 0)))
@@ -516,7 +516,10 @@ def evaluate_pollution_dispersion(
             continue
         source_rows.append(dict(row))
 
-    wind_by_cell = _wind_by_cell(field_cell_rows, field_id=str(wind_field_id or "").strip() or "field.wind")
+    requested_wind_field_id = str(wind_field_id or "").strip() or "field.wind_vector"
+    wind_by_cell = _wind_by_cell(field_cell_rows, field_id=requested_wind_field_id)
+    if (not wind_by_cell) and requested_wind_field_id != "field.wind":
+        wind_by_cell = _wind_by_cell(field_cell_rows, field_id="field.wind")
     neighbor_map = dict(neighbor_map_by_cell or {})
 
     updates: List[dict] = []
@@ -675,6 +678,7 @@ def evaluate_pollution_dispersion(
                     extensions={
                         "neighbor_count": len(neighbor_ids),
                         "wind_enabled": bool(wind_enabled),
+                        "wind_field_id": requested_wind_field_id if wind_by_cell else "field.wind",
                     },
                 )
             )
