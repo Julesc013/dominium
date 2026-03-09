@@ -4082,6 +4082,17 @@ def _ensure_earth_climate_runtime_state(state: dict) -> dict:
             if row.get("last_processed_tick") is None
             else int(max(-1, _as_int(row.get("last_processed_tick", -1), -1)))
         ),
+        "last_tick_window_start": (
+            None
+            if row.get("last_tick_window_start") is None
+            else int(max(0, _as_int(row.get("last_tick_window_start", 0), 0)))
+        ),
+        "last_tick_window_end": (
+            None
+            if row.get("last_tick_window_end") is None
+            else int(max(0, _as_int(row.get("last_tick_window_end", 0), 0)))
+        ),
+        "last_tick_window_span": int(max(0, _as_int(row.get("last_tick_window_span", 0), 0))),
         "last_climate_params_id": str(row.get("last_climate_params_id", "")).strip(),
         "last_due_bucket_ids": [int(max(0, _as_int(item, 0))) for item in list(row.get("last_due_bucket_ids") or [])],
         "last_updated_tile_ids": _sorted_tokens(list(row.get("last_updated_tile_ids") or [])),
@@ -4703,6 +4714,14 @@ def _recompute_earth_climate_fields(
     runtime_state = _ensure_earth_climate_runtime_state(state)
     climate_registry = _earth_climate_params_registry_payload(policy_context)
     climate_rows_by_id = earth_climate_params_rows(climate_registry)
+    previous_tick = runtime_state.get("last_processed_tick")
+    if previous_tick is None:
+        tick_window_start = int(max(0, _as_int(current_tick, 0)))
+    else:
+        previous_tick_value = int(_as_int(previous_tick, -1))
+        tick_window_start = int(max(0, previous_tick_value + 1 if int(current_tick) > previous_tick_value else int(current_tick)))
+    tick_window_end = int(max(0, _as_int(current_tick, 0)))
+    tick_window_span = int(max(1, tick_window_end - tick_window_start + 1))
     climate_params_id = str(runtime_state.get("last_climate_params_id", "")).strip() or DEFAULT_EARTH_CLIMATE_PARAMS_ID
     climate_row = _as_map(climate_rows_by_id.get(climate_params_id))
     if not climate_row:
@@ -4811,6 +4830,9 @@ def _recompute_earth_climate_fields(
         extensions={
             "source_process_id": process_id,
             "climate_params_id": climate_params_id,
+            "tick_window_start": int(tick_window_start),
+            "tick_window_end": int(tick_window_end),
+            "tick_window_span": int(tick_window_span),
             "due_bucket_ids": [int(item) for item in list(plan.get("due_bucket_ids") or [])],
             "selected_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
             "skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
@@ -4831,6 +4853,9 @@ def _recompute_earth_climate_fields(
     runtime_payload = {
         "version": "EARTH2-4",
         "last_processed_tick": int(max(0, _as_int(current_tick, 0))),
+        "last_tick_window_start": int(tick_window_start),
+        "last_tick_window_end": int(tick_window_end),
+        "last_tick_window_span": int(tick_window_span),
         "last_climate_params_id": climate_params_id,
         "last_due_bucket_ids": [int(item) for item in list(plan.get("due_bucket_ids") or [])],
         "last_updated_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
@@ -4849,6 +4874,9 @@ def _recompute_earth_climate_fields(
         "result": "complete",
         "climate_params_id": climate_params_id,
         "climate_params_registry_hash": canonical_sha256(climate_registry),
+        "tick_window_start": int(tick_window_start),
+        "tick_window_end": int(tick_window_end),
+        "tick_window_span": int(tick_window_span),
         "due_bucket_ids": [int(item) for item in list(plan.get("due_bucket_ids") or [])],
         "selected_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
         "skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
@@ -60127,6 +60155,9 @@ def execute_intent(
         result_metadata = {
             "climate_params_id": str(climate_result.get("climate_params_id", "")).strip(),
             "climate_params_registry_hash": str(climate_result.get("climate_params_registry_hash", "")).strip(),
+            "tick_window_start": int(_as_int(climate_result.get("tick_window_start", 0), 0)),
+            "tick_window_end": int(_as_int(climate_result.get("tick_window_end", 0), 0)),
+            "tick_window_span": int(_as_int(climate_result.get("tick_window_span", 0), 0)),
             "due_bucket_ids": [int(item) for item in list(climate_result.get("due_bucket_ids") or [])],
             "selected_tile_ids": _sorted_tokens(list(climate_result.get("selected_tile_ids") or [])),
             "skipped_tile_ids": _sorted_tokens(list(climate_result.get("skipped_tile_ids") or [])),
