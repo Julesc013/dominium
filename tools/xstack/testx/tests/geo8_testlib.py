@@ -66,6 +66,7 @@ def seed_worldgen_state():
     state["worldgen_requests"] = []
     state["worldgen_results"] = []
     state["worldgen_spawned_objects"] = []
+    state["worldgen_star_system_artifacts"] = []
     return state
 
 
