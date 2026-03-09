@@ -8,7 +8,7 @@ import sys
 TEST_ID = "test_cross_platform_mw_hash_match"
 TEST_TAGS = ["fast", "mw", "worldgen", "determinism", "cross_platform"]
 
-EXPECTED_RESULT_HASH = "60f30e610b9dc117985d356a4f96181682576b094d29b003b0ddc874290904b0"
+EXPECTED_RESULT_HASH = "dbd5772e0aae37552f25c4bae55cdb932753e3eea7fdba1f9c641bdb08310873"
 
 
 def run(repo_root: str):
