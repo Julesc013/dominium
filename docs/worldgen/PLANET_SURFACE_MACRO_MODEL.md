@@ -146,7 +146,7 @@ Surface generation is selected through registries, never through hardcoded objec
 Routing surfaces:
 
 - default generator: `gen.surface.default_stub`
-- Earth placeholder generator: `gen.surface.earth_stub`
+- Earth-specific generator: `gen.surface.earth_stub`
 - selector aliases:
   - `planet_default_surface_generator` -> `gen.surface.default_stub`
   - `earth_surface_generator` -> `gen.surface.earth_stub`
@@ -168,7 +168,8 @@ Rules:
 
 - runtime code must not branch on `"Earth"` or `planet.earth` literals to choose the generator
 - later Sol/Earth overlays may supply route tags such as `planet.earth`
-- route selection may delegate from a placeholder generator to a default stub only through data-declared registry metadata
+- route selection must resolve through data-declared registry metadata
+- the routed Earth handler for EARTH-0 is `earth.surface.stub`
 
 ## 8. Refinement L3
 
@@ -195,7 +196,7 @@ MW-3 reserves Earth specialization without embedding Earth logic in the base run
 Rules:
 
 - Earth-specific generation must enter through overlay tags or generator routing registry rows
-- the default procedural generator remains valid if the Earth-specific generator is absent
+- the default procedural generator remains valid for non-Earth planets
 - future Earth packs may enrich tile content, but must preserve stable tile identity and tile ancestry
 
 ## 10. Non-Goals

@@ -280,12 +280,17 @@ MW_SYSTEM_QUERY_ENGINE_REL = os.path.join("src", "worldgen", "mw", "system_query
 MW_SYSTEM_REFINER_L2_REL = os.path.join("src", "worldgen", "mw", "mw_system_refiner_l2.py")
 MW_SURFACE_REFINER_L3_REL = os.path.join("src", "worldgen", "mw", "mw_surface_refiner_l3.py")
 MW_INSOLATION_PROXY_REL = os.path.join("src", "worldgen", "mw", "insolation_proxy.py")
+EARTH_SURFACE_GENERATOR_REL = os.path.join("src", "worldgen", "earth", "earth_surface_generator.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
 MW_SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
 MW_SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
 MW_SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_routing_registry.json")
+EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_surface_params_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
+EARTH_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth0_probe.py")
+EARTH_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_earth_surface.py")
+EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -324,6 +329,18 @@ MW_SURFACE_RUNTIME_EARTH_TOKENS = (
     "gen.surface.earth_stub",
     "earth_surface_generator",
 )
+EARTH_REAL_DATA_FORBIDDEN_TOKENS = (
+    "gdal",
+    ".tif",
+    ".hgt",
+    "heightmap",
+    "shapefile",
+    "country_border",
+    "city_dataset",
+    "real_dem",
+    "dem_source",
+)
+EARTH_NONDETERMINISTIC_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
 MVP_DIST_ALIAS_RELS = (
     os.path.join("dist", "packs", "base", "pack.base.procedural", "pack.alias.json"),
     os.path.join("dist", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
@@ -4332,7 +4349,8 @@ def check_surface_gen_routed(repo_root):
         MW_SURFACE_GENERATOR_REGISTRY_REL: (
             "gen.surface.default_stub",
             "gen.surface.earth_stub",
-            "delegate_generator_id",
+            "earth.surface.stub",
+            "earth_surface_params_id",
         ),
         MW_SURFACE_GENERATOR_ROUTING_REGISTRY_REL: (
             "route.default",
@@ -4344,7 +4362,7 @@ def check_surface_gen_routed(repo_root):
         doc_rel: (
             "Generator Routing",
             "runtime code must not branch on",
-            "earth_surface_generator",
+            "earth.surface.stub",
             "planet.earth",
         ),
     }
@@ -4449,6 +4467,143 @@ def check_tiles_on_demand_only(repo_root):
             if token in text:
                 violations.append(
                     "{}: eager tile-generation token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_real_data_in_earth_stub(repo_root):
+    invariant_id = "INV-NO-REAL-DATA-IN-EARTH-STUB"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_SURFACE_GENERATOR_REL: (
+            "generate_earth_surface_tile_plan(",
+            "continent_count_target",
+            "ocean_fraction_target",
+            "surface.class.ocean",
+            "visual.class.blue_ocean",
+        ),
+        EARTH_SURFACE_PARAMS_REGISTRY_REL: (
+            "params.earth.surface_default_stub",
+            "continent_count_target",
+            "ocean_fraction_target",
+            "mountain_intensity",
+        ),
+        MW_SURFACE_GENERATOR_REGISTRY_REL: (
+            "gen.surface.earth_stub",
+            "earth.surface.stub",
+            "earth_surface_params_id",
+        ),
+        EARTH_PROCEDURAL_DOC_REL: (
+            "real DEM data",
+            "real coastlines",
+            "future higher-fidelity Earth packs",
+        ),
+        EARTH_VERIFY_TOOL_REL: (
+            "verify_earth_surface_consistency",
+            "EARTH-0 far-LOD surface consistency",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing Earth low-data marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EARTH_SURFACE_GENERATOR_REL, EARTH_PROBE_TOOL_REL, EARTH_VERIFY_TOOL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = (read_text(path) or "").lower()
+        for token in EARTH_REAL_DATA_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: real-data token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_earth_gen_deterministic(repo_root):
+    invariant_id = "INV-EARTH-GEN-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_SURFACE_GENERATOR_REL: (
+            "canonical_sha256(",
+            "tile_seed",
+            "_interpolated_noise_permille(",
+            "_triangle_wave_permille(",
+            "EARTH_SURFACE_GENERATOR_VERSION",
+        ),
+        MW_SURFACE_REFINER_L3_REL: (
+            "earth_surface_params_rows(",
+            'handler_id == "earth.surface.stub"',
+            "generate_earth_surface_tile_plan(",
+        ),
+        EARTH_PROBE_TOOL_REL: (
+            "worldgen_rng_stream_policy(",
+            "RNG_WORLDGEN_SURFACE",
+            "generate_mw_surface_l3_payload(",
+            "surface_sample_hash",
+        ),
+        EARTH_VERIFY_TOOL_REL: (
+            "verify_earth_surface_consistency",
+            "axial_tilt_affects_daylight",
+            "surface_sample_hash",
+        ),
+        EARTH_PROCEDURAL_DOC_REL: (
+            "All random variation must use named RNG substreams only.",
+            "wall-clock time must never participate",
+            "Earth generation is selected only through routing data.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing deterministic-Earth marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EARTH_SURFACE_GENERATOR_REL, EARTH_PROBE_TOOL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EARTH_NONDETERMINISTIC_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: nondeterministic token '{}' forbidden in {}".format(
                         invariant_id,
                         token,
                         normalize_path(rel),
@@ -7358,6 +7513,8 @@ def main() -> int:
                 lambda: check_no_random_retry_loops_in_worldgen(repo_root),
                 lambda: check_surface_gen_routed(repo_root),
                 lambda: check_tiles_on_demand_only(repo_root),
+                lambda: check_no_real_data_in_earth_stub(repo_root),
+                lambda: check_earth_gen_deterministic(repo_root),
             ],
         },
         {

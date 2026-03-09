@@ -29,12 +29,14 @@ REQUIRED_ROUTING_TOKENS = (
 REQUIRED_GENERATOR_TOKENS = (
     "gen.surface.default_stub",
     "gen.surface.earth_stub",
-    "delegate_generator_id",
+    "earth.surface.stub",
+    "earth_surface_params_id",
 )
 REQUIRED_DOC_TOKENS = (
     "runtime code must not branch on",
     "planet.earth",
-    "Earth placeholder generator",
+    "Earth-specific generator",
+    "earth.surface.stub",
 )
 FORBIDDEN_RUNTIME_TOKENS = (
     "planet.earth",

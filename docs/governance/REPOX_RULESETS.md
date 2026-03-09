@@ -138,6 +138,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN`
 - `INV-SURFACE-GEN-ROUTED`
 - `INV-TILES-ON-DEMAND-ONLY`
+- `INV-NO-REAL-DATA-IN-EARTH-STUB`
+- `INV-EARTH-GEN-DETERMINISTIC`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -456,6 +458,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when MW-3 surface refinement loses the explicit tile-scoped generation markers in the canonical runtime path.
 - Fails when eager planet-surface expansion tokens appear in the governed MW-3 files.
 - Preserves L3 as a single-tile on-demand refinement path with bounded field and geometry initialization.
+
+### INV-NO-REAL-DATA-IN-EARTH-STUB
+
+- Fails when the governed EARTH-0 generator surface loses the explicit low-data Earth parameter markers.
+- Fails when DEM, heightmap, shapefile, city, border, or other real-data import tokens appear in the governed EARTH-0 runtime path.
+- Preserves EARTH-0 as a procedural, replaceable, data-light Earth baseline instead of a hidden real-data bundle.
+
+### INV-EARTH-GEN-DETERMINISTIC
+
+- Fails when the governed EARTH-0 generator surfaces lose the explicit named-seed, interpolated-noise, and routed-handler markers.
+- Fails when nondeterministic RNG or wall-clock style tokens appear in the EARTH-0 runtime or verification path.
+- Preserves replay-stable Earth macro generation and cross-platform hash expectations.
 
 ### INV-SOL-PACK-MINIMAL-SIZE
 

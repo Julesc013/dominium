@@ -388,6 +388,8 @@ from analyzers import e361_hardcoded_earth_gen_smell
 from analyzers import e362_eager_tile_generation_smell
 from analyzers import e363_large_data_in_pin_pack_smell
 from analyzers import e364_identity_override_smell
+from analyzers import e365_hardcoded_dem_reference_smell
+from analyzers import e366_nondeterministic_noise_smell
 
 
 ANALYZERS = (
@@ -779,6 +781,8 @@ ANALYZERS = (
     e362_eager_tile_generation_smell,
     e363_large_data_in_pin_pack_smell,
     e364_identity_override_smell,
+    e365_hardcoded_dem_reference_smell,
+    e366_nondeterministic_noise_smell,
 )
 
 

@@ -39,6 +39,7 @@ def main() -> int:
         and bool(report.get("ocean_ratio_within_bounds"))
         and bool(report.get("polar_ice_present"))
         and bool(report.get("axial_tilt_affects_daylight"))
+        and str(report.get("surface_sample_hash", "")).strip()
     ) else 1
 
 
