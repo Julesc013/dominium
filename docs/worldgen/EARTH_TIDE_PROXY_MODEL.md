@@ -1,6 +1,7 @@
 Status: CANONICAL
-Last Updated: 2026-03-10
-Scope: EARTH-3 deterministic Moon-driven tide proxy for macro Earth surface tiles.
+Last Reviewed: 2026-03-10
+Supersedes: none
+Superseded By: none
 
 # Earth Tide Proxy Model
 

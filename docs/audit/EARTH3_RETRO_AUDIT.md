@@ -1,6 +1,7 @@
 Status: DERIVED
-Last Updated: 2026-03-10
-Scope: EARTH-3 retro audit for deterministic tide proxy integration.
+Last Reviewed: 2026-03-10
+Supersedes: none
+Superseded By: none
 
 # EARTH-3 Retro Audit
 
