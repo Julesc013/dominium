@@ -14,7 +14,7 @@ from src.geo.edit import build_geometry_cell_state
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
 
-from .insolation_proxy import daylight_proxy_permille, insolation_proxy_permille, orbital_period_proxy_ticks
+from .insolation_proxy import daylight_proxy_permille, insolation_proxy_permille, orbital_period_proxy_ticks, season_phase_permille
 
 
 DEFAULT_SURFACE_PRIORS_ID = "priors.surface_default_stub"
@@ -515,6 +515,7 @@ def generate_mw_surface_l3_payload(
         semi_major_axis_milli_au=semi_major_axis_milli_au,
         star_mass_milli_solar=star_mass_milli_solar,
     )
+    season_phase_value = season_phase_permille(current_tick=current_tick, orbital_period_ticks=orbital_period_ticks)
     daylight_params = _as_map(surface_priors_row.get("daylight_params"))
     daylight_value = daylight_proxy_permille(
         latitude_mdeg=latitude_mdeg,
@@ -578,6 +579,9 @@ def generate_mw_surface_l3_payload(
             "routing_id": str(route_row.get("routing_id", "")).strip(),
             "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
             "handler_id": str(handler_row.get("handler_id", "")).strip(),
+            "orbital_period_ticks": int(orbital_period_ticks),
+            "season_phase_permille": int(season_phase_value),
+            "insolation_permille": int(insolation_value),
             "source": MW_SURFACE_REFINER_L3_VERSION,
         },
     }
@@ -709,6 +713,9 @@ def generate_mw_surface_l3_payload(
             "temperature_value": int(temperature_value),
             "daylight_value": int(daylight_value),
             "pressure_value": int(pressure_value),
+            "orbital_period_ticks": int(orbital_period_ticks),
+            "season_phase_permille": int(season_phase_value),
+            "insolation_value": int(insolation_value),
             "material_baseline_id": material_baseline_id,
             "biome_stub_id": biome_stub_id,
             "latitude_mdeg": int(latitude_mdeg),
