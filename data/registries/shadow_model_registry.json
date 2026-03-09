@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.registry.earth.shadow_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.earth.shadow_model_registry",
+    "registry_version": "1.0.0",
+    "shadow_models": [
+      {
+        "schema_version": "1.0.0",
+        "shadow_model_id": "shadow.horizon_stub_default",
+        "kind": "horizon_stub",
+        "parameters_ref": "params.shadow.horizon.earth_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-5 bounded horizon shadow model using local macro elevation proxy samples only.",
+          "sample_count": 8,
+          "step_distance_cells": 1,
+          "sample_height_gain_units": 280,
+          "horizon_bias_mdeg": 900,
+          "soft_transition_band_mdeg": 1600,
+          "max_occlusion_mdeg": 24000,
+          "source": "EARTH5-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "shadow_model_id": "shadow.none",
+        "kind": "none",
+        "parameters_ref": "params.shadow.none",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Null shadow model for derived-lighting fallback and no-op render paths.",
+          "sample_count": 0,
+          "step_distance_cells": 0,
+          "source": "EARTH5-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH5-2"
+    }
+  }
+}

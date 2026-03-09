@@ -1,0 +1,46 @@
+{
+  "schema_id": "dominium.registry.earth.illumination_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.earth.illumination_model_registry",
+    "registry_version": "1.0.0",
+    "illumination_models": [
+      {
+        "schema_version": "1.0.0",
+        "illum_model_id": "illum.basic_diffuse_default",
+        "kind": "basic_diffuse",
+        "parameters_ref": "params.illum.basic_diffuse.earth_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-5 illumination model using derived ambient, sky-light, sun key light, and moon fill light with no truth mutation.",
+          "ambient_day_permille": 520,
+          "ambient_twilight_permille": 340,
+          "ambient_night_permille": 90,
+          "sun_key_day_permille": 960,
+          "sun_key_twilight_permille": 620,
+          "moon_fill_max_permille": 220,
+          "sky_light_day_color": {
+            "r": 156,
+            "g": 190,
+            "b": 238
+          },
+          "sky_light_twilight_color": {
+            "r": 186,
+            "g": 126,
+            "b": 104
+          },
+          "sky_light_night_color": {
+            "r": 36,
+            "g": 42,
+            "b": 68
+          },
+          "ambient_min_permille": 40,
+          "source": "EARTH5-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH5-2"
+    }
+  }
+}
