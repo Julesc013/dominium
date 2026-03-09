@@ -301,6 +301,7 @@ execution artifacts and are not authoritative.
 - `docs/ui/UI_MODDING_AND_THEMES.md`
 - `docs/ui/UI_SYSTEM_DOCTRINE.md`
 - `docs/worldgen/WORLDGEN_PIPELINE.md`
+- `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
 - `docs/worldgen/WORLDGEN_PREVIEW_AND_OPTIMIZATION.md`
 - `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`
 
