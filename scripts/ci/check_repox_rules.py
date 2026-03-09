@@ -284,6 +284,8 @@ EARTH_SURFACE_GENERATOR_REL = os.path.join("src", "worldgen", "earth", "earth_su
 EARTH_HYDROLOGY_ENGINE_REL = os.path.join("src", "worldgen", "earth", "hydrology_engine.py")
 EARTH_CLIMATE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "climate_field_engine.py")
 EARTH_SEASON_PHASE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "season_phase_engine.py")
+EARTH_TIDE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "tide_field_engine.py")
+EARTH_TIDE_PHASE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "tide_phase_engine.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
 MW_SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
 MW_SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
@@ -291,17 +293,21 @@ MW_SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "
 EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_surface_params_registry.json")
 EARTH_HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "hydrology_params_registry.json")
 EARTH_CLIMATE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_climate_params_registry.json")
+EARTH_TIDE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "tide_params_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
 EARTH_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth0_probe.py")
 EARTH_HYDROLOGY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth1_probe.py")
 EARTH_CLIMATE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth2_probe.py")
+EARTH_TIDE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth3_probe.py")
 EARTH_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_earth_surface.py")
 EARTH_HYDROLOGY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_hydrology_window.py")
 EARTH_CLIMATE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_climate_window.py")
+EARTH_TIDE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_tide_window.py")
 EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
 EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
 EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
+EARTH_TIDE_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_TIDE_PROXY_MODEL.md")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -4981,6 +4987,157 @@ def check_no_wallclock_climate(repo_root):
     return violations
 
 
+def check_tide_deterministic(repo_root):
+    invariant_id = "INV-TIDE-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_TIDE_PHASE_ENGINE_REL: (
+            "EARTH_TIDE_PHASE_SCALE",
+            "lunar_phase_from_params(",
+            "rotation_phase_from_params(",
+            "phase_carrier_permille(",
+        ),
+        EARTH_TIDE_ENGINE_REL: (
+            "evaluate_earth_tile_tide(",
+            "build_earth_tide_update_plan(",
+            "tide_bucket_id(",
+            "due_bucket_ids(",
+            "build_tide_coupling_stub(",
+        ),
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"): (
+            "_recompute_earth_tide_fields(",
+            "process.earth_tide_tick",
+            "earth_tide_tile_overlays",
+            "tide_window_hash",
+        ),
+        EARTH_TIDE_PARAMS_REGISTRY_REL: (
+            "\"tide_params_id\": \"tide.earth_stub_default\"",
+            "\"update_interval_ticks\"",
+            "\"inland_damping_factor\"",
+        ),
+        EARTH_TIDE_PROBE_TOOL_REL: (
+            "run_tide_tick_fixture",
+            "verify_tide_window_replay",
+            "tide_day_delta_report",
+            "inland_damping_report",
+        ),
+        EARTH_TIDE_REPLAY_TOOL_REL: (
+            "verify_tide_window_replay",
+            "EARTH-3 tide replay determinism",
+        ),
+        EARTH_TIDE_PROXY_DOC_REL: (
+            "fixed-point only",
+            "tide update buckets are deterministic",
+            "Mutation occurs only through `process.earth_tide_tick`.",
+            "time warp is lawful because phase depends only on canonical tick",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing tide marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(", "random.seed(")
+    for rel in (
+        EARTH_TIDE_PHASE_ENGINE_REL,
+        EARTH_TIDE_ENGINE_REL,
+        EARTH_TIDE_PROBE_TOOL_REL,
+        EARTH_TIDE_REPLAY_TOOL_REL,
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"),
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: nondeterministic tide token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_ocean_pde_in_mvp(repo_root):
+    invariant_id = "INV-NO-OCEAN-PDE-IN-MVP"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_TIDE_ENGINE_REL: (
+            "build_tide_coupling_stub(",
+            "\"future.ocean.surface_height_bias\"",
+            "\"future.hazard.coastal_flood_bias\"",
+            "\"future.fluid.estuary_flow_bias\"",
+        ),
+        EARTH_TIDE_PROBE_TOOL_REL: (
+            "run_tide_tick_fixture",
+            "overlay_hash",
+            "TIDE_MAX_TILES_PER_UPDATE",
+        ),
+        EARTH_TIDE_PROXY_DOC_REL: (
+            "no ocean PDE solver",
+            "It does not simulate ocean transport, pressure solve, or shoreline fluid dynamics.",
+            "EARTH-3 itself does not solve volume transport or ocean PDEs.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing no-ocean-pde marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("navier", "stokes", "shallow_water", "wave_equation", "pressure_solve", "fluid_solve", "fft")
+    for rel in (
+        EARTH_TIDE_ENGINE_REL,
+        EARTH_TIDE_PHASE_ENGINE_REL,
+        EARTH_TIDE_PROBE_TOOL_REL,
+        EARTH_TIDE_REPLAY_TOOL_REL,
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = (read_text(path) or "").lower()
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: ocean-PDE token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_asset_dependency_for_emb(repo_root):
     invariant_id = "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
     if is_override_active(repo_root, invariant_id):
@@ -8225,6 +8382,8 @@ def main() -> int:
                 lambda: check_no_random_flow(repo_root),
                 lambda: check_climate_deterministic(repo_root),
                 lambda: check_no_wallclock_climate(repo_root),
+                lambda: check_tide_deterministic(repo_root),
+                lambda: check_no_ocean_pde_in_mvp(repo_root),
             ],
         },
         {

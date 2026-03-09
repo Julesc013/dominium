@@ -144,6 +144,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-RANDOM-FLOW`
 - `INV-CLIMATE-DETERMINISTIC`
 - `INV-NO-WALLCLOCK-CLIMATE`
+- `INV-TIDE-DETERMINISTIC`
+- `INV-NO-OCEAN-PDE-IN-MVP`
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
 - `INV-LENS-PROFILED`
 - `INV-BODY-MOTION-PROCESS-ONLY`
@@ -503,6 +505,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the governed EARTH-2 climate path loses the explicit canonical-tick and time-warp markers.
 - Fails when wall-clock APIs or similar real-time dependencies appear in the seasonal climate runtime or replay tooling.
 - Preserves canonical-tick climate evaluation under batching, replay, and lawful time warp.
+
+### INV-TIDE-DETERMINISTIC
+
+- Fails when the governed EARTH-3 tide surface loses the explicit fixed-point phase, deterministic bucket, and replay-tool markers.
+- Fails when nondeterministic RNG or other unstable tide-update tokens appear in the tide runtime or proof surface.
+- Preserves replay-stable Moon-driven tide proxy updates and cross-platform tide field hashes for EARTH-3.
+
+### INV-NO-OCEAN-PDE-IN-MVP
+
+- Fails when the governed EARTH-3 tide surface loses the explicit proxy-only hook markers for future ocean and coastal systems.
+- Fails when ocean PDE, pressure-solve, or heavy fluid-solver tokens appear in the tide runtime or proof tooling.
+- Preserves EARTH-3 as a deterministic tide proxy layer instead of a hidden ocean dynamics implementation.
 
 ### INV-NO-ASSET-DEPENDENCY-FOR-EMB
 

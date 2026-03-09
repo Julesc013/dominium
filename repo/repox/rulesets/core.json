@@ -717,6 +717,34 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-TIDE-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/tide_phase_engine.py",
+        "src/worldgen/earth/tide_field_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "data/registries/tide_params_registry.json",
+        "tools/worldgen/earth3_probe.py",
+        "tools/worldgen/tool_replay_tide_window.py",
+        "docs/worldgen/EARTH_TIDE_PROXY_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tide-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-OCEAN-PDE-IN-MVP",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/tide_phase_engine.py",
+        "src/worldgen/earth/tide_field_engine.py",
+        "tools/worldgen/earth3_probe.py",
+        "tools/worldgen/tool_replay_tide_window.py",
+        "docs/worldgen/EARTH_TIDE_PROXY_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-ocean-pde-in-mvp",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-ASSET-DEPENDENCY-FOR-EMB",
       "severity": "FAIL",
       "scope_paths": [

@@ -398,6 +398,7 @@ from analyzers import e371_random_river_smell
 from analyzers import e372_recursion_without_bound_smell
 from analyzers import e373_float_trig_smell
 from analyzers import e374_nondeterministic_climate_smell
+from analyzers import e375_nondeterministic_tide_smell
 
 
 ANALYZERS = (
@@ -799,6 +800,7 @@ ANALYZERS = (
     e372_recursion_without_bound_smell,
     e373_float_trig_smell,
     e374_nondeterministic_climate_smell,
+    e375_nondeterministic_tide_smell,
 )
 
 
