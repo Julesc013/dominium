@@ -205,11 +205,17 @@ def _expected_system_count_milli(priors_row: Mapping[str, object], *, density_pe
     return max(0, (base_density * volume_pc3 * max(0, int(density_permille))) // 1000000)
 
 
-def _deterministic_system_count(expected_system_count_milli: int, max_systems_per_cell: int, galaxy_stream_seed: str) -> int:
+def _deterministic_system_count(expected_system_count_milli: int, max_systems_per_cell: int, galaxy_stream_seed: str) -> Tuple[int, int, str]:
     base_count = max(0, int(expected_system_count_milli)) // 1000
     remainder = max(0, int(expected_system_count_milli)) % 1000
     extra = 1 if (_hash_int(galaxy_stream_seed, "mw0.system_count.remainder") % 1000) < remainder else 0
-    return min(max(0, int(max_systems_per_cell)), base_count + extra)
+    uncapped_count = max(0, base_count + extra)
+    bounded_count = min(max(0, int(max_systems_per_cell)), uncapped_count)
+    if bounded_count < uncapped_count:
+        return (uncapped_count, bounded_count, "capped")
+    if extra:
+        return (uncapped_count, bounded_count, "rounded_up")
+    return (uncapped_count, bounded_count, "floor")
 
 
 def _metallicity_permille(priors_row: Mapping[str, object], radius_pc: int) -> int:
@@ -331,7 +337,7 @@ def generate_mw_cell_payload(
         cell_size_pc=cell_size_pc,
     )
     expected_system_count_milli = _expected_system_count_milli(priors_row, density_permille=density_permille)
-    system_count = _deterministic_system_count(
+    uncapped_system_count, system_count, count_resolution = _deterministic_system_count(
         expected_system_count_milli=expected_system_count_milli,
         max_systems_per_cell=max_systems_per_cell,
         galaxy_stream_seed=str(galaxy_stream_seed),
@@ -362,7 +368,9 @@ def generate_mw_cell_payload(
         "galactocentric_radius_pc": int(radius_pc),
         "density_permille": int(density_permille),
         "expected_system_count_milli": int(expected_system_count_milli),
+        "uncapped_system_count": int(uncapped_system_count),
         "system_count": int(system_count),
+        "count_resolution": str(count_resolution),
         "metallicity_permille": int(metallicity_permille),
         "habitable_filter_bias_permille": int(habitability_bias_permille),
         "deterministic_fingerprint": "",
