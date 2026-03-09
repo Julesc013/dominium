@@ -21,10 +21,15 @@ record surface_tile_artifact
     - elevation_params_ref: map
     - material_baseline_id: string
     - biome_stub_id: string
+    - drainage_accumulation_proxy: integer
+    - river_flag: boolean
     - deterministic_fingerprint: sha256
     - extensions: map
+  optional:
+    - flow_target_tile_key: map
 
 INVARIANTS:
 - `tile_object_id` remains the stable GEO-derived `kind.surface_tile` identity
 - `tile_cell_key` remains the canonical GEO tile coordinate for the surface request
+- `drainage_accumulation_proxy` is a deterministic bounded proxy, not a PDE water solve
 - artifact rows remain macro-only, replay-stable, and overlay-safe

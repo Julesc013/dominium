@@ -1,0 +1,26 @@
+{
+  "schema_id": "dominium.registry.worldgen.hydrology_params_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.hydrology_params_registry",
+    "registry_version": "1.0.0",
+    "hydrology_params": [
+      {
+        "schema_version": "1.0.0",
+        "params_id": "params.hydrology.default_stub",
+        "accumulation_threshold": 7,
+        "lake_elevation_delta_threshold": 220,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "analysis_radius": 2,
+          "local_recompute_radius": 2,
+          "max_window_tiles": 32,
+          "source": "EARTH1-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH1-2"
+    }
+  }
+}
