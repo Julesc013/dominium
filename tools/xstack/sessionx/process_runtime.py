@@ -718,6 +718,12 @@ from src.geo.overlay import (
     validate_overlay_manifest_trust,
 )
 from src.worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
+from src.worldgen.mw.mw_system_refiner_l2 import (
+    normalize_planet_basic_artifact_rows,
+    normalize_planet_orbit_artifact_rows,
+    normalize_star_artifact_rows,
+    normalize_system_l2_summary_rows,
+)
 from src.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
@@ -3969,6 +3975,30 @@ def _ensure_worldgen_star_system_artifact_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows]
 
 
+def _ensure_worldgen_star_artifact_rows(state: dict) -> List[dict]:
+    rows = normalize_star_artifact_rows(state.get("worldgen_star_artifacts"))
+    state["worldgen_star_artifacts"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_worldgen_planet_orbit_artifact_rows(state: dict) -> List[dict]:
+    rows = normalize_planet_orbit_artifact_rows(state.get("worldgen_planet_orbit_artifacts"))
+    state["worldgen_planet_orbit_artifacts"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_worldgen_planet_basic_artifact_rows(state: dict) -> List[dict]:
+    rows = normalize_planet_basic_artifact_rows(state.get("worldgen_planet_basic_artifacts"))
+    state["worldgen_planet_basic_artifacts"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_worldgen_system_l2_summary_rows(state: dict) -> List[dict]:
+    rows = normalize_system_l2_summary_rows(state.get("worldgen_system_l2_summaries"))
+    state["worldgen_system_l2_summaries"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
 def _append_worldgen_request_artifact(state: dict, request_row: Mapping[str, object]) -> None:
     row = normalize_worldgen_request(request_row)
     request_id = str(row.get("request_id", "")).strip()
@@ -4030,6 +4060,69 @@ def _append_star_system_artifact_model(state: dict, artifact_row: Mapping[str, o
     state["knowledge_artifacts"] = [dict(item) for item in info_rows]
 
 
+def _append_star_artifact_model(state: dict, artifact_row: Mapping[str, object]) -> None:
+    row = next(iter(normalize_star_artifact_rows([artifact_row])), {})
+    object_id = str(row.get("object_id", "")).strip()
+    if not object_id:
+        return
+    artifact_model = {
+        "artifact_id": "artifact.star_artifact.{}".format(object_id),
+        "artifact_family_id": "MODEL",
+        "extensions": {
+            "artifact_type_id": "artifact.star_artifact",
+            "target_object_id": object_id,
+            "star_artifact": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_model]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_planet_orbit_artifact_model(state: dict, artifact_row: Mapping[str, object]) -> None:
+    row = next(iter(normalize_planet_orbit_artifact_rows([artifact_row])), {})
+    planet_object_id = str(row.get("planet_object_id", "")).strip()
+    if not planet_object_id:
+        return
+    artifact_model = {
+        "artifact_id": "artifact.planet_orbit_artifact.{}".format(planet_object_id),
+        "artifact_family_id": "MODEL",
+        "extensions": {
+            "artifact_type_id": "artifact.planet_orbit_artifact",
+            "target_object_id": planet_object_id,
+            "planet_orbit_artifact": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_model]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
+def _append_planet_basic_artifact_model(state: dict, artifact_row: Mapping[str, object]) -> None:
+    row = next(iter(normalize_planet_basic_artifact_rows([artifact_row])), {})
+    object_id = str(row.get("object_id", "")).strip()
+    if not object_id:
+        return
+    artifact_model = {
+        "artifact_id": "artifact.planet_basic_artifact.{}".format(object_id),
+        "artifact_family_id": "MODEL",
+        "extensions": {
+            "artifact_type_id": "artifact.planet_basic_artifact",
+            "target_object_id": object_id,
+            "planet_basic_artifact": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_model]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
 def _append_worldgen_request(state: dict, request_row: Mapping[str, object]) -> dict:
     normalized = normalize_worldgen_request(request_row)
     merged = list(_ensure_worldgen_request_rows(state))
@@ -4047,6 +4140,10 @@ def _append_worldgen_result(
     result_row: Mapping[str, object],
     spawned_object_rows: object = None,
     star_system_artifact_rows: object = None,
+    star_artifact_rows: object = None,
+    planet_orbit_artifact_rows: object = None,
+    planet_basic_artifact_rows: object = None,
+    system_l2_summary_rows: object = None,
 ) -> dict:
     normalized = normalize_worldgen_result(result_row)
     merged = list(_ensure_worldgen_result_rows(state))
@@ -4080,6 +4177,45 @@ def _append_worldgen_result(
             current_by_id[object_id] = dict(row)
             _append_star_system_artifact_model(state, row)
         state["worldgen_star_system_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
+    if isinstance(star_artifact_rows, list):
+        current_rows = list(_ensure_worldgen_star_artifact_rows(state))
+        current_by_id = dict((str(dict(row).get("object_id", "")).strip(), dict(row)) for row in current_rows)
+        for row in normalize_star_artifact_rows(star_artifact_rows):
+            object_id = str(dict(row).get("object_id", "")).strip()
+            if not object_id:
+                continue
+            current_by_id[object_id] = dict(row)
+            _append_star_artifact_model(state, row)
+        state["worldgen_star_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
+    if isinstance(planet_orbit_artifact_rows, list):
+        current_rows = list(_ensure_worldgen_planet_orbit_artifact_rows(state))
+        current_by_id = dict((str(dict(row).get("planet_object_id", "")).strip(), dict(row)) for row in current_rows)
+        for row in normalize_planet_orbit_artifact_rows(planet_orbit_artifact_rows):
+            planet_object_id = str(dict(row).get("planet_object_id", "")).strip()
+            if not planet_object_id:
+                continue
+            current_by_id[planet_object_id] = dict(row)
+            _append_planet_orbit_artifact_model(state, row)
+        state["worldgen_planet_orbit_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
+    if isinstance(planet_basic_artifact_rows, list):
+        current_rows = list(_ensure_worldgen_planet_basic_artifact_rows(state))
+        current_by_id = dict((str(dict(row).get("object_id", "")).strip(), dict(row)) for row in current_rows)
+        for row in normalize_planet_basic_artifact_rows(planet_basic_artifact_rows):
+            object_id = str(dict(row).get("object_id", "")).strip()
+            if not object_id:
+                continue
+            current_by_id[object_id] = dict(row)
+            _append_planet_basic_artifact_model(state, row)
+        state["worldgen_planet_basic_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
+    if isinstance(system_l2_summary_rows, list):
+        current_rows = list(_ensure_worldgen_system_l2_summary_rows(state))
+        current_by_id = dict((str(dict(row).get("system_object_id", "")).strip(), dict(row)) for row in current_rows)
+        for row in normalize_system_l2_summary_rows(system_l2_summary_rows):
+            system_object_id = str(dict(row).get("system_object_id", "")).strip()
+            if not system_object_id:
+                continue
+            current_by_id[system_object_id] = dict(row)
+        state["worldgen_system_l2_summaries"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
     _append_worldgen_result_artifact(state, normalized)
     return dict(next((row for row in merged if str(row.get("result_id", "")).strip() == result_id), normalized))
 
@@ -44433,6 +44569,16 @@ def execute_intent(
         star_system_artifact_rows = [
             dict(row) for row in list(generated.get("generated_star_system_artifact_rows") or []) if isinstance(row, Mapping)
         ]
+        star_artifact_rows = [dict(row) for row in list(generated.get("generated_star_artifact_rows") or []) if isinstance(row, Mapping)]
+        planet_orbit_artifact_rows = [
+            dict(row) for row in list(generated.get("generated_planet_orbit_artifact_rows") or []) if isinstance(row, Mapping)
+        ]
+        planet_basic_artifact_rows = [
+            dict(row) for row in list(generated.get("generated_planet_basic_artifact_rows") or []) if isinstance(row, Mapping)
+        ]
+        system_l2_summary_rows = [
+            dict(row) for row in list(generated.get("generated_system_l2_summary_rows") or []) if isinstance(row, Mapping)
+        ]
         field_layer_rows = [dict(row) for row in list(generated.get("field_layers") or []) if isinstance(row, Mapping)]
         field_initializations = [dict(row) for row in list(generated.get("field_initializations") or []) if isinstance(row, Mapping)]
         geometry_initializations = [dict(row) for row in list(generated.get("geometry_initializations") or []) if isinstance(row, Mapping)]
@@ -44508,6 +44654,10 @@ def execute_intent(
             worldgen_result_row,
             generated_object_rows,
             star_system_artifact_rows,
+            star_artifact_rows,
+            planet_orbit_artifact_rows,
+            planet_basic_artifact_rows,
+            system_l2_summary_rows,
         )
         _refresh_worldgen_hash_chains(state)
         result_metadata = {
@@ -44520,6 +44670,9 @@ def execute_intent(
             "realism_profile_id": str(generated.get("realism_profile_id", "")).strip(),
             "spawned_object_count": int(len(list(generated_object_rows or []))),
             "star_system_artifact_count": int(len(list(star_system_artifact_rows or []))),
+            "star_artifact_count": int(len(list(star_artifact_rows or []))),
+            "planet_orbit_artifact_count": int(len(list(planet_orbit_artifact_rows or []))),
+            "planet_basic_artifact_count": int(len(list(planet_basic_artifact_rows or []))),
             "field_initialization_count": int(len(list(field_initializations or []))),
             "geometry_initialization_count": int(len(list(geometry_initializations or []))),
             "field_initializations_applied": int(field_initializations_applied),

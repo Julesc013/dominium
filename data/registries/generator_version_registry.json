@@ -8,7 +8,7 @@
       {
         "schema_version": "1.0.0",
         "generator_version_id": "gen.v0_stub",
-        "description": "Baseline deterministic MW-0 generator for on-demand Milky Way cell seeds and bounded refinement anchors.",
+        "description": "Baseline deterministic MW generator for on-demand Milky Way cell seeds, star-system artifacts, and bounded L2 star/orbit priors.",
         "compat_version": "1.0.0",
         "deterministic_fingerprint": "",
         "extensions": {
@@ -19,7 +19,7 @@
             2,
             3
           ],
-          "source": "MW0-3"
+          "source": "MW2-3"
         }
       }
     ],

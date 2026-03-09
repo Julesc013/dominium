@@ -19,6 +19,13 @@ from src.worldgen.mw.mw_cell_generator import (
     normalize_star_system_artifact_rows,
     normalize_star_system_seed_rows,
 )
+from src.worldgen.mw.mw_system_refiner_l2 import (
+    generate_mw_system_l2_payload,
+    normalize_planet_basic_artifact_rows,
+    normalize_planet_orbit_artifact_rows,
+    normalize_star_artifact_rows,
+    normalize_system_l2_summary_rows,
+)
 
 
 REFUSAL_GEO_WORLDGEN_INVALID = "refusal.geo.worldgen_invalid"
@@ -34,7 +41,7 @@ _REALISM_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "realism_prof
 _GENERATOR_VERSION_REGISTRY_REL = os.path.join("data", "registries", "generator_version_registry.json")
 _WORLDGEN_CACHE: Dict[str, dict] = {}
 _WORLDGEN_CACHE_MAX = 256
-_WORLDGEN_VERSION = "GEO8-5"
+_WORLDGEN_VERSION = "GEO8-6"
 
 
 def _repo_root() -> str:
@@ -578,12 +585,49 @@ def _star_system_artifact_rows(rows: object) -> List[dict]:
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
+def _star_artifact_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_star_artifact_rows(rows):
+        object_id = str(row.get("object_id", "")).strip()
+        if object_id:
+            out[object_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _planet_orbit_artifact_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_planet_orbit_artifact_rows(rows):
+        planet_object_id = str(row.get("planet_object_id", "")).strip()
+        if planet_object_id:
+            out[planet_object_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _planet_basic_artifact_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_planet_basic_artifact_rows(rows):
+        object_id = str(row.get("object_id", "")).strip()
+        if object_id:
+            out[object_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _system_l2_summary_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_system_l2_summary_rows(rows):
+        system_object_id = str(row.get("system_object_id", "")).strip()
+        if system_object_id:
+            out[system_object_id] = dict(row)
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
 def _generated_object_rows(
     *,
     universe_identity_hash: str,
     cell_key: Mapping[str, object],
     refinement_level: int,
     system_seed_rows: object,
+    l2_object_rows: object = None,
 ) -> List[dict]:
     seeded_systems = _system_seed_rows(system_seed_rows)
     out = [
@@ -605,40 +649,11 @@ def _generated_object_rows(
                 )
             )
     if int(max(0, refinement_level)) >= 2:
-        for system_row in seeded_systems:
-            system_index = int(max(0, _as_int(system_row.get("local_index", 0), 0)))
-            system_seed = str(system_row.get("system_seed", "")).strip()
-            star_count = _count_from_seed(system_seed, minimum=1, maximum=2, salt="star_count")
-            for star_idx in range(star_count):
-                out.append(
-                    _spawn_object_row(
-                        universe_identity_hash=universe_identity_hash,
-                        cell_key=cell_key,
-                        object_kind_id="kind.star",
-                        local_subkey="star:{}:{}".format(system_index, star_idx),
-                    )
-                )
-            planet_minimum = 1 if int(max(0, _as_int(system_row.get("habitable_filter_bias_permille", 0), 0))) >= 700 else 0
-            planet_count = _count_from_seed(system_seed, minimum=planet_minimum, maximum=4, salt="planet_count")
-            for planet_idx in range(planet_count):
-                out.append(
-                    _spawn_object_row(
-                        universe_identity_hash=universe_identity_hash,
-                        cell_key=cell_key,
-                        object_kind_id="kind.planet",
-                        local_subkey="planet:{}:{}".format(system_index, planet_idx),
-                    )
-                )
-                moon_count = _count_from_seed(system_seed, minimum=0, maximum=2, salt="moon_count:{}".format(planet_idx))
-                for moon_idx in range(moon_count):
-                    out.append(
-                        _spawn_object_row(
-                            universe_identity_hash=universe_identity_hash,
-                            cell_key=cell_key,
-                            object_kind_id="kind.moon",
-                            local_subkey="moon:{}:{}:{}".format(system_index, planet_idx, moon_idx),
-                        )
-                    )
+        for row in list(l2_object_rows or []):
+            if not isinstance(row, Mapping):
+                continue
+            if str(dict(row).get("object_id_hash", "")).strip():
+                out.append(dict(row))
     if int(max(0, refinement_level)) >= 3:
         out.append(
             _spawn_object_row(
@@ -782,16 +797,40 @@ def generate_worldgen_result(
         )
     system_seed_rows = _system_seed_rows(mw_cell_payload.get("system_seed_rows"))
 
+    star_system_artifact_rows = (
+        _star_system_artifact_rows(mw_cell_payload.get("star_system_artifact_rows"))
+        if refinement_level >= 1
+        else []
+    )
+    l2_payload = {}
+    star_artifact_rows: List[dict] = []
+    planet_orbit_artifact_rows: List[dict] = []
+    planet_basic_artifact_rows: List[dict] = []
+    system_l2_summary_rows: List[dict] = []
+    l2_object_rows: List[dict] = []
+    if refinement_level >= 2:
+        l2_payload = generate_mw_system_l2_payload(
+            universe_identity_hash=universe_identity_hash,
+            geo_cell_key=cell_key,
+            realism_profile_row=realism_rows.get(resolved_realism_profile_id),
+            star_system_artifact_rows=star_system_artifact_rows,
+        )
+        if str(l2_payload.get("result", "")) != "complete":
+            return _refusal(
+                str(l2_payload.get("message", "MW-2 system refinement refused")),
+                _as_map(l2_payload.get("details")),
+            )
+        star_artifact_rows = _star_artifact_rows(l2_payload.get("generated_star_artifact_rows"))
+        planet_orbit_artifact_rows = _planet_orbit_artifact_rows(l2_payload.get("generated_planet_orbit_artifact_rows"))
+        planet_basic_artifact_rows = _planet_basic_artifact_rows(l2_payload.get("generated_planet_basic_artifact_rows"))
+        system_l2_summary_rows = _system_l2_summary_rows(l2_payload.get("generated_system_l2_summary_rows"))
+        l2_object_rows = [dict(row) for row in list(l2_payload.get("generated_object_rows") or []) if isinstance(row, Mapping)]
     generated_object_rows = _generated_object_rows(
         universe_identity_hash=universe_identity_hash,
         cell_key=cell_key,
         refinement_level=refinement_level,
         system_seed_rows=system_seed_rows,
-    )
-    star_system_artifact_rows = (
-        _star_system_artifact_rows(mw_cell_payload.get("star_system_artifact_rows"))
-        if refinement_level >= 1
-        else []
+        l2_object_rows=l2_object_rows,
     )
     field_layers = _build_field_layers_for_result(cell_key)
     field_initializations = _build_field_initializations(cell_key, planet_seed)
@@ -812,9 +851,19 @@ def generate_worldgen_result(
             "mw_cell_summary": _as_map(mw_cell_payload.get("cell_summary")),
             "generated_system_seed_rows": system_seed_rows,
             "generated_star_system_artifact_rows": star_system_artifact_rows,
+            "generated_star_artifact_rows": star_artifact_rows,
+            "generated_planet_orbit_artifact_rows": planet_orbit_artifact_rows,
+            "generated_planet_basic_artifact_rows": planet_basic_artifact_rows,
+            "generated_system_l2_summary_rows": system_l2_summary_rows,
             "star_system_artifact_ids": [str(row.get("object_id", "")).strip() for row in star_system_artifact_rows],
             "star_system_artifact_seed_values": [str(row.get("system_seed_value", "")).strip() for row in star_system_artifact_rows],
+            "star_artifact_ids": [str(row.get("object_id", "")).strip() for row in star_artifact_rows],
+            "planet_object_ids": [str(row.get("object_id", "")).strip() for row in planet_basic_artifact_rows],
+            "planet_orbit_artifact_fingerprints": [str(row.get("deterministic_fingerprint", "")).strip() for row in planet_orbit_artifact_rows],
+            "planet_basic_artifact_fingerprints": [str(row.get("deterministic_fingerprint", "")).strip() for row in planet_basic_artifact_rows],
             "galaxy_priors_id": str(mw_cell_payload.get("galaxy_priors_id", "")).strip(),
+            "system_priors_id": str(l2_payload.get("system_priors_id", "")).strip(),
+            "planet_priors_id": str(l2_payload.get("planet_priors_id", "")).strip(),
             "named_rng_streams": list(rng_policy.get("streams") or []),
         },
     )
@@ -829,8 +878,14 @@ def generate_worldgen_result(
         "geometry_initializations": geometry_initializations,
         "generated_system_seed_rows": system_seed_rows,
         "generated_star_system_artifact_rows": star_system_artifact_rows,
+        "generated_star_artifact_rows": star_artifact_rows,
+        "generated_planet_orbit_artifact_rows": planet_orbit_artifact_rows,
+        "generated_planet_basic_artifact_rows": planet_basic_artifact_rows,
+        "generated_system_l2_summary_rows": system_l2_summary_rows,
         "mw_cell_summary": _as_map(mw_cell_payload.get("cell_summary")),
         "galaxy_priors_id": str(mw_cell_payload.get("galaxy_priors_id", "")).strip(),
+        "system_priors_id": str(l2_payload.get("system_priors_id", "")).strip(),
+        "planet_priors_id": str(l2_payload.get("planet_priors_id", "")).strip(),
         "generator_version_id": resolved_generator_version_id,
         "realism_profile_id": resolved_realism_profile_id,
         "cache_key": cache_key,
