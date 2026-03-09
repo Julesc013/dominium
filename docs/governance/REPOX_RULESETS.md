@@ -569,6 +569,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when render adapters or software renderer surfaces introduce direct truth/runtime reads instead of consuming the derived sky-view artifact.
 - Preserves observer/render/truth separation for sky dome, moon disk, stars, and Milky Way band presentation.
 
+### INV-LIGHTING-DERIVED-ONLY
+
+- Fails when the governed EARTH-5 lighting runtime path loses the explicit `derived.illumination_view_artifact` markers, cache policy, or RenderModel handoff markers.
+- Fails when viewer-shell or RenderModel surfaces stop routing illumination through the derived observer artifact path.
+- Preserves EARTH-5 illumination/shadow as a lens-first derived-view contract instead of an ad hoc renderer-side truth read.
+
+### INV-NO-TRUTH-READ-IN-RENDER
+
+- Fails when governed render-adapter or renderer surfaces read truth/runtime state directly instead of consuming the derived illumination artifact.
+- Fails when the null/software renderer paths stop documenting the illumination artifact as presentation-only input.
+- Preserves renderer responsibility as presentation only while keeping illumination and shadow lawfully observer-derived.
+
+### INV-SHADOW-BOUNDED
+
+- Fails when the EARTH-5 horizon-shadow path loses fixed sample-count or step-distance markers.
+- Fails when the shadow model or documentation stops declaring bounded deterministic sampling.
+- Preserves the MVP horizon-shadow approximation as fixed-cost local sampling rather than hidden terrain traversal.
+
 ### INV-SOL-PACK-MINIMAL-SIZE
 
 - Fails when the canonical Sol pin pack artifacts are missing from the official pack surface.

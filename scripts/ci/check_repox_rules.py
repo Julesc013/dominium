@@ -290,6 +290,8 @@ EARTH_SKY_ASTRONOMY_REL = os.path.join("src", "worldgen", "earth", "sky", "astro
 EARTH_SKY_GRADIENT_REL = os.path.join("src", "worldgen", "earth", "sky", "sky_gradient_model.py")
 EARTH_STARFIELD_GENERATOR_REL = os.path.join("src", "worldgen", "earth", "sky", "starfield_generator.py")
 EARTH_SKY_VIEW_ENGINE_REL = os.path.join("src", "worldgen", "earth", "sky", "sky_view_engine.py")
+EARTH_HORIZON_SHADOW_ENGINE_REL = os.path.join("src", "worldgen", "earth", "lighting", "horizon_shadow_engine.py")
+EARTH_LIGHTING_VIEW_ENGINE_REL = os.path.join("src", "worldgen", "earth", "lighting", "lighting_view_engine.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
 MW_SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
 MW_SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
@@ -301,6 +303,8 @@ EARTH_TIDE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "tide_params
 EARTH_SKY_MODEL_REGISTRY_REL = os.path.join("data", "registries", "sky_model_registry.json")
 EARTH_STARFIELD_POLICY_REGISTRY_REL = os.path.join("data", "registries", "starfield_policy_registry.json")
 EARTH_MILKYWAY_BAND_POLICY_REGISTRY_REL = os.path.join("data", "registries", "milkyway_band_policy_registry.json")
+EARTH_ILLUMINATION_MODEL_REGISTRY_REL = os.path.join("data", "registries", "illumination_model_registry.json")
+EARTH_SHADOW_MODEL_REGISTRY_REL = os.path.join("data", "registries", "shadow_model_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
 EARTH_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth0_probe.py")
@@ -313,11 +317,14 @@ EARTH_HYDROLOGY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay
 EARTH_CLIMATE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_climate_window.py")
 EARTH_TIDE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_tide_window.py")
 EARTH_SKY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_sky_view.py")
+EARTH_LIGHTING_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth5_probe.py")
+EARTH_LIGHTING_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_illumination_view.py")
 EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
 EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
 EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
 EARTH_TIDE_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_TIDE_PROXY_MODEL.md")
 EARTH_SKY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SKY_STARFIELD_MODEL.md")
+EARTH_LIGHTING_DOC_REL = os.path.join("docs", "worldgen", "EARTH_ILLUMINATION_SHADOW_MODEL.md")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -406,6 +413,18 @@ EARTH_SKY_RENDER_TRUTH_FORBIDDEN_TOKENS = (
     "process_runtime[",
     "process_runtime.",
 )
+EARTH_LIGHTING_FORBIDDEN_TOKENS = (
+    "random.",
+    "uuid",
+    "secrets.",
+    "time.time(",
+    "datetime.now(",
+    "os.urandom(",
+    "random.seed(",
+    "time.sleep(",
+)
+EARTH_LIGHTING_RENDER_TRUTH_FORBIDDEN_TOKENS = EARTH_SKY_RENDER_TRUTH_FORBIDDEN_TOKENS
+EARTH_SHADOW_BOUNDED_FORBIDDEN_TOKENS = ("while ", "recursion", "recurse", "queue.append(", "stack.append(")
 EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
 EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
 EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
@@ -5250,6 +5269,170 @@ def check_skyview_derived_only(repo_root):
     return violations
 
 
+def check_lighting_derived_only(repo_root):
+    invariant_id = "INV-LIGHTING-DERIVED-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_LIGHTING_VIEW_ENGINE_REL: (
+            "build_lighting_view_surface(",
+            '"source_kind": "derived.illumination_view_artifact"',
+            '"cache_policy_id": "cache.lighting.observer_tick_bucket"',
+            '"lens_layer_ids": ["layer.illumination", "layer.shadow_factor"]',
+        ),
+        UX_VIEWER_SHELL_REL: (
+            "build_lighting_view_surface(",
+            '"illumination_view_surface": dict(illumination_view_surface)',
+            '"consumes_illumination_view_artifacts": True',
+        ),
+        RENDER_MODEL_ADAPTER_REL: (
+            "illumination_view_artifact: dict | None = None",
+            '"illumination_view_artifact": dict(illumination_view_artifact or {}),',
+        ),
+        EARTH_LIGHTING_DOC_REL: (
+            "EARTH-5 is a derived-view system.",
+            "UI and renderers consume the derived artifact only.",
+            "Mutation of TruthModel is forbidden.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing lighting marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_truth_read_in_render(repo_root):
+    invariant_id = "INV-NO-TRUTH-READ-IN-RENDER"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        RENDER_MODEL_ADAPTER_REL: (
+            "illumination_view_artifact: dict | None = None",
+            '"illumination_view_artifact": dict(illumination_view_artifact or {}),',
+        ),
+        SOFTWARE_RENDERER_REL: (
+            'model_extensions.get("illumination_view_artifact")',
+            "_apply_illumination(",
+        ),
+        NULL_RENDERER_REL: (
+            'model_extensions.get("illumination_view_artifact")',
+            '"illumination_artifact_ignored": illumination_artifact_ignored,',
+        ),
+        EARTH_LIGHTING_DOC_REL: (
+            "renderers consume `illumination_view_artifact` only",
+            "renderers must not read terrain truth, process runtime, or hidden world state directly",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing render-truth guard marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (RENDER_MODEL_ADAPTER_REL, SOFTWARE_RENDERER_REL, NULL_RENDERER_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in EARTH_LIGHTING_RENDER_TRUTH_FORBIDDEN_TOKENS if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: renderer truth-read token '{}' forbidden in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
+def check_shadow_bounded(repo_root):
+    invariant_id = "INV-SHADOW-BOUNDED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_HORIZON_SHADOW_ENGINE_REL: (
+            "sample_count",
+            "step_distance_cells",
+            "for sample_index in range(1, sample_count + 1):",
+            '"sampling_bounded": True',
+        ),
+        EARTH_SHADOW_MODEL_REGISTRY_REL: (
+            '"shadow_model_id": "shadow.horizon_stub_default"',
+            '"sample_count": 8',
+            '"step_distance_cells": 1',
+        ),
+        EARTH_LIGHTING_DOC_REL: (
+            "K is fixed by the shadow model row",
+            "no unbounded search is allowed",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing bounded-shadow marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EARTH_HORIZON_SHADOW_ENGINE_REL,):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EARTH_SHADOW_BOUNDED_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: bounded shadow token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_catalog_dependency(repo_root):
     invariant_id = "INV-NO-CATALOG-DEPENDENCY"
     if is_override_active(repo_root, invariant_id):
@@ -8627,6 +8810,7 @@ def main() -> int:
                 lambda: check_no_ocean_pde_in_mvp(repo_root),
                 lambda: check_no_catalog_dependency(repo_root),
                 lambda: check_no_wallclock_sky(repo_root),
+                lambda: check_shadow_bounded(repo_root),
             ],
         },
         {
@@ -8648,6 +8832,8 @@ def main() -> int:
                 lambda: check_view_artifact_only(repo_root),
                 lambda: check_lens_profiled(repo_root),
                 lambda: check_skyview_derived_only(repo_root),
+                lambda: check_lighting_derived_only(repo_root),
+                lambda: check_no_truth_read_in_render(repo_root),
             ],
         },
         {

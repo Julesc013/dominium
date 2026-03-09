@@ -401,6 +401,8 @@ from analyzers import e374_nondeterministic_climate_smell
 from analyzers import e375_nondeterministic_tide_smell
 from analyzers import e376_truth_read_in_renderer_smell
 from analyzers import e377_nondeterministic_starfield_smell
+from analyzers import e378_renderer_truth_leak_smell
+from analyzers import e379_unbounded_shadow_sampling_smell
 
 
 ANALYZERS = (
@@ -805,6 +807,8 @@ ANALYZERS = (
     e375_nondeterministic_tide_smell,
     e376_truth_read_in_renderer_smell,
     e377_nondeterministic_starfield_smell,
+    e378_renderer_truth_leak_smell,
+    e379_unbounded_shadow_sampling_smell,
 )
 
 

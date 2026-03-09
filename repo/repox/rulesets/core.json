@@ -854,6 +854,41 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-LIGHTING-DERIVED-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/lighting/lighting_view_engine.py",
+        "src/client/ui/viewer_shell.py",
+        "src/client/render/render_model_adapter.py",
+        "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-lighting-derived-only",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-TRUTH-READ-IN-RENDER",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/client/render/render_model_adapter.py",
+        "src/client/render/renderers/software_renderer.py",
+        "src/client/render/renderers/null_renderer.py",
+        "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-read-in-render",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-SHADOW-BOUNDED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/lighting/horizon_shadow_engine.py",
+        "data/registries/shadow_model_registry.json",
+        "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-shadow-bounded",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [
