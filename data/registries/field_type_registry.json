@@ -192,7 +192,7 @@
         "schema_version": "1.0.0",
         "field_type_id": "field.wind",
         "field_id": "field.wind",
-        "description": "Coarse wind vector field.",
+        "description": "Legacy wind vector field alias. Prefer field.wind_vector.",
         "value_kind": "vector",
         "dimension_vector": {
           "M": 0,
@@ -207,9 +207,37 @@
           "y": 0,
           "z": 0
         },
-        "update_policy_id": "field.static_default",
+        "update_policy_id": "field.profile_defined",
         "deterministic_fingerprint": "",
-        "extensions": {}
+        "extensions": {
+          "deprecated": true,
+          "alias_of": "field.wind_vector"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.wind_vector",
+        "field_id": "field.wind_vector",
+        "description": "Canonical EARTH-7 macro wind vector field.",
+        "value_kind": "vector",
+        "dimension_vector": {
+          "M": 0,
+          "L": 1,
+          "T": -1,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EARTH7-2"
+        }
       },
       {
         "schema_version": "1.0.0",

@@ -1,0 +1,43 @@
+{
+  "schema_id": "dominium.registry.worldgen.wind_params_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.wind_params_registry",
+    "registry_version": "1.0.0",
+    "wind_params": [
+      {
+        "schema_version": "1.0.0",
+        "wind_params_id": "wind.earth_stub_default",
+        "base_speed_by_band": {
+          "wind.band.hadley": 320,
+          "wind.band.ferrel": 460,
+          "wind.band.polar": 240
+        },
+        "seasonal_shift_amplitude": 2600,
+        "noise_magnitude": 0,
+        "update_interval_ticks": 8,
+        "noise_policy_id": "noise.none",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-7 macro wind parameters for deterministic Earth tile refresh.",
+          "year_length_ticks": 3650,
+          "epoch_offset_ticks": 0,
+          "axial_tilt_mdeg": 23500,
+          "hadley_max_mdeg": 30000,
+          "ferrel_max_mdeg": 60000,
+          "hadley_zonal_permille": -900,
+          "hadley_meridional_permille": 220,
+          "ferrel_zonal_permille": 920,
+          "ferrel_meridional_permille": 180,
+          "polar_zonal_permille": -700,
+          "polar_meridional_permille": 140,
+          "default_max_tiles_per_update": 32,
+          "source": "EARTH7-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH7-2"
+    }
+  }
+}

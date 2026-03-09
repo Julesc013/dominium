@@ -72,6 +72,20 @@
       },
       {
         "schema_version": "1.0.0",
+        "field_id": "field.wind_vector",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "default_r3",
+          "source": "EARTH7-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "field_id": "field.gravity_vector",
         "topology_profile_id": "geo.topology.r3_infinite",
         "partition_profile_id": "geo.partition.grid_zd",
@@ -268,6 +282,20 @@
         "extensions": {
           "metric_profile_id": "geo.metric.spherical_geodesic_stub",
           "binding_scope": "surface_s2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.wind_vector",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "storage_kind": "tile",
+        "interpolation_policy_id": "interp.atlas_nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.spherical_geodesic_stub",
+          "binding_scope": "surface_s2",
+          "source": "EARTH7-2"
         }
       }
     ],
