@@ -277,8 +277,10 @@ MVP_MINIMAL_PACK_IDS = (
 MW_CELL_GENERATOR_REL = os.path.join("src", "worldgen", "mw", "mw_cell_generator.py")
 MW_WORLDGEN_ENGINE_REL = os.path.join("src", "geo", "worldgen", "worldgen_engine.py")
 MW_SYSTEM_QUERY_ENGINE_REL = os.path.join("src", "worldgen", "mw", "system_query_engine.py")
+MW_SYSTEM_REFINER_L2_REL = os.path.join("src", "worldgen", "mw", "mw_system_refiner_l2.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
+MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -3944,6 +3946,114 @@ def check_no_eager_system_generation(repo_root):
     return violations
 
 
+def check_l2_objects_id_stable(repo_root):
+    invariant_id = "INV-L2-OBJECTS-ID-STABLE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MW_SYSTEM_REFINER_L2_REL: (
+            "geo_object_id(",
+            "kind.star",
+            "kind.planet",
+            "kind.moon",
+            "system:{}:star:0",
+            "system:{}:planet:{}",
+            "system:{}:moon:{}:{}",
+        ),
+        MW_WORLDGEN_ENGINE_REL: (
+            "generated_star_artifact_rows",
+            "generated_planet_orbit_artifact_rows",
+            "generated_planet_basic_artifact_rows",
+            "generated_system_l2_summary_rows",
+        ),
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"): (
+            "worldgen_star_artifacts",
+            "worldgen_planet_orbit_artifacts",
+            "worldgen_planet_basic_artifacts",
+            "worldgen_system_l2_summaries",
+        ),
+        MW_SYSTEM_L2_REPLAY_TOOL_REL: (
+            "star_artifact_hash_chain",
+            "planet_orbit_artifact_hash_chain",
+            "planet_basic_artifact_hash_chain",
+            "system_l2_summary_hash_chain",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing stable-L2-id marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_random_retry_loops_in_worldgen(repo_root):
+    invariant_id = "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MW_SYSTEM_REFINER_L2_REL: (
+            "Deterministic forward pass",
+            "push_out_ratio_permille",
+            "periapsis_gap_ratio_permille",
+            "spacing_adjusted",
+            "max_eccentricity_permille",
+        ),
+        os.path.join("docs", "worldgen", "STAR_SYSTEM_ORBITAL_PRIORS.md"): (
+            "no random retry loops are permitted",
+            "push_out_ratio_permille",
+            "no retry loops",
+        ),
+        MW_SYSTEM_L2_REPLAY_TOOL_REL: (
+            "worldgen_request_row(",
+            "refinement_level=2",
+            "planet_orbit_artifact_hash_chain",
+        ),
+    }
+    forbidden_tokens = ("while True", "retry(", "random_retry", "attempt in range(")
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing deterministic-orbit marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+        if rel == MW_SYSTEM_REFINER_L2_REL:
+            for token in forbidden_tokens:
+                if token in text:
+                    violations.append(
+                        "{}: forbidden retry-loop token '{}' present in {}".format(
+                            invariant_id,
+                            token,
+                            normalize_path(rel),
+                        )
+                    )
+                    break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -6837,6 +6947,8 @@ def main() -> int:
                 lambda: check_named_rng_worldgen_only(repo_root),
                 lambda: check_system_instantiation_via_worldgen(repo_root),
                 lambda: check_no_eager_system_generation(repo_root),
+                lambda: check_l2_objects_id_stable(repo_root),
+                lambda: check_no_random_retry_loops_in_worldgen(repo_root),
             ],
         },
         {

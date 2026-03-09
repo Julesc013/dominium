@@ -380,6 +380,10 @@ from analyzers import e353_hardcoded_pack_path_smell
 from analyzers import e354_missing_pack_lock_smell
 from analyzers import e355_catalog_dependency_smell
 from analyzers import e356_eager_galaxy_instantiation_smell
+from analyzers import e357_direct_system_spawn_smell
+from analyzers import e358_nondeterministic_query_smell
+from analyzers import e359_nondeterministic_orbit_smell
+from analyzers import e360_unbounded_generation_smell
 
 
 ANALYZERS = (
@@ -763,6 +767,10 @@ ANALYZERS = (
     e354_missing_pack_lock_smell,
     e355_catalog_dependency_smell,
     e356_eager_galaxy_instantiation_smell,
+    e357_direct_system_spawn_smell,
+    e358_nondeterministic_query_smell,
+    e359_nondeterministic_orbit_smell,
+    e360_unbounded_generation_smell,
 )
 
 

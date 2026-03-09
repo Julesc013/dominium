@@ -551,6 +551,30 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-L2-OBJECTS-ID-STABLE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/mw_system_refiner_l2.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/worldgen/tool_replay_system_l2.py",
+        "docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-l2-objects-id-stable",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/mw_system_refiner_l2.py",
+        "tools/worldgen/tool_replay_system_l2.py",
+        "docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-random-retry-loops-in-worldgen",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [

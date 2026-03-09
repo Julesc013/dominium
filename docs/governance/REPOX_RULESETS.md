@@ -131,6 +131,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NAMED-RNG-WORLDGEN-ONLY`
 - `INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN`
 - `INV-NO-EAGER-SYSTEM-GENERATION`
+- `INV-L2-OBJECTS-ID-STABLE`
+- `INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -425,6 +427,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when MW-1 system discovery/query surfaces lose their explicit cell-bounded enumeration markers.
 - Fails when eager whole-galaxy or all-system generation tokens appear in governed MW-1 files.
 - Preserves on-demand system discovery and bounded nearest-query behavior.
+
+### INV-L2-OBJECTS-ID-STABLE
+
+- Fails when MW-2 L2 star, planet, or moon object-id derivation markers drift from the canonical GEO-1 local-subkey contract.
+- Fails when runtime persistence or replay proof surfaces stop emitting the canonical L2 star/orbit/basic/summary artifact rows.
+- Preserves overlay-safe stable identities for later SOL/catalog pinning and replay-safe L2 refinement.
+
+### INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN
+
+- Fails when MW-2 orbit generation loses the deterministic push-out and periapsis-clamp markers that replace retry sampling.
+- Fails when retry-loop tokens are introduced into the governed L2 refinement surface.
+- Preserves bounded deterministic orbital-spacing adjustment with no random retry behavior.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 
