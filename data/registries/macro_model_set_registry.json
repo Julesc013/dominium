@@ -244,6 +244,23 @@
           "compiled_model_required": true,
           "expand_restores_logic_network": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "macro_model_set_id": "macro.body.pill",
+        "model_bindings": [],
+        "validity_conditions": {
+          "required_tier_mode": "macro",
+          "requires_interface_template_ids": [
+            "interface.body_pill_basic"
+          ]
+        },
+        "error_bound_policy_id": "tol.default",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB0-2",
+          "notes": "Primitive embodied body system template with PHYS/MOB coupling handled by deterministic processes."
+        }
       }
     ],
     "extensions": {

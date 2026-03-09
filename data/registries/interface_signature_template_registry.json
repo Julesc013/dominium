@@ -255,6 +255,29 @@
           "source": "LOGIC6-6",
           "supports_compiled_logic_capsules": true
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "interface_signature_template_id": "interface.body_pill_basic",
+        "description": "Baseline embodiment body template interface for deterministic body control, gravity, and lens follow.",
+        "port_descriptors": [],
+        "signal_descriptors": [
+          {
+            "channel_type_id": "channel.wired_basic",
+            "capacity": 256,
+            "delay": 1,
+            "access_policy_id": "ctrl.policy.player.diegetic"
+          }
+        ],
+        "required_spec_type_ids": [],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB0-2",
+          "body_control_channels": [
+            "control.move_vector_local",
+            "control.look_vector"
+          ]
+        }
       }
     ],
     "extensions": {

@@ -45,6 +45,34 @@
             "inspection_request"
           ]
         }
+      },
+      {
+        "schema_version": "1.0.0",
+        "template_id": "template.body.pill",
+        "version": "1.0.0",
+        "description": "Primitive capsule body template for deterministic embodiment baseline.",
+        "required_domains": [],
+        "assembly_graph_spec_ref": "assembly_graph.body.pill",
+        "interface_signature_template_id": "interface.body_pill_basic",
+        "boundary_invariant_template_ids": [
+          "inv.momentum_basic"
+        ],
+        "macro_model_set_id": "macro.body.pill",
+        "tier_contract_id": "tier.mob.default",
+        "safety_pattern_instance_templates": [],
+        "spec_bindings": [],
+        "nested_template_refs": [],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB0-2",
+          "assembly_graph_spec": {
+            "node_ids": [
+              "assembly.body.root"
+            ]
+          },
+          "collider_kind": "capsule",
+          "art_free": true
+        }
       }
     ],
     "extensions": {

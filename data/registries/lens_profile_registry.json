@@ -1,0 +1,94 @@
+{
+  "schema_id": "dominium.registry.embodiment.lens_profile_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.embodiment.lens_profile_registry",
+    "registry_version": "1.0.0",
+    "lens_profiles": [
+      {
+        "schema_version": "1.0.0",
+        "lens_profile_id": "lens.fp",
+        "view_mode_id": "view.first_person.player",
+        "view_policy_id": "view.first_person_diegetic",
+        "lens_id": "lens.diegetic.sensor",
+        "requires_embodiment": true,
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB0-2",
+          "camera_mode": "first_person",
+          "follow_offset_mm": {
+            "x": 0,
+            "y": 0,
+            "z": 1600
+          }
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "lens_profile_id": "lens.tp",
+        "view_mode_id": "view.third_person.player",
+        "view_policy_id": "view.third_person_diegetic",
+        "lens_id": "lens.diegetic.sensor",
+        "requires_embodiment": true,
+        "required_entitlements": [
+          "entitlement.control.camera"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB0-2",
+          "camera_mode": "third_person",
+          "follow_offset_mm": {
+            "x": -2600,
+            "y": 0,
+            "z": 1800
+          },
+          "smoothing_permille": 250
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "lens_profile_id": "lens.freecam",
+        "view_mode_id": "view.free.lab",
+        "view_policy_id": "view.freecam_lab",
+        "lens_id": "lens.nondiegetic.debug",
+        "requires_embodiment": false,
+        "required_entitlements": [
+          "entitlement.control.camera",
+          "lens.nondiegetic.access"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB0-2",
+          "camera_mode": "freecam",
+          "profile_gate": "dev"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "lens_profile_id": "lens.inspect",
+        "view_mode_id": "view.free.observer_truth",
+        "view_policy_id": "view.observer_truth",
+        "lens_id": "lens.nondiegetic.debug",
+        "requires_embodiment": false,
+        "required_entitlements": [
+          "entitlement.control.camera",
+          "entitlement.control.lens_override",
+          "entitlement.observer.truth",
+          "lens.nondiegetic.access"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB0-2",
+          "camera_mode": "inspect",
+          "profile_gate": "inspector"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EMB0-2"
+    }
+  }
+}
