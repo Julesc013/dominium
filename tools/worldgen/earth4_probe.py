@@ -22,8 +22,8 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 SKY_SAMPLE_CHART_ID = "chart.atlas.north"
 SKY_SAMPLE_INDEX_TUPLE = [16, 6]
 SKY_DAY_TICK = 0
-SKY_TWILIGHT_TICK = 7
-SKY_NIGHT_TICK = 5
+SKY_TWILIGHT_TICK = 6
+SKY_NIGHT_TICK = 8
 
 
 def _as_map(value: object) -> dict:
@@ -116,7 +116,12 @@ def verify_sky_view_replay(repo_root: str) -> dict:
     first_surface = _as_map(first.get("sky_view_surface"))
     second_surface = _as_map(second.get("sky_view_surface"))
     first_artifact = _as_map(first_surface.get("sky_view_artifact"))
-    stable = first_surface == second_surface and first_artifact == _as_map(second_surface.get("sky_view_artifact"))
+    second_artifact = _as_map(second_surface.get("sky_view_artifact"))
+    normalized_first_surface = dict(first_surface)
+    normalized_second_surface = dict(second_surface)
+    normalized_first_surface.pop("cache_hit", None)
+    normalized_second_surface.pop("cache_hit", None)
+    stable = normalized_first_surface == normalized_second_surface and first_artifact == second_artifact
     report = {
         "result": "complete" if stable else "violation",
         "stable_across_repeated_runs": bool(stable),
@@ -124,6 +129,7 @@ def verify_sky_view_replay(repo_root: str) -> dict:
         "cache_key": str(_as_map(first_artifact.get("extensions")).get("cache_key", "")).strip(),
         "star_count": int(len(list(first_artifact.get("star_points_ref") or []))),
         "milkyway_sample_count": int(len(list(first_artifact.get("milkyway_band_ref") or []))),
+        "surface_fingerprint": canonical_sha256(normalized_first_surface),
         "deterministic_fingerprint": "",
     }
     report["deterministic_fingerprint"] = canonical_sha256(dict(report, deterministic_fingerprint=""))
