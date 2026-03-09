@@ -50,6 +50,7 @@ EARTH-2 defines `orbit_phase` as a fixed-point fraction derived from:
 Rules:
 
 - `orbit_phase` is computed with integer arithmetic only
+- fixed-point math only; floating-point seasonal phase law is out of scope
 - the phase range is `[0, 1)` represented by deterministic fixed-point units
 - identical `(canonical_tick, year_length_ticks, epoch_offset_ticks)` inputs must produce identical phase outputs
 - wall-clock time is forbidden

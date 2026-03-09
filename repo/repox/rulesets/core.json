@@ -689,6 +689,34 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-CLIMATE-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/season_phase_engine.py",
+        "src/worldgen/earth/climate_field_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "data/registries/earth_climate_params_registry.json",
+        "tools/worldgen/earth2_probe.py",
+        "tools/worldgen/tool_replay_climate_window.py",
+        "docs/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-climate-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-WALLCLOCK-CLIMATE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/season_phase_engine.py",
+        "src/worldgen/earth/climate_field_engine.py",
+        "tools/worldgen/earth2_probe.py",
+        "tools/worldgen/tool_replay_climate_window.py",
+        "docs/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-climate",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-ASSET-DEPENDENCY-FOR-EMB",
       "severity": "FAIL",
       "scope_paths": [

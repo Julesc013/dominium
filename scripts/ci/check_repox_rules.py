@@ -282,20 +282,26 @@ MW_SURFACE_REFINER_L3_REL = os.path.join("src", "worldgen", "mw", "mw_surface_re
 MW_INSOLATION_PROXY_REL = os.path.join("src", "worldgen", "mw", "insolation_proxy.py")
 EARTH_SURFACE_GENERATOR_REL = os.path.join("src", "worldgen", "earth", "earth_surface_generator.py")
 EARTH_HYDROLOGY_ENGINE_REL = os.path.join("src", "worldgen", "earth", "hydrology_engine.py")
+EARTH_CLIMATE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "climate_field_engine.py")
+EARTH_SEASON_PHASE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "season_phase_engine.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
 MW_SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
 MW_SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
 MW_SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_routing_registry.json")
 EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_surface_params_registry.json")
 EARTH_HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "hydrology_params_registry.json")
+EARTH_CLIMATE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_climate_params_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
 EARTH_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth0_probe.py")
 EARTH_HYDROLOGY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth1_probe.py")
+EARTH_CLIMATE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth2_probe.py")
 EARTH_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_earth_surface.py")
 EARTH_HYDROLOGY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_hydrology_window.py")
+EARTH_CLIMATE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_climate_window.py")
 EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
 EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
+EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -347,6 +353,16 @@ EARTH_REAL_DATA_FORBIDDEN_TOKENS = (
 )
 EARTH_NONDETERMINISTIC_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
 EARTH_HYDROLOGY_FORBIDDEN_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(", "random.seed(")
+EARTH_CLIMATE_FORBIDDEN_TOKENS = (
+    "random.",
+    "uuid",
+    "secrets.",
+    "time.time(",
+    "datetime.now(",
+    "os.urandom(",
+    "random.seed(",
+)
+EARTH_FLOAT_TRIG_TOKENS = ("math.sin(", "math.cos(", "numpy.sin(", "numpy.cos(", "np.sin(", "np.cos(")
 EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
 EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
 EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
@@ -4816,6 +4832,155 @@ def check_no_random_flow(repo_root):
     return violations
 
 
+def check_climate_deterministic(repo_root):
+    invariant_id = "INV-CLIMATE-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_SEASON_PHASE_ENGINE_REL: (
+            "EARTH_ORBIT_PHASE_SCALE",
+            "earth_orbit_phase_from_params(",
+            "solar_declination_mdeg(",
+            "phase_scale",
+        ),
+        EARTH_CLIMATE_ENGINE_REL: (
+            "evaluate_earth_tile_climate(",
+            "build_earth_climate_update_plan(",
+            "climate_bucket_id(",
+            "due_bucket_ids(",
+            "seasonal_tilt_weight_permille",
+        ),
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"): (
+            "_recompute_earth_climate_fields(",
+            "process.earth_climate_tick",
+            "tick_window_span",
+            "earth_climate_tile_overlays",
+        ),
+        EARTH_CLIMATE_PARAMS_REGISTRY_REL: (
+            "\"climate_params_id\": \"climate.earth_stub_default\"",
+            "\"update_interval_ticks\"",
+            "\"seasonal_amplitude\"",
+        ),
+        EARTH_CLIMATE_PROBE_TOOL_REL: (
+            "run_climate_tick_fixture",
+            "verify_climate_window_replay",
+            "climate_year_delta_report",
+            "polar_daylight_report",
+        ),
+        EARTH_CLIMATE_REPLAY_TOOL_REL: (
+            "verify_climate_window_replay",
+            "EARTH-2 seasonal climate replay determinism",
+        ),
+        EARTH_SEASONAL_CLIMATE_DOC_REL: (
+            "fixed-point math only",
+            "tick batching",
+            "wall-clock time is forbidden",
+            "deterministic update buckets",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing climate marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (
+        EARTH_SEASON_PHASE_ENGINE_REL,
+        EARTH_CLIMATE_ENGINE_REL,
+        EARTH_CLIMATE_PROBE_TOOL_REL,
+        EARTH_CLIMATE_REPLAY_TOOL_REL,
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"),
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EARTH_CLIMATE_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: nondeterministic token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_wallclock_climate(repo_root):
+    invariant_id = "INV-NO-WALLCLOCK-CLIMATE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_SEASON_PHASE_ENGINE_REL: (
+            "tick=tick",
+            "year_length_ticks",
+            "epoch_offset_ticks",
+        ),
+        EARTH_CLIMATE_ENGINE_REL: (
+            "current_tick",
+            "earth_orbit_phase_from_params(",
+            "solar_declination_mdeg(",
+        ),
+        EARTH_SEASONAL_CLIMATE_DOC_REL: (
+            "wall-clock time is forbidden",
+            "canonical tick",
+            "lawful time warp policies",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing wall-clock guard marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("time.time(", "datetime.now(", "perf_counter(", "utcnow(", "wall_clock")
+    for rel in (
+        EARTH_SEASON_PHASE_ENGINE_REL,
+        EARTH_CLIMATE_ENGINE_REL,
+        EARTH_CLIMATE_PROBE_TOOL_REL,
+        EARTH_CLIMATE_REPLAY_TOOL_REL,
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: wall-clock token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_asset_dependency_for_emb(repo_root):
     invariant_id = "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
     if is_override_active(repo_root, invariant_id):
@@ -8058,6 +8223,8 @@ def main() -> int:
                 lambda: check_earth_gen_deterministic(repo_root),
                 lambda: check_hydrology_deterministic(repo_root),
                 lambda: check_no_random_flow(repo_root),
+                lambda: check_climate_deterministic(repo_root),
+                lambda: check_no_wallclock_climate(repo_root),
             ],
         },
         {

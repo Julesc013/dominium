@@ -142,6 +142,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-EARTH-GEN-DETERMINISTIC`
 - `INV-HYDROLOGY-DETERMINISTIC`
 - `INV-NO-RANDOM-FLOW`
+- `INV-CLIMATE-DETERMINISTIC`
+- `INV-NO-WALLCLOCK-CLIMATE`
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
 - `INV-LENS-PROFILED`
 - `INV-BODY-MOTION-PROCESS-ONLY`
@@ -489,6 +491,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the EARTH-1 hydrology runtime path loses the explicit canonical tie-break and sorted accumulation markers.
 - Fails when random, time-seeded, or other nondeterministic flow-selection tokens appear in the hydrology runtime or probe surface.
 - Preserves deterministic downhill selection and river-threshold behavior with no random flow arbitration.
+
+### INV-CLIMATE-DETERMINISTIC
+
+- Fails when the governed EARTH-2 climate surface loses the explicit fixed-point phase, deterministic bucket, and replay-tool markers.
+- Fails when nondeterministic RNG or other unstable climate-update tokens appear in the seasonal climate runtime or proof surface.
+- Preserves replay-stable seasonal temperature/daylight updates and climate-band overlays for EARTH-2.
+
+### INV-NO-WALLCLOCK-CLIMATE
+
+- Fails when the governed EARTH-2 climate path loses the explicit canonical-tick and time-warp markers.
+- Fails when wall-clock APIs or similar real-time dependencies appear in the seasonal climate runtime or replay tooling.
+- Preserves canonical-tick climate evaluation under batching, replay, and lawful time warp.
 
 ### INV-NO-ASSET-DEPENDENCY-FOR-EMB
 
