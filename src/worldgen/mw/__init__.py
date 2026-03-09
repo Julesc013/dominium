@@ -33,6 +33,18 @@ _EXPORT_MODULES = {
     "planet_orbit_artifact_hash_chain": ".mw_system_refiner_l2",
     "planet_basic_artifact_hash_chain": ".mw_system_refiner_l2",
     "system_l2_summary_hash_chain": ".mw_system_refiner_l2",
+    "DEFAULT_SURFACE_PRIORS_ID": ".mw_surface_refiner_l3",
+    "build_planet_surface_cell_key": ".mw_surface_refiner_l3",
+    "generate_mw_surface_l3_payload": ".mw_surface_refiner_l3",
+    "normalize_surface_tile_artifact_rows": ".mw_surface_refiner_l3",
+    "surface_generator_rows": ".mw_surface_refiner_l3",
+    "surface_generator_routing_rows": ".mw_surface_refiner_l3",
+    "surface_priors_rows": ".mw_surface_refiner_l3",
+    "surface_tile_artifact_hash_chain": ".mw_surface_refiner_l3",
+    "daylight_proxy_permille": ".insolation_proxy",
+    "insolation_proxy_permille": ".insolation_proxy",
+    "orbital_period_proxy_ticks": ".insolation_proxy",
+    "season_phase_permille": ".insolation_proxy",
 }
 
 

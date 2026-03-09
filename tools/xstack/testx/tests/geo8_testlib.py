@@ -71,6 +71,7 @@ def seed_worldgen_state():
     state["worldgen_planet_orbit_artifacts"] = []
     state["worldgen_planet_basic_artifacts"] = []
     state["worldgen_system_l2_summaries"] = []
+    state["worldgen_surface_tile_artifacts"] = []
     return state
 
 
