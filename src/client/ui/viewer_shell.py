@@ -6,6 +6,7 @@ from typing import Mapping
 
 from src.client.render import build_render_model
 from src.embodiment import resolve_authorized_lens_profile
+from src.client.ui.teleport_controller import build_teleport_plan
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
@@ -157,6 +158,9 @@ def build_viewer_shell_state(
     registry_payloads: Mapping[str, object] | None = None,
     authority_context: Mapping[str, object] | None = None,
     requested_lens_profile_id: str = "",
+    teleport_command: str = "",
+    teleport_counter: int = 0,
+    candidate_system_rows: object = None,
     selection: Mapping[str, object] | None = None,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
@@ -191,6 +195,20 @@ def build_viewer_shell_state(
         registry_payloads=registry_payloads,
         pack_lock_hash=str(_as_map(bootstrap.get("pack_lock")).get("pack_lock_hash", "")),
     )
+    teleport_plan = (
+        build_teleport_plan(
+            repo_root=str(repo_root),
+            command=str(teleport_command),
+            universe_seed=str(_as_map(bootstrap.get("session_spec")).get("universe_seed", "")).strip(),
+            authority_mode=str(authority_mode),
+            profile_bundle_path=str(profile_bundle_path),
+            pack_lock_path=str(pack_lock_path),
+            teleport_counter=int(max(0, int(teleport_counter))),
+            candidate_system_rows=candidate_system_rows,
+        )
+        if str(teleport_command or "").strip()
+        else {"result": "complete", "process_sequence": [], "target_object_id": ""}
+    )
     payload = {
         "result": "complete",
         "viewer_shell_id": "viewer_shell.mvp_default",
@@ -203,6 +221,7 @@ def build_viewer_shell_state(
         "authority_context": runtime_authority,
         "lens_resolution": dict(lens_resolution),
         "render_contract": render_contract,
+        "teleport_plan": dict(teleport_plan),
         "selection": dict(selection or {}),
         "panels": _viewer_panels(current_stage),
         "ui_contract": {
