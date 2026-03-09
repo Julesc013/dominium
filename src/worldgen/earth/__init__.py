@@ -12,6 +12,19 @@ from .hydrology_engine import (
     hydrology_params_rows,
     hydrology_window_hash,
 )
+from .climate_field_engine import (
+    DEFAULT_EARTH_CLIMATE_PARAMS_ID,
+    EARTH_CLIMATE_ENGINE_VERSION,
+    EARTH_CLIMATE_PARAMS_REGISTRY_REL,
+    build_climate_field_updates,
+    build_earth_climate_update_plan,
+    climate_bucket_id,
+    climate_window_hash,
+    due_bucket_ids,
+    earth_climate_params_rows,
+    evaluate_earth_tile_climate,
+    is_earth_surface_tile,
+)
 from .season_phase_engine import (
     EARTH_ORBIT_PHASE_SCALE,
     EARTH_SEASON_PHASE_ENGINE_VERSION,
@@ -24,6 +37,16 @@ from .season_phase_engine import (
 
 __all__ = [
     "DEFAULT_HYDROLOGY_PARAMS_ID",
+    "DEFAULT_EARTH_CLIMATE_PARAMS_ID",
+    "EARTH_CLIMATE_ENGINE_VERSION",
+    "EARTH_CLIMATE_PARAMS_REGISTRY_REL",
+    "build_climate_field_updates",
+    "build_earth_climate_update_plan",
+    "climate_bucket_id",
+    "climate_window_hash",
+    "due_bucket_ids",
+    "earth_climate_params_rows",
+    "evaluate_earth_tile_climate",
     "EARTH_SURFACE_GENERATOR_VERSION",
     "EARTH_ORBIT_PHASE_SCALE",
     "EARTH_SEASON_PHASE_ENGINE_VERSION",
@@ -39,6 +62,7 @@ __all__ = [
     "generate_earth_surface_tile_plan",
     "hydrology_params_rows",
     "hydrology_window_hash",
+    "is_earth_surface_tile",
     "seasonal_wave_permille",
     "solar_declination_mdeg",
 ]

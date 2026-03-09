@@ -735,11 +735,15 @@ from src.worldgen.mw.mw_system_refiner_l2 import (
 )
 from src.worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifact_rows
 from src.worldgen.earth import (
+    DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     DEFAULT_HYDROLOGY_PARAMS_ID,
     apply_hydrology_to_surface_tile_artifact,
+    build_earth_climate_update_plan,
     build_fluid_channel_guidance,
     build_poll_transport_stub,
+    climate_window_hash,
     compute_hydrology_window,
+    earth_climate_params_rows,
     hydrology_params_rows,
 )
 from src.meta.compile import (
@@ -985,6 +989,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.mechanics_tick": "session.boot",
     "process.field_tick": "session.boot",
     "process.field_update": "session.boot",
+    "process.earth_climate_tick": "session.boot",
     "process.safety_tick": "session.boot",
     "process.model_evaluate_tick": "session.boot",
     "process.apply_force": "session.boot",
@@ -1211,6 +1216,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.mechanics_tick": "observer",
     "process.field_tick": "observer",
     "process.field_update": "observer",
+    "process.earth_climate_tick": "observer",
     "process.safety_tick": "observer",
     "process.model_evaluate_tick": "observer",
     "process.apply_force": "observer",
@@ -1379,6 +1385,7 @@ CONTROL_PROCESS_IDS = {
     "process.safety_tick",
     "process.model_evaluate_tick",
     "process.field_update",
+    "process.earth_climate_tick",
     "process.apply_force",
     "process.apply_impulse",
     "process.hazard_increment",
@@ -1491,6 +1498,7 @@ MECHANICS_PROCESS_IDS = {
 FIELD_PROCESS_IDS = {
     "process.field_tick",
     "process.field_update",
+    "process.earth_climate_tick",
     "process.pollution_dispersion_tick",
 }
 SAFETY_PROCESS_IDS = {
@@ -4032,6 +4040,63 @@ def _ensure_worldgen_surface_tile_artifact_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows]
 
 
+def _normalize_earth_climate_tile_overlay_rows(rows: object) -> List[dict]:
+    normalized: Dict[str, dict] = {}
+    for raw in list(rows or []):
+        if not isinstance(raw, Mapping):
+            continue
+        row = dict(raw)
+        tile_object_id = str(row.get("tile_object_id", "")).strip()
+        if not tile_object_id:
+            continue
+        payload = {
+            "tile_object_id": tile_object_id,
+            "planet_object_id": str(row.get("planet_object_id", "")).strip(),
+            "tile_cell_key": _coerce_cell_key(row.get("tile_cell_key")) or {},
+            "current_tick": int(max(0, _as_int(row.get("current_tick", 0), 0))),
+            "orbit_phase": int(max(0, _as_int(row.get("orbit_phase", 0), 0))),
+            "temperature_value": int(_as_int(row.get("temperature_value", 0), 0)),
+            "daylight_value": int(_as_int(row.get("daylight_value", 0), 0)),
+            "climate_band_id": str(row.get("climate_band_id", "")).strip() or "climate.band.temperate",
+            "derived_tags": _sorted_tokens(list(row.get("derived_tags") or [])),
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        normalized[tile_object_id] = payload
+    return [dict(normalized[key]) for key in sorted(normalized.keys())]
+
+
+def _ensure_earth_climate_tile_overlay_rows(state: dict) -> List[dict]:
+    rows = _normalize_earth_climate_tile_overlay_rows(state.get("earth_climate_tile_overlays"))
+    state["earth_climate_tile_overlays"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_earth_climate_runtime_state(state: dict) -> dict:
+    row = dict(state.get("earth_climate_runtime_state") or {})
+    payload = {
+        "version": str(row.get("version", "")).strip() or "EARTH2-4",
+        "last_processed_tick": (
+            None
+            if row.get("last_processed_tick") is None
+            else int(max(-1, _as_int(row.get("last_processed_tick", -1), -1)))
+        ),
+        "last_climate_params_id": str(row.get("last_climate_params_id", "")).strip(),
+        "last_due_bucket_ids": [int(max(0, _as_int(item, 0))) for item in list(row.get("last_due_bucket_ids") or [])],
+        "last_updated_tile_ids": _sorted_tokens(list(row.get("last_updated_tile_ids") or [])),
+        "last_skipped_tile_ids": _sorted_tokens(list(row.get("last_skipped_tile_ids") or [])),
+        "last_window_hash": str(row.get("last_window_hash", "")).strip(),
+        "last_degraded": bool(row.get("last_degraded", False)),
+        "last_degrade_reason": (
+            None if row.get("last_degrade_reason") is None else str(row.get("last_degrade_reason", "")).strip() or None
+        ),
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    state["earth_climate_runtime_state"] = dict(payload)
+    return dict(payload)
+
+
 def _append_worldgen_request_artifact(state: dict, request_row: Mapping[str, object]) -> None:
     row = normalize_worldgen_request(request_row)
     request_id = str(row.get("request_id", "")).strip()
@@ -4391,6 +4456,15 @@ def _hydrology_params_registry_payload(policy_context: dict | None) -> dict:
     )
 
 
+def _earth_climate_params_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="earth_climate_params_registry",
+        registry_rel_path="data/registries/earth_climate_params_registry.json",
+        entry_key="earth_climate_params",
+    )
+
+
 def _recompute_surface_tile_hydrology(
     *,
     state: dict,
@@ -4607,6 +4681,189 @@ def _recompute_surface_tile_hydrology(
             dict(row.get("tile_cell_key") or {})
             for row in sorted(updated_rows, key=lambda item: str(item.get("tile_object_id", "")))
         ],
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _recompute_earth_climate_fields(
+    *,
+    state: dict,
+    field_layers: object,
+    field_cells: object,
+    geometry_cell_states: object,
+    current_tick: int,
+    process_id: str,
+    policy_context: dict | None = None,
+    max_tiles_per_update: int | None = None,
+) -> dict:
+    artifact_rows = list(_ensure_worldgen_surface_tile_artifact_rows(state))
+    runtime_state = _ensure_earth_climate_runtime_state(state)
+    climate_registry = _earth_climate_params_registry_payload(policy_context)
+    climate_rows_by_id = earth_climate_params_rows(climate_registry)
+    climate_params_id = str(runtime_state.get("last_climate_params_id", "")).strip() or DEFAULT_EARTH_CLIMATE_PARAMS_ID
+    climate_row = _as_map(climate_rows_by_id.get(climate_params_id))
+    if not climate_row:
+        climate_row = _as_map(climate_rows_by_id.get(DEFAULT_EARTH_CLIMATE_PARAMS_ID))
+        climate_params_id = str(climate_row.get("climate_params_id", "")).strip() or DEFAULT_EARTH_CLIMATE_PARAMS_ID
+    if not climate_row:
+        payload = {
+            "result": "refused",
+            "message": "earth climate params registry missing default row",
+            "climate_params_id": DEFAULT_EARTH_CLIMATE_PARAMS_ID,
+            "updated_field_ids": [],
+            "applied_update_count": 0,
+            "skipped_update_count": 0,
+            "due_bucket_ids": [],
+            "selected_tile_ids": [],
+            "skipped_tile_ids": [],
+            "climate_window_hash": "",
+            "climate_params_registry_hash": canonical_sha256(climate_registry),
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return payload
+
+    climate_ext = _as_map(climate_row.get("extensions"))
+    budget = int(
+        max(
+            0,
+            _as_int(
+                (
+                    max_tiles_per_update
+                    if max_tiles_per_update is not None
+                    else _as_map(policy_context).get(
+                        "earth_climate_max_tiles_per_update",
+                        climate_ext.get("default_max_tiles_per_update", 32),
+                    )
+                ),
+                climate_ext.get("default_max_tiles_per_update", 32),
+            ),
+        )
+    )
+    plan = build_earth_climate_update_plan(
+        artifact_rows=artifact_rows,
+        climate_params_row=climate_row,
+        current_tick=int(current_tick),
+        last_processed_tick=runtime_state.get("last_processed_tick"),
+        max_tiles_per_update=budget,
+        geometry_rows_by_key=geometry_cell_state_rows_by_key(geometry_cell_states),
+    )
+    field_type_registry = _field_registry_payload(
+        policy_context=policy_context,
+        key="field_type_registry",
+        registry_rel_path="data/registries/field_type_registry.json",
+        entry_key="field_types",
+    )
+    field_binding_registry = _field_binding_registry_payload(policy_context)
+    field_update_policy_registry = _field_registry_payload(
+        policy_context=policy_context,
+        key="field_update_policy_registry",
+        registry_rel_path="data/registries/field_update_policy_registry.json",
+        entry_key="policies",
+    )
+    normalized_layers = normalize_field_layer_rows(field_layers)
+    normalized_cells = normalize_field_cell_rows(
+        field_cells,
+        field_layer_rows=normalized_layers,
+        field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
+    )
+    field_update_result = _apply_field_updates(
+        current_tick=int(current_tick),
+        field_layers=normalized_layers,
+        field_cells=normalized_cells,
+        field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
+        field_update_policy_registry=field_update_policy_registry,
+        requested_updates=list(plan.get("field_updates") or []),
+        source_process_id=process_id,
+    )
+    updated_layers = normalize_field_layer_rows(field_update_result.get("field_layer_rows"))
+    updated_cells = normalize_field_cell_rows(
+        field_update_result.get("field_cell_rows"),
+        field_layer_rows=updated_layers,
+        field_type_registry=field_type_registry,
+        field_binding_registry=field_binding_registry,
+    )
+    _persist_field_state(
+        state,
+        field_layers=updated_layers,
+        field_cells=updated_cells,
+        field_modifier_rows=[dict(row) for row in list(state.get("field_modifier_rows") or []) if isinstance(row, Mapping)],
+    )
+    state["field_sample_rows"] = normalize_field_sample_rows(
+        list(state.get("field_sample_rows") or [])
+        + [dict(row) for row in list(field_update_result.get("field_sample_rows") or []) if isinstance(row, Mapping)]
+    )
+    _append_field_update_event(
+        state,
+        source_process_id=process_id,
+        tick=int(current_tick),
+        update_kind="earth_climate_tick",
+        updated_field_ids=list(field_update_result.get("updated_field_ids") or []),
+        applied_update_count=int(len(list(field_update_result.get("applied_updates") or []))),
+        skipped_update_count=int(len(list(field_update_result.get("skipped_updates") or []))),
+        field_sample_count=int(len(list(field_update_result.get("field_sample_rows") or []))),
+        boundary_field_exchange_count=0,
+        extensions={
+            "source_process_id": process_id,
+            "climate_params_id": climate_params_id,
+            "due_bucket_ids": [int(item) for item in list(plan.get("due_bucket_ids") or [])],
+            "selected_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
+            "skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
+            "degraded": bool(plan.get("degraded", False)),
+            "degrade_reason": (
+                None if plan.get("degrade_reason") is None else str(plan.get("degrade_reason", "")).strip() or None
+            ),
+        },
+    )
+    _refresh_field_hash_chains(state)
+
+    existing_overlay_rows = _ensure_earth_climate_tile_overlay_rows(state)
+    overlay_by_id = dict((str(row.get("tile_object_id", "")).strip(), dict(row)) for row in existing_overlay_rows)
+    for row in _normalize_earth_climate_tile_overlay_rows(plan.get("evaluations")):
+        overlay_by_id[str(row.get("tile_object_id", "")).strip()] = dict(row)
+    state["earth_climate_tile_overlays"] = [dict(overlay_by_id[key]) for key in sorted(overlay_by_id.keys())]
+
+    runtime_payload = {
+        "version": "EARTH2-4",
+        "last_processed_tick": int(max(0, _as_int(current_tick, 0))),
+        "last_climate_params_id": climate_params_id,
+        "last_due_bucket_ids": [int(item) for item in list(plan.get("due_bucket_ids") or [])],
+        "last_updated_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
+        "last_skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
+        "last_window_hash": climate_window_hash(plan.get("evaluations") or []),
+        "last_degraded": bool(plan.get("degraded", False)),
+        "last_degrade_reason": (
+            None if plan.get("degrade_reason") is None else str(plan.get("degrade_reason", "")).strip() or None
+        ),
+        "deterministic_fingerprint": "",
+    }
+    runtime_payload["deterministic_fingerprint"] = canonical_sha256(dict(runtime_payload, deterministic_fingerprint=""))
+    state["earth_climate_runtime_state"] = dict(runtime_payload)
+
+    payload = {
+        "result": "complete",
+        "climate_params_id": climate_params_id,
+        "climate_params_registry_hash": canonical_sha256(climate_registry),
+        "due_bucket_ids": [int(item) for item in list(plan.get("due_bucket_ids") or [])],
+        "selected_tile_ids": _sorted_tokens(list(plan.get("selected_tile_ids") or [])),
+        "skipped_tile_ids": _sorted_tokens(list(plan.get("skipped_tile_ids") or [])),
+        "updated_field_ids": list(field_update_result.get("updated_field_ids") or []),
+        "applied_update_count": int(len(list(field_update_result.get("applied_updates") or []))),
+        "skipped_update_count": int(len(list(field_update_result.get("skipped_updates") or []))),
+        "cost_units_used": int(_as_int(field_update_result.get("cost_units_used", 0), 0)),
+        "degraded": bool(plan.get("degraded", False) or field_update_result.get("degraded", False)),
+        "degrade_reason": (
+            str(plan.get("degrade_reason", "")).strip()
+            or str(field_update_result.get("degrade_reason", "")).strip()
+            or None
+        ),
+        "climate_window_hash": climate_window_hash(plan.get("evaluations") or []),
+        "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+        "evaluations": [dict(row) for row in list(plan.get("evaluations") or []) if isinstance(row, Mapping)],
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
@@ -59821,6 +60078,70 @@ def execute_intent(
             "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
             "field_sample_hash_chain": str(state.get("field_sample_hash_chain", "")).strip(),
             "boundary_field_exchange_hash_chain": str(state.get("boundary_field_exchange_hash_chain", "")).strip(),
+        }
+        _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.earth_climate_tick":
+        _record_geo_field_registry_hashes(state, policy_context)
+        incoming_layers = inputs.get("field_layers")
+        incoming_cells = inputs.get("field_cells")
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        field_binding_registry = _field_binding_registry_payload(policy_context)
+        if isinstance(incoming_layers, list):
+            field_layers = normalize_field_layer_rows(incoming_layers)
+        else:
+            field_layers = normalize_field_layer_rows(field_layers)
+        if isinstance(incoming_cells, list):
+            field_cells = normalize_field_cell_rows(
+                incoming_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
+            )
+        else:
+            field_cells = normalize_field_cell_rows(
+                field_cells,
+                field_layer_rows=field_layers,
+                field_type_registry=field_type_registry,
+                field_binding_registry=field_binding_registry,
+            )
+        climate_result = _recompute_earth_climate_fields(
+            state=state,
+            field_layers=field_layers,
+            field_cells=field_cells,
+            geometry_cell_states=geometry_cell_states,
+            current_tick=int(current_tick),
+            process_id=process_id,
+            policy_context=policy_context,
+            max_tiles_per_update=(
+                None
+                if inputs.get("max_tiles_per_update") is None
+                else int(max(0, _as_int(inputs.get("max_tiles_per_update", 0), 0)))
+            ),
+        )
+        result_metadata = {
+            "climate_params_id": str(climate_result.get("climate_params_id", "")).strip(),
+            "climate_params_registry_hash": str(climate_result.get("climate_params_registry_hash", "")).strip(),
+            "due_bucket_ids": [int(item) for item in list(climate_result.get("due_bucket_ids") or [])],
+            "selected_tile_ids": _sorted_tokens(list(climate_result.get("selected_tile_ids") or [])),
+            "skipped_tile_ids": _sorted_tokens(list(climate_result.get("skipped_tile_ids") or [])),
+            "updated_field_ids": list(climate_result.get("updated_field_ids") or []),
+            "applied_update_count": int(_as_int(climate_result.get("applied_update_count", 0), 0)),
+            "skipped_update_count": int(_as_int(climate_result.get("skipped_update_count", 0), 0)),
+            "cost_units_used": int(_as_int(climate_result.get("cost_units_used", 0), 0)),
+            "degraded": bool(climate_result.get("degraded", False)),
+            "degrade_reason": (
+                None
+                if climate_result.get("degrade_reason") is None
+                else str(climate_result.get("degrade_reason", "")).strip() or None
+            ),
+            "climate_window_hash": str(climate_result.get("climate_window_hash", "")).strip(),
+            "field_update_hash_chain": str(state.get("field_update_hash_chain", "")).strip(),
+            "deterministic_fingerprint": str(climate_result.get("deterministic_fingerprint", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
     elif process_id == "process.field_tick":

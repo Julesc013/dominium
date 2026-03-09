@@ -14,11 +14,14 @@ from src.geo.edit import build_geometry_cell_state
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
 from src.worldgen.earth import (
+    DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     DEFAULT_HYDROLOGY_PARAMS_ID,
     apply_hydrology_to_surface_tile_artifact,
     build_fluid_channel_guidance,
     build_poll_transport_stub,
     compute_hydrology_window,
+    earth_climate_params_rows,
+    evaluate_earth_tile_climate,
     generate_earth_surface_tile_plan,
     hydrology_params_rows,
 )
@@ -617,6 +620,7 @@ def generate_mw_surface_l3_payload(
     surface_generator_registry_payload: Mapping[str, object] | None = None,
     surface_generator_routing_registry_payload: Mapping[str, object] | None = None,
     earth_surface_params_registry_payload: Mapping[str, object] | None = None,
+    earth_climate_params_registry_payload: Mapping[str, object] | None = None,
     hydrology_params_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     surface_cell_key = _coerce_cell_key(surface_geo_cell_key)
@@ -691,6 +695,8 @@ def generate_mw_surface_l3_payload(
         return payload
     handler_id = str(handler_row.get("handler_id", "")).strip()
     earth_surface_params_row = {}
+    earth_climate_params_row = {}
+    earth_climate_params_id = ""
     if handler_id == "earth.surface.stub":
         earth_surface_params_id = str(_as_map(_as_map(selected_generator_row).get("extensions")).get("earth_surface_params_id", "")).strip()
         earth_surface_params_row = _as_map(earth_surface_params_rows(earth_surface_params_registry_payload).get(earth_surface_params_id))
@@ -702,6 +708,20 @@ def generate_mw_surface_l3_payload(
                     "routing_id": str(route_row.get("routing_id", "")).strip(),
                     "generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
                     "earth_surface_params_id": earth_surface_params_id,
+                },
+                "deterministic_fingerprint": "",
+            }
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+            return payload
+        earth_climate_params_id = str(surface_priors_row.get("earth_climate_params_ref", "")).strip() or DEFAULT_EARTH_CLIMATE_PARAMS_ID
+        earth_climate_params_row = _as_map(earth_climate_params_rows(earth_climate_params_registry_payload).get(earth_climate_params_id))
+        if not earth_climate_params_row:
+            payload = {
+                "result": "refused",
+                "message": "earth surface generator route is missing declared earth climate parameters",
+                "details": {
+                    "surface_priors_id": surface_priors_id,
+                    "earth_climate_params_id": earth_climate_params_id,
                 },
                 "deterministic_fingerprint": "",
             }
@@ -823,6 +843,7 @@ def generate_mw_surface_l3_payload(
             "routing_id": str(route_row.get("routing_id", "")).strip(),
             "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
             "handler_id": handler_id,
+            "earth_climate_params_id": earth_climate_params_id,
             "orbital_period_ticks": int(orbital_period_ticks),
             "season_phase_permille": int(season_phase_value),
             "insolation_permille": int(insolation_value),
@@ -855,6 +876,27 @@ def generate_mw_surface_l3_payload(
         "hydrology_source": MW_SURFACE_REFINER_L3_VERSION,
         "source": MW_SURFACE_REFINER_L3_VERSION,
     }
+    climate_evaluation = {}
+    if handler_id == "earth.surface.stub" and earth_climate_params_row:
+        climate_evaluation = evaluate_earth_tile_climate(
+            artifact_row=tile_artifact_row,
+            climate_params_row=earth_climate_params_row,
+            current_tick=max(0, _as_int(current_tick, 0)),
+            geometry_row={},
+        )
+        temperature_value = int(climate_evaluation.get("temperature_value", temperature_value))
+        daylight_value = int(climate_evaluation.get("daylight_value", daylight_value))
+        tile_artifact_row["extensions"] = {
+            **_as_map(tile_artifact_row.get("extensions")),
+            "earth_orbit_phase": int(_as_int(climate_evaluation.get("orbit_phase", 0), 0)),
+            "climate_band_id": str(climate_evaluation.get("climate_band_id", "")).strip(),
+            "biome_overlay_tags": [
+                str(tag).strip()
+                for tag in list(climate_evaluation.get("derived_tags") or [])
+                if str(tag).strip()
+            ],
+            "source": MW_SURFACE_REFINER_L3_VERSION,
+        }
     tile_artifact_row["deterministic_fingerprint"] = canonical_sha256(dict(tile_artifact_row, deterministic_fingerprint=""))
 
     field_layers = [
@@ -872,6 +914,7 @@ def generate_mw_surface_l3_payload(
                 "interpolation_policy_id": "interp.atlas_nearest",
                 "planet_object_id": planet_object_token,
                 "field_domain": "surface_macro",
+                "earth_climate_params_id": earth_climate_params_id,
                 "source": MW_SURFACE_REFINER_L3_VERSION,
             },
         ),
@@ -889,6 +932,7 @@ def generate_mw_surface_l3_payload(
                 "interpolation_policy_id": "interp.atlas_nearest",
                 "planet_object_id": planet_object_token,
                 "field_domain": "surface_macro",
+                "earth_climate_params_id": earth_climate_params_id,
                 "source": MW_SURFACE_REFINER_L3_VERSION,
             },
         ),
@@ -899,25 +943,27 @@ def generate_mw_surface_l3_payload(
             value=int(temperature_value),
             last_updated_tick=max(0, _as_int(current_tick, 0)),
             geo_cell_key=surface_cell_key,
-            extensions={
-                "field_type_id": "field.temperature",
-                "planet_object_id": planet_object_token,
-                "initialization_kind": "mw3_surface_temperature",
-                "source": MW_SURFACE_REFINER_L3_VERSION,
-            },
-        ),
+                extensions={
+                    "field_type_id": "field.temperature",
+                    "planet_object_id": planet_object_token,
+                    "earth_climate_params_id": earth_climate_params_id,
+                    "initialization_kind": "mw3_surface_temperature",
+                    "source": MW_SURFACE_REFINER_L3_VERSION,
+                },
+            ),
         build_field_cell(
             field_id="field.daylight.surface.{}".format(planet_object_token),
             value=int(daylight_value),
             last_updated_tick=max(0, _as_int(current_tick, 0)),
             geo_cell_key=surface_cell_key,
-            extensions={
-                "field_type_id": "field.daylight",
-                "planet_object_id": planet_object_token,
-                "initialization_kind": "mw3_surface_daylight",
-                "source": MW_SURFACE_REFINER_L3_VERSION,
-            },
-        ),
+                extensions={
+                    "field_type_id": "field.daylight",
+                    "planet_object_id": planet_object_token,
+                    "earth_climate_params_id": earth_climate_params_id,
+                    "initialization_kind": "mw3_surface_daylight",
+                    "source": MW_SURFACE_REFINER_L3_VERSION,
+                },
+            ),
     ]
     if atmosphere_class_id and atmosphere_class_id != "atmo.none":
         field_layers.append(
@@ -935,6 +981,7 @@ def generate_mw_surface_l3_payload(
                     "interpolation_policy_id": "interp.atlas_nearest",
                     "planet_object_id": planet_object_token,
                     "field_domain": "surface_macro",
+                    "earth_climate_params_id": earth_climate_params_id,
                     "source": MW_SURFACE_REFINER_L3_VERSION,
                 },
             )
@@ -948,6 +995,7 @@ def generate_mw_surface_l3_payload(
                 extensions={
                     "field_type_id": "field.pressure_stub",
                     "planet_object_id": planet_object_token,
+                    "earth_climate_params_id": earth_climate_params_id,
                     "initialization_kind": "mw3_surface_pressure",
                     "source": MW_SURFACE_REFINER_L3_VERSION,
                 },
@@ -969,6 +1017,7 @@ def generate_mw_surface_l3_payload(
     payload = {
         "result": "complete",
         "surface_priors_id": surface_priors_id,
+        "earth_climate_params_id": earth_climate_params_id,
         "hydrology_params_id": hydrology_params_id,
         "routing_id": str(route_row.get("routing_id", "")).strip(),
         "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
@@ -987,12 +1036,19 @@ def generate_mw_surface_l3_payload(
             "orbital_period_ticks": int(orbital_period_ticks),
             "season_phase_permille": int(season_phase_value),
             "insolation_value": int(insolation_value),
+            "earth_orbit_phase": int(_as_int(climate_evaluation.get("orbit_phase", 0), 0)),
+            "earth_climate_params_id": earth_climate_params_id,
             "material_baseline_id": material_baseline_id,
             "biome_stub_id": biome_stub_id,
             "latitude_mdeg": int(latitude_mdeg),
             "longitude_mdeg": int(_as_int(surface_plan_extensions.get("longitude_mdeg", longitude_mdeg), longitude_mdeg)),
             "surface_class_id": str(surface_plan_extensions.get("surface_class_id", "")).strip(),
-            "climate_band_id": str(surface_plan_extensions.get("climate_band_id", "")).strip(),
+            "climate_band_id": str(
+                _as_map(tile_artifact_row.get("extensions")).get(
+                    "climate_band_id",
+                    surface_plan_extensions.get("climate_band_id", ""),
+                )
+            ).strip(),
             "far_lod_visual_class": str(surface_plan_extensions.get("far_lod_visual_class", "")).strip(),
             "flow_target_tile_key": _as_map(tile_artifact_row.get("flow_target_tile_key")),
             "drainage_accumulation_proxy": int(tile_artifact_row.get("drainage_accumulation_proxy", 1)),
