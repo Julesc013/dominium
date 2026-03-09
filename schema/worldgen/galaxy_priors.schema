@@ -1,0 +1,39 @@
+SCHEMA: worldgen/galaxy_priors.schema
+schema_id: dominium.schema.worldgen.galaxy_priors
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic MW-0 galaxy priors for analytic, on-demand Milky Way generation.
+- Keep procedural galaxy semantics data-declared and low-data.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- Meaning drift requires explicit registry/profile or generator-version change.
+
+NON-SEMANTICS:
+- This schema does not encode star catalogs.
+- This schema does not authorize eager galaxy instantiation.
+- This schema does not replace GEO identity or overlay law.
+
+REQUIRED SHAPE:
+record galaxy_priors
+  required:
+    - priors_id: id
+    - disk_radius: map
+    - bulge_radius: map
+    - disk_thickness: map
+    - arm_count: integer
+    - pitch_angle: map
+    - density_params: map
+    - metallicity_params: map
+    - cell_size_pc: integer
+    - max_systems_per_cell: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- galaxy priors remain analytic and deterministic
+- cell size and cap policy remain explicit data, never hidden constants
+- catalog overlays may refine generated content later without replacing base IDs

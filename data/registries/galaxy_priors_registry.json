@@ -1,0 +1,73 @@
+{
+  "schema_id": "dominium.registry.worldgen.galaxy_priors_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.galaxy_priors_registry",
+    "registry_version": "1.0.0",
+    "galaxy_priors": [
+      {
+        "schema_version": "1.0.0",
+        "priors_id": "priors.milkyway_stub_default",
+        "disk_radius": {
+          "unit": "pc",
+          "value": 60000
+        },
+        "bulge_radius": {
+          "unit": "pc",
+          "value": 6000
+        },
+        "disk_thickness": {
+          "unit": "pc",
+          "value": 1200
+        },
+        "arm_count": 4,
+        "pitch_angle": {
+          "unit": "deg",
+          "value_milli": 12000
+        },
+        "density_params": {
+          "midplane_systems_per_million_cubic_pc": 9000,
+          "radial_scale_length_pc": 18000,
+          "vertical_scale_height_pc": 400,
+          "bulge_core_boost_permille": 1800,
+          "arm_contrast_permille": 240,
+          "arm_width_sectors": 1,
+          "halo_floor_permille": 20
+        },
+        "metallicity_params": {
+          "solar_radius_pc": 8000,
+          "solar_metallicity_permille": 1000,
+          "radial_gradient_drop_permille_per_kpc": 40,
+          "floor_permille": 300,
+          "ceiling_permille": 1400
+        },
+        "cell_size_pc": 10,
+        "max_systems_per_cell": 24,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Realism-like Milky Way priors for deterministic on-demand MW-0 cell generation.",
+          "star_formation_priors": {
+            "age_weights": {
+              "young": 140,
+              "mature": 620,
+              "old": 240
+            },
+            "imf_weights": {
+              "m": 620,
+              "k": 220,
+              "g": 110,
+              "f_a": 50
+            },
+            "habitable_band_center_pc": 8000,
+            "habitable_band_half_width_pc": 4000,
+            "vertical_habitable_half_thickness_pc": 600
+          },
+          "source": "MW0-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "MW0-2"
+    }
+  }
+}

@@ -8,7 +8,7 @@
       {
         "schema_version": "1.0.0",
         "realism_profile_id": "realism.realistic_default_milkyway_stub",
-        "galaxy_priors_ref": "priors.galaxy.milkyway.coarse_default",
+        "galaxy_priors_ref": "priors.milkyway_stub_default",
         "system_priors_ref": "priors.system.main_sequence.default",
         "planet_priors_ref": "priors.planet.occurrence.default",
         "surface_priors_ref": "priors.surface.terrestrial.default",
