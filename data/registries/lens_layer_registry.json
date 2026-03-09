@@ -28,6 +28,17 @@
       },
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.tide_height_proxy",
+        "description": "Deterministic tide-height proxy layer rendered from lawful EARTH-3 field samples.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "field",
+          "field_id": "field.tide_height_proxy",
+          "source": "EARTH3-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.pollution",
         "description": "Deterministic pollution overlay rendered from lawful perceived pollution field samples.",
         "deterministic_fingerprint": "",

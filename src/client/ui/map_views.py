@@ -31,6 +31,7 @@ DEFAULT_MINIMAP_VIEW_TYPE_ID = "view.minimap"
 DEFAULT_MAP_LAYERS = [
     "layer.terrain_stub",
     "layer.temperature",
+    "layer.tide_height_proxy",
     "layer.pollution",
     "layer.geometry_occupancy",
     "layer.infrastructure_stub",
@@ -39,6 +40,7 @@ DEFAULT_MAP_LAYERS = [
 DEFAULT_MINIMAP_LAYERS = [
     "layer.terrain_stub",
     "layer.temperature",
+    "layer.tide_height_proxy",
     "layer.geometry_occupancy",
 ]
 _MAP_VIEW_CACHE: dict[str, dict] = {}
