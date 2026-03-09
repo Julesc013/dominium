@@ -26,6 +26,49 @@
       },
       {
         "schema_version": "1.0.0",
+        "field_type_id": "field.daylight",
+        "field_id": "field.daylight",
+        "description": "Macro daylight / insolation proxy scalar field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "MW3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.pressure_stub",
+        "field_id": "field.pressure_stub",
+        "description": "Macro atmospheric pressure proxy scalar field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 1,
+          "L": -1,
+          "T": -2,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "stub": true,
+          "source": "MW3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "field_type_id": "field.moisture",
         "field_id": "field.moisture",
         "description": "Moisture/saturation scalar field.",

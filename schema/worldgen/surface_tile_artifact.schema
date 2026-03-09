@@ -1,0 +1,30 @@
+SCHEMA: worldgen/surface_tile_artifact.schema
+schema_id: dominium.schema.worldgen.surface_tile_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical MW-3 macro surface-tile artifact emitted at refinement `L3`.
+- Preserve deterministic tile identity, ancestry, and later surface-generator handoff inputs.
+
+NON-SEMANTICS:
+- This schema does not encode detailed terrain meshes.
+- This schema does not encode full climate simulation.
+- This schema does not imply authored Earth geography.
+
+REQUIRED SHAPE:
+record surface_tile_artifact
+  required:
+    - tile_object_id: sha256
+    - planet_object_id: sha256
+    - tile_cell_key: map
+    - elevation_params_ref: map
+    - material_baseline_id: string
+    - biome_stub_id: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `tile_object_id` remains the stable GEO-derived `kind.surface_tile` identity
+- `tile_cell_key` remains the canonical GEO tile coordinate for the surface request
+- artifact rows remain macro-only, replay-stable, and overlay-safe

@@ -1,0 +1,27 @@
+SCHEMA: worldgen/surface_generator_routing.schema
+schema_id: dominium.schema.worldgen.surface_generator_routing
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic MW-3 routing from a planet/tile context to a declared surface generator.
+- Preserve data-driven generator selection for later Earth delegation.
+
+NON-SEMANTICS:
+- This schema does not embed executable pack logic.
+- This schema does not authorize hardcoded planet-name checks in runtime code.
+
+REQUIRED SHAPE:
+record surface_generator_routing
+  required:
+    - routing_id: id
+    - selector_kind: enum(by_object_id|by_tag|by_profile)
+    - match_rule: map
+    - generator_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- routing remains data-declared and deterministic
+- selector precedence must remain explicit and stable
+- Earth specialization must enter through routing data, not hardcoded runtime branches

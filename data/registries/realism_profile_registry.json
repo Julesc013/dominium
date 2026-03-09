@@ -11,7 +11,7 @@
         "galaxy_priors_ref": "priors.milkyway_stub_default",
         "system_priors_ref": "priors.system_default_stub",
         "planet_priors_ref": "priors.planet_default_stub",
-        "surface_priors_ref": "priors.surface.terrestrial.default",
+        "surface_priors_ref": "priors.surface_default_stub",
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Default realistic procedural Milky Way prior set with coarse astrophysical tendencies.",

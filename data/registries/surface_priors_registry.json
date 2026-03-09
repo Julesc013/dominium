@@ -1,0 +1,265 @@
+{
+  "schema_id": "dominium.registry.worldgen.surface_priors_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.surface_priors_registry",
+    "registry_version": "1.0.0",
+    "surface_priors": [
+      {
+        "schema_version": "1.0.0",
+        "priors_id": "priors.surface_default_stub",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "temperature_params": {
+          "baseline_kelvin": 210,
+          "insolation_weight_kelvin": 120,
+          "latitude_cooling_max_kelvin": 80,
+          "daylight_bonus_max_kelvin": 35,
+          "ocean_moderation_kelvin": 10
+        },
+        "pressure_params": {
+          "atmo.none": 0,
+          "atmo.thin": 180,
+          "atmo.temperate": 1000,
+          "atmo.dense": 1400,
+          "atmo.volatile": 1800
+        },
+        "daylight_params": {
+          "equatorial_daylight_permille": 1000,
+          "polar_floor_permille": 0,
+          "seasonal_tilt_weight_permille": 1000
+        },
+        "elevation_params": {
+          "ocean_height_min": 200,
+          "ocean_height_max": 900,
+          "land_height_min": 1200,
+          "land_height_max": 4200,
+          "ice_height_min": 900,
+          "ice_height_max": 2600
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Default deterministic MW-3 surface priors for sphere-planet atlas tiles.",
+          "chart_ids": [
+            "chart.atlas.north",
+            "chart.atlas.south"
+          ],
+          "atlas_resolution": 8,
+          "routing_order": [
+            "route.earth",
+            "route.default"
+          ],
+          "material_baselines": {
+            "ocean": "material.water",
+            "land": "material.stone_basic",
+            "ice": "material.stone_basic"
+          },
+          "source": "MW3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "priors_id": "priors.surface.terrestrial.default",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "temperature_params": {
+          "baseline_kelvin": 210,
+          "insolation_weight_kelvin": 120,
+          "latitude_cooling_max_kelvin": 80,
+          "daylight_bonus_max_kelvin": 35,
+          "ocean_moderation_kelvin": 10
+        },
+        "pressure_params": {
+          "atmo.none": 0,
+          "atmo.thin": 180,
+          "atmo.temperate": 1000,
+          "atmo.dense": 1400,
+          "atmo.volatile": 1800
+        },
+        "daylight_params": {
+          "equatorial_daylight_permille": 1000,
+          "polar_floor_permille": 0,
+          "seasonal_tilt_weight_permille": 1000
+        },
+        "elevation_params": {
+          "ocean_height_min": 200,
+          "ocean_height_max": 900,
+          "land_height_min": 1200,
+          "land_height_max": 4200,
+          "ice_height_min": 900,
+          "ice_height_max": 2600
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "alias_of": "priors.surface_default_stub",
+          "description": "Compatibility alias for the default terrestrial MW-3 surface priors.",
+          "chart_ids": [
+            "chart.atlas.north",
+            "chart.atlas.south"
+          ],
+          "atlas_resolution": 8,
+          "routing_order": [
+            "route.earth",
+            "route.default"
+          ],
+          "material_baselines": {
+            "ocean": "material.water",
+            "land": "material.stone_basic",
+            "ice": "material.stone_basic"
+          },
+          "source": "MW3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "priors_id": "priors.surface.flat_world.stub",
+        "topology_profile_id": "geo.topology.r2_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "temperature_params": {
+          "baseline_kelvin": 220,
+          "insolation_weight_kelvin": 90,
+          "latitude_cooling_max_kelvin": 40,
+          "daylight_bonus_max_kelvin": 20,
+          "ocean_moderation_kelvin": 5
+        },
+        "pressure_params": {
+          "atmo.none": 0,
+          "atmo.thin": 160,
+          "atmo.temperate": 950,
+          "atmo.dense": 1350,
+          "atmo.volatile": 1700
+        },
+        "daylight_params": {
+          "equatorial_daylight_permille": 1000,
+          "polar_floor_permille": 150,
+          "seasonal_tilt_weight_permille": 600
+        },
+        "elevation_params": {
+          "ocean_height_min": 200,
+          "ocean_height_max": 700,
+          "land_height_min": 900,
+          "land_height_max": 2600,
+          "ice_height_min": 700,
+          "ice_height_max": 1800
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Flat-world MW-3 surface priors using grid tiles.",
+          "chart_ids": [
+            "chart.global.r2"
+          ],
+          "routing_order": [
+            "route.default"
+          ],
+          "material_baselines": {
+            "ocean": "material.water",
+            "land": "material.soil_basic",
+            "ice": "material.stone_basic"
+          },
+          "source": "MW3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "priors_id": "priors.surface.torus.stub",
+        "topology_profile_id": "geo.topology.torus_r2",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "temperature_params": {
+          "baseline_kelvin": 220,
+          "insolation_weight_kelvin": 90,
+          "latitude_cooling_max_kelvin": 40,
+          "daylight_bonus_max_kelvin": 20,
+          "ocean_moderation_kelvin": 5
+        },
+        "pressure_params": {
+          "atmo.none": 0,
+          "atmo.thin": 160,
+          "atmo.temperate": 950,
+          "atmo.dense": 1350,
+          "atmo.volatile": 1700
+        },
+        "daylight_params": {
+          "equatorial_daylight_permille": 1000,
+          "polar_floor_permille": 150,
+          "seasonal_tilt_weight_permille": 600
+        },
+        "elevation_params": {
+          "ocean_height_min": 200,
+          "ocean_height_max": 700,
+          "land_height_min": 900,
+          "land_height_max": 2600,
+          "ice_height_min": 700,
+          "ice_height_max": 1800
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Torus-surface MW-3 priors using grid tiles.",
+          "chart_ids": [
+            "chart.global.r2"
+          ],
+          "routing_order": [
+            "route.default"
+          ],
+          "material_baselines": {
+            "ocean": "material.water",
+            "land": "material.soil_basic",
+            "ice": "material.stone_basic"
+          },
+          "source": "MW3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "priors_id": "priors.surface.fantasy.stub",
+        "topology_profile_id": "geo.topology.r2_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "temperature_params": {
+          "baseline_kelvin": 225,
+          "insolation_weight_kelvin": 95,
+          "latitude_cooling_max_kelvin": 45,
+          "daylight_bonus_max_kelvin": 25,
+          "ocean_moderation_kelvin": 8
+        },
+        "pressure_params": {
+          "atmo.none": 0,
+          "atmo.thin": 150,
+          "atmo.temperate": 900,
+          "atmo.dense": 1300,
+          "atmo.volatile": 1700
+        },
+        "daylight_params": {
+          "equatorial_daylight_permille": 1000,
+          "polar_floor_permille": 200,
+          "seasonal_tilt_weight_permille": 650
+        },
+        "elevation_params": {
+          "ocean_height_min": 200,
+          "ocean_height_max": 800,
+          "land_height_min": 900,
+          "land_height_max": 3200,
+          "ice_height_min": 700,
+          "ice_height_max": 1900
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Fantasy placeholder MW-3 surface priors using generic grid tiles.",
+          "chart_ids": [
+            "chart.global.r2"
+          ],
+          "routing_order": [
+            "route.default"
+          ],
+          "material_baselines": {
+            "ocean": "material.water",
+            "land": "material.wood_basic",
+            "ice": "material.stone_basic"
+          },
+          "source": "MW3-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "MW3-2"
+    }
+  }
+}

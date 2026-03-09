@@ -1,0 +1,48 @@
+{
+  "schema_id": "dominium.registry.worldgen.surface_generator_routing_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.surface_generator_routing_registry",
+    "registry_version": "1.0.0",
+    "surface_generator_routes": [
+      {
+        "schema_version": "1.0.0",
+        "routing_id": "route.default",
+        "selector_kind": "by_profile",
+        "match_rule": {
+          "realism_profile_ids": [
+            "realism.realistic_default_milkyway_stub",
+            "realism.flat_world_stub",
+            "realism.torus_world_stub",
+            "realism.fantasy_stub"
+          ]
+        },
+        "generator_id": "gen.surface.default_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "priority": 300,
+          "source": "MW3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "routing_id": "route.earth",
+        "selector_kind": "by_tag",
+        "match_rule": {
+          "planet_tags": [
+            "planet.earth"
+          ]
+        },
+        "generator_id": "gen.surface.earth_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "priority": 200,
+          "source": "MW3-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "MW3-2"
+    }
+  }
+}
