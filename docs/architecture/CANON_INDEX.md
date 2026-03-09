@@ -311,6 +311,7 @@ execution artifacts and are not authoritative.
 - `docs/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md`
 - `docs/worldgen/EARTH_SKY_STARFIELD_MODEL.md`
 - `docs/worldgen/EARTH_TIDE_PROXY_MODEL.md`
+- `docs/worldgen/EARTH_WIND_PROXY_MODEL.md`
 - `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
 - `docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
 - `docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`
