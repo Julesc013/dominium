@@ -293,6 +293,7 @@ execution artifacts and are not authoritative.
 - `docs/policies/FEATURE_EPOCH_POLICY.md`
 - `docs/policies/LONG_TERM_SUPPORT_POLICY.md`
 - `docs/policies/RENDER_BACKEND_LIFECYCLE.md`
+- `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
 - `docs/server/SERVER_SETTINGS.md`
 - `docs/settings/SETTINGS_OWNERSHIP_MODEL.md`
 - `docs/setup/SETUP_SETTINGS.md`
