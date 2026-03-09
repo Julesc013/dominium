@@ -380,6 +380,74 @@ def _draw_sky_disk(
     )
 
 
+def _scale_color(color: Tuple[int, int, int], factor_permille: int) -> Tuple[int, int, int]:
+    factor = _clamp(_to_int(factor_permille, 1000), 0, 2000)
+    return (
+        _clamp((int(color[0]) * factor) // 1000, 0, 255),
+        _clamp((int(color[1]) * factor) // 1000, 0, 255),
+        _clamp((int(color[2]) * factor) // 1000, 0, 255),
+    )
+
+
+def _mix_tuple_color(a: Tuple[int, int, int], b: Tuple[int, int, int], factor_permille: int) -> Tuple[int, int, int]:
+    return (
+        _mix_channel(int(a[0]), int(b[0]), factor_permille),
+        _mix_channel(int(a[1]), int(b[1]), factor_permille),
+        _mix_channel(int(a[2]), int(b[2]), factor_permille),
+    )
+
+
+def _tuple_color(value: dict | None, fallback: Tuple[int, int, int]) -> Tuple[int, int, int]:
+    row = dict(value or {})
+    return (
+        _clamp(_to_int(row.get("r", fallback[0]), fallback[0]), 0, 255),
+        _clamp(_to_int(row.get("g", fallback[1]), fallback[1]), 0, 255),
+        _clamp(_to_int(row.get("b", fallback[2]), fallback[2]), 0, 255),
+    )
+
+
+def _apply_illumination(
+    *,
+    base_color: Tuple[int, int, int],
+    illumination_artifact: dict,
+    sx: int,
+    sy: int,
+    width: int,
+    height: int,
+) -> Tuple[int, int, int]:
+    artifact = dict(illumination_artifact or {})
+    if not artifact:
+        return base_color
+    ext = dict(artifact.get("extensions") or {})
+    ambient_intensity = _clamp(_to_int(artifact.get("ambient_intensity", 0), 0), 0, 1000)
+    sun_intensity = _clamp(_to_int(artifact.get("sun_intensity", 0), 0), 0, 1000)
+    moon_intensity = _clamp(_to_int(artifact.get("moon_intensity", 0), 0), 0, 1000)
+    shadow_factor = _clamp(_to_int(artifact.get("shadow_factor", 1000), 1000), 0, 1000)
+    ambient_color = _tuple_color(ext.get("ambient_color"), (64, 72, 88))
+    key_color = _tuple_color(ext.get("key_light_color"), (255, 240, 220))
+    fill_color = _tuple_color(ext.get("fill_light_color"), (112, 120, 136))
+    sky_color = _tuple_color(ext.get("sky_light_color"), ambient_color)
+    sun_screen = dict(ext.get("sun_screen") or {})
+    if bool(sun_screen.get("visible", False)):
+        sun_x = _screen_permille_to_px(sun_screen.get("screen_x_permille", 500), width)
+        sun_y = _screen_permille_to_px(sun_screen.get("screen_y_permille", 250), height)
+        dist = abs(int(sx) - int(sun_x)) + abs(int(sy) - int(sun_y))
+        max_dist = max(1, int(width) + int(height))
+        directional_factor = _clamp(300 + (((max_dist - min(max_dist, dist)) * 700) // max_dist), 200, 1000)
+    else:
+        directional_factor = 720
+    sun_contrib = (sun_intensity * shadow_factor * directional_factor) // 1_000_000
+    moon_contrib = (moon_intensity * 620) // 1000
+    total_light = _clamp(max(40, ambient_intensity) + sun_contrib + moon_contrib, 40, 1600)
+    lit = _scale_color(base_color, total_light)
+    lit = _mix_tuple_color(lit, sky_color, ambient_intensity // 4)
+    if sun_contrib > 0:
+        lit = _mix_tuple_color(lit, key_color, _clamp((sun_contrib * 3) // 2, 0, 1000))
+    if moon_contrib > 0:
+        lit = _mix_tuple_color(lit, fill_color, _clamp(moon_contrib, 0, 1000))
+    return lit
+
+
 def render_software_snapshot(
     *,
     render_model: dict,
@@ -413,6 +481,7 @@ def render_software_snapshot(
     pixels = bytearray(width * height * 3)
     depth = [1e18] * (width * height)
     sky_artifact = dict(model_extensions.get("sky_view_artifact") or {})
+    illumination_artifact = dict(model_extensions.get("illumination_view_artifact") or {})
     if sky_artifact:
         _draw_sky_background(
             pixels=pixels,
@@ -492,6 +561,14 @@ def render_software_snapshot(
         primitive = _primitive_token(str(row.get("primitive_id", "")))
         size_px = _size_px_for_primitive(primitive, zf, scale_permille)
         color = _base_color(materials, str(row.get("material_id", "")))
+        color = _apply_illumination(
+            base_color=color,
+            illumination_artifact=illumination_artifact,
+            sx=sx,
+            sy=sy,
+            width=width,
+            height=height,
+        )
 
         if primitive in ("sphere", "capsule", "cylinder"):
             _draw_circle(
