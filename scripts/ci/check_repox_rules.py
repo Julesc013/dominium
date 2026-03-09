@@ -263,6 +263,22 @@ DIST_PLATFORM_CANON_ROOTS = (
     os.path.join("dist", "wrap"),
     os.path.join("dist", "redist"),
 )
+MVP_PROFILE_BUNDLE_REL = os.path.join("profiles", "bundles", "bundle.mvp_default.json")
+MVP_PACK_LOCK_REL = os.path.join("locks", "pack_lock.mvp_default.json")
+MVP_SESSION_TEMPLATE_REL = os.path.join("data", "session_templates", "session.mvp_default.json")
+MVP_RUNTIME_ENTRY_REL = os.path.join("tools", "mvp", "runtime_entry.py")
+MVP_DIST_PROFILE_BUNDLE_REL = os.path.join("dist", "profiles", "bundle.mvp_default.json")
+MVP_DIST_PACK_LOCK_REL = os.path.join("dist", "locks", "pack_lock.mvp_default.json")
+MVP_MINIMAL_PACK_IDS = (
+    "pack.base.procedural",
+    "pack.sol.pin_minimal",
+    "pack.earth.procedural",
+)
+MVP_DIST_ALIAS_RELS = (
+    os.path.join("dist", "packs", "base", "pack.base.procedural", "pack.alias.json"),
+    os.path.join("dist", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
+    os.path.join("dist", "packs", "official", "pack.earth.procedural", "pack.alias.json"),
+)
 IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.json")
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
 GLOSSARY_SCHEMA_REL = os.path.join("schema", "governance", "glossary.schema")
@@ -3588,6 +3604,163 @@ def check_session_spec_required_for_run(repo_root):
     return violations
 
 
+def check_mvp_packs_minimal(repo_root):
+    invariant_id = "INV-MVP-PACKS-MINIMAL"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    pack_lock_path = os.path.join(repo_root, MVP_PACK_LOCK_REL)
+    payload = _load_json_file(pack_lock_path)
+    if not os.path.isfile(pack_lock_path):
+        return ["{}: missing {}".format(invariant_id, normalize_path(MVP_PACK_LOCK_REL))]
+    if not isinstance(payload, dict):
+        return ["{}: invalid json {}".format(invariant_id, normalize_path(MVP_PACK_LOCK_REL))]
+
+    ordered = payload.get("ordered_packs")
+    if not isinstance(ordered, list):
+        return ["{}: ordered_packs missing in {}".format(invariant_id, normalize_path(MVP_PACK_LOCK_REL))]
+
+    actual_ids = []
+    actual_alias_paths = []
+    for row in ordered:
+        if not isinstance(row, dict):
+            violations.append("{}: ordered_packs must contain only objects in {}".format(
+                invariant_id, normalize_path(MVP_PACK_LOCK_REL)
+            ))
+            continue
+        actual_ids.append(str(row.get("pack_id", "")).strip())
+        actual_alias_paths.append(
+            normalize_path(
+                os.path.join(
+                    "dist",
+                    str(row.get("distribution_rel", "")).replace("/", os.sep),
+                    "pack.alias.json",
+                )
+            )
+        )
+    if actual_ids != list(MVP_MINIMAL_PACK_IDS):
+        violations.append("{}: ordered pack ids must be exactly {}".format(
+            invariant_id, ", ".join(MVP_MINIMAL_PACK_IDS)
+        ))
+    expected_alias_paths = [normalize_path(rel) for rel in MVP_DIST_ALIAS_RELS]
+    if actual_alias_paths != expected_alias_paths:
+        violations.append("{}: ordered pack alias paths must be exactly {}".format(
+            invariant_id, ", ".join(expected_alias_paths)
+        ))
+
+    for rel in expected_alias_paths:
+        if not os.path.isfile(os.path.join(repo_root, rel.replace("/", os.sep))):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+
+    extra_aliases = []
+    dist_packs_root = os.path.join(repo_root, "dist", "packs")
+    if os.path.isdir(dist_packs_root):
+        for walk_root, _dirs, files in os.walk(dist_packs_root):
+            for name in sorted(files):
+                if name != "pack.alias.json":
+                    continue
+                rel = normalize_path(os.path.relpath(os.path.join(walk_root, name), repo_root))
+                if rel not in expected_alias_paths:
+                    extra_aliases.append(rel)
+    if extra_aliases:
+        violations.append("{}: unexpected dist pack aliases {}".format(
+            invariant_id, ", ".join(sorted(extra_aliases))
+        ))
+    return violations
+
+
+def check_pack_lock_required(repo_root):
+    invariant_id = "INV-PACK-LOCK-REQUIRED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    pack_lock_rel = normalize_path(MVP_PACK_LOCK_REL)
+    session_rel = normalize_path(MVP_SESSION_TEMPLATE_REL)
+    entry_rel = normalize_path(MVP_RUNTIME_ENTRY_REL)
+    dist_lock_rel = normalize_path(MVP_DIST_PACK_LOCK_REL)
+    pack_lock_path = os.path.join(repo_root, pack_lock_rel.replace("/", os.sep))
+    session_path = os.path.join(repo_root, session_rel.replace("/", os.sep))
+    entry_path = os.path.join(repo_root, entry_rel.replace("/", os.sep))
+    dist_lock_path = os.path.join(repo_root, dist_lock_rel.replace("/", os.sep))
+
+    if not os.path.isfile(pack_lock_path):
+        violations.append("{}: missing {}".format(invariant_id, pack_lock_rel))
+        return violations
+    lock_payload = _load_json_file(pack_lock_path)
+    if not isinstance(lock_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, pack_lock_rel))
+        return violations
+    pack_lock_hash = str(lock_payload.get("pack_lock_hash", "")).strip()
+    if not pack_lock_hash:
+        violations.append("{}: pack_lock_hash missing in {}".format(invariant_id, pack_lock_rel))
+
+    if not os.path.isfile(session_path):
+        violations.append("{}: missing {}".format(invariant_id, session_rel))
+    else:
+        session_payload = _load_json_file(session_path)
+        if not isinstance(session_payload, dict):
+            violations.append("{}: invalid json {}".format(invariant_id, session_rel))
+        else:
+            session_hash = str(session_payload.get("pack_lock_hash", "")).strip()
+            if not session_hash:
+                violations.append("{}: pack_lock_hash missing in {}".format(invariant_id, session_rel))
+            elif pack_lock_hash and session_hash != pack_lock_hash:
+                violations.append("{}: {} pack_lock_hash does not match {}".format(
+                    invariant_id, session_rel, pack_lock_rel
+                ))
+
+    if not os.path.isfile(entry_path):
+        violations.append("{}: missing {}".format(invariant_id, entry_rel))
+    else:
+        entry_text = read_text(entry_path) or ""
+        if "--pack_lock" not in entry_text:
+            violations.append("{}: {} missing --pack_lock CLI contract".format(invariant_id, entry_rel))
+
+    if not os.path.isfile(dist_lock_path):
+        violations.append("{}: missing {}".format(invariant_id, dist_lock_rel))
+    return violations
+
+
+def check_profile_bundle_required(repo_root):
+    invariant_id = "INV-PROFILE-BUNDLE-REQUIRED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    bundle_rel = normalize_path(MVP_PROFILE_BUNDLE_REL)
+    entry_rel = normalize_path(MVP_RUNTIME_ENTRY_REL)
+    dist_bundle_rel = normalize_path(MVP_DIST_PROFILE_BUNDLE_REL)
+    bundle_path = os.path.join(repo_root, bundle_rel.replace("/", os.sep))
+    entry_path = os.path.join(repo_root, entry_rel.replace("/", os.sep))
+    dist_bundle_path = os.path.join(repo_root, dist_bundle_rel.replace("/", os.sep))
+
+    if not os.path.isfile(bundle_path):
+        violations.append("{}: missing {}".format(invariant_id, bundle_rel))
+        return violations
+    bundle_payload = _load_json_file(bundle_path)
+    if not isinstance(bundle_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, bundle_rel))
+        return violations
+
+    if str(bundle_payload.get("profile_bundle_id", "")).strip() != "profile.bundle.mvp_default":
+        violations.append("{}: profile_bundle_id mismatch in {}".format(invariant_id, bundle_rel))
+    if not str(bundle_payload.get("profile_bundle_hash", "")).strip():
+        violations.append("{}: profile_bundle_hash missing in {}".format(invariant_id, bundle_rel))
+
+    if not os.path.isfile(entry_path):
+        violations.append("{}: missing {}".format(invariant_id, entry_rel))
+    else:
+        entry_text = read_text(entry_path) or ""
+        if "--profile_bundle" not in entry_text:
+            violations.append("{}: {} missing --profile_bundle CLI contract".format(invariant_id, entry_rel))
+
+    if not os.path.isfile(dist_bundle_path):
+        violations.append("{}: missing {}".format(invariant_id, dist_bundle_rel))
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -6459,6 +6632,16 @@ def main() -> int:
                 lambda: check_forbidden_legacy_gating_tokens(repo_root),
                 lambda: check_runtime_no_xstack_imports(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.bundle",
+            "scope_subtrees": ("tools", "profiles", "locks", "data", "dist"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_mvp_packs_minimal(repo_root),
+                lambda: check_pack_lock_required(repo_root),
+                lambda: check_profile_bundle_required(repo_root),
             ],
         },
         {

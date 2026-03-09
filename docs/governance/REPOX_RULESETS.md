@@ -123,6 +123,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-UNIVERSE_IDENTITY_IMMUTABLE`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
+- `INV-MVP-PACKS-MINIMAL`
+- `INV-PACK-LOCK-REQUIRED`
+- `INV-PROFILE-BUNDLE-REQUIRED`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -369,6 +372,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when session launch schema omits required deterministic/session-binding fields.
 - Fails when client launch flow lacks session-spec creation markers.
 - Fails when session default template registry is missing required reconstruction keys.
+
+### INV-MVP-PACKS-MINIMAL
+
+- Fails when `locks/pack_lock.mvp_default.json` does not resolve to exactly the three MVP install-visible pack IDs.
+- Fails when `dist/packs/**/pack.alias.json` contains extra alias packs outside the canonical MVP default set.
+- Prevents v0.0.0 bundle drift from accreting non-minimal install-visible content.
+
+### INV-PACK-LOCK-REQUIRED
+
+- Fails when the canonical MVP pack lock artifact is missing or omits `pack_lock_hash`.
+- Fails when `data/session_templates/session.mvp_default.json` does not record the canonical `pack_lock_hash`.
+- Fails when the MVP runtime entry surface omits the explicit `--pack_lock` CLI contract.
+
+### INV-PROFILE-BUNDLE-REQUIRED
+
+- Fails when the canonical MVP profile bundle artifact is missing or malformed.
+- Fails when shipped dist artifacts omit `dist/profiles/bundle.mvp_default.json`.
+- Fails when the MVP runtime entry surface omits the explicit `--profile_bundle` CLI contract.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

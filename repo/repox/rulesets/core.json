@@ -455,6 +455,42 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-MVP-PACKS-MINIMAL",
+      "severity": "FAIL",
+      "scope_paths": [
+        "locks/pack_lock.mvp_default.json",
+        "dist/packs",
+        "tools/mvp/runtime_bundle.py",
+        "docs/mvp/MVP_RUNTIME_BUNDLE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-mvp-packs-minimal",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PACK-LOCK-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "locks/pack_lock.mvp_default.json",
+        "data/session_templates/session.mvp_default.json",
+        "dist/locks/pack_lock.mvp_default.json",
+        "tools/mvp/runtime_entry.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-pack-lock-required",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PROFILE-BUNDLE-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "profiles/bundles/bundle.mvp_default.json",
+        "dist/profiles/bundle.mvp_default.json",
+        "tools/mvp/runtime_entry.py",
+        "docs/mvp/MVP_RUNTIME_BUNDLE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-profile-bundle-required",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [

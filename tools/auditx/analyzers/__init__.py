@@ -376,6 +376,8 @@ from analyzers import e349_adhoc_worldgen_smell
 from analyzers import e350_silent_identity_change_smell
 from analyzers import e351_nondeterministic_merge_smell
 from analyzers import e352_nondeterministic_distance_smell
+from analyzers import e353_hardcoded_pack_path_smell
+from analyzers import e354_missing_pack_lock_smell
 
 
 ANALYZERS = (
@@ -755,6 +757,8 @@ ANALYZERS = (
     e350_silent_identity_change_smell,
     e351_nondeterministic_merge_smell,
     e352_nondeterministic_distance_smell,
+    e353_hardcoded_pack_path_smell,
+    e354_missing_pack_lock_smell,
 )
 
 
