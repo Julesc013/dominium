@@ -47,6 +47,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the MW-3 planet surface macro model in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-09"
+    },
+    {
+      "id": "OVR-2026-03-09-SOL0-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the SOL-0 Sol minimal pin pack doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-09"
     }
   ]
 }
