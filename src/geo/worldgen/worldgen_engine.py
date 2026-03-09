@@ -14,6 +14,7 @@ from src.fields import build_field_cell, build_field_layer
 from src.geo.edit import build_geometry_cell_state
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
+from src.worldgen.mw import generate_mw_cell_payload
 
 
 REFUSAL_GEO_WORLDGEN_INVALID = "refusal.geo.worldgen_invalid"
@@ -526,14 +527,37 @@ def _spawn_object_row(
     }
 
 
+def _system_seed_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in rows:
+        if not isinstance(row, Mapping):
+            continue
+        local_index = int(max(0, _as_int(row.get("local_index", 0), 0)))
+        normalized = {
+            "local_index": local_index,
+            "local_subkey": str(row.get("local_subkey", "star_system:{}".format(local_index))).strip() or "star_system:{}".format(local_index),
+            "seed_subkey": str(row.get("seed_subkey", "")).strip(),
+            "system_seed": str(row.get("system_seed", "")).strip(),
+            "object_id_hash": str(row.get("object_id_hash", "")).strip(),
+            "metallicity_permille": int(max(0, _as_int(row.get("metallicity_permille", 0), 0))),
+            "age_bucket": str(row.get("age_bucket", "")).strip(),
+            "imf_bucket": str(row.get("imf_bucket", "")).strip(),
+            "habitable_filter_bias_permille": int(max(0, _as_int(row.get("habitable_filter_bias_permille", 0), 0))),
+        }
+        out["{:08d}".format(local_index)] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
 def _generated_object_rows(
     *,
     universe_identity_hash: str,
     cell_key: Mapping[str, object],
     refinement_level: int,
-    system_seed: str,
-    planet_seed: str,
+    system_seed_rows: object,
 ) -> List[dict]:
+    seeded_systems = _system_seed_rows(system_seed_rows)
     out = [
         _spawn_object_row(
             universe_identity_hash=universe_identity_hash,
@@ -543,45 +567,50 @@ def _generated_object_rows(
         )
     ]
     if int(max(0, refinement_level)) >= 1:
-        out.append(
-            _spawn_object_row(
-                universe_identity_hash=universe_identity_hash,
-                cell_key=cell_key,
-                object_kind_id="kind.star_system",
-                local_subkey="star_system:0",
-            )
-        )
-        star_count = _count_from_seed(system_seed, minimum=1, maximum=2, salt="star_count")
-        for idx in range(star_count):
+        for system_row in seeded_systems:
             out.append(
                 _spawn_object_row(
                     universe_identity_hash=universe_identity_hash,
                     cell_key=cell_key,
-                    object_kind_id="kind.star",
-                    local_subkey="star:{}".format(idx),
+                    object_kind_id="kind.star_system",
+                    local_subkey=str(system_row.get("local_subkey", "")).strip(),
                 )
             )
     if int(max(0, refinement_level)) >= 2:
-        planet_count = _count_from_seed(planet_seed, minimum=1, maximum=4, salt="planet_count")
-        for planet_idx in range(planet_count):
-            out.append(
-                _spawn_object_row(
-                    universe_identity_hash=universe_identity_hash,
-                    cell_key=cell_key,
-                    object_kind_id="kind.planet",
-                    local_subkey="planet:{}".format(planet_idx),
-                )
-            )
-            moon_count = _count_from_seed(planet_seed, minimum=0, maximum=2, salt="moon_count:{}".format(planet_idx))
-            for moon_idx in range(moon_count):
+        for system_row in seeded_systems:
+            system_index = int(max(0, _as_int(system_row.get("local_index", 0), 0)))
+            system_seed = str(system_row.get("system_seed", "")).strip()
+            star_count = _count_from_seed(system_seed, minimum=1, maximum=2, salt="star_count")
+            for star_idx in range(star_count):
                 out.append(
                     _spawn_object_row(
                         universe_identity_hash=universe_identity_hash,
                         cell_key=cell_key,
-                        object_kind_id="kind.moon",
-                        local_subkey="moon:{}:{}".format(planet_idx, moon_idx),
+                        object_kind_id="kind.star",
+                        local_subkey="star:{}:{}".format(system_index, star_idx),
                     )
                 )
+            planet_minimum = 1 if int(max(0, _as_int(system_row.get("habitable_filter_bias_permille", 0), 0))) >= 700 else 0
+            planet_count = _count_from_seed(system_seed, minimum=planet_minimum, maximum=4, salt="planet_count")
+            for planet_idx in range(planet_count):
+                out.append(
+                    _spawn_object_row(
+                        universe_identity_hash=universe_identity_hash,
+                        cell_key=cell_key,
+                        object_kind_id="kind.planet",
+                        local_subkey="planet:{}:{}".format(system_index, planet_idx),
+                    )
+                )
+                moon_count = _count_from_seed(system_seed, minimum=0, maximum=2, salt="moon_count:{}".format(planet_idx))
+                for moon_idx in range(moon_count):
+                    out.append(
+                        _spawn_object_row(
+                            universe_identity_hash=universe_identity_hash,
+                            cell_key=cell_key,
+                            object_kind_id="kind.moon",
+                            local_subkey="moon:{}:{}:{}".format(system_index, planet_idx, moon_idx),
+                        )
+                    )
     if int(max(0, refinement_level)) >= 3:
         out.append(
             _spawn_object_row(
@@ -711,13 +740,25 @@ def generate_worldgen_result(
     planet_seed = str(stream_seed_by_name.get(RNG_WORLDGEN_PLANET, "")).strip()
     surface_seed = str(stream_seed_by_name.get(RNG_WORLDGEN_SURFACE, "")).strip()
     universe_identity_hash = _resolved_universe_identity_hash(identity)
+    mw_cell_payload = generate_mw_cell_payload(
+        universe_identity_hash=universe_identity_hash,
+        geo_cell_key=cell_key,
+        realism_profile_row=realism_rows.get(resolved_realism_profile_id),
+        galaxy_stream_seed=str(stream_seed_by_name.get(RNG_WORLDGEN_GALAXY, "")).strip(),
+        system_stream_seed=system_seed,
+    )
+    if str(mw_cell_payload.get("result", "")) != "complete":
+        return _refusal(
+            str(mw_cell_payload.get("message", "Milky Way cell generation refused")),
+            _as_map(mw_cell_payload.get("details")),
+        )
+    system_seed_rows = _system_seed_rows(mw_cell_payload.get("system_seed_rows"))
 
     generated_object_rows = _generated_object_rows(
         universe_identity_hash=universe_identity_hash,
         cell_key=cell_key,
         refinement_level=refinement_level,
-        system_seed=system_seed,
-        planet_seed=planet_seed,
+        system_seed_rows=system_seed_rows,
     )
     field_layers = _build_field_layers_for_result(cell_key)
     field_initializations = _build_field_initializations(cell_key, planet_seed)
@@ -735,6 +776,9 @@ def generate_worldgen_result(
             "cache_key": cache_key,
             "field_layers": field_layers,
             "generated_object_rows": generated_object_rows,
+            "mw_cell_summary": _as_map(mw_cell_payload.get("cell_summary")),
+            "generated_system_seed_rows": system_seed_rows,
+            "galaxy_priors_id": str(mw_cell_payload.get("galaxy_priors_id", "")).strip(),
             "named_rng_streams": list(rng_policy.get("streams") or []),
         },
     )
@@ -747,6 +791,9 @@ def generate_worldgen_result(
         "field_layers": field_layers,
         "field_initializations": field_initializations,
         "geometry_initializations": geometry_initializations,
+        "generated_system_seed_rows": system_seed_rows,
+        "mw_cell_summary": _as_map(mw_cell_payload.get("cell_summary")),
+        "galaxy_priors_id": str(mw_cell_payload.get("galaxy_priors_id", "")).strip(),
         "generator_version_id": resolved_generator_version_id,
         "realism_profile_id": resolved_realism_profile_id,
         "cache_key": cache_key,
