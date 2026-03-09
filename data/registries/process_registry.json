@@ -6555,6 +6555,135 @@
       "extensions": {
         "implementation_ref": "src/logic/eval/commit_engine.py::process_statevec_update"
       }
+    },
+    {
+      "affected_assemblies": [
+        "body_assemblies"
+      ],
+      "affected_fields": [
+        "body_states",
+        "force_application_rows",
+        "momentum_states",
+        "agent_states"
+      ],
+      "deprecated": false,
+      "description": "Deterministic EMB-0 body-input process for primitive embodiment movement intent integration.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "fixed-point-kinematics"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent/process.body_apply_input",
+        "source": "EMB0-4"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.control.target_invalid",
+        "refusal.agent.unembodied"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "body_id",
+          "ref_id": "dominium.state.body_assemblies",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "move_vector_local",
+          "ref_id": "dominium.control.vector3_int",
+          "ref_type": "concept"
+        },
+        {
+          "io_tags": [],
+          "name": "look_vector",
+          "ref_id": "dominium.control.vector3_int",
+          "ref_type": "concept"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "body_states",
+          "ref_id": "dominium.state.body_states",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "momentum_states",
+          "ref_id": "dominium.state.momentum_states",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.body_apply_input",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
+        "body_assemblies",
+        "camera_assemblies"
+      ],
+      "affected_fields": [
+        "body_states",
+        "field_layers",
+        "field_cells",
+        "force_application_rows",
+        "momentum_states"
+      ],
+      "deprecated": false,
+      "description": "Deterministic EMB-0 body tick process for gravity coupling, damping, and momentum-to-position integration.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "field-sampled"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent/process.body_tick",
+        "source": "EMB0-5"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.control.target_invalid"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "body_id",
+          "ref_id": "dominium.state.body_assemblies",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "field.gravity_vector",
+          "ref_id": "dominium.state.field_cells",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "body_states",
+          "ref_id": "dominium.state.body_states",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "force_application_rows",
+          "ref_id": "dominium.state.force_application_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.body_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
     }
   ],
   "schema_id": "dominium.schema.process_registry",

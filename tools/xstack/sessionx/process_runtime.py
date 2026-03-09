@@ -258,6 +258,14 @@ from src.control.view import (
     resolve_view_policy_id as resolve_view_policy_id_from_registry,
     view_policy_rows_by_id,
 )
+from src.embodiment.body import (
+    DEFAULT_BODY_TEMPLATE_ID,
+    body_state_from_body_row,
+    body_state_rows_by_subject_id,
+    body_template_rows_by_id,
+    normalize_body_state_rows,
+)
+from src.embodiment.lens import resolve_authorized_lens_profile, resolve_lens_camera_state
 from src.control.effects import (
     REFUSAL_EFFECT_FORBIDDEN,
     REFUSAL_EFFECT_INVALID_TARGET,
@@ -824,6 +832,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.camera_set_lens": "entitlement.control.lens_override",
     "process.cosmetic_assign": "entitlement.cosmetic.assign",
     "process.body_move_attempt": "entitlement.control.possess",
+    "process.body_apply_input": "entitlement.control.possess",
+    "process.body_tick": "session.boot",
     "process.instrument_tick": "session.boot",
     "process.instrument_notebook_add_note": "entitlement.diegetic.notebook_write",
     "process.instrument_radio_send_text": "entitlement.diegetic.radio_use",
@@ -1048,6 +1058,8 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.camera_set_lens": "operator",
     "process.cosmetic_assign": "operator",
     "process.body_move_attempt": "operator",
+    "process.body_apply_input": "operator",
+    "process.body_tick": "observer",
     "process.instrument_tick": "observer",
     "process.instrument_notebook_add_note": "observer",
     "process.instrument_radio_send_text": "observer",
@@ -1268,6 +1280,7 @@ CONTROL_PROCESS_IDS = {
     "process.instrument_notebook_add_note",
     "process.instrument_radio_send_text",
     "process.body_move_attempt",
+    "process.body_apply_input",
     "process.control_ir.autopilot_stub",
     "process.control_ir.ai_controller_stub",
     "process.plan_create",
@@ -16911,6 +16924,7 @@ def _ensure_body_assemblies(state: dict) -> List[dict]:
                 if row.get("owner_agent_id") is None
                 else str(row.get("owner_agent_id", "")).strip(),
                 "shard_id": str(row.get("shard_id", "")).strip() or "shard.0",
+                "frame_id": str(row.get("frame_id", "frame.world")).strip() or "frame.world",
                 "shape_type": shape_type,
                 "shape_parameters": {
                     "radius_mm": max(0, _as_int(params.get("radius_mm", 0), 0)),
@@ -16940,10 +16954,88 @@ def _ensure_body_assemblies(state: dict) -> List[dict]:
                     "y": _as_int((velocity or {}).get("y", 0), 0),
                     "z": _as_int((velocity or {}).get("z", 0), 0),
                 },
+                "extensions": dict(row.get("extensions") or {}) if isinstance(row.get("extensions"), Mapping) else {},
             }
         )
     state["body_assemblies"] = normalized
     return normalized
+
+
+def _ensure_body_state_rows(state: dict) -> List[dict]:
+    rows = normalize_body_state_rows(state.get("body_states"))
+    state["body_states"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows]
+
+
+def _subject_id_for_body(body_row: Mapping[str, object] | None, explicit_subject_id: str = "") -> str:
+    token = str(explicit_subject_id or "").strip()
+    if token:
+        return token
+    body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
+    for candidate in (
+        str(body.get("owner_agent_id", "")).strip(),
+        str(body.get("owner_assembly_id", "")).strip(),
+        str(body.get("assembly_id", "")).strip(),
+    ):
+        if candidate:
+            return candidate
+    return ""
+
+
+def _upsert_body_state_for_body(
+    *,
+    state: dict,
+    body_row: Mapping[str, object] | None,
+    subject_id: str = "",
+) -> dict:
+    body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
+    subject_token = _subject_id_for_body(body, explicit_subject_id=subject_id)
+    if not subject_token:
+        return {}
+    current_rows = _ensure_body_state_rows(state)
+    by_subject = body_state_rows_by_subject_id(current_rows)
+    updated_row = body_state_from_body_row(
+        subject_id=subject_token,
+        frame_id=str(body.get("frame_id", "frame.world")).strip() or "frame.world",
+        body_row=body,
+        extensions={
+            "body_id": str(body.get("assembly_id", "")).strip(),
+            "template_id": str((dict(body.get("extensions") or {})).get("template_id", "")).strip(),
+        },
+    )
+    if not updated_row:
+        return {}
+    by_subject[subject_token] = dict(updated_row)
+    state["body_states"] = [dict(by_subject[key]) for key in sorted(by_subject.keys())]
+    return dict(updated_row)
+
+
+def _body_template_registry_payload(policy_context: dict | None) -> dict:
+    payload = _policy_payload(policy_context, "body_template_registry")
+    if payload:
+        return {"body_templates": list((dict(payload).get("body_templates") or []))}
+    fallback = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/body_template_registry.json",
+        default_payload={"body_templates": []},
+    )
+    return {"body_templates": list(dict(fallback).get("body_templates") or [])}
+
+
+def _movement_params_for_body(policy_context: dict | None, body_row: Mapping[str, object] | None) -> dict:
+    body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
+    template_id = str((dict(body.get("extensions") or {})).get("template_id", "")).strip() or DEFAULT_BODY_TEMPLATE_ID
+    template_rows = body_template_rows_by_id(_body_template_registry_payload(policy_context))
+    template_row = dict(template_rows.get(template_id) or template_rows.get(DEFAULT_BODY_TEMPLATE_ID) or {})
+    template_ext = dict(template_row.get("extensions") or {}) if isinstance(template_row.get("extensions"), Mapping) else {}
+    params = dict(template_ext.get("movement_params") or {}) if isinstance(template_ext.get("movement_params"), Mapping) else {}
+    return {
+        "walk_accel_mm_per_tick2": int(max(1, _as_int(params.get("walk_accel_mm_per_tick2", 120), 120))),
+        "look_rate_mdeg_per_tick": int(max(1, _as_int(params.get("look_rate_mdeg_per_tick", 1800), 1800))),
+        "horizontal_damping_permille": int(max(0, min(950, _as_int(params.get("horizontal_damping_permille", 120), 120)))),
+        "mass_value": int(max(1, _as_int(template_row.get("mass_value", 80000), 80000))),
+        "template_id": str(template_row.get("template_id", template_id)).strip() or DEFAULT_BODY_TEMPLATE_ID,
+    }
 
 
 def _ensure_collision_state(state: dict) -> dict:
@@ -17806,6 +17898,9 @@ def _apply_body_move_attempt(
         )
         if resolved.get("result") != "complete":
             return resolved
+    latest_bodies = _ensure_body_assemblies(state)
+    latest_body = _find_body(body_rows=latest_bodies, body_id=body_id) or body
+    _upsert_body_state_for_body(state=state, body_row=latest_body)
     return {
         "result": "complete",
         "body_id": body_id,
@@ -17819,9 +17914,9 @@ def _apply_body_move_attempt(
         "speed_cap_permille": int(speed_cap_permille),
         "wind_drift_permille": int(wind_drift_permille),
         "aircraft_wind_applied": bool(is_aircraft and int(wind_drift_permille) > 0),
-        "final_transform_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
-        "final_orientation_mdeg": dict(body.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0}),
-        "final_velocity_mm_per_tick": dict(body.get("velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}),
+        "final_transform_mm": dict(latest_body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
+        "final_orientation_mdeg": dict(latest_body.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0}),
+        "final_velocity_mm_per_tick": dict(latest_body.get("velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}),
     }
 
 
@@ -24230,6 +24325,7 @@ def execute_intent(
     machine_port_connections = _ensure_machine_port_connections(state)
     machine_provenance_events = _ensure_machine_provenance_events(state)
     bodies = _ensure_body_assemblies(state)
+    body_states = _ensure_body_state_rows(state)
     cohorts = _ensure_cohort_assemblies(state)
     order_rows = _ensure_order_assemblies(state)
     queue_rows = _ensure_order_queue_assemblies(state)
@@ -24565,6 +24661,305 @@ def execute_intent(
             ],
         )
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.body_apply_input":
+        body_id = str(inputs.get("body_id", "") or inputs.get("target_body_id", "") or inputs.get("target_id", "")).strip()
+        if not body_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.body_apply_input requires body_id",
+                "Provide body_id and optional move_vector_local/look_vector inputs.",
+                {"process_id": process_id},
+                "$.intent.inputs.body_id",
+            )
+        body = _find_body(body_rows=bodies, body_id=body_id)
+        if not body:
+            return refusal(
+                "refusal.control.target_invalid",
+                "body '{}' does not exist".format(body_id),
+                "Use a body_id present in universe_state.body_assemblies.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        if not bool(body.get("dynamic", False)):
+            return refusal(
+                "refusal.agent.unembodied",
+                "body '{}' is static and cannot receive body input".format(body_id),
+                "Select a dynamic body assembly before applying embodied input.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        local_move = _vector3_int(inputs.get("move_vector_local"), "move_vector_local") or {"x": 0, "y": 0, "z": 0}
+        look_vector = _vector3_int(inputs.get("look_vector"), "look_vector") or {"x": 0, "y": 0, "z": 0}
+        dt_ticks = int(max(1, _as_int(inputs.get("dt_ticks", 1), 1)))
+        movement_params = _movement_params_for_body(policy_context=policy_context, body_row=body)
+        orientation = _angles_int(body.get("orientation_mdeg")) or {"yaw": 0, "pitch": 0, "roll": 0}
+        look_rate = int(movement_params.get("look_rate_mdeg_per_tick", 1800))
+        orientation["yaw"] = int(orientation["yaw"]) + ((int(look_vector["x"]) * look_rate * dt_ticks) // 1000)
+        orientation["pitch"] = int(orientation["pitch"]) + ((int(look_vector["y"]) * look_rate * dt_ticks) // 1000)
+        orientation["roll"] = int(orientation["roll"]) + ((int(look_vector["z"]) * look_rate * dt_ticks) // 1000)
+        world_move = _movement_world_delta(local_delta=local_move, yaw_mdeg=int(orientation.get("yaw", 0)))
+        momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+        existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
+        mass_value = _mass_value_for_assembly(
+            body_row=body,
+            existing_momentum_row=existing_momentum_row,
+            explicit_mass_value=movement_params.get("mass_value"),
+        )
+        if not existing_momentum_row:
+            existing_momentum_row = build_momentum_state(
+                assembly_id=body_id,
+                mass_value=int(mass_value),
+                momentum_linear={
+                    "x": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("x", 0), 0)) * int(mass_value),
+                    "y": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("y", 0), 0)) * int(mass_value),
+                    "z": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("z", 0), 0)) * int(mass_value),
+                },
+                momentum_angular=0,
+                last_update_tick=int(current_tick),
+                extensions={},
+            )
+        walk_accel = int(max(1, _as_int(movement_params.get("walk_accel_mm_per_tick2", 120), 120)))
+        force_vector = {
+            "x": int(int(world_move["x"]) * walk_accel * int(mass_value) // 1000),
+            "y": int(int(world_move["y"]) * walk_accel * int(mass_value) // 1000),
+            "z": int(int(world_move["z"]) * walk_accel * int(mass_value) // 1000),
+        }
+        force_row = build_force_application(
+            application_id="force.body_input.{}".format(canonical_sha256({"body_id": body_id, "tick": int(current_tick), "intent_id": str(intent_id)})[:16]),
+            target_assembly_id=body_id,
+            force_vector=dict(force_vector),
+            duration_ticks=int(dt_ticks),
+            torque=None,
+            originating_process_id=process_id,
+            extensions={"source": "EMB0-4"},
+        )
+        applied = apply_force_to_momentum_state(
+            momentum_state_row=existing_momentum_row,
+            force_application_row=force_row,
+            tick=int(current_tick),
+        )
+        updated_momentum_row = dict(applied.get("momentum_state") or existing_momentum_row)
+        updated_velocity = velocity_from_momentum_state(updated_momentum_row)
+        force_application_rows = normalize_force_application_rows(
+            list(force_application_rows or [])
+            + [force_row]
+        )
+        state["force_application_rows"] = [dict(row) for row in list(force_application_rows or []) if isinstance(row, Mapping)]
+        body["orientation_mdeg"] = dict(orientation)
+        body["velocity_mm_per_tick"] = dict(updated_velocity)
+        body_rows_by_id = dict(
+            (
+                str(row.get("assembly_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(bodies or [])
+            if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+        )
+        body_rows_by_id[body_id] = dict(body)
+        state["body_assemblies"] = [dict(body_rows_by_id[key]) for key in sorted(body_rows_by_id.keys())]
+        momentum_rows_by_assembly[body_id] = dict(updated_momentum_row)
+        momentum_states = normalize_momentum_state_rows([dict(momentum_rows_by_assembly[key]) for key in sorted(momentum_rows_by_assembly.keys())])
+        state["momentum_states"] = [dict(row) for row in list(momentum_states or []) if isinstance(row, Mapping)]
+        subject_id = _subject_id_for_body(body, explicit_subject_id=str(inputs.get("subject_id", "")).strip())
+        updated_body_state = _upsert_body_state_for_body(state=state, body_row=body, subject_id=subject_id)
+        owned_agent_id = str(body.get("owner_agent_id", "")).strip()
+        if owned_agent_id:
+            agent_row = _find_agent(agent_rows=agents, agent_id=owned_agent_id)
+            if agent_row:
+                agent_row["orientation_mdeg"] = dict(orientation)
+                _refresh_agent_state_hash(agent_row=agent_row, body_row=body)
+                state["agent_states"] = sorted(
+                    (dict(item) for item in agents if isinstance(item, dict)),
+                    key=lambda item: str(item.get("agent_id", "")),
+                )
+        result_metadata = {
+            "body_id": body_id,
+            "subject_id": str(updated_body_state.get("subject_id", subject_id)).strip(),
+            "force_vector": dict(force_vector),
+            "look_vector": dict(look_vector),
+            "orientation_mdeg": dict(orientation),
+            "movement_params_ref": str((dict(body.get("extensions") or {})).get("movement_params_ref", "")).strip(),
+        }
+        _advance_time(state, steps=int(dt_ticks), policy_context=policy_context)
+    elif process_id == "process.body_tick":
+        body_id = str(inputs.get("body_id", "") or inputs.get("target_body_id", "") or inputs.get("target_id", "")).strip()
+        if not body_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.body_tick requires body_id",
+                "Provide body_id for deterministic embodied integration.",
+                {"process_id": process_id},
+                "$.intent.inputs.body_id",
+            )
+        body = _find_body(body_rows=bodies, body_id=body_id)
+        if not body:
+            return refusal(
+                "refusal.control.target_invalid",
+                "body '{}' does not exist".format(body_id),
+                "Use a body_id present in universe_state.body_assemblies.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        dt_ticks = int(max(1, _as_int(inputs.get("dt_ticks", 1), 1)))
+        movement_params = _movement_params_for_body(policy_context=policy_context, body_row=body)
+        field_type_registry = _field_registry_payload(
+            policy_context=policy_context,
+            key="field_type_registry",
+            registry_rel_path="data/registries/field_type_registry.json",
+            entry_key="field_types",
+        )
+        field_binding_registry = _field_binding_registry_payload(policy_context)
+        normalized_field_layers = normalize_field_layer_rows(state.get("field_layers") or [])
+        normalized_field_cells = normalize_field_cell_rows(
+            state.get("field_cells") or [],
+            field_layer_rows=normalized_field_layers,
+            field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
+        )
+        gravity_sample = get_field_value(
+            spatial_position={"position_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0})},
+            field_id="field.gravity_vector",
+            field_layer_rows=normalized_field_layers,
+            field_cell_rows=normalized_field_cells,
+            field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
+        )
+        gravity_value = gravity_sample.get("vector")
+        if not isinstance(gravity_value, Mapping):
+            gravity_value = gravity_sample.get("value")
+        gravity_vector = dict(gravity_value) if isinstance(gravity_value, Mapping) else {"x": 0, "y": 0, "z": 0}
+        momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+        existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
+        mass_value = _mass_value_for_assembly(
+            body_row=body,
+            existing_momentum_row=existing_momentum_row,
+            explicit_mass_value=movement_params.get("mass_value"),
+        )
+        if not existing_momentum_row:
+            existing_momentum_row = build_momentum_state(
+                assembly_id=body_id,
+                mass_value=int(mass_value),
+                momentum_linear={
+                    "x": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("x", 0), 0)) * int(mass_value),
+                    "y": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("y", 0), 0)) * int(mass_value),
+                    "z": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("z", 0), 0)) * int(mass_value),
+                },
+                momentum_angular=0,
+                last_update_tick=int(current_tick),
+                extensions={},
+            )
+        gravity_force_row = build_force_application(
+            application_id="force.body_gravity.{}".format(canonical_sha256({"body_id": body_id, "tick": int(current_tick), "dt_ticks": int(dt_ticks)})[:16]),
+            target_assembly_id=body_id,
+            force_vector={
+                "x": int(_as_int(gravity_vector.get("x", 0), 0)) * int(mass_value),
+                "y": int(_as_int(gravity_vector.get("y", 0), 0)) * int(mass_value),
+                "z": int(_as_int(gravity_vector.get("z", 0), 0)) * int(mass_value),
+            },
+            duration_ticks=int(dt_ticks),
+            torque=None,
+            originating_process_id=process_id,
+            extensions={"source": "EMB0-5", "model_id": "model.phys_gravity_force"},
+        )
+        applied = apply_force_to_momentum_state(
+            momentum_state_row=existing_momentum_row,
+            force_application_row=gravity_force_row,
+            tick=int(current_tick),
+        )
+        updated_momentum_row = dict(applied.get("momentum_state") or existing_momentum_row)
+        updated_velocity = velocity_from_momentum_state(updated_momentum_row)
+        force_application_rows = normalize_force_application_rows(
+            list(force_application_rows or [])
+            + [gravity_force_row]
+        )
+        state["force_application_rows"] = [dict(row) for row in list(force_application_rows or []) if isinstance(row, Mapping)]
+        horizontal_damping = int(max(0, min(950, _as_int(movement_params.get("horizontal_damping_permille", 120), 120))))
+        updated_velocity["x"] = int(updated_velocity["x"] * (1000 - horizontal_damping) // 1000)
+        updated_velocity["y"] = int(updated_velocity["y"] * (1000 - horizontal_damping) // 1000)
+        current_transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+        next_transform = {
+            "x": int(current_transform["x"]) + int(updated_velocity["x"]) * int(dt_ticks),
+            "y": int(current_transform["y"]) + int(updated_velocity["y"]) * int(dt_ticks),
+            "z": int(current_transform["z"]) + int(updated_velocity["z"]) * int(dt_ticks),
+        }
+        body["transform_mm"] = dict(next_transform)
+        body["velocity_mm_per_tick"] = dict(updated_velocity)
+        body_rows_by_id = dict(
+            (
+                str(row.get("assembly_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(bodies or [])
+            if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+        )
+        body_rows_by_id[body_id] = dict(body)
+        state["body_assemblies"] = [dict(body_rows_by_id[key]) for key in sorted(body_rows_by_id.keys())]
+        collision_result = _resolve_body_collisions(
+            state=state,
+            moved_body_id=body_id,
+            ghost_collisions_enabled=False,
+            policy_context=policy_context,
+        )
+        if str(collision_result.get("result", "")) != "complete":
+            return collision_result
+        bodies = _ensure_body_assemblies(state)
+        body = _find_body(body_rows=bodies, body_id=body_id) or body
+        resolved_velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or dict(updated_velocity)
+        updated_momentum_row = build_momentum_state(
+            assembly_id=body_id,
+            mass_value=int(mass_value),
+            momentum_linear={
+                "x": int(resolved_velocity["x"]) * int(mass_value),
+                "y": int(resolved_velocity["y"]) * int(mass_value),
+                "z": int(resolved_velocity["z"]) * int(mass_value),
+            },
+            momentum_angular=int(_as_int(existing_momentum_row.get("momentum_angular", 0), 0)),
+            last_update_tick=int(current_tick),
+            extensions=dict(updated_momentum_row.get("extensions") or {}),
+        )
+        momentum_rows_by_assembly[body_id] = dict(updated_momentum_row)
+        momentum_states = normalize_momentum_state_rows([dict(momentum_rows_by_assembly[key]) for key in sorted(momentum_rows_by_assembly.keys())])
+        state["momentum_states"] = [dict(row) for row in list(momentum_states or []) if isinstance(row, Mapping)]
+        subject_id = _subject_id_for_body(body, explicit_subject_id=str(inputs.get("subject_id", "")).strip())
+        updated_body_state = _upsert_body_state_for_body(state=state, body_row=body, subject_id=subject_id)
+        lens_profile_id = str(inputs.get("lens_profile_id", "")).strip()
+        camera_id = str(inputs.get("camera_id", "")).strip()
+        lens_result = {}
+        if camera_id and lens_profile_id and _camera_exists(state=state, camera_id=camera_id):
+            lens_auth = resolve_authorized_lens_profile(
+                requested_lens_profile_id=lens_profile_id,
+                authority_context=authority_context,
+            )
+            if str(lens_auth.get("result", "")) == "complete":
+                lens_profile_row = dict(lens_auth.get("lens_profile") or {})
+                camera_row = _camera_row(state=state, camera_id=camera_id)
+                lens_result = resolve_lens_camera_state(
+                    body_state_row=updated_body_state,
+                    body_row=body,
+                    lens_profile_row=lens_profile_row,
+                    previous_camera_state=camera_row,
+                )
+                if str(lens_result.get("result", "")) == "complete":
+                    camera_state = dict(lens_result.get("camera_state") or {})
+                    camera_row["position_mm"] = dict(camera_state.get("position_mm") or {"x": 0, "y": 0, "z": 0})
+                    camera_row["orientation_mdeg"] = dict(camera_state.get("orientation_mdeg") or {"yaw": 0, "pitch": 0, "roll": 0})
+                    camera_row["view_mode_id"] = str(camera_state.get("view_mode_id", "")).strip() or str(camera_row.get("view_mode_id", "")).strip()
+                    camera_row["lens_id"] = str(camera_state.get("lens_id", "")).strip() or str(camera_row.get("lens_id", "")).strip()
+        result_metadata = {
+            "body_id": body_id,
+            "subject_id": str(updated_body_state.get("subject_id", subject_id)).strip(),
+            "gravity_vector": {
+                "x": int(_as_int(gravity_vector.get("x", 0), 0)),
+                "y": int(_as_int(gravity_vector.get("y", 0), 0)),
+                "z": int(_as_int(gravity_vector.get("z", 0), 0)),
+            },
+            "model_id": "model.phys_gravity_force",
+            "velocity_mm_per_tick": dict(resolved_velocity),
+            "position_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
+            "lens_profile_id": lens_profile_id or None,
+            "lens_camera_fingerprint": str(lens_result.get("deterministic_fingerprint", "")).strip() or None,
+        }
+        _advance_time(state, steps=int(dt_ticks), policy_context=policy_context)
     elif process_id == "process.agent_move":
         agent_id = str(inputs.get("agent_id", "") or inputs.get("target_agent_id", "") or inputs.get("target_id", "")).strip()
         if not agent_id:
