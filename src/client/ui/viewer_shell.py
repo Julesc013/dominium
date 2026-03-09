@@ -6,6 +6,7 @@ from typing import Mapping
 
 from src.client.render import build_render_model
 from src.embodiment import resolve_authorized_lens_profile
+from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.teleport_controller import build_teleport_plan
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
@@ -161,6 +162,10 @@ def build_viewer_shell_state(
     teleport_command: str = "",
     teleport_counter: int = 0,
     candidate_system_rows: object = None,
+    inspection_snapshot: Mapping[str, object] | None = None,
+    property_origin_request: Mapping[str, object] | None = None,
+    property_origin_result: Mapping[str, object] | None = None,
+    field_values: Mapping[str, object] | None = None,
     selection: Mapping[str, object] | None = None,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
@@ -209,6 +214,16 @@ def build_viewer_shell_state(
         if str(teleport_command or "").strip()
         else {"result": "complete", "process_sequence": [], "target_object_id": ""}
     )
+    inspection_surfaces = build_inspection_panel_set(
+        perceived_model=perceived_model,
+        target_semantic_id=str(_as_map(selection).get("object_id", "")).strip()
+        or str(_as_map(selection).get("target_id", "")).strip(),
+        authority_context=runtime_authority,
+        inspection_snapshot=inspection_snapshot,
+        property_origin_request=property_origin_request,
+        property_origin_result=property_origin_result,
+        field_values=field_values,
+    )
     payload = {
         "result": "complete",
         "viewer_shell_id": "viewer_shell.mvp_default",
@@ -222,6 +237,7 @@ def build_viewer_shell_state(
         "lens_resolution": dict(lens_resolution),
         "render_contract": render_contract,
         "teleport_plan": dict(teleport_plan),
+        "inspection_surfaces": dict(inspection_surfaces),
         "selection": dict(selection or {}),
         "panels": _viewer_panels(current_stage),
         "ui_contract": {
