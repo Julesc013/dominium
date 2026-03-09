@@ -15,7 +15,22 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "description": "Default realistic procedural Milky Way prior set with coarse astrophysical tendencies.",
-          "source": "MW2-2"
+          "sol_anchor_cell_key": {
+            "chart_id": "chart.global.r3",
+            "extensions": {
+              "anchor_id": "anchor.sol.default",
+              "source": "SOL0-3"
+            },
+            "index_tuple": [
+              801,
+              0,
+              0
+            ],
+            "partition_profile_id": "geo.partition.grid_zd",
+            "refinement_level": 0,
+            "topology_profile_id": "geo.topology.r3_infinite"
+          },
+          "source": "SOL0-3"
         }
       },
       {

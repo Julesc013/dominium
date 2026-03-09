@@ -66,7 +66,14 @@ def sol_anchor_matches_cell(
     anchor = resolve_sol_anchor_cell_key(realism_profile_row)
     if not candidate or not anchor:
         return False
-    return bool(candidate == anchor)
+    return bool(
+        str(candidate.get("partition_profile_id", "")).strip() == str(anchor.get("partition_profile_id", "")).strip()
+        and str(candidate.get("topology_profile_id", "")).strip() == str(anchor.get("topology_profile_id", "")).strip()
+        and str(candidate.get("chart_id", "")).strip() == str(anchor.get("chart_id", "")).strip()
+        and int(_as_int(candidate.get("refinement_level", 0), 0)) == int(_as_int(anchor.get("refinement_level", 0), 0))
+        and [int(_as_int(item, 0)) for item in list(candidate.get("index_tuple") or [])]
+        == [int(_as_int(item, 0)) for item in list(anchor.get("index_tuple") or [])]
+    )
 
 
 def sol_anchor_body_slots() -> List[dict]:

@@ -13,6 +13,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from src.geo.frame.frame_engine import build_position_ref
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
+from src.worldgen.mw.sol_anchor import SOL_ANCHOR_ID, resolve_sol_anchor_cell_key, sol_anchor_matches_cell
 
 
 DEFAULT_GALAXY_PRIORS_ID = "priors.milkyway_stub_default"
@@ -573,11 +574,18 @@ def generate_mw_cell_payload(
         cell_size_pc=cell_size_pc,
     )
     expected_system_count_milli = _expected_system_count_milli(priors_row, density_permille=density_permille)
+    sol_anchor_active = sol_anchor_matches_cell(cell_key, realism_row)
     uncapped_system_count, system_count, count_resolution = _deterministic_system_count(
         expected_system_count_milli=expected_system_count_milli,
         max_systems_per_cell=max_systems_per_cell,
         galaxy_stream_seed=str(galaxy_stream_seed),
     )
+    sol_anchor_forced_minimum = False
+    if sol_anchor_active and int(system_count) < 1:
+        uncapped_system_count = max(1, int(uncapped_system_count))
+        system_count = 1
+        count_resolution = "anchor_minimum"
+        sol_anchor_forced_minimum = True
     metallicity_permille = _metallicity_permille(priors_row, radius_pc)
     habitability_bias_permille = _habitability_bias_permille(
         priors_row,
@@ -615,6 +623,14 @@ def generate_mw_cell_payload(
         "habitable_filter_bias_permille": int(habitability_bias_permille),
         "deterministic_fingerprint": "",
     }
+    if sol_anchor_active:
+        summary["extensions"] = {
+            "sol_anchor_active": True,
+            "sol_anchor_cell_key": resolve_sol_anchor_cell_key(realism_row),
+            "sol_anchor_forced_minimum": bool(sol_anchor_forced_minimum),
+            "sol_anchor_id": SOL_ANCHOR_ID,
+            "source": "SOL0-3",
+        }
     summary["deterministic_fingerprint"] = canonical_sha256(dict(summary, deterministic_fingerprint=""))
     payload = {
         "result": "complete",
