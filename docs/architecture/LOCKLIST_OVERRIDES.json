@@ -113,6 +113,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the EARTH-7 wind proxy doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-10"
+    },
+    {
+      "id": "OVR-2026-03-10-EARTH8-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the EARTH-8 water visual doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-10"
     }
   ]
 }
