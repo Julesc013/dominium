@@ -32,6 +32,7 @@ DEFAULT_MAP_LAYERS = [
     "layer.terrain_stub",
     "layer.temperature",
     "layer.tide_height_proxy",
+    "layer.wind_vector",
     "layer.pollution",
     "layer.geometry_occupancy",
     "layer.infrastructure_stub",
@@ -41,6 +42,7 @@ DEFAULT_MINIMAP_LAYERS = [
     "layer.terrain_stub",
     "layer.temperature",
     "layer.tide_height_proxy",
+    "layer.wind_vector",
     "layer.geometry_occupancy",
 ]
 _MAP_VIEW_CACHE: dict[str, dict] = {}

@@ -134,6 +134,7 @@ def build_field_panel(
         {"key": "temperature", "value": values.get("temperature")},
         {"key": "daylight", "value": values.get("daylight")},
         {"key": "tide_height_proxy", "value": values.get("tide_height_proxy")},
+        {"key": "wind_vector", "value": values.get("wind_vector")},
         {"key": "pollution", "value": values.get("pollution")},
     ]
     visible = any(row.get("value") is not None and str(row.get("value", "")).strip() != "" for row in rows)

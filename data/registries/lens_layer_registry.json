@@ -83,6 +83,20 @@
       },
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.wind_vector",
+        "description": "Deterministic EARTH-7 wind-vector layer rendered from lawful perceived wind field samples only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "field",
+          "field_id": "field.wind_vector",
+          "required_channels": [
+            "ch.diegetic.weather_vane"
+          ],
+          "source": "EARTH7-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.pollution",
         "description": "Deterministic pollution overlay rendered from lawful perceived pollution field samples.",
         "deterministic_fingerprint": "",
