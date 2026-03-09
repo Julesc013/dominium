@@ -29,6 +29,28 @@
       },
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.illumination",
+        "description": "Deterministic EARTH-5 illumination layer sourced from derived illumination-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "illumination_view",
+          "artifact_id": "illumination_view_artifact",
+          "source": "EARTH5-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.shadow_factor",
+        "description": "Deterministic EARTH-5 horizon-shadow factor layer sourced from bounded derived illumination-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "illumination_view",
+          "artifact_id": "illumination_view_artifact",
+          "source": "EARTH5-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.terrain_stub",
         "description": "Deterministic terrain or atlas-terrain surface derived from lawful perceived map or tile sources.",
         "deterministic_fingerprint": "",

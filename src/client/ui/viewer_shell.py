@@ -10,6 +10,7 @@ from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
 from src.client.ui.teleport_controller import build_teleport_plan
 from src.geo import build_position_ref
+from src.worldgen.earth import build_lighting_view_surface
 from src.worldgen.earth.sky import build_sky_view_surface
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
@@ -492,6 +493,7 @@ def _render_contract(
     registry_payloads: Mapping[str, object] | None,
     pack_lock_hash: str,
     sky_view_artifact: Mapping[str, object] | None = None,
+    illumination_view_artifact: Mapping[str, object] | None = None,
 ) -> dict:
     perceived = _as_map(perceived_model)
     if not perceived:
@@ -507,6 +509,7 @@ def _render_contract(
         pack_lock_hash=str(pack_lock_hash or ""),
         physics_profile_id="physics.default_realistic",
         sky_view_artifact=dict(sky_view_artifact or {}),
+        illumination_view_artifact=dict(illumination_view_artifact or {}),
     )
     return {
         "result": str(render_result.get("result", "")) or "complete",
@@ -686,11 +689,26 @@ def build_viewer_shell_state(
         or DEFAULT_VIEWER_LENS_PROFILE_ID,
         ui_mode=str(ui_mode),
     )
+    illumination_view_surface = build_lighting_view_surface(
+        sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
+        observer_ref=_preferred_position_ref(
+            explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
+            selection=selection,
+        ),
+        observer_surface_artifact=_resolve_sky_observer_surface_artifact(
+            selection=selection,
+            inspection_snapshot=inspection_snapshot,
+            layer_source_payloads=layer_source_payloads,
+            extensions=extensions,
+        ),
+        ui_mode=str(ui_mode),
+    )
     render_contract = _render_contract(
         perceived_model=perceived_model,
         registry_payloads=registry_payloads,
         pack_lock_hash=str(_as_map(bootstrap.get("pack_lock")).get("pack_lock_hash", "")),
         sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
+        illumination_view_artifact=_as_map(_as_map(illumination_view_surface).get("illumination_view_artifact")),
     )
     payload = {
         "result": "complete",
@@ -709,6 +727,7 @@ def build_viewer_shell_state(
         "inspection_surfaces": dict(inspection_surfaces),
         "map_views": dict(map_views),
         "sky_view_surface": dict(sky_view_surface),
+        "illumination_view_surface": dict(illumination_view_surface),
         "selection_controls": dict(selection_controls),
         "selection": dict(selection or {}),
         "panels": _viewer_panels(current_stage),
@@ -716,6 +735,7 @@ def build_viewer_shell_state(
             "consumes_perceived_model_only": True,
             "consumes_projection_and_lens_artifacts": True,
             "consumes_sky_view_artifacts": True,
+            "consumes_illumination_view_artifacts": True,
             "forbidden_truth_inputs": [
                 "truth_model",
                 "universe_state",

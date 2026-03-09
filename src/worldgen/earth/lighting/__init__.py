@@ -16,15 +16,21 @@ from .horizon_shadow_engine import (
     shadow_model_registry_hash,
     shadow_model_rows,
 )
+from .lighting_view_engine import (
+    EARTH_LIGHTING_VIEW_ENGINE_VERSION,
+    build_lighting_view_surface,
+)
 
 __all__ = [
     "DEFAULT_ILLUMINATION_MODEL_ID",
     "DEFAULT_SHADOW_MODEL_ID",
     "EARTH_ILLUMINATION_ENGINE_VERSION",
     "EARTH_HORIZON_SHADOW_ENGINE_VERSION",
+    "EARTH_LIGHTING_VIEW_ENGINE_VERSION",
     "ILLUMINATION_MODEL_REGISTRY_REL",
     "SHADOW_MODEL_REGISTRY_REL",
     "build_illumination_view_artifact",
+    "build_lighting_view_surface",
     "evaluate_horizon_shadow",
     "illumination_model_registry_hash",
     "illumination_model_rows",
