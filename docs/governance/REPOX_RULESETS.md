@@ -143,6 +143,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
 - `INV-LENS-PROFILED`
 - `INV-BODY-MOTION-PROCESS-ONLY`
+- `INV-NO-TRUTH-IN-UI`
+- `INV-VIEW-ARTIFACT-ONLY`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -491,6 +493,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the EMB-0 runtime surface loses the explicit `process.body_apply_input` and `process.body_tick` motion pathway markers.
 - Fails when embodiment helper modules start mutating authoritative body state directly instead of emitting process-governed rows.
 - Preserves process-only body motion, PHYS force logging, and lawful camera/render separation.
+
+### INV-NO-TRUTH-IN-UI
+
+- Fails when the governed UX-0 viewer shell surfaces lose their explicit `PerceivedModel`-only and forbidden-truth-input markers.
+- Fails when viewer shell modules introduce direct `truth_model`, `universe_state`, or process-runtime access patterns.
+- Preserves observer/render/truth separation for the MVP viewer shell.
+
+### INV-VIEW-ARTIFACT-ONLY
+
+- Fails when UX-0 map or inspection surfaces stop routing through GEO projection/lens artifacts, inspection snapshots, or explain/provenance tooling.
+- Fails when viewer UI modules introduce direct field sampling, geometry reads, or ad hoc worldgen/view derivation bypasses.
+- Preserves the lens-first, derived-artifact-only contract for maps, minimaps, inspection panels, and provenance views.
 
 ### INV-SOL-PACK-MINIMAL-SIZE
 

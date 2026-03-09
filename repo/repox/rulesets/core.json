@@ -702,6 +702,31 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-TRUTH-IN-UI",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/client/ui/viewer_shell.py",
+        "src/client/ui/map_views.py",
+        "src/client/ui/inspect_panels.py",
+        "docs/ux/MVP_VIEWER_SHELL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-in-ui",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-VIEW-ARTIFACT-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/client/ui/viewer_shell.py",
+        "src/client/ui/map_views.py",
+        "src/client/ui/inspect_panels.py",
+        "docs/ux/MVP_VIEWER_SHELL.md",
+        "tools/geo/tool_explain_property_origin.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-view-artifact-only",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [

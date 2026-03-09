@@ -392,6 +392,8 @@ from analyzers import e365_hardcoded_dem_reference_smell
 from analyzers import e366_nondeterministic_noise_smell
 from analyzers import e367_asset_dependency_smell
 from analyzers import e368_direct_position_write_smell
+from analyzers import e369_ui_truth_leak_smell
+from analyzers import e370_uninstrumented_inspect_smell
 
 
 ANALYZERS = (
@@ -787,6 +789,8 @@ ANALYZERS = (
     e366_nondeterministic_noise_smell,
     e367_asset_dependency_smell,
     e368_direct_position_write_smell,
+    e369_ui_truth_leak_smell,
+    e370_uninstrumented_inspect_smell,
 )
 
 

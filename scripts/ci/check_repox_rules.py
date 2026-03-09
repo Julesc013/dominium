@@ -348,6 +348,10 @@ EMB_BODY_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "body_templa
 EMB_LENS_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "lens_profile_registry.json")
 EMB_SYSTEM_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "system_template_registry.json")
 EMB_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
+UX_VIEWER_SHELL_REL = os.path.join("src", "client", "ui", "viewer_shell.py")
+UX_MAP_VIEWS_REL = os.path.join("src", "client", "ui", "map_views.py")
+UX_INSPECT_PANELS_REL = os.path.join("src", "client", "ui", "inspect_panels.py")
+UX_VIEWER_DOC_REL = os.path.join("docs", "ux", "MVP_VIEWER_SHELL.md")
 EMB_ASSET_FORBIDDEN_TOKENS = (
     ".png",
     ".jpg",
@@ -361,6 +365,22 @@ EMB_ASSET_FORBIDDEN_TOKENS = (
     "mesh_path",
     "skeleton",
     "rig_ref",
+)
+UX_UI_TRUTH_FORBIDDEN_TOKENS = (
+    "build_truth_model(",
+    "observe_truth(",
+    "truth_model[",
+    "truth_model.",
+    "universe_state[",
+    "universe_state.",
+    "process_runtime[",
+    "process_runtime.",
+)
+UX_VIEW_ARTIFACT_FORBIDDEN_TOKENS = (
+    "field_get_value(",
+    "geometry_get_cell_state(",
+    "build_worldgen_request(",
+    "generate_worldgen_result(",
 )
 EMB_LENS_HARDCODED_TOKENS = (
     '== "lens.fp"',
@@ -4856,6 +4876,140 @@ def check_body_motion_process_only(repo_root):
     return violations
 
 
+def check_no_truth_in_ui(repo_root):
+    invariant_id = "INV-NO-TRUTH-IN-UI"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        UX_VIEWER_SHELL_REL: (
+            '"consumes_perceived_model_only": True',
+            '"forbidden_truth_inputs": [',
+            '"truth_model"',
+            '"universe_state"',
+            '"process_runtime"',
+            "build_inspection_panel_set(",
+            "build_map_view_set(",
+        ),
+        UX_MAP_VIEWS_REL: (
+            "_normalized_perceived_model(",
+            "build_projected_view_artifact(",
+            "truth_hash_anchor",
+            '"cache_policy_id": "cache.truth_anchor_keyed"',
+        ),
+        UX_INSPECT_PANELS_REL: (
+            "build_inspection_overlays(",
+            "explain_property_origin_report(",
+            "process.inspect_generate_snapshot",
+            "tool.geo.explain_property_origin",
+        ),
+        UX_VIEWER_DOC_REL: (
+            "UI consumes PerceivedModel and derived view artifacts only.",
+            "It must not read or mutate TruthModel directly.",
+            "projection_engine + lens_engine output artifacts",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing UI truth-safety marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (UX_VIEWER_SHELL_REL, UX_MAP_VIEWS_REL, UX_INSPECT_PANELS_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in UX_UI_TRUTH_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: forbidden truth-access token '{}' detected in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_view_artifact_only(repo_root):
+    invariant_id = "INV-VIEW-ARTIFACT-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        UX_VIEWER_SHELL_REL: (
+            "build_map_view_set(",
+            "build_inspection_panel_set(",
+            '"consumes_projection_and_lens_artifacts": True',
+            '"selection_mode": "cell_list_stub"',
+        ),
+        UX_MAP_VIEWS_REL: (
+            "build_projection_request(",
+            "project_view_cells(",
+            "build_lens_request(",
+            "build_projected_view_artifact(",
+            "render_projected_view_ascii(",
+            "build_projected_view_layer_buffers(",
+            "plan_geo_degradation_actions(",
+        ),
+        UX_INSPECT_PANELS_REL: (
+            "build_inspection_overlays(",
+            "explain_property_origin_report(",
+            '"tool_id": "tool.geo.explain_property_origin"',
+            '"inspection_overlay_payload"',
+        ),
+        UX_VIEWER_DOC_REL: (
+            "projection_engine + lens_engine output artifacts",
+            "inspection snapshots",
+            "explain/provenance tools",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing derived-view marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (UX_MAP_VIEWS_REL, UX_INSPECT_PANELS_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in UX_VIEW_ARTIFACT_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: forbidden direct-view bypass token '{}' detected in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -7768,6 +7922,16 @@ def main() -> int:
                 lambda: check_no_asset_dependency_for_emb(repo_root),
                 lambda: check_lens_profiled(repo_root),
                 lambda: check_body_motion_process_only(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.viewer",
+            "scope_subtrees": ("src", "tools", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_no_truth_in_ui(repo_root),
+                lambda: check_view_artifact_only(repo_root),
+                lambda: check_lens_profiled(repo_root),
             ],
         },
         {

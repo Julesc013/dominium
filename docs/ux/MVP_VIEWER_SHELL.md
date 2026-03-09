@@ -33,6 +33,7 @@ It must not read or mutate TruthModel directly.
   - `process.worldgen_request`
 - Inspection content must come from:
   - `process.inspect_generate_snapshot`
+  - inspection snapshots
   - derived inspection overlays
   - explain/provenance tools
 - Overlay provenance must use the canonical GEO-9 property-origin explain tool.
@@ -163,6 +164,7 @@ Inspection is not a direct truth read.
 The shell must compose:
 
 - `process.inspect_generate_snapshot`
+- inspection snapshots
 - `src/client/interaction/inspection_overlays.py`
 - explain/provenance tools
 
@@ -173,6 +175,7 @@ The shell must not synthesize hidden state by reading runtime internals.
 - map generation must cap cell counts deterministically
 - debug-heavy surfaces must throttle deterministically
 - view artifacts must be cacheable by truth anchor hash plus request hashes
+- projection_engine + lens_engine output artifacts are the canonical map/minimap inputs
 - no viewer path may eagerly instantiate galaxy, systems, or surface tiles
 
 ## Non-Goals
