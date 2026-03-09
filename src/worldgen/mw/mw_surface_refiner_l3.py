@@ -13,6 +13,7 @@ from src.fields import build_field_cell, build_field_layer
 from src.geo.edit import build_geometry_cell_state
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
+from src.worldgen.earth import generate_earth_surface_tile_plan
 
 from .insolation_proxy import daylight_proxy_permille, insolation_proxy_permille, orbital_period_proxy_ticks, season_phase_permille
 
@@ -21,6 +22,7 @@ DEFAULT_SURFACE_PRIORS_ID = "priors.surface_default_stub"
 SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
 SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
 SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_routing_registry.json")
+EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_surface_params_registry.json")
 MW_SURFACE_REFINER_L3_VERSION = "MW3-3"
 
 
@@ -127,6 +129,14 @@ def surface_generator_routing_rows(payload: Mapping[str, object] | None = None) 
         _as_map(payload) or _registry_payload(SURFACE_GENERATOR_ROUTING_REGISTRY_REL),
         row_key="surface_generator_routes",
         id_key="routing_id",
+    )
+
+
+def earth_surface_params_rows(payload: Mapping[str, object] | None = None) -> Dict[str, dict]:
+    return _rows_by_id(
+        _as_map(payload) or _registry_payload(EARTH_SURFACE_PARAMS_REGISTRY_REL),
+        row_key="earth_surface_params",
+        id_key="params_id",
     )
 
 
@@ -344,6 +354,17 @@ def _latitude_mdeg(tile_cell_key: Mapping[str, object], surface_priors_row: Mapp
     return 90_000 - ((midpoint * 90_000) // (band_count * 2))
 
 
+def _longitude_mdeg(tile_cell_key: Mapping[str, object], surface_priors_row: Mapping[str, object]) -> int:
+    cell_key = _coerce_cell_key(tile_cell_key) or {}
+    atlas_resolution = max(1, _as_int(_as_map(_as_map(surface_priors_row).get("extensions")).get("atlas_resolution", 8), 8))
+    refinement_level = max(0, _as_int(cell_key.get("refinement_level", 0), 0))
+    column_count = max(4, atlas_resolution * 4 * max(1, 1 << refinement_level))
+    index_tuple = list(cell_key.get("index_tuple") or [0, 0])
+    u_idx = _as_int(index_tuple[0] if index_tuple else 0, 0) % column_count
+    midpoint = (u_idx * 2) + 1
+    return -180_000 + ((midpoint * 360_000) // (column_count * 2))
+
+
 def _pressure_proxy_value(*, atmosphere_class_id: str, surface_priors_row: Mapping[str, object]) -> int:
     pressure_params = _as_map(_as_map(surface_priors_row).get("pressure_params"))
     return max(0, _as_int(pressure_params.get(str(atmosphere_class_id).strip(), 0), 0))
@@ -404,6 +425,51 @@ def _surface_material_key(*, tile_seed: str, latitude_mdeg: int, temperature_kel
     return "land"
 
 
+def _default_surface_tile_plan(
+    *,
+    generator_seed: str,
+    surface_priors_row: Mapping[str, object],
+    latitude_mdeg: int,
+    longitude_mdeg: int,
+    temperature_value: int,
+    ocean_fraction_permille: int,
+) -> dict:
+    material_key = _surface_material_key(
+        tile_seed=generator_seed,
+        latitude_mdeg=latitude_mdeg,
+        temperature_kelvin=temperature_value,
+        ocean_fraction_permille=ocean_fraction_permille,
+    )
+    height_proxy = _height_proxy(tile_seed=generator_seed, material_key=material_key, surface_priors_row=surface_priors_row)
+    return {
+        "temperature_value": int(temperature_value),
+        "material_baseline_id": _material_baseline_id(material_key=material_key, surface_priors_row=surface_priors_row),
+        "biome_stub_id": _biome_stub_id(
+            material_key=material_key,
+            temperature_kelvin=temperature_value,
+            ocean_fraction_permille=ocean_fraction_permille,
+        ),
+        "height_proxy": int(height_proxy),
+        "elevation_params_ref": {
+            "noise_seed": _named_substream_seed(generator_seed, "rng.worldgen.surface.elevation"),
+            "height_proxy": int(height_proxy),
+            "macro_relief_permille": int(200 + (_hash_int(generator_seed, "macro_relief") % 801)),
+            "ridge_bias_permille": int(_hash_int(generator_seed, "ridge_bias") % 1000),
+            "coastal_bias_permille": int(ocean_fraction_permille),
+        },
+        "extensions": {
+            "longitude_mdeg": int(longitude_mdeg),
+            "surface_class_id": "surface.class.{}".format(material_key),
+            "far_lod_visual_class": (
+                "visual.class.blue_ocean"
+                if material_key == "ocean"
+                else "visual.class.white_polar" if material_key == "ice" else "visual.class.green_brown_land"
+            ),
+            "source": MW_SURFACE_REFINER_L3_VERSION,
+        },
+    }
+
+
 def generate_mw_surface_l3_payload(
     *,
     universe_identity_hash: str,
@@ -419,6 +485,7 @@ def generate_mw_surface_l3_payload(
     surface_priors_registry_payload: Mapping[str, object] | None = None,
     surface_generator_registry_payload: Mapping[str, object] | None = None,
     surface_generator_routing_registry_payload: Mapping[str, object] | None = None,
+    earth_surface_params_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     surface_cell_key = _coerce_cell_key(surface_geo_cell_key)
     ancestor_key = _coerce_cell_key(ancestor_world_cell_key)
@@ -490,6 +557,24 @@ def generate_mw_surface_l3_payload(
         payload = {"result": "refused", "message": "surface generator route points to an undeclared generator", "details": {"routing_id": str(route_row.get("routing_id", "")).strip(), "generator_id": str(route_row.get("generator_id", "")).strip()}, "deterministic_fingerprint": ""}
         payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
         return payload
+    handler_id = str(handler_row.get("handler_id", "")).strip()
+    earth_surface_params_row = {}
+    if handler_id == "earth.surface.stub":
+        earth_surface_params_id = str(_as_map(_as_map(selected_generator_row).get("extensions")).get("earth_surface_params_id", "")).strip()
+        earth_surface_params_row = _as_map(earth_surface_params_rows(earth_surface_params_registry_payload).get(earth_surface_params_id))
+        if not earth_surface_params_row:
+            payload = {
+                "result": "refused",
+                "message": "earth surface generator route is missing declared earth surface parameters",
+                "details": {
+                    "routing_id": str(route_row.get("routing_id", "")).strip(),
+                    "generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
+                    "earth_surface_params_id": earth_surface_params_id,
+                },
+                "deterministic_fingerprint": "",
+            }
+            payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+            return payload
 
     tile_object_id, object_row = _spawn_object_identity(
         universe_identity_hash=universe_identity_hash,
@@ -505,6 +590,7 @@ def generate_mw_surface_l3_payload(
     tile_seed = _surface_seed(surface_stream_seed=surface_stream_seed, planet_object_id=planet_object_token, tile_cell_key=surface_cell_key)
     generator_seed = _named_substream_seed(tile_seed, "rng.worldgen.surface.generator")
     latitude_mdeg = _latitude_mdeg(surface_cell_key, surface_priors_row)
+    longitude_mdeg = _longitude_mdeg(surface_cell_key, surface_priors_row)
     star_mass_milli_solar = _quantity_value(star_row.get("star_mass"), default_value=1000)
     luminosity_permille = _quantity_value(star_row.get("luminosity_proxy"), default_value=1000)
     semi_major_axis_milli_au = _quantity_value(planet_orbit_row.get("semi_major_axis"), default_value=1000)
@@ -540,33 +626,53 @@ def generate_mw_surface_l3_payload(
         120,
         480,
     )
-    material_key = _surface_material_key(
-        tile_seed=generator_seed,
-        latitude_mdeg=latitude_mdeg,
-        temperature_kelvin=temperature_value,
-        ocean_fraction_permille=ocean_fraction_permille,
+    if handler_id == "earth.surface.stub":
+        surface_plan = generate_earth_surface_tile_plan(
+            tile_seed=generator_seed,
+            planet_object_id=planet_object_token,
+            tile_cell_key=surface_cell_key,
+            surface_priors_row=surface_priors_row,
+            earth_surface_params_row=earth_surface_params_row,
+            latitude_mdeg=latitude_mdeg,
+            longitude_mdeg=longitude_mdeg,
+            base_temperature_kelvin=temperature_value,
+            daylight_permille=daylight_value,
+            insolation_permille=insolation_value,
+        )
+    else:
+        surface_plan = _default_surface_tile_plan(
+            generator_seed=generator_seed,
+            surface_priors_row=surface_priors_row,
+            latitude_mdeg=latitude_mdeg,
+            longitude_mdeg=longitude_mdeg,
+            temperature_value=temperature_value,
+            ocean_fraction_permille=ocean_fraction_permille,
+        )
+    surface_plan_extensions = _as_map(surface_plan.get("extensions"))
+    temperature_value = _clamp(_as_int(surface_plan.get("temperature_value", temperature_value), temperature_value), 120, 480)
+    material_baseline_id = str(surface_plan.get("material_baseline_id", "")).strip() or _material_baseline_id(
+        material_key="land",
+        surface_priors_row=surface_priors_row,
     )
-    material_baseline_id = _material_baseline_id(material_key=material_key, surface_priors_row=surface_priors_row)
-    biome_stub_id = _biome_stub_id(
-        material_key=material_key,
-        temperature_kelvin=temperature_value,
-        ocean_fraction_permille=ocean_fraction_permille,
-    )
-    height_proxy = _height_proxy(tile_seed=generator_seed, material_key=material_key, surface_priors_row=surface_priors_row)
-    pressure_value = _pressure_proxy_value(atmosphere_class_id=atmosphere_class_id, surface_priors_row=surface_priors_row)
-    occupancy_fraction = 700 if material_key == "ocean" else 1000
-
-    tile_artifact_row = {
-        "tile_object_id": tile_object_id,
-        "planet_object_id": planet_object_token,
-        "tile_cell_key": dict(surface_cell_key),
-        "elevation_params_ref": {
+    biome_stub_id = str(surface_plan.get("biome_stub_id", "")).strip() or "biome.stub.temperate"
+    height_proxy = max(0, _as_int(surface_plan.get("height_proxy", 0), 0))
+    elevation_params_ref = _as_map(surface_plan.get("elevation_params_ref"))
+    if not elevation_params_ref:
+        elevation_params_ref = {
             "noise_seed": _named_substream_seed(generator_seed, "rng.worldgen.surface.elevation"),
             "height_proxy": int(height_proxy),
             "macro_relief_permille": int(200 + (_hash_int(generator_seed, "macro_relief") % 801)),
             "ridge_bias_permille": int(_hash_int(generator_seed, "ridge_bias") % 1000),
             "coastal_bias_permille": int(ocean_fraction_permille),
-        },
+        }
+    pressure_value = _pressure_proxy_value(atmosphere_class_id=atmosphere_class_id, surface_priors_row=surface_priors_row)
+    occupancy_fraction = 700 if str(surface_plan_extensions.get("surface_class_id", "")).strip() == "surface.class.ocean" else 1000
+
+    tile_artifact_row = {
+        "tile_object_id": tile_object_id,
+        "planet_object_id": planet_object_token,
+        "tile_cell_key": dict(surface_cell_key),
+        "elevation_params_ref": dict(elevation_params_ref),
         "material_baseline_id": material_baseline_id,
         "biome_stub_id": biome_stub_id,
         "deterministic_fingerprint": "",
@@ -575,13 +681,15 @@ def generate_mw_surface_l3_payload(
             "parent_system_object_id": str(_as_map(planet_basic_row.get("extensions")).get("parent_system_object_id", "")).strip(),
             "parent_star_object_id": str(_as_map(planet_basic_row.get("extensions")).get("parent_star_object_id", "")).strip(),
             "latitude_mdeg": int(latitude_mdeg),
+            "longitude_mdeg": int(_as_int(surface_plan_extensions.get("longitude_mdeg", longitude_mdeg), longitude_mdeg)),
             "route_tags": list(planet_tags),
             "routing_id": str(route_row.get("routing_id", "")).strip(),
             "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
-            "handler_id": str(handler_row.get("handler_id", "")).strip(),
+            "handler_id": handler_id,
             "orbital_period_ticks": int(orbital_period_ticks),
             "season_phase_permille": int(season_phase_value),
             "insolation_permille": int(insolation_value),
+            **surface_plan_extensions,
             "source": MW_SURFACE_REFINER_L3_VERSION,
         },
     }
@@ -701,7 +809,7 @@ def generate_mw_surface_l3_payload(
         "surface_priors_id": surface_priors_id,
         "routing_id": str(route_row.get("routing_id", "")).strip(),
         "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
-        "handler_id": str(handler_row.get("handler_id", "")).strip(),
+        "handler_id": handler_id,
         "generated_object_rows": [dict(object_row)],
         "generated_surface_tile_artifact_rows": normalize_surface_tile_artifact_rows([tile_artifact_row]),
         "field_layers": [dict(row) for row in list(field_layers or [])],
@@ -719,6 +827,10 @@ def generate_mw_surface_l3_payload(
             "material_baseline_id": material_baseline_id,
             "biome_stub_id": biome_stub_id,
             "latitude_mdeg": int(latitude_mdeg),
+            "longitude_mdeg": int(_as_int(surface_plan_extensions.get("longitude_mdeg", longitude_mdeg), longitude_mdeg)),
+            "surface_class_id": str(surface_plan_extensions.get("surface_class_id", "")).strip(),
+            "climate_band_id": str(surface_plan_extensions.get("climate_band_id", "")).strip(),
+            "far_lod_visual_class": str(surface_plan_extensions.get("far_lod_visual_class", "")).strip(),
             "current_tick": int(max(0, _as_int(current_tick, 0))),
             "deterministic_fingerprint": "",
         },
@@ -731,11 +843,13 @@ def generate_mw_surface_l3_payload(
 
 __all__ = [
     "DEFAULT_SURFACE_PRIORS_ID",
+    "EARTH_SURFACE_PARAMS_REGISTRY_REL",
     "MW_SURFACE_REFINER_L3_VERSION",
     "SURFACE_GENERATOR_REGISTRY_REL",
     "SURFACE_GENERATOR_ROUTING_REGISTRY_REL",
     "SURFACE_PRIORS_REGISTRY_REL",
     "build_planet_surface_cell_key",
+    "earth_surface_params_rows",
     "generate_mw_surface_l3_payload",
     "normalize_surface_tile_artifact_rows",
     "surface_generator_rows",
