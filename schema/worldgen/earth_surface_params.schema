@@ -1,0 +1,29 @@
+SCHEMA: worldgen/earth_surface_params.schema
+schema_id: dominium.schema.worldgen.earth_surface_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic EARTH-0 macro-surface parameters for the Earth-specific generator.
+- Keep Earth macro continent, ocean, mountain, and biome thresholds data-declared and low-data.
+
+NON-SEMANTICS:
+- This schema does not encode real DEM data.
+- This schema does not encode political or cultural data.
+- This schema does not authorize hardcoded real geography.
+
+REQUIRED SHAPE:
+record earth_surface_params
+  required:
+    - params_id: id
+    - continent_count_target: integer
+    - ocean_fraction_target: integer
+    - mountain_intensity: integer
+    - biome_thresholds: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Earth macro parameters remain deterministic and data-light
+- ocean target and climate thresholds remain explicit data, never hidden constants
+- future higher-fidelity Earth overlays may refine content without replacing base tile identity

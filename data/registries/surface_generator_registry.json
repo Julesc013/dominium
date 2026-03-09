@@ -19,13 +19,13 @@
       {
         "schema_version": "1.0.0",
         "generator_id": "gen.surface.earth_stub",
-        "handler_id": "mw.surface.default_stub",
-        "description": "Placeholder EARTH-series route anchor; delegates to the default stub until an Earth generator pack is bound.",
+        "handler_id": "earth.surface.stub",
+        "description": "Canonical EARTH-0 deterministic macro Earth surface generator.",
         "deterministic_fingerprint": "",
         "extensions": {
-          "placeholder": true,
-          "delegate_generator_id": "gen.surface.default_stub",
-          "source": "MW3-2"
+          "placeholder": false,
+          "earth_surface_params_id": "params.earth.surface_default_stub",
+          "source": "EARTH0-2"
         }
       }
     ],

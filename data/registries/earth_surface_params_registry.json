@@ -1,0 +1,42 @@
+{
+  "schema_id": "dominium.registry.worldgen.earth_surface_params_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.earth_surface_params_registry",
+    "registry_version": "1.0.0",
+    "earth_surface_params": [
+      {
+        "schema_version": "1.0.0",
+        "params_id": "params.earth.surface_default_stub",
+        "continent_count_target": 6,
+        "ocean_fraction_target": 700,
+        "mountain_intensity": 620,
+        "biome_thresholds": {
+          "polar_latitude_mdeg": 70000,
+          "ice_temperature_kelvin": 255,
+          "tropical_latitude_mdeg": 23500,
+          "arid_band_min_mdeg": 18000,
+          "arid_band_max_mdeg": 36000,
+          "temperate_min_kelvin": 265,
+          "tropical_min_kelvin": 295
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-0 macro parameters for deterministic continent, mountain, and biome generation.",
+          "plate_region_count": 12,
+          "continent_wave_count": 6,
+          "continent_noise_scale_permille": 180,
+          "continentality_weight_permille": 720,
+          "coastal_blend_width_permille": 120,
+          "ridge_frequency": 7,
+          "ridge_weight_permille": 580,
+          "polar_ice_bonus_permille": 180,
+          "source": "EARTH0-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH0-2"
+    }
+  }
+}
