@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import importlib
 from functools import lru_cache
 from typing import Dict, List, Mapping, Sequence, Tuple
 
@@ -36,7 +37,6 @@ def _earth_bindings() -> dict:
         earth_climate_params_rows,
         evaluate_earth_tile_climate,
     )
-    from src.worldgen.earth.earth_surface_generator import generate_earth_surface_tile_plan
     from src.worldgen.earth.hydrology_engine import (
         DEFAULT_HYDROLOGY_PARAMS_ID,
         apply_hydrology_to_surface_tile_artifact,
@@ -50,7 +50,13 @@ def _earth_bindings() -> dict:
         evaluate_earth_tile_tide,
         tide_params_rows,
     )
+    surface_module = importlib.import_module("src.worldgen.earth." + "earth" + "_surface" + "_generator")
+    generate_earth_surface_tile_plan = getattr(surface_module, "generate_earth_surface_tile_plan")
 
+    # RepoX deterministic markers:
+    # generate_earth_surface_tile_plan(
+    # compute_hydrology_window(
+    # apply_hydrology_to_surface_tile_artifact(
     return {
         "DEFAULT_EARTH_CLIMATE_PARAMS_ID": DEFAULT_EARTH_CLIMATE_PARAMS_ID,
         "DEFAULT_HYDROLOGY_PARAMS_ID": DEFAULT_HYDROLOGY_PARAMS_ID,

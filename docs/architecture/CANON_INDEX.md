@@ -305,6 +305,7 @@ execution artifacts and are not authoritative.
 - `docs/ux/MVP_VIEWER_SHELL.md`
 - `docs/worldgen/WORLDGEN_PIPELINE.md`
 - `docs/worldgen/EARTH_HYDROLOGY_MODEL.md`
+- `docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md`
 - `docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
 - `docs/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md`
 - `docs/worldgen/EARTH_SKY_STARFIELD_MODEL.md`
@@ -339,8 +340,10 @@ execution artifacts and are not authoritative.
 - `docs/architecture/truth_model.md`
 - `docs/audit/AUDITX_OVERHAUL_REPORT.md`
 - `docs/audit/EARTH4_RETRO_AUDIT.md`
+- `docs/audit/EARTH5_RETRO_AUDIT.md`
 - `docs/audit/EARTH1_RETRO_AUDIT.md`
 - `docs/audit/EARTH_HYDROLOGY_BASELINE.md`
+- `docs/audit/EARTH_LIGHTING_BASELINE.md`
 - `docs/audit/EARTH_SKY_STARFIELD_BASELINE.md`
 - `docs/audit/compat/COMPAT_BASELINE.md`
 - `docs/audit/compat/README.md`
