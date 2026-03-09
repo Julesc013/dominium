@@ -302,6 +302,7 @@ execution artifacts and are not authoritative.
 - `docs/ui/UI_IR_SCHEMA_AND_LAYOUTS.md`
 - `docs/ui/UI_MODDING_AND_THEMES.md`
 - `docs/ui/UI_SYSTEM_DOCTRINE.md`
+- `docs/ux/MVP_VIEWER_SHELL.md`
 - `docs/worldgen/WORLDGEN_PIPELINE.md`
 - `docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
 - `docs/worldgen/MILKY_WAY_CONSTITUTION.md`

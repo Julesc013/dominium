@@ -26,3 +26,4 @@ Superseded By: none
   - 2026-03-09: refreshed for SOL-0 Sol pin pack registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX Sol pack discipline additions, and SOL-0 TestX additions
   - 2026-03-09: refreshed for EARTH-0 Earth procedural constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX Earth generator discipline additions, and EARTH-0 TestX additions
   - 2026-03-09: refreshed for EMB-0 embodiment baseline registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX embodiment discipline additions, and EMB-0 TestX additions
+  - 2026-03-09: refreshed for UX-0 MVP viewer shell registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX viewer-shell discipline additions, and UX-0 TestX additions

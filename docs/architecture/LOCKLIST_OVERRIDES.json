@@ -65,6 +65,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the EMB-0 embodiment baseline in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-09"
+    },
+    {
+      "id": "OVR-2026-03-09-UX0-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the UX-0 MVP viewer shell doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-09"
     }
   ]
 }
