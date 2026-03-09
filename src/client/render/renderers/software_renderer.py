@@ -254,6 +254,132 @@ def _write_ppm(path: str, width: int, height: int, pixels: bytes) -> None:
         handle.write(bytes(pixels))
 
 
+def _mix_channel(a: int, b: int, factor_permille: int) -> int:
+    factor = _clamp(_to_int(factor_permille, 0), 0, 1000)
+    return _clamp((_to_int(a, 0) * (1000 - factor) + _to_int(b, 0) * factor) // 1000, 0, 255)
+
+
+def _mix_color(a: dict, b: dict, factor_permille: int) -> Tuple[int, int, int]:
+    return (
+        _mix_channel(dict(a or {}).get("r", 0), dict(b or {}).get("r", 0), factor_permille),
+        _mix_channel(dict(a or {}).get("g", 0), dict(b or {}).get("g", 0), factor_permille),
+        _mix_channel(dict(a or {}).get("b", 0), dict(b or {}).get("b", 0), factor_permille),
+    )
+
+
+def _screen_permille_to_px(value_permille: object, size: int) -> int:
+    return _clamp((_to_int(value_permille, 0) * max(1, int(size))) // 1000, 0, max(0, int(size) - 1))
+
+
+def _draw_sky_background(*, pixels: bytearray, width: int, height: int, sky_artifact: dict) -> None:
+    colors = dict(dict(sky_artifact or {}).get("sky_colors_ref") or {})
+    zenith = dict(colors.get("zenith_color") or {"r": 12, "g": 16, "b": 24})
+    horizon = dict(colors.get("horizon_color") or {"r": 24, "g": 28, "b": 36})
+    for yy in range(max(1, int(height))):
+        factor = (yy * 1000) // max(1, int(height) - 1)
+        r, g, b = _mix_color(zenith, horizon, factor)
+        row_base = yy * width * 3
+        for xx in range(max(1, int(width))):
+            pi = row_base + (xx * 3)
+            pixels[pi] = r
+            pixels[pi + 1] = g
+            pixels[pi + 2] = b
+
+
+def _draw_sky_band_rows(
+    *,
+    pixels: bytearray,
+    depth: List[float],
+    width: int,
+    height: int,
+    band_rows: List[dict],
+) -> None:
+    for idx, row in enumerate(list(band_rows or [])):
+        intensity = _clamp(_to_int(row.get("intensity_permille", 0), 0), 0, 1000)
+        if intensity <= 0:
+            continue
+        sx = _screen_permille_to_px(row.get("screen_x_permille", 500), width)
+        sy = _screen_permille_to_px(row.get("screen_y_permille", 500), height)
+        color = (
+            _clamp(18 + (intensity // 10), 0, 255),
+            _clamp(24 + (intensity // 8), 0, 255),
+            _clamp(42 + (intensity // 6), 0, 255),
+        )
+        _draw_rect(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            cx=sx,
+            cy=sy,
+            half_w=max(1, int(width) // 24),
+            half_h=max(1, int(height) // 80),
+            z_value=1.0e17 + (idx * 0.0001),
+            color=color,
+            wireframe=False,
+        )
+
+
+def _draw_sky_stars(
+    *,
+    pixels: bytearray,
+    depth: List[float],
+    width: int,
+    height: int,
+    star_rows: List[dict],
+) -> None:
+    for idx, row in enumerate(list(star_rows or [])):
+        sx = _screen_permille_to_px(row.get("screen_x_permille", 500), width)
+        sy = _screen_permille_to_px(row.get("screen_y_permille", 500), height)
+        color_row = dict(row.get("color") or {})
+        color = (
+            _clamp(_to_int(color_row.get("r", 230), 230), 0, 255),
+            _clamp(_to_int(color_row.get("g", 235), 235), 0, 255),
+            _clamp(_to_int(color_row.get("b", 255), 255), 0, 255),
+        )
+        magnitude = _clamp(_to_int(row.get("magnitude_permille", 500), 500), 0, 1000)
+        radius = max(1, 1 + ((1000 - magnitude) // 320))
+        _draw_circle(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            cx=sx,
+            cy=sy,
+            radius=radius,
+            z_value=1.0e17 + (idx * 0.0001),
+            color=color,
+            wireframe=False,
+        )
+
+
+def _draw_sky_disk(
+    *,
+    pixels: bytearray,
+    depth: List[float],
+    width: int,
+    height: int,
+    screen_row: dict,
+    color: Tuple[int, int, int],
+    radius_px: int,
+    z_value: float,
+) -> None:
+    if not bool(dict(screen_row or {}).get("visible", False)):
+        return
+    _draw_circle(
+        pixels=pixels,
+        depth=depth,
+        width=width,
+        height=height,
+        cx=_screen_permille_to_px(dict(screen_row or {}).get("screen_x_permille", 500), width),
+        cy=_screen_permille_to_px(dict(screen_row or {}).get("screen_y_permille", 500), height),
+        radius=max(1, int(radius_px)),
+        z_value=float(z_value),
+        color=color,
+        wireframe=False,
+    )
+
+
 def render_software_snapshot(
     *,
     render_model: dict,
@@ -286,6 +412,58 @@ def render_software_snapshot(
 
     pixels = bytearray(width * height * 3)
     depth = [1e18] * (width * height)
+    sky_artifact = dict(model_extensions.get("sky_view_artifact") or {})
+    if sky_artifact:
+        _draw_sky_background(
+            pixels=pixels,
+            width=width,
+            height=height,
+            sky_artifact=sky_artifact,
+        )
+        _draw_sky_band_rows(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            band_rows=[dict(row) for row in list(sky_artifact.get("milkyway_band_ref") or []) if isinstance(row, dict)],
+        )
+        sky_colors = dict(sky_artifact.get("sky_colors_ref") or {})
+        sky_ext = dict(sky_artifact.get("extensions") or {})
+        sun_color_row = dict(sky_colors.get("sun_color") or {"r": 255, "g": 240, "b": 220})
+        sun_color = (
+            _clamp(_to_int(sun_color_row.get("r", 255), 255), 0, 255),
+            _clamp(_to_int(sun_color_row.get("g", 240), 240), 0, 255),
+            _clamp(_to_int(sun_color_row.get("b", 220), 220), 0, 255),
+        )
+        moon_illumination = _clamp(_to_int(sky_ext.get("moon_illumination_permille", 0), 0), 0, 1000)
+        moon_shade = 40 + ((moon_illumination * 190) // 1000)
+        _draw_sky_disk(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            screen_row=dict(sky_ext.get("sun_screen") or {}),
+            color=sun_color,
+            radius_px=max(2, min(width, height) // 32),
+            z_value=1.0e17,
+        )
+        _draw_sky_disk(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            screen_row=dict(sky_ext.get("moon_screen") or {}),
+            color=(moon_shade, moon_shade, moon_shade),
+            radius_px=max(2, min(width, height) // 40),
+            z_value=1.0e17 + 0.5,
+        )
+        _draw_sky_stars(
+            pixels=pixels,
+            depth=depth,
+            width=width,
+            height=height,
+            star_rows=[dict(row) for row in list(sky_artifact.get("star_points_ref") or []) if isinstance(row, dict)],
+        )
 
     for idx, row in enumerate(rows):
         transform = dict(row.get("transform") or {})

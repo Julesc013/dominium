@@ -7,6 +7,28 @@
     "lens_layers": [
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.sky_dome",
+        "description": "Deterministic EARTH-4 sky-dome layer sourced from derived sky-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "sky_view",
+          "artifact_id": "sky_view_artifact",
+          "source": "EARTH4-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.starfield",
+        "description": "Deterministic EARTH-4 starfield and coarse Milky Way band layer sourced from derived sky-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "sky_view",
+          "artifact_id": "sky_view_artifact",
+          "source": "EARTH4-6"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.terrain_stub",
         "description": "Deterministic terrain or atlas-terrain surface derived from lawful perceived map or tile sources.",
         "deterministic_fingerprint": "",

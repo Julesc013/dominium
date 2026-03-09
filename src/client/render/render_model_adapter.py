@@ -228,6 +228,7 @@ def build_render_model(
     registry_payloads: Dict[str, dict] | None = None,
     pack_lock_hash: str = "",
     physics_profile_id: str = "",
+    sky_view_artifact: dict | None = None,
 ) -> Dict[str, object]:
     """Build schema-versioned RenderModel strictly from PerceivedModel."""
     payloads = dict(registry_payloads or {})
@@ -308,6 +309,7 @@ def build_render_model(
             "view_mode_id": view_mode_id,
             "materials": materials,
             "camera_viewpoint": dict(perceived.get("camera_viewpoint") or {}),
+            "sky_view_artifact": dict(sky_view_artifact or {}),
         },
     }
     render_hash = canonical_sha256(dict(render_model))

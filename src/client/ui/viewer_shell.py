@@ -10,6 +10,7 @@ from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
 from src.client.ui.teleport_controller import build_teleport_plan
 from src.geo import build_position_ref
+from src.worldgen.earth.sky import build_sky_view_surface
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
@@ -81,6 +82,17 @@ def _entitlements(authority_context: Mapping[str, object] | None) -> set[str]:
 
 def _truth_hash_anchor(perceived_model: Mapping[str, object] | None) -> str:
     return str(_as_map(_as_map(perceived_model).get("truth_overlay")).get("state_hash_anchor", "")).strip()
+
+
+def _universe_identity_from_bootstrap(bootstrap: Mapping[str, object] | None) -> dict:
+    session_spec = _as_map(_as_map(bootstrap).get("session_spec"))
+    profile_bundle = _as_map(_as_map(bootstrap).get("profile_bundle"))
+    return {
+        "universe_seed": str(session_spec.get("universe_seed", "")).strip(),
+        "generator_version_id": str(session_spec.get("generator_version_id", "")).strip(),
+        "realism_profile_id": str(session_spec.get("realism_profile_id", "")).strip(),
+        "profile_bundle_id": str(profile_bundle.get("profile_bundle_id", "")).strip(),
+    }
 
 
 def _preferred_position_ref(
@@ -462,6 +474,7 @@ def _viewer_panels(current_stage: str) -> list[dict]:
     base = [
         {"panel_id": "viewer.session", "panel_kind": "session_summary"},
         {"panel_id": "viewer.render", "panel_kind": "render_summary"},
+        {"panel_id": "viewer.sky", "panel_kind": "sky_summary"},
         {"panel_id": "viewer.inspect", "panel_kind": "inspection_summary"},
         {"panel_id": "viewer.map", "panel_kind": "map_summary"},
     ]
@@ -478,6 +491,7 @@ def _render_contract(
     perceived_model: Mapping[str, object] | None,
     registry_payloads: Mapping[str, object] | None,
     pack_lock_hash: str,
+    sky_view_artifact: Mapping[str, object] | None = None,
 ) -> dict:
     perceived = _as_map(perceived_model)
     if not perceived:
@@ -492,6 +506,7 @@ def _render_contract(
         registry_payloads=dict(registry_payloads or {}),
         pack_lock_hash=str(pack_lock_hash or ""),
         physics_profile_id="physics.default_realistic",
+        sky_view_artifact=dict(sky_view_artifact or {}),
     )
     return {
         "result": str(render_result.get("result", "")) or "complete",
@@ -499,6 +514,29 @@ def _render_contract(
         "render_model_hash": str(render_result.get("render_model_hash", "")).strip(),
         "source_kind": "perceived.render_model",
     }
+
+
+def _resolve_sky_observer_surface_artifact(
+    *,
+    selection: Mapping[str, object] | None,
+    inspection_snapshot: Mapping[str, object] | None,
+    layer_source_payloads: Mapping[str, object] | None,
+    extensions: Mapping[str, object] | None,
+) -> dict:
+    candidates = [
+        _as_map(_as_map(extensions).get("sky_observer_surface_artifact")),
+        _as_map(_as_map(selection).get("surface_tile_artifact")),
+        _as_map(_as_map(_as_map(_as_map(inspection_snapshot).get("target_payload")).get("row")).get("surface_tile_artifact")),
+        _as_map(_as_map(_as_map(layer_source_payloads).get("layer.sky_dome")).get("observer_surface_artifact")),
+        _as_map(_as_map(_as_map(layer_source_payloads).get("layer.starfield")).get("observer_surface_artifact")),
+    ]
+    for candidate in candidates:
+        if not candidate:
+            continue
+        ext = _as_map(candidate.get("extensions"))
+        if ext.get("latitude_mdeg") is not None or candidate.get("tile_cell_key"):
+            return dict(candidate)
+    return {}
 
 
 def build_viewer_shell_state(
@@ -566,11 +604,6 @@ def build_viewer_shell_state(
         bundle_id=str(_as_map(bootstrap.get("profile_bundle")).get("profile_bundle_id", "")),
     )
     current_stage = _current_stage(stage_trace)
-    render_contract = _render_contract(
-        perceived_model=perceived_model,
-        registry_payloads=registry_payloads,
-        pack_lock_hash=str(_as_map(bootstrap.get("pack_lock")).get("pack_lock_hash", "")),
-    )
     teleport_plan = (
         build_teleport_plan(
             repo_root=str(repo_root),
@@ -634,6 +667,31 @@ def build_viewer_shell_state(
         map_views=map_views,
         authority_context=runtime_authority,
     )
+    sky_view_surface = build_sky_view_surface(
+        universe_identity=_universe_identity_from_bootstrap(bootstrap),
+        perceived_model=perceived_model,
+        observer_ref=_preferred_position_ref(
+            explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
+            selection=selection,
+        ),
+        observer_surface_artifact=_resolve_sky_observer_surface_artifact(
+            selection=selection,
+            inspection_snapshot=inspection_snapshot,
+            layer_source_payloads=layer_source_payloads,
+            extensions=extensions,
+        ),
+        authority_context=runtime_authority,
+        lens_profile_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_profile_id", "")).strip()
+        or str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
+        or DEFAULT_VIEWER_LENS_PROFILE_ID,
+        ui_mode=str(ui_mode),
+    )
+    render_contract = _render_contract(
+        perceived_model=perceived_model,
+        registry_payloads=registry_payloads,
+        pack_lock_hash=str(_as_map(bootstrap.get("pack_lock")).get("pack_lock_hash", "")),
+        sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
+    )
     payload = {
         "result": "complete",
         "viewer_shell_id": "viewer_shell.mvp_default",
@@ -650,12 +708,14 @@ def build_viewer_shell_state(
         "teleport_plan": dict(teleport_plan),
         "inspection_surfaces": dict(inspection_surfaces),
         "map_views": dict(map_views),
+        "sky_view_surface": dict(sky_view_surface),
         "selection_controls": dict(selection_controls),
         "selection": dict(selection or {}),
         "panels": _viewer_panels(current_stage),
         "ui_contract": {
             "consumes_perceived_model_only": True,
             "consumes_projection_and_lens_artifacts": True,
+            "consumes_sky_view_artifacts": True,
             "forbidden_truth_inputs": [
                 "truth_model",
                 "universe_state",
