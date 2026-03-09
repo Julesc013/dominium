@@ -1,0 +1,29 @@
+SCHEMA: worldgen/system_priors.schema
+schema_id: dominium.schema.worldgen.system_priors
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic MW-2 system-level priors for star count, planet count, and orbital spacing.
+- Keep coarse stellar/orbital generation profile-declared and low-data.
+
+NON-SEMANTICS:
+- This schema does not encode authored catalogs.
+- This schema does not encode full orbital simulation.
+- This schema does not authorize random retry loops.
+
+REQUIRED SHAPE:
+record system_priors
+  required:
+    - priors_id: id
+    - planet_count_params: map
+    - orbital_spacing_params: map
+    - eccentricity_params: map
+    - inclination_params: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- planet-count and orbital-spacing caps remain explicit data
+- star/orbit generation remains deterministic for identical system seeds
+- profile meaning drift requires explicit registry/profile or generator-version change

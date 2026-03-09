@@ -1,0 +1,95 @@
+{
+  "schema_id": "dominium.registry.worldgen.system_priors_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.system_priors_registry",
+    "registry_version": "1.0.0",
+    "system_priors": [
+      {
+        "schema_version": "1.0.0",
+        "priors_id": "priors.system_default_stub",
+        "planet_count_params": {
+          "base_count_by_star_band": {
+            "m": 2,
+            "k": 3,
+            "g": 4,
+            "f_a": 5
+          },
+          "count_jitter": 1,
+          "metallicity_bonus_threshold_permille": 950,
+          "metallicity_bonus_planets": 1,
+          "habitability_bonus_threshold_permille": 780,
+          "habitability_bonus_planets": 1,
+          "hot_star_penalty_threshold_milli_solar": 1500,
+          "hot_star_penalty_planets": 1,
+          "max_planets": 8
+        },
+        "orbital_spacing_params": {
+          "inner_edge_milli_au": 220,
+          "outer_edge_milli_au": 24000,
+          "nominal_spacing_ratio_permille": 1680,
+          "band_jitter_permille": 140,
+          "min_spacing_ratio_permille": 1350,
+          "push_out_ratio_permille": 1450,
+          "max_moons_per_planet": 1
+        },
+        "eccentricity_params": {
+          "base_max_permille": 260,
+          "inner_zone_bonus_permille": 30,
+          "periapsis_gap_ratio_permille": 1050
+        },
+        "inclination_params": {
+          "base_max_mdeg": 3500,
+          "outer_zone_bonus_mdeg": 2500
+        },
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Default deterministic MW-2 system priors for one primary star, bounded planet counts, and stable coarse orbit ladders.",
+          "star_mass_band_ranges_milli_solar": {
+            "m": {
+              "min": 80,
+              "max": 600
+            },
+            "k": {
+              "min": 600,
+              "max": 900
+            },
+            "g": {
+              "min": 900,
+              "max": 1100
+            },
+            "f_a": {
+              "min": 1100,
+              "max": 2200
+            }
+          },
+          "age_bucket_ranges_gyr_milli": {
+            "young": {
+              "min": 300,
+              "max": 2500
+            },
+            "mature": {
+              "min": 2500,
+              "max": 7000
+            },
+            "old": {
+              "min": 7000,
+              "max": 12000
+            }
+          },
+          "moon_stub_chance_permille_by_planet_class": {
+            "rocky": 120,
+            "terrestrial": 180,
+            "oceanic": 220,
+            "icy": 200,
+            "gas_dwarf": 350
+          },
+          "source": "MW2-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "MW2-2"
+    }
+  }
+}
