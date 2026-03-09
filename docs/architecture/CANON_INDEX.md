@@ -287,6 +287,7 @@ execution artifacts and are not authoritative.
 - `docs/launcher/LAUNCHER_SETTINGS.md`
 - `docs/guides/TOOLING_OVERVIEW.md`
 - `docs/guides/ui_editor/README.md`
+- `docs/embodiment/EMBODIMENT_BASELINE.md`
 - `docs/policies/COMPATIBILITY_PROMISES.md`
 - `docs/policies/DEPRECATION_POLICY.md`
 - `docs/policies/DETERMINISM_REGRESSION_RULES.md`
