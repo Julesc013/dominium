@@ -526,6 +526,31 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/system_query_engine.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/worldgen/tool_replay_system_instantiation.py",
+        "docs/worldgen/STAR_SYSTEM_SEED_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-system-instantiation-via-worldgen",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-EAGER-SYSTEM-GENERATION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/system_query_engine.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "tools/worldgen/tool_replay_system_instantiation.py",
+        "docs/worldgen/STAR_SYSTEM_SEED_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-eager-system-generation",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [

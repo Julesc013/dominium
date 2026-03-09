@@ -129,6 +129,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-CATALOG-REQUIRED`
 - `INV-MW-CELL-ON-DEMAND-ONLY`
 - `INV-NAMED-RNG-WORLDGEN-ONLY`
+- `INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN`
+- `INV-NO-EAGER-SYSTEM-GENERATION`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -411,6 +413,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the Milky Way worldgen surfaces omit the named galaxy/system RNG markers.
 - Fails when nondeterministic RNG or wall-clock style tokens appear in the governed Milky Way runtime files.
 - Preserves replay-stable MW cell generation and cross-platform hash expectations.
+
+### INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN
+
+- Fails when MW-1 star-system artifact instantiation markers are missing from the canonical worldgen surfaces.
+- Fails when teleport/query/runtime proof surfaces drift away from the `process.worldgen_request` -> `process.camera_teleport` contract.
+- Preserves process-only authoritative star-system creation and replay-safe artifact attachment.
+
+### INV-NO-EAGER-SYSTEM-GENERATION
+
+- Fails when MW-1 system discovery/query surfaces lose their explicit cell-bounded enumeration markers.
+- Fails when eager whole-galaxy or all-system generation tokens appear in governed MW-1 files.
+- Preserves on-demand system discovery and bounded nearest-query behavior.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

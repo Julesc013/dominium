@@ -276,7 +276,9 @@ MVP_MINIMAL_PACK_IDS = (
 )
 MW_CELL_GENERATOR_REL = os.path.join("src", "worldgen", "mw", "mw_cell_generator.py")
 MW_WORLDGEN_ENGINE_REL = os.path.join("src", "geo", "worldgen", "worldgen_engine.py")
+MW_SYSTEM_QUERY_ENGINE_REL = os.path.join("src", "worldgen", "mw", "system_query_engine.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
+MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -294,6 +296,12 @@ MW_EAGER_TOKENS = (
     "for z_index in range(",
 )
 MW_NAMED_RNG_FORBIDDEN_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
+MW_SYSTEM_EAGER_TOKENS = (
+    "instantiate_all_star_systems",
+    "generate_all_star_systems",
+    "discover_entire_galaxy",
+    "list_all_galaxy_systems",
+)
 MVP_DIST_ALIAS_RELS = (
     os.path.join("dist", "packs", "base", "pack.base.procedural", "pack.alias.json"),
     os.path.join("dist", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
@@ -3864,6 +3872,78 @@ def check_named_rng_worldgen_only(repo_root):
     return violations
 
 
+def check_system_instantiation_via_worldgen(repo_root):
+    invariant_id = "INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MW_WORLDGEN_ENGINE_REL: ("generated_star_system_artifact_rows", "kind.star_system", "generated_system_seed_rows"),
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"): (
+            "process.worldgen_request",
+            "worldgen_star_system_artifacts",
+            "artifact.star_system_artifact",
+        ),
+        MW_SYSTEM_QUERY_ENGINE_REL: ("build_system_teleport_plan", "build_worldgen_request_for_query(", "\"target_object_id\""),
+        MW_SYSTEM_REPLAY_TOOL_REL: ("star_system_artifact_hash_chain", "worldgen_star_system_artifacts"),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing star-system worldgen marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_eager_system_generation(repo_root):
+    invariant_id = "INV-NO-EAGER-SYSTEM-GENERATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MW_SYSTEM_QUERY_ENGINE_REL: ("list_systems_in_cell(", "query_nearest_system(", "geo_cell_key_neighbors(", "max_cells"),
+        MW_SYSTEM_REPLAY_TOOL_REL: ("worldgen_request_row(", "refinement_level=1", "star_system_artifact_hash_chain"),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing on-demand system marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+        for token in MW_EAGER_TOKENS + MW_SYSTEM_EAGER_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: eager system-generation token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -6755,6 +6835,8 @@ def main() -> int:
                 lambda: check_no_catalog_required(repo_root),
                 lambda: check_mw_cell_on_demand_only(repo_root),
                 lambda: check_named_rng_worldgen_only(repo_root),
+                lambda: check_system_instantiation_via_worldgen(repo_root),
+                lambda: check_no_eager_system_generation(repo_root),
             ],
         },
         {
