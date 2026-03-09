@@ -280,6 +280,7 @@ def evaluate_earth_tile_climate(
         "daylight_value": int(daylight_value),
         "climate_band_id": climate_band_id,
         "derived_tags": _sorted_unique_strings(derived_tags),
+        "biome_overlay_tags": _sorted_unique_strings(derived_tags),
         "latitude_mdeg": int(latitude_mdeg),
         "longitude_mdeg": int(longitude_mdeg),
         "surface_class_id": surface_class_id,

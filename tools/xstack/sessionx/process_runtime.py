@@ -4059,6 +4059,7 @@ def _normalize_earth_climate_tile_overlay_rows(rows: object) -> List[dict]:
             "daylight_value": int(_as_int(row.get("daylight_value", 0), 0)),
             "climate_band_id": str(row.get("climate_band_id", "")).strip() or "climate.band.temperate",
             "derived_tags": _sorted_tokens(list(row.get("derived_tags") or [])),
+            "biome_overlay_tags": _sorted_tokens(list(row.get("biome_overlay_tags") or row.get("derived_tags") or [])),
             "deterministic_fingerprint": "",
         }
         payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
