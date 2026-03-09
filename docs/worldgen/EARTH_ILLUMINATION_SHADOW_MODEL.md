@@ -109,6 +109,7 @@ For a given observer tile and sun azimuth:
 Rules:
 
 - `K` is fixed by the shadow model row
+- K is fixed by the shadow model row
 - step distance is fixed by the shadow model row
 - no unbounded search is allowed
 - no shadow map allocation is allowed

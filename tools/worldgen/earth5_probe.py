@@ -13,8 +13,9 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from src.worldgen.earth import build_lighting_view_surface  # noqa: E402
+from src.worldgen.earth.lighting import build_lighting_view_surface  # noqa: E402
 from tools.worldgen.earth4_probe import (  # noqa: E402
+    SKY_DAY_TICK,
     SKY_NIGHT_TICK,
     SKY_TWILIGHT_TICK,
     build_sky_fixture,
@@ -107,7 +108,7 @@ def moon_phase_report(repo_root: str) -> dict:
 
 
 def horizon_shadow_report(repo_root: str) -> dict:
-    baseline_fixture = build_lighting_fixture(repo_root, current_tick=SKY_TWILIGHT_TICK)
+    baseline_fixture = build_lighting_fixture(repo_root, current_tick=SKY_DAY_TICK)
     baseline_artifact = _deep_copy_map(baseline_fixture.get("observer_surface_artifact"))
     exaggerated = _deep_copy_map(baseline_artifact)
     elevation = _as_map(exaggerated.get("elevation_params_ref"))
@@ -122,7 +123,7 @@ def horizon_shadow_report(repo_root: str) -> dict:
         _as_map(
             build_lighting_fixture(
                 repo_root,
-                current_tick=SKY_TWILIGHT_TICK,
+                current_tick=SKY_DAY_TICK,
                 override_surface_artifact=exaggerated,
             ).get("lighting_view_surface")
         ).get("illumination_view_artifact")

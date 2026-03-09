@@ -10,7 +10,7 @@ from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
 from src.client.ui.teleport_controller import build_teleport_plan
 from src.geo import build_position_ref
-from src.worldgen.earth import build_lighting_view_surface
+from src.worldgen.earth.lighting import build_lighting_view_surface
 from src.worldgen.earth.sky import build_sky_view_surface
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,

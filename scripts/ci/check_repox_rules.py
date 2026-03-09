@@ -437,6 +437,7 @@ UX_MAP_VIEWS_REL = os.path.join("src", "client", "ui", "map_views.py")
 UX_INSPECT_PANELS_REL = os.path.join("src", "client", "ui", "inspect_panels.py")
 RENDER_MODEL_ADAPTER_REL = os.path.join("src", "client", "render", "render_model_adapter.py")
 SOFTWARE_RENDERER_REL = os.path.join("src", "client", "render", "renderers", "software_renderer.py")
+NULL_RENDERER_REL = os.path.join("src", "client", "render", "renderers", "null_renderer.py")
 UX_VIEWER_DOC_REL = os.path.join("docs", "ux", "MVP_VIEWER_SHELL.md")
 EMB_ASSET_FORBIDDEN_TOKENS = (
     ".png",
