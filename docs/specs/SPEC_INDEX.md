@@ -514,6 +514,10 @@ ownership rules and boundary enforcement.
 
 
 
+| `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md` | game | engine, client, server, tools | core |
+
+
+
 | `docs/specs/SPEC_MONEY_STANDARDS.md` | game | client, server, tools | extension |
 
 

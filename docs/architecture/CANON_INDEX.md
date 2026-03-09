@@ -245,6 +245,7 @@ execution artifacts and are not authoritative.
 - `docs/specs/SPEC_DETERMINISM.md`
 - `docs/specs/SPEC_DETERMINISM_GRADES.md`
 - `docs/specs/SPEC_LANGUAGE_BASELINES.md`
+- `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
 - `docs/specs/SPEC_NUMERIC.md`
 - `docs/specs/DATA_FORMATS.md`
 - `docs/specs/SPEC_ACTIONS.md`
