@@ -7,6 +7,7 @@ from typing import Mapping
 from src.client.render import build_render_model
 from src.embodiment import resolve_authorized_lens_profile
 from src.client.ui.inspect_panels import build_inspection_panel_set
+from src.client.ui.map_views import build_map_view_set
 from src.client.ui.teleport_controller import build_teleport_plan
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
@@ -41,6 +42,25 @@ def _as_bool(value: object, default_value: bool = False) -> bool:
 
 def _sorted_strings(values: object) -> list[str]:
     return sorted(set(str(item).strip() for item in list(values or []) if str(item).strip()))
+
+
+def _truth_hash_anchor(perceived_model: Mapping[str, object] | None) -> str:
+    return str(_as_map(_as_map(perceived_model).get("truth_overlay")).get("state_hash_anchor", "")).strip()
+
+
+def _preferred_position_ref(
+    *,
+    explicit_position_ref: Mapping[str, object] | None,
+    selection: Mapping[str, object] | None,
+) -> dict:
+    if _as_map(explicit_position_ref):
+        return _as_map(explicit_position_ref)
+    selected = _as_map(selection)
+    for key in ("position_ref", "origin_position_ref", "camera_position_ref"):
+        candidate = _as_map(selected.get(key))
+        if candidate:
+            return candidate
+    return {}
 
 
 def _default_authority_context(authority_mode: str) -> dict:
@@ -166,6 +186,11 @@ def build_viewer_shell_state(
     property_origin_request: Mapping[str, object] | None = None,
     property_origin_result: Mapping[str, object] | None = None,
     field_values: Mapping[str, object] | None = None,
+    map_origin_position_ref: Mapping[str, object] | None = None,
+    minimap_origin_position_ref: Mapping[str, object] | None = None,
+    layer_source_payloads: Mapping[str, object] | None = None,
+    map_layer_ids: object = None,
+    minimap_layer_ids: object = None,
     selection: Mapping[str, object] | None = None,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
@@ -224,6 +249,25 @@ def build_viewer_shell_state(
         property_origin_result=property_origin_result,
         field_values=field_values,
     )
+    map_views = build_map_view_set(
+        perceived_model=perceived_model,
+        authority_context=runtime_authority,
+        map_origin_position_ref=_preferred_position_ref(
+            explicit_position_ref=map_origin_position_ref,
+            selection=selection,
+        ),
+        minimap_origin_position_ref=_preferred_position_ref(
+            explicit_position_ref=minimap_origin_position_ref,
+            selection=selection,
+        ),
+        layer_source_payloads=layer_source_payloads,
+        map_layer_ids=map_layer_ids,
+        minimap_layer_ids=minimap_layer_ids,
+        lens_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
+        or "lens.diegetic.sensor",
+        ui_mode=str(ui_mode),
+        truth_hash_anchor=_truth_hash_anchor(perceived_model),
+    )
     payload = {
         "result": "complete",
         "viewer_shell_id": "viewer_shell.mvp_default",
@@ -238,6 +282,7 @@ def build_viewer_shell_state(
         "render_contract": render_contract,
         "teleport_plan": dict(teleport_plan),
         "inspection_surfaces": dict(inspection_surfaces),
+        "map_views": dict(map_views),
         "selection": dict(selection or {}),
         "panels": _viewer_panels(current_stage),
         "ui_contract": {

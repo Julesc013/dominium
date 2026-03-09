@@ -15,6 +15,7 @@ from .teleport_controller import (
     query_nearest_system_plan,
 )
 from .inspect_panels import build_inspection_panel_set
+from .map_views import build_map_view_set
 
 __all__ = [
     "RNG_UI_TELEPORT_RANDOM_STAR",
@@ -23,6 +24,7 @@ __all__ = [
     "STATE_SEED_SELECT",
     "STATE_SESSION_RUNNING",
     "build_inspection_panel_set",
+    "build_map_view_set",
     "build_teleport_plan",
     "build_viewer_shell_state",
     "filter_habitable_systems_plan",
