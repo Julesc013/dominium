@@ -265,6 +265,14 @@ from src.embodiment.body import (
     body_template_rows_by_id,
     normalize_body_state_rows,
 )
+from src.embodiment.collision import (
+    DEFAULT_COLLISION_PROVIDER_ID,
+    DEFAULT_MOVEMENT_SLOPE_PARAMS_ID,
+    collision_provider_rows_by_id,
+    invalidate_macro_heightfield_cache_for_tiles,
+    movement_slope_params_rows_by_id,
+    resolve_macro_heightfield_sample,
+)
 from src.embodiment.lens import resolve_authorized_lens_profile, resolve_lens_camera_state
 from src.control.effects import (
     REFUSAL_EFFECT_FORBIDDEN,
@@ -17894,6 +17902,14 @@ def _subject_id_for_body(body_row: Mapping[str, object] | None, explicit_subject
     return ""
 
 
+def _body_state_row_for_body(state: dict, body_row: Mapping[str, object] | None) -> dict:
+    subject_token = _subject_id_for_body(body_row)
+    if not subject_token:
+        return {}
+    rows_by_subject = body_state_rows_by_subject_id(_ensure_body_state_rows(state))
+    return dict(rows_by_subject.get(subject_token) or {})
+
+
 def _upsert_body_state_for_body(
     *,
     state: dict,
@@ -17906,14 +17922,30 @@ def _upsert_body_state_for_body(
         return {}
     current_rows = _ensure_body_state_rows(state)
     by_subject = body_state_rows_by_subject_id(current_rows)
+    body_ext = dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}
+    mirrored_extensions = {
+        "body_id": str(body.get("assembly_id", "")).strip(),
+        "template_id": str(body_ext.get("template_id", "")).strip(),
+    }
+    for key in (
+        "surface_tile_cell_key",
+        "collision_provider_id",
+        "movement_slope_params_id",
+    ):
+        value = body_ext.get(key)
+        if key.endswith("_cell_key"):
+            value = dict(value or {}) if isinstance(value, Mapping) else {}
+        if value:
+            mirrored_extensions[key] = value
+    for key in ("terrain_collision_state", "terrain_slope_response"):
+        value = body_ext.get(key)
+        if isinstance(value, Mapping) and value:
+            mirrored_extensions[key] = dict(value)
     updated_row = body_state_from_body_row(
         subject_id=subject_token,
         frame_id=str(body.get("frame_id", "frame.world")).strip() or "frame.world",
         body_row=body,
-        extensions={
-            "body_id": str(body.get("assembly_id", "")).strip(),
-            "template_id": str((dict(body.get("extensions") or {})).get("template_id", "")).strip(),
-        },
+        extensions=mirrored_extensions,
     )
     if not updated_row:
         return {}
@@ -17934,6 +17966,38 @@ def _body_template_registry_payload(policy_context: dict | None) -> dict:
     return {"body_templates": list(dict(fallback).get("body_templates") or [])}
 
 
+def _collision_provider_registry_payload(policy_context: dict | None) -> dict:
+    payload = _policy_payload(policy_context, "collision_provider_registry")
+    if payload:
+        return {"collision_providers": list((dict(payload).get("collision_providers") or []))}
+    fallback = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/collision_provider_registry.json",
+        default_payload={"collision_providers": []},
+    )
+    record = dict(fallback.get("record") or {}) if isinstance(fallback, Mapping) else {}
+    return {"collision_providers": list(dict(fallback).get("collision_providers") or record.get("collision_providers") or [])}
+
+
+def _movement_slope_params_registry_payload(policy_context: dict | None) -> dict:
+    payload = _policy_payload(policy_context, "movement_slope_params_registry")
+    if payload:
+        return {"movement_slope_params": list((dict(payload).get("movement_slope_params") or []))}
+    fallback = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/movement_slope_params_registry.json",
+        default_payload={"movement_slope_params": []},
+    )
+    record = dict(fallback.get("record") or {}) if isinstance(fallback, Mapping) else {}
+    return {
+        "movement_slope_params": list(
+            dict(fallback).get("movement_slope_params")
+            or record.get("movement_slope_params")
+            or []
+        )
+    }
+
+
 def _movement_params_for_body(policy_context: dict | None, body_row: Mapping[str, object] | None) -> dict:
     body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
     template_id = str((dict(body.get("extensions") or {})).get("template_id", "")).strip() or DEFAULT_BODY_TEMPLATE_ID
@@ -17947,6 +18011,219 @@ def _movement_params_for_body(policy_context: dict | None, body_row: Mapping[str
         "horizontal_damping_permille": int(max(0, min(950, _as_int(params.get("horizontal_damping_permille", 120), 120)))),
         "mass_value": int(max(1, _as_int(template_row.get("mass_value", 80000), 80000))),
         "template_id": str(template_row.get("template_id", template_id)).strip() or DEFAULT_BODY_TEMPLATE_ID,
+        "collision_provider_id": str(template_ext.get("collision_provider_id", "")).strip() or DEFAULT_COLLISION_PROVIDER_ID,
+        "movement_slope_params_id": str(template_ext.get("movement_slope_params_id", "")).strip() or DEFAULT_MOVEMENT_SLOPE_PARAMS_ID,
+        "foot_offset_mm": int(max(0, _as_int(template_ext.get("foot_offset_mm", 1100), 1100))),
+    }
+
+
+def _collision_provider_row_for_body(policy_context: dict | None, body_row: Mapping[str, object] | None) -> dict:
+    movement_params = _movement_params_for_body(policy_context=policy_context, body_row=body_row)
+    provider_rows = collision_provider_rows_by_id(_collision_provider_registry_payload(policy_context))
+    provider_id = str(movement_params.get("collision_provider_id", "")).strip() or DEFAULT_COLLISION_PROVIDER_ID
+    return dict(provider_rows.get(provider_id) or provider_rows.get(DEFAULT_COLLISION_PROVIDER_ID) or {})
+
+
+def _movement_slope_params_for_body(policy_context: dict | None, body_row: Mapping[str, object] | None) -> dict:
+    movement_params = _movement_params_for_body(policy_context=policy_context, body_row=body_row)
+    slope_rows = movement_slope_params_rows_by_id(_movement_slope_params_registry_payload(policy_context))
+    slope_params_id = str(movement_params.get("movement_slope_params_id", "")).strip() or DEFAULT_MOVEMENT_SLOPE_PARAMS_ID
+    slope_row = dict(slope_rows.get(slope_params_id) or slope_rows.get(DEFAULT_MOVEMENT_SLOPE_PARAMS_ID) or {})
+    slope_ext = dict(slope_row.get("extensions") or {}) if isinstance(slope_row.get("extensions"), Mapping) else {}
+    return {
+        "slope_params_id": str(slope_row.get("slope_params_id", slope_params_id)).strip() or DEFAULT_MOVEMENT_SLOPE_PARAMS_ID,
+        "uphill_slow_factor": int(max(0, _as_int(slope_row.get("uphill_slow_factor", 0), 0))),
+        "downhill_speed_cap_factor": int(max(1000, _as_int(slope_row.get("downhill_speed_cap_factor", 1000), 1000))),
+        "slide_angle_threshold_stub": int(max(0, _as_int(slope_row.get("slide_angle_threshold_stub", 0), 0))),
+        "max_effective_slope_angle_mdeg": int(max(1, _as_int(slope_ext.get("max_effective_slope_angle_mdeg", 45000), 45000))),
+        "downhill_assist_floor_permille": int(max(1000, _as_int(slope_ext.get("downhill_assist_floor_permille", 1000), 1000))),
+        "uphill_floor_permille": int(max(0, _as_int(slope_ext.get("uphill_floor_permille", 580), 580))),
+    }
+
+
+def _body_surface_query(
+    *,
+    state: dict,
+    body_row: Mapping[str, object] | None,
+    position_override: Mapping[str, object] | None = None,
+    body_state_override: Mapping[str, object] | None = None,
+    policy_context: dict | None = None,
+) -> dict:
+    body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
+    if not body:
+        return {}
+    provider_row = _collision_provider_row_for_body(policy_context=policy_context, body_row=body)
+    if not provider_row:
+        return {}
+    position_mm = _vector3_int(position_override, "position_override") or _vector3_int(body.get("transform_mm"), "transform_mm") or {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+    }
+    body_state_row = dict(body_state_override or {}) if isinstance(body_state_override, Mapping) else _body_state_row_for_body(state, body)
+    return resolve_macro_heightfield_sample(
+        position_mm=position_mm,
+        body_row=body,
+        body_state_row=body_state_row,
+        surface_tile_rows=_ensure_worldgen_surface_tile_artifact_rows(state),
+        geometry_rows_by_key=geometry_cell_state_rows_by_key(_ensure_geometry_cell_state_rows(state)),
+        provider_row=provider_row,
+    )
+
+
+def _approx_horizontal_magnitude(vector_xy: Mapping[str, object] | None) -> int:
+    vector = dict(vector_xy or {}) if isinstance(vector_xy, Mapping) else {}
+    abs_x = abs(_as_int(vector.get("x", 0), 0))
+    abs_y = abs(_as_int(vector.get("y", 0), 0))
+    return int(max(abs_x, abs_y) + (min(abs_x, abs_y) // 2))
+
+
+def _evaluate_slope_response(
+    *,
+    body_row: Mapping[str, object] | None,
+    world_move: Mapping[str, object] | None,
+    surface_query: Mapping[str, object] | None,
+    policy_context: dict | None = None,
+) -> dict:
+    body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
+    move = dict(world_move or {}) if isinstance(world_move, Mapping) else {}
+    query = dict(surface_query or {}) if isinstance(surface_query, Mapping) else {}
+    slope_params = _movement_slope_params_for_body(policy_context=policy_context, body_row=body)
+    if str(query.get("result", "")).strip() != "complete":
+        return {
+            "accel_factor_permille": 1000,
+            "slope_angle_mdeg": 0,
+            "movement_alignment_permille": 0,
+            "direction_class": "flat",
+            "slide_angle_threshold_stub": int(slope_params.get("slide_angle_threshold_stub", 0)),
+            "slope_params_id": str(slope_params.get("slope_params_id", "")).strip(),
+            "deterministic_fingerprint": canonical_sha256({"result": "no_surface", "accel_factor_permille": 1000}),
+        }
+
+    move_mag = _approx_horizontal_magnitude(move)
+    downhill = dict(query.get("downhill_vector_permille") or {})
+    downhill_mag = _approx_horizontal_magnitude(downhill)
+    slope_angle_mdeg = int(max(0, _as_int(query.get("slope_angle_mdeg", 0), 0)))
+    if move_mag <= 0 or downhill_mag <= 0 or slope_angle_mdeg <= 0:
+        payload = {
+            "accel_factor_permille": 1000,
+            "slope_angle_mdeg": int(slope_angle_mdeg),
+            "movement_alignment_permille": 0,
+            "direction_class": "flat",
+            "slide_angle_threshold_stub": int(slope_params.get("slide_angle_threshold_stub", 0)),
+            "slope_params_id": str(slope_params.get("slope_params_id", "")).strip(),
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return payload
+
+    dot = (
+        int(_as_int(move.get("x", 0), 0)) * int(_as_int(downhill.get("x", 0), 0))
+        + int(_as_int(move.get("y", 0), 0)) * int(_as_int(downhill.get("y", 0), 0))
+    )
+    alignment_permille = int(max(-1000, min(1000, (int(dot) * 1000) // max(1, int(move_mag) * int(downhill_mag)))))
+    effective_angle = int(
+        min(
+            int(slope_params.get("max_effective_slope_angle_mdeg", 45000)),
+            int(slope_angle_mdeg),
+        )
+    )
+    if alignment_permille < 0:
+        reduction = int(
+            (
+                int(slope_params.get("uphill_slow_factor", 0))
+                * abs(int(alignment_permille))
+                * int(effective_angle)
+            )
+            // max(1, 1000 * int(slope_params.get("max_effective_slope_angle_mdeg", 45000)))
+        )
+        accel_factor = int(max(int(slope_params.get("uphill_floor_permille", 580)), 1000 - reduction))
+        direction_class = "uphill"
+    elif alignment_permille > 0:
+        max_cap = int(max(1000, _as_int(slope_params.get("downhill_speed_cap_factor", 1000), 1000)))
+        assist = int(
+            (
+                (max_cap - 1000)
+                * int(alignment_permille)
+                * int(effective_angle)
+            )
+            // max(1, 1000 * int(slope_params.get("max_effective_slope_angle_mdeg", 45000)))
+        )
+        accel_factor = int(max(int(slope_params.get("downhill_assist_floor_permille", 1000)), min(max_cap, 1000 + assist)))
+        direction_class = "downhill"
+    else:
+        accel_factor = 1000
+        direction_class = "flat"
+    payload = {
+        "accel_factor_permille": int(accel_factor),
+        "slope_angle_mdeg": int(slope_angle_mdeg),
+        "movement_alignment_permille": int(alignment_permille),
+        "direction_class": direction_class,
+        "slide_angle_threshold_stub": int(slope_params.get("slide_angle_threshold_stub", 0)),
+        "slope_params_id": str(slope_params.get("slope_params_id", "")).strip(),
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def _apply_ground_contact(
+    *,
+    body_row: Mapping[str, object] | None,
+    movement_params: Mapping[str, object] | None,
+    surface_query: Mapping[str, object] | None,
+) -> dict:
+    body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
+    movement = dict(movement_params or {}) if isinstance(movement_params, Mapping) else {}
+    query = dict(surface_query or {}) if isinstance(surface_query, Mapping) else {}
+    if str(query.get("result", "")).strip() != "complete":
+        return {
+            "body_row": dict(body),
+            "grounded": False,
+            "clamped": False,
+            "ground_contact_height_mm": None,
+            "surface_query": dict(query),
+        }
+    transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
+    velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}
+    body_ext = dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}
+    prior_contact = dict(body_ext.get("terrain_collision_state") or {}) if isinstance(body_ext.get("terrain_collision_state"), Mapping) else {}
+    foot_offset_mm = int(max(0, _as_int(movement.get("foot_offset_mm", 1100), 1100)))
+    ground_contact_height_mm = int(max(0, _as_int(query.get("terrain_height_mm", 0), 0)) + foot_offset_mm)
+    contact_snap_tolerance_mm = int(max(0, _as_int(_as_map(query.get("extensions")).get("contact_snap_tolerance_mm", 180), 180)))
+    prior_grounded = bool(prior_contact.get("grounded", False))
+    should_clamp = bool(
+        int(transform["z"]) < int(ground_contact_height_mm)
+        or (
+            prior_grounded
+            and int(velocity["z"]) <= 0
+            and int(transform["z"]) <= int(ground_contact_height_mm) + int(contact_snap_tolerance_mm)
+        )
+    )
+    if should_clamp:
+        transform["z"] = int(ground_contact_height_mm)
+        velocity["z"] = 0
+    body["transform_mm"] = dict(transform)
+    body["velocity_mm_per_tick"] = dict(velocity)
+    body_ext["surface_tile_cell_key"] = dict(query.get("tile_cell_key") or {})
+    body_ext["collision_provider_id"] = str(query.get("provider_id", "")).strip() or DEFAULT_COLLISION_PROVIDER_ID
+    body_ext["terrain_collision_state"] = {
+        "grounded": bool(should_clamp),
+        "clamped": bool(should_clamp),
+        "ground_contact_height_mm": int(ground_contact_height_mm),
+        "terrain_height_mm": int(max(0, _as_int(query.get("terrain_height_mm", 0), 0))),
+        "slope_angle_mdeg": int(max(0, _as_int(query.get("slope_angle_mdeg", 0), 0))),
+        "tile_object_id": str(query.get("tile_object_id", "")).strip() or None,
+        "tile_cell_key": dict(query.get("tile_cell_key") or {}),
+        "source": "EARTH6-4",
+    }
+    body["extensions"] = body_ext
+    return {
+        "body_row": dict(body),
+        "grounded": bool(should_clamp),
+        "clamped": bool(should_clamp),
+        "ground_contact_height_mm": int(ground_contact_height_mm),
+        "surface_query": dict(query),
     }
 
 
@@ -25610,6 +25887,17 @@ def execute_intent(
         orientation["pitch"] = int(orientation["pitch"]) + ((int(look_vector["y"]) * look_rate * dt_ticks) // 1000)
         orientation["roll"] = int(orientation["roll"]) + ((int(look_vector["z"]) * look_rate * dt_ticks) // 1000)
         world_move = _movement_world_delta(local_delta=local_move, yaw_mdeg=int(orientation.get("yaw", 0)))
+        surface_query = _body_surface_query(
+            state=state,
+            body_row=body,
+            policy_context=policy_context,
+        )
+        slope_response = _evaluate_slope_response(
+            body_row=body,
+            world_move=world_move,
+            surface_query=surface_query,
+            policy_context=policy_context,
+        )
         momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
         existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
         mass_value = _mass_value_for_assembly(
@@ -25632,8 +25920,8 @@ def execute_intent(
             )
         walk_accel = int(max(1, _as_int(movement_params.get("walk_accel_mm_per_tick2", 120), 120)))
         force_vector = {
-            "x": int(int(world_move["x"]) * walk_accel * int(mass_value) // 1000),
-            "y": int(int(world_move["y"]) * walk_accel * int(mass_value) // 1000),
+            "x": int(int(world_move["x"]) * walk_accel * int(mass_value) * int(slope_response.get("accel_factor_permille", 1000)) // 1_000_000),
+            "y": int(int(world_move["y"]) * walk_accel * int(mass_value) * int(slope_response.get("accel_factor_permille", 1000)) // 1_000_000),
             "z": int(int(world_move["z"]) * walk_accel * int(mass_value) // 1000),
         }
         force_row = build_force_application(
@@ -25659,6 +25947,21 @@ def execute_intent(
         state["force_application_rows"] = [dict(row) for row in list(force_application_rows or []) if isinstance(row, Mapping)]
         body["orientation_mdeg"] = dict(orientation)
         body["velocity_mm_per_tick"] = dict(updated_velocity)
+        if str(surface_query.get("result", "")).strip() == "complete":
+            body_extensions = dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}
+            body_extensions["surface_tile_cell_key"] = dict(surface_query.get("tile_cell_key") or {})
+            body_extensions["collision_provider_id"] = str(surface_query.get("provider_id", "")).strip() or DEFAULT_COLLISION_PROVIDER_ID
+            body_extensions["movement_slope_params_id"] = str(slope_response.get("slope_params_id", "")).strip() or DEFAULT_MOVEMENT_SLOPE_PARAMS_ID
+            body_extensions["terrain_slope_response"] = {
+                "accel_factor_permille": int(slope_response.get("accel_factor_permille", 1000)),
+                "direction_class": str(slope_response.get("direction_class", "flat")).strip() or "flat",
+                "movement_alignment_permille": int(slope_response.get("movement_alignment_permille", 0)),
+                "slope_angle_mdeg": int(slope_response.get("slope_angle_mdeg", 0)),
+                "slide_angle_threshold_stub": int(slope_response.get("slide_angle_threshold_stub", 0)),
+                "tile_object_id": str(surface_query.get("tile_object_id", "")).strip() or None,
+                "source": "EARTH6-5",
+            }
+            body["extensions"] = body_extensions
         body_rows_by_id = dict(
             (
                 str(row.get("assembly_id", "")).strip(),
@@ -25691,6 +25994,7 @@ def execute_intent(
             "look_vector": dict(look_vector),
             "orientation_mdeg": dict(orientation),
             "movement_params_ref": str((dict(body.get("extensions") or {})).get("movement_params_ref", "")).strip(),
+            "slope_response": dict(slope_response),
         }
         _advance_time(state, steps=int(dt_ticks), policy_context=policy_context)
     elif process_id == "process.body_tick":
@@ -25816,6 +26120,28 @@ def execute_intent(
             return collision_result
         bodies = _ensure_body_assemblies(state)
         body = _find_body(body_rows=bodies, body_id=body_id) or body
+        terrain_query = _body_surface_query(
+            state=state,
+            body_row=body,
+            position_override=body.get("transform_mm"),
+            policy_context=policy_context,
+        )
+        ground_contact = _apply_ground_contact(
+            body_row=body,
+            movement_params=movement_params,
+            surface_query=terrain_query,
+        )
+        body = dict(ground_contact.get("body_row") or body)
+        body_rows_by_id = dict(
+            (
+                str(row.get("assembly_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(bodies or [])
+            if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+        )
+        body_rows_by_id[body_id] = dict(body)
+        state["body_assemblies"] = [dict(body_rows_by_id[key]) for key in sorted(body_rows_by_id.keys())]
         resolved_velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or dict(updated_velocity)
         updated_momentum_row = build_momentum_state(
             assembly_id=body_id,
@@ -25868,6 +26194,7 @@ def execute_intent(
             "model_id": "model.phys_gravity_force",
             "velocity_mm_per_tick": dict(resolved_velocity),
             "position_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
+            "terrain_collision": dict(_as_map(_as_map(body.get("extensions")).get("terrain_collision_state"))),
             "lens_profile_id": lens_profile_id or None,
             "lens_camera_fingerprint": str(lens_result.get("deterministic_fingerprint", "")).strip() or None,
         }
@@ -46443,6 +46770,9 @@ def execute_intent(
             process_id=process_id,
             policy_context=policy_context,
         )
+        collision_cache_refresh = invalidate_macro_heightfield_cache_for_tiles(
+            [dict(row.get("geo_cell_key") or {}) for row in list(geometry_result.get("updated_geometry_cell_states") or [])]
+        )
         collapse_explain = {}
         if int(max(0, _as_int(coupling_summary.get("max_hazard_value", 0), 0))) >= 500:
             collapse_explain = _append_geometry_explain_artifact(
@@ -46492,6 +46822,7 @@ def execute_intent(
             "hydrology_dirty_tile_count": int(max(0, _as_int(hydrology_refresh.get("dirty_tile_count", 0), 0))),
             "hydrology_recomputed_tile_count": int(max(0, _as_int(hydrology_refresh.get("recomputed_tile_count", 0), 0))),
             "hydrology_recomputed_tile_ids": list(hydrology_refresh.get("recomputed_tile_ids") or []),
+            "collision_cache_invalidated_entries": int(max(0, _as_int(collision_cache_refresh.get("invalidated_entries", 0), 0))),
             "micro_chunk_count": int(max(0, _as_int(micro_chunk_result.get("micro_chunk_count", 0), 0))),
             "compaction_marker_id": (
                 None
