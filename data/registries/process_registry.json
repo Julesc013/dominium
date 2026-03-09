@@ -4494,6 +4494,76 @@
     {
       "affected_assemblies": [],
       "affected_fields": [
+        "field.temperature",
+        "field.daylight"
+      ],
+      "deprecated": false,
+      "description": "Canonical EARTH-2 seasonal climate tick; recomputes deterministic Earth surface temperature/daylight proxies for due update buckets and persists derived climate-band overlays.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "canonical-tick-only",
+        "budgeted-degrade",
+        "process-only-mutation"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.earth_climate_tick)",
+        "source": "EARTH2-4",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Earth Climate Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "worldgen_surface_tile_artifacts",
+          "ref_id": "dominium.state.worldgen_surface_tile_artifacts",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "geometry_cell_states",
+          "ref_id": "dominium.state.geometry_cell_state_rows",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "field_cells",
+          "ref_id": "dominium.schema.field.field_cell@1.0.0",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "field_update_events",
+          "ref_id": "dominium.state.field_update_event_rows",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "earth_climate_tile_overlays",
+          "ref_id": "dominium.state.earth_climate_tile_overlays",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "earth_climate_runtime_state",
+          "ref_id": "dominium.state.earth_climate_runtime_state",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.earth_climate_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [
         "field.pollution.smoke_particulate_concentration",
         "field.pollution.co2_stub_concentration",
         "field.pollution.toxic_gas_stub_concentration",
