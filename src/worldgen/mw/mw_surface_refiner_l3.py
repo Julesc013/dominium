@@ -13,7 +13,15 @@ from src.fields import build_field_cell, build_field_layer
 from src.geo.edit import build_geometry_cell_state
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
-from src.worldgen.earth import generate_earth_surface_tile_plan
+from src.worldgen.earth import (
+    DEFAULT_HYDROLOGY_PARAMS_ID,
+    apply_hydrology_to_surface_tile_artifact,
+    build_fluid_channel_guidance,
+    build_poll_transport_stub,
+    compute_hydrology_window,
+    generate_earth_surface_tile_plan,
+    hydrology_params_rows,
+)
 
 from .insolation_proxy import daylight_proxy_permille, insolation_proxy_permille, orbital_period_proxy_ticks, season_phase_permille
 
@@ -23,7 +31,7 @@ SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors
 SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
 SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_routing_registry.json")
 EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_surface_params_registry.json")
-MW_SURFACE_REFINER_L3_VERSION = "MW3-3"
+MW_SURFACE_REFINER_L3_VERSION = "MW3-4"
 
 
 def _repo_root() -> str:
@@ -208,9 +216,14 @@ def normalize_surface_tile_artifact_rows(rows: object) -> List[dict]:
             "elevation_params_ref": _as_map(row.get("elevation_params_ref")),
             "material_baseline_id": str(row.get("material_baseline_id", "")).strip(),
             "biome_stub_id": str(row.get("biome_stub_id", "")).strip(),
+            "drainage_accumulation_proxy": int(max(1, _as_int(row.get("drainage_accumulation_proxy", 1), 1))),
+            "river_flag": bool(row.get("river_flag", False)),
             "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
             "extensions": _normalized_extensions_map(row.get("extensions")),
         }
+        flow_target = _as_map(row.get("flow_target_tile_key"))
+        if flow_target:
+            normalized["flow_target_tile_key"] = flow_target
         if not normalized["deterministic_fingerprint"]:
             normalized["deterministic_fingerprint"] = canonical_sha256(dict(normalized, deterministic_fingerprint=""))
         out[tile_object_id] = normalized
@@ -470,6 +483,123 @@ def _default_surface_tile_plan(
     }
 
 
+def _surface_tile_descriptor(
+    *,
+    surface_cell_key: Mapping[str, object],
+    planet_object_token: str,
+    surface_stream_seed: str,
+    current_tick: int,
+    handler_id: str,
+    surface_priors_row: Mapping[str, object],
+    earth_surface_params_row: Mapping[str, object],
+    planet_basic_row: Mapping[str, object],
+    planet_orbit_row: Mapping[str, object],
+    star_row: Mapping[str, object],
+) -> dict:
+    tile_key = _coerce_cell_key(surface_cell_key) or {}
+    tile_seed = _surface_seed(surface_stream_seed=surface_stream_seed, planet_object_id=planet_object_token, tile_cell_key=tile_key)
+    generator_seed = _named_substream_seed(tile_seed, "rng.worldgen.surface.generator")
+    latitude_mdeg = _latitude_mdeg(tile_key, surface_priors_row)
+    longitude_mdeg = _longitude_mdeg(tile_key, surface_priors_row)
+    star_mass_milli_solar = _quantity_value(star_row.get("star_mass"), default_value=1000)
+    luminosity_permille = _quantity_value(star_row.get("luminosity_proxy"), default_value=1000)
+    semi_major_axis_milli_au = _quantity_value(planet_orbit_row.get("semi_major_axis"), default_value=1000)
+    axial_tilt_mdeg = _quantity_value(planet_basic_row.get("axial_tilt"), default_value=0)
+    ocean_fraction_permille = _quantity_value(planet_basic_row.get("ocean_fraction"), default_value=0)
+    atmosphere_class_id = str(planet_basic_row.get("atmosphere_class_id", "")).strip()
+    orbital_period_ticks = orbital_period_proxy_ticks(
+        semi_major_axis_milli_au=semi_major_axis_milli_au,
+        star_mass_milli_solar=star_mass_milli_solar,
+    )
+    season_phase_value = season_phase_permille(current_tick=current_tick, orbital_period_ticks=orbital_period_ticks)
+    daylight_params = _as_map(surface_priors_row.get("daylight_params"))
+    daylight_value = daylight_proxy_permille(
+        latitude_mdeg=latitude_mdeg,
+        axial_tilt_mdeg=axial_tilt_mdeg,
+        current_tick=current_tick,
+        orbital_period_ticks=orbital_period_ticks,
+        daylight_params=daylight_params,
+    )
+    insolation_value = insolation_proxy_permille(
+        daylight_permille=daylight_value,
+        luminosity_permille=luminosity_permille,
+        semi_major_axis_milli_au=semi_major_axis_milli_au,
+    )
+    temperature_params = _as_map(surface_priors_row.get("temperature_params"))
+    temperature_value = _clamp(
+        _as_int(temperature_params.get("baseline_kelvin", 210), 210)
+        + ((insolation_value * _as_int(temperature_params.get("insolation_weight_kelvin", 120), 120)) // 1000)
+        - ((abs(latitude_mdeg) * _as_int(temperature_params.get("latitude_cooling_max_kelvin", 80), 80)) // 90_000)
+        + ((daylight_value * _as_int(temperature_params.get("daylight_bonus_max_kelvin", 35), 35)) // 1000)
+        + ((ocean_fraction_permille * _as_int(temperature_params.get("ocean_moderation_kelvin", 10), 10)) // 1000)
+        + _atmosphere_temperature_bias(atmosphere_class_id),
+        120,
+        480,
+    )
+    if handler_id == "earth.surface.stub":
+        surface_plan = generate_earth_surface_tile_plan(
+            tile_seed=generator_seed,
+            planet_object_id=planet_object_token,
+            tile_cell_key=tile_key,
+            surface_priors_row=surface_priors_row,
+            earth_surface_params_row=earth_surface_params_row,
+            latitude_mdeg=latitude_mdeg,
+            longitude_mdeg=longitude_mdeg,
+            base_temperature_kelvin=temperature_value,
+            daylight_permille=daylight_value,
+            insolation_permille=insolation_value,
+        )
+    else:
+        surface_plan = _default_surface_tile_plan(
+            generator_seed=generator_seed,
+            surface_priors_row=surface_priors_row,
+            latitude_mdeg=latitude_mdeg,
+            longitude_mdeg=longitude_mdeg,
+            temperature_value=temperature_value,
+            ocean_fraction_permille=ocean_fraction_permille,
+        )
+    surface_plan_extensions = _as_map(surface_plan.get("extensions"))
+    temperature_value = _clamp(_as_int(surface_plan.get("temperature_value", temperature_value), temperature_value), 120, 480)
+    material_baseline_id = str(surface_plan.get("material_baseline_id", "")).strip() or _material_baseline_id(
+        material_key="land",
+        surface_priors_row=surface_priors_row,
+    )
+    biome_stub_id = str(surface_plan.get("biome_stub_id", "")).strip() or "biome.stub.temperate"
+    height_proxy = max(0, _as_int(surface_plan.get("height_proxy", 0), 0))
+    elevation_params_ref = _as_map(surface_plan.get("elevation_params_ref"))
+    if not elevation_params_ref:
+        elevation_params_ref = {
+            "noise_seed": _named_substream_seed(generator_seed, "rng.worldgen.surface.elevation"),
+            "height_proxy": int(height_proxy),
+            "macro_relief_permille": int(200 + (_hash_int(generator_seed, "macro_relief") % 801)),
+            "ridge_bias_permille": int(_hash_int(generator_seed, "ridge_bias") % 1000),
+            "coastal_bias_permille": int(ocean_fraction_permille),
+        }
+    pressure_value = _pressure_proxy_value(atmosphere_class_id=atmosphere_class_id, surface_priors_row=surface_priors_row)
+    occupancy_fraction = 700 if str(surface_plan_extensions.get("surface_class_id", "")).strip() == "surface.class.ocean" else 1000
+    return {
+        "tile_seed": tile_seed,
+        "generator_seed": generator_seed,
+        "latitude_mdeg": int(latitude_mdeg),
+        "longitude_mdeg": int(_as_int(surface_plan_extensions.get("longitude_mdeg", longitude_mdeg), longitude_mdeg)),
+        "temperature_value": int(temperature_value),
+        "daylight_value": int(daylight_value),
+        "pressure_value": int(pressure_value),
+        "orbital_period_ticks": int(orbital_period_ticks),
+        "season_phase_permille": int(season_phase_value),
+        "insolation_value": int(insolation_value),
+        "material_baseline_id": material_baseline_id,
+        "biome_stub_id": biome_stub_id,
+        "height_proxy": int(height_proxy),
+        "elevation_params_ref": dict(elevation_params_ref),
+        "surface_plan_extensions": surface_plan_extensions,
+        "surface_class_id": str(surface_plan_extensions.get("surface_class_id", "")).strip(),
+        "climate_band_id": str(surface_plan_extensions.get("climate_band_id", "")).strip(),
+        "far_lod_visual_class": str(surface_plan_extensions.get("far_lod_visual_class", "")).strip(),
+        "occupancy_fraction": int(occupancy_fraction),
+    }
+
+
 def generate_mw_surface_l3_payload(
     *,
     universe_identity_hash: str,
@@ -486,6 +616,7 @@ def generate_mw_surface_l3_payload(
     surface_generator_registry_payload: Mapping[str, object] | None = None,
     surface_generator_routing_registry_payload: Mapping[str, object] | None = None,
     earth_surface_params_registry_payload: Mapping[str, object] | None = None,
+    hydrology_params_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     surface_cell_key = _coerce_cell_key(surface_geo_cell_key)
     ancestor_key = _coerce_cell_key(ancestor_world_cell_key)
@@ -575,6 +706,20 @@ def generate_mw_surface_l3_payload(
             }
             payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
             return payload
+    hydrology_params_id = str(surface_priors_row.get("hydrology_params_ref", "")).strip() or DEFAULT_HYDROLOGY_PARAMS_ID
+    hydrology_params_row = _as_map(hydrology_params_rows(hydrology_params_registry_payload).get(hydrology_params_id))
+    if not hydrology_params_row:
+        payload = {
+            "result": "refused",
+            "message": "surface priors are missing declared hydrology parameters",
+            "details": {
+                "surface_priors_id": surface_priors_id,
+                "hydrology_params_id": hydrology_params_id,
+            },
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return payload
 
     tile_object_id, object_row = _spawn_object_identity(
         universe_identity_hash=universe_identity_hash,
@@ -587,86 +732,74 @@ def generate_mw_surface_l3_payload(
         payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
         return payload
 
-    tile_seed = _surface_seed(surface_stream_seed=surface_stream_seed, planet_object_id=planet_object_token, tile_cell_key=surface_cell_key)
-    generator_seed = _named_substream_seed(tile_seed, "rng.worldgen.surface.generator")
-    latitude_mdeg = _latitude_mdeg(surface_cell_key, surface_priors_row)
-    longitude_mdeg = _longitude_mdeg(surface_cell_key, surface_priors_row)
-    star_mass_milli_solar = _quantity_value(star_row.get("star_mass"), default_value=1000)
-    luminosity_permille = _quantity_value(star_row.get("luminosity_proxy"), default_value=1000)
-    semi_major_axis_milli_au = _quantity_value(planet_orbit_row.get("semi_major_axis"), default_value=1000)
-    axial_tilt_mdeg = _quantity_value(planet_basic_row.get("axial_tilt"), default_value=0)
-    ocean_fraction_permille = _quantity_value(planet_basic_row.get("ocean_fraction"), default_value=0)
-    atmosphere_class_id = str(planet_basic_row.get("atmosphere_class_id", "")).strip()
-    orbital_period_ticks = orbital_period_proxy_ticks(
-        semi_major_axis_milli_au=semi_major_axis_milli_au,
-        star_mass_milli_solar=star_mass_milli_solar,
+    tile_descriptor = _surface_tile_descriptor(
+        surface_cell_key=surface_cell_key,
+        planet_object_token=planet_object_token,
+        surface_stream_seed=surface_stream_seed,
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        handler_id=handler_id,
+        surface_priors_row=surface_priors_row,
+        earth_surface_params_row=earth_surface_params_row,
+        planet_basic_row=planet_basic_row,
+        planet_orbit_row=planet_orbit_row,
+        star_row=star_row,
     )
-    season_phase_value = season_phase_permille(current_tick=current_tick, orbital_period_ticks=orbital_period_ticks)
-    daylight_params = _as_map(surface_priors_row.get("daylight_params"))
-    daylight_value = daylight_proxy_permille(
-        latitude_mdeg=latitude_mdeg,
-        axial_tilt_mdeg=axial_tilt_mdeg,
-        current_tick=current_tick,
-        orbital_period_ticks=orbital_period_ticks,
-        daylight_params=daylight_params,
-    )
-    insolation_value = insolation_proxy_permille(
-        daylight_permille=daylight_value,
-        luminosity_permille=luminosity_permille,
-        semi_major_axis_milli_au=semi_major_axis_milli_au,
-    )
-    temperature_params = _as_map(surface_priors_row.get("temperature_params"))
-    temperature_value = _clamp(
-        _as_int(temperature_params.get("baseline_kelvin", 210), 210)
-        + ((insolation_value * _as_int(temperature_params.get("insolation_weight_kelvin", 120), 120)) // 1000)
-        - ((abs(latitude_mdeg) * _as_int(temperature_params.get("latitude_cooling_max_kelvin", 80), 80)) // 90_000)
-        + ((daylight_value * _as_int(temperature_params.get("daylight_bonus_max_kelvin", 35), 35)) // 1000)
-        + ((ocean_fraction_permille * _as_int(temperature_params.get("ocean_moderation_kelvin", 10), 10)) // 1000)
-        + _atmosphere_temperature_bias(atmosphere_class_id),
-        120,
-        480,
-    )
-    if handler_id == "earth.surface.stub":
-        surface_plan = generate_earth_surface_tile_plan(
-            tile_seed=generator_seed,
-            planet_object_id=planet_object_token,
-            tile_cell_key=surface_cell_key,
+    temperature_value = int(tile_descriptor.get("temperature_value", 0))
+    daylight_value = int(tile_descriptor.get("daylight_value", 0))
+    pressure_value = int(tile_descriptor.get("pressure_value", 0))
+    orbital_period_ticks = int(tile_descriptor.get("orbital_period_ticks", 0))
+    season_phase_value = int(tile_descriptor.get("season_phase_permille", 0))
+    insolation_value = int(tile_descriptor.get("insolation_value", 0))
+    material_baseline_id = str(tile_descriptor.get("material_baseline_id", "")).strip()
+    biome_stub_id = str(tile_descriptor.get("biome_stub_id", "")).strip()
+    height_proxy = int(tile_descriptor.get("height_proxy", 0))
+    elevation_params_ref = _as_map(tile_descriptor.get("elevation_params_ref"))
+    surface_plan_extensions = _as_map(tile_descriptor.get("surface_plan_extensions"))
+    latitude_mdeg = int(tile_descriptor.get("latitude_mdeg", 0))
+    longitude_mdeg = int(tile_descriptor.get("longitude_mdeg", 0))
+    occupancy_fraction = int(tile_descriptor.get("occupancy_fraction", 1000))
+
+    descriptor_cache: Dict[str, dict] = {}
+
+    def _resolve_tile_snapshot(tile_cell_key: Mapping[str, object]) -> dict:
+        key_row = _coerce_cell_key(tile_cell_key) or {}
+        cache_key = canonical_sha256(_semantic_cell_key(key_row))
+        cached = descriptor_cache.get(cache_key)
+        if cached:
+            return dict(cached)
+        descriptor = _surface_tile_descriptor(
+            surface_cell_key=key_row,
+            planet_object_token=planet_object_token,
+            surface_stream_seed=surface_stream_seed,
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            handler_id=handler_id,
             surface_priors_row=surface_priors_row,
             earth_surface_params_row=earth_surface_params_row,
-            latitude_mdeg=latitude_mdeg,
-            longitude_mdeg=longitude_mdeg,
-            base_temperature_kelvin=temperature_value,
-            daylight_permille=daylight_value,
-            insolation_permille=insolation_value,
+            planet_basic_row=planet_basic_row,
+            planet_orbit_row=planet_orbit_row,
+            star_row=star_row,
         )
-    else:
-        surface_plan = _default_surface_tile_plan(
-            generator_seed=generator_seed,
-            surface_priors_row=surface_priors_row,
-            latitude_mdeg=latitude_mdeg,
-            longitude_mdeg=longitude_mdeg,
-            temperature_value=temperature_value,
-            ocean_fraction_permille=ocean_fraction_permille,
-        )
-    surface_plan_extensions = _as_map(surface_plan.get("extensions"))
-    temperature_value = _clamp(_as_int(surface_plan.get("temperature_value", temperature_value), temperature_value), 120, 480)
-    material_baseline_id = str(surface_plan.get("material_baseline_id", "")).strip() or _material_baseline_id(
-        material_key="land",
-        surface_priors_row=surface_priors_row,
-    )
-    biome_stub_id = str(surface_plan.get("biome_stub_id", "")).strip() or "biome.stub.temperate"
-    height_proxy = max(0, _as_int(surface_plan.get("height_proxy", 0), 0))
-    elevation_params_ref = _as_map(surface_plan.get("elevation_params_ref"))
-    if not elevation_params_ref:
-        elevation_params_ref = {
-            "noise_seed": _named_substream_seed(generator_seed, "rng.worldgen.surface.elevation"),
-            "height_proxy": int(height_proxy),
-            "macro_relief_permille": int(200 + (_hash_int(generator_seed, "macro_relief") % 801)),
-            "ridge_bias_permille": int(_hash_int(generator_seed, "ridge_bias") % 1000),
-            "coastal_bias_permille": int(ocean_fraction_permille),
+        snapshot = {
+            "tile_cell_key": dict(key_row),
+            "surface_class_id": str(descriptor.get("surface_class_id", "")).strip(),
+            "material_baseline_id": str(descriptor.get("material_baseline_id", "")).strip(),
+            "biome_stub_id": str(descriptor.get("biome_stub_id", "")).strip(),
+            "effective_height_proxy": int(max(0, _as_int(descriptor.get("height_proxy", 0), 0))),
+            "elevation_params_ref": _as_map(descriptor.get("elevation_params_ref")),
+            "extensions": {
+                "surface_class_id": str(descriptor.get("surface_class_id", "")).strip(),
+                "source": MW_SURFACE_REFINER_L3_VERSION,
+            },
         }
-    pressure_value = _pressure_proxy_value(atmosphere_class_id=atmosphere_class_id, surface_priors_row=surface_priors_row)
-    occupancy_fraction = 700 if str(surface_plan_extensions.get("surface_class_id", "")).strip() == "surface.class.ocean" else 1000
+        descriptor_cache[cache_key] = dict(snapshot)
+        return dict(snapshot)
+
+    hydrology_payload = compute_hydrology_window(
+        center_tile_cell_key=surface_cell_key,
+        hydrology_params_row=hydrology_params_row,
+        resolve_tile_snapshot=_resolve_tile_snapshot,
+    )
+    hydrology_center = _as_map(hydrology_payload.get("center_tile"))
 
     tile_artifact_row = {
         "tile_object_id": tile_object_id,
@@ -675,6 +808,8 @@ def generate_mw_surface_l3_payload(
         "elevation_params_ref": dict(elevation_params_ref),
         "material_baseline_id": material_baseline_id,
         "biome_stub_id": biome_stub_id,
+        "drainage_accumulation_proxy": 1,
+        "river_flag": False,
         "deterministic_fingerprint": "",
         "extensions": {
             "ancestor_world_cell_key": dict(ancestor_key),
@@ -692,6 +827,31 @@ def generate_mw_surface_l3_payload(
             **surface_plan_extensions,
             "source": MW_SURFACE_REFINER_L3_VERSION,
         },
+    }
+    tile_artifact_row = apply_hydrology_to_surface_tile_artifact(
+        artifact_row=tile_artifact_row,
+        hydrology_center_row=hydrology_center,
+        hydrology_params_id=hydrology_params_id,
+    )
+    hydrology_rows_by_hash = dict(
+        (
+            canonical_sha256(_semantic_cell_key(_coerce_cell_key(row.get("tile_cell_key")) or {})),
+            dict(row),
+        )
+        for row in list(hydrology_payload.get("window_rows") or [])
+        if isinstance(row, Mapping)
+    )
+    tile_artifact_row["extensions"] = {
+        **_as_map(tile_artifact_row.get("extensions")),
+        "poll_transport_stub": build_poll_transport_stub(
+            artifact_row=tile_artifact_row,
+            tile_rows_by_cell_hash=hydrology_rows_by_hash,
+        ),
+        "fluid_channel_guidance": build_fluid_channel_guidance(artifact_row=tile_artifact_row),
+        "hydrology_analysis_radius": int(hydrology_payload.get("analysis_radius", 0)),
+        "hydrology_window_fingerprint": str(hydrology_payload.get("window_fingerprint", "")).strip(),
+        "hydrology_source": MW_SURFACE_REFINER_L3_VERSION,
+        "source": MW_SURFACE_REFINER_L3_VERSION,
     }
     tile_artifact_row["deterministic_fingerprint"] = canonical_sha256(dict(tile_artifact_row, deterministic_fingerprint=""))
 
@@ -807,6 +967,7 @@ def generate_mw_surface_l3_payload(
     payload = {
         "result": "complete",
         "surface_priors_id": surface_priors_id,
+        "hydrology_params_id": hydrology_params_id,
         "routing_id": str(route_row.get("routing_id", "")).strip(),
         "selected_generator_id": str(selected_generator_row.get("generator_id", "")).strip(),
         "handler_id": handler_id,
@@ -831,6 +992,11 @@ def generate_mw_surface_l3_payload(
             "surface_class_id": str(surface_plan_extensions.get("surface_class_id", "")).strip(),
             "climate_band_id": str(surface_plan_extensions.get("climate_band_id", "")).strip(),
             "far_lod_visual_class": str(surface_plan_extensions.get("far_lod_visual_class", "")).strip(),
+            "flow_target_tile_key": _as_map(tile_artifact_row.get("flow_target_tile_key")),
+            "drainage_accumulation_proxy": int(tile_artifact_row.get("drainage_accumulation_proxy", 1)),
+            "river_flag": bool(tile_artifact_row.get("river_flag", False)),
+            "lake_flag": bool(_as_map(tile_artifact_row.get("extensions")).get("lake_flag", False)),
+            "hydrology_window_fingerprint": str(hydrology_payload.get("window_fingerprint", "")).strip(),
             "current_tick": int(max(0, _as_int(current_tick, 0))),
             "deterministic_fingerprint": "",
         },
