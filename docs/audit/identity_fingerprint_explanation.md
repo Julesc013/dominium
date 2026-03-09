@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-09
+Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 
@@ -27,3 +27,4 @@ Superseded By: none
   - 2026-03-09: refreshed for EARTH-0 Earth procedural constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX Earth generator discipline additions, and EARTH-0 TestX additions
   - 2026-03-09: refreshed for EMB-0 embodiment baseline registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX embodiment discipline additions, and EMB-0 TestX additions
   - 2026-03-09: refreshed for UX-0 MVP viewer shell registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX viewer-shell discipline additions, and UX-0 TestX additions
+  - 2026-03-10: refreshed for EARTH-1 hydrology constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX hydrology discipline additions, and EARTH-1 TestX additions

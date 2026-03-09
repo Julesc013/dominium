@@ -71,6 +71,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the UX-0 MVP viewer shell doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-09"
+    },
+    {
+      "id": "OVR-2026-03-10-EARTH1-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the EARTH-1 hydrology constitution in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-10"
     }
   ]
 }

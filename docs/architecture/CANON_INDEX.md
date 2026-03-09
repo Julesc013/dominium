@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-11
+Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 
@@ -304,6 +304,7 @@ execution artifacts and are not authoritative.
 - `docs/ui/UI_SYSTEM_DOCTRINE.md`
 - `docs/ux/MVP_VIEWER_SHELL.md`
 - `docs/worldgen/WORLDGEN_PIPELINE.md`
+- `docs/worldgen/EARTH_HYDROLOGY_MODEL.md`
 - `docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
 - `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
 - `docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
@@ -334,6 +335,8 @@ execution artifacts and are not authoritative.
 - `docs/architecture/time_model.md`
 - `docs/architecture/truth_model.md`
 - `docs/audit/AUDITX_OVERHAUL_REPORT.md`
+- `docs/audit/EARTH1_RETRO_AUDIT.md`
+- `docs/audit/EARTH_HYDROLOGY_BASELINE.md`
 - `docs/audit/compat/COMPAT_BASELINE.md`
 - `docs/audit/compat/README.md`
 - `docs/CAPABILITY_STAGES.md`
