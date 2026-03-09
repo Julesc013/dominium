@@ -23,6 +23,9 @@
             "look_rate_mdeg_per_tick": 1800,
             "horizontal_damping_permille": 120
           },
+          "collision_provider_id": "collision.macro_heightfield_default",
+          "movement_slope_params_id": "slope.mvp_default",
+          "foot_offset_mm": 1100,
           "system_template_id": "template.body.pill",
           "body_shape_type": "capsule"
         }
