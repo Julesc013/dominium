@@ -302,6 +302,7 @@ execution artifacts and are not authoritative.
 - `docs/ui/UI_SYSTEM_DOCTRINE.md`
 - `docs/worldgen/WORLDGEN_PIPELINE.md`
 - `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
+- `docs/worldgen/STAR_SYSTEM_SEED_MODEL.md`
 - `docs/worldgen/WORLDGEN_PREVIEW_AND_OPTIMIZATION.md`
 - `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`
 
