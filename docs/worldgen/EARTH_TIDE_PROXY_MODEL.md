@@ -157,6 +157,15 @@ This proxy is the canonical hook surface for future:
 - coastal flooding hazard
 - estuary flow direction bias
 
+The reserved hook identifiers are:
+
+- `future.ocean.surface_height_bias`
+- `future.hazard.coastal_flood_bias`
+- `future.fluid.estuary_flow_bias`
+
+EARTH-3 may publish these as derived coupling descriptors attached to tide evaluations.
+They are declarative only and must not directly mutate ocean or hazard truth in MVP.
+
 Those systems must layer on top of EARTH-3.
 EARTH-3 itself does not solve volume transport or ocean PDEs.
 
