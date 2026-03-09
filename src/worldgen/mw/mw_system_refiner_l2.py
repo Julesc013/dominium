@@ -533,21 +533,37 @@ def generate_mw_system_l2_payload(
         band_jitter_permille = max(0, _as_int(orbital_spacing.get("band_jitter_permille", 140), 140))
         eccentricity_params = _as_map(system_priors_row.get("eccentricity_params"))
         inclination_params = _as_map(system_priors_row.get("inclination_params"))
+        min_spacing_ratio_permille = max(1000, _as_int(orbital_spacing.get("min_spacing_ratio_permille", 1350), 1350))
+        push_out_ratio_permille = max(min_spacing_ratio_permille, _as_int(orbital_spacing.get("push_out_ratio_permille", 1450), 1450))
+        periapsis_gap_ratio_permille = max(1000, _as_int(eccentricity_params.get("periapsis_gap_ratio_permille", 1050), 1050))
         last_axis_milli_au = inner_edge_milli_au
+        last_apoapsis_milli_au = 0
         planet_object_ids: List[str] = []
         moon_object_ids: List[str] = []
         habitable_planet_count = 0
 
+        # Deterministic forward pass: bounded push-out for spacing, then a periapsis-order clamp for eccentricity.
         for planet_index in range(planet_count):
             orbit_seed = _named_substream_seed(system_seed_value, "rng.worldgen.system.planet.{}".format(planet_index))
             nominal_axis = inner_edge_milli_au if planet_index == 0 else min(outer_edge_milli_au, _ratio_mul(last_axis_milli_au, nominal_ratio_permille))
             jitter_span = (nominal_axis * band_jitter_permille) // 1000
             candidate_axis = nominal_axis + ((_hash_int(orbit_seed, "semi_major_jitter") % (jitter_span * 2 + 1)) - jitter_span) if jitter_span > 0 else nominal_axis
             semi_major_axis_milli_au = max(inner_edge_milli_au, min(outer_edge_milli_au, candidate_axis))
+            spacing_adjusted = False
+            if planet_index > 0:
+                min_allowed_axis = _ratio_mul(last_axis_milli_au, min_spacing_ratio_permille)
+                if semi_major_axis_milli_au < min_allowed_axis:
+                    semi_major_axis_milli_au = min(outer_edge_milli_au, _ratio_mul(last_axis_milli_au, push_out_ratio_permille))
+                    spacing_adjusted = True
             base_e_max = max(0, min(900, _as_int(eccentricity_params.get("base_max_permille", 260), 260)))
             if semi_major_axis_milli_au < _ratio_mul(habitable_center_milli_au, 700):
                 base_e_max = min(900, base_e_max + max(0, _as_int(eccentricity_params.get("inner_zone_bonus_permille", 30), 30)))
-            eccentricity_permille = _hash_int(orbit_seed, "eccentricity") % (base_e_max + 1 if base_e_max > 0 else 1)
+            raw_eccentricity_permille = _hash_int(orbit_seed, "eccentricity") % (base_e_max + 1 if base_e_max > 0 else 1)
+            max_eccentricity_permille = base_e_max
+            if planet_index > 0 and semi_major_axis_milli_au > 0:
+                max_from_periapsis = 1000 - ((last_apoapsis_milli_au * periapsis_gap_ratio_permille + semi_major_axis_milli_au - 1) // semi_major_axis_milli_au)
+                max_eccentricity_permille = min(base_e_max, max(0, max_from_periapsis))
+            eccentricity_permille = max(0, min(raw_eccentricity_permille, max_eccentricity_permille))
             base_inclination_mdeg = max(0, _as_int(inclination_params.get("base_max_mdeg", 3500), 3500))
             if semi_major_axis_milli_au > _ratio_mul(habitable_center_milli_au, 1600):
                 base_inclination_mdeg += max(0, _as_int(inclination_params.get("outer_zone_bonus_mdeg", 2500), 2500))
@@ -592,7 +608,17 @@ def generate_mw_system_l2_payload(
                 "eccentricity": _quantity("permille", eccentricity_permille),
                 "inclination": _quantity("mdeg", inclination_mdeg),
                 "deterministic_fingerprint": "",
-                "extensions": {"parent_system_object_id": system_object_id, "planet_index": planet_index, "planet_class_id": planet_class_id, "named_rng_stream": "rng.worldgen.system.planet.{}".format(planet_index), "habitable_center_milli_au": habitable_center_milli_au, "spacing_adjusted": False, "source": MW_SYSTEM_REFINER_L2_VERSION},
+                "extensions": {
+                    "parent_system_object_id": system_object_id,
+                    "planet_index": planet_index,
+                    "planet_class_id": planet_class_id,
+                    "named_rng_stream": "rng.worldgen.system.planet.{}".format(planet_index),
+                    "habitable_center_milli_au": habitable_center_milli_au,
+                    "spacing_adjusted": bool(spacing_adjusted),
+                    "raw_eccentricity_permille": int(raw_eccentricity_permille),
+                    "max_eccentricity_permille": int(max_eccentricity_permille),
+                    "source": MW_SYSTEM_REFINER_L2_VERSION,
+                },
             }
             orbit_row["deterministic_fingerprint"] = canonical_sha256(dict(orbit_row, deterministic_fingerprint=""))
             orbit_rows.append(orbit_row)
@@ -610,6 +636,7 @@ def generate_mw_system_l2_payload(
             basic_row["deterministic_fingerprint"] = canonical_sha256(dict(basic_row, deterministic_fingerprint=""))
             basic_rows.append(basic_row)
             last_axis_milli_au = semi_major_axis_milli_au
+            last_apoapsis_milli_au = (semi_major_axis_milli_au * (1000 + eccentricity_permille) + 999) // 1000
 
         summary_row = {
             "system_object_id": system_object_id,
