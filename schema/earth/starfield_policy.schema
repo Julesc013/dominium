@@ -1,0 +1,27 @@
+SCHEMA: earth/starfield_policy.schema
+schema_id: dominium.schema.earth.starfield_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic EARTH-4 starfield policy rows.
+- Bound star count, magnitude range, and tick-bucket cadence for derived sky generation.
+
+NON-SEMANTICS:
+- This schema does not encode real star catalogs.
+- This schema does not authorize unbounded view generation.
+
+REQUIRED SHAPE:
+record starfield_policy
+  required:
+    - policy_id: id
+    - max_stars: integer
+    - magnitude_range: map
+    - tick_bucket_size: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- star counts remain bounded by policy
+- tick bucket cadence is explicit data, never a hidden runtime constant
+- catalog-free procedural generation remains lawful

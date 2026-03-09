@@ -1,0 +1,30 @@
+{
+  "schema_id": "dominium.registry.earth.sky_model_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.earth.sky_model_registry",
+    "registry_version": "1.0.0",
+    "sky_models": [
+      {
+        "schema_version": "1.0.0",
+        "sky_model_id": "sky.gradient_stub_default",
+        "kind": "gradient_stub",
+        "parameters_ref": "params.sky.gradient.earth_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-4 gradient-based sky model with deterministic twilight blending and no texture dependency.",
+          "turbidity_permille": 460,
+          "twilight_top_mdeg": 6000,
+          "twilight_bottom_mdeg": -18000,
+          "night_visibility_threshold_permille": 180,
+          "sun_disk_radius_permille": 18,
+          "moon_disk_radius_permille": 14,
+          "source": "EARTH4-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH4-2"
+    }
+  }
+}

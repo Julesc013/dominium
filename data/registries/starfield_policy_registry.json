@@ -1,0 +1,116 @@
+{
+  "schema_id": "dominium.registry.earth.starfield_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.earth.starfield_policy_registry",
+    "registry_version": "1.0.0",
+    "starfield_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "stars.low",
+        "max_stars": 256,
+        "magnitude_range": {
+          "min_permille": 120,
+          "max_permille": 900
+        },
+        "tick_bucket_size": 6,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Low-density EARTH-4 starfield policy for constrained render budgets.",
+          "observer_cell_quantum_mm": 250000,
+          "sun_visibility_threshold_permille": 120,
+          "min_altitude_mdeg": 2000,
+          "magnitude_bins": [
+            {
+              "bin_id": "bright",
+              "max_permille": 260,
+              "color": {
+                "r": 255,
+                "g": 248,
+                "b": 236
+              }
+            },
+            {
+              "bin_id": "neutral",
+              "max_permille": 620,
+              "color": {
+                "r": 222,
+                "g": 232,
+                "b": 255
+              }
+            },
+            {
+              "bin_id": "cool",
+              "max_permille": 1000,
+              "color": {
+                "r": 184,
+                "g": 208,
+                "b": 255
+              }
+            }
+          ],
+          "source": "EARTH4-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "stars.mvp_default",
+        "max_stars": 2048,
+        "magnitude_range": {
+          "min_permille": 80,
+          "max_permille": 980
+        },
+        "tick_bucket_size": 6,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-4 MVP starfield policy with bounded procedural stars and no catalog dependency.",
+          "observer_cell_quantum_mm": 250000,
+          "sun_visibility_threshold_permille": 180,
+          "min_altitude_mdeg": 1000,
+          "magnitude_bins": [
+            {
+              "bin_id": "bright",
+              "max_permille": 220,
+              "color": {
+                "r": 255,
+                "g": 246,
+                "b": 230
+              }
+            },
+            {
+              "bin_id": "warm",
+              "max_permille": 420,
+              "color": {
+                "r": 255,
+                "g": 236,
+                "b": 214
+              }
+            },
+            {
+              "bin_id": "neutral",
+              "max_permille": 700,
+              "color": {
+                "r": 224,
+                "g": 234,
+                "b": 255
+              }
+            },
+            {
+              "bin_id": "cool",
+              "max_permille": 1000,
+              "color": {
+                "r": 188,
+                "g": 210,
+                "b": 255
+              }
+            }
+          ],
+          "source": "EARTH4-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH4-2"
+    }
+  }
+}

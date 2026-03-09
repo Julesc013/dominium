@@ -1,0 +1,26 @@
+SCHEMA: earth/sky_model.schema
+schema_id: dominium.schema.earth.sky_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic EARTH-4 sky model rows for derived sky-dome generation.
+- Keep sky-model kind and parameter references data-declared and replay-stable.
+
+NON-SEMANTICS:
+- This schema does not encode atmospheric scattering PDE coefficients.
+- This schema does not authorize truth mutation or renderer truth reads.
+
+REQUIRED SHAPE:
+record sky_model
+  required:
+    - sky_model_id: id
+    - kind: string
+    - parameters_ref: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- sky models remain derived-view only
+- model behavior remains deterministic for identical inputs
+- future scattering models must preserve the derived artifact contract
