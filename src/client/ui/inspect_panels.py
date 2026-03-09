@@ -147,6 +147,37 @@ def build_field_panel(
     )
 
 
+def build_terrain_collision_panel(
+    *,
+    body_state: Mapping[str, object] | None = None,
+    inspection_snapshot: Mapping[str, object] | None = None,
+) -> dict:
+    state = _as_map(body_state)
+    state_ext = _as_map(state.get("extensions"))
+    collision = _as_map(state_ext.get("terrain_collision_state"))
+    slope = _as_map(state_ext.get("terrain_slope_response"))
+    _target_payload, row = _target_row(inspection_snapshot)
+    surface_tile = _as_map(row.get("surface_tile_artifact"))
+    surface_height = _as_int(_as_map(surface_tile.get("elevation_params_ref")).get("height_proxy", 0), 0)
+    rows = [
+        {"key": "grounded", "value": collision.get("grounded")},
+        {"key": "terrain_height_mm", "value": collision.get("terrain_height_mm")},
+        {"key": "ground_contact_height_mm", "value": collision.get("ground_contact_height_mm")},
+        {"key": "slope_angle_mdeg", "value": collision.get("slope_angle_mdeg") or slope.get("slope_angle_mdeg")},
+        {"key": "accel_factor_permille", "value": slope.get("accel_factor_permille")},
+        {"key": "selection_height_proxy", "value": surface_height if surface_height else None},
+    ]
+    visible = any(row.get("value") not in (None, "", []) for row in rows)
+    return _panel(
+        panel_id="panel.inspect.terrain_collision",
+        panel_kind="terrain_collision",
+        panel_title="Terrain Collision",
+        visible=visible,
+        rows=rows,
+        summary="terrain collision debug" if visible else "terrain collision unavailable",
+    )
+
+
 def build_logic_network_panel(*, inspection_snapshot: Mapping[str, object] | None) -> dict:
     snapshot = _as_map(inspection_snapshot)
     sections = _as_map(snapshot.get("summary_sections"))
@@ -237,6 +268,7 @@ def build_inspection_panel_set(
     overlay_runtime: Mapping[str, object] | None = None,
     requested_cost_units: int = 1,
     field_values: Mapping[str, object] | None = None,
+    body_state: Mapping[str, object] | None = None,
 ) -> dict:
     """Panels consume process.inspect_generate_snapshot and tool.geo.explain_property_origin outputs only."""
 
@@ -255,6 +287,7 @@ def build_inspection_panel_set(
         build_surface_tile_panel(inspection_snapshot=inspection_snapshot),
         build_geometry_cell_panel(inspection_snapshot=inspection_snapshot),
         build_field_panel(field_values=field_values),
+        build_terrain_collision_panel(body_state=body_state, inspection_snapshot=inspection_snapshot),
         build_logic_network_panel(inspection_snapshot=inspection_snapshot),
         build_system_capsule_panel(inspection_snapshot=inspection_snapshot),
         build_overlay_provenance_panel(

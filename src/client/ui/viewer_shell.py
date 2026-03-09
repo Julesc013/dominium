@@ -274,6 +274,41 @@ def _debug_controls(
     return payload
 
 
+def _terrain_debug_overlay(
+    *,
+    authority_context: Mapping[str, object] | None,
+    body_state: Mapping[str, object] | None,
+    selection: Mapping[str, object] | None,
+) -> dict:
+    entitlements = _entitlements(authority_context)
+    if "entitlement.debug_view" not in entitlements:
+        payload = {
+            "visible": False,
+            "profile_gated": True,
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return payload
+    state_ext = _as_map(_as_map(body_state).get("extensions"))
+    collision = _as_map(state_ext.get("terrain_collision_state"))
+    slope = _as_map(state_ext.get("terrain_slope_response"))
+    selected_surface = _as_map(_as_map(selection).get("surface_tile_artifact"))
+    payload = {
+        "visible": bool(collision or slope or selected_surface),
+        "profile_gated": True,
+        "terrain_height_mm": collision.get("terrain_height_mm"),
+        "grounded": collision.get("grounded"),
+        "slope_angle_mdeg": collision.get("slope_angle_mdeg") or slope.get("slope_angle_mdeg"),
+        "selected_height_proxy": _as_int(_as_map(selected_surface.get("elevation_params_ref")).get("height_proxy", 0), 0)
+        if selected_surface
+        else None,
+        "source_kind": "derived.viewer_shell",
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
 def _build_control_surface(
     *,
     bootstrap: Mapping[str, object] | None,
@@ -644,6 +679,7 @@ def build_viewer_shell_state(
         property_origin_request=property_origin_request,
         property_origin_result=property_origin_result,
         field_values=field_values,
+        body_state=body_state,
     )
     map_views = build_map_view_set(
         perceived_model=perceived_model,
@@ -728,6 +764,13 @@ def build_viewer_shell_state(
         "map_views": dict(map_views),
         "sky_view_surface": dict(sky_view_surface),
         "illumination_view_surface": dict(illumination_view_surface),
+        "debug_overlays": {
+            "terrain_collision": _terrain_debug_overlay(
+                authority_context=runtime_authority,
+                body_state=body_state,
+                selection=selection,
+            )
+        },
         "selection_controls": dict(selection_controls),
         "selection": dict(selection or {}),
         "panels": _viewer_panels(current_stage),
