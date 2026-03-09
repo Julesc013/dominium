@@ -426,12 +426,18 @@ EARTH_LIGHTING_FORBIDDEN_TOKENS = (
 EARTH_LIGHTING_RENDER_TRUTH_FORBIDDEN_TOKENS = EARTH_SKY_RENDER_TRUTH_FORBIDDEN_TOKENS
 EARTH_SHADOW_BOUNDED_FORBIDDEN_TOKENS = ("while ", "recursion", "recurse", "queue.append(", "stack.append(")
 EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
+EARTH6_COLLISION_DOC_REL = os.path.join("docs", "embodiment", "TERRAIN_COLLISION_MODEL.md")
 EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
+EARTH6_COLLISION_PROVIDER_REL = os.path.join("src", "embodiment", "collision", "macro_heightfield_provider.py")
 EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
 EMB_BODY_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "body_template_registry.json")
+EARTH6_COLLISION_PROVIDER_REGISTRY_REL = os.path.join("data", "registries", "collision_provider_registry.json")
+EARTH6_SLOPE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "movement_slope_params_registry.json")
 EMB_LENS_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "lens_profile_registry.json")
 EMB_SYSTEM_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "system_template_registry.json")
 EMB_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
+EARTH6_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "earth6_probe.py")
+EARTH6_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_movement_window.py")
 UX_VIEWER_SHELL_REL = os.path.join("src", "client", "ui", "viewer_shell.py")
 UX_MAP_VIEWS_REL = os.path.join("src", "client", "ui", "map_views.py")
 UX_INSPECT_PANELS_REL = os.path.join("src", "client", "ui", "inspect_panels.py")
@@ -5767,6 +5773,155 @@ def check_body_motion_process_only(repo_root):
     return violations
 
 
+def check_collision_deterministic(repo_root):
+    invariant_id = "INV-COLLISION-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    process_runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    violations = []
+    required_tokens = {
+        EARTH6_COLLISION_PROVIDER_REL: (
+            "resolve_macro_heightfield_sample(",
+            "invalidate_macro_heightfield_cache_for_tiles(",
+            '"sampling_bounded": True',
+            "geo_cell_key_neighbors(",
+        ),
+        process_runtime_rel: (
+            "_body_surface_query(",
+            "_evaluate_slope_response(",
+            "_apply_ground_contact(",
+            '"terrain_collision_state"',
+            '"collision_cache_invalidated_entries"',
+        ),
+        EARTH6_COLLISION_PROVIDER_REGISTRY_REL: (
+            '"provider_id": "collision.macro_heightfield_default"',
+            '"contact_snap_tolerance_mm"',
+            '"slope_sample_offset_mm"',
+        ),
+        EARTH6_SLOPE_PARAMS_REGISTRY_REL: (
+            '"slope_params_id": "slope.mvp_default"',
+            '"uphill_slow_factor"',
+            '"downhill_speed_cap_factor"',
+        ),
+        EARTH6_PROBE_TOOL_REL: (
+            "ground_contact_report(",
+            "slope_modifier_report(",
+            "geometry_edit_height_report(",
+            "verify_collision_window_replay(",
+        ),
+        EARTH6_REPLAY_TOOL_REL: (
+            "Verify EARTH-6 terrain collision replay determinism.",
+            "verify_collision_window_replay",
+        ),
+        EARTH6_COLLISION_DOC_REL: (
+            "Terrain height is queried deterministically from the active collision provider.",
+            "Mutation occurs only through:",
+            "Geometry edits that change height invalidate collision samples locally.",
+            "No UI, renderer, or tool may commit terrain contact directly.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing collision-determinism marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(", "random.seed(")
+    for rel in (
+        EARTH6_COLLISION_PROVIDER_REL,
+        process_runtime_rel,
+        EARTH6_PROBE_TOOL_REL,
+        EARTH6_REPLAY_TOOL_REL,
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: nondeterministic collision token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_position_write_bypass(repo_root):
+    invariant_id = "INV-NO-POSITION-WRITE-BYPASS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    process_runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    violations = []
+    required_tokens = {
+        process_runtime_rel: (
+            '_body_surface_query(',
+            '_apply_ground_contact(',
+            '_upsert_body_state_for_body(',
+            'elif process_id == "process.body_tick":',
+        ),
+        EARTH6_COLLISION_DOC_REL: (
+            "Mutation occurs only through:",
+            "No UI, renderer, or tool may commit terrain contact directly.",
+            "These are derived view surfaces only.",
+        ),
+        UX_VIEWER_SHELL_REL: (
+            '"debug_overlays": {',
+            "_terrain_debug_overlay(",
+        ),
+        UX_INSPECT_PANELS_REL: (
+            "build_terrain_collision_panel(",
+            'panel.inspect.terrain_collision',
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing no-bypass marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = EMB_DIRECT_POSITION_FORBIDDEN_TOKENS
+    for rel in (EARTH6_COLLISION_PROVIDER_REL, UX_VIEWER_SHELL_REL, UX_INSPECT_PANELS_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: direct position-write token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_truth_in_ui(repo_root):
     invariant_id = "INV-NO-TRUTH-IN-UI"
     if is_override_active(repo_root, invariant_id):
@@ -8822,6 +8977,8 @@ def main() -> int:
                 lambda: check_no_asset_dependency_for_emb(repo_root),
                 lambda: check_lens_profiled(repo_root),
                 lambda: check_body_motion_process_only(repo_root),
+                lambda: check_collision_deterministic(repo_root),
+                lambda: check_no_position_write_bypass(repo_root),
             ],
         },
         {

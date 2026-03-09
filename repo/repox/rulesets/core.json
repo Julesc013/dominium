@@ -816,6 +816,34 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-COLLISION-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/collision/macro_heightfield_provider.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/embodiment/earth6_probe.py",
+        "tools/embodiment/tool_replay_movement_window.py",
+        "data/registries/collision_provider_registry.json",
+        "data/registries/movement_slope_params_registry.json",
+        "docs/embodiment/TERRAIN_COLLISION_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-collision-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-POSITION-WRITE-BYPASS",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/collision/macro_heightfield_provider.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/client/ui/viewer_shell.py",
+        "src/client/ui/inspect_panels.py",
+        "docs/embodiment/TERRAIN_COLLISION_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-position-write-bypass",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-TRUTH-IN-UI",
       "severity": "FAIL",
       "scope_paths": [

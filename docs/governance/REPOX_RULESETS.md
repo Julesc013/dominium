@@ -151,6 +151,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
 - `INV-LENS-PROFILED`
 - `INV-BODY-MOTION-PROCESS-ONLY`
+- `INV-COLLISION-DETERMINISTIC`
+- `INV-NO-POSITION-WRITE-BYPASS`
 - `INV-NO-TRUTH-IN-UI`
 - `INV-VIEW-ARTIFACT-ONLY`
 - `INV-SKYVIEW-DERIVED-ONLY`
@@ -259,6 +261,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - Fails when identity input changes are not accompanied by explanation artifact updates.
 - Explanation artifact: `docs/audit/identity_fingerprint_explanation.md`.
+
+### INV-COLLISION-DETERMINISTIC
+
+- Fails when EARTH-6 terrain grounding or slope response loses deterministic marker surfaces.
+- Requires the macro heightfield provider, process-runtime hooks, replay tool, and terrain collision doctrine to stay aligned.
+- Forbids anonymous RNG and wall-clock tokens in the collision provider and replay path.
+
+### INV-NO-POSITION-WRITE-BYPASS
+
+- Fails when terrain contact is moved outside the process-owned embodiment path.
+- Requires UI/debug surfaces to remain derived-only observers of collision state.
+- Extends the embodiment direct-position-write discipline to EARTH-6 terrain contact and slope metadata.
 
 ### INV-PLATFORM-ID-CANONICAL
 

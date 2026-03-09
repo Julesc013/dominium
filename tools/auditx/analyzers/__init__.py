@@ -403,6 +403,7 @@ from analyzers import e376_truth_read_in_renderer_smell
 from analyzers import e377_nondeterministic_starfield_smell
 from analyzers import e378_renderer_truth_leak_smell
 from analyzers import e379_unbounded_shadow_sampling_smell
+from analyzers import e380_nondeterministic_collision_smell
 
 
 ANALYZERS = (
@@ -809,6 +810,7 @@ ANALYZERS = (
     e377_nondeterministic_starfield_smell,
     e378_renderer_truth_leak_smell,
     e379_unbounded_shadow_sampling_smell,
+    e380_nondeterministic_collision_smell,
 )
 
 
