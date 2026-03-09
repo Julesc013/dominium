@@ -286,6 +286,7 @@ EARTH_CLIMATE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "climate_fie
 EARTH_SEASON_PHASE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "season_phase_engine.py")
 EARTH_TIDE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "tide_field_engine.py")
 EARTH_TIDE_PHASE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "tide_phase_engine.py")
+EARTH_WIND_ENGINE_REL = os.path.join("src", "worldgen", "earth", "wind", "wind_field_engine.py")
 EARTH_SKY_ASTRONOMY_REL = os.path.join("src", "worldgen", "earth", "sky", "astronomy_proxy_engine.py")
 EARTH_SKY_GRADIENT_REL = os.path.join("src", "worldgen", "earth", "sky", "sky_gradient_model.py")
 EARTH_STARFIELD_GENERATOR_REL = os.path.join("src", "worldgen", "earth", "sky", "starfield_generator.py")
@@ -300,6 +301,7 @@ EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_su
 EARTH_HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "hydrology_params_registry.json")
 EARTH_CLIMATE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_climate_params_registry.json")
 EARTH_TIDE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "tide_params_registry.json")
+EARTH_WIND_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "wind_params_registry.json")
 EARTH_SKY_MODEL_REGISTRY_REL = os.path.join("data", "registries", "sky_model_registry.json")
 EARTH_STARFIELD_POLICY_REGISTRY_REL = os.path.join("data", "registries", "starfield_policy_registry.json")
 EARTH_MILKYWAY_BAND_POLICY_REGISTRY_REL = os.path.join("data", "registries", "milkyway_band_policy_registry.json")
@@ -311,11 +313,13 @@ EARTH_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth0_probe.py")
 EARTH_HYDROLOGY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth1_probe.py")
 EARTH_CLIMATE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth2_probe.py")
 EARTH_TIDE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth3_probe.py")
+EARTH_WIND_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth7_probe.py")
 EARTH_SKY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth4_probe.py")
 EARTH_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_earth_surface.py")
 EARTH_HYDROLOGY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_hydrology_window.py")
 EARTH_CLIMATE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_climate_window.py")
 EARTH_TIDE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_tide_window.py")
+EARTH_WIND_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_wind_window.py")
 EARTH_SKY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_sky_view.py")
 EARTH_LIGHTING_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth5_probe.py")
 EARTH_LIGHTING_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_illumination_view.py")
@@ -323,6 +327,7 @@ EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CO
 EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
 EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
 EARTH_TIDE_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_TIDE_PROXY_MODEL.md")
+EARTH_WIND_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_WIND_PROXY_MODEL.md")
 EARTH_SKY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SKY_STARFIELD_MODEL.md")
 EARTH_LIGHTING_DOC_REL = os.path.join("docs", "worldgen", "EARTH_ILLUMINATION_SHADOW_MODEL.md")
 MW_CATALOG_PATH_TOKENS = (
@@ -384,6 +389,16 @@ EARTH_CLIMATE_FORBIDDEN_TOKENS = (
     "datetime.now(",
     "os.urandom(",
     "random.seed(",
+)
+EARTH_WIND_FORBIDDEN_TOKENS = (
+    "random.",
+    "uuid",
+    "secrets.",
+    "time.time(",
+    "datetime.now(",
+    "os.urandom(",
+    "random.seed(",
+    "time.sleep(",
 )
 EARTH_FLOAT_TRIG_TOKENS = ("math.sin(", "math.cos(", "numpy.sin(", "numpy.cos(", "np.sin(", "np.cos(")
 EARTH_SKY_FORBIDDEN_TOKENS = (
@@ -5140,6 +5155,143 @@ def check_tide_deterministic(repo_root):
     return violations
 
 
+def check_wind_deterministic(repo_root):
+    invariant_id = "INV-WIND-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_WIND_ENGINE_REL: (
+            "evaluate_earth_tile_wind(",
+            "build_earth_wind_update_plan(",
+            "wind_bucket_id(",
+            "wind_tick_bucket(",
+            "build_poll_advection_stub(",
+        ),
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"): (
+            "_recompute_earth_wind_fields(",
+            "process.earth_wind_tick",
+            "earth_wind_tile_overlays",
+            "wind_window_hash",
+        ),
+        EARTH_WIND_PARAMS_REGISTRY_REL: (
+            "\"wind_params_id\": \"wind.earth_stub_default\"",
+            "\"update_interval_ticks\"",
+            "\"seasonal_shift_amplitude\"",
+        ),
+        EARTH_WIND_PROBE_TOOL_REL: (
+            "run_wind_tick_fixture",
+            "verify_wind_window_replay",
+            "wind_latitude_band_report",
+            "wind_seasonal_shift_report",
+        ),
+        EARTH_WIND_REPLAY_TOOL_REL: (
+            "verify_wind_window_replay",
+            "EARTH-7 wind replay determinism",
+        ),
+        EARTH_WIND_PROXY_DOC_REL: (
+            "Mutation occurs only through `process.earth_wind_tick`.",
+            "deterministic bucket scheduling",
+            "time warp is lawful because wind evaluation depends only on canonical tick buckets and stable tile identity",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing wind marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (
+        EARTH_WIND_ENGINE_REL,
+        EARTH_WIND_PROBE_TOOL_REL,
+        EARTH_WIND_REPLAY_TOOL_REL,
+        os.path.join("tools", "xstack", "sessionx", "process_runtime.py"),
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EARTH_WIND_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: nondeterministic wind token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_wallclock_wind(repo_root):
+    invariant_id = "INV-NO-WALLCLOCK-WIND"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_WIND_ENGINE_REL: (
+            "current_tick",
+            "wind_tick_bucket(",
+            "_season_boundary_shift_mdeg(",
+        ),
+        EARTH_WIND_PROXY_DOC_REL: (
+            "canonical tick only",
+            "time warp is lawful because wind evaluation depends only on canonical tick buckets and stable tile identity",
+        ),
+        EARTH_WIND_REPLAY_TOOL_REL: (
+            "EARTH-7 wind replay determinism",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing wall-clock guard marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("time.time(", "datetime.now(", "perf_counter(", "utcnow(", "wall_clock")
+    for rel in (
+        EARTH_WIND_ENGINE_REL,
+        EARTH_WIND_PROBE_TOOL_REL,
+        EARTH_WIND_REPLAY_TOOL_REL,
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: wall-clock token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_ocean_pde_in_mvp(repo_root):
     invariant_id = "INV-NO-OCEAN-PDE-IN-MVP"
     if is_override_active(repo_root, invariant_id):
@@ -8963,6 +9115,8 @@ def main() -> int:
                 lambda: check_climate_deterministic(repo_root),
                 lambda: check_no_wallclock_climate(repo_root),
                 lambda: check_tide_deterministic(repo_root),
+                lambda: check_wind_deterministic(repo_root),
+                lambda: check_no_wallclock_wind(repo_root),
                 lambda: check_no_ocean_pde_in_mvp(repo_root),
                 lambda: check_no_catalog_dependency(repo_root),
                 lambda: check_no_wallclock_sky(repo_root),

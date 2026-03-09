@@ -732,6 +732,32 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-WIND-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/wind/wind_field_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "data/registries/wind_params_registry.json",
+        "tools/worldgen/earth7_probe.py",
+        "tools/worldgen/tool_replay_wind_window.py",
+        "docs/worldgen/EARTH_WIND_PROXY_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-wind-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-WALLCLOCK-WIND",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/wind/wind_field_engine.py",
+        "tools/worldgen/earth7_probe.py",
+        "tools/worldgen/tool_replay_wind_window.py",
+        "docs/worldgen/EARTH_WIND_PROXY_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-wind",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-OCEAN-PDE-IN-MVP",
       "severity": "FAIL",
       "scope_paths": [

@@ -145,6 +145,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-CLIMATE-DETERMINISTIC`
 - `INV-NO-WALLCLOCK-CLIMATE`
 - `INV-TIDE-DETERMINISTIC`
+- `INV-WIND-DETERMINISTIC`
+- `INV-NO-WALLCLOCK-WIND`
 - `INV-NO-OCEAN-PDE-IN-MVP`
 - `INV-NO-CATALOG-DEPENDENCY`
 - `INV-NO-WALLCLOCK-SKY`
@@ -528,6 +530,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the governed EARTH-3 tide surface loses the explicit fixed-point phase, deterministic bucket, and replay-tool markers.
 - Fails when nondeterministic RNG or other unstable tide-update tokens appear in the tide runtime or proof surface.
 - Preserves replay-stable Moon-driven tide proxy updates and cross-platform tide field hashes for EARTH-3.
+
+### INV-WIND-DETERMINISTIC
+
+- Fails when the governed EARTH-7 wind surface loses the explicit deterministic bucket, band-evaluation, or replay-tool markers.
+- Fails when nondeterministic RNG or other unstable wind-update tokens appear in the wind runtime or proof surface.
+- Preserves replay-stable Earth wind-vector field updates, seasonal band shifts, and deterministic POLL hook surfaces for EARTH-7.
+
+### INV-NO-WALLCLOCK-WIND
+
+- Fails when the governed EARTH-7 wind path loses the explicit canonical-tick and lawful-time-warp markers.
+- Fails when wall-clock APIs or similar real-time dependencies appear in the wind runtime or replay tooling.
+- Preserves canonical-tick wind evaluation under batching, replay, and lawful time warp.
 
 ### INV-NO-OCEAN-PDE-IN-MVP
 
