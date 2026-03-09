@@ -212,14 +212,20 @@ def _debug_overlay_payload(
     authority_context: Mapping[str, object] | None,
     lens_profile_id: str,
     milkyway_band_rows: object,
+    epistemic_policy_id: str,
 ) -> dict:
     entitlements = set(_sorted_strings(_as_map(authority_context).get("entitlements")))
-    enabled = "entitlement.debug_view" in entitlements or "entitlement.observer.truth" in entitlements
+    enabled = (
+        "entitlement.debug_view" in entitlements
+        or "entitlement.observer.truth" in entitlements
+        or str(epistemic_policy_id or "").strip() == "epistemic.admin_full"
+    )
     rows = [dict(row) for row in list(milkyway_band_rows or []) if isinstance(row, Mapping)]
     payload = {
         "galactic_plane_marker": {
             "enabled": bool(enabled),
             "lens_profile_id": str(lens_profile_id or "").strip(),
+            "epistemic_policy_id": str(epistemic_policy_id or "").strip(),
             "sample_count": int(len(rows) if enabled else 0),
         },
         "debug_overlay_log": [
@@ -251,6 +257,13 @@ def build_sky_view_surface(
     tick = max(0, _as_int(_as_map(perceived.get("time_state")).get("tick", 0), 0))
     observer = _as_map(observer_ref)
     surface_artifact = _as_map(observer_surface_artifact)
+    metadata = _as_map(perceived.get("metadata"))
+    epistemic_policy_id = str(
+        metadata.get(
+            "epistemic_policy_id",
+            _as_map(_as_map(authority_context).get("epistemic_scope")).get("scope_id", ""),
+        )
+    ).strip()
     sky_model_row = dict(sky_model_rows().get(str(sky_model_id).strip() or DEFAULT_SKY_MODEL_ID) or {})
     star_policy_row = dict(starfield_policy_rows().get(str(starfield_policy_id).strip() or DEFAULT_STARFIELD_POLICY_ID) or {})
     band_policy_row = dict(milkyway_band_policy_rows().get(str(milkyway_band_policy_id).strip() or DEFAULT_MILKYWAY_BAND_POLICY_ID) or {})
@@ -367,6 +380,7 @@ def build_sky_view_surface(
         authority_context=authority_context,
         lens_profile_id=lens_profile_id,
         milkyway_band_rows=band_rows,
+        epistemic_policy_id=epistemic_policy_id,
     )
     artifact = {
         "view_id": "sky_view.{}.tick.{}".format(observer_hash[:16], tick),
@@ -399,6 +413,12 @@ def build_sky_view_surface(
             "sun_elevation_mdeg": int(_as_int(sun_payload.get("sun_elevation_mdeg", 0), 0)),
             "moon_elevation_mdeg": int(_as_int(moon_payload.get("moon_elevation_mdeg", 0), 0)),
             "moon_illumination_permille": int(_as_int(moon_payload.get("illumination_permille", 0), 0)),
+            "epistemic_policy_id": epistemic_policy_id,
+            "visibility_policy": {
+                "sky_dome_visible": True,
+                "starfield_visible": bool(sky_visibility > 0),
+                "debug_overlay_gated": True,
+            },
             "registry_hashes": {
                 "sky_model_registry_hash": sky_model_registry_hash(),
                 "starfield_policy_registry_hash": starfield_policy_registry_hash(),
