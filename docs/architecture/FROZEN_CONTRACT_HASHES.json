@@ -34,7 +34,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "173bd87bdfce0497cb0a94d7868ced5159fef81bf93d3c0c584462508ca75e9c"
+      "sha256": "c2b58df703f4feb30efa7d98fa628be751505ea0ae5dc5807117cd819201e20c"
     },
     {
       "path": "docs/architecture/CAPABILITY_BASELINES.md",
@@ -200,5 +200,6 @@
       "path": "docs/distribution/PACK_TAXONOMY.md",
       "sha256": "da58946bbf1d9b3c9cd7b02ba2aa500f6a55ecd6ab52819b96b8f333ccda821b"
     }
-  ]
+  ],
+  "generated_at": "deterministic"
 }

@@ -1,4 +1,4 @@
-Status: CANONICAL
+Status: DERIVED
 Last Reviewed: 2026-03-09
 Supersedes: none
 Superseded By: none

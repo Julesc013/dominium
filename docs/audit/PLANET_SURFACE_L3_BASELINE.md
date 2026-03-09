@@ -12,9 +12,9 @@ Compatibility: Bound to `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`, `docs/worl
 - Canonical realism profile: `realism.realistic_default_milkyway_stub`
 - Canonical surface priors: `priors.surface_default_stub`
 - Canonical default route: `route.default`
-- Canonical Earth placeholder route: `route.earth`
+- Canonical Earth route: `route.earth`
 - Canonical default generator: `gen.surface.default_stub`
-- Canonical Earth placeholder generator: `gen.surface.earth_stub`
+- Canonical Earth generator: `gen.surface.earth_stub`
 
 MW-3 now materializes one deterministic `kind.surface_tile` per requested tile-scoped `geo_cell_key`.
 
@@ -38,8 +38,9 @@ Observed canonical surface fixture outputs:
 Routing remains registry-driven:
 
 - runtime code resolves generator selection through `surface_generator_routing_registry.json`
-- the Earth placeholder route remains a tag-driven overlay hook only
-- generator delegation uses data-declared `delegate_generator_id`, not runtime `Earth` branches
+- the Earth route remains a tag-driven overlay hook selected by `planet.earth`
+- EARTH-0 binds `gen.surface.earth_stub` to `earth.surface.stub`
+- runtime code still avoids direct `Earth` branches
 
 ## Macro Climate Proxies
 

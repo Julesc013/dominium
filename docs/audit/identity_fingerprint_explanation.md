@@ -24,3 +24,4 @@ Superseded By: none
   - 2026-03-09: refreshed for MW-2 star/orbital priors registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX worldgen discipline additions, and MW-2 TestX additions
   - 2026-03-09: refreshed for MW-3 planet surface macro model registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX surface discipline additions, and MW-3 TestX additions
   - 2026-03-09: refreshed for SOL-0 Sol pin pack registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX Sol pack discipline additions, and SOL-0 TestX additions
+  - 2026-03-09: refreshed for EARTH-0 Earth procedural constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX Earth generator discipline additions, and EARTH-0 TestX additions
