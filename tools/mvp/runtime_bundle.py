@@ -631,6 +631,28 @@ def build_runtime_bootstrap(
             "budget_policy_id": str(template_payload.get("budget_policy_id", "")),
             "fidelity_policy_id": str(template_payload.get("fidelity_policy_id", "")),
         },
+        "embodiment": {
+            "body_template_id": "template.body.pill",
+            "default_lens_profile_id": "lens.freecam" if str(ui) != "headless" else "lens.fp",
+            "available_lens_profile_ids": [
+                "lens.fp",
+                "lens.tp",
+                "lens.freecam",
+                "lens.inspect",
+            ],
+            "input_bindings": {
+                "move": "process.body_apply_input",
+                "look": "process.body_apply_input",
+                "toggle_lens": "process.camera_set_view_mode",
+                "teleport": "process.camera_teleport",
+            },
+            "toggle_lens_sequence": [
+                "lens.fp",
+                "lens.tp",
+                "lens.freecam",
+                "lens.inspect",
+            ],
+        },
         "rng_streams": _named_rng_streams(universe_seed=universe_seed, generator_version_id=generator_version_id),
     }
 
