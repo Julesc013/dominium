@@ -491,6 +491,41 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-CATALOG-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/mw_cell_generator.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "data/registries/galaxy_priors_registry.json",
+        "docs/worldgen/MILKY_WAY_CONSTITUTION.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-catalog-required",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-MW-CELL-ON-DEMAND-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/mw_cell_generator.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "schema/geo/worldgen_request.schema",
+        "docs/worldgen/MILKY_WAY_CONSTITUTION.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-mw-cell-on-demand-only",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NAMED-RNG-WORLDGEN-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/mw/mw_cell_generator.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "docs/worldgen/MILKY_WAY_CONSTITUTION.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-named-rng-worldgen-only",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [

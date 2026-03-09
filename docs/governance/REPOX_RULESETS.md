@@ -126,6 +126,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-MVP-PACKS-MINIMAL`
 - `INV-PACK-LOCK-REQUIRED`
 - `INV-PROFILE-BUNDLE-REQUIRED`
+- `INV-NO-CATALOG-REQUIRED`
+- `INV-MW-CELL-ON-DEMAND-ONLY`
+- `INV-NAMED-RNG-WORLDGEN-ONLY`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -390,6 +393,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the canonical MVP profile bundle artifact is missing or malformed.
 - Fails when shipped dist artifacts omit `dist/profiles/bundle.mvp_default.json`.
 - Fails when the MVP runtime entry surface omits the explicit `--profile_bundle` CLI contract.
+
+### INV-NO-CATALOG-REQUIRED
+
+- Fails when runtime Milky Way generation surfaces reference Milky Way catalog or real-data files directly.
+- Fails when the analytic Milky Way priors registry required for MW-0 base generation is missing.
+- Preserves overlay-safe procedural base generation with no catalog dependency.
+
+### INV-MW-CELL-ON-DEMAND-ONLY
+
+- Fails when the MW generator surface loses the explicit cell-addressed generation markers.
+- Fails when eager whole-galaxy generation tokens appear in the Milky Way runtime generator path.
+- Preserves MW-0 as an on-demand GEO-cell refinement layer, not a bulk-instantiated galaxy pass.
+
+### INV-NAMED-RNG-WORLDGEN-ONLY
+
+- Fails when the Milky Way worldgen surfaces omit the named galaxy/system RNG markers.
+- Fails when nondeterministic RNG or wall-clock style tokens appear in the governed Milky Way runtime files.
+- Preserves replay-stable MW cell generation and cross-platform hash expectations.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

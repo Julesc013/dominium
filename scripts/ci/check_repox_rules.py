@@ -274,6 +274,26 @@ MVP_MINIMAL_PACK_IDS = (
     "pack.sol.pin_minimal",
     "pack.earth.procedural",
 )
+MW_CELL_GENERATOR_REL = os.path.join("src", "worldgen", "mw", "mw_cell_generator.py")
+MW_WORLDGEN_ENGINE_REL = os.path.join("src", "geo", "worldgen", "worldgen_engine.py")
+MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
+MW_CATALOG_PATH_TOKENS = (
+    "data/world/milky_way/",
+    "data/worldgen/real/milky_way/",
+    "milky_way.galaxy.json",
+    "milky_way.arms.json",
+    "milky_way.anchors.json",
+    "milky_way.regions.json",
+)
+MW_EAGER_TOKENS = (
+    "instantiate_full_galaxy",
+    "generate_full_galaxy",
+    "generate_all_galaxy_cells",
+    "for x_index in range(",
+    "for y_index in range(",
+    "for z_index in range(",
+)
+MW_NAMED_RNG_FORBIDDEN_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
 MVP_DIST_ALIAS_RELS = (
     os.path.join("dist", "packs", "base", "pack.base.procedural", "pack.alias.json"),
     os.path.join("dist", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
@@ -3761,6 +3781,89 @@ def check_profile_bundle_required(repo_root):
     return violations
 
 
+def check_no_catalog_required(repo_root):
+    invariant_id = "INV-NO-CATALOG-REQUIRED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    for rel in (MW_CELL_GENERATOR_REL, MW_WORLDGEN_ENGINE_REL, MW_GALAXY_PRIORS_REGISTRY_REL):
+        if not os.path.isfile(os.path.join(repo_root, rel.replace("/", os.sep))):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+    for rel in (MW_CELL_GENERATOR_REL, MW_WORLDGEN_ENGINE_REL):
+        text = read_text(os.path.join(repo_root, rel.replace("/", os.sep))) or ""
+        normalized = text.replace("\\", "/")
+        for token in MW_CATALOG_PATH_TOKENS:
+            if token in normalized:
+                violations.append("{}: runtime worldgen surface depends on catalog path '{}' in {}".format(
+                    invariant_id, token, normalize_path(rel)
+                ))
+    return violations
+
+
+def check_mw_cell_on_demand_only(repo_root):
+    invariant_id = "INV-MW-CELL-ON-DEMAND-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MW_CELL_GENERATOR_REL: ("generate_mw_cell_payload(", "geo_cell_key", "system_seed_rows", "max_systems_per_cell"),
+        MW_WORLDGEN_ENGINE_REL: ("generate_mw_cell_payload(", "worldgen_request", "generated_system_seed_rows"),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append("{}: {} missing required token(s): {}".format(
+                invariant_id, normalize_path(rel), ", ".join(missing[:4])
+            ))
+        for token in MW_EAGER_TOKENS:
+            if token in text:
+                violations.append("{}: eager galaxy token '{}' forbidden in {}".format(
+                    invariant_id, token, normalize_path(rel)
+                ))
+    return violations
+
+
+def check_named_rng_worldgen_only(repo_root):
+    invariant_id = "INV-NAMED-RNG-WORLDGEN-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MW_CELL_GENERATOR_REL: ("galaxy_stream_seed", "system_stream_seed", "canonical_sha256"),
+        MW_WORLDGEN_ENGINE_REL: ("RNG_WORLDGEN_GALAXY", "RNG_WORLDGEN_SYSTEM", "worldgen_rng_stream_policy("),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append("{}: {} missing named-RNG marker(s): {}".format(
+                invariant_id, normalize_path(rel), ", ".join(missing[:4])
+            ))
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in MW_NAMED_RNG_FORBIDDEN_TOKENS if item in snippet), "")
+            if token:
+                violations.append("{}: forbidden nondeterministic token '{}' in {}:{}".format(
+                    invariant_id, token, normalize_path(rel), line_no
+                ))
+                break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -6352,7 +6455,7 @@ def _impacted_roots(changed_files):
         if not norm:
             continue
         head = norm.split("/")[0].lower()
-        if head in {"engine", "game", "client", "server", "tools", "schema", "data", "docs", "scripts", "repo", "tests"}:
+        if head in {"engine", "game", "client", "server", "src", "tools", "schema", "data", "docs", "scripts", "repo", "tests"}:
             impacted.add(head)
             continue
         if head in {"cmake", ".github", "ci"}:
@@ -6642,6 +6745,16 @@ def main() -> int:
                 lambda: check_mvp_packs_minimal(repo_root),
                 lambda: check_pack_lock_required(repo_root),
                 lambda: check_profile_bundle_required(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.worldgen",
+            "scope_subtrees": ("src", "data", "schema", "docs", "tools"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_no_catalog_required(repo_root),
+                lambda: check_mw_cell_on_demand_only(repo_root),
+                lambda: check_named_rng_worldgen_only(repo_root),
             ],
         },
         {

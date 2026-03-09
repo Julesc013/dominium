@@ -378,6 +378,8 @@ from analyzers import e351_nondeterministic_merge_smell
 from analyzers import e352_nondeterministic_distance_smell
 from analyzers import e353_hardcoded_pack_path_smell
 from analyzers import e354_missing_pack_lock_smell
+from analyzers import e355_catalog_dependency_smell
+from analyzers import e356_eager_galaxy_instantiation_smell
 
 
 ANALYZERS = (
@@ -759,6 +761,8 @@ ANALYZERS = (
     e352_nondeterministic_distance_smell,
     e353_hardcoded_pack_path_smell,
     e354_missing_pack_lock_smell,
+    e355_catalog_dependency_smell,
+    e356_eager_galaxy_instantiation_smell,
 )
 
 
