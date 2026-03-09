@@ -1,0 +1,41 @@
+{
+  "schema_id": "dominium.registry.worldgen.earth_climate_params_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.earth_climate_params_registry",
+    "registry_version": "1.0.0",
+    "earth_climate_params": [
+      {
+        "schema_version": "1.0.0",
+        "climate_params_id": "climate.earth_stub_default",
+        "year_length_ticks": 3650,
+        "axial_tilt_deg": 23,
+        "base_temp_equator": 303,
+        "base_temp_pole": 238,
+        "seasonal_amplitude": 36,
+        "lapse_rate_per_km": 6,
+        "update_interval_ticks": 12,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-2 macro seasonal climate parameters for deterministic Earth temperature/daylight refresh.",
+          "epoch_offset_ticks": 0,
+          "axial_tilt_mdeg": 23440,
+          "equatorial_daylight_permille": 1000,
+          "polar_floor_permille": 0,
+          "seasonal_tilt_weight_permille": 1000,
+          "season_boundary_shift_mdeg": 4500,
+          "arid_band_min_mdeg": 18000,
+          "arid_band_max_mdeg": 36000,
+          "polar_band_min_mdeg": 64000,
+          "tropical_band_max_mdeg": 24000,
+          "default_max_tiles_per_update": 32,
+          "altitude_units_per_km": 1000,
+          "source": "EARTH2-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH2-2"
+    }
+  }
+}

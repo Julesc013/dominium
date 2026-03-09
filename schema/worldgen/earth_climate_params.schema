@@ -1,0 +1,32 @@
+SCHEMA: worldgen/earth_climate_params.schema
+schema_id: dominium.schema.worldgen.earth_climate_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic EARTH-2 seasonal climate parameters for Earth macro field refresh.
+- Keep year length, axial tilt, macro temperature envelope, and refresh cadence data-declared.
+
+NON-SEMANTICS:
+- This schema does not encode atmospheric PDE coefficients.
+- This schema does not encode precipitation or circulation simulation.
+- This schema does not authorize wall-clock-driven climate updates.
+
+REQUIRED SHAPE:
+record earth_climate_params
+  required:
+    - climate_params_id: id
+    - year_length_ticks: integer
+    - axial_tilt_deg: integer
+    - base_temp_equator: integer
+    - base_temp_pole: integer
+    - seasonal_amplitude: integer
+    - lapse_rate_per_km: integer
+    - update_interval_ticks: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- climate phase derives from canonical tick only
+- seasonal daylight and temperature remain deterministic and replay-stable
+- bucketed refresh cadence is explicit data, never a hidden runtime constant

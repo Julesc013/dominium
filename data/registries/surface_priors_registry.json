@@ -10,6 +10,7 @@
         "priors_id": "priors.surface_default_stub",
         "topology_profile_id": "geo.topology.sphere_surface_s2",
         "partition_profile_id": "geo.partition.atlas_tiles",
+        "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
         "temperature_params": {
           "baseline_kelvin": 210,
@@ -63,6 +64,7 @@
         "priors_id": "priors.surface.terrestrial.default",
         "topology_profile_id": "geo.topology.sphere_surface_s2",
         "partition_profile_id": "geo.partition.atlas_tiles",
+        "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
         "temperature_params": {
           "baseline_kelvin": 210,
@@ -117,6 +119,7 @@
         "priors_id": "priors.surface.flat_world.stub",
         "topology_profile_id": "geo.topology.r2_infinite",
         "partition_profile_id": "geo.partition.grid_zd",
+        "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
         "temperature_params": {
           "baseline_kelvin": 220,
@@ -167,6 +170,7 @@
         "priors_id": "priors.surface.torus.stub",
         "topology_profile_id": "geo.topology.torus_r2",
         "partition_profile_id": "geo.partition.grid_zd",
+        "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
         "temperature_params": {
           "baseline_kelvin": 220,
@@ -217,6 +221,7 @@
         "priors_id": "priors.surface.fantasy.stub",
         "topology_profile_id": "geo.topology.r2_infinite",
         "partition_profile_id": "geo.partition.grid_zd",
+        "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
         "temperature_params": {
           "baseline_kelvin": 225,
