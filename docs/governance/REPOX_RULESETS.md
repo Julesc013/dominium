@@ -126,6 +126,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-MVP-PACKS-MINIMAL`
 - `INV-PACK-LOCK-REQUIRED`
 - `INV-PROFILE-BUNDLE-REQUIRED`
+- `INV-SOL-PACK-MINIMAL-SIZE`
+- `INV-SOL-PACK-NO-TERRAIN-DATA`
+- `INV-NO-IDENTITY-OVERRIDE`
 - `INV-NO-CATALOG-REQUIRED`
 - `INV-MW-CELL-ON-DEMAND-ONLY`
 - `INV-NAMED-RNG-WORLDGEN-ONLY`
@@ -453,6 +456,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when MW-3 surface refinement loses the explicit tile-scoped generation markers in the canonical runtime path.
 - Fails when eager planet-surface expansion tokens appear in the governed MW-3 files.
 - Preserves L3 as a single-tile on-demand refinement path with bounded field and geometry initialization.
+
+### INV-SOL-PACK-MINIMAL-SIZE
+
+- Fails when the canonical Sol pin pack artifacts are missing from the official pack surface.
+- Fails when the Sol pin patch count or governed artifact byte size exceeds the bounded SOL-0 heuristic envelope.
+- Preserves SOL-0 as a tiny official overlay, not a hidden dataset bundle.
+
+### INV-SOL-PACK-NO-TERRAIN-DATA
+
+- Fails when the Sol pin pack drifts beyond the allowed coarse property classes.
+- Fails when terrain, DEM, city, border, or authored-surface tokens appear in the governed Sol patch payload.
+- Preserves SOL-0 as a hierarchy-and-constants pin only, leaving Earth/Sol surface detail to later overlays.
+
+### INV-NO-IDENTITY-OVERRIDE
+
+- Fails when the Sol pin documentation or overlay engine loses the immutable-identity guard markers.
+- Fails when the Sol patch payload targets immutable identity paths or uses delete-style property operations.
+- Preserves GEO-owned object identity while allowing only lawful property refinement through GEO-9 overlays.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

@@ -329,6 +329,40 @@ MVP_DIST_ALIAS_RELS = (
     os.path.join("dist", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
     os.path.join("dist", "packs", "official", "pack.earth.procedural", "pack.alias.json"),
 )
+SOL_PIN_PACK_MANIFEST_REL = os.path.join("packs", "official", "pack.sol.pin_minimal", "pack.json")
+SOL_PIN_OVERLAY_LAYER_REL = os.path.join(
+    "packs", "official", "pack.sol.pin_minimal", "data", "overlay", "overlay.layer.sol_pin_minimal.json"
+)
+SOL_PIN_PATCHES_REL = os.path.join(
+    "packs", "official", "pack.sol.pin_minimal", "data", "overlay", "sol_pin_patches.json"
+)
+SOL_PIN_DOC_REL = os.path.join("docs", "packs", "sol", "PACK_SOL_PIN_MINIMAL.md")
+SOL_PIN_VERIFY_TOOL_REL = os.path.join("tools", "geo", "tool_verify_sol_pin_overlay.py")
+SOL_PIN_ALLOWED_PROPERTY_PATHS = ("display_name", "hierarchy", "orbit", "physical", "spin", "tags")
+SOL_PIN_FORBIDDEN_DATA_TOKENS = (
+    "terrain",
+    "heightmap",
+    "dem",
+    "city",
+    "cities",
+    "border",
+    "borders",
+    "road",
+    "roads",
+    "surface_tile",
+    "geometry_cell_state",
+)
+SOL_PIN_IMMUTABLE_PROPERTY_PATHS = (
+    "object_id",
+    "identity_hash",
+    "generator_version_id",
+    "topology_profile_id",
+    "metric_profile_id",
+    "partition_profile_id",
+    "projection_profile_id",
+)
+SOL_PIN_MAX_PATCH_COUNT = 96
+SOL_PIN_MAX_TOTAL_BYTES = 73728
 IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.json")
 IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
 GLOSSARY_SCHEMA_REL = os.path.join("schema", "governance", "glossary.schema")
@@ -3811,6 +3845,199 @@ def check_profile_bundle_required(repo_root):
     return violations
 
 
+def check_sol_pack_minimal_size(repo_root):
+    invariant_id = "INV-SOL-PACK-MINIMAL-SIZE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_rels = (
+        SOL_PIN_PACK_MANIFEST_REL,
+        SOL_PIN_OVERLAY_LAYER_REL,
+        SOL_PIN_PATCHES_REL,
+        SOL_PIN_DOC_REL,
+        SOL_PIN_VERIFY_TOOL_REL,
+    )
+    abs_paths = {}
+    for rel in required_rels:
+        abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+        abs_paths[rel] = abs_path
+        if not os.path.isfile(abs_path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+    if violations:
+        return violations
+
+    manifest_payload = _load_json_file(abs_paths[SOL_PIN_PACK_MANIFEST_REL])
+    patch_payload = _load_json_file(abs_paths[SOL_PIN_PATCHES_REL])
+    if not isinstance(manifest_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, normalize_path(SOL_PIN_PACK_MANIFEST_REL)))
+        return violations
+    if not isinstance(patch_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, normalize_path(SOL_PIN_PATCHES_REL)))
+        return violations
+
+    if str(manifest_payload.get("pack_id", "")).strip() != "pack.sol.pin_minimal":
+        violations.append("{}: pack_id mismatch in {}".format(invariant_id, normalize_path(SOL_PIN_PACK_MANIFEST_REL)))
+    contributions = sorted(
+        str((item or {}).get("path", "")).strip().replace("\\", "/")
+        for item in list(manifest_payload.get("contributions") or [])
+        if isinstance(item, dict) and str((item or {}).get("path", "")).strip()
+    )
+    if contributions != sorted(
+        (
+            "data/overlay/overlay.layer.sol_pin_minimal.json",
+            "data/overlay/sol_pin_patches.json",
+        )
+    ):
+        violations.append(
+            "{}: {} must contribute only the canonical Sol overlay artifacts".format(
+                invariant_id,
+                normalize_path(SOL_PIN_PACK_MANIFEST_REL),
+            )
+        )
+
+    patch_rows = list(patch_payload.get("property_patches") or [])
+    if len(patch_rows) > SOL_PIN_MAX_PATCH_COUNT:
+        violations.append(
+            "{}: {} patch count {} exceeds max {}".format(
+                invariant_id,
+                normalize_path(SOL_PIN_PATCHES_REL),
+                len(patch_rows),
+                SOL_PIN_MAX_PATCH_COUNT,
+            )
+        )
+    total_bytes = sum(int(os.path.getsize(abs_paths[rel])) for rel in required_rels if os.path.isfile(abs_paths[rel]))
+    if total_bytes > SOL_PIN_MAX_TOTAL_BYTES:
+        violations.append(
+            "{}: Sol pin governed artifact bytes {} exceed max {}".format(
+                invariant_id,
+                total_bytes,
+                SOL_PIN_MAX_TOTAL_BYTES,
+            )
+        )
+    if not isinstance(patch_payload.get("slot_object_ids"), dict):
+        violations.append("{}: slot_object_ids missing in {}".format(invariant_id, normalize_path(SOL_PIN_PATCHES_REL)))
+    return violations
+
+
+def check_sol_pack_no_terrain_data(repo_root):
+    invariant_id = "INV-SOL-PACK-NO-TERRAIN-DATA"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        SOL_PIN_DOC_REL: (
+            "DEM or terrain height data",
+            "real Earth geography",
+            "cities, roads, or infrastructure",
+            "authored surface tiles",
+        ),
+        SOL_PIN_PATCHES_REL: (
+            "property_patches",
+            "\"display_name\"",
+            "\"physical\"",
+            "\"orbit\"",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing Sol minimal-data marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    patch_payload = _load_json_file(os.path.join(repo_root, SOL_PIN_PATCHES_REL.replace("/", os.sep)))
+    if not isinstance(patch_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, normalize_path(SOL_PIN_PATCHES_REL)))
+        return violations
+    for row in list(patch_payload.get("property_patches") or []):
+        if not isinstance(row, dict):
+            continue
+        property_path = str(row.get("property_path", "")).strip()
+        if property_path not in SOL_PIN_ALLOWED_PROPERTY_PATHS:
+            violations.append(
+                "{}: forbidden non-minimal property_path '{}' in {}".format(
+                    invariant_id,
+                    property_path or "<missing>",
+                    normalize_path(SOL_PIN_PATCHES_REL),
+                )
+            )
+            break
+    return violations
+
+
+def check_no_identity_override(repo_root):
+    invariant_id = "INV-NO-IDENTITY-OVERRIDE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    overlay_engine_rel = os.path.join("src", "geo", "overlay", "overlay_merge_engine.py")
+    violations = []
+    required_tokens = {
+        SOL_PIN_DOC_REL: (
+            "deleting procedural objects",
+            "replacing object identity",
+            "patching immutable identity paths such as `object_id`",
+        ),
+        SOL_PIN_PATCHES_REL: (
+            "property_patches",
+            "\"target_object_id\"",
+            "\"operation\"",
+            "\"originating_layer_id\"",
+        ),
+        overlay_engine_rel: (
+            "_IMMUTABLE_PROPERTY_PATHS",
+            "immutable property path may not be patched",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing identity-guard marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    patch_payload = _load_json_file(os.path.join(repo_root, SOL_PIN_PATCHES_REL.replace("/", os.sep)))
+    if not isinstance(patch_payload, dict):
+        violations.append("{}: invalid json {}".format(invariant_id, normalize_path(SOL_PIN_PATCHES_REL)))
+        return violations
+    for row in list(patch_payload.get("property_patches") or []):
+        if not isinstance(row, dict):
+            continue
+        property_path = str(row.get("property_path", "")).strip()
+        operation = str(row.get("operation", "")).strip().lower()
+        if property_path in SOL_PIN_IMMUTABLE_PROPERTY_PATHS:
+            violations.append(
+                "{}: immutable property_path '{}' patched in {}".format(
+                    invariant_id,
+                    property_path,
+                    normalize_path(SOL_PIN_PATCHES_REL),
+                )
+            )
+            break
+        if operation == "remove":
+            violations.append("{}: remove operation forbidden in {}".format(invariant_id, normalize_path(SOL_PIN_PATCHES_REL)))
+            break
+    return violations
+
+
 def check_no_catalog_required(repo_root):
     invariant_id = "INV-NO-CATALOG-REQUIRED"
     if is_override_active(repo_root, invariant_id):
@@ -7112,6 +7339,9 @@ def main() -> int:
                 lambda: check_mvp_packs_minimal(repo_root),
                 lambda: check_pack_lock_required(repo_root),
                 lambda: check_profile_bundle_required(repo_root),
+                lambda: check_sol_pack_minimal_size(repo_root),
+                lambda: check_sol_pack_no_terrain_data(repo_root),
+                lambda: check_no_identity_override(repo_root),
             ],
         },
         {

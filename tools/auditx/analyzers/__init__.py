@@ -386,6 +386,8 @@ from analyzers import e359_nondeterministic_orbit_smell
 from analyzers import e360_unbounded_generation_smell
 from analyzers import e361_hardcoded_earth_gen_smell
 from analyzers import e362_eager_tile_generation_smell
+from analyzers import e363_large_data_in_pin_pack_smell
+from analyzers import e364_identity_override_smell
 
 
 ANALYZERS = (
@@ -775,6 +777,8 @@ ANALYZERS = (
     e360_unbounded_generation_smell,
     e361_hardcoded_earth_gen_smell,
     e362_eager_tile_generation_smell,
+    e363_large_data_in_pin_pack_smell,
+    e364_identity_override_smell,
 )
 
 

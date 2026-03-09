@@ -491,6 +491,41 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SOL-PACK-MINIMAL-SIZE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "packs/official/pack.sol.pin_minimal/pack.json",
+        "packs/official/pack.sol.pin_minimal/data/overlay/overlay.layer.sol_pin_minimal.json",
+        "packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
+        "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
+        "tools/geo/tool_verify_sol_pin_overlay.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-sol-pack-minimal-size",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-SOL-PACK-NO-TERRAIN-DATA",
+      "severity": "FAIL",
+      "scope_paths": [
+        "packs/official/pack.sol.pin_minimal/pack.json",
+        "packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
+        "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-sol-pack-no-terrain-data",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-IDENTITY-OVERRIDE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
+        "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md",
+        "src/geo/overlay/overlay_merge_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-identity-override",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-CATALOG-REQUIRED",
       "severity": "FAIL",
       "scope_paths": [
