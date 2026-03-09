@@ -146,11 +146,14 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-WALLCLOCK-CLIMATE`
 - `INV-TIDE-DETERMINISTIC`
 - `INV-NO-OCEAN-PDE-IN-MVP`
+- `INV-NO-CATALOG-DEPENDENCY`
+- `INV-NO-WALLCLOCK-SKY`
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
 - `INV-LENS-PROFILED`
 - `INV-BODY-MOTION-PROCESS-ONLY`
 - `INV-NO-TRUTH-IN-UI`
 - `INV-VIEW-ARTIFACT-ONLY`
+- `INV-SKYVIEW-DERIVED-ONLY`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -518,6 +521,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when ocean PDE, pressure-solve, or heavy fluid-solver tokens appear in the tide runtime or proof tooling.
 - Preserves EARTH-3 as a deterministic tide proxy layer instead of a hidden ocean dynamics implementation.
 
+### INV-NO-CATALOG-DEPENDENCY
+
+- Fails when the governed EARTH-4 starfield surface loses the explicit procedural-starfield and Milky Way priors markers.
+- Fails when catalog imports, dataset references, or catalog-backed lookup tokens appear in the EARTH-4 runtime or replay tooling.
+- Preserves EARTH-4 as a data-light procedural sky surface that future catalog packs may overlay without becoming an MVP dependency.
+
+### INV-NO-WALLCLOCK-SKY
+
+- Fails when the governed EARTH-4 sky path loses the explicit canonical-tick, tick-bucket, and named stream markers.
+- Fails when wall-clock APIs, anonymous randomness, or other nondeterministic sky-evaluation tokens appear in the governed EARTH-4 runtime or proof tooling.
+- Preserves replay-stable sky, sun, moon, and starfield view artifacts under batching and lawful time warp.
+
 ### INV-NO-ASSET-DEPENDENCY-FOR-EMB
 
 - Fails when the governed EMB-0 body template/runtime surfaces lose the explicit primitive capsule and art-free markers.
@@ -547,6 +562,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when UX-0 map or inspection surfaces stop routing through GEO projection/lens artifacts, inspection snapshots, or explain/provenance tooling.
 - Fails when viewer UI modules introduce direct field sampling, geometry reads, or ad hoc worldgen/view derivation bypasses.
 - Preserves the lens-first, derived-artifact-only contract for maps, minimaps, inspection panels, and provenance views.
+
+### INV-SKYVIEW-DERIVED-ONLY
+
+- Fails when the governed EARTH-4 sky runtime path loses the explicit `derived.sky_view_artifact` markers, cache policy, or RenderModel handoff markers.
+- Fails when render adapters or software renderer surfaces introduce direct truth/runtime reads instead of consuming the derived sky-view artifact.
+- Preserves observer/render/truth separation for sky dome, moon disk, stars, and Milky Way band presentation.
 
 ### INV-SOL-PACK-MINIMAL-SIZE
 

@@ -286,6 +286,10 @@ EARTH_CLIMATE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "climate_fie
 EARTH_SEASON_PHASE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "season_phase_engine.py")
 EARTH_TIDE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "tide_field_engine.py")
 EARTH_TIDE_PHASE_ENGINE_REL = os.path.join("src", "worldgen", "earth", "tide_phase_engine.py")
+EARTH_SKY_ASTRONOMY_REL = os.path.join("src", "worldgen", "earth", "sky", "astronomy_proxy_engine.py")
+EARTH_SKY_GRADIENT_REL = os.path.join("src", "worldgen", "earth", "sky", "sky_gradient_model.py")
+EARTH_STARFIELD_GENERATOR_REL = os.path.join("src", "worldgen", "earth", "sky", "starfield_generator.py")
+EARTH_SKY_VIEW_ENGINE_REL = os.path.join("src", "worldgen", "earth", "sky", "sky_view_engine.py")
 MW_GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
 MW_SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
 MW_SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
@@ -294,20 +298,26 @@ EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_su
 EARTH_HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "hydrology_params_registry.json")
 EARTH_CLIMATE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_climate_params_registry.json")
 EARTH_TIDE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "tide_params_registry.json")
+EARTH_SKY_MODEL_REGISTRY_REL = os.path.join("data", "registries", "sky_model_registry.json")
+EARTH_STARFIELD_POLICY_REGISTRY_REL = os.path.join("data", "registries", "starfield_policy_registry.json")
+EARTH_MILKYWAY_BAND_POLICY_REGISTRY_REL = os.path.join("data", "registries", "milkyway_band_policy_registry.json")
 MW_SYSTEM_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_instantiation.py")
 MW_SYSTEM_L2_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_system_l2.py")
 EARTH_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth0_probe.py")
 EARTH_HYDROLOGY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth1_probe.py")
 EARTH_CLIMATE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth2_probe.py")
 EARTH_TIDE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth3_probe.py")
+EARTH_SKY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth4_probe.py")
 EARTH_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_earth_surface.py")
 EARTH_HYDROLOGY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_hydrology_window.py")
 EARTH_CLIMATE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_climate_window.py")
 EARTH_TIDE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_tide_window.py")
+EARTH_SKY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_sky_view.py")
 EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
 EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
 EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
 EARTH_TIDE_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_TIDE_PROXY_MODEL.md")
+EARTH_SKY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SKY_STARFIELD_MODEL.md")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -369,6 +379,33 @@ EARTH_CLIMATE_FORBIDDEN_TOKENS = (
     "random.seed(",
 )
 EARTH_FLOAT_TRIG_TOKENS = ("math.sin(", "math.cos(", "numpy.sin(", "numpy.cos(", "np.sin(", "np.cos(")
+EARTH_SKY_FORBIDDEN_TOKENS = (
+    "random.",
+    "uuid",
+    "secrets.",
+    "time.time(",
+    "datetime.now(",
+    "os.urandom(",
+    "random.seed(",
+    "time.sleep(",
+)
+EARTH_SKY_CATALOG_FORBIDDEN_TOKENS = (
+    "hipparcos",
+    "gaia",
+    "tycho",
+    "star_catalog",
+    "catalog.csv",
+    ".fits",
+    ".sqlite",
+)
+EARTH_SKY_RENDER_TRUTH_FORBIDDEN_TOKENS = (
+    "truth_model[",
+    "truth_model.",
+    "universe_state[",
+    "universe_state.",
+    "process_runtime[",
+    "process_runtime.",
+)
 EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
 EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
 EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
@@ -379,6 +416,8 @@ EMB_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
 UX_VIEWER_SHELL_REL = os.path.join("src", "client", "ui", "viewer_shell.py")
 UX_MAP_VIEWS_REL = os.path.join("src", "client", "ui", "map_views.py")
 UX_INSPECT_PANELS_REL = os.path.join("src", "client", "ui", "inspect_panels.py")
+RENDER_MODEL_ADAPTER_REL = os.path.join("src", "client", "render", "render_model_adapter.py")
+SOFTWARE_RENDERER_REL = os.path.join("src", "client", "render", "renderers", "software_renderer.py")
 UX_VIEWER_DOC_REL = os.path.join("docs", "ux", "MVP_VIEWER_SHELL.md")
 EMB_ASSET_FORBIDDEN_TOKENS = (
     ".png",
@@ -5138,6 +5177,208 @@ def check_no_ocean_pde_in_mvp(repo_root):
     return violations
 
 
+def check_skyview_derived_only(repo_root):
+    invariant_id = "INV-SKYVIEW-DERIVED-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_SKY_VIEW_ENGINE_REL: (
+            "build_sky_view_surface(",
+            '"source_kind": "derived.sky_view_artifact"',
+            '"derived_only": True',
+            '"artifact_class": "DERIVED_VIEW"',
+            '"cache_policy_id": "cache.sky.observer_tick_bucket"',
+        ),
+        UX_VIEWER_SHELL_REL: (
+            "build_sky_view_surface(",
+            '"sky_view_surface": dict(sky_view_surface)',
+            '"consumes_sky_view_artifacts": True',
+        ),
+        RENDER_MODEL_ADAPTER_REL: (
+            "sky_view_artifact: dict | None = None",
+            '"sky_view_artifact": dict(sky_view_artifact or {}),',
+        ),
+        SOFTWARE_RENDERER_REL: (
+            'model_extensions.get("sky_view_artifact")',
+            "_draw_sky_background(",
+            "_draw_sky_stars(",
+            "_draw_sky_disk(",
+        ),
+        EARTH_SKY_DOC_REL: (
+            "EARTH-4 is a derived-view system.",
+            "UI and renderers consume sky-view artifacts only.",
+            "Mutation of TruthModel is forbidden.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing sky-view marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (RENDER_MODEL_ADAPTER_REL, SOFTWARE_RENDERER_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in EARTH_SKY_RENDER_TRUTH_FORBIDDEN_TOKENS if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: renderer truth-read token '{}' forbidden in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_catalog_dependency(repo_root):
+    invariant_id = "INV-NO-CATALOG-DEPENDENCY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_STARFIELD_GENERATOR_REL: (
+            '"stream_name": "rng.view.sky.starfield"',
+            "build_starfield_snapshot(",
+            "galaxy_priors_rows",
+        ),
+        EARTH_SKY_VIEW_ENGINE_REL: (
+            "build_starfield_snapshot(",
+            "galaxy_priors_rows()",
+            "galaxy_priors_registry_hash()",
+        ),
+        EARTH_SKY_DOC_REL: (
+            "The MVP starfield is procedural only.",
+            "No catalog dependency is allowed.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing no-catalog marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (
+        EARTH_STARFIELD_GENERATOR_REL,
+        EARTH_SKY_VIEW_ENGINE_REL,
+        EARTH_SKY_PROBE_TOOL_REL,
+        EARTH_SKY_REPLAY_TOOL_REL,
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = (read_text(path) or "").lower()
+        for token in EARTH_SKY_CATALOG_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: catalog token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_wallclock_sky(repo_root):
+    invariant_id = "INV-NO-WALLCLOCK-SKY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_SKY_ASTRONOMY_REL: (
+            "current_tick",
+            "earth_orbit_phase_from_params(",
+            "rotation_phase_from_params(",
+            "lunar_phase_from_params(",
+        ),
+        EARTH_STARFIELD_GENERATOR_REL: (
+            "sky_tick_bucket(",
+            '"tick_bucket": int(tick_bucket)',
+            '"stream_name": "rng.view.sky.starfield"',
+        ),
+        EARTH_SKY_VIEW_ENGINE_REL: (
+            'perceived.get("time_state")',
+            '"cache_policy_id": "cache.sky.observer_tick_bucket"',
+            "tick = max(0, _as_int(",
+        ),
+        EARTH_SKY_DOC_REL: (
+            "wall-clock time is forbidden",
+            "canonical tick",
+            "Same inputs must produce the same starfield.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing no-wallclock marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (
+        EARTH_SKY_ASTRONOMY_REL,
+        EARTH_SKY_GRADIENT_REL,
+        EARTH_STARFIELD_GENERATOR_REL,
+        EARTH_SKY_VIEW_ENGINE_REL,
+        EARTH_SKY_PROBE_TOOL_REL,
+        EARTH_SKY_REPLAY_TOOL_REL,
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EARTH_SKY_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: sky wall-clock/nondeterministic token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_asset_dependency_for_emb(repo_root):
     invariant_id = "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
     if is_override_active(repo_root, invariant_id):
@@ -8384,6 +8625,8 @@ def main() -> int:
                 lambda: check_no_wallclock_climate(repo_root),
                 lambda: check_tide_deterministic(repo_root),
                 lambda: check_no_ocean_pde_in_mvp(repo_root),
+                lambda: check_no_catalog_dependency(repo_root),
+                lambda: check_no_wallclock_sky(repo_root),
             ],
         },
         {
@@ -8404,6 +8647,7 @@ def main() -> int:
                 lambda: check_no_truth_in_ui(repo_root),
                 lambda: check_view_artifact_only(repo_root),
                 lambda: check_lens_profiled(repo_root),
+                lambda: check_skyview_derived_only(repo_root),
             ],
         },
         {

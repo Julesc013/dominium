@@ -399,6 +399,8 @@ from analyzers import e372_recursion_without_bound_smell
 from analyzers import e373_float_trig_smell
 from analyzers import e374_nondeterministic_climate_smell
 from analyzers import e375_nondeterministic_tide_smell
+from analyzers import e376_truth_read_in_renderer_smell
+from analyzers import e377_nondeterministic_starfield_smell
 
 
 ANALYZERS = (
@@ -801,6 +803,8 @@ ANALYZERS = (
     e373_float_trig_smell,
     e374_nondeterministic_climate_smell,
     e375_nondeterministic_tide_smell,
+    e376_truth_read_in_renderer_smell,
+    e377_nondeterministic_starfield_smell,
 )
 
 
