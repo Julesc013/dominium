@@ -89,6 +89,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the EARTH-3 tide proxy doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-10"
+    },
+    {
+      "id": "OVR-2026-03-10-EARTH4-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the EARTH-4 sky and starfield doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-10"
     }
   ]
 }

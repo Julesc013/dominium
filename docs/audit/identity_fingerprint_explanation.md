@@ -30,3 +30,4 @@ Superseded By: none
   - 2026-03-10: refreshed for EARTH-1 hydrology constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX hydrology discipline additions, and EARTH-1 TestX additions
   - 2026-03-10: refreshed for EARTH-2 seasonal climate constitution registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX climate discipline additions, and EARTH-2 TestX additions
   - 2026-03-10: refreshed for EARTH-3 tide proxy doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX tide discipline additions, and EARTH-3 TestX additions
+  - 2026-03-10: refreshed for EARTH-4 sky/starfield doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX sky discipline additions, and EARTH-4 TestX additions

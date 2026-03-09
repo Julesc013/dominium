@@ -307,6 +307,7 @@ execution artifacts and are not authoritative.
 - `docs/worldgen/EARTH_HYDROLOGY_MODEL.md`
 - `docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
 - `docs/worldgen/EARTH_SEASONAL_CLIMATE_MODEL.md`
+- `docs/worldgen/EARTH_SKY_STARFIELD_MODEL.md`
 - `docs/worldgen/EARTH_TIDE_PROXY_MODEL.md`
 - `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
 - `docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
@@ -337,8 +338,10 @@ execution artifacts and are not authoritative.
 - `docs/architecture/time_model.md`
 - `docs/architecture/truth_model.md`
 - `docs/audit/AUDITX_OVERHAUL_REPORT.md`
+- `docs/audit/EARTH4_RETRO_AUDIT.md`
 - `docs/audit/EARTH1_RETRO_AUDIT.md`
 - `docs/audit/EARTH_HYDROLOGY_BASELINE.md`
+- `docs/audit/EARTH_SKY_STARFIELD_BASELINE.md`
 - `docs/audit/compat/COMPAT_BASELINE.md`
 - `docs/audit/compat/README.md`
 - `docs/CAPABILITY_STAGES.md`
