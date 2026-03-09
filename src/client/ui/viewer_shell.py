@@ -12,6 +12,7 @@ from src.client.ui.teleport_controller import build_teleport_plan
 from src.geo import build_position_ref
 from src.worldgen.earth.lighting import build_lighting_view_surface
 from src.worldgen.earth.sky import build_sky_view_surface
+from src.worldgen.earth.water import build_water_layer_source_payloads, build_water_view_surface
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
@@ -529,6 +530,7 @@ def _render_contract(
     pack_lock_hash: str,
     sky_view_artifact: Mapping[str, object] | None = None,
     illumination_view_artifact: Mapping[str, object] | None = None,
+    water_view_artifact: Mapping[str, object] | None = None,
 ) -> dict:
     perceived = _as_map(perceived_model)
     if not perceived:
@@ -545,6 +547,7 @@ def _render_contract(
         physics_profile_id="physics.default_realistic",
         sky_view_artifact=dict(sky_view_artifact or {}),
         illumination_view_artifact=dict(illumination_view_artifact or {}),
+        water_view_artifact=dict(water_view_artifact or {}),
     )
     return {
         "result": str(render_result.get("result", "")) or "complete",
@@ -575,6 +578,130 @@ def _resolve_sky_observer_surface_artifact(
         if ext.get("latitude_mdeg") is not None or candidate.get("tile_cell_key"):
             return dict(candidate)
     return {}
+
+
+def _resolve_water_surface_tile_artifact_rows(
+    *,
+    selection: Mapping[str, object] | None,
+    inspection_snapshot: Mapping[str, object] | None,
+    extensions: Mapping[str, object] | None,
+) -> list[dict]:
+    rows = []
+    candidates = [
+        _as_map(_as_map(extensions).get("sky_observer_surface_artifact")),
+        _as_map(_as_map(selection).get("surface_tile_artifact")),
+        _as_map(_as_map(_as_map(_as_map(inspection_snapshot).get("target_payload")).get("row")).get("surface_tile_artifact")),
+    ]
+    for candidate in candidates:
+        tile_id = str(candidate.get("tile_object_id", "")).strip()
+        if tile_id:
+            rows.append(dict(candidate))
+    for raw in list(_as_map(extensions).get("surface_tile_artifact_rows") or []):
+        row = _as_map(raw)
+        tile_id = str(row.get("tile_object_id", "")).strip()
+        if tile_id:
+            rows.append(dict(row))
+    deduped = {}
+    for row in rows:
+        deduped[str(row.get("tile_object_id", "")).strip()] = dict(row)
+    return [dict(deduped[key]) for key in sorted(deduped.keys())]
+
+
+def _resolve_water_tide_overlay_rows(
+    *,
+    selection: Mapping[str, object] | None,
+    inspection_snapshot: Mapping[str, object] | None,
+    field_values: Mapping[str, object] | None,
+    extensions: Mapping[str, object] | None,
+) -> list[dict]:
+    rows = [
+        dict(row)
+        for row in list(_as_map(extensions).get("earth_tide_tile_overlays") or _as_map(extensions).get("tide_overlay_rows") or [])
+        if isinstance(row, Mapping)
+    ]
+    if rows:
+        return rows
+    tide_value = _as_map(field_values).get("tide_height_proxy")
+    if tide_value is None:
+        return []
+    surface_artifact = (
+        _as_map(_as_map(selection).get("surface_tile_artifact"))
+        or _as_map(_as_map(_as_map(_as_map(inspection_snapshot).get("target_payload")).get("row")).get("surface_tile_artifact"))
+    )
+    tile_id = str(surface_artifact.get("tile_object_id", "")).strip()
+    tile_cell_key = _as_map(surface_artifact.get("tile_cell_key"))
+    if not tile_id or not tile_cell_key:
+        return []
+    return [
+        {
+            "tile_object_id": tile_id,
+            "tile_cell_key": dict(tile_cell_key),
+            "tide_height_value": int(_as_int(tide_value, 0)),
+        }
+    ]
+
+
+def _merge_layer_source_payloads(*, base: Mapping[str, object] | None, extra: Mapping[str, object] | None) -> dict:
+    merged = dict((str(key), dict(_as_map(value))) for key, value in sorted(_as_map(base).items(), key=lambda item: str(item[0])))
+    for key, value in sorted(_as_map(extra).items(), key=lambda item: str(item[0])):
+        merged[str(key)] = dict(_as_map(value))
+    return merged
+
+
+def _surface_map_context(
+    *,
+    origin_position_ref: Mapping[str, object] | None,
+    observer_surface_artifact: Mapping[str, object] | None,
+) -> tuple[dict, dict]:
+    origin = _as_map(origin_position_ref)
+    artifact = _as_map(observer_surface_artifact)
+    tile_cell_key = _as_map(artifact.get("tile_cell_key"))
+    if not origin or not tile_cell_key:
+        return dict(origin), {}
+    local_position = list(origin.get("local_position") or [])
+    while len(local_position) < 3:
+        local_position.append(0)
+    augmented = build_position_ref(
+        object_id=str(origin.get("object_id", "")).strip() or "camera.main",
+        frame_id=str(origin.get("frame_id", "")).strip() or "frame.surface_local",
+        local_position=[int(_as_int(item, 0)) for item in local_position[:3]],
+        extensions={
+            **_as_map(origin.get("extensions")),
+            "chart_id": str(tile_cell_key.get("chart_id", "")).strip() or None,
+            "geo_cell_key": dict(tile_cell_key),
+        },
+    )
+    return (
+        augmented,
+        {
+            "topology_profile_id": str(tile_cell_key.get("topology_profile_id", "")).strip() or "geo.topology.r3_infinite",
+            "partition_profile_id": str(tile_cell_key.get("partition_profile_id", "")).strip() or "geo.partition.grid_zd",
+            "metric_profile_id": str(_as_map(origin.get("extensions")).get("metric_profile_id", "")).strip() or "geo.metric.euclidean",
+        },
+    )
+
+
+def _collect_region_cell_keys(
+    *,
+    map_views: Mapping[str, object] | None,
+    observer_surface_artifact: Mapping[str, object] | None,
+) -> list[dict]:
+    rows = []
+    for key in ("map_view", "minimap_view"):
+        projected = _as_map(_as_map(_as_map(map_views).get(key)).get("projected_view_artifact"))
+        for rendered in list(projected.get("rendered_cells") or []):
+            row = _as_map(rendered)
+            cell_key = _as_map(row.get("geo_cell_key"))
+            if cell_key:
+                rows.append(dict(cell_key))
+    observer_cell_key = _as_map(_as_map(observer_surface_artifact).get("tile_cell_key"))
+    if observer_cell_key:
+        rows.append(dict(observer_cell_key))
+    deduped = {}
+    for row in rows:
+        token = canonical_sha256(row)
+        deduped[token] = dict(row)
+    return [dict(deduped[key]) for key in sorted(deduped.keys())]
 
 
 def build_viewer_shell_state(
@@ -681,23 +808,43 @@ def build_viewer_shell_state(
         field_values=field_values,
         body_state=body_state,
     )
-    map_views = build_map_view_set(
+    observer_surface_artifact = _resolve_sky_observer_surface_artifact(
+        selection=selection,
+        inspection_snapshot=inspection_snapshot,
+        layer_source_payloads=layer_source_payloads,
+        extensions=extensions,
+    )
+    base_layer_source_payloads = _as_map(layer_source_payloads)
+    map_origin_base = _preferred_position_ref(
+        explicit_position_ref=_as_map(map_origin_position_ref) or _as_map(control_surface.get("camera_position_ref")),
+        selection=selection,
+    )
+    minimap_origin_base = _preferred_position_ref(
+        explicit_position_ref=_as_map(minimap_origin_position_ref) or _as_map(control_surface.get("camera_position_ref")),
+        selection=selection,
+    )
+    map_origin_ref, map_surface_overrides = _surface_map_context(
+        origin_position_ref=map_origin_base,
+        observer_surface_artifact=observer_surface_artifact,
+    )
+    minimap_origin_ref, minimap_surface_overrides = _surface_map_context(
+        origin_position_ref=minimap_origin_base,
+        observer_surface_artifact=observer_surface_artifact,
+    )
+    preliminary_map_views = build_map_view_set(
         perceived_model=perceived_model,
         authority_context=runtime_authority,
-        map_origin_position_ref=_preferred_position_ref(
-            explicit_position_ref=_as_map(map_origin_position_ref) or _as_map(control_surface.get("camera_position_ref")),
-            selection=selection,
-        ),
-        minimap_origin_position_ref=_preferred_position_ref(
-            explicit_position_ref=_as_map(minimap_origin_position_ref) or _as_map(control_surface.get("camera_position_ref")),
-            selection=selection,
-        ),
-        layer_source_payloads=layer_source_payloads,
+        map_origin_position_ref=map_origin_ref,
+        minimap_origin_position_ref=minimap_origin_ref,
+        layer_source_payloads=base_layer_source_payloads,
         map_layer_ids=map_layer_ids,
         minimap_layer_ids=minimap_layer_ids,
         lens_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
         or "lens.diegetic.sensor",
         compute_profile_id=str(compute_profile_id or "compute.default").strip() or "compute.default",
+        topology_profile_id=str(map_surface_overrides.get("topology_profile_id", minimap_surface_overrides.get("topology_profile_id", "geo.topology.r3_infinite"))),
+        partition_profile_id=str(map_surface_overrides.get("partition_profile_id", minimap_surface_overrides.get("partition_profile_id", "geo.partition.grid_zd"))),
+        metric_profile_id=str(map_surface_overrides.get("metric_profile_id", minimap_surface_overrides.get("metric_profile_id", "geo.metric.euclidean"))),
         ui_mode=str(ui_mode),
         truth_hash_anchor=_truth_hash_anchor(perceived_model),
     )
@@ -713,12 +860,7 @@ def build_viewer_shell_state(
             explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
             selection=selection,
         ),
-        observer_surface_artifact=_resolve_sky_observer_surface_artifact(
-            selection=selection,
-            inspection_snapshot=inspection_snapshot,
-            layer_source_payloads=layer_source_payloads,
-            extensions=extensions,
-        ),
+        observer_surface_artifact=observer_surface_artifact,
         authority_context=runtime_authority,
         lens_profile_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_profile_id", "")).strip()
         or str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
@@ -731,13 +873,53 @@ def build_viewer_shell_state(
             explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
             selection=selection,
         ),
-        observer_surface_artifact=_resolve_sky_observer_surface_artifact(
+        observer_surface_artifact=observer_surface_artifact,
+        ui_mode=str(ui_mode),
+    )
+    water_view_surface = build_water_view_surface(
+        current_tick=int(max(0, _as_int(_as_map(_as_map(perceived_model).get("time_state")).get("tick", 0), 0))),
+        observer_ref=_preferred_position_ref(
+            explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
+            selection=selection,
+        ),
+        observer_surface_artifact=observer_surface_artifact,
+        region_cell_keys=_collect_region_cell_keys(
+            map_views=preliminary_map_views,
+            observer_surface_artifact=observer_surface_artifact,
+        ),
+        surface_tile_artifact_rows=_resolve_water_surface_tile_artifact_rows(
             selection=selection,
             inspection_snapshot=inspection_snapshot,
-            layer_source_payloads=layer_source_payloads,
+            extensions=extensions,
+        ),
+        tide_overlay_rows=_resolve_water_tide_overlay_rows(
+            selection=selection,
+            inspection_snapshot=inspection_snapshot,
+            field_values=field_values,
             extensions=extensions,
         ),
         ui_mode=str(ui_mode),
+    )
+    effective_layer_source_payloads = _merge_layer_source_payloads(
+        base=base_layer_source_payloads,
+        extra=build_water_layer_source_payloads(water_view_surface),
+    )
+    map_views = build_map_view_set(
+        perceived_model=perceived_model,
+        authority_context=runtime_authority,
+        map_origin_position_ref=map_origin_ref,
+        minimap_origin_position_ref=minimap_origin_ref,
+        layer_source_payloads=effective_layer_source_payloads,
+        map_layer_ids=map_layer_ids,
+        minimap_layer_ids=minimap_layer_ids,
+        lens_id=str(_as_map(lens_resolution.get("lens_profile")).get("lens_id", "")).strip()
+        or "lens.diegetic.sensor",
+        compute_profile_id=str(compute_profile_id or "compute.default").strip() or "compute.default",
+        topology_profile_id=str(map_surface_overrides.get("topology_profile_id", minimap_surface_overrides.get("topology_profile_id", "geo.topology.r3_infinite"))),
+        partition_profile_id=str(map_surface_overrides.get("partition_profile_id", minimap_surface_overrides.get("partition_profile_id", "geo.partition.grid_zd"))),
+        metric_profile_id=str(map_surface_overrides.get("metric_profile_id", minimap_surface_overrides.get("metric_profile_id", "geo.metric.euclidean"))),
+        ui_mode=str(ui_mode),
+        truth_hash_anchor=_truth_hash_anchor(perceived_model),
     )
     render_contract = _render_contract(
         perceived_model=perceived_model,
@@ -745,6 +927,7 @@ def build_viewer_shell_state(
         pack_lock_hash=str(_as_map(bootstrap.get("pack_lock")).get("pack_lock_hash", "")),
         sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
         illumination_view_artifact=_as_map(_as_map(illumination_view_surface).get("illumination_view_artifact")),
+        water_view_artifact=_as_map(_as_map(water_view_surface).get("water_view_artifact")),
     )
     payload = {
         "result": "complete",
@@ -764,6 +947,7 @@ def build_viewer_shell_state(
         "map_views": dict(map_views),
         "sky_view_surface": dict(sky_view_surface),
         "illumination_view_surface": dict(illumination_view_surface),
+        "water_view_surface": dict(water_view_surface),
         "debug_overlays": {
             "terrain_collision": _terrain_debug_overlay(
                 authority_context=runtime_authority,
@@ -779,6 +963,7 @@ def build_viewer_shell_state(
             "consumes_projection_and_lens_artifacts": True,
             "consumes_sky_view_artifacts": True,
             "consumes_illumination_view_artifacts": True,
+            "consumes_water_view_artifacts": True,
             "forbidden_truth_inputs": [
                 "truth_model",
                 "universe_state",

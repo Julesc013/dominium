@@ -83,6 +83,53 @@
       },
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.water_ocean",
+        "description": "Deterministic EARTH-8 ocean-mask layer sourced from derived water-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "water_view",
+          "artifact_id": "water_view_artifact",
+          "source": "EARTH8-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.water_river",
+        "description": "Deterministic EARTH-8 river-mask layer sourced from derived hydrology-backed water-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "water_view",
+          "artifact_id": "water_view_artifact",
+          "source": "EARTH8-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.water_lake",
+        "description": "Deterministic EARTH-8 lake-mask layer sourced from derived sink and basin heuristics only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "water_view",
+          "artifact_id": "water_view_artifact",
+          "source": "EARTH8-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layer_id": "layer.tide_offset",
+        "description": "Deterministic EARTH-8 tide-offset debug layer sourced from derived water-view artifacts only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "water_view",
+          "artifact_id": "water_view_artifact",
+          "required_entitlements": [
+            "entitlement.debug_view"
+          ],
+          "source": "EARTH8-5"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.wind_vector",
         "description": "Deterministic EARTH-7 wind-vector layer rendered from lawful perceived wind field samples only.",
         "deterministic_fingerprint": "",

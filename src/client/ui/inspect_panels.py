@@ -90,11 +90,15 @@ def build_celestial_object_panel(
 def build_surface_tile_panel(*, inspection_snapshot: Mapping[str, object] | None) -> dict:
     target_payload, row = _target_row(inspection_snapshot)
     tile_id = str(target_payload.get("target_id", "")).strip() or str(row.get("tile_object_id", "")).strip()
+    row_ext = _as_map(row.get("extensions"))
     rows = [
         {"key": "tile_object_id", "value": tile_id},
         {"key": "planet_object_id", "value": str(row.get("planet_object_id", "")).strip()},
         {"key": "material_baseline_id", "value": str(row.get("material_baseline_id", "")).strip()},
         {"key": "biome_stub_id", "value": str(row.get("biome_stub_id", "")).strip()},
+        {"key": "river_flag", "value": row.get("river_flag")},
+        {"key": "lake_flag", "value": row_ext.get("lake_flag")},
+        {"key": "hydrology_structure_kind", "value": str(row_ext.get("hydrology_structure_kind", "")).strip()},
     ]
     return _panel(
         panel_id="panel.inspect.surface_tile",

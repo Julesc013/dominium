@@ -260,6 +260,52 @@ def _marker_layer_value(
     return _layer_state(visible=True, value=matched)
 
 
+def _water_layer_value(
+    *,
+    cell_key: Mapping[str, object],
+    source: Mapping[str, object],
+    authority_context: Mapping[str, object] | None,
+    layer_id: str,
+    diegetic: bool,
+    quantization_step: int,
+) -> dict:
+    required_entitlements = set(_sorted_strings(_as_map(source).get("required_entitlements")))
+    entitlements = set(_sorted_strings(_as_map(authority_context).get("entitlements")))
+    if required_entitlements and not required_entitlements.issubset(entitlements):
+        return _layer_state(visible=False, value=None, hidden_reason="entitlement_required")
+    rows = [dict(item) for item in list(_as_map(source).get("rows") or []) if isinstance(item, Mapping)]
+    if not rows:
+        return _layer_state(visible=False, value=None, hidden_reason="water_unavailable")
+    target_hash = canonical_sha256(_as_map(cell_key))
+    matched = {}
+    for row in sorted(rows, key=lambda item: canonical_sha256(item)):
+        row_key = _as_map(row.get("geo_cell_key") or row.get("tile_cell_key"))
+        if row_key and canonical_sha256(row_key) != target_hash:
+            continue
+        matched = dict(row)
+        break
+    if not matched:
+        return _layer_state(visible=False, value=None, hidden_reason="water_absent")
+    if str(layer_id or "").strip() == "layer.tide_offset":
+        value = int(_as_int(matched.get("tide_offset_value", 0), 0))
+        quantized = False
+        if diegetic:
+            value = _quantize_scalar(value, int(max(1, quantization_step)))
+            quantized = True
+        return _layer_state(visible=True, value=value, quantized=quantized)
+    return _layer_state(
+        visible=True,
+        value={
+            "water_kind": str(matched.get("water_kind", "")).strip() or str(_as_map(source).get("water_kind", "")).strip(),
+            "tile_object_id": str(matched.get("tile_object_id", "")).strip(),
+            "flow_target_tile_key": _as_map(matched.get("flow_target_tile_key")),
+            "river_width_permille": matched.get("river_width_permille"),
+            "lake_fill_permille": matched.get("lake_fill_permille"),
+            "tide_offset_value": int(_as_int(matched.get("tide_offset_value", 0), 0)),
+        },
+    )
+
+
 def _geometry_layer_value(
     *,
     cell_key: Mapping[str, object],
@@ -409,6 +455,15 @@ def build_projected_view_artifact(
             source_kind = str(_as_map(layer_row.get("extensions")).get("source_kind", source.get("source_kind", ""))).strip()
             if layer_token in {"layer.temperature", "layer.pollution"} or source_kind == "field":
                 layers[layer_token] = _field_layer_value(cell_key=cell_key, source=source, diegetic=diegetic, quantization_step=quantization_step)
+            elif layer_token in {"layer.water_ocean", "layer.water_river", "layer.water_lake", "layer.tide_offset"} or source_kind == "water_view":
+                layers[layer_token] = _water_layer_value(
+                    cell_key=cell_key,
+                    source=source,
+                    authority_context=authority_context,
+                    layer_id=layer_token,
+                    diegetic=diegetic,
+                    quantization_step=quantization_step,
+                )
             elif layer_token == "layer.terrain_stub" or source_kind == "terrain":
                 layers[layer_token] = _terrain_layer_value(cell_key=cell_key, source=source, perceived_model=perceived, omniscient_allowed=omniscient)
             elif layer_token == "layer.geometry_occupancy" or source_kind == "geometry_occupancy":

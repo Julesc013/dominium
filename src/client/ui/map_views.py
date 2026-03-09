@@ -30,8 +30,12 @@ DEFAULT_MAP_VIEW_TYPE_ID = "view.map_ortho"
 DEFAULT_MINIMAP_VIEW_TYPE_ID = "view.minimap"
 DEFAULT_MAP_LAYERS = [
     "layer.terrain_stub",
+    "layer.water_ocean",
+    "layer.water_river",
+    "layer.water_lake",
     "layer.temperature",
     "layer.tide_height_proxy",
+    "layer.tide_offset",
     "layer.wind_vector",
     "layer.pollution",
     "layer.geometry_occupancy",
@@ -40,6 +44,9 @@ DEFAULT_MAP_LAYERS = [
 ]
 DEFAULT_MINIMAP_LAYERS = [
     "layer.terrain_stub",
+    "layer.water_ocean",
+    "layer.water_river",
+    "layer.water_lake",
     "layer.temperature",
     "layer.tide_height_proxy",
     "layer.wind_vector",

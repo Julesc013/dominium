@@ -53,6 +53,12 @@ def _glyph_for_cell(row: Mapping[str, object], preferred_layer_order: List[str])
             return "E"
         if layer_id == "layer.infrastructure_stub":
             return "#"
+        if layer_id == "layer.water_ocean":
+            return "~"
+        if layer_id == "layer.water_river":
+            return "r"
+        if layer_id == "layer.water_lake":
+            return "o"
         if layer_id == "layer.geometry_occupancy":
             payload = _as_map(value)
             if bool(payload.get("tunnel_stub", False)):
