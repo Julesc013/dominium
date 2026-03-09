@@ -402,6 +402,8 @@ def build_sky_view_surface(
         "extensions": {
             "source": EARTH_SKY_VIEW_ENGINE_VERSION,
             "derived_only": True,
+            "compactable": True,
+            "artifact_class": "DERIVED_VIEW",
             "cache_key": cache_key,
             "cache_policy_id": "cache.sky.observer_tick_bucket",
             "observer_cell_key": dict(observer_cell_key),
