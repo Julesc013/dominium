@@ -90,6 +90,10 @@ Each macro tile artifact stores:
 - `elevation_params_ref`
 - `material_baseline_id`
 - `biome_stub_id`
+- optional hydrology extensions such as:
+  - `flow_target_tile_key`
+  - `drainage_accumulation_proxy`
+  - `river_flag`
 
 The artifact is coarse and planet-agnostic.
 It is sufficient to anchor later detailed terrain generators without changing identity.
