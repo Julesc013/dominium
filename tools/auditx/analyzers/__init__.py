@@ -390,6 +390,8 @@ from analyzers import e363_large_data_in_pin_pack_smell
 from analyzers import e364_identity_override_smell
 from analyzers import e365_hardcoded_dem_reference_smell
 from analyzers import e366_nondeterministic_noise_smell
+from analyzers import e367_asset_dependency_smell
+from analyzers import e368_direct_position_write_smell
 
 
 ANALYZERS = (
@@ -783,6 +785,8 @@ ANALYZERS = (
     e364_identity_override_smell,
     e365_hardcoded_dem_reference_smell,
     e366_nondeterministic_noise_smell,
+    e367_asset_dependency_smell,
+    e368_direct_position_write_smell,
 )
 
 

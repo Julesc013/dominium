@@ -663,6 +663,45 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-ASSET-DEPENDENCY-FOR-EMB",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/body/body_system.py",
+        "src/embodiment/lens/lens_engine.py",
+        "data/registries/body_template_registry.json",
+        "data/registries/system_template_registry.json",
+        "docs/embodiment/EMBODIMENT_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-asset-dependency-for-emb",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-LENS-PROFILED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/lens/lens_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/mvp/runtime_bundle.py",
+        "data/registries/lens_profile_registry.json",
+        "docs/embodiment/EMBODIMENT_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-lens-profiled",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-BODY-MOTION-PROCESS-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/body/body_system.py",
+        "src/embodiment/lens/lens_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/mvp/runtime_bundle.py",
+        "docs/embodiment/EMBODIMENT_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-body-motion-process-only",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-MODE-AS-PROFILES",
       "severity": "FAIL",
       "scope_paths": [

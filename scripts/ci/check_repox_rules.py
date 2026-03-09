@@ -341,6 +341,45 @@ EARTH_REAL_DATA_FORBIDDEN_TOKENS = (
     "dem_source",
 )
 EARTH_NONDETERMINISTIC_TOKENS = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(")
+EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
+EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
+EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
+EMB_BODY_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "body_template_registry.json")
+EMB_LENS_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "lens_profile_registry.json")
+EMB_SYSTEM_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "system_template_registry.json")
+EMB_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
+EMB_ASSET_FORBIDDEN_TOKENS = (
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".tga",
+    ".dds",
+    ".fbx",
+    ".gltf",
+    ".glb",
+    "texture_path",
+    "mesh_path",
+    "skeleton",
+    "rig_ref",
+)
+EMB_LENS_HARDCODED_TOKENS = (
+    '== "lens.fp"',
+    '== "lens.tp"',
+    '== "lens.freecam"',
+    '== "lens.inspect"',
+)
+EMB_DIRECT_POSITION_FORBIDDEN_TOKENS = (
+    'state["body_assemblies"]',
+    "state['body_assemblies']",
+    'state["body_states"]',
+    "state['body_states']",
+    'state["momentum_states"]',
+    "state['momentum_states']",
+    'state["camera_assemblies"]',
+    "state['camera_assemblies']",
+    'body["transform_mm"] =',
+    "body['transform_mm'] =",
+)
 MVP_DIST_ALIAS_RELS = (
     os.path.join("dist", "packs", "base", "pack.base.procedural", "pack.alias.json"),
     os.path.join("dist", "packs", "official", "pack.sol.pin_minimal", "pack.alias.json"),
@@ -4613,6 +4652,210 @@ def check_earth_gen_deterministic(repo_root):
     return violations
 
 
+def check_no_asset_dependency_for_emb(repo_root):
+    invariant_id = "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EMB_BODY_SYSTEM_REL: (
+            "instantiate_body_system(",
+            '"shape_type": str(template_row.get("collider_kind", "capsule")).strip() or "capsule"',
+            '"vertex_ref_id": ""',
+            "build_momentum_state(",
+        ),
+        EMB_BODY_TEMPLATE_REGISTRY_REL: (
+            "template.body.pill",
+            '"collider_kind": "capsule"',
+            '"movement_params_ref": "move.body.default_ground"',
+        ),
+        EMB_SYSTEM_TEMPLATE_REGISTRY_REL: (
+            "template.body.pill",
+            '"art_free": true',
+            '"collider_kind": "capsule"',
+        ),
+        EMB_BASELINE_DOC_REL: (
+            "no textures are required",
+            "no meshes are required",
+            "primitive capsule",
+            "art-free",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing asset-free marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EMB_BODY_SYSTEM_REL, EMB_LENS_ENGINE_REL, EMB_BODY_TEMPLATE_REGISTRY_REL, EMB_SYSTEM_TEMPLATE_REGISTRY_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = (read_text(path) or "").lower()
+        for token in EMB_ASSET_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: asset dependency token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_lens_profiled(repo_root):
+    invariant_id = "INV-LENS-PROFILED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    process_runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    violations = []
+    required_tokens = {
+        EMB_LENS_PROFILE_REGISTRY_REL: (
+            "lens.fp",
+            "lens.tp",
+            "lens.freecam",
+            "lens.inspect",
+            '"profile_gate": "dev"',
+            '"profile_gate": "inspector"',
+        ),
+        EMB_LENS_ENGINE_REL: (
+            "resolve_authorized_lens_profile(",
+            "required_entitlements",
+            "resolve_lens_camera_state(",
+            '"requires_embodiment"',
+            '"camera_state"',
+        ),
+        process_runtime_rel: (
+            "resolve_authorized_lens_profile(",
+            "resolve_lens_camera_state(",
+            "lens_profile_id",
+            'camera_row["view_mode_id"] =',
+            'camera_row["lens_id"] =',
+        ),
+        EMB_RUNTIME_BUNDLE_REL: (
+            '"default_lens_profile_id"',
+            '"toggle_lens": "process.camera_set_view_mode"',
+            '"toggle_lens_sequence"',
+        ),
+        EMB_BASELINE_DOC_REL: (
+            "freecam is dev/lab profile gated",
+            "inspect is observer/admin gated",
+            "Lens transforms produce render-facing camera state only",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing lens-profile marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EMB_LENS_ENGINE_REL,):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EMB_LENS_HARDCODED_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: hardcoded lens branch token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_body_motion_process_only(repo_root):
+    invariant_id = "INV-BODY-MOTION-PROCESS-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    process_runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    violations = []
+    required_tokens = {
+        EMB_BODY_SYSTEM_REL: (
+            "build_body_state(",
+            "instantiate_body_system(",
+            '"movement_params_ref"',
+            '"template_instance_record"',
+        ),
+        EMB_RUNTIME_BUNDLE_REL: (
+            '"move": "process.body_apply_input"',
+            '"look": "process.body_apply_input"',
+            '"teleport": "process.camera_teleport"',
+        ),
+        process_runtime_rel: (
+            'elif process_id == "process.body_apply_input":',
+            'elif process_id == "process.body_tick":',
+            "build_force_application(",
+            "_upsert_body_state_for_body(",
+            "_resolve_body_collisions(",
+            'state["force_application_rows"]',
+        ),
+        EMB_BASELINE_DOC_REL: (
+            "process.body_apply_input",
+            "process.body_tick",
+            "all authoritative body motion must occur through these processes",
+            "no UI, renderer, or tool may write body transforms directly",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing process-only embodiment marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (EMB_BODY_SYSTEM_REL, EMB_LENS_ENGINE_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in EMB_DIRECT_POSITION_FORBIDDEN_TOKENS:
+            if token in text:
+                violations.append(
+                    "{}: direct position-write token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_mode_as_profiles(repo_root):
     invariant_id = "INV-MODE-AS-PROFILES"
     if is_override_active(repo_root, invariant_id):
@@ -7515,6 +7758,16 @@ def main() -> int:
                 lambda: check_tiles_on_demand_only(repo_root),
                 lambda: check_no_real_data_in_earth_stub(repo_root),
                 lambda: check_earth_gen_deterministic(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.embodiment",
+            "scope_subtrees": ("src", "tools", "data", "schema", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_no_asset_dependency_for_emb(repo_root),
+                lambda: check_lens_profiled(repo_root),
+                lambda: check_body_motion_process_only(repo_root),
             ],
         },
         {

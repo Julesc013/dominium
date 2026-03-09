@@ -140,6 +140,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-TILES-ON-DEMAND-ONLY`
 - `INV-NO-REAL-DATA-IN-EARTH-STUB`
 - `INV-EARTH-GEN-DETERMINISTIC`
+- `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
+- `INV-LENS-PROFILED`
+- `INV-BODY-MOTION-PROCESS-ONLY`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
 - `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`
@@ -470,6 +473,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the governed EARTH-0 generator surfaces lose the explicit named-seed, interpolated-noise, and routed-handler markers.
 - Fails when nondeterministic RNG or wall-clock style tokens appear in the EARTH-0 runtime or verification path.
 - Preserves replay-stable Earth macro generation and cross-platform hash expectations.
+
+### INV-NO-ASSET-DEPENDENCY-FOR-EMB
+
+- Fails when the governed EMB-0 body template/runtime surfaces lose the explicit primitive capsule and art-free markers.
+- Fails when mesh, texture, skeleton, or authored asset-path tokens appear in the embodiment runtime surface.
+- Preserves EMB-0 as an art-free primitive embodiment baseline with no pack or renderer asset dependency.
+
+### INV-LENS-PROFILED
+
+- Fails when the governed EMB-0 lens surface loses the explicit lens profile registry, entitlement-resolution, or runtime bundle markers.
+- Fails when lens behavior drifts into hardcoded profile branches instead of remaining registry and entitlement driven.
+- Preserves lawful first-person, third-person, freecam, and inspect lens composition through profile data.
+
+### INV-BODY-MOTION-PROCESS-ONLY
+
+- Fails when the EMB-0 runtime surface loses the explicit `process.body_apply_input` and `process.body_tick` motion pathway markers.
+- Fails when embodiment helper modules start mutating authoritative body state directly instead of emitting process-governed rows.
+- Preserves process-only body motion, PHYS force logging, and lawful camera/render separation.
 
 ### INV-SOL-PACK-MINIMAL-SIZE
 
