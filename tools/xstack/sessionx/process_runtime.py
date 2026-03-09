@@ -717,6 +717,7 @@ from src.geo.overlay import (
     overlay_proof_surface,
     validate_overlay_manifest_trust,
 )
+from src.worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
 from src.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
@@ -3962,6 +3963,12 @@ def _ensure_worldgen_spawned_object_rows(state: dict) -> List[dict]:
     return [dict(row) for row in rows]
 
 
+def _ensure_worldgen_star_system_artifact_rows(state: dict) -> List[dict]:
+    rows = normalize_star_system_artifact_rows(state.get("worldgen_star_system_artifacts"))
+    state["worldgen_star_system_artifacts"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
 def _append_worldgen_request_artifact(state: dict, request_row: Mapping[str, object]) -> None:
     row = normalize_worldgen_request(request_row)
     request_id = str(row.get("request_id", "")).strip()
@@ -4002,6 +4009,27 @@ def _append_worldgen_result_artifact(state: dict, result_row: Mapping[str, objec
     state["knowledge_artifacts"] = [dict(item) for item in info_rows]
 
 
+def _append_star_system_artifact_model(state: dict, artifact_row: Mapping[str, object]) -> None:
+    row = next(iter(normalize_star_system_artifact_rows([artifact_row])), {})
+    object_id = str(row.get("object_id", "")).strip()
+    if not object_id:
+        return
+    artifact_model = {
+        "artifact_id": "artifact.star_system_artifact.{}".format(object_id),
+        "artifact_family_id": "MODEL",
+        "extensions": {
+            "artifact_type_id": "artifact.star_system_artifact",
+            "target_object_id": object_id,
+            "star_system_artifact": dict(row),
+        },
+    }
+    info_rows = normalize_info_artifact_rows(
+        list(state.get("info_artifact_rows") or state.get("knowledge_artifacts") or []) + [artifact_model]
+    )
+    state["info_artifact_rows"] = [dict(item) for item in info_rows]
+    state["knowledge_artifacts"] = [dict(item) for item in info_rows]
+
+
 def _append_worldgen_request(state: dict, request_row: Mapping[str, object]) -> dict:
     normalized = normalize_worldgen_request(request_row)
     merged = list(_ensure_worldgen_request_rows(state))
@@ -4014,7 +4042,12 @@ def _append_worldgen_request(state: dict, request_row: Mapping[str, object]) -> 
     return emitted
 
 
-def _append_worldgen_result(state: dict, result_row: Mapping[str, object], spawned_object_rows: object = None) -> dict:
+def _append_worldgen_result(
+    state: dict,
+    result_row: Mapping[str, object],
+    spawned_object_rows: object = None,
+    star_system_artifact_rows: object = None,
+) -> dict:
     normalized = normalize_worldgen_result(result_row)
     merged = list(_ensure_worldgen_result_rows(state))
     result_id = str(normalized.get("result_id", "")).strip()
@@ -4037,6 +4070,16 @@ def _append_worldgen_result(state: dict, result_row: Mapping[str, object], spawn
                 "geo_cell_key": dict(dict(row).get("geo_cell_key") or {}),
             }
         state["worldgen_spawned_objects"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
+    if isinstance(star_system_artifact_rows, list):
+        current_rows = list(_ensure_worldgen_star_system_artifact_rows(state))
+        current_by_id = dict((str(dict(row).get("object_id", "")).strip(), dict(row)) for row in current_rows)
+        for row in normalize_star_system_artifact_rows(star_system_artifact_rows):
+            object_id = str(dict(row).get("object_id", "")).strip()
+            if not object_id:
+                continue
+            current_by_id[object_id] = dict(row)
+            _append_star_system_artifact_model(state, row)
+        state["worldgen_star_system_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
     _append_worldgen_result_artifact(state, normalized)
     return dict(next((row for row in merged if str(row.get("result_id", "")).strip() == result_id), normalized))
 
@@ -17952,6 +17995,48 @@ def _as_float(value: object, default_value: float = 0.0) -> float:
         return float(default_value)
 
 
+def _worldgen_star_system_object_map(state: dict | None) -> Dict[str, dict]:
+    if not isinstance(state, dict):
+        return {}
+    out: Dict[str, dict] = {}
+    for row in _ensure_worldgen_star_system_artifact_rows(state):
+        object_id = str(row.get("object_id", "")).strip()
+        position_ref = dict(row.get("galaxy_position_ref") or {})
+        frame_id = str(position_ref.get("frame_id", "")).strip()
+        local_position = position_ref.get("local_position")
+        position_mm = None
+        if isinstance(local_position, list):
+            coords = [int(_as_int(value, 0)) for value in local_position[:3]]
+            while len(coords) < 3:
+                coords.append(0)
+            position_mm = {"x": coords[0], "y": coords[1], "z": coords[2]}
+        metallicity_proxy = dict(row.get("metallicity_proxy") or {})
+        extensions = dict(row.get("extensions") or {})
+        if not object_id or not frame_id or position_mm is None:
+            continue
+        out[object_id] = {
+            "object_id": object_id,
+            "frame_id": frame_id,
+            "kind": "star_system",
+            "parent_id": "object.milky_way",
+            "bounds": {
+                "kind": "sphere",
+                "sphere_radius_mm": 61_713_551_629_827_344_000,
+            },
+            "physical_params": {
+                "metallicity_permille": int(_as_int(metallicity_proxy.get("metallicity_permille", 0), 0)),
+                "habitable_filter_bias_permille": int(_as_int(extensions.get("habitable_filter_bias_permille", 0), 0)),
+            },
+            "search_keys": [
+                object_id,
+                "star_system:{}".format(int(_as_int(extensions.get("local_index", 0), 0))),
+            ],
+            "position_mm": position_mm,
+            "position_ref": position_ref,
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
 def _site_position_to_local_mm(site_row: dict, object_row: dict | None) -> Dict[str, int] | None:
     position = site_row.get("position")
     if not isinstance(position, dict):
@@ -17989,7 +18074,7 @@ def _site_position_to_local_mm(site_row: dict, object_row: dict | None) -> Dict[
     return None
 
 
-def _resolve_teleport_target(inputs: dict, navigation_indices: dict | None) -> Dict[str, object]:
+def _resolve_teleport_target(inputs: dict, navigation_indices: dict | None, state: dict | None = None) -> Dict[str, object]:
     direct_frame_id = str(inputs.get("target_frame_id", "")).strip() or str(inputs.get("frame_id", "")).strip()
     direct_position = _vector3_int(inputs.get("position_mm"), "position_mm")
     direct_orientation = _angles_int(inputs.get("orientation_mdeg"))
@@ -17997,7 +18082,8 @@ def _resolve_teleport_target(inputs: dict, navigation_indices: dict | None) -> D
     target_site_id = str(inputs.get("target_site_id", "")).strip()
     target_object_id = str(inputs.get("target_object_id", "")).strip()
     maps = _navigation_maps(navigation_indices)
-    object_map = maps.get("objects") or {}
+    object_map = dict(maps.get("objects") or {})
+    object_map.update(_worldgen_star_system_object_map(state))
     site_map = maps.get("sites") or {}
     ephemeris_map = maps.get("ephemeris") or {}
 
@@ -18070,7 +18156,15 @@ def _resolve_teleport_target(inputs: dict, navigation_indices: dict | None) -> D
         default_distance = max(1000, int(radius_mm * 2) if radius_mm > 0 else 1_000_000)
         ephemeris_row = ephemeris_map.get(target_object_id)
         base_position = {"x": 0, "y": 0, "z": 0}
-        if isinstance(ephemeris_row, dict):
+        inline_position = _vector3_int(object_row.get("position_mm"), "position_mm")
+        position_ref = object_row.get("position_ref")
+        if inline_position is not None:
+            base_position = inline_position
+        elif isinstance(position_ref, dict):
+            local_position = _vector3_int(position_ref.get("local_position"), "local_position")
+            if local_position is not None:
+                base_position = local_position
+        elif isinstance(ephemeris_row, dict):
             samples = ephemeris_row.get("samples")
             if isinstance(samples, list):
                 sample_rows = [item for item in samples if isinstance(item, dict)]
@@ -24276,7 +24370,7 @@ def execute_intent(
         camera["velocity_mm_per_tick"] = velocity
         _advance_time(state, steps=int(dt_ticks), policy_context=policy_context)
     elif process_id == "process.camera_teleport":
-        resolved_target = _resolve_teleport_target(inputs=inputs, navigation_indices=navigation_indices)
+        resolved_target = _resolve_teleport_target(inputs=inputs, navigation_indices=navigation_indices, state=state)
         if resolved_target.get("result") != "complete":
             return resolved_target
         camera["frame_id"] = str(resolved_target.get("frame_id", ""))
@@ -44336,6 +44430,9 @@ def execute_intent(
         )
         worldgen_result_row = dict(generated.get("worldgen_result") or {})
         generated_object_rows = [dict(row) for row in list(generated.get("generated_object_rows") or []) if isinstance(row, Mapping)]
+        star_system_artifact_rows = [
+            dict(row) for row in list(generated.get("generated_star_system_artifact_rows") or []) if isinstance(row, Mapping)
+        ]
         field_layer_rows = [dict(row) for row in list(generated.get("field_layers") or []) if isinstance(row, Mapping)]
         field_initializations = [dict(row) for row in list(generated.get("field_initializations") or []) if isinstance(row, Mapping)]
         geometry_initializations = [dict(row) for row in list(generated.get("geometry_initializations") or []) if isinstance(row, Mapping)]
@@ -44406,7 +44503,12 @@ def execute_intent(
             geometry_initializations_applied = 0
             field_initializations_applied = 0
             worldgen_result_row = existing_result
-        worldgen_result_row = _append_worldgen_result(state, worldgen_result_row, generated_object_rows)
+        worldgen_result_row = _append_worldgen_result(
+            state,
+            worldgen_result_row,
+            generated_object_rows,
+            star_system_artifact_rows,
+        )
         _refresh_worldgen_hash_chains(state)
         result_metadata = {
             "request_id": str(request_row.get("request_id", "")).strip(),
@@ -44417,6 +44519,7 @@ def execute_intent(
             "generator_version_id": str(generated.get("generator_version_id", "")).strip(),
             "realism_profile_id": str(generated.get("realism_profile_id", "")).strip(),
             "spawned_object_count": int(len(list(generated_object_rows or []))),
+            "star_system_artifact_count": int(len(list(star_system_artifact_rows or []))),
             "field_initialization_count": int(len(list(field_initializations or []))),
             "geometry_initialization_count": int(len(list(geometry_initializations or []))),
             "field_initializations_applied": int(field_initializations_applied),

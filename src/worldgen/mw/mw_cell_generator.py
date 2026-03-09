@@ -10,13 +10,16 @@ from typing import Dict, List, Mapping, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
+from src.geo.frame.frame_engine import build_position_ref
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
 
 
 DEFAULT_GALAXY_PRIORS_ID = "priors.milkyway_stub_default"
 GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
-MW_CELL_GENERATOR_VERSION = "MW0-3"
+MW_CELL_GENERATOR_VERSION = "MW1-3"
+MW_GALACTIC_FRAME_ID = "frame.milky_way.galactic"
+PARSEC_MM = 30_856_775_814_913_672_000
 
 _TAN_22_5_PERMILLE = 414
 _TAN_67_5_PERMILLE = 2414
@@ -242,6 +245,214 @@ def _habitability_bias_permille(priors_row: Mapping[str, object], *, radius_pc: 
     return max(0, (radial_bias * vertical_bias * metallicity_bias) // 1000000)
 
 
+def _pc_to_mm(value_pc: int) -> int:
+    return int(value_pc) * PARSEC_MM
+
+
+def _cell_origin_mm(*, x_pc: int, y_pc: int, z_pc: int) -> Tuple[int, int, int]:
+    return (_pc_to_mm(x_pc), _pc_to_mm(y_pc), _pc_to_mm(z_pc))
+
+
+def _axis_offset_mm(system_seed: str, axis: str, cell_size_pc: int) -> int:
+    extent_mm = max(1, int(cell_size_pc)) * PARSEC_MM
+    return (_hash_int(system_seed, "mw1.axis.{}".format(str(axis))) % extent_mm)
+
+
+def _system_position_ref(
+    *,
+    object_id: str,
+    system_seed: str,
+    x_pc: int,
+    y_pc: int,
+    z_pc: int,
+    cell_size_pc: int,
+) -> dict:
+    origin_x, origin_y, origin_z = _cell_origin_mm(x_pc=x_pc, y_pc=y_pc, z_pc=z_pc)
+    return build_position_ref(
+        object_id=str(object_id),
+        frame_id=MW_GALACTIC_FRAME_ID,
+        local_position=[
+            origin_x + _axis_offset_mm(system_seed, "x", cell_size_pc),
+            origin_y + _axis_offset_mm(system_seed, "y", cell_size_pc),
+            origin_z + _axis_offset_mm(system_seed, "z", cell_size_pc),
+        ],
+        extensions={
+            "source": MW_CELL_GENERATOR_VERSION,
+            "position_space": "galactic_mm",
+        },
+    )
+
+
+def _build_star_system_seed_row(
+    *,
+    cell_key: Mapping[str, object],
+    local_index: int,
+    local_subkey: str,
+    seed_subkey: str,
+    system_seed: str,
+    object_id: str,
+    metallicity_permille: int,
+    age_bucket: str,
+    imf_bucket: str,
+    habitable_filter_bias_permille: int,
+) -> dict:
+    row = {
+        "schema_version": "1.0.0",
+        "cell_key": _as_map(cell_key),
+        "local_index": int(local_index),
+        "system_seed_value": str(system_seed).strip(),
+        "object_id": str(object_id).strip(),
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "local_subkey": str(local_subkey).strip(),
+            "seed_subkey": str(seed_subkey).strip(),
+            "object_id_hash": str(object_id).strip(),
+            "metallicity_permille": int(metallicity_permille),
+            "age_bucket": str(age_bucket).strip(),
+            "imf_bucket": str(imf_bucket).strip(),
+            "habitable_filter_bias_permille": int(habitable_filter_bias_permille),
+            "source": MW_CELL_GENERATOR_VERSION,
+        },
+    }
+    row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+    return row
+
+
+def normalize_star_system_seed_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[Tuple[int, str], dict] = {}
+    for item in rows:
+        if not isinstance(item, Mapping):
+            continue
+        cell_key = _coerce_cell_key(_as_map(item.get("cell_key")))
+        if not cell_key:
+            continue
+        local_index = max(0, _as_int(item.get("local_index", 0), 0))
+        extensions = _as_map(item.get("extensions"))
+        local_subkey = str(item.get("local_subkey", "")).strip() or str(extensions.get("local_subkey", "")).strip() or "star_system:{}".format(local_index)
+        system_seed_value = str(item.get("system_seed_value", "")).strip() or str(item.get("system_seed", "")).strip()
+        object_id = str(item.get("object_id", "")).strip() or str(item.get("object_id_hash", "")).strip() or str(extensions.get("object_id_hash", "")).strip()
+        seed_subkey = str(item.get("seed_subkey", "")).strip() or str(extensions.get("seed_subkey", "")).strip()
+        row = _build_star_system_seed_row(
+            cell_key=cell_key,
+            local_index=local_index,
+            local_subkey=local_subkey,
+            seed_subkey=seed_subkey,
+            system_seed=system_seed_value,
+            object_id=object_id,
+            metallicity_permille=max(0, _as_int(item.get("metallicity_permille", extensions.get("metallicity_permille", 0)), 0)),
+            age_bucket=str(item.get("age_bucket", "")).strip() or str(extensions.get("age_bucket", "")).strip(),
+            imf_bucket=str(item.get("imf_bucket", "")).strip() or str(extensions.get("imf_bucket", "")).strip(),
+            habitable_filter_bias_permille=max(
+                0,
+                min(
+                    1000,
+                    _as_int(
+                        item.get(
+                            "habitable_filter_bias_permille",
+                            extensions.get("habitable_filter_bias_permille", 0),
+                        ),
+                        0,
+                    ),
+                ),
+            ),
+        )
+        out[(local_index, local_subkey)] = row
+    return [
+        dict(out[key])
+        for key in sorted(out.keys(), key=lambda item: (int(item[0]), str(item[1])))
+    ]
+
+
+def _build_star_system_artifact_row(
+    *,
+    object_id: str,
+    system_seed: str,
+    metallicity_permille: int,
+    galaxy_position_ref: Mapping[str, object],
+    cell_key: Mapping[str, object],
+    local_index: int,
+    local_subkey: str,
+    age_bucket: str,
+    imf_bucket: str,
+    habitable_filter_bias_permille: int,
+) -> dict:
+    row = {
+        "schema_version": "1.0.0",
+        "object_id": str(object_id).strip(),
+        "system_seed_value": str(system_seed).strip(),
+        "metallicity_proxy": {
+            "metallicity_permille": int(max(0, metallicity_permille)),
+            "solar_relative_permille": int(max(0, metallicity_permille)),
+        },
+        "galaxy_position_ref": _as_map(galaxy_position_ref),
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "cell_key": _as_map(cell_key),
+            "local_index": int(local_index),
+            "local_subkey": str(local_subkey).strip(),
+            "object_kind_id": "kind.star_system",
+            "age_bucket": str(age_bucket).strip(),
+            "imf_bucket": str(imf_bucket).strip(),
+            "habitable_filter_bias_permille": int(max(0, min(1000, habitable_filter_bias_permille))),
+            "habitable_likely": bool(int(max(0, min(1000, habitable_filter_bias_permille))) >= 650),
+            "source": MW_CELL_GENERATOR_VERSION,
+        },
+    }
+    row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+    return row
+
+
+def normalize_star_system_artifact_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for item in rows:
+        if not isinstance(item, Mapping):
+            continue
+        object_id = str(item.get("object_id", "")).strip() or str(item.get("object_id_hash", "")).strip()
+        if not object_id:
+            continue
+        extensions = _as_map(item.get("extensions"))
+        row = _build_star_system_artifact_row(
+            object_id=object_id,
+            system_seed=str(item.get("system_seed_value", "")).strip() or str(item.get("system_seed", "")).strip(),
+            metallicity_permille=max(
+                0,
+                _as_int(
+                    _as_map(item.get("metallicity_proxy")).get("metallicity_permille", extensions.get("metallicity_permille", 0)),
+                    0,
+                ),
+            ),
+            galaxy_position_ref=_as_map(item.get("galaxy_position_ref")),
+            cell_key=_coerce_cell_key(_as_map(extensions.get("cell_key"))) or {},
+            local_index=max(0, _as_int(item.get("local_index", extensions.get("local_index", 0)), 0)),
+            local_subkey=str(item.get("local_subkey", "")).strip() or str(extensions.get("local_subkey", "")).strip(),
+            age_bucket=str(item.get("age_bucket", "")).strip() or str(extensions.get("age_bucket", "")).strip(),
+            imf_bucket=str(item.get("imf_bucket", "")).strip() or str(extensions.get("imf_bucket", "")).strip(),
+            habitable_filter_bias_permille=max(
+                0,
+                min(
+                    1000,
+                    _as_int(
+                        item.get(
+                            "habitable_filter_bias_permille",
+                            extensions.get("habitable_filter_bias_permille", 0),
+                        ),
+                        0,
+                    ),
+                ),
+            ),
+        )
+        out[object_id] = row
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def star_system_artifact_hash_chain(rows: object) -> str:
+    return canonical_sha256(normalize_star_system_artifact_rows(rows))
+
+
 def _system_seed_rows(
     *,
     universe_identity_hash: str,
@@ -249,11 +460,16 @@ def _system_seed_rows(
     priors_row: Mapping[str, object],
     system_count: int,
     system_stream_seed: str,
+    x_pc: int,
+    y_pc: int,
+    z_pc: int,
+    cell_size_pc: int,
     metallicity_permille: int,
     habitability_bias_permille: int,
-) -> List[dict]:
+) -> Tuple[List[dict], List[dict]]:
     star_priors = _as_map(_as_map(_as_map(priors_row).get("extensions")).get("star_formation_priors"))
-    out = []
+    seed_rows = []
+    artifact_rows = []
     for local_index in range(max(0, int(system_count))):
         local_subkey = "star_system:{}".format(int(local_index))
         system_seed = canonical_sha256(
@@ -278,30 +494,50 @@ def _system_seed_rows(
                 int(habitability_bias_permille) + ((_hash_int(system_seed, "mw0.habitable_bias_jitter") % 121) - 60),
             ),
         )
-        out.append(
-            {
-                "local_index": int(local_index),
-                "local_subkey": local_subkey,
-                "seed_subkey": canonical_sha256({"system_seed": system_seed, "kind": "star_system.subkey"}),
-                "system_seed": system_seed,
-                "object_id_hash": str(object_row.get("object_id_hash", "")).strip(),
-                "metallicity_permille": int(system_metallicity),
-                "age_bucket": _pick_weighted(system_seed, "mw0.age_bucket", _as_map(star_priors.get("age_weights")), "mature"),
-                "imf_bucket": _pick_weighted(system_seed, "mw0.imf_bucket", _as_map(star_priors.get("imf_weights")), "m"),
-                "habitable_filter_bias_permille": int(habitable_bias),
-            }
+        age_bucket = _pick_weighted(system_seed, "mw0.age_bucket", _as_map(star_priors.get("age_weights")), "mature")
+        imf_bucket = _pick_weighted(system_seed, "mw0.imf_bucket", _as_map(star_priors.get("imf_weights")), "m")
+        seed_subkey = canonical_sha256({"system_seed": system_seed, "kind": "star_system.subkey"})
+        object_id = str(object_row.get("object_id_hash", "")).strip()
+        galaxy_position_ref = _system_position_ref(
+            object_id=object_id,
+            system_seed=system_seed,
+            x_pc=x_pc,
+            y_pc=y_pc,
+            z_pc=z_pc,
+            cell_size_pc=cell_size_pc,
         )
-    return [
-        dict(row)
-        for row in sorted(
-            out,
-            key=lambda item: (
-                int(item.get("local_index", 0)),
-                str(item.get("local_subkey", "")),
-                str(item.get("object_id_hash", "")),
-            ),
+        seed_rows.append(
+            _build_star_system_seed_row(
+                cell_key=cell_key,
+                local_index=local_index,
+                local_subkey=local_subkey,
+                seed_subkey=seed_subkey,
+                system_seed=system_seed,
+                object_id=object_id,
+                metallicity_permille=system_metallicity,
+                age_bucket=age_bucket,
+                imf_bucket=imf_bucket,
+                habitable_filter_bias_permille=habitable_bias,
+            )
         )
-    ]
+        artifact_rows.append(
+            _build_star_system_artifact_row(
+                object_id=object_id,
+                system_seed=system_seed,
+                metallicity_permille=system_metallicity,
+                galaxy_position_ref=galaxy_position_ref,
+                cell_key=cell_key,
+                local_index=local_index,
+                local_subkey=local_subkey,
+                age_bucket=age_bucket,
+                imf_bucket=imf_bucket,
+                habitable_filter_bias_permille=habitable_bias,
+            )
+        )
+    return (
+        normalize_star_system_seed_rows(seed_rows),
+        normalize_star_system_artifact_rows(artifact_rows),
+    )
 
 
 def generate_mw_cell_payload(
@@ -349,12 +585,16 @@ def generate_mw_cell_payload(
         z_pc=z_pc,
         metallicity_permille=metallicity_permille,
     )
-    system_seed_rows = _system_seed_rows(
+    system_seed_rows, star_system_artifact_rows = _system_seed_rows(
         universe_identity_hash=str(universe_identity_hash),
         cell_key=cell_key,
         priors_row=priors_row,
         system_count=system_count,
         system_stream_seed=str(system_stream_seed),
+        x_pc=x_pc,
+        y_pc=y_pc,
+        z_pc=z_pc,
+        cell_size_pc=cell_size_pc,
         metallicity_permille=metallicity_permille,
         habitability_bias_permille=habitability_bias_permille,
     )
@@ -380,6 +620,8 @@ def generate_mw_cell_payload(
         "result": "complete",
         "galaxy_priors_id": priors_id,
         "cell_summary": summary,
+        "star_system_seed_rows": system_seed_rows,
+        "star_system_artifact_rows": star_system_artifact_rows,
         "system_seed_rows": system_seed_rows,
         "deterministic_fingerprint": "",
     }

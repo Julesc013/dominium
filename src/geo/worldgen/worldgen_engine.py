@@ -14,7 +14,11 @@ from src.fields import build_field_cell, build_field_layer
 from src.geo.edit import build_geometry_cell_state
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
-from src.worldgen.mw import generate_mw_cell_payload
+from src.worldgen.mw.mw_cell_generator import (
+    generate_mw_cell_payload,
+    normalize_star_system_artifact_rows,
+    normalize_star_system_seed_rows,
+)
 
 
 REFUSAL_GEO_WORLDGEN_INVALID = "refusal.geo.worldgen_invalid"
@@ -30,7 +34,7 @@ _REALISM_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "realism_prof
 _GENERATOR_VERSION_REGISTRY_REL = os.path.join("data", "registries", "generator_version_registry.json")
 _WORLDGEN_CACHE: Dict[str, dict] = {}
 _WORLDGEN_CACHE_MAX = 256
-_WORLDGEN_VERSION = "GEO8-4"
+_WORLDGEN_VERSION = "GEO8-5"
 
 
 def _repo_root() -> str:
@@ -528,25 +532,49 @@ def _spawn_object_row(
 
 
 def _system_seed_rows(rows: object) -> List[dict]:
-    if not isinstance(rows, list):
-        rows = []
     out: Dict[str, dict] = {}
-    for row in rows:
-        if not isinstance(row, Mapping):
-            continue
+    for row in normalize_star_system_seed_rows(rows):
         local_index = int(max(0, _as_int(row.get("local_index", 0), 0)))
+        extensions = _as_map(row.get("extensions"))
         normalized = {
+            "cell_key": _as_map(row.get("cell_key")),
             "local_index": local_index,
-            "local_subkey": str(row.get("local_subkey", "star_system:{}".format(local_index))).strip() or "star_system:{}".format(local_index),
-            "seed_subkey": str(row.get("seed_subkey", "")).strip(),
-            "system_seed": str(row.get("system_seed", "")).strip(),
-            "object_id_hash": str(row.get("object_id_hash", "")).strip(),
-            "metallicity_permille": int(max(0, _as_int(row.get("metallicity_permille", 0), 0))),
-            "age_bucket": str(row.get("age_bucket", "")).strip(),
-            "imf_bucket": str(row.get("imf_bucket", "")).strip(),
-            "habitable_filter_bias_permille": int(max(0, _as_int(row.get("habitable_filter_bias_permille", 0), 0))),
+            "local_subkey": str(extensions.get("local_subkey", "star_system:{}".format(local_index))).strip() or "star_system:{}".format(local_index),
+            "seed_subkey": str(extensions.get("seed_subkey", "")).strip(),
+            "system_seed": str(row.get("system_seed_value", "")).strip(),
+            "system_seed_value": str(row.get("system_seed_value", "")).strip(),
+            "object_id": str(row.get("object_id", "")).strip(),
+            "object_id_hash": str(row.get("object_id", "")).strip(),
+            "metallicity_permille": int(max(0, _as_int(extensions.get("metallicity_permille", 0), 0))),
+            "age_bucket": str(extensions.get("age_bucket", "")).strip(),
+            "imf_bucket": str(extensions.get("imf_bucket", "")).strip(),
+            "habitable_filter_bias_permille": int(max(0, _as_int(extensions.get("habitable_filter_bias_permille", 0), 0))),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": extensions,
         }
         out["{:08d}".format(local_index)] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _star_system_artifact_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for row in normalize_star_system_artifact_rows(rows):
+        object_id = str(row.get("object_id", "")).strip()
+        if not object_id:
+            continue
+        extensions = _as_map(row.get("extensions"))
+        normalized = {
+            "object_id": object_id,
+            "object_id_hash": object_id,
+            "system_seed_value": str(row.get("system_seed_value", "")).strip(),
+            "metallicity_proxy": _as_map(row.get("metallicity_proxy")),
+            "galaxy_position_ref": _as_map(row.get("galaxy_position_ref")),
+            "local_index": int(max(0, _as_int(extensions.get("local_index", 0), 0))),
+            "local_subkey": str(extensions.get("local_subkey", "")).strip(),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": extensions,
+        }
+        out[object_id] = normalized
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
@@ -760,6 +788,11 @@ def generate_worldgen_result(
         refinement_level=refinement_level,
         system_seed_rows=system_seed_rows,
     )
+    star_system_artifact_rows = (
+        _star_system_artifact_rows(mw_cell_payload.get("star_system_artifact_rows"))
+        if refinement_level >= 1
+        else []
+    )
     field_layers = _build_field_layers_for_result(cell_key)
     field_initializations = _build_field_initializations(cell_key, planet_seed)
     geometry_initializations = _build_geometry_initializations(cell_key, surface_seed, resolved_realism_profile_id, refinement_level)
@@ -778,6 +811,9 @@ def generate_worldgen_result(
             "generated_object_rows": generated_object_rows,
             "mw_cell_summary": _as_map(mw_cell_payload.get("cell_summary")),
             "generated_system_seed_rows": system_seed_rows,
+            "generated_star_system_artifact_rows": star_system_artifact_rows,
+            "star_system_artifact_ids": [str(row.get("object_id", "")).strip() for row in star_system_artifact_rows],
+            "star_system_artifact_seed_values": [str(row.get("system_seed_value", "")).strip() for row in star_system_artifact_rows],
             "galaxy_priors_id": str(mw_cell_payload.get("galaxy_priors_id", "")).strip(),
             "named_rng_streams": list(rng_policy.get("streams") or []),
         },
@@ -792,6 +828,7 @@ def generate_worldgen_result(
         "field_initializations": field_initializations,
         "geometry_initializations": geometry_initializations,
         "generated_system_seed_rows": system_seed_rows,
+        "generated_star_system_artifact_rows": star_system_artifact_rows,
         "mw_cell_summary": _as_map(mw_cell_payload.get("cell_summary")),
         "galaxy_priors_id": str(mw_cell_payload.get("galaxy_priors_id", "")).strip(),
         "generator_version_id": resolved_generator_version_id,
