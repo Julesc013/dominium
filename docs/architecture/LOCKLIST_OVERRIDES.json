@@ -17,6 +17,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "CLEAN-2 status header insertion on frozen docs; no semantic content changes.",
       "expires": "2026-02-15"
+    },
+    {
+      "id": "OVR-2026-03-09-MVP0-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the MVP-0 scope constitution in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-09"
     }
   ]
 }

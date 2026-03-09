@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-10
+Last Reviewed: 2026-03-09
 Supersedes: none
 Superseded By: none
 
@@ -17,3 +17,5 @@ Superseded By: none
 - Update policy:
   - when any identity input changes, regenerate `docs/audit/identity_fingerprint.json`
   - include this explanation artifact in the same change.
+- Current change note:
+  - 2026-03-09: refreshed for MVP-0 scope constitution registration in `docs/architecture/CANON_INDEX.md`
