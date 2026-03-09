@@ -590,6 +590,7 @@ def _surface_tile_descriptor(
         "insolation_value": int(insolation_value),
         "material_baseline_id": material_baseline_id,
         "biome_stub_id": biome_stub_id,
+        "atmosphere_class_id": atmosphere_class_id,
         "height_proxy": int(height_proxy),
         "elevation_params_ref": dict(elevation_params_ref),
         "surface_plan_extensions": surface_plan_extensions,
@@ -752,6 +753,7 @@ def generate_mw_surface_l3_payload(
     insolation_value = int(tile_descriptor.get("insolation_value", 0))
     material_baseline_id = str(tile_descriptor.get("material_baseline_id", "")).strip()
     biome_stub_id = str(tile_descriptor.get("biome_stub_id", "")).strip()
+    atmosphere_class_id = str(tile_descriptor.get("atmosphere_class_id", "")).strip()
     height_proxy = int(tile_descriptor.get("height_proxy", 0))
     elevation_params_ref = _as_map(tile_descriptor.get("elevation_params_ref"))
     surface_plan_extensions = _as_map(tile_descriptor.get("surface_plan_extensions"))

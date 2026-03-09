@@ -700,6 +700,7 @@ from src.geo.edit import (
     normalize_geometry_edit_event,
     normalize_geometry_edit_event_rows,
 )
+from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_neighbors
 from src.geo.worldgen import (
     DEFAULT_GENERATOR_VERSION_ID,
     DEFAULT_REALISM_PROFILE_ID,
@@ -733,6 +734,14 @@ from src.worldgen.mw.mw_system_refiner_l2 import (
     normalize_system_l2_summary_rows,
 )
 from src.worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifact_rows
+from src.worldgen.earth import (
+    DEFAULT_HYDROLOGY_PARAMS_ID,
+    apply_hydrology_to_surface_tile_artifact,
+    build_fluid_channel_guidance,
+    build_poll_transport_stub,
+    compute_hydrology_window,
+    hydrology_params_rows,
+)
 from src.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
@@ -1651,6 +1660,10 @@ def _as_int(value: object, default_value: int = 0) -> int:
         return int(value)
     except (TypeError, ValueError):
         return int(default_value)
+
+
+def _as_map(value: object) -> dict:
+    return dict(value or {}) if isinstance(value, Mapping) else {}
 
 
 def _mechanics_failure_state(value: object) -> str:
@@ -4270,6 +4283,334 @@ def _append_worldgen_result(
         state["worldgen_surface_tile_artifacts"] = [dict(current_by_id[key]) for key in sorted(current_by_id.keys())]
     _append_worldgen_result_artifact(state, normalized)
     return dict(next((row for row in merged if str(row.get("result_id", "")).strip() == result_id), normalized))
+
+
+def _runtime_geo_cell_key_hash(value: object) -> str:
+    row = _coerce_cell_key(value)
+    return canonical_sha256(_semantic_cell_key(row)) if row else ""
+
+
+def _runtime_neighbor_window(center_cell_key: Mapping[str, object], radius: int) -> List[dict]:
+    center = _coerce_cell_key(center_cell_key)
+    if not center:
+        return []
+    payload = geo_cell_key_neighbors(center, int(max(0, _as_int(radius, 0))))
+    rows = [dict(center)]
+    if str(payload.get("result", "")) == "complete":
+        rows.extend(dict(row) for row in list(payload.get("neighbors") or []) if isinstance(row, Mapping))
+    deduped = {}
+    for row in rows:
+        cell_hash = _runtime_geo_cell_key_hash(row)
+        if cell_hash:
+            deduped[cell_hash] = dict(row)
+    return [dict(deduped[key]) for key in sorted(deduped.keys())]
+
+
+def _surface_snapshot_from_artifact_row(
+    artifact_row: Mapping[str, object],
+    *,
+    geometry_rows_by_key: Mapping[str, object] | None = None,
+) -> dict:
+    row = dict(artifact_row or {})
+    cell_key = _coerce_cell_key(row.get("tile_cell_key"))
+    if not cell_key:
+        return {}
+    extensions = _as_map(row.get("extensions"))
+    geometry_row = dict((dict(geometry_rows_by_key or {})).get(_runtime_geo_cell_key_hash(cell_key)) or {})
+    surface_class_id = str(extensions.get("surface_class_id", "")).strip()
+    material_baseline_id = str(row.get("material_baseline_id", "")).strip()
+    biome_stub_id = str(row.get("biome_stub_id", "")).strip()
+    if not surface_class_id:
+        if material_baseline_id == "material.water" or biome_stub_id == "biome.stub.ocean":
+            surface_class_id = "surface.class.ocean"
+        elif biome_stub_id == "biome.stub.ice_cap":
+            surface_class_id = "surface.class.ice"
+        else:
+            surface_class_id = "surface.class.land"
+    effective_height_proxy = int(
+        max(
+            0,
+            _as_int(
+                geometry_row.get(
+                    "height_proxy",
+                    extensions.get(
+                        "hydrology_effective_height_proxy",
+                        _as_map(row.get("elevation_params_ref")).get("height_proxy", 0),
+                    ),
+                ),
+                0,
+            ),
+        )
+    )
+    return {
+        "tile_cell_key": dict(cell_key),
+        "surface_class_id": surface_class_id,
+        "material_baseline_id": material_baseline_id,
+        "biome_stub_id": biome_stub_id,
+        "effective_height_proxy": effective_height_proxy,
+        "elevation_params_ref": _as_map(row.get("elevation_params_ref")),
+        "extensions": {
+            "surface_class_id": surface_class_id,
+            "source": str(extensions.get("source", "")).strip() or "EARTH1-5",
+        },
+    }
+
+
+def _fallback_surface_snapshot(
+    cell_key: Mapping[str, object],
+    *,
+    geometry_rows_by_key: Mapping[str, object] | None = None,
+) -> dict:
+    key_row = _coerce_cell_key(cell_key)
+    if not key_row:
+        return {}
+    geometry_row = dict((dict(geometry_rows_by_key or {})).get(_runtime_geo_cell_key_hash(key_row)) or {})
+    material_id = str(geometry_row.get("material_id", "material.stone_basic")).strip() or "material.stone_basic"
+    surface_class_id = "surface.class.ocean" if material_id == "material.water" else "surface.class.land"
+    biome_stub_id = "biome.stub.ocean" if surface_class_id == "surface.class.ocean" else "biome.stub.temperate"
+    return {
+        "tile_cell_key": dict(key_row),
+        "surface_class_id": surface_class_id,
+        "material_baseline_id": material_id,
+        "biome_stub_id": biome_stub_id,
+        "effective_height_proxy": int(max(0, _as_int(geometry_row.get("height_proxy", 0), 0))),
+        "elevation_params_ref": {"height_proxy": int(max(0, _as_int(geometry_row.get("height_proxy", 0), 0)))},
+        "extensions": {
+            "surface_class_id": surface_class_id,
+            "source": "EARTH1-5",
+        },
+    }
+
+
+def _hydrology_params_registry_payload(policy_context: dict | None) -> dict:
+    return _field_registry_payload(
+        policy_context=policy_context,
+        key="hydrology_params_registry",
+        registry_rel_path="data/registries/hydrology_params_registry.json",
+        entry_key="hydrology_params",
+    )
+
+
+def _recompute_surface_tile_hydrology(
+    *,
+    state: dict,
+    dirty_tile_cell_keys: object,
+    geometry_cell_states: object,
+    current_tick: int,
+    process_id: str,
+    policy_context: dict | None = None,
+) -> dict:
+    artifact_rows = list(_ensure_worldgen_surface_tile_artifact_rows(state))
+    if not artifact_rows:
+        payload = {
+            "result": "complete",
+            "dirty_tile_count": 0,
+            "recomputed_tile_count": 0,
+            "dirty_tile_cell_keys": [],
+            "recomputed_tile_ids": [],
+            "recomputed_tile_cell_keys": [],
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return payload
+
+    hydrology_registry = _hydrology_params_registry_payload(policy_context)
+    hydrology_rows_by_id = hydrology_params_rows(hydrology_registry)
+    max_local_radius = max(
+        1,
+        max(
+            int(max(1, _as_int(_as_map(_as_map(row).get("extensions")).get("local_recompute_radius", 1), 1)))
+            for row in list(hydrology_rows_by_id.values()) or [{}]
+        ),
+    )
+    geometry_rows_by_key = geometry_cell_state_rows_by_key(geometry_cell_states)
+    current_artifacts_by_id = dict(
+        (str(row.get("tile_object_id", "")).strip(), dict(row))
+        for row in artifact_rows
+        if isinstance(row, Mapping) and str(row.get("tile_object_id", "")).strip()
+    )
+    current_artifacts_by_cell_hash = dict(
+        (_runtime_geo_cell_key_hash(row.get("tile_cell_key")), dict(row))
+        for row in artifact_rows
+        if isinstance(row, Mapping) and _runtime_geo_cell_key_hash(row.get("tile_cell_key"))
+    )
+    dirty_window_hashes = set()
+    dirty_rows = []
+    for raw in list(dirty_tile_cell_keys or []):
+        key_row = _coerce_cell_key(raw)
+        if not key_row:
+            continue
+        for neighbor_row in _runtime_neighbor_window(key_row, max_local_radius):
+            dirty_window_hashes.add(_runtime_geo_cell_key_hash(neighbor_row))
+        dirty_rows.append(dict(key_row))
+    if not dirty_rows:
+        payload = {
+            "result": "complete",
+            "dirty_tile_count": 0,
+            "recomputed_tile_count": 0,
+            "dirty_tile_cell_keys": [],
+            "recomputed_tile_ids": [],
+            "recomputed_tile_cell_keys": [],
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return payload
+
+    recompute_center_rows = [
+        dict(row)
+        for row in artifact_rows
+        if _runtime_geo_cell_key_hash(row.get("tile_cell_key")) in dirty_window_hashes
+    ]
+    recompute_center_rows = sorted(
+        recompute_center_rows,
+        key=lambda row: (
+            _runtime_geo_cell_key_hash(row.get("tile_cell_key")),
+            str(row.get("tile_object_id", "")),
+        ),
+    )
+    if not recompute_center_rows:
+        payload = {
+            "result": "complete",
+            "dirty_tile_count": int(len(dirty_rows)),
+            "recomputed_tile_count": 0,
+            "dirty_tile_cell_keys": [dict(row) for row in dirty_rows],
+            "recomputed_tile_ids": [],
+            "recomputed_tile_cell_keys": [],
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return payload
+
+    realism_profile_registry = _realism_profile_registry_payload(policy_context)
+    generator_version_registry = _generator_version_registry_payload(policy_context)
+    universe_identity = dict(state.get("universe_identity") or {})
+    generated_snapshot_cache: Dict[str, dict] = {}
+
+    def _resolve_snapshot(tile_cell_key: Mapping[str, object]) -> dict:
+        key_row = _coerce_cell_key(tile_cell_key)
+        if not key_row:
+            return {}
+        cell_hash = _runtime_geo_cell_key_hash(key_row)
+        cached_artifact = dict(current_artifacts_by_cell_hash.get(cell_hash) or {})
+        if cached_artifact:
+            return _surface_snapshot_from_artifact_row(
+                cached_artifact,
+                geometry_rows_by_key=geometry_rows_by_key,
+            )
+        if cell_hash in generated_snapshot_cache:
+            return dict(generated_snapshot_cache[cell_hash])
+        fallback_snapshot = _fallback_surface_snapshot(key_row, geometry_rows_by_key=geometry_rows_by_key)
+        try:
+            request_row = build_worldgen_request(
+                request_id="worldgen.hydrology.{}".format(cell_hash[:16]),
+                geo_cell_key=key_row,
+                refinement_level=3,
+                reason="query",
+                extensions={
+                    "source_process_id": process_id,
+                    "hydrology_probe": True,
+                },
+            )
+        except ValueError:
+            generated_snapshot_cache[cell_hash] = dict(fallback_snapshot)
+            return dict(fallback_snapshot)
+        generated = generate_worldgen_result(
+            universe_identity=universe_identity,
+            worldgen_request=request_row,
+            realism_profile_registry_payload=realism_profile_registry,
+            generator_version_registry_payload=generator_version_registry,
+            current_tick=int(max(0, _as_int(current_tick, 0))),
+            cache_enabled=False,
+        )
+        if str(generated.get("result", "")) != "complete":
+            generated_snapshot_cache[cell_hash] = dict(fallback_snapshot)
+            return dict(fallback_snapshot)
+        generated_surface_rows = normalize_surface_tile_artifact_rows(
+            list(generated.get("generated_surface_tile_artifact_rows") or [])
+        )
+        if not generated_surface_rows:
+            generated_snapshot_cache[cell_hash] = dict(fallback_snapshot)
+            return dict(fallback_snapshot)
+        snapshot = _surface_snapshot_from_artifact_row(
+            generated_surface_rows[0],
+            geometry_rows_by_key=geometry_rows_by_key,
+        )
+        generated_snapshot_cache[cell_hash] = dict(snapshot or fallback_snapshot)
+        return dict(snapshot or fallback_snapshot)
+
+    updated_rows = []
+    for artifact_row in recompute_center_rows:
+        cell_key = _coerce_cell_key(artifact_row.get("tile_cell_key"))
+        if not cell_key:
+            continue
+        extensions = _as_map(artifact_row.get("extensions"))
+        hydrology_params_id = str(extensions.get("hydrology_params_id", "")).strip() or DEFAULT_HYDROLOGY_PARAMS_ID
+        hydrology_row = _as_map(hydrology_rows_by_id.get(hydrology_params_id))
+        if not hydrology_row:
+            continue
+        hydrology_payload = compute_hydrology_window(
+            center_tile_cell_key=cell_key,
+            hydrology_params_row=hydrology_row,
+            resolve_tile_snapshot=_resolve_snapshot,
+        )
+        center_row = _as_map(hydrology_payload.get("center_tile"))
+        updated_artifact = apply_hydrology_to_surface_tile_artifact(
+            artifact_row=artifact_row,
+            hydrology_center_row=center_row,
+            hydrology_params_id=hydrology_params_id,
+        )
+        hydrology_rows_by_hash = dict(
+            (
+                _runtime_geo_cell_key_hash(row.get("tile_cell_key")),
+                dict(row),
+            )
+            for row in list(hydrology_payload.get("window_rows") or [])
+            if isinstance(row, Mapping) and _runtime_geo_cell_key_hash(row.get("tile_cell_key"))
+        )
+        updated_artifact["extensions"] = {
+            **_as_map(updated_artifact.get("extensions")),
+            "poll_transport_stub": build_poll_transport_stub(
+                artifact_row=updated_artifact,
+                tile_rows_by_cell_hash=hydrology_rows_by_hash,
+            ),
+            "fluid_channel_guidance": build_fluid_channel_guidance(artifact_row=updated_artifact),
+            "hydrology_analysis_radius": int(max(0, _as_int(hydrology_payload.get("analysis_radius", 0), 0))),
+            "hydrology_window_fingerprint": str(hydrology_payload.get("window_fingerprint", "")).strip(),
+            "hydrology_process_id": str(process_id).strip(),
+            "hydrology_source": "EARTH1-5",
+        }
+        updated_artifact["deterministic_fingerprint"] = canonical_sha256(
+            dict(updated_artifact, deterministic_fingerprint="")
+        )
+        tile_object_id = str(updated_artifact.get("tile_object_id", "")).strip()
+        if not tile_object_id:
+            continue
+        current_artifacts_by_id[tile_object_id] = dict(updated_artifact)
+        current_artifacts_by_cell_hash[_runtime_geo_cell_key_hash(cell_key)] = dict(updated_artifact)
+        updated_rows.append(dict(updated_artifact))
+
+    if updated_rows:
+        state["worldgen_surface_tile_artifacts"] = [
+            dict(row)
+            for row in normalize_surface_tile_artifact_rows(list(current_artifacts_by_id.values()))
+        ]
+        for row in updated_rows:
+            _append_surface_tile_artifact_model(state, row)
+
+    payload = {
+        "result": "complete",
+        "dirty_tile_count": int(len(dirty_rows)),
+        "recomputed_tile_count": int(len(updated_rows)),
+        "dirty_tile_cell_keys": [dict(row) for row in dirty_rows],
+        "recomputed_tile_ids": _sorted_tokens([row.get("tile_object_id") for row in updated_rows]),
+        "recomputed_tile_cell_keys": [
+            dict(row.get("tile_cell_key") or {})
+            for row in sorted(updated_rows, key=lambda item: str(item.get("tile_object_id", "")))
+        ],
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
 
 
 def _refresh_worldgen_hash_chains(state: dict) -> None:
@@ -45098,6 +45439,16 @@ def execute_intent(
             system_l2_summary_rows,
             surface_tile_artifact_rows,
         )
+        hydrology_refresh = {}
+        if surface_tile_artifact_rows and not existing_result:
+            hydrology_refresh = _recompute_surface_tile_hydrology(
+                state=state,
+                dirty_tile_cell_keys=[dict(row.get("tile_cell_key") or {}) for row in surface_tile_artifact_rows],
+                geometry_cell_states=geometry_cell_states,
+                current_tick=int(current_tick),
+                process_id=process_id,
+                policy_context=policy_context,
+            )
         _refresh_worldgen_hash_chains(state)
         result_metadata = {
             "request_id": str(request_row.get("request_id", "")).strip(),
@@ -45117,6 +45468,8 @@ def execute_intent(
             "geometry_initialization_count": int(len(list(geometry_initializations or []))),
             "field_initializations_applied": int(field_initializations_applied),
             "geometry_initializations_applied": int(geometry_initializations_applied),
+            "hydrology_recomputed_tile_count": int(max(0, _as_int(hydrology_refresh.get("recomputed_tile_count", 0), 0))),
+            "hydrology_recomputed_tile_ids": list(hydrology_refresh.get("recomputed_tile_ids") or []),
             "worldgen_request_hash_chain": str(state.get("worldgen_request_hash_chain", "")).strip(),
             "worldgen_result_hash_chain": str(state.get("worldgen_result_hash_chain", "")).strip(),
             "worldgen_spawned_object_hash_chain": str(state.get("worldgen_spawned_object_hash_chain", "")).strip(),
@@ -45511,6 +45864,14 @@ def execute_intent(
             edit_id=str(geometry_event.get("edit_id", "")).strip(),
             material_registry=material_class_registry,
         )
+        hydrology_refresh = _recompute_surface_tile_hydrology(
+            state=state,
+            dirty_tile_cell_keys=[dict(row.get("geo_cell_key") or {}) for row in list(geometry_result.get("updated_geometry_cell_states") or [])],
+            geometry_cell_states=geometry_cell_states,
+            current_tick=int(current_tick),
+            process_id=process_id,
+            policy_context=policy_context,
+        )
         collapse_explain = {}
         if int(max(0, _as_int(coupling_summary.get("max_hazard_value", 0), 0))) >= 500:
             collapse_explain = _append_geometry_explain_artifact(
@@ -45557,6 +45918,9 @@ def execute_intent(
             "coupling_hazard_count": int(max(0, _as_int(coupling_summary.get("hazard_count", 0), 0))),
             "coupling_flow_adjustment_count": int(max(0, _as_int(coupling_summary.get("flow_adjustment_count", 0), 0))),
             "max_instability_hazard": int(max(0, _as_int(coupling_summary.get("max_hazard_value", 0), 0))),
+            "hydrology_dirty_tile_count": int(max(0, _as_int(hydrology_refresh.get("dirty_tile_count", 0), 0))),
+            "hydrology_recomputed_tile_count": int(max(0, _as_int(hydrology_refresh.get("recomputed_tile_count", 0), 0))),
+            "hydrology_recomputed_tile_ids": list(hydrology_refresh.get("recomputed_tile_ids") or []),
             "micro_chunk_count": int(max(0, _as_int(micro_chunk_result.get("micro_chunk_count", 0), 0))),
             "compaction_marker_id": (
                 None
