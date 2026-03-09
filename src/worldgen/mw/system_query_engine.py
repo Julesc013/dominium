@@ -25,6 +25,11 @@ from src.worldgen.mw.mw_cell_generator import (
     galaxy_priors_rows,
     normalize_star_system_artifact_rows,
 )
+from src.worldgen.mw.mw_system_refiner_l2 import (
+    normalize_planet_basic_artifact_rows,
+    normalize_star_artifact_rows,
+    normalize_system_l2_summary_rows,
+)
 
 
 DEFAULT_QUERY_MAX_CELLS = 256
@@ -199,6 +204,10 @@ def _normalized_query_row(artifact_row: Mapping[str, object]) -> dict:
         "habitable_likely": bool(extensions.get("habitable_likely", False)),
         "age_bucket": str(extensions.get("age_bucket", "")).strip(),
         "imf_bucket": str(extensions.get("imf_bucket", "")).strip(),
+        "star_mass_milli_solar": int(max(0, _as_int(raw.get("star_mass_milli_solar", 0), 0))),
+        "planet_count": int(max(0, _as_int(raw.get("planet_count", 0), 0))),
+        "candidate_habitable_planet_count": int(max(0, _as_int(raw.get("candidate_habitable_planet_count", 0), 0))),
+        "l2_available": bool(raw.get("l2_available", False)),
         "deterministic_fingerprint": "",
         "extensions": {"source": "MW1-4"},
     }
@@ -222,11 +231,12 @@ def _cell_query_result(
     *,
     universe_identity: Mapping[str, object] | None,
     geo_cell_key: Mapping[str, object],
+    refinement_level: int,
     cache_enabled: bool,
 ) -> dict:
     request = build_worldgen_request_for_query(
         geo_cell_key=geo_cell_key,
-        refinement_level=1,
+        refinement_level=int(max(1, refinement_level)),
         extensions={"query_surface_id": "mw.system_query.cell", "source": MW_CELL_GENERATOR_VERSION},
     )
     return generate_worldgen_result(
@@ -235,6 +245,44 @@ def _cell_query_result(
         realism_profile_id=str(_as_map(universe_identity).get("realism_profile_id", "")).strip() or DEFAULT_REALISM_PROFILE_ID,
         cache_enabled=bool(cache_enabled),
     )
+
+
+def _l2_enrichment_map(generated: Mapping[str, object] | None) -> Dict[str, dict]:
+    summary_rows = normalize_system_l2_summary_rows(_as_map(generated).get("generated_system_l2_summary_rows"))
+    star_rows = normalize_star_artifact_rows(_as_map(generated).get("generated_star_artifact_rows"))
+    basic_rows = normalize_planet_basic_artifact_rows(_as_map(generated).get("generated_planet_basic_artifact_rows"))
+    star_mass_by_id = dict(
+        (
+            str(row.get("object_id", "")).strip(),
+            int(max(0, _as_int(_as_map(row.get("star_mass")).get("value", 0), 0))),
+        )
+        for row in star_rows
+        if str(row.get("object_id", "")).strip()
+    )
+    planet_basic_by_system: Dict[str, List[dict]] = {}
+    for row in basic_rows:
+        extensions = _as_map(row.get("extensions"))
+        system_object_id = str(extensions.get("parent_system_object_id", "")).strip()
+        if system_object_id:
+            planet_basic_by_system.setdefault(system_object_id, []).append(dict(row))
+    out: Dict[str, dict] = {}
+    for row in summary_rows:
+        system_object_id = str(row.get("system_object_id", "")).strip()
+        if not system_object_id:
+            continue
+        star_object_id = str(row.get("star_object_id", "")).strip()
+        basic_for_system = sorted(
+            planet_basic_by_system.get(system_object_id, []),
+            key=lambda item: str(item.get("object_id", "")),
+        )
+        candidate_habitable_count = sum(1 for item in basic_for_system if bool(_as_map(item.get("extensions")).get("habitable_likely", False)))
+        out[system_object_id] = {
+            "star_mass_milli_solar": int(max(0, _as_int(row.get("star_mass_milli_solar", 0), 0))) or int(max(0, _as_int(star_mass_by_id.get(star_object_id, 0), 0))),
+            "planet_count": int(max(0, _as_int(row.get("planet_count", 0), 0))),
+            "candidate_habitable_planet_count": int(candidate_habitable_count),
+            "l2_available": True,
+        }
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
 
 
 def _galactic_cell_key_from_position(
@@ -268,6 +316,7 @@ def list_systems_in_cell(
     *,
     universe_identity: Mapping[str, object] | None,
     geo_cell_key: Mapping[str, object],
+    refinement_level: int = 1,
     cache_enabled: bool = True,
 ) -> dict:
     cell_key = _coerce_cell_key(geo_cell_key)
@@ -276,14 +325,23 @@ def list_systems_in_cell(
     generated = _cell_query_result(
         universe_identity=universe_identity,
         geo_cell_key=cell_key,
+        refinement_level=refinement_level,
         cache_enabled=cache_enabled,
     )
     if str(generated.get("result", "")) != "complete":
         return _refusal("cell query failed", {"generated": dict(generated)})
     systems = _normalized_query_rows(generated.get("generated_star_system_artifact_rows"))
+    if int(max(1, refinement_level)) >= 2:
+        enrichment = _l2_enrichment_map(generated)
+        systems = [
+            dict(dict(row), **dict(enrichment.get(str(dict(row).get("object_id", "")).strip(), {})))
+            for row in systems
+        ]
+        systems = _normalized_query_rows(systems)
     payload = {
         "result": "complete",
         "geo_cell_key": cell_key,
+        "refinement_level": int(max(1, refinement_level)),
         "systems": systems,
         "count": int(len(systems)),
         "mw_cell_summary": _as_map(generated.get("mw_cell_summary")),
@@ -418,24 +476,67 @@ def query_nearest_system(
     return payload
 
 
-def filter_habitable_candidates(*, system_rows: object, criteria_stub: Mapping[str, object] | None = None) -> dict:
+def filter_habitable_candidates(
+    *,
+    system_rows: object,
+    criteria_stub: Mapping[str, object] | None = None,
+    universe_identity: Mapping[str, object] | None = None,
+    cache_enabled: bool = True,
+) -> dict:
     criteria = _as_map(criteria_stub)
     min_habitable_bias = int(max(0, min(1000, _as_int(criteria.get("min_habitable_bias_permille", 650), 650))))
     metallicity_floor = int(max(0, _as_int(criteria.get("metallicity_floor_permille", 700), 700)))
     metallicity_ceiling = int(max(metallicity_floor, _as_int(criteria.get("metallicity_ceiling_permille", 1300), 1300)))
+    min_star_mass = int(max(0, _as_int(criteria.get("min_star_mass_milli_solar", 600), 600)))
+    max_star_mass = int(max(min_star_mass, _as_int(criteria.get("max_star_mass_milli_solar", 1300), 1300)))
+    min_habitable_planets = int(max(0, _as_int(criteria.get("min_habitable_planets", 1), 1)))
     limit = int(max(1, _as_int(criteria.get("limit", 32), 32)))
+    rows = _normalized_query_rows(system_rows)
+    if universe_identity is not None:
+        enriched_by_id: Dict[str, dict] = {}
+        seen_cells: Dict[str, dict] = {}
+        for row in rows:
+            cell_key = _coerce_cell_key(row.get("cell_key"))
+            if cell_key:
+                seen_cells[canonical_sha256(_semantic_cell_key(cell_key))] = cell_key
+        for key in sorted(seen_cells.keys(), key=lambda token: _cell_sort_tuple(seen_cells[token])):
+            listing = list_systems_in_cell(
+                universe_identity=universe_identity,
+                geo_cell_key=seen_cells[key],
+                refinement_level=2,
+                cache_enabled=cache_enabled,
+            )
+            if str(listing.get("result", "")) != "complete":
+                continue
+            for row in _as_list(listing.get("systems")):
+                if not isinstance(row, Mapping):
+                    continue
+                object_id = str(dict(row).get("object_id", "")).strip()
+                if object_id:
+                    enriched_by_id[object_id] = dict(row)
+        rows = [dict(enriched_by_id.get(str(row.get("object_id", "")).strip(), row)) for row in rows]
+        rows = _normalized_query_rows(rows)
     candidates = []
-    for row in _normalized_query_rows(system_rows):
+    for row in rows:
         metallicity_permille = int(max(0, _as_int(row.get("metallicity_permille", 0), 0)))
         habitable_bias = int(max(0, _as_int(row.get("habitable_filter_bias_permille", 0), 0)))
+        star_mass = int(max(0, _as_int(row.get("star_mass_milli_solar", 0), 0)))
+        candidate_habitable_planet_count = int(max(0, _as_int(row.get("candidate_habitable_planet_count", 0), 0)))
+        l2_available = bool(row.get("l2_available", False))
         if habitable_bias < min_habitable_bias:
             continue
         if metallicity_permille < metallicity_floor or metallicity_permille > metallicity_ceiling:
+            continue
+        if l2_available and star_mass and (star_mass < min_star_mass or star_mass > max_star_mass):
+            continue
+        if l2_available and candidate_habitable_planet_count < min_habitable_planets:
             continue
         candidates.append(dict(row))
     candidates = sorted(
         candidates,
         key=lambda row: (
+            -int(_as_int(row.get("candidate_habitable_planet_count", 0), 0)),
+            int(abs(_as_int(row.get("star_mass_milli_solar", 1000), 1000) - 1000)),
             -int(_as_int(row.get("habitable_filter_bias_permille", 0), 0)),
             -int(_as_int(row.get("metallicity_permille", 0), 0)),
             str(row.get("object_id", "")),
@@ -448,6 +549,9 @@ def filter_habitable_candidates(*, system_rows: object, criteria_stub: Mapping[s
             "min_habitable_bias_permille": min_habitable_bias,
             "metallicity_floor_permille": metallicity_floor,
             "metallicity_ceiling_permille": metallicity_ceiling,
+            "min_star_mass_milli_solar": min_star_mass,
+            "max_star_mass_milli_solar": max_star_mass,
+            "min_habitable_planets": min_habitable_planets,
             "limit": limit,
         },
         "candidates": candidates,

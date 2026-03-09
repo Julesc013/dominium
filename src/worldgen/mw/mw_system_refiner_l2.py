@@ -12,7 +12,6 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from src.geo.index.geo_index_engine import _coerce_cell_key
 from src.geo.index.object_id_engine import geo_object_id
-from src.worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
 
 
 DEFAULT_SYSTEM_PRIORS_ID = "priors.system_default_stub"
@@ -236,6 +235,30 @@ def normalize_system_l2_summary_rows(rows: object) -> List[dict]:
         if not normalized["deterministic_fingerprint"]:
             normalized["deterministic_fingerprint"] = canonical_sha256(dict(normalized, deterministic_fingerprint=""))
         out[system_object_id] = normalized
+    return [dict(out[key]) for key in sorted(out.keys())]
+
+
+def _normalize_star_system_artifact_rows(rows: object) -> List[dict]:
+    out: Dict[str, dict] = {}
+    for raw in list(rows or []):
+        if not isinstance(raw, Mapping):
+            continue
+        row = dict(raw)
+        object_id = str(row.get("object_id", "")).strip() or str(row.get("object_id_hash", "")).strip()
+        if not object_id:
+            continue
+        extensions = _normalized_extensions_map(row.get("extensions"))
+        normalized = {
+            "object_id": object_id,
+            "system_seed_value": str(row.get("system_seed_value", "")).strip() or str(row.get("system_seed", "")).strip(),
+            "metallicity_proxy": _as_map(row.get("metallicity_proxy")),
+            "galaxy_position_ref": _as_map(row.get("galaxy_position_ref")),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": extensions,
+        }
+        if not normalized["deterministic_fingerprint"]:
+            normalized["deterministic_fingerprint"] = canonical_sha256(dict(normalized, deterministic_fingerprint=""))
+        out[object_id] = normalized
     return [dict(out[key]) for key in sorted(out.keys())]
 
 
@@ -494,7 +517,7 @@ def generate_mw_system_l2_payload(
     object_rows: List[dict] = []
     summary_rows: List[dict] = []
 
-    for system_row in normalize_star_system_artifact_rows(star_system_artifact_rows):
+    for system_row in _normalize_star_system_artifact_rows(star_system_artifact_rows):
         system_object_id = str(system_row.get("object_id", "")).strip()
         system_seed_value = str(system_row.get("system_seed_value", "")).strip()
         if not system_object_id or not system_seed_value:
