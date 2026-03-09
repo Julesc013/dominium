@@ -302,6 +302,7 @@ EARTH_HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "hydrol
 EARTH_CLIMATE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_climate_params_registry.json")
 EARTH_TIDE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "tide_params_registry.json")
 EARTH_WIND_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "wind_params_registry.json")
+EARTH_WATER_VISUAL_POLICY_REGISTRY_REL = os.path.join("data", "registries", "water_visual_policy_registry.json")
 EARTH_SKY_MODEL_REGISTRY_REL = os.path.join("data", "registries", "sky_model_registry.json")
 EARTH_STARFIELD_POLICY_REGISTRY_REL = os.path.join("data", "registries", "starfield_policy_registry.json")
 EARTH_MILKYWAY_BAND_POLICY_REGISTRY_REL = os.path.join("data", "registries", "milkyway_band_policy_registry.json")
@@ -314,12 +315,14 @@ EARTH_HYDROLOGY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth1_probe
 EARTH_CLIMATE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth2_probe.py")
 EARTH_TIDE_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth3_probe.py")
 EARTH_WIND_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth7_probe.py")
+EARTH_WATER_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth8_probe.py")
 EARTH_SKY_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth4_probe.py")
 EARTH_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_earth_surface.py")
 EARTH_HYDROLOGY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_hydrology_window.py")
 EARTH_CLIMATE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_climate_window.py")
 EARTH_TIDE_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_tide_window.py")
 EARTH_WIND_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_wind_window.py")
+EARTH_WATER_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_water_view.py")
 EARTH_SKY_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_sky_view.py")
 EARTH_LIGHTING_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth5_probe.py")
 EARTH_LIGHTING_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_illumination_view.py")
@@ -328,8 +331,10 @@ EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODE
 EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
 EARTH_TIDE_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_TIDE_PROXY_MODEL.md")
 EARTH_WIND_PROXY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_WIND_PROXY_MODEL.md")
+EARTH_WATER_DOC_REL = os.path.join("docs", "worldgen", "EARTH_WATER_VISUAL_MODEL.md")
 EARTH_SKY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SKY_STARFIELD_MODEL.md")
 EARTH_LIGHTING_DOC_REL = os.path.join("docs", "worldgen", "EARTH_ILLUMINATION_SHADOW_MODEL.md")
+EARTH_WATER_VIEW_ENGINE_REL = os.path.join("src", "worldgen", "earth", "water", "water_view_engine.py")
 MW_CATALOG_PATH_TOKENS = (
     "data/world/milky_way/",
     "data/worldgen/real/milky_way/",
@@ -5355,6 +5360,123 @@ def check_no_ocean_pde_in_mvp(repo_root):
     return violations
 
 
+def check_water_view_derived_only(repo_root):
+    invariant_id = "INV-WATER-VIEW-DERIVED-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_WATER_VIEW_ENGINE_REL: (
+            "build_water_view_surface(",
+            '"source_kind": "derived.water_view_artifact"',
+            '"derived_only": True',
+            '"artifact_class": "DERIVED_VIEW"',
+            '"cache_policy_id": "cache.water.region_tick"',
+        ),
+        UX_VIEWER_SHELL_REL: (
+            "build_water_view_surface(",
+            "build_water_layer_source_payloads(",
+            '"water_view_surface": dict(water_view_surface)',
+            '"consumes_water_view_artifacts": True',
+        ),
+        RENDER_MODEL_ADAPTER_REL: (
+            "water_view_artifact: dict | None = None",
+            '"water_view_artifact": dict(water_view_artifact or {}),',
+        ),
+        SOFTWARE_RENDERER_REL: (
+            'model_extensions.get("water_view_artifact")',
+            "_draw_water_surface_overlay(",
+        ),
+        EARTH_WATER_DOC_REL: (
+            "EARTH-8 is derived-view only.",
+            "UI and renderers consume the derived artifact only.",
+            "Mutation of TruthModel is forbidden.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing water-view marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_fluid_sim_in_mvp(repo_root):
+    invariant_id = "INV-NO-FLUID-SIM-IN-MVP"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH_WATER_VIEW_ENGINE_REL: (
+            "water_view_artifact",
+            "tide_offset_value",
+            "flow_target_tile_key",
+        ),
+        EARTH_WATER_PROBE_TOOL_REL: (
+            "verify_water_view_replay",
+            "river_mask_report",
+            "tide_offset_report",
+        ),
+        EARTH_WATER_REPLAY_TOOL_REL: (
+            "Verify EARTH-8 water-view replay determinism.",
+        ),
+        EARTH_WATER_DOC_REL: (
+            "It does not simulate water volume, shoreline transport, or fluid pressure.",
+            "Renderer-side fluid simulation is forbidden in MVP.",
+            "no water volume simulation",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing no-fluid-sim marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("navier", "stokes", "shallow_water", "fluid_solve", "volume_sim", "wave_equation", "pressure_solve")
+    for rel in (
+        EARTH_WATER_VIEW_ENGINE_REL,
+        EARTH_WATER_PROBE_TOOL_REL,
+        EARTH_WATER_REPLAY_TOOL_REL,
+        SOFTWARE_RENDERER_REL,
+    ):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = (read_text(path) or "").lower()
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: fluid-sim token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_skyview_derived_only(repo_root):
     invariant_id = "INV-SKYVIEW-DERIVED-ONLY"
     if is_override_active(repo_root, invariant_id):
@@ -9118,6 +9240,7 @@ def main() -> int:
                 lambda: check_wind_deterministic(repo_root),
                 lambda: check_no_wallclock_wind(repo_root),
                 lambda: check_no_ocean_pde_in_mvp(repo_root),
+                lambda: check_no_fluid_sim_in_mvp(repo_root),
                 lambda: check_no_catalog_dependency(repo_root),
                 lambda: check_no_wallclock_sky(repo_root),
                 lambda: check_shadow_bounded(repo_root),
@@ -9145,6 +9268,7 @@ def main() -> int:
                 lambda: check_lens_profiled(repo_root),
                 lambda: check_skyview_derived_only(repo_root),
                 lambda: check_lighting_derived_only(repo_root),
+                lambda: check_water_view_derived_only(repo_root),
                 lambda: check_no_truth_read_in_render(repo_root),
             ],
         },

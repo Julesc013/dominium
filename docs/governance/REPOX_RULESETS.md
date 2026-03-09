@@ -148,6 +148,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-WIND-DETERMINISTIC`
 - `INV-NO-WALLCLOCK-WIND`
 - `INV-NO-OCEAN-PDE-IN-MVP`
+- `INV-WATER-VIEW-DERIVED-ONLY`
+- `INV-NO-FLUID-SIM-IN-MVP`
 - `INV-NO-CATALOG-DEPENDENCY`
 - `INV-NO-WALLCLOCK-SKY`
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
@@ -603,6 +605,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when viewer-shell or RenderModel surfaces stop routing illumination through the derived observer artifact path.
 - Preserves EARTH-5 illumination/shadow as a lens-first derived-view contract instead of an ad hoc renderer-side truth read.
 
+### INV-WATER-VIEW-DERIVED-ONLY
+
+- Fails when the governed EARTH-8 water runtime path loses the explicit `derived.water_view_artifact` markers, cache policy, or RenderModel handoff markers.
+- Fails when viewer-shell or renderer surfaces stop routing water presentation through the derived water-view artifact path.
+- Preserves EARTH-8 oceans, rivers, lakes, and tide offsets as a lens-first derived-view contract instead of an ad hoc renderer-side truth read.
+
 ### INV-NO-TRUTH-READ-IN-RENDER
 
 - Fails when governed render-adapter or renderer surfaces read truth/runtime state directly instead of consuming the derived illumination artifact.
@@ -614,6 +622,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the EARTH-5 horizon-shadow path loses fixed sample-count or step-distance markers.
 - Fails when the shadow model or documentation stops declaring bounded deterministic sampling.
 - Preserves the MVP horizon-shadow approximation as fixed-cost local sampling rather than hidden terrain traversal.
+
+### INV-NO-FLUID-SIM-IN-MVP
+
+- Fails when EARTH-8 water presentation introduces fluid or shoreline simulation tokens into the governed water-view, replay, or renderer path.
+- Fails when the water-visual doctrine stops declaring the layer as proxy-only, derived-only, and non-simulated.
+- Preserves EARTH-8 as a presentation stub that can later hand off to FLUID without implying an MVP solver.
 
 ### INV-SOL-PACK-MINIMAL-SIZE
 

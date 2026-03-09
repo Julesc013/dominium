@@ -920,6 +920,19 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-WATER-VIEW-DERIVED-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/water/water_view_engine.py",
+        "src/client/ui/viewer_shell.py",
+        "src/client/render/render_model_adapter.py",
+        "src/client/render/renderers/software_renderer.py",
+        "docs/worldgen/EARTH_WATER_VISUAL_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-water-view-derived-only",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-TRUTH-READ-IN-RENDER",
       "severity": "FAIL",
       "scope_paths": [
@@ -940,6 +953,20 @@
         "docs/worldgen/EARTH_ILLUMINATION_SHADOW_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-shadow-bounded",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-FLUID-SIM-IN-MVP",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/earth/water/water_view_engine.py",
+        "src/client/render/renderers/software_renderer.py",
+        "tools/worldgen/earth8_probe.py",
+        "tools/worldgen/tool_replay_water_view.py",
+        "data/registries/water_visual_policy_registry.json",
+        "docs/worldgen/EARTH_WATER_VISUAL_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-fluid-sim-in-mvp",
       "exemption_policy": "deny"
     },
     {
