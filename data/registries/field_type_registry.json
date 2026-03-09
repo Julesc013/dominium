@@ -47,6 +47,27 @@
       },
       {
         "schema_version": "1.0.0",
+        "field_type_id": "field.tide_height_proxy",
+        "field_id": "field.tide_height_proxy",
+        "description": "Macro Moon-driven tide height proxy scalar field.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 1,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EARTH3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "field_type_id": "field.pressure_stub",
         "field_id": "field.pressure_stub",
         "description": "Macro atmospheric pressure proxy scalar field.",

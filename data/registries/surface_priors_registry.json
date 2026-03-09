@@ -12,6 +12,7 @@
         "partition_profile_id": "geo.partition.atlas_tiles",
         "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
+        "tide_params_ref": "tide.earth_stub_default",
         "temperature_params": {
           "baseline_kelvin": 210,
           "insolation_weight_kelvin": 120,
@@ -66,6 +67,7 @@
         "partition_profile_id": "geo.partition.atlas_tiles",
         "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
+        "tide_params_ref": "tide.earth_stub_default",
         "temperature_params": {
           "baseline_kelvin": 210,
           "insolation_weight_kelvin": 120,
@@ -121,6 +123,7 @@
         "partition_profile_id": "geo.partition.grid_zd",
         "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
+        "tide_params_ref": "tide.earth_stub_default",
         "temperature_params": {
           "baseline_kelvin": 220,
           "insolation_weight_kelvin": 90,
@@ -172,6 +175,7 @@
         "partition_profile_id": "geo.partition.grid_zd",
         "earth_climate_params_ref": "climate.earth_stub_default",
         "hydrology_params_ref": "params.hydrology.default_stub",
+        "tide_params_ref": "tide.earth_stub_default",
         "temperature_params": {
           "baseline_kelvin": 220,
           "insolation_weight_kelvin": 90,

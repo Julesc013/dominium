@@ -1,0 +1,34 @@
+{
+  "schema_id": "dominium.registry.worldgen.tide_params_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.worldgen.tide_params_registry",
+    "registry_version": "1.0.0",
+    "tide_params": [
+      {
+        "schema_version": "1.0.0",
+        "tide_params_id": "tide.earth_stub_default",
+        "amplitude": 240,
+        "update_interval_ticks": 6,
+        "inland_damping_factor": 180,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Canonical EARTH-3 macro Moon-driven tide parameters for deterministic Earth tile refresh.",
+          "lunar_period_ticks": 273,
+          "day_length_ticks": 10,
+          "epoch_offset_ticks": 0,
+          "latitude_floor_permille": 450,
+          "latitude_peak_permille": 1000,
+          "ocean_factor_permille": 1000,
+          "coastal_boost_permille": 200,
+          "ice_factor_permille": 220,
+          "default_max_tiles_per_update": 32,
+          "source": "EARTH3-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EARTH3-2"
+    }
+  }
+}

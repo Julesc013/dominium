@@ -205,6 +205,20 @@
       },
       {
         "schema_version": "1.0.0",
+        "field_id": "field.tide_height_proxy",
+        "topology_profile_id": "geo.topology.sphere_surface_s2",
+        "partition_profile_id": "geo.partition.atlas_tiles",
+        "storage_kind": "tile",
+        "interpolation_policy_id": "interp.atlas_nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.spherical_geodesic_stub",
+          "binding_scope": "surface_s2",
+          "source": "EARTH3-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "field_id": "field.pressure_stub",
         "topology_profile_id": "geo.topology.sphere_surface_s2",
         "partition_profile_id": "geo.partition.atlas_tiles",
