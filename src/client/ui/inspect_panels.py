@@ -152,6 +152,33 @@ def build_field_panel(
     )
 
 
+def build_scan_result_panel(*, scan_result: Mapping[str, object] | None = None) -> dict:
+    result = _as_map(scan_result)
+    flags = _as_map(result.get("surface_flags"))
+    rows = [
+        {"key": "tool_id", "value": str(result.get("tool_id", "")).strip()},
+        {"key": "precision_mode", "value": str(result.get("precision_mode", "")).strip()},
+        {"key": "tile_cell_key", "value": _as_map(result.get("tile_cell_key"))},
+        {"key": "elevation_proxy_mm", "value": result.get("elevation_proxy_mm")},
+        {"key": "surface_flags", "value": flags},
+        {"key": "flow_target_tile_key", "value": _as_map(result.get("flow_target_tile_key"))},
+        {"key": "temperature", "value": result.get("temperature")},
+        {"key": "daylight", "value": result.get("daylight")},
+        {"key": "wind_vector", "value": _as_map(result.get("wind_vector"))},
+        {"key": "tide_height_proxy", "value": result.get("tide_height_proxy")},
+        {"key": "pollution", "value": result.get("pollution")},
+    ]
+    return _panel(
+        panel_id="panel.inspect.scan_result",
+        panel_kind="scan_result",
+        panel_title="Scanner",
+        visible=bool(result),
+        rows=rows,
+        summary="scanner {}".format(str(result.get("scan_id", "")).strip() or "<none>"),
+        extensions={"used_tool_ids": _sorted_strings(result.get("used_tool_ids"))},
+    )
+
+
 def build_terrain_collision_panel(
     *,
     body_state: Mapping[str, object] | None = None,
@@ -180,6 +207,35 @@ def build_terrain_collision_panel(
         visible=visible,
         rows=rows,
         summary="terrain collision debug" if visible else "terrain collision unavailable",
+    )
+
+
+def build_logic_tool_panel(
+    *,
+    logic_probe_surface: Mapping[str, object] | None = None,
+    logic_trace_surface: Mapping[str, object] | None = None,
+) -> dict:
+    probe = _as_map(logic_probe_surface)
+    trace = _as_map(logic_trace_surface)
+    rows = [
+        {"key": "probe_request_id", "value": str(_as_map(probe.get("probe_request")).get("request_id", "")).strip()},
+        {"key": "trace_request_id", "value": str(_as_map(trace.get("trace_request")).get("request_id", "")).strip()},
+        {"key": "trace_duration_ticks", "value": trace.get("bounded_duration_ticks")},
+        {"key": "probe_process_count", "value": len(_as_list(probe.get("process_sequence")))},
+        {"key": "trace_process_count", "value": len(_as_list(trace.get("process_sequence")))},
+    ]
+    return _panel(
+        panel_id="panel.inspect.logic_tools",
+        panel_kind="logic_tools",
+        panel_title="Logic Tools",
+        visible=bool(probe or trace),
+        rows=rows,
+        summary="logic probe/trace tool surface" if (probe or trace) else "logic tool surface unavailable",
+        extensions={
+            "used_tool_ids": _sorted_strings(
+                [str(probe.get("tool_id", "")).strip(), str(trace.get("tool_id", "")).strip()]
+            )
+        },
     )
 
 
@@ -274,6 +330,9 @@ def build_inspection_panel_set(
     requested_cost_units: int = 1,
     field_values: Mapping[str, object] | None = None,
     body_state: Mapping[str, object] | None = None,
+    scan_result: Mapping[str, object] | None = None,
+    logic_probe_surface: Mapping[str, object] | None = None,
+    logic_trace_surface: Mapping[str, object] | None = None,
 ) -> dict:
     """Panels consume process.inspect_generate_snapshot and tool.geo.explain_property_origin outputs only."""
 
@@ -292,7 +351,9 @@ def build_inspection_panel_set(
         build_surface_tile_panel(inspection_snapshot=inspection_snapshot),
         build_geometry_cell_panel(inspection_snapshot=inspection_snapshot),
         build_field_panel(field_values=field_values),
+        build_scan_result_panel(scan_result=scan_result),
         build_terrain_collision_panel(body_state=body_state, inspection_snapshot=inspection_snapshot),
+        build_logic_tool_panel(logic_probe_surface=logic_probe_surface, logic_trace_surface=logic_trace_surface),
         build_logic_network_panel(inspection_snapshot=inspection_snapshot),
         build_system_capsule_panel(inspection_snapshot=inspection_snapshot),
         build_overlay_provenance_panel(
@@ -306,7 +367,14 @@ def build_inspection_panel_set(
         "panels": visible_panels,
         "inspection_overlay_payload": dict(overlays.get("inspection_overlays") or {}),
         "inspection_overlay_runtime": dict(overlays.get("overlay_runtime") or {}),
-        "used_tool_ids": _sorted_strings(["tool.geo.explain_property_origin"] if property_origin_request or property_origin_result else []),
+        "used_tool_ids": _sorted_strings(
+            (["tool.geo.explain_property_origin"] if property_origin_request or property_origin_result else [])
+            + list(_as_map(scan_result).get("used_tool_ids") or [])
+            + [
+                str(_as_map(logic_probe_surface).get("tool_id", "")).strip(),
+                str(_as_map(logic_trace_surface).get("tool_id", "")).strip(),
+            ]
+        ),
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
@@ -318,8 +386,11 @@ __all__ = [
     "build_field_panel",
     "build_geometry_cell_panel",
     "build_inspection_panel_set",
+    "build_logic_tool_panel",
     "build_logic_network_panel",
     "build_overlay_provenance_panel",
+    "build_scan_result_panel",
     "build_surface_tile_panel",
     "build_system_capsule_panel",
+    "build_terrain_collision_panel",
 ]
