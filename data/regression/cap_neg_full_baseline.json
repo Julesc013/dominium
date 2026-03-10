@@ -127,7 +127,7 @@
     }
   ],
   "description": "Deterministic CAP-NEG-4 regression lock for mixed-version negotiation, degrade ladders, read-only fallback, and refusal surfaces.",
-  "deterministic_fingerprint": "666706c1c886e1f214bf815f7dfe47b898bcfb1ea02f1b8a9c0ea535dae811f8",
+  "deterministic_fingerprint": "3fdcdf2825a37900bd5208fbca669cf947b8664f182bf16a572ef771c5aff14a",
   "disabled_capability_frequency": [
     {
       "capability_id": "cap.logic.protocol_layer",
@@ -173,7 +173,6 @@
         "cap.geo.sphere_atlas",
         "cap.ui.rendered"
       ],
-      "negotiation_record_hash": "2c4f8340a2231cdbca001d34ad5e29f1a63bc1400af5a4bb88a9e49d92ef0a16",
       "refusal_code": "",
       "scenario_id": "real.client_server.current_build",
       "substituted_capability_ids": [
@@ -188,7 +187,6 @@
         "cap.geo.sphere_atlas",
         "cap.ui.rendered"
       ],
-      "negotiation_record_hash": "81869364440e2a6a307966a68682a3a9a3d16e6e8194a1d1d8cfa8a85aa3aaa6",
       "refusal_code": "refusal.compat.no_common_protocol",
       "scenario_id": "real.launcher_client.current_build",
       "substituted_capability_ids": [
@@ -200,7 +198,6 @@
       "chosen_protocol_version": "1.0.0",
       "compatibility_mode_id": "compat.full",
       "disabled_capability_ids": [],
-      "negotiation_record_hash": "9fd07f94e712a8959682b0e8b61cd29e6c0a6442737e9ed8edda699ff3827d8f",
       "refusal_code": "",
       "scenario_id": "real.setup_pack_stub.current_build",
       "substituted_capability_ids": []
@@ -216,10 +213,10 @@
       "refusal_code": "refusal.compat.no_common_protocol"
     }
   ],
-  "replay_summary_fingerprint": "701f8b973d02d70db893eeb8f1e7dd552b3480fded7d2023ec29ac46abe1ebdd",
+  "replay_summary_fingerprint": "940937de7eea180207bd0dee70faebf69ae65a45f3ecd29b51ef0a707680a2bf",
   "scenario_seed": 41004,
   "schema_version": "1.0.0",
-  "stress_report_fingerprint": "cd1397a23e5b05271e3274cc2aadf42ffff4ff512135e17fff399f348e8d825f",
+  "stress_report_fingerprint": "537e81f08a0e645eb17bf5353badc53a7134f37928dac924519e0bb46b40b8a5",
   "update_policy": {
     "notes": "Baseline updates require rerunning CAP-NEG-4 matrix, stress, and replay verification under explicit CAP-NEG-REGRESSION-UPDATE review.",
     "required_commit_tag": "CAP-NEG-REGRESSION-UPDATE"

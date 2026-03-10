@@ -877,17 +877,35 @@ def build_cap_neg_full_baseline(
                 "refusal_code": str(row_map.get("actual_refusal_code", "")).strip(),
                 "disabled_capability_ids": _sorted_tokens(row_map.get("disabled_capability_ids")),
                 "substituted_capability_ids": _sorted_tokens(row_map.get("substituted_capability_ids")),
-                "negotiation_record_hash": str(row_map.get("negotiation_record_hash", "")).strip(),
             }
         )
-    baseline = {
-        "baseline_id": "cap.neg.full.baseline.v1",
-        "schema_version": "1.0.0",
-        "description": "Deterministic CAP-NEG-4 regression lock for mixed-version negotiation, degrade ladders, read-only fallback, and refusal surfaces.",
-        "scenario_seed": int(_as_int(seed, DEFAULT_CAP_NEG4_SEED)),
-        "matrix_fingerprint": str(matrix_payload.get("deterministic_fingerprint", "")).strip(),
-        "stress_report_fingerprint": str(report.get("deterministic_fingerprint", "")).strip(),
-        "replay_summary_fingerprint": str(_as_map(report.get("replay_summary")).get("deterministic_fingerprint", "")).strip(),
+    replay_summary = _as_map(report.get("replay_summary"))
+    stable_replay_summary = {
+        "result": str(replay_summary.get("result", "")).strip(),
+        "scenario_rows": sorted(
+            [
+                {
+                    "scenario_id": str(_as_map(row).get("scenario_id", "")).strip(),
+                    "compatibility_mode_id": str(_as_map(row).get("compatibility_mode_id", "")).strip(),
+                    "replay_result": str(_as_map(row).get("replay_result", "")).strip(),
+                }
+                for row in list(replay_summary.get("scenario_record_hashes") or [])
+            ],
+            key=lambda row: str(row.get("scenario_id", "")),
+        ),
+        "real_descriptor_rows": sorted(
+            [
+                {
+                    "scenario_id": str(_as_map(row).get("scenario_id", "")).strip(),
+                    "compatibility_mode_id": str(_as_map(row).get("compatibility_mode_id", "")).strip(),
+                    "replay_result": str(_as_map(row).get("replay_result", "")).strip(),
+                }
+                for row in list(replay_summary.get("real_descriptor_record_hashes") or [])
+            ],
+            key=lambda row: str(row.get("scenario_id", "")),
+        ),
+    }
+    stable_stress_summary = {
         "mode_counts": dict(_as_map(report.get("mode_counts"))),
         "refusal_counts": [dict(row) for row in list(report.get("refusal_counts") or []) if isinstance(row, Mapping)],
         "disabled_capability_frequency": [
@@ -899,7 +917,30 @@ def build_cap_neg_full_baseline(
         ),
         "real_descriptor_smoke": sorted(
             real_rows,
+            key=lambda row: str(row.get("scenario_id", "")),
+        ),
+        "replay_summary": stable_replay_summary,
+    }
+    baseline = {
+        "baseline_id": "cap.neg.full.baseline.v1",
+        "schema_version": "1.0.0",
+        "description": "Deterministic CAP-NEG-4 regression lock for mixed-version negotiation, degrade ladders, read-only fallback, and refusal surfaces.",
+        "scenario_seed": int(_as_int(seed, DEFAULT_CAP_NEG4_SEED)),
+        "matrix_fingerprint": str(matrix_payload.get("deterministic_fingerprint", "")).strip(),
+        "stress_report_fingerprint": canonical_sha256(stable_stress_summary),
+        "replay_summary_fingerprint": canonical_sha256(stable_replay_summary),
+        "mode_counts": dict(_as_map(report.get("mode_counts"))),
+        "refusal_counts": [dict(row) for row in list(report.get("refusal_counts") or []) if isinstance(row, Mapping)],
+        "disabled_capability_frequency": [
+            dict(row) for row in list(report.get("disabled_capability_frequency") or []) if isinstance(row, Mapping)
+        ],
+        "canonical_scenarios": sorted(
+            scenario_rows,
             key=lambda row: (str(row.get("scenario_id", "")), str(row.get("negotiation_record_hash", ""))),
+        ),
+        "real_descriptor_smoke": sorted(
+            real_rows,
+            key=lambda row: str(row.get("scenario_id", "")),
         ),
         "update_policy": {
             "required_commit_tag": "CAP-NEG-REGRESSION-UPDATE",

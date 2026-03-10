@@ -11,7 +11,7 @@ Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.
 - Canonical matrix rows: `10`
 - Deterministic seed: `41004`
 - Matrix fingerprint: `2fa40b3042ce792415469e9544cd08fa130751996f201b99af48907841ac667c`
-- Stress fingerprint: `cd1397a23e5b05271e3274cc2aadf42ffff4ff512135e17fff399f348e8d825f`
+- Stress fingerprint: `537e81f08a0e645eb17bf5353badc53a7134f37928dac924519e0bb46b40b8a5`
 - Canonical modes:
   - `compat.full`: `2`
   - `compat.degraded`: `5`
@@ -45,12 +45,14 @@ Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.
   - current-build smoke still refuses without a shared protocol
 - `setup <-> pack verify stub`: `compat.full`
   - current-build offline verification stays fully compatible
+- Real-descriptor rows in the regression lock are normalized to negotiated semantic outcomes.
+  - build-id-sensitive descriptor hashes stay in the live stress report and replay artifacts, not in the committed lock.
 
 ## Regression Lock
 - Committed lock: `data/regression/cap_neg_full_baseline.json`
-- Baseline fingerprint: `666706c1c886e1f214bf815f7dfe47b898bcfb1ea02f1b8a9c0ea535dae811f8`
+- Baseline fingerprint: `3fdcdf2825a37900bd5208fbca669cf947b8664f182bf16a572ef771c5aff14a`
 - Required update tag: `CAP-NEG-REGRESSION-UPDATE`
-- Replay summary fingerprint: `701f8b973d02d70db893eeb8f1e7dd552b3480fded7d2023ec29ac46abe1ebdd`
+- Replay summary fingerprint: `940937de7eea180207bd0dee70faebf69ae65a45f3ecd29b51ef0a707680a2bf`
 
 ## Readiness
 CAP-NEG is ready for PACK-COMPAT follow-up and APPSHELL negotiation surfaces.
