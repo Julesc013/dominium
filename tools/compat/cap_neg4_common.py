@@ -5,6 +5,8 @@ from __future__ import annotations
 import copy
 import json
 import os
+import subprocess
+import sys
 from typing import Iterable, List, Mapping, Sequence
 
 from src.compat import (
@@ -595,6 +597,106 @@ def _scenario_report(
     )
 
 
+def _preferred_wrapper_names(product_id: str) -> List[str]:
+    token = str(product_id or "").strip()
+    if token == "client":
+        return ["dominium_client", "client"]
+    if token == "server":
+        return ["dominium_server", "server"]
+    if token == "launcher":
+        return ["launcher"]
+    if token == "setup":
+        return ["setup"]
+    if token == "engine":
+        return ["engine"]
+    if token == "game":
+        return ["game"]
+    if token == "tool.attach_console_stub":
+        return ["tool_attach_console_stub"]
+    return [token]
+
+
+def _descriptor_from_wrapper(repo_root: str, *, product_id: str) -> dict:
+    last_error = ""
+    for wrapper_name in _preferred_wrapper_names(product_id):
+        wrapper_path = os.path.join(repo_root, "dist", "bin", wrapper_name)
+        if not os.path.isfile(wrapper_path):
+            continue
+        result = subprocess.run(
+            [sys.executable, wrapper_path, "--descriptor"],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            check=False,
+        )
+        if int(result.returncode or 0) != 0:
+            last_error = "wrapper {} failed".format(wrapper_name)
+            continue
+        try:
+            payload = json.loads(str(result.stdout or "{}"))
+        except ValueError:
+            last_error = "wrapper {} emitted invalid JSON".format(wrapper_name)
+            continue
+        if isinstance(payload, dict):
+            return dict(payload)
+    raise RuntimeError(last_error or "no descriptor wrapper available for {}".format(product_id))
+
+
+def _real_descriptor_scenarios(repo_root: str, *, seed: int) -> List[dict]:
+    actual_client = _descriptor_from_wrapper(repo_root, product_id="client")
+    actual_server = _descriptor_from_wrapper(repo_root, product_id="server")
+    actual_launcher = _descriptor_from_wrapper(repo_root, product_id="launcher")
+    actual_setup = _descriptor_from_wrapper(repo_root, product_id="setup")
+    matrix_payload = generate_interop_matrix(repo_root=repo_root, seed=seed)
+    setup_pack_stub = {}
+    for row in _as_list(matrix_payload.get("scenarios")):
+        row_map = _as_map(row)
+        if str(row_map.get("scenario_id", "")).strip() == "interop.setup_pack.verify_older_newer":
+            setup_pack_stub = dict(_as_map(row_map.get("endpoint_b")))
+            break
+    if not setup_pack_stub:
+        raise RuntimeError("CAP-NEG-4 setup pack stub scenario missing from generated matrix")
+    return [
+        _scenario_row(
+            repo_root,
+            scenario_id="real.client_server.current_build",
+            description="current built client and server descriptors negotiate through the live emitted endpoint descriptors",
+            endpoint_a=actual_client,
+            endpoint_b=actual_server,
+            expected_compatibility_mode_id="compat.degraded",
+            allow_read_only=False,
+            policy_profile_id="server.policy.private.default",
+            tags=["real_descriptor", "client_server"],
+        ),
+        _scenario_row(
+            repo_root,
+            scenario_id="real.launcher_client.current_build",
+            description="current built launcher and client descriptors refuse when there is no shared protocol",
+            endpoint_a=actual_launcher,
+            endpoint_b=actual_client,
+            expected_compatibility_mode_id="compat.refuse",
+            expected_refusal_code="refusal.compat.no_common_protocol",
+            allow_read_only=False,
+            policy_profile_id="launcher.policy.local",
+            tags=["real_descriptor", "launcher_client"],
+        ),
+        _scenario_row(
+            repo_root,
+            scenario_id="real.setup_pack_stub.current_build",
+            description="current built setup descriptor remains fully compatible with the newer pack-verification stub",
+            endpoint_a=actual_setup,
+            endpoint_b=setup_pack_stub,
+            expected_compatibility_mode_id="compat.full",
+            allow_read_only=False,
+            policy_profile_id="setup.policy.offline",
+            tags=["real_descriptor", "setup_pack"],
+        ),
+    ]
+
+
 def run_interop_stress(
     *,
     repo_root: str,
@@ -605,6 +707,7 @@ def run_interop_stress(
     matrix_payload = dict(matrix or generate_interop_matrix(repo_root=repo_root, seed=int(seed)))
     scenario_rows = [dict(row) for row in _as_list(matrix_payload.get("scenarios")) if isinstance(row, Mapping)]
     reports = [_scenario_report(repo_root, scenario_row=row) for row in scenario_rows]
+    real_descriptor_reports = [_scenario_report(repo_root, scenario_row=row) for row in _real_descriptor_scenarios(repo_root, seed=int(seed))]
     mode_counts = {
         mode_id: int(len([row for row in reports if str(row.get("compatibility_mode_id", "")).strip() == mode_id]))
         for mode_id in ("compat.full", "compat.degraded", "compat.read_only", "compat.refuse")
@@ -641,6 +744,10 @@ def run_interop_stress(
         "deterministic_outcomes": all(bool(row.get("stable_across_repeated_runs", False)) for row in reports),
         "expected_modes_match": all(bool(row.get("match_expected", False)) for row in reports),
         "replay_matches": all(str(row.get("replay_result", "")).strip() == "complete" for row in reports),
+        "real_descriptor_smoke_matches": all(bool(row.get("match_expected", False)) for row in real_descriptor_reports),
+        "real_descriptor_smoke_replay_matches": all(
+            str(row.get("replay_result", "")).strip() == "complete" for row in real_descriptor_reports
+        ),
     }
     report = {
         "result": "complete" if all(bool(value) for value in assertions.values()) else "violation",
@@ -653,6 +760,7 @@ def run_interop_stress(
         "disabled_capability_frequency": disabled_rows,
         "explain_rows": explain_rows,
         "scenario_reports": reports,
+        "real_descriptor_smoke_reports": real_descriptor_reports,
         "assertions": assertions,
         "deterministic_fingerprint": "",
         "extensions": {
