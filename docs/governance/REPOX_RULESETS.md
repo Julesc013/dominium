@@ -146,9 +146,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-WALLCLOCK-CLIMATE`
 - `INV-TIDE-DETERMINISTIC`
 - `INV-WIND-DETERMINISTIC`
+- `INV-EARTH-UPDATES-BOUNDED`
+- `INV-EARTH-DETERMINISTIC`
 - `INV-NO-WALLCLOCK-WIND`
 - `INV-NO-OCEAN-PDE-IN-MVP`
 - `INV-WATER-VIEW-DERIVED-ONLY`
+- `INV-EARTH-VIEWS-DERIVED-ONLY`
 - `INV-NO-FLUID-SIM-IN-MVP`
 - `INV-NO-CATALOG-DEPENDENCY`
 - `INV-NO-WALLCLOCK-SKY`
@@ -539,6 +542,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when nondeterministic RNG or other unstable wind-update tokens appear in the wind runtime or proof surface.
 - Preserves replay-stable Earth wind-vector field updates, seasonal band shifts, and deterministic POLL hook surfaces for EARTH-7.
 
+### INV-EARTH-UPDATES-BOUNDED
+
+- Fails when the governed EARTH-9 stress envelope loses the explicit bounded bucket, bounded shadow-sampling, or deterministic downsample markers.
+- Fails when the EARTH-9 stress and replay tooling introduces unbounded loop or wall-clock tokens into the governed envelope.
+- Preserves EARTH MVP stress verification as a bounded-cost envelope with deterministic degradation reporting instead of hidden load spikes.
+
+### INV-EARTH-DETERMINISTIC
+
+- Fails when the governed EARTH-9 stress/replay/baseline surfaces lose the explicit scenario, replay, or regression-lock determinism markers.
+- Fails when nondeterministic tokens or noncanonical seed/time sources appear in the EARTH-9 stress and replay tooling.
+- Preserves replay-stable EARTH MVP regression locking, thread-count hash equivalence, and explicit `EARTH-REGRESSION-UPDATE` review discipline.
+
 ### INV-NO-WALLCLOCK-WIND
 
 - Fails when the governed EARTH-7 wind path loses the explicit canonical-tick and lawful-time-warp markers.
@@ -610,6 +625,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the governed EARTH-8 water runtime path loses the explicit `derived.water_view_artifact` markers, cache policy, or RenderModel handoff markers.
 - Fails when viewer-shell or renderer surfaces stop routing water presentation through the derived water-view artifact path.
 - Preserves EARTH-8 oceans, rivers, lakes, and tide offsets as a lens-first derived-view contract instead of an ad hoc renderer-side truth read.
+
+### INV-EARTH-VIEWS-DERIVED-ONLY
+
+- Fails when the governed EARTH-9 stress/replay surfaces stop auditing Earth views through derived artifacts and truth-leak reports.
+- Fails when the EARTH-9 view proof path introduces direct truth/runtime reads instead of replaying derived sky, illumination, water, and map artifacts.
+- Preserves EARTH MVP verification as observer/render/truth separated even under stress, replay, and deterministic degradation checks.
 
 ### INV-NO-TRUTH-READ-IN-RENDER
 

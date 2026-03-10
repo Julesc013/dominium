@@ -746,6 +746,31 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-EARTH-UPDATES-BOUNDED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "tools/earth/earth9_stress_common.py",
+        "tools/earth/tool_run_earth_mvp_stress.py",
+        "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-earth-updates-bounded",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-EARTH-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "tools/earth/earth9_stress_common.py",
+        "tools/earth/tool_run_earth_mvp_stress.py",
+        "tools/earth/tool_replay_earth_view_window.py",
+        "tools/earth/tool_replay_earth_physics_window.py",
+        "data/regression/earth_mvp_baseline.json",
+        "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-earth-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-WALLCLOCK-WIND",
       "severity": "FAIL",
       "scope_paths": [
@@ -930,6 +955,17 @@
         "docs/worldgen/EARTH_WATER_VISUAL_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-water-view-derived-only",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-EARTH-VIEWS-DERIVED-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "tools/earth/earth9_stress_common.py",
+        "tools/earth/tool_replay_earth_view_window.py",
+        "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-earth-views-derived-only",
       "exemption_policy": "deny"
     },
     {

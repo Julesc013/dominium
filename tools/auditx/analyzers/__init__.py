@@ -406,6 +406,9 @@ from analyzers import e379_unbounded_shadow_sampling_smell
 from analyzers import e380_nondeterministic_collision_smell
 from analyzers import e381_nondeterministic_wind_smell
 from analyzers import e382_water_sim_leak_smell
+from analyzers import e383_nondeterministic_view_smell
+from analyzers import e384_truth_leak_smell
+from analyzers import e385_unbounded_update_loop_smell
 
 
 ANALYZERS = (
@@ -815,6 +818,9 @@ ANALYZERS = (
     e380_nondeterministic_collision_smell,
     e381_nondeterministic_wind_smell,
     e382_water_sim_leak_smell,
+    e383_nondeterministic_view_smell,
+    e384_truth_leak_smell,
+    e385_unbounded_update_loop_smell,
 )
 
 

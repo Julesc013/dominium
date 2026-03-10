@@ -406,6 +406,12 @@ EARTH_WIND_FORBIDDEN_TOKENS = (
     "time.sleep(",
 )
 EARTH_FLOAT_TRIG_TOKENS = ("math.sin(", "math.cos(", "numpy.sin(", "numpy.cos(", "np.sin(", "np.cos(")
+EARTH9_STRESS_COMMON_REL = os.path.join("tools", "earth", "earth9_stress_common.py")
+EARTH9_STRESS_TOOL_REL = os.path.join("tools", "earth", "tool_run_earth_mvp_stress.py")
+EARTH9_VIEW_REPLAY_TOOL_REL = os.path.join("tools", "earth", "tool_replay_earth_view_window.py")
+EARTH9_PHYSICS_REPLAY_TOOL_REL = os.path.join("tools", "earth", "tool_replay_earth_physics_window.py")
+EARTH9_BASELINE_REL = os.path.join("data", "regression", "earth_mvp_baseline.json")
+EARTH9_FINAL_AUDIT_REL = os.path.join("docs", "audit", "EARTH_MVP_FINAL_BASELINE.md")
 EARTH_SKY_FORBIDDEN_TOKENS = (
     "random.",
     "uuid",
@@ -5412,6 +5418,224 @@ def check_water_view_derived_only(repo_root):
     return violations
 
 
+def check_earth_views_derived_only(repo_root):
+    invariant_id = "INV-EARTH-VIEWS-DERIVED-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH9_STRESS_COMMON_REL: (
+            "_view_truth_leak_report(",
+            '"no_truth_leaks_in_views"',
+            '"sky_surfaces"',
+            '"illumination_surfaces"',
+            '"water_view_surface"',
+            '"map_view_surface"',
+            '"explain.view_downsampled"',
+        ),
+        EARTH9_VIEW_REPLAY_TOOL_REL: (
+            "Replay deterministic EARTH-9 derived view windows.",
+            "replay_earth_view_window(",
+        ),
+        EARTH9_FINAL_AUDIT_REL: (
+            "EARTH-9 keeps Earth presentation derived-view only.",
+            "Derived view artifacts remained replayable from truth anchors and canonical tick buckets.",
+            "No new truth-read bridge was introduced into UI or render surfaces.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing EARTH-9 derived-view marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = (
+        "truth_model[",
+        "truth_model.",
+        "universe_state[",
+        "universe_state.",
+        "process_runtime[",
+        "process_runtime.",
+    )
+    for rel in (EARTH9_STRESS_COMMON_REL, EARTH9_VIEW_REPLAY_TOOL_REL, EARTH9_STRESS_TOOL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in forbidden_tokens if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: renderer/view truth-read token '{}' forbidden in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
+def check_earth_updates_bounded(repo_root):
+    invariant_id = "INV-EARTH-UPDATES-BOUNDED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH9_STRESS_COMMON_REL: (
+            "CLIMATE_MAX_TILES_PER_UPDATE",
+            "WIND_MAX_TILES_PER_UPDATE",
+            "TIDE_MAX_TILES_PER_UPDATE",
+            "sampling_bounded_report(",
+            '"debug_throttled_view_count"',
+            '"debug_view_limit"',
+            '"map_downsampled"',
+            '"explain.view_downsampled"',
+        ),
+        EARTH9_STRESS_TOOL_REL: (
+            "Run deterministic EARTH-9 MVP stress validation.",
+            "verify_earth_mvp_stress_scenario(",
+        ),
+        EARTH9_FINAL_AUDIT_REL: (
+            "EARTH-9 preserves bounded update envelopes.",
+            "Climate buckets per stress run: 12.",
+            "Wind buckets per stress run: 8.",
+            "Tide buckets per stress run: 6.",
+            "Hydrology local recompute region size remained 1 tile.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing EARTH-9 bounded-update marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("while ", "time.sleep(", "datetime.now(", "time.time(")
+    for rel in (EARTH9_STRESS_COMMON_REL, EARTH9_STRESS_TOOL_REL, EARTH9_VIEW_REPLAY_TOOL_REL, EARTH9_PHYSICS_REPLAY_TOOL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in forbidden_tokens if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: unbounded/noncanonical token '{}' forbidden in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
+def check_earth_deterministic(repo_root):
+    invariant_id = "INV-EARTH-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EARTH9_STRESS_COMMON_REL: (
+            "generate_earth_mvp_stress_scenario(",
+            "run_earth_mvp_stress_scenario(",
+            "verify_earth_mvp_stress_scenario(",
+            "replay_earth_view_window(",
+            "replay_earth_physics_window(",
+            "build_earth_mvp_regression_baseline(",
+            '"cross_platform_determinism_hash"',
+        ),
+        EARTH9_STRESS_TOOL_REL: (
+            "verify_earth_mvp_stress_scenario(",
+            "DEFAULT_EARTH9_SEED",
+        ),
+        EARTH9_VIEW_REPLAY_TOOL_REL: (
+            "replay_earth_view_window(",
+            "DEFAULT_EARTH9_SEED",
+        ),
+        EARTH9_PHYSICS_REPLAY_TOOL_REL: (
+            "replay_earth_physics_window(",
+            "DEFAULT_EARTH9_SEED",
+        ),
+        EARTH9_BASELINE_REL: (
+            '"required_commit_tag": "EARTH-REGRESSION-UPDATE"',
+            '"cross_platform_determinism_hash"',
+            '"stress_report_fingerprint"',
+        ),
+        EARTH9_FINAL_AUDIT_REL: (
+            "cross-platform determinism hash",
+            "Time warp stayed lawful because all EARTH-9 checks derive from canonical tick progression.",
+            "EARTH-9 regression lock updates require `EARTH-REGRESSION-UPDATE`.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing EARTH-9 determinism marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("random.", "uuid", "secrets.", "time.time(", "datetime.now(", "os.urandom(", "random.seed(", "time.sleep(")
+    for rel in (EARTH9_STRESS_COMMON_REL, EARTH9_STRESS_TOOL_REL, EARTH9_VIEW_REPLAY_TOOL_REL, EARTH9_PHYSICS_REPLAY_TOOL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            snippet = str(line).strip()
+            if not snippet or snippet.startswith("#"):
+                continue
+            token = next((item for item in forbidden_tokens if item in snippet), "")
+            if token:
+                violations.append(
+                    "{}: nondeterministic token '{}' forbidden in {}:{}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                        line_no,
+                    )
+                )
+                break
+    return violations
+
+
 def check_no_fluid_sim_in_mvp(repo_root):
     invariant_id = "INV-NO-FLUID-SIM-IN-MVP"
     if is_override_active(repo_root, invariant_id):
@@ -9239,6 +9463,8 @@ def main() -> int:
                 lambda: check_tide_deterministic(repo_root),
                 lambda: check_wind_deterministic(repo_root),
                 lambda: check_no_wallclock_wind(repo_root),
+                lambda: check_earth_updates_bounded(repo_root),
+                lambda: check_earth_deterministic(repo_root),
                 lambda: check_no_ocean_pde_in_mvp(repo_root),
                 lambda: check_no_fluid_sim_in_mvp(repo_root),
                 lambda: check_no_catalog_dependency(repo_root),
@@ -9269,6 +9495,7 @@ def main() -> int:
                 lambda: check_skyview_derived_only(repo_root),
                 lambda: check_lighting_derived_only(repo_root),
                 lambda: check_water_view_derived_only(repo_root),
+                lambda: check_earth_views_derived_only(repo_root),
                 lambda: check_no_truth_read_in_render(repo_root),
             ],
         },
