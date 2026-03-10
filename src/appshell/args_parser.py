@@ -16,6 +16,7 @@ ROOT_COMMANDS = (
     "packs",
     "verify",
     "diag",
+    "console",
 )
 
 
@@ -50,7 +51,7 @@ def parse_appshell_args(product_id: str, argv: Sequence[str] | None) -> AppShell
     command_args: List[str] = []
     if filtered_remainder:
         token = str(filtered_remainder[0]).strip()
-        if token in ROOT_COMMANDS:
+        if token and not token.startswith("-"):
             command = token
             command_args = list(filtered_remainder[1:])
             filtered_remainder = []

@@ -16,6 +16,21 @@
         "description": "Semantic or contract compatibility mismatch."
       },
       {
+        "refusal_code": "refusal.compat.feature_disabled",
+        "family": "compat",
+        "description": "Negotiated compatibility mode disabled the requested feature."
+      },
+      {
+        "refusal_code": "refusal.compat.negotiation_record_missing",
+        "family": "compat",
+        "description": "A required negotiation record was missing."
+      },
+      {
+        "refusal_code": "refusal.compat.negotiation_record_mismatch",
+        "family": "compat",
+        "description": "A replayed or provided negotiation record did not match deterministic negotiation inputs."
+      },
+      {
         "refusal_code": "refusal.pack.contract_range_mismatch",
         "family": "pack",
         "description": "Pack contract range is incompatible with the active engine or universe contract bundle."
@@ -41,9 +56,44 @@
         "description": "Debug or diagnostic surface is not allowed."
       },
       {
+        "refusal_code": "refusal.debug.command_unavailable",
+        "family": "debug",
+        "description": "A declared command namespace is not yet bound in the current AppShell phase."
+      },
+      {
+        "refusal_code": "refusal.debug.command_unknown",
+        "family": "debug",
+        "description": "The requested command is not registered for the active product shell."
+      },
+      {
+        "refusal_code": "refusal.debug.mode_unsupported",
+        "family": "debug",
+        "description": "The requested AppShell mode is not supported by the active product."
+      },
+      {
+        "refusal_code": "refusal.debug.rendered_client_only",
+        "family": "debug",
+        "description": "Rendered AppShell mode is client-only."
+      },
+      {
         "refusal_code": "refusal.io.offline_required",
         "family": "io",
         "description": "Action requires an unavailable non-offline dependency."
+      },
+      {
+        "refusal_code": "refusal.io.invalid_args",
+        "family": "io",
+        "description": "Command arguments did not satisfy the declared command shape."
+      },
+      {
+        "refusal_code": "refusal.io.profile_not_found",
+        "family": "io",
+        "description": "A requested profile bundle was not present in the local bundle surfaces."
+      },
+      {
+        "refusal_code": "refusal.server.command_unknown",
+        "family": "debug",
+        "description": "A server console command was not declared in the server command surface."
       }
     ],
     "deterministic_fingerprint": "",

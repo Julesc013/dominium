@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Command Descriptor Schema",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Deterministic AppShell command descriptor.",
   "type": "object",
   "required": [
@@ -11,6 +11,11 @@
     "product_ids",
     "description",
     "supported_mode_ids",
+    "args_schema_id",
+    "output_schema_id",
+    "refusal_codes",
+    "exit_code_mapping_id",
+    "handler_id",
     "deterministic_fingerprint",
     "extensions"
   ],
@@ -18,7 +23,7 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "1.0.0"
+      "const": "1.1.0"
     },
     "command_id": {
       "type": "string",
@@ -45,6 +50,29 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "args_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "output_schema_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "refusal_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "exit_code_mapping_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "handler_id": {
+      "type": "string",
+      "minLength": 1
     },
     "deterministic_fingerprint": {
       "type": "string",

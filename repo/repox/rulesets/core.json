@@ -413,6 +413,43 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-COMMANDS-REGISTERED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/COMMANDS_AND_REFUSALS.md",
+        "data/registries/command_registry.json",
+        "src/appshell/command_registry.py",
+        "src/appshell/commands/command_engine.py",
+        "tools/appshell/tool_generate_command_docs.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-commands-registered",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-ADHOC-ARG-PARSING",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/COMMANDS_AND_REFUSALS.md",
+        "src/appshell/args_parser.py",
+        "src/appshell/bootstrap.py",
+        "src/appshell/commands/command_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-adhoc-arg-parsing",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-REFUSAL-CODES-STABLE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/COMMANDS_AND_REFUSALS.md",
+        "data/registries/refusal_code_registry.json",
+        "data/registries/refusal_to_exit_registry.json",
+        "src/appshell/commands/command_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-refusal-codes-stable",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [

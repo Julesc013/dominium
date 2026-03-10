@@ -1,0 +1,124 @@
+{
+  "schema_id": "dominium.registry.appshell.refusal_to_exit_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.appshell.refusal_to_exit_registry",
+    "registry_version": "1.0.0",
+    "mappings": [
+      {
+        "mapping_id": "mapping.refusal.io.invalid_args",
+        "refusal_code": "refusal.io.invalid_args",
+        "exit_code": 10,
+        "description": "Invalid command arguments map to usage-range exits.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.debug.command_unknown",
+        "refusal_code": "refusal.debug.command_unknown",
+        "exit_code": 10,
+        "description": "Unknown registered-command tokens map to usage-range exits.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.io.profile_not_found",
+        "refusal_code": "refusal.io.profile_not_found",
+        "exit_code": 20,
+        "description": "Missing profile bundles are treated as pack/profile surface failures.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.compat.feature_disabled",
+        "refusal_code": "refusal.compat.feature_disabled",
+        "exit_code": 50,
+        "description": "Negotiated feature-disable refusals map to the refusal range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.server.command_unknown",
+        "refusal_code": "refusal.server.command_unknown",
+        "exit_code": 50,
+        "description": "Unknown live server console commands remain explicit refusal-range failures.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.compat.prefix",
+        "refusal_prefix": "refusal.compat.",
+        "exit_code": 30,
+        "description": "Compatibility and negotiation failures map to the contract/compatibility range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.pack.prefix",
+        "refusal_prefix": "refusal.pack.",
+        "exit_code": 20,
+        "description": "Pack validation and verification failures map to the pack/profile range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.contract.prefix",
+        "refusal_prefix": "refusal.contract.",
+        "exit_code": 30,
+        "description": "Contract mismatches map to the contract/compatibility range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.io.prefix",
+        "refusal_prefix": "refusal.io.",
+        "exit_code": 40,
+        "description": "IO/host-shell failures map to the transport and IO-shell range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.law.prefix",
+        "refusal_prefix": "refusal.law.",
+        "exit_code": 50,
+        "description": "Law refusals map to the refusal range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.debug.prefix",
+        "refusal_prefix": "refusal.debug.",
+        "exit_code": 50,
+        "description": "Debug/gating refusals map to the refusal range except where explicitly overridden.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-1"
+        }
+      }
+    ],
+    "deterministic_fingerprint": "",
+    "extensions": {
+      "official.source": "APPSHELL-1"
+    }
+  }
+}

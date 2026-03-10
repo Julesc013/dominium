@@ -5250,12 +5250,10 @@ def check_products_must_use_appshell(repo_root):
         ),
         bootstrap_rel: (
             "def appshell_main(",
-            "descriptor",
-            "compat-status",
-            "verify",
-            "profiles",
-            "packs",
-            "diag",
+            "dispatch_registered_command(",
+            "build_root_command_descriptors(",
+            "format_help_text(",
+            "build_tui_panel_descriptors(",
         ),
         wrapper_stub_rel: (
             "from src.appshell import appshell_main",
@@ -5355,11 +5353,14 @@ def check_offline_boot_ok(repo_root):
 
     doctrine_rel = os.path.join("docs", "appshell", "APPSHELL_CONSTITUTION.md")
     bootstrap_rel = os.path.join("src", "appshell", "bootstrap.py")
+    command_engine_rel = os.path.join("src", "appshell", "commands", "command_engine.py")
     offline_rels = (
         os.path.join("src", "appshell", "__init__.py"),
         os.path.join("src", "appshell", "args_parser.py"),
         os.path.join("src", "appshell", "bootstrap.py"),
         os.path.join("src", "appshell", "command_registry.py"),
+        os.path.join("src", "appshell", "commands", "__init__.py"),
+        os.path.join("src", "appshell", "commands", "command_engine.py"),
         os.path.join("src", "appshell", "compat_adapter.py"),
         os.path.join("src", "appshell", "config_loader.py"),
         os.path.join("src", "appshell", "console_repl.py"),
@@ -5391,8 +5392,11 @@ def check_offline_boot_ok(repo_root):
         )
 
     bootstrap_text = read_text(os.path.join(repo_root, bootstrap_rel.replace("/", os.sep))) or ""
-    if "verify_pack_root(" not in bootstrap_text or "emit_descriptor_payload(" not in bootstrap_text:
+    command_engine_text = read_text(os.path.join(repo_root, command_engine_rel.replace("/", os.sep))) or ""
+    if "dispatch_registered_command(" not in bootstrap_text or "emit_descriptor_payload(" not in bootstrap_text:
         violations.append("{}: {} missing offline bootstrap adapter markers".format(invariant_id, normalize_path(bootstrap_rel)))
+    if "verify_pack_root(" not in command_engine_text or "_verify_pack_command(" not in command_engine_text:
+        violations.append("{}: {} missing offline verification markers".format(invariant_id, normalize_path(command_engine_rel)))
 
     forbidden_tokens = ("tools.xstack", "xstack.", "requests.", "urllib.request", "socket.create_connection(")
     for rel_path in offline_rels:
@@ -5411,6 +5415,314 @@ def check_offline_boot_ok(repo_root):
                     )
                 )
                 break
+    return violations
+
+
+def check_commands_registered(repo_root):
+    invariant_id = "INV-COMMANDS-REGISTERED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
+    registry_rel = os.path.join("data", "registries", "command_registry.json")
+    engine_rel = os.path.join("src", "appshell", "commands", "command_engine.py")
+    registry_loader_rel = os.path.join("src", "appshell", "command_registry.py")
+    docs_tool_rel = os.path.join("tools", "appshell", "tool_generate_command_docs.py")
+
+    violations = []
+    required_doctrine_tokens = (
+        "help",
+        "version",
+        "descriptor",
+        "compat-status",
+        "profiles",
+        "packs",
+        "verify",
+        "diag",
+        "console",
+        "packs verify",
+        "profiles show",
+    )
+    doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
+    missing = [token for token in required_doctrine_tokens if token not in doctrine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing command-doctrine marker(s): {}".format(
+                invariant_id,
+                normalize_path(doctrine_rel),
+                ", ".join(missing[:6]),
+            )
+        )
+
+    registry_abs = os.path.join(repo_root, registry_rel.replace("/", os.sep))
+    payload = _load_json_file(registry_abs)
+    if not isinstance(payload, dict):
+        violations.append("{}: invalid {}".format(invariant_id, normalize_path(registry_rel)))
+        return violations
+    command_rows = list((dict(payload.get("record") or {})).get("commands") or [])
+    if not command_rows:
+        violations.append("{}: {} defines no commands".format(invariant_id, normalize_path(registry_rel)))
+        return violations
+
+    required_paths = {
+        "help",
+        "version",
+        "descriptor",
+        "compat-status",
+        "profiles",
+        "packs",
+        "verify",
+        "diag",
+        "console",
+        "packs list",
+        "packs verify",
+        "packs build-lock",
+        "profiles list",
+        "profiles show",
+        "session.*",
+        "engine.*",
+        "game.*",
+        "client.*",
+        "server.*",
+        "setup.*",
+        "launcher.*",
+        "logic.*",
+        "geo.*",
+        "tool.*",
+    }
+    discovered_paths = {
+        str(dict(row).get("command_path", "")).strip()
+        for row in command_rows
+        if isinstance(row, dict)
+    }
+    missing_paths = sorted(path for path in required_paths if path not in discovered_paths)
+    if missing_paths:
+        violations.append(
+            "{}: {} missing registered command path(s): {}".format(
+                invariant_id,
+                normalize_path(registry_rel),
+                ", ".join(missing_paths[:8]),
+            )
+        )
+
+    required_fields = ("args_schema_id", "output_schema_id", "refusal_codes", "exit_code_mapping_id", "handler_id")
+    for row in command_rows:
+        if not isinstance(row, dict):
+            violations.append("{}: {} contains non-object command rows".format(invariant_id, normalize_path(registry_rel)))
+            break
+        command_path = str(row.get("command_path", "")).strip() or "<unknown>"
+        missing_fields = [field for field in required_fields if field not in row]
+        if missing_fields:
+            violations.append(
+                "{}: command {} missing field(s): {}".format(
+                    invariant_id,
+                    command_path,
+                    ", ".join(missing_fields[:5]),
+                )
+            )
+
+    required_engine_tokens = {
+        registry_loader_rel: (
+            "COMMAND_REGISTRY_REL",
+            "load_command_registry(",
+            "find_command_descriptor(",
+            "format_help_text(",
+        ),
+        engine_rel: (
+            "dispatch_registered_command(",
+            "handler_id",
+            "_refusal_dispatch(",
+            "_exit_code_for_refusal(",
+        ),
+        docs_tool_rel: (
+            "generate_cli_reference(",
+            "load_command_registry",
+            "CLI_REFERENCE.md",
+        ),
+    }
+    for rel_path, tokens in sorted(required_engine_tokens.items()):
+        text = read_text(os.path.join(repo_root, rel_path.replace("/", os.sep))) or ""
+        if not text:
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing command-registry marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_adhoc_arg_parsing(repo_root):
+    invariant_id = "INV-NO-ADHOC-ARG-PARSING"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    bootstrap_rel = os.path.join("src", "appshell", "bootstrap.py")
+    parser_rel = os.path.join("src", "appshell", "args_parser.py")
+    engine_rel = os.path.join("src", "appshell", "commands", "command_engine.py")
+    command_doc_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
+
+    violations = []
+    required_tokens = {
+        command_doc_rel: (
+            "registered declaratively",
+            "deterministic output ordering",
+            "Refusal Structure",
+        ),
+        bootstrap_rel: (
+            "dispatch_registered_command(",
+            "build_root_command_descriptors(",
+            "format_help_text(",
+        ),
+        parser_rel: (
+            "parse_appshell_args(",
+            "filtered_remainder",
+            "command_args",
+        ),
+        engine_rel: (
+            "find_command_descriptor(",
+            "handler_id ==",
+            "_parse_command_args(",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        text = read_text(os.path.join(repo_root, rel_path.replace("/", os.sep))) or ""
+        if not text:
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing AppShell command-dispatch marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    bootstrap_text = read_text(os.path.join(repo_root, bootstrap_rel.replace("/", os.sep))) or ""
+    forbidden_bootstrap_tokens = (
+        "_handle_root_command(",
+        "root_commands =",
+    )
+    for token in forbidden_bootstrap_tokens:
+        if token in bootstrap_text:
+            violations.append(
+                "{}: {} still contains ad hoc command bootstrap token {}".format(
+                    invariant_id,
+                    normalize_path(bootstrap_rel),
+                    token,
+                )
+            )
+    return violations
+
+
+def check_refusal_codes_stable(repo_root):
+    invariant_id = "INV-REFUSAL-CODES-STABLE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
+    registry_rel = os.path.join("data", "registries", "refusal_to_exit_registry.json")
+    refusal_registry_rel = os.path.join("data", "registries", "refusal_code_registry.json")
+    engine_rel = os.path.join("src", "appshell", "commands", "command_engine.py")
+
+    violations = []
+    doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
+    doctrine_tokens = (
+        "refusal_code",
+        "reason",
+        "remediation_hint",
+        "20..29",
+        "30..39",
+        "50..59",
+    )
+    missing = [token for token in doctrine_tokens if token not in doctrine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing refusal/exit-code doctrine marker(s): {}".format(
+                invariant_id,
+                normalize_path(doctrine_rel),
+                ", ".join(missing[:6]),
+            )
+        )
+
+    registry_payload = _load_json_file(os.path.join(repo_root, registry_rel.replace("/", os.sep)))
+    if not isinstance(registry_payload, dict):
+        violations.append("{}: invalid {}".format(invariant_id, normalize_path(registry_rel)))
+    else:
+        rows = list((dict(registry_payload.get("record") or {})).get("mappings") or [])
+        exact_codes = {
+            str(dict(row).get("refusal_code", "")).strip()
+            for row in rows
+            if isinstance(row, dict)
+        }
+        prefix_codes = {
+            str(dict(row).get("refusal_prefix", "")).strip()
+            for row in rows
+            if isinstance(row, dict)
+        }
+        for code in (
+            "refusal.io.invalid_args",
+            "refusal.debug.command_unknown",
+            "refusal.io.profile_not_found",
+            "refusal.compat.feature_disabled",
+        ):
+            if code not in exact_codes:
+                violations.append("{}: {} missing exact mapping for {}".format(invariant_id, normalize_path(registry_rel), code))
+        for prefix in (
+            "refusal.compat.",
+            "refusal.pack.",
+            "refusal.contract.",
+            "refusal.io.",
+            "refusal.law.",
+            "refusal.debug.",
+        ):
+            if prefix not in prefix_codes:
+                violations.append("{}: {} missing refusal prefix {}".format(invariant_id, normalize_path(registry_rel), prefix))
+
+    refusal_payload = _load_json_file(os.path.join(repo_root, refusal_registry_rel.replace("/", os.sep)))
+    if not isinstance(refusal_payload, dict):
+        violations.append("{}: invalid {}".format(invariant_id, normalize_path(refusal_registry_rel)))
+    else:
+        refusal_rows = list((dict(refusal_payload.get("record") or {})).get("refusal_codes") or [])
+        refusal_codes = {
+            str(dict(row).get("refusal_code", "")).strip()
+            for row in refusal_rows
+            if isinstance(row, dict)
+        }
+        for code in (
+            "refusal.compat.feature_disabled",
+            "refusal.debug.command_unavailable",
+            "refusal.debug.command_unknown",
+            "refusal.debug.mode_unsupported",
+            "refusal.io.invalid_args",
+            "refusal.io.profile_not_found",
+        ):
+            if code not in refusal_codes:
+                violations.append(
+                    "{}: {} missing refusal code {}".format(
+                        invariant_id,
+                        normalize_path(refusal_registry_rel),
+                        code,
+                    )
+                )
+
+    engine_text = read_text(os.path.join(repo_root, engine_rel.replace("/", os.sep))) or ""
+    for token in ('"refusal_code"', '"reason"', '"remediation_hint"', "_exit_code_for_refusal("):
+        if token not in engine_text:
+            violations.append(
+                "{}: {} missing structured-refusal marker {}".format(
+                    invariant_id,
+                    normalize_path(engine_rel),
+                    token,
+                )
+            )
     return violations
 
 
@@ -12811,6 +13123,9 @@ def main() -> int:
                 lambda: check_products_must_use_appshell(repo_root),
                 lambda: check_no_adhoc_main(repo_root),
                 lambda: check_offline_boot_ok(repo_root),
+                lambda: check_commands_registered(repo_root),
+                lambda: check_no_adhoc_arg_parsing(repo_root),
+                lambda: check_refusal_codes_stable(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },

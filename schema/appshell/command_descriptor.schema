@@ -1,6 +1,6 @@
 SCHEMA: appshell/command_descriptor.schema
 schema_id: dominium.schema.appshell.command_descriptor
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -19,9 +19,16 @@ record command_descriptor
     - product_ids: [id]
     - description: text
     - supported_mode_ids: [id]
+    - args_schema_id: id
+    - output_schema_id: id
+    - refusal_codes: [id]
+    - exit_code_mapping_id: id
+    - handler_id: id
     - deterministic_fingerprint: sha256
     - extensions: map
 
 INVARIANTS:
 - command_path must be stable for a pinned AppShell contract version
+- handler_id must resolve to a deterministic AppShell-owned handler or an
+  explicit namespace placeholder
 - descriptors must serialize deterministically

@@ -40,7 +40,7 @@ def list_profile_bundles(repo_root: str) -> List[dict]:
             payload, error = _read_json(path)
             if error:
                 continue
-            bundle_id = str(payload.get("bundle_id", "")).strip()
+            bundle_id = str(payload.get("bundle_id", "")).strip() or str(payload.get("profile_bundle_id", "")).strip()
             if not bundle_id or bundle_id in seen:
                 continue
             seen.add(bundle_id)

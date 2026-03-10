@@ -134,6 +134,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-PRODUCTS-MUST-USE-APPSHELL`
 - `INV-NO-ADHOC-MAIN`
 - `INV-OFFLINE-BOOT-OK`
+- `INV-COMMANDS-REGISTERED`
+- `INV-NO-ADHOC-ARG-PARSING`
+- `INV-REFUSAL-CODES-STABLE`
 - `INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS`
 - `INV-DEGRADE-PLAN-DECLARED`
 - `INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY`
@@ -596,6 +599,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the AppShell constitution stops declaring offline operation, deterministic logging, or runtime independence from repo/XStack surfaces.
 - Fails when the shared AppShell runtime starts importing XStack-only modules or network/bootstrap dependencies that would block portable offline boot.
 - Preserves the removable, offline-first shell spine required for portable installs and future IPC/TUI work.
+
+### INV-COMMANDS-REGISTERED
+
+- Fails when the APPSHELL-1 commands/refusals doctrine, command registry, or command engine stop declaring the shared root commands and reserved product namespaces.
+- Fails when help/doc generation is no longer derived from the same registered command surface used at runtime.
+- Preserves a single declarative command tree instead of per-product shell drift.
+
+### INV-NO-ADHOC-ARG-PARSING
+
+- Fails when AppShell bootstrap regains private root-command branches instead of routing through the registered command engine.
+- Fails when the shared parser/bootstrap/dispatch path stops being the single source of truth for AppShell command resolution.
+- Preserves deterministic command parsing and prevents product-local command UX forks.
+
+### INV-REFUSAL-CODES-STABLE
+
+- Fails when the APPSHELL-1 refusal doctrine, refusal registries, or command engine stop emitting structured refusal payloads with stable refusal-to-exit mappings.
+- Fails when shared refusal families or exact AppShell refusal codes disappear from the governed registries.
+- Preserves backward-stable operator UX and automation-friendly exit semantics.
 
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 

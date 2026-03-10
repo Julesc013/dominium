@@ -16,9 +16,9 @@ REQUIRED_TOKENS = {
     ),
     "src/appshell/bootstrap.py": (
         "def appshell_main(",
-        "descriptor",
-        "verify",
-        "compat-status",
+        "dispatch_registered_command(",
+        "build_root_command_descriptors(",
+        "format_help_text(",
     ),
     "tools/mvp/runtime_entry.py": (
         "from src.appshell import appshell_main",
