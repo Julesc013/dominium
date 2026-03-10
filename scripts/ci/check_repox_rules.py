@@ -130,6 +130,12 @@ MOD_POLICY_SESSION_CONTROL_REL = os.path.join("tools", "xstack", "sessionx", "se
 MOD_POLICY_SESSION_CREATE_REL = os.path.join("tools", "xstack", "session_create.py")
 MOD_POLICY_CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capability_registry.json")
 MOD_POLICY_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
+PACK_COMPAT_DOC_REL = os.path.join("docs", "packs", "PACK_COMPATIBILITY_MANIFEST.md")
+PACK_COMPAT_BASELINE_REL = os.path.join("docs", "audit", "PACK_COMPAT_BASELINE.md")
+PACK_COMPAT_SCHEMA_REL = os.path.join("schema", "packs", "pack_compat_manifest.schema")
+PACK_COMPAT_JSON_SCHEMA_REL = os.path.join("schemas", "pack_compat_manifest.schema.json")
+PACK_COMPAT_VALIDATOR_REL = os.path.join("src", "packs", "compat", "pack_compat_validator.py")
+PACK_DEGRADE_MODE_REGISTRY_REL = os.path.join("data", "registries", "pack_degrade_mode_registry.json")
 CANONICAL_JSON_REL = os.path.join("tools", "xstack", "compatx", "canonical_json.py")
 SCHEMA_REGISTRY_REL = os.path.join("tools", "xstack", "compatx", "schema_registry.py")
 COMPAT_VALIDATOR_REL = os.path.join("tools", "xstack", "compatx", "validator.py")
@@ -5388,6 +5394,229 @@ def check_mod_policy_enforced(repo_root):
                     ", ".join(missing[:4]),
                 )
             )
+    return violations
+
+
+def check_official_packs_have_compat_manifest(repo_root):
+    invariant_id = "INV-OFFICIAL-PACKS-HAVE-COMPAT-MANIFEST"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        PACK_COMPAT_DOC_REL: (
+            "pack.compat.json",
+            "strict policy surfaces must refuse packs missing it",
+            "pack.degrade.strict_refuse",
+        ),
+        PACK_COMPAT_VALIDATOR_REL: (
+            "PACK_COMPAT_MANIFEST_NAME",
+            "REFUSAL_PACK_COMPAT_MANIFEST_MISSING",
+            "validate_pack_compat_manifest(",
+        ),
+        PACK_COMPAT_JSON_SCHEMA_REL: (
+            "\"title\": \"Pack Compatibility Manifest Schema\"",
+            "\"degrade_mode_id\"",
+            "\"required_contract_ranges\"",
+        ),
+        PACK_DEGRADE_MODE_REGISTRY_REL: (
+            "\"pack.degrade.strict_refuse\"",
+            "\"pack.degrade.best_effort\"",
+            "\"pack.degrade.read_only_only\"",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing pack-compat marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    official_rows = [
+        (rel_manifest, abs_manifest)
+        for rel_manifest, abs_manifest in _iter_mod_policy_pack_manifests(repo_root)
+        if rel_manifest.startswith("packs/official/")
+    ]
+    if not official_rows:
+        violations.append("{}: no official pack manifests discovered".format(invariant_id))
+        return violations
+
+    for rel_manifest, abs_manifest in official_rows:
+        manifest_payload = _load_json_file(abs_manifest)
+        if not isinstance(manifest_payload, dict):
+            violations.append("{}: invalid json {}".format(invariant_id, rel_manifest))
+            continue
+        pack_id = str(manifest_payload.get("pack_id", "")).strip()
+        version = str(manifest_payload.get("version", "")).strip()
+        compat_abs = os.path.join(os.path.dirname(abs_manifest), "pack.compat.json")
+        compat_rel = normalize_path(os.path.relpath(compat_abs, repo_root))
+        if not os.path.isfile(compat_abs):
+            violations.append("{}: missing {}".format(invariant_id, compat_rel))
+            continue
+        compat_payload = _load_json_file(compat_abs)
+        if not isinstance(compat_payload, dict):
+            violations.append("{}: invalid json {}".format(invariant_id, compat_rel))
+            continue
+        if str(compat_payload.get("pack_id", "")).strip() != pack_id:
+            violations.append("{}: {} pack_id mismatch".format(invariant_id, compat_rel))
+        if str(compat_payload.get("pack_version", "")).strip() != version:
+            violations.append("{}: {} pack_version mismatch".format(invariant_id, compat_rel))
+        if not str(compat_payload.get("trust_level_id", "")).strip():
+            violations.append("{}: {} missing trust_level_id".format(invariant_id, compat_rel))
+        if not isinstance(compat_payload.get("capability_ids"), list):
+            violations.append("{}: {} missing capability_ids list".format(invariant_id, compat_rel))
+        if not isinstance(compat_payload.get("required_contract_ranges"), dict):
+            violations.append("{}: {} missing required_contract_ranges object".format(invariant_id, compat_rel))
+        if not str(compat_payload.get("degrade_mode_id", "")).strip():
+            violations.append("{}: {} missing degrade_mode_id".format(invariant_id, compat_rel))
+        if not str(compat_payload.get("deterministic_fingerprint", "")).strip():
+            violations.append("{}: {} missing deterministic_fingerprint".format(invariant_id, compat_rel))
+    return violations
+
+
+def check_strict_mode_refuses_missing_compat(repo_root):
+    invariant_id = "INV-STRICT-MODE-REFUSES-MISSING-COMPAT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        PACK_COMPAT_DOC_REL: (
+            "strict policy surfaces must refuse packs missing it",
+            "mod_policy.strict",
+            "refusal.pack.compat_manifest_missing",
+        ),
+        PACK_COMPAT_VALIDATOR_REL: (
+            "REFUSAL_PACK_COMPAT_MANIFEST_MISSING",
+            "\"mod_policy.strict\"",
+            "\"warn.pack.compat_manifest_missing\"",
+        ),
+        MOD_POLICY_PACK_LOADER_REL: (
+            "attach_pack_compat_manifest(",
+            "mod_policy_id=mod_policy_id",
+            "compat_errors",
+            "compat_warnings",
+        ),
+        os.path.join("tools", "xstack", "testx", "tests", "test_missing_manifest_warns_or_refuses_by_policy.py"): (
+            "\"mod_policy.lab\"",
+            "\"mod_policy.strict\"",
+            "\"refusal.pack.compat_manifest_missing\"",
+            "\"warn.pack.compat_manifest_missing\"",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing strict-compat marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_pack_compat_validated_before_load(repo_root):
+    invariant_id = "INV-PACK-COMPAT-VALIDATED-BEFORE-LOAD"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        PACK_COMPAT_DOC_REL: (
+            "Offline validation must check",
+            "required registries exist",
+            "the manifest hash must be included in pack-lock identity when present",
+        ),
+        PACK_COMPAT_VALIDATOR_REL: (
+            "validate_pack_compat_manifest(",
+            "required contract id is not present in the current semantic contract registry",
+            "required registry '{}' is not present",
+        ),
+        MOD_POLICY_PACK_LOADER_REL: (
+            "attach_pack_compat_manifest(",
+            "\"compat_manifest_path\"",
+            "compat_errors",
+            "compat_warnings",
+        ),
+        MOD_POLICY_COMPILER_REL: (
+            "\"compat_manifest_hash\"",
+            "\"pack_degrade_mode_id\"",
+            "load_pack_set(",
+        ),
+        MOD_POLICY_RUNTIME_BUNDLE_REL: (
+            "attach_pack_compat_manifest(",
+            "\"compat_manifest_hash\"",
+            "\"pack_degrade_mode_id\"",
+            "compute_pack_lock_hash(",
+        ),
+        os.path.join("tools", "xstack", "registry_compile", "lockfile.py"): (
+            "\"compat_manifest_hash\"",
+            "\"pack_degrade_mode_id\"",
+            "compute_pack_lock_hash(",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing pack-compat validation marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    try:
+        from tools.xstack.pack_loader.loader import load_pack_set
+    except Exception as exc:  # pragma: no cover - governance fallback
+        violations.append("{}: unable to import pack loader ({})".format(invariant_id, exc))
+        return violations
+
+    result = load_pack_set(
+        repo_root=repo_root,
+        packs_root_rel="packs",
+        schema_repo_root=repo_root,
+        mod_policy_id="mod_policy.lab",
+    )
+    if str(result.get("result", "")) != "complete":
+        errors = list(result.get("errors") or [])
+        sample = ", ".join(str(row.get("code", "invalid")) for row in errors[:3] if isinstance(row, dict))
+        violations.append("{}: pack loader failed governed pack-compat validation ({})".format(invariant_id, sample or "unknown"))
+        return violations
+
+    for row in list(result.get("payload", {}).get("packs") or []):
+        if not isinstance(row, dict):
+            continue
+        rel_dir = normalize_path(str(row.get("pack_dir_rel", "")).strip())
+        if not rel_dir.startswith("packs/"):
+            continue
+        if not str(row.get("compat_manifest_path", "")).strip():
+            violations.append("{}: {} missing compat_manifest_path after load".format(invariant_id, rel_dir))
+        if not str(row.get("compat_manifest_hash", "")).strip():
+            violations.append("{}: {} missing compat_manifest_hash after load".format(invariant_id, rel_dir))
+        if not str(row.get("pack_degrade_mode_id", "")).strip():
+            violations.append("{}: {} missing pack_degrade_mode_id after load".format(invariant_id, rel_dir))
     return violations
 
 
@@ -12078,6 +12307,9 @@ def main() -> int:
             "checks": [
                 lambda: check_packs_must_declare_capabilities(repo_root),
                 lambda: check_mod_policy_enforced(repo_root),
+                lambda: check_official_packs_have_compat_manifest(repo_root),
+                lambda: check_strict_mode_refuses_missing_compat(repo_root),
+                lambda: check_pack_compat_validated_before_load(repo_root),
             ],
         },
         {

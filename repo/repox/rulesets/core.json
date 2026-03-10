@@ -539,6 +539,45 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-OFFICIAL-PACKS-HAVE-COMPAT-MANIFEST",
+      "severity": "FAIL",
+      "scope_paths": [
+        "packs/official",
+        "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
+        "schemas/pack_compat_manifest.schema.json",
+        "src/packs/compat/pack_compat_validator.py",
+        "data/registries/pack_degrade_mode_registry.json"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-official-packs-have-compat-manifest",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-STRICT-MODE-REFUSES-MISSING-COMPAT",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
+        "src/packs/compat/pack_compat_validator.py",
+        "tools/xstack/pack_loader/loader.py",
+        "tools/xstack/testx/tests/test_missing_manifest_warns_or_refuses_by_policy.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-strict-mode-refuses-missing-compat",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PACK-COMPAT-VALIDATED-BEFORE-LOAD",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/packs/compat/pack_compat_validator.py",
+        "tools/xstack/pack_loader/loader.py",
+        "tools/xstack/registry_compile/compiler.py",
+        "tools/xstack/registry_compile/lockfile.py",
+        "tools/mvp/runtime_bundle.py",
+        "docs/packs/PACK_COMPATIBILITY_MANIFEST.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-pack-compat-validated-before-load",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-SERVER-TICK-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [

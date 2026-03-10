@@ -1,0 +1,21 @@
+{
+  "capability_ids": [],
+  "degrade_mode_id": "pack.degrade.best_effort",
+  "deterministic_fingerprint": "85cff1323c303d7bcdc896252be9c78be0a36c6e4769b246c3d2a41c126ddc96",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "pack.representation.base",
+  "pack_version": "1.0.0",
+  "provides": [
+    "provides.registry_entries"
+  ],
+  "required_contract_ranges": {},
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.thirdparty_signed"
+}

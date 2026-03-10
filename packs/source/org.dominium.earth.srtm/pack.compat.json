@@ -1,0 +1,25 @@
+{
+  "capability_ids": [],
+  "degrade_mode_id": "pack.degrade.read_only_only",
+  "deterministic_fingerprint": "d6bb83e8a820c99af1802c0633c18eec244902d509ecc707b6fdad4bc80b8059",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "org.dominium.earth.srtm",
+  "pack_version": "1.0.0",
+  "provides": [],
+  "required_contract_ranges": {
+    "contract.worldgen.refinement.v1": {
+      "exact_version": "contract.worldgen.refinement.v1",
+      "max_version": "contract.worldgen.refinement.v1",
+      "min_version": "contract.worldgen.refinement.v1"
+    }
+  },
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.thirdparty_signed"
+}

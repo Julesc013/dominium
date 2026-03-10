@@ -2,6 +2,7 @@
 
 PACKS_ROOT_REL = "packs"
 PACK_MANIFEST_NAME = "pack.json"
+PACK_COMPAT_MANIFEST_NAME = "pack.compat.json"
 PACK_TRUST_DESCRIPTOR_NAME = "pack.trust.json"
 PACK_CAPABILITIES_NAME = "pack.capabilities.json"
 

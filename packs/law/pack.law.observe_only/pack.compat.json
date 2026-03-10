@@ -1,0 +1,23 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "degrade_mode_id": "pack.degrade.strict_refuse",
+  "deterministic_fingerprint": "fd9052d82c5358d6880a9369796ed82f1140a8519f0af019af4d9a5ae609f2bc",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "pack.law.observe_only",
+  "pack_version": "1.0.0",
+  "provides": [
+    "provides.profiles"
+  ],
+  "required_contract_ranges": {},
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.thirdparty_signed"
+}

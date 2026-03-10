@@ -60,7 +60,9 @@ def build_cache_key(
                         "pack_id": str(row.get("pack_id", "")),
                         "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
                         "capabilities_hash": str(row.get("capabilities_hash", "")),
+                        "compat_manifest_hash": str(row.get("compat_manifest_hash", "")),
                         "trust_level_id": str(row.get("trust_level_id", "")),
+                        "pack_degrade_mode_id": str(row.get("pack_degrade_mode_id", "")),
                         "capability_ids": sorted(
                             set(str(item).strip() for item in (row.get("capability_ids") or []) if str(item).strip())
                         ),

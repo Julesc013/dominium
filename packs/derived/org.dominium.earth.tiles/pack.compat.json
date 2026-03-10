@@ -1,0 +1,27 @@
+{
+  "capability_ids": [],
+  "degrade_mode_id": "pack.degrade.read_only_only",
+  "deterministic_fingerprint": "93edff096e2c4f17eab9bb5beba78103d4bc12a30aa0d6719ad4de9ed6c3afac",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "org.dominium.earth.tiles",
+  "pack_version": "1.0.0",
+  "provides": [
+    "provides.registry_entries"
+  ],
+  "required_contract_ranges": {
+    "contract.worldgen.refinement.v1": {
+      "exact_version": "contract.worldgen.refinement.v1",
+      "max_version": "contract.worldgen.refinement.v1",
+      "min_version": "contract.worldgen.refinement.v1"
+    }
+  },
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.thirdparty_signed"
+}

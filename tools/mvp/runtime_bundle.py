@@ -14,6 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
+from tools.xstack.registry_compile.lockfile import compute_pack_lock_hash
 from tools.xstack.sessionx.common import deterministic_seed_hex, identity_hash_for_payload
 from src.modding import (
     DEFAULT_MOD_POLICY_ID,
@@ -22,6 +23,7 @@ from src.modding import (
     mod_policy_registry_hash,
     mod_policy_rows_by_id,
 )
+from src.packs.compat import attach_pack_compat_manifest
 from src.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
@@ -169,6 +171,36 @@ def _source_pack_row(repo_root: str, rel_path: str) -> Dict[str, object]:
             "capabilities_hash": str(policy_row.get("capabilities_hash", "")).strip(),
         }
     )
+    compat_row, compat_errors, compat_warnings = attach_pack_compat_manifest(
+        repo_root=repo_root,
+        pack_row={
+            "pack_id": row["pack_id"],
+            "version": row["version"],
+            "pack_dir": os.path.dirname(manifest_path),
+            "trust_level_id": row["trust_level_id"],
+            "capability_ids": list(row["capability_ids"]),
+        },
+        schema_repo_root=repo_root,
+        mod_policy_id=DEFAULT_MOD_POLICY_ID,
+    )
+    if compat_errors:
+        raise ValueError(
+            "invalid pack compatibility manifest for {}: {}".format(
+                row["pack_id"],
+                "; ".join(str(dict(item).get("code", "invalid")) for item in compat_errors[:3] if isinstance(item, dict)),
+            )
+        )
+    if compat_warnings:
+        raise ValueError(
+            "missing pack compatibility manifest for {} under default runtime bundle generation".format(row["pack_id"])
+        )
+    row.update(
+        {
+            "compat_manifest_hash": str(compat_row.get("compat_manifest_hash", "")).strip(),
+            "pack_degrade_mode_id": str(compat_row.get("pack_degrade_mode_id", "")).strip(),
+            "compat_manifest_path": str(compat_row.get("compat_manifest_path", "")).strip(),
+        }
+    )
     return row
 
 
@@ -201,6 +233,8 @@ def _mod_policy_loaded_packs(pack_rows: List[Dict[str, object]]) -> List[Dict[st
                 ),
                 "trust_descriptor_hash": str(source_row.get("trust_descriptor_hash", "")).strip(),
                 "capabilities_hash": str(source_row.get("capabilities_hash", "")).strip(),
+                "compat_manifest_hash": str(source_row.get("compat_manifest_hash", "")).strip(),
+                "pack_degrade_mode_id": str(source_row.get("pack_degrade_mode_id", "")).strip(),
             }
     return [dict(by_key[key]) for key in sorted(by_key.keys())]
 
@@ -334,6 +368,7 @@ def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, ob
     mod_policy_row, mod_policy_registry_hash_value = _default_mod_policy_row(repo_root)
     pack_rows = _ordered_alias_pack_rows(repo_root=repo_root)
     mod_policy_loaded_packs = _mod_policy_loaded_packs(pack_rows)
+    source_pack_lock_hash = compute_pack_lock_hash(mod_policy_loaded_packs)
     mod_policy_proof_hash = canonical_sha256(
         {
             "mod_policy_id": DEFAULT_MOD_POLICY_ID,
@@ -354,9 +389,11 @@ def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, ob
         "mod_policy_registry_hash": mod_policy_registry_hash_value,
         "mod_policy_proof_hash": mod_policy_proof_hash,
         "overlay_conflict_policy_id": str(mod_policy_row.get("conflict_policy_id", "")).strip(),
+        "source_pack_lock_hash": source_pack_lock_hash,
         "pack_lock_hash": canonical_sha256(
             {
                 "ordered_pack_hashes": _ordered_pack_hashes(pack_rows),
+                "source_pack_lock_hash": source_pack_lock_hash,
                 "profile_bundle_hash": profile_bundle_hash,
             }
         ),
@@ -375,7 +412,13 @@ def validate_pack_lock_payload(repo_root: str, payload: Dict[str, object]) -> Li
         errors.append("ordered_packs mismatch")
     if str(payload.get("profile_bundle_hash", "")).strip() != str(expected.get("profile_bundle_hash", "")).strip():
         errors.append("profile_bundle_hash mismatch")
-    for key in ("mod_policy_id", "mod_policy_registry_hash", "mod_policy_proof_hash", "overlay_conflict_policy_id"):
+    for key in (
+        "mod_policy_id",
+        "mod_policy_registry_hash",
+        "mod_policy_proof_hash",
+        "overlay_conflict_policy_id",
+        "source_pack_lock_hash",
+    ):
         if str(payload.get(key, "")).strip() != str(expected.get(key, "")).strip():
             errors.append("{} mismatch".format(key))
     if str(payload.get("pack_lock_hash", "")).strip() != str(expected.get("pack_lock_hash", "")).strip():
@@ -535,6 +578,14 @@ import sys
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 SCRIPT = os.path.join(REPO_ROOT, "tools", "mvp", "runtime_entry.py")
+DESCRIPTOR_TOOL = os.path.join(REPO_ROOT, "tools", "compat", "tool_emit_descriptor.py")
+
+if "--descriptor" in sys.argv[1:] or "--descriptor-file" in sys.argv[1:]:
+    if not os.path.isfile(DESCRIPTOR_TOOL):
+        print("descriptor tool missing: {{}}".format(DESCRIPTOR_TOOL))
+        raise SystemExit(2)
+    cmd = [sys.executable, DESCRIPTOR_TOOL, "--product-id", "{product_id}"] + sys.argv[1:]
+    raise SystemExit(subprocess.call(cmd))
 
 if not os.path.isfile(SCRIPT):
     print("dominium runtime bootstrap missing: {{}}".format(SCRIPT))
@@ -542,13 +593,17 @@ if not os.path.isfile(SCRIPT):
 
 cmd = [sys.executable, SCRIPT, "{entrypoint}", "--ui", "{ui_mode}"] + sys.argv[1:]
 raise SystemExit(subprocess.call(cmd))
-""".format(entrypoint=entrypoint, ui_mode=ui_mode)
+""".format(
+        entrypoint=entrypoint,
+        ui_mode=ui_mode,
+        product_id=entrypoint,
+    )
 
 
 def _dist_cmd_stub(entrypoint: str, ui_mode: str) -> str:
     return (
         "@echo off\r\n"
-        "python \"%~dp0\\..\\..\\tools\\mvp\\runtime_entry.py\" {entrypoint} --ui {ui_mode} %*\r\n"
+        "python \"%~dp0dominium_{entrypoint}\" %*\r\n"
     ).format(entrypoint=entrypoint, ui_mode=ui_mode)
 
 

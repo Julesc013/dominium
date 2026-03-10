@@ -11785,7 +11785,12 @@ def compile_bundle(
     lockfile_out = os.path.join(repo_root, lockfile_out_rel)
     _ensure_dir(out_dir)
 
-    loaded = load_pack_set(repo_root=repo_root, packs_root_rel=packs_root_rel, schema_repo_root=schema_root)
+    loaded = load_pack_set(
+        repo_root=repo_root,
+        packs_root_rel=packs_root_rel,
+        schema_repo_root=schema_root,
+        mod_policy_id=str(mod_policy_id or DEFAULT_MOD_POLICY_ID),
+    )
     if loaded.get("result") != "complete":
         return loaded
 
@@ -11870,6 +11875,8 @@ def compile_bundle(
                                     ),
                                     "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
                                     "capabilities_hash": str(row.get("capabilities_hash", "")),
+                                    "compat_manifest_hash": str(row.get("compat_manifest_hash", "")),
+                                    "pack_degrade_mode_id": str(row.get("pack_degrade_mode_id", "")),
                                 }
                                 for row in list(restored_lockfile_payload.get("resolved_packs") or [])
                                 if isinstance(row, dict)
@@ -13883,6 +13890,8 @@ def compile_bundle(
             ),
             "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
             "capabilities_hash": str(row.get("capabilities_hash", "")),
+            "compat_manifest_hash": str(row.get("compat_manifest_hash", "")),
+            "pack_degrade_mode_id": str(row.get("pack_degrade_mode_id", "")),
         }
         for row in ordered_packs
     ]

@@ -7,10 +7,12 @@ import os
 from typing import Dict, List, Tuple
 
 from src.modding import attach_pack_policy_descriptors
+from src.packs.compat import attach_pack_compat_manifest
 from src.meta_extensions_engine import normalize_extensions_tree
 from tools.xstack.compatx.validator import validate_instance
 
 from .constants import (
+    PACK_COMPAT_MANIFEST_NAME,
     FORBIDDEN_PACK_EXTENSIONS,
     PACK_CAPABILITIES_NAME,
     PACK_CATEGORIES,
@@ -82,11 +84,13 @@ def load_pack_set(
     repo_root: str,
     packs_root_rel: str = PACKS_ROOT_REL,
     schema_repo_root: str = "",
+    mod_policy_id: str = "",
 ) -> Dict[str, object]:
     packs_root = os.path.join(repo_root, packs_root_rel)
     schema_root = os.path.abspath(schema_repo_root) if str(schema_repo_root).strip() else repo_root
     manifests = _discover_pack_manifests(repo_root, packs_root)
     errors: List[Dict[str, str]] = []
+    warnings: List[Dict[str, str]] = []
     packs: List[dict] = []
     seen_pack_ids: Dict[str, dict] = {}
 
@@ -226,6 +230,9 @@ def load_pack_set(
             "capabilities_descriptor_path": _rel(os.path.join(pack_dir, PACK_CAPABILITIES_NAME), repo_root)
             if os.path.isfile(os.path.join(pack_dir, PACK_CAPABILITIES_NAME))
             else "",
+            "compat_manifest_path": _rel(os.path.join(pack_dir, PACK_COMPAT_MANIFEST_NAME), repo_root)
+            if os.path.isfile(os.path.join(pack_dir, PACK_COMPAT_MANIFEST_NAME))
+            else "",
         }
         attached_row, policy_errors = attach_pack_policy_descriptors(
             repo_root=repo_root,
@@ -237,13 +244,25 @@ def load_pack_set(
         else:
             pack_row = attached_row
             pack_row["mod_policy_metadata_errors"] = []
+        compat_row, compat_errors, compat_warnings = attach_pack_compat_manifest(
+            repo_root=repo_root,
+            pack_row=pack_row,
+            schema_repo_root=schema_root,
+            mod_policy_id=mod_policy_id,
+        )
+        if compat_errors:
+            errors.extend([dict(item) for item in compat_errors if isinstance(item, dict)])
+        else:
+            pack_row = compat_row
+        if compat_warnings:
+            warnings.extend([dict(item) for item in compat_warnings if isinstance(item, dict)])
         seen_pack_ids[pack_id] = pack_row
         packs.append(pack_row)
         errors.extend(_scan_forbidden_files(pack_dir, pack_id, repo_root))
 
     packs = sorted(packs, key=lambda row: str(row.get("pack_id", "")))
     if errors:
-        return result_refused({"pack_count": len(packs), "packs": packs}, errors)
+        return result_refused({"pack_count": len(packs), "packs": packs, "warnings": sorted(warnings, key=lambda row: (str(row.get("code", "")), str(row.get("path", "")), str(row.get("message", ""))))}, errors)
 
     dependency_result = resolve_packs(packs, bundle_selection=None)
     if dependency_result.get("result") == "refused":
@@ -254,5 +273,6 @@ def load_pack_set(
             "pack_count": len(packs),
             "packs": packs,
             "ordered_pack_ids": list(dependency_result.get("ordered_pack_ids", [])),
+            "warnings": sorted(warnings, key=lambda row: (str(row.get("code", "")), str(row.get("path", "")), str(row.get("message", "")))),
         }
     )

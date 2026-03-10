@@ -486,6 +486,8 @@ def evaluate_mod_policy(
                 "required_capabilities": required_capabilities,
                 "trust_descriptor_hash": str(pack_row.get("trust_descriptor_hash", "")).strip(),
                 "capabilities_hash": str(pack_row.get("capabilities_hash", "")).strip(),
+                "compat_manifest_hash": str(pack_row.get("compat_manifest_hash", "")).strip(),
+                "pack_degrade_mode_id": str(pack_row.get("pack_degrade_mode_id", "")).strip(),
                 "requests_nondeterministic_allowance": bool(pack_row.get("requests_nondeterministic_allowance", False)),
             }
         )
@@ -582,6 +584,8 @@ def proof_bundle_from_lockfile(lockfile_payload: Mapping[str, object] | None) ->
                 "capability_ids": _sorted_tokens(row.get("capability_ids")),
                 "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
                 "capabilities_hash": str(row.get("capabilities_hash", "")),
+                "compat_manifest_hash": str(row.get("compat_manifest_hash", "")),
+                "pack_degrade_mode_id": str(row.get("pack_degrade_mode_id", "")),
             }
             for row in list(payload.get("resolved_packs") or [])
             if isinstance(row, Mapping)

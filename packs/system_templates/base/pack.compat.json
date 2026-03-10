@@ -1,0 +1,30 @@
+{
+  "capability_ids": [
+    "cap.add_templates"
+  ],
+  "degrade_mode_id": "pack.degrade.strict_refuse",
+  "deterministic_fingerprint": "63a59cd43127cff084d7dce3ee666b68c0811a3a744c4a35374440f79ad1f189",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "base",
+  "pack_version": "1.0.0",
+  "provides": [
+    "provides.registry_entries",
+    "provides.templates"
+  ],
+  "required_contract_ranges": {
+    "contract.sys.collapse.v1": {
+      "exact_version": "contract.sys.collapse.v1",
+      "max_version": "contract.sys.collapse.v1",
+      "min_version": "contract.sys.collapse.v1"
+    }
+  },
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.local_dev"
+}

@@ -20,6 +20,10 @@ def compute_pack_lock_hash(resolved_packs: List[dict]) -> str:
             str(item.get("version", "")),
             str(item.get("canonical_hash", "")),
             str(item.get("signature_status", "")),
+            str(item.get("trust_level_id", "")),
+            str(item.get("trust_descriptor_hash", "")),
+            str(item.get("capabilities_hash", "")),
+            str(item.get("compat_manifest_hash", "")),
         ),
     ):
         rows.append(
@@ -28,6 +32,14 @@ def compute_pack_lock_hash(resolved_packs: List[dict]) -> str:
                 "version": str(row.get("version", "")),
                 "canonical_hash": str(row.get("canonical_hash", "")),
                 "signature_status": str(row.get("signature_status", "")),
+                "trust_level_id": str(row.get("trust_level_id", "")),
+                "capability_ids": sorted(
+                    set(str(item).strip() for item in (row.get("capability_ids") or []) if str(item).strip())
+                ),
+                "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
+                "capabilities_hash": str(row.get("capabilities_hash", "")),
+                "compat_manifest_hash": str(row.get("compat_manifest_hash", "")),
+                "pack_degrade_mode_id": str(row.get("pack_degrade_mode_id", "")),
             }
         )
     return canonical_sha256(rows)
@@ -105,7 +117,7 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
                         "path": "$.resolved_packs[{}].{}".format(idx, field),
                     }
                 )
-        optional_hash_fields = ("trust_descriptor_hash", "capabilities_hash")
+        optional_hash_fields = ("trust_descriptor_hash", "capabilities_hash", "compat_manifest_hash")
         for field in optional_hash_fields:
             token = str(row.get(field, "")).strip()
             if token and (not HASH_RE.fullmatch(token)):
@@ -123,6 +135,15 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
                     "code": "refuse.lockfile.invalid_resolved_pack_field",
                     "message": "resolved_packs entry capability_ids must be a list when present",
                     "path": "$.resolved_packs[{}].capability_ids".format(idx),
+                }
+            )
+        pack_degrade_mode_id = str(row.get("pack_degrade_mode_id", "")).strip()
+        if pack_degrade_mode_id and not pack_degrade_mode_id.startswith("pack.degrade."):
+            errors.append(
+                {
+                    "code": "refuse.lockfile.invalid_resolved_pack_field",
+                    "message": "resolved_packs entry pack_degrade_mode_id must use pack.degrade.* ids when present",
+                    "path": "$.resolved_packs[{}].pack_degrade_mode_id".format(idx),
                 }
             )
 

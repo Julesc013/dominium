@@ -1,0 +1,35 @@
+{
+  "capability_ids": [
+    "cap.overlay_patch"
+  ],
+  "degrade_mode_id": "pack.degrade.strict_refuse",
+  "deterministic_fingerprint": "ad63421252d2565a5678c06201f296305392d3fe1d4ad8dcab8870e0622f26d9",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "pack.sol.pin_minimal",
+  "pack_version": "0.0.0",
+  "provides": [
+    "provides.overlay_layers",
+    "provides.registry_entries"
+  ],
+  "required_contract_ranges": {
+    "contract.overlay.merge.v1": {
+      "exact_version": "contract.overlay.merge.v1",
+      "max_version": "contract.overlay.merge.v1",
+      "min_version": "contract.overlay.merge.v1"
+    },
+    "contract.worldgen.refinement.v1": {
+      "exact_version": "contract.worldgen.refinement.v1",
+      "max_version": "contract.worldgen.refinement.v1",
+      "min_version": "contract.worldgen.refinement.v1"
+    }
+  },
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.official_signed"
+}

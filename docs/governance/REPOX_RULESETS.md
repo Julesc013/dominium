@@ -136,6 +136,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY`
 - `INV-PACKS-MUST-DECLARE-CAPABILITIES`
 - `INV-MOD-POLICY-ENFORCED`
+- `INV-OFFICIAL-PACKS-HAVE-COMPAT-MANIFEST`
+- `INV-STRICT-MODE-REFUSES-MISSING-COMPAT`
+- `INV-PACK-COMPAT-VALIDATED-BEFORE-LOAD`
 - `INV-SERVER-TICK-DETERMINISTIC`
 - `INV-CONTRACTS-VALIDATED-ON-BOOT`
 - `INV-AUTHORITY-REQUIRED`
@@ -644,6 +647,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the canonical mod-policy doctrine, registry, compiler/session enforcement surfaces, or MVP runtime metadata stop carrying `mod_policy_id` and associated proof hashes.
 - Fails when trust denial, capability denial, nondeterminism refusal, or replay/resume policy mismatch markers disappear from the governed enforcement path.
 - Preserves explicit server-friendly mod governance without silent trust bypass, capability escalation, or nondeterministic allowances.
+
+### INV-OFFICIAL-PACKS-HAVE-COMPAT-MANIFEST
+
+- Fails when governed official packs under `packs/official/` do not ship adjacent `pack.compat.json` sidecars.
+- Fails when official compat manifests drift away from adjacent `pack.json` identity/version fields or omit deterministic compatibility metadata.
+- Preserves official pack loading as an explicit offline-verified compatibility surface rather than a best-effort implicit contract.
+
+### INV-STRICT-MODE-REFUSES-MISSING-COMPAT
+
+- Fails when strict policy doctrine or runtime validation stops refusing packs that omit `pack.compat.json`.
+- Fails when the governed pack loader loses stable refusal/warning markers for strict-vs-lab compatibility sidecar handling.
+- Preserves deterministic strict-server refusal for underdeclared packs instead of silent fallback.
+
+### INV-PACK-COMPAT-VALIDATED-BEFORE-LOAD
+
+- Fails when pack loading, registry compilation, or MVP runtime bundle generation stop attaching validated pack compatibility metadata before composition proceeds.
+- Fails when compat manifest hashes or degrade-mode ids stop flowing into pack-lock identity and derived proof surfaces.
+- Preserves offline compatibility checking as a prerequisite for lawful pack load, pack-lock generation, and deterministic runtime reconstruction.
 
 ### INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS
 

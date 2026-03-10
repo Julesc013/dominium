@@ -1,0 +1,19 @@
+{
+  "capability_ids": [],
+  "degrade_mode_id": "pack.degrade.best_effort",
+  "deterministic_fingerprint": "c5df9a084df03bb09eb0c6b70079037d445430af8a1383946b3f918345522092",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "workspace.observer.truth",
+  "pack_version": "1.0.0",
+  "provides": [],
+  "required_contract_ranges": {},
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.thirdparty_signed"
+}

@@ -1,0 +1,37 @@
+SCHEMA: packs/pack_compat_manifest.schema
+schema_id: dominium.schema.packs.pack_compat_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic pack compatibility metadata for offline verification and pack-lock identity.
+- Keep compatibility declarations separate from `pack.json` content declarations.
+
+NON-SEMANTICS:
+- PackCompatManifest does not replace `pack.json`.
+- PackCompatManifest does not authorize behavior changes outside pinned semantic contracts.
+
+REQUIRED SHAPE:
+record pack_compat_manifest
+  required:
+    - schema_version: tag
+    - pack_id: id
+    - pack_version: tag
+    - trust_level_id: id
+    - capability_ids: [id]
+    - required_contract_ranges: map
+    - required_registry_ids: [id]
+    - degrade_mode_id: id
+    - migration_refs: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - required_protocol_ranges: map
+    - supported_engine_version_range: map
+    - provides: [id]
+
+INVARIANTS:
+- pack_id and pack_version must match adjacent `pack.json`
+- required_contract_ranges only constrain declared semantic contract families
+- missing compatibility manifests are handled by explicit policy, never silent inference
+- deterministic_fingerprint is computed with the fingerprint field blanked

@@ -80,6 +80,13 @@
           "capabilities_hash": {
             "type": "string",
             "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "compat_manifest_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "pack_degrade_mode_id": {
+            "type": "string"
           }
         }
       }

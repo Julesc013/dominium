@@ -46,3 +46,4 @@ Superseded By: none
   - 2026-03-10: refreshed for SERVER-MVP-1 local singleplayer doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX local-orchestration discipline additions, and SERVER-MVP-1 TestX additions
   - 2026-03-10: refreshed for CAP-NEG-1 endpoint descriptor doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX descriptor-emission discipline additions, and CAP-NEG-1 TestX additions
   - 2026-03-10: refreshed for CAP-NEG-3 degrade ladder doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX degrade-discipline additions, and CAP-NEG-3 TestX additions
+  - 2026-03-11: refreshed for PACK-COMPAT-0 pack compatibility manifest registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX pack-compat discipline additions, and PACK-COMPAT-0 TestX additions

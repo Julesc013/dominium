@@ -1,0 +1,23 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "degrade_mode_id": "pack.degrade.strict_refuse",
+  "deterministic_fingerprint": "a2d4f2fa2ed8df9adf7727926f6c1d6f7959440f488dcfcfa34344cc1d929417",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "pack.test.law",
+  "pack_version": "1.0.0",
+  "provides": [
+    "provides.profiles"
+  ],
+  "required_contract_ranges": {},
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.thirdparty_signed"
+}

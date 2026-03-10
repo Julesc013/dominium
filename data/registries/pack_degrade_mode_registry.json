@@ -1,0 +1,43 @@
+{
+  "record": {
+    "extensions": {
+      "official.source": "PACK-COMPAT-0"
+    },
+    "pack_degrade_modes": [
+      {
+        "degrade_mode_id": "pack.degrade.best_effort",
+        "description": "Disable optional surfaces deterministically and continue when required compatibility checks still pass.",
+        "deterministic_fingerprint": "4249acf2973336acd10536ef1012e076278606eaa15a48005e54ab5e7165ec43",
+        "extensions": {
+          "official.source": "PACK-COMPAT-0",
+          "partial_load_allowed": true,
+          "read_only_only": false
+        }
+      },
+      {
+        "degrade_mode_id": "pack.degrade.read_only_only",
+        "description": "Permit only observation-safe participation when compatibility falls back to read-only mode.",
+        "deterministic_fingerprint": "c75a70d28a532746fb2a5935ace8a055afc79d5483d20bd18008b3958c44a3f5",
+        "extensions": {
+          "official.source": "PACK-COMPAT-0",
+          "partial_load_allowed": true,
+          "read_only_only": true
+        }
+      },
+      {
+        "degrade_mode_id": "pack.degrade.strict_refuse",
+        "description": "Refuse pack load when declared requirements are not fully satisfied.",
+        "deterministic_fingerprint": "036a49f0cd0fddb389bbf7d2e70ccccc931882b605e10d5b4087c6440715837f",
+        "extensions": {
+          "official.source": "PACK-COMPAT-0",
+          "partial_load_allowed": false,
+          "read_only_only": false
+        }
+      }
+    ],
+    "registry_id": "dominium.registry.packs.pack_degrade_mode_registry",
+    "registry_version": "1.0.0"
+  },
+  "schema_id": "dominium.registry.packs.pack_degrade_mode_registry",
+  "schema_version": "1.0.0"
+}

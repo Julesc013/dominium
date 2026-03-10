@@ -306,6 +306,7 @@ execution artifacts and are not authoritative.
 - `docs/policies/FEATURE_EPOCH_POLICY.md`
 - `docs/policies/LONG_TERM_SUPPORT_POLICY.md`
 - `docs/policies/RENDER_BACKEND_LIFECYCLE.md`
+- `docs/packs/PACK_COMPATIBILITY_MANIFEST.md`
 - `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`

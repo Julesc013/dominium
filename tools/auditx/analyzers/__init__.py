@@ -420,6 +420,8 @@ from analyzers import e403_intent_without_authority_smell
 from analyzers import e404_wallclock_timeout_smell
 from analyzers import e405_ungated_authority_spawn_smell
 from analyzers import e413_missing_interop_test_smell
+from analyzers import e414_missing_pack_compat_smell
+from analyzers import e415_pack_loaded_without_compat_validation_smell
 
 
 ANALYZERS = (
@@ -843,6 +845,8 @@ ANALYZERS = (
     e404_wallclock_timeout_smell,
     e405_ungated_authority_spawn_smell,
     e413_missing_interop_test_smell,
+    e414_missing_pack_compat_smell,
+    e415_pack_loaded_without_compat_validation_smell,
 )
 
 

@@ -1,0 +1,27 @@
+{
+  "capability_ids": [],
+  "degrade_mode_id": "pack.degrade.strict_refuse",
+  "deterministic_fingerprint": "b1dec16ef416b434489ad4b23a423ed329b43be97a6889f01a06e00ef95a8c9e",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "astronomy.sol",
+  "pack_version": "1.0.0",
+  "provides": [
+    "provides.registry_entries"
+  ],
+  "required_contract_ranges": {
+    "contract.worldgen.refinement.v1": {
+      "exact_version": "contract.worldgen.refinement.v1",
+      "max_version": "contract.worldgen.refinement.v1",
+      "min_version": "contract.worldgen.refinement.v1"
+    }
+  },
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.thirdparty_signed"
+}

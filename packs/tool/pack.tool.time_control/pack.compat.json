@@ -1,0 +1,19 @@
+{
+  "capability_ids": [],
+  "degrade_mode_id": "pack.degrade.best_effort",
+  "deterministic_fingerprint": "9c2389a5d9f157d44423345a13787a35ee99992d864b5026ffb541d4a5d3e148",
+  "extensions": {
+    "official.manifest_sidecar": "pack.compat.json",
+    "official.source": "PACK-COMPAT-0"
+  },
+  "migration_refs": [],
+  "pack_id": "pack.tool.time_control",
+  "pack_version": "1.0.0",
+  "provides": [],
+  "required_contract_ranges": {},
+  "required_protocol_ranges": {},
+  "required_registry_ids": [],
+  "schema_version": "1.0.0",
+  "supported_engine_version_range": {},
+  "trust_level_id": "trust.local_dev"
+}
