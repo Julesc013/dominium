@@ -586,6 +586,7 @@ def boot_server_runtime(
     server_config_id: str = DEFAULT_SERVER_CONFIG_ID,
     authority_mode: str = "dev",
     save_id: str = "",
+    expected_contract_bundle_hash: str = "",
     compile_if_missing: bool = False,
     registries_dir: str = "",
 ) -> dict:
@@ -673,6 +674,16 @@ def boot_server_runtime(
     )
     if str(contract_enforcement.get("result", "")) != "complete":
         return _contract_enforcement_to_server_refusal(contract_enforcement)
+    expected_contract_hash = str(expected_contract_bundle_hash or "").strip()
+    actual_contract_hash = str(contract_enforcement.get("contract_bundle_hash", "")).strip()
+    if expected_contract_hash and actual_contract_hash != expected_contract_hash:
+        return _server_refusal(
+            REFUSAL_SESSION_CONTRACT_MISMATCH,
+            "explicit expected contract_bundle_hash does not match the pinned universe contract bundle",
+            "Pass the universe contract bundle hash recorded by the target SessionSpec, or recreate the session before boot.",
+            details={"expected_contract_bundle_hash": expected_contract_hash, "actual_contract_bundle_hash": actual_contract_hash},
+            path="$.contract_bundle_hash",
+        )
 
     bundle_token = (
         str(session_spec.get("bundle_id", "")).strip()

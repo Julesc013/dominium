@@ -773,6 +773,15 @@ def build_runtime_bootstrap(
                 "lens.inspect",
             ],
         },
+        "local_singleplayer": {
+            "authority_model_id": "server.authority.local_singleplayer",
+            "server_config_id": "server.mvp_default",
+            "launch_contract": "process_preferred_inproc_loopback_current",
+            "control_command_ids": [
+                "status",
+                "save_snapshot",
+            ],
+        },
         "rng_streams": _named_rng_streams(universe_seed=universe_seed, generator_version_id=generator_version_id),
     }
 

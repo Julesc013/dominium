@@ -29,6 +29,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--teleport", default="")
     parser.add_argument("--authority", default="dev", choices=("dev", "release"))
     parser.add_argument("--ui", default="", choices=("", "cli", "gui", "headless"))
+    parser.add_argument("--local-singleplayer", action="store_true")
+    parser.add_argument("--server-config-id", default="server.mvp_default")
+    parser.add_argument("--ticks", type=int, default=0)
+    parser.add_argument("--server-command", default="", choices=("", "status", "save_snapshot"))
+    parser.add_argument("--output-path", default="")
     return parser
 
 
@@ -44,6 +49,43 @@ def _default_ui(entrypoint: str, ui: str) -> str:
 def main() -> int:
     args = build_parser().parse_args()
     repo_root = os.path.abspath(str(args.repo_root))
+    if str(args.entrypoint) == "client" and bool(args.local_singleplayer):
+        from src.client.local_server import request_local_server_control, run_local_server_ticks, start_local_singleplayer
+
+        started = start_local_singleplayer(
+            repo_root=repo_root,
+            seed=str(args.seed),
+            profile_bundle_path=str(args.profile_bundle),
+            pack_lock_path=str(args.pack_lock),
+            server_config_id=str(args.server_config_id),
+            authority_mode=str(args.authority),
+        )
+        if str(started.get("result", "")) != "complete":
+            print(json.dumps(started, indent=2, sort_keys=True))
+            return 2
+        controller = dict(started.get("controller") or {})
+        command_result = {}
+        if str(args.server_command or "").strip():
+            command_request = request_local_server_control(
+                controller,
+                request_kind=str(args.server_command),
+                payload={"output_path": str(args.output_path or "").strip()},
+            )
+            tick_report = run_local_server_ticks(controller, ticks=1)
+            command_result = {
+                "request": dict(command_request),
+                "responses": list(tick_report.get("control_responses") or []),
+                "log_events": list(tick_report.get("log_events") or []),
+            }
+        tick_report = run_local_server_ticks(controller, ticks=int(max(0, int(args.ticks or 0))))
+        payload = {
+            "result": "complete",
+            "local_singleplayer": dict(started),
+            "server_command": command_result,
+            "ticks": dict(tick_report),
+        }
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
     try:
         payload = build_runtime_bootstrap(
             repo_root=repo_root,
