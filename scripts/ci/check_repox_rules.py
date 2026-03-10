@@ -4839,6 +4839,108 @@ def check_degrade_recorded_in_negotiation(repo_root):
     return violations
 
 
+def check_negotiation_stress_baselines_present(repo_root):
+    invariant_id = "INV-NEGOTIATION-STRESS-BASELINES-PRESENT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    baseline_rel = os.path.join("data", "regression", "cap_neg_full_baseline.json")
+    common_rel = os.path.join("tools", "compat", "cap_neg4_common.py")
+    stress_tool_rel = os.path.join("tools", "compat", "tool_run_interop_stress.py")
+    replay_tool_rel = os.path.join("tools", "compat", "tool_replay_negotiation.py")
+
+    violations = []
+    required_tokens = {
+        baseline_rel: (
+            '"baseline_id": "cap.neg.full.baseline.v1"',
+            '"required_commit_tag": "CAP-NEG-REGRESSION-UPDATE"',
+            '"scenario_id": "interop.client_server.contract_mismatch_read_only"',
+            '"scenario_id": "real.client_server.current_build"',
+        ),
+        common_rel: (
+            "def build_cap_neg_full_baseline(",
+            'DEFAULT_BASELINE_REL = os.path.join("data", "regression", "cap_neg_full_baseline.json")',
+            '"cap.neg.full.baseline.v1"',
+        ),
+        stress_tool_rel: (
+            "generate_interop_matrix",
+            "run_interop_stress",
+            "interoperability stress harness",
+        ),
+        replay_tool_rel: (
+            "verify_recorded_negotiation",
+            '"deterministic_fingerprint"',
+            '"negotiation_record_hash"',
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing CAP-NEG-4 baseline marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_degrade_ladder_coverage(repo_root):
+    invariant_id = "INV-DEGRADE-LADDER-COVERAGE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
+    common_rel = os.path.join("tools", "compat", "cap_neg4_common.py")
+    baseline_rel = os.path.join("data", "regression", "cap_neg_full_baseline.json")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "cap.ui.rendered",
+            "cap.logic.compiled_automaton",
+            "semantic-contract mismatch may switch to `compat.read_only`",
+            "switch_to_read_only",
+        ),
+        common_rel: (
+            '"interop.client_server.rendered_to_tui"',
+            '"interop.client_server.protocol_layer_disabled"',
+            '"interop.engine_server.compiled_to_l1"',
+            '"interop.client_server.contract_mismatch_read_only"',
+            '"interop.client_server.no_common_protocol"',
+        ),
+        baseline_rel: (
+            '"scenario_id": "interop.client_server.rendered_to_tui"',
+            '"scenario_id": "interop.client_server.protocol_layer_disabled"',
+            '"scenario_id": "interop.engine_server.compiled_to_l1"',
+            '"scenario_id": "interop.client_server.contract_mismatch_read_only"',
+            '"scenario_id": "interop.client_server.no_common_protocol"',
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing degrade-coverage marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
 def check_unknown_cap_ignored_deterministically(repo_root):
     invariant_id = "INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY"
     if is_override_active(repo_root, invariant_id):
@@ -12007,6 +12109,8 @@ def main() -> int:
                 lambda: check_degrade_ladder_declared(repo_root),
                 lambda: check_no_silent_degrade(repo_root),
                 lambda: check_degrade_recorded_in_negotiation(repo_root),
+                lambda: check_negotiation_stress_baselines_present(repo_root),
+                lambda: check_degrade_ladder_coverage(repo_root),
                 lambda: check_unknown_cap_ignored_deterministically(repo_root),
             ],
         },

@@ -615,6 +615,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when handshake/replay surfaces no longer preserve deterministic degrade evidence.
 - Preserves proofable compatibility behavior rather than ephemeral downgrade choices.
 
+### INV-NEGOTIATION-STRESS-BASELINES-PRESENT
+
+- Fails when the committed CAP-NEG-4 regression lock disappears or stops pinning canonical mixed-version and real-descriptor negotiation scenarios.
+- Fails when the deterministic interop stress harness or negotiation replay surfaces disappear from the governed compat envelope.
+- Preserves a replayable interoperability matrix instead of leaving mix-and-match behavior unpinned.
+
+### INV-DEGRADE-LADDER-COVERAGE
+
+- Fails when CAP-NEG-4 no longer exercises the canonical degrade cases for rendered-to-TUI fallback, protocol-layer disablement, compiled-to-L1 downgrade, read-only fallback, and no-common-protocol refusal.
+- Fails when the regression lock stops recording those canonical scenario identifiers as deterministic compatibility coverage.
+- Preserves explicit degrade-ladder coverage instead of untested or drifting fallback behavior.
+
 ### INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY
 
 - Fails when canonical capability filtering no longer separates known capability ids from unknown ones before capability negotiation.

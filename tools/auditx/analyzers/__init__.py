@@ -419,6 +419,7 @@ from analyzers import e402_wallclock_tick_smell
 from analyzers import e403_intent_without_authority_smell
 from analyzers import e404_wallclock_timeout_smell
 from analyzers import e405_ungated_authority_spawn_smell
+from analyzers import e413_missing_interop_test_smell
 
 
 ANALYZERS = (
@@ -841,6 +842,7 @@ ANALYZERS = (
     e403_intent_without_authority_smell,
     e404_wallclock_timeout_smell,
     e405_ungated_authority_spawn_smell,
+    e413_missing_interop_test_smell,
 )
 
 
