@@ -16,9 +16,11 @@ from src.geo.worldgen.worldgen_engine import normalize_worldgen_result
 
 
 REFUSAL_GEO_OVERLAY_INVALID = "refusal.geo.overlay_invalid"
+REFUSAL_OVERLAY_CONFLICT = "refusal.overlay.conflict"
 
 _OVERLAY_POLICY_REGISTRY_REL = os.path.join("data", "registries", "overlay_policy_registry.json")
-_OVERLAY_VERSION = "GEO9-3"
+_OVERLAY_CONFLICT_POLICY_REGISTRY_REL = os.path.join("data", "registries", "overlay_conflict_policy_registry.json")
+_OVERLAY_VERSION = "GEO9-4"
 _OVERLAY_CACHE: Dict[str, dict] = {}
 _OVERLAY_CACHE_MAX = 256
 
@@ -154,6 +156,35 @@ def overlay_policy_rows_by_id(registry_payload: Mapping[str, object] | None = No
 
 def overlay_policy_registry_hash(registry_payload: Mapping[str, object] | None = None) -> str:
     return canonical_sha256(_as_map(registry_payload) or _registry_payload(_OVERLAY_POLICY_REGISTRY_REL))
+
+
+def overlay_conflict_policy_rows_by_id(registry_payload: Mapping[str, object] | None = None) -> Dict[str, dict]:
+    payload = _as_map(registry_payload) or _registry_payload(_OVERLAY_CONFLICT_POLICY_REGISTRY_REL)
+    rows = _rows_from_registry(payload, "overlay_conflict_policies")
+    out: Dict[str, dict] = {}
+    for row in sorted(rows, key=lambda item: str(item.get("policy_id", ""))):
+        policy_id = str(row.get("policy_id", "")).strip()
+        if not policy_id:
+            continue
+        normalized = {
+            "schema_version": "1.0.0",
+            "policy_id": policy_id,
+            "mode": str(row.get("mode", "")).strip(),
+            "description": str(row.get("description", "")).strip(),
+            "deterministic_fingerprint": str(row.get("deterministic_fingerprint", "")).strip(),
+            "extensions": {
+                str(key): value
+                for key, value in sorted(_as_map(row.get("extensions")).items(), key=lambda item: str(item[0]))
+            },
+        }
+        if not normalized["deterministic_fingerprint"]:
+            normalized["deterministic_fingerprint"] = canonical_sha256(dict(normalized, deterministic_fingerprint=""))
+        out[policy_id] = normalized
+    return dict((key, dict(out[key])) for key in sorted(out.keys()))
+
+
+def overlay_conflict_policy_registry_hash(registry_payload: Mapping[str, object] | None = None) -> str:
+    return canonical_sha256(_as_map(registry_payload) or _registry_payload(_OVERLAY_CONFLICT_POLICY_REGISTRY_REL))
 
 
 def build_overlay_layer(
@@ -352,6 +383,7 @@ def build_default_overlay_manifest(
     official_layer_specs: object = None,
     mod_layer_specs: object = None,
     overlay_policy_id: str = "overlay.default",
+    overlay_conflict_policy_id: str = "",
 ) -> dict:
     layers = [
         build_overlay_layer(
@@ -416,6 +448,7 @@ def build_default_overlay_manifest(
         pack_lock_hash=pack_lock_hash,
         extensions={
             "overlay_policy_id": str(overlay_policy_id or "overlay.default").strip() or "overlay.default",
+            "overlay_conflict_policy_id": str(overlay_conflict_policy_id or "").strip(),
             "source": "GEO9-3",
         },
     )
@@ -516,6 +549,108 @@ def overlay_base_objects_from_worldgen_result(
     return normalize_effective_object_view_rows(out)
 
 
+def build_overlay_conflict_artifact(
+    *,
+    object_id: str,
+    property_path: str,
+    involved_patches: object,
+    mode: str,
+    conflict_id: str = "",
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    object_token = str(object_id or "").strip()
+    property_token = str(property_path or "").strip()
+    mode_token = str(mode or "").strip()
+    if not object_token or not property_token or mode_token not in {"last_wins", "refuse", "prompt_stub"}:
+        raise ValueError("overlay conflict artifact inputs are invalid")
+    patch_rows = []
+    for row in _as_list(involved_patches):
+        payload = _as_map(row)
+        patch_rows.append(
+            {
+                "layer_id": str(payload.get("layer_id", "")).strip(),
+                "layer_kind": str(payload.get("layer_kind", "")).strip(),
+                "layer_order": list(_layer_sort_key(payload.get("layer_row")) if payload.get("layer_row") else tuple(payload.get("layer_order") or [])),
+                "precedence_order": int(max(0, _as_int(payload.get("precedence_order", 0), 0))),
+                "source_ref": str(payload.get("source_ref", "")).strip(),
+                "patch_hash": str(payload.get("patch_hash", "")).strip(),
+                "operation": str(payload.get("operation", "")).strip(),
+                "value": _jsonable_value(payload.get("value")),
+            }
+        )
+    normalized_patches = sorted(
+        patch_rows,
+        key=lambda row: (
+            object_token,
+            property_token,
+            tuple(row.get("layer_order") or []),
+            str(row.get("patch_hash", "")),
+        ),
+    )
+    payload = {
+        "schema_version": "1.0.0",
+        "conflict_id": str(conflict_id or "").strip(),
+        "object_id": object_token,
+        "property_path": property_token,
+        "involved_patches": normalized_patches,
+        "mode": mode_token,
+        "deterministic_fingerprint": "",
+        "extensions": {
+            str(key): _jsonable_value(value)
+            for key, value in sorted(_as_map(extensions).items(), key=lambda item: str(item[0]))
+        },
+    }
+    if not payload["conflict_id"]:
+        payload["conflict_id"] = "conflict.overlay.{}".format(
+            canonical_sha256(
+                {
+                    "object_id": object_token,
+                    "property_path": property_token,
+                    "involved_patches": normalized_patches,
+                    "mode": mode_token,
+                }
+            )[:16]
+        )
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
+def normalize_overlay_conflict_artifact_rows(rows: object) -> List[dict]:
+    if not isinstance(rows, list):
+        rows = []
+    out: Dict[str, dict] = {}
+    for row in rows:
+        if not isinstance(row, Mapping):
+            continue
+        try:
+            normalized = build_overlay_conflict_artifact(
+                object_id=str(row.get("object_id", "")).strip(),
+                property_path=str(row.get("property_path", "")).strip(),
+                involved_patches=_as_list(row.get("involved_patches")),
+                mode=str(row.get("mode", "")).strip(),
+                conflict_id=str(row.get("conflict_id", "")).strip(),
+                extensions=_as_map(row.get("extensions")),
+            )
+        except ValueError:
+            continue
+        out[str(normalized.get("conflict_id", "")).strip()] = normalized
+    return [
+        dict(out[key])
+        for key in sorted(
+            out.keys(),
+            key=lambda key: (
+                str(out[key].get("object_id", "")),
+                str(out[key].get("property_path", "")),
+                str(out[key].get("conflict_id", "")),
+            ),
+        )
+    ]
+
+
+def overlay_conflict_artifact_hash_chain(rows: object) -> str:
+    return canonical_sha256(normalize_overlay_conflict_artifact_rows(rows))
+
+
 def _resolved_pack_rows(resolved_packs: object) -> List[dict]:
     rows = [
         {
@@ -536,15 +671,42 @@ def validate_overlay_manifest_trust(
     expected_pack_lock_hash: str = "",
     overlay_policy_id: str = "",
     overlay_policy_registry_payload: Mapping[str, object] | None = None,
+    overlay_conflict_policy_id: str = "",
+    overlay_conflict_policy_registry_payload: Mapping[str, object] | None = None,
 ) -> dict:
     manifest = normalize_overlay_manifest(overlay_manifest)
     policy_rows = overlay_policy_rows_by_id(overlay_policy_registry_payload)
+    conflict_policy_rows = overlay_conflict_policy_rows_by_id(overlay_conflict_policy_registry_payload)
     resolved_policy_id = str(
         overlay_policy_id or _as_map(manifest.get("extensions")).get("overlay_policy_id", "overlay.default")
     ).strip() or "overlay.default"
     policy_row = dict(policy_rows.get(resolved_policy_id) or {})
     if not policy_row:
         return _refusal("overlay_policy_id is not declared", {"overlay_policy_id": resolved_policy_id})
+    policy_ext = _as_map(policy_row.get("extensions"))
+    resolved_conflict_policy_id = str(
+        overlay_conflict_policy_id
+        or _as_map(manifest.get("extensions")).get("overlay_conflict_policy_id", "")
+        or policy_ext.get("overlay_conflict_policy_id", "")
+        or "overlay.conflict.last_wins"
+    ).strip() or "overlay.conflict.last_wins"
+    conflict_policy_row = dict(conflict_policy_rows.get(resolved_conflict_policy_id) or {})
+    if not conflict_policy_row:
+        return _refusal(
+            "overlay_conflict_policy_id is not declared",
+            {"overlay_conflict_policy_id": resolved_conflict_policy_id},
+            refusal_code="refusal.overlay.conflict_policy_missing",
+        )
+    overlay_conflict_mode = str(conflict_policy_row.get("mode", "")).strip()
+    if overlay_conflict_mode not in {"last_wins", "refuse", "prompt_stub"}:
+        return _refusal(
+            "overlay_conflict_policy_id resolves to an invalid mode",
+            {
+                "overlay_conflict_policy_id": resolved_conflict_policy_id,
+                "mode": overlay_conflict_mode,
+            },
+            refusal_code="refusal.overlay.conflict_policy_invalid",
+        )
     if str(expected_pack_lock_hash or "").strip() and str(manifest.get("pack_lock_hash", "")).strip() != str(expected_pack_lock_hash).strip():
         return _refusal(
             "overlay manifest pack_lock_hash does not match expected lock hash",
@@ -554,7 +716,6 @@ def validate_overlay_manifest_trust(
             },
             refusal_code="refusal.geo.overlay_pack_lock_mismatch",
         )
-    policy_ext = _as_map(policy_row.get("extensions"))
     allow_unsigned_mods = bool(policy_ext.get("allow_unsigned_mods", True))
     require_official_signature = bool(policy_ext.get("require_official_signature", True))
     pack_rows = _resolved_pack_rows(resolved_packs)
@@ -627,6 +788,7 @@ def validate_overlay_manifest_trust(
         extensions={
             **_as_map(manifest.get("extensions")),
             "overlay_policy_id": resolved_policy_id,
+            "overlay_conflict_policy_id": resolved_conflict_policy_id,
             "unsigned_mod_layer_ids": sorted(set(unsigned_mod_layers)),
             "trust_categories": dict((key, trust_categories[key]) for key in sorted(trust_categories.keys())),
         },
@@ -635,12 +797,16 @@ def validate_overlay_manifest_trust(
         "result": "complete",
         "overlay_manifest": validated_manifest,
         "overlay_policy_id": resolved_policy_id,
+        "overlay_conflict_policy_id": resolved_conflict_policy_id,
+        "overlay_conflict_mode": overlay_conflict_mode,
         "unsigned_mod_layer_ids": sorted(set(unsigned_mod_layers)),
         "trust_categories": dict((key, trust_categories[key]) for key in sorted(trust_categories.keys())),
         "deterministic_fingerprint": canonical_sha256(
             {
                 "overlay_manifest": validated_manifest,
                 "overlay_policy_id": resolved_policy_id,
+                "overlay_conflict_policy_id": resolved_conflict_policy_id,
+                "overlay_conflict_mode": overlay_conflict_mode,
                 "unsigned_mod_layer_ids": sorted(set(unsigned_mod_layers)),
                 "trust_categories": dict((key, trust_categories[key]) for key in sorted(trust_categories.keys())),
             }
@@ -750,6 +916,83 @@ def _ordered_patches_for_manifest(manifest: Mapping[str, object], property_patch
     return [dict(item[-1]) for item in sorted(sortable)], layer_by_id
 
 
+def _detect_overlay_conflicts(
+    ordered_patches: Sequence[Mapping[str, object]],
+    layer_by_id: Mapping[str, Mapping[str, object]],
+    *,
+    conflict_mode: str,
+) -> List[dict]:
+    grouped: Dict[Tuple[str, str, int], List[dict]] = {}
+    for patch in ordered_patches:
+        patch_row = _as_map(patch)
+        layer_row = _as_map(layer_by_id.get(str(patch_row.get("originating_layer_id", "")).strip()))
+        if not layer_row:
+            continue
+        precedence_order = _as_int(layer_row.get("precedence_order", 0), 0)
+        grouped.setdefault(
+            (
+                str(patch_row.get("target_object_id", "")).strip(),
+                str(patch_row.get("property_path", "")).strip(),
+                precedence_order,
+            ),
+            [],
+        ).append(
+            {
+                "layer_id": str(layer_row.get("layer_id", "")).strip(),
+                "layer_kind": str(layer_row.get("layer_kind", "")).strip(),
+                "layer_order": list(_layer_sort_key(layer_row)),
+                "layer_row": dict(layer_row),
+                "precedence_order": precedence_order,
+                "source_ref": str(layer_row.get("source_ref", "")).strip(),
+                "patch_hash": str(patch_row.get("deterministic_fingerprint", "")).strip(),
+                "operation": str(patch_row.get("operation", "")).strip(),
+                "value": _jsonable_value(patch_row.get("value")),
+            }
+        )
+    artifacts = []
+    for (object_id, property_path, precedence_order) in sorted(grouped.keys()):
+        involved = sorted(
+            grouped[(object_id, property_path, precedence_order)],
+            key=lambda row: (
+                tuple(row.get("layer_order") or []),
+                str(row.get("patch_hash", "")),
+            ),
+        )
+        if len(involved) < 2:
+            continue
+        artifacts.append(
+            build_overlay_conflict_artifact(
+                object_id=object_id,
+                property_path=property_path,
+                involved_patches=involved,
+                mode=conflict_mode,
+                extensions={
+                    "precedence_order": precedence_order,
+                    "source": "COMPAT-SEM-3",
+                },
+            )
+        )
+    return normalize_overlay_conflict_artifact_rows(artifacts)
+
+
+def _overlay_conflict_index(rows: object) -> Dict[str, dict]:
+    artifacts = normalize_overlay_conflict_artifact_rows(rows)
+    out: Dict[str, dict] = {}
+    for row in artifacts:
+        object_id = str(row.get("object_id", "")).strip()
+        property_path = str(row.get("property_path", "")).strip()
+        if not object_id or not property_path:
+            continue
+        out.setdefault(object_id, {}).setdefault(property_path, []).append(dict(row))
+    return {
+        object_id: {
+            property_path: list(out[object_id][property_path])
+            for property_path in sorted(out[object_id].keys())
+        }
+        for object_id in sorted(out.keys())
+    }
+
+
 def _merge_cache_lookup(cache_key: str) -> dict | None:
     cached = _OVERLAY_CACHE.get(str(cache_key))
     if not isinstance(cached, dict):
@@ -782,6 +1025,8 @@ def merge_overlay_view(
     expected_pack_lock_hash: str = "",
     overlay_policy_id: str = "",
     overlay_policy_registry_payload: Mapping[str, object] | None = None,
+    overlay_conflict_policy_id: str = "",
+    overlay_conflict_policy_registry_payload: Mapping[str, object] | None = None,
     cache_enabled: bool = True,
 ) -> dict:
     validated = validate_overlay_manifest_trust(
@@ -790,6 +1035,8 @@ def merge_overlay_view(
         expected_pack_lock_hash=expected_pack_lock_hash,
         overlay_policy_id=overlay_policy_id,
         overlay_policy_registry_payload=overlay_policy_registry_payload,
+        overlay_conflict_policy_id=overlay_conflict_policy_id,
+        overlay_conflict_policy_registry_payload=overlay_conflict_policy_registry_payload,
     )
     if str(validated.get("result", "")) != "complete":
         return dict(validated)
@@ -802,6 +1049,7 @@ def merge_overlay_view(
             "overlay_manifest_hash": overlay_manifest_hash(manifest),
             "property_patch_hash_chain": property_patch_hash_chain(normalized_patches),
             "overlay_policy_id": str(validated.get("overlay_policy_id", "")).strip(),
+            "overlay_conflict_policy_id": str(validated.get("overlay_conflict_policy_id", "")).strip(),
             "version": _OVERLAY_VERSION,
         }
     )
@@ -813,6 +1061,44 @@ def merge_overlay_view(
         return payload
 
     ordered_patches, layer_by_id = _ordered_patches_for_manifest(manifest, normalized_patches)
+    overlay_conflict_policy_id_token = str(validated.get("overlay_conflict_policy_id", "")).strip()
+    overlay_conflict_mode = str(validated.get("overlay_conflict_mode", "")).strip()
+    overlay_conflict_artifacts = _detect_overlay_conflicts(
+        ordered_patches,
+        layer_by_id,
+        conflict_mode=overlay_conflict_mode,
+    )
+    overlay_conflict_index = _overlay_conflict_index(overlay_conflict_artifacts)
+    overlay_conflict_artifact_hash = overlay_conflict_artifact_hash_chain(overlay_conflict_artifacts)
+    if overlay_conflict_artifacts and overlay_conflict_mode in {"refuse", "prompt_stub"}:
+        remediation_hint = (
+            "remedy.overlay.add_explicit_resolver_layer"
+            if overlay_conflict_mode == "prompt_stub"
+            else "remedy.overlay.resolve_conflict_or_change_policy"
+        )
+        refusal = {
+            "result": "refused",
+            "refusal_code": REFUSAL_OVERLAY_CONFLICT,
+            "message": "overlay merge conflict detected under strict conflict policy",
+            "details": {
+                "overlay_conflict_policy_id": overlay_conflict_policy_id_token,
+                "overlay_conflict_mode": overlay_conflict_mode,
+                "overlay_conflict_count": len(overlay_conflict_artifacts),
+            },
+            "remediation_hint": remediation_hint,
+            "overlay_manifest": manifest,
+            "overlay_manifest_hash": overlay_manifest_hash(manifest),
+            "property_patch_hash_chain": property_patch_hash_chain(normalized_patches),
+            "overlay_policy_id": str(validated.get("overlay_policy_id", "")).strip(),
+            "overlay_conflict_policy_id": overlay_conflict_policy_id_token,
+            "overlay_conflict_mode": overlay_conflict_mode,
+            "overlay_conflict_artifacts": overlay_conflict_artifacts,
+            "overlay_conflict_index": overlay_conflict_index,
+            "overlay_conflict_artifact_hash_chain": overlay_conflict_artifact_hash,
+            "deterministic_fingerprint": "",
+        }
+        refusal["deterministic_fingerprint"] = canonical_sha256(dict(refusal, deterministic_fingerprint=""))
+        return refusal
     object_map: Dict[str, dict] = {}
     property_history_index: Dict[Tuple[str, str], List[dict]] = {}
     base_layer_id = str(
@@ -952,6 +1238,11 @@ def merge_overlay_view(
         "property_patch_hash_chain": property_patch_hash_chain(normalized_patches),
         "overlay_merge_result_hash_chain": overlay_effective_object_hash_chain(effective_object_views),
         "overlay_policy_id": str(validated.get("overlay_policy_id", "")).strip(),
+        "overlay_conflict_policy_id": overlay_conflict_policy_id_token,
+        "overlay_conflict_mode": overlay_conflict_mode,
+        "overlay_conflict_artifacts": overlay_conflict_artifacts,
+        "overlay_conflict_index": overlay_conflict_index,
+        "overlay_conflict_artifact_hash_chain": overlay_conflict_artifact_hash,
         "deterministic_fingerprint": "",
     }
     result["deterministic_fingerprint"] = canonical_sha256(dict(result, deterministic_fingerprint=""))
@@ -971,7 +1262,12 @@ def explain_property_origin(
         str(key): _as_map(value)
         for key, value in sorted(_as_map(payload.get("property_origin_index")).items(), key=lambda item: str(item[0]))
     }
+    conflict_index = {
+        str(key): _as_map(value)
+        for key, value in sorted(_as_map(payload.get("overlay_conflict_index")).items(), key=lambda item: str(item[0]))
+    }
     history = _as_list(_as_map(origin_index.get(object_token)).get(property_token))
+    conflicts = _as_list(_as_map(conflict_index.get(object_token)).get(property_token))
     if not history:
         return _refusal(
             "property origin is unknown for the requested object/property path",
@@ -989,6 +1285,15 @@ def explain_property_origin(
         "current_pack_id": str(current.get("pack_id", "")).strip(),
         "current_value": _jsonable_value(current.get("value")),
         "prior_value_chain": [dict(item) for item in history],
+        "overlay_conflict_policy_id": str(payload.get("overlay_conflict_policy_id", "")).strip(),
+        "overlay_conflict_mode": str(payload.get("overlay_conflict_mode", "")).strip(),
+        "overlay_conflict_count": len(conflicts),
+        "overlay_conflicts": [dict(item) for item in conflicts],
+        "conflict_note": (
+            "explain.overlay_conflict"
+            if conflicts and str(payload.get("overlay_conflict_mode", "")).strip() in {"last_wins", "refuse", "prompt_stub"}
+            else ""
+        ),
         "deterministic_fingerprint": "",
     }
     report["deterministic_fingerprint"] = canonical_sha256(dict(report, deterministic_fingerprint=""))
@@ -1000,11 +1305,13 @@ def overlay_proof_surface(
     overlay_manifest: Mapping[str, object] | None,
     property_patches: object,
     effective_object_views: object = None,
+    overlay_conflict_artifacts: object = None,
 ) -> dict:
     payload = {
         "overlay_manifest_hash": overlay_manifest_hash(overlay_manifest) if overlay_manifest else "",
         "property_patch_hash_chain": property_patch_hash_chain(property_patches),
         "overlay_merge_result_hash_chain": overlay_effective_object_hash_chain(effective_object_views or []),
+        "overlay_conflict_artifact_hash_chain": overlay_conflict_artifact_hash_chain(overlay_conflict_artifacts or []),
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
@@ -1013,14 +1320,17 @@ def overlay_proof_surface(
 
 __all__ = [
     "REFUSAL_GEO_OVERLAY_INVALID",
+    "REFUSAL_OVERLAY_CONFLICT",
     "build_default_overlay_manifest",
     "build_effective_object_view",
+    "build_overlay_conflict_artifact",
     "build_overlay_layer",
     "build_overlay_manifest",
     "build_property_patch",
     "explain_property_origin",
     "merge_overlay_view",
     "normalize_effective_object_view_rows",
+    "normalize_overlay_conflict_artifact_rows",
     "normalize_overlay_layer",
     "normalize_overlay_layer_rows",
     "normalize_overlay_manifest",
@@ -1029,6 +1339,9 @@ __all__ = [
     "overlay_base_objects_from_worldgen_result",
     "overlay_cache_clear",
     "overlay_cache_snapshot",
+    "overlay_conflict_artifact_hash_chain",
+    "overlay_conflict_policy_registry_hash",
+    "overlay_conflict_policy_rows_by_id",
     "overlay_effective_object_hash_chain",
     "overlay_manifest_hash",
     "overlay_policy_registry_hash",
