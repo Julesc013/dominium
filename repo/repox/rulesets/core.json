@@ -490,6 +490,41 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-TUI-NO-TRUTH-READ",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/TUI_FRAMEWORK.md",
+        "src/appshell/tui",
+        "src/client/ui/map_views.py",
+        "src/client/ui/inspect_panels.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tui-no-truth-read",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TUI-DETERMINISTIC-ORDER",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/TUI_FRAMEWORK.md",
+        "data/registries/tui_layout_registry.json",
+        "src/appshell/tui"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tui-deterministic-order",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TUI-FALLBACK-DECLARED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/TUI_FRAMEWORK.md",
+        "data/registries/capability_fallback_registry.json",
+        "data/registries/product_capability_defaults.json",
+        "src/appshell/tui"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tui-fallback-declared",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [

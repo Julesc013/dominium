@@ -18,6 +18,7 @@ from .logging import (
     set_current_log_engine,
 )
 from .mode_dispatcher import build_mode_stub, legacy_mode_args, normalize_mode, supported_modes_for_product
+from .tui import run_tui_mode
 
 
 EXIT_SUCCESS = 0
@@ -58,7 +59,6 @@ def appshell_main(
     repo_root = resolve_repo_root(shell_args.repo_root, repo_root_hint=repo_root_hint)
     mode_id = normalize_mode(product_id=str(product_id).strip(), requested_mode=shell_args.mode)
     command_rows = build_root_command_descriptors(repo_root, str(product_id).strip())
-    panel_rows = build_tui_panel_descriptors(str(product_id).strip())
     version_payload = build_version_payload(repo_root, product_id=str(product_id).strip())
     logger = create_log_engine(
         product_id=str(product_id).strip(),
@@ -137,14 +137,28 @@ def appshell_main(
             return EXIT_REFUSAL
 
         if bool(shell_args.mode_requested) and str(mode_id).strip() == "tui":
+            panel_rows = build_tui_panel_descriptors(str(product_id).strip())
             log_emit(
                 category="appshell",
                 severity="info",
                 message_key="appshell.mode.enter",
-                params={"mode_id": "tui", "entry_surface": "stub"},
+                params={
+                    "mode_id": "tui",
+                    "entry_surface": "tui_engine",
+                    "panel_descriptor_count": int(len(list(panel_rows))),
+                },
             )
-            _print_json(build_mode_stub(str(product_id).strip(), "tui", command_rows, panel_rows))
-            return EXIT_SUCCESS
+            dispatch = run_tui_mode(
+                repo_root,
+                product_id=str(product_id).strip(),
+                requested_layout_id=str(shell_args.tui_layout).strip(),
+            )
+            if str(dispatch.get("dispatch_kind", "")).strip() == "json":
+                _print_json(dict(dispatch.get("payload") or {}))
+            else:
+                print(str(dispatch.get("text", "")), end="")
+            exit_code = dict(dispatch or {}).get("exit_code", EXIT_INTERNAL)
+            return int(EXIT_INTERNAL if exit_code is None else exit_code)
 
         if bool(shell_args.mode_requested) and str(mode_id).strip() == "rendered" and str(product_id).strip() != "client":
             payload = _refusal(
@@ -169,7 +183,7 @@ def appshell_main(
                 message_key="appshell.mode.enter",
                 params={"mode_id": str(mode_id).strip(), "entry_surface": "stub"},
             )
-            _print_json(build_mode_stub(str(product_id).strip(), str(mode_id).strip(), command_rows, panel_rows))
+            _print_json(build_mode_stub(str(product_id).strip(), str(mode_id).strip(), command_rows, []))
             return EXIT_SUCCESS
 
         delegate_args = list(shell_args.remainder)

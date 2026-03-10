@@ -1,0 +1,109 @@
+{
+  "schema_id": "dominium.registry.appshell.tui_layout_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.appshell.tui_layout_registry",
+    "registry_version": "1.0.0",
+    "layouts": [
+      {
+        "schema_version": "1.0.0",
+        "layout_id": "layout.default",
+        "panels": [
+          {
+            "panel_id": "panel.console",
+            "slot_id": "main.left",
+            "order": 10,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.logs",
+            "slot_id": "right.top",
+            "order": 20,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.status",
+            "slot_id": "right.bottom",
+            "order": 30,
+            "extensions": {}
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layout_id": "layout.server",
+        "panels": [
+          {
+            "panel_id": "panel.status",
+            "slot_id": "top.full",
+            "order": 10,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.logs",
+            "slot_id": "middle.full",
+            "order": 20,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.console",
+            "slot_id": "bottom.full",
+            "order": 30,
+            "extensions": {}
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "layout_id": "layout.viewer",
+        "panels": [
+          {
+            "panel_id": "panel.map",
+            "slot_id": "main.left",
+            "order": 10,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.inspect",
+            "slot_id": "main.right",
+            "order": 20,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.logs",
+            "slot_id": "bottom.left",
+            "order": 30,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.console",
+            "slot_id": "bottom.center",
+            "order": 40,
+            "extensions": {}
+          },
+          {
+            "panel_id": "panel.status",
+            "slot_id": "bottom.right",
+            "order": 50,
+            "extensions": {}
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-3"
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "APPSHELL-3"
+    }
+  }
+}

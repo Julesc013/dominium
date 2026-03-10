@@ -81,9 +81,12 @@
         ],
         "semantic_contract_versions_supported": [],
         "feature_capabilities": [
+          "cap.geo.ortho_map_lens",
           "cap.geo.metric",
           "cap.geo.projection",
           "cap.proof.verify",
+          "cap.ui.cli",
+          "cap.ui.tui",
           "cap.worldgen.refinement"
         ],
         "required_capabilities": [],
@@ -108,6 +111,9 @@
         ],
         "semantic_contract_versions_supported": [],
         "feature_capabilities": [
+          "cap.geo.ortho_map_lens",
+          "cap.ui.cli",
+          "cap.ui.tui",
           "cap.logic",
           "cap.proc",
           "cap.sys",
@@ -187,6 +193,8 @@
         "semantic_contract_versions_supported": [],
         "feature_capabilities": [
           "cap.ipc.attach_console",
+          "cap.ui.cli",
+          "cap.ui.tui",
           "cap.logic.compiled_automaton",
           "cap.logic.protocol_layer",
           "cap.net.loopback",
@@ -233,7 +241,9 @@
         "feature_capabilities": [
           "cap.pack.install",
           "cap.pack.verify",
-          "cap.profile.manage"
+          "cap.profile.manage",
+          "cap.ui.cli",
+          "cap.ui.tui"
         ],
         "required_capabilities": [],
         "optional_capabilities": [],

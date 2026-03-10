@@ -20,6 +20,18 @@
       },
       {
         "schema_version": "1.0.0",
+        "capability_id": "cap.ui.tui",
+        "fallback_action": "downgrade_mode",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "fallback_capability_ids": [
+            "cap.ui.cli"
+          ],
+          "user_message_key": "explain.compat_degraded.ui_tui"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "capability_id": "cap.logic.debug_analyzer",
         "fallback_action": "disable_feature",
         "deterministic_fingerprint": "",

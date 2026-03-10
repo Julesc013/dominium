@@ -313,6 +313,7 @@ execution artifacts and are not authoritative.
 - `docs/appshell/APPSHELL_CONSTITUTION.md`
 - `docs/appshell/COMMANDS_AND_REFUSALS.md`
 - `docs/appshell/LOGGING_AND_TRACING.md`
+- `docs/appshell/TUI_FRAMEWORK.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`
 - `docs/server/SERVER_SETTINGS.md`
@@ -353,8 +354,12 @@ execution artifacts and are not authoritative.
 - `docs/audit/SERVER_MVP_BASELINE_REPORT.md`
 - `docs/audit/APPSHELL0_RETRO_AUDIT.md`
 - `docs/audit/APPSHELL1_RETRO_AUDIT.md`
+- `docs/audit/APPSHELL2_RETRO_AUDIT.md`
+- `docs/audit/APPSHELL3_RETRO_AUDIT.md`
 - `docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md`
 - `docs/audit/APPSHELL_COMMANDS_BASELINE.md`
+- `docs/audit/APPSHELL_LOGGING_BASELINE.md`
+- `docs/audit/APPSHELL_TUI_BASELINE.md`
 - `docs/appshell/CLI_REFERENCE.md`
 - `docs/audit/CAP_NEGOTIATION_BASELINE.md`
 - `docs/audit/CAP_NEG1_RETRO_AUDIT.md`

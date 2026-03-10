@@ -426,6 +426,14 @@ from analyzers import e416_pack_loaded_without_verification_smell
 from analyzers import e417_nondeterministic_pack_order_smell
 from analyzers import e418_missing_format_version_smell
 from analyzers import e419_silent_migration_smell
+from analyzers import e420_ad_hoc_entry_point_smell
+from analyzers import e421_xstack_runtime_dependency_smell
+from analyzers import e422_ad_hoc_command_smell
+from analyzers import e423_unstructured_error_smell
+from analyzers import e424_printf_log_smell
+from analyzers import e425_wallclock_in_sim_smell
+from analyzers import e426_tui_truth_leak_smell
+from analyzers import e427_wallclock_refresh_smell
 
 
 ANALYZERS = (
@@ -855,6 +863,14 @@ ANALYZERS = (
     e417_nondeterministic_pack_order_smell,
     e418_missing_format_version_smell,
     e419_silent_migration_smell,
+    e420_ad_hoc_entry_point_smell,
+    e421_xstack_runtime_dependency_smell,
+    e422_ad_hoc_command_smell,
+    e423_unstructured_error_smell,
+    e424_printf_log_smell,
+    e425_wallclock_in_sim_smell,
+    e426_tui_truth_leak_smell,
+    e427_wallclock_refresh_smell,
 )
 
 

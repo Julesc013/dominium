@@ -636,6 +636,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when host-clock fields are introduced into canonical tick/proof/control paths instead of remaining optional host metadata.
 - Preserves deterministic simulation and replay semantics while still allowing non-authoritative host metadata.
 
+### INV-TUI-NO-TRUTH-READ
+
+- Fails when the APPSHELL-3 TUI doctrine stops requiring map/inspect panels to consume derived view artifacts only.
+- Fails when the shared TUI engine stops routing observer panels through derived map/inspect helpers and regains direct truth access.
+- Preserves observer/render/truth separation inside the text shell.
+
+### INV-TUI-DETERMINISTIC-ORDER
+
+- Fails when APPSHELL-3 layouts or the shared TUI engine stop sorting panels and focus order deterministically.
+- Fails when TUI rendering or refresh order starts depending on wall-clock pacing, ad hoc randomness, or unstable iteration order.
+- Preserves stable panel composition and repeatable text/curses presentation surfaces.
+
+### INV-TUI-FALLBACK-DECLARED
+
+- Fails when the APPSHELL-3 doctrine or capability fallback registry stop declaring the `cap.ui.tui` to `cap.ui.cli` degradation path.
+- Fails when the shared TUI engine stops surfacing lite-backend fallback as an explicit degraded compatibility state.
+- Preserves explainable portable fallback instead of silent TUI failure on unsupported hosts.
+
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 
 - Fails when client-server handshake or server loopback accept paths stop invoking the deterministic negotiation engine.

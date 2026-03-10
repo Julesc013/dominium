@@ -21,6 +21,8 @@ WATCH_PATHS = (
     "src/appshell/mode_dispatcher.py",
     "src/appshell/pack_verifier_adapter.py",
     "src/appshell/rendered_stub.py",
+    "src/appshell/tui/__init__.py",
+    "src/appshell/tui/tui_engine.py",
     "src/appshell/tui_stub.py",
     "tools/appshell/product_stub_cli.py",
 )

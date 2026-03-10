@@ -11,6 +11,7 @@ from src.meta_extensions_engine import normalize_extensions_tree
 
 
 COMMAND_REGISTRY_REL = os.path.join("data", "registries", "command_registry.json")
+TUI_PANEL_REGISTRY_REL = os.path.join("data", "registries", "tui_panel_registry.json")
 
 
 def _fingerprint(payload: Mapping[str, object]) -> str:
@@ -93,19 +94,26 @@ def build_root_command_descriptors(repo_root: str, product_id: str) -> List[dict
 
 
 def build_tui_panel_descriptors(product_id: str) -> List[dict]:
-    payload = {
-        "schema_version": "1.0.0",
-        "panel_id": "panel.{}.console".format(str(product_id).strip().replace(".", "_")),
-        "product_id": str(product_id).strip(),
-        "title": "{} Console".format(str(product_id).strip()),
-        "position_hint": "main",
-        "deterministic_fingerprint": "",
-        "extensions": {
-            "official.source": "APPSHELL-0",
-        },
-    }
-    payload["deterministic_fingerprint"] = _fingerprint(payload)
-    return [payload]
+    del product_id
+    repo_root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+    payload, error = _read_json(os.path.join(repo_root, TUI_PANEL_REGISTRY_REL))
+    if error:
+        return []
+    rows = []
+    for row in list(dict(payload.get("record") or {}).get("panels") or []):
+        if not isinstance(row, Mapping):
+            continue
+        row_map = normalize_extensions_tree(dict(row))
+        row_map["required_capabilities"] = _sorted_tokens(row_map.get("required_capabilities"))
+        row_map["schema_version"] = str(row_map.get("schema_version", "")).strip() or "1.0.0"
+        row_map["panel_id"] = str(row_map.get("panel_id", "")).strip()
+        row_map["title"] = str(row_map.get("title", "")).strip()
+        row_map["extensions"] = normalize_extensions_tree(dict(row_map.get("extensions") or {}))
+        row_map["deterministic_fingerprint"] = (
+            str(row_map.get("deterministic_fingerprint", "")).strip() or _fingerprint(row_map)
+        )
+        rows.append(row_map)
+    return sorted(rows, key=lambda row: str(row.get("panel_id", "")))
 
 
 def _command_sort_key(row: Mapping[str, object]) -> Tuple[object, ...]:

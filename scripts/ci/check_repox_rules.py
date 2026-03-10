@@ -5254,6 +5254,7 @@ def check_products_must_use_appshell(repo_root):
             "build_root_command_descriptors(",
             "format_help_text(",
             "build_tui_panel_descriptors(",
+            "run_tui_mode(",
         ),
         wrapper_stub_rel: (
             "from src.appshell import appshell_main",
@@ -5372,6 +5373,8 @@ def check_offline_boot_ok(repo_root):
         os.path.join("src", "appshell", "mode_dispatcher.py"),
         os.path.join("src", "appshell", "pack_verifier_adapter.py"),
         os.path.join("src", "appshell", "rendered_stub.py"),
+        os.path.join("src", "appshell", "tui", "__init__.py"),
+        os.path.join("src", "appshell", "tui", "tui_engine.py"),
         os.path.join("src", "appshell", "tui_stub.py"),
         os.path.join("tools", "appshell", "product_stub_cli.py"),
     )
@@ -5834,6 +5837,156 @@ def check_no_wallclock_in_sim(repo_root):
             if token in text:
                 violations.append("{}: {} contains forbidden wallclock token {}".format(invariant_id, normalize_path(rel_path), token))
                 break
+    return violations
+
+
+def check_tui_no_truth_read(repo_root):
+    invariant_id = "INV-TUI-NO-TRUTH-READ"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "TUI_FRAMEWORK.md")
+    engine_rel = os.path.join("src", "appshell", "tui", "tui_engine.py")
+    violations = []
+
+    doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
+    doctrine_tokens = (
+        "panel.map",
+        "panel.inspect",
+        "must not read TruthModel directly",
+        "derived view artifacts only",
+    )
+    missing = [token for token in doctrine_tokens if token not in doctrine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing TUI truth-boundary doctrine marker(s): {}".format(
+                invariant_id,
+                normalize_path(doctrine_rel),
+                ", ".join(missing[:4]),
+            )
+        )
+
+    engine_text = read_text(os.path.join(repo_root, engine_rel.replace("/", os.sep))) or ""
+    required_engine_tokens = (
+        "build_map_view_set(",
+        "build_inspection_panel_set(",
+        "_map_lines(",
+        "_inspect_lines(",
+    )
+    missing = [token for token in required_engine_tokens if token not in engine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing derived-view marker(s): {}".format(
+                invariant_id,
+                normalize_path(engine_rel),
+                ", ".join(missing[:4]),
+            )
+        )
+    for token in ("TruthModel", "truth_model", "authoritative_state"):
+        if token in engine_text:
+            violations.append(
+                "{}: {} contains forbidden direct-truth token {}".format(
+                    invariant_id,
+                    normalize_path(engine_rel),
+                    token,
+                )
+            )
+    return violations
+
+
+def check_tui_deterministic_order(repo_root):
+    invariant_id = "INV-TUI-DETERMINISTIC-ORDER"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "TUI_FRAMEWORK.md")
+    engine_rel = os.path.join("src", "appshell", "tui", "tui_engine.py")
+    violations = []
+
+    doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
+    doctrine_tokens = (
+        "sort by layout `order`",
+        "render ordering must not depend on wall-clock timing",
+        "panel focus is deterministic",
+    )
+    missing = [token for token in doctrine_tokens if token not in doctrine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing deterministic-order doctrine marker(s): {}".format(
+                invariant_id,
+                normalize_path(doctrine_rel),
+                ", ".join(missing[:4]),
+            )
+        )
+
+    engine_text = read_text(os.path.join(repo_root, engine_rel.replace("/", os.sep))) or ""
+    engine_tokens = ("sorted(", "panel_order", "_cycle_panel(", "_fingerprint(", "render_tui_text(")
+    missing = [token for token in engine_tokens if token not in engine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing deterministic-order marker(s): {}".format(
+                invariant_id,
+                normalize_path(engine_rel),
+                ", ".join(missing[:5]),
+            )
+        )
+    for token in ("random", "uuid4", "time.sleep(", "time.monotonic(", "time.perf_counter("):
+        if token in engine_text:
+            violations.append(
+                "{}: {} contains forbidden nondeterministic-order token {}".format(
+                    invariant_id,
+                    normalize_path(engine_rel),
+                    token,
+                )
+            )
+            break
+    return violations
+
+
+def check_tui_fallback_declared(repo_root):
+    invariant_id = "INV-TUI-FALLBACK-DECLARED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "TUI_FRAMEWORK.md")
+    fallback_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
+    engine_rel = os.path.join("src", "appshell", "tui", "tui_engine.py")
+    violations = []
+
+    doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
+    doctrine_tokens = ("TUI-lite", "cap.ui.tui", "cap.ui.cli", "No silent degradation is allowed")
+    missing = [token for token in doctrine_tokens if token not in doctrine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing fallback-doctrine marker(s): {}".format(
+                invariant_id,
+                normalize_path(doctrine_rel),
+                ", ".join(missing[:4]),
+            )
+        )
+
+    fallback_text = read_text(os.path.join(repo_root, fallback_rel.replace("/", os.sep))) or ""
+    for token in ('"capability_id": "cap.ui.tui"', '"cap.ui.cli"', '"explain.compat_degraded.ui_tui"'):
+        if token not in fallback_text:
+            violations.append(
+                "{}: {} missing fallback registry token {}".format(
+                    invariant_id,
+                    normalize_path(fallback_rel),
+                    token,
+                )
+            )
+
+    engine_text = read_text(os.path.join(repo_root, engine_rel.replace("/", os.sep))) or ""
+    engine_tokens = ("TUI_BACKEND_LITE", "appshell.tui.backend_degraded", "compat.local.tui_backend_missing")
+    missing = [token for token in engine_tokens if token not in engine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing fallback marker(s): {}".format(
+                invariant_id,
+                normalize_path(engine_rel),
+                ", ".join(missing[:4]),
+            )
+        )
     return violations
 
 
@@ -13240,6 +13393,9 @@ def main() -> int:
                 lambda: check_no_printf_logging(repo_root),
                 lambda: check_log_engine_only(repo_root),
                 lambda: check_no_wallclock_in_sim(repo_root),
+                lambda: check_tui_no_truth_read(repo_root),
+                lambda: check_tui_deterministic_order(repo_root),
+                lambda: check_tui_fallback_declared(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },

@@ -26,6 +26,7 @@ class AppShellArgs:
     repo_root: str
     mode: str
     mode_requested: bool
+    tui_layout: str
     descriptor: bool
     descriptor_file: str
     version: bool
@@ -41,6 +42,7 @@ def parse_appshell_args(product_id: str, argv: Sequence[str] | None) -> AppShell
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--mode", default="")
+    parser.add_argument("--tui-layout", default="")
     parser.add_argument("--descriptor", action="store_true")
     parser.add_argument("--descriptor-file", default="")
     parser.add_argument("--version", action="store_true")
@@ -62,6 +64,7 @@ def parse_appshell_args(product_id: str, argv: Sequence[str] | None) -> AppShell
         repo_root=str(parsed.repo_root or ".").strip() or ".",
         mode=str(parsed.mode or "").strip().lower(),
         mode_requested=bool(str(parsed.mode or "").strip()),
+        tui_layout=str(parsed.tui_layout or "").strip(),
         descriptor=bool(parsed.descriptor),
         descriptor_file=str(parsed.descriptor_file or "").strip(),
         version=bool(parsed.version),

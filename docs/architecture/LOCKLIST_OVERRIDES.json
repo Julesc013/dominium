@@ -203,6 +203,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the APPSHELL-0 shell constitution and schema anchors in CANON_INDEX/CONTRACTS_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-11"
+    },
+    {
+      "id": "OVR-2026-03-11-APPSHELL3-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the APPSHELL-3 TUI doctrine and audit surfaces in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-11"
     }
   ]
 }

@@ -1,0 +1,85 @@
+{
+  "schema_id": "dominium.registry.appshell.tui_panel_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.appshell.tui_panel_registry",
+    "registry_version": "1.0.0",
+    "panels": [
+      {
+        "schema_version": "1.0.0",
+        "panel_id": "panel.console",
+        "title": "Console",
+        "required_capabilities": [
+          "cap.ui.tui"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "focus_key": "Ctrl+C",
+          "official.source": "APPSHELL-3",
+          "panel_kind": "console"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "panel_id": "panel.inspect",
+        "title": "Inspect",
+        "required_capabilities": [
+          "cap.ui.tui",
+          "cap.worldgen.refinement_l3"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "focus_key": "Ctrl+I",
+          "official.source": "APPSHELL-3",
+          "panel_kind": "inspect"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "panel_id": "panel.logs",
+        "title": "Logs",
+        "required_capabilities": [
+          "cap.ui.tui"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "focus_key": "Ctrl+L",
+          "official.source": "APPSHELL-3",
+          "panel_kind": "logs"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "panel_id": "panel.map",
+        "title": "Map",
+        "required_capabilities": [
+          "cap.ui.tui",
+          "cap.geo.projection"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "focus_key": "Ctrl+M",
+          "official.source": "APPSHELL-3",
+          "panel_kind": "map"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "panel_id": "panel.status",
+        "title": "Status",
+        "required_capabilities": [
+          "cap.ui.tui"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "focus_key": "Ctrl+S",
+          "official.source": "APPSHELL-3",
+          "panel_kind": "status"
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "APPSHELL-3"
+    }
+  }
+}

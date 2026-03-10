@@ -95,6 +95,7 @@
           "cap.geo.ortho_map_lens",
           "cap.geo.sphere_atlas",
           "cap.ipc.attach_console",
+          "cap.ui.cli",
           "cap.ui.rendered",
           "cap.ui.tui",
           "cap.worldgen.refinement_l3"
@@ -170,7 +171,10 @@
         ],
         "default_semantic_contract_versions_supported": [],
         "default_feature_capabilities": [
+          "cap.geo.ortho_map_lens",
           "cap.geo.sphere_atlas",
+          "cap.ui.cli",
+          "cap.ui.tui",
           "cap.logic.compiled_automaton",
           "cap.logic.protocol_layer",
           "cap.worldgen.refinement_l3"
@@ -201,7 +205,10 @@
         ],
         "default_semantic_contract_versions_supported": [],
         "default_feature_capabilities": [
+          "cap.geo.ortho_map_lens",
           "cap.geo.sphere_atlas",
+          "cap.ui.cli",
+          "cap.ui.tui",
           "cap.logic.protocol_layer",
           "cap.worldgen.refinement_l3"
         ],
@@ -232,6 +239,7 @@
         "default_semantic_contract_versions_supported": [],
         "default_feature_capabilities": [
           "cap.ipc.attach_console",
+          "cap.ui.cli",
           "cap.ui.tui"
         ],
         "default_required_capabilities": [],
@@ -283,6 +291,8 @@
         "default_semantic_contract_versions_supported": [],
         "default_feature_capabilities": [
           "cap.ipc.attach_console",
+          "cap.ui.cli",
+          "cap.ui.tui",
           "cap.logic.compiled_automaton",
           "cap.logic.protocol_layer",
           "cap.server.proof_anchors",
@@ -342,7 +352,9 @@
         ],
         "default_semantic_contract_versions_supported": [],
         "default_feature_capabilities": [
-          "cap.ipc.attach_console"
+          "cap.ipc.attach_console",
+          "cap.ui.cli",
+          "cap.ui.tui"
         ],
         "default_required_capabilities": [],
         "default_optional_capabilities": [],
@@ -371,6 +383,7 @@
         "default_semantic_contract_versions_supported": [],
         "default_feature_capabilities": [
           "cap.ipc.attach_console",
+          "cap.ui.cli",
           "cap.ui.tui"
         ],
         "default_required_capabilities": [],
