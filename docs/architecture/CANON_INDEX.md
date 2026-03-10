@@ -320,6 +320,7 @@ execution artifacts and are not authoritative.
 - `docs/worldgen/EARTH_WIND_PROXY_MODEL.md`
 - `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
 - `docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
+- `docs/worldgen/REFINEMENT_PIPELINE_MODEL.md`
 - `docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`
 - `docs/worldgen/STAR_SYSTEM_SEED_MODEL.md`
 - `docs/worldgen/WORLDGEN_PREVIEW_AND_OPTIMIZATION.md`
@@ -349,6 +350,8 @@ execution artifacts and are not authoritative.
 - `docs/architecture/time_model.md`
 - `docs/architecture/truth_model.md`
 - `docs/audit/AUDITX_OVERHAUL_REPORT.md`
+- `docs/audit/MW4_RETRO_AUDIT.md`
+- `docs/audit/REFINEMENT_PIPELINE_BASELINE.md`
 - `docs/audit/EARTH4_RETRO_AUDIT.md`
 - `docs/audit/EARTH5_RETRO_AUDIT.md`
 - `docs/audit/EARTH1_RETRO_AUDIT.md`
