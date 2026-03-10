@@ -1,5 +1,5 @@
 {
-  "fingerprint_sha256": "4dcefa707ef8b44435370be965d1a29e481bb69313f7d5cd19f9395de27eccea",
+  "fingerprint_sha256": "ce67f4c4886ba4d5ba5fd1cccd5b81ffa54989e6a8c09980a13a3e3a0f7ce096",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
@@ -15,7 +15,7 @@
     },
     "repox_rulesets": {
       "path": "repo/repox/rulesets",
-      "sha256": "c4dbca02cc0327cedbc58ee2c8b6f732af297e5edfbfb866a8c00766e3c2a490"
+      "sha256": "2ac95b3325965c6c082fffad8428208e0f18a07734439a581f208251176d81f9"
     },
     "status_now_snapshot": {
       "path": "docs/STATUS_NOW.md",
