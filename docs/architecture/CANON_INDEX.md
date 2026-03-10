@@ -293,6 +293,7 @@ execution artifacts and are not authoritative.
 - `docs/guides/ui_editor/README.md`
 - `docs/embodiment/EMBODIMENT_BASELINE.md`
 - `docs/embodiment/TERRAIN_COLLISION_MODEL.md`
+- `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`
 - `docs/policies/COMPATIBILITY_PROMISES.md`
 - `docs/policies/DEPRECATION_POLICY.md`
 - `docs/policies/DETERMINISM_REGRESSION_RULES.md`
@@ -325,6 +326,8 @@ execution artifacts and are not authoritative.
 - `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`
 
 ## DERIVED
+- `docs/audit/MOD_POLICY0_RETRO_AUDIT.md`
+- `docs/audit/MOD_POLICY_BASELINE.md`
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
 - `docs/architecture/ARTIFACT_LIFECYCLE.md`
 - `docs/architecture/APPLICATION_CONTRACTS.md`
