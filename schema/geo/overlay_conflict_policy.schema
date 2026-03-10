@@ -1,0 +1,25 @@
+SCHEMA: geo/overlay_conflict_policy.schema
+schema_id: dominium.schema.geo.overlay_conflict_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic overlay conflict behavior modes for GEO-9 merge evaluation.
+- Keep conflict handling data-declared and profile-selectable.
+
+NON-SEMANTICS:
+- This schema does not define pack trust/signature rules.
+- This schema does not authorize interactive prompt UI.
+
+REQUIRED SHAPE:
+record overlay_conflict_policy
+  required:
+    - policy_id: id
+    - mode: enum(last_wins|refuse|prompt_stub)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- conflict policy selection must remain explicit and deterministic
+- strict modes must not silently resolve same-precedence conflicts
+- prompt_stub remains refusal-only until a later launcher surface exists

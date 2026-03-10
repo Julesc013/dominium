@@ -15,9 +15,10 @@
           "allow_identity_override": false,
           "allow_generator_override": false,
           "allow_topology_override": false,
+          "overlay_conflict_policy_id": "overlay.conflict.last_wins",
           "require_remove_reason": true,
           "require_official_signature": true,
-          "source": "GEO9-2"
+          "source": "COMPAT-SEM-3"
         }
       },
       {
@@ -30,10 +31,11 @@
           "allow_identity_override": false,
           "allow_generator_override": false,
           "allow_topology_override": false,
+          "overlay_conflict_policy_id": "overlay.conflict.refuse",
           "require_remove_reason": true,
           "require_official_signature": true,
           "save_layer_only_for_authoritative_events": true,
-          "source": "GEO9-2"
+          "source": "COMPAT-SEM-3"
         }
       },
       {
@@ -46,14 +48,15 @@
           "allow_identity_override": false,
           "allow_generator_override": false,
           "allow_topology_override": false,
+          "overlay_conflict_policy_id": "overlay.conflict.last_wins",
           "require_remove_reason": true,
           "require_official_signature": false,
-          "source": "GEO9-2"
+          "source": "COMPAT-SEM-3"
         }
       }
     ],
     "extensions": {
-      "source": "GEO9-2"
+      "source": "COMPAT-SEM-3"
     }
   }
 }

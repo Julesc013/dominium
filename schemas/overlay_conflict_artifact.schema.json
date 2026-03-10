@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Overlay Conflict Artifact Schema",
+  "version": "1.0.0",
+  "description": "Derived conflict artifact emitted by the GEO-9 overlay merge engine.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A1/A6/A10",
+    "docs/geo/OVERLAY_CONFLICT_POLICIES.md"
+  ],
+  "type": "object",
+  "required": [
+    "conflict_id",
+    "object_id",
+    "property_path",
+    "involved_patches",
+    "mode",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "conflict_id": {
+      "type": "string",
+      "pattern": "^overlay\\.conflict\\.[A-Fa-f0-9]{16}$"
+    },
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "property_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "involved_patches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "originating_layer_id",
+          "layer_order",
+          "patch_hash",
+          "operation"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "originating_layer_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layer_order": {
+            "type": "array"
+          },
+          "patch_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "operation": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "last_wins",
+        "refuse",
+        "prompt_stub"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  }
+}

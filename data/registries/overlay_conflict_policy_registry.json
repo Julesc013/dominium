@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.registry.geo.overlay_conflict_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.geo.overlay_conflict_policy_registry",
+    "registry_version": "1.0.0",
+    "overlay_conflict_policies": [
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "overlay.conflict.last_wins",
+        "mode": "last_wins",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Apply deterministic stable ordering and emit conflict artifacts for audit.",
+          "source": "COMPAT-SEM-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "overlay.conflict.prompt_stub",
+        "mode": "prompt_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Refuse conflicting merge groups and require an explicit resolver layer; no interactive UI yet.",
+          "remediation_hint": "remedy.overlay.add_explicit_resolver_layer",
+          "source": "COMPAT-SEM-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "policy_id": "overlay.conflict.refuse",
+        "mode": "refuse",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "description": "Refuse same-precedence overlay conflicts instead of silently applying precedence.",
+          "remediation_hint": "remedy.overlay.resolve_conflict_or_change_policy",
+          "source": "COMPAT-SEM-3"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "COMPAT-SEM-3"
+    }
+  }
+}
