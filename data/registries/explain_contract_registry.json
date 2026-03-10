@@ -855,6 +855,26 @@
       },
       {
         "schema_version": "1.0.0",
+        "contract_id": "explain.overlay_conflict",
+        "event_kind_id": "geo.overlay_conflict",
+        "explain_artifact_type_id": "artifact.explain.overlay_conflict",
+        "required_inputs": [
+          "artifact.overlay_conflict",
+          "artifact.overlay_property_origin",
+          "section.overlay.conflict_summary"
+        ],
+        "remediation_hint_keys": [
+          "hint.overlay.raise_precedence",
+          "hint.overlay.switch_conflict_policy",
+          "hint.overlay.create_resolver_layer"
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "COMPAT-SEM-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "contract_id": "explain.system_tier_transition_refusal",
         "event_kind_id": "system.tier_transition_refusal",
         "explain_artifact_type_id": "artifact.explain.system_tier_transition_refusal",

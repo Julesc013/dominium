@@ -46,6 +46,9 @@ def explain_property_origin_report(
                 "overlay_manifest_hash": str(resolved_merge.get("overlay_manifest_hash", "")).strip(),
                 "property_patch_hash_chain": str(resolved_merge.get("property_patch_hash_chain", "")).strip(),
                 "overlay_merge_result_hash_chain": str(resolved_merge.get("overlay_merge_result_hash_chain", "")).strip(),
+                "overlay_conflict_artifact_hash_chain": str(
+                    resolved_merge.get("overlay_conflict_artifact_hash_chain", "")
+                ).strip(),
             }
         ),
         "deterministic_fingerprint": "",
