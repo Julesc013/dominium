@@ -1,0 +1,109 @@
+{
+  "schema_id": "dominium.registry.embodiment.tool_capability_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.embodiment.tool_capability_registry",
+    "registry_version": "1.0.0",
+    "tool_capabilities": [
+      {
+        "schema_version": "1.0.0",
+        "tool_id": "tool.logic_analyzer",
+        "capability_kind": "logic_trace",
+        "required_entitlement_id": "ent.tool.logic_trace",
+        "access_policy_id": "access.role_required",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2",
+          "display_name": "Logic Analyzer",
+          "allowed_process_ids": [
+            "process.logic_trace_end",
+            "process.logic_trace_start",
+            "process.logic_trace_tick"
+          ],
+          "max_trace_duration_ticks": 32,
+          "sampling_policy_id": "debug.sample.default",
+          "ui_command_id": "tool trace"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_id": "tool.logic_probe",
+        "capability_kind": "logic_probe",
+        "required_entitlement_id": "ent.tool.logic_probe",
+        "access_policy_id": "access.role_required",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2",
+          "display_name": "Logic Probe",
+          "allowed_process_ids": [
+            "process.logic_probe"
+          ],
+          "required_instrument_type_ids": [
+            "instrument.logic_probe"
+          ],
+          "ui_command_id": "tool probe"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_id": "tool.scanner_basic",
+        "capability_kind": "scan",
+        "required_entitlement_id": "ent.tool.scan",
+        "access_policy_id": "access.physical_contact_required",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2",
+          "display_name": "Scanner",
+          "allowed_process_ids": [
+            "process.inspect_generate_snapshot",
+            "process.tool_readout_tick"
+          ],
+          "default_precision_mode": "diegetic_coarse",
+          "max_range_mm": 500000,
+          "ui_command_id": "tool scan"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_id": "tool.teleport",
+        "capability_kind": "teleport",
+        "required_entitlement_id": "ent.tool.teleport",
+        "access_policy_id": "access.role_required",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2",
+          "display_name": "Teleport",
+          "allowed_process_ids": [
+            "process.camera_teleport",
+            "process.refinement_request_enqueue"
+          ],
+          "rng_stream_id": "rng.ui.teleport.random_star",
+          "ui_command_id": "tool tp"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "tool_id": "tool.terrain_edit",
+        "capability_kind": "terrain_edit",
+        "required_entitlement_id": "ent.tool.terrain_edit",
+        "access_policy_id": "access.role_required",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2",
+          "display_name": "Terrain Edit",
+          "allowed_process_ids": [
+            "process.geometry_add",
+            "process.geometry_cut",
+            "process.geometry_remove"
+          ],
+          "default_geometry_edit_policy_id": "geo.edit.default",
+          "max_volume_amount": 32,
+          "ui_command_id": "tool mine"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EMB1-2"
+    }
+  }
+}

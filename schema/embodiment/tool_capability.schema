@@ -1,0 +1,27 @@
+SCHEMA: embodiment/tool_capability.schema
+schema_id: dominium.schema.embodiment.tool_capability
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic embodiment tool capability rows for EMB-1.
+- Keep tool affordances law-gated, registry-driven, and inventory-independent.
+
+NON-SEMANTICS:
+- This schema does not define owned inventory items.
+- This schema does not authorize direct truth mutation or unrestricted inspection.
+
+REQUIRED SHAPE:
+record tool_capability
+  required:
+    - tool_id: id
+    - capability_kind: string
+    - required_entitlement_id: id
+    - access_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- tool affordances remain explicit capabilities rather than item ownership
+- capability use remains law-gated and entitlement-gated
+- terrain edits remain process-only and scanner outputs remain derived-only

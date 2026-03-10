@@ -1,0 +1,58 @@
+{
+  "schema_id": "dominium.registry.entitlement_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.entitlement_registry",
+    "registry_version": "1.0.0",
+    "entitlements": [
+      {
+        "schema_version": "1.0.0",
+        "entitlement_id": "ent.tool.logic_probe",
+        "description": "Allows use of EMB-1 logic probe affordances subject to law and access policy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "entitlement_id": "ent.tool.logic_trace",
+        "description": "Allows bounded EMB-1 logic analyzer sessions subject to law and compute policy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "entitlement_id": "ent.tool.scan",
+        "description": "Allows EMB-1 scanner summaries under the active observation policy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "entitlement_id": "ent.tool.teleport",
+        "description": "Allows EMB-1 teleport tool affordances in addition to process-level teleport gating.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "entitlement_id": "ent.tool.terrain_edit",
+        "description": "Allows EMB-1 terrain edit affordances in addition to process-level geometry-edit gating.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB1-2"
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EMB1-2"
+    }
+  }
+}

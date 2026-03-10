@@ -301,6 +301,24 @@
         "value_type": "any"
       },
       {
+        "extension_key": "mod.unknown.allowed_process_ids",
+        "allowed_owners": [
+          "tool_capabilities"
+        ],
+        "value_type": "any",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "profile_gate_required": "extensions.default",
+        "deterministic_fingerprint": "8b6d20e5b225ea15afa0c8afc80a6eee15cf93aeec5b912c17d3edc2dba6be4c",
+        "extensions": {
+          "legacy_alias_for": "allowed_process_ids",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/embodiment/tools/toolbelt_engine.py"
+          ],
+          "source": "EMB1-2"
+        }
+      },
+      {
         "allowed_owners": [
           "*"
         ],
@@ -1217,6 +1235,24 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
         "value_type": "any"
+      },
+      {
+        "extension_key": "mod.unknown.display_name",
+        "allowed_owners": [
+          "tool_capabilities"
+        ],
+        "value_type": "any",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "profile_gate_required": "extensions.default",
+        "deterministic_fingerprint": "8f2fef964c43d2e2c0a6759d2765c7a44c82af6213c6ae3a3f79cb1aaac5e438",
+        "extensions": {
+          "legacy_alias_for": "display_name",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/embodiment/tools/toolbelt_engine.py"
+          ],
+          "source": "EMB1-2"
+        }
       },
       {
         "allowed_owners": [
@@ -2421,6 +2457,24 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
         "value_type": "any"
+      },
+      {
+        "extension_key": "mod.unknown.max_trace_duration_ticks",
+        "allowed_owners": [
+          "tool_capabilities"
+        ],
+        "value_type": "any",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "profile_gate_required": "extensions.default",
+        "deterministic_fingerprint": "942b6e581a4f95d90a7b4e5e5969b24d9cc46ebfb55b71425437dcb14e3e3ee3",
+        "extensions": {
+          "legacy_alias_for": "max_trace_duration_ticks",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/embodiment/tools/logic_tool.py"
+          ],
+          "source": "EMB1-2"
+        }
       },
       {
         "allowed_owners": [
@@ -4275,6 +4329,24 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.proc.capsule.v1",
         "value_type": "any"
+      },
+      {
+        "extension_key": "mod.unknown.ui_command_id",
+        "allowed_owners": [
+          "tool_capabilities"
+        ],
+        "value_type": "any",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "profile_gate_required": "extensions.default",
+        "deterministic_fingerprint": "4d7d26f40c894a61b57adbe3f81753ac6a31e16253d93546f14f92fc030441f1",
+        "extensions": {
+          "legacy_alias_for": "ui_command_id",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/embodiment/tools/toolbelt_engine.py"
+          ],
+          "source": "EMB1-2"
+        }
       },
       {
         "allowed_owners": [
