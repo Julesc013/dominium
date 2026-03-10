@@ -1,0 +1,27 @@
+SCHEMA: embodiment/impact_event.schema
+schema_id: dominium.schema.embodiment.impact_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical EMB-2 impact event rows emitted when terrain contact exceeds the locomotion threshold.
+- Preserve replay-relevant fall/impact diagnostics without introducing injury semantics.
+
+NON-SEMANTICS:
+- This schema does not encode damage, health, or ragdoll state.
+- This schema does not authorize renderer-only diagnostic payloads as truth.
+
+REQUIRED SHAPE:
+record impact_event
+  required:
+    - event_id: id
+    - subject_id: id
+    - tick: u64
+    - impact_speed: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- impact events remain deterministic and auditable
+- event emission does not alter survival state
+- replay of identical movement inputs yields identical impact rows

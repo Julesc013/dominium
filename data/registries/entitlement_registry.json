@@ -7,6 +7,15 @@
     "entitlements": [
       {
         "schema_version": "1.0.0",
+        "entitlement_id": "ent.move.jump",
+        "description": "Allows EMB-2 deterministic jump affordances subject to law and grounded-state checks.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB2-2"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "entitlement_id": "ent.tool.logic_probe",
         "description": "Allows use of EMB-1 logic probe affordances subject to law and access policy.",
         "deterministic_fingerprint": "",

@@ -274,6 +274,13 @@ from src.embodiment.collision import (
     resolve_macro_heightfield_sample,
 )
 from src.embodiment.lens import resolve_authorized_lens_profile, resolve_lens_camera_state
+from src.embodiment.movement import (
+    DEFAULT_JUMP_PARAMS_ID,
+    build_impact_event_row,
+    normalize_impact_event_rows,
+    resolve_horizontal_damping_state,
+    resolve_jump_params_row,
+)
 from src.control.effects import (
     REFUSAL_EFFECT_FORBIDDEN,
     REFUSAL_EFFECT_INVALID_TARGET,
@@ -881,6 +888,7 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.cosmetic_assign": "entitlement.cosmetic.assign",
     "process.body_move_attempt": "entitlement.control.possess",
     "process.body_apply_input": "entitlement.control.possess",
+    "process.body_jump": "ent.move.jump",
     "process.body_tick": "session.boot",
     "process.instrument_tick": "session.boot",
     "process.instrument_notebook_add_note": "entitlement.diegetic.notebook_write",
@@ -1112,6 +1120,7 @@ PROCESS_PRIVILEGE_DEFAULTS = {
     "process.cosmetic_assign": "operator",
     "process.body_move_attempt": "operator",
     "process.body_apply_input": "operator",
+    "process.body_jump": "operator",
     "process.body_tick": "observer",
     "process.instrument_tick": "observer",
     "process.instrument_notebook_add_note": "observer",
@@ -1337,6 +1346,7 @@ CONTROL_PROCESS_IDS = {
     "process.instrument_radio_send_text",
     "process.body_move_attempt",
     "process.body_apply_input",
+    "process.body_jump",
     "process.control_ir.autopilot_stub",
     "process.control_ir.ai_controller_stub",
     "process.plan_create",
@@ -3272,6 +3282,12 @@ def _ensure_force_application_rows(state: dict) -> List[dict]:
 def _ensure_impulse_application_rows(state: dict) -> List[dict]:
     rows = normalize_impulse_application_rows(state.get("impulse_application_rows"))
     state["impulse_application_rows"] = [dict(row) for row in rows if isinstance(row, Mapping)]
+    return [dict(row) for row in rows if isinstance(row, Mapping)]
+
+
+def _ensure_impact_event_rows(state: dict) -> List[dict]:
+    rows = normalize_impact_event_rows(state.get("impact_events"))
+    state["impact_events"] = [dict(row) for row in rows if isinstance(row, Mapping)]
     return [dict(row) for row in rows if isinstance(row, Mapping)]
 
 
@@ -7140,8 +7156,10 @@ def _append_physics_exception_event(
 def _refresh_momentum_hash_chains(state: dict) -> None:
     momentum_rows = normalize_momentum_state_rows(state.get("momentum_states") or [])
     impulse_rows = normalize_impulse_application_rows(state.get("impulse_application_rows") or [])
+    impact_rows = normalize_impact_event_rows(state.get("impact_events") or [])
     state["momentum_hash_chain"] = canonical_sha256([dict(row) for row in momentum_rows])
     state["impulse_event_hash_chain"] = canonical_sha256([dict(row) for row in impulse_rows])
+    state["impact_event_hash_chain"] = canonical_sha256([dict(row) for row in impact_rows])
 
 
 def _refresh_time_hash_chains(state: dict) -> None:
@@ -18371,7 +18389,7 @@ def _upsert_body_state_for_body(
             value = dict(value or {}) if isinstance(value, Mapping) else {}
         if value:
             mirrored_extensions[key] = value
-    for key in ("terrain_collision_state", "terrain_slope_response"):
+    for key in ("terrain_collision_state", "terrain_slope_response", "locomotion_state"):
         value = body_ext.get(key)
         if isinstance(value, Mapping) and value:
             mirrored_extensions[key] = dict(value)
@@ -18432,6 +18450,19 @@ def _movement_slope_params_registry_payload(policy_context: dict | None) -> dict
     }
 
 
+def _jump_params_registry_payload(policy_context: dict | None) -> dict:
+    payload = _policy_payload(policy_context, "jump_params_registry")
+    if payload:
+        return {"jump_params": list((dict(payload).get("jump_params") or []))}
+    fallback = _read_registry_fallback(
+        repo_root=REPO_ROOT_HINT,
+        registry_rel_path="data/registries/jump_params_registry.json",
+        default_payload={"jump_params": []},
+    )
+    record = dict(fallback.get("record") or {}) if isinstance(fallback, Mapping) else {}
+    return {"jump_params": list(dict(fallback).get("jump_params") or record.get("jump_params") or [])}
+
+
 def _movement_params_for_body(policy_context: dict | None, body_row: Mapping[str, object] | None) -> dict:
     body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
     template_id = str((dict(body.get("extensions") or {})).get("template_id", "")).strip() or DEFAULT_BODY_TEMPLATE_ID
@@ -18449,6 +18480,17 @@ def _movement_params_for_body(policy_context: dict | None, body_row: Mapping[str
         "movement_slope_params_id": str(template_ext.get("movement_slope_params_id", "")).strip() or DEFAULT_MOVEMENT_SLOPE_PARAMS_ID,
         "foot_offset_mm": int(max(0, _as_int(template_ext.get("foot_offset_mm", 1100), 1100))),
     }
+
+
+def _jump_params_for_body(policy_context: dict | None, body_row: Mapping[str, object] | None) -> dict:
+    del body_row
+    return dict(
+        resolve_jump_params_row(
+            jump_params_id=DEFAULT_JUMP_PARAMS_ID,
+            registry_payload=_jump_params_registry_payload(policy_context),
+        )
+        or {}
+    )
 
 
 def _collision_provider_row_for_body(policy_context: dict | None, body_row: Mapping[str, object] | None) -> dict:
@@ -18606,6 +18648,9 @@ def _apply_ground_contact(
     body_row: Mapping[str, object] | None,
     movement_params: Mapping[str, object] | None,
     surface_query: Mapping[str, object] | None,
+    subject_id: str = "",
+    current_tick: int = 0,
+    impact_threshold_speed: int = 0,
 ) -> dict:
     body = dict(body_row or {}) if isinstance(body_row, Mapping) else {}
     movement = dict(movement_params or {}) if isinstance(movement_params, Mapping) else {}
@@ -18621,11 +18666,13 @@ def _apply_ground_contact(
     transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
     velocity = _vector3_int(body.get("velocity_mm_per_tick"), "velocity_mm_per_tick") or {"x": 0, "y": 0, "z": 0}
     body_ext = dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}
+    locomotion_state = dict(body_ext.get("locomotion_state") or {}) if isinstance(body_ext.get("locomotion_state"), Mapping) else {}
     prior_contact = dict(body_ext.get("terrain_collision_state") or {}) if isinstance(body_ext.get("terrain_collision_state"), Mapping) else {}
     foot_offset_mm = int(max(0, _as_int(movement.get("foot_offset_mm", 1100), 1100)))
     ground_contact_height_mm = int(max(0, _as_int(query.get("terrain_height_mm", 0), 0)) + foot_offset_mm)
     contact_snap_tolerance_mm = int(max(0, _as_int(_as_map(query.get("extensions")).get("contact_snap_tolerance_mm", 180), 180)))
     prior_grounded = bool(prior_contact.get("grounded", False))
+    pre_clamp_vertical_speed = int(abs(min(0, _as_int(velocity.get("z", 0), 0))))
     should_clamp = bool(
         int(transform["z"]) < int(ground_contact_height_mm)
         or (
@@ -18639,6 +18686,45 @@ def _apply_ground_contact(
         velocity["z"] = 0
     body["transform_mm"] = dict(transform)
     body["velocity_mm_per_tick"] = dict(velocity)
+    impact_event = {}
+    explain_artifact = {}
+    threshold_speed = int(max(0, _as_int(impact_threshold_speed, 0)))
+    if should_clamp and pre_clamp_vertical_speed > threshold_speed:
+        impact_event = build_impact_event_row(
+            event_id="impact.event.{}".format(
+                canonical_sha256(
+                    {
+                        "body_id": str(body.get("assembly_id", "")).strip(),
+                        "subject_id": str(subject_id or "").strip(),
+                        "tick": int(max(0, _as_int(current_tick, 0))),
+                        "impact_speed": int(pre_clamp_vertical_speed),
+                        "tile_object_id": str(query.get("tile_object_id", "")).strip(),
+                    }
+                )[:16]
+            ),
+            subject_id=str(subject_id or "").strip() or str(body.get("assembly_id", "")).strip(),
+            tick=int(max(0, _as_int(current_tick, 0))),
+            impact_speed=int(pre_clamp_vertical_speed),
+            extensions={
+                "source": "EMB2-4",
+                "body_id": str(body.get("assembly_id", "")).strip(),
+                "tile_object_id": str(query.get("tile_object_id", "")).strip() or None,
+                "tile_cell_key": dict(query.get("tile_cell_key") or {}),
+                "explain_id": "explain.impact_event",
+            },
+        )
+        if impact_event:
+            explain_artifact = {
+                "explain_id": "explain.impact_event",
+                "event_id": str(impact_event.get("event_id", "")).strip(),
+                "subject_id": str(impact_event.get("subject_id", "")).strip(),
+                "tick": int(impact_event.get("tick", 0)),
+                "impact_speed": int(impact_event.get("impact_speed", 0)),
+                "threshold_speed": int(threshold_speed),
+                "ground_contact_height_mm": int(ground_contact_height_mm),
+                "deterministic_fingerprint": "",
+            }
+            explain_artifact["deterministic_fingerprint"] = canonical_sha256(dict(explain_artifact, deterministic_fingerprint=""))
     body_ext["surface_tile_cell_key"] = dict(query.get("tile_cell_key") or {})
     body_ext["collision_provider_id"] = str(query.get("provider_id", "")).strip() or DEFAULT_COLLISION_PROVIDER_ID
     body_ext["terrain_collision_state"] = {
@@ -18651,6 +18737,14 @@ def _apply_ground_contact(
         "tile_cell_key": dict(query.get("tile_cell_key") or {}),
         "source": "EARTH6-4",
     }
+    cooldown_remaining = int(max(0, _as_int(locomotion_state.get("jump_cooldown_remaining_ticks", 0), 0)))
+    locomotion_state["grounded"] = bool(should_clamp)
+    locomotion_state["jump_cooldown_remaining_ticks"] = int(cooldown_remaining)
+    if impact_event:
+        locomotion_state["last_impact_event_id"] = str(impact_event.get("event_id", "")).strip()
+        locomotion_state["last_impact_speed"] = int(impact_event.get("impact_speed", 0))
+        locomotion_state["last_impact_tick"] = int(impact_event.get("tick", 0))
+    body_ext["locomotion_state"] = locomotion_state
     body["extensions"] = body_ext
     return {
         "body_row": dict(body),
@@ -18658,6 +18752,8 @@ def _apply_ground_contact(
         "clamped": bool(should_clamp),
         "ground_contact_height_mm": int(ground_contact_height_mm),
         "surface_query": dict(query),
+        "impact_event": dict(impact_event),
+        "impact_explain_artifact": dict(explain_artifact),
     }
 
 
@@ -26284,6 +26380,135 @@ def execute_intent(
             ],
         )
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.body_jump":
+        body_id = str(inputs.get("body_id", "") or inputs.get("target_body_id", "") or inputs.get("target_id", "")).strip()
+        if not body_id:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "process.body_jump requires body_id",
+                "Provide body_id for deterministic jump intent execution.",
+                {"process_id": process_id},
+                "$.intent.inputs.body_id",
+            )
+        body = _find_body(body_rows=bodies, body_id=body_id)
+        if not body:
+            return refusal(
+                "refusal.control.target_invalid",
+                "body '{}' does not exist".format(body_id),
+                "Use a body_id present in universe_state.body_assemblies.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        if not bool(body.get("dynamic", False)):
+            return refusal(
+                "refusal.agent.unembodied",
+                "body '{}' is static and cannot jump".format(body_id),
+                "Select a dynamic body assembly before applying embodied jump.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        dt_ticks = int(max(1, _as_int(inputs.get("dt_ticks", 1), 1)))
+        jump_params = _jump_params_for_body(policy_context=policy_context, body_row=body)
+        movement_params = _movement_params_for_body(policy_context=policy_context, body_row=body)
+        body_ext = dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}
+        collision_state = dict(body_ext.get("terrain_collision_state") or {}) if isinstance(body_ext.get("terrain_collision_state"), Mapping) else {}
+        locomotion_state = dict(body_ext.get("locomotion_state") or {}) if isinstance(body_ext.get("locomotion_state"), Mapping) else {}
+        grounded = bool(collision_state.get("grounded", False))
+        if not grounded:
+            return refusal(
+                "refusal.move.jump_not_grounded",
+                "body '{}' is not grounded".format(body_id),
+                "Wait for deterministic terrain contact before jumping.",
+                {"body_id": body_id},
+                "$.intent.inputs.body_id",
+            )
+        cooldown_remaining = int(max(0, _as_int(locomotion_state.get("jump_cooldown_remaining_ticks", 0), 0)))
+        if cooldown_remaining > 0:
+            return refusal(
+                "refusal.move.jump_cooldown",
+                "body '{}' is still on jump cooldown".format(body_id),
+                "Retry after the remaining cooldown ticks elapse.",
+                {"body_id": body_id, "cooldown_remaining_ticks": int(cooldown_remaining)},
+                "$.intent.inputs.body_id",
+            )
+        momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
+        existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
+        mass_value = _mass_value_for_assembly(
+            body_row=body,
+            existing_momentum_row=existing_momentum_row,
+            explicit_mass_value=movement_params.get("mass_value"),
+        )
+        if not existing_momentum_row:
+            existing_momentum_row = build_momentum_state(
+                assembly_id=body_id,
+                mass_value=int(mass_value),
+                momentum_linear={
+                    "x": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("x", 0), 0)) * int(mass_value),
+                    "y": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("y", 0), 0)) * int(mass_value),
+                    "z": int(_as_int((dict(body.get("velocity_mm_per_tick") or {})).get("z", 0), 0)) * int(mass_value),
+                },
+                momentum_angular=0,
+                last_update_tick=int(current_tick),
+                extensions={},
+            )
+        jump_impulse_velocity = int(max(1, _as_int(jump_params.get("impulse_value", 1), 1)))
+        impulse_row = build_impulse_application(
+            application_id="impulse.body_jump.{}".format(
+                canonical_sha256({"body_id": body_id, "tick": int(current_tick), "intent_id": str(intent_id)})[:16]
+            ),
+            target_assembly_id=body_id,
+            impulse_vector={
+                "x": 0,
+                "y": 0,
+                "z": int(jump_impulse_velocity) * int(mass_value),
+            },
+            torque_impulse=None,
+            originating_process_id=process_id,
+            extensions={"source": "EMB2-3", "jump_params_id": str(jump_params.get("jump_params_id", DEFAULT_JUMP_PARAMS_ID)).strip()},
+        )
+        applied = apply_impulse_to_momentum_state(
+            momentum_state_row=existing_momentum_row,
+            impulse_application_row=impulse_row,
+            tick=int(current_tick),
+        )
+        updated_momentum_row = dict(applied.get("momentum_state") or existing_momentum_row)
+        updated_velocity = velocity_from_momentum_state(updated_momentum_row)
+        impulse_application_rows = normalize_impulse_application_rows(list(impulse_application_rows or []) + [impulse_row])
+        state["impulse_application_rows"] = [dict(row) for row in list(impulse_application_rows or []) if isinstance(row, Mapping)]
+        collision_state["grounded"] = False
+        collision_state["clamped"] = False
+        body_ext["terrain_collision_state"] = collision_state
+        locomotion_state["grounded"] = False
+        locomotion_state["last_jump_tick"] = int(current_tick)
+        locomotion_state["jump_cooldown_remaining_ticks"] = int(max(0, _as_int(jump_params.get("cooldown_ticks", 0), 0)))
+        locomotion_state["jump_params_id"] = str(jump_params.get("jump_params_id", DEFAULT_JUMP_PARAMS_ID)).strip() or DEFAULT_JUMP_PARAMS_ID
+        body_ext["locomotion_state"] = locomotion_state
+        body["extensions"] = body_ext
+        body["velocity_mm_per_tick"] = dict(updated_velocity)
+        body_rows_by_id = dict(
+            (
+                str(row.get("assembly_id", "")).strip(),
+                dict(row),
+            )
+            for row in list(bodies or [])
+            if isinstance(row, Mapping) and str(row.get("assembly_id", "")).strip()
+        )
+        body_rows_by_id[body_id] = dict(body)
+        state["body_assemblies"] = [dict(body_rows_by_id[key]) for key in sorted(body_rows_by_id.keys())]
+        momentum_rows_by_assembly[body_id] = dict(updated_momentum_row)
+        momentum_states = normalize_momentum_state_rows([dict(momentum_rows_by_assembly[key]) for key in sorted(momentum_rows_by_assembly.keys())])
+        state["momentum_states"] = [dict(row) for row in list(momentum_states or []) if isinstance(row, Mapping)]
+        subject_id = _subject_id_for_body(body, explicit_subject_id=str(inputs.get("subject_id", "")).strip())
+        updated_body_state = _upsert_body_state_for_body(state=state, body_row=body, subject_id=subject_id)
+        result_metadata = {
+            "body_id": body_id,
+            "subject_id": str(updated_body_state.get("subject_id", subject_id)).strip(),
+            "jump_params_id": str(jump_params.get("jump_params_id", DEFAULT_JUMP_PARAMS_ID)).strip() or DEFAULT_JUMP_PARAMS_ID,
+            "jump_impulse_velocity": int(jump_impulse_velocity),
+            "jump_cooldown_remaining_ticks": int(max(0, _as_int(locomotion_state.get("jump_cooldown_remaining_ticks", 0), 0))),
+            "application_id": str(impulse_row.get("application_id", "")).strip(),
+        }
+        _advance_time(state, steps=int(dt_ticks), policy_context=policy_context)
     elif process_id == "process.body_apply_input":
         body_id = str(inputs.get("body_id", "") or inputs.get("target_body_id", "") or inputs.get("target_id", "")).strip()
         if not body_id:
@@ -26452,6 +26677,12 @@ def execute_intent(
             )
         dt_ticks = int(max(1, _as_int(inputs.get("dt_ticks", 1), 1)))
         movement_params = _movement_params_for_body(policy_context=policy_context, body_row=body)
+        jump_params = _jump_params_for_body(policy_context=policy_context, body_row=body)
+        body_ext = dict(body.get("extensions") or {}) if isinstance(body.get("extensions"), Mapping) else {}
+        locomotion_state = dict(body_ext.get("locomotion_state") or {}) if isinstance(body_ext.get("locomotion_state"), Mapping) else {}
+        locomotion_state["jump_cooldown_remaining_ticks"] = int(max(0, _as_int(locomotion_state.get("jump_cooldown_remaining_ticks", 0), 0) - int(dt_ticks)))
+        body_ext["locomotion_state"] = locomotion_state
+        body["extensions"] = body_ext
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
@@ -26478,6 +26709,17 @@ def execute_intent(
         if not isinstance(gravity_value, Mapping):
             gravity_value = gravity_sample.get("value")
         gravity_vector = dict(gravity_value) if isinstance(gravity_value, Mapping) else {"x": 0, "y": 0, "z": 0}
+        friction_sample = get_field_value(
+            spatial_position={"position_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0})},
+            field_id="field.friction",
+            field_layer_rows=normalized_field_layers,
+            field_cell_rows=normalized_field_cells,
+            field_type_registry=field_type_registry,
+            field_binding_registry=field_binding_registry,
+        )
+        friction_value = friction_sample.get("value")
+        if isinstance(friction_value, Mapping):
+            friction_value = friction_value.get("traction_permille")
         momentum_rows_by_assembly = momentum_state_rows_by_assembly_id(momentum_states)
         existing_momentum_row = dict(momentum_rows_by_assembly.get(body_id) or {})
         mass_value = _mass_value_for_assembly(
@@ -26523,7 +26765,12 @@ def execute_intent(
             + [gravity_force_row]
         )
         state["force_application_rows"] = [dict(row) for row in list(force_application_rows or []) if isinstance(row, Mapping)]
-        horizontal_damping = int(max(0, min(950, _as_int(movement_params.get("horizontal_damping_permille", 120), 120))))
+        friction_state = resolve_horizontal_damping_state(
+            base_damping_permille=int(_as_int(movement_params.get("horizontal_damping_permille", 120), 120)),
+            slope_response=_as_map(_as_map(body.get("extensions")).get("terrain_slope_response")),
+            friction_field_value=friction_value,
+        )
+        horizontal_damping = int(max(0, min(950, _as_int(friction_state.get("effective_damping_permille", 120), 120))))
         updated_velocity["x"] = int(updated_velocity["x"] * (1000 - horizontal_damping) // 1000)
         updated_velocity["y"] = int(updated_velocity["y"] * (1000 - horizontal_damping) // 1000)
         current_transform = _vector3_int(body.get("transform_mm"), "transform_mm") or {"x": 0, "y": 0, "z": 0}
@@ -26564,8 +26811,15 @@ def execute_intent(
             body_row=body,
             movement_params=movement_params,
             surface_query=terrain_query,
+            subject_id=_subject_id_for_body(body, explicit_subject_id=str(inputs.get("subject_id", "")).strip()),
+            current_tick=int(current_tick),
+            impact_threshold_speed=int(max(0, _as_int(jump_params.get("impulse_value", 0), 0))),
         )
         body = dict(ground_contact.get("body_row") or body)
+        impact_event_row = dict(ground_contact.get("impact_event") or {})
+        if impact_event_row:
+            impact_events = normalize_impact_event_rows(list(state.get("impact_events") or []) + [impact_event_row])
+            state["impact_events"] = [dict(row) for row in list(impact_events or []) if isinstance(row, Mapping)]
         body_rows_by_id = dict(
             (
                 str(row.get("assembly_id", "")).strip(),
@@ -26629,6 +26883,10 @@ def execute_intent(
             "velocity_mm_per_tick": dict(resolved_velocity),
             "position_mm": dict(body.get("transform_mm") or {"x": 0, "y": 0, "z": 0}),
             "terrain_collision": dict(_as_map(_as_map(body.get("extensions")).get("terrain_collision_state"))),
+            "locomotion_state": dict(_as_map(_as_map(body.get("extensions")).get("locomotion_state"))),
+            "friction_state": dict(friction_state),
+            "impact_event_id": str(impact_event_row.get("event_id", "")).strip() or None,
+            "impact_explain_artifact": dict(ground_contact.get("impact_explain_artifact") or {}),
             "lens_profile_id": lens_profile_id or None,
             "lens_camera_fingerprint": str(lens_result.get("deterministic_fingerprint", "")).strip() or None,
         }

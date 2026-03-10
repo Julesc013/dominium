@@ -277,6 +277,11 @@ def instantiate_body_system(
             "template_id": str(template_row.get("template_id", "")).strip(),
             "movement_params_ref": str(template_row.get("movement_params_ref", "")).strip(),
             "system_template_id": str(template_ext.get("system_template_id", "")).strip() or str(template_row.get("template_id", "")).strip(),
+            "locomotion_state": {
+                "grounded": False,
+                "jump_cooldown_remaining_ticks": 0,
+                "source": "EMB2-3",
+            },
         },
     }
     body_state_row = body_state_from_body_row(

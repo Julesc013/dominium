@@ -24,6 +24,7 @@ from src.embodiment import (  # noqa: E402
     build_scan_result,
     build_teleport_tool_surface,
 )
+from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.embodiment.emb1_probe import _authority_context, _field_values, _inspection_snapshot, _property_origin_result, _selection  # noqa: E402
 
 
@@ -42,6 +43,9 @@ def main() -> int:
     sub.add_parser("probe")
     sub.add_parser("trace")
     sub.add_parser("tp")
+    move = sub.add_parser("move")
+    move_sub = move.add_subparsers(dest="move_command", required=True)
+    move_sub.add_parser("jump")
     args = parser.parse_args()
 
     authority_context = _authority_context()
@@ -110,6 +114,26 @@ def main() -> int:
                 duration_ticks=8,
             )
         )
+    if args.command == "move" and args.move_command == "jump":
+        payload = {
+            "result": "complete",
+            "command_id": "move jump",
+            "required_entitlement_id": "ent.move.jump",
+            "process_sequence": [
+                {
+                    "process_id": "process.body_jump",
+                    "inputs": {
+                        "body_id": "body.emb.test",
+                        "controller_id": "controller.emb.test",
+                        "dt_ticks": 1,
+                    },
+                }
+            ],
+            "source_kind": "derived.command_surface",
+            "deterministic_fingerprint": "",
+        }
+        payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+        return _emit(payload)
     return _emit(
         build_teleport_tool_surface(
             repo_root=REPO_ROOT_HINT,

@@ -1,0 +1,25 @@
+{
+  "schema_id": "dominium.registry.embodiment.camera_smoothing_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.embodiment.camera_smoothing_registry",
+    "registry_version": "1.0.0",
+    "camera_smoothing_params": [
+      {
+        "schema_version": "1.0.0",
+        "camera_smoothing_params_id": "cam_smooth.mvp_default",
+        "fp_alpha": 700,
+        "tp_alpha": 350,
+        "max_offset": 1600,
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "EMB2-2",
+          "description": "Canonical EMB-2 bounded fixed-point render smoothing for embodied cameras."
+        }
+      }
+    ],
+    "extensions": {
+      "source": "EMB2-2"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+SCHEMA: embodiment/jump_params.schema
+schema_id: dominium.schema.embodiment.jump_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic jump tuning parameters for embodied locomotion.
+- Keep jump impulse and cooldown data-declared and replay-stable.
+
+NON-SEMANTICS:
+- This schema does not define damage, injury, or stamina systems.
+- This schema does not authorize animation-specific jump arcs.
+
+REQUIRED SHAPE:
+record jump_params
+  required:
+    - jump_params_id: id
+    - impulse_value: integer
+    - cooldown_ticks: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- jump behavior remains deterministic and process-driven
+- cooldown is tick-based only
+- jump tuning remains profile/law gated rather than mode-flagged

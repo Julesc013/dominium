@@ -15,6 +15,9 @@ def law_profile(allowed_processes: list[str]) -> dict:
     if "process.body_apply_input" in unique_processes:
         entitlements["process.body_apply_input"] = "entitlement.control.possess"
         privileges["process.body_apply_input"] = "operator"
+    if "process.body_jump" in unique_processes:
+        entitlements["process.body_jump"] = "ent.move.jump"
+        privileges["process.body_jump"] = "operator"
     if "process.body_tick" in unique_processes:
         entitlements["process.body_tick"] = "session.boot"
         privileges["process.body_tick"] = "observer"

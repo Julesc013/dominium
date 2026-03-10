@@ -1,0 +1,27 @@
+SCHEMA: embodiment/camera_smoothing_params.schema
+schema_id: dominium.schema.embodiment.camera_smoothing_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic render-only smoothing parameters for embodied FP/TP camera views.
+- Keep smoothing data-declared and bounded.
+
+NON-SEMANTICS:
+- This schema does not authorize wall-clock interpolation.
+- This schema does not authorize truth mutation from render code.
+
+REQUIRED SHAPE:
+record camera_smoothing_params
+  required:
+    - camera_smoothing_params_id: id
+    - fp_alpha: integer
+    - tp_alpha: integer
+    - max_offset: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- smoothing remains fixed-point and bounded
+- smoothing remains render-only
+- FP and TP policies remain explicit data rather than hardcoded modes

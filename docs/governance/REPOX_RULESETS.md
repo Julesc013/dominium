@@ -175,6 +175,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-BODY-MOTION-PROCESS-ONLY`
 - `INV-COLLISION-DETERMINISTIC`
 - `INV-NO-POSITION-WRITE-BYPASS`
+- `INV-JUMP-PROFILE-GATED`
+- `INV-CAMERA-SMOOTH-RENDER-ONLY`
+- `INV-NO-FLOAT-SMOOTHING`
 - `INV-TOOLS-REQUIRE-ENTITLEMENT`
 - `INV-NO-TRUTH-LEAK-IN-SCANS`
 - `INV-TERRAIN-EDITS-PROCESS-ONLY`
@@ -299,6 +302,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when terrain contact is moved outside the process-owned embodiment path.
 - Requires UI/debug surfaces to remain derived-only observers of collision state.
 - Extends the embodiment direct-position-write discipline to EARTH-6 terrain contact and slope metadata.
+
+### INV-JUMP-PROFILE-GATED
+
+- Fails when the governed EMB-2 jump surface loses the explicit `ent.move.jump` and `process.body_jump` bindings.
+- Fails when jump command/runtime surfaces stop routing through LawProfile and AuthorityContext gating.
+- Preserves lawful optional jump as a deterministic profile entitlement instead of an implicit always-on movement bypass.
+
+### INV-CAMERA-SMOOTH-RENDER-ONLY
+
+- Fails when the governed EMB-2 camera smoothing surface loses the explicit render-only smoothing markers or replay doctrine.
+- Fails when smoothing helpers or lens surfaces introduce authoritative body/camera mutation or direct truth/runtime reads.
+- Preserves EMB-2 camera smoothing as a derived presentation layer over authoritative motion rather than a hidden truth mutation path.
+
+### INV-NO-FLOAT-SMOOTHING
+
+- Fails when the governed EMB-2 camera smoothing path loses the explicit fixed-point bounded blending markers.
+- Fails when float-based smoothing, wall-clock APIs, or time-based exponential helpers appear in the smoothing surface.
+- Preserves cross-platform stable FP/TP smoothing and replay-equivalent render behavior for EMB-2.
 
 ### INV-PLATFORM-ID-CANONICAL
 

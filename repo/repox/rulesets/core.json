@@ -1103,6 +1103,47 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-JUMP-PROFILE-GATED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/movement/jump_process.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "src/client/ui/viewer_shell.py",
+        "tools/embodiment/toolbelt_cli.py",
+        "tools/mvp/runtime_bundle.py",
+        "data/registries/jump_params_registry.json",
+        "data/registries/entitlement_registry.json",
+        "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-jump-profile-gated",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CAMERA-SMOOTH-RENDER-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/lens/camera_smoothing.py",
+        "src/embodiment/lens/lens_engine.py",
+        "src/client/ui/viewer_shell.py",
+        "tools/embodiment/tool_replay_locomotion_window.py",
+        "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-camera-smooth-render-only",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-FLOAT-SMOOTHING",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/lens/camera_smoothing.py",
+        "src/client/ui/viewer_shell.py",
+        "data/registries/camera_smoothing_registry.json",
+        "docs/embodiment/LOCOMOTION_POLISH_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-float-smoothing",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-TOOLS-REQUIRE-ENTITLEMENT",
       "severity": "FAIL",
       "scope_paths": [

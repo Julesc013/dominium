@@ -591,6 +591,13 @@ def build_control_proof_bundle_from_markers(
         tick_end=int(end_tick),
         decision_log_hashes=decision_log_hashes,
     )
+    impact_event_hash_chain = _mobility_surface_hash(
+        key="impact_event_hash_chain",
+        surface=mobility_proof_surface,
+        tick_start=int(start_tick),
+        tick_end=int(end_tick),
+        decision_log_hashes=decision_log_hashes,
+    )
     energy_ledger_hash_chain = _mobility_surface_hash(
         key="energy_ledger_hash_chain",
         surface=mobility_proof_surface,
@@ -1173,6 +1180,7 @@ def build_control_proof_bundle_from_markers(
         "jamming_event_hash_chain": str(jamming_event_hash_chain),
         "momentum_hash_chain": str(momentum_hash_chain),
         "impulse_event_hash_chain": str(impulse_event_hash_chain),
+        "impact_event_hash_chain": str(impact_event_hash_chain),
         "energy_ledger_hash_chain": str(energy_ledger_hash_chain),
         "boundary_flux_hash_chain": str(boundary_flux_hash_chain),
         "combustion_hash_chain": str(combustion_hash_chain),

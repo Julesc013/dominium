@@ -184,20 +184,6 @@ def _rotate_offset(offset_mm: Mapping[str, object], yaw_mdeg: int) -> dict:
     return {"x": y, "y": -x, "z": z}
 
 
-def _apply_smoothing(target: Mapping[str, object], previous: Mapping[str, object] | None, smoothing_permille: int) -> dict:
-    target_pos = _vector3_int(target)
-    previous_pos = _vector3_int(previous)
-    smoothing = max(0, min(1000, int(_as_int(smoothing_permille, 0))))
-    if not previous:
-        return dict(target_pos)
-    blend = 1000 - smoothing
-    return {
-        "x": int(previous_pos["x"] + ((target_pos["x"] - previous_pos["x"]) * blend // 1000)),
-        "y": int(previous_pos["y"] + ((target_pos["y"] - previous_pos["y"]) * blend // 1000)),
-        "z": int(previous_pos["z"] + ((target_pos["z"] - previous_pos["z"]) * blend // 1000)),
-    }
-
-
 def resolve_lens_camera_state(
     *,
     body_state_row: Mapping[str, object] | None,
@@ -220,12 +206,6 @@ def resolve_lens_camera_state(
             "y": int(position["y"]) + int(rotated_offset["y"]),
             "z": int(position["z"]) + int(rotated_offset["z"]),
         }
-        if camera_mode == "third_person":
-            target_position = _apply_smoothing(
-                target_position,
-                _as_map(previous_camera_state).get("position_mm") if isinstance(previous_camera_state, Mapping) else None,
-                _as_int(profile_ext.get("smoothing_permille", 0), 0),
-            )
         orientation_out = dict(orientation)
     else:
         previous = _as_map(previous_camera_state)

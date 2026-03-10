@@ -6918,6 +6918,62 @@
     },
     {
       "affected_assemblies": [
+        "body_assemblies"
+      ],
+      "affected_fields": [
+        "body_states",
+        "impulse_application_rows",
+        "momentum_states"
+      ],
+      "deprecated": false,
+      "description": "Deterministic EMB-2 jump process for lawful grounded upward impulse application.",
+      "determinism_notes": [
+        "deterministic-order",
+        "no-rng",
+        "process-only-mutation",
+        "fixed-point-impulse"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent/process.body_jump",
+        "source": "EMB2-3"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID",
+        "refusal.control.target_invalid",
+        "refusal.agent.unembodied",
+        "refusal.move.jump_not_grounded",
+        "refusal.move.jump_cooldown"
+      ],
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "body_id",
+          "ref_id": "dominium.state.body_assemblies",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "body_states",
+          "ref_id": "dominium.state.body_states",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "impulse_application_rows",
+          "ref_id": "dominium.state.impulse_application_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.body_jump",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [
         "body_assemblies",
         "camera_assemblies"
       ],

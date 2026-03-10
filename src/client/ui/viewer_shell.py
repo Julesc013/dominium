@@ -16,6 +16,7 @@ from src.embodiment import (
     build_toolbelt_availability_surface,
     resolve_authorized_lens_profile,
     resolve_lens_camera_state,
+    resolve_smoothed_camera_state,
 )
 from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
@@ -134,7 +135,7 @@ def _preferred_position_ref(
 
 def _default_authority_context(authority_mode: str) -> dict:
     mode = str(authority_mode or "").strip().lower() or "dev"
-    entitlements = ["session.boot", "entitlement.control.camera", "entitlement.control.possess"]
+    entitlements = ["session.boot", "entitlement.control.camera", "entitlement.control.possess", "ent.move.jump"]
     if mode == "dev":
         entitlements.extend(
             [
@@ -330,12 +331,15 @@ def _terrain_debug_overlay(
     state_ext = _as_map(_as_map(body_state).get("extensions"))
     collision = _as_map(state_ext.get("terrain_collision_state"))
     slope = _as_map(state_ext.get("terrain_slope_response"))
+    locomotion = _as_map(state_ext.get("locomotion_state"))
     selected_surface = _as_map(_as_map(selection).get("surface_tile_artifact"))
     payload = {
         "visible": bool(collision or slope or selected_surface),
         "profile_gated": True,
         "terrain_height_mm": collision.get("terrain_height_mm"),
         "grounded": collision.get("grounded"),
+        "jump_cooldown_remaining_ticks": locomotion.get("jump_cooldown_remaining_ticks"),
+        "last_impact_speed": locomotion.get("last_impact_speed"),
         "slope_angle_mdeg": collision.get("slope_angle_mdeg") or slope.get("slope_angle_mdeg"),
         "selected_height_proxy": _as_int(_as_map(selected_surface.get("elevation_params_ref")).get("height_proxy", 0), 0)
         if selected_surface
@@ -358,6 +362,7 @@ def _build_control_surface(
     controller_id: str,
     move_vector_local: Mapping[str, object] | None,
     look_vector: Mapping[str, object] | None,
+    jump_requested: bool,
     toggle_lens: bool,
     requested_debug_view_ids: object,
     compute_profile_id: str,
@@ -378,10 +383,34 @@ def _build_control_surface(
         else {"result": "complete", "camera_state": dict(_as_map(previous_camera_state))}
     )
     camera_state = _as_map(camera_state_result.get("camera_state"))
+    smoothed_camera_result = resolve_smoothed_camera_state(
+        target_camera_state=camera_state,
+        previous_camera_state=previous_camera_state,
+        lens_profile_row=lens_profile,
+    )
+    render_camera_state = _as_map(smoothed_camera_result.get("camera_state")) or dict(camera_state)
     resolved_controller_id = str(controller_id or "").strip() or str(_as_map(authority_context).get("controller_id", "")).strip()
     resolved_controller_id = resolved_controller_id or "controller.local"
     body_id = str(_as_map(body_row).get("assembly_id", "")).strip() or str(_as_map(body_row).get("body_id", "")).strip()
+    locomotion_state = _as_map(_as_map(body_state).get("extensions")).get("locomotion_state")
+    locomotion_state = _as_map(locomotion_state)
     process_sequence = []
+    jump_allowed = bool(
+        body_id
+        and "entitlement.control.possess" in entitlements
+        and "ent.move.jump" in entitlements
+    )
+    if bool(jump_requested) and jump_allowed:
+        process_sequence.append(
+            {
+                "process_id": "process.body_jump",
+                "inputs": {
+                    "body_id": body_id,
+                    "controller_id": resolved_controller_id,
+                    "dt_ticks": 1,
+                },
+            }
+        )
     if body_id and "entitlement.control.possess" in entitlements and (_has_signal(move_vector_local) or _has_signal(look_vector)):
         process_sequence.append(
             {
@@ -453,13 +482,27 @@ def _build_control_surface(
     payload = {
         "result": "complete",
         "controller_id": resolved_controller_id,
-        "camera_state": dict(camera_state),
+        "camera_state": dict(render_camera_state),
+        "camera_target_state": dict(camera_state),
         "camera_position_ref": _camera_position_ref(
-            camera_state=camera_state,
+            camera_state=render_camera_state,
             body_state=body_state,
             lens_id=lens_id,
         ),
         "input_bindings": dict(embodiment.get("input_bindings") or {}),
+        "command_registry": {
+            "commands": ["move jump"] if jump_allowed else [],
+        },
+        "jump_surface": {
+            "available": bool(jump_allowed),
+            "requested": bool(jump_requested),
+            "grounded": bool(_as_map(_as_map(body_state).get("extensions")).get("terrain_collision_state", {}).get("grounded", False))
+            if isinstance(_as_map(body_state).get("extensions"), Mapping)
+            else False,
+            "cooldown_remaining_ticks": int(max(0, _as_int(locomotion_state.get("jump_cooldown_remaining_ticks", 0), 0))),
+            "required_entitlement_id": "ent.move.jump",
+            "source_kind": "derived.viewer_control_surface",
+        },
         "active_lens_profile_id": str(_as_map(lens_resolution).get("active_lens_profile_id", "")).strip()
         or str(lens_profile.get("lens_profile_id", "")).strip(),
         "active_lens_id": lens_id,
@@ -470,6 +513,11 @@ def _build_control_surface(
             requested_debug_view_ids=requested_debug_view_ids,
             compute_profile_id=compute_profile_id,
         ),
+        "camera_smoothing": {
+            "smoothing_applied": bool(smoothed_camera_result.get("smoothing_applied", False)),
+            "camera_smoothing_params_id": str(smoothed_camera_result.get("camera_smoothing_params_id", "")).strip(),
+            "deterministic_fingerprint": str(smoothed_camera_result.get("deterministic_fingerprint", "")).strip(),
+        },
         "deterministic_fingerprint": "",
     }
     payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
@@ -565,11 +613,27 @@ def _render_contract(
     perceived_model: Mapping[str, object] | None,
     registry_payloads: Mapping[str, object] | None,
     pack_lock_hash: str,
+    camera_viewpoint_override: Mapping[str, object] | None = None,
     sky_view_artifact: Mapping[str, object] | None = None,
     illumination_view_artifact: Mapping[str, object] | None = None,
     water_view_artifact: Mapping[str, object] | None = None,
 ) -> dict:
-    perceived = _as_map(perceived_model)
+    perceived = dict(_as_map(perceived_model))
+    camera_override = _as_map(camera_viewpoint_override)
+    if camera_override:
+        perceived["camera_viewpoint"] = {
+            **_as_map(perceived.get("camera_viewpoint")),
+            **{
+                "position_mm": _vector3_int(camera_override.get("position_mm")),
+                "orientation_mdeg": {
+                    "yaw": int(_as_int(_as_map(camera_override.get("orientation_mdeg")).get("yaw", 0), 0)),
+                    "pitch": int(_as_int(_as_map(camera_override.get("orientation_mdeg")).get("pitch", 0), 0)),
+                    "roll": int(_as_int(_as_map(camera_override.get("orientation_mdeg")).get("roll", 0), 0)),
+                },
+                "view_mode_id": str(camera_override.get("view_mode_id", "")).strip(),
+                "lens_id": str(camera_override.get("lens_id", "")).strip(),
+            },
+        }
     if not perceived:
         return {
             "result": "complete",
@@ -839,6 +903,7 @@ def build_viewer_shell_state(
     previous_camera_state: Mapping[str, object] | None = None,
     move_vector_local: Mapping[str, object] | None = None,
     look_vector: Mapping[str, object] | None = None,
+    jump_requested: bool = False,
     toggle_lens: bool = False,
     controller_id: str = "",
     requested_debug_view_ids: object = None,
@@ -910,6 +975,7 @@ def build_viewer_shell_state(
         controller_id=str(controller_id or "").strip(),
         move_vector_local=move_vector_local,
         look_vector=look_vector,
+        jump_requested=bool(jump_requested),
         toggle_lens=bool(toggle_lens),
         requested_debug_view_ids=requested_debug_view_ids,
         compute_profile_id=str(compute_profile_id or "compute.default").strip() or "compute.default",
@@ -997,9 +1063,11 @@ def build_viewer_shell_state(
         "logic_trace_surface": dict(logic_trace_surface),
         "teleport_tool_surface": dict(teleport_tool_surface),
         "command_registry": {
-            "commands": [
+            "commands": list(_as_map(control_surface.get("command_registry")).get("commands") or [])
+            + [
                 "tool mine",
                 "tool fill",
+                "tool cut",
                 "tool scan",
                 "tool probe",
                 "tool trace",
@@ -1170,6 +1238,7 @@ def build_viewer_shell_state(
         perceived_model=perceived_model,
         registry_payloads=registry_payloads,
         pack_lock_hash=str(_as_map(bootstrap.get("pack_lock")).get("pack_lock_hash", "")),
+        camera_viewpoint_override=_as_map(control_surface.get("camera_state")),
         sky_view_artifact=_as_map(_as_map(sky_view_surface).get("sky_view_artifact")),
         illumination_view_artifact=_as_map(_as_map(illumination_view_surface).get("illumination_view_artifact")),
         water_view_artifact=_as_map(_as_map(water_view_surface).get("water_view_artifact")),

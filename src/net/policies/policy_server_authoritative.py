@@ -585,6 +585,7 @@ def _emit_control_proof_bundle(
             ).strip(),
             "momentum_hash_chain": str(universe_state.get("momentum_hash_chain", "")).strip(),
             "impulse_event_hash_chain": str(universe_state.get("impulse_event_hash_chain", "")).strip(),
+            "impact_event_hash_chain": str(universe_state.get("impact_event_hash_chain", "")).strip(),
             "energy_ledger_hash_chain": str(universe_state.get("energy_ledger_hash_chain", "")).strip(),
             "boundary_flux_hash_chain": str(universe_state.get("boundary_flux_hash_chain", "")).strip(),
             "combustion_hash_chain": str(universe_state.get("combustion_hash_chain", "")).strip(),

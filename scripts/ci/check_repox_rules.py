@@ -506,9 +506,13 @@ EARTH_SHADOW_BOUNDED_FORBIDDEN_TOKENS = ("while ", "recursion", "recurse", "queu
 EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
 EARTH6_COLLISION_DOC_REL = os.path.join("docs", "embodiment", "TERRAIN_COLLISION_MODEL.md")
 EMB1_TOOLBELT_DOC_REL = os.path.join("docs", "embodiment", "MVP_TOOLBELT_MODEL.md")
+EMB2_LOCOMOTION_DOC_REL = os.path.join("docs", "embodiment", "LOCOMOTION_POLISH_MODEL.md")
 EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
 EARTH6_COLLISION_PROVIDER_REL = os.path.join("src", "embodiment", "collision", "macro_heightfield_provider.py")
 EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
+EMB2_CAMERA_SMOOTHING_REL = os.path.join("src", "embodiment", "lens", "camera_smoothing.py")
+EMB2_JUMP_PROCESS_REL = os.path.join("src", "embodiment", "movement", "jump_process.py")
+EMB2_FRICTION_MODEL_REL = os.path.join("src", "embodiment", "movement", "friction_model.py")
 EMB1_TERRAIN_TOOL_REL = os.path.join("src", "embodiment", "tools", "terrain_edit_tool.py")
 EMB1_SCANNER_TOOL_REL = os.path.join("src", "embodiment", "tools", "scanner_tool.py")
 EMB1_LOGIC_TOOL_REL = os.path.join("src", "embodiment", "tools", "logic_tool.py")
@@ -521,12 +525,16 @@ EMB_LENS_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "lens_profile
 EMB_SYSTEM_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "system_template_registry.json")
 EMB1_TOOL_CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "tool_capability_registry.json")
 EMB1_ENTITLEMENT_REGISTRY_REL = os.path.join("data", "registries", "entitlement_registry.json")
+EMB2_JUMP_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "jump_params_registry.json")
+EMB2_CAMERA_SMOOTHING_REGISTRY_REL = os.path.join("data", "registries", "camera_smoothing_registry.json")
 EMB_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
 EARTH6_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "earth6_probe.py")
 EARTH6_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_movement_window.py")
 EMB1_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "emb1_probe.py")
 EMB1_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_tool_session.py")
 EMB1_CLI_TOOL_REL = os.path.join("tools", "embodiment", "toolbelt_cli.py")
+EMB2_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "emb2_probe.py")
+EMB2_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_locomotion_window.py")
 UX_VIEWER_SHELL_REL = os.path.join("src", "client", "ui", "viewer_shell.py")
 UX_MAP_VIEWS_REL = os.path.join("src", "client", "ui", "map_views.py")
 UX_INSPECT_PANELS_REL = os.path.join("src", "client", "ui", "inspect_panels.py")
@@ -7443,6 +7451,208 @@ def check_terrain_edits_process_only(repo_root):
     return violations
 
 
+def check_jump_profile_gated(repo_root):
+    invariant_id = "INV-JUMP-PROFILE-GATED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    process_runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    violations = []
+    required_tokens = {
+        EMB2_JUMP_PROCESS_REL: (
+            "build_jump_params_row(",
+            "resolve_jump_params_row(",
+            "build_impact_event_row(",
+        ),
+        EMB2_JUMP_PARAMS_REGISTRY_REL: (
+            '"jump_params_id": "jump.mvp_default"',
+            '"impulse_value"',
+            '"cooldown_ticks"',
+        ),
+        EMB1_ENTITLEMENT_REGISTRY_REL: ('"entitlement_id": "ent.move.jump"',),
+        process_runtime_rel: (
+            '"process.body_jump": "ent.move.jump"',
+            'elif process_id == "process.body_jump":',
+            '"refusal.move.jump_not_grounded"',
+            '"refusal.move.jump_cooldown"',
+        ),
+        UX_VIEWER_SHELL_REL: (
+            '"ent.move.jump"',
+            '"process.body_jump"',
+            '"required_entitlement_id": "ent.move.jump"',
+            '"move jump"',
+        ),
+        EMB1_CLI_TOOL_REL: (
+            '"command_id": "move jump"',
+            '"required_entitlement_id": "ent.move.jump"',
+            '"process_id": "process.body_jump"',
+        ),
+        EMB_RUNTIME_BUNDLE_REL: (
+            '"jump": "process.body_jump"',
+            '"move jump"',
+        ),
+        EMB2_LOCOMOTION_DOC_REL: (
+            "Jump is optional and profile gated.",
+            "`ent.move.jump` is present in `AuthorityContext`",
+            "the active `LawProfile` allows `process.body_jump`",
+            "Jump cooldown, if non-zero, is tick-based only.",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing jump-gating marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_camera_smooth_render_only(repo_root):
+    invariant_id = "INV-CAMERA-SMOOTH-RENDER-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EMB2_CAMERA_SMOOTHING_REL: (
+            "resolve_smoothed_camera_state(",
+            'camera_mode == "first_person"',
+            'camera_mode == "third_person"',
+            '"smoothing_applied": bool(applied)',
+        ),
+        UX_VIEWER_SHELL_REL: (
+            "resolve_smoothed_camera_state(",
+            '"camera_target_state": dict(camera_state)',
+            '"camera_smoothing": {',
+            "camera_viewpoint_override=_as_map(control_surface.get(\"camera_state\"))",
+        ),
+        EMB2_LOCOMOTION_DOC_REL: (
+            "Camera smoothing is render-only.",
+            "No smoothing state may mutate authoritative body or camera truth.",
+            "camera smoothing is excluded from authoritative truth proofs because it is render-only",
+        ),
+        EMB2_REPLAY_TOOL_REL: (
+            "Verify EMB-2 locomotion replay determinism.",
+            "verify_locomotion_window_replay",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing render-only smoothing marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = EMB_DIRECT_POSITION_FORBIDDEN_TOKENS + (
+        "truth_model[",
+        "truth_model.",
+        "universe_state[",
+        "universe_state.",
+        "process_runtime[",
+        "process_runtime.",
+    )
+    for rel in (EMB2_CAMERA_SMOOTHING_REL, EMB_LENS_ENGINE_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: forbidden render-only mutation token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_no_float_smoothing(repo_root):
+    invariant_id = "INV-NO-FLOAT-SMOOTHING"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EMB2_CAMERA_SMOOTHING_REL: (
+            "int(",
+            "// 1000",
+            "max_offset",
+            "canonical_sha256(",
+        ),
+        EMB2_CAMERA_SMOOTHING_REGISTRY_REL: (
+            '"camera_smoothing_params_id": "cam_smooth.mvp_default"',
+            '"fp_alpha"',
+            '"tp_alpha"',
+            '"max_offset"',
+        ),
+        EMB2_LOCOMOTION_DOC_REL: (
+            "The helper uses fixed-point bounded blending.",
+            "no time-based exponential using wall-clock",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing fixed-point smoothing marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = (
+        "float(",
+        "math.exp(",
+        "math.sin(",
+        "math.cos(",
+        "perf_counter(",
+        "time.time(",
+        "datetime.now(",
+        "time.sleep(",
+    )
+    for rel in (EMB2_CAMERA_SMOOTHING_REL, UX_VIEWER_SHELL_REL):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: forbidden smoothing token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_refinement_budgeted(repo_root):
     invariant_id = "INV-REFINEMENT-BUDGETED"
     if is_override_active(repo_root, invariant_id):
@@ -10808,6 +11018,9 @@ def main() -> int:
                 lambda: check_body_motion_process_only(repo_root),
                 lambda: check_collision_deterministic(repo_root),
                 lambda: check_no_position_write_bypass(repo_root),
+                lambda: check_jump_profile_gated(repo_root),
+                lambda: check_camera_smooth_render_only(repo_root),
+                lambda: check_no_float_smoothing(repo_root),
                 lambda: check_tools_require_entitlement(repo_root),
                 lambda: check_terrain_edits_process_only(repo_root),
             ],
