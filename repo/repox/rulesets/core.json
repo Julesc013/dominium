@@ -325,6 +325,41 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-PACKS-MUST-DECLARE-CAPABILITIES",
+      "severity": "FAIL",
+      "scope_paths": [
+        "packs",
+        "tools/xstack/testdata/packs",
+        "src/modding/mod_policy_engine.py",
+        "tools/xstack/pack_loader/loader.py",
+        "tools/xstack/pack_loader/constants.py",
+        "data/registries/capability_registry.json",
+        "docs/modding/MOD_TRUST_AND_CAPABILITIES.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-packs-must-declare-capabilities",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-MOD-POLICY-ENFORCED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/modding/mod_policy_engine.py",
+        "tools/xstack/registry_compile/compiler.py",
+        "tools/xstack/sessionx/creator.py",
+        "tools/xstack/sessionx/runner.py",
+        "tools/xstack/sessionx/script_runner.py",
+        "tools/xstack/sessionx/session_control.py",
+        "tools/xstack/session_create.py",
+        "tools/mvp/runtime_bundle.py",
+        "schemas/session_spec.schema.json",
+        "schemas/bundle_lockfile.schema.json",
+        "data/registries/mod_policy_registry.json",
+        "docs/modding/MOD_TRUST_AND_CAPABILITIES.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-mod-policy-enforced",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
       "severity": "WARN",
       "scope_paths": [

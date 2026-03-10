@@ -130,6 +130,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-EXTENSIONS-NAMESPACED`
 - `INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY`
 - `INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION`
+- `INV-PACKS-MUST-DECLARE-CAPABILITIES`
+- `INV-MOD-POLICY-ENFORCED`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-MVP-PACKS-MINIMAL`
@@ -474,6 +476,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when canonical JSON, schema validation, session/profile loading, pack loading, overlay loading, or worldgen loading no longer normalize extensions before hashing and validation.
 - Fails when extension-discipline doctrine no longer states sorted-key deterministic serialization requirements.
 - Preserves cross-platform stable hashing and deterministic ignore semantics for forward-compatible extensions.
+
+### INV-PACKS-MUST-DECLARE-CAPABILITIES
+
+- Fails when governed `packs/**/pack.json` or `tools/xstack/testdata/packs/**/pack.json` surfaces do not ship adjacent `pack.trust.json` and `pack.capabilities.json` descriptors.
+- Fails when adjacent trust/capability descriptors drift away from the pack manifest `pack_id`, omit deterministic fingerprints, or stop declaring canonical MOD-POLICY capability metadata.
+- Preserves deterministic pack classification and capability declaration as an explicit prerequisite for authoritative composition.
+
+### INV-MOD-POLICY-ENFORCED
+
+- Fails when the canonical mod-policy doctrine, registry, compiler/session enforcement surfaces, or MVP runtime metadata stop carrying `mod_policy_id` and associated proof hashes.
+- Fails when trust denial, capability denial, nondeterminism refusal, or replay/resume policy mismatch markers disappear from the governed enforcement path.
+- Preserves explicit server-friendly mod governance without silent trust bypass, capability escalation, or nondeterministic allowances.
 
 ### INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS
 

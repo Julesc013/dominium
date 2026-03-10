@@ -117,6 +117,19 @@ EXTENSION_MIGRATION_NOTES_REL = os.path.join("docs", "meta", "EXTENSION_MIGRATIO
 EXTENSION_INTERPRETATION_REGISTRY_REL = os.path.join("data", "registries", "extension_interpretation_registry.json")
 EXTENSION_ENGINE_REL = os.path.join("src", "meta_extensions_engine.py")
 EXTENSION_ENGINE_WRAPPER_REL = os.path.join("src", "meta", "extensions", "extensions_engine.py")
+MOD_POLICY_DOC_REL = os.path.join("docs", "modding", "MOD_TRUST_AND_CAPABILITIES.md")
+MOD_POLICY_BASELINE_REL = os.path.join("docs", "audit", "MOD_POLICY_BASELINE.md")
+MOD_POLICY_REGISTRY_REL = os.path.join("data", "registries", "mod_policy_registry.json")
+MOD_POLICY_ENGINE_REL = os.path.join("src", "modding", "mod_policy_engine.py")
+MOD_POLICY_PACK_LOADER_REL = os.path.join("tools", "xstack", "pack_loader", "loader.py")
+MOD_POLICY_COMPILER_REL = os.path.join("tools", "xstack", "registry_compile", "compiler.py")
+MOD_POLICY_SESSION_CREATOR_REL = os.path.join("tools", "xstack", "sessionx", "creator.py")
+MOD_POLICY_SESSION_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "runner.py")
+MOD_POLICY_SCRIPT_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "script_runner.py")
+MOD_POLICY_SESSION_CONTROL_REL = os.path.join("tools", "xstack", "sessionx", "session_control.py")
+MOD_POLICY_SESSION_CREATE_REL = os.path.join("tools", "xstack", "session_create.py")
+MOD_POLICY_CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capability_registry.json")
+MOD_POLICY_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
 CANONICAL_JSON_REL = os.path.join("tools", "xstack", "compatx", "canonical_json.py")
 SCHEMA_REGISTRY_REL = os.path.join("tools", "xstack", "compatx", "schema_registry.py")
 COMPAT_VALIDATOR_REL = os.path.join("tools", "xstack", "compatx", "validator.py")
@@ -1675,6 +1688,29 @@ def _load_json_file(path):
             return json.load(handle)
     except (OSError, ValueError):
         return None
+
+
+def _iter_mod_policy_pack_manifests(repo_root):
+    roots = (
+        os.path.join(repo_root, "packs"),
+        os.path.join(repo_root, "tools", "xstack", "testdata", "packs"),
+    )
+    manifest_rows = []
+    for root_dir in roots:
+        if not os.path.isdir(root_dir):
+            continue
+        for walk_root, _dirs, files in os.walk(root_dir):
+            for name in sorted(files):
+                if name != "pack.json":
+                    continue
+                abs_path = os.path.join(walk_root, name)
+                manifest_rows.append(
+                    (
+                        normalize_path(os.path.relpath(abs_path, repo_root)),
+                        abs_path,
+                    )
+                )
+    return sorted(set(manifest_rows), key=lambda item: item[0])
 
 
 def _sha256_file(path):
@@ -4308,6 +4344,199 @@ def check_extensions_deterministic_serialization(repo_root):
         for token in tokens:
             if token not in text:
                 violations.append("{}: {} missing token {}".format(invariant_id, rel_path, token))
+    return violations
+
+
+def check_packs_must_declare_capabilities(repo_root):
+    invariant_id = "INV-PACKS-MUST-DECLARE-CAPABILITIES"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MOD_POLICY_DOC_REL: (
+            "pack.trust.json",
+            "pack.capabilities.json",
+            "cap.allow_exception_profiles",
+        ),
+        MOD_POLICY_ENGINE_REL: (
+            "PACK_TRUST_DESCRIPTOR_NAME",
+            "PACK_CAPABILITIES_NAME",
+            "load_pack_policy_descriptors(",
+            "infer_required_capabilities(",
+        ),
+        MOD_POLICY_PACK_LOADER_REL: (
+            "PACK_TRUST_DESCRIPTOR_NAME",
+            "PACK_CAPABILITIES_NAME",
+            "mod_policy_metadata_errors",
+        ),
+        os.path.join("tools", "xstack", "pack_loader", "constants.py"): (
+            "PACK_TRUST_DESCRIPTOR_NAME",
+            "PACK_CAPABILITIES_NAME",
+        ),
+        MOD_POLICY_CAPABILITY_REGISTRY_REL: (
+            "cap.overlay_patch",
+            "cap.add_templates",
+            "cap.add_processes",
+            "cap.add_logic_elements",
+            "cap.add_profiles",
+            "cap.add_contracts",
+            "cap.allow_exception_profiles",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing mod-policy marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    manifest_rows = _iter_mod_policy_pack_manifests(repo_root)
+    if not manifest_rows:
+        violations.append("{}: no pack manifests discovered under governed roots".format(invariant_id))
+        return violations
+
+    for rel_manifest, abs_manifest in manifest_rows:
+        pack_dir = os.path.dirname(abs_manifest)
+        capabilities_rel = normalize_path(os.path.join(os.path.dirname(rel_manifest), "pack.capabilities.json"))
+        trust_rel = normalize_path(os.path.join(os.path.dirname(rel_manifest), "pack.trust.json"))
+        capabilities_abs = os.path.join(pack_dir, "pack.capabilities.json")
+        trust_abs = os.path.join(pack_dir, "pack.trust.json")
+        manifest_payload = _load_json_file(abs_manifest)
+        if not isinstance(manifest_payload, dict):
+            violations.append("{}: invalid json {}".format(invariant_id, rel_manifest))
+            continue
+        pack_id = str(manifest_payload.get("pack_id", "")).strip()
+        if not os.path.isfile(capabilities_abs):
+            violations.append("{}: missing {}".format(invariant_id, capabilities_rel))
+            continue
+        capabilities_payload = _load_json_file(capabilities_abs)
+        if not isinstance(capabilities_payload, dict):
+            violations.append("{}: invalid json {}".format(invariant_id, capabilities_rel))
+            continue
+        if str(capabilities_payload.get("pack_id", "")).strip() != pack_id:
+            violations.append("{}: {} pack_id mismatch".format(invariant_id, capabilities_rel))
+        if not isinstance(capabilities_payload.get("capability_ids"), list):
+            violations.append("{}: {} missing capability_ids list".format(invariant_id, capabilities_rel))
+        if not str(capabilities_payload.get("deterministic_fingerprint", "")).strip():
+            violations.append("{}: {} missing deterministic_fingerprint".format(invariant_id, capabilities_rel))
+
+        if not os.path.isfile(trust_abs):
+            violations.append("{}: missing {}".format(invariant_id, trust_rel))
+            continue
+        trust_payload = _load_json_file(trust_abs)
+        if not isinstance(trust_payload, dict):
+            violations.append("{}: invalid json {}".format(invariant_id, trust_rel))
+            continue
+        if str(trust_payload.get("pack_id", "")).strip() != pack_id:
+            violations.append("{}: {} pack_id mismatch".format(invariant_id, trust_rel))
+        if not str(trust_payload.get("trust_level_id", "")).strip():
+            violations.append("{}: {} missing trust_level_id".format(invariant_id, trust_rel))
+        if not str(trust_payload.get("deterministic_fingerprint", "")).strip():
+            violations.append("{}: {} missing deterministic_fingerprint".format(invariant_id, trust_rel))
+    return violations
+
+
+def check_mod_policy_enforced(repo_root):
+    invariant_id = "INV-MOD-POLICY-ENFORCED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        MOD_POLICY_DOC_REL: (
+            "mod_policy.anarchy",
+            "mod_policy.strict",
+            "mod_policy.lab",
+            "refusal.mod.trust_denied",
+            "refusal.mod.capability_denied",
+            "refusal.mod.nondeterminism_forbidden",
+        ),
+        MOD_POLICY_REGISTRY_REL: (
+            "mod_policy.anarchy",
+            "mod_policy.strict",
+            "mod_policy.lab",
+            "overlay.conflict.refuse",
+            "overlay.conflict.last_wins",
+        ),
+        MOD_POLICY_ENGINE_REL: (
+            "evaluate_mod_policy(",
+            "REFUSAL_MOD_TRUST_DENIED",
+            "REFUSAL_MOD_CAPABILITY_DENIED",
+            "REFUSAL_MOD_NONDETERMINISM_FORBIDDEN",
+            "validate_saved_mod_policy(",
+            "requests_nondeterministic_allowance",
+        ),
+        MOD_POLICY_COMPILER_REL: (
+            "evaluate_mod_policy(",
+            '"mod_policy_id"',
+            '"mod_policy_registry_hash"',
+            '"mod_policy_proof_hash"',
+            '"overlay_conflict_policy_id"',
+        ),
+        MOD_POLICY_SESSION_CREATOR_REL: (
+            '"mod_policy_id"',
+            '"mod_policy_registry_hash"',
+            "lockfile missing mod policy metadata",
+        ),
+        MOD_POLICY_SESSION_RUNNER_REL: (
+            "validate_saved_mod_policy(",
+            '"mod_policy_id"',
+            '"mod_policy_registry_hash"',
+        ),
+        MOD_POLICY_SCRIPT_RUNNER_REL: (
+            "validate_saved_mod_policy(",
+            '"mod_policy_id"',
+            '"mod_policy_registry_hash"',
+        ),
+        MOD_POLICY_SESSION_CONTROL_REL: (
+            "mod_policy_id mismatch detected during resume",
+            "$.mod_policy_registry_hash",
+        ),
+        MOD_POLICY_SESSION_CREATE_REL: (
+            "--mod-policy-id",
+        ),
+        "schemas/session_spec.schema.json": (
+            '"mod_policy_id"',
+            '"mod_policy_registry_hash"',
+        ),
+        "schemas/bundle_lockfile.schema.json": (
+            '"mod_policy_id"',
+            '"mod_policy_registry_hash"',
+            '"mod_policy_proof_hash"',
+            '"overlay_conflict_policy_id"',
+        ),
+        MOD_POLICY_RUNTIME_BUNDLE_REL: (
+            '"mod_policy_id"',
+            '"mod_policy_registry_hash"',
+            '"mod_policy_proof_hash"',
+            '"overlay_conflict_policy_id"',
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing mod-policy enforcement marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
     return violations
 
 
@@ -10036,6 +10265,15 @@ def main() -> int:
                 lambda: check_forbidden_legacy_gating_tokens(repo_root),
                 lambda: check_runtime_no_xstack_imports(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.modding",
+            "scope_subtrees": ("src", "tools", "packs", "data", "schema", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_packs_must_declare_capabilities(repo_root),
+                lambda: check_mod_policy_enforced(repo_root),
             ],
         },
         {
