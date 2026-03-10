@@ -1,2 +1,2 @@
 @echo off
-python "%~dp0\..\..\tools\mvp\runtime_entry.py" server --ui headless %*
+python "%~dp0dominium_server" %*

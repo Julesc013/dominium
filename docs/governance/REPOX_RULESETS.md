@@ -549,6 +549,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when governed product defaults stop declaring protocol ranges, semantic contract ranges, and feature-capability surfaces for the baseline client/server/launcher/setup/tool products.
 - Preserves explicit product identity surfaces so compatibility is negotiated from declared descriptors instead of ad hoc assumptions.
 
+### INV-ALL-PRODUCTS-EMIT-DESCRIPTOR
+
+- Fails when the CAP-NEG-1 descriptor doctrine, product capability defaults, descriptor engine/tooling, or dist wrapper surfaces disappear.
+- Fails when governed `dist/bin` product surfaces stop exposing deterministic `--descriptor` or `--descriptor-file` behavior for the shipped engine/game/client/server/setup/launcher/tool products.
+- Preserves offline, self-describing product binaries so setup, launcher, and future handshakes can negotiate from emitted descriptors alone.
+
+### INV-DESCRIPTOR-DETERMINISTIC
+
+- Fails when descriptor build identity no longer derives from stable build metadata inputs such as semantic-contract hashes and compilation-options hashes.
+- Fails when emitted descriptor serialization or offline manifest generation stops using deterministic ordering and stable hashing.
+- Preserves cross-run stable endpoint descriptors for the same build across portable installs and offline tooling.
+
+### INV-NO-WALLCLOCK-IN-DESCRIPTOR
+
+- Fails when descriptor engine/tooling starts reading wall-clock or other volatile host state while building endpoint descriptors.
+- Fails when descriptor emission can vary because of timestamps, clocks, ad hoc randomness, or volatile UUID generation.
+- Preserves deterministic descriptor identity and reproducible offline manifests.
+
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 
 - Fails when client-server handshake or server loopback accept paths stop invoking the deterministic negotiation engine.

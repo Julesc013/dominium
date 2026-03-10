@@ -12,6 +12,13 @@ import uuid
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
+from src.compat import descriptor_json_text, emit_product_descriptor
+
 
 DEFAULT_CAPABILITY_BASELINE = "BASELINE_MAINLINE_CORE"
 NULL_UUID = "00000000-0000-0000-0000-000000000000"
@@ -994,6 +1001,8 @@ def handle_rollback(args: argparse.Namespace, deterministic: bool) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Dominium setup CLI (offline-first, transactional).")
+    ap.add_argument("--descriptor", action="store_true")
+    ap.add_argument("--descriptor-file", default="")
     ap.add_argument("--format", default="json", choices=["json", "text"])
     ap.add_argument("--deterministic", nargs="?", const="1", default="0")
     ap.add_argument("--transaction-id", default=None)
@@ -1099,6 +1108,14 @@ def main() -> int:
     args = ap.parse_args()
 
     deterministic = parse_deterministic(args.deterministic)
+    if bool(args.descriptor) or str(args.descriptor_file or "").strip():
+        emitted = emit_product_descriptor(
+            REPO_ROOT_HINT,
+            product_id="setup",
+            descriptor_file=str(args.descriptor_file or "").strip(),
+        )
+        print(descriptor_json_text(dict(emitted.get("descriptor") or {})))
+        return EXIT_OK
     args.deterministic = deterministic
     args.versions = {
         "engine_version": os.environ.get("DOMINO_VERSION_STRING", "0.0.0"),

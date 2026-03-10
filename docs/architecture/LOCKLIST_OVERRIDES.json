@@ -179,6 +179,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the CAP-NEG-0 capability negotiation constitution in CANON_INDEX and refresh dependent governance artifacts without changing simulation semantics.",
       "expires": "2026-04-10"
+    },
+    {
+      "id": "OVR-2026-03-10-CAPNEG1-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the CAP-NEG-1 endpoint descriptor doctrine in CANON_INDEX/CONTRACTS_INDEX and refresh dependent governance artifacts without changing simulation semantics.",
+      "expires": "2026-04-10"
     }
   ]
 }

@@ -4443,6 +4443,34 @@
       },
       {
         "allowed_owners": [
+          "product_registry"
+        ],
+        "deterministic_fingerprint": "d4b79dad2eea689a8e063bc5a13fe950cd39e0edeea661027326759d55e214c5",
+        "extension_key": "official.default_semver",
+        "extensions": {
+          "official.description": "Default SemVer used when emitting a product endpoint descriptor without an explicit version override.",
+          "official.source": "CAP-NEG-1"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "product_registry"
+        ],
+        "deterministic_fingerprint": "dc318db76999dccde338eade90b7ebae8912c764997d2fd847d44fb8eeaae664",
+        "extension_key": "official.dist_bin_names",
+        "extensions": {
+          "official.description": "Deterministically ordered dist/bin wrapper names associated with a product endpoint descriptor.",
+          "official.source": "CAP-NEG-1"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
           "*"
         ],
         "deterministic_fingerprint": "1054a529d55169c173ccb072276bfe4d49fea8f032af2b99553473dd5f2e0bce",
@@ -4594,6 +4622,21 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
         "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "product_capability_defaults",
+          "product_registry"
+        ],
+        "deterministic_fingerprint": "7ab25956b313fa72120d76555dd2457f5de74d02e8f82f5a65b1db0f46436e7c",
+        "extension_key": "official.source",
+        "extensions": {
+          "official.description": "Deterministic source tag used by offline descriptor emission metadata and capability default provenance.",
+          "official.source": "CAP-NEG-1"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
       },
       {
         "allowed_owners": [

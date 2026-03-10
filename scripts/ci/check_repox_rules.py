@@ -4564,6 +4564,219 @@ def check_unknown_cap_ignored_deterministically(repo_root):
     return violations
 
 
+def _load_product_dist_bin_map(repo_root):
+    registry_rel = os.path.join("data", "registries", "product_registry.json")
+    registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
+    try:
+        payload = json.load(open(registry_path, "r", encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}, ["missing or invalid {}".format(normalize_path(registry_rel))]
+    rows = list(dict(payload.get("record") or {}).get("products") or [])
+    out = {}
+    required_products = {
+        "engine",
+        "game",
+        "client",
+        "server",
+        "setup",
+        "launcher",
+        "tool.attach_console_stub",
+    }
+    missing_products = sorted(required_products.difference(set(str(dict(row or {}).get("product_id", "")).strip() for row in rows)))
+    violations = ["product_registry missing {}".format(product_id) for product_id in missing_products]
+    for row in rows:
+        row_map = dict(row or {})
+        product_id = str(row_map.get("product_id", "")).strip()
+        if not product_id:
+            continue
+        extensions = dict(row_map.get("extensions") or {})
+        names = sorted(set(str(item).strip() for item in list(extensions.get("official.dist_bin_names") or []) if str(item).strip()))
+        if product_id in required_products and not names:
+            violations.append("product_registry has no dist_bin_names for {}".format(product_id))
+        for name in names:
+            out[name] = product_id
+    return out, violations
+
+
+def check_all_products_emit_descriptor(repo_root):
+    invariant_id = "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "compat", "ENDPOINT_DESCRIPTORS.md")
+    defaults_rel = os.path.join("data", "registries", "product_capability_defaults.json")
+    engine_rel = os.path.join("src", "compat", "descriptor", "descriptor_engine.py")
+    emit_tool_rel = os.path.join("tools", "compat", "tool_emit_descriptor.py")
+    manifest_tool_rel = os.path.join("tools", "compat", "tool_generate_descriptor_manifest.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "--descriptor",
+            "--descriptor-file",
+            "tool.attach_console_stub",
+            "dist/manifests/endpoint_descriptors.json",
+        ),
+        defaults_rel: (
+            '"product_id": "engine"',
+            '"product_id": "game"',
+            '"product_id": "client"',
+            '"product_id": "server"',
+            '"product_id": "setup"',
+            '"product_id": "launcher"',
+            '"product_id": "tool.attach_console_stub"',
+        ),
+        engine_rel: (
+            "build_product_descriptor(",
+            "product_descriptor_bin_names(",
+            "emit_product_descriptor(",
+        ),
+        emit_tool_rel: (
+            "--product-id",
+            "emit_product_descriptor(",
+            "descriptor_json_text(",
+        ),
+        manifest_tool_rel: (
+            "product_descriptor_bin_names(",
+            "--descriptor",
+            "endpoint_descriptors.json",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing descriptor-emission marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    bin_map, registry_violations = _load_product_dist_bin_map(repo_root)
+    for message in registry_violations:
+        violations.append("{}: {}".format(invariant_id, message))
+    for bin_name, product_id in sorted(bin_map.items()):
+        rel_path = os.path.join("dist", "bin", bin_name)
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        if bin_name in {"client", "server"}:
+            expected = "dominium_{}".format(bin_name)
+            if expected not in text:
+                violations.append("{}: {} missing alias to {}".format(invariant_id, normalize_path(rel_path), expected))
+            continue
+        required_wrapper_tokens = ("--descriptor", "tool_emit_descriptor", product_id)
+        missing = [token for token in required_wrapper_tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing wrapper descriptor marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_descriptor_deterministic(repo_root):
+    invariant_id = "INV-DESCRIPTOR-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    engine_rel = os.path.join("src", "compat", "descriptor", "descriptor_engine.py")
+    emit_tool_rel = os.path.join("tools", "compat", "tool_emit_descriptor.py")
+    manifest_tool_rel = os.path.join("tools", "compat", "tool_generate_descriptor_manifest.py")
+    doctrine_rel = os.path.join("docs", "compat", "ENDPOINT_DESCRIPTORS.md")
+
+    violations = []
+    required_tokens = {
+        engine_rel: (
+            "canonical_sha256(",
+            "canonical_json_text(",
+            "_semantic_contract_registry_hash(",
+            "_git_commit_hash(",
+            "build.{}",
+        ),
+        emit_tool_rel: (
+            "descriptor_json_text(",
+            "emit_product_descriptor(",
+        ),
+        manifest_tool_rel: (
+            "rows = sorted(",
+            "canonical_sha256(",
+            '"deterministic_fingerprint"',
+        ),
+        doctrine_rel: (
+            "stable for the same build",
+            "independent of wall-clock",
+            "Build Metadata",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing deterministic-descriptor marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_wallclock_in_descriptor(repo_root):
+    invariant_id = "INV-NO-WALLCLOCK-IN-DESCRIPTOR"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    scanned = (
+        os.path.join("src", "compat", "descriptor", "descriptor_engine.py"),
+        os.path.join("tools", "compat", "tool_emit_descriptor.py"),
+        os.path.join("tools", "compat", "tool_generate_descriptor_manifest.py"),
+    )
+    forbidden_tokens = (
+        "datetime",
+        "utcnow",
+        "time(",
+        "time.",
+        "clock(",
+        "uuid4",
+        "random",
+    )
+    violations = []
+    for rel_path in scanned:
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: {} contains forbidden wallclock/nondeterministic token {}".format(
+                        invariant_id,
+                        normalize_path(rel_path),
+                        token,
+                    )
+                )
+                break
+    return violations
+
+
 def check_packs_must_declare_capabilities(repo_root):
     invariant_id = "INV-PACKS-MUST-DECLARE-CAPABILITIES"
     if is_override_active(repo_root, invariant_id):
@@ -11464,6 +11677,9 @@ def main() -> int:
             "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
             "checks": [
                 lambda: check_all_products_have_endpoint_descriptor(repo_root),
+                lambda: check_all_products_emit_descriptor(repo_root),
+                lambda: check_descriptor_deterministic(repo_root),
+                lambda: check_no_wallclock_in_descriptor(repo_root),
                 lambda: check_negotiation_required_for_connections(repo_root),
                 lambda: check_degrade_plan_declared(repo_root),
                 lambda: check_unknown_cap_ignored_deterministically(repo_root),

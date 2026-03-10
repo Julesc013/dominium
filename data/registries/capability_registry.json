@@ -89,6 +89,186 @@
         "applicable_entity_kinds": [
           "custom"
         ],
+        "capability_id": "cap.console.mux",
+        "description": "Endpoint can multiplex deterministic console/control surfaces across compatible products.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.geo.metric",
+        "description": "Endpoint supports deterministic geo metric and distance behavior surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.geo.projection",
+        "description": "Endpoint supports deterministic geo projection and lens projection surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.logic",
+        "description": "Endpoint supports deterministic logic/gameplay logic interoperability surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.negotiation.run",
+        "description": "Endpoint can execute deterministic compatibility negotiation as a first-class action.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.net.loopback",
+        "description": "Endpoint supports deterministic local loopback transport surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.pack.install",
+        "description": "Endpoint can perform deterministic pack-install orchestration.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.pack.verify",
+        "description": "Endpoint can perform deterministic offline pack verification.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.proc",
+        "description": "Endpoint supports deterministic process-domain interoperability surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.process.supervise",
+        "description": "Endpoint can supervise deterministic child-process lifecycle surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.profile.manage",
+        "description": "Endpoint can manage deterministic profile selection or verification surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.proof.verify",
+        "description": "Endpoint can verify deterministic proof and replay anchor artifacts.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.server.authority",
+        "description": "Endpoint can host authoritative simulation and law-gated intent validation.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.sys",
+        "description": "Endpoint supports deterministic system-template and assembly interoperability surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.ui.cli",
+        "description": "Endpoint supports deterministic CLI presentation or control surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
         "capability_id": "cap.geo.ortho_map_lens",
         "description": "Endpoint can expose or consume orthographic map lens outputs.",
         "extensions": {
@@ -177,6 +357,18 @@
         "description": "Endpoint supports text or TUI presentation output.",
         "extensions": {
           "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.worldgen.refinement",
+        "description": "Endpoint supports generic deterministic worldgen refinement coordination.",
+        "extensions": {
+          "official.source": "CAP-NEG-1"
         },
         "parameters_schema_id": null,
         "schema_version": "1.0.0"

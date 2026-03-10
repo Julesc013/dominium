@@ -175,6 +175,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/ui/SETTINGS_GUIDE.md` | EVOLVING | Settings contract and constraints |
 | `docs/ui/DEBUG_AND_INSPECT.md` | EVOLVING | Debug/inspect access contract |
 | `docs/dev/DEBUG_AND_DIAGNOSTICS_MODEL.md` | EVOLVING | Debug and diagnostics model |
+| `docs/compat/ENDPOINT_DESCRIPTORS.md` | EVOLVING | Deterministic per-product endpoint descriptor emission and offline manifest surfaces |
 | `docs/ops/SERVER_SCOPE.md` | EVOLVING | Server scope and guarantees |
 | `docs/ops/LOGGING_MODEL.md` | EVOLVING | Server logging format and rotation |
 | `docs/ops/LONG_RUN_EXPECTATIONS.md` | EVOLVING | Long-run stability expectations |

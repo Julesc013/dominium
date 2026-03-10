@@ -12,6 +12,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from src.compat import descriptor_json_text, emit_product_descriptor
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
@@ -23,6 +24,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Bootstrap Dominium MVP runtime entrypoints.")
     parser.add_argument("entrypoint", choices=("client", "server"))
     parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--descriptor", action="store_true")
+    parser.add_argument("--descriptor-file", default="")
     parser.add_argument("--seed", default="")
     parser.add_argument("--profile_bundle", default=MVP_PROFILE_BUNDLE_REL)
     parser.add_argument("--pack_lock", default=MVP_PACK_LOCK_REL)
@@ -49,6 +52,14 @@ def _default_ui(entrypoint: str, ui: str) -> str:
 def main() -> int:
     args = build_parser().parse_args()
     repo_root = os.path.abspath(str(args.repo_root))
+    if bool(args.descriptor) or str(args.descriptor_file or "").strip():
+        emitted = emit_product_descriptor(
+            repo_root,
+            product_id=str(args.entrypoint),
+            descriptor_file=str(args.descriptor_file or "").strip(),
+        )
+        print(descriptor_json_text(dict(emitted.get("descriptor") or {})))
+        return 0
     if str(args.entrypoint) == "client" and bool(args.local_singleplayer):
         from src.client.local_server import request_local_server_control, run_local_server_ticks, start_local_singleplayer
 

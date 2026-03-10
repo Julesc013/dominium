@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 
+from src.compat import descriptor_json_text, emit_product_descriptor
 from src.server.net.loopback_transport import accept_loopback_connection, create_loopback_listener
 from src.server.runtime.tick_loop import run_server_ticks
 from src.server.server_boot import boot_server_runtime
@@ -30,6 +31,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--save-id", default="")
     parser.add_argument("--authority", default="dev")
     parser.add_argument("--ticks", type=int, default=0)
+    parser.add_argument("--descriptor", action="store_true")
+    parser.add_argument("--descriptor-file", default="")
     parser.add_argument("--listen-loopback", action="store_true")
     parser.add_argument("--accept-once", action="store_true")
     parser.add_argument(
@@ -42,6 +45,14 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     repo_root = os.path.normpath(os.path.abspath(str(args.repo_root)))
+    if bool(args.descriptor) or str(args.descriptor_file or "").strip():
+        emitted = emit_product_descriptor(
+            repo_root,
+            product_id="server",
+            descriptor_file=str(args.descriptor_file or "").strip(),
+        )
+        print(descriptor_json_text(dict(emitted.get("descriptor") or {})))
+        return 0
     boot = boot_server_runtime(
         repo_root=repo_root,
         session_spec_path=str(args.session_spec_path),

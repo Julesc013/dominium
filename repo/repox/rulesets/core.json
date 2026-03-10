@@ -336,6 +336,43 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/ENDPOINT_DESCRIPTORS.md",
+        "data/registries/product_capability_defaults.json",
+        "src/compat/descriptor/descriptor_engine.py",
+        "tools/compat/tool_emit_descriptor.py",
+        "tools/compat/tool_generate_descriptor_manifest.py",
+        "dist/bin"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-all-products-emit-descriptor",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DESCRIPTOR-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/ENDPOINT_DESCRIPTORS.md",
+        "src/compat/descriptor/descriptor_engine.py",
+        "tools/compat/tool_emit_descriptor.py",
+        "tools/compat/tool_generate_descriptor_manifest.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-descriptor-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-WALLCLOCK-IN-DESCRIPTOR",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/compat/descriptor/descriptor_engine.py",
+        "tools/compat/tool_emit_descriptor.py",
+        "tools/compat/tool_generate_descriptor_manifest.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-in-descriptor",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [

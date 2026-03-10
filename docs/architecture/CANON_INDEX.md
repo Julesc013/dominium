@@ -65,6 +65,7 @@ execution artifacts and are not authoritative.
 - `docs/meta/EXTENSION_DISCIPLINE.md`
 - `docs/geo/OVERLAY_CONFLICT_POLICIES.md`
 - `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`
+- `docs/compat/ENDPOINT_DESCRIPTORS.md`
 - `docs/architecture/CONTROL_LAYERS.md`
 - `docs/architecture/CRASH_RECOVERY.md`
 - `docs/architecture/CROSS_SHARD_LOG.md`
@@ -339,6 +340,8 @@ execution artifacts and are not authoritative.
 - `docs/audit/SERVER_MVP0_RETRO_AUDIT.md`
 - `docs/audit/SERVER_MVP_BASELINE_REPORT.md`
 - `docs/audit/CAP_NEGOTIATION_BASELINE.md`
+- `docs/audit/CAP_NEG1_RETRO_AUDIT.md`
+- `docs/audit/ENDPOINT_DESCRIPTOR_BASELINE.md`
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
 - `docs/architecture/ARTIFACT_LIFECYCLE.md`
 - `docs/architecture/APPLICATION_CONTRACTS.md`

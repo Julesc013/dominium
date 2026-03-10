@@ -15,6 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
 from tools.xstack.compatx.validator import validate_instance  # noqa: E402
 from tools.xstack.packagingx import validate_dist_layout  # noqa: E402
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
@@ -383,6 +384,8 @@ def cmd_create_session(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Launch deterministic lab sessions from dist bundles.")
     parser.add_argument("--repo-root", default="")
+    parser.add_argument("--descriptor", action="store_true")
+    parser.add_argument("--descriptor-file", default="")
     sub = parser.add_subparsers(dest="cmd")
 
     list_builds = sub.add_parser("list-builds", help="List available dist builds")
@@ -415,6 +418,14 @@ def main() -> int:
 
     args = parser.parse_args()
     repo_root = _repo_root(args.repo_root)
+    if bool(args.descriptor) or str(args.descriptor_file or "").strip():
+        emitted = emit_product_descriptor(
+            repo_root,
+            product_id="launcher",
+            descriptor_file=str(args.descriptor_file or "").strip(),
+        )
+        print(descriptor_json_text(dict(emitted.get("descriptor") or {})))
+        return 0
 
     if args.cmd == "list-builds":
         result = cmd_list_builds(repo_root=repo_root, root=str(args.root))

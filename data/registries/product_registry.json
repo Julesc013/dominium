@@ -148,6 +148,11 @@
         ],
         "deterministic_fingerprint": "",
         "extensions": {
+          "official.default_semver": "0.0.0",
+          "official.dist_bin_names": [
+            "client",
+            "dominium_client"
+          ],
           "official.source": "CAP-NEG-0"
         }
       },
@@ -175,6 +180,10 @@
         "default_degrade_ladders": [],
         "deterministic_fingerprint": "",
         "extensions": {
+          "official.default_semver": "0.0.0",
+          "official.dist_bin_names": [
+            "engine"
+          ],
           "official.source": "CAP-NEG-0"
         }
       },
@@ -201,6 +210,10 @@
         "default_degrade_ladders": [],
         "deterministic_fingerprint": "",
         "extensions": {
+          "official.default_semver": "0.0.0",
+          "official.dist_bin_names": [
+            "game"
+          ],
           "official.source": "CAP-NEG-0"
         }
       },
@@ -240,6 +253,10 @@
         ],
         "deterministic_fingerprint": "",
         "extensions": {
+          "official.default_semver": "0.0.0",
+          "official.dist_bin_names": [
+            "launcher"
+          ],
           "official.source": "CAP-NEG-0"
         }
       },
@@ -303,6 +320,11 @@
         ],
         "deterministic_fingerprint": "",
         "extensions": {
+          "official.default_semver": "0.0.0",
+          "official.dist_bin_names": [
+            "server",
+            "dominium_server"
+          ],
           "official.source": "CAP-NEG-0"
         }
       },
@@ -327,6 +349,10 @@
         "default_degrade_ladders": [],
         "deterministic_fingerprint": "",
         "extensions": {
+          "official.default_semver": "0.0.0",
+          "official.dist_bin_names": [
+            "setup"
+          ],
           "official.source": "CAP-NEG-0"
         }
       },
@@ -366,6 +392,10 @@
         ],
         "deterministic_fingerprint": "",
         "extensions": {
+          "official.default_semver": "0.0.0",
+          "official.dist_bin_names": [
+            "tool_attach_console_stub"
+          ],
           "official.source": "CAP-NEG-0"
         }
       }
