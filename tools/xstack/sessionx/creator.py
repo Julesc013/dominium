@@ -15,6 +15,7 @@ from src.universe import (
     pin_contract_bundle_metadata,
     validate_pinned_contract_bundle_metadata,
 )
+from src.modding import DEFAULT_MOD_POLICY_ID, load_mod_policy_registry, mod_policy_registry_hash, mod_policy_rows_by_id
 from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
@@ -1216,6 +1217,7 @@ def create_session_spec(
     repo_root: str,
     save_id: str,
     bundle_id: str = DEFAULT_BUNDLE_ID,
+    mod_policy_id: str = DEFAULT_MOD_POLICY_ID,
     physics_profile_id: str = "",
     scenario_id: str = DEFAULT_SCENARIO_ID,
     mission_id: str = "",
@@ -1374,6 +1376,7 @@ def create_session_spec(
                 lockfile_out_rel="build/lockfile.json",
                 packs_root_rel="packs",
                 schema_repo_root=repo_root,
+                mod_policy_id=str(mod_policy_id or DEFAULT_MOD_POLICY_ID),
                 use_cache=False,
             )
         if compile_result.get("result") != "complete":
@@ -1399,6 +1402,52 @@ def create_session_spec(
             },
             "$.bundle_id",
         )
+    requested_mod_policy_id = str(mod_policy_id or DEFAULT_MOD_POLICY_ID).strip() or DEFAULT_MOD_POLICY_ID
+    lockfile_mod_policy_id = str(lockfile_payload.get("mod_policy_id", "")).strip()
+    lockfile_mod_policy_registry_hash = str(lockfile_payload.get("mod_policy_registry_hash", "")).strip()
+    if lockfile_mod_policy_id and lockfile_mod_policy_id != requested_mod_policy_id:
+        return refusal(
+            "REFUSE_MOD_POLICY_MISMATCH",
+            "lockfile mod_policy_id does not match requested session mod policy",
+            "Regenerate lockfile with the requested --mod-policy-id or reuse the original policy.",
+            {
+                "requested_mod_policy_id": requested_mod_policy_id,
+                "lockfile_mod_policy_id": lockfile_mod_policy_id,
+            },
+            "$.mod_policy_id",
+        )
+    if not compile_outputs and (not lockfile_mod_policy_id or not lockfile_mod_policy_registry_hash):
+        return refusal(
+            "REFUSE_MOD_POLICY_METADATA_MISSING",
+            "existing lockfile missing mod policy metadata required for new session creation",
+            "Rebuild build/lockfile.json under the requested mod policy before creating this session.",
+            {"mod_policy_id": requested_mod_policy_id},
+            "$.mod_policy_id",
+        )
+    mod_policy_registry_payload, mod_policy_registry_errors = load_mod_policy_registry(repo_root)
+    if mod_policy_registry_errors:
+        return refusal(
+            "REFUSE_MOD_POLICY_REGISTRY_INVALID",
+            "mod policy registry failed validation during session creation",
+            "Repair data/registries/mod_policy_registry.json and retry session creation.",
+            {"errors": mod_policy_registry_errors},
+            "$.mod_policy_registry",
+        )
+    mod_policy_row = dict(mod_policy_rows_by_id(mod_policy_registry_payload).get(requested_mod_policy_id) or {})
+    if not mod_policy_row:
+        return refusal(
+            "REFUSE_MOD_POLICY_INVALID",
+            "requested mod_policy_id is not declared",
+            "Select a declared mod_policy_id and retry session creation.",
+            {"mod_policy_id": requested_mod_policy_id},
+            "$.mod_policy_id",
+        )
+    selected_mod_policy_registry_hash = lockfile_mod_policy_registry_hash or mod_policy_registry_hash(
+        mod_policy_registry_payload
+    )
+    selected_overlay_conflict_policy_id = str(lockfile_payload.get("overlay_conflict_policy_id", "")).strip() or str(
+        mod_policy_row.get("conflict_policy_id", "")
+    ).strip()
 
     registries = lockfile_payload.get("registries")
     if not isinstance(registries, dict):
@@ -1774,6 +1823,8 @@ def create_session_spec(
         "semantic_contract_registry_hash": str(
             semantic_contract_proof_bundle.get("semantic_contract_registry_hash", "")
         ).strip(),
+        "mod_policy_id": requested_mod_policy_id,
+        "mod_policy_registry_hash": selected_mod_policy_registry_hash,
         "budget_policy_id": str(budget_policy_id),
         "fidelity_policy_id": str(fidelity_policy_id),
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
@@ -1813,11 +1864,13 @@ def create_session_spec(
         pack_lock_hash=str(lockfile_payload.get("pack_lock_hash", "")),
         save_id=save_token,
         generator_version_id=str(identity_payload.get("generator_version_id", "")).strip(),
+        overlay_conflict_policy_id=selected_overlay_conflict_policy_id,
     )
     overlay_trust = validate_overlay_manifest_trust(
         overlay_manifest=overlay_manifest,
         resolved_packs=list(lockfile_payload.get("resolved_packs") or []),
         expected_pack_lock_hash=str(lockfile_payload.get("pack_lock_hash", "")),
+        overlay_conflict_policy_id=selected_overlay_conflict_policy_id,
     )
     if str(overlay_trust.get("result", "")) != "complete":
         return overlay_trust
@@ -1865,6 +1918,8 @@ def create_session_spec(
         if search_plan_payload
         else "",
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
+        "mod_policy_id": requested_mod_policy_id,
+        "mod_policy_registry_hash": selected_mod_policy_registry_hash,
         "registry_hashes": dict((lockfile_payload.get("registries") or {})),
         "physics_profile_id": str(identity_payload.get("physics_profile_id", "")),
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),

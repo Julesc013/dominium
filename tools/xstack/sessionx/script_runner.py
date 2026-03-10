@@ -9,6 +9,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
+from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from src.universe import enforce_session_contract_bundle
 
 from .common import identity_hash_for_payload, norm, now_utc_iso, read_json_object, refusal, write_canonical_json
@@ -335,10 +336,12 @@ def run_intent_script(
         return spec_error
 
     bundle_token = str(bundle_id).strip() or str(session_spec.get("bundle_id", "")).strip() or DEFAULT_BUNDLE_ID
+    selected_mod_policy_id = str(session_spec.get("mod_policy_id", "")).strip() or DEFAULT_MOD_POLICY_ID
     lock_payload, lock_error = _load_lockfile(
         repo_root=repo_root,
         compile_if_missing=bool(compile_if_missing),
         bundle_id=bundle_token,
+        mod_policy_id=selected_mod_policy_id,
         lockfile_path=lockfile_path,
     )
     if lock_error:
@@ -369,10 +372,19 @@ def run_intent_script(
         lockfile_payload=lock_payload,
         compile_if_missing=bool(compile_if_missing),
         bundle_id=bundle_token,
+        mod_policy_id=selected_mod_policy_id,
         registries_dir=registries_dir,
     )
     if registry_check.get("result") != "complete":
         return registry_check
+    mod_policy_proof_bundle = proof_bundle_from_lockfile(lock_payload)
+    mod_policy_enforcement = validate_saved_mod_policy(
+        expected_mod_policy_id=selected_mod_policy_id,
+        expected_registry_hash=str(session_spec.get("mod_policy_registry_hash", "")).strip(),
+        actual_proof_bundle=mod_policy_proof_bundle,
+    )
+    if mod_policy_enforcement.get("result") != "complete":
+        return mod_policy_enforcement
 
     registries = lock_payload.get("registries")
     if not isinstance(registries, dict):
@@ -1413,6 +1425,9 @@ def run_intent_script(
         "contract_bundle_hash": str(contract_enforcement.get("contract_bundle_hash", "")),
         "semantic_contract_registry_hash": str(contract_enforcement.get("semantic_contract_registry_hash", "")),
         "semantic_contract_proof_bundle": dict(contract_enforcement.get("proof_bundle") or {}),
+        "mod_policy_id": selected_mod_policy_id,
+        "mod_policy_registry_hash": str(mod_policy_proof_bundle.get("mod_policy_registry_hash", "")).strip(),
+        "mod_policy_proof_bundle": dict(mod_policy_proof_bundle),
         "registry_hashes": registry_hashes,
         "state_hash_anchors": state_hash_anchors,
         "tick_hash_anchors": tick_hash_anchors,
@@ -1479,6 +1494,9 @@ def run_intent_script(
         "contract_bundle_hash": str(contract_enforcement.get("contract_bundle_hash", "")),
         "semantic_contract_registry_hash": str(contract_enforcement.get("semantic_contract_registry_hash", "")),
         "semantic_contract_proof_bundle": dict(contract_enforcement.get("proof_bundle") or {}),
+        "mod_policy_id": selected_mod_policy_id,
+        "mod_policy_registry_hash": str(mod_policy_proof_bundle.get("mod_policy_registry_hash", "")).strip(),
+        "mod_policy_proof_bundle": dict(mod_policy_proof_bundle),
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
         "generator_version_id": identity_generator_version_id,

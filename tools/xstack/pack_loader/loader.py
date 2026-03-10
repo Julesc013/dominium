@@ -6,14 +6,17 @@ import json
 import os
 from typing import Dict, List, Tuple
 
+from src.modding import attach_pack_policy_descriptors
 from src.meta_extensions_engine import normalize_extensions_tree
 from tools.xstack.compatx.validator import validate_instance
 
 from .constants import (
     FORBIDDEN_PACK_EXTENSIONS,
+    PACK_CAPABILITIES_NAME,
     PACK_CATEGORIES,
     PACK_MANIFEST_NAME,
     PACKS_ROOT_REL,
+    PACK_TRUST_DESCRIPTOR_NAME,
 )
 from .dependency_resolver import parse_dependency_token, resolve_packs
 from .errors import build_error, result_complete, result_refused
@@ -217,7 +220,23 @@ def load_pack_set(
                     str(row.get("raw", "")),
                 ),
             ),
+            "trust_descriptor_path": _rel(os.path.join(pack_dir, PACK_TRUST_DESCRIPTOR_NAME), repo_root)
+            if os.path.isfile(os.path.join(pack_dir, PACK_TRUST_DESCRIPTOR_NAME))
+            else "",
+            "capabilities_descriptor_path": _rel(os.path.join(pack_dir, PACK_CAPABILITIES_NAME), repo_root)
+            if os.path.isfile(os.path.join(pack_dir, PACK_CAPABILITIES_NAME))
+            else "",
         }
+        attached_row, policy_errors = attach_pack_policy_descriptors(
+            repo_root=repo_root,
+            pack_row=pack_row,
+            schema_repo_root=schema_root,
+        )
+        if policy_errors:
+            pack_row["mod_policy_metadata_errors"] = [dict(item) for item in policy_errors if isinstance(item, dict)]
+        else:
+            pack_row = attached_row
+            pack_row["mod_policy_metadata_errors"] = []
         seen_pack_ids[pack_id] = pack_row
         packs.append(pack_row)
         errors.extend(_scan_forbidden_files(pack_dir, pack_id, repo_root))

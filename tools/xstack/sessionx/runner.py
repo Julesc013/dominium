@@ -17,6 +17,7 @@ from src.net.policies.policy_srz_hybrid import (
     join_client_hybrid,
     prepare_hybrid_baseline,
 )
+from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from src.universe import enforce_session_contract_bundle
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -372,6 +373,7 @@ def _load_lockfile(
     repo_root: str,
     compile_if_missing: bool,
     bundle_id: str,
+    mod_policy_id: str = DEFAULT_MOD_POLICY_ID,
     lockfile_path: str = "",
 ) -> Tuple[dict, Dict[str, object]]:
     lock_path = _resolve_lockfile_path(repo_root, lockfile_path)
@@ -403,6 +405,7 @@ def _load_lockfile(
             lockfile_out_rel="build/lockfile.json",
             packs_root_rel="packs",
             schema_repo_root=repo_root,
+            mod_policy_id=str(mod_policy_id or DEFAULT_MOD_POLICY_ID),
             use_cache=True,
         )
         if compiled.get("result") != "complete":
@@ -421,6 +424,7 @@ def _validate_registry_hashes(
     lockfile_payload: dict,
     compile_if_missing: bool,
     bundle_id: str,
+    mod_policy_id: str = DEFAULT_MOD_POLICY_ID,
     registries_dir: str = "",
 ) -> Dict[str, object]:
     registries_abs = _resolve_registries_dir(repo_root, registries_dir)
@@ -458,6 +462,7 @@ def _validate_registry_hashes(
             lockfile_out_rel="build/lockfile.json",
             packs_root_rel="packs",
             schema_repo_root=repo_root,
+            mod_policy_id=str(mod_policy_id or DEFAULT_MOD_POLICY_ID),
             use_cache=True,
         )
         if compiled.get("result") != "complete":
@@ -991,10 +996,12 @@ def boot_session_spec(
         )
 
     bundle_token = str(bundle_id).strip() or str(session_spec.get("bundle_id", "")).strip() or DEFAULT_BUNDLE_ID
+    selected_mod_policy_id = str(session_spec.get("mod_policy_id", "")).strip() or DEFAULT_MOD_POLICY_ID
     lock_payload, lock_error = _load_lockfile(
         repo_root=repo_root,
         compile_if_missing=bool(compile_if_missing),
         bundle_id=bundle_token,
+        mod_policy_id=selected_mod_policy_id,
         lockfile_path=lockfile_path,
     )
     if lock_error:
@@ -1025,10 +1032,19 @@ def boot_session_spec(
         lockfile_payload=lock_payload,
         compile_if_missing=bool(compile_if_missing),
         bundle_id=bundle_token,
+        mod_policy_id=selected_mod_policy_id,
         registries_dir=registries_dir,
     )
     if registry_check.get("result") != "complete":
         return registry_check
+    mod_policy_proof_bundle = proof_bundle_from_lockfile(lock_payload)
+    mod_policy_enforcement = validate_saved_mod_policy(
+        expected_mod_policy_id=selected_mod_policy_id,
+        expected_registry_hash=str(session_spec.get("mod_policy_registry_hash", "")).strip(),
+        actual_proof_bundle=mod_policy_proof_bundle,
+    )
+    if mod_policy_enforcement.get("result") != "complete":
+        return mod_policy_enforcement
 
     registries = lock_payload.get("registries")
     if not isinstance(registries, dict):
@@ -2946,6 +2962,9 @@ def boot_session_spec(
         "contract_bundle_hash": str(contract_enforcement.get("contract_bundle_hash", "")),
         "semantic_contract_registry_hash": str(contract_enforcement.get("semantic_contract_registry_hash", "")),
         "semantic_contract_proof_bundle": dict(contract_enforcement.get("proof_bundle") or {}),
+        "mod_policy_id": selected_mod_policy_id,
+        "mod_policy_registry_hash": str(mod_policy_proof_bundle.get("mod_policy_registry_hash", "")).strip(),
+        "mod_policy_proof_bundle": dict(mod_policy_proof_bundle),
         "registry_hashes": registry_hashes,
         "session_stage_registry_hash": str(pipeline_contract.get("stage_registry_hash", "")),
         "session_pipeline_registry_hash": str(pipeline_contract.get("pipeline_registry_hash", "")),
@@ -3038,6 +3057,9 @@ def boot_session_spec(
         "contract_bundle_hash": str(contract_enforcement.get("contract_bundle_hash", "")),
         "semantic_contract_registry_hash": str(contract_enforcement.get("semantic_contract_registry_hash", "")),
         "semantic_contract_proof_bundle": dict(contract_enforcement.get("proof_bundle") or {}),
+        "mod_policy_id": selected_mod_policy_id,
+        "mod_policy_registry_hash": str(mod_policy_proof_bundle.get("mod_policy_registry_hash", "")).strip(),
+        "mod_policy_proof_bundle": dict(mod_policy_proof_bundle),
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,

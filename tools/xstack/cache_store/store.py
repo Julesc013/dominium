@@ -43,14 +43,31 @@ def build_cache_key(
     packs: List[dict],
     contributions: List[dict],
     bundle_selection: List[str],
+    mod_policy_id: str = "",
     tool_version: str = TOOL_VERSION,
 ) -> Tuple[str, Dict[str, object]]:
     manifest_leaf_hashes: List[str] = []
+    pack_policy_leaf_hashes: List[str] = []
     contribution_leaf_hashes: List[str] = []
 
     sorted_packs = sorted(packs or [], key=lambda row: str(row.get("pack_id", "")))
     for row in sorted_packs:
         manifest_leaf_hashes.append(sha256_text(canonical_json_text(row.get("manifest") or {})))
+        pack_policy_leaf_hashes.append(
+            sha256_text(
+                canonical_json_text(
+                    {
+                        "pack_id": str(row.get("pack_id", "")),
+                        "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
+                        "capabilities_hash": str(row.get("capabilities_hash", "")),
+                        "trust_level_id": str(row.get("trust_level_id", "")),
+                        "capability_ids": sorted(
+                            set(str(item).strip() for item in (row.get("capability_ids") or []) if str(item).strip())
+                        ),
+                    }
+                )
+            )
+        )
 
     sorted_contrib = sorted(
         contributions or [],
@@ -74,16 +91,19 @@ def build_cache_key(
         canonical_json_text(sorted(set(str(item).strip() for item in (bundle_selection or []) if str(item).strip()))
         )
     )
+    mod_policy_leaf = sha256_text(str(mod_policy_id or ""))
     tool_leaf = sha256_text(str(tool_version))
 
-    ordered_leaves = manifest_leaf_hashes + contribution_leaf_hashes + [bundle_leaf, tool_leaf]
+    ordered_leaves = manifest_leaf_hashes + pack_policy_leaf_hashes + contribution_leaf_hashes + [bundle_leaf, mod_policy_leaf, tool_leaf]
     key = merkle_root_hex(ordered_leaves)
     input_manifest = {
         "cache_schema_version": CACHE_SCHEMA_VERSION,
         "tool_version": str(tool_version),
         "manifest_leaf_hashes": manifest_leaf_hashes,
+        "pack_policy_leaf_hashes": pack_policy_leaf_hashes,
         "contribution_leaf_hashes": contribution_leaf_hashes,
         "bundle_leaf_hash": bundle_leaf,
+        "mod_policy_leaf_hash": mod_policy_leaf,
         "tool_leaf_hash": tool_leaf,
         "merkle_input_hashes": ordered_leaves,
         "cache_key": key,

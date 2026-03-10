@@ -15,6 +15,13 @@ if REPO_ROOT_HINT not in sys.path:
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 from tools.xstack.sessionx.common import deterministic_seed_hex, identity_hash_for_payload
+from src.modding import (
+    DEFAULT_MOD_POLICY_ID,
+    load_mod_policy_registry,
+    load_pack_policy_descriptors,
+    mod_policy_registry_hash,
+    mod_policy_rows_by_id,
+)
 from src.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
@@ -130,14 +137,72 @@ def _profile_bundle_hash(payload: Dict[str, object]) -> str:
 
 
 def _source_pack_row(repo_root: str, rel_path: str) -> Dict[str, object]:
-    manifest = load_json_object(os.path.join(repo_root, rel_path.replace("/", os.sep)))
-    return {
+    manifest_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+    manifest = load_json_object(manifest_path)
+    row = {
         "pack_id": str(manifest.get("pack_id", "")).strip(),
         "version": str(manifest.get("version", "")).strip(),
         "canonical_hash": str(manifest.get("canonical_hash", "")).strip(),
         "signature_status": str(manifest.get("signature_status", "")).strip(),
         "manifest_path": _norm(rel_path),
     }
+    policy_row, errors = load_pack_policy_descriptors(
+        repo_root=repo_root,
+        pack_row={
+            "pack_id": row["pack_id"],
+            "pack_dir": os.path.dirname(manifest_path),
+        },
+        schema_repo_root=repo_root,
+    )
+    if errors:
+        raise ValueError(
+            "invalid pack policy descriptors for {}: {}".format(
+                row["pack_id"],
+                "; ".join(str(dict(item).get("code", "invalid")) for item in errors[:3] if isinstance(item, dict)),
+            )
+        )
+    row.update(
+        {
+            "trust_level_id": str(policy_row.get("trust_level_id", "")).strip(),
+            "capability_ids": sorted(str(item).strip() for item in list(policy_row.get("capability_ids") or []) if str(item).strip()),
+            "trust_descriptor_hash": str(policy_row.get("trust_descriptor_hash", "")).strip(),
+            "capabilities_hash": str(policy_row.get("capabilities_hash", "")).strip(),
+        }
+    )
+    return row
+
+
+def _default_mod_policy_row(repo_root: str) -> Tuple[Dict[str, object], str]:
+    registry_payload, errors = load_mod_policy_registry(repo_root)
+    if errors:
+        raise ValueError("invalid mod policy registry")
+    row = dict(mod_policy_rows_by_id(registry_payload).get(DEFAULT_MOD_POLICY_ID) or {})
+    if not row:
+        raise ValueError("missing default mod_policy_id '{}'".format(DEFAULT_MOD_POLICY_ID))
+    return row, mod_policy_registry_hash(registry_payload)
+
+
+def _mod_policy_loaded_packs(pack_rows: List[Dict[str, object]]) -> List[Dict[str, object]]:
+    by_key: Dict[Tuple[str, str], Dict[str, object]] = {}
+    for alias_row in list(pack_rows or []):
+        for source_row in list(dict(alias_row).get("source_packs") or []):
+            if not isinstance(source_row, dict):
+                continue
+            pack_id = str(source_row.get("pack_id", "")).strip()
+            version = str(source_row.get("version", "")).strip()
+            if not pack_id:
+                continue
+            by_key[(pack_id, version)] = {
+                "pack_id": pack_id,
+                "version": version,
+                "trust_level_id": str(source_row.get("trust_level_id", "")).strip(),
+                "capability_ids": sorted(
+                    str(item).strip() for item in list(source_row.get("capability_ids") or []) if str(item).strip()
+                ),
+                "trust_descriptor_hash": str(source_row.get("trust_descriptor_hash", "")).strip(),
+                "capabilities_hash": str(source_row.get("capabilities_hash", "")).strip(),
+            }
+    return [dict(by_key[key]) for key in sorted(by_key.keys())]
 
 
 def _alias_pack_hash(pack_id: str, version: str, source_rows: List[Dict[str, object]]) -> str:
@@ -215,17 +280,20 @@ def build_profile_bundle_payload() -> Dict[str, object]:
         },
         "runtime_defaults": {
             "authority_default": "dev",
+            "mod_policy_default": DEFAULT_MOD_POLICY_ID,
             "release_seed_policy": "explicit_required",
             "dev_seed_default": "0",
             "cli_default": {
                 "profile_bundle": MVP_PROFILE_BUNDLE_ID,
                 "pack_lock": MVP_PACK_LOCK_ID,
+                "mod_policy_id": DEFAULT_MOD_POLICY_ID,
                 "teleport": "",
                 "ui": "cli",
             },
             "gui_default": {
                 "profile_bundle": MVP_PROFILE_BUNDLE_ID,
                 "pack_lock": MVP_PACK_LOCK_ID,
+                "mod_policy_id": DEFAULT_MOD_POLICY_ID,
                 "teleport": "",
                 "ui": "gui",
                 "camera_mode": "freecam",
@@ -233,6 +301,7 @@ def build_profile_bundle_payload() -> Dict[str, object]:
             "server_default": {
                 "profile_bundle": MVP_PROFILE_BUNDLE_ID,
                 "pack_lock": MVP_PACK_LOCK_ID,
+                "mod_policy_id": DEFAULT_MOD_POLICY_ID,
                 "teleport": "",
                 "ui": "headless",
             },
@@ -262,7 +331,17 @@ def _ordered_pack_hashes(pack_rows: List[Dict[str, object]]) -> List[str]:
 
 def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, object] | None = None) -> Dict[str, object]:
     profile_bundle_payload = dict(profile_bundle_payload or build_profile_bundle_payload())
+    mod_policy_row, mod_policy_registry_hash_value = _default_mod_policy_row(repo_root)
     pack_rows = _ordered_alias_pack_rows(repo_root=repo_root)
+    mod_policy_loaded_packs = _mod_policy_loaded_packs(pack_rows)
+    mod_policy_proof_hash = canonical_sha256(
+        {
+            "mod_policy_id": DEFAULT_MOD_POLICY_ID,
+            "mod_policy_registry_hash": mod_policy_registry_hash_value,
+            "overlay_conflict_policy_id": str(mod_policy_row.get("conflict_policy_id", "")).strip(),
+            "loaded_packs": mod_policy_loaded_packs,
+        }
+    )
     profile_bundle_hash = str(profile_bundle_payload.get("profile_bundle_hash", "")).strip()
     payload = {
         "schema_version": "1.0.0",
@@ -271,6 +350,10 @@ def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, ob
         "profile_bundle_id": str(profile_bundle_payload.get("profile_bundle_id", "")),
         "profile_bundle_hash": profile_bundle_hash,
         "ordered_packs": pack_rows,
+        "mod_policy_id": DEFAULT_MOD_POLICY_ID,
+        "mod_policy_registry_hash": mod_policy_registry_hash_value,
+        "mod_policy_proof_hash": mod_policy_proof_hash,
+        "overlay_conflict_policy_id": str(mod_policy_row.get("conflict_policy_id", "")).strip(),
         "pack_lock_hash": canonical_sha256(
             {
                 "ordered_pack_hashes": _ordered_pack_hashes(pack_rows),
@@ -292,6 +375,9 @@ def validate_pack_lock_payload(repo_root: str, payload: Dict[str, object]) -> Li
         errors.append("ordered_packs mismatch")
     if str(payload.get("profile_bundle_hash", "")).strip() != str(expected.get("profile_bundle_hash", "")).strip():
         errors.append("profile_bundle_hash mismatch")
+    for key in ("mod_policy_id", "mod_policy_registry_hash", "mod_policy_proof_hash", "overlay_conflict_policy_id"):
+        if str(payload.get(key, "")).strip() != str(expected.get(key, "")).strip():
+            errors.append("{} mismatch".format(key))
     if str(payload.get("pack_lock_hash", "")).strip() != str(expected.get("pack_lock_hash", "")).strip():
         errors.append("pack_lock_hash mismatch")
     if str(payload.get("deterministic_fingerprint", "")).strip() != _payload_hash(payload):
@@ -319,6 +405,8 @@ def build_session_template_payload(repo_root: str, pack_lock_payload: Dict[str, 
         "profile_bundle_id": MVP_PROFILE_BUNDLE_ID,
         "profile_bundle_hash": str(pack_lock_payload.get("profile_bundle_hash", "")),
         "pack_lock_hash": str(pack_lock_payload.get("pack_lock_hash", "")),
+        "mod_policy_id": str(pack_lock_payload.get("mod_policy_id", "")).strip() or DEFAULT_MOD_POLICY_ID,
+        "mod_policy_registry_hash": str(pack_lock_payload.get("mod_policy_registry_hash", "")).strip(),
         "authority_context": {
             "default": "dev",
             "modes": {
@@ -412,6 +500,8 @@ def validate_session_template_payload(repo_root: str, payload: Dict[str, object]
         "profile_bundle_id",
         "profile_bundle_hash",
         "pack_lock_hash",
+        "mod_policy_id",
+        "mod_policy_registry_hash",
         "budget_policy_id",
         "fidelity_policy_id",
     ):
@@ -625,6 +715,8 @@ def build_runtime_bootstrap(
         "pack_lock": {
             "pack_lock_id": str(lock_payload.get("pack_lock_id", "")),
             "pack_lock_hash": pack_lock_hash,
+            "mod_policy_id": str(lock_payload.get("mod_policy_id", "")).strip(),
+            "mod_policy_registry_hash": str(lock_payload.get("mod_policy_registry_hash", "")).strip(),
             "path": _norm(pack_lock_path),
         },
         "session_spec": {
@@ -635,6 +727,8 @@ def build_runtime_bootstrap(
             "realism_profile_id": str(template_payload.get("realism_profile_id", "")),
             "profile_bundle_id": profile_bundle_id,
             "pack_lock_hash": pack_lock_hash,
+            "mod_policy_id": str(template_payload.get("mod_policy_id", "")).strip(),
+            "mod_policy_registry_hash": str(template_payload.get("mod_policy_registry_hash", "")).strip(),
             "authority_context": authority_payload,
             "budget_policy_id": str(template_payload.get("budget_policy_id", "")),
             "fidelity_policy_id": str(template_payload.get("fidelity_policy_id", "")),

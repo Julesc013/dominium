@@ -15,6 +15,7 @@ from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
 from tools.xstack.sessionx.universe_physics import write_null_boot_artifacts
+from src.modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
 
 from .bundle_profile import resolve_bundle_selection
 from .constants import (
@@ -11776,6 +11777,7 @@ def compile_bundle(
     lockfile_out_rel: str = DEFAULT_LOCKFILE_OUT_REL,
     packs_root_rel: str = "packs",
     schema_repo_root: str = "",
+    mod_policy_id: str = DEFAULT_MOD_POLICY_ID,
     use_cache: bool = True,
 ) -> Dict[str, object]:
     schema_root = os.path.abspath(schema_repo_root) if str(schema_repo_root).strip() else repo_root
@@ -11807,10 +11809,21 @@ def compile_bundle(
         return contrib
     contributions = list(contrib.get("contributions") or [])
 
+    mod_policy_eval = evaluate_mod_policy(
+        repo_root=repo_root,
+        ordered_packs=ordered_packs,
+        contributions=contributions,
+        mod_policy_id=str(mod_policy_id or DEFAULT_MOD_POLICY_ID),
+        schema_repo_root=schema_root,
+    )
+    if mod_policy_eval.get("result") != "complete":
+        return mod_policy_eval
+
     key, input_manifest = build_cache_key(
         packs=ordered_packs,
         contributions=contributions,
         bundle_selection=selected_pack_ids,
+        mod_policy_id=str(mod_policy_eval.get("mod_policy_id", "")),
         tool_version=COMPILER_VERSION,
     )
 
@@ -11840,6 +11853,28 @@ def compile_bundle(
                     return {
                         "result": "complete",
                         "bundle_id": bundle_id,
+                        "mod_policy_id": str(restored_lockfile_payload.get("mod_policy_id", "")),
+                        "mod_policy_registry_hash": str(restored_lockfile_payload.get("mod_policy_registry_hash", "")),
+                        "mod_policy_proof_bundle": {
+                            "mod_policy_id": str(restored_lockfile_payload.get("mod_policy_id", "")),
+                            "mod_policy_registry_hash": str(restored_lockfile_payload.get("mod_policy_registry_hash", "")),
+                            "mod_policy_proof_hash": str(restored_lockfile_payload.get("mod_policy_proof_hash", "")),
+                            "overlay_conflict_policy_id": str(restored_lockfile_payload.get("overlay_conflict_policy_id", "")),
+                            "loaded_packs": [
+                                {
+                                    "pack_id": str(row.get("pack_id", "")),
+                                    "version": str(row.get("version", "")),
+                                    "trust_level_id": str(row.get("trust_level_id", "")),
+                                    "capability_ids": sorted(
+                                        set(str(item).strip() for item in (row.get("capability_ids") or []) if str(item).strip())
+                                    ),
+                                    "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
+                                    "capabilities_hash": str(row.get("capabilities_hash", "")),
+                                }
+                                for row in list(restored_lockfile_payload.get("resolved_packs") or [])
+                                if isinstance(row, dict)
+                            ],
+                        },
                         "cache_key": key,
                         "cache_hit": True,
                         "out_dir": _norm(os.path.relpath(out_dir, repo_root)),
@@ -13842,6 +13877,12 @@ def compile_bundle(
             "version": str(row.get("version", "")),
             "canonical_hash": str((row.get("manifest") or {}).get("canonical_hash", "")),
             "signature_status": str(row.get("signature_status", "")),
+            "trust_level_id": str(row.get("trust_level_id", "")),
+            "capability_ids": sorted(
+                set(str(item).strip() for item in (row.get("capability_ids") or []) if str(item).strip())
+            ),
+            "trust_descriptor_hash": str(row.get("trust_descriptor_hash", "")),
+            "capabilities_hash": str(row.get("capabilities_hash", "")),
         }
         for row in ordered_packs
     ]
@@ -13849,6 +13890,10 @@ def compile_bundle(
     lockfile_payload = {
         "lockfile_version": "1.0.0",
         "bundle_id": str(bundle_id),
+        "mod_policy_id": str(mod_policy_eval.get("mod_policy_id", "")),
+        "mod_policy_registry_hash": str(mod_policy_eval.get("mod_policy_registry_hash", "")),
+        "mod_policy_proof_hash": str((mod_policy_eval.get("proof_bundle") or {}).get("mod_policy_proof_hash", "")),
+        "overlay_conflict_policy_id": str(mod_policy_eval.get("overlay_conflict_policy_id", "")),
         "resolved_packs": resolved_packs,
         "registries": {
             "conservation_contract_set_registry_hash": registry_hashes["conservation_contract_set_registry_hash"],
@@ -14024,6 +14069,10 @@ def compile_bundle(
     return {
         "result": "complete",
         "bundle_id": str(bundle_id),
+        "mod_policy_id": str(mod_policy_eval.get("mod_policy_id", "")),
+        "mod_policy_registry_hash": str(mod_policy_eval.get("mod_policy_registry_hash", "")),
+        "overlay_conflict_policy_id": str(mod_policy_eval.get("overlay_conflict_policy_id", "")),
+        "mod_policy_proof_bundle": dict(mod_policy_eval.get("proof_bundle") or {}),
         "cache_key": key,
         "cache_hit": False,
         "out_dir": _norm(os.path.relpath(out_dir, repo_root)),

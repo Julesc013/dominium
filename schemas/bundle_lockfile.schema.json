@@ -26,6 +26,20 @@
     "bundle_id": {
       "type": "string"
     },
+    "mod_policy_id": {
+      "type": "string"
+    },
+    "mod_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mod_policy_proof_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "overlay_conflict_policy_id": {
+      "type": "string"
+    },
     "resolved_packs": {
       "type": "array",
       "items": {
@@ -49,6 +63,23 @@
           },
           "signature_status": {
             "type": "string"
+          },
+          "trust_level_id": {
+            "type": "string"
+          },
+          "capability_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "trust_descriptor_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "capabilities_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
           }
         }
       }

@@ -105,6 +105,26 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
                         "path": "$.resolved_packs[{}].{}".format(idx, field),
                     }
                 )
+        optional_hash_fields = ("trust_descriptor_hash", "capabilities_hash")
+        for field in optional_hash_fields:
+            token = str(row.get(field, "")).strip()
+            if token and (not HASH_RE.fullmatch(token)):
+                errors.append(
+                    {
+                        "code": "refuse.lockfile.invalid_resolved_pack_field",
+                        "message": "resolved_packs entry '{}' must be sha256 hex when present".format(field),
+                        "path": "$.resolved_packs[{}].{}".format(idx, field),
+                    }
+                )
+        capability_ids = row.get("capability_ids")
+        if capability_ids is not None and not isinstance(capability_ids, list):
+            errors.append(
+                {
+                    "code": "refuse.lockfile.invalid_resolved_pack_field",
+                    "message": "resolved_packs entry capability_ids must be a list when present",
+                    "path": "$.resolved_packs[{}].capability_ids".format(idx),
+                }
+            )
 
     registries = payload.get("registries")
     if not isinstance(registries, dict):
@@ -279,6 +299,24 @@ def validate_lockfile_payload(payload: Dict[str, object]) -> Dict[str, object]:
                 "code": "refuse.lockfile.pack_lock_hash_mismatch",
                 "message": "pack_lock_hash mismatch",
                 "path": "$.pack_lock_hash",
+            }
+        )
+    mod_policy_registry_hash = str(payload.get("mod_policy_registry_hash", "")).strip()
+    if mod_policy_registry_hash and (not HASH_RE.fullmatch(mod_policy_registry_hash)):
+        errors.append(
+            {
+                "code": "refuse.lockfile.invalid_mod_policy_registry_hash",
+                "message": "mod_policy_registry_hash must be sha256 hex when present",
+                "path": "$.mod_policy_registry_hash",
+            }
+        )
+    mod_policy_proof_hash = str(payload.get("mod_policy_proof_hash", "")).strip()
+    if mod_policy_proof_hash and (not HASH_RE.fullmatch(mod_policy_proof_hash)):
+        errors.append(
+            {
+                "code": "refuse.lockfile.invalid_mod_policy_proof_hash",
+                "message": "mod_policy_proof_hash must be sha256 hex when present",
+                "path": "$.mod_policy_proof_hash",
             }
         )
 

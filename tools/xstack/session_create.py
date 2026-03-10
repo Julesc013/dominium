@@ -15,6 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
+from src.modding import DEFAULT_MOD_POLICY_ID  # noqa: E402
 from tools.xstack.sessionx.creator import (  # noqa: E402
     DEFAULT_BUDGET_POLICY_ID,
     DEFAULT_EXPERIENCE_ID,
@@ -39,6 +40,7 @@ def main() -> int:
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--save-id", required=True)
     parser.add_argument("--bundle", default=DEFAULT_BUNDLE_ID)
+    parser.add_argument("--mod-policy-id", default=DEFAULT_MOD_POLICY_ID)
     parser.add_argument("--physics-profile-id", default="")
     parser.add_argument("--pipeline-id", default=DEFAULT_PIPELINE_ID)
     parser.add_argument("--scenario-id", default=DEFAULT_SCENARIO_ID)
@@ -80,6 +82,7 @@ def main() -> int:
         repo_root=repo_root,
         save_id=str(args.save_id),
         bundle_id=str(args.bundle),
+        mod_policy_id=str(args.mod_policy_id),
         physics_profile_id=str(args.physics_profile_id),
         pipeline_id=str(args.pipeline_id),
         scenario_id=str(args.scenario_id),

@@ -171,10 +171,12 @@ def abort_session_spec(
         )
 
     bundle_token = str(session_spec.get("bundle_id", "")).strip() or DEFAULT_BUNDLE_ID
+    selected_mod_policy_id = str(session_spec.get("mod_policy_id", "")).strip()
     lock_payload, lock_error = _load_lockfile(
         repo_root=repo_root,
         compile_if_missing=False,
         bundle_id=bundle_token,
+        mod_policy_id=selected_mod_policy_id,
         lockfile_path="",
     )
     if lock_error:
@@ -201,6 +203,8 @@ def abort_session_spec(
         "pipeline_id": str(pipeline_contract.get("pipeline_id", DEFAULT_PIPELINE_ID)),
         "session_spec_path": norm(os.path.relpath(spec_abs, repo_root)),
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
+        "mod_policy_id": selected_mod_policy_id or str(lock_payload.get("mod_policy_id", "")),
+        "mod_policy_registry_hash": str(lock_payload.get("mod_policy_registry_hash", "")),
         "registry_hashes": dict((lock_payload.get("registries") or {})),
         "authority_context": dict(session_spec.get("authority_context") or {}),
         "universe_identity_hash": str(identity_payload.get("identity_hash", "")),
@@ -279,10 +283,12 @@ def resume_session_spec(
         )
 
     bundle_token = str(bundle_id).strip() or str(session_spec.get("bundle_id", "")).strip() or DEFAULT_BUNDLE_ID
+    selected_mod_policy_id = str(session_spec.get("mod_policy_id", "")).strip()
     lock_payload, lock_error = _load_lockfile(
         repo_root=repo_root,
         compile_if_missing=False,
         bundle_id=bundle_token,
+        mod_policy_id=selected_mod_policy_id,
         lockfile_path=lockfile_path,
     )
     if lock_error:
@@ -302,6 +308,7 @@ def resume_session_spec(
         lockfile_payload=lock_payload,
         compile_if_missing=False,
         bundle_id=bundle_token,
+        mod_policy_id=selected_mod_policy_id,
         registries_dir=registries_dir,
     )
     if registry_check.get("result") != "complete":
@@ -326,6 +333,30 @@ def resume_session_spec(
                 "save_id": save_id,
             },
             "$.registry_hashes",
+        )
+    previous_mod_policy_id = str(previous_run_meta.get("mod_policy_id", "")).strip()
+    current_mod_policy_id = selected_mod_policy_id or str(lock_payload.get("mod_policy_id", "")).strip()
+    if previous_mod_policy_id and current_mod_policy_id and previous_mod_policy_id != current_mod_policy_id:
+        return refusal(
+            "refusal.resume_hash_mismatch",
+            "mod_policy_id mismatch detected during resume",
+            "Resume using the same mod policy lineage as the save snapshot.",
+            {"save_id": save_id},
+            "$.mod_policy_id",
+        )
+    previous_mod_policy_registry_hash = str(previous_run_meta.get("mod_policy_registry_hash", "")).strip()
+    current_mod_policy_registry_hash = str(lock_payload.get("mod_policy_registry_hash", "")).strip()
+    if (
+        previous_mod_policy_registry_hash
+        and current_mod_policy_registry_hash
+        and previous_mod_policy_registry_hash != current_mod_policy_registry_hash
+    ):
+        return refusal(
+            "refusal.resume_hash_mismatch",
+            "mod policy registry hash mismatch detected during resume",
+            "Resume with the same mod policy registry revision used by the save snapshot.",
+            {"save_id": save_id},
+            "$.mod_policy_registry_hash",
         )
 
     identity_payload, identity_error = _load_schema_validated(repo_root=repo_root, schema_name="universe_identity", path=identity_path)
