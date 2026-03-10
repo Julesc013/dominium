@@ -417,6 +417,8 @@ from analyzers import e390_contract_mismatch_not_refused_smell
 from analyzers import e393_silent_conflict_resolution_smell
 from analyzers import e402_wallclock_tick_smell
 from analyzers import e403_intent_without_authority_smell
+from analyzers import e404_wallclock_timeout_smell
+from analyzers import e405_ungated_authority_spawn_smell
 
 
 ANALYZERS = (
@@ -837,6 +839,8 @@ ANALYZERS = (
     e393_silent_conflict_resolution_smell,
     e402_wallclock_tick_smell,
     e403_intent_without_authority_smell,
+    e404_wallclock_timeout_smell,
+    e405_ungated_authority_spawn_smell,
 )
 
 

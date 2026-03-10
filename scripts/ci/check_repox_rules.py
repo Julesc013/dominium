@@ -7831,6 +7831,117 @@ def check_authority_required(repo_root):
     return violations
 
 
+def check_local_spawn_profiled(repo_root):
+    invariant_id = "INV-LOCAL-SPAWN-PROFILED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    controller_rel = os.path.join("src", "client", "local_server", "local_server_controller.py")
+    runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
+    doc_rel = os.path.join("docs", "server", "LOCAL_SINGLEPLAYER_MODEL.md")
+
+    violations = []
+    required_tokens = {
+        controller_rel: (
+            "REFUSAL_LOCAL_AUTHORITY_FORBIDDEN",
+            "LOCAL_SERVER_PROFILE_ALLOWLIST",
+            "server.profile.private_relaxed",
+            "_local_authority_gate(",
+            "start_local_singleplayer(",
+        ),
+        runtime_entry_rel: (
+            "--local-singleplayer",
+            "start_local_singleplayer(",
+        ),
+        doc_rel: (
+            "Local authority spawning is profile-driven.",
+            "`server.profile.private_relaxed`",
+            "`refusal.client.local_authority_forbidden`",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing local-authority gating marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_wallclock_timeouts_in_boot(repo_root):
+    invariant_id = "INV-NO-WALLCLOCK-TIMEOUTS-IN-BOOT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    controller_rel = os.path.join("src", "client", "local_server", "local_server_controller.py")
+    runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
+    replay_tool_rel = os.path.join("tools", "server", "tool_replay_local_singleplayer.py")
+    doc_rel = os.path.join("docs", "server", "LOCAL_SINGLEPLAYER_MODEL.md")
+
+    violations = []
+    required_tokens = {
+        controller_rel: (
+            "LOCAL_READY_POLL_ITERATIONS",
+            '"strategy": "bounded_poll_iterations"',
+            "for attempt in range(1, LOCAL_READY_POLL_ITERATIONS + 1):",
+            "accept_loopback_connection(",
+        ),
+        runtime_entry_rel: (
+            "--local-singleplayer",
+            "start_local_singleplayer(",
+        ),
+        replay_tool_rel: (
+            "Verify SERVER-MVP-1 local singleplayer orchestration replay.",
+            "verify_local_singleplayer_replay(",
+        ),
+        doc_rel: (
+            "Ready detection must not use wall-clock timeouts.",
+            "bounded polling iterations",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing local boot-timeout marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep(")
+    for rel in (controller_rel, replay_tool_rel):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: forbidden wall-clock boot token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
 def check_refinement_budgeted(repo_root):
     invariant_id = "INV-REFINEMENT-BUDGETED"
     if is_override_active(repo_root, invariant_id):
@@ -11145,6 +11256,8 @@ def main() -> int:
                 lambda: check_server_tick_deterministic(repo_root),
                 lambda: check_contracts_validated_on_boot(repo_root),
                 lambda: check_authority_required(repo_root),
+                lambda: check_local_spawn_profiled(repo_root),
+                lambda: check_no_wallclock_timeouts_in_boot(repo_root),
             ],
         },
         {

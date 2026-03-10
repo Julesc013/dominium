@@ -135,6 +135,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-SERVER-TICK-DETERMINISTIC`
 - `INV-CONTRACTS-VALIDATED-ON-BOOT`
 - `INV-AUTHORITY-REQUIRED`
+- `INV-LOCAL-SPAWN-PROFILED`
+- `INV-NO-WALLCLOCK-TIMEOUTS-IN-BOOT`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-MVP-PACKS-MINIMAL`
@@ -341,6 +343,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when SERVER-MVP-0 connection or intent submission surfaces stop creating and enforcing `AuthorityContext` for client-origin actions.
 - Fails when unauthorized-intent refusal markers disappear from the server boot, loopback, or replay probe surfaces.
 - Preserves the headless server as an authority-wrapping ingress boundary where client intents never execute without lawful server-owned context.
+
+### INV-LOCAL-SPAWN-PROFILED
+
+- Fails when the SERVER-MVP-1 local singleplayer controller stops gating local authority spawn through an explicit server profile rule.
+- Fails when the local client launch path loses the stable refusal surface for disallowed authority profiles.
+- Preserves local singleplayer as a governed profile-based authority path instead of a hidden client-side authority bypass.
+
+### INV-NO-WALLCLOCK-TIMEOUTS-IN-BOOT
+
+- Fails when SERVER-MVP-1 ready detection or local orchestration boot flow loses the explicit bounded-polling markers.
+- Fails when wall-clock boot timeout helpers appear in the governed local controller or replay surfaces.
+- Preserves local singleplayer boot as a deterministic handshake/polling sequence rather than a host-clock timeout loop.
 
 ### INV-PLATFORM-ID-CANONICAL
 

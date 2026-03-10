@@ -397,6 +397,29 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-LOCAL-SPAWN-PROFILED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/client/local_server/local_server_controller.py",
+        "tools/mvp/runtime_entry.py",
+        "docs/server/LOCAL_SINGLEPLAYER_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-local-spawn-profiled",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-WALLCLOCK-TIMEOUTS-IN-BOOT",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/client/local_server/local_server_controller.py",
+        "tools/mvp/runtime_entry.py",
+        "tools/server/tool_replay_local_singleplayer.py",
+        "docs/server/LOCAL_SINGLEPLAYER_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-timeouts-in-boot",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
       "severity": "WARN",
       "scope_paths": [
