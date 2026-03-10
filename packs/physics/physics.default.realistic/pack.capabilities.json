@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "17725950fdbc2f85017a502c2c6d8afbadfac4a0ba9bd41421dc563c902051f5",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "physics.default.realistic",
+  "schema_version": "1.0.0"
+}

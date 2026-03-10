@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "a004b172eca717b43a471df7f09c4a41faa16a57ea5539e2888e56275e036d44",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.experience.lab_galaxy",
+  "schema_version": "1.0.0"
+}

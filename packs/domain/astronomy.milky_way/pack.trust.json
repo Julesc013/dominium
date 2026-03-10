@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "801b603a0aea365d7604efb532762645f1a4ea3eb4c02abaf15791f06b1a30d8",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "astronomy.milky_way",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

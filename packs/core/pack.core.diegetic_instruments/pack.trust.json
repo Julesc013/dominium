@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "5c09f4f939d358fdb7c57d3b08c39bf2b2f24ea9af88ecc261da73c98a43186d",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.core.diegetic_instruments",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

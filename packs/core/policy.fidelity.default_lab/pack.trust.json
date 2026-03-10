@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "467c66eedc3b7f8c026db1dc8524a84902b9261e97288a81393f921ecafe21ae",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "policy.fidelity.default_lab",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

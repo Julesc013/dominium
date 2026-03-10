@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_logic_elements"
+  ],
+  "deterministic_fingerprint": "328df9fc6a0fe55970fda47e84ee97c6b2d3fd84fea954db342e18c24c000eb5",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.core.logic_base",
+  "schema_version": "1.0.0"
+}

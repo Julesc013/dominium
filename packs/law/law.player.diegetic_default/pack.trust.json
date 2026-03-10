@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "4c3a715785fd74b8741d577bf484e94f9f9b243571c582d43c7ac95512ac6c48",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "law.player.diegetic_default",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

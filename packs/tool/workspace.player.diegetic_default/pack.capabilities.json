@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "7080491ccd9da8aa92bbb06d71a4d3f12246c5e4efd2975d16c5004d3ff7e82d",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "workspace.player.diegetic_default",
+  "schema_version": "1.0.0"
+}

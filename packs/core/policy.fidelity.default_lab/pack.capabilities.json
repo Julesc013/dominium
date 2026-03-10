@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "bfade92afcaa62755424b2fe585d7b0d7c2aad6f3d257c371125c438d12c0235",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "policy.fidelity.default_lab",
+  "schema_version": "1.0.0"
+}

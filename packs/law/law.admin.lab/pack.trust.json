@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "1f5aaae530089edded977eb7788678f97022f8f86c670d83bd705416e28d6a08",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "law.admin.lab",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

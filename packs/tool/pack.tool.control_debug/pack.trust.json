@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "5ee4919dbfec812b04b8267cc59dc6fbcd9464e4b68f4b6099a143c048fd934b",
+  "extensions": {
+    "official.signature_status": "unsigned",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.tool.control_debug",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.local_dev"
+}

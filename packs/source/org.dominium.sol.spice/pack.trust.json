@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "b6b1f5f97685f411a4f616d91e0df7993bedf4568a1d1da3268b4449d1cca8f0",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.sol.spice",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

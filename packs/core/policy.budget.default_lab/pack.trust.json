@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "e27eac081164f9934fdd319e7b618bb93944c2f860a738bfa702343a93ff82d2",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "policy.budget.default_lab",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

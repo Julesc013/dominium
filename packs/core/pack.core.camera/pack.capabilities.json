@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_processes"
+  ],
+  "deterministic_fingerprint": "11ccd34c488e7973acd2b6ff5fe836b013ce2e22ff001a9cc26704efa23968b8",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.core.camera",
+  "schema_version": "1.0.0"
+}

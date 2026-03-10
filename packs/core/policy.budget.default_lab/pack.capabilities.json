@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "6a5d40b982e3830990dfec1d45cd30c0f8b4a6205427272365d9af0b1429047d",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "policy.budget.default_lab",
+  "schema_version": "1.0.0"
+}

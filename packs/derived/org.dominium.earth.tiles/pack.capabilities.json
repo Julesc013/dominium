@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "b1aca0339c0a922e0b4370237c05cdc3910678f19a7087ac8cf48d4ba5b19b8b",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.earth.tiles",
+  "schema_version": "1.0.0"
+}

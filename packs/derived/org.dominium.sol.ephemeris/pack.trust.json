@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "34e80812eb636f817cc7506bdf82050f09e9350044dd7cef8d307a8b90ab4fa6",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.sol.ephemeris",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

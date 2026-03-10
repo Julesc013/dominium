@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "48f36aa825ef047bbdf18a5d2c6e04e3773a39e3b965eec96f12226f0882f0b2",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.tool.inspector",
+  "schema_version": "1.0.0"
+}

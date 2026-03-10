@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "a21684ebfe424cfbaa6a34404da897f274bdd85695ed672456b03d22c44fd8f7",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "workspace.player.diegetic_default",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

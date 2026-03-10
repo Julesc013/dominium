@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "ad16c5e09657514bc92bd16fca2f3198a0c274f90ff90f7569f51436a2628ae0",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.core.camera",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

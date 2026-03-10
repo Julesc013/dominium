@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "4dbe03fc2fa17989b0ce6b57a7d055144020c8f1141f0a9abb05c4529cab910d",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "physics.default.realistic",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

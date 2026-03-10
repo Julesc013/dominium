@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "581a0656ddd32ee18e234ed73c1b14f1e854caec3956210c2016d9bd093e063c",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "profile.spectator.default",
+  "schema_version": "1.0.0"
+}

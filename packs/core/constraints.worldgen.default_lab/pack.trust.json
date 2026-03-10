@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "5fdb58e431c4aa2d1c22513a0470cb05de91e9e6dcca61a50a254a5d45275bcb",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "constraints.worldgen.default_lab",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

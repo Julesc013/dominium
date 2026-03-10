@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "fbe4abaeed459b76b56573cc9866ab32353b0718c8138bbe0a7d33cd7ddf9f99",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "workspace.observer.truth",
+  "schema_version": "1.0.0"
+}

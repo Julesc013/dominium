@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "409885aa590516bd63779b7aeba98da12b3da723eefce912c08140d7fdba77c3",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "profile.observer.exploration",
+  "schema_version": "1.0.0"
+}

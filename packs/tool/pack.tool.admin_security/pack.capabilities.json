@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "f44b4f04db36e8da030c9b1ab24bbb9d63888bb2f518c98d2be266fe3f770089",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.tool.admin_security",
+  "schema_version": "1.0.0"
+}

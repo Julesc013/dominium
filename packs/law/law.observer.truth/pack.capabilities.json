@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "0888de5671f20dc4aec20310c7d1a34c46a40c6d918c110cbdbbca7938cd8ea3",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "law.observer.truth",
+  "schema_version": "1.0.0"
+}

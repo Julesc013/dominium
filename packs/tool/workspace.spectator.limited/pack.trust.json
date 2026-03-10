@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "2af27a030a22bf419220bf2a84732b3ad0eb9eda5418eda4f8f1a6caded078b9",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "workspace.spectator.limited",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "77058926f3a293bf6cc5c8474a7998bed7a051acf40c29a7a49854ae560a1ef4",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "law.spectator.limited",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "7b16326f19cc99c8695ac86267427c432b3613674880c741a094994db107383d",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "workspace.spectator.limited",
+  "schema_version": "1.0.0"
+}

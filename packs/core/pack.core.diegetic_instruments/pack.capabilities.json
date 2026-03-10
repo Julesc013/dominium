@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_processes"
+  ],
+  "deterministic_fingerprint": "79ee7d48ef0b9894e9e9f28a17f5a1e175038a147e14f05e7cce0e1366e598a3",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.core.diegetic_instruments",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "77cf2b90a63c34bd93f96a9df33262f1f4f357e5b33449a38bb0ff0122d4869f",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.earth.tiles",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

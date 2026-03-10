@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.overlay_patch"
+  ],
+  "deterministic_fingerprint": "cf97de6dddafd482a92ed1b41a1877047e20e21da5d95f2495fe3e259837d08b",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.sol.pin_minimal",
+  "schema_version": "1.0.0"
+}

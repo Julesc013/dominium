@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "642d870692265192c83fd0372c04706200459ea116840e09bd5e5462b3637b10",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.earth.srtm",
+  "schema_version": "1.0.0"
+}

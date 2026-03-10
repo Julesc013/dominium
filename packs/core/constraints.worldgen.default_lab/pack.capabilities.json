@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "04b7c19250943d302374ae53ce1ab6223b7d5b692a42df3856ce18801da10eec",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "constraints.worldgen.default_lab",
+  "schema_version": "1.0.0"
+}

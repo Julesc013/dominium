@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "a692f68fa2e70aacacdf2788f74ffa9fdef2e56ef56f79615d2dec1c22d9b9e5",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "workspace.observer.truth",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

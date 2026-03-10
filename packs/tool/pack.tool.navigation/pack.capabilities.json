@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "14cba6623ab810709b09671f65ad623aeb8f3e65241d09efa68fdaf6a3116a57",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.tool.navigation",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "1831c190992555d34b3ce0e9fe7cb470e3836db064576ee181cab0ee616e79bc",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.earth.srtm",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

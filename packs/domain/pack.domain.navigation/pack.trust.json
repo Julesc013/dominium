@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "4f50b259a64bca0e61f7dcfe7427f10ab943300ce9ac32267809f6f77725e8c4",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.domain.navigation",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

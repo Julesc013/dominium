@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "96c10a542cf71f69d99a62f5fc034d67793aa3363265e171c5b3bd6c8ee736ef",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.experience.lab_galaxy",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

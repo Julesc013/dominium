@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "440287ae5f357fa20fea5de83311be727c8a09cfd192e21bc785fab7ffd74b5e",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.sol.spice",
+  "schema_version": "1.0.0"
+}

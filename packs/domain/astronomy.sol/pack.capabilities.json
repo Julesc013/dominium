@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "d2a30d72517af7f21b3d4097f9ec506edbcb304d83baec97136d4930e0d7dc32",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "astronomy.sol",
+  "schema_version": "1.0.0"
+}

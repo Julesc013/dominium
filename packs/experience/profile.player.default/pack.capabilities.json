@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "92da87029ac68df0c330105f4d3e2c2824b27410ab080fddcb0649748665796a",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "profile.player.default",
+  "schema_version": "1.0.0"
+}

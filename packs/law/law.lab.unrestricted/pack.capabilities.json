@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "aa652ba08274749a4625fece3f6cc4341954e2d43ea49e916962c7bc53800250",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "law.lab.unrestricted",
+  "schema_version": "1.0.0"
+}

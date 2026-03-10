@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "7b1bd18e9a0acc7b1ad24ab1b869bdc26d369720cd0e9591b07b5efde8bac9da",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.sol.pin_minimal",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.official_signed"
+}

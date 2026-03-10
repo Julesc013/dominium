@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "e9d28cdae0d3f1e9ba7db82443802f4402f4cdff366d133121212b61b6bed3cb",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "profile.lab.developer",
+  "schema_version": "1.0.0"
+}

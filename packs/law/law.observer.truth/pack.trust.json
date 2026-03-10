@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "ef4fe3bc1355f9005e338d39ca1685b4d8e1304b4ede4d58ccc877706b11a47b",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "law.observer.truth",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

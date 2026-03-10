@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "c581f0203378e1413020c7a2b8fa54ec3c92d0390eb7871d4585c36cd979aad5",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "org.dominium.sol.ephemeris",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "d6961f150914587371b85de1202a79a376b7aec27a9919c5b2c9fa7249301fbc",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.law.observe_only",
+  "schema_version": "1.0.0"
+}

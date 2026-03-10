@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "8e6ef4870c5744f0adae7050050fe3b3ef8a6a06d5e538ded2d7b1af9d245c72",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.tool.log_viewer",
+  "schema_version": "1.0.0"
+}

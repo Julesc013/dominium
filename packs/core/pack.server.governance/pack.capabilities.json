@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "8214cec3047911fe228cab7cb75055c603696578a99867140d2ca50c4045b938",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.server.governance",
+  "schema_version": "1.0.0"
+}

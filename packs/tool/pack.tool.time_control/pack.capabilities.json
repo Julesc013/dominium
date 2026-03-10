@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "892dd09c10240672683721fd04a9d910b8a409bb630d9612a6b948bf499da970",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.tool.time_control",
+  "schema_version": "1.0.0"
+}

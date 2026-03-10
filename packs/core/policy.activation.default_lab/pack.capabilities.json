@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "53d319a470a18c622a830760c5104683b91fca62bfc092b6dc5f19d1fef75bdc",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "policy.activation.default_lab",
+  "schema_version": "1.0.0"
+}

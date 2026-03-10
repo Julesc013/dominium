@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "7d66549e7a28433ef973026ca77a7ee512d369fef70fe989b2fe0232945de933",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "planet.earth",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

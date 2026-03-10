@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "982ec442b74a614976f1946746bba16c04138e9c0d3b013a66f029307dd71c1c",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "planet.earth",
+  "schema_version": "1.0.0"
+}

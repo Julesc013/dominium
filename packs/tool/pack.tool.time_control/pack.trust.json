@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "87a3dcbed55d7442912d95888666590c2736127ab87e5ab80e4efc081957ce99",
+  "extensions": {
+    "official.signature_status": "unsigned",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.tool.time_control",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.local_dev"
+}

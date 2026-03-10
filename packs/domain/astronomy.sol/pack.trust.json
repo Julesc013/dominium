@@ -1,0 +1,11 @@
+{
+  "deterministic_fingerprint": "108263ef930f7f7062f4d42760bd1254dfe41990ac16963a457d56b84f12907e",
+  "extensions": {
+    "official.signature_status": "signed",
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "astronomy.sol",
+  "schema_version": "1.0.0",
+  "signature_hash": null,
+  "trust_level_id": "trust.thirdparty_signed"
+}

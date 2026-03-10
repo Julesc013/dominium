@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "940e4935c2edbd618d0410df75f16ed23e4b3e49471e21cfefa33a44b874496d",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "astronomy.milky_way",
+  "schema_version": "1.0.0"
+}

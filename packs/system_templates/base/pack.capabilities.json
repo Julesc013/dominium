@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_templates"
+  ],
+  "deterministic_fingerprint": "098eff165ba62324253fde19f5271c1cee185bc6bbf89dca0e583d32bce52343",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "base",
+  "schema_version": "1.0.0"
+}

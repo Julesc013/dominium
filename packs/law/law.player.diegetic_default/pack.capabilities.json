@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "2c668273f007c3015eb8af42c466579c05a6ac444b106a314a3f2f536d2f1d15",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "law.player.diegetic_default",
+  "schema_version": "1.0.0"
+}
