@@ -1,0 +1,26 @@
+SCHEMA: appshell/tui_panel_descriptor.schema
+schema_id: dominium.schema.appshell.tui_panel_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic TUI panel descriptors for AppShell panel composition.
+
+NON-SEMANTICS:
+- TUIPanelDescriptor is presentational only.
+- It must not mutate truth.
+
+REQUIRED SHAPE:
+record tui_panel_descriptor
+  required:
+    - schema_version: tag
+    - panel_id: id
+    - product_id: id
+    - title: text
+    - position_hint: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- TUI panel descriptors must be stable across identical builds
+- panel descriptors must not encode platform-specific widget requirements

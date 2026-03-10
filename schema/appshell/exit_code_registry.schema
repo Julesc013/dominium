@@ -1,0 +1,24 @@
+SCHEMA: appshell/exit_code_registry.schema
+schema_id: dominium.schema.appshell.exit_code_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic exit-code registry used by AppShell products.
+
+NON-SEMANTICS:
+- ExitCodeRegistry describes shell outcomes only.
+- Exit codes do not change authoritative simulation meaning.
+
+REQUIRED SHAPE:
+record exit_code_registry
+  required:
+    - schema_version: tag
+    - registry_id: id
+    - ranges: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- exit code ranges must not overlap
+- exit code interpretation must remain stable for a pinned AppShell contract version

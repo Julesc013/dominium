@@ -6,12 +6,14 @@ import argparse
 import json
 import os
 import sys
+from typing import Sequence
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from src.appshell import appshell_main
 from src.compat import descriptor_json_text, emit_product_descriptor
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
@@ -20,9 +22,10 @@ from tools.mvp.runtime_bundle import (
 )
 
 
-def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Bootstrap Dominium MVP runtime entrypoints.")
-    parser.add_argument("entrypoint", choices=("client", "server"))
+def build_parser(entrypoint: str) -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Bootstrap Dominium MVP runtime entrypoint for {}.".format(str(entrypoint).strip())
+    )
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--descriptor", action="store_true")
     parser.add_argument("--descriptor-file", default="")
@@ -49,18 +52,18 @@ def _default_ui(entrypoint: str, ui: str) -> str:
     return "gui"
 
 
-def main() -> int:
-    args = build_parser().parse_args()
+def _legacy_main(entrypoint: str, argv: Sequence[str] | None = None) -> int:
+    args = build_parser(entrypoint).parse_args(argv)
     repo_root = os.path.abspath(str(args.repo_root))
     if bool(args.descriptor) or str(args.descriptor_file or "").strip():
         emitted = emit_product_descriptor(
             repo_root,
-            product_id=str(args.entrypoint),
+            product_id=str(entrypoint),
             descriptor_file=str(args.descriptor_file or "").strip(),
         )
         print(descriptor_json_text(dict(emitted.get("descriptor") or {})))
         return 0
-    if str(args.entrypoint) == "client" and bool(args.local_singleplayer):
+    if str(entrypoint) == "client" and bool(args.local_singleplayer):
         from src.client.local_server import request_local_server_control, run_local_server_ticks, start_local_singleplayer
 
         started = start_local_singleplayer(
@@ -100,8 +103,8 @@ def main() -> int:
     try:
         payload = build_runtime_bootstrap(
             repo_root=repo_root,
-            entrypoint=str(args.entrypoint),
-            ui=_default_ui(entrypoint=str(args.entrypoint), ui=str(args.ui)),
+            entrypoint=str(entrypoint),
+            ui=_default_ui(entrypoint=str(entrypoint), ui=str(args.ui)),
             seed=str(args.seed),
             profile_bundle_path=str(args.profile_bundle),
             pack_lock_path=str(args.pack_lock),
@@ -113,6 +116,36 @@ def main() -> int:
         return 2
     print(json.dumps(payload, indent=2, sort_keys=True))
     return 0
+
+
+def client_main(argv: Sequence[str] | None = None) -> int:
+    return appshell_main(
+        product_id="client",
+        argv=argv,
+        repo_root_hint=REPO_ROOT_HINT,
+        legacy_main=lambda delegate_argv: _legacy_main("client", delegate_argv),
+        legacy_accepts_repo_root=False,
+    )
+
+
+def server_main(argv: Sequence[str] | None = None) -> int:
+    return appshell_main(
+        product_id="server",
+        argv=argv,
+        repo_root_hint=REPO_ROOT_HINT,
+        legacy_main=lambda delegate_argv: _legacy_main("server", delegate_argv),
+        legacy_accepts_repo_root=False,
+    )
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    raw_args = list(argv or sys.argv[1:])
+    if raw_args and str(raw_args[0]).strip() in {"client", "server"}:
+        return _legacy_main(str(raw_args[0]).strip(), raw_args[1:])
+    script_name = os.path.basename(sys.argv[0]).lower()
+    if "server" in script_name:
+        return server_main(raw_args)
+    return client_main(raw_args)
 
 
 if __name__ == "__main__":

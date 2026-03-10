@@ -1,0 +1,24 @@
+SCHEMA: appshell/refusal_code_registry.schema
+schema_id: dominium.schema.appshell.refusal_code_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic shell-level refusal code registry for AppShell products.
+
+NON-SEMANTICS:
+- RefusalCodeRegistry does not authorize or deny simulation actions by itself.
+- It classifies shell-layer refusals only.
+
+REQUIRED SHAPE:
+record refusal_code_registry
+  required:
+    - schema_version: tag
+    - registry_id: id
+    - refusal_codes: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- refusal codes must be unique
+- refusal codes must be deterministic and auditable

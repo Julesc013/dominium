@@ -197,6 +197,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the CAP-NEG-3 degrade ladder doctrine in CANON_INDEX/CONTRACTS_INDEX and refresh dependent governance artifacts without changing simulation semantics.",
       "expires": "2026-04-10"
+    },
+    {
+      "id": "OVR-2026-03-11-APPSHELL0-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the APPSHELL-0 shell constitution and schema anchors in CANON_INDEX/CONTRACTS_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-11"
     }
   ]
 }

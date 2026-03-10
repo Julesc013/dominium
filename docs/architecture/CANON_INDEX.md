@@ -310,6 +310,7 @@ execution artifacts and are not authoritative.
 - `docs/packs/PACK_COMPATIBILITY_MANIFEST.md`
 - `docs/packs/PACK_VERIFICATION_PIPELINE.md`
 - `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
+- `docs/appshell/APPSHELL_CONSTITUTION.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`
 - `docs/server/SERVER_SETTINGS.md`
@@ -348,6 +349,8 @@ execution artifacts and are not authoritative.
 - `docs/audit/SERVER_MVP1_RETRO_AUDIT.md`
 - `docs/audit/SERVER_MVP0_RETRO_AUDIT.md`
 - `docs/audit/SERVER_MVP_BASELINE_REPORT.md`
+- `docs/audit/APPSHELL0_RETRO_AUDIT.md`
+- `docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md`
 - `docs/audit/CAP_NEGOTIATION_BASELINE.md`
 - `docs/audit/CAP_NEG1_RETRO_AUDIT.md`
 - `docs/audit/ENDPOINT_DESCRIPTOR_BASELINE.md`

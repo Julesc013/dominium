@@ -48,3 +48,4 @@ Superseded By: none
   - 2026-03-10: refreshed for CAP-NEG-3 degrade ladder doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX degrade-discipline additions, and CAP-NEG-3 TestX additions
   - 2026-03-11: refreshed for PACK-COMPAT-0 pack compatibility manifest registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX pack-compat discipline additions, and PACK-COMPAT-0 TestX additions
   - 2026-03-11: refreshed for PACK-COMPAT-2 data format versioning registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX format-compat discipline additions, and PACK-COMPAT-2 TestX additions
+  - 2026-03-11: refreshed for APPSHELL-0 shell constitution registration in `docs/architecture/CANON_INDEX.md`/`docs/architecture/CONTRACTS_INDEX.md`, RepoX/AuditX AppShell adoption discipline additions, and APPSHELL-0 TestX additions

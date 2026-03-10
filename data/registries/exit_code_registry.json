@@ -1,0 +1,56 @@
+{
+  "schema_id": "dominium.registry.appshell.exit_code_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.appshell.exit_code_registry",
+    "registry_version": "1.0.0",
+    "ranges": [
+      {
+        "range_id": "exit.success",
+        "start_code": 0,
+        "end_code": 0,
+        "description": "Successful shell completion."
+      },
+      {
+        "range_id": "exit.usage",
+        "start_code": 10,
+        "end_code": 19,
+        "description": "Usage and command-shape errors."
+      },
+      {
+        "range_id": "exit.pack_profile",
+        "start_code": 20,
+        "end_code": 29,
+        "description": "Pack, profile, bundle, and verification errors."
+      },
+      {
+        "range_id": "exit.contract",
+        "start_code": 30,
+        "end_code": 39,
+        "description": "Determinism, contract, and compatibility enforcement errors."
+      },
+      {
+        "range_id": "exit.transport",
+        "start_code": 40,
+        "end_code": 49,
+        "description": "IPC and network-shell surface errors."
+      },
+      {
+        "range_id": "exit.refusal",
+        "start_code": 50,
+        "end_code": 59,
+        "description": "Law, refusal, and gated-capability denials."
+      },
+      {
+        "range_id": "exit.internal",
+        "start_code": 60,
+        "end_code": 69,
+        "description": "Internal shell failures."
+      }
+    ],
+    "deterministic_fingerprint": "",
+    "extensions": {
+      "official.source": "APPSHELL-0"
+    }
+  }
+}

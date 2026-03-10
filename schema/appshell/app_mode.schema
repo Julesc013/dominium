@@ -1,0 +1,26 @@
+SCHEMA: appshell/app_mode.schema
+schema_id: dominium.schema.appshell.app_mode
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a deterministic AppShell mode descriptor.
+- Bind product shell mode identifiers to stable shell semantics.
+
+NON-SEMANTICS:
+- AppMode does not mutate truth.
+- AppMode does not authorize simulation behavior.
+
+REQUIRED SHAPE:
+record app_mode
+  required:
+    - schema_version: tag
+    - mode_id: id
+    - title: text
+    - supports_console: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- mode_id must be stable and globally unique within AppShell registries
+- modes are selected outside authoritative truth mutation

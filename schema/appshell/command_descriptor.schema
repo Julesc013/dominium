@@ -1,0 +1,27 @@
+SCHEMA: appshell/command_descriptor.schema
+schema_id: dominium.schema.appshell.command_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic command descriptors for AppShell command surfaces.
+
+NON-SEMANTICS:
+- CommandDescriptor does not execute commands.
+- CommandDescriptor does not mutate truth.
+
+REQUIRED SHAPE:
+record command_descriptor
+  required:
+    - schema_version: tag
+    - command_id: id
+    - command_path: text
+    - product_ids: [id]
+    - description: text
+    - supported_mode_ids: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- command_path must be stable for a pinned AppShell contract version
+- descriptors must serialize deterministically

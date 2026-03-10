@@ -4457,6 +4457,34 @@
       },
       {
         "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "4787776bdf1c826ee59f44e3cabebd14efa5d1e9b3a0481c0d271d3aff4c4fe7",
+        "extension_key": "official.build_id",
+        "extensions": {
+          "official.description": "Deterministic build identifier surfaced by AppShell version output from endpoint descriptors.",
+          "official.source": "APPSHELL-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "8f8fdf07604c85be466585e6729f82156ab90c4f11dae7a151ff0d196cadc400",
+        "extension_key": "official.compilation_options_hash",
+        "extensions": {
+          "official.description": "Compilation options hash surfaced by AppShell version output from endpoint descriptors.",
+          "official.source": "APPSHELL-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
           "product_registry"
         ],
         "deterministic_fingerprint": "dc318db76999dccde338eade90b7ebae8912c764997d2fd847d44fb8eeaae664",
@@ -4473,11 +4501,39 @@
         "allowed_owners": [
           "*"
         ],
+        "deterministic_fingerprint": "b993cc7d2fc12950b6ac25a3aaf42969aa7e8222a12cfd23d033bd3d8d55c216",
+        "extension_key": "official.git_commit_hash",
+        "extensions": {
+          "official.description": "Source commit hash surfaced by AppShell version output from endpoint descriptors.",
+          "official.source": "APPSHELL-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
         "deterministic_fingerprint": "1054a529d55169c173ccb072276bfe4d49fea8f032af2b99553473dd5f2e0bce",
         "extension_key": "official.client_endpoint_descriptor_hash",
         "extensions": {
           "official.description": "Hash of the negotiated client endpoint descriptor.",
           "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "5375da103fbe20276b85c11a83c01412437b5cab0fb8715d23756fc7c4f5ba51",
+        "extension_key": "official.semantic_contract_registry_hash",
+        "extensions": {
+          "official.description": "Semantic contract registry hash surfaced by AppShell version output from endpoint descriptors.",
+          "official.source": "APPSHELL-0"
         },
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",

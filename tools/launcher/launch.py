@@ -15,25 +15,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from src.appshell import appshell_main  # noqa: E402
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
-from src.packs.compat import verify_pack_set  # noqa: E402
-from tools.xstack.compatx.validator import validate_instance  # noqa: E402
-from tools.xstack.packagingx import validate_dist_layout  # noqa: E402
-from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
-from tools.xstack.sessionx.creator import (  # noqa: E402
-    DEFAULT_BUDGET_POLICY_ID,
-    DEFAULT_EXPERIENCE_ID,
-    DEFAULT_FIDELITY_POLICY_ID,
-    DEFAULT_LAW_PROFILE_ID,
-    DEFAULT_PARAMETER_BUNDLE_ID,
-    DEFAULT_PRIVILEGE_LEVEL,
-    DEFAULT_SCENARIO_ID,
-    create_session_spec,
-)
-from tools.xstack.sessionx.pipeline_contract import DEFAULT_PIPELINE_ID  # noqa: E402
-from tools.xstack.sessionx.runner import boot_session_spec  # noqa: E402
-from tools.xstack.sessionx.server_gate import server_validate_transition  # noqa: E402
-from tools.xstack.sessionx.script_runner import run_intent_script  # noqa: E402
 
 
 def _norm(path: str) -> str:
@@ -44,6 +27,32 @@ def _repo_root(value: str) -> str:
     if value:
         return os.path.normpath(os.path.abspath(value))
     return REPO_ROOT_HINT
+
+
+def _launcher_defaults() -> dict:
+    from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
+    from tools.xstack.sessionx.creator import (
+        DEFAULT_BUDGET_POLICY_ID,
+        DEFAULT_EXPERIENCE_ID,
+        DEFAULT_FIDELITY_POLICY_ID,
+        DEFAULT_LAW_PROFILE_ID,
+        DEFAULT_PARAMETER_BUNDLE_ID,
+        DEFAULT_PRIVILEGE_LEVEL,
+        DEFAULT_SCENARIO_ID,
+    )
+    from tools.xstack.sessionx.pipeline_contract import DEFAULT_PIPELINE_ID
+
+    return {
+        "DEFAULT_BUNDLE_ID": DEFAULT_BUNDLE_ID,
+        "DEFAULT_BUDGET_POLICY_ID": DEFAULT_BUDGET_POLICY_ID,
+        "DEFAULT_EXPERIENCE_ID": DEFAULT_EXPERIENCE_ID,
+        "DEFAULT_FIDELITY_POLICY_ID": DEFAULT_FIDELITY_POLICY_ID,
+        "DEFAULT_LAW_PROFILE_ID": DEFAULT_LAW_PROFILE_ID,
+        "DEFAULT_PARAMETER_BUNDLE_ID": DEFAULT_PARAMETER_BUNDLE_ID,
+        "DEFAULT_PIPELINE_ID": DEFAULT_PIPELINE_ID,
+        "DEFAULT_PRIVILEGE_LEVEL": DEFAULT_PRIVILEGE_LEVEL,
+        "DEFAULT_SCENARIO_ID": DEFAULT_SCENARIO_ID,
+    }
 
 
 def _refusal(reason_code: str, message: str, remediation_hint: str, relevant_ids: Dict[str, str], path: str) -> Dict[str, object]:
@@ -143,6 +152,8 @@ def _validate_session_vs_dist(
     session_spec_path: str,
     require_bundle: str,
 ) -> Dict[str, object]:
+    from tools.xstack.compatx.validator import validate_instance
+
     spec_abs = os.path.normpath(os.path.abspath(session_spec_path))
     payload, err = _read_json(spec_abs)
     if err:
@@ -235,6 +246,8 @@ def _validate_session_vs_dist(
 
 
 def cmd_list_builds(repo_root: str, root: str) -> Dict[str, object]:
+    from tools.xstack.packagingx import validate_dist_layout
+
     root_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, root))) if not os.path.isabs(root) else os.path.normpath(root)
     rows = []
     for dist_root in _find_dist_roots(root_abs):
@@ -268,6 +281,12 @@ def cmd_run(
     write_state: bool,
     bundle_id: str,
 ) -> Dict[str, object]:
+    from src.packs.compat import verify_pack_set
+    from tools.xstack.packagingx import validate_dist_layout
+    from tools.xstack.sessionx.runner import boot_session_spec
+    from tools.xstack.sessionx.script_runner import run_intent_script
+    from tools.xstack.sessionx.server_gate import server_validate_transition
+
     dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, dist_root))) if not os.path.isabs(dist_root) else os.path.normpath(dist_root)
     dist_check = validate_dist_layout(repo_root=repo_root, dist_root=dist_abs)
     if dist_check.get("result") != "complete":
@@ -406,6 +425,8 @@ def cmd_compat_status(
     overlay_conflict_policy_id: str,
     contract_bundle_path: str,
 ) -> Dict[str, object]:
+    from src.packs.compat import verify_pack_set
+
     dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, dist_root))) if not os.path.isabs(dist_root) else os.path.normpath(dist_root)
     compat = verify_pack_set(
         repo_root=dist_abs,
@@ -452,6 +473,8 @@ def cmd_create_session(
     privilege_level: str,
     compile_outputs: bool,
 ) -> Dict[str, object]:
+    from tools.xstack.sessionx.creator import create_session_spec
+
     return create_session_spec(
         repo_root=repo_root,
         save_id=str(save_id),
@@ -478,7 +501,9 @@ def cmd_create_session(
     )
 
 
-def main() -> int:
+def _legacy_main(argv: list[str] | None = None) -> int:
+    defaults = _launcher_defaults()
+
     parser = argparse.ArgumentParser(description="Launch deterministic lab sessions from dist bundles.")
     parser.add_argument("--repo-root", default="")
     parser.add_argument("--descriptor", action="store_true")
@@ -509,18 +534,18 @@ def main() -> int:
 
     create_cmd = sub.add_parser("create-session", help="Create SessionSpec through launcher surface with declared pipeline_id")
     create_cmd.add_argument("--save-id", required=True)
-    create_cmd.add_argument("--bundle", default=DEFAULT_BUNDLE_ID)
-    create_cmd.add_argument("--pipeline-id", default=DEFAULT_PIPELINE_ID)
-    create_cmd.add_argument("--scenario-id", default=DEFAULT_SCENARIO_ID)
-    create_cmd.add_argument("--experience-id", default=DEFAULT_EXPERIENCE_ID)
-    create_cmd.add_argument("--law-profile-id", default=DEFAULT_LAW_PROFILE_ID)
-    create_cmd.add_argument("--parameter-bundle-id", default=DEFAULT_PARAMETER_BUNDLE_ID)
-    create_cmd.add_argument("--budget-policy-id", default=DEFAULT_BUDGET_POLICY_ID)
-    create_cmd.add_argument("--fidelity-policy-id", default=DEFAULT_FIDELITY_POLICY_ID)
-    create_cmd.add_argument("--privilege-level", default=DEFAULT_PRIVILEGE_LEVEL, choices=("observer", "operator", "system"))
+    create_cmd.add_argument("--bundle", default=defaults["DEFAULT_BUNDLE_ID"])
+    create_cmd.add_argument("--pipeline-id", default=defaults["DEFAULT_PIPELINE_ID"])
+    create_cmd.add_argument("--scenario-id", default=defaults["DEFAULT_SCENARIO_ID"])
+    create_cmd.add_argument("--experience-id", default=defaults["DEFAULT_EXPERIENCE_ID"])
+    create_cmd.add_argument("--law-profile-id", default=defaults["DEFAULT_LAW_PROFILE_ID"])
+    create_cmd.add_argument("--parameter-bundle-id", default=defaults["DEFAULT_PARAMETER_BUNDLE_ID"])
+    create_cmd.add_argument("--budget-policy-id", default=defaults["DEFAULT_BUDGET_POLICY_ID"])
+    create_cmd.add_argument("--fidelity-policy-id", default=defaults["DEFAULT_FIDELITY_POLICY_ID"])
+    create_cmd.add_argument("--privilege-level", default=defaults["DEFAULT_PRIVILEGE_LEVEL"], choices=("observer", "operator", "system"))
     create_cmd.add_argument("--compile-outputs", default="on", choices=("on", "off"))
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     repo_root = _repo_root(args.repo_root)
     if bool(args.descriptor) or str(args.descriptor_file or "").strip():
         emitted = emit_product_descriptor(
@@ -576,6 +601,16 @@ def main() -> int:
 
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result.get("result") == "complete" else 2
+
+
+def main(argv: list[str] | None = None) -> int:
+    return appshell_main(
+        product_id="launcher",
+        argv=argv,
+        repo_root_hint=REPO_ROOT_HINT,
+        legacy_main=_legacy_main,
+        legacy_accepts_repo_root=False,
+    )
 
 
 if __name__ == "__main__":

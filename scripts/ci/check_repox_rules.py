@@ -5109,8 +5109,21 @@ def check_all_products_emit_descriptor(repo_root):
             if expected not in text:
                 violations.append("{}: {} missing alias to {}".format(invariant_id, normalize_path(rel_path), expected))
             continue
-        required_wrapper_tokens = ("--descriptor", "tool_emit_descriptor", product_id)
-        missing = [token for token in required_wrapper_tokens if token not in text]
+        if bin_name in {"dominium_client", "dominium_server", "launcher", "setup"}:
+            if "main(sys.argv[1:])" not in text and "client_main(sys.argv[1:])" not in text and "server_main(sys.argv[1:])" not in text:
+                violations.append(
+                    "{}: {} missing AppShell-backed wrapper delegation".format(
+                        invariant_id,
+                        normalize_path(rel_path),
+                    )
+                )
+            continue
+        if bin_name in {"engine", "game", "tool_attach_console_stub"}:
+            required_wrapper_tokens = ("product_stub_cli.py", "--product-id", product_id)
+            missing = [token for token in required_wrapper_tokens if token not in text]
+        else:
+            required_wrapper_tokens = ("--descriptor", "tool_emit_descriptor", product_id)
+            missing = [token for token in required_wrapper_tokens if token not in text]
         if missing:
             violations.append(
                 "{}: {} missing wrapper descriptor marker(s): {}".format(
@@ -5207,6 +5220,194 @@ def check_no_wallclock_in_descriptor(repo_root):
                         invariant_id,
                         normalize_path(rel_path),
                         token,
+                    )
+                )
+                break
+    return violations
+
+
+def check_products_must_use_appshell(repo_root):
+    invariant_id = "INV-PRODUCTS-MUST-USE-APPSHELL"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "APPSHELL_CONSTITUTION.md")
+    bootstrap_rel = os.path.join("src", "appshell", "bootstrap.py")
+    wrapper_stub_rel = os.path.join("tools", "appshell", "product_stub_cli.py")
+    runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
+    server_main_rel = os.path.join("src", "server", "server_main.py")
+    setup_rel = os.path.join("tools", "setup", "setup_cli.py")
+    launcher_rel = os.path.join("tools", "launcher", "launch.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "mode.cli",
+            "mode.tui",
+            "mode.rendered",
+            "mode.headless",
+            "appshell must not depend on repo or XStack at runtime",
+        ),
+        bootstrap_rel: (
+            "def appshell_main(",
+            "descriptor",
+            "compat-status",
+            "verify",
+            "profiles",
+            "packs",
+            "diag",
+        ),
+        wrapper_stub_rel: (
+            "from src.appshell import appshell_main",
+            "--product-id",
+            "legacy_main=None",
+        ),
+        runtime_entry_rel: (
+            "from src.appshell import appshell_main",
+            "def client_main(",
+            "def server_main(",
+        ),
+        server_main_rel: (
+            "from src.appshell import appshell_main",
+            "legacy_main=_legacy_main",
+        ),
+        setup_rel: (
+            "from src.appshell import appshell_main",
+            "legacy_main=_legacy_main",
+        ),
+        launcher_rel: (
+            "from src.appshell import appshell_main",
+            "legacy_main=_legacy_main",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing AppShell adoption marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_adhoc_main(repo_root):
+    invariant_id = "INV-NO-ADHOC-MAIN"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    wrapper_rels = (
+        os.path.join("dist", "bin", "dominium_client"),
+        os.path.join("dist", "bin", "dominium_server"),
+        os.path.join("dist", "bin", "launcher"),
+        os.path.join("dist", "bin", "setup"),
+        os.path.join("dist", "bin", "engine"),
+        os.path.join("dist", "bin", "game"),
+        os.path.join("dist", "bin", "tool_attach_console_stub"),
+    )
+    violations = []
+    for rel_path in wrapper_rels:
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        if "tool_emit_descriptor" in text or "\"--descriptor\"" in text or "'--descriptor'" in text:
+            violations.append(
+                "{}: {} still contains wrapper-local descriptor routing".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                )
+            )
+        if "main(sys.argv[1:])" not in text and "product_stub_cli.py" not in text:
+            violations.append(
+                "{}: {} is not delegating through an AppShell-owned entrypoint".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                )
+            )
+
+    runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
+    server_main_rel = os.path.join("src", "server", "server_main.py")
+    setup_rel = os.path.join("tools", "setup", "setup_cli.py")
+    launcher_rel = os.path.join("tools", "launcher", "launch.py")
+    for rel_path in (runtime_entry_rel, server_main_rel, setup_rel, launcher_rel):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        text = read_text(path) or ""
+        if "from src.appshell import appshell_main" not in text:
+            violations.append("{}: {} missing appshell_main import".format(invariant_id, normalize_path(rel_path)))
+        if "legacy_main=_legacy_main" not in text and "lambda delegate_argv: _legacy_main(" not in text:
+            violations.append("{}: {} missing delegated legacy bootstrap".format(invariant_id, normalize_path(rel_path)))
+    return violations
+
+
+def check_offline_boot_ok(repo_root):
+    invariant_id = "INV-OFFLINE-BOOT-OK"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "APPSHELL_CONSTITUTION.md")
+    bootstrap_rel = os.path.join("src", "appshell", "bootstrap.py")
+    offline_rels = (
+        os.path.join("src", "appshell", "__init__.py"),
+        os.path.join("src", "appshell", "args_parser.py"),
+        os.path.join("src", "appshell", "bootstrap.py"),
+        os.path.join("src", "appshell", "command_registry.py"),
+        os.path.join("src", "appshell", "compat_adapter.py"),
+        os.path.join("src", "appshell", "config_loader.py"),
+        os.path.join("src", "appshell", "console_repl.py"),
+        os.path.join("src", "appshell", "logging_sink.py"),
+        os.path.join("src", "appshell", "mode_dispatcher.py"),
+        os.path.join("src", "appshell", "pack_verifier_adapter.py"),
+        os.path.join("src", "appshell", "rendered_stub.py"),
+        os.path.join("src", "appshell", "tui_stub.py"),
+        os.path.join("tools", "appshell", "product_stub_cli.py"),
+    )
+
+    violations = []
+    doctrine_path = os.path.join(repo_root, doctrine_rel.replace("/", os.sep))
+    doctrine_text = read_text(doctrine_path) or ""
+    required_doctrine_tokens = (
+        "offline operation",
+        "direct console access",
+        "deterministic logging",
+        "appshell must not depend on repo or XStack at runtime",
+    )
+    missing = [token for token in required_doctrine_tokens if token not in doctrine_text]
+    if missing:
+        violations.append(
+            "{}: {} missing offline-boot doctrine marker(s): {}".format(
+                invariant_id,
+                normalize_path(doctrine_rel),
+                ", ".join(missing[:4]),
+            )
+        )
+
+    bootstrap_text = read_text(os.path.join(repo_root, bootstrap_rel.replace("/", os.sep))) or ""
+    if "verify_pack_root(" not in bootstrap_text or "emit_descriptor_payload(" not in bootstrap_text:
+        violations.append("{}: {} missing offline bootstrap adapter markers".format(invariant_id, normalize_path(bootstrap_rel)))
+
+    forbidden_tokens = ("tools.xstack", "xstack.", "requests.", "urllib.request", "socket.create_connection(")
+    for rel_path in offline_rels:
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: forbidden offline-boot token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel_path),
                     )
                 )
                 break
@@ -12607,6 +12808,9 @@ def main() -> int:
                 lambda: check_solver_registry_contracts(repo_root),
                 lambda: check_forbidden_legacy_gating_tokens(repo_root),
                 lambda: check_runtime_no_xstack_imports(repo_root),
+                lambda: check_products_must_use_appshell(repo_root),
+                lambda: check_no_adhoc_main(repo_root),
+                lambda: check_offline_boot_ok(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },

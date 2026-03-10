@@ -131,6 +131,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY`
 - `INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION`
 - `INV-ALL-PRODUCTS-HAVE-ENDPOINT-DESCRIPTOR`
+- `INV-PRODUCTS-MUST-USE-APPSHELL`
+- `INV-NO-ADHOC-MAIN`
+- `INV-OFFLINE-BOOT-OK`
 - `INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS`
 - `INV-DEGRADE-PLAN-DECLARED`
 - `INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY`
@@ -575,6 +578,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when descriptor engine/tooling starts reading wall-clock or other volatile host state while building endpoint descriptors.
 - Fails when descriptor emission can vary because of timestamps, clocks, ad hoc randomness, or volatile UUID generation.
 - Preserves deterministic descriptor identity and reproducible offline manifests.
+
+### INV-PRODUCTS-MUST-USE-APPSHELL
+
+- Fails when the AppShell constitution, shared bootstrap, or product stub surfaces disappear from the governed runtime shell.
+- Fails when the MVP client/server/setup/launcher entrypoints stop importing `appshell_main(...)` and delegating through the shared bootstrap.
+- Preserves a single deterministic shell lifecycle across products instead of fragmented startup behavior.
+
+### INV-NO-ADHOC-MAIN
+
+- Fails when governed `dist/bin` wrappers regain wrapper-local descriptor handling or other entrypoint-specific shell branches.
+- Fails when active product mains stop delegating to AppShell and fall back to ad hoc argument parsing at the top-level entrypoint boundary.
+- Preserves one AppShell-owned outer shell instead of product-by-product startup drift.
+
+### INV-OFFLINE-BOOT-OK
+
+- Fails when the AppShell constitution stops declaring offline operation, deterministic logging, or runtime independence from repo/XStack surfaces.
+- Fails when the shared AppShell runtime starts importing XStack-only modules or network/bootstrap dependencies that would block portable offline boot.
+- Preserves the removable, offline-first shell spine required for portable installs and future IPC/TUI work.
 
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 

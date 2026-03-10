@@ -235,6 +235,9 @@ document is binding but still expected to grow or sharpen.
 
 ## Schema and contract anchors
 
+AppShell shell-lifecycle anchor:
+
+- `docs/appshell/APPSHELL_CONSTITUTION.md`
 
 Schemas are the authoritative data-shape contracts. Start here:
 
@@ -295,6 +298,11 @@ Schemas are the authoritative data-shape contracts. Start here:
 
 - `schema/profile.schema`
 - `schema/universe/universe_contract_bundle.schema`
+- `schema/appshell/app_mode.schema`
+- `schema/appshell/exit_code_registry.schema`
+- `schema/appshell/refusal_code_registry.schema`
+- `schema/appshell/command_descriptor.schema`
+- `schema/appshell/tui_panel_descriptor.schema`
 
 
 

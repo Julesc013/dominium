@@ -17,8 +17,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from src.appshell import appshell_main
 from src.compat import descriptor_json_text, emit_product_descriptor
-from src.packs.compat import verify_pack_set, write_pack_compatibility_outputs
 
 
 DEFAULT_CAPABILITY_BASELINE = "BASELINE_MAINLINE_CORE"
@@ -489,6 +489,8 @@ def _verify_pack_root(
     schema_root: str,
     universe_contract_bundle_path: str,
 ) -> dict:
+    from src.packs.compat import verify_pack_set
+
     return verify_pack_set(
         repo_root=root,
         bundle_id=str(bundle_id or "").strip(),
@@ -507,6 +509,8 @@ def _write_verification_outputs(
     report_path: Optional[str],
     lock_path: Optional[str],
 ) -> dict:
+    from src.packs.compat import write_pack_compatibility_outputs
+
     report_target = normalize_path(report_path or os.path.join(root, DEFAULT_COMPAT_REPORT))
     lock_target = normalize_path(lock_path or os.path.join(root, "pack_lock.json"))
     return write_pack_compatibility_outputs(
@@ -1247,7 +1251,7 @@ def handle_rollback(args: argparse.Namespace, deterministic: bool) -> int:
     return code
 
 
-def main() -> int:
+def _legacy_main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Dominium setup CLI (offline-first, transactional).")
     ap.add_argument("--descriptor", action="store_true")
     ap.add_argument("--descriptor-file", default="")
@@ -1391,7 +1395,7 @@ def main() -> int:
     diagnose_cmd.add_argument("--contract-bundle-path", default="")
     diagnose_cmd.add_argument("--pack-id", required=True)
 
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     deterministic = parse_deterministic(args.deterministic)
     if bool(args.descriptor) or str(args.descriptor_file or "").strip():
@@ -1451,6 +1455,16 @@ def main() -> int:
 
     ap.print_help()
     return EXIT_USAGE
+
+
+def main(argv: list[str] | None = None) -> int:
+    return appshell_main(
+        product_id="setup",
+        argv=argv,
+        repo_root_hint=REPO_ROOT_HINT,
+        legacy_main=_legacy_main,
+        legacy_accepts_repo_root=False,
+    )
 
 
 if __name__ == "__main__":

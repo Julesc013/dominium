@@ -373,6 +373,46 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-PRODUCTS-MUST-USE-APPSHELL",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/APPSHELL_CONSTITUTION.md",
+        "src/appshell",
+        "tools/appshell/product_stub_cli.py",
+        "tools/mvp/runtime_entry.py",
+        "src/server/server_main.py",
+        "tools/setup/setup_cli.py",
+        "tools/launcher/launch.py",
+        "dist/bin"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-products-must-use-appshell",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-ADHOC-MAIN",
+      "severity": "FAIL",
+      "scope_paths": [
+        "tools/mvp/runtime_entry.py",
+        "src/server/server_main.py",
+        "tools/setup/setup_cli.py",
+        "tools/launcher/launch.py",
+        "dist/bin"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-adhoc-main",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-OFFLINE-BOOT-OK",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/APPSHELL_CONSTITUTION.md",
+        "src/appshell",
+        "tools/appshell/product_stub_cli.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-offline-boot-ok",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [

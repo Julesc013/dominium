@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Refusal Code Registry Schema",
+  "version": "1.0.0",
+  "description": "Deterministic AppShell refusal-code registry.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_id",
+    "refusal_codes",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "registry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "refusal_codes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "refusal_code",
+          "family",
+          "description"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "refusal_code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "family": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
