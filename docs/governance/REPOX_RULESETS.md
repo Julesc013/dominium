@@ -175,6 +175,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-BODY-MOTION-PROCESS-ONLY`
 - `INV-COLLISION-DETERMINISTIC`
 - `INV-NO-POSITION-WRITE-BYPASS`
+- `INV-TOOLS-REQUIRE-ENTITLEMENT`
+- `INV-NO-TRUTH-LEAK-IN-SCANS`
+- `INV-TERRAIN-EDITS-PROCESS-ONLY`
 - `INV-NO-TRUTH-IN-UI`
 - `INV-VIEW-ARTIFACT-ONLY`
 - `INV-NO-BLOCKING-WORLDGEN-IN-UI`
@@ -689,6 +692,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the EMB-0 runtime surface loses the explicit `process.body_apply_input` and `process.body_tick` motion pathway markers.
 - Fails when embodiment helper modules start mutating authoritative body state directly instead of emitting process-governed rows.
 - Preserves process-only body motion, PHYS force logging, and lawful camera/render separation.
+
+### INV-TOOLS-REQUIRE-ENTITLEMENT
+
+- Fails when EMB-1 tool capability rows stop declaring explicit `required_entitlement_id` bindings.
+- Fails when toolbelt wrappers stop routing access checks through the registry-backed entitlement/access-policy evaluator.
+- Preserves tools as lawful capability affordances instead of implicit always-on debug actions.
+
+### INV-NO-TRUTH-LEAK-IN-SCANS
+
+- Fails when the EMB-1 scanner surface stops declaring itself as a derived scan artifact built from inspection, field, and provenance inputs.
+- Fails when scanner/runtime surfaces introduce direct `truth_model`, `universe_state`, or process-runtime reads.
+- Preserves scanner summaries as observer-safe derived views instead of a hidden truth inspection bypass.
+
+### INV-TERRAIN-EDITS-PROCESS-ONLY
+
+- Fails when EMB-1 terrain edit affordances stop routing through `process.geometry_remove`, `process.geometry_add`, and `process.geometry_cut`.
+- Fails when toolbelt or CLI surfaces introduce direct terrain-state mutation markers outside the process runtime.
+- Preserves terrain editing as a lawful GEO-7 process path rather than an ad hoc tool-side write path.
 
 ### INV-NO-TRUTH-IN-UI
 

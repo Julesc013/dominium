@@ -505,17 +505,28 @@ EARTH_LIGHTING_RENDER_TRUTH_FORBIDDEN_TOKENS = EARTH_SKY_RENDER_TRUTH_FORBIDDEN_
 EARTH_SHADOW_BOUNDED_FORBIDDEN_TOKENS = ("while ", "recursion", "recurse", "queue.append(", "stack.append(")
 EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.md")
 EARTH6_COLLISION_DOC_REL = os.path.join("docs", "embodiment", "TERRAIN_COLLISION_MODEL.md")
+EMB1_TOOLBELT_DOC_REL = os.path.join("docs", "embodiment", "MVP_TOOLBELT_MODEL.md")
 EMB_BODY_SYSTEM_REL = os.path.join("src", "embodiment", "body", "body_system.py")
 EARTH6_COLLISION_PROVIDER_REL = os.path.join("src", "embodiment", "collision", "macro_heightfield_provider.py")
 EMB_LENS_ENGINE_REL = os.path.join("src", "embodiment", "lens", "lens_engine.py")
+EMB1_TERRAIN_TOOL_REL = os.path.join("src", "embodiment", "tools", "terrain_edit_tool.py")
+EMB1_SCANNER_TOOL_REL = os.path.join("src", "embodiment", "tools", "scanner_tool.py")
+EMB1_LOGIC_TOOL_REL = os.path.join("src", "embodiment", "tools", "logic_tool.py")
+EMB1_TELEPORT_TOOL_REL = os.path.join("src", "embodiment", "tools", "teleport_tool.py")
+EMB1_TOOLBELT_ENGINE_REL = os.path.join("src", "embodiment", "tools", "toolbelt_engine.py")
 EMB_BODY_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "body_template_registry.json")
 EARTH6_COLLISION_PROVIDER_REGISTRY_REL = os.path.join("data", "registries", "collision_provider_registry.json")
 EARTH6_SLOPE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "movement_slope_params_registry.json")
 EMB_LENS_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "lens_profile_registry.json")
 EMB_SYSTEM_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "system_template_registry.json")
+EMB1_TOOL_CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "tool_capability_registry.json")
+EMB1_ENTITLEMENT_REGISTRY_REL = os.path.join("data", "registries", "entitlement_registry.json")
 EMB_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
 EARTH6_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "earth6_probe.py")
 EARTH6_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_movement_window.py")
+EMB1_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "emb1_probe.py")
+EMB1_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_tool_session.py")
+EMB1_CLI_TOOL_REL = os.path.join("tools", "embodiment", "toolbelt_cli.py")
 UX_VIEWER_SHELL_REL = os.path.join("src", "client", "ui", "viewer_shell.py")
 UX_MAP_VIEWS_REL = os.path.join("src", "client", "ui", "map_views.py")
 UX_INSPECT_PANELS_REL = os.path.join("src", "client", "ui", "inspect_panels.py")
@@ -7260,6 +7271,178 @@ def check_no_position_write_bypass(repo_root):
     return violations
 
 
+def check_tools_require_entitlement(repo_root):
+    invariant_id = "INV-TOOLS-REQUIRE-ENTITLEMENT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EMB1_TOOL_CAPABILITY_REGISTRY_REL: (
+            '"tool_id": "tool.terrain_edit"',
+            '"required_entitlement_id": "ent.tool.terrain_edit"',
+            '"tool_id": "tool.scanner_basic"',
+            '"required_entitlement_id": "ent.tool.scan"',
+            '"tool_id": "tool.logic_probe"',
+            '"required_entitlement_id": "ent.tool.logic_probe"',
+            '"tool_id": "tool.logic_analyzer"',
+            '"required_entitlement_id": "ent.tool.logic_trace"',
+            '"tool_id": "tool.teleport"',
+            '"required_entitlement_id": "ent.tool.teleport"',
+        ),
+        EMB1_ENTITLEMENT_REGISTRY_REL: (
+            '"entitlement_id": "ent.tool.terrain_edit"',
+            '"entitlement_id": "ent.tool.scan"',
+            '"entitlement_id": "ent.tool.logic_probe"',
+            '"entitlement_id": "ent.tool.logic_trace"',
+            '"entitlement_id": "ent.tool.teleport"',
+        ),
+        EMB1_TOOLBELT_ENGINE_REL: (
+            "required_entitlement_id",
+            '"refusal.tool.entitlement_missing"',
+            "evaluate_tool_access(",
+        ),
+        EMB1_TERRAIN_TOOL_REL: ("evaluate_tool_access(tool_id=\"tool.terrain_edit\"",),
+        EMB1_SCANNER_TOOL_REL: ("evaluate_tool_access(", "\"tool.scanner_basic\""),
+        EMB1_LOGIC_TOOL_REL: ("evaluate_tool_access(tool_id=\"tool.logic_probe\"", "evaluate_tool_access(tool_id=\"tool.logic_analyzer\""),
+        EMB1_TELEPORT_TOOL_REL: ("evaluate_tool_access(tool_id=\"tool.teleport\"",),
+        EMB1_TOOLBELT_DOC_REL: (
+            "Tool use is granted by `AuthorityContext` and constrained by `LawProfile`.",
+            "`ent.tool.terrain_edit`",
+            "`ent.tool.scan`",
+            "`ent.tool.logic_probe`",
+            "`ent.tool.logic_trace`",
+            "`ent.tool.teleport`",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing entitlement-gating marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_truth_leak_in_scans(repo_root):
+    invariant_id = "INV-NO-TRUTH-LEAK-IN-SCANS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EMB1_SCANNER_TOOL_REL: (
+            '"source_kind": "derived.scan_result"',
+            "inspection_snapshot",
+            "field_values",
+            "property_origin_result",
+            '"used_tool_ids": ["tool.geo.explain_property_origin"]',
+        ),
+        UX_INSPECT_PANELS_REL: (
+            "build_scan_result_panel(",
+            'panel.inspect.scan_result',
+        ),
+        EMB1_TOOLBELT_DOC_REL: (
+            "scanner output may only be built from inspection snapshots, field summaries, and explain/provenance artifacts",
+            "direct truth reads from scanners or UI tools",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing scan-derived marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("truth_model", "universe_state", "process_runtime")
+    path = os.path.join(repo_root, EMB1_SCANNER_TOOL_REL.replace("/", os.sep))
+    if os.path.isfile(path):
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: scanner truth-leak token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(EMB1_SCANNER_TOOL_REL),
+                    )
+                )
+                break
+    return violations
+
+
+def check_terrain_edits_process_only(repo_root):
+    invariant_id = "INV-TERRAIN-EDITS-PROCESS-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        EMB1_TERRAIN_TOOL_REL: (
+            '"process.geometry_remove"',
+            '"process.geometry_add"',
+            '"process.geometry_cut"',
+            '"process_sequence"',
+        ),
+        EMB1_TOOLBELT_DOC_REL: (
+            "Terrain edits are canonical mutation requests.",
+            "No UI or tool may mutate terrain state directly.",
+        ),
+        EMB1_CLI_TOOL_REL: (
+            "build_mine_at_cursor_task(",
+            "build_fill_at_cursor_task(",
+            "build_cut_trench_task(",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing process-only terrain marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("geometry_cell_states[", "geometry_state[", "terrain_state[")
+    path = os.path.join(repo_root, EMB1_TERRAIN_TOOL_REL.replace("/", os.sep))
+    if os.path.isfile(path):
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: direct terrain mutation token '{}' forbidden in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(EMB1_TERRAIN_TOOL_REL),
+                    )
+                )
+                break
+    return violations
+
+
 def check_refinement_budgeted(repo_root):
     invariant_id = "INV-REFINEMENT-BUDGETED"
     if is_override_active(repo_root, invariant_id):
@@ -10625,6 +10808,8 @@ def main() -> int:
                 lambda: check_body_motion_process_only(repo_root),
                 lambda: check_collision_deterministic(repo_root),
                 lambda: check_no_position_write_bypass(repo_root),
+                lambda: check_tools_require_entitlement(repo_root),
+                lambda: check_terrain_edits_process_only(repo_root),
             ],
         },
         {
@@ -10641,6 +10826,7 @@ def main() -> int:
                 lambda: check_earth_views_derived_only(repo_root),
                 lambda: check_no_truth_read_in_render(repo_root),
                 lambda: check_no_blocking_worldgen_in_ui(repo_root),
+                lambda: check_no_truth_leak_in_scans(repo_root),
             ],
         },
         {

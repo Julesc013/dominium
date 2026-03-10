@@ -1103,6 +1103,45 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-TOOLS-REQUIRE-ENTITLEMENT",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/tools/toolbelt_engine.py",
+        "src/embodiment/tools/terrain_edit_tool.py",
+        "src/embodiment/tools/scanner_tool.py",
+        "src/embodiment/tools/logic_tool.py",
+        "src/embodiment/tools/teleport_tool.py",
+        "data/registries/tool_capability_registry.json",
+        "data/registries/entitlement_registry.json",
+        "docs/embodiment/MVP_TOOLBELT_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-tools-require-entitlement",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-TRUTH-LEAK-IN-SCANS",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/tools/scanner_tool.py",
+        "src/client/ui/inspect_panels.py",
+        "docs/embodiment/MVP_TOOLBELT_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-truth-leak-in-scans",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-TERRAIN-EDITS-PROCESS-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/embodiment/tools/terrain_edit_tool.py",
+        "tools/embodiment/toolbelt_cli.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "docs/embodiment/MVP_TOOLBELT_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-terrain-edits-process-only",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-TRUTH-IN-UI",
       "severity": "FAIL",
       "scope_paths": [
