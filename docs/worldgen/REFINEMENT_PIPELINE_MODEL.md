@@ -66,7 +66,16 @@ No wall-clock order is allowed.
 
 The refinement cache key is:
 
-`H(universe_identity_hash, universe_contract_bundle_hash, generator_version_id, realism_profile_id, overlay_manifest_hash, mod_policy_id, geo_cell_key, refinement_level)`
+`cache_key = H(`
+`  universe_identity_hash,`
+`  universe_contract_bundle_hash,`
+`  generator_version_id,`
+`  realism_profile_id,`
+`  overlay_manifest_hash,`
+`  mod_policy_id,`
+`  geo_cell_key,`
+`  refinement_level`
+`)`
 
 The cache key must not omit semantic pins that affect replay, overlay meaning,
 or mod-policy behavior.
@@ -122,6 +131,8 @@ MW-4 does not promise that every requested region is instantly refined.
 It guarantees that:
 
 - traversal and teleport stay responsive
+- movement/teleport never blocks on generation
+- UI shows coarse view until refined
 - coarse state remains available while refinement is pending
 - refinement status is exposed as a derived view surface
 - canonical refinement requests are replayable

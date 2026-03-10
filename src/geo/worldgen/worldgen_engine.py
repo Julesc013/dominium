@@ -15,6 +15,7 @@ from src.fields import build_field_cell, build_field_layer
 from src.geo.edit import build_geometry_cell_state
 from src.geo.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key
 from src.geo.index.object_id_engine import geo_object_id
+from src.worldgen.refinement.refinement_cache import build_refinement_cache_key
 from src.worldgen.mw.mw_cell_generator import (
     generate_mw_cell_payload,
     normalize_star_system_artifact_rows,
@@ -684,20 +685,32 @@ def _cache_key(
     worldgen_request: Mapping[str, object],
     generator_version_id: str,
     realism_profile_id: str,
+    universe_contract_bundle_hash: str = "",
+    overlay_manifest_hash: str = "",
+    mod_policy_id: str = "",
     current_tick: int = 0,
 ) -> str:
     request = normalize_worldgen_request(worldgen_request)
-    return canonical_sha256(
-        {
-            "universe_seed": str(_as_map(universe_identity).get("global_seed", "")),
-            "geo_cell_key": _semantic_cell_key(_as_map(request.get("geo_cell_key"))),
-            "geo_cell_key_extensions": _as_map(_as_map(request.get("geo_cell_key")).get("extensions")),
-            "refinement_level": int(max(0, _as_int(request.get("refinement_level", 0), 0))),
-            "generator_version_id": str(generator_version_id),
-            "realism_profile_id": str(realism_profile_id),
-            "current_tick": int(max(0, _as_int(current_tick, 0))),
-            "request_extensions": _as_map(request.get("extensions")),
-        }
+    del current_tick
+    identity_payload = _as_map(universe_identity)
+    return build_refinement_cache_key(
+        universe_identity_hash=_resolved_universe_identity_hash(identity_payload),
+        universe_contract_bundle_hash=(
+            str(universe_contract_bundle_hash or "").strip()
+            or str(identity_payload.get("universe_contract_bundle_hash", "")).strip()
+        ),
+        generator_version_id=str(generator_version_id),
+        realism_profile_id=str(realism_profile_id),
+        overlay_manifest_hash=(
+            str(overlay_manifest_hash or "").strip()
+            or str(_as_map(request.get("extensions")).get("overlay_manifest_hash", "")).strip()
+        ),
+        mod_policy_id=(
+            str(mod_policy_id or "").strip()
+            or str(_as_map(request.get("extensions")).get("mod_policy_id", "")).strip()
+        ),
+        geo_cell_key=_as_map(request.get("geo_cell_key")),
+        refinement_level=int(max(0, _as_int(request.get("refinement_level", 0), 0))),
     )
 
 
@@ -740,6 +753,9 @@ def generate_worldgen_result(
     worldgen_request: Mapping[str, object] | None,
     generator_version_id: str = "",
     realism_profile_id: str = "",
+    universe_contract_bundle_hash: str = "",
+    overlay_manifest_hash: str = "",
+    mod_policy_id: str = "",
     realism_profile_registry_payload: Mapping[str, object] | None = None,
     generator_version_registry_payload: Mapping[str, object] | None = None,
     current_tick: int = 0,
@@ -794,6 +810,9 @@ def generate_worldgen_result(
         worldgen_request=request,
         generator_version_id=resolved_generator_version_id,
         realism_profile_id=resolved_realism_profile_id,
+        universe_contract_bundle_hash=str(universe_contract_bundle_hash or "").strip(),
+        overlay_manifest_hash=str(overlay_manifest_hash or "").strip(),
+        mod_policy_id=str(mod_policy_id or "").strip(),
         current_tick=current_tick_value,
     )
     cached = _cache_lookup(cache_key) if cache_enabled else None
@@ -1039,6 +1058,9 @@ def generate_worldgen_result(
         "surface_summary": _as_map(surface_payload.get("surface_summary")),
         "generator_version_id": resolved_generator_version_id,
         "realism_profile_id": resolved_realism_profile_id,
+        "universe_contract_bundle_hash": str(universe_contract_bundle_hash or "").strip(),
+        "overlay_manifest_hash": str(overlay_manifest_hash or "").strip(),
+        "mod_policy_id": str(mod_policy_id or "").strip(),
         "cache_key": cache_key,
         "deterministic_fingerprint": "",
     }
