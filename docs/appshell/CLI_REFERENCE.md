@@ -21,7 +21,10 @@ This reference is generated from `data/registries/command_registry.json` and
 | `profiles` | Alias of `profiles list` for deterministic bundle enumeration. | - |
 | `verify` | Alias of `packs verify` for offline pack/profile verification. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
 | `version` | Emit deterministic product version metadata and build identity. | - |
+| `console attach` | Attach to a local IPC console endpoint through CAP-NEG negotiation. | `refusal.connection.negotiation_mismatch`, `refusal.connection.no_negotiation`, `refusal.io.invalid_args`, `refusal.law.attach_denied` |
+| `console detach` | Detach a logical local IPC console session. | `refusal.io.invalid_args` |
 | `console enter` | Open the deterministic REPL console session stub for the current product. | - |
+| `console sessions` | List discovered local IPC console endpoints in deterministic order. | `refusal.io.invalid_args` |
 | `diag snapshot` | Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors. | `refusal.io.invalid_args` |
 | `packs build-lock` | Verify packs offline and emit a deterministic pack lock plus compatibility report. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
 | `packs list` | List available pack manifests in deterministic order. | `refusal.io.invalid_args` |
@@ -50,6 +53,9 @@ This reference is generated from `data/registries/command_registry.json` and
 | --- | --- | --- |
 | `refusal.compat.*` | `30` | Compatibility and negotiation failures map to the contract/compatibility range. |
 | `refusal.compat.feature_disabled` | `50` | Negotiated feature-disable refusals map to the refusal range. |
+| `refusal.connection.*` | `40` | Connection and attach handshake failures map to the transport/IPC range unless explicitly overridden. |
+| `refusal.connection.negotiation_mismatch` | `40` | Negotiation record mismatches on attach/connection map to the transport range. |
+| `refusal.connection.no_negotiation` | `40` | Missing mandatory attach/connection negotiation maps to the transport range. |
 | `refusal.contract.*` | `30` | Contract mismatches map to the contract/compatibility range. |
 | `refusal.debug.*` | `50` | Debug/gating refusals map to the refusal range except where explicitly overridden. |
 | `refusal.debug.command_unknown` | `10` | Unknown registered-command tokens map to usage-range exits. |
@@ -73,7 +79,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `profiles`: Alias of `profiles list` for deterministic bundle enumeration.
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
+- `console attach`: Attach to a local IPC console endpoint through CAP-NEG negotiation.
+- `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -96,7 +105,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `profiles`: Alias of `profiles list` for deterministic bundle enumeration.
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
+- `console attach`: Attach to a local IPC console endpoint through CAP-NEG negotiation.
+- `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -116,7 +128,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `profiles`: Alias of `profiles list` for deterministic bundle enumeration.
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
+- `console attach`: Attach to a local IPC console endpoint through CAP-NEG negotiation.
+- `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -136,7 +151,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `profiles`: Alias of `profiles list` for deterministic bundle enumeration.
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
+- `console attach`: Attach to a local IPC console endpoint through CAP-NEG negotiation.
+- `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -157,7 +175,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `profiles`: Alias of `profiles list` for deterministic bundle enumeration.
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
+- `console attach`: Attach to a local IPC console endpoint through CAP-NEG negotiation.
+- `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -178,7 +199,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `profiles`: Alias of `profiles list` for deterministic bundle enumeration.
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
+- `console attach`: Attach to a local IPC console endpoint through CAP-NEG negotiation.
+- `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -199,7 +223,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `profiles`: Alias of `profiles list` for deterministic bundle enumeration.
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
+- `console attach`: Attach to a local IPC console endpoint through CAP-NEG negotiation.
+- `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.

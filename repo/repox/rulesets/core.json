@@ -525,6 +525,40 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-IPC-ATTACH-NEGOTIATED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/IPC_ATTACH_CONSOLES.md",
+        "src/appshell/ipc",
+        "src/appshell/commands/command_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-ipc-attach-negotiated",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-IPC-SEQ-NO-MONOTONIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "schema/ipc",
+        "schemas",
+        "src/appshell/ipc",
+        "tools/appshell/tool_replay_ipc_attach.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-ipc-seq-no-monotonic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-PRIVILEGE-ESCALATION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/IPC_ATTACH_CONSOLES.md",
+        "src/appshell/ipc",
+        "src/appshell/commands/command_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-privilege-escalation",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [

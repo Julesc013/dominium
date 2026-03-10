@@ -1,0 +1,25 @@
+SCHEMA: ipc/console_io_message.schema
+schema_id: dominium.schema.ipc.console_io_message
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic console request/response payloads carried over AppShell IPC.
+
+NON-SEMANTICS:
+- ConsoleIOMessage does not imply shell escape or OS command execution.
+- ConsoleIOMessage does not bypass command registry refusal handling.
+
+REQUIRED SHAPE:
+record console_io_message
+  required:
+    - schema_version: tag
+    - kind: enum[cmd_request|cmd_response|stdout|stderr]
+    - text: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- text must remain bounded and transport-safe
+- messages must be stable for the same command/response inputs
+- command payloads must pass through negotiated and authorized AppShell surfaces only

@@ -312,6 +312,7 @@ execution artifacts and are not authoritative.
 - `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
 - `docs/appshell/APPSHELL_CONSTITUTION.md`
 - `docs/appshell/COMMANDS_AND_REFUSALS.md`
+- `docs/appshell/IPC_ATTACH_CONSOLES.md`
 - `docs/appshell/LOGGING_AND_TRACING.md`
 - `docs/appshell/TUI_FRAMEWORK.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
@@ -356,8 +357,10 @@ execution artifacts and are not authoritative.
 - `docs/audit/APPSHELL1_RETRO_AUDIT.md`
 - `docs/audit/APPSHELL2_RETRO_AUDIT.md`
 - `docs/audit/APPSHELL3_RETRO_AUDIT.md`
+- `docs/audit/APPSHELL4_RETRO_AUDIT.md`
 - `docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md`
 - `docs/audit/APPSHELL_COMMANDS_BASELINE.md`
+- `docs/audit/APPSHELL_IPC_BASELINE.md`
 - `docs/audit/APPSHELL_LOGGING_BASELINE.md`
 - `docs/audit/APPSHELL_TUI_BASELINE.md`
 - `docs/appshell/CLI_REFERENCE.md`

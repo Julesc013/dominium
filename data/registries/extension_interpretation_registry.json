@@ -301,14 +301,11 @@
         "value_type": "any"
       },
       {
-        "extension_key": "mod.unknown.allowed_process_ids",
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "value_type": "any",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "profile_gate_required": "extensions.default",
         "deterministic_fingerprint": "8b6d20e5b225ea15afa0c8afc80a6eee15cf93aeec5b912c17d3edc2dba6be4c",
+        "extension_key": "mod.unknown.allowed_process_ids",
         "extensions": {
           "legacy_alias_for": "allowed_process_ids",
           "legacy_status": "legacy_bare_key",
@@ -316,7 +313,10 @@
             "src/embodiment/tools/toolbelt_engine.py"
           ],
           "source": "EMB1-2"
-        }
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "any"
       },
       {
         "allowed_owners": [
@@ -1237,14 +1237,11 @@
         "value_type": "any"
       },
       {
-        "extension_key": "mod.unknown.display_name",
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "value_type": "any",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "profile_gate_required": "extensions.default",
         "deterministic_fingerprint": "8f2fef964c43d2e2c0a6759d2765c7a44c82af6213c6ae3a3f79cb1aaac5e438",
+        "extension_key": "mod.unknown.display_name",
         "extensions": {
           "legacy_alias_for": "display_name",
           "legacy_status": "legacy_bare_key",
@@ -1252,7 +1249,10 @@
             "src/embodiment/tools/toolbelt_engine.py"
           ],
           "source": "EMB1-2"
-        }
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "any"
       },
       {
         "allowed_owners": [
@@ -1639,6 +1639,26 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
         "value_type": "any"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.fallback_capability_ids",
+        "extensions": {
+          "legacy_alias_for": "fallback_capability_ids",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Ordered substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
       },
       {
         "allowed_owners": [
@@ -2233,6 +2253,25 @@
       },
       {
         "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.law_profile_id_override",
+        "extensions": {
+          "legacy_alias_for": "law_profile_id_override",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "LawProfile override applied when CAP-NEG negotiation forces read-only mode.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
           "*"
         ],
         "deterministic_fingerprint": "ee766392d2b905a534245002bdfe0655f6ff0a416afb5e99d160c8166f2d0af8",
@@ -2459,14 +2498,11 @@
         "value_type": "any"
       },
       {
-        "extension_key": "mod.unknown.max_trace_duration_ticks",
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "value_type": "any",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "profile_gate_required": "extensions.default",
         "deterministic_fingerprint": "942b6e581a4f95d90a7b4e5e5969b24d9cc46ebfb55b71425437dcb14e3e3ee3",
+        "extension_key": "mod.unknown.max_trace_duration_ticks",
         "extensions": {
           "legacy_alias_for": "max_trace_duration_ticks",
           "legacy_status": "legacy_bare_key",
@@ -2474,7 +2510,10 @@
             "src/embodiment/tools/logic_tool.py"
           ],
           "source": "EMB1-2"
-        }
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "any"
       },
       {
         "allowed_owners": [
@@ -3783,6 +3822,46 @@
       },
       {
         "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.substitute_capability_id",
+        "extensions": {
+          "legacy_alias_for": "substitute_capability_id",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Explicit substitute capability id chosen by a CAP-NEG degrade rule.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.substitute_capability_ids",
+        "extensions": {
+          "legacy_alias_for": "substitute_capability_ids",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Alternative substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
           "*"
         ],
         "deterministic_fingerprint": "1394b2638949f21669cb099b1177d31f60b7a5773ca5e802943984dc48486d30",
@@ -4331,14 +4410,11 @@
         "value_type": "any"
       },
       {
-        "extension_key": "mod.unknown.ui_command_id",
         "allowed_owners": [
           "tool_capabilities"
         ],
-        "value_type": "any",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "profile_gate_required": "extensions.default",
         "deterministic_fingerprint": "4d7d26f40c894a61b57adbe3f81753ac6a31e16253d93546f14f92fc030441f1",
+        "extension_key": "mod.unknown.ui_command_id",
         "extensions": {
           "legacy_alias_for": "ui_command_id",
           "legacy_status": "legacy_bare_key",
@@ -4346,7 +4422,10 @@
             "src/embodiment/tools/toolbelt_engine.py"
           ],
           "source": "EMB1-2"
-        }
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "any"
       },
       {
         "allowed_owners": [
@@ -4383,6 +4462,26 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.proc.capsule.v1",
         "value_type": "any"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.user_message_key",
+        "extensions": {
+          "legacy_alias_for": "user_message_key",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Explain-key identifier surfaced when a capability is degraded or disabled.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
       },
       {
         "allowed_owners": [
@@ -4443,20 +4542,6 @@
       },
       {
         "allowed_owners": [
-          "product_registry"
-        ],
-        "deterministic_fingerprint": "d4b79dad2eea689a8e063bc5a13fe950cd39e0edeea661027326759d55e214c5",
-        "extension_key": "official.default_semver",
-        "extensions": {
-          "official.description": "Default SemVer used when emitting a product endpoint descriptor without an explicit version override.",
-          "official.source": "CAP-NEG-1"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "string"
-      },
-      {
-        "allowed_owners": [
           "*"
         ],
         "deterministic_fingerprint": "4787776bdf1c826ee59f44e3cabebd14efa5d1e9b3a0481c0d271d3aff4c4fe7",
@@ -4473,80 +4558,10 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "8f8fdf07604c85be466585e6729f82156ab90c4f11dae7a151ff0d196cadc400",
-        "extension_key": "official.compilation_options_hash",
-        "extensions": {
-          "official.description": "Compilation options hash surfaced by AppShell version output from endpoint descriptors.",
-          "official.source": "APPSHELL-0"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "string"
-      },
-      {
-        "allowed_owners": [
-          "product_registry"
-        ],
-        "deterministic_fingerprint": "dc318db76999dccde338eade90b7ebae8912c764997d2fd847d44fb8eeaae664",
-        "extension_key": "official.dist_bin_names",
-        "extensions": {
-          "official.description": "Deterministically ordered dist/bin wrapper names associated with a product endpoint descriptor.",
-          "official.source": "CAP-NEG-1"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "list[string]"
-      },
-      {
-        "allowed_owners": [
-          "*"
-        ],
-        "deterministic_fingerprint": "b993cc7d2fc12950b6ac25a3aaf42969aa7e8222a12cfd23d033bd3d8d55c216",
-        "extension_key": "official.git_commit_hash",
-        "extensions": {
-          "official.description": "Source commit hash surfaced by AppShell version output from endpoint descriptors.",
-          "official.source": "APPSHELL-0"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "string"
-      },
-      {
-        "allowed_owners": [
-          "*"
-        ],
         "deterministic_fingerprint": "1054a529d55169c173ccb072276bfe4d49fea8f032af2b99553473dd5f2e0bce",
         "extension_key": "official.client_endpoint_descriptor_hash",
         "extensions": {
           "official.description": "Hash of the negotiated client endpoint descriptor.",
-          "official.source": "CAP-NEG-0"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "string"
-      },
-      {
-        "allowed_owners": [
-          "*"
-        ],
-        "deterministic_fingerprint": "5375da103fbe20276b85c11a83c01412437b5cab0fb8715d23756fc7c4f5ba51",
-        "extension_key": "official.semantic_contract_registry_hash",
-        "extensions": {
-          "official.description": "Semantic contract registry hash surfaced by AppShell version output from endpoint descriptors.",
-          "official.source": "APPSHELL-0"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "string"
-      },
-      {
-        "allowed_owners": [
-          "*"
-        ],
-        "deterministic_fingerprint": "a6b5b7e4aec143f5304906cd5cf1199f18962c727a3f41d2ab031df83e63032c",
-        "extension_key": "official.compatibility_mode_id",
-        "extensions": {
-          "official.description": "Compatibility mode selected by deterministic endpoint negotiation.",
           "official.source": "CAP-NEG-0"
         },
         "profile_gate_required": "extensions.default",
@@ -4627,6 +4642,62 @@
         "allowed_owners": [
           "*"
         ],
+        "deterministic_fingerprint": "a6b5b7e4aec143f5304906cd5cf1199f18962c727a3f41d2ab031df83e63032c",
+        "extension_key": "official.compatibility_mode_id",
+        "extensions": {
+          "official.description": "Compatibility mode selected by deterministic endpoint negotiation.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "8f8fdf07604c85be466585e6729f82156ab90c4f11dae7a151ff0d196cadc400",
+        "extension_key": "official.compilation_options_hash",
+        "extensions": {
+          "official.description": "Compilation options hash surfaced by AppShell version output from endpoint descriptors.",
+          "official.source": "APPSHELL-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "product_registry"
+        ],
+        "deterministic_fingerprint": "d4b79dad2eea689a8e063bc5a13fe950cd39e0edeea661027326759d55e214c5",
+        "extension_key": "official.default_semver",
+        "extensions": {
+          "official.description": "Default SemVer used when emitting a product endpoint descriptor without an explicit version override.",
+          "official.source": "CAP-NEG-1"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "product_registry"
+        ],
+        "deterministic_fingerprint": "dc318db76999dccde338eade90b7ebae8912c764997d2fd847d44fb8eeaae664",
+        "extension_key": "official.dist_bin_names",
+        "extensions": {
+          "official.description": "Deterministically ordered dist/bin wrapper names associated with a product endpoint descriptor.",
+          "official.source": "CAP-NEG-1"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
         "deterministic_fingerprint": "4f7cc091a0cce3d110f6a979ab2ada456ba778450581b444ffae0870c5aa7bea",
         "extension_key": "official.enabled_capabilities",
         "extensions": {
@@ -4650,6 +4721,34 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
         "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "b993cc7d2fc12950b6ac25a3aaf42969aa7e8222a12cfd23d033bd3d8d55c216",
+        "extension_key": "official.git_commit_hash",
+        "extensions": {
+          "official.description": "Source commit hash surfaced by AppShell version output from endpoint descriptors.",
+          "official.source": "APPSHELL-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "a7e03db8d6678b48853b1fc0e70cb30bcd45e86fbf6b306192af740114c1b97f",
+        "extension_key": "official.handshake_messages",
+        "extensions": {
+          "official.description": "Deterministically ordered handshake transcript messages attached to a negotiated connection response.",
+          "official.source": "CAP-NEG-2"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[object]"
       },
       {
         "allowed_owners": [
@@ -4681,14 +4780,27 @@
       },
       {
         "allowed_owners": [
-          "product_capability_defaults",
-          "product_registry"
+          "pack_capabilities"
         ],
-        "deterministic_fingerprint": "7ab25956b313fa72120d76555dd2457f5de74d02e8f82f5a65b1db0f46436e7c",
-        "extension_key": "official.source",
+        "deterministic_fingerprint": "8bb4b4bbfe27b828a09bce6b4797e999b8aa15fa9b6131251396eacd8c3ca76f",
+        "extension_key": "official.requests_nondeterministic_allowance",
         "extensions": {
-          "official.description": "Deterministic source tag used by offline descriptor emission metadata and capability default provenance.",
-          "official.source": "CAP-NEG-1"
+          "official.description": "Explicit request for replayable nondeterministic allowances under mod policy governance.",
+          "official.source": "MOD-POLICY-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "boolean"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "5375da103fbe20276b85c11a83c01412437b5cab0fb8715d23756fc7c4f5ba51",
+        "extension_key": "official.semantic_contract_registry_hash",
+        "extensions": {
+          "official.description": "Semantic contract registry hash surfaced by AppShell version output from endpoint descriptors.",
+          "official.source": "APPSHELL-0"
         },
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
@@ -4712,20 +4824,6 @@
         "allowed_owners": [
           "*"
         ],
-        "deterministic_fingerprint": "a7e03db8d6678b48853b1fc0e70cb30bcd45e86fbf6b306192af740114c1b97f",
-        "extension_key": "official.handshake_messages",
-        "extensions": {
-          "official.description": "Deterministically ordered handshake transcript messages attached to a negotiated connection response.",
-          "official.source": "CAP-NEG-2"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "list[object]"
-      },
-      {
-        "allowed_owners": [
-          "*"
-        ],
         "deterministic_fingerprint": "c720207e1d96acd642e467206dcc0a6629cabd2df5bfac74833551f23563b262",
         "extension_key": "official.session_begin",
         "extensions": {
@@ -4738,73 +4836,27 @@
       },
       {
         "allowed_owners": [
-          "pack_capabilities"
+          "*"
         ],
-        "deterministic_fingerprint": "8bb4b4bbfe27b828a09bce6b4797e999b8aa15fa9b6131251396eacd8c3ca76f",
-        "extension_key": "official.requests_nondeterministic_allowance",
+        "deterministic_fingerprint": "",
+        "extension_key": "official.attach_record",
         "extensions": {
-          "official.description": "Explicit request for replayable nondeterministic allowances under mod policy governance.",
-          "official.source": "MOD-POLICY-0"
+          "official.description": "Deterministic IPC attach record cached by AppShell TUI remote console sessions for negotiated reattach-safe status, log, and command refreshes.",
+          "official.source": "APPSHELL-4"
         },
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "boolean"
+        "value_type": "object"
       },
       {
         "allowed_owners": [
-          "dominium.schema.compat.degrade_ladder",
-          "dominium.schema.compat.fallback_map"
+          "*"
         ],
         "deterministic_fingerprint": "",
-        "extension_key": "mod.unknown.fallback_capability_ids",
+        "extension_key": "official.remote_endpoint_id",
         "extensions": {
-          "legacy_alias_for": "fallback_capability_ids",
-          "legacy_status": "legacy_bare_key",
-          "observed_paths": [
-            "src/compat/capability_negotiation.py"
-          ],
-          "official.description": "Ordered substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
-          "official.source": "CAP-NEG-3"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "list[string]"
-      },
-      {
-        "allowed_owners": [
-          "dominium.schema.compat.degrade_ladder",
-          "dominium.schema.compat.fallback_map"
-        ],
-        "deterministic_fingerprint": "",
-        "extension_key": "mod.unknown.substitute_capability_ids",
-        "extensions": {
-          "legacy_alias_for": "substitute_capability_ids",
-          "legacy_status": "legacy_bare_key",
-          "observed_paths": [
-            "src/compat/capability_negotiation.py"
-          ],
-          "official.description": "Alternative substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
-          "official.source": "CAP-NEG-3"
-        },
-        "profile_gate_required": "extensions.default",
-        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
-        "value_type": "list[string]"
-      },
-      {
-        "allowed_owners": [
-          "dominium.schema.compat.degrade_ladder",
-          "dominium.schema.compat.fallback_map"
-        ],
-        "deterministic_fingerprint": "",
-        "extension_key": "mod.unknown.substitute_capability_id",
-        "extensions": {
-          "legacy_alias_for": "substitute_capability_id",
-          "legacy_status": "legacy_bare_key",
-          "observed_paths": [
-            "src/compat/capability_negotiation.py"
-          ],
-          "official.description": "Explicit substitute capability id chosen by a CAP-NEG degrade rule.",
-          "official.source": "CAP-NEG-3"
+          "official.description": "Deterministic IPC endpoint identifier bound to an AppShell TUI remote console session tab.",
+          "official.source": "APPSHELL-4"
         },
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
@@ -4812,19 +4864,13 @@
       },
       {
         "allowed_owners": [
-          "dominium.schema.compat.degrade_ladder",
-          "dominium.schema.compat.fallback_map"
+          "*"
         ],
         "deterministic_fingerprint": "",
-        "extension_key": "mod.unknown.user_message_key",
+        "extension_key": "official.remote_last_event_id",
         "extensions": {
-          "legacy_alias_for": "user_message_key",
-          "legacy_status": "legacy_bare_key",
-          "observed_paths": [
-            "src/compat/capability_negotiation.py"
-          ],
-          "official.description": "Explain-key identifier surfaced when a capability is degraded or disabled.",
-          "official.source": "CAP-NEG-3"
+          "official.description": "Last observed structured log event identifier for deterministic incremental IPC log polling in AppShell TUI sessions.",
+          "official.source": "APPSHELL-4"
         },
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
@@ -4832,18 +4878,56 @@
       },
       {
         "allowed_owners": [
-          "dominium.schema.compat.degrade_ladder"
+          "*"
         ],
         "deterministic_fingerprint": "",
-        "extension_key": "mod.unknown.law_profile_id_override",
+        "extension_key": "official.remote_log_events",
         "extensions": {
-          "legacy_alias_for": "law_profile_id_override",
-          "legacy_status": "legacy_bare_key",
-          "observed_paths": [
-            "src/compat/capability_negotiation.py"
-          ],
-          "official.description": "LawProfile override applied when CAP-NEG negotiation forces read-only mode.",
-          "official.source": "CAP-NEG-3"
+          "official.description": "Bounded remote structured log event rows cached for AppShell TUI IPC console sessions.",
+          "official.source": "APPSHELL-4"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[object]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "official.remote_status",
+        "extensions": {
+          "official.description": "Deterministic remote endpoint status snapshot cached by AppShell TUI IPC console sessions.",
+          "official.source": "APPSHELL-4"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "object"
+      },
+      {
+        "allowed_owners": [
+          "product_capability_defaults",
+          "product_registry"
+        ],
+        "deterministic_fingerprint": "7ab25956b313fa72120d76555dd2457f5de74d02e8f82f5a65b1db0f46436e7c",
+        "extension_key": "official.source",
+        "extensions": {
+          "official.description": "Deterministic source tag used by offline descriptor emission metadata and capability default provenance.",
+          "official.source": "CAP-NEG-1"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.ipc.ipc_endpoint_descriptor"
+        ],
+        "deterministic_fingerprint": "a93a879b7c1ff1cb998e00d9a6f5ba9530a1c2156b8ad0371a6547db68583b4d",
+        "extension_key": "official.transport_id",
+        "extensions": {
+          "official.description": "Deterministic local IPC transport identifier used by AppShell attach discovery to select the local transport family.",
+          "official.source": "APPSHELL-4"
         },
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",

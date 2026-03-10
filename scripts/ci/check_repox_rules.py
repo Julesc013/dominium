@@ -9979,6 +9979,152 @@ def check_authority_required(repo_root):
     return violations
 
 
+def check_ipc_attach_negotiated(repo_root):
+    invariant_id = "INV-IPC-ATTACH-NEGOTIATED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "IPC_ATTACH_CONSOLES.md")
+    endpoint_server_rel = os.path.join("src", "appshell", "ipc", "ipc_endpoint_server.py")
+    ipc_client_rel = os.path.join("src", "appshell", "ipc", "ipc_client.py")
+    command_engine_rel = os.path.join("src", "appshell", "commands", "command_engine.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "connector and endpoint run the CAP-NEG-2 handshake",
+            "Connections must not succeed without negotiation.",
+            "`refusal.connection.no_negotiation`",
+        ),
+        endpoint_server_rel: (
+            "REFUSAL_CONNECTION_NO_NEGOTIATION",
+            "build_compat_refusal(",
+            'str(client_message.get("message_kind", "")).strip() != "client_hello"',
+            'message_key="ipc.attach.refused"',
+        ),
+        ipc_client_rel: (
+            'message_kind="client_hello"',
+            'message_kind="ack"',
+            "attach_ipc_endpoint(",
+            '"negotiation_record_hash"',
+        ),
+        command_engine_rel: (
+            'handler_id == "console_attach"',
+            '"refusal.connection.no_negotiation"',
+            '"refusal.connection.negotiation_mismatch"',
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing IPC negotiation marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_ipc_seq_no_monotonic(repo_root):
+    invariant_id = "INV-IPC-SEQ-NO-MONOTONIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    schema_rel = os.path.join("schema", "ipc", "ipc_frame.schema")
+    transport_rel = os.path.join("src", "appshell", "ipc", "ipc_transport.py")
+    endpoint_server_rel = os.path.join("src", "appshell", "ipc", "ipc_endpoint_server.py")
+    replay_tool_rel = os.path.join("tools", "appshell", "tool_replay_ipc_attach.py")
+
+    violations = []
+    required_tokens = {
+        schema_rel: (
+            "seq_no must be monotonic per channel",
+            "frame ordering must not depend on wall-clock timing",
+        ),
+        transport_rel: (
+            "build_ipc_frame(",
+            '"seq_no"',
+            "send_frame(",
+            "recv_frame(",
+        ),
+        endpoint_server_rel: (
+            "self._channel_seq",
+            "def _next_seq(",
+            "seq_no=self._next_seq(",
+        ),
+        replay_tool_rel: (
+            "verify_ipc_attach_replay(",
+            "IPC attach and verify framing/hash stability",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing monotonic-seq marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_privilege_escalation(repo_root):
+    invariant_id = "INV-NO-PRIVILEGE-ESCALATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "IPC_ATTACH_CONSOLES.md")
+    endpoint_server_rel = os.path.join("src", "appshell", "ipc", "ipc_endpoint_server.py")
+    ipc_client_rel = os.path.join("src", "appshell", "ipc", "ipc_client.py")
+
+    violations = []
+    doctrine_path = os.path.join(repo_root, doctrine_rel.replace("/", os.sep))
+    doctrine_text = read_text(doctrine_path) or ""
+    for token in (
+        "no shell escape to the operating system",
+        "read-only attach is allowed when negotiated or policy requires",
+        "attach must not escalate privileges above the local product/session policy",
+    ):
+        if token not in doctrine_text:
+            violations.append("{}: {} missing privilege-boundary doctrine token {}".format(invariant_id, normalize_path(doctrine_rel), token))
+
+    endpoint_server_path = os.path.join(repo_root, endpoint_server_rel.replace("/", os.sep))
+    endpoint_server_text = read_text(endpoint_server_path) or ""
+    for token in (
+        "_READ_ONLY_SAFE_COMMAND_PREFIXES",
+        "_read_only_command_allowed(",
+        "dispatch_registered_command(",
+        '"refusal.law.attach_denied"',
+    ):
+        if token not in endpoint_server_text:
+            violations.append("{}: {} missing privilege-enforcement marker {}".format(invariant_id, normalize_path(endpoint_server_rel), token))
+    for token in ("subprocess.", "os.system(", "Popen("):
+        if token in endpoint_server_text:
+            violations.append("{}: {} contains forbidden escalation token {}".format(invariant_id, normalize_path(endpoint_server_rel), token))
+
+    ipc_client_path = os.path.join(repo_root, ipc_client_rel.replace("/", os.sep))
+    ipc_client_text = read_text(ipc_client_path) or ""
+    for token in ("subprocess.", "os.system(", "Popen("):
+        if token in ipc_client_text:
+            violations.append("{}: {} contains forbidden escalation token {}".format(invariant_id, normalize_path(ipc_client_rel), token))
+            break
+    return violations
+
+
 def check_local_spawn_profiled(repo_root):
     invariant_id = "INV-LOCAL-SPAWN-PROFILED"
     if is_override_active(repo_root, invariant_id):
@@ -13396,6 +13542,9 @@ def main() -> int:
                 lambda: check_tui_no_truth_read(repo_root),
                 lambda: check_tui_deterministic_order(repo_root),
                 lambda: check_tui_fallback_declared(repo_root),
+                lambda: check_ipc_attach_negotiated(repo_root),
+                lambda: check_ipc_seq_no_monotonic(repo_root),
+                lambda: check_no_privilege_escalation(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },

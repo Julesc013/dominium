@@ -1,9 +1,9 @@
 {
-  "fingerprint_sha256": "46e0d87f71d48980f5e213b7320f01211d65aba2c5aed225d170428ffe38540e",
+  "fingerprint_sha256": "d6f4cf1fa9a9b05ef8e18e4a312bc56eef92fa17a26b6b295b2958d110587666",
   "inputs": {
     "canon_index": {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "9e96b987adc697663970c32740803ace1050f7d2ee320b5a476ad50973a9af4a"
+      "sha256": "a81e3c2800ad6759c7e33c2b8259f1d04c9acf5d1777a6a396a445ca7403487f"
     },
     "gate_runner": {
       "path": "scripts/dev/gate.py",
@@ -15,7 +15,7 @@
     },
     "repox_rulesets": {
       "path": "repo/repox/rulesets",
-      "sha256": "f95daf5897d16fc091005a82485f35414eacddb6d66ac22bfa4e43d9b9257567"
+      "sha256": "35529d7d8694a171a653d57d4ffb67e609cbad91438028c70f21d5798229a6e6"
     },
     "status_now_snapshot": {
       "path": "docs/STATUS_NOW.md",

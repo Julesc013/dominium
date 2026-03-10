@@ -13,6 +13,7 @@ from src.appshell.command_registry import build_root_command_descriptors
 from src.appshell.commands import dispatch_registered_command
 from src.appshell.compat_adapter import emit_descriptor_payload
 from src.appshell.console_repl import build_console_session_stub
+from src.appshell.ipc import attach_ipc_endpoint, query_ipc_log_events, query_ipc_status, run_ipc_console_command
 from src.appshell.logging import get_current_log_engine, log_emit
 from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set
@@ -338,6 +339,26 @@ def _logs_lines(log_category_filter: str) -> list[str]:
     return list(rows[-DEFAULT_LOG_LINE_LIMIT:]) or ["no log events"]
 
 
+def _remote_log_lines(console_sessions: Sequence[Mapping[str, object]]) -> list[str]:
+    rows = []
+    for session in list(console_sessions or []):
+        ext = _as_map(_as_map(session).get("extensions"))
+        remote_events = list(ext.get("official.remote_log_events") or [])
+        session_id = str(_as_map(session).get("session_id", "")).strip()
+        for event in remote_events:
+            event_map = _as_map(event)
+            rows.append(
+                "{event_id} [remote:{session_id}/{severity}/{category}] {message_key}".format(
+                    event_id=str(event_map.get("event_id", "")).strip(),
+                    session_id=session_id,
+                    severity=str(event_map.get("severity", "")).strip(),
+                    category=str(event_map.get("category", "")).strip(),
+                    message_key=str(event_map.get("message_key", "")).strip(),
+                )
+            )
+    return sorted(rows)[-DEFAULT_LOG_LINE_LIMIT:]
+
+
 def _map_lines(product_id: str) -> list[str]:
     if str(product_id).strip() != "client":
         return ["map panel unavailable for this product"]
@@ -372,11 +393,13 @@ def _panel_lines(
     console_sessions: Sequence[Mapping[str, object]],
     active_session_id: str,
     log_category_filter: str,
+    remote_log_lines: Sequence[str] | None = None,
 ) -> list[str]:
     if panel_id == "panel.console":
         return _console_lines(console_sessions, active_session_id)
     if panel_id == "panel.logs":
-        return _logs_lines(log_category_filter)
+        combined = _logs_lines(log_category_filter) + list(remote_log_lines or [])
+        return list(combined[-DEFAULT_LOG_LINE_LIMIT:]) or ["no log events"]
     if panel_id == "panel.status":
         return _status_lines(repo_root, product_id, layout_id, backend_state)
     if panel_id == "panel.map":
@@ -404,6 +427,7 @@ def build_tui_surface(
     backend_state = _backend_state(backend_override=backend_override)
     session_rows = _build_console_sessions(repo_root, str(product_id).strip(), console_sessions)
     active_session = str(active_session_id or "").strip() or str(session_rows[0].get("session_id", "")).strip()
+    remote_lines = _remote_log_lines(session_rows)
 
     rendered_panels = []
     for row in list(layout_row.get("panels") or []):
@@ -429,6 +453,7 @@ def build_tui_surface(
                         console_sessions=session_rows,
                         active_session_id=active_session,
                         log_category_filter=log_category_filter,
+                        remote_log_lines=remote_lines,
                     )
                     if not missing
                     else ["disabled: missing {}".format(", ".join(missing))]
@@ -540,12 +565,38 @@ def execute_console_session_command(
         }
     sessions = _build_console_sessions(repo_root, str(product_id).strip(), _as_list(surface.get("console_sessions")))
     active_session = str(surface.get("active_session_id", "")).strip() or str(sessions[0].get("session_id", "")).strip()
-    dispatch = dispatch_registered_command(
-        repo_root,
-        product_id=str(product_id).strip(),
-        mode_id=str(mode_id).strip() or "tui",
-        command_tokens=text.split(),
-    )
+    active_row = {}
+    for row in sessions:
+        row_map = dict(row)
+        if str(row_map.get("session_id", "")).strip() == active_session:
+            active_row = row_map
+            break
+    extensions = _as_map(active_row.get("extensions"))
+    attach_record = _as_map(extensions.get("official.attach_record"))
+    if str(extensions.get("official.remote_endpoint_id", "")).strip():
+        remote_dispatch = run_ipc_console_command(repo_root, attach_record, text)
+        dispatch = {
+            "dispatch_kind": "text",
+            "text": str(remote_dispatch.get("stdout", "")).strip() or str(remote_dispatch.get("stderr", "")).strip(),
+            "payload": dict(remote_dispatch),
+            "exit_code": int(_as_map(remote_dispatch.get("dispatch")).get("exit_code", 0) or 0),
+        }
+        refreshed_status = query_ipc_status(repo_root, attach_record)
+        refreshed_logs = query_ipc_log_events(
+            repo_root,
+            attach_record,
+            after_event_id=str(extensions.get("official.remote_last_event_id", "")).strip(),
+            limit=8,
+        )
+    else:
+        dispatch = dispatch_registered_command(
+            repo_root,
+            product_id=str(product_id).strip(),
+            mode_id=str(mode_id).strip() or "tui",
+            command_tokens=text.split(),
+        )
+        refreshed_status = {}
+        refreshed_logs = {}
     updated = []
     for row in sessions:
         row_map = dict(row)
@@ -562,6 +613,13 @@ def execute_console_session_command(
         )
         row_map["history"] = history[-DEFAULT_HISTORY_LIMIT:]
         row_map["last_dispatch"] = normalize_extensions_tree(dict(dispatch))
+        if refreshed_status:
+            ext = dict(_as_map(row_map.get("extensions")))
+            ext["official.remote_status"] = dict(refreshed_status.get("status") or {})
+            ext["official.remote_log_events"] = list(refreshed_logs.get("events") or [])
+            if list(refreshed_logs.get("events") or []):
+                ext["official.remote_last_event_id"] = str(dict(list(refreshed_logs.get("events") or [])[-1]).get("event_id", "")).strip()
+            row_map["extensions"] = ext
         updated.append(row_map)
     log_emit(
         category="ui",
@@ -584,6 +642,117 @@ def execute_console_session_command(
         backend_override=str(surface.get("backend_id", "")).strip() or TUI_BACKEND_LITE,
     )
     return {"result": "complete", "dispatch": normalize_extensions_tree(dict(dispatch)), "surface": rebuilt, "session_id": active_session}
+
+
+def attach_ipc_session_to_surface(
+    repo_root: str,
+    *,
+    product_id: str,
+    surface_payload: Mapping[str, object],
+    endpoint_id: str,
+) -> dict:
+    surface = normalize_extensions_tree(dict(surface_payload or {}))
+    attach = attach_ipc_endpoint(repo_root, local_product_id=str(product_id).strip(), endpoint_id=str(endpoint_id).strip())
+    if str(attach.get("result", "")).strip() != "complete":
+        return {"result": "refused", "attach": attach, "surface": dict(surface)}
+    status = query_ipc_status(repo_root, attach)
+    logs = query_ipc_log_events(repo_root, attach, limit=8)
+    sessions = _build_console_sessions(repo_root, str(product_id).strip(), _as_list(surface.get("console_sessions")))
+    remote_session_id = "ipc.{}".format(str(endpoint_id).strip())
+    sessions = [row for row in sessions if str(dict(row).get("session_id", "")).strip() != remote_session_id]
+    sessions.append(
+        {
+            "session_id": remote_session_id,
+            "title": "{} [{}]".format(str(dict(attach.get("endpoint") or {}).get("product_id", "")).strip(), str(endpoint_id).strip()),
+            "history": [],
+            "last_dispatch": {
+                "dispatch_kind": "json",
+                "payload": {"result": "complete", "attach": attach, "status": dict(status.get("status") or {})},
+                "exit_code": 0,
+            },
+            "extensions": {
+                "official.remote_endpoint_id": str(endpoint_id).strip(),
+                "official.attach_record": dict(attach),
+                "official.remote_status": dict(status.get("status") or {}),
+                "official.remote_log_events": list(logs.get("events") or []),
+                "official.remote_last_event_id": str(dict(list(logs.get("events") or [])[-1]).get("event_id", "")).strip() if list(logs.get("events") or []) else "",
+                "official.compatibility_mode_id": str(attach.get("compatibility_mode_id", "")).strip(),
+            },
+        }
+    )
+    rebuilt = build_tui_surface(
+        repo_root,
+        product_id=str(product_id).strip(),
+        requested_layout_id=str(surface.get("effective_layout_id", "")).strip() or str(surface.get("requested_layout_id", "")).strip(),
+        active_panel_id="panel.console",
+        console_sessions=sessions,
+        active_session_id=remote_session_id,
+        backend_override=str(surface.get("backend_id", "")).strip() or TUI_BACKEND_LITE,
+    )
+    return {"result": "complete", "attach": attach, "surface": rebuilt}
+
+
+def detach_ipc_session_from_surface(
+    repo_root: str,
+    *,
+    product_id: str,
+    surface_payload: Mapping[str, object],
+    session_id: str,
+) -> dict:
+    surface = normalize_extensions_tree(dict(surface_payload or {}))
+    sessions = [
+        dict(row)
+        for row in _as_list(surface.get("console_sessions"))
+        if str(dict(row).get("session_id", "")).strip() != str(session_id).strip()
+    ]
+    rebuilt = build_tui_surface(
+        repo_root,
+        product_id=str(product_id).strip(),
+        requested_layout_id=str(surface.get("effective_layout_id", "")).strip() or str(surface.get("requested_layout_id", "")).strip(),
+        console_sessions=sessions or None,
+        active_session_id="",
+        backend_override=str(surface.get("backend_id", "")).strip() or TUI_BACKEND_LITE,
+    )
+    return {"result": "complete", "surface": rebuilt}
+
+
+def refresh_ipc_sessions_in_surface(
+    repo_root: str,
+    *,
+    product_id: str,
+    surface_payload: Mapping[str, object],
+) -> dict:
+    surface = normalize_extensions_tree(dict(surface_payload or {}))
+    refreshed_sessions = []
+    for row in _as_list(surface.get("console_sessions")):
+        row_map = dict(row)
+        ext = _as_map(row_map.get("extensions"))
+        attach_record = _as_map(ext.get("official.attach_record"))
+        if not str(ext.get("official.remote_endpoint_id", "")).strip():
+            refreshed_sessions.append(row_map)
+            continue
+        status = query_ipc_status(repo_root, attach_record)
+        logs = query_ipc_log_events(
+            repo_root,
+            attach_record,
+            after_event_id=str(ext.get("official.remote_last_event_id", "")).strip(),
+            limit=8,
+        )
+        ext["official.remote_status"] = dict(status.get("status") or {})
+        ext["official.remote_log_events"] = list(logs.get("events") or [])
+        if list(logs.get("events") or []):
+            ext["official.remote_last_event_id"] = str(dict(list(logs.get("events") or [])[-1]).get("event_id", "")).strip()
+        row_map["extensions"] = ext
+        refreshed_sessions.append(row_map)
+    rebuilt = build_tui_surface(
+        repo_root,
+        product_id=str(product_id).strip(),
+        requested_layout_id=str(surface.get("effective_layout_id", "")).strip() or str(surface.get("requested_layout_id", "")).strip(),
+        console_sessions=refreshed_sessions,
+        active_session_id=str(surface.get("active_session_id", "")).strip(),
+        backend_override=str(surface.get("backend_id", "")).strip() or TUI_BACKEND_LITE,
+    )
+    return {"result": "complete", "surface": rebuilt}
 
 
 def _run_curses_loop(surface_payload: Mapping[str, object]) -> None:
@@ -677,10 +846,13 @@ def run_tui_mode(
 
 
 __all__ = [
+    "attach_ipc_session_to_surface",
     "build_tui_surface",
+    "detach_ipc_session_from_surface",
     "execute_console_session_command",
     "load_tui_layout_registry",
     "load_tui_panel_registry",
+    "refresh_ipc_sessions_in_surface",
     "render_tui_text",
     "run_tui_mode",
 ]

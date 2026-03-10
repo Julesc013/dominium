@@ -8,6 +8,7 @@
       { "category_id": "client", "description": "Client orchestration and presentation-level events." },
       { "category_id": "compat", "description": "Compatibility negotiation and degrade reporting." },
       { "category_id": "diag", "description": "Diagnostic snapshot and replay assistance events." },
+      { "category_id": "ipc", "description": "Local IPC endpoint lifecycle, attach negotiation, and stream events." },
       { "category_id": "packs", "description": "Offline pack verification and pack-lock generation." },
       { "category_id": "refusal", "description": "Structured refusals and remediation outputs." },
       { "category_id": "server", "description": "Server boot, connection, control, and tick events." },

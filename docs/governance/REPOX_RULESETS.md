@@ -654,6 +654,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the shared TUI engine stops surfacing lite-backend fallback as an explicit degraded compatibility state.
 - Preserves explainable portable fallback instead of silent TUI failure on unsupported hosts.
 
+### INV-IPC-ATTACH-NEGOTIATED
+
+- Fails when the APPSHELL-4 IPC doctrine, endpoint server, or IPC client stop requiring a CAP-NEG handshake before status, console, or log channels may be used.
+- Fails when missing-negotiation refusal markers disappear from the governed attach path or the shared console-attach command stops surfacing them explicitly.
+- Preserves deterministic negotiated attach instead of ad hoc local console sockets.
+
+### INV-IPC-SEQ-NO-MONOTONIC
+
+- Fails when the APPSHELL-4 IPC frame schema, transport, endpoint server, or replay tool stop enforcing monotonic per-channel sequence numbers.
+- Fails when framing order ceases to be replayable and explicit in the governed IPC surface.
+- Preserves deterministic stream ordering and bounded attach transcripts.
+
+### INV-NO-PRIVILEGE-ESCALATION
+
+- Fails when APPSHELL-4 doctrine or IPC server enforcement stops restricting attached sessions to AppShell commands and read-only-safe command subsets when negotiated.
+- Fails when governed IPC surfaces regain shell escape or other privilege-escalation tokens.
+- Preserves law-gated attach behavior rather than using IPC as a backdoor around command and authority policy.
+
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 
 - Fails when client-server handshake or server loopback accept paths stop invoking the deterministic negotiation engine.

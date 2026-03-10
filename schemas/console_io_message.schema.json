@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Console IO Message Schema",
+  "version": "1.0.0",
+  "description": "Deterministic console request/response payload carried over AppShell IPC.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "text",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "cmd_request",
+        "cmd_response",
+        "stderr",
+        "stdout"
+      ]
+    },
+    "text": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

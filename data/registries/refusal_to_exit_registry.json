@@ -26,6 +26,26 @@
         }
       },
       {
+        "mapping_id": "mapping.refusal.connection.no_negotiation",
+        "refusal_code": "refusal.connection.no_negotiation",
+        "exit_code": 40,
+        "description": "Missing mandatory attach/connection negotiation maps to the transport range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-4"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.connection.negotiation_mismatch",
+        "refusal_code": "refusal.connection.negotiation_mismatch",
+        "exit_code": 40,
+        "description": "Negotiation record mismatches on attach/connection map to the transport range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-4"
+        }
+      },
+      {
         "mapping_id": "mapping.refusal.io.profile_not_found",
         "refusal_code": "refusal.io.profile_not_found",
         "exit_code": 20,
@@ -83,6 +103,16 @@
         "deterministic_fingerprint": "",
         "extensions": {
           "official.source": "APPSHELL-1"
+        }
+      },
+      {
+        "mapping_id": "mapping.refusal.connection.prefix",
+        "refusal_prefix": "refusal.connection.",
+        "exit_code": 40,
+        "description": "Connection and attach handshake failures map to the transport/IPC range unless explicitly overridden.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-4"
         }
       },
       {

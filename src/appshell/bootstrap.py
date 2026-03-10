@@ -10,6 +10,7 @@ from .command_registry import build_root_command_descriptors, build_tui_panel_de
 from .commands import dispatch_registered_command
 from .compat_adapter import build_version_payload, emit_descriptor_payload
 from .config_loader import resolve_repo_root
+from .ipc import AppShellIPCEndpointServer
 from .logging import (
     build_default_log_file_path,
     clear_current_log_engine,
@@ -66,6 +67,7 @@ def appshell_main(
         file_path=build_default_log_file_path(repo_root, str(product_id).strip()),
     )
     set_current_log_engine(logger)
+    ipc_server = None
     log_emit(
         category="appshell",
         severity="info",
@@ -101,6 +103,16 @@ def appshell_main(
         if bool(shell_args.version):
             _print_json(version_payload)
             return EXIT_SUCCESS
+
+        if bool(shell_args.ipc_enabled):
+            ipc_server = AppShellIPCEndpointServer(
+                repo_root=repo_root,
+                product_id=str(product_id).strip(),
+                session_id=str(shell_args.session_id).strip(),
+                mode_id=str(mode_id).strip() or "cli",
+                manifest_path=str(shell_args.ipc_manifest_path).strip(),
+            )
+            ipc_server.start()
 
         if str(shell_args.command or "").strip():
             dispatch = dispatch_registered_command(
@@ -200,6 +212,8 @@ def appshell_main(
         )
         return int(legacy_main(delegate_args))
     finally:
+        if ipc_server is not None:
+            ipc_server.stop()
         clear_current_log_engine()
 
 

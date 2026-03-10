@@ -13,6 +13,15 @@ from src.appshell.compat_adapter import build_version_payload, emit_descriptor_p
 from src.appshell.config_loader import list_pack_manifests, list_profile_bundles
 from src.appshell.console_repl import build_console_session_stub
 from src.appshell.diag import write_diag_snapshot_bundle
+from src.appshell.ipc import (
+    attach_ipc_endpoint,
+    detach_ipc_session,
+    discover_ipc_endpoints,
+    get_current_ipc_endpoint_server,
+    query_ipc_log_events,
+    query_ipc_status,
+    run_ipc_console_command,
+)
 from src.appshell.logging import get_current_log_engine, log_emit
 from src.appshell.pack_verifier_adapter import verify_pack_root
 
@@ -426,6 +435,7 @@ def _run_diag_snapshot_command(repo_root: str, product_id: str, args: Sequence[s
         proof_anchor_dir=str(getattr(parsed, "proof_anchor_dir", "")).strip(),
         log_events=list(logger.ring_events() if logger is not None else []),
         log_tail=int(max(0, int(getattr(parsed, "log_tail", 32) or 32))),
+        ipc_attach_rows=list((get_current_ipc_endpoint_server().recent_attach_records() if get_current_ipc_endpoint_server() is not None else [])),
     )
     log_emit(
         category="diag",
@@ -443,6 +453,99 @@ def _run_diag_snapshot_command(repo_root: str, product_id: str, args: Sequence[s
 def _run_console_command(repo_root: str, product_id: str) -> dict:
     rows = build_command_rows(repo_root, product_id)
     return _json_dispatch(build_console_session_stub(product_id, rows))
+
+
+def _run_console_sessions_command(repo_root: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="console sessions", add_help=False)
+    parser.add_argument("--manifest-path", default="")
+    parsed, refusal = _parse_command_args(repo_root, parser, "console sessions", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    return _json_dispatch(discover_ipc_endpoints(repo_root, manifest_path=str(getattr(parsed, "manifest_path", "")).strip()))
+
+
+def _run_console_attach_command(repo_root: str, product_id: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="console attach", add_help=False)
+    parser.add_argument("--endpoint-id", required=True)
+    parser.add_argument("--manifest-path", default="")
+    parser.add_argument("--require-full", action="store_true")
+    parser.add_argument("--disallow-read-only", action="store_true")
+    parser.add_argument("--command", default="")
+    parsed, refusal = _parse_command_args(repo_root, parser, "console attach", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    attach_result = attach_ipc_endpoint(
+        repo_root,
+        local_product_id=str(product_id).strip(),
+        endpoint_id=str(getattr(parsed, "endpoint_id", "")).strip(),
+        manifest_path=str(getattr(parsed, "manifest_path", "")).strip(),
+        allow_read_only=not bool(getattr(parsed, "disallow_read_only", False)),
+        accept_degraded=not bool(getattr(parsed, "require_full", False)),
+    )
+    if str(attach_result.get("result", "")).strip() != "complete":
+        refusal_code = str(attach_result.get("refusal_code", "")).strip() or "refusal.connection.no_negotiation"
+        if refusal_code == "refusal.connection.negotiation_mismatch":
+            reason = "IPC attach negotiation record mismatch prevented session attach"
+            remediation = "Retry the attach so both sides negotiate against the same descriptors and capability sets."
+        elif refusal_code == "refusal.law.attach_denied":
+            reason = "IPC attach was denied by the active law or attach policy"
+            remediation = "Use an allowed local policy/profile or attach in a read-only-safe mode."
+        else:
+            reason = "IPC attach negotiation failed or was refused"
+            remediation = "Inspect compat-status or attach to a compatible endpoint/mode."
+        log_emit(
+            category="ipc",
+            severity="warn",
+            message_key="ipc.attach.refused",
+            params={
+                "product_id": str(product_id).strip(),
+                "endpoint_id": str(getattr(parsed, "endpoint_id", "")).strip(),
+                "refusal_code": refusal_code,
+            },
+        )
+        return _refusal_dispatch(
+            repo_root,
+            refusal_code,
+            reason,
+            remediation,
+            details={
+                "endpoint_id": str(getattr(parsed, "endpoint_id", "")).strip(),
+                "compatibility_mode_id": str(attach_result.get("compatibility_mode_id", "")).strip(),
+            },
+        )
+    status_result = query_ipc_status(repo_root, attach_result)
+    log_result = query_ipc_log_events(repo_root, attach_result, limit=8)
+    command_result = {}
+    if str(getattr(parsed, "command", "")).strip():
+        command_result = run_ipc_console_command(repo_root, attach_result, str(getattr(parsed, "command", "")).strip())
+    log_emit(
+        category="ipc",
+        severity="info",
+        message_key="ipc.attach.accepted",
+        params={
+            "product_id": str(product_id).strip(),
+            "endpoint_id": str(getattr(parsed, "endpoint_id", "")).strip(),
+            "compatibility_mode_id": str(dict(attach_result).get("compatibility_mode_id", "")).strip(),
+        },
+    )
+    return _json_dispatch(
+        {
+            "result": "complete",
+            "attach": attach_result,
+            "status": dict(status_result.get("status") or {}),
+            "log_events": list(log_result.get("events") or []),
+            "command": command_result,
+        }
+    )
+
+
+def _run_console_detach_command(repo_root: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="console detach", add_help=False)
+    parser.add_argument("--endpoint-id", required=True)
+    parsed, refusal = _parse_command_args(repo_root, parser, "console detach", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    return _json_dispatch(detach_ipc_session({"endpoint": {"endpoint_id": str(getattr(parsed, "endpoint_id", "")).strip()}}))
 
 
 def _run_namespace_placeholder(repo_root: str, row: Mapping[str, object], attempted_tokens: Sequence[str]) -> dict:
@@ -519,6 +622,12 @@ def dispatch_registered_command(
         return _run_diag_snapshot_command(repo_root, product_id, remaining)
     if handler_id == "console_enter":
         return _run_console_command(repo_root, product_id)
+    if handler_id == "console_sessions":
+        return _run_console_sessions_command(repo_root, remaining)
+    if handler_id == "console_attach":
+        return _run_console_attach_command(repo_root, product_id, remaining)
+    if handler_id == "console_detach":
+        return _run_console_detach_command(repo_root, remaining)
     if handler_id == "namespace_placeholder":
         return _run_namespace_placeholder(repo_root, row, tokens)
     return _refusal_dispatch(

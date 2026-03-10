@@ -27,6 +27,9 @@ class AppShellArgs:
     mode: str
     mode_requested: bool
     tui_layout: str
+    ipc_enabled: bool
+    ipc_manifest_path: str
+    session_id: str
     descriptor: bool
     descriptor_file: str
     version: bool
@@ -43,6 +46,9 @@ def parse_appshell_args(product_id: str, argv: Sequence[str] | None) -> AppShell
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--mode", default="")
     parser.add_argument("--tui-layout", default="")
+    parser.add_argument("--ipc", default="")
+    parser.add_argument("--ipc-manifest-path", default="")
+    parser.add_argument("--session-id", default="")
     parser.add_argument("--descriptor", action="store_true")
     parser.add_argument("--descriptor-file", default="")
     parser.add_argument("--version", action="store_true")
@@ -65,6 +71,9 @@ def parse_appshell_args(product_id: str, argv: Sequence[str] | None) -> AppShell
         mode=str(parsed.mode or "").strip().lower(),
         mode_requested=bool(str(parsed.mode or "").strip()),
         tui_layout=str(parsed.tui_layout or "").strip(),
+        ipc_enabled=str(parsed.ipc or "").strip().lower() in {"1", "true", "yes", "on"},
+        ipc_manifest_path=str(parsed.ipc_manifest_path or "").strip(),
+        session_id=str(parsed.session_id or "").strip(),
         descriptor=bool(parsed.descriptor),
         descriptor_file=str(parsed.descriptor_file or "").strip(),
         version=bool(parsed.version),

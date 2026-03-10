@@ -31,6 +31,16 @@
         "description": "A replayed or provided negotiation record did not match deterministic negotiation inputs."
       },
       {
+        "refusal_code": "refusal.connection.no_negotiation",
+        "family": "connection",
+        "description": "A connection or attach attempt did not complete required negotiation before requesting service."
+      },
+      {
+        "refusal_code": "refusal.connection.negotiation_mismatch",
+        "family": "connection",
+        "description": "A connection or attach acknowledgement did not match the negotiated deterministic record."
+      },
+      {
         "refusal_code": "refusal.pack.contract_range_mismatch",
         "family": "pack",
         "description": "Pack contract range is incompatible with the active engine or universe contract bundle."
@@ -49,6 +59,11 @@
         "refusal_code": "refusal.law.denied",
         "family": "law",
         "description": "Law or entitlement denied the requested action."
+      },
+      {
+        "refusal_code": "refusal.law.attach_denied",
+        "family": "law",
+        "description": "An IPC attach or attached console action was denied by law or attach policy."
       },
       {
         "refusal_code": "refusal.debug.disabled",
