@@ -1,4 +1,4 @@
-"""FAST test: GEO-5 replay tool reproduces the same projected-view fingerprint and registry hashes."""
+"""FAST test: EARTH-9 replayed view fingerprints match the regression lock."""
 
 from __future__ import annotations
 
@@ -6,28 +6,35 @@ import sys
 
 
 TEST_ID = "test_replay_view_fingerprint_match"
-TEST_TAGS = ["fast", "geo", "projection", "replay"]
+TEST_TAGS = ["fast", "earth", "view", "replay", "regression"]
 
 
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
+    from tools.xstack.testx.tests.earth9_testlib import earth_view_fingerprint_report
 
-    from src.geo import lens_layer_registry_hash, projection_profile_registry_hash, view_type_registry_hash
-    from tools.geo.tool_replay_view_window import verify_view_window
-
-    report = verify_view_window()
-    if str(report.get("result", "")) != "complete":
-        return {"status": "fail", "message": "view replay verification reported non-complete result"}
-    if not bool(report.get("stable_across_repeated_runs", False)):
-        return {"status": "fail", "message": "view replay verification was not stable across repeated runs"}
-    if str(report.get("projection_profile_registry_hash", "")) != projection_profile_registry_hash():
-        return {"status": "fail", "message": "projection profile registry hash did not match replay tool output"}
-    if str(report.get("lens_layer_registry_hash", "")) != lens_layer_registry_hash():
-        return {"status": "fail", "message": "lens layer registry hash did not match replay tool output"}
-    if str(report.get("view_type_registry_hash", "")) != view_type_registry_hash():
-        return {"status": "fail", "message": "view type registry hash did not match replay tool output"}
-    observed = dict(report.get("observed") or {})
-    if not str(observed.get("view_fingerprint", "")).strip():
-        return {"status": "fail", "message": "view replay verification did not produce a view fingerprint"}
-    return {"status": "pass", "message": "GEO-5 replay tool reproduces deterministic view fingerprints"}
+    report = earth_view_fingerprint_report(repo_root)
+    baseline = dict(report.get("baseline") or {})
+    replay = dict(report.get("view_replay") or {})
+    if str(replay.get("result", "")).strip() != "complete":
+        return {"status": "fail", "message": "EARTH-9 replayed view window did not complete"}
+    baseline_views = dict(baseline.get("view_fingerprints") or {})
+    replay_views = dict(replay.get("view_fingerprints") or {})
+    expected_map = {
+        "day_sky_view": "sky_day_fingerprint",
+        "twilight_sky_view": "sky_twilight_fingerprint",
+        "night_sky_view": "sky_night_fingerprint",
+        "day_lighting_view": "lighting_day_fingerprint",
+        "twilight_lighting_view": "lighting_twilight_fingerprint",
+        "night_lighting_view": "lighting_night_fingerprint",
+        "water_view": "water_view_fingerprint",
+        "map_view": "map_view_fingerprint",
+    }
+    for baseline_key, replay_key in sorted(expected_map.items()):
+        if str(baseline_views.get(baseline_key, "")).strip() != str(replay_views.get(replay_key, "")).strip():
+            return {
+                "status": "fail",
+                "message": "EARTH-9 replay fingerprint mismatch for '{}'".format(baseline_key),
+            }
+    return {"status": "pass", "message": "EARTH-9 replayed view fingerprints match the regression lock"}
