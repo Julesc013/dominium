@@ -964,6 +964,33 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-REFINEMENT-BUDGETED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/refinement/refinement_scheduler.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/worldgen/mw4_probe.py",
+        "tools/worldgen/tool_run_refinement_stress.py",
+        "docs/worldgen/REFINEMENT_PIPELINE_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-refinement-budgeted",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CACHE-KEY-INCLUDES-CONTRACTS",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/worldgen/refinement/refinement_cache.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "tools/xstack/sessionx/process_runtime.py",
+        "tools/xstack/sessionx/runner.py",
+        "tools/xstack/sessionx/script_runner.py",
+        "docs/worldgen/REFINEMENT_PIPELINE_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-cache-key-includes-contracts",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-OCEAN-PDE-IN-MVP",
       "severity": "FAIL",
       "scope_paths": [
@@ -1098,6 +1125,19 @@
         "tools/geo/tool_explain_property_origin.py"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-view-artifact-only",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-BLOCKING-WORLDGEN-IN-UI",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/client/ui/viewer_shell.py",
+        "src/client/ui/teleport_controller.py",
+        "tools/worldgen/mw4_probe.py",
+        "tools/worldgen/tool_run_refinement_stress.py",
+        "docs/worldgen/REFINEMENT_PIPELINE_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-blocking-worldgen-in-ui",
       "exemption_policy": "deny"
     },
     {

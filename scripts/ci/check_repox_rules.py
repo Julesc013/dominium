@@ -7260,6 +7260,296 @@ def check_no_position_write_bypass(repo_root):
     return violations
 
 
+def check_refinement_budgeted(repo_root):
+    invariant_id = "INV-REFINEMENT-BUDGETED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    scheduler_rel = os.path.join("src", "worldgen", "refinement", "refinement_scheduler.py")
+    runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    doc_rel = os.path.join("docs", "worldgen", "REFINEMENT_PIPELINE_MODEL.md")
+    stress_tool_rel = os.path.join("tools", "worldgen", "tool_run_refinement_stress.py")
+
+    violations = []
+    required_tokens = {
+        scheduler_rel: (
+            "compute_budget_units",
+            "refinement.deferred.budget_denied",
+            "queue_capacity",
+            "priority_class",
+            "approved_rows",
+        ),
+        runtime_rel: (
+            "_refinement_compute_budget_units(",
+            "budget_policy",
+            "process.refinement_scheduler_tick",
+            "refinement_deferred_hash_chain",
+        ),
+        doc_rel: (
+            "teleport destination",
+            "background prefetch",
+            "explain.refinement_deferred",
+        ),
+        stress_tool_rel: (
+            "Run the MW-4 rapid-teleport and ROI-thrash stress fixture.",
+            "run_refinement_stress(",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing refinement-budget marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    try:
+        if repo_root not in sys.path:
+            sys.path.insert(0, repo_root)
+        from tools.worldgen.mw4_probe import run_refinement_stress
+
+        report = dict(run_refinement_stress(repo_root))
+    except Exception as exc:  # pragma: no cover - RepoX runtime guard
+        return ["{}: MW-4 stress fixture could not be evaluated ({})".format(invariant_id, exc)]
+
+    approved_first_tick = list(report.get("approved_first_tick") or [])
+    remaining_after_first_tick = list(report.get("remaining_after_first_tick") or [])
+    if len(approved_first_tick) != 2:
+        violations.append(
+            "{}: stress fixture expected 2 first-tick approvals under budget, found {}".format(
+                invariant_id,
+                len(approved_first_tick),
+            )
+        )
+    if not remaining_after_first_tick:
+        violations.append("{}: stress fixture no longer leaves deterministic deferred work after the first tick".format(invariant_id))
+    return violations
+
+
+def check_cache_key_includes_contracts(repo_root):
+    invariant_id = "INV-CACHE-KEY-INCLUDES-CONTRACTS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    cache_rel = os.path.join("src", "worldgen", "refinement", "refinement_cache.py")
+    worldgen_rel = os.path.join("src", "geo", "worldgen", "worldgen_engine.py")
+    runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
+    runner_rel = os.path.join("tools", "xstack", "sessionx", "runner.py")
+    script_runner_rel = os.path.join("tools", "xstack", "sessionx", "script_runner.py")
+    doc_rel = os.path.join("docs", "worldgen", "REFINEMENT_PIPELINE_MODEL.md")
+
+    violations = []
+    required_tokens = {
+        cache_rel: (
+            "universe_contract_bundle_hash",
+            "overlay_manifest_hash",
+            "mod_policy_id",
+            "geo_cell_key",
+            "refinement_level",
+        ),
+        worldgen_rel: (
+            "build_refinement_cache_key(",
+            "universe_contract_bundle_hash",
+            "overlay_manifest_hash",
+            "mod_policy_id",
+            "cache_key",
+        ),
+        runtime_rel: (
+            "EXPLAIN_CONTRACT_MISMATCH_CACHE",
+            "universe_contract_bundle_hash",
+            "overlay_manifest_hash",
+            "mod_policy_id",
+        ),
+        runner_rel: (
+            "overlay_manifest_hash",
+            "refinement_request_hash_chain",
+            "refinement_cache_hash_chain",
+            "worldgen_result_hash_chain",
+        ),
+        script_runner_rel: (
+            "overlay_manifest_hash",
+            "refinement_request_hash_chain",
+            "refinement_cache_hash_chain",
+            "worldgen_result_hash_chain",
+        ),
+        doc_rel: (
+            "contract_bundle_hash",
+            "overlay_manifest_hash",
+            "mod_policy_id",
+            "cache_key = H(",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing cache-key marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    try:
+        if repo_root not in sys.path:
+            sys.path.insert(0, repo_root)
+        from src.worldgen.refinement.refinement_cache import build_refinement_cache_key
+        from tools.xstack.testx.tests.geo8_testlib import worldgen_cell_key
+
+        common = {
+            "universe_identity_hash": "identity.hash.mw4.repox",
+            "generator_version_id": "gen.v0_stub",
+            "realism_profile_id": "realism.realistic_default_milkyway_stub",
+            "geo_cell_key": worldgen_cell_key([9, 1, -4]),
+            "refinement_level": 2,
+        }
+        cache_variants = {
+            "contract": build_refinement_cache_key(
+                universe_contract_bundle_hash="bundle.contract.a",
+                overlay_manifest_hash="overlay.hash.same",
+                mod_policy_id="mod_policy.strict",
+                **common,
+            )
+            != build_refinement_cache_key(
+                universe_contract_bundle_hash="bundle.contract.b",
+                overlay_manifest_hash="overlay.hash.same",
+                mod_policy_id="mod_policy.strict",
+                **common,
+            ),
+            "overlay": build_refinement_cache_key(
+                universe_contract_bundle_hash="bundle.contract.same",
+                overlay_manifest_hash="overlay.hash.a",
+                mod_policy_id="mod_policy.strict",
+                **common,
+            )
+            != build_refinement_cache_key(
+                universe_contract_bundle_hash="bundle.contract.same",
+                overlay_manifest_hash="overlay.hash.b",
+                mod_policy_id="mod_policy.strict",
+                **common,
+            ),
+            "mod_policy": build_refinement_cache_key(
+                universe_contract_bundle_hash="bundle.contract.same",
+                overlay_manifest_hash="overlay.hash.same",
+                mod_policy_id="mod_policy.strict",
+                **common,
+            )
+            != build_refinement_cache_key(
+                universe_contract_bundle_hash="bundle.contract.same",
+                overlay_manifest_hash="overlay.hash.same",
+                mod_policy_id="mod_policy.lab",
+                **common,
+            ),
+        }
+    except Exception as exc:  # pragma: no cover - RepoX runtime guard
+        return ["{}: refinement cache fixture could not be evaluated ({})".format(invariant_id, exc)]
+
+    for dimension, changed in sorted(cache_variants.items()):
+        if not changed:
+            violations.append("{}: refinement cache key no longer varies by {}".format(invariant_id, dimension))
+    return violations
+
+
+def check_no_blocking_worldgen_in_ui(repo_root):
+    invariant_id = "INV-NO-BLOCKING-WORLDGEN-IN-UI"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    viewer_rel = os.path.join("src", "client", "ui", "viewer_shell.py")
+    teleport_rel = os.path.join("src", "client", "ui", "teleport_controller.py")
+    doc_rel = os.path.join("docs", "worldgen", "REFINEMENT_PIPELINE_MODEL.md")
+    stress_tool_rel = os.path.join("tools", "worldgen", "tool_run_refinement_stress.py")
+
+    violations = []
+    required_tokens = {
+        viewer_rel: (
+            '"nonblocking": True',
+            '"source_kind": "derived.refinement_status_view"',
+            '"provenance_tool_id": "tool.geo.explain_property_origin"',
+        ),
+        teleport_rel: (
+            "process.refinement_request_enqueue",
+            "process.camera_teleport",
+            "build_refinement_request_record(",
+        ),
+        doc_rel: (
+            "movement/teleport never blocks on generation",
+            "shows coarse view until refined",
+            "explain.refinement_deferred",
+        ),
+        stress_tool_rel: (
+            "rapid-teleport and ROI-thrash",
+            "run_refinement_stress(",
+        ),
+    }
+    forbidden_tokens = {
+        viewer_rel: ("process.worldgen_request", "generate_worldgen_result("),
+        teleport_rel: ("process.worldgen_request", "generate_worldgen_result("),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing nonblocking marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel, tokens in sorted(forbidden_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in tokens:
+            if token in text:
+                violations.append(
+                    "{}: UI surface {} still contains blocking worldgen token '{}'".format(
+                        invariant_id,
+                        normalize_path(rel),
+                        token,
+                    )
+                )
+                break
+
+    try:
+        if repo_root not in sys.path:
+            sys.path.insert(0, repo_root)
+        from tools.worldgen.mw4_probe import run_refinement_stress
+
+        report = dict(run_refinement_stress(repo_root))
+    except Exception as exc:  # pragma: no cover - RepoX runtime guard
+        return ["{}: MW-4 viewer stress fixture could not be evaluated ({})".format(invariant_id, exc)]
+
+    before_rows = list((dict(report.get("viewer_before_status") or {})).get("status_per_level") or [])
+    after_rows = list((dict(report.get("viewer_after_second_status") or {})).get("status_per_level") or [])
+    before_tokens = set(str(dict(row).get("status", "")).strip() for row in before_rows if isinstance(row, dict))
+    after_tokens = set(str(dict(row).get("status", "")).strip() for row in after_rows if isinstance(row, dict))
+    if "queued" not in before_tokens:
+        violations.append("{}: viewer status no longer exposes queued coarse state".format(invariant_id))
+    if "present" not in after_tokens:
+        violations.append("{}: viewer status no longer exposes present refined state".format(invariant_id))
+    return violations
+
+
 def check_no_truth_in_ui(repo_root):
     invariant_id = "INV-NO-TRUTH-IN-UI"
     if is_override_active(repo_root, invariant_id):
@@ -10316,6 +10606,8 @@ def main() -> int:
                 lambda: check_no_wallclock_wind(repo_root),
                 lambda: check_earth_updates_bounded(repo_root),
                 lambda: check_earth_deterministic(repo_root),
+                lambda: check_refinement_budgeted(repo_root),
+                lambda: check_cache_key_includes_contracts(repo_root),
                 lambda: check_no_ocean_pde_in_mvp(repo_root),
                 lambda: check_no_fluid_sim_in_mvp(repo_root),
                 lambda: check_no_catalog_dependency(repo_root),
@@ -10348,6 +10640,7 @@ def main() -> int:
                 lambda: check_water_view_derived_only(repo_root),
                 lambda: check_earth_views_derived_only(repo_root),
                 lambda: check_no_truth_read_in_render(repo_root),
+                lambda: check_no_blocking_worldgen_in_ui(repo_root),
             ],
         },
         {

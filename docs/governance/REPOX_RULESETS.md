@@ -162,6 +162,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-EARTH-UPDATES-BOUNDED`
 - `INV-EARTH-DETERMINISTIC`
 - `INV-NO-WALLCLOCK-WIND`
+- `INV-REFINEMENT-BUDGETED`
+- `INV-CACHE-KEY-INCLUDES-CONTRACTS`
 - `INV-NO-OCEAN-PDE-IN-MVP`
 - `INV-WATER-VIEW-DERIVED-ONLY`
 - `INV-EARTH-VIEWS-DERIVED-ONLY`
@@ -175,6 +177,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-POSITION-WRITE-BYPASS`
 - `INV-NO-TRUTH-IN-UI`
 - `INV-VIEW-ARTIFACT-ONLY`
+- `INV-NO-BLOCKING-WORLDGEN-IN-UI`
 - `INV-SKYVIEW-DERIVED-ONLY`
 - `INV-NO-HARDCODED-MODE-BRANCH`
 - `INV-AUTHORITY-CONTEXT-REQUIRED`
@@ -639,6 +642,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when wall-clock APIs or similar real-time dependencies appear in the wind runtime or replay tooling.
 - Preserves canonical-tick wind evaluation under batching, replay, and lawful time warp.
 
+### INV-REFINEMENT-BUDGETED
+
+- Fails when the governed MW-4 refinement scheduler surface loses explicit compute-budget, queue-capacity, or deterministic defer markers.
+- Fails when the MW-4 stress path stops proving that budget pressure approves only the highest-priority requests and leaves the remainder deferred deterministically.
+- Preserves seamless traversal as a budgeted worldgen pipeline instead of an unmetered background generator.
+
+### INV-CACHE-KEY-INCLUDES-CONTRACTS
+
+- Fails when the MW-4 refinement cache surface stops hashing `universe_contract_bundle_hash`, `overlay_manifest_hash`, or `mod_policy_id` into cache identity.
+- Fails when runtime or replay surfaces stop carrying the semantic pins needed to refuse stale cache reuse.
+- Preserves replay-stable cache regeneration across contract, overlay, and mod-policy boundaries instead of silently reusing semantically stale results.
+
 ### INV-NO-OCEAN-PDE-IN-MVP
 
 - Fails when the governed EARTH-3 tide surface loses the explicit proxy-only hook markers for future ocean and coastal systems.
@@ -686,6 +701,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when UX-0 map or inspection surfaces stop routing through GEO projection/lens artifacts, inspection snapshots, or explain/provenance tooling.
 - Fails when viewer UI modules introduce direct field sampling, geometry reads, or ad hoc worldgen/view derivation bypasses.
 - Preserves the lens-first, derived-artifact-only contract for maps, minimaps, inspection panels, and provenance views.
+
+### INV-NO-BLOCKING-WORLDGEN-IN-UI
+
+- Fails when the governed MW-4 viewer and teleport surfaces stop routing traversal through refinement-request enqueueing and nonblocking status artifacts.
+- Fails when UI modules reintroduce direct `process.worldgen_request` or generator-side calls instead of showing coarse state until refinement completes.
+- Preserves seamless traversal as a lawful nonblocking request/defer/present flow rather than a synchronous loading-screen-style worldgen path.
 
 ### INV-SKYVIEW-DERIVED-ONLY
 
