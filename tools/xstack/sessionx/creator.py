@@ -9,11 +9,11 @@ from typing import Dict, List, Tuple
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.compatx.schema_registry import load_version_registry
-from tools.compatx.core.semantic_contract_validator import (
-    build_default_universe_contract_bundle,
-    load_semantic_contract_registry,
-    validate_semantic_contract_registry,
-    validate_universe_contract_bundle,
+from src.universe import (
+    DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
+    build_universe_contract_bundle_payload,
+    pin_contract_bundle_metadata,
+    validate_pinned_contract_bundle_metadata,
 )
 from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
@@ -1260,6 +1260,7 @@ def create_session_spec(
             {"field": "save_id"},
             "$.save_id",
         )
+    paths = _session_paths(repo_root=repo_root, save_id=save_token, saves_root_rel=saves_root_rel)
 
     bundle_profile = load_bundle_profile(repo_root=repo_root, bundle_id=str(bundle_id), schema_repo_root=repo_root)
     if bundle_profile.get("result") != "complete":
@@ -1480,6 +1481,50 @@ def create_session_spec(
         )
         identity_abs = ""
 
+    (
+        universe_contract_bundle_payload,
+        _semantic_contract_registry_payload,
+        semantic_contract_proof_bundle,
+        universe_contract_bundle_errors,
+    ) = build_universe_contract_bundle_payload(repo_root=repo_root)
+    if universe_contract_bundle_errors:
+        if "refuse.semantic_contract_registry_missing" in universe_contract_bundle_errors:
+            return refusal(
+                "REFUSE_SEMANTIC_CONTRACT_REGISTRY_MISSING",
+                "semantic contract registry could not be loaded",
+                "Restore data/registries/semantic_contract_registry.json and retry session creation.",
+                {"registry_id": "dominium.registry.semantic_contracts"},
+                "$.universe_contract_bundle",
+            )
+        return refusal(
+            "REFUSE_UNIVERSE_CONTRACT_BUNDLE_INVALID",
+            "universe semantic contract bundle failed validation",
+            "Repair semantic contract registry and universe contract bundle metadata, then retry session creation.",
+            {"schema_id": "universe_contract_bundle"},
+            "$.universe_contract_bundle",
+        )
+
+    if identity_abs:
+        pinned_identity_errors = validate_pinned_contract_bundle_metadata(
+            identity_payload,
+            bundle_ref=DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
+            bundle_payload=universe_contract_bundle_payload,
+        )
+        if pinned_identity_errors:
+            return refusal(
+                "REFUSE_UNIVERSE_IDENTITY_CONTRACT_BUNDLE_MISMATCH",
+                "provided UniverseIdentity is missing or mismatches its pinned universe contract bundle metadata",
+                "Run the CompatX migration tool or recreate the universe so it pins the current semantic contract bundle.",
+                {"schema_id": "universe_identity"},
+                "$.universe_identity",
+            )
+    else:
+        identity_payload = pin_contract_bundle_metadata(
+            identity_payload,
+            bundle_ref=DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
+            bundle_payload=universe_contract_bundle_payload,
+        )
+
     selected_profile, profile_error = select_physics_profile(
         physics_profile_id=requested_physics_profile_id,
         profile_registry=universe_physics_registry,
@@ -1501,39 +1546,6 @@ def create_session_spec(
     identity_check = _validate_universe_identity(repo_root=repo_root, payload=identity_payload)
     if identity_check.get("result") != "complete":
         return identity_check
-
-    semantic_contract_registry_payload, semantic_contract_registry_error = load_semantic_contract_registry(repo_root)
-    if semantic_contract_registry_error:
-        return refusal(
-            "REFUSE_SEMANTIC_CONTRACT_REGISTRY_MISSING",
-            "semantic contract registry could not be loaded",
-            "Restore data/registries/semantic_contract_registry.json and retry session creation.",
-            {"registry_id": "dominium.registry.semantic_contracts"},
-            "$.universe_contract_bundle",
-        )
-    semantic_contract_registry_validation = validate_semantic_contract_registry(semantic_contract_registry_payload)
-    if semantic_contract_registry_validation:
-        return refusal(
-            "REFUSE_SEMANTIC_CONTRACT_REGISTRY_INVALID",
-            "semantic contract registry failed validation",
-            "Repair semantic contract registry entries and retry session creation.",
-            {"registry_id": "dominium.registry.semantic_contracts"},
-            "$.universe_contract_bundle",
-        )
-    universe_contract_bundle_payload = build_default_universe_contract_bundle(semantic_contract_registry_payload)
-    universe_contract_bundle_errors = validate_universe_contract_bundle(
-        repo_root=repo_root,
-        payload=universe_contract_bundle_payload,
-        registry_payload=semantic_contract_registry_payload,
-    )
-    if universe_contract_bundle_errors:
-        return refusal(
-            "REFUSE_UNIVERSE_CONTRACT_BUNDLE_INVALID",
-            "universe semantic contract bundle failed validation",
-            "Repair universe contract bundle metadata and retry session creation.",
-            {"schema_id": "universe_contract_bundle"},
-            "$.universe_contract_bundle",
-        )
 
     calculated_universe_id = str(identity_payload.get("universe_id", "")).strip() or str(universe_id).strip()
     if not calculated_universe_id:
@@ -1758,6 +1770,10 @@ def create_session_spec(
         },
         "profile_bindings": [dict(row) for row in session_profile_bindings],
         "pack_lock_hash": str(lockfile_payload.get("pack_lock_hash", "")),
+        "contract_bundle_hash": str(semantic_contract_proof_bundle.get("universe_contract_bundle_hash", "")).strip(),
+        "semantic_contract_registry_hash": str(
+            semantic_contract_proof_bundle.get("semantic_contract_registry_hash", "")
+        ).strip(),
         "budget_policy_id": str(budget_policy_id),
         "fidelity_policy_id": str(fidelity_policy_id),
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
@@ -1826,7 +1842,6 @@ def create_session_spec(
             "$.universe_state",
         )
 
-    paths = _session_paths(repo_root=repo_root, save_id=save_token, saves_root_rel=saves_root_rel)
     write_canonical_json(paths["session_spec_path"], session_payload)
     write_canonical_json(paths["universe_identity_path"], identity_payload)
     write_canonical_json(paths["universe_contract_bundle_path"], universe_contract_bundle_payload)
@@ -1855,8 +1870,6 @@ def create_session_spec(
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "loaded_universe_identity_path": norm(identity_abs) if identity_abs else "",
         "generated_universe_identity": not bool(universe_identity_path),
-        "semantic_contract_registry_hash": str(
-            dict(universe_contract_bundle_payload.get("extensions") or {}).get("semantic_contract_registry_hash", "")
-        ).strip(),
-        "universe_contract_bundle_hash": str(universe_contract_bundle_payload.get("deterministic_fingerprint", "")).strip(),
+        "semantic_contract_registry_hash": str(semantic_contract_proof_bundle.get("semantic_contract_registry_hash", "")).strip(),
+        "universe_contract_bundle_hash": str(semantic_contract_proof_bundle.get("universe_contract_bundle_hash", "")).strip(),
     }

@@ -34,3 +34,5 @@ record session_spec
 OPTIONAL:
   - time_control_policy_id: id
   - profile_bindings: [id]
+  - contract_bundle_hash: tag
+  - semantic_contract_registry_hash: tag

@@ -12,6 +12,11 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 DEFAULT_COMPATIBILITY_VERSION = "1.0.0"
 DEFAULT_TIMESTAMP_UTC = "1970-01-01T00:00:00Z"
+IDENTITY_HASH_EXCLUDED_FIELDS = (
+    "identity_hash",
+    "universe_contract_bundle_ref",
+    "universe_contract_bundle_hash",
+)
 
 
 def norm(path: str) -> str:
@@ -48,7 +53,9 @@ def now_utc_iso() -> str:
 
 def identity_hash_for_payload(payload: Dict[str, object]) -> str:
     body = dict(payload)
-    body["identity_hash"] = ""
+    for field_name in IDENTITY_HASH_EXCLUDED_FIELDS:
+        if field_name in body:
+            body[field_name] = ""
     return canonical_sha256(body)
 
 

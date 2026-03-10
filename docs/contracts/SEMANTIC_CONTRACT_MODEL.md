@@ -52,6 +52,8 @@ Each registry row declares:
 ## Universe Binding
 - Universe creation writes an immutable sidecar: `universe_contract_bundle.json`.
 - The sidecar is validated by `schemas/universe_contract_bundle.schema.json`.
+- `UniverseIdentity` stores `universe_contract_bundle_ref` and `universe_contract_bundle_hash`.
+- `SessionSpec` stores `contract_bundle_hash` and may also store `semantic_contract_registry_hash`.
 - The sidecar is kept out of `UniverseIdentity.identity_hash` on purpose so existing object-id derivation does not drift.
 - This is an explicit compatibility-preserving split between identity hashing and semantic pin metadata.
 
@@ -70,6 +72,8 @@ The sidecar pins:
 - Proof surfaces must carry:
   - semantic contract registry hash
   - universe contract bundle hash
+- Load refuses `refusal.contract.missing_bundle` when a universe/session artifact does not carry the required contract pins.
+- Load and replay refuse `refusal.contract.mismatch` when pinned contract hashes do not match runtime expectations.
 - Replay must compare the pinned bundle against the replay bundle.
 - If contract versions differ, replay refuses unless an explicit CompatX migration tool is invoked.
 

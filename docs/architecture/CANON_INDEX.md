@@ -61,6 +61,7 @@ execution artifacts and are not authoritative.
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 - `docs/architecture/CONTRACTS_INDEX.md`
 - `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`
+- `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`
 - `docs/architecture/CONTROL_LAYERS.md`
 - `docs/architecture/CRASH_RECOVERY.md`
 - `docs/architecture/CROSS_SHARD_LOG.md`

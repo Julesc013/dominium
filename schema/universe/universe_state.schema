@@ -22,3 +22,11 @@ record universe_state
     - save_checkpoint_refs: [id]
     - history_log_anchors: [id]
     - extensions: map
+
+OPTIONAL:
+  - overlay_manifest: map
+  - save_property_patches: [map]
+  - overlay_merge_results: [map]
+  - overlay_manifest_hash: tag
+  - property_patch_hash_chain: tag
+  - overlay_merge_result_hash_chain: tag

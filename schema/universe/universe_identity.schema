@@ -31,3 +31,5 @@ OPTIONAL:
   - projection_profile_id: id
   - generator_version_id: id
   - realism_profile_id: id
+  - universe_contract_bundle_ref: id
+  - universe_contract_bundle_hash: tag

@@ -17,6 +17,7 @@ from src.net.policies.policy_srz_hybrid import (
     join_client_hybrid,
     prepare_hybrid_baseline,
 )
+from src.universe import enforce_session_contract_bundle
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -1968,6 +1969,15 @@ def boot_session_spec(
             {"save_id": save_id},
             "$.identity_hash",
         )
+    contract_enforcement = enforce_session_contract_bundle(
+        repo_root=repo_root,
+        session_spec=session_spec,
+        universe_identity=universe_identity,
+        identity_path=identity_path,
+        replay_mode=False,
+    )
+    if contract_enforcement.get("result") != "complete":
+        return contract_enforcement
     identity_physics_profile_id = str(universe_identity.get("physics_profile_id", "")).strip()
     if not identity_physics_profile_id:
         return refusal(
@@ -2933,6 +2943,9 @@ def boot_session_spec(
         "pipeline_id": selected_pipeline_id,
         "session_spec_hash": session_spec_hash,
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
+        "contract_bundle_hash": str(contract_enforcement.get("contract_bundle_hash", "")),
+        "semantic_contract_registry_hash": str(contract_enforcement.get("semantic_contract_registry_hash", "")),
+        "semantic_contract_proof_bundle": dict(contract_enforcement.get("proof_bundle") or {}),
         "registry_hashes": registry_hashes,
         "session_stage_registry_hash": str(pipeline_contract.get("stage_registry_hash", "")),
         "session_pipeline_registry_hash": str(pipeline_contract.get("pipeline_registry_hash", "")),
@@ -3022,6 +3035,9 @@ def boot_session_spec(
         "run_meta_path": norm(os.path.relpath(run_meta_path, repo_root)),
         "session_spec_hash": session_spec_hash,
         "pack_lock_hash": str(lock_payload.get("pack_lock_hash", "")),
+        "contract_bundle_hash": str(contract_enforcement.get("contract_bundle_hash", "")),
+        "semantic_contract_registry_hash": str(contract_enforcement.get("semantic_contract_registry_hash", "")),
+        "semantic_contract_proof_bundle": dict(contract_enforcement.get("proof_bundle") or {}),
         "registry_hashes": registry_hashes,
         "physics_profile_id": identity_physics_profile_id,
         "conservation_contract_set_id": identity_conservation_contract_set_id,

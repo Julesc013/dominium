@@ -124,6 +124,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-CONTRACT-PINNED-IN-UNIVERSE`
 - `INV-NO-UNVERSIONED-BEHAVIOR-CHANGE`
 - `INV-NEW-CONTRACT-REQUIRES-ENTRY`
+- `INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE`
+- `INV-SESSION-MUST-REFERENCE-CONTRACT-HASH`
+- `INV-REPLAY-REFUSES-CONTRACT-MISMATCH`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-MVP-PACKS-MINIMAL`
@@ -430,6 +433,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when any `contract.*.vN` token appears in governed repo surfaces without a matching semantic contract registry entry.
 - Fails when semantic contract references are introduced ad hoc outside the canonical registry.
 - Forces new behavior-meaning contracts through explicit registry registration.
+
+### INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE
+
+- Fails when `UniverseIdentity` schemas omit `universe_contract_bundle_ref` or `universe_contract_bundle_hash`.
+- Fails when the universe identity builder/creator no longer pins the contract sidecar deterministically.
+- Fails when the canonical `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md` doctrine or runtime enforcer markers are missing.
+
+### INV-SESSION-MUST-REFERENCE-CONTRACT-HASH
+
+- Fails when `SessionSpec` schemas omit `contract_bundle_hash` or `semantic_contract_registry_hash`.
+- Fails when session creation no longer records the bundle hash needed for load/replay refusal.
+- Keeps session boot inputs explicitly tied to the universe semantic contract bundle.
+
+### INV-REPLAY-REFUSES-CONTRACT-MISMATCH
+
+- Fails when replay/load enforcement no longer routes through the universe contract enforcer.
+- Fails when `refusal.contract.missing_bundle` or `refusal.contract.mismatch` markers disappear from the enforcement path.
+- Prevents silent continuation under mismatched semantic contracts.
 
 ### INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS
 

@@ -245,6 +245,43 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "schema/universe/universe_identity.schema",
+        "schemas/universe_identity.schema.json",
+        "src/universe/universe_identity_builder.py",
+        "src/universe/universe_contract_enforcer.py",
+        "tools/xstack/sessionx/creator.py",
+        "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-universe-must-have-contract-bundle",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-SESSION-MUST-REFERENCE-CONTRACT-HASH",
+      "severity": "FAIL",
+      "scope_paths": [
+        "schema/session/session_spec.schema",
+        "schemas/session_spec.schema.json",
+        "tools/xstack/sessionx/creator.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-session-must-reference-contract-hash",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/universe/universe_contract_enforcer.py",
+        "tools/xstack/sessionx/runner.py",
+        "tools/xstack/sessionx/script_runner.py",
+        "docs/meta/UNIVERSE_CONTRACT_BUNDLE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-replay-refuses-contract-mismatch",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
       "severity": "WARN",
       "scope_paths": [

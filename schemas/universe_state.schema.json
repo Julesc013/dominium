@@ -159,6 +159,33 @@
         "type": "string"
       }
     },
+    "overlay_manifest": {
+      "type": "object"
+    },
+    "save_property_patches": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "overlay_merge_results": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "overlay_manifest_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "property_patch_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "overlay_merge_result_hash_chain": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "camera_assemblies": {
       "type": "array",
       "items": {
@@ -3913,6 +3940,12 @@
       "active_law_references": [
         "law.lab.observe_only"
       ],
+      "overlay_manifest": {},
+      "save_property_patches": [],
+      "overlay_merge_results": [],
+      "overlay_manifest_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "property_patch_hash_chain": "0000000000000000000000000000000000000000000000000000000000000000",
+      "overlay_merge_result_hash_chain": "0000000000000000000000000000000000000000000000000000000000000000",
       "session_references": [
         "session.lab.nav.001"
       ],

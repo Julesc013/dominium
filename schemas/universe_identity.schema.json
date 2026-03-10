@@ -74,6 +74,16 @@
       "type": "string",
       "minLength": 1
     },
+    "universe_contract_bundle_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative sidecar reference for the immutable universe contract bundle."
+    },
+    "universe_contract_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$",
+      "description": "Deterministic fingerprint of the pinned universe contract bundle."
+    },
     "base_scenario_id": {
       "type": "string"
     },
@@ -116,6 +126,8 @@
       "projection_profile_id": "geo.projection.perspective_3d",
       "generator_version_id": "gen.v0_stub",
       "realism_profile_id": "realism.realistic_default_milkyway_stub",
+      "universe_contract_bundle_ref": "universe_contract_bundle.json",
+      "universe_contract_bundle_hash": "95313b59cd3663a63c46d7ced657b12a0fa1eec1c730d334fef8b198ff89e279",
       "base_scenario_id": "scenario.lab.galaxy_nav",
       "initial_pack_set_hash_expectation": "d9eb253e069b2ce7fbbdb5f95f98cc28fbf3622f29227cececad2e89d13718a5",
       "compatibility_schema_refs": [

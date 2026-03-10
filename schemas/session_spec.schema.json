@@ -317,6 +317,16 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "contract_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$",
+      "description": "Pinned universe semantic contract bundle fingerprint for load/replay refusal checks."
+    },
+    "semantic_contract_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$",
+      "description": "Optional semantic contract registry hash recorded at session creation time."
+    },
     "budget_policy_id": {
       "type": "string"
     },
@@ -388,6 +398,8 @@
         "privilege_level": "observer"
       },
       "pack_lock_hash": "17a8255be7f6d082c7fce0f6bc2d0ad4cc4f95e14f7696b1ef255fca605dc04d",
+      "contract_bundle_hash": "95313b59cd3663a63c46d7ced657b12a0fa1eec1c730d334fef8b198ff89e279",
+      "semantic_contract_registry_hash": "a996c8327410bd3965108401f98c0d0aacd1fb173b9e7bcbace0da6241f5625b",
       "budget_policy_id": "policy.budget.default_lab",
       "fidelity_policy_id": "policy.fidelity.default_lab",
       "time_control_policy_id": "time.policy.null",

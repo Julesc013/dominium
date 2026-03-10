@@ -36,3 +36,4 @@ Superseded By: none
   - 2026-03-10: refreshed for EARTH-7 wind proxy doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX wind discipline additions, and EARTH-7 TestX additions
   - 2026-03-10: refreshed for EARTH-8 water visual doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX water-view discipline additions, and EARTH-8 TestX additions
   - 2026-03-10: refreshed for COMPAT-SEM-0 semantic contract model registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX semantic contract discipline additions, and COMPAT-SEM-0 TestX additions
+  - 2026-03-10: refreshed for COMPAT-SEM-1 universe contract bundle registration in `docs/architecture/CANON_INDEX.md`, contract-bundle schema/session pinning additions, and RepoX/AuditX/TestX contract-enforcement additions

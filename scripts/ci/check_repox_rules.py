@@ -89,6 +89,15 @@ SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_co
 SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL = os.path.join("schema", "universe", "universe_contract_bundle.schema")
 SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL = os.path.join("schemas", "universe_contract_bundle.schema.json")
 SEMANTIC_CONTRACT_MODEL_REL = os.path.join("docs", "contracts", "SEMANTIC_CONTRACT_MODEL.md")
+UNIVERSE_CONTRACT_BUNDLE_DOC_REL = os.path.join("docs", "meta", "UNIVERSE_CONTRACT_BUNDLE.md")
+UNIVERSE_IDENTITY_SCHEMA_REL = os.path.join("schema", "universe", "universe_identity.schema")
+UNIVERSE_IDENTITY_JSON_SCHEMA_REL = os.path.join("schemas", "universe_identity.schema.json")
+SESSION_SPEC_SCHEMA_REL = os.path.join("schema", "session", "session_spec.schema")
+SESSION_SPEC_JSON_SCHEMA_REL = os.path.join("schemas", "session_spec.schema.json")
+UNIVERSE_IDENTITY_BUILDER_REL = os.path.join("src", "universe", "universe_identity_builder.py")
+UNIVERSE_CONTRACT_ENFORCER_REL = os.path.join("src", "universe", "universe_contract_enforcer.py")
+SESSION_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "runner.py")
+SESSION_SCRIPT_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "script_runner.py")
 SEMANTIC_CONTRACT_VALIDATOR_REL = os.path.join("tools", "compatx", "core", "semantic_contract_validator.py")
 SEMANTIC_CONTRACT_CREATOR_REL = os.path.join("tools", "xstack", "sessionx", "creator.py")
 SEMANTIC_CONTRACT_TOKEN_RE = re.compile(r"\b(contract\.[a-z0-9_.]+\.v[0-9]+)\b")
@@ -3966,8 +3975,9 @@ def check_contract_pinned_in_universe(repo_root):
     creator_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_CREATOR_REL.replace("/", os.sep))) or ""
     required_creator_tokens = (
         "universe_contract_bundle.json",
-        "build_default_universe_contract_bundle(",
-        "validate_universe_contract_bundle(",
+        "build_universe_contract_bundle_payload(",
+        "validate_pinned_contract_bundle_metadata(",
+        "pin_contract_bundle_metadata(",
         '"universe_contract_bundle_path"',
     )
     for token in required_creator_tokens:
@@ -4042,6 +4052,102 @@ def check_new_contract_requires_entry(repo_root):
             if token not in allowed:
                 missing.add("{} ({})".format(token, rel))
     return ["{}: semantic contract token missing registry entry {}".format(invariant_id, token) for token in sorted(missing)]
+
+
+def check_universe_must_have_contract_bundle(repo_root):
+    invariant_id = "INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_paths = (
+        UNIVERSE_IDENTITY_SCHEMA_REL,
+        UNIVERSE_IDENTITY_JSON_SCHEMA_REL,
+        UNIVERSE_IDENTITY_BUILDER_REL,
+        UNIVERSE_CONTRACT_ENFORCER_REL,
+        UNIVERSE_CONTRACT_BUNDLE_DOC_REL,
+        SEMANTIC_CONTRACT_CREATOR_REL,
+    )
+    for rel in required_paths:
+        abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+    if violations:
+        return violations
+
+    schema_text = read_text(os.path.join(repo_root, UNIVERSE_IDENTITY_SCHEMA_REL.replace("/", os.sep))) or ""
+    json_schema_text = read_text(os.path.join(repo_root, UNIVERSE_IDENTITY_JSON_SCHEMA_REL.replace("/", os.sep))) or ""
+    for token in ("universe_contract_bundle_ref", "universe_contract_bundle_hash"):
+        if token not in schema_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, UNIVERSE_IDENTITY_SCHEMA_REL, token))
+        if '"{}"'.format(token) not in json_schema_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, UNIVERSE_IDENTITY_JSON_SCHEMA_REL, token))
+
+    builder_text = read_text(os.path.join(repo_root, UNIVERSE_IDENTITY_BUILDER_REL.replace("/", os.sep))) or ""
+    for token in ("pin_contract_bundle_metadata(", "validate_pinned_contract_bundle_metadata(", "bundle_hash("):
+        if token not in builder_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, UNIVERSE_IDENTITY_BUILDER_REL, token))
+
+    creator_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_CREATOR_REL.replace("/", os.sep))) or ""
+    for token in ('"universe_contract_bundle_path"', "DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF", "pin_contract_bundle_metadata("):
+        if token not in creator_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, SEMANTIC_CONTRACT_CREATOR_REL, token))
+
+    enforcer_text = read_text(os.path.join(repo_root, UNIVERSE_CONTRACT_ENFORCER_REL.replace("/", os.sep))) or ""
+    for token in ("enforce_session_contract_bundle(", "REFUSAL_CONTRACT_MISSING_BUNDLE", "REFUSAL_CONTRACT_MISMATCH"):
+        if token not in enforcer_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, UNIVERSE_CONTRACT_ENFORCER_REL, token))
+
+    doc_text = read_text(os.path.join(repo_root, UNIVERSE_CONTRACT_BUNDLE_DOC_REL.replace("/", os.sep))) or ""
+    for token in ("refusal.contract.missing_bundle", "refusal.contract.mismatch", "UniverseIdentity", "SessionSpec"):
+        if token not in doc_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, UNIVERSE_CONTRACT_BUNDLE_DOC_REL, token))
+    return violations
+
+
+def check_session_must_reference_contract_hash(repo_root):
+    invariant_id = "INV-SESSION-MUST-REFERENCE-CONTRACT-HASH"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    schema_text = read_text(os.path.join(repo_root, SESSION_SPEC_SCHEMA_REL.replace("/", os.sep))) or ""
+    json_schema_text = read_text(os.path.join(repo_root, SESSION_SPEC_JSON_SCHEMA_REL.replace("/", os.sep))) or ""
+    for token in ("contract_bundle_hash", "semantic_contract_registry_hash"):
+        if token not in schema_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, SESSION_SPEC_SCHEMA_REL, token))
+        if '"{}"'.format(token) not in json_schema_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, SESSION_SPEC_JSON_SCHEMA_REL, token))
+
+    creator_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_CREATOR_REL.replace("/", os.sep))) or ""
+    for token in ('"contract_bundle_hash"', '"semantic_contract_registry_hash"'):
+        if token not in creator_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, SEMANTIC_CONTRACT_CREATOR_REL, token))
+    return violations
+
+
+def check_replay_refuses_contract_mismatch(repo_root):
+    invariant_id = "INV-REPLAY-REFUSES-CONTRACT-MISMATCH"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    enforcer_text = read_text(os.path.join(repo_root, UNIVERSE_CONTRACT_ENFORCER_REL.replace("/", os.sep))) or ""
+    for token in (
+        "enforce_session_contract_bundle(",
+        "refusal.contract.missing_bundle",
+        "refusal.contract.mismatch",
+        "Replay requires SessionSpec.semantic_contract_registry_hash",
+    ):
+        if token not in enforcer_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, UNIVERSE_CONTRACT_ENFORCER_REL, token))
+
+    for rel in (SESSION_RUNNER_REL, SESSION_SCRIPT_RUNNER_REL):
+        text = read_text(os.path.join(repo_root, rel.replace("/", os.sep))) or ""
+        for token in ("enforce_session_contract_bundle(", '"semantic_contract_proof_bundle"', '"contract_bundle_hash"'):
+            if token not in text:
+                violations.append("{}: {} missing token {}".format(invariant_id, rel, token))
+    return violations
 
 
 def check_mvp_packs_minimal(repo_root):
@@ -9687,6 +9793,9 @@ def main() -> int:
                 lambda: check_contract_pinned_in_universe(repo_root),
                 lambda: check_no_unversioned_behavior_change(repo_root),
                 lambda: check_new_contract_requires_entry(repo_root),
+                lambda: check_universe_must_have_contract_bundle(repo_root),
+                lambda: check_session_must_reference_contract_hash(repo_root),
+                lambda: check_replay_refuses_contract_mismatch(repo_root),
             ],
         },
     ]

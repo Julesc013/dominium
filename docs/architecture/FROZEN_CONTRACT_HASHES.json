@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "3f01725a3ca106ee096e81a8fd6cd1ec01aae9e9ec8abe29f75486faaf76bddd"
+      "sha256": "de184bac077261438ee1ceb836bc49dfe58a1ab8e5ef39528cb6d162f05305a2"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
@@ -118,7 +118,7 @@
     },
     {
       "path": "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
-      "sha256": "add8175e0a63a38018e6d6735850021de8dd0a68b1999f4c73395eb12ce3f5ad"
+      "sha256": "da0d21264d0e6790d42233a88cc9bad14a4f2d74ebf761ce95ba1c22a5a390d9"
     },
     {
       "path": "docs/architecture/ANTI_ENTROPY_RULES.md",

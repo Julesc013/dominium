@@ -15,6 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 from tools.xstack.sessionx.common import deterministic_seed_hex, identity_hash_for_payload
+from src.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
 MVP_RUNTIME_VERSION = "0.0.0"
@@ -389,8 +390,15 @@ def build_default_universe_identity(
         },
         "identity_hash": "",
     }
-    payload["identity_hash"] = identity_hash_for_payload(payload)
-    return payload
+    bundle_payload, _registry_payload, _proof_bundle, errors = build_universe_contract_bundle_payload(repo_root=repo_root)
+    if errors:
+        payload["identity_hash"] = identity_hash_for_payload(payload)
+        return payload
+    return pin_contract_bundle_metadata(
+        payload,
+        bundle_ref=DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
+        bundle_payload=bundle_payload,
+    )
 
 
 def validate_session_template_payload(repo_root: str, payload: Dict[str, object]) -> List[str]:
