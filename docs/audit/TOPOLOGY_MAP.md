@@ -4,9 +4,9 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:ead8e6de3d69a37a4f8026fffb546272600506e4`
+- repository_hash: `HEAD:70749afdd7134eba9b83318e552823266384e1a1`
 - generated_tick: `0`
-- deterministic_fingerprint: `6c0427bb85b35d5734f349fbe3e1af44a71e17d12befc9acca63ed6cfc126159`
+- deterministic_fingerprint: `1d3590d24035e28cabb56bb1e68d74d82ea9eb1752fdf7706adee35343cd9186`
 
 ## Counts
 - node_count: 4779

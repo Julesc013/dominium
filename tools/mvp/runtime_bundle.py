@@ -24,7 +24,7 @@ from src.modding import (
     mod_policy_rows_by_id,
 )
 from src.packs.compat import attach_pack_compat_manifest
-from src.compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
+from src.compat.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
 from src.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
@@ -126,17 +126,21 @@ def _write_text(path: str, text: str) -> None:
         handle.write(text.replace("\r\n", "\n"))
 
 
-def _payload_hash(payload: Dict[str, object], field_name: str = "deterministic_fingerprint") -> str:
+def _payload_hash(payload: Dict[str, object], field_name: str = "deterministic_fingerprint", ignored_fields: Tuple[str, ...] = ()) -> str:
     body = dict(payload)
     body[field_name] = ""
+    for token in ignored_fields:
+        field_token = str(token or "").strip()
+        if field_token:
+            body[field_token] = ""
     return canonical_sha256(body)
 
 
 def _profile_bundle_hash(payload: Dict[str, object]) -> str:
-    body = dict(payload)
-    body["deterministic_fingerprint"] = ""
-    body["profile_bundle_hash"] = ""
-    return canonical_sha256(body)
+    return artifact_deterministic_fingerprint(
+        dict(payload),
+        ignored_fields=("engine_version_created", "profile_bundle_hash"),
+    )
 
 
 def _source_pack_row(repo_root: str, rel_path: str) -> Dict[str, object]:
@@ -450,7 +454,7 @@ def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, ob
         payload=payload,
         update_fingerprint=False,
     )
-    payload["deterministic_fingerprint"] = _payload_hash(payload)
+    payload["deterministic_fingerprint"] = _payload_hash(payload, ignored_fields=("engine_version_created",))
     return payload
 
 
@@ -488,7 +492,10 @@ def validate_pack_lock_payload(repo_root: str, payload: Dict[str, object]) -> Li
         errors.append("extensions mismatch")
     if str(payload.get("pack_lock_hash", "")).strip() != str(expected.get("pack_lock_hash", "")).strip():
         errors.append("pack_lock_hash mismatch")
-    if str(payload.get("deterministic_fingerprint", "")).strip() != _payload_hash(payload):
+    if str(payload.get("deterministic_fingerprint", "")).strip() != _payload_hash(
+        payload,
+        ignored_fields=("engine_version_created",),
+    ):
         errors.append("deterministic_fingerprint mismatch")
     return errors
 
@@ -542,7 +549,7 @@ def build_session_template_payload(repo_root: str, pack_lock_payload: Dict[str, 
         payload=payload,
         update_fingerprint=False,
     )
-    payload["deterministic_fingerprint"] = _payload_hash(payload)
+    payload["deterministic_fingerprint"] = _payload_hash(payload, ignored_fields=("engine_version_created",))
     return payload
 
 
@@ -625,7 +632,10 @@ def validate_session_template_payload(repo_root: str, payload: Dict[str, object]
     ):
         if payload.get(key) != expected.get(key):
             errors.append("{} mismatch".format(key))
-    if str(payload.get("deterministic_fingerprint", "")).strip() != _payload_hash(payload):
+    if str(payload.get("deterministic_fingerprint", "")).strip() != _payload_hash(
+        payload,
+        ignored_fields=("engine_version_created",),
+    ):
         errors.append("deterministic_fingerprint mismatch")
     return errors
 

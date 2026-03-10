@@ -64,7 +64,7 @@ _ARTIFACT_RULES = {
         ),
         "requires_contract_hash": False,
         "supports_required_contract_ranges": False,
-        "fingerprint_ignored_fields": ("profile_bundle_hash",),
+        "fingerprint_ignored_fields": ("engine_version_created", "profile_bundle_hash"),
     },
     "session_template": {
         "base_schema_name": "",
@@ -77,6 +77,7 @@ _ARTIFACT_RULES = {
         ),
         "requires_contract_hash": False,
         "supports_required_contract_ranges": False,
+        "fingerprint_ignored_fields": ("engine_version_created",),
     },
     "pack_lock": {
         "base_schema_name": "pack_lock",
@@ -89,6 +90,7 @@ _ARTIFACT_RULES = {
         ),
         "requires_contract_hash": False,
         "supports_required_contract_ranges": False,
+        "fingerprint_ignored_fields": ("engine_version_created",),
     },
 }
 
