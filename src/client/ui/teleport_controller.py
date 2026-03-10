@@ -6,6 +6,7 @@ import re
 from typing import Iterable, Mapping
 
 from src.geo.worldgen import build_worldgen_request_for_query
+from src.worldgen.refinement.refinement_scheduler import build_refinement_request_record
 from src.worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key, sol_anchor_object_ids
 from src.worldgen.mw.system_query_engine import (
     build_system_teleport_plan,
@@ -105,8 +106,30 @@ def _sol_process_sequence(*, object_id: str, refinement_level: int, extensions: 
     )
     return [
         {
-            "process_id": "process.worldgen_request",
-            "inputs": {"worldgen_request": dict(worldgen_request)},
+            "process_id": "process.refinement_request_enqueue",
+            "inputs": {
+                "refinement_request_record": build_refinement_request_record(
+                    request_id="refinement.request.{}".format(
+                        canonical_sha256(
+                            {
+                                "worldgen_request_id": str(worldgen_request.get("request_id", "")).strip(),
+                                "request_kind": "teleport",
+                                "priority_class": "priority.teleport.destination",
+                            }
+                        )[:16]
+                    ),
+                    request_kind="teleport",
+                    geo_cell_key=_as_map(worldgen_request.get("geo_cell_key")),
+                    refinement_level=int(max(0, _as_int(worldgen_request.get("refinement_level", 0), 0))),
+                    priority_class="priority.teleport.destination",
+                    tick=0,
+                    extensions={
+                        "source": "MW4-5",
+                        "worldgen_request_id": str(worldgen_request.get("request_id", "")).strip(),
+                        "worldgen_reason": str(worldgen_request.get("reason", "")).strip(),
+                    },
+                )
+            },
         },
         {
             "process_id": "process.camera_teleport",
@@ -276,8 +299,34 @@ def build_teleport_plan(
             "selection_index": int(selected.get("selection_index", 0)),
             "process_sequence": [
                 {
-                    "process_id": "process.worldgen_request",
-                    "inputs": {"worldgen_request": dict(plan.get("worldgen_request") or {})},
+                    "process_id": "process.refinement_request_enqueue",
+                    "inputs": {
+                        "refinement_request_record": build_refinement_request_record(
+                            request_id="refinement.request.{}".format(
+                                canonical_sha256(
+                                    {
+                                        "worldgen_request_id": str(_as_map(plan.get("worldgen_request")).get("request_id", "")).strip(),
+                                        "request_kind": "teleport",
+                                        "priority_class": "priority.teleport.destination",
+                                        "target_object_id": str(plan.get("target_object_id", "")).strip(),
+                                    }
+                                )[:16]
+                            ),
+                            request_kind="teleport",
+                            geo_cell_key=_as_map(_as_map(plan.get("worldgen_request")).get("geo_cell_key")),
+                            refinement_level=int(
+                                max(0, _as_int(_as_map(plan.get("worldgen_request")).get("refinement_level", 0), 0))
+                            ),
+                            priority_class="priority.teleport.destination",
+                            tick=0,
+                            extensions={
+                                "source": "MW4-5",
+                                "worldgen_request_id": str(_as_map(plan.get("worldgen_request")).get("request_id", "")).strip(),
+                                "worldgen_reason": str(_as_map(plan.get("worldgen_request")).get("reason", "")).strip(),
+                                "target_object_id": str(plan.get("target_object_id", "")).strip(),
+                            },
+                        )
+                    },
                 },
                 {
                     "process_id": "process.camera_teleport",
