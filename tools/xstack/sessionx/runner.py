@@ -19,6 +19,7 @@ from src.net.policies.policy_srz_hybrid import (
 )
 from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from src.universe import enforce_session_contract_bundle
+from src.compat.data_format_loader import load_versioned_artifact
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -300,6 +301,21 @@ REGISTRY_FILE_MAP = {
 
 
 def _load_schema_validated(repo_root: str, schema_name: str, path: str) -> Tuple[dict, Dict[str, object]]:
+    artifact_kind = {
+        "universe_state": "save_file",
+        "pack_lock": "pack_lock",
+    }.get(str(schema_name or "").strip(), "")
+    if artifact_kind:
+        payload, _meta, error = load_versioned_artifact(
+            repo_root=repo_root,
+            artifact_kind=artifact_kind,
+            path=path,
+            allow_read_only=False,
+            strip_loaded_metadata=(artifact_kind == "save_file"),
+        )
+        if error:
+            return {}, error
+        return payload, {}
     payload, err = read_json_object(path)
     if err:
         return {}, refusal(

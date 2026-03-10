@@ -134,6 +134,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS`
 - `INV-DEGRADE-PLAN-DECLARED`
 - `INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY`
+- `INV-ARTIFACTS-MUST-HAVE-FORMAT-VERSION`
+- `INV-NO-SILENT-FORMAT-INTERPRETATION`
+- `INV-MIGRATIONS-LOGGED`
 - `INV-PACKS-MUST-DECLARE-CAPABILITIES`
 - `INV-MOD-POLICY-ENFORCED`
 - `INV-OFFICIAL-PACKS-HAVE-COMPAT-MANIFEST`
@@ -638,6 +641,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when canonical capability filtering no longer separates known capability ids from unknown ones before capability negotiation.
 - Fails when unknown capabilities stop surfacing as explicit ignored rows in the negotiation record.
 - Preserves forward compatibility for third-party ecosystems without letting unknown capability ids perturb deterministic outcomes.
+
+### INV-ARTIFACTS-MUST-HAVE-FORMAT-VERSION
+
+- Fails when PACK-COMPAT-2 versioned artifact surfaces stop declaring explicit `format_version`, `engine_version_created`, and deterministic format metadata.
+- Fails when the governed metadata schemas or shared data-format loader lose save/blueprint/profile/session-template/pack-lock format markers.
+- Preserves explicit artifact-version negotiation instead of silent reinterpretation of persistent files.
+
+### INV-NO-SILENT-FORMAT-INTERPRETATION
+
+- Fails when the data-format compatibility doctrine or loader stop refusing unsupported versions or read-only fallback conditions explicitly.
+- Fails when migration/read-only replay surfaces lose the refusal and remediation markers that make format handling auditable.
+- Preserves explicit migration, read-only fallback, or refusal instead of silent artifact reinterpretation.
+
+### INV-MIGRATIONS-LOGGED
+
+- Fails when deterministic migration registry entries disappear for governed persistent artifact classes.
+- Fails when PACK-COMPAT-2 replay/runtime surfaces stop emitting migration-event markers or deterministic migration fingerprints.
+- Preserves auditable migration history instead of hidden artifact upgrades.
 
 ### INV-PACKS-MUST-DECLARE-CAPABILITIES
 

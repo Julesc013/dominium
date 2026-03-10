@@ -17,6 +17,11 @@ record blueprint
     - tags: list<string>
     - extensions: map
   optional:
+    - format_version: semver
+    - engine_version_created: tag
+    - required_contract_ranges: map
+    - migration_history: [map]
+    - deterministic_fingerprint: sha256
     - parameters: list<parameter_def>
 
 record parameter_def

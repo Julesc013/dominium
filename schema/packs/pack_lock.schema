@@ -15,6 +15,7 @@ REQUIRED SHAPE:
 record pack_lock
   required:
     - schema_version: tag
+    - format_version: semver
     - pack_lock_id: id
     - ordered_pack_ids: [id]
     - ordered_pack_versions: [tag]
@@ -22,9 +23,13 @@ record pack_lock
     - pack_compat_hashes: map
     - mod_policy_id: id
     - pack_lock_hash: sha256
+    - engine_version_created: tag
     - deterministic_fingerprint: sha256
     - extensions: map
   optional:
+    - engine_contract_bundle_hash: sha256
+    - semantic_contract_registry_hash: sha256
+    - migration_history: [map]
     - ordered_packs: [map]
     - runtime_version: tag
     - profile_bundle_id: id

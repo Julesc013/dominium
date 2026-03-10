@@ -6,6 +6,7 @@ import json
 import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
+from src.compat.data_format_loader import stamp_artifact_metadata
 from src.compat.descriptor.descriptor_engine import build_product_descriptor
 from src.geo import build_overlay_manifest, merge_overlay_view
 from src.modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
@@ -285,6 +286,7 @@ def _ordered_pack_rows(rows: Sequence[Mapping[str, object]]) -> List[dict]:
 
 def build_verified_pack_lock(
     *,
+    repo_root: str,
     bundle_id: str,
     ordered_pack_list: Sequence[Mapping[str, object]],
     mod_policy_id: str,
@@ -318,18 +320,24 @@ def build_verified_pack_lock(
         "pack_compat_hashes": {row["pack_id"]: row["compat_manifest_hash"] for row in ordered_rows},
         "mod_policy_id": str(mod_policy_id).strip() or DEFAULT_MOD_POLICY_ID,
         "overlay_conflict_policy_id": str(overlay_conflict_policy_id).strip(),
+        "engine_contract_bundle_hash": str(engine_contract_bundle_hash).strip(),
+        "semantic_contract_registry_hash": str(semantic_contract_registry_hash).strip(),
         "ordered_packs": resolved_rows,
         "source_pack_lock_hash": pack_lock_hash,
         "pack_lock_hash": pack_lock_hash,
         "deterministic_fingerprint": "",
         "extensions": {
             "bundle_id": str(bundle_id or "").strip(),
-            "engine_contract_bundle_hash": str(engine_contract_bundle_hash).strip(),
-            "semantic_contract_registry_hash": str(semantic_contract_registry_hash).strip(),
             "pack_count": len(ordered_rows),
             "source": "PACK-COMPAT-1",
         },
     }
+    payload = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="pack_lock",
+        payload=payload,
+        update_fingerprint=False,
+    )
     payload["deterministic_fingerprint"] = _fingerprint(payload)
     return payload
 
@@ -549,7 +557,7 @@ def verify_pack_set(
             )
 
     pack_list = _ordered_pack_rows(ordered_packs)
-    pack_lock = build_verified_pack_lock(bundle_id=str(bundle_selection.get("bundle_id", "")), ordered_pack_list=ordered_packs, mod_policy_id=effective_mod_policy_id, overlay_conflict_policy_id=effective_conflict_policy_id, engine_contract_bundle_hash=engine_contract_bundle_hash, semantic_contract_registry_hash=semantic_contract_registry_hash)
+    pack_lock = build_verified_pack_lock(repo_root=root, bundle_id=str(bundle_selection.get("bundle_id", "")), ordered_pack_list=ordered_packs, mod_policy_id=effective_mod_policy_id, overlay_conflict_policy_id=effective_conflict_policy_id, engine_contract_bundle_hash=engine_contract_bundle_hash, semantic_contract_registry_hash=semantic_contract_registry_hash)
     valid = not errors and not refused_packs
     report = _report_payload(
         engine_contract_bundle_hash=engine_contract_bundle_hash,

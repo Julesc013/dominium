@@ -1,0 +1,23 @@
+SCHEMA: blueprint/blueprint_file.schema
+schema_id: dominium.schema.blueprint.file
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define metadata required for versioned blueprint file artifacts.
+- Preserve deterministic loading across engine versions without rewriting existing pack content.
+
+REQUIRED SHAPE:
+record blueprint_file_metadata
+  required:
+    - format_version: semver
+    - engine_version_created: tag
+    - deterministic_fingerprint: sha256
+  optional:
+    - required_contract_ranges: map
+    - migration_history: [map]
+    - extensions: map
+
+INVARIANTS:
+- Legacy blueprints without `format_version` require explicit compatibility loading.
+- Blueprint migrations may not silently alter compile semantics.

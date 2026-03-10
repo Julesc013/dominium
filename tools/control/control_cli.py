@@ -16,6 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
+from src.compat.data_format_loader import stamp_artifact_metadata  # noqa: E402
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
 from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json  # noqa: E402
 from tools.xstack.sessionx.runner import (  # noqa: E402
@@ -172,6 +173,7 @@ def _intent_for_command(command_id: str, process_id: str, inputs: dict) -> dict:
 def _execute_command(
     *,
     repo_root: str,
+    session_spec: dict,
     authority_context: dict,
     law_profile: dict,
     universe_state: dict,
@@ -196,7 +198,12 @@ def _execute_command(
         out["process_id"] = str(process_id)
         out["intent"] = intent
         return out
-    updated_state = dict(executed.get("universe_state") or {})
+    updated_state = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="save_file",
+        payload=dict(executed.get("universe_state") or {}),
+        semantic_contract_bundle_hash=str(session_spec.get("contract_bundle_hash", "")).strip(),
+    )
     write_canonical_json(state_path, updated_state)
     return {
         "result": "complete",
@@ -277,6 +284,7 @@ def main() -> int:
         }
         result = _execute_command(
             repo_root=repo_root,
+            session_spec=session_spec,
             authority_context=authority_context,
             law_profile=law_profile,
             universe_state=universe_state,
@@ -288,6 +296,7 @@ def main() -> int:
     elif command == "control.bind.camera":
         result = _execute_command(
             repo_root=repo_root,
+            session_spec=session_spec,
             authority_context=authority_context,
             law_profile=law_profile,
             universe_state=universe_state,
@@ -299,6 +308,7 @@ def main() -> int:
     elif command == "control.unbind.camera":
         result = _execute_command(
             repo_root=repo_root,
+            session_spec=session_spec,
             authority_context=authority_context,
             law_profile=law_profile,
             universe_state=universe_state,
@@ -310,6 +320,7 @@ def main() -> int:
     elif command == "control.possess":
         result = _execute_command(
             repo_root=repo_root,
+            session_spec=session_spec,
             authority_context=authority_context,
             law_profile=law_profile,
             universe_state=universe_state,
@@ -321,6 +332,7 @@ def main() -> int:
     elif command == "control.release":
         result = _execute_command(
             repo_root=repo_root,
+            session_spec=session_spec,
             authority_context=authority_context,
             law_profile=law_profile,
             universe_state=universe_state,

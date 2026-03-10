@@ -15,6 +15,7 @@ from src.net.policies.policy_server_authoritative import (
     queue_intent_envelope,
 )
 from src.compat import COMPAT_MODE_READ_ONLY, REFUSAL_CONNECTION_NO_NEGOTIATION
+from src.compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
 from src.universe import (
     DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
     build_universe_contract_bundle_payload,
@@ -210,17 +211,23 @@ def load_server_config(repo_root: str, server_config_id: str = DEFAULT_SERVER_CO
 
 
 def _runtime_pack_lock_payload(repo_root: str, pack_lock_path: str) -> Tuple[dict, dict]:
+    payload, _meta, load_error = load_versioned_artifact(
+        repo_root=repo_root,
+        artifact_kind="pack_lock",
+        path=pack_lock_path,
+        allow_read_only=False,
+    )
+    if load_error:
+        return {}, _server_refusal(
+            REFUSAL_SESSION_PACK_LOCK_MISMATCH,
+            "runtime pack lock payload is missing or invalid",
+            "Restore the requested pack lock artifact and retry server boot.",
+            details={"pack_lock_path": norm(pack_lock_path)},
+            path="$.pack_lock_hash",
+        )
     payload, err = _load_schema_validated(repo_root=repo_root, schema_name="pack_lock", path=pack_lock_path)
     if err:
-        payload, err = read_json_object(pack_lock_path)
-        if err:
-            return {}, _server_refusal(
-                REFUSAL_SESSION_PACK_LOCK_MISMATCH,
-                "runtime pack lock payload is missing or invalid",
-                "Restore the requested pack lock artifact and retry server boot.",
-                details={"pack_lock_path": norm(pack_lock_path)},
-                path="$.pack_lock_hash",
-            )
+        payload = dict(payload)
     errors = validate_runtime_pack_lock_payload(repo_root=repo_root, payload=dict(payload))
     if errors:
         return {}, _server_refusal(
@@ -547,6 +554,12 @@ def materialize_server_session(
     state_payload["overlay_manifest_hash"] = str(overlay_surface.get("overlay_manifest_hash", "")).strip()
     state_payload["property_patch_hash_chain"] = str(overlay_surface.get("property_patch_hash_chain", "")).strip()
     state_payload["overlay_merge_result_hash_chain"] = str(overlay_surface.get("overlay_merge_result_hash_chain", "")).strip()
+    state_payload = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="save_file",
+        payload=state_payload,
+        semantic_contract_bundle_hash=str(proof_bundle.get("universe_contract_bundle_hash", "")).strip(),
+    )
     state_valid = validate_instance(repo_root=repo_root, schema_name="universe_state", payload=state_payload, strict_top_level=True)
     if not bool(state_valid.get("valid", False)):
         return _server_refusal(

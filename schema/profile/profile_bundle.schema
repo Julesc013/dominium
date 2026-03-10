@@ -1,0 +1,20 @@
+SCHEMA: profile/profile_bundle.schema
+schema_id: dominium.schema.profile.bundle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define metadata required for versioned profile bundle artifacts.
+
+REQUIRED SHAPE:
+record profile_bundle_metadata
+  required:
+    - format_version: semver
+    - engine_version_created: tag
+    - deterministic_fingerprint: sha256
+  optional:
+    - migration_history: [map]
+    - extensions: map
+
+INVARIANTS:
+- Profile bundles must not be silently reinterpreted across format versions.

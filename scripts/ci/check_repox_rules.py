@@ -5786,6 +5786,150 @@ def check_strict_mode_refuses_conflict(repo_root):
     return violations
 
 
+def check_artifacts_must_have_format_version(repo_root):
+    invariant_id = "INV-ARTIFACTS-MUST-HAVE-FORMAT-VERSION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    required_tokens = {
+        "docs/compat/DATA_FORMAT_VERSIONING.md": (
+            "format_version",
+            "engine_version_created",
+            "semantic_contract_bundle_hash",
+        ),
+        "schemas/save_file.schema.json": (
+            "\"format_version\"",
+            "\"semantic_contract_bundle_hash\"",
+            "\"engine_version_created\"",
+        ),
+        "schemas/blueprint_file.schema.json": (
+            "\"format_version\"",
+            "\"required_contract_ranges\"",
+            "\"engine_version_created\"",
+        ),
+        "schemas/profile_bundle.schema.json": (
+            "\"format_version\"",
+            "\"engine_version_created\"",
+        ),
+        "schemas/session_template.schema.json": (
+            "\"format_version\"",
+            "\"engine_version_created\"",
+        ),
+        "schemas/pack_lock.schema.json": (
+            "\"format_version\"",
+            "\"engine_version_created\"",
+        ),
+        "src/compat/data_format_loader.py": (
+            "CURRENT_ARTIFACT_FORMAT_VERSION",
+            "stamp_artifact_metadata(",
+            "load_versioned_artifact(",
+        ),
+    }
+    violations = []
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing format-version marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_silent_format_interpretation(repo_root):
+    invariant_id = "INV-NO-SILENT-FORMAT-INTERPRETATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    required_tokens = {
+        "docs/compat/DATA_FORMAT_VERSIONING.md": (
+            "No silent fallback to reinterpretation.",
+            "attempt deterministic migration path",
+            "attempt read-only mode",
+        ),
+        "src/compat/data_format_loader.py": (
+            "REFUSAL_FORMAT_FUTURE_VERSION",
+            "REFUSAL_FORMAT_MIGRATION_MISSING",
+            "REFUSAL_FORMAT_READ_ONLY_UNAVAILABLE",
+        ),
+        "tools/compat/tool_replay_migration.py": (
+            "load_versioned_artifact(",
+            "\"migration_events\"",
+            "\"read_only_mode\"",
+        ),
+    }
+    violations = []
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing silent-interpretation guard marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_migrations_logged(repo_root):
+    invariant_id = "INV-MIGRATIONS-LOGGED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    required_tokens = {
+        "data/registries/migration_registry.json": (
+            "\"migration.save.v1_to_v2\"",
+            "\"migration.blueprint.v1_to_v2\"",
+            "\"migration.profile.v1_to_v2\"",
+        ),
+        "src/compat/data_format_loader.py": (
+            "\"migration_events\"",
+            "\"migration_id\"",
+            "\"deterministic_transform_function_id\"",
+        ),
+        "tools/compat/tool_replay_migration.py": (
+            "\"migration_events\"",
+            "\"loaded_hash\"",
+            "\"deterministic_fingerprint\"",
+        ),
+        "tools/xstack/testx/tests/test_load_old_version_migrates.py": (
+            "migration_events",
+            "migration_history",
+        ),
+    }
+    violations = []
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing migration-log marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
 def check_mvp_packs_minimal(repo_root):
     invariant_id = "INV-MVP-PACKS-MINIMAL"
     if is_override_active(repo_root, invariant_id):
@@ -12513,6 +12657,9 @@ def main() -> int:
                 lambda: check_negotiation_stress_baselines_present(repo_root),
                 lambda: check_degrade_ladder_coverage(repo_root),
                 lambda: check_unknown_cap_ignored_deterministically(repo_root),
+                lambda: check_artifacts_must_have_format_version(repo_root),
+                lambda: check_no_silent_format_interpretation(repo_root),
+                lambda: check_migrations_logged(repo_root),
             ],
         },
         {

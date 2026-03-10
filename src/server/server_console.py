@@ -6,6 +6,7 @@ import os
 from typing import Mapping
 
 from src.compat import build_compat_status_payload
+from src.compat.data_format_loader import stamp_artifact_metadata
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, write_canonical_json
 
@@ -110,7 +111,12 @@ def save_snapshot(server_boot_payload: Mapping[str, object], output_path: str = 
             "manual.tick.{}.json".format(int(tick)),
         )
     os.makedirs(os.path.dirname(out_abs), exist_ok=True)
-    payload = dict(server.get("universe_state") or {})
+    payload = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="save_file",
+        payload=dict(server.get("universe_state") or {}),
+        semantic_contract_bundle_hash=str((dict(runtime.get("server_mvp") or {})).get("contract_bundle_hash", "")).strip(),
+    )
     write_canonical_json(out_abs, payload)
     return {
         "result": "complete",

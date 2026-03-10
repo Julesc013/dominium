@@ -6,6 +6,7 @@
   "type": "object",
   "required": [
     "schema_version",
+    "format_version",
     "pack_lock_id",
     "ordered_pack_ids",
     "ordered_pack_versions",
@@ -13,6 +14,7 @@
     "pack_compat_hashes",
     "mod_policy_id",
     "pack_lock_hash",
+    "engine_version_created",
     "deterministic_fingerprint",
     "extensions"
   ],
@@ -21,6 +23,10 @@
     "schema_version": {
       "type": "string",
       "const": "1.0.0"
+    },
+    "format_version": {
+      "type": "string",
+      "const": "2.0.0"
     },
     "pack_lock_id": {
       "type": "string",
@@ -58,9 +64,28 @@
       "type": "string",
       "minLength": 1
     },
+    "engine_contract_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "semantic_contract_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "pack_lock_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "engine_version_created": {
+      "type": "string",
+      "minLength": 1
+    },
+    "migration_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
     },
     "ordered_packs": {
       "type": "array",

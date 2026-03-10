@@ -336,6 +336,13 @@
         "1.0.0"
       ]
     },
+    "blueprint_file": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "blueprint_registry": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -2947,6 +2954,20 @@
         "1.0.0"
       ]
     },
+    "profile_bundle": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "save_file": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "progress_model": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -3340,6 +3361,13 @@
       ]
     },
     "session_spec": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "session_template": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

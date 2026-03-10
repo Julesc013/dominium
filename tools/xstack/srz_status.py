@@ -15,6 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
+from src.compat.data_format_loader import load_versioned_artifact  # noqa: E402
 from tools.xstack.compatx.validator import validate_instance  # noqa: E402
 from tools.xstack.sessionx.common import norm, read_json_object, refusal  # noqa: E402
 from tools.xstack.sessionx.srz import build_single_shard, validate_srz_shard  # noqa: E402
@@ -27,6 +28,21 @@ def _repo_root(value: str) -> str:
 
 
 def _load_schema_validated(repo_root: str, schema_name: str, path: str) -> Tuple[dict, Dict[str, object]]:
+    artifact_kind = {
+        "universe_state": "save_file",
+        "pack_lock": "pack_lock",
+    }.get(str(schema_name or "").strip(), "")
+    if artifact_kind:
+        payload, _meta, error = load_versioned_artifact(
+            repo_root=repo_root,
+            artifact_kind=artifact_kind,
+            path=path,
+            allow_read_only=True,
+            strip_loaded_metadata=(artifact_kind == "save_file"),
+        )
+        if error:
+            return {}, error
+        return payload, {}
     payload, err = read_json_object(path)
     if err:
         return {}, refusal(

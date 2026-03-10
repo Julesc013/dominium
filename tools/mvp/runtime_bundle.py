@@ -24,6 +24,7 @@ from src.modding import (
     mod_policy_rows_by_id,
 )
 from src.packs.compat import attach_pack_compat_manifest
+from src.compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
 from src.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
@@ -281,7 +282,8 @@ def _ordered_alias_pack_rows(repo_root: str) -> List[Dict[str, object]]:
     return rows
 
 
-def build_profile_bundle_payload() -> Dict[str, object]:
+def build_profile_bundle_payload(repo_root: str | None = None) -> Dict[str, object]:
+    repo_root = os.path.abspath(str(repo_root or REPO_ROOT_HINT))
     payload = {
         "schema_version": "1.0.0",
         "profile_bundle_id": MVP_PROFILE_BUNDLE_ID,
@@ -342,15 +344,26 @@ def build_profile_bundle_payload() -> Dict[str, object]:
         },
         "deterministic_fingerprint": "",
     }
+    payload = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="profile_bundle",
+        payload=payload,
+        update_fingerprint=False,
+    )
     payload["deterministic_fingerprint"] = _profile_bundle_hash(payload)
     payload["profile_bundle_hash"] = payload["deterministic_fingerprint"]
     return payload
 
 
-def validate_profile_bundle_payload(payload: Dict[str, object]) -> List[str]:
+def validate_profile_bundle_payload(payload: Dict[str, object], repo_root: str | None = None) -> List[str]:
+    del repo_root
     errors: List[str] = []
     if str(payload.get("profile_bundle_id", "")).strip() != MVP_PROFILE_BUNDLE_ID:
         errors.append("profile_bundle_id mismatch")
+    if str(payload.get("format_version", "")).strip() != "2.0.0":
+        errors.append("format_version mismatch")
+    if not str(payload.get("engine_version_created", "")).strip():
+        errors.append("engine_version_created missing")
     expected = _profile_bundle_hash(payload)
     if str(payload.get("deterministic_fingerprint", "")).strip() != expected:
         errors.append("deterministic_fingerprint mismatch")
@@ -363,8 +376,24 @@ def _ordered_pack_hashes(pack_rows: List[Dict[str, object]]) -> List[str]:
     return [str(row.get("canonical_hash", "")).strip() for row in pack_rows]
 
 
+def _alias_pack_compat_hash(source_rows: List[Dict[str, object]]) -> str:
+    return canonical_sha256(
+        {
+            "source_packs": [
+                {
+                    "pack_id": str(row.get("pack_id", "")).strip(),
+                    "version": str(row.get("version", "")).strip(),
+                    "compat_manifest_hash": str(row.get("compat_manifest_hash", "")).strip(),
+                    "pack_degrade_mode_id": str(row.get("pack_degrade_mode_id", "")).strip(),
+                }
+                for row in list(source_rows or [])
+            ]
+        }
+    )
+
+
 def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, object] | None = None) -> Dict[str, object]:
-    profile_bundle_payload = dict(profile_bundle_payload or build_profile_bundle_payload())
+    profile_bundle_payload = dict(profile_bundle_payload or build_profile_bundle_payload(repo_root=repo_root))
     mod_policy_row, mod_policy_registry_hash_value = _default_mod_policy_row(repo_root)
     pack_rows = _ordered_alias_pack_rows(repo_root=repo_root)
     mod_policy_loaded_packs = _mod_policy_loaded_packs(pack_rows)
@@ -381,6 +410,18 @@ def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, ob
     payload = {
         "schema_version": "1.0.0",
         "pack_lock_id": MVP_PACK_LOCK_ID,
+        "ordered_pack_ids": [str(row.get("pack_id", "")).strip() for row in pack_rows],
+        "ordered_pack_versions": [str(row.get("version", "")).strip() for row in pack_rows],
+        "pack_hashes": {
+            str(row.get("pack_id", "")).strip(): str(row.get("canonical_hash", "")).strip()
+            for row in pack_rows
+            if str(row.get("pack_id", "")).strip()
+        },
+        "pack_compat_hashes": {
+            str(row.get("pack_id", "")).strip(): _alias_pack_compat_hash(list(row.get("source_packs") or []))
+            for row in pack_rows
+            if str(row.get("pack_id", "")).strip()
+        },
         "runtime_version": MVP_RUNTIME_VERSION,
         "profile_bundle_id": str(profile_bundle_payload.get("profile_bundle_id", "")),
         "profile_bundle_hash": profile_bundle_hash,
@@ -398,16 +439,38 @@ def build_pack_lock_payload(repo_root: str, profile_bundle_payload: Dict[str, ob
             }
         ),
         "deterministic_fingerprint": "",
+        "extensions": {
+            "pack_count": len(pack_rows),
+            "source": "MVP-1",
+        },
     }
+    payload = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="pack_lock",
+        payload=payload,
+        update_fingerprint=False,
+    )
     payload["deterministic_fingerprint"] = _payload_hash(payload)
     return payload
 
 
 def validate_pack_lock_payload(repo_root: str, payload: Dict[str, object]) -> List[str]:
-    expected = build_pack_lock_payload(repo_root=repo_root, profile_bundle_payload=build_profile_bundle_payload())
+    expected = build_pack_lock_payload(repo_root=repo_root, profile_bundle_payload=build_profile_bundle_payload(repo_root=repo_root))
     errors: List[str] = []
     if str(payload.get("pack_lock_id", "")).strip() != MVP_PACK_LOCK_ID:
         errors.append("pack_lock_id mismatch")
+    if str(payload.get("format_version", "")).strip() != "2.0.0":
+        errors.append("format_version mismatch")
+    if not str(payload.get("engine_version_created", "")).strip():
+        errors.append("engine_version_created missing")
+    if list(payload.get("ordered_pack_ids") or []) != list(expected.get("ordered_pack_ids") or []):
+        errors.append("ordered_pack_ids mismatch")
+    if list(payload.get("ordered_pack_versions") or []) != list(expected.get("ordered_pack_versions") or []):
+        errors.append("ordered_pack_versions mismatch")
+    if dict(payload.get("pack_hashes") or {}) != dict(expected.get("pack_hashes") or {}):
+        errors.append("pack_hashes mismatch")
+    if dict(payload.get("pack_compat_hashes") or {}) != dict(expected.get("pack_compat_hashes") or {}):
+        errors.append("pack_compat_hashes mismatch")
     if list(payload.get("ordered_packs") or []) != list(expected.get("ordered_packs") or []):
         errors.append("ordered_packs mismatch")
     if str(payload.get("profile_bundle_hash", "")).strip() != str(expected.get("profile_bundle_hash", "")).strip():
@@ -421,6 +484,8 @@ def validate_pack_lock_payload(repo_root: str, payload: Dict[str, object]) -> Li
     ):
         if str(payload.get(key, "")).strip() != str(expected.get(key, "")).strip():
             errors.append("{} mismatch".format(key))
+    if dict(payload.get("extensions") or {}) != dict(expected.get("extensions") or {}):
+        errors.append("extensions mismatch")
     if str(payload.get("pack_lock_hash", "")).strip() != str(expected.get("pack_lock_hash", "")).strip():
         errors.append("pack_lock_hash mismatch")
     if str(payload.get("deterministic_fingerprint", "")).strip() != _payload_hash(payload):
@@ -471,6 +536,12 @@ def build_session_template_payload(repo_root: str, pack_lock_payload: Dict[str, 
         "fidelity_policy_id": "policy.fidelity.default_lab",
         "deterministic_fingerprint": "",
     }
+    payload = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="session_template",
+        payload=payload,
+        update_fingerprint=False,
+    )
     payload["deterministic_fingerprint"] = _payload_hash(payload)
     return payload
 
@@ -537,6 +608,10 @@ def validate_session_template_payload(repo_root: str, payload: Dict[str, object]
     errors: List[str] = []
     if str(payload.get("template_id", "")).strip() != MVP_SESSION_TEMPLATE_ID:
         errors.append("template_id mismatch")
+    if str(payload.get("format_version", "")).strip() != "2.0.0":
+        errors.append("format_version mismatch")
+    if not str(payload.get("engine_version_created", "")).strip():
+        errors.append("engine_version_created missing")
     for key in (
         "generator_version_id",
         "realism_profile_id",
@@ -618,6 +693,7 @@ def build_dist_layout(repo_root: str) -> Dict[str, object]:
         os.path.join("packs", "official", "pack.sol.pin_minimal"),
         os.path.join("packs", "official", "pack.earth.procedural"),
         "profiles",
+        os.path.join("data", "session_templates"),
         "locks",
         "saves",
         "logs",
@@ -635,6 +711,7 @@ def build_dist_layout(repo_root: str) -> Dict[str, object]:
 
     _write_canonical_json(os.path.join(out_root, "profiles", "bundle.mvp_default.json"), profile_bundle)
     _write_canonical_json(os.path.join(out_root, "locks", "pack_lock.mvp_default.json"), pack_lock)
+    _write_canonical_json(os.path.join(out_root, "data", "session_templates", "session.mvp_default.json"), build_session_template_payload(repo_root=repo_root, pack_lock_payload=pack_lock))
     _write_text(os.path.join(out_root, "saves", ".gitkeep"), "")
     _write_text(os.path.join(out_root, "logs", ".gitkeep"), "")
     _write_text(os.path.join(out_root, "bin", "dominium_client"), _dist_python_stub(entrypoint="client", ui_mode="gui"))
@@ -660,6 +737,7 @@ def validate_dist_layout(repo_root: str) -> List[str]:
         os.path.join("packs", "official", "pack.sol.pin_minimal"),
         os.path.join("packs", "official", "pack.earth.procedural"),
         "profiles",
+        os.path.join("data", "session_templates"),
         "locks",
         "saves",
         "logs",
@@ -671,6 +749,7 @@ def validate_dist_layout(repo_root: str) -> List[str]:
         os.path.join("bin", "dominium_server"),
         os.path.join("profiles", "bundle.mvp_default.json"),
         os.path.join("locks", "pack_lock.mvp_default.json"),
+        os.path.join("data", "session_templates", "session.mvp_default.json"),
     ):
         if not os.path.isfile(os.path.join(out_root, rel_file.replace("/", os.sep))):
             errors.append("missing dist file {}".format(_norm(os.path.join(MVP_DIST_ROOT_REL, rel_file))))
@@ -727,9 +806,23 @@ def build_runtime_bootstrap(
     teleport: str,
     authority_mode: str,
 ) -> Dict[str, object]:
-    bundle_payload = load_json_object(os.path.join(repo_root, profile_bundle_path.replace("/", os.sep)))
-    lock_payload = load_json_object(os.path.join(repo_root, pack_lock_path.replace("/", os.sep)))
-    bundle_errors = validate_profile_bundle_payload(bundle_payload)
+    bundle_payload, bundle_meta, bundle_error = load_versioned_artifact(
+        repo_root=repo_root,
+        artifact_kind="profile_bundle",
+        path=os.path.join(repo_root, profile_bundle_path.replace("/", os.sep)),
+        allow_read_only=False,
+    )
+    if bundle_error:
+        raise ValueError(str((dict(bundle_error.get("refusal") or {})).get("message", "invalid profile bundle artifact")))
+    lock_payload, lock_meta, lock_error = load_versioned_artifact(
+        repo_root=repo_root,
+        artifact_kind="pack_lock",
+        path=os.path.join(repo_root, pack_lock_path.replace("/", os.sep)),
+        allow_read_only=False,
+    )
+    if lock_error:
+        raise ValueError(str((dict(lock_error.get("refusal") or {})).get("message", "invalid pack lock artifact")))
+    bundle_errors = validate_profile_bundle_payload(bundle_payload, repo_root=repo_root)
     lock_errors = validate_pack_lock_payload(repo_root=repo_root, payload=lock_payload)
     if bundle_errors or lock_errors:
         raise ValueError("invalid MVP runtime artifacts: {} {}".format(bundle_errors, lock_errors))
@@ -738,7 +831,14 @@ def build_runtime_bootstrap(
     if authority not in ("dev", "release"):
         raise ValueError("authority must be dev or release")
 
-    template_payload = build_session_template_payload(repo_root=repo_root, pack_lock_payload=lock_payload)
+    template_payload, template_meta, template_error = load_versioned_artifact(
+        repo_root=repo_root,
+        artifact_kind="session_template",
+        path=os.path.join(repo_root, MVP_SESSION_TEMPLATE_REL.replace("/", os.sep)),
+        allow_read_only=False,
+    )
+    if template_error:
+        raise ValueError(str((dict(template_error.get("refusal") or {})).get("message", "invalid session template artifact")))
     template_errors = validate_session_template_payload(repo_root=repo_root, payload=template_payload)
     if template_errors:
         raise ValueError("invalid session template: {}".format(", ".join(template_errors)))
@@ -838,6 +938,11 @@ def build_runtime_bootstrap(
             ],
         },
         "rng_streams": _named_rng_streams(universe_seed=universe_seed, generator_version_id=generator_version_id),
+        "artifact_format_loads": [
+            dict(bundle_meta),
+            dict(lock_meta),
+            dict(template_meta),
+        ],
     }
 
 
@@ -867,7 +972,7 @@ def build_star_system_teleport_runtime_contract(system_row: Dict[str, object]) -
 
 
 def write_runtime_artifacts(repo_root: str) -> Dict[str, object]:
-    profile_bundle = build_profile_bundle_payload()
+    profile_bundle = build_profile_bundle_payload(repo_root=repo_root)
     pack_lock = build_pack_lock_payload(repo_root=repo_root, profile_bundle_payload=profile_bundle)
     session_template = build_session_template_payload(repo_root=repo_root, pack_lock_payload=pack_lock)
 
@@ -896,7 +1001,7 @@ def main() -> int:
     repo_root = os.path.abspath(str(args.repo_root))
     payload = write_runtime_artifacts(repo_root=repo_root) if args.write else {
         "result": "complete",
-        "profile_bundle": build_profile_bundle_payload(),
+        "profile_bundle": build_profile_bundle_payload(repo_root=repo_root),
         "pack_lock": build_pack_lock_payload(repo_root=repo_root),
         "session_template": build_session_template_payload(repo_root=repo_root),
     }

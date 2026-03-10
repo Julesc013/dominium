@@ -1,0 +1,72 @@
+{
+  "schema_id": "dominium.schema.governance.migration_spec",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.compat.data_format_migrations",
+    "registry_version": "1.0.0",
+    "schema_version_ref": "dominium.schema.governance.migration_spec@1.0.0",
+    "migrations": [
+      {
+        "migration_id": "migration.blueprint.v1_to_v2",
+        "from_version": "1.0.0",
+        "to_version": "2.0.0",
+        "component_type": "blueprint",
+        "deterministic_required": true,
+        "migration_tool": "tools/compat/tool_replay_migration.py::migrate",
+        "version_field": "format_version",
+        "deterministic_transform_function_id": "transform.blueprint.inject_format_metadata.v2",
+        "semantic_contract_requirements": [],
+        "notes": "PACK-COMPAT-2 metadata migration for legacy blueprint payloads."
+      },
+      {
+        "migration_id": "migration.pack_lock.v1_to_v2",
+        "from_version": "1.0.0",
+        "to_version": "2.0.0",
+        "component_type": "pack_lock",
+        "deterministic_required": true,
+        "migration_tool": "tools/compat/tool_replay_migration.py::migrate",
+        "version_field": "format_version",
+        "deterministic_transform_function_id": "transform.pack_lock.inject_format_metadata.v2",
+        "semantic_contract_requirements": [],
+        "notes": "PACK-COMPAT-2 metadata migration for legacy pack lock payloads."
+      },
+      {
+        "migration_id": "migration.profile.v1_to_v2",
+        "from_version": "1.0.0",
+        "to_version": "2.0.0",
+        "component_type": "profile",
+        "deterministic_required": true,
+        "migration_tool": "tools/compat/tool_replay_migration.py::migrate",
+        "version_field": "format_version",
+        "deterministic_transform_function_id": "transform.profile.inject_format_metadata.v2",
+        "semantic_contract_requirements": [],
+        "notes": "PACK-COMPAT-2 metadata migration for legacy profile bundle payloads."
+      },
+      {
+        "migration_id": "migration.save.v1_to_v2",
+        "from_version": "1.0.0",
+        "to_version": "2.0.0",
+        "component_type": "save",
+        "deterministic_required": true,
+        "migration_tool": "tools/compat/tool_replay_migration.py::migrate",
+        "version_field": "format_version",
+        "deterministic_transform_function_id": "transform.save.inject_format_metadata.v2",
+        "semantic_contract_requirements": [],
+        "notes": "PACK-COMPAT-2 metadata migration for legacy save payloads."
+      },
+      {
+        "migration_id": "migration.session_template.v1_to_v2",
+        "from_version": "1.0.0",
+        "to_version": "2.0.0",
+        "component_type": "session_template",
+        "deterministic_required": true,
+        "migration_tool": "tools/compat/tool_replay_migration.py::migrate",
+        "version_field": "format_version",
+        "deterministic_transform_function_id": "transform.session_template.inject_format_metadata.v2",
+        "semantic_contract_requirements": [],
+        "notes": "PACK-COMPAT-2 metadata migration for legacy session template payloads."
+      }
+    ],
+    "extensions": {}
+  }
+}

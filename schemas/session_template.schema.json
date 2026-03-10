@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session Template Metadata Schema",
+  "version": "1.0.0",
+  "description": "Metadata contract for versioned session template artifacts.",
+  "type": "object",
+  "required": [
+    "format_version",
+    "engine_version_created",
+    "deterministic_fingerprint"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "2.0.0"
+    },
+    "engine_version_created": {
+      "type": "string",
+      "minLength": 1
+    },
+    "migration_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

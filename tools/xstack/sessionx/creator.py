@@ -28,6 +28,7 @@ from worldgen.core.pipeline import run_worldgen_pipeline
 
 from src.geo import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
 from src.meta.profile import resolve_effective_profile_snapshot
+from src.compat.data_format_loader import stamp_artifact_metadata
 
 from .common import (
     DEFAULT_TIMESTAMP_UTC,
@@ -1897,6 +1898,12 @@ def create_session_spec(
     state_payload["overlay_manifest_hash"] = str(overlay_surface.get("overlay_manifest_hash", "")).strip()
     state_payload["property_patch_hash_chain"] = str(overlay_surface.get("property_patch_hash_chain", "")).strip()
     state_payload["overlay_merge_result_hash_chain"] = str(overlay_surface.get("overlay_merge_result_hash_chain", "")).strip()
+    state_payload = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="save_file",
+        payload=state_payload,
+        semantic_contract_bundle_hash=str(semantic_contract_proof_bundle.get("universe_contract_bundle_hash", "")).strip(),
+    )
     state_valid = validate_instance(repo_root=repo_root, schema_name="universe_state", payload=state_payload, strict_top_level=True)
     if not bool(state_valid.get("valid", False)):
         return refusal(

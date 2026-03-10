@@ -178,6 +178,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/compat/ENDPOINT_DESCRIPTORS.md` | EVOLVING | Deterministic per-product endpoint descriptor emission and offline manifest surfaces |
 | `docs/compat/NEGOTIATION_HANDSHAKES.md` | EVOLVING | Deterministic client/server and IPC attach negotiation handshake flow |
 | `docs/compat/DEGRADE_LADDERS.md` | EVOLVING | Deterministic per-product degrade ladders and explicit fallback mapping |
+| `docs/compat/DATA_FORMAT_VERSIONING.md` | EVOLVING | Deterministic persistent artifact format versioning, migration hooks, and read-only fallback rules |
 | `docs/ops/SERVER_SCOPE.md` | EVOLVING | Server scope and guarantees |
 | `docs/ops/LOGGING_MODEL.md` | EVOLVING | Server logging format and rotation |
 | `docs/ops/LONG_RUN_EXPECTATIONS.md` | EVOLVING | Long-run stability expectations |

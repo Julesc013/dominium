@@ -24,6 +24,11 @@ record universe_state
     - extensions: map
 
 OPTIONAL:
+  - format_version: semver
+  - semantic_contract_bundle_hash: sha256
+  - engine_version_created: tag
+  - migration_history: [map]
+  - deterministic_fingerprint: sha256
   - overlay_manifest: map
   - save_property_patches: [map]
   - overlay_merge_results: [map]

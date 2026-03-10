@@ -1,0 +1,24 @@
+SCHEMA: save/save_file.schema
+schema_id: dominium.schema.save.file
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define metadata required for versioned save-file artifacts.
+- Separate persistent artifact interpretation from the mutable `universe_state` structural schema.
+
+REQUIRED SHAPE:
+record save_file_metadata
+  required:
+    - format_version: semver
+    - semantic_contract_bundle_hash: sha256
+    - engine_version_created: tag
+    - deterministic_fingerprint: sha256
+  optional:
+    - required_contract_ranges: map
+    - migration_history: [map]
+    - extensions: map
+
+INVARIANTS:
+- Missing `format_version` is legacy-only and must be handled by explicit compatibility loading.
+- Save files may not be silently reinterpreted across format versions.

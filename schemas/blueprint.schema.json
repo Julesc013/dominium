@@ -22,6 +22,29 @@
       "type": "string",
       "const": "1.0.0"
     },
+    "format_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "engine_version_created": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_contract_ranges": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "migration_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
     "blueprint_id": {
       "type": "string",
       "minLength": 1
@@ -173,6 +196,10 @@
       "tags": [
         "example"
       ],
+      "format_version": "2.0.0",
+      "engine_version_created": "0.0.0+build.example",
+      "required_contract_ranges": {},
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
       "extensions": {}
     }
   ]

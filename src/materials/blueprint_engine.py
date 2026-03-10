@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import copy
-import json
 import os
 from typing import Dict, Mapping
 
+from src.compat.data_format_loader import load_versioned_artifact
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -62,24 +62,6 @@ def _registry_hash(payload: Mapping[str, object] | None) -> str:
     if token:
         return token
     return canonical_sha256(row)
-
-
-def _read_json_payload(path: str) -> dict:
-    try:
-        payload = json.load(open(path, "r", encoding="utf-8"))
-    except (OSError, ValueError):
-        raise BlueprintCompileError(
-            REFUSAL_BLUEPRINT_INVALID_GRAPH,
-            "blueprint payload is missing or invalid JSON",
-            {"path": _norm(path)},
-        )
-    if not isinstance(payload, dict):
-        raise BlueprintCompileError(
-            REFUSAL_BLUEPRINT_INVALID_GRAPH,
-            "blueprint payload root must be object",
-            {"path": _norm(path)},
-        )
-    return payload
 
 
 def _to_int(value: object, *, reason_code: str, field: str) -> int:
@@ -149,7 +131,18 @@ def _resolve_blueprint_payload(
             "blueprint path does not exist",
             {"blueprint_id": str(blueprint_id), "blueprint_path": _norm(blueprint_path)},
         )
-    payload = _read_json_payload(abs_path)
+    payload, _meta, error = load_versioned_artifact(
+        repo_root=repo_root,
+        artifact_kind="blueprint_file",
+        path=abs_path,
+        allow_read_only=False,
+    )
+    if error:
+        raise BlueprintCompileError(
+            REFUSAL_BLUEPRINT_INVALID_GRAPH,
+            "blueprint payload is missing or incompatible",
+            {"path": _norm(blueprint_path), "reason_code": str((dict(error.get("refusal") or {})).get("reason_code", ""))},
+        )
     payload_blueprint_id = str(payload.get("blueprint_id", "")).strip()
     if payload_blueprint_id != str(blueprint_id).strip():
         raise BlueprintCompileError(

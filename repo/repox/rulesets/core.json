@@ -504,6 +504,44 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-ARTIFACTS-MUST-HAVE-FORMAT-VERSION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/DATA_FORMAT_VERSIONING.md",
+        "src/compat/data_format_loader.py",
+        "schemas/save_file.schema.json",
+        "schemas/blueprint_file.schema.json",
+        "schemas/profile_bundle.schema.json",
+        "schemas/session_template.schema.json",
+        "schemas/pack_lock.schema.json"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-artifacts-must-have-format-version",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-SILENT-FORMAT-INTERPRETATION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/DATA_FORMAT_VERSIONING.md",
+        "src/compat/data_format_loader.py",
+        "tools/compat/tool_replay_migration.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-silent-format-interpretation",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-MIGRATIONS-LOGGED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/migration_registry.json",
+        "src/compat/data_format_loader.py",
+        "tools/compat/tool_replay_migration.py",
+        "docs/compat/DATA_FORMAT_VERSIONING.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-migrations-logged",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-PACKS-MUST-DECLARE-CAPABILITIES",
       "severity": "FAIL",
       "scope_paths": [

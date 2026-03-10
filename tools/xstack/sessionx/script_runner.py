@@ -9,6 +9,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
+from src.compat.data_format_loader import stamp_artifact_metadata
 from src.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from src.universe import enforce_session_contract_bundle
 
@@ -1259,6 +1260,12 @@ def run_intent_script(
     final_state_hash = str(script_result.get("final_state_hash", ""))
     srz = dict(script_result.get("srz") or {})
     worker_effective = int((srz.get("worker_count_effective", 1) or 1))
+    updated_state = stamp_artifact_metadata(
+        repo_root=repo_root,
+        artifact_kind="save_file",
+        payload=updated_state,
+        semantic_contract_bundle_hash=str(contract_enforcement.get("contract_bundle_hash", "")).strip(),
+    )
 
     updated_state_valid = validate_instance(
         repo_root=repo_root,

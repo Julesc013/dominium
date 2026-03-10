@@ -422,6 +422,10 @@ from analyzers import e405_ungated_authority_spawn_smell
 from analyzers import e413_missing_interop_test_smell
 from analyzers import e414_missing_pack_compat_smell
 from analyzers import e415_pack_loaded_without_compat_validation_smell
+from analyzers import e416_pack_loaded_without_verification_smell
+from analyzers import e417_nondeterministic_pack_order_smell
+from analyzers import e418_missing_format_version_smell
+from analyzers import e419_silent_migration_smell
 
 
 ANALYZERS = (
@@ -847,6 +851,10 @@ ANALYZERS = (
     e413_missing_interop_test_smell,
     e414_missing_pack_compat_smell,
     e415_pack_loaded_without_compat_validation_smell,
+    e416_pack_loaded_without_verification_smell,
+    e417_nondeterministic_pack_order_smell,
+    e418_missing_format_version_smell,
+    e419_silent_migration_smell,
 )
 
 
