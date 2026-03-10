@@ -1,0 +1,227 @@
+{
+  "baseline_id": "cap.neg.full.baseline.v1",
+  "canonical_scenarios": [
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.read_only",
+      "disabled_capability_ids": [],
+      "negotiation_record_hash": "4ac83792233b683ca15388b9fd7f6ccf171c1534aa0b0879d3a52786785bb815",
+      "refusal_code": "",
+      "scenario_id": "interop.client_server.contract_mismatch_read_only",
+      "substituted_capability_ids": []
+    },
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.refuse",
+      "disabled_capability_ids": [],
+      "negotiation_record_hash": "705299642637ed4d4bd774fca93946f916ea6713d0ed686b02135e61b3326800",
+      "refusal_code": "refusal.compat.contract_mismatch",
+      "scenario_id": "interop.client_server.contract_mismatch_refuse",
+      "substituted_capability_ids": []
+    },
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.full",
+      "disabled_capability_ids": [],
+      "negotiation_record_hash": "d365ec06d3c620049988d83518d74871f103aaf21559b72a8dd13ae9cfed56af",
+      "refusal_code": "",
+      "scenario_id": "interop.client_server.full_v1",
+      "substituted_capability_ids": []
+    },
+    {
+      "chosen_protocol_id": "",
+      "chosen_protocol_version": "",
+      "compatibility_mode_id": "compat.refuse",
+      "disabled_capability_ids": [
+        "cap.logic.protocol_layer",
+        "cap.ui.rendered"
+      ],
+      "negotiation_record_hash": "c84658a365c6398d51be51646707d52db674a238ce053c40158a4e1b4d88c90a",
+      "refusal_code": "refusal.compat.no_common_protocol",
+      "scenario_id": "interop.client_server.no_common_protocol",
+      "substituted_capability_ids": [
+        "cap.ui.rendered->cap.ui.cli"
+      ]
+    },
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.degraded",
+      "disabled_capability_ids": [
+        "cap.logic.protocol_layer"
+      ],
+      "negotiation_record_hash": "fa6303e83b4492f22824cb052fbba92e8c0f90b8fb2f8d57574a76f4d6b4ba7f",
+      "refusal_code": "",
+      "scenario_id": "interop.client_server.protocol_layer_disabled",
+      "substituted_capability_ids": []
+    },
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.degraded",
+      "disabled_capability_ids": [
+        "cap.ui.rendered"
+      ],
+      "negotiation_record_hash": "66c38a42d425c11141f8802fca7d051d863df4c1795e5dd09d7fef34af58889c",
+      "refusal_code": "",
+      "scenario_id": "interop.client_server.rendered_to_tui",
+      "substituted_capability_ids": [
+        "cap.ui.rendered->cap.ui.cli"
+      ]
+    },
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.full",
+      "disabled_capability_ids": [
+        "cap.unknown.synthetic_render_channel"
+      ],
+      "negotiation_record_hash": "3dc91ea2d8ecaa76911427d1d3962633f0f9944ab151c65a539456c145efbee9",
+      "refusal_code": "",
+      "scenario_id": "interop.client_server.unknown_capability_ignored",
+      "substituted_capability_ids": []
+    },
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.degraded",
+      "disabled_capability_ids": [
+        "cap.logic.protocol_layer",
+        "cap.ui.rendered"
+      ],
+      "negotiation_record_hash": "2532144261c5fd041e95cf271e7ea9463474cfd88ed8b90c0953d36fe1ec12d4",
+      "refusal_code": "",
+      "scenario_id": "interop.client_v2_server_v1.degrade",
+      "substituted_capability_ids": [
+        "cap.ui.rendered->cap.ui.cli"
+      ]
+    },
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.degraded",
+      "disabled_capability_ids": [
+        "cap.logic.compiled_automaton"
+      ],
+      "negotiation_record_hash": "ff4e6f8f91fb8d5e87c55deaf3ec7644afed50b7f06e82cf1e57d6d35de51580",
+      "refusal_code": "",
+      "scenario_id": "interop.engine_server.compiled_to_l1",
+      "substituted_capability_ids": [
+        "cap.logic.compiled_automaton->cap.logic.l1_eval"
+      ]
+    },
+    {
+      "chosen_protocol_id": "protocol.pack.verify",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.degraded",
+      "disabled_capability_ids": [
+        "cap.pack.install"
+      ],
+      "negotiation_record_hash": "e6dab9179e9dcd483f07f833b82d01f4f8e3cda00f2ca724e9a2e93d652f0929",
+      "refusal_code": "",
+      "scenario_id": "interop.setup_pack.verify_older_newer",
+      "substituted_capability_ids": []
+    }
+  ],
+  "description": "Deterministic CAP-NEG-4 regression lock for mixed-version negotiation, degrade ladders, read-only fallback, and refusal surfaces.",
+  "deterministic_fingerprint": "210590a7d98b6efddae8d50ee7e7d3405f2026c6b24f9ab56810471c4a621750",
+  "disabled_capability_frequency": [
+    {
+      "capability_id": "cap.logic.protocol_layer",
+      "count": 3
+    },
+    {
+      "capability_id": "cap.ui.rendered",
+      "count": 3
+    },
+    {
+      "capability_id": "cap.logic.compiled_automaton",
+      "count": 1
+    },
+    {
+      "capability_id": "cap.pack.install",
+      "count": 1
+    },
+    {
+      "capability_id": "cap.unknown.synthetic_render_channel",
+      "count": 1
+    }
+  ],
+  "extensions": {
+    "generated_from": {
+      "matrix_path": "build/cap_neg/interop_matrix.json",
+      "stress_report_path": "build/cap_neg/interop_stress.json"
+    },
+    "lock_scope": "capability_negotiation_envelope"
+  },
+  "matrix_fingerprint": "2fa40b3042ce792415469e9544cd08fa130751996f201b99af48907841ac667c",
+  "mode_counts": {
+    "compat.degraded": 5,
+    "compat.full": 2,
+    "compat.read_only": 1,
+    "compat.refuse": 2
+  },
+  "real_descriptor_smoke": [
+    {
+      "chosen_protocol_id": "protocol.loopback.session",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.degraded",
+      "disabled_capability_ids": [
+        "cap.geo.sphere_atlas",
+        "cap.ui.rendered"
+      ],
+      "negotiation_record_hash": "12450df44c7683fc9a22e1e1ce60d8d3d2c31865c9177f0f700b6bc7f47ece0f",
+      "refusal_code": "",
+      "scenario_id": "real.client_server.current_build",
+      "substituted_capability_ids": [
+        "cap.ui.rendered->cap.ui.cli"
+      ]
+    },
+    {
+      "chosen_protocol_id": "",
+      "chosen_protocol_version": "",
+      "compatibility_mode_id": "compat.refuse",
+      "disabled_capability_ids": [
+        "cap.geo.sphere_atlas",
+        "cap.ui.rendered"
+      ],
+      "negotiation_record_hash": "21c13508557144860caac166ee4d90763c7c5c82caaa7a2b3da15d07c6cf599f",
+      "refusal_code": "refusal.compat.no_common_protocol",
+      "scenario_id": "real.launcher_client.current_build",
+      "substituted_capability_ids": [
+        "cap.ui.rendered->cap.ui.cli"
+      ]
+    },
+    {
+      "chosen_protocol_id": "protocol.pack.verify",
+      "chosen_protocol_version": "1.0.0",
+      "compatibility_mode_id": "compat.full",
+      "disabled_capability_ids": [],
+      "negotiation_record_hash": "1d4a6c187db9df6daed541bbba18a5e6298102c088263d0ff3b42e7fb41db78a",
+      "refusal_code": "",
+      "scenario_id": "real.setup_pack_stub.current_build",
+      "substituted_capability_ids": []
+    }
+  ],
+  "refusal_counts": [
+    {
+      "count": 1,
+      "refusal_code": "refusal.compat.contract_mismatch"
+    },
+    {
+      "count": 1,
+      "refusal_code": "refusal.compat.no_common_protocol"
+    }
+  ],
+  "replay_summary_fingerprint": "c0fc54fabe7088a591f6dbe944f0d8af95c755b882f55bc65a396063bb247522",
+  "scenario_seed": 41004,
+  "schema_version": "1.0.0",
+  "stress_report_fingerprint": "3e005c08e05c21fb864ebfce33692257c22e625cf62bc0b244bedd807ae780e8",
+  "update_policy": {
+    "notes": "Baseline updates require rerunning CAP-NEG-4 matrix, stress, and replay verification under explicit CAP-NEG-REGRESSION-UPDATE review.",
+    "required_commit_tag": "CAP-NEG-REGRESSION-UPDATE"
+  }
+}

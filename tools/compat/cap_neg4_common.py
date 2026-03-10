@@ -841,11 +841,89 @@ def verify_interop_stress_replay(
     }
 
 
+def build_cap_neg_full_baseline(
+    *,
+    repo_root: str,
+    matrix: Mapping[str, object] | None = None,
+    stress_report: Mapping[str, object] | None = None,
+    seed: int = DEFAULT_CAP_NEG4_SEED,
+) -> dict:
+    matrix_payload = dict(matrix or generate_interop_matrix(repo_root=repo_root, seed=seed))
+    report = dict(stress_report or run_interop_stress(repo_root=repo_root, matrix=matrix_payload, seed=seed))
+    scenario_rows = []
+    for row in list(report.get("scenario_reports") or []):
+        row_map = _as_map(row)
+        scenario_rows.append(
+            {
+                "scenario_id": str(row_map.get("scenario_id", "")).strip(),
+                "compatibility_mode_id": str(row_map.get("compatibility_mode_id", "")).strip(),
+                "chosen_protocol_id": str(row_map.get("chosen_protocol_id", "")).strip(),
+                "chosen_protocol_version": str(row_map.get("chosen_protocol_version", "")).strip(),
+                "refusal_code": str(row_map.get("actual_refusal_code", "")).strip(),
+                "disabled_capability_ids": _sorted_tokens(row_map.get("disabled_capability_ids")),
+                "substituted_capability_ids": _sorted_tokens(row_map.get("substituted_capability_ids")),
+                "negotiation_record_hash": str(row_map.get("negotiation_record_hash", "")).strip(),
+            }
+        )
+    real_rows = []
+    for row in list(report.get("real_descriptor_smoke_reports") or []):
+        row_map = _as_map(row)
+        real_rows.append(
+            {
+                "scenario_id": str(row_map.get("scenario_id", "")).strip(),
+                "compatibility_mode_id": str(row_map.get("compatibility_mode_id", "")).strip(),
+                "chosen_protocol_id": str(row_map.get("chosen_protocol_id", "")).strip(),
+                "chosen_protocol_version": str(row_map.get("chosen_protocol_version", "")).strip(),
+                "refusal_code": str(row_map.get("actual_refusal_code", "")).strip(),
+                "disabled_capability_ids": _sorted_tokens(row_map.get("disabled_capability_ids")),
+                "substituted_capability_ids": _sorted_tokens(row_map.get("substituted_capability_ids")),
+                "negotiation_record_hash": str(row_map.get("negotiation_record_hash", "")).strip(),
+            }
+        )
+    baseline = {
+        "baseline_id": "cap.neg.full.baseline.v1",
+        "schema_version": "1.0.0",
+        "description": "Deterministic CAP-NEG-4 regression lock for mixed-version negotiation, degrade ladders, read-only fallback, and refusal surfaces.",
+        "scenario_seed": int(_as_int(seed, DEFAULT_CAP_NEG4_SEED)),
+        "matrix_fingerprint": str(matrix_payload.get("deterministic_fingerprint", "")).strip(),
+        "stress_report_fingerprint": str(report.get("deterministic_fingerprint", "")).strip(),
+        "replay_summary_fingerprint": str(_as_map(report.get("replay_summary")).get("deterministic_fingerprint", "")).strip(),
+        "mode_counts": dict(_as_map(report.get("mode_counts"))),
+        "refusal_counts": [dict(row) for row in list(report.get("refusal_counts") or []) if isinstance(row, Mapping)],
+        "disabled_capability_frequency": [
+            dict(row) for row in list(report.get("disabled_capability_frequency") or []) if isinstance(row, Mapping)
+        ],
+        "canonical_scenarios": sorted(
+            scenario_rows,
+            key=lambda row: (str(row.get("scenario_id", "")), str(row.get("negotiation_record_hash", ""))),
+        ),
+        "real_descriptor_smoke": sorted(
+            real_rows,
+            key=lambda row: (str(row.get("scenario_id", "")), str(row.get("negotiation_record_hash", ""))),
+        ),
+        "update_policy": {
+            "required_commit_tag": "CAP-NEG-REGRESSION-UPDATE",
+            "notes": "Baseline updates require rerunning CAP-NEG-4 matrix, stress, and replay verification under explicit CAP-NEG-REGRESSION-UPDATE review.",
+        },
+        "extensions": {
+            "generated_from": {
+                "matrix_path": DEFAULT_MATRIX_REL.replace("\\", "/"),
+                "stress_report_path": DEFAULT_STRESS_REL.replace("\\", "/"),
+            },
+            "lock_scope": "capability_negotiation_envelope",
+        },
+        "deterministic_fingerprint": "",
+    }
+    baseline["deterministic_fingerprint"] = canonical_sha256(dict(baseline, deterministic_fingerprint=""))
+    return baseline
+
+
 __all__ = [
     "DEFAULT_BASELINE_REL",
     "DEFAULT_CAP_NEG4_SEED",
     "DEFAULT_MATRIX_REL",
     "DEFAULT_STRESS_REL",
+    "build_cap_neg_full_baseline",
     "generate_interop_matrix",
     "run_interop_stress",
     "verify_interop_stress_replay",
