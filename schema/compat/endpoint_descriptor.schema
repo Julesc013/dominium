@@ -1,0 +1,33 @@
+SCHEMA: compat/endpoint_descriptor.schema
+schema_id: dominium.schema.compat.endpoint_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic capability and contract descriptor emitted by an interoperating product endpoint.
+- Provide the canonical input surface for capability negotiation.
+
+NON-SEMANTICS:
+- EndpointDescriptor does not mutate truth.
+- EndpointDescriptor does not authorize simulation behavior by itself.
+
+REQUIRED SHAPE:
+record endpoint_descriptor
+  required:
+    - schema_version: tag
+    - product_id: id
+    - product_version: tag
+    - protocol_versions_supported: [map]
+    - semantic_contract_versions_supported: [map]
+    - feature_capabilities: [id]
+    - required_capabilities: [id]
+    - optional_capabilities: [id]
+    - degrade_ladders: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- protocol_versions_supported must be deterministically ordered before hashing
+- semantic_contract_versions_supported must be deterministically ordered before hashing
+- capabilities are filtered through the capability registry before negotiation
+- unknown capabilities are inert by default

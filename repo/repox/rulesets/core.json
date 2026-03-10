@@ -325,6 +325,51 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-ALL-PRODUCTS-HAVE-ENDPOINT-DESCRIPTOR",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/product_registry.json",
+        "src/compat/capability_negotiation.py",
+        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-all-products-have-endpoint-descriptor",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
+      "severity": "FAIL",
+      "scope_paths": [
+        "tools/xstack/sessionx/net_handshake.py",
+        "src/server/net/loopback_transport.py",
+        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-negotiation-required-for-connections",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DEGRADE-PLAN-DECLARED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/product_registry.json",
+        "data/registries/compat_mode_registry.json",
+        "src/compat/capability_negotiation.py",
+        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-degrade-plan-declared",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/capability_registry.json",
+        "src/compat/capability_negotiation.py",
+        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-unknown-cap-ignored-deterministically",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-PACKS-MUST-DECLARE-CAPABILITIES",
       "severity": "FAIL",
       "scope_paths": [

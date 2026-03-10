@@ -1,0 +1,34 @@
+SCHEMA: compat/negotiation_record.schema
+schema_id: dominium.schema.compat.negotiation_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic derived artifact emitted by capability negotiation.
+- Preserve negotiation, degradation, and refusal evidence for proof and replay.
+
+NON-SEMANTICS:
+- NegotiationRecord does not mutate truth.
+- NegotiationRecord does not authorize mutation when the chosen mode is read-only.
+
+REQUIRED SHAPE:
+record negotiation_record
+  required:
+    - schema_version: tag
+    - negotiation_id: id
+    - endpoints: [map]
+    - chosen_protocol_id: id
+    - chosen_protocol_version: tag
+    - chosen_contract_versions: map
+    - compatibility_mode_id: id
+    - enabled_capabilities: [id]
+    - disabled_capabilities: [map]
+    - degrade_plan: [map]
+    - input_hashes: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- list ordering is deterministic
+- disabled_capabilities must preserve explicit reasons
+- degrade_plan must be explicit for compat.degraded and compat.read_only

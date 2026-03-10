@@ -4443,6 +4443,174 @@
       },
       {
         "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "1054a529d55169c173ccb072276bfe4d49fea8f032af2b99553473dd5f2e0bce",
+        "extension_key": "official.client_endpoint_descriptor_hash",
+        "extensions": {
+          "official.description": "Hash of the negotiated client endpoint descriptor.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "a6b5b7e4aec143f5304906cd5cf1199f18962c727a3f41d2ab031df83e63032c",
+        "extension_key": "official.compatibility_mode_id",
+        "extensions": {
+          "official.description": "Compatibility mode selected by deterministic endpoint negotiation.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "86cb697ce3d2c9190b6c24791125555d4aa61d11375432930cb19e7279b1a0ea",
+        "extension_key": "official.compat.contract_mismatches",
+        "extensions": {
+          "official.description": "Sorted contract categories that prevented a full compatibility match.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "8b38519245bd7768f37f20f97d766b9bec6579d150b97b291b166006006d107b",
+        "extension_key": "official.compat.read_only_allowed",
+        "extensions": {
+          "official.description": "Endpoint descriptor or record explicitly allows read-only compatibility fallback.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "boolean"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "dd4483bc87a364e4e40b5d03a34175ae34a168847f362c37277ed14d1eeff416",
+        "extension_key": "official.compat.read_only_law_profile_id",
+        "extensions": {
+          "official.description": "Law profile bound when negotiation degrades to read-only compatibility.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "cf00f47ef1eddedab2f78ad22984d73f734f04ad9b953bda225140adee5475f7",
+        "extension_key": "official.compat.refusal",
+        "extensions": {
+          "official.description": "Deterministic refusal payload captured on negotiation refusal or degrade decision.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "object"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "b5cae86b5939fb473b8fbed8779fd2acd3ff957f15690c9806d3e272b041c35a",
+        "extension_key": "official.compat.required_capability_violations",
+        "extensions": {
+          "official.description": "Sorted required capability mismatches detected during negotiation.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "4f7cc091a0cce3d110f6a979ab2ada456ba778450581b444ffae0870c5aa7bea",
+        "extension_key": "official.enabled_capabilities",
+        "extensions": {
+          "official.description": "Deterministically ordered enabled capability set chosen by endpoint negotiation.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "fc14114143ecfa5e089f8cca014b9aa0559f742833387f73d55ca39c5404d82e",
+        "extension_key": "official.endpoint_descriptor_hashes",
+        "extensions": {
+          "official.description": "Sorted endpoint descriptor hashes included in a proof-anchor surface.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "d9e962ca671580300371a1f19b6aa015fe5b944012c63b86bb543cf69ad1dc4e",
+        "extension_key": "official.negotiation_record_hash",
+        "extensions": {
+          "official.description": "Hash of the deterministic negotiation record for the active handshake or refusal.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "775f4bf2ba7e11ae3a752f05c20b42d6caa121e5d19d563c0ca141d75647b3a1",
+        "extension_key": "official.negotiation_record_hashes",
+        "extensions": {
+          "official.description": "Sorted negotiation record hashes included in a proof-anchor surface.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "90c0377a2f273661428f038e14f69ac72c1ab07ad157a117fff6ece94e51a1ad",
+        "extension_key": "official.server_endpoint_descriptor_hash",
+        "extensions": {
+          "official.description": "Hash of the negotiated server endpoint descriptor.",
+          "official.source": "CAP-NEG-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
           "pack_capabilities"
         ],
         "deterministic_fingerprint": "8bb4b4bbfe27b828a09bce6b4797e999b8aa15fa9b6131251396eacd8c3ca76f",

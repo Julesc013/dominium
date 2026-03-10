@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Endpoint Descriptor Schema",
+  "version": "1.0.0",
+  "description": "Deterministic product endpoint descriptor for capability negotiation.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "product_id",
+    "product_version",
+    "protocol_versions_supported",
+    "semantic_contract_versions_supported",
+    "feature_capabilities",
+    "required_capabilities",
+    "optional_capabilities",
+    "degrade_ladders",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "product_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "product_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocol_versions_supported": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "semantic_contract_versions_supported": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "feature_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "optional_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "degrade_ladders": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  }
+}

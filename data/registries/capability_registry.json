@@ -87,6 +87,114 @@
       },
       {
         "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.geo.ortho_map_lens",
+        "description": "Endpoint can expose or consume orthographic map lens outputs.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.geo.sphere_atlas",
+        "description": "Endpoint can expose or consume sphere-atlas spatial views.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.ipc.attach_console",
+        "description": "Endpoint supports attach-console control negotiation over a deterministic side channel.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.logic.compiled_automaton",
+        "description": "Endpoint supports compiled logic automaton exchange or execution surfaces.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.logic.protocol_layer",
+        "description": "Endpoint supports negotiated logic protocol-layer interactions.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.server.proof_anchors",
+        "description": "Endpoint can emit or consume deterministic server proof-anchor artifacts.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.ui.rendered",
+        "description": "Endpoint supports rendered presentation output.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.ui.tui",
+        "description": "Endpoint supports text or TUI presentation output.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.worldgen.refinement_l3",
+        "description": "Endpoint supports L3 worldgen refinement coordination and observation.",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
           "assembly",
           "structure"
         ],

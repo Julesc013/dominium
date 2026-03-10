@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Contract Range Schema",
+  "version": "1.0.0",
+  "description": "Deterministic supported semantic contract version range.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_category_id",
+    "min_version",
+    "max_version",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contract_category_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "min_version": {
+      "type": "integer"
+    },
+    "max_version": {
+      "type": "integer"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  }
+}

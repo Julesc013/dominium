@@ -42,9 +42,26 @@ def build_server_proof_anchor(server_boot_payload: Mapping[str, object], step_pa
     runtime = _runtime(server_boot_payload)
     server = dict(runtime.get("server") or {})
     meta = _server_meta(runtime)
+    connections = dict(runtime.get("server_mvp_connections") or {})
     frame = dict(step_payload.get("hash_anchor_frame") or {})
     bundle = dict(step_payload.get("control_proof_bundle") or {})
     tick = int(step_payload.get("tick", server.get("network_tick", 0)) or 0)
+    negotiation_record_hashes = sorted(
+        str((dict(row or {})).get("negotiation_record_hash", "")).strip()
+        for row in connections.values()
+        if str((dict(row or {})).get("negotiation_record_hash", "")).strip()
+    )
+    endpoint_descriptor_hashes = sorted(
+        set(
+            token
+            for row in connections.values()
+            for token in (
+                str((dict(row or {})).get("client_endpoint_descriptor_hash", "")).strip(),
+                str((dict(row or {})).get("server_endpoint_descriptor_hash", "")).strip(),
+            )
+            if token
+        )
+    )
     payload = {
         "schema_version": "1.0.0",
         "tick": int(tick),
@@ -62,6 +79,8 @@ def build_server_proof_anchor(server_boot_payload: Mapping[str, object], step_pa
             "control_proof_bundle_ref": str(bundle.get("bundle_ref", "")).strip()
             or str((dict(frame.get("extensions") or {})).get("control_proof_bundle_ref", "")).strip(),
             "ledger_hash": str(step_payload.get("ledger_hash", "")).strip(),
+            "official.negotiation_record_hashes": negotiation_record_hashes,
+            "official.endpoint_descriptor_hashes": endpoint_descriptor_hashes,
         },
     }
     fingerprint_payload = dict(payload)

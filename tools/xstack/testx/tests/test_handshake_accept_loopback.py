@@ -42,6 +42,8 @@ def run(repo_root: str):
         return {"status": "fail", "message": "unexpected negotiated replication policy id"}
     if str(result.get("server_law_profile_id", "")) != "law.lab.unrestricted":
         return {"status": "fail", "message": "unexpected server law profile id"}
+    if not str(result.get("negotiation_record_hash", "")).strip():
+        return {"status": "fail", "message": "negotiation record hash is missing from handshake output"}
     if not str(result.get("handshake_artifact_hash", "")).strip():
         return {"status": "fail", "message": "handshake artifact hash is missing"}
     return {"status": "pass", "message": "loopback handshake accepted deterministically"}

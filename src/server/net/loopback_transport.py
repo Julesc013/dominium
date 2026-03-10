@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
+from src.compat import READ_ONLY_LAW_PROFILE_ID, build_default_endpoint_descriptor, negotiate_endpoint_descriptors
 from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
 from src.net.transport.loopback import LoopbackTransport
 from src.server.server_boot import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context
@@ -177,7 +178,15 @@ def create_loopback_listener(server_boot_payload: Mapping[str, object]) -> dict:
     }
 
 
-def send_client_hello(endpoint: str, client_peer_id: str, account_id: str = "account.loopback") -> dict:
+def send_client_hello(
+    endpoint: str,
+    client_peer_id: str,
+    account_id: str = "account.loopback",
+    *,
+    repo_root: str = "",
+    endpoint_descriptor: Mapping[str, object] | None = None,
+    allow_read_only: bool = False,
+) -> dict:
     endpoint_token = str(endpoint or "").strip()
     peer_token = str(client_peer_id or "").strip()
     if (not endpoint_token) or (not peer_token):
@@ -190,11 +199,20 @@ def send_client_hello(endpoint: str, client_peer_id: str, account_id: str = "acc
     connected = client.connect(endpoint_token)
     if str(connected.get("result", "")) != "complete":
         return dict(connected)
+    descriptor_payload = dict(endpoint_descriptor or {})
+    if not descriptor_payload:
+        descriptor_payload = build_default_endpoint_descriptor(
+            str(repo_root or "").strip(),
+            product_id="client",
+            product_version="0.0.0+client.loopback",
+        )
     hello_payload = {
         "schema_version": "1.0.0",
         "client_peer_id": peer_token,
         "account_id": str(account_id or "account.loopback").strip() or "account.loopback",
         "protocol_version": "1.0.0",
+        "endpoint_descriptor": descriptor_payload,
+        "allow_read_only": bool(allow_read_only),
         "extensions": {},
     }
     message = build_proto_message(
@@ -258,13 +276,52 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
     peer_id = str(hello_payload.get("client_peer_id", accepted.get("remote_peer_id", ""))).strip()
     account_id = str(hello_payload.get("account_id", "account.loopback")).strip() or "account.loopback"
     connection_id = str(accepted.get("connection_id", "")).strip()
+    repo_root = str((dict(server_boot_payload or {})).get("repo_root", "")).strip()
 
     session_spec = dict((dict(server_boot_payload or {})).get("session_spec") or {})
+    client_endpoint_descriptor = dict(hello_payload.get("endpoint_descriptor") or {})
+    if not client_endpoint_descriptor:
+        client_endpoint_descriptor = build_default_endpoint_descriptor(
+            repo_root,
+            product_id="client",
+            product_version="0.0.0+client.loopback",
+        )
+    server_endpoint_descriptor = build_default_endpoint_descriptor(
+        repo_root,
+        product_id="server",
+        product_version="0.0.0+server.loopback",
+    )
+    negotiation = negotiate_endpoint_descriptors(
+        repo_root,
+        client_endpoint_descriptor,
+        server_endpoint_descriptor,
+        allow_read_only=bool(hello_payload.get("allow_read_only", False)),
+        chosen_contract_bundle_hash=str(session_spec.get("contract_bundle_hash", "")).strip(),
+    )
+    negotiation_record = dict(negotiation.get("negotiation_record") or {})
+    if str(negotiation.get("result", "")) != "complete":
+        refusal_payload = dict(negotiation.get("refusal") or {})
+        return _refuse(
+            str(refusal_payload.get("message", "endpoint capability negotiation refused the loopback connection")).strip()
+            or "endpoint capability negotiation refused the loopback connection",
+            code=str(refusal_payload.get("reason_code", "refusal.compat.contract_mismatch")).strip()
+            or "refusal.compat.contract_mismatch",
+            details=dict(refusal_payload.get("relevant_ids") or {}),
+            path="$.endpoint_descriptor",
+        )
+
+    law_profile_override = ""
+    entitlements_override = None
+    if str(negotiation.get("compatibility_mode_id", "")) == "compat.read_only":
+        law_profile_override = READ_ONLY_LAW_PROFILE_ID
+        entitlements_override = []
     authority_context = build_connection_authority_context(
         session_spec=session_spec,
         server_profile=dict(meta.get("server_profile") or {}),
         connection_id=connection_id,
         account_id=account_id,
+        law_profile_id_override=law_profile_override,
+        entitlements_override=entitlements_override,
     )
     joined = join_client_midstream(
         repo_root=str((dict(server_boot_payload or {})).get("repo_root", "")),
@@ -287,6 +344,10 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
         "peer_id": peer_id,
         "account_id": account_id,
         "authority_context": authority_context,
+        "compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
+        "negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
+        "client_endpoint_descriptor_hash": str(negotiation.get("endpoint_a_hash", "")).strip(),
+        "server_endpoint_descriptor_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
         "snapshot_id": str(joined.get("snapshot_id", "")).strip(),
         "perceived_hash": str(joined.get("perceived_hash", "")).strip(),
         "transport_id": "transport.loopback",
@@ -306,7 +367,13 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
             "pack_lock_hash": str(session_spec.get("pack_lock_hash", "")).strip(),
             "contract_bundle_hash": str(session_spec.get("contract_bundle_hash", "")).strip(),
         },
-        "extensions": {},
+        "extensions": {
+            "official.compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
+            "official.negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
+            "official.client_endpoint_descriptor_hash": str(negotiation.get("endpoint_a_hash", "")).strip(),
+            "official.server_endpoint_descriptor_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
+            "official.enabled_capabilities": list(negotiation_record.get("enabled_capabilities") or []),
+        },
     }
     ack_message = build_proto_message(
         msg_type="handshake_response",
@@ -332,6 +399,9 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
         "peer_id": peer_id,
         "account_id": account_id,
         "authority_context": authority_context,
+        "compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
+        "negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
+        "negotiation_record": negotiation_record,
         "ack_payload": ack_payload,
     }
 

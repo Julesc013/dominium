@@ -4366,6 +4366,204 @@ def check_extensions_deterministic_serialization(repo_root):
     return violations
 
 
+def check_all_products_have_endpoint_descriptor(repo_root):
+    invariant_id = "INV-ALL-PRODUCTS-HAVE-ENDPOINT-DESCRIPTOR"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    product_registry_rel = os.path.join("data", "registries", "product_registry.json")
+    negotiation_rel = os.path.join("src", "compat", "capability_negotiation.py")
+    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+
+    violations = []
+    required_tokens = {
+        product_registry_rel: (
+            '"product_id": "client"',
+            '"product_id": "server"',
+            '"product_id": "launcher"',
+            '"product_id": "setup"',
+            '"product_id": "tool.attach_console_stub"',
+            '"default_protocol_versions_supported"',
+            '"default_semantic_contract_versions_supported"',
+        ),
+        negotiation_rel: (
+            "build_default_endpoint_descriptor(",
+            "product_rows_by_id(",
+            "build_endpoint_descriptor(",
+        ),
+        doctrine_rel: (
+            "Every executable or attachable endpoint exposes a deterministic descriptor",
+            "`product_id`",
+            "`product_version`",
+            "`protocol_versions_supported`",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing endpoint-descriptor marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_negotiation_required_for_connections(repo_root):
+    invariant_id = "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    handshake_rel = os.path.join("tools", "xstack", "sessionx", "net_handshake.py")
+    loopback_rel = os.path.join("src", "server", "net", "loopback_transport.py")
+    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+    server_probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
+
+    violations = []
+    required_tokens = {
+        handshake_rel: (
+            "negotiate_endpoint_descriptors(",
+            '"negotiation_record_hash"',
+            '"endpoint_descriptor"',
+            '"compatibility_mode_id"',
+        ),
+        loopback_rel: (
+            "negotiate_endpoint_descriptors(",
+            '"negotiation_record_hash"',
+            '"compatibility_mode_id"',
+            '"endpoint_descriptor"',
+        ),
+        doctrine_rel: (
+            "Identify themselves and their capabilities",
+            "Choose a mutually supported “compatibility mode”",
+            "Produce a signed/hashed negotiation record",
+        ),
+        server_probe_rel: (
+            '"negotiation_record_hash"',
+            '"compatibility_mode_id"',
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing negotiation marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_degrade_plan_declared(repo_root):
+    invariant_id = "INV-DEGRADE-PLAN-DECLARED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    product_registry_rel = os.path.join("data", "registries", "product_registry.json")
+    compat_mode_registry_rel = os.path.join("data", "registries", "compat_mode_registry.json")
+    negotiation_rel = os.path.join("src", "compat", "capability_negotiation.py")
+    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+
+    violations = []
+    required_tokens = {
+        product_registry_rel: (
+            '"default_degrade_ladders"',
+            '"degrade.client.rendered_to_tui"',
+            '"degrade.client.contract_read_only"',
+        ),
+        compat_mode_registry_rel: (
+            '"compat.degraded"',
+            '"compat.read_only"',
+            '"compat.refuse"',
+        ),
+        negotiation_rel: (
+            "def _degrade_plan(",
+            '"degrade.optional_capability_unavailable"',
+            '"fallback_mode_id"',
+        ),
+        doctrine_rel: (
+            "All degradation decisions must appear in the NegotiationRecord.",
+            "disable feature",
+            "substitute stub",
+            "refuse the entire connection",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing degrade-plan marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_unknown_cap_ignored_deterministically(repo_root):
+    invariant_id = "INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    capability_registry_rel = os.path.join("data", "registries", "capability_registry.json")
+    negotiation_rel = os.path.join("src", "compat", "capability_negotiation.py")
+    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+
+    violations = []
+    required_tokens = {
+        capability_registry_rel: (
+            '"cap.geo.sphere_atlas"',
+            '"cap.ui.rendered"',
+            '"cap.server.proof_anchors"',
+        ),
+        negotiation_rel: (
+            "def _filter_known_capabilities(",
+            '"ignored.unknown_capability"',
+            "known_set = set(known)",
+        ),
+        doctrine_rel: (
+            "Unknown capabilities inside a descriptor are ignored deterministically",
+            "unknown capabilities are ignored deterministically after capability-registry filtering",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing unknown-capability marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
 def check_packs_must_declare_capabilities(repo_root):
     invariant_id = "INV-PACKS-MUST-DECLARE-CAPABILITIES"
     if is_override_active(repo_root, invariant_id):
@@ -11258,6 +11456,17 @@ def main() -> int:
                 lambda: check_authority_required(repo_root),
                 lambda: check_local_spawn_profiled(repo_root),
                 lambda: check_no_wallclock_timeouts_in_boot(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.compat",
+            "scope_subtrees": ("src", "tools", "data", "schema", "schemas", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_all_products_have_endpoint_descriptor(repo_root),
+                lambda: check_negotiation_required_for_connections(repo_root),
+                lambda: check_degrade_plan_declared(repo_root),
+                lambda: check_unknown_cap_ignored_deterministically(repo_root),
             ],
         },
         {

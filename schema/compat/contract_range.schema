@@ -1,0 +1,25 @@
+SCHEMA: compat/contract_range.schema
+schema_id: dominium.schema.compat.contract_range
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a supported semantic-contract category version range for capability negotiation.
+
+NON-SEMANTICS:
+- ContractRange does not migrate semantic meaning.
+- ContractRange only declares supported versions for negotiation.
+
+REQUIRED SHAPE:
+record contract_range
+  required:
+    - schema_version: tag
+    - contract_category_id: id
+    - min_version: int
+    - max_version: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- contract categories map to pinned semantic contract families
+- exact support is expressed by equal min_version and max_version

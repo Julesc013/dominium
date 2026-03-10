@@ -1,0 +1,28 @@
+SCHEMA: compat/degrade_rule.schema
+schema_id: dominium.schema.compat.degrade_rule
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a deterministic degrade or fallback rule for endpoint capability negotiation.
+
+NON-SEMANTICS:
+- DegradeRule does not mutate truth.
+- DegradeRule only declares fallback behavior for compatibility negotiation.
+
+REQUIRED SHAPE:
+record degrade_rule
+  required:
+    - schema_version: tag
+    - rule_id: id
+    - trigger_kind: enum(missing_optional_capability|contract_mismatch|protocol_mismatch|unknown_capability)
+    - trigger_id: id
+    - fallback_mode_id: id
+    - action_kind: enum(disable_feature|substitute_stub|refuse_action|refuse_connection|force_read_only)
+    - priority: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- degrade rules are evaluated in deterministic priority order
+- substitute targets, if used, must be carried in extensions

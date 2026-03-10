@@ -269,6 +269,7 @@ def start_local_singleplayer(
         endpoint=str(listener.get("endpoint", "")).strip(),
         client_peer_id=str(client_peer_id).strip() or "peer.client.local_singleplayer",
         account_id=str(account_id).strip() or "account.local.singleplayer",
+        repo_root=repo_root_abs,
     )
     if str(hello.get("result", "")) != "complete":
         return dict(hello, launch_spec=dict(launch_spec))

@@ -23,6 +23,8 @@ def run(repo_root: str):
     for key in comparable_keys:
         if first.get(key) != second.get(key):
             return {"status": "fail", "message": "loopback handshake field '{}' drifted".format(key)}
+    if not str((dict(first.get("handshake") or {})).get("negotiation_record_hash", "")).strip():
+        return {"status": "fail", "message": "loopback handshake is missing negotiation record hash"}
     if dict(first.get("handshake") or {}) != dict(second.get("handshake") or {}):
         return {"status": "fail", "message": "loopback handshake payload drifted across repeated runs"}
     return {"status": "pass", "message": "server loopback handshake is deterministic"}

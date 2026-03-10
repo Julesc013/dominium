@@ -107,6 +107,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/contracts/SEMANTIC_CONTRACT_MODEL.md` | FROZEN | Semantic behavior versioning and migration rules |
 | `docs/meta/EXTENSION_DISCIPLINE.md` | FROZEN | Namespaced extension discipline and deterministic ignore/refusal policy |
 | `docs/geo/OVERLAY_CONFLICT_POLICIES.md` | FROZEN | Deterministic overlay conflict-policy modes and refusal semantics |
+| `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md` | FROZEN | Deterministic endpoint capability negotiation, degrade plans, and negotiation records |
 | `docs/modding/MOD_TRUST_AND_CAPABILITIES.md` | FROZEN | Deterministic mod trust levels, capability declarations, and refusal policy |
 
 

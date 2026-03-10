@@ -130,6 +130,10 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-EXTENSIONS-NAMESPACED`
 - `INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY`
 - `INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION`
+- `INV-ALL-PRODUCTS-HAVE-ENDPOINT-DESCRIPTOR`
+- `INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS`
+- `INV-DEGRADE-PLAN-DECLARED`
+- `INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY`
 - `INV-PACKS-MUST-DECLARE-CAPABILITIES`
 - `INV-MOD-POLICY-ENFORCED`
 - `INV-SERVER-TICK-DETERMINISTIC`
@@ -538,6 +542,30 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when canonical JSON, schema validation, session/profile loading, pack loading, overlay loading, or worldgen loading no longer normalize extensions before hashing and validation.
 - Fails when extension-discipline doctrine no longer states sorted-key deterministic serialization requirements.
 - Preserves cross-platform stable hashing and deterministic ignore semantics for forward-compatible extensions.
+
+### INV-ALL-PRODUCTS-HAVE-ENDPOINT-DESCRIPTOR
+
+- Fails when the canonical capability-negotiation doctrine, default product registry, or endpoint-descriptor builder surface disappears.
+- Fails when governed product defaults stop declaring protocol ranges, semantic contract ranges, and feature-capability surfaces for the baseline client/server/launcher/setup/tool products.
+- Preserves explicit product identity surfaces so compatibility is negotiated from declared descriptors instead of ad hoc assumptions.
+
+### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
+
+- Fails when client-server handshake or server loopback accept paths stop invoking the deterministic negotiation engine.
+- Fails when negotiated connection outputs stop carrying `negotiation_record_hash`, endpoint descriptor hashes, or compatibility mode markers.
+- Prevents products from connecting implicitly without a recorded compatibility decision.
+
+### INV-DEGRADE-PLAN-DECLARED
+
+- Fails when capability-negotiation doctrine, product defaults, or compat-mode registry no longer declare explicit degradation ladders and standard fallback modes.
+- Fails when optional-capability degradation stops producing deterministic plan entries instead of silent feature loss.
+- Preserves auditable graceful degradation in place of breakage or hidden behavior drift.
+
+### INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY
+
+- Fails when canonical capability filtering no longer separates known capability ids from unknown ones before capability negotiation.
+- Fails when unknown capabilities stop surfacing as explicit ignored rows in the negotiation record.
+- Preserves forward compatibility for third-party ecosystems without letting unknown capability ids perturb deterministic outcomes.
 
 ### INV-PACKS-MUST-DECLARE-CAPABILITIES
 

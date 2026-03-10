@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 from typing import Dict, List, Tuple
 
+from src.compat import build_default_endpoint_descriptor, negotiate_endpoint_descriptors
 from src.net.transport.loopback import LoopbackTransport
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.schema_registry import load_version_registry
@@ -242,6 +243,7 @@ def _server_response(
     securex_policy_registry: dict,
     server_profile_registry: dict,
     authority_context: dict,
+    chosen_contract_bundle_hash: str = "",
     server_physics_profile_id: str = "",
     server_conservation_contract_set_id: str = "",
     server_time_control_policy_id: str = "",
@@ -789,7 +791,50 @@ def _server_response(
             securex_policy_id=server_securex_policy_id,
         )
 
-    return _handshake_payload(
+    client_endpoint_descriptor = dict(request_payload.get("endpoint_descriptor") or {})
+    if not client_endpoint_descriptor:
+        client_endpoint_descriptor = build_default_endpoint_descriptor(
+            repo_root,
+            product_id="client",
+            product_version="0.0.0+client.default",
+        )
+    server_endpoint_descriptor = build_default_endpoint_descriptor(
+        repo_root,
+        product_id="server",
+        product_version="0.0.0+server.default",
+    )
+    negotiation = negotiate_endpoint_descriptors(
+        repo_root,
+        client_endpoint_descriptor,
+        server_endpoint_descriptor,
+        allow_read_only=bool(request_payload.get("allow_read_only", False)),
+        chosen_contract_bundle_hash=str(chosen_contract_bundle_hash or "").strip(),
+    )
+    negotiation_record = dict(negotiation.get("negotiation_record") or {})
+    if str(negotiation.get("result", "")) != "complete":
+        refusal_payload = dict(negotiation.get("refusal") or {})
+        refused = refuse(
+            str(refusal_payload.get("reason_code", "refusal.compat.contract_mismatch")).strip()
+            or "refusal.compat.contract_mismatch",
+            str(refusal_payload.get("message", "compatibility negotiation refused the connection")).strip()
+            or "compatibility negotiation refused the connection",
+            "Use compatible protocol, contract, and capability surfaces or enable lawful read-only compatibility.",
+            dict(refusal_payload.get("relevant_ids") or {}),
+            law_profile_id=selected_law_profile,
+            anti_cheat_id=server_anti_cheat_policy_id or anti_cheat_policy_id,
+            securex_policy_id=server_securex_policy_id,
+        )
+        refused_extensions = dict(refused.get("extensions") or {})
+        refused_extensions["official.negotiation_record"] = negotiation_record
+        refused_extensions["official.negotiation_record_hash"] = str(negotiation.get("negotiation_record_hash", "")).strip()
+        refused_extensions["official.compatibility_mode_id"] = str(negotiation.get("compatibility_mode_id", "")).strip()
+        refused_extensions["official.client_endpoint_descriptor_hash"] = str(negotiation.get("endpoint_a_hash", "")).strip()
+        refused_extensions["official.server_endpoint_descriptor_hash"] = str(negotiation.get("endpoint_b_hash", "")).strip()
+        refused_extensions["official.chosen_contract_bundle_hash"] = str(chosen_contract_bundle_hash or "").strip()
+        refused["extensions"] = refused_extensions
+        return refused
+
+    response_payload = _handshake_payload(
         handshake_id=handshake_id,
         client_peer_id=client_peer_id,
         server_peer_id=server_peer_id,
@@ -822,6 +867,16 @@ def _server_response(
         server_arbitration_policy_id=expected_server_arbitration_policy_id,
         client_arbitration_policy_id=requested_arbitration_policy_id,
     )
+    response_extensions = dict(response_payload.get("extensions") or {})
+    response_extensions["official.negotiation_record"] = negotiation_record
+    response_extensions["official.negotiation_record_hash"] = str(negotiation.get("negotiation_record_hash", "")).strip()
+    response_extensions["official.compatibility_mode_id"] = str(negotiation.get("compatibility_mode_id", "")).strip()
+    response_extensions["official.client_endpoint_descriptor_hash"] = str(negotiation.get("endpoint_a_hash", "")).strip()
+    response_extensions["official.server_endpoint_descriptor_hash"] = str(negotiation.get("endpoint_b_hash", "")).strip()
+    response_extensions["official.chosen_contract_bundle_hash"] = str(chosen_contract_bundle_hash or "").strip()
+    response_extensions["official.enabled_capabilities"] = list(negotiation_record.get("enabled_capabilities") or [])
+    response_payload["extensions"] = response_extensions
+    return response_payload
 
 
 def _require_network_payload(session_spec: dict) -> Tuple[dict, dict]:
@@ -978,6 +1033,12 @@ def run_loopback_handshake(
     server_arbitration_policy_id_value = (
         str(server_arbitration_policy_id).strip() or client_arbitration_policy_id_value
     )
+    contract_bundle_hash_value = str(session_spec.get("contract_bundle_hash", "")).strip()
+    client_endpoint_descriptor = build_default_endpoint_descriptor(
+        repo_root,
+        product_id="client",
+        product_version="0.0.0+client.default",
+    )
 
     request_seed = {
         "client_peer_id": str(network_payload.get("client_peer_id", "")).strip(),
@@ -995,6 +1056,8 @@ def run_loopback_handshake(
         "transition_policy_id": client_transition_policy_id_value,
         "budget_envelope_id": client_budget_envelope_id_value,
         "arbitration_policy_id": client_arbitration_policy_id_value,
+        "contract_bundle_hash": contract_bundle_hash_value,
+        "endpoint_descriptor": client_endpoint_descriptor,
     }
     handshake_id = "hs.{}".format(canonical_sha256(request_seed)[:16])
     request_payload = {
@@ -1013,9 +1076,12 @@ def run_loopback_handshake(
             else str(network_payload.get("desired_law_profile_id", "")).strip()
         ),
         "pack_lock_hash": client_pack_lock_hash_value,
+        "contract_bundle_hash": contract_bundle_hash_value,
         "registry_hashes": dict(client_registry_hashes_value),
         "schema_versions": dict(network_payload.get("schema_versions") or {}),
         "securex_policy_id": str(network_payload.get("securex_policy_id", "")).strip(),
+        "endpoint_descriptor": client_endpoint_descriptor,
+        "allow_read_only": bool(network_payload.get("allow_read_only", False)),
         "extensions": {
             "physics_profile_id": client_physics_profile_id_value,
             "conservation_contract_set_id": client_conservation_contract_set_id_value,
@@ -1105,6 +1171,7 @@ def run_loopback_handshake(
         securex_policy_registry=securex_policy_registry,
         server_profile_registry=server_profile_registry,
         authority_context=authority_context,
+        chosen_contract_bundle_hash=contract_bundle_hash_value,
         server_physics_profile_id=server_physics_profile_id_value,
         server_conservation_contract_set_id=server_conservation_contract_set_id_value,
         server_time_control_policy_id=server_time_control_policy_id_value,
@@ -1171,6 +1238,7 @@ def run_loopback_handshake(
 
     if str(response_proto_payload.get("result", "")) != "accept":
         refusal_payload = dict(response_proto_payload.get("refusal") or {})
+        response_extensions = dict(response_proto_payload.get("extensions") or {})
         return {
             "result": "refused",
             "refusal": {
@@ -1188,6 +1256,8 @@ def run_loopback_handshake(
             ],
             "handshake": response_proto_payload,
             "request": request_payload,
+            "negotiation_record_hash": str(response_extensions.get("official.negotiation_record_hash", "")).strip(),
+            "compatibility_mode_id": str(response_extensions.get("official.compatibility_mode_id", "")).strip(),
             "handshake_artifact_hash": canonical_sha256(
                 {
                     "request": request_payload,
@@ -1196,6 +1266,7 @@ def run_loopback_handshake(
             ),
         }
 
+    response_extensions = dict(response_proto_payload.get("extensions") or {})
     return {
         "result": "complete",
         "handshake": response_proto_payload,
@@ -1221,6 +1292,11 @@ def run_loopback_handshake(
         "arbitration_policy_id": str(((response_proto_payload.get("extensions") or {}).get("server_arbitration_policy_id") or "")),
         "client_arbitration_policy_id": str(((response_proto_payload.get("extensions") or {}).get("client_arbitration_policy_id") or "")),
         "control_capabilities": dict(((response_proto_payload.get("extensions") or {}).get("control_capabilities") or {})),
+        "negotiation_record_hash": str(response_extensions.get("official.negotiation_record_hash", "")).strip(),
+        "compatibility_mode_id": str(response_extensions.get("official.compatibility_mode_id", "")).strip(),
+        "client_endpoint_descriptor_hash": str(response_extensions.get("official.client_endpoint_descriptor_hash", "")).strip(),
+        "server_endpoint_descriptor_hash": str(response_extensions.get("official.server_endpoint_descriptor_hash", "")).strip(),
+        "enabled_capabilities": list(response_extensions.get("official.enabled_capabilities") or []),
         "handshake_artifact_hash": canonical_sha256(
             {
                 "request": request_payload,

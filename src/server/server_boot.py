@@ -274,13 +274,21 @@ def build_connection_authority_context(
     server_profile: Mapping[str, object],
     connection_id: str,
     account_id: str,
+    law_profile_id_override: str = "",
+    entitlements_override: list[str] | None = None,
 ) -> dict:
     session_authority = dict((dict(session_spec or {})).get("authority_context") or {})
+    selected_law_profile_id = str(law_profile_id_override or session_authority.get("law_profile_id", "")).strip()
+    selected_entitlements = (
+        sorted(set(str(item).strip() for item in list(entitlements_override or []) if str(item).strip()))
+        if entitlements_override is not None
+        else _connection_entitlements(server_profile, session_authority)
+    )
     return {
         "authority_origin": "client",
         "experience_id": str(session_authority.get("experience_id", "")).strip(),
-        "law_profile_id": str(session_authority.get("law_profile_id", "")).strip(),
-        "entitlements": _connection_entitlements(server_profile, session_authority),
+        "law_profile_id": selected_law_profile_id,
+        "entitlements": selected_entitlements,
         "epistemic_scope": dict(session_authority.get("epistemic_scope") or {}),
         "privilege_level": str(session_authority.get("privilege_level", "")).strip(),
         "extensions": {

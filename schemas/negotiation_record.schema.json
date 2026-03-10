@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Negotiation Record Schema",
+  "version": "1.0.0",
+  "description": "Deterministic derived capability negotiation artifact.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "negotiation_id",
+    "endpoints",
+    "chosen_protocol_id",
+    "chosen_protocol_version",
+    "chosen_contract_versions",
+    "compatibility_mode_id",
+    "enabled_capabilities",
+    "disabled_capabilities",
+    "degrade_plan",
+    "input_hashes",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "negotiation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "endpoints": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "chosen_protocol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chosen_protocol_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chosen_contract_versions": {
+      "type": "object"
+    },
+    "compatibility_mode_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "enabled_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "disabled_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "degrade_plan": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "input_hashes": {
+      "type": "object"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  }
+}

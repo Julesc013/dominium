@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "98df3750d78ed974d251891862382491606afbf3d12524ab779e5854dac070df"
+      "sha256": "3feb4ac98ee7e52409b979940445c77f8e3a748c8fe19a82b28832c0a979ec9c"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
@@ -127,6 +127,10 @@
     {
       "path": "docs/geo/OVERLAY_CONFLICT_POLICIES.md",
       "sha256": "9e511038c6885a738b9f498f48a545b37c1b8807b1776d7f7f299f40af6b30c3"
+    },
+    {
+      "path": "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md",
+      "sha256": "ba7c0cd82d59d6dbd1d45b49a1780de1f78d40997df94bc7b12281ecee46eaae"
     },
     {
       "path": "docs/modding/MOD_TRUST_AND_CAPABILITIES.md",

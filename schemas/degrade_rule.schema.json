@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Degrade Rule Schema",
+  "version": "1.0.0",
+  "description": "Deterministic degrade or fallback rule for capability negotiation.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "rule_id",
+    "trigger_kind",
+    "trigger_id",
+    "fallback_mode_id",
+    "action_kind",
+    "priority",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_kind": {
+      "type": "string",
+      "enum": [
+        "missing_optional_capability",
+        "contract_mismatch",
+        "protocol_mismatch",
+        "unknown_capability"
+      ]
+    },
+    "trigger_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fallback_mode_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action_kind": {
+      "type": "string",
+      "enum": [
+        "disable_feature",
+        "substitute_stub",
+        "refuse_action",
+        "refuse_connection",
+        "force_read_only"
+      ]
+    },
+    "priority": {
+      "type": "integer"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,377 @@
+{
+  "schema_id": "dominium.registry.product_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.product_registry",
+    "registry_version": "1.0.0",
+    "products": [
+      {
+        "product_id": "client",
+        "default_protocol_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.session",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_semantic_contract_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.worldgen.refinement",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.overlay.merge",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.logic.eval",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.proc.capsule",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.sys.collapse",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.geo.metric",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.geo.projection",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.geo.partition",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.appshell.lifecycle",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_feature_capabilities": [
+          "cap.geo.ortho_map_lens",
+          "cap.geo.sphere_atlas",
+          "cap.ipc.attach_console",
+          "cap.ui.rendered",
+          "cap.ui.tui",
+          "cap.worldgen.refinement_l3"
+        ],
+        "default_required_capabilities": [],
+        "default_optional_capabilities": [
+          "cap.geo.sphere_atlas",
+          "cap.ipc.attach_console",
+          "cap.ui.rendered"
+        ],
+        "default_degrade_ladders": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.rendered_to_tui",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ui.rendered",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "substitute_stub",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "substitute_capability_id": "cap.ui.tui"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.sphere_to_ortho",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.geo.sphere_atlas",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "substitute_stub",
+            "priority": 20,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "substitute_capability_id": "cap.geo.ortho_map_lens"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.contract_read_only",
+            "trigger_kind": "contract_mismatch",
+            "trigger_id": "semantic_contract_bundle",
+            "fallback_mode_id": "compat.read_only",
+            "action_kind": "force_read_only",
+            "priority": 100,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "law_profile_id_override": "law.observer.default"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        }
+      },
+      {
+        "product_id": "engine",
+        "default_protocol_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.session",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_semantic_contract_versions_supported": [],
+        "default_feature_capabilities": [
+          "cap.geo.sphere_atlas",
+          "cap.logic.compiled_automaton",
+          "cap.logic.protocol_layer",
+          "cap.worldgen.refinement_l3"
+        ],
+        "default_required_capabilities": [],
+        "default_optional_capabilities": [],
+        "default_degrade_ladders": [],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        }
+      },
+      {
+        "product_id": "game",
+        "default_protocol_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.session",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_semantic_contract_versions_supported": [],
+        "default_feature_capabilities": [
+          "cap.geo.sphere_atlas",
+          "cap.logic.protocol_layer",
+          "cap.worldgen.refinement_l3"
+        ],
+        "default_required_capabilities": [],
+        "default_optional_capabilities": [],
+        "default_degrade_ladders": [],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        }
+      },
+      {
+        "product_id": "launcher",
+        "default_protocol_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.control",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_semantic_contract_versions_supported": [],
+        "default_feature_capabilities": [
+          "cap.ipc.attach_console",
+          "cap.ui.tui"
+        ],
+        "default_required_capabilities": [],
+        "default_optional_capabilities": [
+          "cap.ipc.attach_console"
+        ],
+        "default_degrade_ladders": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.launcher.attach_console_optional",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ipc.attach_console",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        }
+      },
+      {
+        "product_id": "server",
+        "default_protocol_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.control",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.session",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_semantic_contract_versions_supported": [],
+        "default_feature_capabilities": [
+          "cap.ipc.attach_console",
+          "cap.logic.compiled_automaton",
+          "cap.logic.protocol_layer",
+          "cap.server.proof_anchors",
+          "cap.worldgen.refinement_l3"
+        ],
+        "default_required_capabilities": [],
+        "default_optional_capabilities": [
+          "cap.ipc.attach_console"
+        ],
+        "default_degrade_ladders": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.server.attach_console_optional",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ipc.attach_console",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.server.contract_read_only",
+            "trigger_kind": "contract_mismatch",
+            "trigger_id": "semantic_contract_bundle",
+            "fallback_mode_id": "compat.read_only",
+            "action_kind": "force_read_only",
+            "priority": 100,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "law_profile_id_override": "law.observer.default"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        }
+      },
+      {
+        "product_id": "setup",
+        "default_protocol_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.pack.verify",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_semantic_contract_versions_supported": [],
+        "default_feature_capabilities": [
+          "cap.ipc.attach_console"
+        ],
+        "default_required_capabilities": [],
+        "default_optional_capabilities": [],
+        "default_degrade_ladders": [],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        }
+      },
+      {
+        "product_id": "tool.attach_console_stub",
+        "default_protocol_versions_supported": [
+          {
+            "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.control",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "default_semantic_contract_versions_supported": [],
+        "default_feature_capabilities": [
+          "cap.ipc.attach_console",
+          "cap.ui.tui"
+        ],
+        "default_required_capabilities": [],
+        "default_optional_capabilities": [
+          "cap.ipc.attach_console"
+        ],
+        "default_degrade_ladders": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.tool.attach_console_optional",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ipc.attach_console",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-0"
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "CAP-NEG-0"
+    }
+  }
+}

@@ -157,6 +157,7 @@ def connect_loopback_client(
         endpoint=str(listener.get("endpoint", "")),
         client_peer_id=str(client_peer_id),
         account_id=str(account_id),
+        repo_root=str((dict(boot_payload or {})).get("repo_root", "")),
     )
     if str(hello.get("result", "")) != "complete":
         return {"result": "refused", "listener": dict(listener), "hello": dict(hello)}
@@ -266,6 +267,8 @@ def run_server_window(
             "ack_msg_type": str((dict(handshake.get("ack_proto") or {})).get("msg_type", "")).strip(),
             "ack_payload_schema_id": str((dict(handshake.get("ack_proto") or {})).get("payload_schema_id", "")).strip(),
             "session_info": dict((dict((dict(handshake.get("ack_proto") or {}).get("payload_ref") or {})).get("inline_json") or {}).get("session_info") or {}),
+            "compatibility_mode_id": str((dict(handshake.get("accepted") or {})).get("compatibility_mode_id", "")).strip(),
+            "negotiation_record_hash": str((dict(handshake.get("accepted") or {})).get("negotiation_record_hash", "")).strip(),
             "authority_context_created": bool((dict(handshake.get("accepted") or {})).get("authority_context")),
         },
         "proof_anchor_interval_ticks": int(meta.get("proof_anchor_interval_ticks", 0) or 0),
@@ -276,6 +279,8 @@ def run_server_window(
                 "contract_bundle_hash": str(row.get("contract_bundle_hash", "")).strip(),
                 "semantic_contract_registry_hash": str(row.get("semantic_contract_registry_hash", "")).strip(),
                 "pack_lock_hash": str(row.get("pack_lock_hash", "")).strip(),
+                "negotiation_record_hashes": list((dict(row.get("extensions") or {})).get("official.negotiation_record_hashes") or []),
+                "endpoint_descriptor_hashes": list((dict(row.get("extensions") or {})).get("official.endpoint_descriptor_hashes") or []),
             }
             for row in anchors
         ],
@@ -300,6 +305,7 @@ def run_server_window(
             "mod_policy_id": str(summary.get("mod_policy_id", "")).strip(),
             "contract_bundle_hash": str(summary.get("contract_bundle_hash", "")).strip(),
             "semantic_contract_registry_hash": str(summary.get("semantic_contract_registry_hash", "")).strip(),
+            "negotiation_record_hash": str((dict(summary.get("handshake") or {})).get("negotiation_record_hash", "")).strip(),
         }
     )
     summary["deterministic_fingerprint"] = canonical_sha256(dict(summary, deterministic_fingerprint=""))
