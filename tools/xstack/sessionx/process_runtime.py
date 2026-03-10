@@ -46934,8 +46934,23 @@ def execute_intent(
                 )
             ),
         )
+        try:
+            from src.appshell.logging import log_emit
+        except Exception:  # pragma: no cover - logging is optional in non-AppShell runtimes
+            log_emit = None
         approved_rows = [dict(row) for row in list(scheduler_plan.get("approved_rows") or []) if isinstance(row, Mapping)]
         deferred_rows = [dict(row) for row in list(scheduler_plan.get("deferred_rows") or []) if isinstance(row, Mapping)]
+        if callable(log_emit):
+            log_emit(
+                category="worldgen",
+                severity="info",
+                message_key="worldgen.refinement.request.summary",
+                params={
+                    "approved_count": int(len(approved_rows)),
+                    "deferred_count": int(len(deferred_rows)),
+                },
+                tick=int(current_tick),
+            )
         explain_rows = list(_ensure_refinement_explain_rows(state))
         explain_rows.extend(dict(row) for row in list(scheduler_plan.get("explain_rows") or []) if isinstance(row, Mapping))
         state["refinement_request_records"] = normalize_refinement_request_record_rows(deferred_rows)

@@ -1,0 +1,33 @@
+SCHEMA: appshell/log_event.schema
+schema_id: dominium.schema.appshell.log_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic structured AppShell log events.
+
+NON-SEMANTICS:
+- LogEvent is diagnostic and observational only.
+- LogEvent does not mutate truth or establish authority.
+
+REQUIRED SHAPE:
+record log_event
+  required:
+    - schema_version: tag
+    - event_id: id
+    - product_id: id
+    - build_id: text
+    - session_id: text
+    - tick: int?
+    - severity: enum(debug|info|warn|error)
+    - category: id
+    - message_key: id
+    - params: map
+    - host_meta: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- event_id must be monotonic within a process run
+- params and host_meta must serialize in sorted-key order
+- host_meta must never influence authoritative truth

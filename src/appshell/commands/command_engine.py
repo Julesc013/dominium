@@ -12,6 +12,8 @@ from src.appshell.command_registry import build_root_command_descriptors, find_c
 from src.appshell.compat_adapter import build_version_payload, emit_descriptor_payload
 from src.appshell.config_loader import list_pack_manifests, list_profile_bundles
 from src.appshell.console_repl import build_console_session_stub
+from src.appshell.diag import write_diag_snapshot_bundle
+from src.appshell.logging import get_current_log_engine, log_emit
 from src.appshell.pack_verifier_adapter import verify_pack_root
 
 
@@ -129,6 +131,15 @@ def _text_dispatch(text: str, exit_code: int = EXIT_SUCCESS) -> dict:
 
 def _refusal_dispatch(repo_root: str, refusal_code: str, reason: str, remediation_hint: str, *, details: Mapping[str, object] | None = None) -> dict:
     payload = _refusal(refusal_code, reason, remediation_hint, details=details)
+    log_emit(
+        category="refusal",
+        severity="error",
+        message_key="appshell.refusal",
+        params={
+            "refusal_code": str(refusal_code).strip(),
+            "reason": str(reason).strip(),
+        },
+    )
     return _json_dispatch(payload, _exit_code_for_refusal(repo_root, refusal_code))
 
 
@@ -237,6 +248,15 @@ def _run_compat_status_command(repo_root: str, product_id: str, args: Sequence[s
         "endpoint_b_hash": str(negotiated.get("endpoint_b_hash", "")).strip(),
     }
     if str(negotiated.get("result", "")).strip() == "refused":
+        log_emit(
+            category="compat",
+            severity="warn",
+            message_key="compat.negotiation.refused",
+            params={
+                "product_id": str(product_id).strip(),
+                "peer_product_id": str(dict(endpoint_b).get("product_id", "")).strip(),
+            },
+        )
         refusal_payload = dict(negotiated.get("refusal") or {})
         return _refusal_dispatch(
             repo_root,
@@ -245,6 +265,17 @@ def _run_compat_status_command(repo_root: str, product_id: str, args: Sequence[s
             str(refusal_payload.get("remediation_hint", "")).strip() or "Provide compatible endpoint descriptors or allow read-only mode.",
             details={"compatibility_mode_id": str(negotiated.get("compatibility_mode_id", "")).strip()},
         )
+    log_emit(
+        category="compat",
+        severity="info",
+        message_key="compat.negotiation.result",
+        params={
+            "product_id": str(product_id).strip(),
+            "peer_product_id": str(dict(endpoint_b).get("product_id", "")).strip(),
+            "compatibility_mode_id": str(negotiated.get("compatibility_mode_id", "")).strip(),
+            "disabled_capability_count": int(len(list(negotiation_record.get("disabled_capabilities") or []))),
+        },
+    )
     return _json_dispatch(status_payload)
 
 
@@ -284,6 +315,17 @@ def _verify_pack_command(repo_root: str, args: Sequence[str], *, build_lock: boo
         out_report=out_report,
         out_lock=out_lock,
         write_outputs=bool(build_lock or getattr(parsed, "write_outputs", False)),
+    )
+    log_emit(
+        category="packs",
+        severity="info" if str(result.get("result", "")).strip() == "complete" else "warn",
+        message_key="packs.lock.generated" if build_lock and str(result.get("result", "")).strip() == "complete" else "packs.verify.result",
+        params={
+            "result": str(result.get("result", "")).strip(),
+            "dist_root": str(result.get("dist_root", "")).strip(),
+            "error_count": int(len(list(result.get("errors") or []))),
+            "warning_count": int(len(list(result.get("warnings") or []))),
+        },
     )
     exit_code = EXIT_SUCCESS if str(result.get("result", "")).strip() == "complete" else _exit_code_for_refusal(
         repo_root,
@@ -347,6 +389,7 @@ def _run_profiles_show_command(repo_root: str, args: Sequence[str]) -> dict:
 
 def _run_diag_command(repo_root: str, product_id: str, mode_id: str) -> dict:
     descriptor = emit_descriptor_payload(repo_root, product_id=product_id)
+    logger = get_current_log_engine()
     return _json_dispatch(
         {
             "result": "complete",
@@ -354,8 +397,47 @@ def _run_diag_command(repo_root: str, product_id: str, mode_id: str) -> dict:
             "mode": str(mode_id).strip(),
             "repo_root": str(repo_root).replace("\\", "/"),
             "descriptor_hash": str(descriptor.get("descriptor_hash", "")).strip(),
+            "log_file_path": str(getattr(logger, "file_path", "")).replace("\\", "/"),
+            "ring_event_count": int(len(list(logger.ring_events() if logger is not None else []))),
         }
     )
+
+
+def _run_diag_snapshot_command(repo_root: str, product_id: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="diag snapshot", add_help=False)
+    parser.add_argument("--out-dir", default="")
+    parser.add_argument("--session-spec-path", default="")
+    parser.add_argument("--pack-lock-path", default="")
+    parser.add_argument("--contract-bundle-hash", default="")
+    parser.add_argument("--proof-anchor-dir", default="")
+    parser.add_argument("--log-tail", default=32, type=int)
+    parsed, refusal = _parse_command_args(repo_root, parser, "diag snapshot", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    logger = get_current_log_engine()
+    snapshot = write_diag_snapshot_bundle(
+        repo_root=repo_root,
+        product_id=product_id,
+        descriptor_payload=emit_descriptor_payload(repo_root, product_id=product_id),
+        out_dir=str(getattr(parsed, "out_dir", "")).strip(),
+        session_spec_path=str(getattr(parsed, "session_spec_path", "")).strip(),
+        pack_lock_path=str(getattr(parsed, "pack_lock_path", "")).strip(),
+        contract_bundle_hash=str(getattr(parsed, "contract_bundle_hash", "")).strip(),
+        proof_anchor_dir=str(getattr(parsed, "proof_anchor_dir", "")).strip(),
+        log_events=list(logger.ring_events() if logger is not None else []),
+        log_tail=int(max(0, int(getattr(parsed, "log_tail", 32) or 32))),
+    )
+    log_emit(
+        category="diag",
+        severity="info",
+        message_key="diag.snapshot.written",
+        params={
+            "product_id": str(product_id).strip(),
+            "bundle_dir": str(snapshot.get("bundle_dir", "")).replace("\\", "/"),
+            "manifest_path": str(snapshot.get("manifest_path", "")).replace("\\", "/"),
+        },
+    )
+    return _json_dispatch(snapshot)
 
 
 def _run_console_command(repo_root: str, product_id: str) -> dict:
@@ -391,6 +473,16 @@ def dispatch_registered_command(
     tokens = [str(token).strip() for token in list(command_tokens or []) if str(token).strip()]
     if not tokens:
         return _json_dispatch({"result": "empty"}, EXIT_SUCCESS)
+    log_emit(
+        category="appshell",
+        severity="info",
+        message_key="appshell.command.dispatch",
+        params={
+            "product_id": str(product_id).strip(),
+            "mode_id": str(mode_id).strip(),
+            "command_path": " ".join(tokens),
+        },
+    )
     row, remaining, namespace_row = find_command_descriptor(repo_root, product_id, tokens)
     if not row:
         if namespace_row is not None:
@@ -423,6 +515,8 @@ def dispatch_registered_command(
         return _run_profiles_show_command(repo_root, remaining)
     if handler_id == "diag":
         return _run_diag_command(repo_root, product_id, mode_id)
+    if handler_id == "diag_snapshot":
+        return _run_diag_snapshot_command(repo_root, product_id, remaining)
     if handler_id == "console_enter":
         return _run_console_command(repo_root, product_id)
     if handler_id == "namespace_placeholder":

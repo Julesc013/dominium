@@ -14,6 +14,7 @@ from src.compat import (
     build_session_begin_payload,
     negotiate_product_endpoints,
 )
+from src.appshell.logging import build_log_event, get_current_log_engine
 from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
 from src.net.transport.loopback import LoopbackTransport
 from src.server.server_boot import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context
@@ -73,6 +74,11 @@ def _refuse(message: str, *, code: str = REFUSAL_CLIENT_UNAUTHORIZED, details: M
 def _server_tick(runtime: Mapping[str, object] | None) -> int:
     server = dict((dict(runtime or {})).get("server") or {})
     return int(server.get("network_tick", 0) or 0)
+
+
+def _session_id(server_boot_payload: Mapping[str, object] | None) -> str:
+    session_spec = dict((dict(server_boot_payload or {})).get("session_spec") or {})
+    return str(session_spec.get("save_id", "")).strip()
 
 
 def _append_console_log(runtime: Mapping[str, object] | None, event_payload: Mapping[str, object]) -> None:
@@ -191,21 +197,41 @@ def stream_server_log_event(
     message: str,
     source: str,
     connection_id: str = "",
+    message_key: str = "",
+    params: Mapping[str, object] | None = None,
+    category: str = "server",
 ) -> dict:
     runtime = _runtime(server_boot_payload)
     live_transports = dict(runtime.get("_server_mvp_live_transports") or {})
-    event_payload = {
-        "schema_version": "1.0.0",
-        "event_id": "log.{}.{}".format(int(tick), canonical_sha256({"tick": int(tick), "message": str(message), "source": str(source)})[:12]),
-        "tick": int(tick),
-        "level": str(level or "info").strip() or "info",
+    logger = get_current_log_engine()
+    message_params = {
         "message": str(message or "").strip(),
         "source": str(source or "server.mvp").strip() or "server.mvp",
         "connection_id": str(connection_id or "").strip(),
-        "deterministic_fingerprint": "",
-        "extensions": {},
     }
-    event_payload["deterministic_fingerprint"] = canonical_sha256(dict(event_payload, deterministic_fingerprint=""))
+    for key, value in sorted((dict(params or {})).items(), key=lambda item: str(item[0])):
+        message_params[str(key)] = value
+    if logger is not None:
+        event_payload = logger.emit(
+            category=str(category or "server").strip() or "server",
+            severity=str(level or "info").strip() or "info",
+            message_key=str(message_key or "server.log.event").strip() or "server.log.event",
+            params=message_params,
+            tick=int(tick),
+            session_id=_session_id(server_boot_payload),
+        )
+    else:
+        event_payload = build_log_event(
+            product_id="server",
+            build_id="",
+            session_id=_session_id(server_boot_payload),
+            event_index=max(1, int(len(list(runtime.get("server_mvp_console_log") or []))) + 1),
+            tick=int(tick),
+            severity=str(level or "info").strip() or "info",
+            category=str(category or "server").strip() or "server",
+            message_key=str(message_key or "server.log.event").strip() or "server.log.event",
+            params=message_params,
+        )
     _append_console_log(runtime, event_payload)
     rows = []
     for target_connection_id in sorted(live_transports.keys()):
@@ -283,6 +309,7 @@ def create_loopback_listener(server_boot_payload: Mapping[str, object]) -> dict:
         level="info",
         message="loopback listener bound",
         source="server.loopback.listener",
+        message_key="server.listener.bound",
     )
     return {
         "result": "complete",
@@ -436,6 +463,16 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
     negotiation_record = dict(negotiation.get("negotiation_record") or {})
     if str(negotiation.get("result", "")) != "complete":
         refusal_payload = dict(negotiation.get("refusal") or {})
+        stream_server_log_event(
+            server_boot_payload,
+            tick=_server_tick(runtime),
+            level="warn",
+            message="loopback negotiation refused",
+            source="server.loopback.negotiation",
+            connection_id=connection_id,
+            message_key="compat.negotiation.refused",
+            category="compat",
+        )
         return _refuse(
             str(refusal_payload.get("message", "endpoint capability negotiation refused the loopback connection")).strip()
             or "endpoint capability negotiation refused the loopback connection",
@@ -600,6 +637,8 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
         message="client accepted on deterministic loopback transport",
         source="server.loopback.accept",
         connection_id=connection_id,
+        message_key="server.connection.accepted",
+        params={"peer_id": peer_id},
     )
     if str(negotiation.get("compatibility_mode_id", "")).strip() == "compat.read_only":
         stream_server_log_event(
@@ -609,6 +648,8 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
             message="read-only compatibility mode negotiated",
             source="server.loopback.negotiation",
             connection_id=connection_id,
+            message_key="compat.negotiation.read_only",
+            category="compat",
         )
     return {
         "result": "complete",
@@ -735,6 +776,8 @@ def service_loopback_control_channel(server_boot_payload: Mapping[str, object]) 
                         message="client negotiation ack mismatch refused",
                         source="server.loopback.control",
                         connection_id=str(connection_id),
+                        message_key="compat.negotiation.mismatch",
+                        category="compat",
                     )
                     rows.append(
                         {
@@ -771,6 +814,8 @@ def service_loopback_control_channel(server_boot_payload: Mapping[str, object]) 
                         message="client refused negotiated compatibility mode",
                         source="server.loopback.control",
                         connection_id=str(connection_id),
+                        message_key="compat.negotiation.client_refused",
+                        category="compat",
                     )
                     rows.append(
                         {
@@ -847,6 +892,8 @@ def service_loopback_control_channel(server_boot_payload: Mapping[str, object]) 
                 message="processed control request {}".format(request_kind or "<unknown>"),
                 source="server.loopback.control",
                 connection_id=str(connection_id),
+                message_key="server.control.processed",
+                params={"request_kind": request_kind},
             )
             rows.append(
                 {

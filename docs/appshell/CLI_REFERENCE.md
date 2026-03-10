@@ -22,6 +22,7 @@ This reference is generated from `data/registries/command_registry.json` and
 | `verify` | Alias of `packs verify` for offline pack/profile verification. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
 | `version` | Emit deterministic product version metadata and build identity. | - |
 | `console enter` | Open the deterministic REPL console session stub for the current product. | - |
+| `diag snapshot` | Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors. | `refusal.io.invalid_args` |
 | `packs build-lock` | Verify packs offline and emit a deterministic pack lock plus compatibility report. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
 | `packs list` | List available pack manifests in deterministic order. | `refusal.io.invalid_args` |
 | `packs verify` | Run the offline pack compatibility verification pipeline. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
@@ -73,6 +74,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.
@@ -95,6 +97,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.
@@ -114,6 +117,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.
@@ -133,6 +137,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.
@@ -153,6 +158,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.
@@ -173,6 +179,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.
@@ -193,6 +200,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `verify`: Alias of `packs verify` for offline pack/profile verification.
 - `version`: Emit deterministic product version metadata and build identity.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
+- `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.

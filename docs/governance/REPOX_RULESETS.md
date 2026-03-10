@@ -618,6 +618,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when shared refusal families or exact AppShell refusal codes disappear from the governed registries.
 - Preserves backward-stable operator UX and automation-friendly exit semantics.
 
+### INV-NO-PRINTF-LOGGING
+
+- Fails when the APPSHELL-2 logging doctrine or shared logging engine disappear from the governed AppShell surfaces.
+- Fails when active server/AppShell logging paths fall back to ad hoc `print(...)`-style logging instead of structured console/file/ring sink emission.
+- Preserves deterministic structured logging rather than product-local log formatting drift.
+
+### INV-LOG-ENGINE-ONLY
+
+- Fails when AppShell bootstrap, command dispatch, or server loopback/tick surfaces stop routing logging through the shared APPSHELL-2 log engine.
+- Fails when governed logging paths lose stable `message_key`/category markers or bypass the shared sink contract.
+- Preserves one shell-owned logging pipeline instead of scattered per-product log behavior.
+
+### INV-NO-WALLCLOCK-IN-SIM
+
+- Fails when governed AppShell/server logging and diagnostic surfaces start reading wall-clock APIs inside simulation-relevant code paths.
+- Fails when host-clock fields are introduced into canonical tick/proof/control paths instead of remaining optional host metadata.
+- Preserves deterministic simulation and replay semantics while still allowing non-authoritative host metadata.
+
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 
 - Fails when client-server handshake or server loopback accept paths stop invoking the deterministic negotiation engine.

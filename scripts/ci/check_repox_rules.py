@@ -5364,6 +5364,10 @@ def check_offline_boot_ok(repo_root):
         os.path.join("src", "appshell", "compat_adapter.py"),
         os.path.join("src", "appshell", "config_loader.py"),
         os.path.join("src", "appshell", "console_repl.py"),
+        os.path.join("src", "appshell", "diag", "__init__.py"),
+        os.path.join("src", "appshell", "diag", "diag_snapshot.py"),
+        os.path.join("src", "appshell", "logging", "__init__.py"),
+        os.path.join("src", "appshell", "logging", "log_engine.py"),
         os.path.join("src", "appshell", "logging_sink.py"),
         os.path.join("src", "appshell", "mode_dispatcher.py"),
         os.path.join("src", "appshell", "pack_verifier_adapter.py"),
@@ -5723,6 +5727,113 @@ def check_refusal_codes_stable(repo_root):
                     token,
                 )
             )
+    return violations
+
+
+def check_no_printf_logging(repo_root):
+    invariant_id = "INV-NO-PRINTF-LOGGING"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "LOGGING_AND_TRACING.md")
+    log_engine_rel = os.path.join("src", "appshell", "logging", "log_engine.py")
+    sink_rel = os.path.join("src", "appshell", "logging_sink.py")
+    guarded_rels = (
+        os.path.join("src", "server", "net", "loopback_transport.py"),
+        os.path.join("src", "server", "runtime", "tick_loop.py"),
+        os.path.join("src", "appshell", "diag", "diag_snapshot.py"),
+    )
+    violations = []
+    doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
+    for token in ("sink.console", "sink.file", "sink.memory_ring"):
+        if token not in doctrine_text:
+            violations.append("{}: {} missing logging doctrine token {}".format(invariant_id, normalize_path(doctrine_rel), token))
+    log_engine_text = read_text(os.path.join(repo_root, log_engine_rel.replace("/", os.sep))) or ""
+    if "class LogEngine" not in log_engine_text or "sys.stderr.write" not in log_engine_text or "append_jsonl(" not in log_engine_text:
+        violations.append("{}: {} missing shared structured logging engine markers".format(invariant_id, normalize_path(log_engine_rel)))
+    sink_text = read_text(os.path.join(repo_root, sink_rel.replace("/", os.sep))) or ""
+    if "from src.appshell.logging import append_jsonl, build_log_event" not in sink_text:
+        violations.append("{}: {} no longer delegates through the shared log engine".format(invariant_id, normalize_path(sink_rel)))
+    print_re = re.compile(r"\bprint\s*\(")
+    for rel_path in guarded_rels:
+        text = read_text(os.path.join(repo_root, rel_path.replace("/", os.sep))) or ""
+        if print_re.search(text):
+            violations.append("{}: {} contains ad hoc print-based logging".format(invariant_id, normalize_path(rel_path)))
+    return violations
+
+
+def check_log_engine_only(repo_root):
+    invariant_id = "INV-LOG-ENGINE-ONLY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    required_tokens = {
+        os.path.join("src", "appshell", "bootstrap.py"): (
+            "create_log_engine(",
+            "set_current_log_engine(",
+            "log_emit(",
+        ),
+        os.path.join("src", "appshell", "commands", "command_engine.py"): (
+            "from src.appshell.logging import get_current_log_engine, log_emit",
+            "message_key",
+            "diag snapshot",
+        ),
+        os.path.join("src", "server", "net", "loopback_transport.py"): (
+            "from src.appshell.logging import build_log_event, get_current_log_engine",
+            "message_key=",
+        ),
+        os.path.join("src", "server", "runtime", "tick_loop.py"): (
+            "message_key=\"server.proof_anchor.emitted\"",
+            "message_key=\"server.tick.advanced\"",
+        ),
+    }
+    violations = []
+    for rel_path, tokens in sorted(required_tokens.items()):
+        text = read_text(os.path.join(repo_root, rel_path.replace("/", os.sep))) or ""
+        if not text:
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing shared logging marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_wallclock_in_sim(repo_root):
+    invariant_id = "INV-NO-WALLCLOCK-IN-SIM"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    rel_paths = (
+        os.path.join("src", "server", "net", "loopback_transport.py"),
+        os.path.join("src", "server", "runtime", "tick_loop.py"),
+        os.path.join("src", "appshell", "logging", "log_engine.py"),
+        os.path.join("src", "appshell", "diag", "diag_snapshot.py"),
+    )
+    forbidden_tokens = (
+        "datetime.utcnow(",
+        "datetime.now(",
+        "time.time(",
+        "time.monotonic(",
+        "time.perf_counter(",
+        "clock_gettime(",
+    )
+    violations = []
+    for rel_path in rel_paths:
+        text = read_text(os.path.join(repo_root, rel_path.replace("/", os.sep))) or ""
+        if not text:
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append("{}: {} contains forbidden wallclock token {}".format(invariant_id, normalize_path(rel_path), token))
+                break
     return violations
 
 
@@ -13126,6 +13237,9 @@ def main() -> int:
                 lambda: check_commands_registered(repo_root),
                 lambda: check_no_adhoc_arg_parsing(repo_root),
                 lambda: check_refusal_codes_stable(repo_root),
+                lambda: check_no_printf_logging(repo_root),
+                lambda: check_log_engine_only(repo_root),
+                lambda: check_no_wallclock_in_sim(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },

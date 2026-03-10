@@ -1,0 +1,31 @@
+{
+  "schema_id": "dominium.registry.appshell.log_message_key_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.appshell.log_message_key_registry",
+    "messages": [
+      { "message_key": "appshell.bootstrap.start", "category_id": "appshell", "description": "AppShell bootstrap started." },
+      { "message_key": "appshell.command.dispatch", "category_id": "appshell", "description": "Registry-backed command dispatch began." },
+      { "message_key": "appshell.mode.enter", "category_id": "appshell", "description": "AppShell entered a resolved mode surface." },
+      { "message_key": "appshell.refusal", "category_id": "refusal", "description": "Structured refusal emitted by AppShell." },
+      { "message_key": "compat.negotiation.client_refused", "category_id": "compat", "description": "Client refused the negotiated degrade mode." },
+      { "message_key": "compat.negotiation.mismatch", "category_id": "compat", "description": "Negotiation acknowledgement mismatch was refused." },
+      { "message_key": "compat.negotiation.read_only", "category_id": "compat", "description": "Read-only compatibility mode was negotiated." },
+      { "message_key": "compat.negotiation.refused", "category_id": "compat", "description": "Compatibility negotiation refused the connection." },
+      { "message_key": "compat.negotiation.result", "category_id": "compat", "description": "Compatibility negotiation completed successfully." },
+      { "message_key": "diag.snapshot.written", "category_id": "diag", "description": "Deterministic diagnostic snapshot bundle was written." },
+      { "message_key": "packs.lock.generated", "category_id": "packs", "description": "Pack lock generation completed." },
+      { "message_key": "packs.verify.result", "category_id": "packs", "description": "Offline pack verification completed." },
+      { "message_key": "server.connection.accepted", "category_id": "server", "description": "Loopback client connection accepted." },
+      { "message_key": "server.control.processed", "category_id": "server", "description": "Loopback control request processed." },
+      { "message_key": "server.listener.bound", "category_id": "server", "description": "Loopback listener bound." },
+      { "message_key": "server.proof_anchor.emitted", "category_id": "server", "description": "Proof anchor emitted for the current tick." },
+      { "message_key": "server.tick.advanced", "category_id": "server", "description": "Authoritative server tick advanced." },
+      { "message_key": "worldgen.refinement.request.summary", "category_id": "worldgen", "description": "Refinement scheduler summary emitted." }
+    ],
+    "deterministic_fingerprint": "",
+    "extensions": {
+      "official.source": "APPSHELL-2"
+    }
+  }
+}

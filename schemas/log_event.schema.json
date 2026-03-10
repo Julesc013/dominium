@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AppShell Log Event Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_id",
+    "product_id",
+    "build_id",
+    "session_id",
+    "severity",
+    "category",
+    "message_key",
+    "params",
+    "host_meta",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "event_id": { "type": "string", "minLength": 1 },
+    "product_id": { "type": "string", "minLength": 1 },
+    "build_id": { "type": "string" },
+    "session_id": { "type": "string" },
+    "tick": { "type": ["integer", "null"] },
+    "severity": { "type": "string", "enum": ["debug", "info", "warn", "error"] },
+    "category": { "type": "string", "minLength": 1 },
+    "message_key": { "type": "string", "minLength": 1 },
+    "params": { "type": "object", "additionalProperties": true },
+    "host_meta": { "type": "object", "additionalProperties": true },
+    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "extensions": { "type": "object", "additionalProperties": true }
+  }
+}

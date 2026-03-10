@@ -120,6 +120,15 @@ def advance_server_tick(
             key=lambda row: int(row.get("tick", 0) or 0),
         )
         proof_anchor_path = norm(os.path.relpath(proof_anchor_abs, repo_root))
+        stream_server_log_event(
+            server_boot_payload,
+            tick=int(tick),
+            level="info",
+            message="proof anchor emitted",
+            source="server.tick_loop",
+            message_key="server.proof_anchor.emitted",
+            params={"proof_anchor_path": proof_anchor_path},
+        )
 
     tick_stream = {}
     if stream_ticks:
@@ -134,6 +143,11 @@ def advance_server_tick(
         level="info",
         message="server authoritative tick advanced",
         source="server.tick_loop",
+        message_key="server.tick.advanced",
+        params={
+            "processed_envelope_count": int(len(list(step.get("processed_envelopes") or []))),
+            "tick_hash": str((dict(runtime.get("server") or {})).get("last_tick_hash", "")).strip(),
+        },
     )
     return {
         "result": "complete",

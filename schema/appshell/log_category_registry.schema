@@ -1,0 +1,20 @@
+SCHEMA: appshell/log_category_registry.schema
+schema_id: dominium.schema.appshell.log_category_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the registry of canonical AppShell log categories.
+
+REQUIRED SHAPE:
+record log_category_registry
+  required:
+    - schema_version: tag
+    - registry_id: id
+    - categories: [record]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- category ids must be unique
+- category ordering must be deterministic

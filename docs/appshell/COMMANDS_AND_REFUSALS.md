@@ -53,6 +53,8 @@ Alias rules:
 - `packs` aliases `packs list`
 - `verify` aliases `packs verify`
 - `console` aliases `console enter`
+- `diag snapshot` is the canonical APPSHELL-2 diagnostic bundle subcommand under
+  the stable `diag` root surface
 
 ## Namespaces
 
@@ -63,6 +65,7 @@ The stable namespaced command trees are:
 - `packs build-lock`
 - `profiles list`
 - `profiles show`
+- `diag snapshot`
 - `session.*`
 - `engine.*`
 - `game.*`
@@ -124,6 +127,8 @@ The APPSHELL-1 command plane remains offline-capable.
 - `compat-status` uses endpoint descriptors only
 - `packs verify` and `packs build-lock` use the PACK-COMPAT offline pipeline
 - `profiles list/show` inspect local bundle surfaces only
+- `diag snapshot` writes a deterministic offline diagnostic bundle from local
+  descriptor/session/pack/log/proof surfaces only
 
 ## Unavailable Namespace Rule
 

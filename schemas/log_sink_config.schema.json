@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AppShell Log Sink Config Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sink_id",
+    "sink_kind",
+    "enabled",
+    "output_ref",
+    "ring_capacity",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "sink_id": { "type": "string", "minLength": 1 },
+    "sink_kind": { "type": "string", "enum": ["console", "file", "memory_ring"] },
+    "enabled": { "type": "boolean" },
+    "output_ref": { "type": "string" },
+    "ring_capacity": { "type": "integer", "minimum": 0 },
+    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "extensions": { "type": "object", "additionalProperties": true }
+  }
+}

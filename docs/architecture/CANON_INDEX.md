@@ -312,6 +312,7 @@ execution artifacts and are not authoritative.
 - `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
 - `docs/appshell/APPSHELL_CONSTITUTION.md`
 - `docs/appshell/COMMANDS_AND_REFUSALS.md`
+- `docs/appshell/LOGGING_AND_TRACING.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`
 - `docs/server/SERVER_SETTINGS.md`

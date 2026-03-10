@@ -450,6 +450,46 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-PRINTF-LOGGING",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/LOGGING_AND_TRACING.md",
+        "src/appshell/logging",
+        "src/appshell/logging_sink.py",
+        "src/server/net/loopback_transport.py",
+        "src/server/runtime/tick_loop.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-printf-logging",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-LOG-ENGINE-ONLY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/LOGGING_AND_TRACING.md",
+        "src/appshell/bootstrap.py",
+        "src/appshell/commands/command_engine.py",
+        "src/appshell/logging",
+        "src/server/net/loopback_transport.py",
+        "src/server/runtime/tick_loop.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-log-engine-only",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-WALLCLOCK-IN-SIM",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/LOGGING_AND_TRACING.md",
+        "src/appshell/logging",
+        "src/appshell/diag",
+        "src/server/net/loopback_transport.py",
+        "src/server/runtime/tick_loop.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-in-sim",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [
