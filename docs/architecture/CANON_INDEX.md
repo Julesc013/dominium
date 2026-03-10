@@ -63,6 +63,7 @@ execution artifacts and are not authoritative.
 - `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`
 - `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`
 - `docs/meta/EXTENSION_DISCIPLINE.md`
+- `docs/geo/OVERLAY_CONFLICT_POLICIES.md`
 - `docs/architecture/CONTROL_LAYERS.md`
 - `docs/architecture/CRASH_RECOVERY.md`
 - `docs/architecture/CROSS_SHARD_LOG.md`

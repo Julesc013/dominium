@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "70d19da669dcfe354af194762cf43a3869fc906bd7679c0d0e5567ab93771820"
+      "sha256": "7657bc7c962bcdea4020288a6d60d9c2b51ae84191a6d64462917cf9eebd3737"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
@@ -123,6 +123,10 @@
     {
       "path": "docs/meta/EXTENSION_DISCIPLINE.md",
       "sha256": "c32de5c38e2edaf11b03ebc1ddb11496bb6a80a3860b85b50a9abbb7099b202a"
+    },
+    {
+      "path": "docs/geo/OVERLAY_CONFLICT_POLICIES.md",
+      "sha256": "9e511038c6885a738b9f498f48a545b37c1b8807b1776d7f7f299f40af6b30c3"
     },
     {
       "path": "docs/architecture/ANTI_ENTROPY_RULES.md",

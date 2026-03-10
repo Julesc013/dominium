@@ -137,6 +137,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the COMPAT-SEM-2 extension discipline doctrine in CANON_INDEX and refresh dependent governance artifacts without changing simulation semantics.",
       "expires": "2026-04-10"
+    },
+    {
+      "id": "OVR-2026-03-10-COMPATSEM3-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the COMPAT-SEM-3 overlay conflict policy doctrine in CANON_INDEX and refresh dependent governance artifacts without changing overlay semantics outside declared profile policy.",
+      "expires": "2026-04-10"
     }
   ]
 }
