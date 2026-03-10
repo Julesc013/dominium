@@ -6,6 +6,7 @@ import os
 import subprocess
 from typing import Mapping
 
+from src.compat import build_compat_status_payload, build_degrade_runtime_state
 from src.client.net import read_loopback_handshake_response, send_loopback_client_ack
 from src.runtime.process_spawn import build_server_process_spec, collect_process_output, poll_process, spawn_process
 from src.server import boot_server_runtime, load_server_config, materialize_server_session
@@ -330,6 +331,15 @@ def start_local_singleplayer(
         "last_client_messages": [],
         "diag_stub_path": "",
     }
+    accepted_payload = dict(accepted or {})
+    compat_runtime_state = build_degrade_runtime_state(dict(accepted_payload.get("negotiation_record") or {}))
+    compat_status = build_compat_status_payload(
+        dict(accepted_payload.get("negotiation_record") or {}),
+        product_id="client",
+        connection_id=str(accepted_payload.get("connection_id", "")).strip(),
+    )
+    controller["compat_runtime_state"] = dict(compat_runtime_state)
+    controller["compat_status"] = dict(compat_status)
     return {
         "result": "complete",
         "launch_spec": dict(launch_spec),
@@ -344,6 +354,9 @@ def start_local_singleplayer(
         "handshake_response": dict(handshake_response),
         "client_ack": dict(ack_result),
         "controller": controller,
+        "compat_runtime_state": dict(compat_runtime_state),
+        "compat_status": dict(compat_status),
+        "effective_ui_mode": str(compat_runtime_state.get("effective_ui_mode", "")).strip(),
         "readiness": {
             "result": "complete",
             "strategy": "bounded_poll_iterations",

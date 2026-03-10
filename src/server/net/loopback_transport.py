@@ -565,6 +565,8 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
             "official.client_endpoint_descriptor_hash": str(negotiation.get("endpoint_a_hash", "")).strip(),
             "official.server_endpoint_descriptor_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
             "official.enabled_capabilities": list(negotiation_record.get("enabled_capabilities") or []),
+            "official.disabled_capabilities": list(negotiation_record.get("disabled_capabilities") or []),
+            "official.substituted_capabilities": list(negotiation_record.get("substituted_capabilities") or []),
             "official.handshake_messages": handshake_messages,
             "official.session_begin": dict(session_begin_payload),
         },

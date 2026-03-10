@@ -4614,17 +4614,23 @@ def check_degrade_plan_declared(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    product_registry_rel = os.path.join("data", "registries", "product_registry.json")
+    degrade_ladder_registry_rel = os.path.join("data", "registries", "degrade_ladder_registry.json")
+    capability_fallback_registry_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
     compat_mode_registry_rel = os.path.join("data", "registries", "compat_mode_registry.json")
     negotiation_rel = os.path.join("src", "compat", "capability_negotiation.py")
-    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
 
     violations = []
     required_tokens = {
-        product_registry_rel: (
-            '"default_degrade_ladders"',
+        degrade_ladder_registry_rel: (
+            '"ladder.client.mvp"',
             '"degrade.client.rendered_to_tui"',
-            '"degrade.client.contract_read_only"',
+            '"degrade.server.compiled_to_l1"',
+        ),
+        capability_fallback_registry_rel: (
+            '"cap.ui.rendered"',
+            '"cap.logic.compiled_automaton"',
+            '"cap.geo.atlas_unwrap"',
         ),
         compat_mode_registry_rel: (
             '"compat.degraded"',
@@ -4633,14 +4639,15 @@ def check_degrade_plan_declared(repo_root):
         ),
         negotiation_rel: (
             "def _degrade_plan(",
-            '"degrade.optional_capability_unavailable"',
+            '"substituted_capabilities"',
+            '"degrade.feature_substituted"',
             '"fallback_mode_id"',
         ),
         doctrine_rel: (
-            "All degradation decisions must appear in the NegotiationRecord.",
-            "disable feature",
-            "substitute stub",
-            "refuse the entire connection",
+            "first applicable rule wins",
+            "disable_feature",
+            "substitute_stub",
+            "switch_to_read_only",
         ),
     }
     for rel_path, tokens in sorted(required_tokens.items()):
@@ -4653,6 +4660,177 @@ def check_degrade_plan_declared(repo_root):
         if missing:
             violations.append(
                 "{}: {} missing degrade-plan marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_degrade_ladder_declared(repo_root):
+    invariant_id = "INV-DEGRADE-LADDER-DECLARED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
+    ladder_schema_rel = os.path.join("schema", "compat", "degrade_ladder.schema")
+    fallback_schema_rel = os.path.join("schema", "compat", "fallback_map.schema")
+    ladder_registry_rel = os.path.join("data", "registries", "degrade_ladder_registry.json")
+    fallback_registry_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
+    enforcer_rel = os.path.join("src", "compat", "negotiation", "degrade_enforcer.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "Deterministic Application",
+            "first applicable rule wins",
+            "compat status",
+        ),
+        ladder_schema_rel: (
+            "record degrade_ladder",
+            "- product_id: id",
+            "- rules: [map]",
+        ),
+        fallback_schema_rel: (
+            "record fallback_map",
+            "- capability_id: id",
+            "- fallback_action:",
+        ),
+        ladder_registry_rel: (
+            '"ladder.client.mvp"',
+            '"ladder.server.mvp"',
+            '"ladder.tool.mvp"',
+        ),
+        fallback_registry_rel: (
+            '"cap.ui.rendered"',
+            '"cap.logic.compiled_automaton"',
+            '"cap.logic.protocol_layer"',
+        ),
+        enforcer_rel: (
+            "def build_degrade_runtime_state(",
+            "def build_compat_status_payload(",
+            "DEFAULT_UI_CAPABILITY_PREFERENCE",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing degrade-ladder marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_no_silent_degrade(repo_root):
+    invariant_id = "INV-NO-SILENT-DEGRADE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
+    enforcer_rel = os.path.join("src", "compat", "negotiation", "degrade_enforcer.py")
+    local_controller_rel = os.path.join("src", "client", "local_server", "local_server_controller.py")
+    server_console_rel = os.path.join("src", "server", "server_console.py")
+    logic_tool_rel = os.path.join("src", "embodiment", "tools", "logic_tool.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "Silent feature disablement is forbidden.",
+            "compat status",
+            "explain.feature_disabled",
+        ),
+        enforcer_rel: (
+            "REFUSAL_COMPAT_FEATURE_DISABLED",
+            '"explain.feature_disabled"',
+            '"effective_ui_mode"',
+        ),
+        local_controller_rel: (
+            '"compat_status"',
+            '"effective_ui_mode"',
+            "build_degrade_runtime_state",
+        ),
+        server_console_rel: (
+            "def compat_status(",
+            '"compat_rows"',
+            "build_compat_status_payload",
+        ),
+        logic_tool_rel: (
+            "enforce_negotiated_capability",
+            '"cap.logic.debug_analyzer"',
+            '"refusal.compat.feature_disabled"',
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing no-silent-degrade marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_degrade_recorded_in_negotiation(repo_root):
+    invariant_id = "INV-DEGRADE-RECORDED-IN-NEGOTIATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    negotiation_rel = os.path.join("src", "compat", "capability_negotiation.py")
+    negotiation_schema_rel = os.path.join("schema", "compat", "negotiation_record.schema")
+    handshake_doc_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
+    replay_tool_rel = os.path.join("tools", "compat", "tool_replay_negotiation.py")
+
+    violations = []
+    required_tokens = {
+        negotiation_rel: (
+            '"disabled_capabilities"',
+            '"substituted_capabilities"',
+            '"official.compat.mode_forced"',
+        ),
+        negotiation_schema_rel: (
+            "- disabled_capabilities: [map]",
+            "- substituted_capabilities: [map]",
+            "degrade_plan must be explicit",
+        ),
+        handshake_doc_rel: (
+            "degrade-plan rows",
+            "Silent downgrade is forbidden.",
+            "NegotiationRecord",
+        ),
+        replay_tool_rel: (
+            '"negotiation_record_hash"',
+            '"compatibility_mode_id"',
+            '"deterministic_fingerprint"',
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing negotiation-record marker(s): {}".format(
                     invariant_id,
                     normalize_path(rel_path),
                     ", ".join(missing[:4]),
@@ -11826,6 +12004,9 @@ def main() -> int:
                 lambda: check_negotiation_record_logged(repo_root),
                 lambda: check_readonly_enforced_when_negotiated(repo_root),
                 lambda: check_degrade_plan_declared(repo_root),
+                lambda: check_degrade_ladder_declared(repo_root),
+                lambda: check_no_silent_degrade(repo_root),
+                lambda: check_degrade_recorded_in_negotiation(repo_root),
                 lambda: check_unknown_cap_ignored_deterministically(repo_root),
             ],
         },

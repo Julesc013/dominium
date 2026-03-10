@@ -42,3 +42,10 @@ def negotiate(repo_root: str, client: dict, server: dict, *, allow_read_only: bo
         allow_read_only=allow_read_only,
         chosen_contract_bundle_hash="hash.contract.bundle.test",
     )
+
+
+def runtime_state(repo_root: str, negotiation_record: dict) -> dict:
+    ensure_repo_on_path(repo_root)
+    from src.compat import build_degrade_runtime_state
+
+    return build_degrade_runtime_state(dict(negotiation_record or {}))

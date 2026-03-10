@@ -18,7 +18,7 @@ record degrade_rule
     - trigger_kind: enum(missing_optional_capability|contract_mismatch|protocol_mismatch|unknown_capability)
     - trigger_id: id
     - fallback_mode_id: id
-    - action_kind: enum(disable_feature|substitute_stub|refuse_action|refuse_connection|force_read_only)
+    - action_kind: enum(disable_feature|substitute_stub|downgrade_mode|refuse_action|refuse_connection|force_read_only|switch_to_read_only)
     - priority: int
     - deterministic_fingerprint: sha256
     - extensions: map

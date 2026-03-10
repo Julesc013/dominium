@@ -421,12 +421,52 @@
       "rule_id": "INV-DEGRADE-PLAN-DECLARED",
       "severity": "FAIL",
       "scope_paths": [
-        "data/registries/product_registry.json",
+        "data/registries/degrade_ladder_registry.json",
+        "data/registries/capability_fallback_registry.json",
         "data/registries/compat_mode_registry.json",
         "src/compat/capability_negotiation.py",
-        "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md"
+        "docs/compat/DEGRADE_LADDERS.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-degrade-plan-declared",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DEGRADE-LADDER-DECLARED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/DEGRADE_LADDERS.md",
+        "schema/compat/degrade_ladder.schema",
+        "schema/compat/fallback_map.schema",
+        "data/registries/degrade_ladder_registry.json",
+        "data/registries/capability_fallback_registry.json",
+        "src/compat/negotiation/degrade_enforcer.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-degrade-ladder-declared",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-SILENT-DEGRADE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/DEGRADE_LADDERS.md",
+        "src/compat/negotiation/degrade_enforcer.py",
+        "src/client/local_server/local_server_controller.py",
+        "src/server/server_console.py",
+        "src/embodiment/tools/logic_tool.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-silent-degrade",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-DEGRADE-RECORDED-IN-NEGOTIATION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/compat/capability_negotiation.py",
+        "schema/compat/negotiation_record.schema",
+        "docs/compat/NEGOTIATION_HANDSHAKES.md",
+        "tools/compat/tool_replay_negotiation.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-degrade-recorded-in-negotiation",
       "exemption_policy": "deny"
     },
     {

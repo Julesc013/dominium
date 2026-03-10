@@ -593,9 +593,27 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-DEGRADE-PLAN-DECLARED
 
-- Fails when capability-negotiation doctrine, product defaults, or compat-mode registry no longer declare explicit degradation ladders and standard fallback modes.
+- Fails when capability-negotiation doctrine, degrade-ladder registry, capability fallback registry, or compat-mode registry stop declaring explicit degradation ladders and standard fallback modes.
 - Fails when optional-capability degradation stops producing deterministic plan entries instead of silent feature loss.
 - Preserves auditable graceful degradation in place of breakage or hidden behavior drift.
+
+### INV-DEGRADE-LADDER-DECLARED
+
+- Fails when CAP-NEG-3 doctrine, degrade-ladder schema, fallback-map schema, or their canonical registries stop declaring per-product ladders and fallback maps.
+- Fails when the shared runtime degrade enforcer disappears from the governed compat surface.
+- Preserves explicit per-product graceful degradation instead of ad hoc local fallback logic.
+
+### INV-NO-SILENT-DEGRADE
+
+- Fails when products stop surfacing negotiated degrades through operator/user-visible compat status or explicit feature-disabled refusals.
+- Fails when runtime compat state no longer drives rendered/TUI fallback or feature-disable refusal paths.
+- Preserves explainable degradation instead of hidden capability loss.
+
+### INV-DEGRADE-RECORDED-IN-NEGOTIATION
+
+- Fails when negotiation records stop carrying disabled capabilities, substituted capabilities, or forced-mode metadata.
+- Fails when handshake/replay surfaces no longer preserve deterministic degrade evidence.
+- Preserves proofable compatibility behavior rather than ephemeral downgrade choices.
 
 ### INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY
 

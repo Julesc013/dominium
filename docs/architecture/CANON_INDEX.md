@@ -67,6 +67,7 @@ execution artifacts and are not authoritative.
 - `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`
 - `docs/compat/ENDPOINT_DESCRIPTORS.md`
 - `docs/compat/NEGOTIATION_HANDSHAKES.md`
+- `docs/compat/DEGRADE_LADDERS.md`
 - `docs/architecture/CONTROL_LAYERS.md`
 - `docs/architecture/CRASH_RECOVERY.md`
 - `docs/architecture/CROSS_SHARD_LOG.md`

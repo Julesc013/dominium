@@ -1,0 +1,27 @@
+SCHEMA: compat/degrade_ladder.schema
+schema_id: dominium.schema.compat.degrade_ladder
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the ordered degrade-rule ladder for a specific product.
+- Preserve deterministic graceful-degradation behavior outside ad hoc runtime code.
+
+NON-SEMANTICS:
+- DegradeLadder does not mutate truth.
+- DegradeLadder does not authorize simulation behavior changes.
+
+REQUIRED SHAPE:
+record degrade_ladder
+  required:
+    - schema_version: tag
+    - ladder_id: id
+    - product_id: id
+    - rules: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- rules are evaluated in declared order after deterministic normalization
+- product_id must map to a declared product registry row
+- first applicable rule wins for a missing capability

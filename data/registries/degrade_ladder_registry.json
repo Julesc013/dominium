@@ -1,0 +1,279 @@
+{
+  "schema_id": "dominium.registry.degrade_ladder_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.degrade_ladder_registry",
+    "registry_version": "1.0.0",
+    "degrade_ladders": [
+      {
+        "schema_version": "1.0.0",
+        "ladder_id": "ladder.client.mvp",
+        "product_id": "client",
+        "rules": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.rendered_to_tui",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ui.rendered",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "downgrade_mode",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "fallback_capability_ids": [
+                "cap.ui.tui",
+                "cap.ui.cli"
+              ],
+              "user_message_key": "explain.compat_degraded.ui_rendered"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.atlas_unwrap_to_ortho",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.geo.atlas_unwrap",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "substitute_stub",
+            "priority": 20,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "fallback_capability_ids": [
+                "cap.geo.ortho_map_lens"
+              ],
+              "user_message_key": "explain.compat_degraded.geo_atlas_unwrap"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.sphere_to_ortho",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.geo.sphere_atlas",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "substitute_stub",
+            "priority": 30,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "fallback_capability_ids": [
+                "cap.geo.ortho_map_lens"
+              ],
+              "user_message_key": "explain.compat_degraded.geo_sphere_atlas"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.logic_debug_disabled",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.logic.debug_analyzer",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 40,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "user_message_key": "explain.feature_disabled.logic_debug_analyzer"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.protocol_sniffer_disabled",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.logic.protocol_sniffer",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 50,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "user_message_key": "explain.feature_disabled.logic_protocol_sniffer"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.client.contract_read_only",
+            "trigger_kind": "contract_mismatch",
+            "trigger_id": "semantic_contract_bundle",
+            "fallback_mode_id": "compat.read_only",
+            "action_kind": "switch_to_read_only",
+            "priority": 100,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "law_profile_id_override": "law.observer.default",
+              "user_message_key": "explain.compat_read_only"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "ladder_id": "ladder.server.mvp",
+        "product_id": "server",
+        "rules": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.server.attach_console_optional",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ipc.attach_console",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "user_message_key": "explain.feature_disabled.attach_console"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.server.compiled_to_l1",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.logic.compiled_automaton",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "substitute_stub",
+            "priority": 20,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "fallback_capability_ids": [
+                "cap.logic.l1_eval"
+              ],
+              "user_message_key": "explain.compat_degraded.logic_compiled_to_l1"
+            }
+          },
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.server.contract_read_only",
+            "trigger_kind": "contract_mismatch",
+            "trigger_id": "semantic_contract_bundle",
+            "fallback_mode_id": "compat.read_only",
+            "action_kind": "switch_to_read_only",
+            "priority": 100,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "law_profile_id_override": "law.observer.default",
+              "user_message_key": "explain.compat_read_only"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "ladder_id": "ladder.setup.mvp",
+        "product_id": "setup",
+        "rules": [],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "ladder_id": "ladder.launcher.mvp",
+        "product_id": "launcher",
+        "rules": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.launcher.attach_console_optional",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ipc.attach_console",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "user_message_key": "explain.feature_disabled.attach_console"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "ladder_id": "ladder.engine.mvp",
+        "product_id": "engine",
+        "rules": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.engine.compiled_to_l1",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.logic.compiled_automaton",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "substitute_stub",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "fallback_capability_ids": [
+                "cap.logic.l1_eval"
+              ],
+              "user_message_key": "explain.compat_degraded.logic_compiled_to_l1"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "ladder_id": "ladder.game.mvp",
+        "product_id": "game",
+        "rules": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.game.compiled_to_l1",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.logic.compiled_automaton",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "substitute_stub",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "fallback_capability_ids": [
+                "cap.logic.l1_eval"
+              ],
+              "user_message_key": "explain.compat_degraded.logic_compiled_to_l1"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "ladder_id": "ladder.tool.mvp",
+        "product_id": "tool.attach_console_stub",
+        "rules": [
+          {
+            "schema_version": "1.0.0",
+            "rule_id": "degrade.tool.attach_console_optional",
+            "trigger_kind": "missing_optional_capability",
+            "trigger_id": "cap.ipc.attach_console",
+            "fallback_mode_id": "compat.degraded",
+            "action_kind": "disable_feature",
+            "priority": 10,
+            "deterministic_fingerprint": "",
+            "extensions": {
+              "user_message_key": "explain.feature_disabled.attach_console"
+            }
+          }
+        ],
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "CAP-NEG-3"
+    }
+  }
+}

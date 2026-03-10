@@ -280,7 +280,21 @@
         "1.0.0"
       ]
     },
+    "degrade_ladder": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "endpoint_descriptor": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "fallback_map": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

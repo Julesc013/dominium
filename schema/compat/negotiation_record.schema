@@ -23,6 +23,7 @@ record negotiation_record
     - compatibility_mode_id: id
     - enabled_capabilities: [id]
     - disabled_capabilities: [map]
+    - substituted_capabilities: [map]
     - degrade_plan: [map]
     - input_hashes: map
     - deterministic_fingerprint: sha256
@@ -31,4 +32,5 @@ record negotiation_record
 INVARIANTS:
 - list ordering is deterministic
 - disabled_capabilities must preserve explicit reasons
+- substituted_capabilities must preserve explicit source and target ids
 - degrade_plan must be explicit for compat.degraded and compat.read_only

@@ -101,6 +101,18 @@
         "applicable_entity_kinds": [
           "custom"
         ],
+        "capability_id": "cap.geo.atlas_unwrap",
+        "description": "Endpoint can expose or consume atlas unwrap or high-resolution spherical map views.",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
         "capability_id": "cap.geo.metric",
         "description": "Endpoint supports deterministic geo metric and distance behavior surfaces.",
         "extensions": {
@@ -125,10 +137,58 @@
         "applicable_entity_kinds": [
           "custom"
         ],
+        "capability_id": "cap.logic.advanced_buses",
+        "description": "Endpoint supports advanced logic bus and bridge tooling beyond baseline message visibility.",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.logic.debug_analyzer",
+        "description": "Endpoint supports logic-debug analyzer and bounded trace tooling.",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.logic.l1_eval",
+        "description": "Endpoint supports baseline L1 logic evaluation fallback when compiled logic is unavailable.",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
         "capability_id": "cap.logic",
         "description": "Endpoint supports deterministic logic/gameplay logic interoperability surfaces.",
         "extensions": {
           "official.source": "CAP-NEG-1"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.logic.protocol_sniffer",
+        "description": "Endpoint supports logic protocol sniffing and advanced protocol diagnostics.",
+        "extensions": {
+          "official.source": "CAP-NEG-3"
         },
         "parameters_schema_id": null,
         "schema_version": "1.0.0"

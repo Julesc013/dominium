@@ -1,0 +1,72 @@
+{
+  "schema_id": "dominium.registry.capability_fallback_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.capability_fallback_registry",
+    "registry_version": "1.0.0",
+    "fallback_maps": [
+      {
+        "schema_version": "1.0.0",
+        "capability_id": "cap.ui.rendered",
+        "fallback_action": "downgrade_mode",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "fallback_capability_ids": [
+            "cap.ui.tui",
+            "cap.ui.cli"
+          ],
+          "user_message_key": "explain.compat_degraded.ui_rendered"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "capability_id": "cap.logic.debug_analyzer",
+        "fallback_action": "disable_feature",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "user_message_key": "explain.feature_disabled.logic_debug_analyzer"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "capability_id": "cap.geo.atlas_unwrap",
+        "fallback_action": "substitute_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "fallback_capability_ids": [
+            "cap.geo.ortho_map_lens"
+          ],
+          "user_message_key": "explain.compat_degraded.geo_atlas_unwrap"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "capability_id": "cap.logic.compiled_automaton",
+        "fallback_action": "substitute_stub",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "fallback_capability_ids": [
+            "cap.logic.l1_eval"
+          ],
+          "user_message_key": "explain.compat_degraded.logic_compiled_to_l1"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "capability_id": "cap.logic.protocol_layer",
+        "fallback_action": "disable_feature",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "disabled_capability_ids": [
+            "cap.logic.protocol_sniffer",
+            "cap.logic.advanced_buses"
+          ],
+          "user_message_key": "explain.feature_disabled.logic_protocol_layer"
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "CAP-NEG-3"
+    }
+  }
+}

@@ -13,6 +13,8 @@ CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capability_registr
 PRODUCT_REGISTRY_REL = os.path.join("data", "registries", "product_registry.json")
 COMPAT_MODE_REGISTRY_REL = os.path.join("data", "registries", "compat_mode_registry.json")
 SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
+DEGRADE_LADDER_REGISTRY_REL = os.path.join("data", "registries", "degrade_ladder_registry.json")
+CAPABILITY_FALLBACK_REGISTRY_REL = os.path.join("data", "registries", "capability_fallback_registry.json")
 
 REFUSAL_NO_COMMON_PROTOCOL = "refusal.compat.no_common_protocol"
 REFUSAL_CONTRACT_MISMATCH = "refusal.compat.contract_mismatch"
@@ -117,6 +119,14 @@ def load_semantic_contract_registry(repo_root: str) -> Tuple[dict, str]:
     return _read_json(os.path.join(repo_root, SEMANTIC_CONTRACT_REGISTRY_REL))
 
 
+def load_degrade_ladder_registry(repo_root: str) -> Tuple[dict, str]:
+    return _read_json(os.path.join(repo_root, DEGRADE_LADDER_REGISTRY_REL))
+
+
+def load_capability_fallback_registry(repo_root: str) -> Tuple[dict, str]:
+    return _read_json(os.path.join(repo_root, CAPABILITY_FALLBACK_REGISTRY_REL))
+
+
 def _normalize_protocol_range(row: Mapping[str, object] | None) -> dict:
     payload = _as_map(row)
     normalized = {
@@ -149,13 +159,16 @@ def _normalize_contract_range(row: Mapping[str, object] | None) -> dict:
 
 def _normalize_degrade_rule(row: Mapping[str, object] | None) -> dict:
     payload = _as_map(row)
+    action_kind = str(payload.get("action_kind", "disable_feature")).strip() or "disable_feature"
+    if action_kind == "switch_to_read_only":
+        action_kind = "switch_to_read_only"
     normalized = {
         "schema_version": str(payload.get("schema_version", "1.0.0")).strip() or "1.0.0",
         "rule_id": str(payload.get("rule_id", "")).strip(),
         "trigger_kind": str(payload.get("trigger_kind", "missing_optional_capability")).strip(),
         "trigger_id": str(payload.get("trigger_id", "")).strip(),
         "fallback_mode_id": str(payload.get("fallback_mode_id", COMPAT_MODE_DEGRADED)).strip() or COMPAT_MODE_DEGRADED,
-        "action_kind": str(payload.get("action_kind", "disable_feature")).strip() or "disable_feature",
+        "action_kind": action_kind,
         "priority": max(0, _as_int(payload.get("priority", 0), 0)),
         "deterministic_fingerprint": "",
         "extensions": _as_map(payload.get("extensions")),
@@ -173,6 +186,19 @@ def _normalize_degrade_rule(row: Mapping[str, object] | None) -> dict:
                 }
             )[:16]
         )
+    normalized["deterministic_fingerprint"] = canonical_sha256(dict(normalized, deterministic_fingerprint=""))
+    return normalized
+
+
+def _normalize_fallback_map(row: Mapping[str, object] | None) -> dict:
+    payload = _as_map(row)
+    normalized = {
+        "schema_version": str(payload.get("schema_version", "1.0.0")).strip() or "1.0.0",
+        "capability_id": str(payload.get("capability_id", "")).strip(),
+        "fallback_action": str(payload.get("fallback_action", "disable_feature")).strip() or "disable_feature",
+        "deterministic_fingerprint": "",
+        "extensions": _as_map(payload.get("extensions")),
+    }
     normalized["deterministic_fingerprint"] = canonical_sha256(dict(normalized, deterministic_fingerprint=""))
     return normalized
 
@@ -278,6 +304,63 @@ def compat_mode_rows_by_id(repo_root: str) -> Tuple[Dict[str, dict], str]:
     return dict((key, out[key]) for key in sorted(out.keys())), ""
 
 
+def degrade_ladder_rows_by_product_id(repo_root: str) -> Tuple[Dict[str, dict], str]:
+    payload, error = load_degrade_ladder_registry(repo_root)
+    if error:
+        return {}, error
+    rows = _as_list(_as_map(payload.get("record")).get("degrade_ladders"))
+    out: Dict[str, dict] = {}
+    for row in rows:
+        row_map = _as_map(row)
+        product_id = str(row_map.get("product_id", "")).strip()
+        if not product_id:
+            continue
+        out[product_id] = {
+            "schema_version": str(row_map.get("schema_version", "1.0.0")).strip() or "1.0.0",
+            "ladder_id": str(row_map.get("ladder_id", "")).strip(),
+            "product_id": product_id,
+            "rules": [
+                _normalize_degrade_rule(item)
+                for item in sorted(
+                    _as_list(row_map.get("rules")),
+                    key=lambda item: (
+                        int(_as_map(item).get("priority", 0) or 0),
+                        str(_as_map(item).get("rule_id", "")),
+                    ),
+                )
+            ],
+            "deterministic_fingerprint": str(row_map.get("deterministic_fingerprint", "")).strip(),
+            "extensions": _as_map(row_map.get("extensions")),
+        }
+    return dict((key, out[key]) for key in sorted(out.keys())), ""
+
+
+def fallback_map_rows_by_capability_id(repo_root: str) -> Tuple[Dict[str, dict], str]:
+    payload, error = load_capability_fallback_registry(repo_root)
+    if error:
+        return {}, error
+    rows = _as_list(_as_map(payload.get("record")).get("fallback_maps"))
+    out: Dict[str, dict] = {}
+    for row in rows:
+        normalized = _normalize_fallback_map(row)
+        capability_id = str(normalized.get("capability_id", "")).strip()
+        if capability_id:
+            out[capability_id] = normalized
+    return dict((key, out[key]) for key in sorted(out.keys())), ""
+
+
+def product_default_degrade_ladders(repo_root: str, product_id: str) -> List[dict]:
+    ladder_rows, _error = degrade_ladder_rows_by_product_id(repo_root)
+    ladder_row = dict(ladder_rows.get(str(product_id).strip()) or {})
+    if ladder_row:
+        return [dict(row) for row in list(ladder_row.get("rules") or []) if isinstance(row, Mapping)]
+    rows_by_id, rows_error = product_rows_by_id(repo_root)
+    if rows_error:
+        return []
+    row = dict(rows_by_id.get(str(product_id).strip()) or {})
+    return [dict(row) for row in list(row.get("default_degrade_ladders") or []) if isinstance(row, Mapping)]
+
+
 def build_endpoint_descriptor(
     *,
     product_id: str,
@@ -346,7 +429,7 @@ def build_default_endpoint_descriptor(
         feature_capabilities=list(row.get("default_feature_capabilities") or []) + list(feature_capabilities or []),
         required_capabilities=list(row.get("default_required_capabilities") or []) + list(required_capabilities or []),
         optional_capabilities=list(row.get("default_optional_capabilities") or []) + list(optional_capabilities or []),
-        degrade_ladders=list(row.get("default_degrade_ladders") or []),
+        degrade_ladders=product_default_degrade_ladders(repo_root, str(product_id)),
         extensions=merged_extensions,
     )
 
@@ -445,32 +528,6 @@ def _required_capability_mismatches(repo_root: str, descriptor_a: Mapping[str, o
     return violations
 
 
-def _build_disabled_capability_rows(
-    enabled_capabilities: Sequence[str],
-    optional_a: Sequence[str],
-    optional_b: Sequence[str],
-    ignored_a: Sequence[str],
-    ignored_b: Sequence[str],
-) -> List[dict]:
-    enabled = set(_sorted_tokens(enabled_capabilities))
-    rows = []
-    for capability_id in sorted(set(_sorted_tokens(optional_a) + _sorted_tokens(optional_b)) - enabled):
-        rows.append(
-            {
-                "capability_id": capability_id,
-                "reason_code": "degrade.optional_capability_unavailable",
-            }
-        )
-    for capability_id in _sorted_tokens(list(ignored_a or []) + list(ignored_b or [])):
-        rows.append(
-            {
-                "capability_id": capability_id,
-                "reason_code": "ignored.unknown_capability",
-            }
-        )
-    return rows
-
-
 def _all_degrade_rules(descriptor_a: Mapping[str, object], descriptor_b: Mapping[str, object]) -> List[dict]:
     rows = []
     for owner_index, descriptor in enumerate((descriptor_a, descriptor_b), start=1):
@@ -478,14 +535,14 @@ def _all_degrade_rules(descriptor_a: Mapping[str, object], descriptor_b: Mapping
         for rule in list(descriptor.get("degrade_ladders") or []):
             normalized = _normalize_degrade_rule(rule)
             normalized["extensions"] = dict(normalized.get("extensions") or {})
-            normalized["extensions"]["owner_product_id"] = owner_product_id
-            normalized["extensions"]["owner_index"] = owner_index
+            normalized["owner_product_id"] = owner_product_id
+            normalized["owner_index"] = owner_index
             rows.append(normalized)
     return sorted(
         rows,
         key=lambda row: (
             int(row.get("priority", 0) or 0),
-            str(dict(row.get("extensions") or {}).get("owner_product_id", "")),
+            str(row.get("owner_product_id", "")),
             str(row.get("rule_id", "")),
         ),
     )
@@ -501,19 +558,99 @@ def _matching_degrade_rule(rules: Sequence[Mapping[str, object]], *, trigger_kin
     return {}
 
 
-def _degrade_plan(
+def _fallback_map_row(repo_root: str, capability_id: str) -> dict:
+    rows_by_capability, _error = fallback_map_rows_by_capability_id(repo_root)
+    return dict(rows_by_capability.get(str(capability_id or "").strip()) or {})
+
+
+def _rule_with_fallback_defaults(repo_root: str, capability_id: str, rule: Mapping[str, object] | None) -> dict:
+    normalized = _normalize_degrade_rule(rule)
+    fallback_row = _fallback_map_row(repo_root, capability_id)
+    fallback_extensions = dict(fallback_row.get("extensions") or {})
+    normalized_extensions = dict(normalized.get("extensions") or {})
+    for key, value in sorted(fallback_extensions.items(), key=lambda item: str(item[0])):
+        normalized_extensions.setdefault(str(key), value)
+    if not str(normalized.get("action_kind", "")).strip() and str(fallback_row.get("fallback_action", "")).strip():
+        normalized["action_kind"] = str(fallback_row.get("fallback_action", "")).strip()
+    normalized["extensions"] = normalized_extensions
+    return normalized
+
+
+def _normalize_action_kind(action_kind: str) -> str:
+    token = str(action_kind or "").strip()
+    if token == "switch_to_read_only":
+        return "force_read_only"
+    return token
+
+
+def _fallback_candidates(row: Mapping[str, object] | None) -> List[str]:
+    extensions = dict((dict(row or {})).get("extensions") or {})
+    return _sorted_tokens(
+        list(extensions.get("fallback_capability_ids") or [])
+        + list(extensions.get("substitute_capability_ids") or [])
+        + [extensions.get("substitute_capability_id", "")]
+    )
+
+
+def _select_fallback_capability(row: Mapping[str, object] | None, available_capabilities: Sequence[str]) -> str:
+    enabled = set(_sorted_tokens(available_capabilities))
+    for capability_id in _fallback_candidates(row):
+        if capability_id in enabled:
+            return capability_id
+    return ""
+
+
+def _disable_row(
     *,
+    capability_id: str,
+    reason_code: str,
+    owner_product_id: str = "",
+    user_message_key: str = "",
+) -> dict:
+    return {
+        "capability_id": str(capability_id or "").strip(),
+        "reason_code": str(reason_code or "").strip(),
+        "owner_product_id": str(owner_product_id or "").strip(),
+        "user_message_key": str(user_message_key or "").strip(),
+    }
+
+
+def _substitution_row(
+    *,
+    capability_id: str,
+    substitute_capability_id: str,
+    action_kind: str,
+    owner_product_id: str = "",
+    user_message_key: str = "",
+) -> dict:
+    return {
+        "capability_id": str(capability_id or "").strip(),
+        "substitute_capability_id": str(substitute_capability_id or "").strip(),
+        "action_kind": str(action_kind or "").strip(),
+        "owner_product_id": str(owner_product_id or "").strip(),
+        "user_message_key": str(user_message_key or "").strip(),
+    }
+
+
+def _degrade_plan(
+    repo_root: str,
+    *,
+    owner_feature_capabilities: Mapping[str, object],
     optional_missing: Sequence[str],
     contract_mismatches: Sequence[str],
     rules: Sequence[Mapping[str, object]],
     allow_read_only: bool,
-) -> Tuple[str, List[dict]]:
-    rows = []
+) -> Tuple[str, List[dict], List[dict], List[dict]]:
+    rows: List[dict] = []
+    disabled_rows: List[dict] = []
+    substituted_rows: List[dict] = []
     mode_id = COMPAT_MODE_FULL
     for capability_id in _sorted_tokens(optional_missing):
         matched = _matching_degrade_rule(rules, trigger_kind="missing_optional_capability", trigger_id=capability_id)
         row = dict(matched or {})
         if not row:
+            fallback_row = _fallback_map_row(repo_root, capability_id)
+            fallback_action = str(fallback_row.get("fallback_action", "disable_feature")).strip() or "disable_feature"
             row = _normalize_degrade_rule(
                 {
                     "schema_version": "1.0.0",
@@ -521,10 +658,48 @@ def _degrade_plan(
                     "trigger_kind": "missing_optional_capability",
                     "trigger_id": capability_id,
                     "fallback_mode_id": COMPAT_MODE_DEGRADED,
-                    "action_kind": "disable_feature",
+                    "action_kind": fallback_action,
                     "priority": 999,
-                    "extensions": {},
+                    "extensions": dict(fallback_row.get("extensions") or {}),
                 }
+            )
+        row = _rule_with_fallback_defaults(repo_root, capability_id, row)
+        row_extensions = dict(row.get("extensions") or {})
+        owner_product_id = str(row.get("owner_product_id", "")).strip()
+        user_message_key = str(row_extensions.get("user_message_key", "")).strip()
+        action_kind = _normalize_action_kind(str(row.get("action_kind", "")).strip())
+        owner_available_capabilities = list(
+            owner_feature_capabilities.get(owner_product_id, owner_feature_capabilities.get("*", [])) or []
+        )
+        substitute_capability_id = str(row_extensions.get("substitute_capability_id", "")).strip()
+        if not substitute_capability_id:
+            substitute_capability_id = _select_fallback_capability(row, owner_available_capabilities)
+        if action_kind in ("substitute_stub", "downgrade_mode") and substitute_capability_id:
+            substituted_rows.append(
+                _substitution_row(
+                    capability_id=capability_id,
+                    substitute_capability_id=substitute_capability_id,
+                    action_kind=action_kind,
+                    owner_product_id=owner_product_id,
+                    user_message_key=user_message_key,
+                )
+            )
+            disabled_rows.append(
+                _disable_row(
+                    capability_id=capability_id,
+                    reason_code="degrade.feature_substituted",
+                    owner_product_id=owner_product_id,
+                    user_message_key=user_message_key,
+                )
+            )
+        else:
+            disabled_rows.append(
+                _disable_row(
+                    capability_id=capability_id,
+                    reason_code="degrade.optional_capability_unavailable",
+                    owner_product_id=owner_product_id,
+                    user_message_key=user_message_key,
+                )
             )
         rows.append(row)
         if str(row.get("fallback_mode_id", "")) == COMPAT_MODE_DEGRADED:
@@ -542,11 +717,12 @@ def _degrade_plan(
                             "trigger_kind": "contract_mismatch",
                             "trigger_id": "semantic_contract_bundle",
                             "fallback_mode_id": COMPAT_MODE_READ_ONLY,
-                            "action_kind": "force_read_only",
+                            "action_kind": "switch_to_read_only",
                             "priority": 1000,
                             "extensions": {
                                 "law_profile_id_override": READ_ONLY_LAW_PROFILE_ID,
                                 "contract_category_id": category_id,
+                                "user_message_key": "explain.compat_read_only",
                             },
                         }
                     )
@@ -559,7 +735,7 @@ def _degrade_plan(
             mode_id = COMPAT_MODE_READ_ONLY
         else:
             mode_id = COMPAT_MODE_REFUSE
-    return mode_id, rows
+    return mode_id, rows, disabled_rows, substituted_rows
 
 
 def _registry_hash(repo_root: str, loader) -> str:
@@ -622,7 +798,13 @@ def negotiate_endpoint_descriptors(
     required_violations = _required_capability_mismatches(repo_root, normalized_a, normalized_b)
     optional_missing = sorted(set(optional_a + optional_b) - set(enabled_capabilities))
     rules = _all_degrade_rules(normalized_a, normalized_b)
-    compatibility_mode_id, degrade_plan = _degrade_plan(
+    compatibility_mode_id, degrade_plan, disabled_rows, substituted_rows = _degrade_plan(
+        repo_root,
+        owner_feature_capabilities={
+            str(normalized_a.get("product_id", "")).strip(): list(feature_a),
+            str(normalized_b.get("product_id", "")).strip(): list(feature_b),
+            "*": list(feature_a) + list(feature_b),
+        },
         optional_missing=optional_missing,
         contract_mismatches=contract_mismatches,
         rules=rules,
@@ -666,16 +848,19 @@ def negotiate_endpoint_descriptors(
                 "product_b": str(normalized_b.get("product_id", "")).strip(),
             },
         )
-    disabled_rows = _build_disabled_capability_rows(
-        enabled_capabilities=enabled_capabilities,
-        optional_a=optional_a,
-        optional_b=optional_b,
-        ignored_a=list(ignored_feature_a) + list(ignored_optional_a),
-        ignored_b=list(ignored_feature_b) + list(ignored_optional_b),
-    )
+    for capability_id in _sorted_tokens(list(ignored_feature_a) + list(ignored_optional_a) + list(ignored_feature_b) + list(ignored_optional_b)):
+        disabled_rows.append(
+            _disable_row(
+                capability_id=capability_id,
+                reason_code="ignored.unknown_capability",
+            )
+        )
     endpoint_hashes = {
         "endpoint_a_hash": canonical_sha256(normalized_a),
         "endpoint_b_hash": canonical_sha256(normalized_b),
+    }
+    substitution_rows_by_capability = {
+        str(row.get("capability_id", "")).strip(): dict(row) for row in list(substituted_rows or []) if isinstance(row, Mapping)
     }
     record = {
         "schema_version": "1.0.0",
@@ -697,6 +882,7 @@ def negotiate_endpoint_descriptors(
         "chosen_semantic_contract_versions": dict((key, contracts[key]) for key in sorted(contracts.keys())),
         "enabled_capabilities": list(enabled_capabilities),
         "disabled_capabilities": list(disabled_rows),
+        "substituted_capabilities": list(substituted_rows),
         "compatibility_mode_id": str(compatibility_mode_id).strip() or COMPAT_MODE_REFUSE,
         "degrade_plan": [
             {
@@ -706,7 +892,13 @@ def negotiate_endpoint_descriptors(
                 "fallback_mode_id": str(row.get("fallback_mode_id", "")).strip(),
                 "action_kind": str(row.get("action_kind", "")).strip(),
                 "priority": int(row.get("priority", 0) or 0),
-                "owner_product_id": str(dict(row.get("extensions") or {}).get("owner_product_id", "")).strip(),
+                "owner_product_id": str(row.get("owner_product_id", "")).strip(),
+                "user_message_key": str(dict(row.get("extensions") or {}).get("user_message_key", "")).strip(),
+                "substitute_capability_id": str(
+                    dict(substitution_rows_by_capability.get(str(row.get("trigger_id", "")).strip()) or {}).get(
+                        "substitute_capability_id", ""
+                    )
+                ).strip(),
             }
             for row in list(degrade_plan or [])
         ],
@@ -715,6 +907,8 @@ def negotiate_endpoint_descriptors(
             "product_registry_hash": _registry_hash(repo_root, load_product_registry),
             "compat_mode_registry_hash": _registry_hash(repo_root, load_compat_mode_registry),
             "semantic_contract_registry_hash": _registry_hash(repo_root, load_semantic_contract_registry),
+            "degrade_ladder_registry_hash": _registry_hash(repo_root, load_degrade_ladder_registry),
+            "capability_fallback_registry_hash": _registry_hash(repo_root, load_capability_fallback_registry),
             "chosen_contract_bundle_hash": str(chosen_contract_bundle_hash or "").strip(),
             "endpoint_a_hash": str(endpoint_hashes.get("endpoint_a_hash", "")).strip(),
             "endpoint_b_hash": str(endpoint_hashes.get("endpoint_b_hash", "")).strip(),
@@ -726,6 +920,9 @@ def negotiate_endpoint_descriptors(
             "official.compat.required_capability_violations": list(required_violations),
             "official.compat.refusal": dict(refusal_payload),
             "official.compat.read_only_law_profile_id": READ_ONLY_LAW_PROFILE_ID if compatibility_mode_id == COMPAT_MODE_READ_ONLY else "",
+            "official.compat.mode_forced": bool(
+                str(compatibility_mode_id).strip() in (COMPAT_MODE_DEGRADED, COMPAT_MODE_READ_ONLY)
+            ),
         },
     }
     record["endpoints"] = sorted(
@@ -734,7 +931,19 @@ def negotiate_endpoint_descriptors(
     )
     record["disabled_capabilities"] = sorted(
         (dict(row) for row in record.get("disabled_capabilities") or []),
-        key=lambda row: (str(row.get("capability_id", "")), str(row.get("reason_code", ""))),
+        key=lambda row: (
+            str(row.get("capability_id", "")),
+            str(row.get("reason_code", "")),
+            str(row.get("owner_product_id", "")),
+        ),
+    )
+    record["substituted_capabilities"] = sorted(
+        (dict(row) for row in record.get("substituted_capabilities") or []),
+        key=lambda row: (
+            str(row.get("capability_id", "")),
+            str(row.get("substitute_capability_id", "")),
+            str(row.get("owner_product_id", "")),
+        ),
     )
     record["degrade_plan"] = sorted(
         (dict(row) for row in record.get("degrade_plan") or []),

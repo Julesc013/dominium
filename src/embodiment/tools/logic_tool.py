@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
+from src.compat import REFUSAL_COMPAT_FEATURE_DISABLED, enforce_negotiated_capability
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .toolbelt_engine import evaluate_tool_access, tool_capability_rows_by_id
@@ -35,12 +36,23 @@ def _refusal(code: str, message: str, details: Mapping[str, object] | None = Non
 def build_logic_probe_task(
     *,
     authority_context: Mapping[str, object] | None,
+    compat_runtime_state: Mapping[str, object] | None = None,
     subject_id: str,
     measurement_point_id: str,
     network_id: str,
     element_id: str,
     port_id: str,
 ) -> dict:
+    compat_result = enforce_negotiated_capability(
+        compat_runtime_state,
+        capability_id="cap.logic.protocol_layer",
+        action_label="logic_probe",
+    )
+    # "refusal.compat.feature_disabled" is the explicit CAP-NEG-3 refusal for negotiated disables.
+    if str(compat_result.get("reason_code", "")).strip() == REFUSAL_COMPAT_FEATURE_DISABLED:
+        return dict(compat_result)
+    if str(compat_result.get("result", "")).strip() != "complete":
+        return dict(compat_result)
     access_result = evaluate_tool_access(tool_id="tool.logic_probe", authority_context=authority_context, has_physical_access=True)
     if str(access_result.get("result", "")).strip() != "complete":
         return dict(access_result)
@@ -81,6 +93,7 @@ def build_logic_probe_task(
 def build_logic_trace_task(
     *,
     authority_context: Mapping[str, object] | None,
+    compat_runtime_state: Mapping[str, object] | None = None,
     subject_id: str,
     measurement_point_ids: object,
     targets: object,
@@ -88,6 +101,16 @@ def build_logic_trace_task(
     duration_ticks: int,
     sampling_policy_id: str = "debug.sample.default",
 ) -> dict:
+    compat_result = enforce_negotiated_capability(
+        compat_runtime_state,
+        capability_id="cap.logic.debug_analyzer",
+        action_label="logic_trace",
+    )
+    # "refusal.compat.feature_disabled" is the explicit CAP-NEG-3 refusal for negotiated disables.
+    if str(compat_result.get("reason_code", "")).strip() == REFUSAL_COMPAT_FEATURE_DISABLED:
+        return dict(compat_result)
+    if str(compat_result.get("result", "")).strip() != "complete":
+        return dict(compat_result)
     access_result = evaluate_tool_access(tool_id="tool.logic_analyzer", authority_context=authority_context, has_physical_access=True)
     if str(access_result.get("result", "")).strip() != "complete":
         return dict(access_result)

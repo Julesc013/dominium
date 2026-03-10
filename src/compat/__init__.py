@@ -19,6 +19,11 @@ from .handshake import (
     build_session_begin_payload,
 )
 from .negotiation import (
+    DEFAULT_UI_CAPABILITY_PREFERENCE,
+    REFUSAL_COMPAT_FEATURE_DISABLED,
+    build_compat_status_payload,
+    build_degrade_runtime_state,
+    enforce_negotiated_capability,
     negotiate_product_endpoints,
     verify_recorded_negotiation,
 )
@@ -48,9 +53,14 @@ __all__ = [
     "build_session_begin_payload",
     "descriptor_json_text",
     "emit_product_descriptor",
+    "build_compat_status_payload",
+    "build_degrade_runtime_state",
     "negotiate_endpoint_descriptors",
+    "enforce_negotiated_capability",
     "negotiate_product_endpoints",
     "product_descriptor_bin_names",
+    "DEFAULT_UI_CAPABILITY_PREFERENCE",
+    "REFUSAL_COMPAT_FEATURE_DISABLED",
     "verify_recorded_negotiation",
     "verify_negotiation_record",
     "write_descriptor_file",

@@ -4693,6 +4693,105 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
         "value_type": "boolean"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.fallback_capability_ids",
+        "extensions": {
+          "legacy_alias_for": "fallback_capability_ids",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Ordered substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.substitute_capability_ids",
+        "extensions": {
+          "legacy_alias_for": "substitute_capability_ids",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Alternative substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[string]"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.substitute_capability_id",
+        "extensions": {
+          "legacy_alias_for": "substitute_capability_id",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Explicit substitute capability id chosen by a CAP-NEG degrade rule.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder",
+          "dominium.schema.compat.fallback_map"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.user_message_key",
+        "extensions": {
+          "legacy_alias_for": "user_message_key",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "Explain-key identifier surfaced when a capability is degraded or disabled.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "dominium.schema.compat.degrade_ladder"
+        ],
+        "deterministic_fingerprint": "",
+        "extension_key": "mod.unknown.law_profile_id_override",
+        "extensions": {
+          "legacy_alias_for": "law_profile_id_override",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "src/compat/capability_negotiation.py"
+          ],
+          "official.description": "LawProfile override applied when CAP-NEG negotiation forces read-only mode.",
+          "official.source": "CAP-NEG-3"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "string"
       }
     ],
     "extensions": {},

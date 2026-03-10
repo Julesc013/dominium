@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
+from src.compat import build_compat_status_payload
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, write_canonical_json
 
@@ -42,6 +43,24 @@ def list_clients(server_boot_payload: Mapping[str, object]) -> dict:
         for connection_id, row in sorted(connections.items(), key=lambda item: str(item[0]))
     ]
     return {"result": "complete", "clients": rows}
+
+
+def compat_status(server_boot_payload: Mapping[str, object], connection_id: str = "") -> dict:
+    runtime = _runtime(server_boot_payload)
+    connections = dict(runtime.get("server_mvp_connections") or {})
+    requested_connection_id = str(connection_id or "").strip()
+    rows = []
+    for current_connection_id, row in sorted(connections.items(), key=lambda item: str(item[0])):
+        if requested_connection_id and str(current_connection_id) != requested_connection_id:
+            continue
+        status_payload = build_compat_status_payload(
+            dict((dict(row or {})).get("negotiation_record") or {}),
+            product_id="server",
+            connection_id=str(current_connection_id),
+        )
+        status_payload["peer_id"] = str((dict(row or {})).get("peer_id", "")).strip()
+        rows.append(status_payload)
+    return {"result": "complete", "compat_rows": rows}
 
 
 def kick_client_stub(server_boot_payload: Mapping[str, object], connection_id: str) -> dict:
@@ -136,11 +155,13 @@ def dispatch_server_console_command(
     command: str,
     payload: Mapping[str, object] | None = None,
 ) -> dict:
-    token = str(command or "").strip().lower().replace("-", "_")
+    token = str(command or "").strip().lower().replace("-", "_").replace(" ", "_")
     if token == "status":
         return server_status(server_boot_payload)
     if token == "list_clients":
         return list_clients(server_boot_payload)
+    if token == "compat_status":
+        return compat_status(server_boot_payload, str((dict(payload or {})).get("connection_id", "")).strip())
     if token == "save_snapshot":
         return save_snapshot(server_boot_payload, str((dict(payload or {})).get("output_path", "")).strip())
     if token == "emit_diag":

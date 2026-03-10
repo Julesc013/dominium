@@ -7,7 +7,12 @@ import os
 import subprocess
 from typing import Dict, Iterable, List, Mapping, Tuple
 
-from src.compat.capability_negotiation import build_endpoint_descriptor, load_product_registry, semantic_contract_rows_by_category
+from src.compat.capability_negotiation import (
+    build_endpoint_descriptor,
+    load_product_registry,
+    product_default_degrade_ladders,
+    semantic_contract_rows_by_category,
+)
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -227,7 +232,7 @@ def build_product_descriptor(repo_root: str, *, product_id: str, product_version
         feature_capabilities=_as_list(defaults_row.get("feature_capabilities")),
         required_capabilities=_as_list(defaults_row.get("required_capabilities")),
         optional_capabilities=_as_list(defaults_row.get("optional_capabilities")),
-        degrade_ladders=_as_list(defaults_row.get("degrade_ladders")),
+        degrade_ladders=product_default_degrade_ladders(repo_root, str(product_id).strip()) or _as_list(defaults_row.get("degrade_ladders")),
         extensions=descriptor_extensions,
     )
 
