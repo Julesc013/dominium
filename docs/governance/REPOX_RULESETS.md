@@ -139,6 +139,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-OFFICIAL-PACKS-HAVE-COMPAT-MANIFEST`
 - `INV-STRICT-MODE-REFUSES-MISSING-COMPAT`
 - `INV-PACK-COMPAT-VALIDATED-BEFORE-LOAD`
+- `INV-PACK-VERIFICATION-REQUIRED-BEFORE-LOAD`
+- `INV-PACK-LOCK-DETERMINISTIC`
+- `INV-STRICT-MODE-REFUSES-CONFLICT`
 - `INV-SERVER-TICK-DETERMINISTIC`
 - `INV-CONTRACTS-VALIDATED-ON-BOOT`
 - `INV-AUTHORITY-REQUIRED`
@@ -665,6 +668,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when pack loading, registry compilation, or MVP runtime bundle generation stop attaching validated pack compatibility metadata before composition proceeds.
 - Fails when compat manifest hashes or degrade-mode ids stop flowing into pack-lock identity and derived proof surfaces.
 - Preserves offline compatibility checking as a prerequisite for lawful pack load, pack-lock generation, and deterministic runtime reconstruction.
+
+### INV-PACK-VERIFICATION-REQUIRED-BEFORE-LOAD
+
+- Fails when the shared offline verification pipeline, Setup CLI surfaces, or Launcher preflight path stop running deterministic pack-set verification before activation or session start.
+- Fails when the canonical `PackCompatibilityReport` surface disappears from the governed portable verification path.
+- Preserves portable offline verification as an explicit prerequisite for pack loading instead of ad hoc runtime best effort.
+
+### INV-PACK-LOCK-DETERMINISTIC
+
+- Fails when PACK-COMPAT-1 stops canonicalizing pack order by `(pack_id, pack_version)` before lock generation.
+- Fails when deterministic pack-lock hashing or canonical serialization markers disappear from the governed verification path.
+- Preserves reproducible pack-lock identity across platforms and repeated verification runs.
+
+### INV-STRICT-MODE-REFUSES-CONFLICT
+
+- Fails when strict offline verification no longer refuses dry-run overlay conflicts under strict conflict policy.
+- Fails when the governed Setup/Launcher verification surfaces lose explicit refusal markers for strict conflict handling.
+- Preserves deterministic strict-mode refusal instead of silent last-wins conflict resolution during portable verification.
 
 ### INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS
 

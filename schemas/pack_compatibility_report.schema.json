@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pack Compatibility Report Schema",
+  "version": "1.0.0",
+  "description": "Deterministic offline compatibility report for a portable pack set.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report_id",
+    "engine_contract_bundle_hash",
+    "mod_policy_id",
+    "pack_list",
+    "valid",
+    "conflicts",
+    "refused_packs",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_contract_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mod_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack_list": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "refused_packs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "refusal_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

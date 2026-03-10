@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pack Lock Schema",
+  "version": "1.0.0",
+  "description": "Deterministic pack lock artifact for offline verification and runtime pinning.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pack_lock_id",
+    "ordered_pack_ids",
+    "ordered_pack_versions",
+    "pack_hashes",
+    "pack_compat_hashes",
+    "mod_policy_id",
+    "pack_lock_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "pack_lock_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ordered_pack_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ordered_pack_versions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "pack_hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{64}$"
+      }
+    },
+    "pack_compat_hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{64}$"
+      }
+    },
+    "mod_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "ordered_packs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "runtime_version": {
+      "type": "string"
+    },
+    "profile_bundle_id": {
+      "type": "string"
+    },
+    "profile_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mod_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mod_policy_proof_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "overlay_conflict_policy_id": {
+      "type": "string"
+    },
+    "source_pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

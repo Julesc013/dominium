@@ -16,6 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from src.compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
+from src.packs.compat import verify_pack_set  # noqa: E402
 from tools.xstack.compatx.validator import validate_instance  # noqa: E402
 from tools.xstack.packagingx import validate_dist_layout  # noqa: E402
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID  # noqa: E402
@@ -281,6 +282,60 @@ def cmd_run(
         return comp
 
     resolved_bundle = str(bundle_id).strip() or str((comp.get("session_payload") or {}).get("bundle_id", ""))
+    selected_mod_policy_id = (
+        str((comp.get("session_payload") or {}).get("mod_policy_id", "")).strip()
+        or str((comp.get("lockfile_payload") or {}).get("mod_policy_id", "")).strip()
+        or "mod_policy.lab"
+    )
+    selected_conflict_policy_id = str((comp.get("lockfile_payload") or {}).get("overlay_conflict_policy_id", "")).strip()
+    compat = verify_pack_set(
+        repo_root=dist_abs,
+        bundle_id=resolved_bundle,
+        mod_policy_id=selected_mod_policy_id,
+        overlay_conflict_policy_id=selected_conflict_policy_id,
+        schema_repo_root=dist_abs if os.path.isdir(os.path.join(dist_abs, "schemas")) else repo_root,
+    )
+    if str(compat.get("result", "")) != "complete":
+        return _refusal(
+            "PACK_INCOMPATIBLE",
+            "offline pack verification failed before launch",
+            "Run launcher compat-status or setup verify to inspect the pack set.",
+            {
+                "bundle_id": resolved_bundle,
+                "mod_policy_id": selected_mod_policy_id,
+            },
+            "$.pack_compatibility_report",
+        )
+    compat_report = dict(compat.get("report") or {})
+    compat_pack_lock = dict(compat.get("pack_lock") or {})
+    if not bool(compat_report.get("valid", False)):
+        refusal_codes = list(compat_report.get("refusal_codes") or [])
+        return _refusal(
+            "PACK_INCOMPATIBLE",
+            "offline pack verification refused the selected pack set",
+            "Resolve the refused packs or choose a compatible bundle/mod policy before launching.",
+            {
+                "bundle_id": resolved_bundle,
+                "mod_policy_id": selected_mod_policy_id,
+                "report_id": str(compat_report.get("report_id", "")),
+                "refusal_codes": ",".join(str(item) for item in refusal_codes),
+            },
+            "$.pack_compatibility_report.valid",
+        )
+    dist_pack_lock_hash = str((comp.get("lockfile_payload") or {}).get("pack_lock_hash", "")).strip()
+    compat_pack_lock_hash = str(compat_pack_lock.get("pack_lock_hash", "")).strip()
+    if compat_pack_lock_hash and dist_pack_lock_hash and compat_pack_lock_hash != dist_pack_lock_hash:
+        return _refusal(
+            "LOCKFILE_MISMATCH",
+            "offline verification pack_lock_hash does not match dist lockfile",
+            "Rebuild the dist lockfile or rebuild the validated pack lock from the same pack set.",
+            {
+                "dist_pack_lock_hash": dist_pack_lock_hash,
+                "verified_pack_lock_hash": compat_pack_lock_hash,
+            },
+            "$.pack_lock_hash",
+        )
+
     lock_path = os.path.join(dist_abs, "lockfile.json")
     regs_dir = os.path.join(dist_abs, "registries")
     boot = boot_session_spec(
@@ -338,6 +393,48 @@ def cmd_run(
         "script": script_result,
         "launch_mode": "headless",
         "lockfile_enforcement": "required",
+        "pack_compatibility_report": compat_report,
+        "verified_pack_lock_hash": compat_pack_lock_hash,
+    }
+
+
+def cmd_compat_status(
+    repo_root: str,
+    dist_root: str,
+    bundle_id: str,
+    mod_policy_id: str,
+    overlay_conflict_policy_id: str,
+    contract_bundle_path: str,
+) -> Dict[str, object]:
+    dist_abs = os.path.normpath(os.path.abspath(os.path.join(repo_root, dist_root))) if not os.path.isabs(dist_root) else os.path.normpath(dist_root)
+    compat = verify_pack_set(
+        repo_root=dist_abs,
+        bundle_id=str(bundle_id).strip(),
+        mod_policy_id=str(mod_policy_id).strip() or "mod_policy.lab",
+        overlay_conflict_policy_id=str(overlay_conflict_policy_id).strip(),
+        schema_repo_root=dist_abs if os.path.isdir(os.path.join(dist_abs, "schemas")) else repo_root,
+        universe_contract_bundle_path=str(contract_bundle_path).strip(),
+    )
+    if str(compat.get("result", "")) != "complete":
+        return _refusal(
+            "PACK_INCOMPATIBLE",
+            "offline pack verification failed",
+            "Run setup verify against the same dist root to inspect details.",
+            {
+                "dist_root": _norm(os.path.relpath(dist_abs, repo_root)),
+                "bundle_id": str(bundle_id).strip(),
+            },
+            "$.pack_compatibility_report",
+        )
+    return {
+        "result": "complete",
+        "dist_root": _norm(os.path.relpath(dist_abs, repo_root)),
+        "bundle_id": str(bundle_id).strip(),
+        "mod_policy_id": str(mod_policy_id).strip() or "mod_policy.lab",
+        "report": dict(compat.get("report") or {}),
+        "pack_lock": dict(compat.get("pack_lock") or {}),
+        "warnings": list(compat.get("warnings") or []),
+        "errors": list(compat.get("errors") or []),
     }
 
 
@@ -403,6 +500,13 @@ def main() -> int:
     run_cmd.add_argument("--logical-shards", type=int, default=1)
     run_cmd.add_argument("--write-state", default="off", choices=("on", "off"))
 
+    compat_cmd = sub.add_parser("compat-status", help="Run offline pack compatibility verification against a dist root")
+    compat_cmd.add_argument("--dist", default="dist")
+    compat_cmd.add_argument("--bundle", default="")
+    compat_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
+    compat_cmd.add_argument("--overlay-conflict-policy-id", default="")
+    compat_cmd.add_argument("--contract-bundle-path", default="")
+
     create_cmd = sub.add_parser("create-session", help="Create SessionSpec through launcher surface with declared pipeline_id")
     create_cmd.add_argument("--save-id", required=True)
     create_cmd.add_argument("--bundle", default=DEFAULT_BUNDLE_ID)
@@ -441,6 +545,15 @@ def main() -> int:
             logical_shards=int(args.logical_shards),
             write_state=str(args.write_state).strip().lower() != "off",
             bundle_id=str(args.bundle),
+        )
+    elif args.cmd == "compat-status":
+        result = cmd_compat_status(
+            repo_root=repo_root,
+            dist_root=str(args.dist),
+            bundle_id=str(args.bundle),
+            mod_policy_id=str(args.mod_policy_id),
+            overlay_conflict_policy_id=str(args.overlay_conflict_policy_id),
+            contract_bundle_path=str(args.contract_bundle_path),
         )
     elif args.cmd == "create-session":
         result = cmd_create_session(

@@ -1,0 +1,40 @@
+SCHEMA: packs/pack_lock.schema
+schema_id: dominium.schema.packs.pack_lock
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic validated pack lock artifact used by portable runtime/bootstrap flows.
+- Preserve pack identity, compatibility identity, and policy identity in a stable offline artifact.
+
+NON-SEMANTICS:
+- PackLock does not alter pack contents.
+- PackLock does not authorize incompatible packs to load.
+
+REQUIRED SHAPE:
+record pack_lock
+  required:
+    - schema_version: tag
+    - pack_lock_id: id
+    - ordered_pack_ids: [id]
+    - ordered_pack_versions: [tag]
+    - pack_hashes: map
+    - pack_compat_hashes: map
+    - mod_policy_id: id
+    - pack_lock_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - ordered_packs: [map]
+    - runtime_version: tag
+    - profile_bundle_id: id
+    - profile_bundle_hash: sha256
+    - mod_policy_registry_hash: sha256
+    - mod_policy_proof_hash: sha256
+    - overlay_conflict_policy_id: id
+    - source_pack_lock_hash: sha256
+
+INVARIANTS:
+- ordered_pack_ids and ordered_pack_versions are parallel arrays
+- pack_hashes and pack_compat_hashes use pack ids as stable keys
+- pack_lock_hash must be stable for identical ordered pack inputs

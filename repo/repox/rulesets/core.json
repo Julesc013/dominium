@@ -578,6 +578,47 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-PACK-VERIFICATION-REQUIRED-BEFORE-LOAD",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/packs/PACK_VERIFICATION_PIPELINE.md",
+        "docs/audit/PACK_VERIFICATION_BASELINE.md",
+        "schema/packs/pack_compatibility_report.schema",
+        "schemas/pack_compatibility_report.schema.json",
+        "src/packs/compat/pack_verification_pipeline.py",
+        "tools/setup/setup_cli.py",
+        "tools/launcher/launch.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-pack-verification-required-before-load",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-PACK-LOCK-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/packs/PACK_VERIFICATION_PIPELINE.md",
+        "schema/packs/pack_lock.schema",
+        "schemas/pack_lock.schema.json",
+        "src/packs/compat/pack_verification_pipeline.py",
+        "tools/xstack/testx/tests/test_deterministic_pack_lock_hash.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-pack-lock-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-STRICT-MODE-REFUSES-CONFLICT",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/packs/PACK_VERIFICATION_PIPELINE.md",
+        "src/packs/compat/pack_verification_pipeline.py",
+        "tools/setup/setup_cli.py",
+        "tools/launcher/launch.py",
+        "tools/xstack/testx/tests/test_overlay_conflict_detected.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-strict-mode-refuses-conflict",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-SERVER-TICK-DETERMINISTIC",
       "severity": "FAIL",
       "scope_paths": [

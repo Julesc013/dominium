@@ -2667,6 +2667,20 @@
         "1.0.0"
       ]
     },
+    "pack_compatibility_report": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "pack_lock": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "pack_manifest": {
       "current_version": "1.0.0",
       "migrations": {},

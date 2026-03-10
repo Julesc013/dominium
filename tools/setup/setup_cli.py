@@ -18,6 +18,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from src.compat import descriptor_json_text, emit_product_descriptor
+from src.packs.compat import verify_pack_set, write_pack_compatibility_outputs
 
 
 DEFAULT_CAPABILITY_BASELINE = "BASELINE_MAINLINE_CORE"
@@ -472,6 +473,253 @@ def output_ok(message: str, details: dict, fmt: str) -> None:
     payload = {"result": "ok", "message": message}
     payload.update(details)
     write_output(payload, fmt)
+
+
+def _compat_root(path: Optional[str]) -> str:
+    token = normalize_path(path or "")
+    return token
+
+
+def _verify_pack_root(
+    *,
+    root: str,
+    bundle_id: str,
+    mod_policy_id: str,
+    overlay_conflict_policy_id: str,
+    schema_root: str,
+    universe_contract_bundle_path: str,
+) -> dict:
+    return verify_pack_set(
+        repo_root=root,
+        bundle_id=str(bundle_id or "").strip(),
+        mod_policy_id=str(mod_policy_id or "").strip() or "mod_policy.lab",
+        overlay_conflict_policy_id=str(overlay_conflict_policy_id or "").strip(),
+        schema_repo_root=str(schema_root or root).strip() or root,
+        universe_contract_bundle_path=str(universe_contract_bundle_path or "").strip(),
+    )
+
+
+def _write_verification_outputs(
+    *,
+    root: str,
+    report: dict,
+    pack_lock: dict,
+    report_path: Optional[str],
+    lock_path: Optional[str],
+) -> dict:
+    report_target = normalize_path(report_path or os.path.join(root, DEFAULT_COMPAT_REPORT))
+    lock_target = normalize_path(lock_path or os.path.join(root, "pack_lock.json"))
+    return write_pack_compatibility_outputs(
+        report_path=report_target,
+        report_payload=report,
+        pack_lock_path=lock_target if pack_lock else "",
+        pack_lock_payload=pack_lock if pack_lock else None,
+    )
+
+
+def handle_verify(args: argparse.Namespace, deterministic: bool) -> int:
+    del deterministic
+    root = _compat_root(getattr(args, "root", "") or getattr(args, "install_root", ""))
+    if not root:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "verification root is required", {})
+        output_refusal("missing verification root", refusal, args.format)
+        return EXIT_REFUSED
+    schema_root = _compat_root(getattr(args, "schema_root", "") or root)
+    verification = _verify_pack_root(
+        root=root,
+        bundle_id=getattr(args, "bundle_id", ""),
+        mod_policy_id=getattr(args, "mod_policy_id", ""),
+        overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
+        schema_root=schema_root,
+        universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+    )
+    if str(verification.get("result", "")) != "complete":
+        refusal = refusal_payload(
+            5,
+            "REFUSE_PACK_VERIFICATION_FAILED",
+            "offline verification pipeline failed",
+            {"root": root},
+        )
+        output_refusal("pack verification failed", refusal, args.format)
+        return EXIT_REFUSED
+    report = dict(verification.get("report") or {})
+    pack_lock = dict(verification.get("pack_lock") or {})
+    outputs = {}
+    if bool(getattr(args, "write_outputs", False)) or getattr(args, "out_report", None) or getattr(args, "out_lock", None):
+        outputs = _write_verification_outputs(
+            root=root,
+            report=report,
+            pack_lock=pack_lock,
+            report_path=getattr(args, "out_report", None),
+            lock_path=getattr(args, "out_lock", None),
+        )
+    details = {
+        "root": root,
+        "schema_root": schema_root,
+        "report": report,
+        "pack_lock": pack_lock,
+        "warnings": list(verification.get("warnings") or []),
+        "errors": list(verification.get("errors") or []),
+    }
+    if outputs:
+        details["outputs"] = outputs
+    if bool(report.get("valid", False)):
+        output_ok("pack verification passed", details, args.format)
+        return EXIT_OK
+    refusal = refusal_payload(
+        5,
+        "REFUSE_PACK_SET_INVALID",
+        "pack set is incompatible with current contracts, policies, or registries",
+        {
+            "report_id": str(report.get("report_id", "")),
+            "refusal_codes": ",".join(str(item) for item in list(report.get("refusal_codes") or [])),
+        },
+    )
+    output_refusal("pack verification refused", refusal, args.format)
+    return EXIT_REFUSED
+
+
+def handle_list_packs(args: argparse.Namespace, deterministic: bool) -> int:
+    del deterministic
+    root = _compat_root(getattr(args, "root", ""))
+    if not root:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "verification root is required", {})
+        output_refusal("missing verification root", refusal, args.format)
+        return EXIT_REFUSED
+    schema_root = _compat_root(getattr(args, "schema_root", "") or root)
+    verification = _verify_pack_root(
+        root=root,
+        bundle_id=getattr(args, "bundle_id", ""),
+        mod_policy_id=getattr(args, "mod_policy_id", ""),
+        overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
+        schema_root=schema_root,
+        universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+    )
+    if str(verification.get("result", "")) != "complete":
+        refusal = refusal_payload(5, "REFUSE_PACK_VERIFICATION_FAILED", "offline verification pipeline failed", {"root": root})
+        output_refusal("pack listing failed", refusal, args.format)
+        return EXIT_REFUSED
+    report = dict(verification.get("report") or {})
+    output_ok(
+        "packs listed",
+        {
+            "details": {
+                "root": root,
+                "valid": bool(report.get("valid", False)),
+                "pack_list": list(report.get("pack_list") or []),
+                "refused_packs": list(report.get("refused_packs") or []),
+                "conflicts": list(report.get("conflicts") or []),
+            }
+        },
+        args.format,
+    )
+    return EXIT_OK
+
+
+def handle_build_lock(args: argparse.Namespace, deterministic: bool) -> int:
+    del deterministic
+    root = _compat_root(getattr(args, "root", ""))
+    if not root:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "verification root is required", {})
+        output_refusal("missing verification root", refusal, args.format)
+        return EXIT_REFUSED
+    schema_root = _compat_root(getattr(args, "schema_root", "") or root)
+    verification = _verify_pack_root(
+        root=root,
+        bundle_id=getattr(args, "bundle_id", ""),
+        mod_policy_id=getattr(args, "mod_policy_id", ""),
+        overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
+        schema_root=schema_root,
+        universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+    )
+    if str(verification.get("result", "")) != "complete":
+        refusal = refusal_payload(5, "REFUSE_PACK_VERIFICATION_FAILED", "offline verification pipeline failed", {"root": root})
+        output_refusal("build-lock failed", refusal, args.format)
+        return EXIT_REFUSED
+    report = dict(verification.get("report") or {})
+    pack_lock = dict(verification.get("pack_lock") or {})
+    if not bool(report.get("valid", False)) or not pack_lock:
+        refusal = refusal_payload(
+            5,
+            "REFUSE_PACK_SET_INVALID",
+            "cannot build pack lock from an invalid pack set",
+            {"report_id": str(report.get("report_id", ""))},
+        )
+        output_refusal("build-lock refused", refusal, args.format)
+        return EXIT_REFUSED
+    outputs = _write_verification_outputs(
+        root=root,
+        report=report,
+        pack_lock=pack_lock,
+        report_path=getattr(args, "out_report", None),
+        lock_path=getattr(args, "out_lock", None),
+    )
+    output_ok(
+        "pack lock built",
+        {
+            "details": {
+                "root": root,
+                "report": report,
+                "pack_lock": pack_lock,
+                "outputs": outputs,
+            }
+        },
+        args.format,
+    )
+    return EXIT_OK
+
+
+def handle_diagnose_pack(args: argparse.Namespace, deterministic: bool) -> int:
+    del deterministic
+    root = _compat_root(getattr(args, "root", ""))
+    pack_id = str(getattr(args, "pack_id", "")).strip()
+    if not root or not pack_id:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "verification root and pack_id are required", {})
+        output_refusal("missing diagnose inputs", refusal, args.format)
+        return EXIT_REFUSED
+    schema_root = _compat_root(getattr(args, "schema_root", "") or root)
+    verification = _verify_pack_root(
+        root=root,
+        bundle_id=getattr(args, "bundle_id", ""),
+        mod_policy_id=getattr(args, "mod_policy_id", ""),
+        overlay_conflict_policy_id=getattr(args, "overlay_conflict_policy_id", ""),
+        schema_root=schema_root,
+        universe_contract_bundle_path=getattr(args, "contract_bundle_path", ""),
+    )
+    if str(verification.get("result", "")) != "complete":
+        refusal = refusal_payload(5, "REFUSE_PACK_VERIFICATION_FAILED", "offline verification pipeline failed", {"root": root})
+        output_refusal("diagnose-pack failed", refusal, args.format)
+        return EXIT_REFUSED
+    report = dict(verification.get("report") or {})
+    pack_row = {}
+    for row in list(report.get("pack_list") or []):
+        if str((row or {}).get("pack_id", "")).strip() == pack_id:
+            pack_row = dict(row or {})
+            break
+    refusal_row = {}
+    for row in list(report.get("refused_packs") or []):
+        if str((row or {}).get("pack_id", "")).strip() == pack_id:
+            refusal_row = dict(row or {})
+            break
+    if not pack_row and not refusal_row:
+        refusal = refusal_payload(1, "REFUSE_PACK_NOT_FOUND", "pack_id not present in verification scope", {"pack_id": pack_id})
+        output_refusal("pack not found", refusal, args.format)
+        return EXIT_REFUSED
+    output_ok(
+        "pack diagnosed",
+        {
+            "details": {
+                "root": root,
+                "pack_id": pack_id,
+                "pack": pack_row,
+                "refusal": refusal_row,
+                "report_id": str(report.get("report_id", "")),
+                "valid": bool(report.get("valid", False)),
+            }
+        },
+        args.format,
+    )
+    return EXIT_OK
 
 
 def handle_export_invocation(args: argparse.Namespace, deterministic: bool) -> int:
@@ -1105,6 +1353,44 @@ def main() -> int:
     rollback_cmd.add_argument("--frontend-id", default="")
     rollback_cmd.add_argument("--ui-mode", default=None)
 
+    verify_cmd = sub.add_parser("verify")
+    verify_cmd.add_argument("--root", default="")
+    verify_cmd.add_argument("--schema-root", default="")
+    verify_cmd.add_argument("--bundle-id", default="")
+    verify_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
+    verify_cmd.add_argument("--overlay-conflict-policy-id", default="")
+    verify_cmd.add_argument("--contract-bundle-path", default="")
+    verify_cmd.add_argument("--out-report", default="")
+    verify_cmd.add_argument("--out-lock", default="")
+    verify_cmd.add_argument("--write-outputs", action="store_true")
+
+    list_packs_cmd = sub.add_parser("list-packs")
+    list_packs_cmd.add_argument("--root", default="")
+    list_packs_cmd.add_argument("--schema-root", default="")
+    list_packs_cmd.add_argument("--bundle-id", default="")
+    list_packs_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
+    list_packs_cmd.add_argument("--overlay-conflict-policy-id", default="")
+    list_packs_cmd.add_argument("--contract-bundle-path", default="")
+
+    build_lock_cmd = sub.add_parser("build-lock")
+    build_lock_cmd.add_argument("--root", default="")
+    build_lock_cmd.add_argument("--schema-root", default="")
+    build_lock_cmd.add_argument("--bundle-id", default="")
+    build_lock_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
+    build_lock_cmd.add_argument("--overlay-conflict-policy-id", default="")
+    build_lock_cmd.add_argument("--contract-bundle-path", default="")
+    build_lock_cmd.add_argument("--out-report", default="")
+    build_lock_cmd.add_argument("--out-lock", default="")
+
+    diagnose_cmd = sub.add_parser("diagnose-pack")
+    diagnose_cmd.add_argument("--root", default="")
+    diagnose_cmd.add_argument("--schema-root", default="")
+    diagnose_cmd.add_argument("--bundle-id", default="")
+    diagnose_cmd.add_argument("--mod-policy-id", default="mod_policy.lab")
+    diagnose_cmd.add_argument("--overlay-conflict-policy-id", default="")
+    diagnose_cmd.add_argument("--contract-bundle-path", default="")
+    diagnose_cmd.add_argument("--pack-id", required=True)
+
     args = ap.parse_args()
 
     deterministic = parse_deterministic(args.deterministic)
@@ -1154,6 +1440,14 @@ def main() -> int:
         return handle_uninstall(args, deterministic)
     if args.cmd == "rollback":
         return handle_rollback(args, deterministic)
+    if args.cmd == "verify":
+        return handle_verify(args, deterministic)
+    if args.cmd == "list-packs":
+        return handle_list_packs(args, deterministic)
+    if args.cmd == "build-lock":
+        return handle_build_lock(args, deterministic)
+    if args.cmd == "diagnose-pack":
+        return handle_diagnose_pack(args, deterministic)
 
     ap.print_help()
     return EXIT_USAGE

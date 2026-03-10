@@ -307,6 +307,7 @@ execution artifacts and are not authoritative.
 - `docs/policies/LONG_TERM_SUPPORT_POLICY.md`
 - `docs/policies/RENDER_BACKEND_LIFECYCLE.md`
 - `docs/packs/PACK_COMPATIBILITY_MANIFEST.md`
+- `docs/packs/PACK_VERIFICATION_PIPELINE.md`
 - `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`
@@ -336,6 +337,10 @@ execution artifacts and are not authoritative.
 - `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`
 
 ## DERIVED
+- `docs/audit/PACK_COMPAT0_RETRO_AUDIT.md`
+- `docs/audit/PACK_COMPAT1_RETRO_AUDIT.md`
+- `docs/audit/PACK_COMPAT_BASELINE.md`
+- `docs/audit/PACK_VERIFICATION_BASELINE.md`
 - `docs/audit/MOD_POLICY0_RETRO_AUDIT.md`
 - `docs/audit/MOD_POLICY_BASELINE.md`
 - `docs/audit/LOCAL_SINGLEPLAYER_BASELINE.md`

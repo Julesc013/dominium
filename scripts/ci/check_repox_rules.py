@@ -136,6 +136,15 @@ PACK_COMPAT_SCHEMA_REL = os.path.join("schema", "packs", "pack_compat_manifest.s
 PACK_COMPAT_JSON_SCHEMA_REL = os.path.join("schemas", "pack_compat_manifest.schema.json")
 PACK_COMPAT_VALIDATOR_REL = os.path.join("src", "packs", "compat", "pack_compat_validator.py")
 PACK_DEGRADE_MODE_REGISTRY_REL = os.path.join("data", "registries", "pack_degrade_mode_registry.json")
+PACK_VERIFICATION_DOC_REL = os.path.join("docs", "packs", "PACK_VERIFICATION_PIPELINE.md")
+PACK_VERIFICATION_BASELINE_REL = os.path.join("docs", "audit", "PACK_VERIFICATION_BASELINE.md")
+PACK_COMPAT_REPORT_SCHEMA_REL = os.path.join("schema", "packs", "pack_compatibility_report.schema")
+PACK_COMPAT_REPORT_JSON_SCHEMA_REL = os.path.join("schemas", "pack_compatibility_report.schema.json")
+PACK_LOCK_SCHEMA_REL = os.path.join("schema", "packs", "pack_lock.schema")
+PACK_LOCK_JSON_SCHEMA_REL = os.path.join("schemas", "pack_lock.schema.json")
+PACK_VERIFICATION_PIPELINE_REL = os.path.join("src", "packs", "compat", "pack_verification_pipeline.py")
+SETUP_CLI_REL = os.path.join("tools", "setup", "setup_cli.py")
+LAUNCHER_CLI_REL = os.path.join("tools", "launcher", "launch.py")
 CANONICAL_JSON_REL = os.path.join("tools", "xstack", "compatx", "canonical_json.py")
 SCHEMA_REGISTRY_REL = os.path.join("tools", "xstack", "compatx", "schema_registry.py")
 COMPAT_VALIDATOR_REL = os.path.join("tools", "xstack", "compatx", "validator.py")
@@ -5617,6 +5626,163 @@ def check_pack_compat_validated_before_load(repo_root):
             violations.append("{}: {} missing compat_manifest_hash after load".format(invariant_id, rel_dir))
         if not str(row.get("pack_degrade_mode_id", "")).strip():
             violations.append("{}: {} missing pack_degrade_mode_id after load".format(invariant_id, rel_dir))
+    return violations
+
+
+def check_pack_verification_required_before_load(repo_root):
+    invariant_id = "INV-PACK-VERIFICATION-REQUIRED-BEFORE-LOAD"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        PACK_VERIFICATION_DOC_REL: (
+            "Produce a deterministic `PackCompatibilityReport`.",
+            "Generate a deterministic `pack_lock.json` when the report is valid.",
+            "Dry-run overlay merge conflict detection using COMPAT-SEM-3 conflict policy.",
+        ),
+        PACK_VERIFICATION_PIPELINE_REL: (
+            "def verify_pack_set(",
+            "merge_overlay_view(",
+            "build_verified_pack_lock(",
+            "pack_compatibility_report",
+        ),
+        SETUP_CLI_REL: (
+            "handle_verify(",
+            "handle_build_lock(",
+            "handle_diagnose_pack(",
+            "verify_pack_set(",
+        ),
+        LAUNCHER_CLI_REL: (
+            "verify_pack_set(",
+            "cmd_compat_status(",
+            "\"pack_compatibility_report\"",
+            "offline pack verification refused the selected pack set",
+        ),
+        PACK_COMPAT_REPORT_SCHEMA_REL: (
+            "record pack_compatibility_report",
+            "engine_contract_bundle_hash",
+            "refused_packs",
+        ),
+        PACK_COMPAT_REPORT_JSON_SCHEMA_REL: (
+            "\"title\": \"Pack Compatibility Report Schema\"",
+            "\"engine_contract_bundle_hash\"",
+            "\"refused_packs\"",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing verification marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_pack_lock_deterministic(repo_root):
+    invariant_id = "INV-PACK-LOCK-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        PACK_VERIFICATION_DOC_REL: (
+            "Pack order is canonicalized by `(pack_id, pack_version)`.",
+            "All report and lock artifacts use canonical JSON serialization.",
+        ),
+        PACK_LOCK_SCHEMA_REL: (
+            "record pack_lock",
+            "ordered_pack_ids and ordered_pack_versions are parallel arrays",
+            "pack_lock_hash must be stable for identical ordered pack inputs",
+        ),
+        PACK_LOCK_JSON_SCHEMA_REL: (
+            "\"title\": \"Pack Lock Schema\"",
+            "\"ordered_pack_ids\"",
+            "\"pack_compat_hashes\"",
+        ),
+        PACK_VERIFICATION_PIPELINE_REL: (
+            "compute_pack_lock_hash(",
+            "canonical_json_text(",
+            "ordered_pack_ids",
+            "pack_compat_hashes",
+        ),
+        os.path.join("tools", "xstack", "testx", "tests", "test_deterministic_pack_lock_hash.py"): (
+            "verify_fixture_pack_set(",
+            "pack_lock_hash",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing deterministic-lock marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_strict_mode_refuses_conflict(repo_root):
+    invariant_id = "INV-STRICT-MODE-REFUSES-CONFLICT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        PACK_VERIFICATION_DOC_REL: (
+            "refusal.pack.conflict_in_strict",
+            "refuses dry-run overlay conflicts when conflict policy is strict",
+        ),
+        PACK_VERIFICATION_PIPELINE_REL: (
+            "REFUSAL_PACK_CONFLICT_IN_STRICT",
+            "merge_overlay_view(",
+            "overlay_conflict_policy_id",
+        ),
+        SETUP_CLI_REL: (
+            "pack verification refused",
+            "\"REFUSE_PACK_VERIFICATION_FAILED\"",
+        ),
+        LAUNCHER_CLI_REL: (
+            "offline pack verification refused the selected pack set",
+            "Resolve the refused packs or choose a compatible bundle/mod policy before launching.",
+        ),
+        os.path.join("tools", "xstack", "testx", "tests", "test_overlay_conflict_detected.py"): (
+            "refusal.pack.conflict_in_strict",
+            "mod_policy.strict",
+            "verify_fixture_pack_set(",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing strict-conflict marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
     return violations
 
 
@@ -12310,6 +12476,9 @@ def main() -> int:
                 lambda: check_official_packs_have_compat_manifest(repo_root),
                 lambda: check_strict_mode_refuses_missing_compat(repo_root),
                 lambda: check_pack_compat_validated_before_load(repo_root),
+                lambda: check_pack_verification_required_before_load(repo_root),
+                lambda: check_pack_lock_deterministic(repo_root),
+                lambda: check_strict_mode_refuses_conflict(repo_root),
             ],
         },
         {

@@ -1,0 +1,35 @@
+SCHEMA: packs/pack_compatibility_report.schema
+schema_id: dominium.schema.packs.pack_compatibility_report
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic offline verification result for a pack set.
+- Provide a portable, audit-friendly compatibility decision surface before runtime load.
+
+NON-SEMANTICS:
+- PackCompatibilityReport does not mutate truth.
+- PackCompatibilityReport does not auto-migrate packs.
+
+REQUIRED SHAPE:
+record pack_compatibility_report
+  required:
+    - schema_version: tag
+    - report_id: id
+    - engine_contract_bundle_hash: sha256
+    - mod_policy_id: id
+    - pack_list: [map]
+    - valid: bool
+    - conflicts: [map]
+    - refused_packs: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - refusal_codes: [id]
+    - warnings: [map]
+    - pack_lock_hash: sha256
+
+INVARIANTS:
+- pack_list ordering is deterministic by pack_id then pack_version
+- conflicts must be derived from deterministic dry-run merge analysis
+- valid=false must preserve explicit refusal_codes

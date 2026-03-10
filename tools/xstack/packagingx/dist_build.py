@@ -23,7 +23,7 @@ from tools.xstack.sessionx.script_runner import run_intent_script
 
 LOCKFILE_REGISTRY_FILE_MAP = dict(SESSION_REGISTRY_FILE_MAP)
 
-MANAGED_SUBDIRS = ("bin", "packs", "bundles", "registries")
+MANAGED_SUBDIRS = ("bin", "packs", "bundles", "registries", "data", "schemas", "tools")
 MANAGED_FILES = ("lockfile.json", "manifest.json")
 
 
@@ -463,6 +463,50 @@ def build_dist_layout(
             )
         dst = os.path.join(out_root, "registries", file_name)
         _write_canonical_json(dst, payload)
+
+    src_registry_root = os.path.join(repo_root, "data", "registries")
+    dst_registry_root = os.path.join(out_root, "data", "registries")
+    if not os.path.isdir(src_registry_root):
+        return _refused(
+            [
+                {
+                    "code": "REFUSE_DIST_COMPAT_REGISTRY_ROOT_MISSING",
+                    "message": "data/registries is required for portable offline verification",
+                    "path": "$.data.registries",
+                }
+            ]
+        )
+    _copy_tree_deterministic(src_registry_root, dst_registry_root)
+
+    src_schema_root = os.path.join(repo_root, "schemas")
+    dst_schema_root = os.path.join(out_root, "schemas")
+    if not os.path.isdir(src_schema_root):
+        return _refused(
+            [
+                {
+                    "code": "REFUSE_DIST_SCHEMA_ROOT_MISSING",
+                    "message": "schemas/ is required for portable offline verification",
+                    "path": "$.schemas",
+                }
+            ]
+        )
+    _copy_tree_deterministic(src_schema_root, dst_schema_root)
+
+    version_registry_src = os.path.join(repo_root, "tools", "xstack", "compatx", "version_registry.json")
+    if not os.path.isfile(version_registry_src):
+        return _refused(
+            [
+                {
+                    "code": "REFUSE_DIST_VERSION_REGISTRY_MISSING",
+                    "message": "CompatX version_registry.json is required for portable offline verification",
+                    "path": "$.tools.xstack.compatx.version_registry",
+                }
+            ]
+        )
+    _copy_file(
+        version_registry_src,
+        os.path.join(out_root, "tools", "xstack", "compatx", "version_registry.json"),
+    )
 
     lock_dst = os.path.join(out_root, "lockfile.json")
     _write_canonical_json(lock_dst, lockfile_payload)
