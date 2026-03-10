@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pack Trust Descriptor Schema",
+  "version": "1.0.0",
+  "description": "Deterministic trust metadata sidecar for pack governance.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pack_id",
+    "trust_level_id",
+    "signature_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "pack_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trust_level_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "signature_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mod Policy Profile Schema",
+  "version": "1.0.0",
+  "description": "Deterministic trust and capability policy for pack admission.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mod_policy_id",
+    "allowed_trust_levels",
+    "allowed_capabilities",
+    "conflict_policy_id",
+    "forbid_nondeterminism",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "mod_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_trust_levels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allowed_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "conflict_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "forbid_nondeterminism": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

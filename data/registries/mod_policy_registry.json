@@ -1,0 +1,85 @@
+{
+  "record": {
+    "extensions": {
+      "official.source": "MOD-POLICY-0"
+    },
+    "mod_policies": [
+      {
+        "allowed_capabilities": [
+          "cap.add_logic_elements",
+          "cap.add_processes",
+          "cap.add_profiles",
+          "cap.add_templates",
+          "cap.allow_exception_profiles",
+          "cap.overlay_patch"
+        ],
+        "allowed_trust_levels": [
+          "trust.local_dev",
+          "trust.official_signed",
+          "trust.thirdparty_signed",
+          "trust.unsigned"
+        ],
+        "conflict_policy_id": "overlay.conflict.last_wins",
+        "deterministic_fingerprint": "e78c82106b565f1da67bae7228816d79775b0e0a572d6651eca67f69d77579ab",
+        "extensions": {
+          "official.description": "Unsigned content is permitted, but policy evaluation remains deterministic and proof-visible.",
+          "official.source": "MOD-POLICY-0"
+        },
+        "forbid_nondeterminism": false,
+        "mod_policy_id": "mod_policy.anarchy",
+        "schema_version": "1.0.0"
+      },
+      {
+        "allowed_capabilities": [
+          "cap.add_logic_elements",
+          "cap.add_processes",
+          "cap.add_profiles",
+          "cap.add_templates",
+          "cap.allow_exception_profiles",
+          "cap.overlay_patch"
+        ],
+        "allowed_trust_levels": [
+          "trust.local_dev",
+          "trust.official_signed",
+          "trust.thirdparty_signed",
+          "trust.unsigned"
+        ],
+        "conflict_policy_id": "overlay.conflict.last_wins",
+        "deterministic_fingerprint": "36fd7c4f5536e59ff0b2ae0da0c2899028ff076e21bf5b262925779bff62815a",
+        "extensions": {
+          "official.description": "Local FAST/lab default with explicit local-dev allowance.",
+          "official.source": "MOD-POLICY-0"
+        },
+        "forbid_nondeterminism": false,
+        "mod_policy_id": "mod_policy.lab",
+        "schema_version": "1.0.0"
+      },
+      {
+        "allowed_capabilities": [
+          "cap.add_logic_elements",
+          "cap.add_processes",
+          "cap.add_profiles",
+          "cap.add_templates",
+          "cap.overlay_patch"
+        ],
+        "allowed_trust_levels": [
+          "trust.official_signed",
+          "trust.thirdparty_signed"
+        ],
+        "conflict_policy_id": "overlay.conflict.refuse",
+        "deterministic_fingerprint": "db05b304f23ea9a98b741eda3eff2c13319d6cc4daea9d3af64c40c9bac1e9a9",
+        "extensions": {
+          "official.description": "Signed-only strict policy for ranked or release-style servers.",
+          "official.source": "MOD-POLICY-0"
+        },
+        "forbid_nondeterminism": true,
+        "mod_policy_id": "mod_policy.strict",
+        "schema_version": "1.0.0"
+      }
+    ],
+    "registry_id": "dominium.registry.mod_policy_registry",
+    "registry_version": "1.0.0"
+  },
+  "schema_id": "dominium.registry.mod_policy_registry",
+  "schema_version": "1.0.0"
+}

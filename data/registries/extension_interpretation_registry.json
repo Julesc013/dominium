@@ -4368,6 +4368,20 @@
         "profile_gate_required": "extensions.default",
         "semantic_contract_version_required": "contract.worldgen.refinement.v1",
         "value_type": "any"
+      },
+      {
+        "allowed_owners": [
+          "pack_capabilities"
+        ],
+        "deterministic_fingerprint": "8bb4b4bbfe27b828a09bce6b4797e999b8aa15fa9b6131251396eacd8c3ca76f",
+        "extension_key": "official.requests_nondeterministic_allowance",
+        "extensions": {
+          "official.description": "Explicit request for replayable nondeterministic allowances under mod policy governance.",
+          "official.source": "MOD-POLICY-0"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "boolean"
       }
     ],
     "extensions": {},

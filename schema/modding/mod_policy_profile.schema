@@ -1,0 +1,23 @@
+SCHEMA: modding/mod_policy_profile.schema
+schema_id: dominium.schema.modding.mod_policy_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic server/local policy for trust and capability admission.
+
+REQUIRED SHAPE:
+record mod_policy_profile
+  required:
+    - mod_policy_id: id
+    - allowed_trust_levels: list<id>
+    - allowed_capabilities: list<id>
+    - conflict_policy_id: id
+    - forbid_nondeterminism: bool
+    - deterministic_fingerprint: tag
+    - extensions: map
+
+INVARIANTS:
+- Policy ids are immutable contract selectors for a run.
+- Conflict policy id binds to COMPAT-SEM-3 overlay conflict handling.
+- `forbid_nondeterminism=true` must refuse explicit nondeterministic allowances.

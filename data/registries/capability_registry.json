@@ -1,257 +1,341 @@
 {
-  "schema_id": "dominium.registry.capability_registry",
-  "schema_version": "1.0.0",
   "record": {
-    "registry_id": "dominium.registry.capability_registry",
-    "registry_version": "1.0.0",
     "capabilities": [
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.can_attach",
-        "description": "Entity can attach to compatible mount/connect surfaces.",
         "applicable_entity_kinds": [
-          "assembly",
-          "structure"
+          "custom"
         ],
+        "capability_id": "cap.add_contracts",
+        "description": "Pack may add semantic or compatibility contract surfaces.",
+        "extensions": {
+          "official.source": "MOD-POLICY-0"
+        },
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.can_be_driven",
-        "description": "Entity can be driven via occupancy/control bindings.",
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.add_logic_elements",
+        "description": "Pack may add logic elements or logic behavior registries.",
+        "extensions": {
+          "official.source": "MOD-POLICY-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.add_processes",
+        "description": "Pack may add process definitions or process registries.",
+        "extensions": {
+          "official.source": "MOD-POLICY-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.add_profiles",
+        "description": "Pack may add law, experience, or related profile artifacts.",
+        "extensions": {
+          "official.source": "MOD-POLICY-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.add_templates",
+        "description": "Pack may add template or template-registry content.",
+        "extensions": {
+          "official.source": "MOD-POLICY-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.allow_exception_profiles",
+        "description": "Pack may contribute profiles whose use can emit profile exception events.",
+        "extensions": {
+          "official.source": "MOD-POLICY-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "custom"
+        ],
+        "capability_id": "cap.overlay_patch",
+        "description": "Pack may contribute overlay layers or property patch payloads.",
+        "extensions": {
+          "official.source": "MOD-POLICY-0"
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
         "applicable_entity_kinds": [
           "assembly",
           "structure"
         ],
+        "capability_id": "capability.can_attach",
+        "description": "Entity can attach to compatible mount/connect surfaces.",
+        "extensions": {},
         "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
+        "applicable_entity_kinds": [
+          "assembly",
+          "structure"
+        ],
+        "capability_id": "capability.can_be_driven",
+        "description": "Entity can be driven via occupancy/control bindings.",
         "extensions": {
           "default_parameters": {
             "control_binding_id": "binding.driver_basic",
             "max_occupants": 1
           }
-        }
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
+        "applicable_entity_kinds": [
+          "assembly",
+          "structure",
+          "graph",
+          "custom"
+        ],
         "capability_id": "capability.can_be_planned",
         "description": "Entity supports planning and commitment-driven execution.",
+        "extensions": {},
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
         "applicable_entity_kinds": [
           "assembly",
           "structure",
-          "graph",
-          "custom"
+          "agent",
+          "graph"
         ],
-        "parameters_schema_id": null,
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
         "capability_id": "capability.can_emit_signal",
         "description": "Entity can emit deterministic signal outputs.",
-        "applicable_entity_kinds": [
-          "assembly",
-          "structure",
-          "agent",
-          "graph"
-        ],
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
+        "applicable_entity_kinds": [
+          "assembly",
+          "structure"
+        ],
         "capability_id": "capability.can_mount",
         "description": "Entity supports mount-point attach/detach operations.",
-        "applicable_entity_kinds": [
-          "assembly",
-          "structure"
-        ],
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
+        "applicable_entity_kinds": [
+          "assembly",
+          "structure",
+          "graph",
+          "volume"
+        ],
         "capability_id": "capability.has_flow_network",
         "description": "Entity participates in flow-network routing/transport.",
+        "extensions": {},
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
         "applicable_entity_kinds": [
           "assembly",
           "structure",
-          "graph",
-          "volume"
+          "graph"
         ],
-        "parameters_schema_id": null,
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
         "capability_id": "capability.has_guide_geometry",
         "description": "Entity exposes guide geometry for deterministic pathing/planning.",
-        "applicable_entity_kinds": [
-          "assembly",
-          "structure",
-          "graph"
-        ],
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.has_interior",
-        "description": "Entity exposes deterministic interior graph/volume semantics.",
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "volume"
         ],
+        "capability_id": "capability.has_interior",
+        "description": "Entity exposes deterministic interior graph/volume semantics.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.has_ports",
-        "description": "Entity exposes deterministic port topology.",
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "graph"
         ],
+        "capability_id": "capability.has_ports",
+        "description": "Entity exposes deterministic port topology.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.has_pose_slots",
-        "description": "Entity exposes deterministic pose-slot occupancy points.",
         "applicable_entity_kinds": [
           "assembly",
           "structure"
         ],
+        "capability_id": "capability.has_pose_slots",
+        "description": "Entity exposes deterministic pose-slot occupancy points.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.has_power_network",
-        "description": "Entity participates in deterministic power-network simulation.",
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "graph"
         ],
+        "capability_id": "capability.has_power_network",
+        "description": "Entity participates in deterministic power-network simulation.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.is_pressurized",
-        "description": "Entity supports pressure state and pressure safety constraints.",
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "volume"
         ],
+        "capability_id": "capability.is_pressurized",
+        "description": "Entity supports pressure state and pressure safety constraints.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.meta.override",
-        "description": "Meta authority can override normal interaction guardrails.",
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "agent",
           "custom"
         ],
-        "parameters_schema_id": null,
+        "capability_id": "capability.meta.override",
+        "description": "Meta authority can override normal interaction guardrails.",
         "extensions": {
           "restricted": true
-        }
+        },
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
+        "applicable_entity_kinds": [
+          "assembly",
+          "structure"
+        ],
         "capability_id": "capability.mount.attach",
         "description": "Mount attachment control action is allowed.",
+        "extensions": {},
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
         "applicable_entity_kinds": [
           "assembly",
           "structure"
         ],
-        "parameters_schema_id": null,
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
         "capability_id": "capability.mount.detach",
         "description": "Mount detachment control action is allowed.",
-        "applicable_entity_kinds": [
-          "assembly",
-          "structure"
-        ],
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.plan.blueprint",
-        "description": "Blueprint planning control actions are allowed.",
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "graph",
           "custom"
         ],
+        "capability_id": "capability.plan.blueprint",
+        "description": "Blueprint planning control actions are allowed.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
+        "applicable_entity_kinds": [
+          "assembly",
+          "structure",
+          "agent"
+        ],
         "capability_id": "capability.pose.enter",
         "description": "Pose-enter control action is allowed.",
+        "extensions": {},
+        "parameters_schema_id": null,
+        "schema_version": "1.0.0"
+      },
+      {
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "agent"
         ],
-        "parameters_schema_id": null,
-        "extensions": {}
-      },
-      {
-        "schema_version": "1.0.0",
         "capability_id": "capability.pose.exit",
         "description": "Pose-exit control action is allowed.",
-        "applicable_entity_kinds": [
-          "assembly",
-          "structure",
-          "agent"
-        ],
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.surface.execute",
-        "description": "Surface/task execution control action is allowed.",
         "applicable_entity_kinds": [
           "assembly",
           "structure",
           "agent",
           "graph"
         ],
+        "capability_id": "capability.surface.execute",
+        "description": "Surface/task execution control action is allowed.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       },
       {
-        "schema_version": "1.0.0",
-        "capability_id": "capability.view.change",
-        "description": "View-change control actions are allowed.",
         "applicable_entity_kinds": [
           "agent",
           "custom"
         ],
+        "capability_id": "capability.view.change",
+        "description": "View-change control actions are allowed.",
+        "extensions": {},
         "parameters_schema_id": null,
-        "extensions": {}
+        "schema_version": "1.0.0"
       }
     ],
-    "extensions": {}
-  }
+    "extensions": {},
+    "registry_id": "dominium.registry.capability_registry",
+    "registry_version": "1.0.0"
+  },
+  "schema_id": "dominium.registry.capability_registry",
+  "schema_version": "1.0.0"
 }

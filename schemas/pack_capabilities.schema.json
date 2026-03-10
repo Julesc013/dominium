@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pack Capabilities Schema",
+  "version": "1.0.0",
+  "description": "Deterministic capability declaration sidecar for pack governance.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pack_id",
+    "capability_ids",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "pack_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,21 @@
+SCHEMA: modding/pack_capabilities.schema
+schema_id: dominium.schema.modding.pack_capabilities
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the authoritative capability set used by a pack.
+- Prevent silent capability expansion.
+
+REQUIRED SHAPE:
+record pack_capabilities
+  required:
+    - pack_id: id
+    - capability_ids: list<id>
+    - deterministic_fingerprint: tag
+    - extensions: map
+
+INVARIANTS:
+- Capability ids are sorted and unique under normalization.
+- Unknown capabilities are refused by policy enforcement, not silently accepted.
+- Extensions remain inert unless explicitly interpreted under COMPAT-SEM contracts.
