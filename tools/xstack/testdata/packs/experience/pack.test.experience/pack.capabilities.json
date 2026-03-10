@@ -1,0 +1,11 @@
+{
+  "capability_ids": [
+    "cap.add_profiles"
+  ],
+  "deterministic_fingerprint": "391fc876ce2a3f3aae5717392d84b006d40b4ec29e948abceb64ec60f9826425",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.test.experience",
+  "schema_version": "1.0.0"
+}

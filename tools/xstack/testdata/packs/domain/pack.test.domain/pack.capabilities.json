@@ -1,0 +1,9 @@
+{
+  "capability_ids": [],
+  "deterministic_fingerprint": "1e195857878776b41672e4b34cefc3f1234dccbe692318a316043f1d1d39ea5f",
+  "extensions": {
+    "official.source": "MOD-POLICY-0"
+  },
+  "pack_id": "pack.test.domain",
+  "schema_version": "1.0.0"
+}
