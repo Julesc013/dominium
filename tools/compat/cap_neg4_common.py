@@ -645,6 +645,50 @@ def _descriptor_from_wrapper(repo_root: str, *, product_id: str) -> dict:
     raise RuntimeError(last_error or "no descriptor wrapper available for {}".format(product_id))
 
 
+def _replay_summary_from_reports(
+    *,
+    scenario_reports: Sequence[Mapping[str, object]],
+    real_descriptor_smoke_reports: Sequence[Mapping[str, object]],
+) -> dict:
+    scenario_rows = [
+        {
+            "scenario_id": str(_as_map(row).get("scenario_id", "")).strip(),
+            "compatibility_mode_id": str(_as_map(row).get("compatibility_mode_id", "")).strip(),
+            "negotiation_record_hash": str(_as_map(row).get("negotiation_record_hash", "")).strip(),
+            "replay_result": str(_as_map(row).get("replay_result", "")).strip(),
+        }
+        for row in list(scenario_reports or [])
+    ]
+    real_rows = [
+        {
+            "scenario_id": str(_as_map(row).get("scenario_id", "")).strip(),
+            "compatibility_mode_id": str(_as_map(row).get("compatibility_mode_id", "")).strip(),
+            "negotiation_record_hash": str(_as_map(row).get("negotiation_record_hash", "")).strip(),
+            "replay_result": str(_as_map(row).get("replay_result", "")).strip(),
+        }
+        for row in list(real_descriptor_smoke_reports or [])
+    ]
+    payload = {
+        "result": "complete"
+        if all(
+            str(_as_map(row).get("replay_result", "")).strip() == "complete"
+            for row in list(scenario_reports or []) + list(real_descriptor_smoke_reports or [])
+        )
+        else "refused",
+        "scenario_record_hashes": sorted(
+            scenario_rows,
+            key=lambda row: (str(row.get("scenario_id", "")), str(row.get("negotiation_record_hash", ""))),
+        ),
+        "real_descriptor_record_hashes": sorted(
+            real_rows,
+            key=lambda row: (str(row.get("scenario_id", "")), str(row.get("negotiation_record_hash", ""))),
+        ),
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
 def _real_descriptor_scenarios(repo_root: str, *, seed: int) -> List[dict]:
     actual_client = _descriptor_from_wrapper(repo_root, product_id="client")
     actual_server = _descriptor_from_wrapper(repo_root, product_id="server")
@@ -749,6 +793,10 @@ def run_interop_stress(
             str(row.get("replay_result", "")).strip() == "complete" for row in real_descriptor_reports
         ),
     }
+    replay_summary = _replay_summary_from_reports(
+        scenario_reports=reports,
+        real_descriptor_smoke_reports=real_descriptor_reports,
+    )
     report = {
         "result": "complete" if all(bool(value) for value in assertions.values()) else "violation",
         "matrix_id": str(matrix_payload.get("matrix_id", "")).strip(),
@@ -761,6 +809,7 @@ def run_interop_stress(
         "explain_rows": explain_rows,
         "scenario_reports": reports,
         "real_descriptor_smoke_reports": real_descriptor_reports,
+        "replay_summary": replay_summary,
         "assertions": assertions,
         "deterministic_fingerprint": "",
         "extensions": {
@@ -771,6 +820,27 @@ def run_interop_stress(
     return report
 
 
+def verify_interop_stress_replay(
+    *,
+    repo_root: str,
+    matrix: Mapping[str, object] | None = None,
+    seed: int = DEFAULT_CAP_NEG4_SEED,
+) -> dict:
+    report = run_interop_stress(repo_root=repo_root, matrix=matrix, seed=seed)
+    replay = dict(_as_map(report.get("replay_summary")))
+    return {
+        "result": str(replay.get("result", "")).strip() or "refused",
+        "stress_report_fingerprint": str(report.get("deterministic_fingerprint", "")).strip(),
+        "replay_summary": replay,
+        "deterministic_fingerprint": canonical_sha256(
+            {
+                "stress_report_fingerprint": str(report.get("deterministic_fingerprint", "")).strip(),
+                "replay_summary": replay,
+            }
+        ),
+    }
+
+
 __all__ = [
     "DEFAULT_BASELINE_REL",
     "DEFAULT_CAP_NEG4_SEED",
@@ -778,5 +848,6 @@ __all__ = [
     "DEFAULT_STRESS_REL",
     "generate_interop_matrix",
     "run_interop_stress",
+    "verify_interop_stress_replay",
     "write_json",
 ]
