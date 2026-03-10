@@ -6,7 +6,7 @@ import os
 from typing import Mapping
 
 from src.net.policies.policy_server_authoritative import advance_authoritative_tick
-from src.server.net.loopback_transport import broadcast_tick_stream
+from src.server.net.loopback_transport import broadcast_tick_stream, service_loopback_control_channel, stream_server_log_event
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, write_canonical_json
 
@@ -78,6 +78,7 @@ def advance_server_tick(
 ) -> dict:
     runtime = _runtime(server_boot_payload)
     repo_root = str((dict(server_boot_payload or {})).get("repo_root", "")).strip()
+    control_channel = service_loopback_control_channel(server_boot_payload)
     step = advance_authoritative_tick(repo_root=repo_root, runtime=runtime)
     if str(step.get("result", "")) != "complete":
         return dict(step)
@@ -108,13 +109,22 @@ def advance_server_tick(
             tick=int(tick),
             tick_hash=str((dict(runtime.get("server") or {})).get("last_tick_hash", "")).strip(),
         )
+    log_event = stream_server_log_event(
+        server_boot_payload,
+        tick=int(tick),
+        level="info",
+        message="server authoritative tick advanced",
+        source="server.tick_loop",
+    )
     return {
         "result": "complete",
         "tick": int(tick),
         "processed_envelopes": list(step.get("processed_envelopes") or []),
+        "control_channel": dict(control_channel),
         "proof_anchor": dict(proof_anchor),
         "proof_anchor_path": proof_anchor_path,
         "tick_stream": dict(tick_stream),
+        "log_event": dict(log_event),
         "hash_anchor_frame": dict(step.get("hash_anchor_frame") or {}),
         "control_proof_bundle": dict(step.get("control_proof_bundle") or {}),
     }

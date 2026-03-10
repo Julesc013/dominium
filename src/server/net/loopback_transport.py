@@ -1,4 +1,4 @@
-"""SERVER-MVP-0 deterministic loopback transport adapter."""
+"""SERVER-MVP deterministic loopback transport adapter."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ from typing import Mapping
 from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
 from src.net.transport.loopback import LoopbackTransport
 from src.server.server_boot import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context
+from src.server.server_console import dispatch_server_console_command
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import refusal
 from tools.xstack.sessionx.net_protocol import build_proto_message, decode_proto_message, encode_proto_message
@@ -47,6 +48,107 @@ def _refuse(message: str, *, code: str = REFUSAL_CLIENT_UNAUTHORIZED, details: M
     return refusal(code, message, "Use the deterministic loopback handshake and retry.", relevant_ids, path)
 
 
+def _server_tick(runtime: Mapping[str, object] | None) -> int:
+    server = dict((dict(runtime or {})).get("server") or {})
+    return int(server.get("network_tick", 0) or 0)
+
+
+def _append_console_log(runtime: Mapping[str, object] | None, event_payload: Mapping[str, object]) -> None:
+    if not isinstance(runtime, dict):
+        return
+    rows = [dict(row) for row in list(runtime.get("server_mvp_console_log") or []) if isinstance(row, dict)]
+    rows.append(dict(event_payload or {}))
+    rows = sorted(
+        rows,
+        key=lambda row: (
+            int(row.get("tick", 0) or 0),
+            str(row.get("event_id", "")).strip(),
+        ),
+    )[-128:]
+    runtime["server_mvp_console_log"] = rows
+
+
+def stream_server_log_event(
+    server_boot_payload: Mapping[str, object],
+    *,
+    tick: int,
+    level: str,
+    message: str,
+    source: str,
+    connection_id: str = "",
+) -> dict:
+    runtime = _runtime(server_boot_payload)
+    live_transports = dict(runtime.get("_server_mvp_live_transports") or {})
+    event_payload = {
+        "schema_version": "1.0.0",
+        "event_id": "log.{}.{}".format(int(tick), canonical_sha256({"tick": int(tick), "message": str(message), "source": str(source)})[:12]),
+        "tick": int(tick),
+        "level": str(level or "info").strip() or "info",
+        "message": str(message or "").strip(),
+        "source": str(source or "server.mvp").strip() or "server.mvp",
+        "connection_id": str(connection_id or "").strip(),
+        "deterministic_fingerprint": "",
+        "extensions": {},
+    }
+    event_payload["deterministic_fingerprint"] = canonical_sha256(dict(event_payload, deterministic_fingerprint=""))
+    _append_console_log(runtime, event_payload)
+    rows = []
+    for target_connection_id in sorted(live_transports.keys()):
+        transport = live_transports.get(target_connection_id)
+        if not isinstance(transport, LoopbackTransport):
+            continue
+        proto = build_proto_message(
+            msg_type="payload",
+            msg_id="msg.server.console.log.{}.{}".format(str(target_connection_id), int(tick)),
+            sequence=max(1, int(tick)),
+            payload_schema_id="server.console.log.stub.v1",
+            payload_inline_json=event_payload,
+        )
+        sent = transport.send(encode_proto_message(proto))
+        rows.append(
+            {
+                "connection_id": str(target_connection_id),
+                "result": str(sent.get("result", "")).strip(),
+            }
+        )
+    return {"result": "complete", "event_payload": event_payload, "broadcasts": rows}
+
+
+def send_client_control_request(
+    *,
+    client_transport: object,
+    request_id: str,
+    request_kind: str,
+    payload: Mapping[str, object] | None = None,
+    sequence: int = 1000,
+) -> dict:
+    transport = client_transport if isinstance(client_transport, LoopbackTransport) else None
+    if transport is None:
+        return _refuse(
+            "client control request requires an active loopback transport",
+            code="refusal.client.control_unavailable",
+            path="$.client_transport",
+        )
+    control_payload = {
+        "schema_version": "1.0.0",
+        "request_id": str(request_id or "").strip(),
+        "request_kind": str(request_kind or "").strip(),
+        "payload": dict(payload or {}),
+        "extensions": {},
+    }
+    message = build_proto_message(
+        msg_type="payload",
+        msg_id="msg.client.control.{}".format(str(request_id or canonical_sha256(control_payload)[:12])),
+        sequence=int(max(1, int(sequence or 1))),
+        payload_schema_id="server.control.request.stub.v1",
+        payload_inline_json=control_payload,
+    )
+    sent = transport.send(encode_proto_message(message))
+    if str(sent.get("result", "")) != "complete":
+        return dict(sent)
+    return {"result": "complete", "request_id": str(control_payload.get("request_id", "")), "request_kind": str(control_payload.get("request_kind", ""))}
+
+
 def create_loopback_listener(server_boot_payload: Mapping[str, object]) -> dict:
     runtime = _runtime(server_boot_payload)
     endpoint, server_peer_id = _listener_config(server_boot_payload)
@@ -60,6 +162,13 @@ def create_loopback_listener(server_boot_payload: Mapping[str, object]) -> dict:
     meta = _server_meta(runtime)
     meta["listener_bound"] = True
     runtime["server_mvp"] = meta
+    stream_server_log_event(
+        server_boot_payload,
+        tick=_server_tick(runtime),
+        level="info",
+        message="loopback listener bound",
+        source="server.loopback.listener",
+    )
     return {
         "result": "complete",
         "endpoint": endpoint,
@@ -209,6 +318,14 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
     sent = listener.send(encode_proto_message(ack_message))
     if str(sent.get("result", "")) != "complete":
         return dict(sent)
+    stream_server_log_event(
+        server_boot_payload,
+        tick=_server_tick(runtime),
+        level="info",
+        message="client accepted on deterministic loopback transport",
+        source="server.loopback.accept",
+        connection_id=connection_id,
+    )
     return {
         "result": "complete",
         "connection_id": connection_id,
@@ -253,3 +370,81 @@ def broadcast_tick_stream(server_boot_payload: Mapping[str, object], *, tick: in
         "result": "complete",
         "broadcasts": rows,
     }
+
+
+def service_loopback_control_channel(server_boot_payload: Mapping[str, object]) -> dict:
+    runtime = _runtime(server_boot_payload)
+    repo_root = str((dict(server_boot_payload or {})).get("repo_root", "")).strip()
+    live_transports = dict(runtime.get("_server_mvp_live_transports") or {})
+    rows = []
+    for connection_id in sorted(live_transports.keys()):
+        transport = live_transports.get(connection_id)
+        if not isinstance(transport, LoopbackTransport):
+            continue
+        while True:
+            inbound = transport.recv()
+            result_token = str((dict(inbound or {})).get("result", "")).strip()
+            if result_token != "complete":
+                break
+            decoded = decode_proto_message(
+                repo_root=repo_root,
+                message_bytes=bytes((dict(inbound or {})).get("message_bytes") or b""),
+            )
+            if str(decoded.get("result", "")) != "complete":
+                rows.append({"connection_id": str(connection_id), "result": "decode_failed"})
+                break
+            proto_message = dict(decoded.get("proto_message") or {})
+            payload_schema_id = str(proto_message.get("payload_schema_id", "")).strip()
+            if payload_schema_id != "server.control.request.stub.v1":
+                rows.append(
+                    {
+                        "connection_id": str(connection_id),
+                        "result": "ignored",
+                        "payload_schema_id": payload_schema_id,
+                    }
+                )
+                continue
+            request_payload = dict((dict(proto_message.get("payload_ref") or {})).get("inline_json") or {})
+            request_id = str(request_payload.get("request_id", "")).strip()
+            request_kind = str(request_payload.get("request_kind", "")).strip()
+            response_payload = {
+                "schema_version": "1.0.0",
+                "request_id": request_id,
+                "request_kind": request_kind,
+                "tick": _server_tick(runtime),
+                "result": "",
+                "payload": {},
+                "extensions": {},
+            }
+            command_result = dispatch_server_console_command(
+                server_boot_payload,
+                command=request_kind,
+                payload=dict(request_payload.get("payload") or {}),
+            )
+            response_payload["result"] = str(command_result.get("result", "")).strip() or "refused"
+            response_payload["payload"] = dict(command_result)
+            response_proto = build_proto_message(
+                msg_type="payload",
+                msg_id="msg.server.control.{}".format(str(request_id or canonical_sha256(response_payload)[:12])),
+                sequence=max(1, int(_server_tick(runtime))),
+                payload_schema_id="server.control.response.stub.v1",
+                payload_inline_json=response_payload,
+            )
+            sent = transport.send(encode_proto_message(response_proto))
+            stream_server_log_event(
+                server_boot_payload,
+                tick=_server_tick(runtime),
+                level="info",
+                message="processed control request {}".format(request_kind or "<unknown>"),
+                source="server.loopback.control",
+                connection_id=str(connection_id),
+            )
+            rows.append(
+                {
+                    "connection_id": str(connection_id),
+                    "request_id": request_id,
+                    "request_kind": request_kind,
+                    "result": str(sent.get("result", "")).strip(),
+                }
+            )
+    return {"result": "complete", "control_rows": rows}
