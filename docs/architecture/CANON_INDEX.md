@@ -292,6 +292,7 @@ execution artifacts and are not authoritative.
 - `docs/guides/TOOLING_OVERVIEW.md`
 - `docs/guides/ui_editor/README.md`
 - `docs/embodiment/EMBODIMENT_BASELINE.md`
+- `docs/embodiment/MVP_TOOLBELT_MODEL.md`
 - `docs/embodiment/TERRAIN_COLLISION_MODEL.md`
 - `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`
 - `docs/policies/COMPATIBILITY_PROMISES.md`

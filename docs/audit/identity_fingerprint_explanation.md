@@ -40,3 +40,4 @@ Superseded By: none
   - 2026-03-10: refreshed for COMPAT-SEM-2 extension discipline registration in `docs/architecture/CANON_INDEX.md`, extension registry/normalization enforcement additions, and COMPAT-SEM-2 TestX additions
   - 2026-03-10: refreshed for COMPAT-SEM-3 overlay conflict policy registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX overlay-conflict discipline additions, and COMPAT-SEM-3 TestX additions
   - 2026-03-10: refreshed for MOD-POLICY-0 mod trust/capability doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX mod-policy discipline additions, and MOD-POLICY-0 TestX additions
+  - 2026-03-10: refreshed for EMB-1 MVP toolbelt registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX toolbelt discipline additions, and EMB-1 TestX additions

@@ -155,6 +155,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the MOD-POLICY-0 mod trust and capability doctrine in CANON_INDEX and refresh dependent governance artifacts without changing simulation semantics.",
       "expires": "2026-04-10"
+    },
+    {
+      "id": "OVR-2026-03-10-EMB1-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the EMB-1 MVP toolbelt doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-10"
     }
   ]
 }
