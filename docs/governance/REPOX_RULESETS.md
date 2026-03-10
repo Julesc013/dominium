@@ -138,6 +138,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-SOL-PACK-MINIMAL-SIZE`
 - `INV-SOL-PACK-NO-TERRAIN-DATA`
 - `INV-NO-IDENTITY-OVERRIDE`
+- `INV-OVERLAY-CONFLICT-POLICY-DECLARED`
+- `INV-CONFLICTS-NOT-SILENT-IN-STRICT`
 - `INV-NO-CATALOG-REQUIRED`
 - `INV-MW-CELL-ON-DEMAND-ONLY`
 - `INV-NAMED-RNG-WORLDGEN-ONLY`
@@ -730,6 +732,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the Sol pin documentation or overlay engine loses the immutable-identity guard markers.
 - Fails when the Sol patch payload targets immutable identity paths or uses delete-style property operations.
 - Preserves GEO-owned object identity while allowing only lawful property refinement through GEO-9 overlays.
+
+### INV-OVERLAY-CONFLICT-POLICY-DECLARED
+
+- Fails when overlay conflict policy schemas, registries, or doctrine are missing from the governed GEO-9/COMPAT-SEM-3 surface.
+- Fails when overlay policy rows stop declaring a default `overlay_conflict_policy_id` or when `explain.overlay_conflict` support drifts out of the explain registry.
+- Preserves deterministic, profile-driven overlay conflict handling as an explicit declared contract instead of an implicit merge side effect.
+
+### INV-CONFLICTS-NOT-SILENT-IN-STRICT
+
+- Fails when strict conflict-policy modes stop refusing ambiguous overlay merges with stable `refusal.overlay.conflict` semantics.
+- Fails when replay/provenance tooling stops emitting conflict artifact hashes or explicit remediation hints for strict and prompt-stub modes.
+- Preserves auditability for mod/pack conflicts by ensuring strict overlays are never silently resolved.
 
 ### INV-NO-HARDCODED-MODE-BRANCH
 

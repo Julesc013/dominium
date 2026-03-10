@@ -644,6 +644,34 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-OVERLAY-CONFLICT-POLICY-DECLARED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/geo/overlay/overlay_merge_engine.py",
+        "data/registries/overlay_conflict_policy_registry.json",
+        "data/registries/overlay_policy_registry.json",
+        "data/registries/explain_contract_registry.json",
+        "schema/geo/overlay_conflict_policy.schema",
+        "schema/geo/overlay_conflict_artifact.schema",
+        "docs/geo/OVERLAY_CONFLICT_POLICIES.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-overlay-conflict-policy-declared",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CONFLICTS-NOT-SILENT-IN-STRICT",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/geo/overlay/overlay_merge_engine.py",
+        "tools/geo/tool_explain_property_origin.py",
+        "tools/geo/tool_replay_overlay_merge.py",
+        "tools/xstack/testx/tests/geo9_testlib.py",
+        "docs/geo/OVERLAY_CONFLICT_POLICIES.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-conflicts-not-silent-in-strict",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NO-CATALOG-REQUIRED",
       "severity": "FAIL",
       "scope_paths": [

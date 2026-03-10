@@ -4661,6 +4661,189 @@ def check_no_identity_override(repo_root):
     return violations
 
 
+def check_overlay_conflict_policy_declared(repo_root):
+    invariant_id = "INV-OVERLAY-CONFLICT-POLICY-DECLARED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    conflict_registry_rel = os.path.join("data", "registries", "overlay_conflict_policy_registry.json")
+    conflict_doc_rel = os.path.join("docs", "geo", "OVERLAY_CONFLICT_POLICIES.md")
+    conflict_schema_rel = os.path.join("schema", "geo", "overlay_conflict_policy.schema")
+    conflict_artifact_schema_rel = os.path.join("schema", "geo", "overlay_conflict_artifact.schema")
+    overlay_policy_registry_rel = os.path.join("data", "registries", "overlay_policy_registry.json")
+    overlay_engine_rel = os.path.join("src", "geo", "overlay", "overlay_merge_engine.py")
+    explain_registry_rel = os.path.join("data", "registries", "explain_contract_registry.json")
+
+    violations = []
+    required_tokens = {
+        conflict_doc_rel: (
+            "overlay.conflict.last_wins",
+            "overlay.conflict.refuse",
+            "overlay.conflict.prompt_stub",
+            "(object_id, property_path, layer_order, patch_hash)",
+        ),
+        conflict_schema_rel: (
+            "policy_id",
+            "last_wins",
+            "refuse",
+            "prompt_stub",
+        ),
+        conflict_artifact_schema_rel: (
+            "conflict_id",
+            "object_id",
+            "property_path",
+            "involved_patches",
+        ),
+        overlay_policy_registry_rel: (
+            "overlay_conflict_policy_id",
+            "overlay.default",
+            "overlay.rank_strict",
+            "overlay.lab_freeform",
+        ),
+        overlay_engine_rel: (
+            "overlay_conflict_policy_rows_by_id(",
+            "overlay_conflict_policy_id",
+            "_detect_overlay_conflicts(",
+            "REFUSAL_OVERLAY_CONFLICT",
+        ),
+        explain_registry_rel: (
+            "explain.overlay_conflict",
+            "geo.overlay_conflict",
+            "section.overlay.conflict_summary",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing overlay-conflict marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    payload = _load_json_file(os.path.join(repo_root, conflict_registry_rel.replace("/", os.sep)))
+    rows = list((((payload.get("record") or {}).get("overlay_conflict_policies")) or [])) if isinstance(payload, dict) else []
+    row_by_id = {
+        str(dict(row).get("policy_id", "")).strip(): dict(row)
+        for row in rows
+        if isinstance(row, dict) and str(dict(row).get("policy_id", "")).strip()
+    }
+    expected_modes = {
+        "overlay.conflict.last_wins": "last_wins",
+        "overlay.conflict.refuse": "refuse",
+        "overlay.conflict.prompt_stub": "prompt_stub",
+    }
+    for policy_id, mode in sorted(expected_modes.items()):
+        row = dict(row_by_id.get(policy_id) or {})
+        if not row:
+            violations.append("{}: {} missing '{}' row".format(invariant_id, normalize_path(conflict_registry_rel), policy_id))
+            continue
+        if str(row.get("mode", "")).strip() != mode:
+            violations.append(
+                "{}: {} row '{}' mode drifted from '{}'".format(
+                    invariant_id,
+                    normalize_path(conflict_registry_rel),
+                    policy_id,
+                    mode,
+                )
+            )
+    return violations
+
+
+def check_conflicts_not_silent_in_strict(repo_root):
+    invariant_id = "INV-CONFLICTS-NOT-SILENT-IN-STRICT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    overlay_engine_rel = os.path.join("src", "geo", "overlay", "overlay_merge_engine.py")
+    explain_tool_rel = os.path.join("tools", "geo", "tool_explain_property_origin.py")
+    replay_tool_rel = os.path.join("tools", "geo", "tool_replay_overlay_merge.py")
+    conflict_doc_rel = os.path.join("docs", "geo", "OVERLAY_CONFLICT_POLICIES.md")
+
+    violations = []
+    required_tokens = {
+        overlay_engine_rel: (
+            "overlay_conflict_artifacts and overlay_conflict_mode in {\"refuse\", \"prompt_stub\"}",
+            "refusal.overlay.conflict",
+            "remedy.overlay.resolve_conflict_or_change_policy",
+            "remedy.overlay.add_explicit_resolver_layer",
+            "overlay_conflict_artifact_hash_chain",
+        ),
+        explain_tool_rel: (
+            "overlay_conflict_contract_id",
+            "explain.overlay_conflict",
+        ),
+        replay_tool_rel: (
+            "overlay_conflict_artifact_hash_chain",
+            "overlay_merge_result_hash_chain",
+        ),
+        conflict_doc_rel: (
+            "record conflict artifact",
+            "refuse merge",
+            "prompt_stub",
+            "explain.overlay_conflict",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing strict-conflict marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+
+    try:
+        if repo_root not in sys.path:
+            sys.path.insert(0, repo_root)
+        from tools.xstack.testx.tests.geo9_testlib import overlay_fixture_merge_result
+
+        last_wins = dict(
+            overlay_fixture_merge_result(include_mods=True, overlay_conflict_policy_id="overlay.conflict.last_wins").get(
+                "merge_result"
+            )
+            or {}
+        )
+        refuse = dict(
+            overlay_fixture_merge_result(include_mods=True, overlay_conflict_policy_id="overlay.conflict.refuse").get(
+                "merge_result"
+            )
+            or {}
+        )
+        prompt_stub = dict(
+            overlay_fixture_merge_result(include_mods=True, overlay_conflict_policy_id="overlay.conflict.prompt_stub").get(
+                "merge_result"
+            )
+            or {}
+        )
+    except Exception as exc:  # pragma: no cover - RepoX runtime guard
+        return ["{}: overlay conflict fixture could not be evaluated ({})".format(invariant_id, exc)]
+
+    if str(last_wins.get("result", "")).strip() != "complete":
+        violations.append("{}: last_wins fixture no longer completes deterministically".format(invariant_id))
+    if not list(last_wins.get("overlay_conflict_artifacts") or []):
+        violations.append("{}: last_wins fixture no longer records overlay conflict artifacts".format(invariant_id))
+    if str(refuse.get("result", "")).strip() != "refused" or str(refuse.get("refusal_code", "")).strip() != "refusal.overlay.conflict":
+        violations.append("{}: refuse policy no longer emits refusal.overlay.conflict".format(invariant_id))
+    if str(prompt_stub.get("result", "")).strip() != "refused" or str(prompt_stub.get("remediation_hint", "")).strip() != "remedy.overlay.add_explicit_resolver_layer":
+        violations.append("{}: prompt_stub policy no longer refuses with explicit resolver remediation".format(invariant_id))
+    return violations
+
+
 def check_no_catalog_required(repo_root):
     invariant_id = "INV-NO-CATALOG-REQUIRED"
     if is_override_active(repo_root, invariant_id):
@@ -9866,6 +10049,8 @@ def main() -> int:
                 lambda: check_sol_pack_minimal_size(repo_root),
                 lambda: check_sol_pack_no_terrain_data(repo_root),
                 lambda: check_no_identity_override(repo_root),
+                lambda: check_overlay_conflict_policy_declared(repo_root),
+                lambda: check_conflicts_not_silent_in_strict(repo_root),
             ],
         },
         {
