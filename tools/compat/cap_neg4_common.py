@@ -1,4 +1,4 @@
-"""Shared deterministic CAP-NEG-4 interop-matrix helpers."""
+"""Shared deterministic CAP-NEG-4 interop-matrix and stress helpers."""
 
 from __future__ import annotations
 
@@ -7,7 +7,12 @@ import json
 import os
 from typing import Iterable, List, Mapping, Sequence
 
-from src.compat import build_default_endpoint_descriptor, build_endpoint_descriptor
+from src.compat import (
+    build_default_endpoint_descriptor,
+    build_endpoint_descriptor,
+    negotiate_endpoint_descriptors,
+    verify_negotiation_record,
+)
 from src.compat.capability_negotiation import semantic_contract_rows_by_category
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -501,11 +506,169 @@ def generate_interop_matrix(*, repo_root: str, seed: int = DEFAULT_CAP_NEG4_SEED
     return payload
 
 
+def _explain_keys(record: Mapping[str, object]) -> List[str]:
+    disabled_rows = [dict(row) for row in _as_list(_as_map(record).get("disabled_capabilities")) if isinstance(row, Mapping)]
+    substituted_rows = [dict(row) for row in _as_list(_as_map(record).get("substituted_capabilities")) if isinstance(row, Mapping)]
+    out = _sorted_tokens(
+        [dict(row.get("details") or {}).get("explain_key", "") for row in disabled_rows]
+        + [str(row.get("user_message_key", "")).strip() for row in disabled_rows]
+        + [str(row.get("user_message_key", "")).strip() for row in substituted_rows]
+        + ["explain.compat_read_only" if str(_as_map(record).get("compatibility_mode_id", "")).strip() == "compat.read_only" else ""]
+    )
+    return out
+
+
+def _scenario_report(
+    repo_root: str,
+    *,
+    scenario_row: Mapping[str, object],
+) -> dict:
+    scenario = dict(scenario_row or {})
+    descriptor_a = dict(_as_map(scenario.get("endpoint_a")))
+    descriptor_b = dict(_as_map(scenario.get("endpoint_b")))
+    allow_read_only = bool(scenario.get("allow_read_only", False))
+    first = negotiate_endpoint_descriptors(
+        repo_root,
+        descriptor_a,
+        descriptor_b,
+        allow_read_only=allow_read_only,
+        chosen_contract_bundle_hash="hash.contract.bundle.cap_neg4",
+    )
+    second = negotiate_endpoint_descriptors(
+        repo_root,
+        descriptor_a,
+        descriptor_b,
+        allow_read_only=allow_read_only,
+        chosen_contract_bundle_hash="hash.contract.bundle.cap_neg4",
+    )
+    first_record = dict(_as_map(first.get("negotiation_record")))
+    second_record = dict(_as_map(second.get("negotiation_record")))
+    replay = verify_negotiation_record(
+        repo_root,
+        first_record,
+        descriptor_a,
+        descriptor_b,
+        allow_read_only=allow_read_only,
+        chosen_contract_bundle_hash="hash.contract.bundle.cap_neg4",
+    )
+    first_refusal = dict(_as_map(first.get("refusal")))
+    first_mode = str(first.get("compatibility_mode_id", "")).strip()
+    expected_mode = str(scenario.get("expected_compatibility_mode_id", "")).strip()
+    expected_refusal_code = str(scenario.get("expected_refusal_code", "")).strip()
+    actual_refusal_code = str(first_refusal.get("reason_code", "")).strip()
+    stable = canonical_sha256(first) == canonical_sha256(second)
+    match_expected = bool(first_mode == expected_mode and actual_refusal_code == expected_refusal_code)
+    disabled_ids = _sorted_tokens(_as_map(row).get("capability_id", "") for row in _as_list(first_record.get("disabled_capabilities")))
+    substituted_ids = _sorted_tokens(
+        "{}->{}".format(
+            str(_as_map(row).get("capability_id", "")).strip(),
+            str(_as_map(row).get("substitute_capability_id", "")).strip(),
+        )
+        for row in _as_list(first_record.get("substituted_capabilities"))
+        if str(_as_map(row).get("capability_id", "")).strip()
+    )
+    return _with_fingerprint(
+        {
+            "scenario_id": str(scenario.get("scenario_id", "")).strip(),
+            "description": str(scenario.get("description", "")).strip(),
+            "policy_profile_id": str(scenario.get("policy_profile_id", "")).strip(),
+            "result": str(first.get("result", "")).strip(),
+            "compatibility_mode_id": first_mode,
+            "expected_compatibility_mode_id": expected_mode,
+            "chosen_protocol_id": str(first_record.get("chosen_protocol_id", "")).strip(),
+            "chosen_protocol_version": str(first_record.get("chosen_protocol_version", "")).strip(),
+            "expected_refusal_code": expected_refusal_code,
+            "actual_refusal_code": actual_refusal_code,
+            "disabled_capability_ids": disabled_ids,
+            "substituted_capability_ids": substituted_ids,
+            "explain_keys": _explain_keys(first_record),
+            "negotiation_record_hash": str(first.get("negotiation_record_hash", "")).strip(),
+            "endpoint_a_hash": str(first.get("endpoint_a_hash", "")).strip(),
+            "endpoint_b_hash": str(first.get("endpoint_b_hash", "")).strip(),
+            "replay_result": str(replay.get("result", "")).strip(),
+            "stable_across_repeated_runs": bool(stable),
+            "match_expected": bool(match_expected),
+            "extensions": {
+                "interop_tags": list(_as_map(scenario.get("extensions")).get("interop_tags") or []),
+            },
+        }
+    )
+
+
+def run_interop_stress(
+    *,
+    repo_root: str,
+    matrix: Mapping[str, object] | None = None,
+    seed: int = DEFAULT_CAP_NEG4_SEED,
+) -> dict:
+    repo_root = os.path.normpath(os.path.abspath(repo_root))
+    matrix_payload = dict(matrix or generate_interop_matrix(repo_root=repo_root, seed=int(seed)))
+    scenario_rows = [dict(row) for row in _as_list(matrix_payload.get("scenarios")) if isinstance(row, Mapping)]
+    reports = [_scenario_report(repo_root, scenario_row=row) for row in scenario_rows]
+    mode_counts = {
+        mode_id: int(len([row for row in reports if str(row.get("compatibility_mode_id", "")).strip() == mode_id]))
+        for mode_id in ("compat.full", "compat.degraded", "compat.read_only", "compat.refuse")
+    }
+    refusal_counts: dict[str, int] = {}
+    disabled_counts: dict[str, int] = {}
+    for row in reports:
+        refusal_code = str(row.get("actual_refusal_code", "")).strip()
+        if refusal_code:
+            refusal_counts[refusal_code] = int(refusal_counts.get(refusal_code, 0)) + 1
+        for capability_id in _as_list(row.get("disabled_capability_ids")):
+            token = str(capability_id).strip()
+            if token:
+                disabled_counts[token] = int(disabled_counts.get(token, 0)) + 1
+    refusal_rows = [
+        {"refusal_code": key, "count": int(refusal_counts[key])} for key in sorted(refusal_counts.keys())
+    ]
+    disabled_rows = [
+        {"capability_id": key, "count": int(disabled_counts[key])}
+        for key in sorted(disabled_counts.keys(), key=lambda token: (-disabled_counts[token], token))
+    ]
+    explain_rows = [
+        {
+            "scenario_id": str(row.get("scenario_id", "")).strip(),
+            "compatibility_mode_id": str(row.get("compatibility_mode_id", "")).strip(),
+            "actual_refusal_code": str(row.get("actual_refusal_code", "")).strip(),
+            "explain_keys": list(row.get("explain_keys") or []),
+        }
+        for row in reports
+        if str(row.get("compatibility_mode_id", "")).strip() != "compat.full"
+    ]
+    assertions = {
+        "matrix_rows_present": bool(reports),
+        "deterministic_outcomes": all(bool(row.get("stable_across_repeated_runs", False)) for row in reports),
+        "expected_modes_match": all(bool(row.get("match_expected", False)) for row in reports),
+        "replay_matches": all(str(row.get("replay_result", "")).strip() == "complete" for row in reports),
+    }
+    report = {
+        "result": "complete" if all(bool(value) for value in assertions.values()) else "violation",
+        "matrix_id": str(matrix_payload.get("matrix_id", "")).strip(),
+        "matrix_fingerprint": str(matrix_payload.get("deterministic_fingerprint", "")).strip(),
+        "scenario_seed": int(_as_int(matrix_payload.get("scenario_seed", seed), seed)),
+        "scenario_count": int(len(reports)),
+        "mode_counts": mode_counts,
+        "refusal_counts": refusal_rows,
+        "disabled_capability_frequency": disabled_rows,
+        "explain_rows": explain_rows,
+        "scenario_reports": reports,
+        "assertions": assertions,
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "official.source": "CAP-NEG-4",
+        },
+    }
+    report["deterministic_fingerprint"] = canonical_sha256(dict(report, deterministic_fingerprint=""))
+    return report
+
+
 __all__ = [
     "DEFAULT_BASELINE_REL",
     "DEFAULT_CAP_NEG4_SEED",
     "DEFAULT_MATRIX_REL",
     "DEFAULT_STRESS_REL",
     "generate_interop_matrix",
+    "run_interop_stress",
     "write_json",
 ]
