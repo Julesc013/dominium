@@ -116,6 +116,16 @@
         }
       },
       {
+        "mapping_id": "mapping.refusal.supervisor.prefix",
+        "refusal_prefix": "refusal.supervisor.",
+        "exit_code": 50,
+        "description": "Supervisor lifecycle and orchestration refusals map to the refusal range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "APPSHELL-6"
+        }
+      },
+      {
         "mapping_id": "mapping.refusal.io.prefix",
         "refusal_prefix": "refusal.io.",
         "exit_code": 40,

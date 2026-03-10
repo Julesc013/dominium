@@ -106,6 +106,31 @@
         "description": "A requested profile bundle was not present in the local bundle surfaces."
       },
       {
+        "refusal_code": "refusal.supervisor.already_running",
+        "family": "supervisor",
+        "description": "A launcher supervisor run is already active for the local runtime surfaces."
+      },
+      {
+        "refusal_code": "refusal.supervisor.not_running",
+        "family": "supervisor",
+        "description": "No launcher supervisor run is currently active."
+      },
+      {
+        "refusal_code": "refusal.supervisor.endpoint_unreached",
+        "family": "supervisor",
+        "description": "The launcher supervisor or child endpoint could not be reached deterministically."
+      },
+      {
+        "refusal_code": "refusal.supervisor.restart_denied",
+        "family": "supervisor",
+        "description": "The configured supervisor restart policy denied another restart."
+      },
+      {
+        "refusal_code": "refusal.supervisor.process_missing",
+        "family": "supervisor",
+        "description": "A requested supervised product is not present in the current run manifest."
+      },
+      {
         "refusal_code": "refusal.server.command_unknown",
         "family": "debug",
         "description": "A server console command was not declared in the server command surface."

@@ -1,0 +1,31 @@
+SCHEMA: appshell/run_manifest.schema
+schema_id: dominium.schema.appshell.run_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic launcher supervisor run manifest surface.
+
+NON-SEMANTICS:
+- RunManifest does not authorize process mutation by itself.
+- RunManifest does not replace proof anchors.
+
+REQUIRED SHAPE:
+record run_manifest
+  required:
+    - schema_version: tag
+    - manifest_id: id
+    - tick_started: int
+    - seed: string
+    - session_template_id: id
+    - profile_bundle_hash: sha256
+    - pack_lock_hash: sha256
+    - contract_bundle_hash: sha256
+    - processes: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- process ordering must be deterministic
+- args hashes must remain stable for the same run spec
+- manifest identity must not depend on host wall-clock

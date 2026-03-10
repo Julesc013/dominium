@@ -15,6 +15,7 @@ from src.appshell.compat_adapter import emit_descriptor_payload
 from src.appshell.console_repl import build_console_session_stub
 from src.appshell.ipc import attach_ipc_endpoint, query_ipc_log_events, query_ipc_status, run_ipc_console_command
 from src.appshell.logging import get_current_log_engine, log_emit
+from src.appshell.supervisor import SUPERVISOR_AGGREGATED_LOG_REL, load_supervisor_runtime_state
 from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set
 from src.meta_extensions_engine import normalize_extensions_tree
@@ -274,7 +275,7 @@ def _status_lines(repo_root: str, product_id: str, layout_id: str, backend_state
     extensions = _as_map(descriptor.get("extensions"))
     logger = get_current_log_engine()
     ticks = [int(event.get("tick")) for event in list(logger.ring_events() if logger is not None else []) if event.get("tick") is not None]
-    return [
+    lines = [
         "product_id: {}".format(str(product_id).strip()),
         "product_version: {}".format(str(descriptor.get("product_version", "")).strip()),
         "build_id: {}".format(str(extensions.get("official.build_id", "")).strip()),
@@ -286,6 +287,26 @@ def _status_lines(repo_root: str, product_id: str, layout_id: str, backend_state
         "session_tick: {}".format(max(ticks, default=0)),
         "log_event_count: {}".format(int(len(list(logger.ring_events() if logger is not None else [])))),
     ]
+    if str(product_id).strip() == "launcher":
+        supervisor_state = _as_map(load_supervisor_runtime_state(repo_root))
+        process_rows = sorted(
+            [dict(row) for row in _as_list(supervisor_state.get("processes")) if isinstance(row, Mapping)],
+            key=lambda row: (str(row.get("product_id", "")), str(row.get("pid_stub", ""))),
+        )
+        service_row = _as_map(supervisor_state.get("service"))
+        lines.append("supervisor_run_id: {}".format(str(supervisor_state.get("run_id", "")).strip() or "idle"))
+        lines.append("supervisor_service: {}".format(str(service_row.get("status", "")).strip() or "inactive"))
+        lines.append("supervisor_process_count: {}".format(int(len(process_rows))))
+        for row in process_rows[:4]:
+            lines.append(
+                "  {}: {} attach={} exit={}".format(
+                    str(row.get("product_id", "")).strip(),
+                    str(row.get("status", "")).strip(),
+                    str(row.get("attach_status", "")).strip(),
+                    row.get("exit_code"),
+                )
+            )
+    return lines
 
 
 def _console_lines(session_rows: Sequence[Mapping[str, object]], active_session_id: str) -> list[str]:
@@ -359,6 +380,42 @@ def _remote_log_lines(console_sessions: Sequence[Mapping[str, object]]) -> list[
     return sorted(rows)[-DEFAULT_LOG_LINE_LIMIT:]
 
 
+def _supervisor_aggregated_log_lines(repo_root: str, product_id: str) -> list[str]:
+    if str(product_id).strip() != "launcher":
+        return []
+    abs_path = os.path.normpath(os.path.join(repo_root, SUPERVISOR_AGGREGATED_LOG_REL.replace("/", os.sep)))
+    if not os.path.isfile(abs_path):
+        return []
+    rows = []
+    try:
+        with open(abs_path, "r", encoding="utf-8") as handle:
+            for raw_line in handle:
+                token = str(raw_line or "").strip()
+                if not token:
+                    continue
+                try:
+                    payload = json.loads(token)
+                except ValueError:
+                    continue
+                if isinstance(payload, Mapping):
+                    rows.append(dict(payload))
+    except OSError:
+        return []
+    out = []
+    for row in rows[-DEFAULT_LOG_LINE_LIMIT:]:
+        row_map = _as_map(row)
+        out.append(
+            "{event_id} [supervisor:{product}/{severity}/{category}] {message_key}".format(
+                event_id=str(row_map.get("event_id", "")).strip(),
+                product=str(row_map.get("source_product_id", "")).strip(),
+                severity=str(row_map.get("severity", "")).strip(),
+                category=str(row_map.get("category", "")).strip(),
+                message_key=str(row_map.get("message_key", "")).strip(),
+            )
+        )
+    return out
+
+
 def _map_lines(product_id: str) -> list[str]:
     if str(product_id).strip() != "client":
         return ["map panel unavailable for this product"]
@@ -398,7 +455,7 @@ def _panel_lines(
     if panel_id == "panel.console":
         return _console_lines(console_sessions, active_session_id)
     if panel_id == "panel.logs":
-        combined = _logs_lines(log_category_filter) + list(remote_log_lines or [])
+        combined = _logs_lines(log_category_filter) + list(remote_log_lines or []) + _supervisor_aggregated_log_lines(repo_root, product_id)
         return list(combined[-DEFAULT_LOG_LINE_LIMIT:]) or ["no log events"]
     if panel_id == "panel.status":
         return _status_lines(repo_root, product_id, layout_id, backend_state)

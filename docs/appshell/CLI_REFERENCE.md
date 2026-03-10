@@ -26,6 +26,10 @@ This reference is generated from `data/registries/command_registry.json` and
 | `console enter` | Open the deterministic REPL console session stub for the current product. | - |
 | `console sessions` | List discovered local IPC console endpoints in deterministic order. | `refusal.io.invalid_args` |
 | `diag snapshot` | Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors. | `refusal.io.invalid_args` |
+| `launcher attach` | Attach launcher TUI/CLI to supervised child IPC consoles in deterministic order. | `refusal.io.invalid_args`, `refusal.supervisor.not_running` |
+| `launcher start` | Start a deterministic supervised local singleplayer or headless server run. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.supervisor.already_running`, `refusal.supervisor.endpoint_unreached` |
+| `launcher status` | Show deterministic supervisor state, process health, and aggregated logs. | `refusal.supervisor.not_running` |
+| `launcher stop` | Stop the active supervised run in deterministic client then server order. | `refusal.supervisor.endpoint_unreached`, `refusal.supervisor.not_running` |
 | `packs build-lock` | Verify packs offline and emit a deterministic pack lock plus compatibility report. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
 | `packs list` | List available pack manifests in deterministic order. | `refusal.io.invalid_args` |
 | `packs verify` | Run the offline pack compatibility verification pipeline. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.pack.registry_missing`, `refusal.pack.schema_invalid`, `refusal.pack.trust_denied` |
@@ -65,6 +69,7 @@ This reference is generated from `data/registries/command_registry.json` and
 | `refusal.law.*` | `50` | Law refusals map to the refusal range. |
 | `refusal.pack.*` | `20` | Pack validation and verification failures map to the pack/profile range. |
 | `refusal.server.command_unknown` | `50` | Unknown live server console commands remain explicit refusal-range failures. |
+| `refusal.supervisor.*` | `50` | Supervisor lifecycle and orchestration refusals map to the refusal range. |
 
 ## Product Views
 
@@ -156,6 +161,10 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
+- `launcher attach`: Attach launcher TUI/CLI to supervised child IPC consoles in deterministic order.
+- `launcher start`: Start a deterministic supervised local singleplayer or headless server run.
+- `launcher status`: Show deterministic supervisor state, process health, and aggregated logs.
+- `launcher stop`: Stop the active supervised run in deterministic client then server order.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
 - `packs verify`: Run the offline pack compatibility verification pipeline.

@@ -718,11 +718,10 @@ def _real_descriptor_scenarios(repo_root: str, *, seed: int) -> List[dict]:
         _scenario_row(
             repo_root,
             scenario_id="real.launcher_client.current_build",
-            description="current built launcher and client descriptors refuse when there is no shared protocol",
+            description="current built launcher and client descriptors negotiate through the local control protocol with explicit UI degradation",
             endpoint_a=actual_launcher,
             endpoint_b=actual_client,
-            expected_compatibility_mode_id="compat.refuse",
-            expected_refusal_code="refusal.compat.no_common_protocol",
+            expected_compatibility_mode_id="compat.degraded",
             allow_read_only=False,
             policy_profile_id="launcher.policy.local",
             tags=["real_descriptor", "launcher_client"],

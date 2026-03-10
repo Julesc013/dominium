@@ -137,6 +137,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-COMMANDS-REGISTERED`
 - `INV-NO-ADHOC-ARG-PARSING`
 - `INV-REFUSAL-CODES-STABLE`
+- `INV-SUPERVISOR-DETERMINISTIC`
+- `INV-NO-WALLCLOCK-POLLING`
+- `INV-LOG-MERGE-STABLE`
 - `INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS`
 - `INV-DEGRADE-PLAN-DECLARED`
 - `INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY`
@@ -671,6 +674,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when APPSHELL-4 doctrine or IPC server enforcement stops restricting attached sessions to AppShell commands and read-only-safe command subsets when negotiated.
 - Fails when governed IPC surfaces regain shell escape or other privilege-escalation tokens.
 - Preserves law-gated attach behavior rather than using IPC as a backdoor around command and authority policy.
+
+### INV-SUPERVISOR-DETERMINISTIC
+
+- Fails when the APPSHELL-6 doctrine, supervisor engine, supervisor service, or replay probe stop declaring deterministic run-manifest, spawn-order, and restart-order behavior.
+- Fails when governed supervisor surfaces regain random or host-derived identifiers instead of canonical hashes and ordered args.
+- Preserves launcher supervision as a replayable orchestration layer rather than an ad hoc host wrapper.
+
+### INV-NO-WALLCLOCK-POLLING
+
+- Fails when APPSHELL-6 doctrine or supervisor runtime stops using bounded polling iterations for shutdown, ready detection, or cleanup.
+- Fails when supervised orchestration surfaces introduce wall-clock timeout or sleep tokens into boot, refresh, or replay paths.
+- Preserves deterministic supervision cadence and offline reproducibility instead of host-clock-driven orchestration.
+
+### INV-LOG-MERGE-STABLE
+
+- Fails when APPSHELL-6 doctrine, supervisor engine, probe, or tests stop declaring the canonical merged-log ordering `(source_product_id, seq_no, endpoint_id, event_id)`.
+- Fails when aggregated supervisor logs stop being produced from a deterministic sort key or lose replay coverage.
+- Preserves a stable cross-process log view for TUI, diagnostics, and repro bundles.
 
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 

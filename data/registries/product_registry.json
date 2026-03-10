@@ -10,6 +10,14 @@
         "default_protocol_versions_supported": [
           {
             "schema_version": "1.0.0",
+            "protocol_id": "protocol.loopback.control",
+            "min_version": "1.0.0",
+            "max_version": "1.0.0",
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
             "protocol_id": "protocol.loopback.session",
             "min_version": "1.0.0",
             "max_version": "1.0.0",

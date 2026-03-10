@@ -559,6 +559,41 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SUPERVISOR-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/SUPERVISOR_MODEL.md",
+        "src/appshell/supervisor",
+        "tools/appshell/supervisor_service.py",
+        "tools/appshell/tool_replay_supervisor.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-supervisor-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-WALLCLOCK-POLLING",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/SUPERVISOR_MODEL.md",
+        "src/appshell/supervisor",
+        "tools/appshell/appshell6_probe.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-wallclock-polling",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-LOG-MERGE-STABLE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/appshell/SUPERVISOR_MODEL.md",
+        "src/appshell/supervisor",
+        "tools/appshell/appshell6_probe.py",
+        "tools/xstack/testx/tests/test_log_merge_stable.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-log-merge-stable",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [

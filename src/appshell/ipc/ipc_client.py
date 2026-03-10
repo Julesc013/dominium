@@ -86,6 +86,8 @@ def _perform_handshake(
     endpoint_row: Mapping[str, object],
     allow_read_only: bool,
     accept_degraded: bool,
+    record_attach: bool,
+    attach_purpose: str,
 ) -> tuple[dict, object, object, object]:
     sock = connect_ipc_client(_address_payload(endpoint_row), max_attempts=4)
     reader = sock.makefile("r", encoding="utf-8", newline="\n")
@@ -99,7 +101,11 @@ def _perform_handshake(
             payload_ref=build_handshake_message(
                 message_kind="client_hello",
                 protocol_version="1.0.0",
-                payload_ref={"endpoint_descriptor": dict(local_descriptor_payload.get("descriptor") or {})},
+                payload_ref={
+                    "endpoint_descriptor": dict(local_descriptor_payload.get("descriptor") or {}),
+                    "official.attach_purpose": str(attach_purpose or "").strip(),
+                    "official.record_attach": bool(record_attach),
+                },
             ),
         ),
     )
@@ -110,7 +116,8 @@ def _perform_handshake(
     negotiation_record = dict(negotiation_message.get("negotiation_record") or {})
     compatibility_mode_id = str(negotiation_message.get("compatibility_mode_id", "")).strip()
     refusal_payload = dict(negotiation_message.get("refusal") or {})
-    accepted = True
+    negotiation_result = str(negotiation_message.get("result", "")).strip()
+    accepted = negotiation_result == "complete"
     if compatibility_mode_id == "compat.read_only" and not bool(allow_read_only):
         accepted = False
     if compatibility_mode_id == "compat.degraded" and not bool(accept_degraded):
@@ -178,6 +185,8 @@ def attach_ipc_endpoint(
         endpoint_row=endpoint_row,
         allow_read_only=allow_read_only,
         accept_degraded=accept_degraded,
+        record_attach=True,
+        attach_purpose="console_attach",
     )
     writer.close()
     reader.close()
@@ -193,6 +202,8 @@ def query_ipc_status(repo_root: str, attach_record: Mapping[str, object]) -> dic
         endpoint_row=endpoint_row,
         allow_read_only=True,
         accept_degraded=True,
+        record_attach=False,
+        attach_purpose="status_query",
     )
     if str(attach_report.get("result", "")).strip() != "complete":
         writer.close()
@@ -219,6 +230,8 @@ def query_ipc_log_events(repo_root: str, attach_record: Mapping[str, object], *,
         endpoint_row=endpoint_row,
         allow_read_only=True,
         accept_degraded=True,
+        record_attach=False,
+        attach_purpose="log_query",
     )
     if str(attach_report.get("result", "")).strip() != "complete":
         writer.close()
@@ -255,6 +268,8 @@ def run_ipc_console_command(repo_root: str, attach_record: Mapping[str, object],
         endpoint_row=endpoint_row,
         allow_read_only=True,
         accept_degraded=True,
+        record_attach=False,
+        attach_purpose="console_request",
     )
     if str(attach_report.get("result", "")).strip() != "complete":
         writer.close()

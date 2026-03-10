@@ -10236,6 +10236,189 @@ def check_no_wallclock_timeouts_in_boot(repo_root):
     return violations
 
 
+def check_supervisor_deterministic(repo_root):
+    invariant_id = "INV-SUPERVISOR-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "SUPERVISOR_MODEL.md")
+    engine_rel = os.path.join("src", "appshell", "supervisor", "supervisor_engine.py")
+    service_rel = os.path.join("tools", "appshell", "supervisor_service.py")
+    replay_rel = os.path.join("tools", "appshell", "tool_replay_supervisor.py")
+    probe_rel = os.path.join("tools", "appshell", "appshell6_probe.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "deterministic run manifest",
+            "Argument ordering must be stable and canonical.",
+            "Supervisor ordering must remain deterministic across platforms and thread counts.",
+            "Restart policy evaluation is deterministic and profile-driven.",
+        ),
+        engine_rel: (
+            "build_supervisor_run_spec(",
+            "_build_run_manifest(",
+            "canonical_sha256(",
+            "sorted(",
+            'row["restart_result"] = dict(self.restart(product_id))',
+        ),
+        service_rel: (
+            "SupervisorEngine(",
+            "engine.start()",
+            "engine.wait_for_shutdown()",
+        ),
+        replay_rel: (
+            "Replay deterministic APPSHELL-6 supervision and verify manifest/log stability.",
+            "verify_supervisor_replay(",
+        ),
+        probe_rel: (
+            "Deterministic APPSHELL-6 supervisor probe helpers.",
+            "run_supervisor_probe(",
+            "verify_supervisor_replay(",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing supervisor-determinism marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    for rel in (engine_rel, service_rel, probe_rel, replay_rel):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in ("random.", "uuid.uuid4(", "secrets.", "os.urandom("):
+            if token in text:
+                violations.append(
+                    "{}: forbidden nondeterministic supervisor token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+    return violations
+
+
+def check_no_wallclock_polling(repo_root):
+    invariant_id = "INV-NO-WALLCLOCK-POLLING"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "SUPERVISOR_MODEL.md")
+    engine_rel = os.path.join("src", "appshell", "supervisor", "supervisor_engine.py")
+    probe_rel = os.path.join("tools", "appshell", "appshell6_probe.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "bounded polling iterations",
+            "The supervisor never uses wall-clock timeouts.",
+        ),
+        engine_rel: (
+            "STOP_POLL_ITERATIONS = 4",
+            "for _ in range(STOP_POLL_ITERATIONS):",
+            "poll_process(process)",
+        ),
+        probe_rel: (
+            "for _ in range(4):",
+            "invoke_supervisor_service_command(repo_root, \"launcher stop\")",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing bounded-polling marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("time.sleep(", "time.time(", "datetime.utcnow(", "perf_counter(", "sleep(")
+    for rel in (engine_rel, probe_rel):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: forbidden wall-clock polling token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+    return violations
+
+
+def check_log_merge_stable(repo_root):
+    invariant_id = "INV-LOG-MERGE-STABLE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "appshell", "SUPERVISOR_MODEL.md")
+    engine_rel = os.path.join("src", "appshell", "supervisor", "supervisor_engine.py")
+    probe_rel = os.path.join("tools", "appshell", "appshell6_probe.py")
+    test_rel = os.path.join("tools", "xstack", "testx", "tests", "test_log_merge_stable.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "The unified supervisor log view merges child streams by:",
+            "1. `source_product_id`",
+            "2. `seq_no`",
+            "3. `endpoint_id`",
+            "4. `event_id`",
+        ),
+        engine_rel: (
+            "self._aggregated_logs = sorted(",
+            '"source_product_id"',
+            '"seq_no"',
+            '"endpoint_id"',
+            '"event_id"',
+        ),
+        probe_rel: (
+            "aggregated_log_event_ids",
+            "cross_platform_supervisor_hash",
+        ),
+        test_rel: (
+            "aggregated supervisor log ordering remains stable",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing stable-log-merge marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
 def check_refinement_budgeted(repo_root):
     invariant_id = "INV-REFINEMENT-BUDGETED"
     if is_override_active(repo_root, invariant_id):
@@ -13545,6 +13728,9 @@ def main() -> int:
                 lambda: check_ipc_attach_negotiated(repo_root),
                 lambda: check_ipc_seq_no_monotonic(repo_root),
                 lambda: check_no_privilege_escalation(repo_root),
+                lambda: check_supervisor_deterministic(repo_root),
+                lambda: check_no_wallclock_polling(repo_root),
+                lambda: check_log_merge_stable(repo_root),
                 lambda: check_no_tracked_writes_during_gate(repo_root),
             ],
         },

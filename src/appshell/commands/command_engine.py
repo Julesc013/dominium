@@ -24,6 +24,15 @@ from src.appshell.ipc import (
 )
 from src.appshell.logging import get_current_log_engine, log_emit
 from src.appshell.pack_verifier_adapter import verify_pack_root
+from src.appshell.supervisor import (
+    DEFAULT_SUPERVISOR_POLICY_ID,
+    attach_supervisor_children,
+    discover_active_supervisor_endpoint,
+    get_current_supervisor_engine,
+    invoke_supervisor_service_command,
+    launch_supervisor_service,
+    load_supervisor_runtime_state,
+)
 
 
 REFUSAL_TO_EXIT_REGISTRY_REL = os.path.join("data", "registries", "refusal_to_exit_registry.json")
@@ -548,6 +557,166 @@ def _run_console_detach_command(repo_root: str, args: Sequence[str]) -> dict:
     return _json_dispatch(detach_ipc_session({"endpoint": {"endpoint_id": str(getattr(parsed, "endpoint_id", "")).strip()}}))
 
 
+def _supervisor_state_payload(repo_root: str) -> dict:
+    state = load_supervisor_runtime_state(repo_root)
+    state_map = dict(state or {})
+    process_rows = sorted(
+        [dict(row) for row in list(state_map.get("processes") or []) if isinstance(row, Mapping)],
+        key=lambda row: (str(row.get("product_id", "")), str(row.get("pid_stub", ""))),
+    )
+    return {
+        "result": "complete",
+        "service_running": bool(discover_active_supervisor_endpoint(repo_root)),
+        "state": state_map,
+        "processes": process_rows,
+        "latest_logs": list(state_map.get("latest_logs") or []),
+        "run_manifest_path": str(state_map.get("manifest_path", "")).strip(),
+    }
+
+
+def _run_launcher_start_command(repo_root: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="launcher start", add_help=False)
+    parser.add_argument("--seed", default="0")
+    parser.add_argument("--session-template-id", default="session.mvp_default")
+    parser.add_argument("--session-template-path", default="")
+    parser.add_argument("--profile-bundle-path", default="")
+    parser.add_argument("--pack-lock-path", default="")
+    parser.add_argument("--mod-policy-id", default="")
+    parser.add_argument("--overlay-conflict-policy-id", default="")
+    parser.add_argument("--contract-bundle-hash", default="")
+    parser.add_argument("--supervisor-policy-id", default=DEFAULT_SUPERVISOR_POLICY_ID)
+    parser.add_argument("--topology", choices=("singleplayer", "server_only"), default="singleplayer")
+    parsed, refusal = _parse_command_args(repo_root, parser, "launcher start", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    if get_current_supervisor_engine() is not None:
+        return _refusal_dispatch(
+            repo_root,
+            "refusal.supervisor.already_running",
+            "this launcher process already owns an active supervisor engine",
+            "Use `launcher status` or `launcher stop` instead of starting another supervisor in the same process.",
+        )
+    result = launch_supervisor_service(
+        repo_root=repo_root,
+        seed=str(getattr(parsed, "seed", "0") or "0").strip() or "0",
+        session_template_id=str(getattr(parsed, "session_template_id", "session.mvp_default") or "session.mvp_default").strip(),
+        session_template_path=str(getattr(parsed, "session_template_path", "") or "").strip(),
+        profile_bundle_path=str(getattr(parsed, "profile_bundle_path", "") or "").strip(),
+        pack_lock_path=str(getattr(parsed, "pack_lock_path", "") or "").strip(),
+        mod_policy_id=str(getattr(parsed, "mod_policy_id", "") or "").strip(),
+        overlay_conflict_policy_id=str(getattr(parsed, "overlay_conflict_policy_id", "") or "").strip(),
+        contract_bundle_hash=str(getattr(parsed, "contract_bundle_hash", "") or "").strip(),
+        supervisor_policy_id=str(getattr(parsed, "supervisor_policy_id", DEFAULT_SUPERVISOR_POLICY_ID) or DEFAULT_SUPERVISOR_POLICY_ID).strip(),
+        topology=str(getattr(parsed, "topology", "singleplayer") or "singleplayer").strip(),
+    )
+    if str(result.get("result", "")).strip() != "complete":
+        return _refusal_dispatch(
+            repo_root,
+            str(result.get("refusal_code", "")).strip() or "refusal.supervisor.endpoint_unreached",
+            str(result.get("reason", "")).strip() or "launcher could not start the supervisor service",
+            str(result.get("remediation_hint", "")).strip() or "Inspect pack verification and supervisor policy inputs, then retry launch.",
+            details=dict(result.get("details") or {}),
+        )
+    attach_summary = attach_supervisor_children(repo_root, attach_all=True)
+    payload = {
+        "result": "complete",
+        "service_endpoint_id": str(result.get("service_endpoint_id", "")).strip(),
+        "service_address": str(result.get("service_address", "")).strip(),
+        "run_manifest_path": str(result.get("run_manifest_path", "")).strip(),
+        "supervisor_state_path": str(result.get("supervisor_state_path", "")).strip(),
+        "attachments": list(attach_summary.get("attachments") or []),
+        "run_spec": dict(result.get("run_spec") or {}),
+    }
+    log_emit(
+        category="appshell",
+        severity="info",
+        message_key="supervisor.command.start",
+        params={"service_endpoint_id": str(payload.get("service_endpoint_id", "")).strip()},
+    )
+    return _json_dispatch(payload)
+
+
+def _run_launcher_status_command(repo_root: str) -> dict:
+    engine = get_current_supervisor_engine()
+    if engine is not None:
+        return _json_dispatch(engine.status())
+    endpoint = discover_active_supervisor_endpoint(repo_root)
+    if endpoint:
+        payload = invoke_supervisor_service_command(repo_root, "launcher status")
+        if str(payload.get("result", "")).strip() == "complete":
+            return _json_dispatch(payload)
+    state_payload = _supervisor_state_payload(repo_root)
+    if dict(state_payload.get("state") or {}):
+        return _json_dispatch(state_payload)
+    return _refusal_dispatch(
+        repo_root,
+        "refusal.supervisor.not_running",
+        "no launcher supervisor is currently active",
+        "Run `launcher start` before requesting supervisor status.",
+    )
+
+
+def _run_launcher_stop_command(repo_root: str) -> dict:
+    engine = get_current_supervisor_engine()
+    if engine is not None:
+        return _json_dispatch(engine.stop(shutdown_supervisor=True))
+    endpoint = discover_active_supervisor_endpoint(repo_root)
+    if not endpoint:
+        return _refusal_dispatch(
+            repo_root,
+            "refusal.supervisor.not_running",
+            "no launcher supervisor is currently active",
+            "Run `launcher start` before requesting shutdown.",
+        )
+    payload = invoke_supervisor_service_command(repo_root, "launcher stop")
+    if str(payload.get("result", "")).strip() != "complete":
+        return _refusal_dispatch(
+            repo_root,
+            str(payload.get("refusal_code", "")).strip() or "refusal.supervisor.endpoint_unreached",
+            str(payload.get("reason", "")).strip() or "launcher supervisor stop failed",
+            str(payload.get("remediation_hint", "")).strip() or "Inspect supervisor logs or retry the stop command.",
+            details=dict(payload.get("details") or {}),
+        )
+    log_emit(
+        category="appshell",
+        severity="info",
+        message_key="supervisor.command.stop",
+        params={"endpoint_id": str(endpoint.get("endpoint_id", "")).strip()},
+    )
+    return _json_dispatch(payload)
+
+
+def _run_launcher_attach_command(repo_root: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="launcher attach", add_help=False)
+    parser.add_argument("--endpoint-id", default="")
+    parser.add_argument("--all", action="store_true")
+    parsed, refusal = _parse_command_args(repo_root, parser, "launcher attach", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+    if not discover_active_supervisor_endpoint(repo_root) and not dict(load_supervisor_runtime_state(repo_root) or {}):
+        return _refusal_dispatch(
+            repo_root,
+            "refusal.supervisor.not_running",
+            "no launcher supervisor is currently active",
+            "Run `launcher start` before requesting IPC attachments.",
+        )
+    payload = attach_supervisor_children(
+        repo_root,
+        endpoint_id=str(getattr(parsed, "endpoint_id", "") or "").strip(),
+        attach_all=bool(getattr(parsed, "all", False)),
+    )
+    log_emit(
+        category="ipc",
+        severity="info",
+        message_key="supervisor.command.attach",
+        params={
+            "endpoint_id": str(getattr(parsed, "endpoint_id", "") or "").strip(),
+            "attach_all": bool(getattr(parsed, "all", False)),
+        },
+    )
+    return _json_dispatch(payload)
+
+
 def _run_namespace_placeholder(repo_root: str, row: Mapping[str, object], attempted_tokens: Sequence[str]) -> dict:
     command_path = str(row.get("command_path", "")).strip()
     return _refusal_dispatch(
@@ -628,6 +797,14 @@ def dispatch_registered_command(
         return _run_console_attach_command(repo_root, product_id, remaining)
     if handler_id == "console_detach":
         return _run_console_detach_command(repo_root, remaining)
+    if handler_id == "launcher_start":
+        return _run_launcher_start_command(repo_root, remaining)
+    if handler_id == "launcher_status":
+        return _run_launcher_status_command(repo_root)
+    if handler_id == "launcher_stop":
+        return _run_launcher_stop_command(repo_root)
+    if handler_id == "launcher_attach":
+        return _run_launcher_attach_command(repo_root, remaining)
     if handler_id == "namespace_placeholder":
         return _run_namespace_placeholder(repo_root, row, tokens)
     return _refusal_dispatch(

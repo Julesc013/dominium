@@ -262,6 +262,8 @@ class AppShellIPCEndpointServer:
                 client_message = dict(dict(client_frame).get("payload_ref") or {})
                 client_payload = dict(client_message.get("payload_ref") or {})
                 client_descriptor = client_payload.get("endpoint_descriptor")
+                record_attach = bool(client_payload.get("official.record_attach", True))
+                attach_purpose = str(client_payload.get("official.attach_purpose", "")).strip()
                 if client_channel_id != "negotiation" or str(client_message.get("message_kind", "")).strip() != "client_hello" or not isinstance(client_descriptor, Mapping):
                     refusal = build_compat_refusal(
                         refusal_code=REFUSAL_CONNECTION_NO_NEGOTIATION,
@@ -341,24 +343,26 @@ class AppShellIPCEndpointServer:
                     self._send(writer, "negotiation", mismatch)
                     return
 
-                self._record_attach(
-                    negotiation_record,
-                    {
-                        "negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
-                        "endpoint_a_hash": str(negotiation.get("endpoint_a_hash", "")).strip(),
-                        "endpoint_b_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
-                    },
-                )
-                log_emit(
-                    category="ipc",
-                    severity="info",
-                    message_key="ipc.attach.accepted",
-                    params={
-                        "product_id": self.product_id,
-                        "endpoint_id": self.endpoint_id,
-                        "compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
-                    },
-                )
+                if record_attach:
+                    self._record_attach(
+                        negotiation_record,
+                        {
+                            "negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
+                            "endpoint_a_hash": str(negotiation.get("endpoint_a_hash", "")).strip(),
+                            "endpoint_b_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
+                        },
+                    )
+                    log_emit(
+                        category="ipc",
+                        severity="info",
+                        message_key="ipc.attach.accepted",
+                        params={
+                            "product_id": self.product_id,
+                            "endpoint_id": self.endpoint_id,
+                            "compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
+                            "attach_purpose": attach_purpose or "console_attach",
+                        },
+                    )
                 if str(negotiation.get("compatibility_mode_id", "")).strip() == COMPAT_MODE_READ_ONLY:
                     log_emit(
                         category="compat",

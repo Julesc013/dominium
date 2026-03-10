@@ -314,6 +314,7 @@ execution artifacts and are not authoritative.
 - `docs/appshell/COMMANDS_AND_REFUSALS.md`
 - `docs/appshell/IPC_ATTACH_CONSOLES.md`
 - `docs/appshell/LOGGING_AND_TRACING.md`
+- `docs/appshell/SUPERVISOR_MODEL.md`
 - `docs/appshell/TUI_FRAMEWORK.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`

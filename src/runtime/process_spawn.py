@@ -1,4 +1,4 @@
-"""Deterministic local process spawn helpers for SERVER-MVP-1."""
+"""Deterministic local process spawn helpers for server and AppShell flows."""
 
 from __future__ import annotations
 
@@ -94,6 +94,33 @@ def build_server_process_spec(
     return payload
 
 
+def build_python_process_spec(
+    *,
+    repo_root: str,
+    spawn_id: str,
+    script_path: str,
+    args: list[str] | tuple[str, ...],
+    cwd: str = "",
+    env: Mapping[str, object] | None = None,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    repo_root_abs = os.path.normpath(os.path.abspath(str(repo_root or ".")))
+    script_rel = _repo_rel_path(repo_root_abs, script_path)
+    payload = {
+        "spawn_id": str(spawn_id or "spawn.python").strip() or "spawn.python",
+        "spawn_kind": "python_process",
+        "executable": os.path.normpath(sys.executable),
+        "cwd": os.path.normpath(os.path.abspath(str(cwd or repo_root_abs))),
+        "script_rel": str(script_rel).strip(),
+        "args": [str(script_rel).strip()] + [str(item) for item in list(args or []) if str(item).strip()],
+        "env": _spawn_env(env),
+        "deterministic_fingerprint": "",
+        "extensions": dict((str(key), str(value)) for key, value in sorted(dict(extensions or {}).items(), key=lambda item: str(item[0]))),
+    }
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
+    return payload
+
+
 def spawn_process(process_spec: Mapping[str, object]) -> dict:
     spec = dict(process_spec or {})
     executable = os.path.normpath(str(spec.get("executable", "")).strip() or sys.executable)
@@ -104,6 +131,7 @@ def spawn_process(process_spec: Mapping[str, object]) -> dict:
         [executable] + args,
         cwd=cwd,
         env=env,
+        stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
