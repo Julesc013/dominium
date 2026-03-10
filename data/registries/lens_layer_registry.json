@@ -144,6 +144,17 @@
       },
       {
         "schema_version": "1.0.0",
+        "layer_id": "layer.refinement_status",
+        "description": "Deterministic MW-4 refinement-status layer sourced from derived refinement-status views only.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source_kind": "refinement_status_view",
+          "artifact_id": "refinement_status_view",
+          "source": "MW4-7"
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "layer_id": "layer.pollution",
         "description": "Deterministic pollution overlay rendered from lawful perceived pollution field samples.",
         "deterministic_fingerprint": "",

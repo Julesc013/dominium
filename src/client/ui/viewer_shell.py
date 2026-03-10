@@ -13,6 +13,12 @@ from src.geo import build_position_ref
 from src.worldgen.earth.lighting import build_lighting_view_surface
 from src.worldgen.earth.sky import build_sky_view_surface
 from src.worldgen.earth.water import build_water_layer_source_payloads, build_water_view_surface
+from src.worldgen.refinement.refinement_scheduler import (
+    build_refinement_layer_source_payloads,
+    build_refinement_request_record,
+    build_refinement_status_view,
+    normalize_refinement_request_record_rows,
+)
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,
@@ -648,6 +654,78 @@ def _merge_layer_source_payloads(*, base: Mapping[str, object] | None, extra: Ma
     return merged
 
 
+def _refinement_level_for_view(*, observer_surface_artifact: Mapping[str, object] | None) -> int:
+    return 3 if _as_map(observer_surface_artifact) else 0
+
+
+def _viewer_generated_refinement_requests(
+    *,
+    preliminary_map_views: Mapping[str, object] | None,
+    observer_surface_artifact: Mapping[str, object] | None,
+    selection: Mapping[str, object] | None,
+    teleport_plan: Mapping[str, object] | None,
+    current_tick: int,
+    extensions: Mapping[str, object] | None,
+) -> list[dict]:
+    generated = []
+    refinement_level = _refinement_level_for_view(observer_surface_artifact=observer_surface_artifact)
+    for key in ("map_view", "minimap_view"):
+        projected = _as_map(_as_map(_as_map(preliminary_map_views).get(key)).get("projected_view_artifact"))
+        for rendered in list(projected.get("rendered_cells") or []):
+            geo_cell_key = _as_map(_as_map(rendered).get("geo_cell_key"))
+            if not geo_cell_key:
+                continue
+            generated.append(
+                build_refinement_request_record(
+                    request_id="refinement.request.{}".format(
+                        canonical_sha256(
+                            {
+                                "source": "viewer.roi",
+                                "geo_cell_key": geo_cell_key,
+                                "refinement_level": refinement_level,
+                            }
+                        )[:16]
+                    ),
+                    request_kind="roi",
+                    geo_cell_key=geo_cell_key,
+                    refinement_level=refinement_level,
+                    priority_class="priority.roi.current",
+                    tick=int(max(0, _as_int(current_tick, 0))),
+                    extensions={"source": "MW4-5", "origin": "viewer_shell"},
+                )
+            )
+    selected_geo_cell_key = _as_map(_as_map(selection).get("geo_cell_key")) or _as_map(_as_map(observer_surface_artifact).get("tile_cell_key"))
+    if selected_geo_cell_key:
+        generated.append(
+            build_refinement_request_record(
+                request_id="refinement.request.{}".format(
+                    canonical_sha256(
+                        {
+                            "source": "viewer.inspect",
+                            "geo_cell_key": selected_geo_cell_key,
+                            "refinement_level": refinement_level,
+                        }
+                    )[:16]
+                ),
+                request_kind="inspect",
+                geo_cell_key=selected_geo_cell_key,
+                refinement_level=refinement_level,
+                priority_class="priority.inspect.focus",
+                tick=int(max(0, _as_int(current_tick, 0))),
+                extensions={"source": "MW4-5", "origin": "viewer_shell"},
+            )
+        )
+    for process_row in list(_as_map(teleport_plan).get("process_sequence") or []):
+        row = _as_map(process_row)
+        if str(row.get("process_id", "")).strip() != "process.refinement_request_enqueue":
+            continue
+        generated.append(_as_map(_as_map(row.get("inputs")).get("refinement_request_record")))
+    for raw in list(_as_map(extensions).get("path_request_records") or []):
+        if isinstance(raw, Mapping):
+            generated.append(dict(raw))
+    return normalize_refinement_request_record_rows(generated)
+
+
 def _surface_map_context(
     *,
     origin_position_ref: Mapping[str, object] | None,
@@ -769,6 +847,7 @@ def build_viewer_shell_state(
         bundle_id=str(_as_map(bootstrap.get("profile_bundle")).get("profile_bundle_id", "")),
     )
     current_stage = _current_stage(stage_trace)
+    current_tick = int(max(0, _as_int(_as_map(_as_map(perceived_model).get("time_state")).get("tick", 0), 0)))
     teleport_plan = (
         build_teleport_plan(
             repo_root=str(repo_root),
@@ -850,7 +929,7 @@ def build_viewer_shell_state(
     )
     selection_controls = _build_selection_controls(
         selection=selection,
-        map_views=map_views,
+        map_views=preliminary_map_views,
         authority_context=runtime_authority,
     )
     sky_view_surface = build_sky_view_surface(
@@ -877,7 +956,7 @@ def build_viewer_shell_state(
         ui_mode=str(ui_mode),
     )
     water_view_surface = build_water_view_surface(
-        current_tick=int(max(0, _as_int(_as_map(_as_map(perceived_model).get("time_state")).get("tick", 0), 0))),
+        current_tick=int(current_tick),
         observer_ref=_preferred_position_ref(
             explicit_position_ref=_as_map(control_surface.get("camera_position_ref")),
             selection=selection,
@@ -900,9 +979,39 @@ def build_viewer_shell_state(
         ),
         ui_mode=str(ui_mode),
     )
+    refinement_request_records = normalize_refinement_request_record_rows(
+        list(_as_map(extensions).get("refinement_request_records") or [])
+        + _viewer_generated_refinement_requests(
+            preliminary_map_views=preliminary_map_views,
+            observer_surface_artifact=observer_surface_artifact,
+            selection=selection,
+            teleport_plan=teleport_plan,
+            current_tick=int(current_tick),
+            extensions=extensions,
+        )
+    )
+    refinement_status_view = build_refinement_status_view(
+        region_id="region.refinement.current",
+        cell_keys=_collect_region_cell_keys(
+            map_views=preliminary_map_views,
+            observer_surface_artifact=observer_surface_artifact,
+        ),
+        pending_request_rows=refinement_request_records,
+        worldgen_result_rows=_as_map(extensions).get("worldgen_results"),
+        refinement_cache_entries=_as_map(extensions).get("refinement_cache_entries"),
+        deferred_request_rows=_as_map(extensions).get("refinement_deferred_rows"),
+        extensions={
+            "source": "MW4-7",
+            "nonblocking": True,
+            "coarse_view_visible_until_refined": True,
+        },
+    )
     effective_layer_source_payloads = _merge_layer_source_payloads(
         base=base_layer_source_payloads,
-        extra=build_water_layer_source_payloads(water_view_surface),
+        extra=_merge_layer_source_payloads(
+            base=build_water_layer_source_payloads(water_view_surface),
+            extra=build_refinement_layer_source_payloads(refinement_status_view),
+        ),
     )
     map_views = build_map_view_set(
         perceived_model=perceived_model,
@@ -948,6 +1057,16 @@ def build_viewer_shell_state(
         "sky_view_surface": dict(sky_view_surface),
         "illumination_view_surface": dict(illumination_view_surface),
         "water_view_surface": dict(water_view_surface),
+        "refinement_surface": {
+            "result": "complete",
+            "request_records": [dict(row) for row in refinement_request_records],
+            "status_view": dict(refinement_status_view),
+            "source_kind": "derived.refinement_status_view",
+            "nonblocking": True,
+            "provenance_tool_id": "tool.geo.explain_property_origin",
+            "selected_property_origin_request": dict(_as_map(property_origin_request)),
+            "selected_property_origin_result": dict(_as_map(property_origin_result)),
+        },
         "debug_overlays": {
             "terrain_collision": _terrain_debug_overlay(
                 authority_context=runtime_authority,
@@ -964,6 +1083,7 @@ def build_viewer_shell_state(
             "consumes_sky_view_artifacts": True,
             "consumes_illumination_view_artifacts": True,
             "consumes_water_view_artifacts": True,
+            "consumes_refinement_status_view": True,
             "forbidden_truth_inputs": [
                 "truth_model",
                 "universe_state",
