@@ -2,15 +2,24 @@
 
 from __future__ import annotations
 
+import os
 from typing import Mapping
 
-from src.compat import READ_ONLY_LAW_PROFILE_ID, build_default_endpoint_descriptor, negotiate_endpoint_descriptors
+from src.compat import (
+    READ_ONLY_LAW_PROFILE_ID,
+    REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
+    build_compat_refusal,
+    build_default_endpoint_descriptor,
+    build_handshake_message,
+    build_session_begin_payload,
+    negotiate_product_endpoints,
+)
 from src.net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
 from src.net.transport.loopback import LoopbackTransport
 from src.server.server_boot import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context
 from src.server.server_console import dispatch_server_console_command
 from tools.xstack.compatx.canonical_json import canonical_sha256
-from tools.xstack.sessionx.common import refusal
+from tools.xstack.sessionx.common import norm, refusal, write_canonical_json
 from tools.xstack.sessionx.net_protocol import build_proto_message, decode_proto_message, encode_proto_message
 
 
@@ -40,6 +49,18 @@ def _listener_config(server_boot_payload: Mapping[str, object] | None) -> tuple[
     return endpoint, server_peer_id
 
 
+def _artifact_root_abs(server_boot_payload: Mapping[str, object] | None) -> str:
+    payload = dict(server_boot_payload or {})
+    repo_root = str(payload.get("repo_root", "")).strip()
+    runtime = _runtime(server_boot_payload)
+    meta = _server_meta(runtime)
+    rel = str(meta.get("artifact_root", "")).strip()
+    if repo_root and rel:
+        return os.path.join(repo_root, rel.replace("/", os.sep))
+    save_id = str((dict(runtime or {})).get("save_id", "")).strip() or "save.server.mvp"
+    return os.path.join(repo_root or os.getcwd(), "build", "server", save_id)
+
+
 def _refuse(message: str, *, code: str = REFUSAL_CLIENT_UNAUTHORIZED, details: Mapping[str, object] | None = None, path: str = "$") -> dict:
     relevant_ids = {
         str(key): str(value).strip()
@@ -67,6 +88,99 @@ def _append_console_log(runtime: Mapping[str, object] | None, event_payload: Map
         ),
     )[-128:]
     runtime["server_mvp_console_log"] = rows
+
+
+def _append_negotiation_log(runtime: Mapping[str, object] | None, row_payload: Mapping[str, object]) -> None:
+    if not isinstance(runtime, dict):
+        return
+    rows = [dict(row) for row in list(runtime.get("server_mvp_negotiation_log") or []) if isinstance(row, dict)]
+    rows.append(dict(row_payload or {}))
+    rows = sorted(
+        rows,
+        key=lambda row: (
+            str(row.get("connection_id", "")).strip(),
+            str(row.get("negotiation_record_hash", "")).strip(),
+            str(row.get("artifact_path", "")).strip(),
+        ),
+    )[-128:]
+    runtime["server_mvp_negotiation_log"] = rows
+
+
+def _write_negotiation_artifact(
+    server_boot_payload: Mapping[str, object],
+    *,
+    connection_id: str,
+    peer_id: str,
+    compatibility_mode_id: str,
+    negotiation_record: Mapping[str, object],
+    handshake_messages: list[Mapping[str, object]],
+    client_endpoint_descriptor_hash: str,
+    server_endpoint_descriptor_hash: str,
+    client_acknowledged: bool,
+    law_profile_id_override: str = "",
+    refusal_payload: Mapping[str, object] | None = None,
+) -> str:
+    runtime = _runtime(server_boot_payload)
+    repo_root = str((dict(server_boot_payload or {})).get("repo_root", "")).strip()
+    out_dir = os.path.join(_artifact_root_abs(server_boot_payload), "negotiation")
+    os.makedirs(out_dir, exist_ok=True)
+    record_payload = dict(negotiation_record or {})
+    artifact = {
+        "schema_version": "1.0.0",
+        "connection_id": str(connection_id or "").strip(),
+        "peer_id": str(peer_id or "").strip(),
+        "compatibility_mode_id": str(compatibility_mode_id or "").strip(),
+        "negotiation_record_hash": canonical_sha256(record_payload) if record_payload else "",
+        "client_endpoint_descriptor_hash": str(client_endpoint_descriptor_hash or "").strip(),
+        "server_endpoint_descriptor_hash": str(server_endpoint_descriptor_hash or "").strip(),
+        "client_acknowledged": bool(client_acknowledged),
+        "law_profile_id_override": str(law_profile_id_override or "").strip(),
+        "negotiation_record": record_payload,
+        "handshake_messages": [
+            dict(message)
+            for message in list(handshake_messages or [])
+            if isinstance(message, Mapping)
+        ],
+        "refusal": dict(refusal_payload or {}),
+        "deterministic_fingerprint": "",
+        "extensions": {
+            "official.exception_event_kind": "compat.read_only"
+            if str(compatibility_mode_id or "").strip() == "compat.read_only"
+            else "",
+        },
+    }
+    artifact["deterministic_fingerprint"] = canonical_sha256(dict(artifact, deterministic_fingerprint=""))
+    out_abs = os.path.join(out_dir, "connection.{}.json".format(str(connection_id or "unknown")))
+    write_canonical_json(out_abs, artifact)
+    artifact_rel = norm(os.path.relpath(out_abs, repo_root)) if repo_root else out_abs.replace("\\", "/")
+    _append_negotiation_log(
+        runtime,
+        {
+            "connection_id": str(connection_id or "").strip(),
+            "peer_id": str(peer_id or "").strip(),
+            "compatibility_mode_id": str(compatibility_mode_id or "").strip(),
+            "negotiation_record_hash": str(artifact.get("negotiation_record_hash", "")).strip(),
+            "artifact_path": artifact_rel,
+            "client_acknowledged": bool(client_acknowledged),
+        },
+    )
+    return artifact_rel
+
+
+def _drop_connection(runtime: Mapping[str, object] | None, connection_id: str) -> None:
+    if not isinstance(runtime, dict):
+        return
+    connection_token = str(connection_id or "").strip()
+    if not connection_token:
+        return
+    connections = dict(runtime.get("server_mvp_connections") or {})
+    if connection_token in connections:
+        connections.pop(connection_token, None)
+        runtime["server_mvp_connections"] = dict((key, connections[key]) for key in sorted(connections.keys()))
+    live_transports = dict(runtime.get("_server_mvp_live_transports") or {})
+    if connection_token in live_transports:
+        live_transports.pop(connection_token, None)
+        runtime["_server_mvp_live_transports"] = dict((key, live_transports[key]) for key in sorted(live_transports.keys()))
 
 
 def stream_server_log_event(
@@ -215,12 +329,20 @@ def send_client_hello(
         "allow_read_only": bool(allow_read_only),
         "extensions": {},
     }
+    hello_message = build_handshake_message(
+        message_kind="client_hello",
+        protocol_version="1.0.0",
+        payload_ref=hello_payload,
+        extensions={
+            "official.endpoint_descriptor_hash": canonical_sha256(descriptor_payload),
+        },
+    )
     message = build_proto_message(
         msg_type="handshake_request",
         msg_id="msg.client_hello.{}".format(str(client.connection_id or canonical_sha256(hello_payload)[:16])),
         sequence=1,
-        payload_schema_id="server.loopback.hello.v1",
-        payload_inline_json=hello_payload,
+        payload_schema_id="compat.handshake.client_hello.v1",
+        payload_inline_json=hello_message,
     )
     sent = client.send(encode_proto_message(message))
     if str(sent.get("result", "")) != "complete":
@@ -231,6 +353,7 @@ def send_client_hello(
         "connection_id": str(client.connection_id),
         "client_peer_id": peer_token,
         "hello_payload": hello_payload,
+        "hello_message": hello_message,
     }
 
 
@@ -272,7 +395,19 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
     if str(decoded.get("result", "")) != "complete":
         return dict(decoded)
     proto_message = dict(decoded.get("proto_message") or {})
-    hello_payload = dict((dict(proto_message.get("payload_ref") or {})).get("inline_json") or {})
+    payload_inline = dict((dict(proto_message.get("payload_ref") or {})).get("inline_json") or {})
+    hello_message = {}
+    if str(payload_inline.get("message_kind", "")).strip() == "client_hello":
+        hello_message = dict(payload_inline)
+        hello_payload = dict(hello_message.get("payload_ref") or {})
+    else:
+        hello_payload = dict(payload_inline)
+        hello_message = build_handshake_message(
+            message_kind="client_hello",
+            protocol_version=str(hello_payload.get("protocol_version", "1.0.0")).strip() or "1.0.0",
+            payload_ref=hello_payload,
+            extensions={},
+        )
     peer_id = str(hello_payload.get("client_peer_id", accepted.get("remote_peer_id", ""))).strip()
     account_id = str(hello_payload.get("account_id", "account.loopback")).strip() or "account.loopback"
     connection_id = str(accepted.get("connection_id", "")).strip()
@@ -291,7 +426,7 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
         product_id="server",
         product_version="0.0.0+server.loopback",
     )
-    negotiation = negotiate_endpoint_descriptors(
+    negotiation = negotiate_product_endpoints(
         repo_root,
         client_endpoint_descriptor,
         server_endpoint_descriptor,
@@ -335,6 +470,58 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
     if str(joined.get("result", "")) != "complete":
         return dict(joined)
 
+    server_hello_message = build_handshake_message(
+        message_kind="server_hello",
+        protocol_version="1.0.0",
+        payload_ref={
+            "connection_id": connection_id,
+            "server_peer_id": server_peer_id,
+            "endpoint_descriptor": server_endpoint_descriptor,
+            "endpoint_descriptor_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
+        },
+        extensions={},
+    )
+    negotiation_result_message = build_handshake_message(
+        message_kind="negotiation_result",
+        protocol_version="1.0.0",
+        payload_ref={
+            "negotiation_record": negotiation_record,
+            "negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
+            "compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
+            "compat_refusal": build_compat_refusal(
+                refusal_code="",
+                remediation_hint="",
+                extensions={},
+            ),
+        },
+        extensions={},
+    )
+    session_begin_payload = build_session_begin_payload(
+        connection_id=connection_id,
+        compatibility_mode_id=str(negotiation.get("compatibility_mode_id", "")).strip(),
+        negotiation_record_hash=str(negotiation.get("negotiation_record_hash", "")).strip(),
+        pack_lock_hash=str(session_spec.get("pack_lock_hash", "")).strip(),
+        contract_bundle_hash=str(session_spec.get("contract_bundle_hash", "")).strip(),
+        semantic_contract_registry_hash=str(session_spec.get("semantic_contract_registry_hash", "")).strip(),
+        law_profile_id_override=law_profile_override,
+        extensions={
+            "official.client_endpoint_descriptor_hash": str(negotiation.get("endpoint_a_hash", "")).strip(),
+            "official.server_endpoint_descriptor_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
+        },
+    )
+    session_begin_message = build_handshake_message(
+        message_kind="session_begin",
+        protocol_version="1.0.0",
+        payload_ref=session_begin_payload,
+        extensions={},
+    )
+    handshake_messages = [
+        dict(hello_message),
+        dict(server_hello_message),
+        dict(negotiation_result_message),
+        dict(session_begin_message),
+    ]
+
     live_transports = dict(runtime.get("_server_mvp_live_transports") or {})
     live_transports[connection_id] = listener
     runtime["_server_mvp_live_transports"] = dict((key, live_transports[key]) for key in sorted(live_transports.keys()))
@@ -351,6 +538,11 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
         "snapshot_id": str(joined.get("snapshot_id", "")).strip(),
         "perceived_hash": str(joined.get("perceived_hash", "")).strip(),
         "transport_id": "transport.loopback",
+        "client_acknowledged": False,
+        "law_profile_id_override": law_profile_override,
+        "negotiation_record": dict(negotiation_record),
+        "handshake_messages": list(handshake_messages),
+        "session_begin_payload": dict(session_begin_payload),
     }
     runtime["server_mvp_connections"] = dict((key, connections[key]) for key in sorted(connections.keys()))
 
@@ -373,6 +565,8 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
             "official.client_endpoint_descriptor_hash": str(negotiation.get("endpoint_a_hash", "")).strip(),
             "official.server_endpoint_descriptor_hash": str(negotiation.get("endpoint_b_hash", "")).strip(),
             "official.enabled_capabilities": list(negotiation_record.get("enabled_capabilities") or []),
+            "official.handshake_messages": handshake_messages,
+            "official.session_begin": dict(session_begin_payload),
         },
     }
     ack_message = build_proto_message(
@@ -385,6 +579,18 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
     sent = listener.send(encode_proto_message(ack_message))
     if str(sent.get("result", "")) != "complete":
         return dict(sent)
+    artifact_path = _write_negotiation_artifact(
+        server_boot_payload,
+        connection_id=connection_id,
+        peer_id=peer_id,
+        compatibility_mode_id=str(negotiation.get("compatibility_mode_id", "")).strip(),
+        negotiation_record=negotiation_record,
+        handshake_messages=handshake_messages,
+        client_endpoint_descriptor_hash=str(negotiation.get("endpoint_a_hash", "")).strip(),
+        server_endpoint_descriptor_hash=str(negotiation.get("endpoint_b_hash", "")).strip(),
+        client_acknowledged=False,
+        law_profile_id_override=law_profile_override,
+    )
     stream_server_log_event(
         server_boot_payload,
         tick=_server_tick(runtime),
@@ -393,6 +599,15 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
         source="server.loopback.accept",
         connection_id=connection_id,
     )
+    if str(negotiation.get("compatibility_mode_id", "")).strip() == "compat.read_only":
+        stream_server_log_event(
+            server_boot_payload,
+            tick=_server_tick(runtime),
+            level="info",
+            message="read-only compatibility mode negotiated",
+            source="server.loopback.negotiation",
+            connection_id=connection_id,
+        )
     return {
         "result": "complete",
         "connection_id": connection_id,
@@ -402,7 +617,10 @@ def accept_loopback_connection(server_boot_payload: Mapping[str, object]) -> dic
         "compatibility_mode_id": str(negotiation.get("compatibility_mode_id", "")).strip(),
         "negotiation_record_hash": str(negotiation.get("negotiation_record_hash", "")).strip(),
         "negotiation_record": negotiation_record,
+        "handshake_messages": handshake_messages,
+        "session_begin_payload": dict(session_begin_payload),
         "ack_payload": ack_payload,
+        "negotiation_artifact_path": artifact_path,
     }
 
 
@@ -465,6 +683,125 @@ def service_loopback_control_channel(server_boot_payload: Mapping[str, object]) 
                 break
             proto_message = dict(decoded.get("proto_message") or {})
             payload_schema_id = str(proto_message.get("payload_schema_id", "")).strip()
+            if payload_schema_id == "compat.handshake.ack.v1":
+                ack_payload = dict((dict(proto_message.get("payload_ref") or {})).get("inline_json") or {})
+                ack_message = build_handshake_message(
+                    message_kind="ack",
+                    protocol_version="1.0.0",
+                    payload_ref=ack_payload,
+                    extensions={},
+                )
+                connection_rows = dict(runtime.get("server_mvp_connections") or {})
+                connection_row = dict(connection_rows.get(str(connection_id), {}) or {})
+                negotiated_hash = str(connection_row.get("negotiation_record_hash", "")).strip()
+                ack_hash = str(ack_payload.get("negotiation_record_hash", "")).strip()
+                if (not connection_row) or (not negotiated_hash):
+                    transport.close()
+                    _drop_connection(runtime, str(connection_id))
+                    rows.append(
+                        {
+                            "connection_id": str(connection_id),
+                            "result": "refused",
+                            "reason_code": REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
+                        }
+                    )
+                    continue
+                if ack_hash != negotiated_hash:
+                    _write_negotiation_artifact(
+                        server_boot_payload,
+                        connection_id=str(connection_id),
+                        peer_id=str(connection_row.get("peer_id", "")).strip(),
+                        compatibility_mode_id=str(connection_row.get("compatibility_mode_id", "")).strip(),
+                        negotiation_record=dict(connection_row.get("negotiation_record") or {}),
+                        handshake_messages=list(connection_row.get("handshake_messages") or []) + [dict(ack_message)],
+                        client_endpoint_descriptor_hash=str(connection_row.get("client_endpoint_descriptor_hash", "")).strip(),
+                        server_endpoint_descriptor_hash=str(connection_row.get("server_endpoint_descriptor_hash", "")).strip(),
+                        client_acknowledged=False,
+                        law_profile_id_override=str(connection_row.get("law_profile_id_override", "")).strip(),
+                        refusal_payload=build_compat_refusal(
+                            refusal_code=REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
+                            remediation_hint="Reconnect and accept the deterministic negotiation result before sending intents.",
+                            extensions={"connection_id": str(connection_id)},
+                        ),
+                    )
+                    transport.close()
+                    _drop_connection(runtime, str(connection_id))
+                    stream_server_log_event(
+                        server_boot_payload,
+                        tick=_server_tick(runtime),
+                        level="warn",
+                        message="client negotiation ack mismatch refused",
+                        source="server.loopback.control",
+                        connection_id=str(connection_id),
+                    )
+                    rows.append(
+                        {
+                            "connection_id": str(connection_id),
+                            "result": "refused",
+                            "reason_code": REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
+                        }
+                    )
+                    continue
+                if not bool(ack_payload.get("accepted", False)):
+                    _write_negotiation_artifact(
+                        server_boot_payload,
+                        connection_id=str(connection_id),
+                        peer_id=str(connection_row.get("peer_id", "")).strip(),
+                        compatibility_mode_id=str(connection_row.get("compatibility_mode_id", "")).strip(),
+                        negotiation_record=dict(connection_row.get("negotiation_record") or {}),
+                        handshake_messages=list(connection_row.get("handshake_messages") or []) + [dict(ack_message)],
+                        client_endpoint_descriptor_hash=str(connection_row.get("client_endpoint_descriptor_hash", "")).strip(),
+                        server_endpoint_descriptor_hash=str(connection_row.get("server_endpoint_descriptor_hash", "")).strip(),
+                        client_acknowledged=False,
+                        law_profile_id_override=str(connection_row.get("law_profile_id_override", "")).strip(),
+                        refusal_payload=build_compat_refusal(
+                            refusal_code="refusal.client.negotiation_declined",
+                            remediation_hint="Reconnect and accept the deterministic degrade mode or select a compatible product/profile pair.",
+                            extensions={"connection_id": str(connection_id)},
+                        ),
+                    )
+                    transport.close()
+                    _drop_connection(runtime, str(connection_id))
+                    stream_server_log_event(
+                        server_boot_payload,
+                        tick=_server_tick(runtime),
+                        level="info",
+                        message="client refused negotiated compatibility mode",
+                        source="server.loopback.control",
+                        connection_id=str(connection_id),
+                    )
+                    rows.append(
+                        {
+                            "connection_id": str(connection_id),
+                            "result": "refused",
+                            "reason_code": "refusal.client.negotiation_declined",
+                        }
+                    )
+                    continue
+                connection_row["client_acknowledged"] = True
+                connection_row["handshake_messages"] = list(connection_row.get("handshake_messages") or []) + [dict(ack_message)]
+                connection_rows[str(connection_id)] = dict(connection_row)
+                runtime["server_mvp_connections"] = dict((key, connection_rows[key]) for key in sorted(connection_rows.keys()))
+                _write_negotiation_artifact(
+                    server_boot_payload,
+                    connection_id=str(connection_id),
+                    peer_id=str(connection_row.get("peer_id", "")).strip(),
+                    compatibility_mode_id=str(connection_row.get("compatibility_mode_id", "")).strip(),
+                    negotiation_record=dict(connection_row.get("negotiation_record") or {}),
+                    handshake_messages=list(connection_row.get("handshake_messages") or []) + [dict(ack_message)],
+                    client_endpoint_descriptor_hash=str(connection_row.get("client_endpoint_descriptor_hash", "")).strip(),
+                    server_endpoint_descriptor_hash=str(connection_row.get("server_endpoint_descriptor_hash", "")).strip(),
+                    client_acknowledged=True,
+                    law_profile_id_override=str(connection_row.get("law_profile_id_override", "")).strip(),
+                )
+                rows.append(
+                    {
+                        "connection_id": str(connection_id),
+                        "result": "complete",
+                        "payload_schema_id": payload_schema_id,
+                    }
+                )
+                continue
             if payload_schema_id != "server.control.request.stub.v1":
                 rows.append(
                     {

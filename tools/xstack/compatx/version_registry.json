@@ -259,6 +259,13 @@
         "1.0.0"
       ]
     },
+    "compat_refusal": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "contract_range": {
       "current_version": "1.0.0",
       "migrations": {},
@@ -274,6 +281,13 @@
       ]
     },
     "endpoint_descriptor": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
+    "handshake_message": {
       "current_version": "1.0.0",
       "migrations": {},
       "supported_versions": [

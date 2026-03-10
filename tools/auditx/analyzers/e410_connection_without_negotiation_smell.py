@@ -1,4 +1,4 @@
-"""E407 ad hoc handshake smell analyzer."""
+"""E410 connection without negotiation smell analyzer."""
 
 from __future__ import annotations
 
@@ -7,23 +7,27 @@ import os
 from analyzers.base import make_finding
 
 
-ANALYZER_ID = "E407_AD_HOC_HANDSHAKE_SMELL"
+ANALYZER_ID = "E410_CONNECTION_WITHOUT_NEGOTIATION_SMELL"
 REQUIRED_TOKENS = {
-    "tools/xstack/sessionx/net_handshake.py": (
-        "negotiate_endpoint_descriptors(",
-        '"negotiation_record_hash"',
-        '"compatibility_mode_id"',
-        '"endpoint_descriptor"',
+    "docs/compat/NEGOTIATION_HANDSHAKES.md": (
+        "Missing negotiation yields `refusal.connection.no_negotiation`.",
+        "`compat.read_only`",
+        "session_begin",
     ),
     "src/server/net/loopback_transport.py": (
-        "negotiate_product_endpoints(",
-        '"negotiation_record_hash"',
-        '"compatibility_mode_id"',
-        '"endpoint_descriptor"',
+        "build_handshake_message(",
+        '"official.handshake_messages"',
+        '"client_acknowledged"',
+        "compat.handshake.ack.v1",
     ),
-    "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md": (
-        "Choose a mutually supported “compatibility mode”",
-        "Produce a signed/hashed negotiation record",
+    "src/server/server_boot.py": (
+        "REFUSAL_CONNECTION_NO_NEGOTIATION",
+        "REFUSAL_CLIENT_READ_ONLY",
+        "COMPAT_MODE_READ_ONLY",
+    ),
+    "tools/compat/tool_replay_negotiation.py": (
+        "verify_recorded_negotiation(",
+        '"negotiation_record_hash"',
     ),
 }
 
@@ -47,15 +51,19 @@ def run(graph, repo_root, changed_files=None):
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,
-                    category="compat.capability_negotiation.ad_hoc_handshake_smell",
+                    category="compat.negotiation.connection_without_negotiation_smell",
                     severity="RISK",
                     confidence=0.97,
                     file_path=rel_path,
                     line=1,
-                    evidence=["required negotiation handshake surface is missing"],
+                    evidence=["required CAP-NEG-2 negotiation surface is missing"],
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="RESTORE",
-                    related_invariants=["INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS"],
+                    related_invariants=[
+                        "INV-CONNECTION-REQUIRES-NEGOTIATION",
+                        "INV-NEGOTIATION-RECORD-LOGGED",
+                        "INV-READONLY-ENFORCED-WHEN-NEGOTIATED",
+                    ],
                     related_paths=related_paths,
                 )
             )
@@ -65,15 +73,19 @@ def run(graph, repo_root, changed_files=None):
             findings.append(
                 make_finding(
                     analyzer_id=ANALYZER_ID,
-                    category="compat.capability_negotiation.ad_hoc_handshake_smell",
+                    category="compat.negotiation.connection_without_negotiation_smell",
                     severity="RISK",
                     confidence=0.95,
                     file_path=rel_path,
                     line=1,
-                    evidence=["missing negotiation-handshake marker(s): {}".format(", ".join(missing[:4]))],
+                    evidence=["missing CAP-NEG-2 marker(s): {}".format(", ".join(missing[:4]))],
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
-                    related_invariants=["INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS"],
+                    related_invariants=[
+                        "INV-CONNECTION-REQUIRES-NEGOTIATION",
+                        "INV-NEGOTIATION-RECORD-LOGGED",
+                        "INV-READONLY-ENFORCED-WHEN-NEGOTIATED",
+                    ],
                     related_paths=related_paths,
                 )
             )

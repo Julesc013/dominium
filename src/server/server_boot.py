@@ -14,6 +14,7 @@ from src.net.policies.policy_server_authoritative import (
     prepare_server_authoritative_baseline,
     queue_intent_envelope,
 )
+from src.compat import COMPAT_MODE_READ_ONLY, REFUSAL_CONNECTION_NO_NEGOTIATION
 from src.universe import (
     DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
     build_universe_contract_bundle_payload,
@@ -53,6 +54,7 @@ DEFAULT_SERVER_CONFIG_ID = "server.mvp_default"
 REFUSAL_SESSION_CONTRACT_MISMATCH = "refusal.session.contract_mismatch"
 REFUSAL_SESSION_PACK_LOCK_MISMATCH = "refusal.session.pack_lock_mismatch"
 REFUSAL_CLIENT_UNAUTHORIZED = "refusal.client.unauthorized"
+REFUSAL_CLIENT_READ_ONLY = "refusal.client.read_only_connection"
 
 
 def _server_refusal(
@@ -882,6 +884,28 @@ def submit_client_intent(
             "client connection is not authorized for intent submission",
             "Join through the deterministic loopback handshake before sending intents.",
             details={"connection_id": str(connection_id or "").strip() or "<empty>"},
+            path="$.connection_id",
+        )
+    compatibility_mode_id = str(connection.get("compatibility_mode_id", "")).strip()
+    negotiation_record_hash = str(connection.get("negotiation_record_hash", "")).strip()
+    if (not compatibility_mode_id) or (not negotiation_record_hash):
+        return _server_refusal(
+            REFUSAL_CONNECTION_NO_NEGOTIATION,
+            "client connection is missing a completed negotiation record",
+            "Complete deterministic capability negotiation before submitting client intents.",
+            details={"connection_id": str(connection_id or "").strip() or "<empty>"},
+            path="$.connection_id",
+        )
+    if compatibility_mode_id == COMPAT_MODE_READ_ONLY:
+        return _server_refusal(
+            REFUSAL_CLIENT_READ_ONLY,
+            "negotiated read-only compatibility forbids mutation intents",
+            "Reconnect with fully compatible products or remain in observation-only mode.",
+            details={
+                "connection_id": str(connection_id or "").strip() or "<empty>",
+                "compatibility_mode_id": compatibility_mode_id,
+                "law_profile_id": str(connection.get("law_profile_id_override", "")).strip(),
+            },
             path="$.connection_id",
         )
     intent_payload = dict(intent or {})

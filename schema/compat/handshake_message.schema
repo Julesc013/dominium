@@ -1,0 +1,27 @@
+SCHEMA: compat/handshake_message.schema
+schema_id: dominium.schema.compat.handshake_message
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic handshake message envelope used by capability negotiation flows.
+- Provide a transport-agnostic message surface for client/server and IPC attach negotiation.
+
+NON-SEMANTICS:
+- HandshakeMessage does not mutate truth.
+- It carries negotiation payloads only.
+
+REQUIRED SHAPE:
+record handshake_message
+  required:
+    - schema_version: tag
+    - message_kind: enum[client_hello|server_hello|negotiation_result|ack|session_begin]
+    - protocol_version: tag
+    - payload_ref: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- message_kind must be one of the declared handshake stages
+- payload_ref must serialize deterministically
+- handshake messages must be stable across transports for the same inputs

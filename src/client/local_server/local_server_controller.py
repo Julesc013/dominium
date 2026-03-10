@@ -6,6 +6,7 @@ import os
 import subprocess
 from typing import Mapping
 
+from src.client.net import read_loopback_handshake_response, send_loopback_client_ack
 from src.runtime.process_spawn import build_server_process_spec, collect_process_output, poll_process, spawn_process
 from src.server import boot_server_runtime, load_server_config, materialize_server_session
 from src.server.net.loopback_transport import (
@@ -13,6 +14,7 @@ from src.server.net.loopback_transport import (
     create_loopback_listener,
     send_client_control_request,
     send_client_hello,
+    service_loopback_control_channel,
 )
 from src.server.runtime.tick_loop import advance_server_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
@@ -304,9 +306,20 @@ def start_local_singleplayer(
         )
 
     client_transport = hello.get("client_transport")
-    ack_proto = {}
+    handshake_response = {}
+    ack_result = {}
     if client_transport is not None:
-        ack_proto = _decode_message(repo_root_abs, client_transport.recv())
+        handshake_response = read_loopback_handshake_response(repo_root_abs, client_transport)
+        ack_payload = dict(handshake_response.get("payload") or {})
+        if str(handshake_response.get("result", "")).strip() == "complete":
+            ack_result = send_loopback_client_ack(
+                client_transport=client_transport,
+                connection_id=str(ack_payload.get("connection_id", "")).strip(),
+                negotiation_record_hash=str((dict(ack_payload.get("extensions") or {})).get("official.negotiation_record_hash", "")).strip(),
+                accepted=True,
+                compatibility_mode_id=str((dict(ack_payload.get("extensions") or {})).get("official.compatibility_mode_id", "")).strip(),
+            )
+            service_loopback_control_channel(boot)
     controller = {
         "repo_root": repo_root_abs,
         "launch_spec": dict(launch_spec),
@@ -327,7 +340,9 @@ def start_local_singleplayer(
             "hello_payload": dict(hello.get("hello_payload") or {}),
         },
         "accepted": dict(accepted),
-        "ack_proto": ack_proto,
+        "ack_proto": dict(handshake_response.get("proto_message") or {}),
+        "handshake_response": dict(handshake_response),
+        "client_ack": dict(ack_result),
         "controller": controller,
         "readiness": {
             "result": "complete",

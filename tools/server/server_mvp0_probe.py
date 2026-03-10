@@ -14,11 +14,13 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
+from src.client.net import read_loopback_handshake_response, send_loopback_client_ack  # noqa: E402
 from src.net.transport.loopback import reset_loopback_state  # noqa: E402
 from src.server.net.loopback_transport import (  # noqa: E402
     accept_loopback_connection,
     create_loopback_listener,
     send_client_hello,
+    service_loopback_control_channel,
 )
 from src.server.runtime.tick_loop import run_server_ticks  # noqa: E402
 from src.server.server_boot import boot_server_runtime, materialize_server_session, submit_client_intent  # noqa: E402
@@ -39,6 +41,18 @@ def _ensure_repo_root(repo_root: str) -> str:
     if repo_root_abs not in sys.path:
         sys.path.insert(0, repo_root_abs)
     return repo_root_abs
+
+
+def _decode_message(repo_root: str, recv_result: Mapping[str, object]) -> dict:
+    if str((dict(recv_result or {})).get("result", "")).strip() != "complete":
+        return {}
+    decoded = decode_proto_message(
+        repo_root=repo_root,
+        message_bytes=bytes((dict(recv_result or {})).get("message_bytes") or b""),
+    )
+    if str(decoded.get("result", "")) != "complete":
+        return {}
+    return dict(decoded.get("proto_message") or {})
 
 
 def _read_json(path: str) -> dict:
@@ -132,18 +146,6 @@ def boot_server_fixture(
     return dict(fixture, boot=dict(boot))
 
 
-def _decode_message(repo_root: str, recv_result: Mapping[str, object]) -> dict:
-    if str((dict(recv_result or {})).get("result", "")).strip() != "complete":
-        return {}
-    decoded = decode_proto_message(
-        repo_root=repo_root,
-        message_bytes=bytes((dict(recv_result or {})).get("message_bytes") or b""),
-    )
-    if str(decoded.get("result", "")) != "complete":
-        return {}
-    return dict(decoded.get("proto_message") or {})
-
-
 def connect_loopback_client(
     boot_payload: Mapping[str, object],
     *,
@@ -165,9 +167,22 @@ def connect_loopback_client(
     if str(accepted.get("result", "")) != "complete":
         return {"result": "refused", "listener": dict(listener), "hello": dict(hello), "accepted": dict(accepted)}
     client_transport = hello.get("client_transport")
+    handshake_response = {}
     ack_proto = {}
+    client_ack = {}
     if client_transport is not None:
-        ack_proto = _decode_message(str((dict(boot_payload or {})).get("repo_root", "")), client_transport.recv())
+        handshake_response = read_loopback_handshake_response(str((dict(boot_payload or {})).get("repo_root", "")), client_transport)
+        ack_proto = dict(handshake_response.get("proto_message") or {})
+        ack_payload = dict(handshake_response.get("payload") or {})
+        if str(handshake_response.get("result", "")).strip() == "complete":
+            client_ack = send_loopback_client_ack(
+                client_transport=client_transport,
+                connection_id=str(ack_payload.get("connection_id", "")).strip(),
+                negotiation_record_hash=str((dict(ack_payload.get("extensions") or {})).get("official.negotiation_record_hash", "")).strip(),
+                accepted=True,
+                compatibility_mode_id=str((dict(ack_payload.get("extensions") or {})).get("official.compatibility_mode_id", "")).strip(),
+            )
+            service_loopback_control_channel(boot_payload)
     return {
         "result": "complete",
         "listener": dict(listener),
@@ -180,6 +195,8 @@ def connect_loopback_client(
         "accepted": dict(accepted),
         "client_transport": client_transport,
         "ack_proto": ack_proto,
+        "handshake_response": dict(handshake_response),
+        "client_ack": dict(client_ack),
     }
 
 

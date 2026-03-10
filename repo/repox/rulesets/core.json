@@ -384,6 +384,40 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-CONNECTION-REQUIRES-NEGOTIATION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/NEGOTIATION_HANDSHAKES.md",
+        "src/server/net/loopback_transport.py",
+        "src/server/server_boot.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-connection-requires-negotiation",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NEGOTIATION-RECORD-LOGGED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/NEGOTIATION_HANDSHAKES.md",
+        "src/server/net/loopback_transport.py",
+        "src/server/runtime/tick_loop.py",
+        "tools/compat/tool_replay_negotiation.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-negotiation-record-logged",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-READONLY-ENFORCED-WHEN-NEGOTIATED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/compat/NEGOTIATION_HANDSHAKES.md",
+        "src/server/net/loopback_transport.py",
+        "src/server/server_boot.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-readonly-enforced-when-negotiated",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-DEGRADE-PLAN-DECLARED",
       "severity": "FAIL",
       "scope_paths": [

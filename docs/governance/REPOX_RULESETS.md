@@ -573,6 +573,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when negotiated connection outputs stop carrying `negotiation_record_hash`, endpoint descriptor hashes, or compatibility mode markers.
 - Prevents products from connecting implicitly without a recorded compatibility decision.
 
+### INV-CONNECTION-REQUIRES-NEGOTIATION
+
+- Fails when the CAP-NEG-2 handshake doctrine, server loopback handshake surface, or server intent boundary stop requiring a completed negotiation record before a connection may act.
+- Fails when loopback handshake messages or explicit `refusal.connection.no_negotiation` enforcement markers disappear from the governed client/server path.
+- Prevents connections from becoming mutation-capable without a deterministic negotiation transcript.
+
+### INV-NEGOTIATION-RECORD-LOGGED
+
+- Fails when CAP-NEG-2 handshake doctrine, loopback negotiation artifact emission, server proof anchors, or negotiation replay tooling stop carrying deterministic negotiation record hashes.
+- Fails when endpoint descriptor hashes or negotiation transcript artifacts disappear from the governed proof/logging path.
+- Preserves replayable compatibility decisions instead of ephemeral handshakes.
+
+### INV-READONLY-ENFORCED-WHEN-NEGOTIATED
+
+- Fails when CAP-NEG-2 read-only doctrine stops binding negotiated observation-only compatibility to an explicit law override and mutation refusal.
+- Fails when the loopback/server enforcement path no longer logs or enforces negotiated read-only mode.
+- Preserves lawful observation-only fallback instead of silent partial authority.
+
 ### INV-DEGRADE-PLAN-DECLARED
 
 - Fails when capability-negotiation doctrine, product defaults, or compat-mode registry no longer declare explicit degradation ladders and standard fallback modes.

@@ -4435,7 +4435,7 @@ def check_negotiation_required_for_connections(repo_root):
             '"compatibility_mode_id"',
         ),
         loopback_rel: (
-            "negotiate_endpoint_descriptors(",
+            "negotiate_product_endpoints(",
             '"negotiation_record_hash"',
             '"compatibility_mode_id"',
             '"endpoint_descriptor"',
@@ -4460,6 +4460,147 @@ def check_negotiation_required_for_connections(repo_root):
         if missing:
             violations.append(
                 "{}: {} missing negotiation marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_connection_requires_negotiation(repo_root):
+    invariant_id = "INV-CONNECTION-REQUIRES-NEGOTIATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
+    loopback_rel = os.path.join("src", "server", "net", "loopback_transport.py")
+    server_boot_rel = os.path.join("src", "server", "server_boot.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "Missing negotiation yields `refusal.connection.no_negotiation`.",
+            "client_ack",
+            "session_begin",
+        ),
+        loopback_rel: (
+            "build_handshake_message(",
+            '"official.handshake_messages"',
+            "compat.handshake.ack.v1",
+            '"negotiation_record_hash"',
+        ),
+        server_boot_rel: (
+            "REFUSAL_CONNECTION_NO_NEGOTIATION",
+            '"client connection is missing a completed negotiation record"',
+            "COMPAT_MODE_READ_ONLY",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing CAP-NEG-2 negotiation marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_negotiation_record_logged(repo_root):
+    invariant_id = "INV-NEGOTIATION-RECORD-LOGGED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
+    loopback_rel = os.path.join("src", "server", "net", "loopback_transport.py")
+    tick_loop_rel = os.path.join("src", "server", "runtime", "tick_loop.py")
+    replay_rel = os.path.join("tools", "compat", "tool_replay_negotiation.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "Proof bundles include:",
+            "`negotiation_record_hash`",
+            "Replay recomputes negotiation",
+        ),
+        loopback_rel: (
+            "_write_negotiation_artifact(",
+            '"server_mvp_negotiation_log"',
+            '"negotiation_record_hash"',
+        ),
+        tick_loop_rel: (
+            '"official.negotiation_record_hashes"',
+            '"official.endpoint_descriptor_hashes"',
+            '"contract_bundle_hash"',
+        ),
+        replay_rel: (
+            "verify_recorded_negotiation(",
+            '"negotiation_record_hash"',
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing negotiation-log marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel_path),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_readonly_enforced_when_negotiated(repo_root):
+    invariant_id = "INV-READONLY-ENFORCED-WHEN-NEGOTIATED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
+    loopback_rel = os.path.join("src", "server", "net", "loopback_transport.py")
+    server_boot_rel = os.path.join("src", "server", "server_boot.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "`compat.read_only`",
+            "forbids authoritative mutation",
+            "binds connection law to `law.observer.default`",
+        ),
+        loopback_rel: (
+            'if str(negotiation.get("compatibility_mode_id", "")) == "compat.read_only":',
+            "READ_ONLY_LAW_PROFILE_ID",
+            '"read-only compatibility mode negotiated"',
+        ),
+        server_boot_rel: (
+            "REFUSAL_CLIENT_READ_ONLY",
+            '"negotiated read-only compatibility forbids mutation intents"',
+            "COMPAT_MODE_READ_ONLY",
+        ),
+    }
+    for rel_path, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel_path)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing read-only marker(s): {}".format(
                     invariant_id,
                     normalize_path(rel_path),
                     ", ".join(missing[:4]),
@@ -11681,6 +11822,9 @@ def main() -> int:
                 lambda: check_descriptor_deterministic(repo_root),
                 lambda: check_no_wallclock_in_descriptor(repo_root),
                 lambda: check_negotiation_required_for_connections(repo_root),
+                lambda: check_connection_requires_negotiation(repo_root),
+                lambda: check_negotiation_record_logged(repo_root),
+                lambda: check_readonly_enforced_when_negotiated(repo_root),
                 lambda: check_degrade_plan_declared(repo_root),
                 lambda: check_unknown_cap_ignored_deterministically(repo_root),
             ],

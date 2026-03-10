@@ -4654,6 +4654,34 @@
       },
       {
         "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "a7e03db8d6678b48853b1fc0e70cb30bcd45e86fbf6b306192af740114c1b97f",
+        "extension_key": "official.handshake_messages",
+        "extensions": {
+          "official.description": "Deterministically ordered handshake transcript messages attached to a negotiated connection response.",
+          "official.source": "CAP-NEG-2"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "list[object]"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "c720207e1d96acd642e467206dcc0a6629cabd2df5bfac74833551f23563b262",
+        "extension_key": "official.session_begin",
+        "extensions": {
+          "official.description": "Session-begin payload attached to a negotiated connection response for deterministic client bootstrap.",
+          "official.source": "CAP-NEG-2"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "value_type": "object"
+      },
+      {
+        "allowed_owners": [
           "pack_capabilities"
         ],
         "deterministic_fingerprint": "8bb4b4bbfe27b828a09bce6b4797e999b8aa15fa9b6131251396eacd8c3ca76f",
