@@ -1,0 +1,27 @@
+SCHEMA: worldgen/refinement_cache_entry.schema
+schema_id: dominium.schema.worldgen.refinement_cache_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the derived MW-4 cache entry used to track hot refinement results.
+- Preserve deterministic cache reuse and eviction metadata.
+
+NON-SEMANTICS:
+- This schema does not define canonical worldgen results.
+- This schema does not authorize deletion of authoritative provenance artifacts.
+
+REQUIRED SHAPE:
+record refinement_cache_entry
+  required:
+    - cache_key: sha256
+    - geo_cell_key: map
+    - refinement_level: int
+    - last_used_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- cache entries are derived-only and evictable
+- cache keys must include all contract, overlay, and policy pins required by MW-4
+- eviction must not alter canonical worldgen artifact identity
