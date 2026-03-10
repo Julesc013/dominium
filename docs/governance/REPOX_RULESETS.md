@@ -132,6 +132,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION`
 - `INV-PACKS-MUST-DECLARE-CAPABILITIES`
 - `INV-MOD-POLICY-ENFORCED`
+- `INV-SERVER-TICK-DETERMINISTIC`
+- `INV-CONTRACTS-VALIDATED-ON-BOOT`
+- `INV-AUTHORITY-REQUIRED`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-MVP-PACKS-MINIMAL`
@@ -320,6 +323,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the governed EMB-2 camera smoothing path loses the explicit fixed-point bounded blending markers.
 - Fails when float-based smoothing, wall-clock APIs, or time-based exponential helpers appear in the smoothing surface.
 - Preserves cross-platform stable FP/TP smoothing and replay-equivalent render behavior for EMB-2.
+
+### INV-SERVER-TICK-DETERMINISTIC
+
+- Fails when the governed SERVER-MVP-0 tick loop loses explicit canonical-tick and proof-anchor cadence markers.
+- Fails when server tick/replay tooling introduces wall-clock scheduling tokens into authoritative server advancement.
+- Preserves the headless server as a deterministic tick-and-anchor runtime rather than a host-clock-driven loop.
+
+### INV-CONTRACTS-VALIDATED-ON-BOOT
+
+- Fails when the governed SERVER-MVP-0 boot surface stops validating pinned contract, pack-lock, mod-policy, or overlay-conflict inputs before runtime start.
+- Fails when server config schema/registry or stable refusal markers drift out of the server boot path.
+- Preserves server boot as an explicit compatibility gate over pinned universe/session inputs instead of a best-effort startup path.
+
+### INV-AUTHORITY-REQUIRED
+
+- Fails when SERVER-MVP-0 connection or intent submission surfaces stop creating and enforcing `AuthorityContext` for client-origin actions.
+- Fails when unauthorized-intent refusal markers disappear from the server boot, loopback, or replay probe surfaces.
+- Preserves the headless server as an authority-wrapping ingress boundary where client intents never execute without lawful server-owned context.
 
 ### INV-PLATFORM-ID-CANONICAL
 

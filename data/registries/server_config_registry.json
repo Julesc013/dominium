@@ -1,0 +1,39 @@
+{
+  "schema_id": "dominium.registry.server_config_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.server_config_registry",
+    "registry_version": "1.0.0",
+    "server_configs": [
+      {
+        "schema_version": "1.0.0",
+        "server_id": "server.mvp_default",
+        "session_template_id": "session.mvp_default",
+        "mod_policy_id": "mod_policy.lab",
+        "overlay_conflict_policy_id": "overlay.conflict.last_wins",
+        "max_clients": 4,
+        "proof_anchor_interval_ticks": 4,
+        "deterministic_fingerprint": "ff5f252fdea53f2e37fec6989a2daf92ad2a76260c9b35427b02fea8e480fe52",
+        "extensions": {
+          "official.endpoint": "loopback://server.mvp.default",
+          "official.requested_replication_policy_id": "policy.net.server_authoritative",
+          "official.server_profile_id": "server.profile.private_relaxed",
+          "official.server_policy_id": "server.policy.private.default",
+          "official.anti_cheat_policy_id": "policy.ac.private_relaxed",
+          "official.securex_policy_id": "securex.policy.private_relaxed",
+          "official.bundle_id": "bundle.base.lab",
+          "official.experience_id": "profile.lab.developer",
+          "official.law_profile_id": "law.lab.unrestricted",
+          "official.parameter_bundle_id": "params.lab.placeholder",
+          "official.budget_policy_id": "policy.budget.default_lab",
+          "official.fidelity_policy_id": "policy.fidelity.default_lab",
+          "official.time_control_policy_id": "time.policy.default_realistic",
+          "official.epistemic_scope_id": "epistemic.lab.placeholder",
+          "official.visibility_level": "placeholder",
+          "official.privilege_level": "operator"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -42,6 +42,7 @@ from .pipeline_contract import DEFAULT_PIPELINE_ID, load_session_pipeline_contra
 from .universe_physics import (
     NULL_PHYSICS_PROFILE_ID,
     is_null_bundle_profile,
+    normalize_physics_profile_id,
     select_physics_profile,
     write_null_boot_artifacts,
 )
@@ -1494,7 +1495,10 @@ def create_session_spec(
                 {"universe_identity_path": norm(identity_abs)},
                 "$.universe_identity.physics_profile_id",
             )
-        if explicit_physics_profile_id and explicit_physics_profile_id != identity_physics_profile_id:
+        if explicit_physics_profile_id and (
+            normalize_physics_profile_id(explicit_physics_profile_id)
+            != normalize_physics_profile_id(identity_physics_profile_id)
+        ):
             return refusal(
                 "refusal.physics_profile_mismatch",
                 "requested physics_profile_id does not match provided universe identity",
@@ -1586,7 +1590,9 @@ def create_session_spec(
     )
     if profile_error:
         return profile_error
-    if str(identity_payload.get("physics_profile_id", "")).strip() != str(selected_profile.get("physics_profile_id", "")).strip():
+    if normalize_physics_profile_id(str(identity_payload.get("physics_profile_id", "")).strip()) != normalize_physics_profile_id(
+        str(selected_profile.get("physics_profile_id", "")).strip()
+    ):
         return refusal(
             "refusal.physics_profile_mismatch",
             "universe identity physics_profile_id does not match selected profile",

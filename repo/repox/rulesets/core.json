@@ -360,6 +360,43 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-SERVER-TICK-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/server/runtime/tick_loop.py",
+        "tools/server/server_mvp0_probe.py",
+        "tools/server/tool_replay_server_window.py",
+        "docs/server/SERVER_MVP_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-server-tick-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-CONTRACTS-VALIDATED-ON-BOOT",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/server/server_boot.py",
+        "src/server/server_main.py",
+        "schema/server/server_config.schema",
+        "data/registries/server_config_registry.json",
+        "docs/server/SERVER_MVP_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-contracts-validated-on-boot",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-AUTHORITY-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src/server/server_boot.py",
+        "src/server/net/loopback_transport.py",
+        "tools/server/server_mvp0_probe.py",
+        "docs/server/SERVER_MVP_BASELINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-authority-required",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
       "severity": "WARN",
       "scope_paths": [

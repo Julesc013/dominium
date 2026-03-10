@@ -1255,7 +1255,32 @@ def build_control_proof_bundle_from_markers(
         "deterministic_fingerprint": "",
         "extensions": dict(extensions or {}),
     }
+    unschematized_hash_chains = {}
+    for key in sorted(
+        (
+            "compile_result_hash_chain",
+            "forced_expand_event_hash_chain",
+            "impact_event_hash_chain",
+            "logic_arbitration_state_hash_chain",
+            "logic_compile_policy_hash_chain",
+            "logic_debug_request_hash_chain",
+            "logic_debug_trace_hash_chain",
+            "logic_fault_state_hash_chain",
+            "logic_noise_decision_hash_chain",
+            "logic_protocol_event_hash_chain",
+            "logic_protocol_frame_hash_chain",
+            "logic_protocol_summary_hash_chain",
+            "logic_security_fail_hash_chain",
+        )
+    ):
+        token = str(payload.pop(key, "")).strip()
+        if token:
+            unschematized_hash_chains[str(key)] = token
     ext = dict(payload.get("extensions") or {})
+    if unschematized_hash_chains:
+        ext["official.control.unschematized_hash_chains"] = dict(
+            (key, unschematized_hash_chains[key]) for key in sorted(unschematized_hash_chains.keys())
+        )
     ext["decision_marker_count"] = int(len(markers))
     ext["decision_id_count"] = int(
         len(

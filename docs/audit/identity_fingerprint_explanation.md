@@ -42,3 +42,4 @@ Superseded By: none
   - 2026-03-10: refreshed for MOD-POLICY-0 mod trust/capability doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX mod-policy discipline additions, and MOD-POLICY-0 TestX additions
   - 2026-03-10: refreshed for EMB-1 MVP toolbelt registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX toolbelt discipline additions, and EMB-1 TestX additions
   - 2026-03-10: refreshed for EMB-2 locomotion polish registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX locomotion discipline additions, and EMB-2 TestX additions
+  - 2026-03-10: refreshed for SERVER-MVP-0 headless server doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX server-baseline discipline additions, and SERVER-MVP-0 TestX additions

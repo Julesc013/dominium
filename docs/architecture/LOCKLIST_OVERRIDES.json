@@ -161,6 +161,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the EMB-1 MVP toolbelt doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-10"
+    },
+    {
+      "id": "OVR-2026-03-10-SERVERMVP0-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Register the SERVER-MVP-0 headless server doctrine in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
+      "expires": "2026-04-10"
     }
   ]
 }

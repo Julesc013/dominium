@@ -7653,6 +7653,184 @@ def check_no_float_smoothing(repo_root):
     return violations
 
 
+def check_server_tick_deterministic(repo_root):
+    invariant_id = "INV-SERVER-TICK-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    tick_loop_rel = os.path.join("src", "server", "runtime", "tick_loop.py")
+    replay_tool_rel = os.path.join("tools", "server", "tool_replay_server_window.py")
+    probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
+    doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
+
+    violations = []
+    required_tokens = {
+        tick_loop_rel: (
+            "advance_authoritative_tick(",
+            "proof_anchor_interval_ticks",
+            "build_server_proof_anchor(",
+            "run_server_ticks(",
+        ),
+        replay_tool_rel: (
+            "Verify SERVER-MVP-0 deterministic tick, loopback, and proof-anchor replay.",
+            "verify_server_window_replay(",
+        ),
+        probe_rel: (
+            "DEFAULT_SERVER_TICKS = 8",
+            "run_server_window(",
+            '"proof_anchor_ticks"',
+            '"cross_platform_server_hash"',
+        ),
+        doc_rel: (
+            "simulation time advances only through canonical ticks",
+            "wall-clock is forbidden for authoritative scheduling",
+            "proof anchors are emitted every configured `proof_anchor_interval_ticks`",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing deterministic server-tick marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("time.time(", "datetime.utcnow(", "perf_counter(", "time.sleep(", "sleep(")
+    for rel in (tick_loop_rel, probe_rel):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: forbidden wall-clock token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_contracts_validated_on_boot(repo_root):
+    invariant_id = "INV-CONTRACTS-VALIDATED-ON-BOOT"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    server_boot_rel = os.path.join("src", "server", "server_boot.py")
+    server_main_rel = os.path.join("src", "server", "server_main.py")
+    doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
+    config_schema_rel = os.path.join("schema", "server", "server_config.schema")
+    config_registry_rel = os.path.join("data", "registries", "server_config_registry.json")
+
+    violations = []
+    required_tokens = {
+        server_boot_rel: (
+            "REFUSAL_SESSION_CONTRACT_MISMATCH",
+            "REFUSAL_SESSION_PACK_LOCK_MISMATCH",
+            "SessionSpec semantic_contract_registry_hash is missing for headless server boot",
+            "enforce_session_contract_bundle(",
+            "validate_saved_mod_policy(",
+            "overlay_conflict_policy_id",
+            "contract_bundle_hash",
+        ),
+        server_main_rel: (
+            "--pack-lock",
+            "--server-config-id",
+            "boot_server_runtime(",
+        ),
+        doc_rel: (
+            "`universe_contract_bundle_hash`",
+            "`semantic_contract_registry_hash`",
+            "`pack_lock_hash`",
+            "`mod_policy_id`",
+            "`overlay_conflict_policy_id`",
+            "`refusal.session.contract_mismatch`",
+            "`refusal.session.pack_lock_mismatch`",
+        ),
+        config_schema_rel: ('schema_id: dominium.schema.server.server_config', "proof_anchor_interval_ticks"),
+        config_registry_rel: ('"server_id": "server.mvp_default"', '"overlay_conflict_policy_id"', '"proof_anchor_interval_ticks"'),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing server boot-validation marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
+def check_authority_required(repo_root):
+    invariant_id = "INV-AUTHORITY-REQUIRED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    server_boot_rel = os.path.join("src", "server", "server_boot.py")
+    loopback_rel = os.path.join("src", "server", "net", "loopback_transport.py")
+    probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
+    doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
+
+    violations = []
+    required_tokens = {
+        server_boot_rel: (
+            "REFUSAL_CLIENT_UNAUTHORIZED",
+            "build_connection_authority_context(",
+            "submit_client_intent(",
+            "build_client_intent_envelope(",
+            "queue_intent_envelope(",
+            "incoming client intent must declare intent_id and target",
+        ),
+        loopback_rel: (
+            "build_connection_authority_context(",
+            '"authority_context": authority_context',
+            "join_client_midstream(",
+        ),
+        probe_rel: (
+            "unauthorized_intent_report(",
+            '"reason_code"',
+            '"refusal.client.unauthorized"',
+        ),
+        doc_rel: (
+            "Every incoming client intent must be wrapped in `AuthorityContext`.",
+            "`refusal.client.unauthorized`",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing authority-enforcement marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
 def check_refinement_budgeted(repo_root):
     invariant_id = "INV-REFINEMENT-BUDGETED"
     if is_override_active(repo_root, invariant_id):
@@ -10957,6 +11135,16 @@ def main() -> int:
             "checks": [
                 lambda: check_packs_must_declare_capabilities(repo_root),
                 lambda: check_mod_policy_enforced(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.server",
+            "scope_subtrees": ("src", "tools", "data", "schema", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_server_tick_deterministic(repo_root),
+                lambda: check_contracts_validated_on_boot(repo_root),
+                lambda: check_authority_required(repo_root),
             ],
         },
         {

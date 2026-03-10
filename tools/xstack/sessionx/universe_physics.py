@@ -22,6 +22,9 @@ NULL_BUNDLE_ID = "bundle.null"
 NULL_PHYSICS_PROFILE_ID = "physics.null"
 NULL_BUILTIN_PACK_ID = "pack.core.null_boot"
 NULL_BUILTIN_PATH = "builtin://null_boot"
+_PHYSICS_PROFILE_ID_ALIASES = {
+    "physics.default_realistic": "physics.default.realistic",
+}
 
 
 _NULL_TIME_MODEL = {
@@ -905,7 +908,9 @@ def is_null_bundle_profile(bundle_profile: dict) -> bool:
 
 def normalize_physics_profile_id(profile_id: str) -> str:
     token = str(profile_id or "").strip()
-    return token or NULL_PHYSICS_PROFILE_ID
+    if not token:
+        return NULL_PHYSICS_PROFILE_ID
+    return str(_PHYSICS_PROFILE_ID_ALIASES.get(token, token)).strip() or NULL_PHYSICS_PROFILE_ID
 
 
 def select_physics_profile(

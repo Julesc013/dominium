@@ -12,6 +12,7 @@ from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.compatx.versioning import resolve_payload_version
 
 from .common import refusal
+from .universe_physics import normalize_physics_profile_id
 from .net_protocol import build_proto_message, decode_proto_message, encode_proto_message
 
 
@@ -369,7 +370,9 @@ def _server_response(
         )
     if not expected_server_physics_profile_id:
         expected_server_physics_profile_id = requested_physics_profile_id
-    if requested_physics_profile_id != expected_server_physics_profile_id:
+    if normalize_physics_profile_id(requested_physics_profile_id) != normalize_physics_profile_id(
+        expected_server_physics_profile_id
+    ):
         return refuse(
             "refusal.physics_profile_mismatch",
             "client/server physics_profile_id mismatch",

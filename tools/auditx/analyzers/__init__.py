@@ -415,6 +415,8 @@ from analyzers import e388_missing_migration_plan_smell
 from analyzers import e389_missing_contract_bundle_smell
 from analyzers import e390_contract_mismatch_not_refused_smell
 from analyzers import e393_silent_conflict_resolution_smell
+from analyzers import e402_wallclock_tick_smell
+from analyzers import e403_intent_without_authority_smell
 
 
 ANALYZERS = (
@@ -833,6 +835,8 @@ ANALYZERS = (
     e389_missing_contract_bundle_smell,
     e390_contract_mismatch_not_refused_smell,
     e393_silent_conflict_resolution_smell,
+    e402_wallclock_tick_smell,
+    e403_intent_without_authority_smell,
 )
 
 
