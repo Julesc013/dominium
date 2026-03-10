@@ -1,0 +1,80 @@
+{
+  "baseline_id": "earth.mvp.baseline.v1",
+  "climate_snapshots": {
+    "season_a": {
+      "overlay_hash": "8710a110529a598195e876396ff99aba8d30f78b089d01542217756dfef24e3d",
+      "tick": 912
+    },
+    "season_b": {
+      "overlay_hash": "3f123d23f54122191b57a76c5e1d5acd2bfb8ec2236fd4aac3c4bd2abbbad81e",
+      "tick": 2737
+    }
+  },
+  "cross_platform_determinism_hash": "c943c49f5879eee97336cce3d1ff1d6181f5ba76dedfa3d1212695e150c02c01",
+  "degradation_summary": {
+    "debug_view_limit": 2,
+    "map_downsampled": true,
+    "throttled_debug_view_ids": [
+      "viewer.field_layers",
+      "viewer.geometry_layer",
+      "viewer.truth_anchor_hash"
+    ]
+  },
+  "description": "Deterministic EARTH-9 regression lock for traversal, time warp, views, local edits, and replay surfaces.",
+  "deterministic_fingerprint": "eba9d3eeaac25c0cac47b5fe4f58048363cd83ba7d2610c7ef1f5c9d9c687065",
+  "extensions": {
+    "generated_from": {
+      "physics_replay_path": "build/earth/earth_physics_replay.json",
+      "scenario_path": "build/earth/earth_mvp_stress_scenario.json",
+      "stress_report_path": "build/earth/earth_mvp_stress_report.json",
+      "view_replay_path": "build/earth/earth_view_replay.json"
+    },
+    "lock_scope": "earth_mvp_final_envelope"
+  },
+  "geometry_edit_effect_trace": {
+    "after_height_mm": 300,
+    "before_height_mm": 400,
+    "collision_cache_invalidated_entries": 0
+  },
+  "hydrology_flow_targets": {
+    "flow_hash": "e6599106b217c2efefbe0a412252028905d5c8916d70321022bee2823b22bc72",
+    "recomputed_tile_count": 1,
+    "window_hash": "e6599106b217c2efefbe0a412252028905d5c8916d70321022bee2823b22bc72"
+  },
+  "movement_collision_trace": {
+    "collision_final_state_hash": "6dd29fabe7a214b4a1d1eefc6634eb49d0d20cd8ec5c5033c7d04f12c7f7ee18",
+    "movement_trace_hash": "cf106240130739c6a90c1667a1a41e42ce1dd7965f16838a4e3a97dbd34ab7fe"
+  },
+  "physics_replay_fingerprint": "606423f411068440614eaf55b99ff46d8e96bdf5054e94d7f6adb485a12d6984",
+  "scenario_fingerprint": "da2e91c5badd6c643fc82c59d2345f77d3df144e4e162a3d056d9f1730376086",
+  "scenario_id": "scenario.earth_mvp.stress.55d9f017038c",
+  "schema_version": "1.0.0",
+  "stress_report_fingerprint": "748ba4ce1fb4ae69f86ffb0e801e6517518669aa279f2d4c7e68b377b22bb03d",
+  "tide_snapshot": {
+    "overlay_hash": "7baa4ad1cb7bd88eff6f58533351d8d5ce3848bab88023290373bdf9528fec27",
+    "window_hash": "7baa4ad1cb7bd88eff6f58533351d8d5ce3848bab88023290373bdf9528fec27"
+  },
+  "update_policy": {
+    "notes": "Baseline updates require rerunning EARTH-9 stress and replay surfaces under explicit EARTH-REGRESSION-UPDATE review.",
+    "required_commit_tag": "EARTH-REGRESSION-UPDATE"
+  },
+  "view_fingerprints": {
+    "day_lighting_view": "55d9f4613ae296790bf919e93221db336a132f9b14cdafcda08950b9db37eaf1",
+    "day_sky_view": "fa688ee7f8934265e4d75d27790aedbb42cfc21246366d3cc7da8b8837fe9c22",
+    "map_view": "6f1c57f39691df383d4259806556046639ce85b91698bf19d8ef901e10310104",
+    "night_lighting_view": "747665a5c6d62a62a7787667b2fd70f402dd985e38bddbd634fc822e290bb792",
+    "night_sky_view": "0a64c46631f42acc4b0933609b1800c08d3d843eabc3bb8dd68f43b19bbd5a53",
+    "twilight_lighting_view": "695bd6e148a5cae76ee00b19439d4cb5620109348219b7a88f1c26b2da20aab4",
+    "twilight_sky_view": "4fc5835c5d45e56badcdc6458e1b1488a8d29bf01a48780b59b54b3e9669d8e1",
+    "water_view": "2a718a93c707d3a10a60c008e7693cb0f155cb04c6a69eda98506ff12bbb74a2"
+  },
+  "view_replay_fingerprint": "468639801eb3e8e5f40f91006acf3c45b8cfc0a7cf2ecfc973f1ada86cc45f94",
+  "water_snapshot": {
+    "artifact_fingerprint": "2a718a93c707d3a10a60c008e7693cb0f155cb04c6a69eda98506ff12bbb74a2",
+    "water_hash": "e31513979d5ab8aad681b1c56df89d48a10042970fbb3e4f3732d5aab763aaae"
+  },
+  "wind_snapshot": {
+    "overlay_hash": "86291e66444f36e702d749dcb9eeafeb951511a766d2e9941ca1216b523a59ba",
+    "window_hash": "f1775175933829b5c4a1e013f977672ec3dca01ed693a43d1d0a964312d82dce"
+  }
+}
