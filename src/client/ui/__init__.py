@@ -1,12 +1,5 @@
 """Deterministic UX-0 viewer shell package."""
 
-from .viewer_shell import (
-    STATE_BOOT,
-    STATE_BUNDLE_SELECT,
-    STATE_SEED_SELECT,
-    STATE_SESSION_RUNNING,
-    build_viewer_shell_state,
-)
 from .teleport_controller import (
     RNG_UI_TELEPORT_RANDOM_STAR,
     build_teleport_plan,
@@ -16,6 +9,17 @@ from .teleport_controller import (
 )
 from .inspect_panels import build_inspection_panel_set
 from .map_views import build_map_view_set
+
+STATE_BOOT = "Boot"
+STATE_BUNDLE_SELECT = "BundleSelect"
+STATE_SEED_SELECT = "SeedSelect"
+STATE_SESSION_RUNNING = "SessionRunning"
+
+
+def build_viewer_shell_state(*args, **kwargs):
+    from .viewer_shell import build_viewer_shell_state as impl
+
+    return impl(*args, **kwargs)
 
 __all__ = [
     "RNG_UI_TELEPORT_RANDOM_STAR",

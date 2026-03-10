@@ -5,10 +5,20 @@ from __future__ import annotations
 from typing import Mapping
 
 from src.client.render import build_render_model
-from src.embodiment import resolve_authorized_lens_profile, resolve_lens_camera_state
+from src.embodiment import (
+    build_cut_trench_task,
+    build_fill_at_cursor_task,
+    build_logic_probe_task,
+    build_logic_trace_task,
+    build_mine_at_cursor_task,
+    build_scan_result,
+    build_teleport_tool_surface,
+    build_toolbelt_availability_surface,
+    resolve_authorized_lens_profile,
+    resolve_lens_camera_state,
+)
 from src.client.ui.inspect_panels import build_inspection_panel_set
 from src.client.ui.map_views import build_map_view_set, debug_view_limit_for_compute_profile
-from src.client.ui.teleport_controller import build_teleport_plan
 from src.geo import build_position_ref
 from src.worldgen.earth.lighting import build_lighting_view_surface
 from src.worldgen.earth.sky import build_sky_view_surface
@@ -92,6 +102,10 @@ def _truth_hash_anchor(perceived_model: Mapping[str, object] | None) -> str:
     return str(_as_map(_as_map(perceived_model).get("truth_overlay")).get("state_hash_anchor", "")).strip()
 
 
+def _tool_requests(extensions: Mapping[str, object] | None) -> dict:
+    return _as_map(_as_map(extensions).get("tool_requests"))
+
+
 def _universe_identity_from_bootstrap(bootstrap: Mapping[str, object] | None) -> dict:
     session_spec = _as_map(_as_map(bootstrap).get("session_spec"))
     profile_bundle = _as_map(_as_map(bootstrap).get("profile_bundle"))
@@ -124,12 +138,29 @@ def _default_authority_context(authority_mode: str) -> dict:
     if mode == "dev":
         entitlements.extend(
             [
+                "entitlement.admin",
+                "entitlement.control.admin",
                 "lens.nondiegetic.access",
                 "entitlement.control.lens_override",
                 "entitlement.inspect",
                 "entitlement.debug_view",
                 "entitlement.teleport",
+                "entitlement.tool.equip",
+                "entitlement.tool.use",
                 "entitlement.observer.truth",
+                "ent.tool.terrain_edit",
+                "ent.tool.scan",
+                "ent.tool.logic_probe",
+                "ent.tool.logic_trace",
+                "ent.tool.teleport",
+            ]
+        )
+    else:
+        entitlements.extend(
+            [
+                "entitlement.tool.equip",
+                "entitlement.tool.use",
+                "ent.tool.scan",
             ]
         )
     return {
@@ -848,9 +879,11 @@ def build_viewer_shell_state(
     )
     current_stage = _current_stage(stage_trace)
     current_tick = int(max(0, _as_int(_as_map(_as_map(perceived_model).get("time_state")).get("tick", 0), 0)))
-    teleport_plan = (
-        build_teleport_plan(
+    tool_requests = _tool_requests(extensions)
+    teleport_tool_surface = (
+        build_teleport_tool_surface(
             repo_root=str(repo_root),
+            authority_context=runtime_authority,
             command=str(teleport_command),
             universe_seed=str(_as_map(bootstrap.get("session_spec")).get("universe_seed", "")).strip(),
             authority_mode=str(authority_mode),
@@ -858,10 +891,15 @@ def build_viewer_shell_state(
             pack_lock_path=str(pack_lock_path),
             teleport_counter=int(max(0, int(teleport_counter))),
             candidate_system_rows=candidate_system_rows,
+            surface_target_cell_key=_as_map(_as_map(selection).get("geo_cell_key")) or _as_map(_as_map(selection).get("tile_cell_key")),
+            current_tick=int(current_tick),
         )
         if str(teleport_command or "").strip()
-        else {"result": "complete", "process_sequence": [], "target_object_id": ""}
+        else {"result": "complete", "tool_id": "tool.teleport", "teleport_plan": {"result": "complete", "process_sequence": [], "target_object_id": ""}, "process_sequence": []}
     )
+    teleport_plan = dict(_as_map(teleport_tool_surface).get("teleport_plan") or {})
+    if not teleport_plan:
+        teleport_plan = {"result": "complete", "process_sequence": [], "target_object_id": ""}
     control_surface = _build_control_surface(
         bootstrap=bootstrap,
         authority_context=runtime_authority,
@@ -876,6 +914,101 @@ def build_viewer_shell_state(
         requested_debug_view_ids=requested_debug_view_ids,
         compute_profile_id=str(compute_profile_id or "compute.default").strip() or "compute.default",
     )
+    toolbelt_availability = build_toolbelt_availability_surface(
+        authority_context=runtime_authority,
+        has_physical_access=bool(selection or inspection_snapshot),
+    )
+    terrain_request = _as_map(tool_requests.get("terrain_edit"))
+    terrain_tool_surface = {}
+    terrain_kind = str(terrain_request.get("kind", "")).strip()
+    if terrain_kind == "mine":
+        terrain_tool_surface = build_mine_at_cursor_task(
+            authority_context=runtime_authority,
+            subject_id=str(terrain_request.get("subject_id", "")).strip() or str(controller_id or "").strip() or "subject.player",
+            selection=selection,
+            volume_amount=int(max(1, _as_int(terrain_request.get("volume_amount", 1), 1))),
+            target_cell_keys=terrain_request.get("target_cell_keys"),
+            geometry_edit_policy_id=str(terrain_request.get("geometry_edit_policy_id", "geo.edit.default")).strip() or "geo.edit.default",
+        )
+    elif terrain_kind == "fill":
+        terrain_tool_surface = build_fill_at_cursor_task(
+            authority_context=runtime_authority,
+            subject_id=str(terrain_request.get("subject_id", "")).strip() or str(controller_id or "").strip() or "subject.player",
+            selection=selection,
+            volume_amount=int(max(1, _as_int(terrain_request.get("volume_amount", 1), 1))),
+            material_id=str(terrain_request.get("material_id", "material.soil_fill")).strip() or "material.soil_fill",
+            target_cell_keys=terrain_request.get("target_cell_keys"),
+            geometry_edit_policy_id=str(terrain_request.get("geometry_edit_policy_id", "geo.edit.default")).strip() or "geo.edit.default",
+        )
+    elif terrain_kind == "cut":
+        terrain_tool_surface = build_cut_trench_task(
+            authority_context=runtime_authority,
+            subject_id=str(terrain_request.get("subject_id", "")).strip() or str(controller_id or "").strip() or "subject.player",
+            path_stub=terrain_request.get("path_stub"),
+            volume_amount=int(max(1, _as_int(terrain_request.get("volume_amount", 1), 1))),
+            selection=selection,
+            geometry_edit_policy_id=str(terrain_request.get("geometry_edit_policy_id", "geo.edit.default")).strip() or "geo.edit.default",
+        )
+    scan_result = (
+        build_scan_result(
+            authority_context=runtime_authority,
+            selection=selection,
+            inspection_snapshot=inspection_snapshot,
+            field_values=field_values,
+            property_origin_result=property_origin_result,
+            has_physical_access=bool(selection or inspection_snapshot),
+        )
+        if selection or inspection_snapshot
+        else {}
+    )
+    logic_probe_request = _as_map(tool_requests.get("logic_probe"))
+    logic_probe_surface = (
+        build_logic_probe_task(
+            authority_context=runtime_authority,
+            subject_id=str(logic_probe_request.get("subject_id", "")).strip() or str(_as_map(selection).get("object_id", "")).strip() or "subject.logic",
+            measurement_point_id=str(logic_probe_request.get("measurement_point_id", "")).strip(),
+            network_id=str(logic_probe_request.get("network_id", "")).strip(),
+            element_id=str(logic_probe_request.get("element_id", "")).strip(),
+            port_id=str(logic_probe_request.get("port_id", "")).strip(),
+        )
+        if logic_probe_request
+        else {}
+    )
+    logic_trace_request = _as_map(tool_requests.get("logic_trace"))
+    logic_trace_surface = (
+        build_logic_trace_task(
+            authority_context=runtime_authority,
+            subject_id=str(logic_trace_request.get("subject_id", "")).strip() or str(_as_map(selection).get("object_id", "")).strip() or "subject.logic",
+            measurement_point_ids=logic_trace_request.get("measurement_point_ids"),
+            targets=logic_trace_request.get("targets"),
+            current_tick=int(current_tick),
+            duration_ticks=int(max(1, _as_int(logic_trace_request.get("duration_ticks", 1), 1))),
+            sampling_policy_id=str(logic_trace_request.get("sampling_policy_id", "debug.sample.default")).strip() or "debug.sample.default",
+        )
+        if logic_trace_request
+        else {}
+    )
+    toolbelt_surface = {
+        "result": "complete",
+        "availability": dict(toolbelt_availability),
+        "terrain_tool_surface": dict(terrain_tool_surface),
+        "scan_result": dict(scan_result),
+        "logic_probe_surface": dict(logic_probe_surface),
+        "logic_trace_surface": dict(logic_trace_surface),
+        "teleport_tool_surface": dict(teleport_tool_surface),
+        "command_registry": {
+            "commands": [
+                "tool mine",
+                "tool fill",
+                "tool scan",
+                "tool probe",
+                "tool trace",
+                "tool tp",
+            ]
+        },
+        "deterministic_fingerprint": "",
+    }
+    toolbelt_surface["deterministic_fingerprint"] = canonical_sha256(dict(toolbelt_surface, deterministic_fingerprint=""))
     inspection_surfaces = build_inspection_panel_set(
         perceived_model=perceived_model,
         target_semantic_id=str(_as_map(selection).get("object_id", "")).strip()
@@ -886,6 +1019,9 @@ def build_viewer_shell_state(
         property_origin_result=property_origin_result,
         field_values=field_values,
         body_state=body_state,
+        scan_result=scan_result,
+        logic_probe_surface=logic_probe_surface,
+        logic_trace_surface=logic_trace_surface,
     )
     observer_surface_artifact = _resolve_sky_observer_surface_artifact(
         selection=selection,
@@ -1052,6 +1188,7 @@ def build_viewer_shell_state(
         "control_surface": dict(control_surface),
         "render_contract": render_contract,
         "teleport_plan": dict(teleport_plan),
+        "toolbelt_surface": dict(toolbelt_surface),
         "inspection_surfaces": dict(inspection_surfaces),
         "map_views": dict(map_views),
         "sky_view_surface": dict(sky_view_surface),
@@ -1084,6 +1221,7 @@ def build_viewer_shell_state(
             "consumes_illumination_view_artifacts": True,
             "consumes_water_view_artifacts": True,
             "consumes_refinement_status_view": True,
+            "consumes_toolbelt_surface": True,
             "forbidden_truth_inputs": [
                 "truth_model",
                 "universe_state",
