@@ -16,6 +16,7 @@ if REPO_ROOT_HINT not in os.sys.path:
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
+from src.meta_extensions_engine import normalize_extensions_tree
 
 
 SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
@@ -36,7 +37,7 @@ CONTRACT_FIELD_ORDER: Tuple[Tuple[str, str], ...] = (
 
 def _read_json(path: str) -> Tuple[dict, str]:
     try:
-        payload = json.load(open(path, "r", encoding="utf-8"))
+        payload = normalize_extensions_tree(json.load(open(path, "r", encoding="utf-8")))
     except (OSError, ValueError):
         return {}, "invalid json: {}".format(path.replace("\\", "/"))
     if not isinstance(payload, dict):

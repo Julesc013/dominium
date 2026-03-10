@@ -14,7 +14,7 @@
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "de184bac077261438ee1ceb836bc49dfe58a1ab8e5ef39528cb6d162f05305a2"
+      "sha256": "70d19da669dcfe354af194762cf43a3869fc906bd7679c0d0e5567ab93771820"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
@@ -119,6 +119,10 @@
     {
       "path": "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
       "sha256": "da0d21264d0e6790d42233a88cc9bad14a4f2d74ebf761ce95ba1c22a5a390d9"
+    },
+    {
+      "path": "docs/meta/EXTENSION_DISCIPLINE.md",
+      "sha256": "c32de5c38e2edaf11b03ebc1ddb11496bb6a80a3860b85b50a9abbb7099b202a"
     },
     {
       "path": "docs/architecture/ANTI_ENTROPY_RULES.md",

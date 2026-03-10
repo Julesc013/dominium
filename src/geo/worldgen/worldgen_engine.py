@@ -9,6 +9,7 @@ from functools import lru_cache
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
+from src.meta_extensions_engine import normalize_extensions_tree
 
 from src.fields import build_field_cell, build_field_layer
 from src.geo.edit import build_geometry_cell_state
@@ -58,7 +59,7 @@ def _registry_payload(rel_path: str) -> dict:
     abs_path = os.path.join(_repo_root(), str(rel_path).replace("/", os.sep))
     try:
         with open(abs_path, "r", encoding="utf-8") as handle:
-            return dict(json.load(handle) or {})
+            return dict(normalize_extensions_tree(json.load(handle)) or {})
     except (OSError, ValueError, TypeError):
         return {}
 

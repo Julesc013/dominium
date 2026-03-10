@@ -112,6 +112,18 @@ REQUIRED_SEMANTIC_CONTRACT_IDS = (
     "contract.geo.partition.v1",
     "contract.appshell.lifecycle.v1",
 )
+EXTENSION_DISCIPLINE_DOC_REL = os.path.join("docs", "meta", "EXTENSION_DISCIPLINE.md")
+EXTENSION_MIGRATION_NOTES_REL = os.path.join("docs", "meta", "EXTENSION_MIGRATION_NOTES.md")
+EXTENSION_INTERPRETATION_REGISTRY_REL = os.path.join("data", "registries", "extension_interpretation_registry.json")
+EXTENSION_ENGINE_REL = os.path.join("src", "meta_extensions_engine.py")
+EXTENSION_ENGINE_WRAPPER_REL = os.path.join("src", "meta", "extensions", "extensions_engine.py")
+CANONICAL_JSON_REL = os.path.join("tools", "xstack", "compatx", "canonical_json.py")
+SCHEMA_REGISTRY_REL = os.path.join("tools", "xstack", "compatx", "schema_registry.py")
+COMPAT_VALIDATOR_REL = os.path.join("tools", "xstack", "compatx", "validator.py")
+SESSION_COMMON_REL = os.path.join("tools", "xstack", "sessionx", "common.py")
+DISTRIBUTION_LIB_REL = os.path.join("tools", "distribution", "distribution_lib.py")
+PACK_LOADER_REL = os.path.join("tools", "xstack", "pack_loader", "loader.py")
+EXTENSION_LITERAL_RE = re.compile(r'extensions\s*\.\s*get\(\s*["\']([^"\']+)["\']')
 CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
 PROCESS_REGISTRY_REL = os.path.join("data", "registries", "process_registry.json")
 PROCESS_SCHEMA_ID = "dominium.schema.process"
@@ -3926,6 +3938,44 @@ def _semantic_contract_registry_ids(repo_root):
     return payload, out
 
 
+def _extension_interpretation_registry_rows(repo_root):
+    path = os.path.join(repo_root, EXTENSION_INTERPRETATION_REGISTRY_REL.replace("/", os.sep))
+    payload = _load_json_file(path)
+    if not isinstance(payload, dict):
+        return {}, {}
+    rows = (((payload.get("record") or {}).get("extension_interpretations")) or [])
+    out = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        extension_key = str(row.get("extension_key", "")).strip()
+        if extension_key:
+            out[extension_key] = row
+        legacy_alias = str(dict(row.get("extensions") or {}).get("legacy_alias_for", "")).strip()
+        if legacy_alias:
+            out[legacy_alias] = row
+    return payload, out
+
+
+def _extension_get_literals(repo_root):
+    roots = (
+        os.path.join(repo_root, "src"),
+        os.path.join(repo_root, "tools"),
+    )
+    out = []
+    for path in iter_files(roots, DEFAULT_EXCLUDES, [".py"]):
+        rel = normalize_path(repo_rel(repo_root, path))
+        text = read_text(path) or ""
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            if "extensions" not in line or ".get(" not in line:
+                continue
+            match = EXTENSION_LITERAL_RE.search(line)
+            if not match:
+                continue
+            out.append((rel, line_no, str(match.group(1)).strip()))
+    return sorted(out)
+
+
 def check_contract_pinned_in_universe(repo_root):
     invariant_id = "INV-CONTRACT-PINNED-IN-UNIVERSE"
     if is_override_active(repo_root, invariant_id):
@@ -4147,6 +4197,117 @@ def check_replay_refuses_contract_mismatch(repo_root):
         for token in ("enforce_session_contract_bundle(", '"semantic_contract_proof_bundle"', '"contract_bundle_hash"'):
             if token not in text:
                 violations.append("{}: {} missing token {}".format(invariant_id, rel, token))
+    return violations
+
+
+def check_extensions_namespaced(repo_root):
+    invariant_id = "INV-EXTENSIONS-NAMESPACED"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_paths = (
+        EXTENSION_DISCIPLINE_DOC_REL,
+        EXTENSION_MIGRATION_NOTES_REL,
+        EXTENSION_INTERPRETATION_REGISTRY_REL,
+        EXTENSION_ENGINE_REL,
+        EXTENSION_ENGINE_WRAPPER_REL,
+    )
+    for rel in required_paths:
+        abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+    if violations:
+        return violations
+
+    doc_text = read_text(os.path.join(repo_root, EXTENSION_DISCIPLINE_DOC_REL.replace("/", os.sep))) or ""
+    for token in ("official.*", "mod.<pack_id>.*", "dev.*", "Unknown keys have no authoritative effect in `extensions.default`."):
+        if token not in doc_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_DISCIPLINE_DOC_REL, token))
+
+    migration_text = read_text(os.path.join(repo_root, EXTENSION_MIGRATION_NOTES_REL.replace("/", os.sep))) or ""
+    for token in ("mod.unknown.<key>", "extensions.default", "extensions.strict"):
+        if token not in migration_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_MIGRATION_NOTES_REL, token))
+
+    engine_text = read_text(os.path.join(repo_root, EXTENSION_ENGINE_REL.replace("/", os.sep))) or ""
+    for token in ("legacy_alias_for_key(", "normalize_extensions_map(", "normalize_extensions_tree(", "DEFAULT_EXTENSION_POLICY_ID"):
+        if token not in engine_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_ENGINE_REL, token))
+
+    wrapper_text = read_text(os.path.join(repo_root, EXTENSION_ENGINE_WRAPPER_REL.replace("/", os.sep))) or ""
+    for token in ("from src.meta_extensions_engine import (", "extensions_get", "normalize_extensions_tree"):
+        if token not in wrapper_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_ENGINE_WRAPPER_REL, token))
+
+    payload, rows = _extension_interpretation_registry_rows(repo_root)
+    if str(payload.get("schema_id", "")).strip() != "dominium.registry.extension_interpretation_registry":
+        violations.append("{}: {} has unexpected schema_id".format(invariant_id, EXTENSION_INTERPRETATION_REGISTRY_REL))
+    if not rows:
+        violations.append("{}: {} missing extension interpretation rows".format(invariant_id, EXTENSION_INTERPRETATION_REGISTRY_REL))
+    for key, row in sorted(rows.items()):
+        if key != str(row.get("extension_key", "")).strip():
+            continue
+        if not key.startswith(("official.", "dev.", "mod.")):
+            violations.append("{}: registry extension_key is not namespaced: {}".format(invariant_id, key))
+            break
+    return violations
+
+
+def check_no_extension_interpretation_without_registry(repo_root):
+    invariant_id = "INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    payload, rows = _extension_interpretation_registry_rows(repo_root)
+    if not rows:
+        return ["{}: missing extension interpretation registry entries".format(invariant_id)]
+
+    for rel, line_no, key in _extension_get_literals(repo_root):
+        if key not in rows:
+            violations.append(
+                "{}: {}:{} interprets extension key '{}' without registry entry".format(
+                    invariant_id,
+                    rel,
+                    line_no,
+                    key,
+                )
+            )
+            break
+
+    engine_text = read_text(os.path.join(repo_root, EXTENSION_ENGINE_REL.replace("/", os.sep))) or ""
+    for token in ("extensions_get(", "load_extension_interpretation_registry(", "normalize_extension_interpretation_rows("):
+        if token not in engine_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, EXTENSION_ENGINE_REL, token))
+    return violations
+
+
+def check_extensions_deterministic_serialization(repo_root):
+    invariant_id = "INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_tokens = {
+        CANONICAL_JSON_REL: ("normalize_extensions_tree(",),
+        SCHEMA_REGISTRY_REL: ("normalize_extensions_tree(",),
+        COMPAT_VALIDATOR_REL: ("validate_extensions_tree(", "extension_policy_id"),
+        SESSION_COMMON_REL: ("normalize_extensions_tree(",),
+        DISTRIBUTION_LIB_REL: ("normalize_extensions_tree(",),
+        PACK_LOADER_REL: ("normalize_extensions_tree(",),
+        "src/geo/overlay/overlay_merge_engine.py": ("normalize_extensions_tree(",),
+        "src/geo/worldgen/worldgen_engine.py": ("normalize_extensions_tree(",),
+        EXTENSION_DISCIPLINE_DOC_REL: ("serialized in sorted key order", "Deterministic normalization must happen before canonical hashing and fingerprinting."),
+    }
+    for rel_path, tokens in required_tokens.items():
+        text = read_text(os.path.join(repo_root, rel_path.replace("/", os.sep))) or ""
+        if not text:
+            violations.append("{}: missing {}".format(invariant_id, rel_path))
+            continue
+        for token in tokens:
+            if token not in text:
+                violations.append("{}: {} missing token {}".format(invariant_id, rel_path, token))
     return violations
 
 
@@ -9796,6 +9957,9 @@ def main() -> int:
                 lambda: check_universe_must_have_contract_bundle(repo_root),
                 lambda: check_session_must_reference_contract_hash(repo_root),
                 lambda: check_replay_refuses_contract_mismatch(repo_root),
+                lambda: check_extensions_namespaced(repo_root),
+                lambda: check_no_extension_interpretation_without_registry(repo_root),
+                lambda: check_extensions_deterministic_serialization(repo_root),
             ],
         },
     ]

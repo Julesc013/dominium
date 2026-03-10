@@ -282,6 +282,49 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-EXTENSIONS-NAMESPACED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/meta/EXTENSION_DISCIPLINE.md",
+        "docs/meta/EXTENSION_MIGRATION_NOTES.md",
+        "data/registries/extension_interpretation_registry.json",
+        "src/meta_extensions_engine.py",
+        "src/meta/extensions/extensions_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-extensions-namespaced",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "src",
+        "tools",
+        "data/registries/extension_interpretation_registry.json",
+        "src/meta_extensions_engine.py",
+        "src/meta/extensions/extensions_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-extension-interpretation-without-registry",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION",
+      "severity": "FAIL",
+      "scope_paths": [
+        "tools/xstack/compatx/canonical_json.py",
+        "tools/xstack/compatx/schema_registry.py",
+        "tools/xstack/compatx/validator.py",
+        "tools/xstack/sessionx/common.py",
+        "tools/distribution/distribution_lib.py",
+        "tools/xstack/pack_loader/loader.py",
+        "src/geo/overlay/overlay_merge_engine.py",
+        "src/geo/worldgen/worldgen_engine.py",
+        "docs/meta/EXTENSION_DISCIPLINE.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-extensions-deterministic-serialization",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
       "severity": "WARN",
       "scope_paths": [

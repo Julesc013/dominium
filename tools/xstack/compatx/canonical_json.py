@@ -6,11 +6,14 @@ import hashlib
 import json
 from typing import Any
 
+from src.meta_extensions_engine import normalize_extensions_tree
+
 
 def canonical_json_text(value: Any) -> str:
     """Return canonical JSON text with stable key ordering and compact separators."""
+    normalized = normalize_extensions_tree(value)
     return json.dumps(
-        value,
+        normalized,
         ensure_ascii=False,
         separators=(",", ":"),
         sort_keys=True,

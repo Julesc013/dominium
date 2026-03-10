@@ -127,6 +127,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE`
 - `INV-SESSION-MUST-REFERENCE-CONTRACT-HASH`
 - `INV-REPLAY-REFUSES-CONTRACT-MISMATCH`
+- `INV-EXTENSIONS-NAMESPACED`
+- `INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY`
+- `INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-MVP-PACKS-MINIMAL`
@@ -451,6 +454,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when replay/load enforcement no longer routes through the universe contract enforcer.
 - Fails when `refusal.contract.missing_bundle` or `refusal.contract.mismatch` markers disappear from the enforcement path.
 - Prevents silent continuation under mismatched semantic contracts.
+
+### INV-EXTENSIONS-NAMESPACED
+
+- Fails when the canonical extension-discipline doctrine, migration note, registry, or runtime engine is missing.
+- Fails when registry-declared interpreted keys are not namespaced.
+- Preserves explicit namespace ownership for future-compatible extension authoring while keeping legacy aliases documented.
+
+### INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY
+
+- Fails when interpreted `extensions.get("...")` keys appear in governed `src/` or `tools/` code without a matching registry declaration.
+- Fails when the registry-backed extension accessor surface disappears.
+- Prevents ad hoc behavior from slipping through undocumented extension keys.
+
+### INV-EXTENSIONS-DETERMINISTIC-SERIALIZATION
+
+- Fails when canonical JSON, schema validation, session/profile loading, pack loading, overlay loading, or worldgen loading no longer normalize extensions before hashing and validation.
+- Fails when extension-discipline doctrine no longer states sorted-key deterministic serialization requirements.
+- Preserves cross-platform stable hashing and deterministic ignore semantics for forward-compatible extensions.
 
 ### INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS
 

@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Tuple
 from .canonical_json import canonical_sha256
 from .schema_registry import load_schema, load_version_registry, normalize_schema_name
 from .versioning import resolve_payload_version
+from src.meta_extensions_engine import DEFAULT_EXTENSION_POLICY_ID, validate_extensions_tree
 
 
 def _norm(path: str) -> str:
@@ -197,6 +198,8 @@ def validate_instance(
     schema_name: str,
     payload: Any,
     strict_top_level: bool = True,
+    extension_policy_id: str = DEFAULT_EXTENSION_POLICY_ID,
+    extension_registry_payload: Dict[str, Any] | None = None,
 ) -> Dict[str, Any]:
     key = normalize_schema_name(schema_name)
     schema, schema_path, schema_error = load_schema(repo_root, key)
@@ -251,6 +254,15 @@ def validate_instance(
     if isinstance(schema, dict):
         _validate_node(schema, payload, "$", errors, strict_top_level=bool(strict_top_level))
 
+    extension_report = validate_extensions_tree(
+        owner_schema_id=key,
+        payload=payload,
+        registry_payload=extension_registry_payload,
+        policy_mode=extension_policy_id,
+    )
+    for row in list(extension_report.get("errors") or []):
+        errors.append(_error(str(row.get("code", "extension_error")), str(row.get("path", "$")), str(row.get("message", ""))))
+
     deterministic_errors = _deterministic_errors(errors)
     payload_hash = canonical_sha256(payload)
     return {
@@ -260,6 +272,7 @@ def validate_instance(
         "payload_hash": payload_hash,
         "valid": len(deterministic_errors) == 0,
         "errors": deterministic_errors,
+        "warnings": list(extension_report.get("warnings") or []),
     }
 
 

@@ -6,6 +6,8 @@ import json
 import os
 from typing import Dict, Tuple
 
+from src.meta_extensions_engine import normalize_extensions_tree
+
 
 SCHEMA_DIR_REL = "schemas"
 VERSION_REGISTRY_REL = os.path.join("tools", "xstack", "compatx", "version_registry.json")
@@ -20,7 +22,7 @@ def _read_json(path: str) -> Tuple[dict, str]:
         return {}, "missing file: {}".format(_norm(path))
     try:
         with open(path, "r", encoding="utf-8") as handle:
-            payload = json.load(handle)
+            payload = normalize_extensions_tree(json.load(handle))
     except (OSError, ValueError):
         return {}, "invalid json: {}".format(_norm(path))
     if not isinstance(payload, dict):

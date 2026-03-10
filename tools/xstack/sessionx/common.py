@@ -8,6 +8,7 @@ import os
 from typing import Dict, Tuple
 
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
+from src.meta_extensions_engine import normalize_extensions_tree
 
 
 DEFAULT_COMPATIBILITY_VERSION = "1.0.0"
@@ -30,7 +31,7 @@ def ensure_dir(path: str) -> None:
 
 def read_json_object(path: str) -> Tuple[dict, str]:
     try:
-        payload = json.load(open(path, "r", encoding="utf-8"))
+        payload = normalize_extensions_tree(json.load(open(path, "r", encoding="utf-8")))
     except (OSError, ValueError):
         return {}, "invalid json"
     if not isinstance(payload, dict):

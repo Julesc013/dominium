@@ -6,6 +6,7 @@ import json
 import os
 from typing import Dict, List, Tuple
 
+from src.meta_extensions_engine import normalize_extensions_tree
 from tools.xstack.compatx.validator import validate_instance
 
 from .constants import (
@@ -66,7 +67,7 @@ def _scan_forbidden_files(pack_dir: str, pack_id: str, repo_root: str) -> List[D
 def _read_manifest(path: str) -> Tuple[dict, str]:
     try:
         with open(path, "r", encoding="utf-8") as handle:
-            payload = json.load(handle)
+            payload = normalize_extensions_tree(json.load(handle))
     except (OSError, ValueError):
         return {}, "invalid json"
     if not isinstance(payload, dict):
