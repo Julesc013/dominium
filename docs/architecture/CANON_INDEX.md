@@ -303,6 +303,7 @@ execution artifacts and are not authoritative.
 - `docs/policies/LONG_TERM_SUPPORT_POLICY.md`
 - `docs/policies/RENDER_BACKEND_LIFECYCLE.md`
 - `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`
+- `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`
 - `docs/server/SERVER_SETTINGS.md`
 - `docs/settings/SETTINGS_OWNERSHIP_MODEL.md`
@@ -332,6 +333,8 @@ execution artifacts and are not authoritative.
 ## DERIVED
 - `docs/audit/MOD_POLICY0_RETRO_AUDIT.md`
 - `docs/audit/MOD_POLICY_BASELINE.md`
+- `docs/audit/LOCAL_SINGLEPLAYER_BASELINE.md`
+- `docs/audit/SERVER_MVP1_RETRO_AUDIT.md`
 - `docs/audit/SERVER_MVP0_RETRO_AUDIT.md`
 - `docs/audit/SERVER_MVP_BASELINE_REPORT.md`
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
