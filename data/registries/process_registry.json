@@ -4689,6 +4689,103 @@
     },
     {
       "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical MW-4 refinement enqueue process; records deterministic refinement requests for later budgeted execution.",
+      "determinism_notes": [
+        "deterministic-order",
+        "canonical-tick-only",
+        "process-only-mutation",
+        "queue-bounded"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.refinement_request_enqueue)",
+        "source": "MW4-3",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Refinement Request Enqueue",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "refinement_request_record",
+          "ref_id": "dominium.schema.worldgen.refinement_request_record@1.0.0",
+          "ref_type": "schema"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "refinement_request_records",
+          "ref_id": "dominium.state.refinement_request_records",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.refinement_request_enqueue",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
+      "affected_fields": [],
+      "deprecated": false,
+      "description": "Canonical MW-4 refinement scheduler tick; drains queued refinement requests under deterministic compute budgets and updates derived refinement cache state.",
+      "determinism_notes": [
+        "deterministic-order",
+        "canonical-tick-only",
+        "process-only-mutation",
+        "budgeted-degrade",
+        "cache-keyed-by-contracts"
+      ],
+      "extensions": {
+        "implementation_ref": "tools/xstack/sessionx/process_runtime.py::execute_intent(process.refinement_scheduler_tick)",
+        "source": "MW4-3",
+        "tier": "P1"
+      },
+      "failure_modes": [
+        "PROCESS_INPUT_INVALID"
+      ],
+      "human_name": "Refinement Scheduler Tick",
+      "inputs": [
+        {
+          "io_tags": [],
+          "name": "refinement_request_records",
+          "ref_id": "dominium.state.refinement_request_records",
+          "ref_type": "state"
+        }
+      ],
+      "outputs": [
+        {
+          "io_tags": [],
+          "name": "worldgen_results",
+          "ref_id": "dominium.state.worldgen_results",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "refinement_cache_entries",
+          "ref_id": "dominium.state.refinement_cache_entries",
+          "ref_type": "state"
+        },
+        {
+          "io_tags": [],
+          "name": "refinement_deferred_rows",
+          "ref_id": "dominium.state.refinement_deferred_rows",
+          "ref_type": "state"
+        }
+      ],
+      "owning_layer": "game",
+      "process_id": "process.refinement_scheduler_tick",
+      "required_law_checks": [],
+      "rng_streams_used": [],
+      "version_introduced": 1
+    },
+    {
+      "affected_assemblies": [],
       "affected_fields": [
         "field.pollution.smoke_particulate_concentration",
         "field.pollution.co2_stub_concentration",

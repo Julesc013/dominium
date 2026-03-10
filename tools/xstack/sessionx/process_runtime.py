@@ -734,6 +734,24 @@ from src.geo.overlay import (
     overlay_proof_surface,
     validate_overlay_manifest_trust,
 )
+from src.worldgen.refinement.refinement_cache import (
+    DEFAULT_REFINEMENT_CACHE_LIMITS,
+    normalize_refinement_cache_entry_rows,
+    touch_refinement_cache_entries,
+    evict_refinement_cache_entries,
+)
+from src.worldgen.refinement.refinement_scheduler import (
+    DEFAULT_REFINEMENT_COST_UNITS,
+    DEFAULT_REFINEMENT_QUEUE_CAPACITY,
+    EXPLAIN_CONTRACT_MISMATCH_CACHE,
+    build_refinement_deferred_artifact,
+    build_refinement_request_record,
+    build_scheduler_plan,
+    merge_refinement_request_record_rows,
+    normalize_refinement_request_record,
+    normalize_refinement_request_record_rows,
+    refinement_record_to_worldgen_request,
+)
 from src.worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
 from src.worldgen.mw.mw_system_refiner_l2 import (
     normalize_planet_basic_artifact_rows,
@@ -874,6 +892,8 @@ PROCESS_ENTITLEMENT_DEFAULTS = {
     "process.time_adjust": "entitlement.time_control",
     "process.time_branch_from_checkpoint": "entitlement.control.admin",
     "process.inspect_generate_snapshot": "entitlement.inspect",
+    "process.refinement_request_enqueue": "session.boot",
+    "process.refinement_scheduler_tick": "session.boot",
     "process.region_management_tick": "session.boot",
     "process.region_expand": "session.boot",
     "process.region_collapse": "session.boot",
@@ -4063,6 +4083,128 @@ def _ensure_worldgen_surface_tile_artifact_rows(state: dict) -> List[dict]:
     rows = normalize_surface_tile_artifact_rows(state.get("worldgen_surface_tile_artifacts"))
     state["worldgen_surface_tile_artifacts"] = [dict(row) for row in rows]
     return [dict(row) for row in rows]
+
+
+def _normalize_refinement_explain_rows(rows: object) -> List[dict]:
+    normalized = []
+    for raw in list(rows or []):
+        if not isinstance(raw, Mapping):
+            continue
+        row = {
+            "explain_id": str(dict(raw).get("explain_id", "")).strip(),
+            "explain_contract_id": str(dict(raw).get("explain_contract_id", "")).strip(),
+            "request_id": str(dict(raw).get("request_id", "")).strip(),
+            "request_kind": str(dict(raw).get("request_kind", "")).strip(),
+            "reason_code": str(dict(raw).get("reason_code", "")).strip(),
+            "tick": int(max(0, _as_int(dict(raw).get("tick", 0), 0))),
+            "geo_cell_key": _coerce_cell_key(dict(raw).get("geo_cell_key")) or {},
+            "refinement_level": int(max(0, _as_int(dict(raw).get("refinement_level", 0), 0))),
+            "extensions": dict((str(key), value) for key, value in sorted(_as_map(dict(raw).get("extensions")).items(), key=lambda item: str(item[0]))),
+            "deterministic_fingerprint": "",
+        }
+        if not row["explain_id"]:
+            row["explain_id"] = "explain.refinement.{}".format(canonical_sha256(raw)[:16])
+        row["deterministic_fingerprint"] = canonical_sha256(dict(row, deterministic_fingerprint=""))
+        normalized.append(row)
+    deduped = dict((str(row.get("explain_id", "")).strip(), dict(row)) for row in normalized if str(row.get("explain_id", "")).strip())
+    return [dict(deduped[key]) for key in sorted(deduped.keys())]
+
+
+def _ensure_refinement_request_record_rows(state: dict) -> List[dict]:
+    rows = normalize_refinement_request_record_rows(state.get("refinement_request_records"))
+    state["refinement_request_records"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_refinement_cache_entry_rows(state: dict) -> List[dict]:
+    rows = normalize_refinement_cache_entry_rows(state.get("refinement_cache_entries"))
+    state["refinement_cache_entries"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _ensure_refinement_explain_rows(state: dict) -> List[dict]:
+    rows = _normalize_refinement_explain_rows(state.get("refinement_deferred_rows"))
+    state["refinement_deferred_rows"] = [dict(row) for row in rows]
+    return [dict(row) for row in rows]
+
+
+def _refresh_refinement_hash_chains(state: dict) -> None:
+    request_rows = _ensure_refinement_request_record_rows(state)
+    cache_rows = _ensure_refinement_cache_entry_rows(state)
+    explain_rows = _ensure_refinement_explain_rows(state)
+    state["refinement_request_hash_chain"] = canonical_sha256(request_rows)
+    state["refinement_cache_hash_chain"] = canonical_sha256(cache_rows)
+    state["refinement_deferred_hash_chain"] = canonical_sha256(explain_rows)
+
+
+def _append_refinement_request_record(state: dict, request_row: Mapping[str, object]) -> dict:
+    merged = merge_refinement_request_record_rows(
+        existing_rows=_ensure_refinement_request_record_rows(state),
+        new_rows=[dict(request_row)],
+        queue_capacity=int(max(1, _as_int(state.get("refinement_queue_capacity", DEFAULT_REFINEMENT_QUEUE_CAPACITY), DEFAULT_REFINEMENT_QUEUE_CAPACITY))),
+    )
+    state["refinement_request_records"] = [dict(row) for row in list(merged.get("queued_rows") or []) if isinstance(row, Mapping)]
+    if list(merged.get("dropped_rows") or []):
+        explains = list(_ensure_refinement_explain_rows(state))
+        for row in list(merged.get("dropped_rows") or []):
+            explains.append(
+                build_refinement_deferred_artifact(
+                    request_row=row,
+                    reason_code="refinement.deferred.queue_overflow",
+                    current_tick=int(max(0, _as_int(_as_map(state.get("time_state")).get("tick", 0), 0))),
+                    extensions={"source": "MW4-3", "policy": "queue_capacity"},
+                )
+            )
+        state["refinement_deferred_rows"] = _normalize_refinement_explain_rows(explains)
+    _refresh_refinement_hash_chains(state)
+    request_id = str(dict(request_row).get("request_id", "")).strip()
+    return dict(next((row for row in list(state.get("refinement_request_records") or []) if str(dict(row).get("request_id", "")).strip() == request_id), dict(request_row)))
+
+
+def _touch_refinement_cache_entry(
+    state: dict,
+    *,
+    cache_key: str,
+    geo_cell_key: Mapping[str, object] | None,
+    refinement_level: int,
+    current_tick: int,
+    extensions: Mapping[str, object] | None = None,
+) -> dict:
+    rows = touch_refinement_cache_entries(
+        existing_rows=_ensure_refinement_cache_entry_rows(state),
+        cache_key=str(cache_key or "").strip(),
+        geo_cell_key=geo_cell_key,
+        refinement_level=int(max(0, _as_int(refinement_level, 0))),
+        current_tick=int(max(0, _as_int(current_tick, 0))),
+        extensions=extensions,
+    )
+    eviction = evict_refinement_cache_entries(
+        cache_entry_rows=rows,
+        max_entries_by_level=dict(DEFAULT_REFINEMENT_CACHE_LIMITS),
+    )
+    state["refinement_cache_entries"] = [dict(row) for row in list(eviction.get("cache_entry_rows") or []) if isinstance(row, Mapping)]
+    state["refinement_evicted_rows"] = [dict(row) for row in list(eviction.get("evicted_rows") or []) if isinstance(row, Mapping)]
+    _refresh_refinement_hash_chains(state)
+    return dict(next((row for row in list(state.get("refinement_cache_entries") or []) if str(dict(row).get("cache_key", "")).strip() == str(cache_key or "").strip()), {}))
+
+
+def _refinement_compute_budget_units(policy_context: Mapping[str, object] | None) -> int:
+    payload = _as_map(policy_context)
+    for key in ("refinement_budget_units", "max_compute_units_per_tick", "compute_budget_units"):
+        if key in payload:
+            return int(max(0, _as_int(payload.get(key, 0), 0)))
+    budget_policy = _as_map(payload.get("budget_policy"))
+    for key in ("refinement_budget_units", "max_compute_units_per_tick", "compute_budget_units"):
+        if key in budget_policy:
+            return int(max(0, _as_int(budget_policy.get(key, 0), 0)))
+    budget_envelope_registry = _as_map(payload.get("budget_envelope_registry"))
+    envelopes = list(budget_envelope_registry.get("envelopes") or [])
+    if envelopes and isinstance(envelopes[0], Mapping):
+        envelope = _as_map(envelopes[0])
+        for key in ("max_solver_cost_units_per_tick", "max_compute_units_per_tick"):
+            if key in envelope:
+                return int(max(0, _as_int(envelope.get(key, 0), 0)))
+    return 4096
 
 
 def _normalize_earth_tide_tile_overlay_rows(rows: object) -> List[dict]:
@@ -46440,6 +46582,184 @@ def execute_intent(
             "formalization_event_id": str(event_row.get("event_id", "")).strip(),
         }
         _advance_time(state, steps=1, policy_context=policy_context)
+    elif process_id == "process.refinement_request_enqueue":
+        raw_record = dict(inputs.get("refinement_request_record") or {}) if isinstance(inputs.get("refinement_request_record"), Mapping) else {}
+        if not raw_record:
+            geo_cell_key = dict(inputs.get("geo_cell_key") or {}) if isinstance(inputs.get("geo_cell_key"), Mapping) else {}
+            request_kind = str(inputs.get("request_kind", "")).strip() or "roi"
+            priority_class = str(inputs.get("priority_class", "")).strip() or "priority.background.prefetch"
+            refinement_level = int(max(0, _as_int(inputs.get("refinement_level", 0), 0)))
+            if not geo_cell_key:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.refinement_request_enqueue requires refinement_request_record or geo_cell_key",
+                    "Provide a deterministic GEO cell target and request metadata for MW-4 scheduling.",
+                    {"process_id": process_id},
+                    "$.intent.inputs.geo_cell_key",
+                )
+            try:
+                raw_record = build_refinement_request_record(
+                    request_id=str(inputs.get("request_id", "")).strip()
+                    or "refinement.request.{}".format(
+                        canonical_sha256(
+                            {
+                                "intent_id": str(intent_id),
+                                "request_kind": request_kind,
+                                "priority_class": priority_class,
+                                "geo_cell_key": geo_cell_key,
+                                "refinement_level": refinement_level,
+                                "tick": int(current_tick),
+                            }
+                        )[:16]
+                    ),
+                    request_kind=request_kind,
+                    geo_cell_key=geo_cell_key,
+                    refinement_level=refinement_level,
+                    priority_class=priority_class,
+                    tick=int(current_tick),
+                    extensions={
+                        "source_process_id": process_id,
+                        "intent_id": str(intent_id),
+                        **(dict(inputs.get("extensions") or {}) if isinstance(inputs.get("extensions"), Mapping) else {}),
+                    },
+                )
+            except ValueError:
+                return refusal(
+                    "PROCESS_INPUT_INVALID",
+                    "process.refinement_request_enqueue inputs are invalid",
+                    "Use a declared request_kind and a valid GEO cell key.",
+                    {"process_id": process_id},
+                    "$.intent.inputs",
+                )
+        try:
+            request_row = normalize_refinement_request_record(raw_record)
+        except ValueError:
+            return refusal(
+                "PROCESS_INPUT_INVALID",
+                "refinement_request_record is invalid",
+                "Use the MW-4 refinement-request record contract.",
+                {"process_id": process_id},
+                "$.intent.inputs.refinement_request_record",
+            )
+        queued_row = _append_refinement_request_record(state, request_row)
+        result_metadata = {
+            "request_id": str(queued_row.get("request_id", "")).strip(),
+            "request_kind": str(queued_row.get("request_kind", "")).strip(),
+            "priority_class": str(queued_row.get("priority_class", "")).strip(),
+            "refinement_level": int(max(0, _as_int(queued_row.get("refinement_level", 0), 0))),
+            "queued_count": int(len(list(state.get("refinement_request_records") or []))),
+            "refinement_request_hash_chain": str(state.get("refinement_request_hash_chain", "")).strip(),
+            "refinement_deferred_hash_chain": str(state.get("refinement_deferred_hash_chain", "")).strip(),
+        }
+    elif process_id == "process.refinement_scheduler_tick":
+        _record_geo_field_registry_hashes(state, policy_context)
+        scheduler_plan = build_scheduler_plan(
+            pending_request_rows=_ensure_refinement_request_record_rows(state),
+            current_tick=int(current_tick),
+            compute_budget_units=_refinement_compute_budget_units(policy_context),
+            refinement_cost_units=int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get("refinement_cost_units", state.get("refinement_cost_units", DEFAULT_REFINEMENT_COST_UNITS)),
+                        DEFAULT_REFINEMENT_COST_UNITS,
+                    ),
+                )
+            ),
+            queue_capacity=int(
+                max(
+                    1,
+                    _as_int(
+                        inputs.get("queue_capacity", state.get("refinement_queue_capacity", DEFAULT_REFINEMENT_QUEUE_CAPACITY)),
+                        DEFAULT_REFINEMENT_QUEUE_CAPACITY,
+                    ),
+                )
+            ),
+        )
+        approved_rows = [dict(row) for row in list(scheduler_plan.get("approved_rows") or []) if isinstance(row, Mapping)]
+        deferred_rows = [dict(row) for row in list(scheduler_plan.get("deferred_rows") or []) if isinstance(row, Mapping)]
+        explain_rows = list(_ensure_refinement_explain_rows(state))
+        explain_rows.extend(dict(row) for row in list(scheduler_plan.get("explain_rows") or []) if isinstance(row, Mapping))
+        state["refinement_request_records"] = normalize_refinement_request_record_rows(deferred_rows)
+        state["refinement_deferred_rows"] = _normalize_refinement_explain_rows(explain_rows)
+        state["refinement_queue_capacity"] = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get("queue_capacity", state.get("refinement_queue_capacity", DEFAULT_REFINEMENT_QUEUE_CAPACITY)),
+                    DEFAULT_REFINEMENT_QUEUE_CAPACITY,
+                ),
+            )
+        )
+        state["refinement_cost_units"] = int(
+            max(
+                1,
+                _as_int(
+                    inputs.get("refinement_cost_units", state.get("refinement_cost_units", DEFAULT_REFINEMENT_COST_UNITS)),
+                    DEFAULT_REFINEMENT_COST_UNITS,
+                ),
+            )
+        )
+        scheduler_results = []
+        contract_bundle_hash = str(state.get("universe_contract_bundle_hash", "")).strip() or str(
+            _as_map(state.get("universe_identity")).get("universe_contract_bundle_hash", "")
+        ).strip()
+        overlay_hash = str(state.get("overlay_manifest_hash", "")).strip()
+        selected_mod_policy_id = str(state.get("mod_policy_id", "")).strip()
+        for row in approved_rows:
+            worldgen_request = refinement_record_to_worldgen_request(row)
+            nested_result = execute_intent(
+                state=state,
+                intent={
+                    "intent_id": "intent.process.worldgen_request.{}".format(str(row.get("request_id", "")).strip() or canonical_sha256(row)[:16]),
+                    "process_id": "process.worldgen_request",
+                    "inputs": {
+                        "worldgen_request": dict(worldgen_request),
+                        "generator_version_id": str(_as_map(state.get("universe_identity")).get("generator_version_id", "")).strip(),
+                        "realism_profile_id": str(_as_map(state.get("universe_identity")).get("realism_profile_id", "")).strip(),
+                        "universe_contract_bundle_hash": contract_bundle_hash,
+                        "overlay_manifest_hash": overlay_hash,
+                        "mod_policy_id": selected_mod_policy_id,
+                    },
+                },
+                law_profile=law_profile,
+                authority_context=authority_context,
+                navigation_indices=navigation_indices,
+                policy_context=policy_context,
+            )
+            scheduler_results.append(
+                {
+                    "request_id": str(row.get("request_id", "")).strip(),
+                    "result": str(nested_result.get("result", "")).strip(),
+                    "cache_hit": bool(nested_result.get("cache_hit", False)),
+                    "state_hash_anchor": str(nested_result.get("state_hash_anchor", "")).strip(),
+                    "result_metadata": dict(nested_result.get("result_metadata") or {}),
+                }
+            )
+            cache_key = str((dict(nested_result.get("result_metadata") or {})).get("cache_key", "")).strip()
+            if cache_key:
+                _touch_refinement_cache_entry(
+                    state,
+                    cache_key=cache_key,
+                    geo_cell_key=_as_map(row.get("geo_cell_key")),
+                    refinement_level=int(max(0, _as_int(row.get("refinement_level", 0), 0))),
+                    current_tick=int(current_tick),
+                    extensions={
+                        "source": "MW4-4",
+                        "contract_bundle_hash": contract_bundle_hash,
+                        "overlay_manifest_hash": overlay_hash,
+                        "mod_policy_id": selected_mod_policy_id,
+                    },
+                )
+        _refresh_refinement_hash_chains(state)
+        result_metadata = {
+            "approved_count": int(len(approved_rows)),
+            "deferred_count": int(len(deferred_rows)),
+            "scheduler_results": scheduler_results,
+            "refinement_request_hash_chain": str(state.get("refinement_request_hash_chain", "")).strip(),
+            "refinement_cache_hash_chain": str(state.get("refinement_cache_hash_chain", "")).strip(),
+            "refinement_deferred_hash_chain": str(state.get("refinement_deferred_hash_chain", "")).strip(),
+        }
     elif process_id == "process.worldgen_request":
         _record_geo_field_registry_hashes(state, policy_context)
         universe_identity = dict(state.get("universe_identity") or {})
@@ -46508,6 +46828,12 @@ def execute_intent(
             worldgen_request=request_row,
             generator_version_id=str(inputs.get("generator_version_id", "")).strip(),
             realism_profile_id=str(inputs.get("realism_profile_id", "")).strip(),
+            universe_contract_bundle_hash=str(inputs.get("universe_contract_bundle_hash", "")).strip()
+            or str(state.get("universe_contract_bundle_hash", "")).strip()
+            or str(universe_identity.get("universe_contract_bundle_hash", "")).strip(),
+            overlay_manifest_hash=str(inputs.get("overlay_manifest_hash", "")).strip()
+            or str(state.get("overlay_manifest_hash", "")).strip(),
+            mod_policy_id=str(inputs.get("mod_policy_id", "")).strip() or str(state.get("mod_policy_id", "")).strip(),
             realism_profile_registry_payload=realism_profile_registry,
             generator_version_registry_payload=generator_version_registry,
             current_tick=int(current_tick),
@@ -46530,6 +46856,51 @@ def execute_intent(
             ),
             {},
         )
+        mismatched_cache_rows = [
+            dict(row)
+            for row in list(_ensure_worldgen_result_rows(state))
+            if _coerce_cell_key(dict(row).get("geo_cell_key"))
+            == _coerce_cell_key(request_row.get("geo_cell_key"))
+            and int(max(0, _as_int(_as_map(dict(row).get("extensions")).get("refinement_level", 0), 0)))
+            == int(max(0, _as_int(request_row.get("refinement_level", 0), 0)))
+            and str(_as_map(dict(row).get("extensions")).get("cache_key", "")).strip()
+            and str(_as_map(dict(row).get("extensions")).get("cache_key", "")).strip() != cache_key
+        ]
+        if mismatched_cache_rows:
+            explain_rows = list(_ensure_refinement_explain_rows(state))
+            explain_rows.append(
+                {
+                    "explain_id": "explain.contract_mismatch_cache.{}".format(
+                        canonical_sha256(
+                            {
+                                "request_id": str(request_row.get("request_id", "")).strip(),
+                                "cache_key": cache_key,
+                                "mismatch_keys": [
+                                    str(_as_map(dict(row).get("extensions")).get("cache_key", "")).strip()
+                                    for row in mismatched_cache_rows
+                                ],
+                            }
+                        )[:16]
+                    ),
+                    "explain_contract_id": EXPLAIN_CONTRACT_MISMATCH_CACHE,
+                    "request_id": str(request_row.get("request_id", "")).strip(),
+                    "request_kind": str(_as_map(_as_map(request_row).get("extensions")).get("request_kind", "")).strip() or "query",
+                    "reason_code": "cache.contract_mismatch",
+                    "tick": int(max(0, _as_int(current_tick, 0))),
+                    "geo_cell_key": dict(_as_map(request_row.get("geo_cell_key"))),
+                    "refinement_level": int(max(0, _as_int(request_row.get("refinement_level", 0), 0))),
+                    "extensions": {
+                        "source": "MW4-6",
+                        "requested_cache_key": cache_key,
+                        "mismatched_cache_keys": [
+                            str(_as_map(dict(row).get("extensions")).get("cache_key", "")).strip()
+                            for row in mismatched_cache_rows
+                        ],
+                    },
+                }
+            )
+            state["refinement_deferred_rows"] = _normalize_refinement_explain_rows(explain_rows)
+            _refresh_refinement_hash_chains(state)
         worldgen_result_row = dict(generated.get("worldgen_result") or {})
         generated_object_rows = [dict(row) for row in list(generated.get("generated_object_rows") or []) if isinstance(row, Mapping)]
         star_system_artifact_rows = [
@@ -46646,8 +47017,18 @@ def execute_intent(
             "request_hash": worldgen_request_hash(request_row),
             "result_id": str(worldgen_result_row.get("result_id", "")).strip(),
             "cache_hit": bool(existing_result or generated.get("cache_hit", False)),
+            "cache_key": str(cache_key).strip(),
             "generator_version_id": str(generated.get("generator_version_id", "")).strip(),
             "realism_profile_id": str(generated.get("realism_profile_id", "")).strip(),
+            "contract_bundle_hash": str(generated.get("universe_contract_bundle_hash", "")).strip()
+            or str(inputs.get("universe_contract_bundle_hash", "")).strip()
+            or str(state.get("universe_contract_bundle_hash", "")).strip(),
+            "overlay_manifest_hash": str(generated.get("overlay_manifest_hash", "")).strip()
+            or str(inputs.get("overlay_manifest_hash", "")).strip()
+            or str(state.get("overlay_manifest_hash", "")).strip(),
+            "mod_policy_id": str(generated.get("mod_policy_id", "")).strip()
+            or str(inputs.get("mod_policy_id", "")).strip()
+            or str(state.get("mod_policy_id", "")).strip(),
             "spawned_object_count": int(len(list(generated_object_rows or []))),
             "star_system_artifact_count": int(len(list(star_system_artifact_rows or []))),
             "star_artifact_count": int(len(list(star_artifact_rows or []))),
@@ -46664,6 +47045,19 @@ def execute_intent(
             "worldgen_result_hash_chain": str(state.get("worldgen_result_hash_chain", "")).strip(),
             "worldgen_spawned_object_hash_chain": str(state.get("worldgen_spawned_object_hash_chain", "")).strip(),
         }
+        _touch_refinement_cache_entry(
+            state,
+            cache_key=str(cache_key).strip(),
+            geo_cell_key=_as_map(request_row.get("geo_cell_key")),
+            refinement_level=int(max(0, _as_int(request_row.get("refinement_level", 0), 0))),
+            current_tick=int(current_tick),
+            extensions={
+                "source": "MW4-4",
+                "contract_bundle_hash": str(result_metadata.get("contract_bundle_hash", "")).strip(),
+                "overlay_manifest_hash": str(result_metadata.get("overlay_manifest_hash", "")).strip(),
+                "mod_policy_id": str(result_metadata.get("mod_policy_id", "")).strip(),
+            },
+        )
     elif process_id == "process.overlay_save_patch":
         overlay_manifest = _ensure_overlay_manifest(state, policy_context=policy_context)
         overlay_layers = dict(
