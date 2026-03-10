@@ -9,6 +9,12 @@ from typing import Dict, List, Tuple
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.compatx.schema_registry import load_version_registry
+from tools.compatx.core.semantic_contract_validator import (
+    build_default_universe_contract_bundle,
+    load_semantic_contract_registry,
+    validate_semantic_contract_registry,
+    validate_universe_contract_bundle,
+)
 from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
@@ -268,6 +274,7 @@ def _session_paths(repo_root: str, save_id: str, saves_root_rel: str) -> Dict[st
         "save_dir": root,
         "session_spec_path": os.path.join(root, "session_spec.json"),
         "universe_identity_path": os.path.join(root, "universe_identity.json"),
+        "universe_contract_bundle_path": os.path.join(root, "universe_contract_bundle.json"),
         "universe_state_path": os.path.join(root, "universe_state.json"),
         "worldgen_search_plan_path": os.path.join(root, "worldgen_search_plan.json"),
     }
@@ -1495,6 +1502,39 @@ def create_session_spec(
     if identity_check.get("result") != "complete":
         return identity_check
 
+    semantic_contract_registry_payload, semantic_contract_registry_error = load_semantic_contract_registry(repo_root)
+    if semantic_contract_registry_error:
+        return refusal(
+            "REFUSE_SEMANTIC_CONTRACT_REGISTRY_MISSING",
+            "semantic contract registry could not be loaded",
+            "Restore data/registries/semantic_contract_registry.json and retry session creation.",
+            {"registry_id": "dominium.registry.semantic_contracts"},
+            "$.universe_contract_bundle",
+        )
+    semantic_contract_registry_validation = validate_semantic_contract_registry(semantic_contract_registry_payload)
+    if semantic_contract_registry_validation:
+        return refusal(
+            "REFUSE_SEMANTIC_CONTRACT_REGISTRY_INVALID",
+            "semantic contract registry failed validation",
+            "Repair semantic contract registry entries and retry session creation.",
+            {"registry_id": "dominium.registry.semantic_contracts"},
+            "$.universe_contract_bundle",
+        )
+    universe_contract_bundle_payload = build_default_universe_contract_bundle(semantic_contract_registry_payload)
+    universe_contract_bundle_errors = validate_universe_contract_bundle(
+        repo_root=repo_root,
+        payload=universe_contract_bundle_payload,
+        registry_payload=semantic_contract_registry_payload,
+    )
+    if universe_contract_bundle_errors:
+        return refusal(
+            "REFUSE_UNIVERSE_CONTRACT_BUNDLE_INVALID",
+            "universe semantic contract bundle failed validation",
+            "Repair universe contract bundle metadata and retry session creation.",
+            {"schema_id": "universe_contract_bundle"},
+            "$.universe_contract_bundle",
+        )
+
     calculated_universe_id = str(identity_payload.get("universe_id", "")).strip() or str(universe_id).strip()
     if not calculated_universe_id:
         calculated_universe_id = "universe.{}".format(str(identity_payload.get("identity_hash", ""))[:16])
@@ -1789,6 +1829,7 @@ def create_session_spec(
     paths = _session_paths(repo_root=repo_root, save_id=save_token, saves_root_rel=saves_root_rel)
     write_canonical_json(paths["session_spec_path"], session_payload)
     write_canonical_json(paths["universe_identity_path"], identity_payload)
+    write_canonical_json(paths["universe_contract_bundle_path"], universe_contract_bundle_payload)
     write_canonical_json(paths["universe_state_path"], state_payload)
     if search_plan_payload:
         write_canonical_json(paths["worldgen_search_plan_path"], search_plan_payload)
@@ -1799,6 +1840,7 @@ def create_session_spec(
         "bundle_id": str(bundle_id),
         "session_spec_path": norm(os.path.relpath(paths["session_spec_path"], repo_root)),
         "universe_identity_path": norm(os.path.relpath(paths["universe_identity_path"], repo_root)),
+        "universe_contract_bundle_path": norm(os.path.relpath(paths["universe_contract_bundle_path"], repo_root)),
         "universe_state_path": norm(os.path.relpath(paths["universe_state_path"], repo_root)),
         "session_spec_hash": canonical_sha256(session_payload),
         "selected_seed": str(session_payload.get("selected_seed", "")),
@@ -1813,4 +1855,8 @@ def create_session_spec(
         "time_control_policy_id": str(selected_time_control_policy.get("time_control_policy_id", "")),
         "loaded_universe_identity_path": norm(identity_abs) if identity_abs else "",
         "generated_universe_identity": not bool(universe_identity_path),
+        "semantic_contract_registry_hash": str(
+            dict(universe_contract_bundle_payload.get("extensions") or {}).get("semantic_contract_registry_hash", "")
+        ).strip(),
+        "universe_contract_bundle_hash": str(universe_contract_bundle_payload.get("deterministic_fingerprint", "")).strip(),
     }

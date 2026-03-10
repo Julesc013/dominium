@@ -409,6 +409,9 @@ from analyzers import e382_water_sim_leak_smell
 from analyzers import e383_nondeterministic_view_smell
 from analyzers import e384_truth_leak_smell
 from analyzers import e385_unbounded_update_loop_smell
+from analyzers import e386_behavior_without_contract_smell
+from analyzers import e387_silent_semantic_change_smell
+from analyzers import e388_missing_migration_plan_smell
 
 
 ANALYZERS = (
@@ -821,6 +824,9 @@ ANALYZERS = (
     e383_nondeterministic_view_smell,
     e384_truth_leak_smell,
     e385_unbounded_update_loop_smell,
+    e386_behavior_without_contract_smell,
+    e387_silent_semantic_change_smell,
+    e388_missing_migration_plan_smell,
 )
 
 

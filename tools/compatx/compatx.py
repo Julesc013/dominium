@@ -39,6 +39,14 @@ from pack_compatibility import (  # noqa: E402
     validate_pack_entries,
 )
 from save_replay_validator import validate_save_replay_entries  # noqa: E402
+from semantic_contract_validator import (  # noqa: E402
+    build_default_universe_contract_bundle,
+    build_semantic_contract_proof_bundle,
+    load_semantic_contract_registry,
+    validate_replay_contract_match,
+    validate_semantic_contract_registry,
+    validate_universe_contract_bundle,
+)
 from schema_diff import diff_schema_files  # noqa: E402
 from env_tools_lib import canonical_workspace_id, canonicalize_env_for_workspace, detect_repo_root  # noqa: E402
 
@@ -51,6 +59,17 @@ BUNDLE_PROFILES_REL = os.path.join("data", "registries", "bundle_profiles.json")
 OUTPUT_ROOT_REL = os.path.join("docs", "audit", "compat")
 BASELINE_JSON_REL = "COMPAT_BASELINE.json"
 BASELINE_MD_REL = "COMPAT_BASELINE.md"
+
+
+def _load_json_object(path: str) -> tuple[dict, str]:
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, ValueError):
+        return {}, "invalid json"
+    if not isinstance(payload, dict):
+        return {}, "invalid root object"
+    return payload, ""
 
 
 def _repo_root(value: str) -> str:
@@ -375,6 +394,79 @@ def _run_pack_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def _run_semantic_validate(args: argparse.Namespace) -> int:
+    repo_root = _repo_root(args.repo_root)
+    registry_payload, registry_error = load_semantic_contract_registry(repo_root)
+    errors = []
+    if registry_error:
+        errors.append("refuse.semantic_contract_registry_missing")
+    else:
+        errors.extend(validate_semantic_contract_registry(registry_payload))
+    bundle_payload: Dict[str, Any]
+    bundle_path = str(args.bundle_path or "").strip()
+    if bundle_path:
+        bundle_payload, bundle_error = _load_json_object(os.path.normpath(os.path.abspath(bundle_path)))
+        if bundle_error:
+            errors.append("refuse.universe_contract_bundle_invalid_json")
+    else:
+        bundle_payload = build_default_universe_contract_bundle(registry_payload)
+    if not errors:
+        errors.extend(validate_universe_contract_bundle(repo_root=repo_root, payload=bundle_payload, registry_payload=registry_payload))
+    if errors:
+        print(json.dumps({"result": "refused", "refusal_codes": sorted(set(errors))}, indent=2, sort_keys=True))
+        return 2
+    print(
+        json.dumps(
+            {
+                "result": "complete",
+                "proof_bundle": build_semantic_contract_proof_bundle(registry_payload, bundle_payload),
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def _run_semantic_replay_validate(args: argparse.Namespace) -> int:
+    repo_root = _repo_root(args.repo_root)
+    registry_payload, registry_error = load_semantic_contract_registry(repo_root)
+    if registry_error:
+        print(json.dumps({"result": "refused", "refusal_code": "refuse.semantic_contract_registry_missing"}, indent=2, sort_keys=True))
+        return 2
+    expected_bundle, expected_error = _load_json_object(os.path.normpath(os.path.abspath(args.expected_bundle)))
+    actual_bundle, actual_error = _load_json_object(os.path.normpath(os.path.abspath(args.actual_bundle)))
+    errors = []
+    if expected_error:
+        errors.append("refuse.expected_contract_bundle_invalid")
+    if actual_error:
+        errors.append("refuse.actual_contract_bundle_invalid")
+    if not errors:
+        errors.extend(validate_universe_contract_bundle(repo_root=repo_root, payload=expected_bundle, registry_payload=registry_payload))
+        errors.extend(validate_universe_contract_bundle(repo_root=repo_root, payload=actual_bundle, registry_payload=registry_payload))
+        errors.extend(
+            validate_replay_contract_match(
+                expected_bundle=expected_bundle,
+                actual_bundle=actual_bundle,
+                migration_invoked=bool(args.migration_invoked),
+            )
+        )
+    if errors:
+        print(json.dumps({"result": "refused", "refusal_codes": sorted(set(errors))}, indent=2, sort_keys=True))
+        return 2
+    print(
+        json.dumps(
+            {
+                "result": "complete",
+                "proof_bundle": build_semantic_contract_proof_bundle(registry_payload, actual_bundle),
+            },
+            indent=2,
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="CompatX compatibility and migration validator.")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -404,6 +496,21 @@ def build_parser() -> argparse.ArgumentParser:
     pack_validate = sub.add_parser("pack-validate", help="Validate pack/protocol/api/abi compatibility entries.")
     pack_validate.add_argument("--repo-root", default="")
     pack_validate.set_defaults(func=_run_pack_validate)
+
+    semantic_validate = sub.add_parser("semantic-validate", help="Validate semantic contract registry and universe bundle.")
+    semantic_validate.add_argument("--repo-root", default="")
+    semantic_validate.add_argument("--bundle-path", default="")
+    semantic_validate.set_defaults(func=_run_semantic_validate)
+
+    semantic_replay = sub.add_parser(
+        "semantic-replay-validate",
+        help="Refuse replay when pinned semantic contract bundles differ without explicit migration invocation.",
+    )
+    semantic_replay.add_argument("--repo-root", default="")
+    semantic_replay.add_argument("--expected-bundle", required=True)
+    semantic_replay.add_argument("--actual-bundle", required=True)
+    semantic_replay.add_argument("--migration-invoked", action="store_true")
+    semantic_replay.set_defaults(func=_run_semantic_replay_validate)
     return parser
 
 

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Universe Contract Bundle Schema",
+  "version": "1.0.0",
+  "description": "Immutable semantic contract pins for a universe lineage.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A1/A6",
+    "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
+    "docs/universe/UNIVERSE_IDENTITY_STATE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_worldgen_refinement_version",
+    "contract_overlay_merge_version",
+    "contract_logic_eval_version",
+    "contract_proc_capsule_version",
+    "contract_sys_collapse_version",
+    "contract_geo_metric_version",
+    "contract_geo_projection_version",
+    "contract_geo_partition_version",
+    "contract_appshell_lifecycle_version",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contract_worldgen_refinement_version": {
+      "type": "string",
+      "pattern": "^contract\\.worldgen\\.refinement\\.v[0-9]+$"
+    },
+    "contract_overlay_merge_version": {
+      "type": "string",
+      "pattern": "^contract\\.overlay\\.merge\\.v[0-9]+$"
+    },
+    "contract_logic_eval_version": {
+      "type": "string",
+      "pattern": "^contract\\.logic\\.eval\\.v[0-9]+$"
+    },
+    "contract_proc_capsule_version": {
+      "type": "string",
+      "pattern": "^contract\\.proc\\.capsule\\.v[0-9]+$"
+    },
+    "contract_sys_collapse_version": {
+      "type": "string",
+      "pattern": "^contract\\.sys\\.collapse\\.v[0-9]+$"
+    },
+    "contract_geo_metric_version": {
+      "type": "string",
+      "pattern": "^contract\\.geo\\.metric\\.v[0-9]+$"
+    },
+    "contract_geo_projection_version": {
+      "type": "string",
+      "pattern": "^contract\\.geo\\.projection\\.v[0-9]+$"
+    },
+    "contract_geo_partition_version": {
+      "type": "string",
+      "pattern": "^contract\\.geo\\.partition\\.v[0-9]+$"
+    },
+    "contract_appshell_lifecycle_version": {
+      "type": "string",
+      "pattern": "^contract\\.appshell\\.lifecycle\\.v[0-9]+$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "contract_worldgen_refinement_version": "contract.worldgen.refinement.v1",
+      "contract_overlay_merge_version": "contract.overlay.merge.v1",
+      "contract_logic_eval_version": "contract.logic.eval.v1",
+      "contract_proc_capsule_version": "contract.proc.capsule.v1",
+      "contract_sys_collapse_version": "contract.sys.collapse.v1",
+      "contract_geo_metric_version": "contract.geo.metric.v1",
+      "contract_geo_projection_version": "contract.geo.projection.v1",
+      "contract_geo_partition_version": "contract.geo.partition.v1",
+      "contract_appshell_lifecycle_version": "contract.appshell.lifecycle.v1",
+      "deterministic_fingerprint": "95313b59cd3663a63c46d7ced657b12a0fa1eec1c730d334fef8b198ff89e279",
+      "extensions": {
+        "migration_policy": "compatx.explicit_only",
+        "semantic_contract_registry_hash": "a996c8327410bd3965108401f98c0d0aacd1fb173b9e7bcbace0da6241f5625b"
+      }
+    }
+  ]
+}

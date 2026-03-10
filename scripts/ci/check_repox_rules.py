@@ -85,6 +85,24 @@ CANON_INDEX_PATH = "docs/architecture/CANON_INDEX.md"
 DOCS_ROOT = "docs"
 DOC_EXTS = [".md", ".txt"]
 DOC_STATUS_VALUES = {"CANONICAL", "DERIVED", "HISTORICAL"}
+SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
+SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL = os.path.join("schema", "universe", "universe_contract_bundle.schema")
+SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL = os.path.join("schemas", "universe_contract_bundle.schema.json")
+SEMANTIC_CONTRACT_MODEL_REL = os.path.join("docs", "contracts", "SEMANTIC_CONTRACT_MODEL.md")
+SEMANTIC_CONTRACT_VALIDATOR_REL = os.path.join("tools", "compatx", "core", "semantic_contract_validator.py")
+SEMANTIC_CONTRACT_CREATOR_REL = os.path.join("tools", "xstack", "sessionx", "creator.py")
+SEMANTIC_CONTRACT_TOKEN_RE = re.compile(r"\b(contract\.[a-z0-9_.]+\.v[0-9]+)\b")
+REQUIRED_SEMANTIC_CONTRACT_IDS = (
+    "contract.worldgen.refinement.v1",
+    "contract.overlay.merge.v1",
+    "contract.logic.eval.v1",
+    "contract.proc.capsule.v1",
+    "contract.sys.collapse.v1",
+    "contract.geo.metric.v1",
+    "contract.geo.projection.v1",
+    "contract.geo.partition.v1",
+    "contract.appshell.lifecycle.v1",
+)
 CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
 PROCESS_REGISTRY_REL = os.path.join("data", "registries", "process_registry.json")
 PROCESS_SCHEMA_ID = "dominium.schema.process"
@@ -3881,6 +3899,149 @@ def check_session_spec_required_for_run(repo_root):
                         violations.append("{}: {} missing template key {}".format(invariant_id, registry_rel, key))
 
     return violations
+
+
+def _semantic_contract_registry_ids(repo_root):
+    path = os.path.join(repo_root, SEMANTIC_CONTRACT_REGISTRY_REL.replace("/", os.sep))
+    payload = _load_json_file(path)
+    if not isinstance(payload, dict):
+        return {}, []
+    rows = (((payload.get("record") or {}).get("contracts")) or [])
+    out = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        contract_id = str(row.get("contract_id", "")).strip()
+        if contract_id:
+            out[contract_id] = row
+    return payload, out
+
+
+def check_contract_pinned_in_universe(repo_root):
+    invariant_id = "INV-CONTRACT-PINNED-IN-UNIVERSE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    required_paths = (
+        SEMANTIC_CONTRACT_REGISTRY_REL,
+        SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL,
+        SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL,
+        SEMANTIC_CONTRACT_MODEL_REL,
+        SEMANTIC_CONTRACT_VALIDATOR_REL,
+        SEMANTIC_CONTRACT_CREATOR_REL,
+    )
+    for rel in required_paths:
+        abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(abs_path):
+            violations.append("{}: missing {}".format(invariant_id, rel))
+    if violations:
+        return violations
+
+    payload, by_id = _semantic_contract_registry_ids(repo_root)
+    if str(payload.get("schema_id", "")).strip() != "dominium.registry.semantic_contract_registry":
+        violations.append("{}: {} has unexpected schema_id".format(invariant_id, SEMANTIC_CONTRACT_REGISTRY_REL))
+    for contract_id in REQUIRED_SEMANTIC_CONTRACT_IDS:
+        if contract_id not in by_id:
+            violations.append("{}: {} missing registry entry {}".format(invariant_id, SEMANTIC_CONTRACT_REGISTRY_REL, contract_id))
+
+    schema_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL.replace("/", os.sep))) or ""
+    json_schema_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL.replace("/", os.sep))) or ""
+    for field_name, _contract_id in (
+        ("contract_worldgen_refinement_version", "contract.worldgen.refinement.v1"),
+        ("contract_overlay_merge_version", "contract.overlay.merge.v1"),
+        ("contract_logic_eval_version", "contract.logic.eval.v1"),
+        ("contract_proc_capsule_version", "contract.proc.capsule.v1"),
+        ("contract_sys_collapse_version", "contract.sys.collapse.v1"),
+        ("contract_geo_metric_version", "contract.geo.metric.v1"),
+        ("contract_geo_projection_version", "contract.geo.projection.v1"),
+        ("contract_geo_partition_version", "contract.geo.partition.v1"),
+        ("contract_appshell_lifecycle_version", "contract.appshell.lifecycle.v1"),
+    ):
+        if field_name not in schema_text:
+            violations.append("{}: {} missing field {}".format(invariant_id, SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL, field_name))
+        if '"{}"'.format(field_name) not in json_schema_text:
+            violations.append("{}: {} missing field {}".format(invariant_id, SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL, field_name))
+
+    creator_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_CREATOR_REL.replace("/", os.sep))) or ""
+    required_creator_tokens = (
+        "universe_contract_bundle.json",
+        "build_default_universe_contract_bundle(",
+        "validate_universe_contract_bundle(",
+        '"universe_contract_bundle_path"',
+    )
+    for token in required_creator_tokens:
+        if token not in creator_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, SEMANTIC_CONTRACT_CREATOR_REL, token))
+    return violations
+
+
+def check_no_unversioned_behavior_change(repo_root):
+    invariant_id = "INV-NO-UNVERSIONED-BEHAVIOR-CHANGE"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    violations = []
+    payload, by_id = _semantic_contract_registry_ids(repo_root)
+    if not by_id:
+        return ["{}: missing semantic contract registry entries".format(invariant_id)]
+
+    required_breaking_tokens = (
+        "CompatX migration descriptor",
+        "explicit migration tool or explicit refusal path",
+        "regression lock update",
+        "release notes",
+    )
+    for contract_id in REQUIRED_SEMANTIC_CONTRACT_IDS:
+        row = by_id.get(contract_id) or {}
+        breaking = row.get("breaking_change_requires")
+        if not isinstance(breaking, list):
+            violations.append("{}: {} missing breaking_change_requires for {}".format(invariant_id, SEMANTIC_CONTRACT_REGISTRY_REL, contract_id))
+            continue
+        joined = " | ".join(str(item) for item in breaking)
+        for token in required_breaking_tokens:
+            if token not in joined:
+                violations.append("{}: {} missing '{}' for {}".format(invariant_id, SEMANTIC_CONTRACT_REGISTRY_REL, token, contract_id))
+
+    validator_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_VALIDATOR_REL.replace("/", os.sep))) or ""
+    for token in ("validate_replay_contract_match(", "build_semantic_contract_proof_bundle(", "refuse.semantic_contract_mismatch"):
+        if token not in validator_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, SEMANTIC_CONTRACT_VALIDATOR_REL, token))
+
+    model_text = read_text(os.path.join(repo_root, SEMANTIC_CONTRACT_MODEL_REL.replace("/", os.sep))) or ""
+    for token in ("Any semantic meaning change requires a new contract entry.", "CompatX migration descriptor", "No runtime behavior change is authorized by this document."):
+        if token not in model_text:
+            violations.append("{}: {} missing token {}".format(invariant_id, SEMANTIC_CONTRACT_MODEL_REL, token))
+    return violations
+
+
+def check_new_contract_requires_entry(repo_root):
+    invariant_id = "INV-NEW-CONTRACT-REQUIRES-ENTRY"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    _payload, by_id = _semantic_contract_registry_ids(repo_root)
+    if not by_id:
+        return ["{}: missing semantic contract registry entries".format(invariant_id)]
+
+    roots = (
+        os.path.join(repo_root, "docs"),
+        os.path.join(repo_root, "src"),
+        os.path.join(repo_root, "tools"),
+        os.path.join(repo_root, "data"),
+        os.path.join(repo_root, "schema"),
+        os.path.join(repo_root, "schemas"),
+    )
+    allowed = set(by_id.keys())
+    missing = set()
+    exts = tuple(set(list(DOC_EXTS) + [".py", ".json", ".schema", ".schema.json"]))
+    for path in iter_files(roots, DEFAULT_EXCLUDES, exts):
+        rel = normalize_path(repo_rel(repo_root, path))
+        text = read_text(path) or ""
+        for token in SEMANTIC_CONTRACT_TOKEN_RE.findall(text):
+            if token not in allowed:
+                missing.add("{} ({})".format(token, rel))
+    return ["{}: semantic contract token missing registry entry {}".format(invariant_id, token) for token in sorted(missing)]
 
 
 def check_mvp_packs_minimal(repo_root):
@@ -9523,6 +9684,9 @@ def main() -> int:
                 lambda: check_compliance_report_canon(repo_root),
                 lambda: check_auditx_deterministic_contract(repo_root),
                 lambda: check_auditx_nonruntime_leak(repo_root),
+                lambda: check_contract_pinned_in_universe(repo_root),
+                lambda: check_no_unversioned_behavior_change(repo_root),
+                lambda: check_new_contract_requires_entry(repo_root),
             ],
         },
     ]

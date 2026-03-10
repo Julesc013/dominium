@@ -10,6 +10,7 @@ Compatibility: Bound to `schemas/session_spec.schema.json` v1.0.0 and `docs/arch
 ## Purpose
 Provide deterministic out-of-game session lifecycle tooling:
 - SessionSpec creation
+- Universe semantic contract bundle creation
 - lockfile/registry preflight binding
 - Observation Kernel derivation (`TruthModel -> PerceivedModel`)
 - RenderModel adapter derivation (`PerceivedModel -> RenderModel`)
@@ -33,6 +34,7 @@ Provide deterministic out-of-game session lifecycle tooling:
 - Session create/boot emit deterministic refusal payloads.
 - Generated save artifacts are canonical JSON.
 - UniverseIdentity mutation is refused if `identity_hash` mismatch is detected.
+- Session creation writes immutable `universe_contract_bundle.json` semantic pins alongside `universe_identity.json`.
 - Lens gating is enforced by LawProfile + AuthorityContext entitlements.
 - Renderer presentation payload is derived from PerceivedModel only.
 - Scripted camera/time interactions mutate UniverseState only through process execution.

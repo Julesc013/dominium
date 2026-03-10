@@ -7,6 +7,7 @@ Superseded By: none
 
 ## Split Contract
 - `UniverseIdentity` is immutable after creation.
+- `UniverseContractBundle` is an immutable semantic sidecar written at the same creation step.
 - `UniverseState` evolves over time and references checkpoints/refinement/history.
 
 ## Why the Split Exists
@@ -28,6 +29,19 @@ Superseded By: none
   - base scenario reference
   - compatibility schema refs
 - `immutable_after_create=true` is required.
+- `identity_hash` remains stable and does not fold semantic contract sidecar metadata into world/object id derivation.
+
+## UniverseContractBundle
+- Stable semantic pins:
+  - worldgen refinement contract version
+  - overlay merge contract version
+  - logic evaluation contract version
+  - process capsule contract version
+  - system collapse contract version
+  - GEO metric/projection/partition contract versions
+  - app shell lifecycle contract version
+- Replay/proof compares this bundle explicitly.
+- The bundle is immutable for the universe lineage once created.
 
 ## UniverseState
 - Mutable references:

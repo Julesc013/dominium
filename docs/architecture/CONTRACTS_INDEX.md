@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 
@@ -104,6 +104,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/PERFORMANCE_METRICS.md` | FROZEN | Derived metrics for PERF fixtures |
 | `docs/architecture/CODE_DATA_BOUNDARY.md` | FROZEN | Code vs data ownership rules |
 | `docs/architecture/SEMANTIC_STABILITY_POLICY.md` | FROZEN | No reuse and no silent reinterpretation |
+| `docs/contracts/SEMANTIC_CONTRACT_MODEL.md` | FROZEN | Semantic behavior versioning and migration rules |
 
 
 | `docs/architecture/ANTI_ENTROPY_RULES.md` | FROZEN | Anti-entropy requirements |
@@ -285,6 +286,7 @@ Schemas are the authoritative data-shape contracts. Start here:
 
 
 - `schema/profile.schema`
+- `schema/universe/universe_contract_bundle.schema`
 
 
 

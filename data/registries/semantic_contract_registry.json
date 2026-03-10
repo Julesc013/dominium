@@ -1,0 +1,200 @@
+{
+  "schema_id": "dominium.registry.semantic_contract_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.semantic_contracts",
+    "registry_version": "1.0.0",
+    "contracts": [
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.appshell.lifecycle.v1",
+        "description": "App shell lifecycle meaning for boot, abort, resume, and replay-stage semantics.",
+        "deterministic_fingerprint": "5c660a26c655a32b0dfcf6e7cb964389c2e587168d45e118906a287cbd42eb53",
+        "guaranteed_invariants": [
+          "same lifecycle contract yields identical stage meaning",
+          "resume and replay refusal semantics remain explicit",
+          "lifecycle meaning does not drift across saved universes"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.geo.metric.v1",
+        "description": "Metric and distance-query meaning for GEO coordinate spaces.",
+        "deterministic_fingerprint": "66bdca5886b6a74c75aa1dc4ea8e648aaac6d9a67af8568e6ac561f2ac5a235b",
+        "guaranteed_invariants": [
+          "same metric contract yields identical distance semantics",
+          "metric query ordering remains deterministic",
+          "distance meaning changes require explicit versioning"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.geo.partition.v1",
+        "description": "Partition and stable cell-resolution meaning for GEO substrate enumeration.",
+        "deterministic_fingerprint": "91ae8c0ad3376b337634a032a90433b23472111cec467a6c5ae7060f0b29dec1",
+        "guaranteed_invariants": [
+          "same partition contract yields identical cell enumeration meaning",
+          "cell ancestry and neighbor semantics remain stable",
+          "partition meaning changes require explicit versioning"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.geo.projection.v1",
+        "description": "Projection and lens-space meaning for GEO map and view derivation.",
+        "deterministic_fingerprint": "e308df9ad2f49a4872657fdb149f57c234eadc9893eb369b32db7fc5e8a4873e",
+        "guaranteed_invariants": [
+          "same projection contract yields identical projection meaning",
+          "lens and projection semantics remain explicit",
+          "projection reinterpretation requires explicit versioning"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.logic.eval.v1",
+        "description": "Logic network evaluation meaning, including deterministic ordering and compiled equivalence.",
+        "deterministic_fingerprint": "60a1c6f46f498284115bea939f4bc8bf10294af288589396c2eff4f3da4847e7",
+        "guaranteed_invariants": [
+          "same logic contract yields identical logical outcomes",
+          "compiled and interpreted equivalence stays pinned",
+          "logic timing meaning changes require explicit versioning"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.overlay.merge.v1",
+        "description": "Overlay precedence, merge ordering, and provenance meaning.",
+        "deterministic_fingerprint": "e5b5e0ba5b4898745ed055164d860f9b60fc402f2c746b8d750a60979970a95d",
+        "guaranteed_invariants": [
+          "same overlay contract yields identical merge semantics",
+          "identity is not replaced silently by overlays",
+          "overlay provenance meaning stays replay-stable"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.proc.capsule.v1",
+        "description": "Process capsule validity, execution gating, and reuse meaning.",
+        "deterministic_fingerprint": "75c5daf2a0dd128bf2addf297254916a249d2216855c3b61f5a3e4b9faf73fe6",
+        "guaranteed_invariants": [
+          "same process capsule contract yields identical validity meaning",
+          "capsule invalidity refusal semantics remain explicit",
+          "capsule meaning changes require explicit versioning"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.sys.collapse.v1",
+        "description": "System collapse and expand meaning, including idempotence and refusal semantics.",
+        "deterministic_fingerprint": "988c23ad87d6325c23fb4338c0be64a5eaba9b7af7ef0d8984fddc84f0eee583",
+        "guaranteed_invariants": [
+          "same system contract yields identical collapse meaning",
+          "collapse and expand semantics remain explicit",
+          "tier transitions do not drift silently"
+        ],
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.worldgen.refinement.v1",
+        "description": "Worldgen refinement meaning for L0-L3 generation, refinement requests, and artifact instantiation boundaries.",
+        "deterministic_fingerprint": "dbcccb940623a65444a95f17d4c2ce7c0c2c19d0daf42b5ccbe1ce58669f23e8",
+        "guaranteed_invariants": [
+          "same refinement contract yields identical refinement meaning",
+          "refinement levels remain replay-stable",
+          "worldgen meaning changes require explicit versioning"
+        ],
+        "version": "1.0.0"
+      }
+    ],
+    "extensions": {}
+  }
+}

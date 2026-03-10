@@ -3528,6 +3528,13 @@
         "1.0.0"
       ]
     },
+    "universe_contract_bundle": {
+      "current_version": "1.0.0",
+      "migrations": {},
+      "supported_versions": [
+        "1.0.0"
+      ]
+    },
     "universe_physics_profile": {
       "current_version": "1.0.0",
       "migrations": {},

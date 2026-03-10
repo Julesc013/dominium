@@ -207,6 +207,44 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-CONTRACT-PINNED-IN-UNIVERSE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/semantic_contract_registry.json",
+        "schema/universe/universe_contract_bundle.schema",
+        "schemas/universe_contract_bundle.schema.json",
+        "tools/xstack/sessionx/creator.py",
+        "docs/contracts/SEMANTIC_CONTRACT_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-contract-pinned-in-universe",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NO-UNVERSIONED-BEHAVIOR-CHANGE",
+      "severity": "FAIL",
+      "scope_paths": [
+        "data/registries/semantic_contract_registry.json",
+        "tools/compatx/core/semantic_contract_validator.py",
+        "docs/contracts/SEMANTIC_CONTRACT_MODEL.md"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-unversioned-behavior-change",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs",
+        "src",
+        "tools",
+        "data",
+        "schema",
+        "schemas"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-new-contract-requires-entry",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "WARN-SCHEMA-DEPRECATED-FIELDS",
       "severity": "WARN",
       "scope_paths": [

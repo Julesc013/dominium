@@ -121,6 +121,9 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-GLOSSARY-TERM-CANON`
 - `WARN-GLOSSARY-TERM-CANON`
 - `INV-UNIVERSE_IDENTITY_IMMUTABLE`
+- `INV-CONTRACT-PINNED-IN-UNIVERSE`
+- `INV-NO-UNVERSIONED-BEHAVIOR-CHANGE`
+- `INV-NEW-CONTRACT-REQUIRES-ENTRY`
 - `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`
 - `INV-SESSION_SPEC_REQUIRED_FOR_RUN`
 - `INV-MVP-PACKS-MINIMAL`
@@ -409,6 +412,24 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when universe identity/state schemas are missing required split-contract fields.
 - Fails when runtime sources introduce explicit universe identity mutation tokens.
 - Keeps UniverseIdentity immutable after creation while UniverseState carries evolution.
+
+### INV-CONTRACT-PINNED-IN-UNIVERSE
+
+- Fails when the semantic contract registry, universe contract bundle schemas, or semantic contract model doc are missing.
+- Fails when session creation no longer emits immutable `universe_contract_bundle.json` metadata beside `universe_identity.json`.
+- Keeps semantic meaning pins explicit at universe creation without perturbing identity-derived object IDs.
+
+### INV-NO-UNVERSIONED-BEHAVIOR-CHANGE
+
+- Fails when semantic contract registry rows omit explicit breaking-change requirements.
+- Fails when the semantic contract validator no longer refuses replay bundle mismatch deterministically.
+- Prevents behavior-meaning drift from bypassing explicit versioned contract surfaces.
+
+### INV-NEW-CONTRACT-REQUIRES-ENTRY
+
+- Fails when any `contract.*.vN` token appears in governed repo surfaces without a matching semantic contract registry entry.
+- Fails when semantic contract references are introduced ad hoc outside the canonical registry.
+- Forces new behavior-meaning contracts through explicit registry registration.
 
 ### INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS
 
