@@ -256,6 +256,12 @@ def export_instance_bundle(
     export_mode: str,
     bundle_id: str = "",
 ) -> dict:
+    if os.path.exists(out_path):
+        return {
+            "result": "refused",
+            "refusal_code": "refusal.bundle.destination_exists",
+            "details": {"target_root": os.path.abspath(out_path).replace("\\", "/")},
+        }
     validation = validate_instance_manifest(repo_root=repo_root, instance_manifest_path=instance_manifest_path)
     if validation.get("result") != "complete":
         return {
@@ -353,7 +359,7 @@ def export_instance_bundle(
             )
 
         lock_hash = str(pack_lock_payload.get("pack_lock_hash", "")).strip()
-        profile_hash = str(profile_bundle_payload.get("profile_bundle_hash", "")).strip()
+        profile_hash = str(export_manifest.get("profile_bundle_hash", "")).strip() or str(instance_manifest.get("profile_bundle_hash", "")).strip()
         lock_root = resolve_instance_artifact_root(instance_root, instance_manifest, LOCK_STORE_CATEGORY, lock_hash)
         profile_root = resolve_instance_artifact_root(instance_root, instance_manifest, PROFILE_STORE_CATEGORY, profile_hash)
         file_entries.extend(
@@ -437,6 +443,12 @@ def export_save_bundle(
     bundle_id: str = "",
     store_root: str = "",
 ) -> dict:
+    if os.path.exists(out_path):
+        return {
+            "result": "refused",
+            "refusal_code": "refusal.bundle.destination_exists",
+            "details": {"target_root": os.path.abspath(out_path).replace("\\", "/")},
+        }
     validation = validate_save_manifest(repo_root=repo_root, save_manifest_path=save_manifest_path)
     if validation.get("result") != "complete":
         return {
@@ -590,6 +602,12 @@ def export_pack_bundle(
 ) -> dict:
     del repo_root
     abs_pack_root = os.path.abspath(str(pack_root or "").strip())
+    if os.path.exists(out_path):
+        return {
+            "result": "refused",
+            "refusal_code": "refusal.bundle.destination_exists",
+            "details": {"target_root": os.path.abspath(out_path).replace("\\", "/")},
+        }
     if not os.path.isdir(abs_pack_root):
         return {
             "result": "refused",
