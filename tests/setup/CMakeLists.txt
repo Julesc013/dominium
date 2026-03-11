@@ -7,3 +7,9 @@ dom_add_testx(NAME setup_install_tests
         --repo-root ${CMAKE_SOURCE_DIR}
     LABELS ${DOM_TESTX_LABEL_PORTABILITY}
 )
+
+dom_add_testx(NAME install_manifest_tests
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/install_manifest_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+)

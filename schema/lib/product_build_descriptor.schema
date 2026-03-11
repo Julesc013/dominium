@@ -1,0 +1,34 @@
+SCHEMA: lib/product_build_descriptor.schema
+schema_id: dominium.schema.lib.product_build_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the immutable binary + endpoint descriptor identity for a product build in an install.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record product_build_descriptor
+  required:
+    - product_id: id
+    - build_id: id
+    - binary_hash: sha256
+    - endpoint_descriptor_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - notes: map
+
+INVARIANTS:
+- binary_hash must match the installed binary referenced by the owning install manifest.
+- endpoint_descriptor_hash must match the declared endpoint descriptor sidecar or emitted descriptor.
+- deterministic_fingerprint is computed from canonical serialized content.

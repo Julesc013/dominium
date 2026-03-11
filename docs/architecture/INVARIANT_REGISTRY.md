@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
@@ -149,6 +149,9 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-ARTIFACTS-CONTENT-ADDRESSED | Reusable artifacts are stored and resolved by canonical hash. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tests/ops/content_store_tests.py |
 | INV-NO-PATH-BASED-SEMANTICS | Paths may locate artifacts but never define identity or authority semantics. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tools/xstack/repox/check.py |
 | INV-PORTABLE-MODE-SELF-CONTAINED | Portable instances and instance bundles must embed all required reusable artifacts. | docs/architecture/INSTANCE_MODEL.md | tests/ops/content_store_tests.py |
+| INV-INSTALL-MANIFEST-REQUIRED | Registered installs must carry a canonical install manifest with build, contract, and store metadata. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
+| INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY | Install identity and validation must not depend on absolute host paths. | docs/architecture/INSTALL_MODEL.md | src/lib/install/install_validator.py |
+| INV-BINARY-HASH-MATCHES-MANIFEST | Installed binaries and endpoint descriptors must match the manifest-declared hashes. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
 
 ## Notes
 

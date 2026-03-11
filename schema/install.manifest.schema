@@ -1,6 +1,6 @@
 SCHEMA: install.manifest.schema
 schema_id: dominium.schema.install_manifest
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -15,6 +15,7 @@ NON-SEMANTICS:
 - The manifest does not imply a single install.
 - The manifest does not imply online connectivity.
 - The manifest does not imply content availability.
+- Install identity is not derived from absolute host paths.
 
 CONVENTIONS:
 - uuid: canonical UUID string (lowercase, hyphenated).
@@ -38,6 +39,16 @@ record install_manifest
     - created_at: timestamp
     - extensions: map
   optional:
+    - install_version: tag
+    - product_builds: map
+    - semantic_contract_registry_hash: id
+    - supported_protocol_versions: map
+    - supported_contract_ranges: map
+    - default_mod_policy_id: id
+    - store_root_ref: store_root_ref
+    - mode: tag
+    - deterministic_fingerprint: id
+    - product_build_descriptors: map
     - install_manifest_version: integer
     - platform: tag
     - install_type: tag
@@ -65,6 +76,11 @@ record binary_info
     - build_id: tag
     - build_number: integer
     - abi_versions: [tag]
+    - binary_ref: path_ref
+    - descriptor_ref: path_ref
+    - binary_hash: id
+    - endpoint_descriptor_hash: id
+    - extensions: map
 
 record protocol_versions
   required:
@@ -79,3 +95,10 @@ record protocol_versions
 record provenance_ref
   required:
     - provenance_id: id
+
+record store_root_ref
+  required:
+    - store_id: id
+  optional:
+    - root_path: path_ref
+    - manifest_ref: path_ref

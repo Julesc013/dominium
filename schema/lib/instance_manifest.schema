@@ -1,6 +1,6 @@
 SCHEMA: lib/instance_manifest.schema
 schema_id: dominium.schema.lib.instance_manifest
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -38,6 +38,8 @@ record instance_manifest
   optional:
     - store_root: store_root_ref
     - embedded_artifacts: [artifact_ref]
+    - required_product_builds: map
+    - required_contract_ranges: map
     - notes: map
 
 TYPE DEFINITIONS:
@@ -80,4 +82,6 @@ INVARIANTS:
 - mode must be `linked` or `portable`.
 - linked instances must resolve reusable artifacts through store_root + hashes.
 - portable instances must list embedded_artifacts for self-contained reuse.
+- required_product_builds, when present, pin product build selection for launcher validation.
+- required_contract_ranges, when present, pin contract-range expectations for launcher validation.
 - deterministic_fingerprint is computed from canonical serialized content.

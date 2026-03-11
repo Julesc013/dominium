@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
-# Instance Model (OPS0 / LIB-0)
+# Instance Model (OPS0 / LIB-1)
 
 Status: binding.
 Scope: instance manifests, linked vs portable topology, and artifact resolution.
@@ -45,6 +45,7 @@ Every LIB-0 instance must declare:
 
 - Legacy `capability_lockfile` remains a compatibility file path only.
 - `active_profiles`, `active_modpacks`, and `data_root` remain available for current launcher/ops flows.
+- `required_product_builds` and `required_contract_ranges` may pin launcher selection without changing runtime law.
 - Instance topology must not change authoritative gameplay/runtime behavior; it is storage-only.
 
 ## Related Contracts

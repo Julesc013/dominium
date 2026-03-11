@@ -18,7 +18,27 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from src.appshell import appshell_main
-from src.compat import descriptor_json_text, emit_product_descriptor
+from src.compat import (
+    build_product_build_metadata,
+    build_product_descriptor,
+    descriptor_json_text,
+    emit_product_descriptor,
+)
+from src.lib.install import (
+    build_product_build_descriptor,
+    default_install_registry_path,
+    deterministic_fingerprint as install_deterministic_fingerprint,
+    load_install_registry,
+    merge_contract_ranges,
+    merge_protocol_ranges,
+    registry_add_install,
+    registry_remove_install,
+    sha256_file,
+    stable_install_id,
+    validate_install_manifest,
+    verify_install_registry,
+)
+from tools.lib.content_store import initialize_store_root
 
 
 DEFAULT_CAPABILITY_BASELINE = "BASELINE_MAINLINE_CORE"
@@ -220,6 +240,8 @@ def build_invocation(args: argparse.Namespace, deterministic: bool) -> dict:
         "ui_mode": args.ui_mode or "cli",
         "frontend_id": args.frontend_id or "",
         "state_path": normalize_invocation_path(getattr(args, "state", None)),
+        "install_mode": str(getattr(args, "install_mode", "") or "").strip(),
+        "store_root": normalize_invocation_path(getattr(args, "store_root", None)),
         "created_at": now_timestamp(deterministic),
         "deterministic": 1 if deterministic else 0,
         "extensions": {},
@@ -248,6 +270,8 @@ def make_plan(invocation: dict,
         "payload_root": normalize_path(payload_root),
         "ui_mode": invocation.get("ui_mode", "cli"),
         "frontend_id": invocation.get("frontend_id", ""),
+        "install_mode": str(invocation.get("install_mode", "")).strip(),
+        "store_root": str(invocation.get("store_root", "")).strip(),
         "invocation_digest64": digest64(invocation),
         "transaction_id": transaction_id,
         "created_at": now_timestamp(deterministic),
@@ -318,57 +342,172 @@ def detect_network_status(mode: str) -> Tuple[str, Optional[str]]:
     return "unknown", None
 
 
+PRODUCT_BINARY_SPECS = (
+    {"product_id": "engine", "version_key": "engine_version", "candidates": ("dominium_engine", "domino_engine")},
+    {"product_id": "game", "version_key": "game_version", "candidates": ("dominium_game", "dominium-game")},
+    {"product_id": "client", "version_key": "game_version", "candidates": ("dominium_client", "dominium-client")},
+    {"product_id": "server", "version_key": "game_version", "candidates": ("dominium_server", "dominium-server")},
+    {"product_id": "launcher", "version_key": "launcher_version", "candidates": ("dominium-launcher", "dominium_launcher")},
+    {"product_id": "setup", "version_key": "setup_version", "candidates": ("dominium-setup", "dominium_setup", "setup_cli.py")},
+)
+
+
+def _semantic_contract_registry_payload() -> dict:
+    path = os.path.join(REPO_ROOT_HINT, "data", "registries", "semantic_contract_registry.json")
+    return load_json(path)
+
+
+def _semantic_contract_registry_hash() -> str:
+    return hashlib.sha256(canonical_bytes(_semantic_contract_registry_payload())).hexdigest()
+
+
+def _store_root_ref_payload(install_root: str, store_root: str, store_id: str) -> dict:
+    payload = {"store_id": str(store_id or "").strip() or "store.default"}
+    try:
+        root_rel = os.path.relpath(store_root, install_root).replace("\\", "/")
+        manifest_rel = os.path.relpath(os.path.join(store_root, "store.root.json"), install_root).replace("\\", "/")
+    except ValueError:
+        root_rel = ""
+        manifest_rel = ""
+    if root_rel:
+        payload["root_path"] = root_rel
+    if manifest_rel:
+        payload["manifest_ref"] = manifest_rel
+    return payload
+
+
+def _install_version_for_products(product_rows: List[dict], versions: dict) -> str:
+    preferred = ("game", "client", "server", "engine", "launcher", "setup")
+    by_id = {str(row.get("product_id", "")).strip(): row for row in list(product_rows or [])}
+    for product_id in preferred:
+        row = dict(by_id.get(product_id) or {})
+        if row.get("product_version"):
+            return str(row.get("product_version")).strip()
+    for key in ("game_version", "engine_version", "launcher_version", "setup_version", "tools_version"):
+        token = str(versions.get(key, "")).strip()
+        if token:
+            return token
+    return "0.0.0"
+
+
+def _descriptor_sidecar_path(stage_root: str, binary_relpath: str) -> str:
+    root, _ext = os.path.splitext(binary_relpath)
+    return os.path.join(stage_root, root + ".descriptor.json")
+
+
+def _discover_install_products(stage_root: str, versions: dict) -> List[dict]:
+    products = []
+    seen = set()
+    for spec in PRODUCT_BINARY_SPECS:
+        product_id = str(spec["product_id"])
+        for candidate in spec["candidates"]:
+            binary_path = os.path.join(stage_root, "bin", candidate)
+            if not os.path.isfile(binary_path):
+                continue
+            if product_id in seen:
+                break
+            version_key = str(spec["version_key"])
+            product_version = str(versions.get(version_key, "0.0.0")).strip() or "0.0.0"
+            build_meta = build_product_build_metadata(REPO_ROOT_HINT, product_id)
+            descriptor = build_product_descriptor(REPO_ROOT_HINT, product_id=product_id, product_version=product_version)
+            binary_relpath = os.path.relpath(binary_path, stage_root).replace("\\", "/")
+            descriptor_relpath = os.path.relpath(_descriptor_sidecar_path(stage_root, binary_relpath), stage_root).replace("\\", "/")
+            write_json(os.path.join(stage_root, descriptor_relpath), descriptor)
+            products.append(
+                {
+                    "product_id": product_id,
+                    "product_version": product_version,
+                    "build_id": str(build_meta.get("build_id", "")).strip(),
+                    "binary_relpath": binary_relpath,
+                    "descriptor_relpath": descriptor_relpath,
+                    "binary_hash": sha256_file(binary_path),
+                    "endpoint_descriptor_hash": hashlib.sha256(canonical_bytes(descriptor)).hexdigest(),
+                    "descriptor": descriptor,
+                    "build_meta": build_meta,
+                }
+            )
+            seen.add(product_id)
+            break
+    return sorted(products, key=lambda row: str(row.get("product_id", "")))
+
+
 def install_manifest_payload(install_id: str,
                              install_root: str,
+                             store_root: str,
+                             mode: str,
                              created_at: str,
                              build_number: int,
-                             versions: dict) -> dict:
-    binaries = {
-        "engine": {
-            "product_id": "domino.engine",
-            "product_version": versions.get("engine_version", "0.0.0"),
-        },
-        "game": {
-            "product_id": "dominium.game",
-            "product_version": versions.get("game_version", "0.0.0"),
-        },
-        "client": {
-            "product_id": "dominium.client",
-            "product_version": versions.get("game_version", "0.0.0"),
-        },
-        "server": {
-            "product_id": "dominium.server",
-            "product_version": versions.get("game_version", "0.0.0"),
-        },
-        "launcher": {
-            "product_id": "dominium.launcher",
-            "product_version": versions.get("launcher_version", "0.0.0"),
-        },
-        "setup": {
-            "product_id": "dominium.setup",
-            "product_version": versions.get("setup_version", "0.0.0"),
-        },
-        "tools": {
-            "product_id": "dominium.tools",
-            "product_version": versions.get("tools_version", "0.0.0"),
-        },
+                             versions: dict,
+                             stage_root: str) -> dict:
+    product_rows = _discover_install_products(stage_root, versions)
+    product_builds = {}
+    product_build_descriptors = {}
+    binaries = {}
+    supported_capabilities = set()
+    protocol_rows = []
+    contract_rows = []
+
+    for row in product_rows:
+        product_id = str(row.get("product_id", "")).strip()
+        descriptor = dict(row.get("descriptor") or {})
+        product_builds[product_id] = str(row.get("build_id", "")).strip()
+        product_build_descriptors[product_id] = build_product_build_descriptor(
+            product_id=product_id,
+            build_id=str(row.get("build_id", "")).strip(),
+            binary_hash=str(row.get("binary_hash", "")).strip(),
+            endpoint_descriptor_hash=str(row.get("endpoint_descriptor_hash", "")).strip(),
+            binary_ref=str(row.get("binary_relpath", "")).strip(),
+            descriptor_ref=str(row.get("descriptor_relpath", "")).strip(),
+            product_version=str(row.get("product_version", "")).strip(),
+        )
+        binaries[product_id] = {
+            "product_id": product_id,
+            "product_version": str(row.get("product_version", "")).strip(),
+            "build_id": str(row.get("build_id", "")).strip(),
+            "binary_ref": str(row.get("binary_relpath", "")).strip(),
+            "descriptor_ref": str(row.get("descriptor_relpath", "")).strip(),
+            "binary_hash": str(row.get("binary_hash", "")).strip(),
+            "endpoint_descriptor_hash": str(row.get("endpoint_descriptor_hash", "")).strip(),
+            "extensions": {},
+        }
+        supported_capabilities.update(list(descriptor.get("feature_capabilities") or []))
+        protocol_rows.extend(list(descriptor.get("protocol_versions_supported") or []))
+        contract_rows.extend(list(descriptor.get("semantic_contract_versions_supported") or []))
+
+    supported_protocol_versions = merge_protocol_ranges(protocol_rows)
+    supported_contract_ranges = merge_contract_ranges(contract_rows)
+    protocol_versions = {
+        "network": str(versions.get("protocol_network", "0")).strip() or "0",
+        "save": str(versions.get("protocol_save", "0")).strip() or "0",
+        "mod": str(versions.get("protocol_mod", "0")).strip() or "0",
+        "replay": str(versions.get("protocol_replay", "0")).strip() or "0",
     }
-    return {
+    payload = {
         "install_id": install_id,
-        "install_root": install_root,
-        "binaries": binaries,
-        "supported_capabilities": versions.get("supported_capabilities", []),
-        "protocol_versions": {
-            "network": versions.get("protocol_network", "0"),
-            "save": versions.get("protocol_save", "0"),
-            "mod": versions.get("protocol_mod", "0"),
-            "replay": versions.get("protocol_replay", "0"),
-        },
+        "install_version": _install_version_for_products(product_rows, versions),
+        "product_builds": dict((key, product_builds[key]) for key in sorted(product_builds.keys())),
+        "product_build_ids": dict((key, product_builds[key]) for key in sorted(product_builds.keys())),
+        "semantic_contract_registry_hash": _semantic_contract_registry_hash(),
+        "supported_protocol_versions": dict((key, supported_protocol_versions[key]) for key in sorted(supported_protocol_versions.keys())),
+        "supported_contract_ranges": dict((key, supported_contract_ranges[key]) for key in sorted(supported_contract_ranges.keys())),
+        "default_mod_policy_id": "mod.policy.default",
+        "store_root_ref": _store_root_ref_payload(install_root, store_root, "store.default"),
+        "mode": mode,
+        "install_root": ".",
+        "binaries": dict((key, binaries[key]) for key in sorted(binaries.keys())),
+        "product_build_descriptors": dict((key, product_build_descriptors[key]) for key in sorted(product_build_descriptors.keys())),
+        "supported_capabilities": sorted(supported_capabilities),
+        "protocol_versions": protocol_versions,
         "build_identity": int(build_number),
         "trust_tier": versions.get("trust_tier", "official"),
         "created_at": created_at,
-        "extensions": {},
+        "extensions": {
+            "official.semantic_contract_registry_ref": "semantic_contract_registry.json",
+        },
+        "deterministic_fingerprint": "",
     }
+    payload["deterministic_fingerprint"] = install_deterministic_fingerprint(payload)
+    return payload
 
 
 def setup_state_payload(install_id: str,
@@ -795,6 +934,8 @@ def install_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool)
     manifest_path = plan.get("manifest_path") or args.manifest or ""
     payload_root = plan.get("payload_root") or args.payload_root or ""
     ui_mode = plan.get("ui_mode") or args.ui_mode or "cli"
+    install_mode = str(plan.get("install_mode") or getattr(args, "install_mode", "") or "").strip().lower()
+    store_root_override = str(plan.get("store_root") or getattr(args, "store_root", "") or "").strip()
 
     if not install_root:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "install_root is required", {})
@@ -802,6 +943,9 @@ def install_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool)
 
     install_root = normalize_path(install_root)
     data_root = normalize_path(data_root) if data_root else normalize_path(os.path.join(install_root, "data"))
+    if install_mode not in ("linked", "portable"):
+        install_mode = "linked" if store_root_override else "portable"
+    effective_store_root = install_root if install_mode == "portable" else normalize_path(store_root_override or os.path.join(os.path.dirname(install_root), "dominium.store"))
 
     if os.path.exists(install_root):
         refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
@@ -833,28 +977,63 @@ def install_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool)
     txn.log("STAGE", "pending", "staging install payloads")
 
     try:
+        created_data_root = False
         ensure_dir(os.path.join(stage_root, "bin"))
+        ensure_dir(os.path.join(stage_root, "instances"))
+        ensure_dir(os.path.join(stage_root, "saves"))
+        ensure_dir(os.path.join(stage_root, "exports"))
+        ensure_dir(os.path.join(stage_root, "store", "packs"))
+        ensure_dir(os.path.join(stage_root, "store", "profiles"))
+        ensure_dir(os.path.join(stage_root, "store", "blueprints"))
+        ensure_dir(os.path.join(stage_root, "store", "locks"))
+        ensure_dir(os.path.join(stage_root, "store", "migrations"))
+        ensure_dir(os.path.join(stage_root, "store", "repro"))
         copy_tree(runtime_bin, os.path.join(stage_root, "bin"), overwrite=True)
         if os.path.isdir(launcher_bin):
             copy_tree(launcher_bin, os.path.join(stage_root, "bin"), overwrite=True)
         if os.path.isdir(tools_dir):
             copy_tree(tools_dir, os.path.join(stage_root, "tools"), overwrite=True)
+        write_json(os.path.join(stage_root, "semantic_contract_registry.json"), _semantic_contract_registry_payload())
 
         if args.simulate_failure == "stage":
             raise RuntimeError("simulated stage failure")
 
         created_at = now_timestamp(deterministic)
-        install_id = str(uuid.uuid4())
-        if deterministic:
-            install_id = str(uuid.uuid5(uuid.NAMESPACE_URL, plan.get("invocation_digest64", "")))
+        install_id = stable_install_id(
+            {
+                "install_version": str(args.versions.get("game_version", "0.0.0")).strip() or "0.0.0",
+                "invocation_digest64": str(plan.get("invocation_digest64", "")).strip(),
+                "mode": install_mode,
+                "semantic_contract_registry_hash": _semantic_contract_registry_hash(),
+            }
+        )
+        if not deterministic:
+            install_id = stable_install_id(
+                {
+                    "install_version": str(args.versions.get("game_version", "0.0.0")).strip() or "0.0.0",
+                    "nonce": str(uuid.uuid4()),
+                    "mode": install_mode,
+                    "semantic_contract_registry_hash": _semantic_contract_registry_hash(),
+                }
+            )
 
         manifest_payload = install_manifest_payload(
             install_id=install_id,
-            install_root=".",
+            install_root=install_root,
+            store_root=effective_store_root,
+            mode=install_mode,
             created_at=created_at,
             build_number=args.build_number or 0,
             versions=args.versions,
+            stage_root=stage_root,
         )
+        validation = validate_install_manifest(
+            repo_root=REPO_ROOT_HINT,
+            install_manifest_path=os.path.join(stage_root, DEFAULT_INSTALL_MANIFEST),
+            manifest_payload=manifest_payload,
+        )
+        if validation.get("result") != "complete":
+            raise RuntimeError(str(validation.get("refusal_code", "install_manifest_invalid")))
         write_json(os.path.join(stage_root, DEFAULT_INSTALL_MANIFEST), manifest_payload)
         write_json(os.path.join(stage_root, DEFAULT_SETUP_STATE),
                    setup_state_payload(install_id, manifest_path, data_root, ui_mode, created_at))
@@ -894,6 +1073,11 @@ def install_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool)
             shutil.copytree(stage_root, install_root)
             shutil.rmtree(stage_root, ignore_errors=True)
 
+        if install_mode == "portable":
+            initialize_store_root(install_root)
+        else:
+            initialize_store_root(effective_store_root)
+
         txn = SetupTransaction(install_root, "setup.install", tx_id, deterministic)
         txn.log("COMMIT", "ok", "install committed")
 
@@ -907,6 +1091,8 @@ def install_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool)
             "details": {
                 "install_root": install_root,
                 "data_root": data_root,
+                "install_mode": install_mode,
+                "store_root": effective_store_root,
                 "transaction_id": tx_id,
                 "compat_report": os.path.join(install_root, DEFAULT_COMPAT_REPORT).replace("\\", "/"),
                 "network_status": getattr(args, "network_status", ""),
@@ -982,6 +1168,13 @@ def repair_from_plan(plan: dict, args: argparse.Namespace, deterministic: bool) 
             sync_tree(launcher_bin, os.path.join(install_root, "bin"))
         if os.path.isdir(tools_dir):
             sync_tree(tools_dir, os.path.join(install_root, "tools"))
+
+        validation = validate_install_manifest(
+            repo_root=REPO_ROOT_HINT,
+            install_manifest_path=manifest_path,
+        )
+        if validation.get("result") != "complete":
+            raise RuntimeError(str(validation.get("refusal_code", "install_manifest_invalid")))
 
         if args.simulate_failure == "commit":
             raise RuntimeError("simulated commit failure")
@@ -1204,7 +1397,103 @@ def handle_manifest_validate(args: argparse.Namespace, deterministic: bool) -> i
     return EXIT_OK
 
 
+def handle_install_registry(args: argparse.Namespace) -> int:
+    registry_path = normalize_path(getattr(args, "registry_path", "") or default_install_registry_path(REPO_ROOT_HINT))
+    cmd = str(getattr(args, "registry_cmd", "") or "").strip().lower()
+    target = str(getattr(args, "registry_target", "") or "").strip()
+
+    if cmd == "list":
+        registry = load_install_registry(registry_path)
+        output_ok(
+            "install registry listed",
+            {
+                "details": {
+                    "registry_path": registry_path,
+                    "installs": list((registry.get("record") or {}).get("installs") or []),
+                }
+            },
+            args.format,
+        )
+        return EXIT_OK
+
+    if cmd == "add":
+        if not target:
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "install path is required", {})
+            output_refusal("missing install path", refusal, args.format)
+            return EXIT_REFUSED
+        manifest_path = target
+        if os.path.isdir(target):
+            manifest_path = os.path.join(target, DEFAULT_INSTALL_MANIFEST)
+        result = registry_add_install(
+            repo_root=REPO_ROOT_HINT,
+            registry_path=registry_path,
+            install_manifest_path=manifest_path,
+        )
+        if result.get("result") != "complete":
+            refusal = refusal_payload(5, str(result.get("refusal_code", REFUSAL_INSTALL_HASH_MISMATCH)), "install registry add failed", {})
+            output_refusal("install registry add failed", refusal, args.format)
+            return EXIT_REFUSED
+        output_ok(
+            "install registry add ok",
+            {
+                "details": {
+                    "registry_path": registry_path,
+                    "entry": result.get("registry_entry") or {},
+                    "created": bool(result.get("created", False)),
+                }
+            },
+            args.format,
+        )
+        return EXIT_OK
+
+    if cmd == "remove":
+        if not target:
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "install_id is required", {})
+            output_refusal("missing install_id", refusal, args.format)
+            return EXIT_REFUSED
+        result = registry_remove_install(registry_path=registry_path, install_id=target)
+        output_ok(
+            "install registry remove ok",
+            {
+                "details": {
+                    "registry_path": registry_path,
+                    "install_id": target,
+                    "removed": bool(result.get("removed", False)),
+                }
+            },
+            args.format,
+        )
+        return EXIT_OK
+
+    if cmd == "verify":
+        result = verify_install_registry(repo_root=REPO_ROOT_HINT, registry_path=registry_path)
+        if result.get("result") != "complete":
+            refusal = refusal_payload(5, "REFUSE_INSTALL_REGISTRY_VERIFY_FAILED", "install registry verify failed", {})
+            write_output({"result": "refused", "message": "install registry verify failed", "refusal": refusal, "details": result}, args.format)
+            return EXIT_REFUSED
+        output_ok(
+            "install registry verify ok",
+            {"details": result},
+            args.format,
+        )
+        return EXIT_OK
+
+    refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown install registry command", {"cmd": cmd})
+    output_refusal("unknown install registry command", refusal, args.format)
+    return EXIT_REFUSED
+
+
 def handle_install(args: argparse.Namespace, deterministic: bool) -> int:
+    if str(getattr(args, "registry_cmd", "") or "").strip():
+        return handle_install_registry(args)
+    if not args.manifest:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "manifest is required", {})
+        output_refusal("missing manifest", refusal, args.format)
+        return EXIT_REFUSED
+    if not args.install_root:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "install_root is required", {})
+        output_refusal("missing install_root", refusal, args.format)
+        return EXIT_REFUSED
     invocation = build_invocation(args, deterministic)
     tx_id = args.transaction_id or str(uuid.uuid5(uuid.NAMESPACE_URL, digest64(invocation)))
     artifact_root = derive_artifact_root(args.manifest, args.artifact_root)
@@ -1291,6 +1580,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     plan_cmd.add_argument("--data-root", dest="data_root", default="")
     plan_cmd.add_argument("--ui-mode", default=None)
     plan_cmd.add_argument("--frontend-id", default="")
+    plan_cmd.add_argument("--install-mode", dest="install_mode", default="")
+    plan_cmd.add_argument("--store-root", dest="store_root", default="")
     plan_cmd.add_argument("--out", default=None)
     plan_cmd.add_argument("--out-plan", dest="out_plan", default=None)
 
@@ -1304,6 +1595,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     apply_cmd.add_argument("--data-root", dest="data_root", default="")
     apply_cmd.add_argument("--ui-mode", default=None)
     apply_cmd.add_argument("--frontend-id", default="")
+    apply_cmd.add_argument("--install-mode", dest="install_mode", default="")
+    apply_cmd.add_argument("--store-root", dest="store_root", default="")
     apply_cmd.add_argument("--dry-run", action="store_true")
     apply_cmd.add_argument("--remove-data", action="store_true")
 
@@ -1317,14 +1610,19 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     manifest_validate.add_argument("--json", action="store_true")
 
     install_cmd = sub.add_parser("install")
-    install_cmd.add_argument("--manifest", required=True)
+    install_cmd.add_argument("registry_cmd", nargs="?", choices=["list", "add", "remove", "verify"])
+    install_cmd.add_argument("registry_target", nargs="?")
+    install_cmd.add_argument("--registry-path", dest="registry_path", default="")
+    install_cmd.add_argument("--manifest", required=False)
     install_cmd.add_argument("--op", default="install")
     install_cmd.add_argument("--scope", default="portable")
     install_cmd.add_argument("--platform", default="")
-    install_cmd.add_argument("--install-root", dest="install_root", required=True)
+    install_cmd.add_argument("--install-root", dest="install_root", default="")
     install_cmd.add_argument("--data-root", dest="data_root", default="")
     install_cmd.add_argument("--frontend-id", default="")
     install_cmd.add_argument("--ui-mode", default=None)
+    install_cmd.add_argument("--install-mode", dest="install_mode", default="")
+    install_cmd.add_argument("--store-root", dest="store_root", default="")
 
     repair_cmd = sub.add_parser("repair")
     repair_cmd.add_argument("--manifest", required=True)
@@ -1335,6 +1633,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     repair_cmd.add_argument("--data-root", dest="data_root", default="")
     repair_cmd.add_argument("--frontend-id", default="")
     repair_cmd.add_argument("--ui-mode", default=None)
+    repair_cmd.add_argument("--install-mode", dest="install_mode", default="")
+    repair_cmd.add_argument("--store-root", dest="store_root", default="")
 
     uninstall_cmd = sub.add_parser("uninstall")
     uninstall_cmd.add_argument("--manifest", required=False)
@@ -1460,7 +1760,7 @@ def _legacy_main(argv: list[str] | None = None) -> int:
 def main(argv: list[str] | None = None) -> int:
     return appshell_main(
         product_id="setup",
-        argv=argv,
+        argv=list(sys.argv[1:] if argv is None else argv),
         repo_root_hint=REPO_ROOT_HINT,
         legacy_main=_legacy_main,
         legacy_accepts_repo_root=False,

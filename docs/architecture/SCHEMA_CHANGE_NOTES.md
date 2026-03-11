@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-02
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
@@ -18,6 +18,12 @@ Template:
   Change: <short summary>
   Invariants: INV-...
   Migration: <required migration steps or "none">
+
+- Date: 2026-03-11
+  Schema(s): schema/lib/install_manifest.schema; schema/lib/product_build_descriptor.schema; schema/lib/instance_manifest.schema; schema/install.manifest.schema
+  Change: upgrade install manifest contracts for LIB-1 multi-install build selection, per-product binary descriptors, and instance build pinning
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-INSTALL-MANIFEST-REQUIRED; INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY; INV-BINARY-HASH-MATCHES-MANIFEST
+  Migration: regenerate or explicitly refuse provisional LIB-0 install manifests; legacy install.manifest.json remains the compatibility adapter
 
 - Date: 2026-03-11
   Schema(s): schema/lib/store_root.schema; schema/lib/install_manifest.schema; schema/lib/instance_manifest.schema; schema/lib/save_manifest.schema

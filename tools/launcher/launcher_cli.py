@@ -22,6 +22,12 @@ from tools.lib.content_store import (
     resolve_instance_artifact_root,
     resolve_locator_path,
 )
+from src.lib.install import (
+    compare_required_contract_ranges,
+    compare_required_product_builds,
+    normalize_contract_range,
+    validate_install_manifest,
+)
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
@@ -72,10 +78,46 @@ def safe_rel(path: str, base: str) -> str:
     return rel.replace("\\", "/")
 
 
+def resolve_install_root(manifest_path: str, manifest: Dict[str, object]) -> str:
+    root_token = str((manifest or {}).get("install_root", "") or "").strip()
+    if not root_token or root_token == ".":
+        return os.path.dirname(os.path.abspath(manifest_path))
+    if os.path.isabs(root_token):
+        return root_token
+    return os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(manifest_path)), root_token))
+
+
 def sorted_unique(values: Optional[List[str]]) -> List[str]:
     if not values:
         return []
     return sorted({value for value in values if value})
+
+
+def install_product_builds(install_manifest: Dict[str, object]) -> Dict[str, str]:
+    product_builds = dict(install_manifest.get("product_builds") or install_manifest.get("product_build_ids") or {})
+    return {
+        str(key): str(value).strip()
+        for key, value in sorted(product_builds.items(), key=lambda item: str(item[0]))
+        if str(key).strip() and str(value).strip()
+    }
+
+
+def instance_required_product_builds(instance_manifest: Dict[str, object]) -> Dict[str, str]:
+    product_builds = dict(instance_manifest.get("required_product_builds") or {})
+    return {
+        str(key): str(value).strip()
+        for key, value in sorted(product_builds.items(), key=lambda item: str(item[0]))
+        if str(key).strip() and str(value).strip()
+    }
+
+
+def instance_required_contract_ranges(instance_manifest: Dict[str, object]) -> Dict[str, dict]:
+    ranges = dict(instance_manifest.get("required_contract_ranges") or {})
+    return {
+        str(key): normalize_contract_range(value)
+        for key, value in sorted(ranges.items(), key=lambda item: str(item[0]))
+        if str(key).strip()
+    }
 
 
 def refusal_payload(code_id: int, code: str, message: str,
@@ -206,7 +248,7 @@ def list_install_manifests(search_roots: List[str]) -> List[Dict[str, object]]:
                     if install_id:
                         seen.add(install_id)
                     results.append(normalize_install_entry(manifest, manifest_path))
-    return results
+    return sorted(results, key=lambda row: (str(row.get("install_id", "")), str(row.get("manifest_path", ""))))
 
 
 def normalize_install_entry(manifest: dict, manifest_path: str) -> Dict[str, object]:
@@ -218,9 +260,13 @@ def normalize_install_entry(manifest: dict, manifest_path: str) -> Dict[str, obj
         build_number = engine.get("build_number")
     if build_number is None:
         build_number = manifest.get("build_identity")
+    if build_number is None:
+        product_builds = install_product_builds(manifest)
+        if product_builds:
+            build_number = next(iter(product_builds.values()))
     return {
         "install_id": manifest.get("install_id"),
-        "install_root": manifest.get("install_root") or os.path.dirname(manifest_path),
+        "install_root": resolve_install_root(manifest_path, manifest),
         "manifest_path": manifest_path.replace("\\", "/"),
         "engine_version": engine.get("product_version"),
         "game_version": game.get("product_version"),
@@ -263,7 +309,7 @@ def list_instance_manifests(search_roots: List[str], install_id: Optional[str]) 
                     if install_id and manifest.get("install_id") != install_id:
                         continue
                     results.append(normalize_instance_entry(manifest, manifest_path))
-    return results
+    return sorted(results, key=lambda row: (str(row.get("instance_id", "")), str(row.get("manifest_path", ""))))
 
 
 def normalize_instance_entry(manifest: dict, manifest_path: str) -> Dict[str, object]:
@@ -529,6 +575,36 @@ def perform_preflight(args: argparse.Namespace,
 
     install_manifest = load_json(install_manifest_path)
     instance_manifest = load_json(instance_manifest_path)
+    install_validation = validate_install_manifest(
+        repo_root=REPO_ROOT,
+        install_manifest_path=install_manifest_path,
+        manifest_payload=install_manifest,
+    )
+    if install_validation.get("result") != "complete":
+        refusal = refusal_payload(
+            5,
+            str(install_validation.get("refusal_code", "REFUSE_INSTALL_INVALID")).upper() or "REFUSE_INSTALL_INVALID",
+            "install manifest verification failed",
+            {"manifest": os.path.basename(install_manifest_path)},
+        )
+        report = build_compat_report(
+            "run",
+            install_manifest.get("install_id"),
+            instance_manifest.get("instance_id"),
+            None,
+            args.capability_baseline,
+            [],
+            [],
+            [],
+            "refuse",
+            [str(install_validation.get("refusal_code", ""))],
+            ["repair or reinstall the selected build"],
+            deterministic,
+            {"install_validation": install_validation},
+            refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+    install_manifest = dict(install_validation.get("install_manifest") or install_manifest)
     install_id = install_manifest.get("install_id")
     instance_id = instance_manifest.get("instance_id")
     if install_id and instance_manifest.get("install_id") not in (None, install_id):
@@ -541,7 +617,7 @@ def perform_preflight(args: argparse.Namespace,
                                      deterministic, {}, refusal)
         return 3, {"result": "refused", "compat_report": report}
 
-    install_root = install_manifest.get("install_root") or os.path.dirname(install_manifest_path)
+    install_root = resolve_install_root(install_manifest_path, install_manifest)
     instance_root = os.path.dirname(instance_manifest_path)
     data_root = resolve_data_root(instance_root, instance_manifest.get("data_root") or "")
     lockfile, lockfile_source = resolve_pack_lock(instance_root, instance_manifest)
@@ -559,6 +635,10 @@ def perform_preflight(args: argparse.Namespace,
     required_caps = collect_required_capabilities(lockfile)
     provided_caps = sorted_unique(install_manifest.get("supported_capabilities") or [])
     missing_caps = sorted(set(required_caps) - set(provided_caps))
+    required_builds = instance_required_product_builds(instance_manifest)
+    build_mismatches = compare_required_product_builds(install_manifest, required_builds)
+    required_contracts = instance_required_contract_ranges(instance_manifest)
+    contract_mismatches = compare_required_contract_ranges(install_manifest, required_contracts)
 
     profile_ids = args.profile or (instance_manifest.get("active_profiles") or [])
     recommended_packs = profile_recommendations(profile_ids, profiles)
@@ -579,6 +659,11 @@ def perform_preflight(args: argparse.Namespace,
         "missing_packs": missing_required,
         "optional_packs": recommended_packs,
         "optional_missing_packs": missing_optional,
+        "required_product_builds": required_builds,
+        "build_mismatches": build_mismatches,
+        "required_contract_ranges": required_contracts,
+        "contract_range_mismatches": contract_mismatches,
+        "install_validation": install_validation,
         "pack_status": required_entries + optional_entries,
     }
 
@@ -594,6 +679,23 @@ def perform_preflight(args: argparse.Namespace,
                                   "required capabilities missing",
                                   {"missing": missing_caps})
         mitigation = ["update install capabilities"]
+    elif build_mismatches or contract_mismatches:
+        if args.run_mode in ("inspect", "replay"):
+            mode = "inspect-only"
+            mitigation = ["select a matching install for full runtime"]
+        else:
+            mode = "refuse"
+            refusal_codes = ["REFUSE_INSTALL_BUILD_MISMATCH"]
+            refusal = refusal_payload(
+                5,
+                "REFUSE_INSTALL_BUILD_MISMATCH",
+                "required product builds or contract ranges are not present in this install",
+                {
+                    "build_mismatches": build_mismatches,
+                    "contract_mismatches": contract_mismatches,
+                },
+            )
+            mitigation = ["select a compatible install or recreate the instance against this build set"]
     elif missing_required:
         missing_mode = (lockfile.get("missing_mode") or "degraded").lower()
         if missing_mode in ("inspect-only", "inspect_only"):
@@ -714,6 +816,8 @@ def main() -> int:
     instances_create.add_argument("--sandbox-policy-ref", default=None)
     instances_create.add_argument("--mod-policy-id", default="mod.policy.default")
     instances_create.add_argument("--overlay-conflict-policy-id", default="overlay.conflict.default")
+    instances_create.add_argument("--required-product-build", action="append", default=[])
+    instances_create.add_argument("--required-contract-range", action="append", default=[])
     instances_create.add_argument("--update-channel", default="stable")
     instances_create.add_argument("--created-at", default=None)
 
@@ -968,6 +1072,10 @@ def main() -> int:
                 extra += ["--active-modpack", modpack]
             for pack_root in args.pack_root:
                 extra += ["--pack-root", pack_root]
+            for product_build in args.required_product_build:
+                extra += ["--required-product-build", product_build]
+            for contract_range in args.required_contract_range:
+                extra += ["--required-contract-range", contract_range]
             if args.capability_lockfile:
                 extra += ["--capability-lockfile", args.capability_lockfile]
             if args.sandbox_policy:
@@ -1173,7 +1281,7 @@ def main() -> int:
         profile_ids = args.profile or []
         if args.install_manifest and os.path.isfile(args.install_manifest):
             install_manifest = load_json(args.install_manifest)
-            install_root = install_manifest.get("install_root") or os.path.dirname(args.install_manifest)
+            install_root = resolve_install_root(args.install_manifest, install_manifest)
         if args.instance_manifest and os.path.isfile(args.instance_manifest):
             instance_manifest = load_json(args.instance_manifest)
             instance_root = os.path.dirname(args.instance_manifest)

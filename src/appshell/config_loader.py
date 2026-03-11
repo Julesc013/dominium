@@ -9,7 +9,7 @@ from typing import List, Tuple
 
 def resolve_repo_root(repo_root: str, repo_root_hint: str = ".") -> str:
     token = str(repo_root or "").strip()
-    if token:
+    if token and token not in {".", "./"}:
         return os.path.normpath(os.path.abspath(token))
     return os.path.normpath(os.path.abspath(repo_root_hint or "."))
 

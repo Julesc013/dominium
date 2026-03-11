@@ -440,6 +440,8 @@ from analyzers import e430_nondeterministic_supervisor_smell
 from analyzers import e431_wallclock_polling_smell
 from analyzers import e432_nondeterministic_bundle_ordering_smell
 from analyzers import e433_secrets_in_bundle_smell
+from analyzers import e434_path_dependent_install_smell
+from analyzers import e435_binary_without_descriptor_smell
 
 
 ANALYZERS = (
@@ -883,6 +885,8 @@ ANALYZERS = (
     e431_wallclock_polling_smell,
     e432_nondeterministic_bundle_ordering_smell,
     e433_secrets_in_bundle_smell,
+    e434_path_dependent_install_smell,
+    e435_binary_without_descriptor_smell,
 )
 
 

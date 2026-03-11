@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
@@ -37,6 +37,7 @@ Create, clone, fork, activate, and delete instances:
 ```
 launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode portable --profile org.dominium.profile.casual
 launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode linked --store-root <store_root> --profile org.dominium.profile.casual
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --required-product-build game=<build_id> --required-contract-range contract.logic.eval=1:1
 launcher instances clone --source-manifest <instance_root>/instance.manifest.json --data-root <new_root>
 launcher instances fork --source-manifest <instance_root>/instance.manifest.json --data-root <new_root>
 launcher instances activate --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json
@@ -63,6 +64,12 @@ Preflight always generates a compat_report. Run modes are explicit:
 launcher preflight --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json --run-mode play
 launcher run --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json --run-mode play --confirm
 ```
+
+Preflight validates:
+- install manifest integrity
+- binary and descriptor hashes
+- required product build pins
+- required contract ranges
 
 Degraded/frozen/inspect-only runs require `--confirm`.
 

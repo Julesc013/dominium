@@ -1,41 +1,62 @@
 SCHEMA: lib/install_manifest.schema
 schema_id: dominium.schema.lib.install_manifest
-schema_version: 1.0.0
+schema_version: 2.0.0
 stability: core
 
 PURPOSE:
-- Define the LIB-0 install descriptor used by linked instances and portable import/export flows.
+- Define the LIB-1 install descriptor for multi-install registration, build selection, and coexistence.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
 - Records are open maps; unknown fields MUST be preserved.
-- No field removal or renaming without a MAJOR version bump.
+- Breaking field removal or semantic reuse requires a MAJOR version bump.
 
 NON-SEMANTICS:
-- The manifest does not imply a single install on the host.
-- Build identity does not imply content availability in the store.
+- mode declares storage topology only; it does not alter runtime law or simulation behavior.
+- store_root_ref locates the reusable artifact store; install identity remains content-derived.
+- Registry membership and host path placement do not change install identity.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
+- semver: semantic version string.
 - tag: namespaced string; unknown values allowed.
-- integer: non-negative whole number.
 - sha256: lowercase hex SHA-256 digest.
+- path_ref: relative or logical path string.
 - map: open key/value map; unknown keys preserved.
 
 REQUIRED SHAPE:
 record install_manifest
   required:
     - install_id: id
-    - product_build_ids: map
+    - install_version: semver
+    - product_builds: map
     - semantic_contract_registry_hash: sha256
     - supported_protocol_versions: map
+    - supported_contract_ranges: map
+    - default_mod_policy_id: id
+    - store_root_ref: store_root_ref
+    - mode: tag
     - deterministic_fingerprint: sha256
     - extensions: map
   optional:
-    - install_manifest_version: integer
+    - product_build_descriptors: map
     - notes: map
 
+TYPE DEFINITIONS:
+record store_root_ref
+  required:
+    - store_id: id
+  optional:
+    - root_path: path_ref
+    - manifest_ref: path_ref
+
 INVARIANTS:
-- product_build_ids maps product identifiers to build identifiers only.
-- supported_protocol_versions must not silently reinterpret protocol compatibility.
+- install_id must remain stable for equivalent canonical install content.
+- product_builds maps product_id to build_id only.
+- supported_protocol_versions must be explicit ranges keyed by protocol_id.
+- supported_contract_ranges must be explicit ranges keyed by contract_category_id.
+- linked installs must not require absolute path refs in the manifest.
+- portable installs must resolve store_root_ref inside the install root.
+- product_build_descriptors, when present, must agree with product_builds.
 - deterministic_fingerprint is computed from canonical serialized content.
+

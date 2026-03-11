@@ -30,6 +30,7 @@ from tools.lib.content_store import (
     store_add_tree_artifact,
     store_artifact_root,
 )
+from src.lib.install import normalize_contract_range
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
@@ -76,6 +77,15 @@ def safe_rel(path: str, base: str) -> str:
     return rel.replace("\\", "/")
 
 
+def resolve_install_root(manifest_path: str, manifest: Dict[str, object]) -> str:
+    root_token = str((manifest or {}).get("install_root", "") or "").strip()
+    if not root_token or root_token == ".":
+        return os.path.dirname(os.path.abspath(manifest_path))
+    if os.path.isabs(root_token):
+        return root_token
+    return os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(manifest_path)), root_token))
+
+
 def refusal_payload(code_id: int, code: str, message: str,
                     details: Optional[Dict[str, str]] = None) -> Dict[str, object]:
     return {
@@ -91,6 +101,70 @@ def sorted_unique(values: Optional[List[str]]) -> List[str]:
     if not values:
         return []
     return sorted({value for value in values if value})
+
+
+def install_product_builds(install_manifest: Dict[str, object]) -> Dict[str, str]:
+    product_builds = dict(install_manifest.get("product_builds") or install_manifest.get("product_build_ids") or {})
+    return {
+        str(key): str(value).strip()
+        for key, value in sorted(product_builds.items(), key=lambda item: str(item[0]))
+        if str(key).strip() and str(value).strip()
+    }
+
+
+def install_supported_contract_ranges(install_manifest: Dict[str, object]) -> Dict[str, dict]:
+    ranges = dict(install_manifest.get("supported_contract_ranges") or {})
+    return {
+        str(key): normalize_contract_range(value)
+        for key, value in sorted(ranges.items(), key=lambda item: str(item[0]))
+        if str(key).strip()
+    }
+
+
+def parse_required_product_builds(rows: Optional[List[str]]) -> Dict[str, str]:
+    parsed: Dict[str, str] = {}
+    for row in list(rows or []):
+        token = str(row or "").strip()
+        if "=" not in token:
+            continue
+        product_id, build_id = token.split("=", 1)
+        product_id = str(product_id).strip()
+        build_id = str(build_id).strip()
+        if product_id and build_id:
+            parsed[product_id] = build_id
+    return dict((key, parsed[key]) for key in sorted(parsed.keys()))
+
+
+def parse_required_contract_ranges(rows: Optional[List[str]]) -> Dict[str, dict]:
+    parsed: Dict[str, dict] = {}
+    for row in list(rows or []):
+        token = str(row or "").strip()
+        if "=" not in token:
+            continue
+        contract_id, range_token = token.split("=", 1)
+        contract_id = str(contract_id).strip()
+        range_token = str(range_token).strip()
+        if not contract_id or not range_token:
+            continue
+        if ":" in range_token:
+            min_token, max_token = range_token.split(":", 1)
+        else:
+            min_token = range_token
+            max_token = range_token
+        try:
+            min_version = int(min_token)
+            max_version = int(max_token)
+        except ValueError:
+            continue
+        parsed[contract_id] = normalize_contract_range(
+            {
+                "contract_category_id": contract_id,
+                "min_version": min_version,
+                "max_version": max_version,
+                "extensions": {},
+            }
+        )
+    return dict((key, parsed[key]) for key in sorted(parsed.keys()))
 
 
 def build_compat_report(context: str,
@@ -240,7 +314,7 @@ def list_install_manifests(search_roots: List[str]) -> List[Dict[str, object]]:
                 seen.add(install_id)
             results.append({
                 "install_id": install_id,
-                "install_root": manifest.get("install_root"),
+                "install_root": resolve_install_root(manifest_path, manifest),
                 "manifest_path": manifest_path.replace("\\", "/"),
             })
             continue
@@ -259,10 +333,10 @@ def list_install_manifests(search_roots: List[str]) -> List[Dict[str, object]]:
                         seen.add(install_id)
                     results.append({
                         "install_id": install_id,
-                        "install_root": manifest.get("install_root"),
+                        "install_root": resolve_install_root(manifest_path, manifest),
                         "manifest_path": manifest_path.replace("\\", "/"),
                     })
-    return results
+    return sorted(results, key=lambda row: (str(row.get("install_id", "")), str(row.get("manifest_path", ""))))
 
 
 def list_instance_manifests(search_roots: List[str],
@@ -307,7 +381,7 @@ def list_instance_manifests(search_roots: List[str],
                         "data_root": manifest.get("data_root"),
                         "manifest_path": manifest_path.replace("\\", "/"),
                     })
-    return results
+    return sorted(results, key=lambda row: (str(row.get("instance_id", "")), str(row.get("manifest_path", ""))))
 
 
 def capabilities_from_manifest(manifest: Optional[dict]) -> List[str]:
@@ -514,6 +588,8 @@ def build_instance_manifest_payload(*,
                                     profile_bundle_hash: str,
                                     mod_policy_id: str,
                                     overlay_conflict_policy_id: str,
+                                    required_product_builds: Dict[str, str],
+                                    required_contract_ranges: Dict[str, dict],
                                     pack_artifact_refs: List[Dict[str, object]],
                                     settings: Dict[str, object],
                                     capability_lockfile: str) -> Dict[str, object]:
@@ -527,6 +603,8 @@ def build_instance_manifest_payload(*,
         "profile_bundle_hash": profile_bundle_hash,
         "mod_policy_id": mod_policy_id,
         "overlay_conflict_policy_id": overlay_conflict_policy_id,
+        "required_product_builds": dict((key, required_product_builds[key]) for key in sorted(required_product_builds.keys())),
+        "required_contract_ranges": dict((key, required_contract_ranges[key]) for key in sorted(required_contract_ranges.keys())),
         "instance_settings": {
             "active_profiles": settings.get("active_profiles") or [],
             "active_modpacks": settings.get("active_modpacks") or [],
@@ -658,6 +736,8 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         instance_root = args.instance_root
     mode = str(getattr(args, "mode", "portable") or "portable").strip().lower()
     store_root = str(getattr(args, "store_root", "") or "").strip()
+    if mode == "linked" and not store_root:
+        store_root = resolve_locator_path(os.path.dirname(args.install_manifest), install_manifest.get("store_root_ref") or install_manifest.get("store_root"))
     mod_policy_id = default_mod_policy_id(args)
     overlay_conflict_policy_id = default_overlay_policy_id(args)
     deterministic = args.deterministic
@@ -782,6 +862,12 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         candidate_instance_root = os.path.abspath(instance_root)
         if candidate_data_root != candidate_instance_root:
             manifest_data_root = safe_rel(candidate_data_root, candidate_instance_root)
+    required_product_builds = parse_required_product_builds(getattr(args, "required_product_build", []))
+    if not required_product_builds:
+        required_product_builds = install_product_builds(install_manifest)
+    required_contract_ranges = parse_required_contract_ranges(getattr(args, "required_contract_range", []))
+    if not required_contract_ranges:
+        required_contract_ranges = install_supported_contract_ranges(install_manifest)
     pack_lock_payload, pack_lock_hash, profile_bundle_payload, profile_bundle_hash, pack_artifact_refs, legacy_lockfile, store_manifest = materialize_instance_artifacts(
         instance_root=instance_root,
         store_root=store_root,
@@ -808,6 +894,8 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         profile_bundle_hash=profile_bundle_hash,
         mod_policy_id=mod_policy_id,
         overlay_conflict_policy_id=overlay_conflict_policy_id,
+        required_product_builds=required_product_builds,
+        required_contract_ranges=required_contract_ranges,
         pack_artifact_refs=pack_artifact_refs,
         settings={
             "active_profiles": args.active_profiles or [],
@@ -1024,7 +1112,7 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
 
 def activate_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     install_manifest = load_json(args.install_manifest)
-    install_root = install_manifest.get("install_root") or os.path.dirname(args.install_manifest)
+    install_root = resolve_install_root(args.install_manifest, install_manifest)
     instance_manifest = load_json(args.instance_manifest)
     instance_id = instance_manifest.get("instance_id")
     deterministic = args.deterministic
@@ -1124,6 +1212,8 @@ def main() -> int:
     instances_create.add_argument("--sandbox-policy-ref", default=None)
     instances_create.add_argument("--mod-policy-id", default="mod.policy.default")
     instances_create.add_argument("--overlay-conflict-policy-id", default="overlay.conflict.default")
+    instances_create.add_argument("--required-product-build", action="append", default=[])
+    instances_create.add_argument("--required-contract-range", action="append", default=[])
     instances_create.add_argument("--update-channel", default="stable")
     instances_create.add_argument("--created-at", default=None)
     instances_create.add_argument("--simulate-failure", default=None)

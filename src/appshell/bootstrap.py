@@ -121,11 +121,26 @@ def appshell_main(
                 mode_id=str(mode_id),
                 command_tokens=[str(shell_args.command)] + list(shell_args.command_args),
             )
+            payload = dict(dispatch or {}).get("payload") or {}
+            if (
+                legacy_main is not None
+                and str(dict(payload or {}).get("refusal_code", "")).strip() == "refusal.debug.command_unknown"
+            ):
+                delegate_args = list(shell_args.raw_args)
+                if legacy_accepts_repo_root:
+                    delegate_args = ["--repo-root", repo_root] + delegate_args
+                log_emit(
+                    category="appshell",
+                    severity="info",
+                    message_key="appshell.mode.enter",
+                    params={"mode_id": str(mode_id).strip(), "entry_surface": "legacy_main_fallback"},
+                )
+                return int(legacy_main(delegate_args))
             dispatch_kind = str(dict(dispatch or {}).get("dispatch_kind", "")).strip()
             if dispatch_kind == "text":
                 print(str(dict(dispatch or {}).get("text", "")))
             else:
-                _print_json(dict(dispatch or {}).get("payload") or {})
+                _print_json(payload)
             exit_code = dict(dispatch or {}).get("exit_code", EXIT_INTERNAL)
             return int(EXIT_INTERNAL if exit_code is None else exit_code)
 

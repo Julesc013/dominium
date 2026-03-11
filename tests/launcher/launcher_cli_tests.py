@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -6,6 +7,15 @@ import subprocess
 import sys
 import tempfile
 import uuid
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+
+from src.compat import build_product_build_metadata, build_product_descriptor
+from src.lib.install import build_product_build_descriptor, deterministic_fingerprint
+from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
 def _ensure_dir(path: str) -> None:
@@ -53,22 +63,69 @@ def _run_share(repo_root: str, args: list, allow_fail: bool = False):
     return proc.returncode, payload
 
 
-def _write_install_manifest(root: str, install_id: str) -> str:
+def _write_install_manifest(repo_root: str, root: str, install_id: str) -> str:
     path = os.path.join(root, "install.manifest.json")
+    _ensure_dir(os.path.join(root, "bin"))
+    registry_payload = json.load(open(os.path.join(repo_root, "data", "registries", "semantic_contract_registry.json"), "r", encoding="utf-8"))
+    _write_json(os.path.join(root, "semantic_contract_registry.json"), registry_payload)
+    game_bin = os.path.join(root, "bin", "dominium_game")
+    with open(game_bin, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("runtime\n")
+    game_descriptor = build_product_descriptor(repo_root, product_id="game", product_version="0.1.0")
+    descriptor_path = os.path.join(root, "bin", "dominium_game.descriptor.json")
+    _write_json(descriptor_path, game_descriptor)
+    build_meta = build_product_build_metadata(repo_root, "game")
+    product_build_descriptor = build_product_build_descriptor(
+        product_id="game",
+        build_id=str(build_meta.get("build_id", "")).strip(),
+        binary_hash=hashlib.sha256(open(game_bin, "rb").read()).hexdigest(),
+        endpoint_descriptor_hash=canonical_sha256(game_descriptor),
+        binary_ref="bin/dominium_game",
+        descriptor_ref="bin/dominium_game.descriptor.json",
+        product_version="0.1.0",
+    )
     payload = {
         "install_id": install_id,
-        "install_root": root,
+        "install_version": "0.1.0",
+        "install_root": ".",
+        "product_builds": {
+            "game": str(build_meta.get("build_id", "")).strip(),
+        },
+        "product_build_ids": {
+            "game": str(build_meta.get("build_id", "")).strip(),
+        },
+        "semantic_contract_registry_hash": canonical_sha256(
+            registry_payload
+        ),
+        "supported_protocol_versions": {
+            str(row.get("protocol_id")): row
+            for row in list(game_descriptor.get("protocol_versions_supported") or [])
+        },
+        "supported_contract_ranges": {
+            str(row.get("contract_category_id")): row
+            for row in list(game_descriptor.get("semantic_contract_versions_supported") or [])
+        },
+        "default_mod_policy_id": "mod.policy.default",
+        "store_root_ref": {
+            "store_id": "store.default",
+            "root_path": "store",
+            "manifest_ref": "store.root.json",
+        },
+        "mode": "portable",
         "binaries": {
-            "engine": {
-                "product_id": "org.dominium.engine",
-                "product_version": "0.1.0",
-                "build_number": 1
-            },
             "game": {
-                "product_id": "org.dominium.game",
+                "product_id": "game",
                 "product_version": "0.1.0",
-                "build_number": 1
+                "build_id": str(build_meta.get("build_id", "")).strip(),
+                "binary_ref": "bin/dominium_game",
+                "descriptor_ref": "bin/dominium_game.descriptor.json",
+                "binary_hash": product_build_descriptor["binary_hash"],
+                "endpoint_descriptor_hash": product_build_descriptor["endpoint_descriptor_hash"],
+                "extensions": {},
             }
+        },
+        "product_build_descriptors": {
+            "game": product_build_descriptor,
         },
         "supported_capabilities": ["CAP_CORE"],
         "protocol_versions": {
@@ -80,8 +137,12 @@ def _write_install_manifest(root: str, install_id: str) -> str:
         "build_identity": 1,
         "trust_tier": "official",
         "created_at": "2000-01-01T00:00:00Z",
-        "extensions": {}
+        "extensions": {
+            "official.semantic_contract_registry_ref": "semantic_contract_registry.json",
+        },
+        "deterministic_fingerprint": "",
     }
+    payload["deterministic_fingerprint"] = deterministic_fingerprint(payload)
     _write_json(path, payload)
     return path
 
@@ -104,11 +165,12 @@ def _write_lockfile(path: str, capability_id: str, pack_id: str, missing_mode: s
     _write_json(path, payload)
 
 
-def _write_instance_manifest(root: str, instance_id: str, install_id: str) -> str:
+def _write_instance_manifest(root: str, instance_id: str, install_id: str, required_product_builds: dict | None = None) -> str:
     path = os.path.join(root, "instance.manifest.json")
     payload = {
         "instance_id": instance_id,
         "install_id": install_id,
+        "required_product_builds": required_product_builds or {},
         "data_root": ".",
         "active_profiles": ["org.dominium.profile.casual"],
         "active_modpacks": [],
@@ -130,8 +192,8 @@ def _test_enumeration(repo_root: str) -> None:
         install_b = os.path.join(work, "install_b")
         _ensure_dir(install_a)
         _ensure_dir(install_b)
-        _write_install_manifest(install_a, str(uuid.uuid4()))
-        _write_install_manifest(install_b, str(uuid.uuid4()))
+        _write_install_manifest(repo_root, install_a, str(uuid.uuid4()))
+        _write_install_manifest(repo_root, install_b, str(uuid.uuid4()))
         rc, payload = _run_launcher(repo_root, ["--deterministic", "installs", "list", "--search", work])
         if rc != 0 or payload.get("result") != "ok":
             raise RuntimeError("install enumeration failed")
@@ -164,7 +226,7 @@ def _test_delete_confirmation(repo_root: str) -> None:
         _ensure_dir(install_root)
         _ensure_dir(instance_root)
         install_id = str(uuid.uuid4())
-        _write_install_manifest(install_root, install_id)
+        _write_install_manifest(repo_root, install_root, install_id)
         manifest_path = _write_instance_manifest(instance_root, str(uuid.uuid4()), install_id)
         lock_path = os.path.join(instance_root, "lockfiles", "capabilities.lock")
         _write_lockfile(lock_path, "CAP_CORE", "org.dominium.pack.core", "degraded")
@@ -209,7 +271,7 @@ def _test_preflight_and_run(repo_root: str) -> None:
         _ensure_dir(install_root)
         _ensure_dir(instance_root)
         install_id = str(uuid.uuid4())
-        install_manifest = _write_install_manifest(install_root, install_id)
+        install_manifest = _write_install_manifest(repo_root, install_root, install_id)
         instance_manifest = _write_instance_manifest(instance_root, str(uuid.uuid4()), install_id)
         lock_path = os.path.join(instance_root, "lockfiles", "capabilities.lock")
         _write_lockfile(lock_path, "CAP_CORE", "org.dominium.pack.missing", "degraded")
@@ -234,6 +296,45 @@ def _test_preflight_and_run(repo_root: str) -> None:
                                                 "--confirm"], allow_fail=False)
         if rc != 0 or payload.get("result") != "ok":
             raise RuntimeError("confirmed run failed")
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def _test_instance_build_selection(repo_root: str) -> None:
+    work = tempfile.mkdtemp(prefix="launcher_build_select_")
+    try:
+        install_root = os.path.join(work, "install")
+        instance_root = os.path.join(work, "instance")
+        _ensure_dir(install_root)
+        _ensure_dir(instance_root)
+        install_id = str(uuid.uuid4())
+        install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        instance_manifest = _write_instance_manifest(
+            instance_root,
+            str(uuid.uuid4()),
+            install_id,
+            required_product_builds={"game": "build.mismatch"},
+        )
+        lock_path = os.path.join(instance_root, "lockfiles", "capabilities.lock")
+        _write_lockfile(lock_path, "CAP_CORE", "org.dominium.pack.core", "degraded")
+
+        rc, payload = _run_launcher(
+            repo_root,
+            [
+                "--deterministic",
+                "preflight",
+                "--install-manifest",
+                install_manifest,
+                "--instance-manifest",
+                instance_manifest,
+            ],
+            allow_fail=True,
+        )
+        report = payload.get("compat_report") or {}
+        if rc == 0:
+            raise RuntimeError("expected build-selection refusal")
+        if report.get("compatibility_mode") != "refuse":
+            raise RuntimeError("expected refused build selection preflight")
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -285,6 +386,7 @@ def main() -> int:
     _test_enumeration(repo_root)
     _test_delete_confirmation(repo_root)
     _test_preflight_and_run(repo_root)
+    _test_instance_build_selection(repo_root)
     _test_bundle_import_refusal(repo_root)
     print("launcher cli tests: OK")
     return 0
