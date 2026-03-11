@@ -19,6 +19,12 @@ Template:
   Invariants: INV-...
   Migration: <required migration steps or "none">
 
+- Date: 2026-03-11
+  Schema(s): schema/lib/store_root.schema; schema/lib/install_manifest.schema; schema/lib/instance_manifest.schema; schema/lib/save_manifest.schema
+  Change: add LIB-0 content-store root, install, instance, and save manifest contracts for CAS-backed linked/portable flows
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-ARTIFACTS-CONTENT-ADDRESSED; INV-NO-PATH-BASED-SEMANTICS; INV-PORTABLE-MODE-SELF-CONTAINED
+  Migration: none (new schemas; existing top-level install/instance/save schemas remain compatibility adapters)
+
 - Date: 2026-02-07
   Schema(s): schema/pack_manifest.schema; schema/stage.declaration.schema
   Change: add explicit capability-stage metadata contract for pack manifests and stage declaration schema

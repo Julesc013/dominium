@@ -1,45 +1,54 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
-# Instance Model (OPS0)
+# Instance Model (OPS0 / LIB-0)
 
 Status: binding.
-Scope: portable instances, data roots, and operational configuration.
+Scope: instance manifests, linked vs portable topology, and artifact resolution.
 
-## Canonical manifest
+## Authoritative Contracts
 
-The authoritative instance manifest is defined by:
+Instance manifests are defined by:
 
-- `schema/instance.manifest.schema`
+- `schema/instance.manifest.schema` for legacy/runtime-compatible fields.
+- `schema/lib/instance_manifest.schema` for LIB-0 CAS topology fields.
 
-The manifest is stored at:
+## Required LIB-0 Identity
 
-- `INSTANCE_ROOT/instance.manifest.json`
+Every LIB-0 instance must declare:
 
-## Required fields (summary)
+- `instance_id`
+- `mode` (`linked` or `portable`)
+- `install_ref`
+- `pack_lock_hash`
+- `profile_bundle_hash`
+- `mod_policy_id`
+- `overlay_conflict_policy_id`
+- `instance_settings`
+- `deterministic_fingerprint`
 
-- instance_id (UUID, stable)
-- install_id (reference to install.manifest)
-- data_root (writable root; relative to instance root when possible)
-- active_profiles / active_modpacks
-- capability_lockfile (path relative to data_root)
-- sandbox_policy_ref
-- update_channel (stable | beta | nightly | pinned)
-- created_at / last_used_at
-- extensions (open map)
+## Linked Topology
 
-## Rules
+- Reusable artifacts resolve through `store_root` plus artifact hashes.
+- Cloning a linked instance must not duplicate store artifacts.
+- Relative store locators are allowed as adapters, but hashes remain authoritative.
 
-- Instances are fully portable by copying the instance directory.
-- Multiple instances may share a single install.
-- Instances must not share writable state.
-- Saves, replays, and logs are relative to data_root.
-- Switching active instance must be explicit and logged.
+## Portable Topology
 
-## See also
+- Required reusable artifacts are materialized under `embedded_artifacts/`.
+- Portable instances must remain valid after directory copy without a shared store.
+- Exported portable instances must be self-contained and offline-usable.
 
-- `docs/architecture/INSTALL_MODEL.md`
-- `docs/architecture/SANDBOX_MODEL.md`
-- `docs/architecture/OPS_TRANSACTION_MODEL.md`
+## Compatibility Rules
+
+- Legacy `capability_lockfile` remains a compatibility file path only.
+- `active_profiles`, `active_modpacks`, and `data_root` remain available for current launcher/ops flows.
+- Instance topology must not change authoritative gameplay/runtime behavior; it is storage-only.
+
+## Related Contracts
+
+- `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
+- `docs/architecture/LOCKFILES.md`
+- `docs/distribution/LAUNCHER_GUIDE.md`

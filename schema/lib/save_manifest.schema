@@ -1,0 +1,39 @@
+SCHEMA: lib/save_manifest.schema
+schema_id: dominium.schema.lib.save_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the LIB-0 save descriptor that pins universe, contract, pack lock, and migration identity by hash.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- The save manifest does not embed filesystem paths.
+- migration_chain records compatibility lineage only; it does not perform migration.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record save_manifest
+  required:
+    - save_id: id
+    - universe_identity_hash: sha256
+    - contract_bundle_hash: sha256
+    - pack_lock_hash: sha256
+    - migration_chain: [sha256]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - notes: map
+
+INVARIANTS:
+- save identity is hash-pinned to universe, contracts, and pack lock.
+- migration_chain ordering is canonical and deterministic.
+- deterministic_fingerprint is computed from canonical serialized content.

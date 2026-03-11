@@ -1,141 +1,84 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
-# Content and Storage Model (STOR0)
-
-
-
-
+# Content and Storage Model (STOR0 / LIB-0)
 
 Status: binding.
+Scope: content-addressable storage, linked vs portable instances, and deterministic export/import layout.
 
+## Canonical Root Layout
 
-Scope: runtime data layout, storage safety, and path rules.
+Reusable artifacts live in a single content-addressable store rooted at:
 
+```text
+<root>/
+  bin/
+    engine/<build_id>/
+    game/<build_id>/
+    client/<build_id>/
+    server/<build_id>/
+    setup/<build_id>/
+    launcher/<build_id>/
+    tool.<name>/<build_id>/
 
+  store/
+    packs/<hash>/
+    profiles/<hash>/
+    blueprints/<hash>/
+    locks/<hash>/
+    migrations/<hash>/
+    repro/<hash>/
 
+  instances/<instance_id>/
+    instance.manifest.json
+    overrides/
+    saves/
 
+  saves/<save_id>/
+    save.manifest.json
+    state.snapshots/
+    patches/
 
-## Canonical runtime layout
-
-
-Runtime data MUST live under a single root with this layout:
-
-
+  exports/
+    <bundle_id>.bundle
 ```
 
+## Identity Rules
 
-data/
+- Reusable artifacts are immutable and content-addressed by canonical SHA-256.
+- Hash identity is computed from canonical serialized content, never host path or timestamp.
+- Directory names carry only ids and hashes; semantic meaning lives in manifests and payloads.
+- Filesystem listing order is irrelevant; manifest ordering is canonical.
 
+## Linked and Portable Instances
 
-  packs/
+Instances use one of two storage topologies:
 
+- `linked`: the instance manifest stores hash references plus a `store_root` locator. Reusable artifacts are resolved from the shared store and are not duplicated into the instance.
+- `portable`: the instance manifest stores the same hashes plus `embedded_artifacts`. Required reusable artifacts are vendored under `embedded_artifacts/` so the instance is self-contained offline.
 
-  saves/
+This topology flag is a storage declaration only. It is not a gameplay/runtime mode and does not bypass `docs/canon/constitution_v1.md` section A4.
 
+## Compatibility and Adapters
 
-  replays/
+- Existing path-based manifests and loaders remain supported as compatibility adapters.
+- `capability_lockfile` paths remain non-authoritative legacy references; `pack_lock_hash` is authoritative for LIB-0 flows.
+- Legacy `data/` layouts remain loadable, but new reusable artifacts must resolve through CAS categories or explicit portable embeddings.
 
+## Determinism Rules
 
-  modpacks/
+- No CAS operation may depend on filesystem timestamps, network access, or platform-specific metadata.
+- Export/import must preserve canonical file ordering and hash identity.
+- Missing optional store artifacts must produce explicit refusal or explicit degraded mode, never silent fallback.
 
+## Related Contracts
 
-  workspaces/
-
-
-  cache/
-
-
-    assets/
-
-
-    derived/
-
-
-  index/
-
-
-  logs/
-
-
-  profiles/
-
-
-```
-
-
-
-
-
-## Rules (hard)
-
-
-- No other runtime data paths are allowed.
-
-
-- No raw file paths are stored inside saves, packs, or WorldDefinitions.
-
-
-- Cache is disposable and never required for correctness.
-
-
-- Logs are non-authoritative and never inputs to simulation.
-
-
-- Saves and replays are deterministic, extension-preserving artifacts.
-
-
-- Data root must be relocatable (CLI `--data-root`).
-
-
-
-
-
-## Storage boundaries
-
-
-- Packs are immutable inputs (content + capability declarations).
-
-
-- Saves and replays are outputs and must be self-describing.
-
-
-- Cache may be wiped without affecting correctness.
-
-
-- Any derived artifact must declare provenance.
-
-
-- Indexes are optional caches only; deletion must not affect correctness.
-
-
-
-
-
-## Path safety
-
-
-- File paths are resolved by the runtime; data never embeds absolute or host paths.
-
-
-- Paths are never used as identifiers.
-
-
-- Paths are never used to resolve authority or capabilities.
-
-
-
-
-
-## See also
-
-
-- `docs/architecture/DIRECTORY_CONTEXT.md`
-
-
-- `docs/specs/SPEC_FS_CONTRACT.md`
-
-
-- `docs/architecture/WORLDDEFINITION.md`
+- `schema/lib/store_root.schema`
+- `schema/lib/install_manifest.schema`
+- `schema/lib/instance_manifest.schema`
+- `schema/lib/save_manifest.schema`
+- `docs/architecture/INSTALL_MODEL.md`
+- `docs/architecture/INSTANCE_MODEL.md`
+- `docs/architecture/BUNDLE_MODEL.md`

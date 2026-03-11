@@ -7,6 +7,30 @@ import uuid
 from datetime import datetime
 from typing import Optional, Dict, List, Tuple
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+from tools.lib.content_store import (
+    artifact_ref,
+    build_install_ref,
+    build_pack_lock_payload,
+    build_profile_bundle_payload,
+    build_store_locator,
+    deterministic_fingerprint,
+    embed_json_artifact,
+    embed_tree_artifact,
+    embedded_artifact_root,
+    initialize_store_root,
+    load_json as load_cas_json,
+    pretty_write_json,
+    resolve_locator_path,
+    store_add_artifact,
+    store_add_tree_artifact,
+    store_artifact_root,
+)
+
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
 DEFAULT_INSTANCE_MANIFEST = "instance.manifest.json"
@@ -261,6 +285,7 @@ def list_instance_manifests(search_roots: List[str],
             results.append({
                 "instance_id": manifest.get("instance_id"),
                 "install_id": manifest.get("install_id"),
+                "mode": manifest.get("mode", "portable"),
                 "data_root": manifest.get("data_root"),
                 "manifest_path": manifest_path.replace("\\", "/"),
             })
@@ -278,6 +303,7 @@ def list_instance_manifests(search_roots: List[str],
                     results.append({
                         "instance_id": manifest.get("instance_id"),
                         "install_id": manifest.get("install_id"),
+                        "mode": manifest.get("mode", "portable"),
                         "data_root": manifest.get("data_root"),
                         "manifest_path": manifest_path.replace("\\", "/"),
                     })
@@ -420,6 +446,208 @@ def resolve_data_root(instance_root: str, data_root: str) -> str:
     return os.path.join(instance_root, data_root)
 
 
+def normalize_instance_settings(payload: Dict[str, object]) -> Dict[str, object]:
+    settings = dict(payload)
+    settings["active_modpacks"] = sorted_unique(settings.get("active_modpacks"))
+    settings["active_profiles"] = sorted_unique(settings.get("active_profiles"))
+    return settings
+
+
+def default_mod_policy_id(args: argparse.Namespace) -> str:
+    return str(getattr(args, "mod_policy_id", "") or "mod.policy.default")
+
+
+def default_overlay_policy_id(args: argparse.Namespace) -> str:
+    return str(getattr(args, "overlay_conflict_policy_id", "") or "overlay.conflict.default")
+
+
+def load_optional_json(path: Optional[str]) -> Dict[str, object]:
+    if not path or not os.path.isfile(path):
+        return {}
+    try:
+        return load_cas_json(path)
+    except (OSError, ValueError):
+        return {}
+
+
+def discover_pack_path(pack_id: str, roots: List[str]) -> str:
+    for root in roots:
+        if not root:
+            continue
+        candidate = os.path.join(root, pack_id)
+        if os.path.isdir(candidate):
+            return candidate
+        if os.path.isdir(root) and os.path.basename(os.path.normpath(root)) == pack_id:
+            return root
+    return ""
+
+
+def candidate_pack_roots(install_manifest_path: str,
+                         instance_root: str,
+                         explicit_roots: List[str]) -> List[str]:
+    install_root = os.path.dirname(os.path.abspath(install_manifest_path))
+    roots = list(explicit_roots or [])
+    roots.append(os.path.join(install_root, "packs"))
+    roots.append(os.path.join(instance_root, "packs"))
+    unique: List[str] = []
+    seen = set()
+    for root in roots:
+        token = os.path.abspath(root)
+        if token in seen:
+            continue
+        seen.add(token)
+        unique.append(token)
+    return unique
+
+
+def build_instance_manifest_payload(*,
+                                    instance_root: str,
+                                    install_manifest_path: str,
+                                    install_manifest: Dict[str, object],
+                                    instance_id: str,
+                                    mode: str,
+                                    store_root: str,
+                                    store_manifest: Dict[str, object],
+                                    pack_lock_payload: Dict[str, object],
+                                    pack_lock_hash: str,
+                                    profile_bundle_payload: Dict[str, object],
+                                    profile_bundle_hash: str,
+                                    mod_policy_id: str,
+                                    overlay_conflict_policy_id: str,
+                                    pack_artifact_refs: List[Dict[str, object]],
+                                    settings: Dict[str, object],
+                                    capability_lockfile: str) -> Dict[str, object]:
+    settings = normalize_instance_settings(settings)
+    payload = {
+        "instance_id": instance_id,
+        "install_id": install_manifest.get("install_id"),
+        "mode": mode,
+        "install_ref": build_install_ref(instance_root, install_manifest_path, install_manifest),
+        "pack_lock_hash": pack_lock_hash,
+        "profile_bundle_hash": profile_bundle_hash,
+        "mod_policy_id": mod_policy_id,
+        "overlay_conflict_policy_id": overlay_conflict_policy_id,
+        "instance_settings": {
+            "active_profiles": settings.get("active_profiles") or [],
+            "active_modpacks": settings.get("active_modpacks") or [],
+            "data_root": settings.get("data_root") or ".",
+            "sandbox_policy_ref": settings.get("sandbox_policy_ref") or "sandbox.default",
+            "update_channel": settings.get("update_channel") or "stable",
+            "created_at": settings.get("created_at"),
+            "last_used_at": settings.get("last_used_at"),
+        },
+        "store_root": build_store_locator(instance_root, store_root, store_manifest) if mode == "linked" else {},
+        "embedded_artifacts": [],
+        "data_root": settings.get("data_root") or ".",
+        "active_profiles": settings.get("active_profiles") or [],
+        "active_modpacks": settings.get("active_modpacks") or [],
+        "capability_lockfile": capability_lockfile,
+        "sandbox_policy_ref": settings.get("sandbox_policy_ref") or "sandbox.default",
+        "update_channel": settings.get("update_channel") or "stable",
+        "created_at": settings.get("created_at"),
+        "last_used_at": settings.get("last_used_at"),
+        "extensions": {},
+        "deterministic_fingerprint": "",
+    }
+    if mode == "portable":
+        lock_root = embedded_artifact_root(instance_root, "locks", pack_lock_hash)
+        profile_root = embedded_artifact_root(instance_root, "profiles", profile_bundle_hash)
+        payload["embedded_artifacts"] = [
+            artifact_ref(
+                category="locks",
+                artifact_hash=pack_lock_hash,
+                artifact_type="json",
+                artifact_root=lock_root,
+                instance_root=instance_root,
+                artifact_id=str(pack_lock_payload.get("pack_lock_id", "")),
+            ),
+            artifact_ref(
+                category="profiles",
+                artifact_hash=profile_bundle_hash,
+                artifact_type="json",
+                artifact_root=profile_root,
+                instance_root=instance_root,
+                artifact_id=str(profile_bundle_payload.get("profile_bundle_id", "")),
+            ),
+        ] + list(pack_artifact_refs)
+    payload["deterministic_fingerprint"] = deterministic_fingerprint(payload)
+    return payload
+
+
+def materialize_instance_artifacts(*,
+                                   instance_root: str,
+                                   store_root: str,
+                                   mode: str,
+                                   instance_id: str,
+                                   active_modpacks: List[str],
+                                   active_profiles: List[str],
+                                   mod_policy_id: str,
+                                   overlay_conflict_policy_id: str,
+                                   capability_lockfile_path: Optional[str],
+                                   pack_roots: List[str]) -> Tuple[Dict[str, object], str, Dict[str, object], str, List[Dict[str, object]], str, Dict[str, object]]:
+    pack_refs: List[Dict[str, object]] = []
+    resolved_hashes: Dict[str, str] = {}
+    target_store_manifest: Dict[str, object] = {}
+    if mode == "linked":
+        target_store_manifest = initialize_store_root(store_root)
+
+    for pack_id in sorted_unique(active_modpacks):
+        pack_path = discover_pack_path(pack_id, pack_roots)
+        if not pack_path:
+            continue
+        if mode == "linked":
+            result = store_add_tree_artifact(store_root, "packs", pack_path)
+            artifact_root = store_artifact_root(store_root, "packs", result["artifact_hash"])
+        else:
+            result = embed_tree_artifact(instance_root, "packs", pack_path)
+            artifact_root = embedded_artifact_root(instance_root, "packs", result["artifact_hash"])
+        resolved_hashes[pack_id] = str(result["artifact_hash"])
+        pack_refs.append(
+            artifact_ref(
+                category="packs",
+                artifact_hash=str(result["artifact_hash"]),
+                artifact_type="tree",
+                artifact_root=artifact_root,
+                instance_root=instance_root,
+                artifact_id=pack_id,
+            )
+        )
+
+    source_lock_payload = load_optional_json(capability_lockfile_path)
+    if resolved_hashes:
+        source_lock_payload["pack_hashes"] = dict(resolved_hashes)
+    pack_lock_payload, pack_lock_hash = build_pack_lock_payload(
+        instance_id=instance_id,
+        pack_ids=active_modpacks,
+        mod_policy_id=mod_policy_id,
+        overlay_conflict_policy_id=overlay_conflict_policy_id,
+        source_payload=source_lock_payload,
+    )
+    profile_bundle_payload, profile_bundle_hash = build_profile_bundle_payload(
+        instance_id=instance_id,
+        profile_ids=active_profiles,
+        mod_policy_id=mod_policy_id,
+        overlay_conflict_policy_id=overlay_conflict_policy_id,
+    )
+    if mode == "linked":
+        store_add_artifact(store_root, "locks", pack_lock_payload)
+        store_add_artifact(store_root, "profiles", profile_bundle_payload)
+    else:
+        embed_json_artifact(instance_root, "locks", pack_lock_payload, expected_hash=pack_lock_hash)
+        embed_json_artifact(instance_root, "profiles", profile_bundle_payload, expected_hash=profile_bundle_hash)
+
+    legacy_lockfile = "lockfiles/capabilities.lock" if mode == "portable" else ""
+    return (
+        pack_lock_payload,
+        pack_lock_hash,
+        profile_bundle_payload,
+        profile_bundle_hash,
+        pack_refs,
+        legacy_lockfile,
+        target_store_manifest,
+    )
+
+
 def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     install_manifest = load_json(args.install_manifest)
     install_id = install_manifest.get("install_id")
@@ -428,6 +656,10 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     instance_root = args.data_root
     if args.instance_root:
         instance_root = args.instance_root
+    mode = str(getattr(args, "mode", "portable") or "portable").strip().lower()
+    store_root = str(getattr(args, "store_root", "") or "").strip()
+    mod_policy_id = default_mod_policy_id(args)
+    overlay_conflict_policy_id = default_overlay_policy_id(args)
     deterministic = args.deterministic
     tx_id = args.transaction_id or str(uuid.uuid4())
     sandbox = load_sandbox_policy(args.sandbox_policy) if args.sandbox_policy else {}
@@ -449,6 +681,47 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
             compatibility_mode="refuse",
             refusal_codes=[refusal.get("code")],
             mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+
+    if mode not in ("linked", "portable"):
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
+                                  "instance mode is invalid",
+                                  {"mode": mode})
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+    if mode == "linked" and not store_root:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
+                                  "linked instances require store_root",
+                                  {"instance_id": instance_id})
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=["set --store-root for linked instances"],
             deterministic=deterministic,
             refusal=refusal,
         )
@@ -502,21 +775,55 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         )
         return 3, {"result": "refused", "compat_report": report}
 
-    payload = {
-        "instance_id": instance_id,
-        "install_id": install_id,
-        "data_root": data_root or ".",
-        "active_profiles": args.active_profiles or [],
-        "active_modpacks": args.active_modpacks or [],
-        "capability_lockfile": args.capability_lockfile or "lockfiles/capabilities.lock",
-        "sandbox_policy_ref": args.sandbox_policy_ref or "sandbox.default",
-        "update_channel": args.update_channel,
-        "created_at": args.created_at or now_timestamp(deterministic),
-        "last_used_at": args.created_at or now_timestamp(deterministic),
-        "extensions": {},
-    }
+    created_at = args.created_at or now_timestamp(deterministic)
+    manifest_data_root = "."
+    if data_root:
+        candidate_data_root = os.path.abspath(data_root)
+        candidate_instance_root = os.path.abspath(instance_root)
+        if candidate_data_root != candidate_instance_root:
+            manifest_data_root = safe_rel(candidate_data_root, candidate_instance_root)
+    pack_lock_payload, pack_lock_hash, profile_bundle_payload, profile_bundle_hash, pack_artifact_refs, legacy_lockfile, store_manifest = materialize_instance_artifacts(
+        instance_root=instance_root,
+        store_root=store_root,
+        mode=mode,
+        instance_id=instance_id,
+        active_modpacks=args.active_modpacks or [],
+        active_profiles=args.active_profiles or [],
+        mod_policy_id=mod_policy_id,
+        overlay_conflict_policy_id=overlay_conflict_policy_id,
+        capability_lockfile_path=args.capability_lockfile,
+        pack_roots=candidate_pack_roots(args.install_manifest, instance_root, getattr(args, "pack_root", [])),
+    )
+    payload = build_instance_manifest_payload(
+        instance_root=instance_root,
+        install_manifest_path=args.install_manifest,
+        install_manifest=install_manifest,
+        instance_id=instance_id,
+        mode=mode,
+        store_root=store_root,
+        store_manifest=store_manifest,
+        pack_lock_payload=pack_lock_payload,
+        pack_lock_hash=pack_lock_hash,
+        profile_bundle_payload=profile_bundle_payload,
+        profile_bundle_hash=profile_bundle_hash,
+        mod_policy_id=mod_policy_id,
+        overlay_conflict_policy_id=overlay_conflict_policy_id,
+        pack_artifact_refs=pack_artifact_refs,
+        settings={
+            "active_profiles": args.active_profiles or [],
+            "active_modpacks": args.active_modpacks or [],
+            "data_root": manifest_data_root,
+            "sandbox_policy_ref": args.sandbox_policy_ref or "sandbox.default",
+            "update_channel": args.update_channel,
+            "created_at": created_at,
+            "last_used_at": created_at,
+        },
+        capability_lockfile=legacy_lockfile,
+    )
     tmp_path = manifest_path + ".tmp"
-    write_json(tmp_path, payload)
+    pretty_write_json(tmp_path, payload)
+    if legacy_lockfile:
+        pretty_write_json(os.path.join(instance_root, legacy_lockfile), pack_lock_payload)
 
     if args.simulate_failure == "stage":
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
@@ -570,6 +877,7 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
     source_manifest = load_json(args.source_manifest)
     source_root = os.path.dirname(args.source_manifest)
     install_id = source_manifest.get("install_id")
+    source_mode = str(source_manifest.get("mode", "portable") or "portable").strip().lower()
     if not install_id:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
                                   "source instance missing install_id",
@@ -647,6 +955,12 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
         shutil.copytree(source_root, target_root, dirs_exist_ok=True)
     else:
         ensure_dir(target_root)
+        if source_mode == "portable":
+            for rel_path in ("embedded_artifacts", "lockfiles"):
+                src_path = os.path.join(source_root, rel_path)
+                dest_path = os.path.join(target_root, rel_path)
+                if os.path.isdir(src_path):
+                    shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
 
     manifest_path = os.path.join(target_root, DEFAULT_INSTANCE_MANIFEST)
     payload = dict(source_manifest)
@@ -654,7 +968,13 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
     payload["data_root"] = payload.get("data_root", ".")
     payload["created_at"] = args.created_at or now_timestamp(deterministic)
     payload["last_used_at"] = args.created_at or now_timestamp(deterministic)
-    write_json(manifest_path, payload)
+    if source_mode == "linked":
+        source_store_root = resolve_locator_path(source_root, source_manifest.get("store_root"))
+        if source_store_root:
+            store_manifest = initialize_store_root(source_store_root)
+            payload["store_root"] = build_store_locator(target_root, source_store_root, store_manifest)
+    payload["deterministic_fingerprint"] = deterministic_fingerprint(payload)
+    pretty_write_json(manifest_path, payload)
 
     if args.simulate_failure == "commit":
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
@@ -794,11 +1114,16 @@ def main() -> int:
     instances_create.add_argument("--data-root", required=True)
     instances_create.add_argument("--instance-root", default=None)
     instances_create.add_argument("--instance-id", default=None)
+    instances_create.add_argument("--mode", choices=["linked", "portable"], default="portable")
+    instances_create.add_argument("--store-root", default=None)
     instances_create.add_argument("--active-profile", action="append", default=[])
     instances_create.add_argument("--active-modpack", action="append", default=[])
+    instances_create.add_argument("--pack-root", action="append", default=[])
     instances_create.add_argument("--capability-lockfile", default=None)
     instances_create.add_argument("--sandbox-policy", default=None)
     instances_create.add_argument("--sandbox-policy-ref", default=None)
+    instances_create.add_argument("--mod-policy-id", default="mod.policy.default")
+    instances_create.add_argument("--overlay-conflict-policy-id", default="overlay.conflict.default")
     instances_create.add_argument("--update-channel", default="stable")
     instances_create.add_argument("--created-at", default=None)
     instances_create.add_argument("--simulate-failure", default=None)

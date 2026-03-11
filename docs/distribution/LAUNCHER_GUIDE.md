@@ -13,12 +13,13 @@ The launcher works with three primitives:
 - **Install**: read-only binaries.
 - **Instance**: mutable data root.
 - **Profile**: advisory defaults (casual/hardcore/creator/server).
+- **Store**: shared reusable CAS root for linked instances.
 
 Select an install, create/select an instance, pick a profile, then run:
 ```
 launcher installs list --search <root>
 launcher installs select --manifest <install_root>/install.manifest.json --state-root <state_root>
-launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --profile org.dominium.profile.casual
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode portable --profile org.dominium.profile.casual
 launcher preflight --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json
 launcher run --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json --run-mode play --confirm
 ```
@@ -34,7 +35,8 @@ launcher installs active --state-root <state_root>
 ## Instances
 Create, clone, fork, activate, and delete instances:
 ```
-launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --profile org.dominium.profile.casual
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode portable --profile org.dominium.profile.casual
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode linked --store-root <store_root> --profile org.dominium.profile.casual
 launcher instances clone --source-manifest <instance_root>/instance.manifest.json --data-root <new_root>
 launcher instances fork --source-manifest <instance_root>/instance.manifest.json --data-root <new_root>
 launcher instances activate --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json
@@ -81,7 +83,9 @@ launcher bundles export --bundle-type replay --artifact <replay_file> --lockfile
 launcher bundles import-save --bundle <bundle_root> --confirm
 launcher bundles import-replay --bundle <bundle_root> --confirm
 launcher bundles import-modpack --bundle <bundle_root> --confirm
-launcher bundles export-instance --instance-manifest <instance_root>/instance.manifest.json --out <bundle_out>
+launcher bundles export-instance --instance-manifest <instance_root>/instance.manifest.json --bundle-type instance --out <bundle_out>
+launcher bundles import --bundle <bundle_out> --confirm --out <instance_root>
+launcher bundles import --bundle <bundle_out> --confirm --import-mode linked --store-root <store_root> --out <instance_root>
 ```
 
 ## Diagnostics access

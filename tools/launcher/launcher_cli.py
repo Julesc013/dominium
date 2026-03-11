@@ -7,6 +7,22 @@ import sys
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+from tools.lib.content_store import (
+    JSON_PAYLOAD,
+    STORE_ROOT_MANIFEST,
+    artifact_payload_path,
+    build_store_locator,
+    initialize_store_root,
+    load_instance_json_artifact,
+    resolve_instance_artifact_root,
+    resolve_locator_path,
+)
+
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
 DEFAULT_INSTANCE_MANIFEST = "instance.manifest.json"
@@ -254,6 +270,7 @@ def normalize_instance_entry(manifest: dict, manifest_path: str) -> Dict[str, ob
     return {
         "instance_id": manifest.get("instance_id"),
         "install_id": manifest.get("install_id"),
+        "mode": manifest.get("mode", "portable"),
         "data_root": manifest.get("data_root"),
         "active_profiles": manifest.get("active_profiles") or [],
         "active_modpacks": manifest.get("active_modpacks") or [],
@@ -360,6 +377,32 @@ def resolve_lockfile(instance_root: str, lock_ref: str) -> str:
     return os.path.join(instance_root, lock_ref)
 
 
+def resolve_pack_lock(instance_root: str, instance_manifest: dict) -> Tuple[Optional[dict], str]:
+    pack_lock_hash = str(instance_manifest.get("pack_lock_hash", "")).strip()
+    if pack_lock_hash:
+        payload = load_instance_json_artifact(instance_root, instance_manifest, "locks", pack_lock_hash)
+        if payload:
+            return payload, "hash"
+    lockfile_path = resolve_lockfile(instance_root, instance_manifest.get("capability_lockfile") or "")
+    return load_lockfile(lockfile_path), lockfile_path
+
+
+def resolve_pack_payloads(instance_root: str, instance_manifest: dict, lockfile: Optional[dict]) -> Dict[str, str]:
+    payloads: Dict[str, str] = {}
+    if not lockfile:
+        return payloads
+    for pack_id, artifact_hash in sorted((lockfile.get("pack_hashes") or {}).items()):
+        pack_token = str(pack_id or "").strip()
+        hash_token = str(artifact_hash or "").strip()
+        if not pack_token or not hash_token:
+            continue
+        artifact_root = resolve_instance_artifact_root(instance_root, instance_manifest, "packs", hash_token)
+        payload_root = artifact_payload_path(artifact_root, "tree")
+        if os.path.isdir(payload_root):
+            payloads[pack_token] = payload_root
+    return payloads
+
+
 def load_lockfile(path: str) -> Optional[dict]:
     if not path or not os.path.isfile(path):
         return None
@@ -383,6 +426,9 @@ def collect_required_packs(lockfile: Optional[dict]) -> List[str]:
     packs = []
     if not lockfile:
         return packs
+    for entry in (lockfile.get("ordered_pack_ids") or []):
+        if entry:
+            packs.append(str(entry))
     for entry in (lockfile.get("resolutions") or []):
         if isinstance(entry, dict) and entry.get("provider_pack_id"):
             packs.append(entry.get("provider_pack_id"))
@@ -408,29 +454,37 @@ def pack_roots(install_root: str, data_root: str, extra_roots: List[str]) -> Lis
 
 def pack_location(pack_id: str, roots: List[str]) -> Optional[str]:
     for root in roots:
+        if os.path.isdir(root) and os.path.basename(os.path.normpath(root)) == pack_id:
+            return root
         path = os.path.join(root, pack_id)
         if os.path.isdir(path):
-            return root
+            return path
     return None
 
 
 def pack_source_for_root(root: str, install_root: str, data_root: str) -> str:
-    if install_root and normalize_path(root).startswith(normalize_path(install_root)):
+    normalized_root = normalize_path(root)
+    if "embedded_artifacts" in normalized_root:
+        return "embedded"
+    if "/store/packs/" in normalized_root.replace("\\", "/"):
+        return "shared-store"
+    if install_root and normalized_root.startswith(normalize_path(install_root)):
         return "bundled"
-    if data_root and normalize_path(root).startswith(normalize_path(data_root)):
+    if data_root and normalized_root.startswith(normalize_path(data_root)):
         return "local"
     return "local"
 
 
 def build_pack_status(pack_ids: List[str],
                       roots: List[str],
+                      direct_payloads: Dict[str, str],
                       install_root: str,
                       data_root: str,
                       status_label: str) -> Tuple[List[Dict[str, object]], List[str]]:
     entries: List[Dict[str, object]] = []
     missing: List[str] = []
     for pack_id in sorted_unique(pack_ids):
-        location = pack_location(pack_id, roots)
+        location = direct_payloads.get(pack_id) or pack_location(pack_id, roots)
         if location:
             entries.append({
                 "pack_id": pack_id,
@@ -490,13 +544,12 @@ def perform_preflight(args: argparse.Namespace,
     install_root = install_manifest.get("install_root") or os.path.dirname(install_manifest_path)
     instance_root = os.path.dirname(instance_manifest_path)
     data_root = resolve_data_root(instance_root, instance_manifest.get("data_root") or "")
-    lockfile_path = resolve_lockfile(instance_root, instance_manifest.get("capability_lockfile") or "")
-    lockfile = load_lockfile(lockfile_path)
+    lockfile, lockfile_source = resolve_pack_lock(instance_root, instance_manifest)
 
     if not lockfile:
         refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
                                   "capability lockfile missing",
-                                  {"lockfile": os.path.basename(lockfile_path or "capability.lock")})
+                                  {"lockfile": os.path.basename(str(lockfile_source or "capability.lock"))})
         report = build_compat_report("run", install_id, instance_id, None, args.capability_baseline,
                                      [], [], [], "refuse",
                                      [refusal.get("code")], ["regenerate lockfile"],
@@ -510,11 +563,14 @@ def perform_preflight(args: argparse.Namespace,
     profile_ids = args.profile or (instance_manifest.get("active_profiles") or [])
     recommended_packs = profile_recommendations(profile_ids, profiles)
     required_packs = collect_required_packs(lockfile)
+    direct_pack_payloads = resolve_pack_payloads(instance_root, instance_manifest, lockfile)
     roots = pack_roots(install_root, data_root, args.pack_root or [])
 
     required_entries, missing_required = build_pack_status(required_packs, roots,
+                                                           direct_pack_payloads,
                                                            install_root, data_root, "required")
     optional_entries, missing_optional = build_pack_status(recommended_packs, roots,
+                                                           direct_pack_payloads,
                                                            install_root, data_root, "optional")
 
     extensions = {
@@ -648,11 +704,16 @@ def main() -> int:
     instances_create.add_argument("--data-root", required=True)
     instances_create.add_argument("--instance-root", default=None)
     instances_create.add_argument("--instance-id", default=None)
+    instances_create.add_argument("--mode", choices=["linked", "portable"], default="portable")
+    instances_create.add_argument("--store-root", default=None)
     instances_create.add_argument("--profile", action="append", default=[])
     instances_create.add_argument("--modpack", action="append", default=[])
+    instances_create.add_argument("--pack-root", action="append", default=[])
     instances_create.add_argument("--capability-lockfile", default=None)
     instances_create.add_argument("--sandbox-policy", default=None)
     instances_create.add_argument("--sandbox-policy-ref", default=None)
+    instances_create.add_argument("--mod-policy-id", default="mod.policy.default")
+    instances_create.add_argument("--overlay-conflict-policy-id", default="overlay.conflict.default")
     instances_create.add_argument("--update-channel", default="stable")
     instances_create.add_argument("--created-at", default=None)
 
@@ -738,24 +799,36 @@ def main() -> int:
     bundles_import.add_argument("--require-full", action="store_true")
     bundles_import.add_argument("--confirm", action="store_true")
     bundles_import.add_argument("--out", default=None)
+    bundles_import.add_argument("--instance-id", default=None)
+    bundles_import.add_argument("--import-mode", choices=["linked", "portable"], default=None)
+    bundles_import.add_argument("--store-root", default=None)
     bundles_import_save = bundles_sub.add_parser("import-save")
     bundles_import_save.add_argument("--bundle", required=True)
     bundles_import_save.add_argument("--available-pack", action="append", default=[])
     bundles_import_save.add_argument("--require-full", action="store_true")
     bundles_import_save.add_argument("--confirm", action="store_true")
     bundles_import_save.add_argument("--out", default=None)
+    bundles_import_save.add_argument("--instance-id", default=None)
+    bundles_import_save.add_argument("--import-mode", choices=["linked", "portable"], default=None)
+    bundles_import_save.add_argument("--store-root", default=None)
     bundles_import_replay = bundles_sub.add_parser("import-replay")
     bundles_import_replay.add_argument("--bundle", required=True)
     bundles_import_replay.add_argument("--available-pack", action="append", default=[])
     bundles_import_replay.add_argument("--require-full", action="store_true")
     bundles_import_replay.add_argument("--confirm", action="store_true")
     bundles_import_replay.add_argument("--out", default=None)
+    bundles_import_replay.add_argument("--instance-id", default=None)
+    bundles_import_replay.add_argument("--import-mode", choices=["linked", "portable"], default=None)
+    bundles_import_replay.add_argument("--store-root", default=None)
     bundles_import_modpack = bundles_sub.add_parser("import-modpack")
     bundles_import_modpack.add_argument("--bundle", required=True)
     bundles_import_modpack.add_argument("--available-pack", action="append", default=[])
     bundles_import_modpack.add_argument("--require-full", action="store_true")
     bundles_import_modpack.add_argument("--confirm", action="store_true")
     bundles_import_modpack.add_argument("--out", default=None)
+    bundles_import_modpack.add_argument("--instance-id", default=None)
+    bundles_import_modpack.add_argument("--import-mode", choices=["linked", "portable"], default=None)
+    bundles_import_modpack.add_argument("--store-root", default=None)
 
     bundles_export = bundles_sub.add_parser("export")
     bundles_export.add_argument("--bundle-type", required=True)
@@ -777,7 +850,7 @@ def main() -> int:
     bundles_export.add_argument("--out", required=True)
     bundles_export_instance = bundles_sub.add_parser("export-instance")
     bundles_export_instance.add_argument("--instance-manifest", required=True)
-    bundles_export_instance.add_argument("--bundle-type", default="modpack")
+    bundles_export_instance.add_argument("--bundle-type", default="instance")
     bundles_export_instance.add_argument("--out", required=True)
 
     paths_cmd = sub.add_parser("paths")
@@ -879,15 +952,22 @@ def main() -> int:
                 "instances", "create",
                 "--install-manifest", args.install_manifest,
                 "--data-root", args.data_root,
+                "--mode", args.mode,
+                "--mod-policy-id", args.mod_policy_id,
+                "--overlay-conflict-policy-id", args.overlay_conflict_policy_id,
             ]
             if args.instance_root:
                 extra += ["--instance-root", args.instance_root]
             if args.instance_id:
                 extra += ["--instance-id", args.instance_id]
+            if args.store_root:
+                extra += ["--store-root", args.store_root]
             for profile in args.profile:
                 extra += ["--active-profile", profile]
             for modpack in args.modpack:
                 extra += ["--active-modpack", modpack]
+            for pack_root in args.pack_root:
+                extra += ["--pack-root", pack_root]
             if args.capability_lockfile:
                 extra += ["--capability-lockfile", args.capability_lockfile]
             if args.sandbox_policy:
@@ -1103,15 +1183,18 @@ def main() -> int:
         profiles = discover_profiles([])
         recommended_packs = profile_recommendations(profile_ids, profiles)
         required_packs: List[str] = []
+        direct_pack_payloads: Dict[str, str] = {}
         if args.instance_manifest and os.path.isfile(args.instance_manifest):
-            lockfile_path = resolve_lockfile(instance_root,
-                                             load_json(args.instance_manifest).get("capability_lockfile") or "")
-            lockfile = load_lockfile(lockfile_path)
+            manifest = load_json(args.instance_manifest)
+            lockfile, _lockfile_source = resolve_pack_lock(instance_root, manifest)
             required_packs = collect_required_packs(lockfile)
+            direct_pack_payloads = resolve_pack_payloads(instance_root, manifest, lockfile)
         roots = pack_roots(install_root, data_root, args.pack_root or [])
         required_entries, missing_required = build_pack_status(required_packs, roots,
+                                                               direct_pack_payloads,
                                                                install_root, data_root, "required")
         optional_entries, missing_optional = build_pack_status(recommended_packs, roots,
+                                                               direct_pack_payloads,
                                                                install_root, data_root, "optional")
         report = build_compat_report("load", None, None, None,
                                      args.capability_baseline,
@@ -1239,6 +1322,12 @@ def main() -> int:
         import_args.append("--confirm")
         if args.out:
             import_args += ["--out", args.out]
+        if args.instance_id:
+            import_args += ["--instance-id", args.instance_id]
+        if args.import_mode:
+            import_args += ["--import-mode", args.import_mode]
+        if args.store_root:
+            import_args += ["--store-root", args.store_root]
         rc, payload, _stderr = run_script(share_cli, import_args)
         run_launcher_action(log_root or os.path.dirname(args.bundle),
                             "bundles.import", "COMMIT",
@@ -1260,26 +1349,10 @@ def main() -> int:
                                          args.deterministic, {}, refusal)
             print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
             return 3
-        instance_manifest = load_json(args.instance_manifest)
-        instance_root = os.path.dirname(args.instance_manifest)
-        lockfile_path = resolve_lockfile(instance_root,
-                                         instance_manifest.get("capability_lockfile") or "")
-        if not lockfile_path or not os.path.isfile(lockfile_path):
-            refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
-                                      "capability lockfile missing",
-                                      {"lockfile": os.path.basename(lockfile_path or "capability.lock")})
-            report = build_compat_report("update", None, None, None,
-                                         args.capability_baseline,
-                                         [], [], [], "refuse",
-                                         [refusal.get("code")], [],
-                                         args.deterministic, {}, refusal)
-            print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
-            return 3
         export_args = [
             "export",
             "--bundle-type", args.bundle_type,
             "--artifact", args.instance_manifest,
-            "--lockfile", lockfile_path,
             "--out", args.out,
         ]
         rc, payload, _stderr = run_script(share_cli, export_args)

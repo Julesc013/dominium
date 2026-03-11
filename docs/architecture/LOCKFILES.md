@@ -1,111 +1,33 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
-# Lockfiles (LOCK0)
-
-
-
-
+# Lockfiles (LOCK0 / LIB-0)
 
 Status: binding.
+Scope: deterministic capability and pack resolution artifacts.
 
+## Authoritative Forms
 
-Scope: deterministic capability resolution lockfiles.
+- Legacy adapter: `schema/capability_lockfile.schema`
+- LIB-0 canonical pack lock artifact: `schema/packs/pack_lock.schema`
 
+## Storage Rules
 
+- Lock artifacts are immutable CAS entries under `store/locks/<hash>/` or `embedded_artifacts/locks/<hash>/`.
+- Instances and saves pin lock identity by `pack_lock_hash`.
+- Path-based `capability_lockfile` references remain compatibility adapters only.
 
+## Determinism Rules
 
+- Same pack set and policy inputs must produce the same `pack_lock_hash`.
+- `ordered_pack_ids` ordering is canonical.
+- Missing required packs must refuse or degrade explicitly according to declared missing-mode policy.
+- No absolute host paths may appear in canonical lock payloads.
 
-## Purpose
+## Related Contracts
 
-
-Lockfiles make capability resolution deterministic across pack ordering.
-
-
-They prevent "mod order roulette" and guarantee reproducible worlds.
-
-
-
-
-
-## capabilities.lock
-
-
-Format: JSON mapped to `schema/capability_lockfile.schema`.
-
-
-
-
-
-Required fields:
-
-
-- lock_id
-
-
-- lock_format_version
-
-
-- generated_by
-
-
-- resolution_rules
-
-
-- missing_mode
-
-
-- resolutions[]
-
-
-- extensions{}
-
-
-
-
-
-Resolution entry:
-
-
-- capability_id -> provider_pack_id@version
-
-
-
-
-
-## Storage rules
-
-
-- Stored with save or referenced by hash.
-
-
-- No absolute paths inside lockfiles.
-
-
-- Unknown fields MUST be preserved.
-
-
-
-
-
-## Determinism rules
-
-
-- Same save + different pack order => identical resolution.
-
-
-- Missing capability => explicit refusal or frozen mode (never silent fallback).
-
-
-
-
-
-## See also
-
-
-- `schema/capability_lockfile.schema`
-
-
-- `docs/architecture/PACK_FORMAT.md`
+- `schema/packs/pack_lock.schema`
+- `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
+- `docs/architecture/INSTANCE_MODEL.md`

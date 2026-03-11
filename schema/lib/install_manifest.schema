@@ -1,0 +1,41 @@
+SCHEMA: lib/install_manifest.schema
+schema_id: dominium.schema.lib.install_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the LIB-0 install descriptor used by linked instances and portable import/export flows.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- The manifest does not imply a single install on the host.
+- Build identity does not imply content availability in the store.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record install_manifest
+  required:
+    - install_id: id
+    - product_build_ids: map
+    - semantic_contract_registry_hash: sha256
+    - supported_protocol_versions: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - install_manifest_version: integer
+    - notes: map
+
+INVARIANTS:
+- product_build_ids maps product identifiers to build identifiers only.
+- supported_protocol_versions must not silently reinterpret protocol compatibility.
+- deterministic_fingerprint is computed from canonical serialized content.

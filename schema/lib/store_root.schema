@@ -1,0 +1,36 @@
+SCHEMA: lib/store_root.schema
+schema_id: dominium.schema.lib.store_root
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical content-addressable store root descriptor for linked installs and imports.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- root_path does not confer authority.
+- Directory names are identifiers only; semantic meaning is carried by hashes and manifests.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- path_ref: relative or canonical path string.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record store_root
+  required:
+    - store_id: id
+    - root_path: path_ref
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - notes: map
+
+INVARIANTS:
+- root_path identifies a store root only; it does not change artifact identity.
+- deterministic_fingerprint is computed from canonical serialized content.

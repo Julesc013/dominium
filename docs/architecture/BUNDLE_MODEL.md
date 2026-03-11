@@ -1,64 +1,45 @@
 Status: CANONICAL
-Last Reviewed: 2026-02-01
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
-# Bundle Model (SHARE0)
+# Bundle Model (SHARE0 / LIB-0)
 
-Status: FROZEN.  
-Scope: shareable bundles for saves, replays, blueprints, and modpacks.
+Status: binding.
+Scope: deterministic share bundles for saves, replays, blueprints, modpacks, and instances.
 
-## Bundle Types (Authoritative)
+## Bundle Types
 
-All bundles share a common container format.
+- `save`
+- `replay`
+- `blueprint`
+- `modpack`
+- `instance`
 
-A) Save Bundle
-- Purpose: share a world save.
-- Contents: save artifact, capability_lockfile, pack references, optional embedded packs, read-only instance metadata.
+## Instance Bundle
 
-B) Replay Bundle
-- Purpose: share a deterministic replay or bug reproduction.
-- Contents: replay artifact, capability_lockfile, compat_report, optional embedded packs, runtime metadata.
+Instance bundles are the LIB-0 portable interchange primitive.
 
-C) Blueprint Bundle
-- Purpose: share designs (assemblies, processes, layouts).
-- Contents: blueprint artifact, referenced schema objects, optional embedded part/material definitions, compatibility hints.
+- Primary artifact: `instance/instance.manifest.json`
+- Required lock payload: `instance/lockfiles/capabilities.lock`
+- Required embedded artifacts: pack lock, profile bundle, and all pinned pack artifacts needed for portable replay/import
+- Optional binaries may be added later without changing the bundle identity rules
 
-D) Modpack Bundle
-- Purpose: share a curated set of packs.
-- Contents: modpack manifest, capability_lockfile, pack references, optional embedded packs, profile suggestions.
+## Determinism Rules
 
-## Common Container
+- Bundle contents are indexed canonically.
+- File hashes must validate on inspect/import.
+- Export/import must not depend on filesystem timestamps or OS metadata.
+- Missing required embedded artifacts are refusal outcomes.
 
-Schema:
+## Import Rules
+
+- Portable import preserves embedded artifacts inside the imported instance.
+- Linked import inserts embedded artifacts into the destination store and rewrites the instance manifest to `mode=linked`.
+- Missing packs may degrade save/replay/modpack bundles, but portable instance bundles must be self-contained.
+
+## Related Contracts
+
 - `schema/bundle.container.schema`
-
-Rules:
-- Bundles are immutable once created.
-- Bundles are portable (single file or folder).
-- Bundles do NOT contain executable code.
-- Bundles do NOT bypass capability checks.
-
-## Export Semantics
-
-- User chooses pack references only or embeds packs.
-- Bundles are generated atomically.
-- compat_report is generated at export time.
-
-## Import Semantics
-
-- Bundle is inspected before import.
-- compat_report is shown before import.
-- Missing packs are resolved via OPS-0 sources (never implicitly).
-- User explicitly confirms any degraded modes.
-- Incompatible bundles refuse explicitly.
-
-## Safety & Trust
-
-- Bundles inherit trust tier from creator.
-- Embedded packs are scanned/validated.
-- No bundle executes code.
-
-## Advanced Users
-
-Power users can inspect bundle internals and override pack resolution via tools.
+- `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
+- `docs/architecture/INSTANCE_MODEL.md`

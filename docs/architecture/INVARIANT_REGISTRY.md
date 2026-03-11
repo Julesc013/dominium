@@ -146,6 +146,9 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-CANON-NO-SUPERSEDED | Canonical docs must not be superseded. | docs/architecture/CANON_INDEX.md | scripts/ci/check_repox_rules.py |
 | INV-SCHEMA-VERSION-BUMP | Schema changes require schema_version update. | docs/architecture/SCHEMA_VERSIONING.md | scripts/ci/check_repox_rules.py |
 | INV-REPORT-CANON | Canon compliance report emitted. | docs/architecture/CANON_INDEX.md | scripts/ci/compliance_report.py |
+| INV-ARTIFACTS-CONTENT-ADDRESSED | Reusable artifacts are stored and resolved by canonical hash. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tests/ops/content_store_tests.py |
+| INV-NO-PATH-BASED-SEMANTICS | Paths may locate artifacts but never define identity or authority semantics. | docs/architecture/CONTENT_AND_STORAGE_MODEL.md | tools/xstack/repox/check.py |
+| INV-PORTABLE-MODE-SELF-CONTAINED | Portable instances and instance bundles must embed all required reusable artifacts. | docs/architecture/INSTANCE_MODEL.md | tests/ops/content_store_tests.py |
 
 ## Notes
 
