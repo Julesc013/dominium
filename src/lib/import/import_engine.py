@@ -14,6 +14,7 @@ from src.lib.export import (
     BUNDLE_KIND_PACK,
     BUNDLE_KIND_SAVE,
 )
+from src.modding import DEFAULT_MOD_POLICY_ID
 from src.lib.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
@@ -550,7 +551,7 @@ def import_pack_bundle(
         bundle_root=bundle_path,
         ordered_pack_ids=sorted(ordered_pack_ids),
         pack_hashes=pack_hashes,
-        mod_policy_id="mod.policy.default",
+        mod_policy_id=DEFAULT_MOD_POLICY_ID,
         overlay_conflict_policy_id="",
         instance_id="pack.import",
     )

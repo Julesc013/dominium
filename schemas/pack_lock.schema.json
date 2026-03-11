@@ -72,6 +72,105 @@
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
     },
+    "resolution_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_provides_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "provides_declarations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "provides_id",
+          "provides_type",
+          "priority",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "properties": {
+          "pack_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provides_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provides_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "provides_resolutions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "instance_id",
+          "provides_id",
+          "chosen_pack_id",
+          "resolution_policy_id",
+          "deterministic_fingerprint",
+          "extensions"
+        ],
+        "properties": {
+          "instance_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provides_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "chosen_pack_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "resolution_policy_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deterministic_fingerprint": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "provider_capability_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
     "pack_lock_hash": {
       "type": "string",
       "pattern": "^[A-Fa-f0-9]{64}$"
