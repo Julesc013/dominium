@@ -6,6 +6,7 @@ import json
 import os
 from typing import Dict, List, Tuple
 
+from src.lib.provides import classify_pack_namespace
 from src.modding import attach_pack_policy_descriptors
 from src.packs.compat import attach_pack_compat_manifest
 from src.meta_extensions_engine import normalize_extensions_tree
@@ -160,6 +161,19 @@ def load_pack_set(
                         pack_id,
                         directory_pack_id,
                         rel_manifest,
+                    ),
+                    "$.pack_id",
+                )
+            )
+            continue
+        namespace_status = classify_pack_namespace(pack_id)
+        if not bool(namespace_status.get("valid", False)):
+            errors.append(
+                build_error(
+                    "refuse.pack.invalid_namespace",
+                    "pack_id '{}' does not satisfy deterministic namespace rules: {}".format(
+                        pack_id,
+                        str(namespace_status.get("message", "")).strip() or "invalid namespace",
                     ),
                     "$.pack_id",
                 )

@@ -20,6 +20,12 @@ Template:
   Migration: <required migration steps or "none">
 
 - Date: 2026-03-11
+  Schema(s): schema/lib/provides_declaration.schema; schema/lib/provides_resolution.schema; schema/lib/instance_manifest.schema; schema/instance.manifest.schema; schema/packs/pack_lock.schema; schema/packs/pack_compat_manifest.schema; schema/pack_manifest.schema
+  Change: add LIB-5 fork namespacing plus deterministic provides declarations and resolution records across instance and pack-lock contracts
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-FORKS-MUST-NAMESPACE; INV-PROVIDES-RESOLUTION-DETERMINISTIC; INV-STRICT-REFUSES-AMBIGUITY
+  Migration: legacy reverse-DNS pack ids remain loadable; normalize provider declarations and instance/lock resolution records through `src/lib/provides/provider_resolution.py`
+
+- Date: 2026-03-11
   Schema(s): schema/lib/artifact_manifest.schema; schema/lib/artifact_reference.schema; schema/profile/profile_bundle.schema; schema/materials/blueprint.schema; schema/system/system_template.schema; schema/process/process_definition.schema
   Change: add LIB-4 shareable artifact manifest/reference contracts plus compatible payload envelope fields for profile bundles, blueprints, system templates, and process definitions
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST; INV-ARTIFACTS-CONTENT-ADDRESSED; INV-ARTIFACT-LOAD-VALIDATED

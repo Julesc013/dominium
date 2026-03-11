@@ -1,6 +1,6 @@
 SCHEMA: pack_manifest.schema
 schema_id: dominium.schema.pack_manifest
-schema_version: 2.3.0
+schema_version: 2.4.0
 stability: core
 
 PURPOSE:
@@ -24,7 +24,13 @@ CONVENTIONS:
 - map: open key/value map; unknown keys preserved.
 
 PACK ID RULES:
-- pack_id MUST use reverse-DNS naming.
+- pack_id MUST use a stable provider-owned namespace.
+- New pack ids MUST use one of:
+  - official.<org>.<pack>
+  - mod.<author>.<pack>
+  - fork.<origin_pack_id>.<fork_author>.<fork_name>
+  - local.<user>.<pack>
+- Legacy reverse-DNS pack ids remain loadable for compatibility.
 
 PACK VERSION RULES:
 - pack_version MUST use semver (MAJOR.MINOR.PATCH).

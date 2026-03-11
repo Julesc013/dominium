@@ -36,7 +36,7 @@ This document tightens and extends:
 ## Canonical identifier rules
 
 
-- All identifiers MUST be reverse-DNS style tokens.
+- All identifiers MUST be reverse-DNS style tokens or equivalent provider-owned hierarchical namespace tokens.
 
 
 - Identifiers MUST be ASCII and case-insensitive.
@@ -66,10 +66,8 @@ This document tightens and extends:
 
 
 
-Reverse-DNS here means a dot-separated namespace owned by a provider, followed
-
-
-by a stable local name, for example: `dominium.schema.process`.
+Provider-owned hierarchical namespacing here means a dot-separated namespace owned by a provider, followed
+by a stable local name, for example: `dominium.schema.process` or `official.dominium.terrain_pack`.
 
 
 

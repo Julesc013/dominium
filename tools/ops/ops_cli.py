@@ -37,12 +37,14 @@ from src.lib.instance import (
     instance_active_profiles,
     instance_data_root,
     instance_install_id,
+    instance_resolution_policy_id,
     instance_settings_payload,
     normalize_instance_manifest,
     normalize_instance_settings,
     stable_instance_id,
     validate_instance_manifest,
 )
+from src.lib.provides import infer_resolution_policy_id, normalize_provides_resolutions
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
@@ -193,6 +195,38 @@ def parse_required_contract_ranges(rows: Optional[List[str]]) -> Dict[str, dict]
             }
         )
     return dict((key, parsed[key]) for key in sorted(parsed.keys()))
+
+
+def parse_provides_resolutions(
+    rows: Optional[List[str]],
+    *,
+    instance_id: str,
+    resolution_policy_id: str,
+) -> List[dict]:
+    parsed: List[dict] = []
+    for row in list(rows or []):
+        token = str(row or "").strip()
+        if "=" not in token:
+            continue
+        provides_id, chosen_pack_id = token.split("=", 1)
+        provides_id = str(provides_id).strip()
+        chosen_pack_id = str(chosen_pack_id).strip()
+        if not provides_id or not chosen_pack_id:
+            continue
+        parsed.append(
+            {
+                "instance_id": instance_id,
+                "provides_id": provides_id,
+                "chosen_pack_id": chosen_pack_id,
+                "resolution_policy_id": resolution_policy_id,
+                "extensions": {},
+            }
+        )
+    return normalize_provides_resolutions(
+        parsed,
+        instance_id=instance_id,
+        resolution_policy_id=resolution_policy_id,
+    )
 
 
 def build_compat_report(context: str,
@@ -618,6 +652,8 @@ def build_instance_manifest_payload(*,
                                     seed_policy: str,
                                     required_product_builds: Dict[str, str],
                                     required_contract_ranges: Dict[str, dict],
+                                    resolution_policy_id: str,
+                                    provides_resolutions: List[Dict[str, object]],
                                     pack_artifact_refs: List[Dict[str, object]],
                                     settings: Dict[str, object],
                                     save_refs: List[str],
@@ -645,6 +681,8 @@ def build_instance_manifest_payload(*,
         "seed_policy": seed_policy,
         "required_product_builds": dict((key, required_product_builds[key]) for key in sorted(required_product_builds.keys())),
         "required_contract_ranges": dict((key, required_contract_ranges[key]) for key in sorted(required_contract_ranges.keys())),
+        "resolution_policy_id": str(resolution_policy_id or "").strip(),
+        "provides_resolutions": list(provides_resolutions or []),
         "instance_settings": settings,
         "save_refs": sorted_unique(save_refs),
         "store_root": build_store_locator(instance_root, store_root, store_manifest) if mode == "linked" else {},
@@ -697,6 +735,8 @@ def materialize_instance_artifacts(*,
                                    active_profiles: List[str],
                                    mod_policy_id: str,
                                    overlay_conflict_policy_id: str,
+                                   resolution_policy_id: str,
+                                   provides_resolutions: List[Dict[str, object]],
                                    capability_lockfile_path: Optional[str],
                                    pack_roots: List[str]) -> Tuple[Dict[str, object], str, Dict[str, object], str, List[Dict[str, object]], str, Dict[str, object]]:
     pack_refs: List[Dict[str, object]] = []
@@ -735,6 +775,8 @@ def materialize_instance_artifacts(*,
         pack_ids=active_modpacks,
         mod_policy_id=mod_policy_id,
         overlay_conflict_policy_id=overlay_conflict_policy_id,
+        resolution_policy_id=resolution_policy_id,
+        provides_resolutions=provides_resolutions,
         source_payload=source_lock_payload,
     )
     profile_bundle_payload, profile_bundle_hash = build_profile_bundle_payload(
@@ -802,6 +844,16 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     last_opened_save_id = str(getattr(args, "last_opened_save_id", "") or "").strip()
     if last_opened_save_id and last_opened_save_id not in save_refs:
         save_refs = sorted(set(save_refs + [last_opened_save_id]))
+    resolution_policy_id = infer_resolution_policy_id(
+        mod_policy_id=mod_policy_id,
+        overlay_conflict_policy_id=overlay_conflict_policy_id,
+        preferred_policy_id=str(getattr(args, "resolution_policy_id", "") or "").strip(),
+    )
+    requested_provides_resolution_args = sorted(
+        str(row or "").strip()
+        for row in list(getattr(args, "provides_resolution", []) or [])
+        if str(row or "").strip()
+    )
     if args.instance_id:
         instance_id = str(args.instance_id).strip()
     elif deterministic:
@@ -818,10 +870,17 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
                 "required_contract_ranges": required_contract_ranges,
                 "default_session_template_id": default_session_template_id,
                 "seed_policy": seed_policy,
+                "resolution_policy_id": resolution_policy_id,
+                "provides_resolutions": requested_provides_resolution_args,
             }
         )
     else:
         instance_id = str(uuid.uuid4())
+    provides_resolutions = parse_provides_resolutions(
+        requested_provides_resolution_args,
+        instance_id=instance_id,
+        resolution_policy_id=resolution_policy_id,
+    )
 
     if not install_id:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
@@ -949,6 +1008,8 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         active_profiles=args.active_profiles or [],
         mod_policy_id=mod_policy_id,
         overlay_conflict_policy_id=overlay_conflict_policy_id,
+        resolution_policy_id=resolution_policy_id,
+        provides_resolutions=provides_resolutions,
         capability_lockfile_path=args.capability_lockfile,
         pack_roots=candidate_pack_roots(args.install_manifest, instance_root, getattr(args, "pack_root", [])),
     )
@@ -971,6 +1032,8 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         seed_policy=seed_policy,
         required_product_builds=required_product_builds,
         required_contract_ranges=required_contract_ranges,
+        resolution_policy_id=resolution_policy_id,
+        provides_resolutions=provides_resolutions,
         pack_artifact_refs=pack_artifact_refs,
         settings={
             "renderer_mode": getattr(args, "renderer_mode", None),
@@ -1355,6 +1418,18 @@ def edit_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         updated["required_product_builds"] = parse_required_product_builds(args.required_product_build)
     if getattr(args, "required_contract_range", None):
         updated["required_contract_ranges"] = parse_required_contract_ranges(args.required_contract_range)
+    if getattr(args, "resolution_policy_id", None):
+        updated["resolution_policy_id"] = infer_resolution_policy_id(
+            mod_policy_id=str(updated.get("mod_policy_id", "")).strip(),
+            overlay_conflict_policy_id=str(updated.get("overlay_conflict_policy_id", "")).strip(),
+            preferred_policy_id=str(args.resolution_policy_id or "").strip(),
+        )
+    if getattr(args, "provides_resolution", None):
+        updated["provides_resolutions"] = parse_provides_resolutions(
+            args.provides_resolution,
+            instance_id=instance_id,
+            resolution_policy_id=str(updated.get("resolution_policy_id", "")).strip() or instance_resolution_policy_id(updated),
+        )
     if getattr(args, "profile", None):
         updated["active_profiles"] = sorted_unique(args.profile)
     if getattr(args, "modpack", None):
@@ -1575,6 +1650,8 @@ def main() -> int:
     instances_create.add_argument("--last-opened-save-id", default="")
     instances_create.add_argument("--required-product-build", action="append", default=[])
     instances_create.add_argument("--required-contract-range", action="append", default=[])
+    instances_create.add_argument("--resolution-policy-id", default="")
+    instances_create.add_argument("--provides-resolution", action="append", default=[])
     instances_create.add_argument("--update-channel", default="stable")
     instances_create.add_argument("--created-at", default=None)
     instances_create.add_argument("--simulate-failure", default=None)
@@ -1618,6 +1695,8 @@ def main() -> int:
     instances_edit.add_argument("--overlay-conflict-policy-id", default=None)
     instances_edit.add_argument("--required-product-build", action="append", default=[])
     instances_edit.add_argument("--required-contract-range", action="append", default=[])
+    instances_edit.add_argument("--resolution-policy-id", default=None)
+    instances_edit.add_argument("--provides-resolution", action="append", default=[])
 
     instances_activate = instances_sub.add_parser("activate")
     instances_activate.add_argument("--install-manifest", required=True)

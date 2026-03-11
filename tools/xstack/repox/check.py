@@ -28772,6 +28772,107 @@ def _append_artifact_manifest_invariant_findings(
                 )
 
 
+def _append_forking_provides_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    invariant_tokens = {
+        "INV-FORKS-MUST-NAMESPACE": {
+            "docs/architecture/FORKING_AND_PROVIDES_MODEL.md": (
+                "INV-FORKS-MUST-NAMESPACE",
+                "fork.<origin_pack_id>.<fork_author>.<fork_name>",
+                "forks must not reuse the origin pack_id",
+            ),
+            "schema/pack_manifest.schema": (
+                "fork.<origin_pack_id>.<fork_author>.<fork_name>",
+                "Legacy reverse-DNS pack ids remain loadable for compatibility.",
+            ),
+            "src/lib/provides/provider_resolution.py": (
+                "classify_pack_namespace(",
+                "REFUSAL_PACK_NAMESPACE_INVALID",
+            ),
+            "tools/xstack/pack_loader/loader.py": (
+                "classify_pack_namespace(",
+                "refuse.pack.invalid_namespace",
+                "refuse.pack.duplicate_pack_id",
+            ),
+        },
+        "INV-PROVIDES-RESOLUTION-DETERMINISTIC": {
+            "docs/architecture/FORKING_AND_PROVIDES_MODEL.md": (
+                "INV-PROVIDES-RESOLUTION-DETERMINISTIC",
+                "resolve.deterministic_highest_priority",
+                "resolve.deterministic_lowest_pack_id",
+                "All provider selections are logged",
+            ),
+            "schema/lib/provides_resolution.schema": (
+                "resolution_policy_id",
+                "chosen_pack_id",
+                "deterministic_fingerprint",
+            ),
+            "src/lib/provides/provider_resolution.py": (
+                "resolve_providers(",
+                "selection_logged",
+                "selection_mode",
+            ),
+            "src/packs/compat/pack_verification_pipeline.py": (
+                "resolve_providers(",
+                "provides_resolutions",
+                "provider_selection_logged",
+            ),
+        },
+        "INV-STRICT-REFUSES-AMBIGUITY": {
+            "docs/architecture/FORKING_AND_PROVIDES_MODEL.md": (
+                "INV-STRICT-REFUSES-AMBIGUITY",
+                "resolve.strict_refuse_ambiguous",
+                "Strict servers must refuse ambiguous providers.",
+            ),
+            "src/lib/provides/provider_resolution.py": (
+                "REFUSAL_PROVIDES_AMBIGUOUS",
+                "RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "provider resolution failed",
+                "choose a provider explicitly, remove ambiguity, or use a deterministic non-strict policy",
+                "\"provider_selection_logged\": bool(provider_resolution.get(\"selection_logged\", False))",
+            ),
+        },
+    }
+    for invariant_id, rel_paths in invariant_tokens.items():
+        for rel_path, tokens in rel_paths.items():
+            abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+            try:
+                text = open(abs_path, "r", encoding="utf-8").read()
+            except OSError:
+                text = ""
+            if not text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="required forking/provides enforcement file is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+                continue
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="required forking/provides enforcement token is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -29373,6 +29474,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_artifact_manifest_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_forking_provides_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

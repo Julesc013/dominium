@@ -21,7 +21,7 @@ Scope: namespace requirements for identifiers.
 ## Required namespaces
 
 
-Identifiers MUST be namespaced (reverse-DNS or equivalent) for:
+Identifiers MUST be namespaced (reverse-DNS or equivalent provider-owned hierarchical tokens) for:
 
 
 - capabilities
@@ -61,6 +61,7 @@ Identifiers MUST be namespaced (reverse-DNS or equivalent) for:
 
 
 - Reserved namespaces are owned by their providers.
+- Pack ids use `official.<org>.<pack>`, `mod.<author>.<pack>`, `fork.<origin_pack_id>.<fork_author>.<fork_name>`, or `local.<user>.<pack>`; legacy reverse-DNS pack ids remain compatibility-only.
 
 
 

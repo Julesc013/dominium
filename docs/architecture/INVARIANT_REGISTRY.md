@@ -160,6 +160,9 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-NO-SILENT-MIGRATION | Save migration and read-only fallback must remain explicit and auditable. | docs/architecture/SAVE_MODEL.md | tests/ops/save_manifest_tests.py |
 | INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST | Shareable non-pack artifacts must publish a canonical artifact manifest or validated sidecar. | docs/architecture/ARTIFACT_MODEL.md | tests/share/share_bundle_tests.py |
 | INV-ARTIFACT-LOAD-VALIDATED | Shareable artifact load must verify content hash, contract ranges, capabilities, and degrade policy before use. | docs/architecture/ARTIFACT_MODEL.md | tests/ops/artifact_manifest_tests.py |
+| INV-FORKS-MUST-NAMESPACE | Forked packs must use explicit fork namespaces and must not reuse the origin `pack_id`. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tools/xstack/pack_loader/loader.py |
+| INV-PROVIDES-RESOLUTION-DETERMINISTIC | Required provides surfaces must resolve through logged deterministic policies and canonical resolution records. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tests/ops/provides_resolution_tests.py |
+| INV-STRICT-REFUSES-AMBIGUITY | Strict provider policies must refuse ambiguous providers instead of auto-selecting one. | docs/architecture/FORKING_AND_PROVIDES_MODEL.md | tests/ops/provides_resolution_tests.py |
 
 ## Notes
 

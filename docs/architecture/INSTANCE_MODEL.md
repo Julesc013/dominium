@@ -34,6 +34,11 @@ Every LIB-2 instance must declare:
 - `save_refs`
 - `deterministic_fingerprint`
 
+Instances may also declare:
+
+- `resolution_policy_id`
+- `provides_resolutions`
+
 ## Instance Kinds
 
 Supported kinds:
@@ -69,6 +74,8 @@ Supported kinds:
 
 - Launcher start/preflight must verify `pack_lock_hash` and `profile_bundle_hash` before runtime.
 - `required_product_builds` and `required_contract_ranges` may pin launcher selection without changing runtime law.
+- Required provides surfaces from the bound pack lock must resolve through `resolution_policy_id` plus `provides_resolutions` or an equivalent deterministic pack-lock record.
+- Instance-level provider selections must match the bound lock record or the launcher must refuse.
 - CAP-NEG may degrade to read-only / inspect-only only when explicitly allowed and logged.
 - No silent degrade is permitted.
 

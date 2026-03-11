@@ -14,6 +14,11 @@ from src.lib.artifact import (
     artifact_kind_from_store_category,
     canonicalize_artifact_manifest,
 )
+from src.lib.provides import (
+    infer_resolution_policy_id,
+    normalize_provides_declarations,
+    normalize_provides_resolutions,
+)
 
 
 HASH_ALGORITHM = "sha256"
@@ -435,6 +440,11 @@ def build_pack_lock_payload(
     pack_ids: Iterable[str],
     mod_policy_id: str,
     overlay_conflict_policy_id: str,
+    resolution_policy_id: str = "",
+    required_provides_ids: Optional[Iterable[str]] = None,
+    provides_declarations: Optional[Iterable[Dict[str, object]]] = None,
+    provides_resolutions: Optional[Iterable[Dict[str, object]]] = None,
+    provider_capability_ids: Optional[Iterable[str]] = None,
     source_payload: Optional[Dict[str, object]] = None,
 ) -> Tuple[Dict[str, object], str]:
     ordered_pack_ids = sorted({str(item).strip() for item in list(pack_ids or []) if str(item).strip()})
@@ -449,12 +459,50 @@ def build_pack_lock_payload(
     payload.setdefault("pack_compat_hashes", {})
     payload.setdefault("mod_policy_id", mod_policy_id)
     payload.setdefault("overlay_conflict_policy_id", overlay_conflict_policy_id)
+    payload.setdefault("resolution_policy_id", str(resolution_policy_id or "").strip())
+    payload.setdefault(
+        "required_provides_ids",
+        sorted({str(item).strip() for item in list(required_provides_ids or []) if str(item).strip()}),
+    )
+    payload.setdefault(
+        "provides_declarations",
+        normalize_provides_declarations(list(provides_declarations or [])),
+    )
+    payload.setdefault(
+        "provides_resolutions",
+        normalize_provides_resolutions(
+            list(provides_resolutions or []),
+            instance_id=str(instance_id or "").strip(),
+            resolution_policy_id=str(payload.get("resolution_policy_id", "")).strip(),
+        ),
+    )
+    payload.setdefault(
+        "provider_capability_ids",
+        sorted({str(item).strip() for item in list(provider_capability_ids or []) if str(item).strip()}),
+    )
     payload.setdefault("engine_version_created", "unknown")
     payload.setdefault("extensions", {})
     payload["ordered_pack_ids"] = ordered_pack_ids
     payload["ordered_pack_versions"] = list(payload.get("ordered_pack_versions") or ["unversioned"] * len(ordered_pack_ids))
     payload["pack_hashes"] = dict(payload.get("pack_hashes") or {})
     payload["pack_compat_hashes"] = dict(payload.get("pack_compat_hashes") or {})
+    payload["resolution_policy_id"] = infer_resolution_policy_id(
+        mod_policy_id=str(mod_policy_id or "").strip(),
+        overlay_conflict_policy_id=str(overlay_conflict_policy_id or "").strip(),
+        preferred_policy_id=str(payload.get("resolution_policy_id", "")).strip(),
+    )
+    payload["required_provides_ids"] = sorted(
+        {str(item).strip() for item in list(payload.get("required_provides_ids") or []) if str(item).strip()}
+    )
+    payload["provides_declarations"] = normalize_provides_declarations(list(payload.get("provides_declarations") or []))
+    payload["provides_resolutions"] = normalize_provides_resolutions(
+        list(payload.get("provides_resolutions") or []),
+        instance_id=str(instance_id or "").strip(),
+        resolution_policy_id=str(payload.get("resolution_policy_id", "")).strip(),
+    )
+    payload["provider_capability_ids"] = sorted(
+        {str(item).strip() for item in list(payload.get("provider_capability_ids") or []) if str(item).strip()}
+    )
     payload["deterministic_fingerprint"] = ""
     payload.pop("pack_lock_hash", None)
     hash_seed = dict(payload)

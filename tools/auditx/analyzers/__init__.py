@@ -448,6 +448,8 @@ from analyzers import e438_save_without_contract_pin_smell
 from analyzers import e439_silent_save_upgrade_smell
 from analyzers import e440_manifest_missing_smell
 from analyzers import e441_artifact_hash_mismatch_smell
+from analyzers import e442_silent_provider_selection_smell
+from analyzers import e443_pack_id_collision_smell
 
 
 ANALYZERS = (
@@ -899,6 +901,8 @@ ANALYZERS = (
     e439_silent_save_upgrade_smell,
     e440_manifest_missing_smell,
     e441_artifact_hash_mismatch_smell,
+    e442_silent_provider_selection_smell,
+    e443_pack_id_collision_smell,
 )
 
 

@@ -1,6 +1,6 @@
 SCHEMA: instance.manifest.schema
 schema_id: dominium.schema.instance_manifest
-schema_version: 1.1.0
+schema_version: 1.2.0
 stability: core
 
 PURPOSE:
@@ -50,6 +50,8 @@ record instance_manifest
     - embedded_artifacts: [map]
     - required_product_builds: map
     - required_contract_ranges: map
+    - resolution_policy_id: id
+    - provides_resolutions: [map]
     - data_root: path_ref
     - active_profiles: [id]
     - active_modpacks: [id]
@@ -71,5 +73,6 @@ record provenance_ref
 INVARIANTS:
 - Legacy adapter fields (`install_id`, `data_root`, `active_profiles`, `active_modpacks`, `capability_lockfile`) remain available for compatibility only.
 - Canonical install selection uses `install_ref`, `required_product_builds`, and `required_contract_ranges`.
+- Canonical provider selection uses `resolution_policy_id` plus `provides_resolutions` or an equivalent deterministic pack-lock record.
 - Instances must bind both `pack_lock_hash` and `profile_bundle_hash`.
 - Saves must be referenced by `save_refs`; save payloads must not be embedded under the instance root.

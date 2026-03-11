@@ -55,7 +55,9 @@ Rules:
 - No implicit load-order dependencies.
 
 
-- Everything namespaced (reverse-DNS).
+- Everything namespaced.
+- New pack ids use `official.<org>.<pack>`, `mod.<author>.<pack>`, `fork.<origin_pack_id>.<fork_author>.<fork_name>`, or `local.<user>.<pack>`.
+- Legacy reverse-DNS pack ids remain loadable for compatibility.
 
 
 

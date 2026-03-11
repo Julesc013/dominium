@@ -6,6 +6,10 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
+from src.lib.provides import (
+    normalize_provides_declarations,
+    validate_provides_declaration,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.compatx.core.semantic_contract_validator import load_semantic_contract_registry, semantic_contract_ids
@@ -115,7 +119,12 @@ def _normalize_manifest(payload: Mapping[str, object]) -> dict:
             for key, value in sorted(_as_map(payload.get("supported_engine_version_range")).items(), key=lambda item: str(item[0]))
         },
         "required_registry_ids": _sorted_tokens(payload.get("required_registry_ids")),
-        "provides": _sorted_tokens(payload.get("provides")),
+        "provides_declarations": normalize_provides_declarations(
+            payload.get("provides_declarations", payload.get("provides", [])),
+            fallback_pack_id=str(payload.get("pack_id", "")).strip(),
+        ),
+        "required_provides_ids": _sorted_tokens(payload.get("required_provides_ids")),
+        "provides": [],
         "degrade_mode_id": str(payload.get("degrade_mode_id", "")).strip(),
         "migration_refs": _sorted_tokens(payload.get("migration_refs")),
         "deterministic_fingerprint": str(payload.get("deterministic_fingerprint", "")).strip(),
@@ -124,6 +133,13 @@ def _normalize_manifest(payload: Mapping[str, object]) -> dict:
             for key, value in sorted(_as_map(payload.get("extensions")).items(), key=lambda item: str(item[0]))
         },
     }
+    body["provides"] = sorted(
+        {
+            str(row.get("provides_id", "")).strip()
+            for row in list(body.get("provides_declarations") or [])
+            if str(row.get("provides_id", "")).strip()
+        }
+    )
     return body
 
 
@@ -177,6 +193,26 @@ def validate_pack_compat_manifest(
         errors.append(_error("pack_compat_trust_level_mismatch", "$.trust_level_id", "pack.compat.json trust_level_id does not match pack.trust.json"))
     if payload["capability_ids"] and _sorted_tokens(pack_row.get("capability_ids")) and payload["capability_ids"] != _sorted_tokens(pack_row.get("capability_ids")):
         errors.append(_error("pack_compat_capability_mismatch", "$.capability_ids", "pack.compat.json capability_ids do not match pack.capabilities.json"))
+    seen_provides_ids = set()
+    for index, declaration in enumerate(list(payload.get("provides_declarations") or [])):
+        validation = validate_provides_declaration(declaration, fallback_pack_id=pack_id)
+        if validation.get("result") != "complete":
+            for row in list(validation.get("errors") or []):
+                if not isinstance(row, Mapping):
+                    continue
+                errors.append(
+                    _error(
+                        str(row.get("code", "pack_compat_invalid_provides_declaration")).strip(),
+                        "$.provides_declarations[{}].{}".format(index, str(row.get("path", "$")).strip().lstrip("$.")),
+                        str(row.get("message", "")).strip() or "invalid provides declaration",
+                    )
+                )
+            continue
+        provides_id = str((dict(validation.get("provides_declaration") or {})).get("provides_id", "")).strip()
+        if provides_id in seen_provides_ids:
+            errors.append(_error("pack_compat_duplicate_provides_id", "$.provides_declarations", "pack.compat.json declares duplicate provides_id '{}'".format(provides_id)))
+            continue
+        seen_provides_ids.add(provides_id)
     capability_ids, capability_errors = _load_capability_ids(repo_root)
     errors.extend(capability_errors)
     for capability_id in payload["capability_ids"]:
@@ -274,4 +310,6 @@ def attach_pack_compat_manifest(
     attached["compat_manifest_hash"] = str(report.get("compat_manifest_hash", "")).strip()
     attached["compat_manifest"] = dict(report.get("compat_manifest") or {})
     attached["pack_degrade_mode_id"] = str(report.get("degrade_mode_id", "")).strip()
+    attached["provides_declarations"] = list((dict(report.get("compat_manifest") or {})).get("provides_declarations") or [])
+    attached["required_provides_ids"] = list((dict(report.get("compat_manifest") or {})).get("required_provides_ids") or [])
     return attached, [], list(report.get("warnings") or [])

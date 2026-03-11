@@ -1,0 +1,39 @@
+SCHEMA: lib/provides_declaration.schema
+schema_id: dominium.schema.lib.provides_declaration
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic pack-level declarations for shareable provider surfaces.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- Breaking field removal or semantic reuse requires a MAJOR version bump.
+
+NON-SEMANTICS:
+- Provides declarations advertise a surface; they do not silently select a winner.
+- Namespace class does not change pack contents.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: signed whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record provides_declaration
+  required:
+    - pack_id: id
+    - provides_id: id
+    - provides_type: tag
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - priority: integer
+
+INVARIANTS:
+- pack_id must remain stable for the provider declaration to remain valid.
+- provides_type must be `domain`, `dataset`, `template_set`, `ui_pack`, or `protocol_extension`.
+- priority, when present, is only a deterministic tie-break input; it does not authorize silent selection.
+- deterministic_fingerprint is computed from canonical serialized content.

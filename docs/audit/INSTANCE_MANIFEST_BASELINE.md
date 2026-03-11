@@ -23,6 +23,11 @@ LIB-2 defines `InstanceManifest` as the deterministic runnable configuration for
 - `save_refs`
 - `deterministic_fingerprint`
 
+Optional provider-selection fields:
+
+- `resolution_policy_id`
+- `provides_resolutions`
+
 ## Instance Types
 
 Supported kinds:
@@ -57,6 +62,7 @@ Portable instances:
 
 - Launcher preflight/start must validate `pack_lock_hash` and `profile_bundle_hash`.
 - Launcher preflight/start must compare `required_product_builds` and `required_contract_ranges` against the selected install.
+- Launcher preflight/start must resolve any required provides surfaces through `resolution_policy_id` and logged provider selections.
 - CAP-NEG degrade ladders may fall back to read-only / inspect-only only when explicitly allowed and logged.
 - No silent degrade is permitted.
 

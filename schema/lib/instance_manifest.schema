@@ -1,6 +1,6 @@
 SCHEMA: lib/instance_manifest.schema
 schema_id: dominium.schema.lib.instance_manifest
-schema_version: 2.0.0
+schema_version: 2.1.0
 stability: core
 
 PURPOSE:
@@ -47,6 +47,8 @@ record instance_manifest
     - embedded_artifacts: [artifact_ref]
     - required_product_builds: map
     - required_contract_ranges: map
+    - resolution_policy_id: id
+    - provides_resolutions: [provides_resolution]
     - notes: map
 
 TYPE DEFINITIONS:
@@ -105,6 +107,15 @@ record embedded_build_descriptor
     - descriptor_ref: path_ref
     - notes: map
 
+record provides_resolution
+  required:
+    - instance_id: id
+    - provides_id: id
+    - chosen_pack_id: id
+    - resolution_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
 INVARIANTS:
 - instance_kind must be `instance.client`, `instance.server`, or `instance.tooling`.
 - mode must be `linked` or `portable`.
@@ -115,5 +126,7 @@ INVARIANTS:
 - last_opened_save_id, when recorded, must be stored in extensions under `instance.last_opened_save_id`.
 - required_product_builds, when present, pin product build selection for launcher validation.
 - required_contract_ranges, when present, pin contract-range expectations for launcher validation.
+- resolution_policy_id, when present, must be a deterministic provider resolution policy.
+- provides_resolutions, when present, must record explicit or computed provider choices without embedding pack payloads.
 - seed_policy must be `fixed`, `prompt`, or `deterministic_counter`.
 - deterministic_fingerprint is computed from canonical serialized content.

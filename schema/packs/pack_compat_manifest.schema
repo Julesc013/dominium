@@ -1,6 +1,6 @@
 SCHEMA: packs/pack_compat_manifest.schema
 schema_id: dominium.schema.packs.pack_compat_manifest
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -29,9 +29,13 @@ record pack_compat_manifest
     - required_protocol_ranges: map
     - supported_engine_version_range: map
     - provides: [id]
+    - provides_declarations: [map]
+    - required_provides_ids: [id]
 
 INVARIANTS:
 - pack_id and pack_version must match adjacent `pack.json`
 - required_contract_ranges only constrain declared semantic contract families
+- provides_declarations, when present, must be deterministic and pack-local declarations for fork/provider resolution
+- required_provides_ids, when present, must be enforced through deterministic provider resolution
 - missing compatibility manifests are handled by explicit policy, never silent inference
 - deterministic_fingerprint is computed with the fingerprint field blanked

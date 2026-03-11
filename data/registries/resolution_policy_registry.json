@@ -1,0 +1,45 @@
+{
+  "schema_id": "dominium.registry.resolution_policy_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.resolution_policy_registry",
+    "registry_version": "1.0.0",
+    "resolution_policies": [
+      {
+        "resolution_policy_id": "resolve.strict_refuse_ambiguous",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Refuse when a required provides_id has more than one provider.",
+          "official.source": "LIB-5"
+        }
+      },
+      {
+        "resolution_policy_id": "resolve.explicit_required",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Require an explicit instance-level chosen_pack_id for every required provides_id.",
+          "official.source": "LIB-5"
+        }
+      },
+      {
+        "resolution_policy_id": "resolve.deterministic_highest_priority",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Pick the highest provider priority and tie-break by pack_id.",
+          "official.source": "LIB-5"
+        }
+      },
+      {
+        "resolution_policy_id": "resolve.deterministic_lowest_pack_id",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Pick the lexicographically lowest pack_id as the stable fallback.",
+          "official.source": "LIB-5"
+        }
+      }
+    ],
+    "extensions": {
+      "official.source": "LIB-5"
+    }
+  }
+}

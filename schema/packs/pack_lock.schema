@@ -1,6 +1,6 @@
 SCHEMA: packs/pack_lock.schema
 schema_id: dominium.schema.packs.pack_lock
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
@@ -29,6 +29,11 @@ record pack_lock
   optional:
     - engine_contract_bundle_hash: sha256
     - semantic_contract_registry_hash: sha256
+    - resolution_policy_id: id
+    - required_provides_ids: [id]
+    - provides_declarations: [map]
+    - provides_resolutions: [map]
+    - provider_capability_ids: [id]
     - migration_history: [map]
     - ordered_packs: [map]
     - runtime_version: tag
@@ -42,4 +47,5 @@ record pack_lock
 INVARIANTS:
 - ordered_pack_ids and ordered_pack_versions are parallel arrays
 - pack_hashes and pack_compat_hashes use pack ids as stable keys
+- resolution_policy_id and provides_resolutions, when present, pin deterministic provider choice for ambiguous provides surfaces
 - pack_lock_hash must be stable for identical ordered pack inputs

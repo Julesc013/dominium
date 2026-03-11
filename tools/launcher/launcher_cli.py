@@ -42,9 +42,19 @@ from src.lib.instance import (
     instance_data_root,
     instance_install_id,
     instance_last_opened_save_id,
+    instance_provides_resolutions,
+    instance_resolution_policy_id,
     instance_settings_payload,
     instance_ui_mode_default,
     validate_instance_manifest,
+)
+from src.lib.provides import (
+    REFUSAL_PROVIDES_AMBIGUOUS,
+    REFUSAL_PROVIDES_EXPLICIT_REQUIRED,
+    REFUSAL_PROVIDES_MISSING_PROVIDER,
+    infer_resolution_policy_id,
+    normalize_provides_resolutions,
+    resolve_providers,
 )
 from src.lib.save import (
     evaluate_save_open,
@@ -516,6 +526,9 @@ def collect_required_capabilities(lockfile: Optional[dict]) -> List[str]:
     for entry in (lockfile.get("resolutions") or []):
         if isinstance(entry, dict) and entry.get("capability_id"):
             required.append(entry.get("capability_id"))
+    for capability_id in (lockfile.get("provider_capability_ids") or []):
+        if capability_id:
+            required.append(capability_id)
     return sorted_unique(required)
 
 
@@ -534,6 +547,9 @@ def collect_required_packs(lockfile: Optional[dict]) -> List[str]:
             packs.append(entry.get("pack_id"))
         elif isinstance(entry, str):
             packs.append(entry)
+    for entry in (lockfile.get("provides_resolutions") or []):
+        if isinstance(entry, dict) and entry.get("chosen_pack_id"):
+            packs.append(entry.get("chosen_pack_id"))
     return sorted_unique(packs)
 
 
@@ -872,7 +888,89 @@ def perform_preflight(args: argparse.Namespace,
         )
         return 3, {"result": "refused", "compat_report": report}
 
-    required_caps = collect_required_capabilities(lockfile)
+    effective_resolution_policy_id = infer_resolution_policy_id(
+        mod_policy_id=str(instance_manifest.get("mod_policy_id", "")).strip(),
+        overlay_conflict_policy_id=str(instance_manifest.get("overlay_conflict_policy_id", "")).strip(),
+        preferred_policy_id=(
+            instance_resolution_policy_id(instance_manifest)
+            or str(lockfile.get("resolution_policy_id", "")).strip()
+        ),
+    )
+    instance_provider_resolutions = instance_provides_resolutions(instance_manifest)
+    lock_provider_resolutions = normalize_provides_resolutions(
+        lockfile.get("provides_resolutions") or [],
+        instance_id=str(instance_id or "").strip(),
+        resolution_policy_id=effective_resolution_policy_id,
+    )
+    if instance_provider_resolutions and lock_provider_resolutions and instance_provider_resolutions != lock_provider_resolutions:
+        refusal = refusal_payload(
+            5,
+            "REFUSE_INTEGRITY_VIOLATION",
+            "instance provider resolutions do not match the pinned pack lock",
+            {"instance_id": instance_id or ""},
+        )
+        report = build_compat_report(
+            "run",
+            install_id,
+            instance_id,
+            None,
+            args.capability_baseline,
+            [],
+            provided_caps,
+            [],
+            "refuse",
+            [refusal.get("code")],
+            ["regenerate the instance pack lock or restore the canonical provider selections"],
+            deterministic,
+            {
+                "instance_validation": instance_validation,
+                "install_validation": install_validation,
+                "profile_bundle_open": profile_bundle_open,
+            },
+            refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+    provider_resolution = resolve_providers(
+        instance_id=str(instance_id or "").strip(),
+        required_provides_ids=lockfile.get("required_provides_ids") or [],
+        provider_declarations=lockfile.get("provides_declarations") or [],
+        explicit_resolutions=instance_provider_resolutions or lock_provider_resolutions,
+        resolution_policy_id=effective_resolution_policy_id,
+        mod_policy_id=str(instance_manifest.get("mod_policy_id", "")).strip(),
+        overlay_conflict_policy_id=str(instance_manifest.get("overlay_conflict_policy_id", "")).strip(),
+    )
+    if provider_resolution.get("result") != "complete":
+        refusal_code = str(provider_resolution.get("refusal_code", REFUSAL_PROVIDES_MISSING_PROVIDER)).strip() or REFUSAL_PROVIDES_MISSING_PROVIDER
+        refusal = refusal_payload(
+            5,
+            refusal_code.upper(),
+            "provider resolution failed",
+            {"instance_id": instance_id or "", "resolution_policy_id": effective_resolution_policy_id},
+        )
+        report = build_compat_report(
+            "run",
+            install_id,
+            instance_id,
+            None,
+            args.capability_baseline,
+            [],
+            provided_caps,
+            [],
+            "refuse",
+            [refusal_code],
+            ["choose a provider explicitly, remove ambiguity, or use a deterministic non-strict policy"],
+            deterministic,
+            {
+                "instance_validation": instance_validation,
+                "install_validation": install_validation,
+                "profile_bundle_open": profile_bundle_open,
+                "provider_resolution": provider_resolution,
+            },
+            refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+
+    required_caps = sorted_unique(collect_required_capabilities(lockfile) + list(provider_resolution.get("implied_capabilities") or []))
     missing_caps = sorted(set(required_caps) - set(provided_caps))
     required_builds = instance_required_product_builds(instance_manifest)
     build_mismatches = compare_required_product_builds(install_manifest, required_builds)
@@ -886,7 +984,14 @@ def perform_preflight(args: argparse.Namespace,
 
     profile_ids = args.profile or instance_active_profiles(instance_manifest)
     recommended_packs = profile_recommendations(profile_ids, profiles)
-    required_packs = collect_required_packs(lockfile)
+    required_packs = sorted_unique(
+        collect_required_packs(lockfile)
+        + [
+            str(row.get("chosen_pack_id", "")).strip()
+            for row in list(provider_resolution.get("provides_resolutions") or [])
+            if str(row.get("chosen_pack_id", "")).strip()
+        ]
+    )
     direct_pack_payloads = resolve_pack_payloads(instance_root, instance_manifest, lockfile)
     roots = pack_roots(install_root, data_root, args.pack_root or [])
 
@@ -928,6 +1033,9 @@ def perform_preflight(args: argparse.Namespace,
         "instance_validation": instance_validation,
         "profile_bundle_open": profile_bundle_open,
         "save_open": save_open,
+        "resolution_policy_id": effective_resolution_policy_id,
+        "provider_resolution": provider_resolution,
+        "provider_selection_logged": bool(provider_resolution.get("selection_logged", False)),
         "install_switch": install_switch,
         "profile_bundle_hash": str(instance_manifest.get("profile_bundle_hash", "")).strip(),
         "pack_status": required_entries + optional_entries,

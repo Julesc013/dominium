@@ -6,6 +6,11 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
+from src.lib.provides import (
+    RESOLUTION_POLICY_VALUES,
+    normalize_provides_resolutions,
+    validate_provides_resolution,
+)
 from src.meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -39,6 +44,7 @@ REFUSAL_INSTANCE_HASH_MISMATCH = "refusal.instance.hash_mismatch"
 REFUSAL_INSTANCE_INVALID_SAVE_REF = "refusal.instance.invalid_save_ref"
 REFUSAL_INSTANCE_MISSING_LOCK = "refusal.instance.missing_lock"
 REFUSAL_INSTANCE_MISSING_PROFILE_BUNDLE = "refusal.instance.missing_profile_bundle"
+REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION = "refusal.instance.invalid_provides_resolution"
 
 PATH_LIKE_KEYS = {
     "artifact_path",
@@ -278,6 +284,30 @@ def instance_last_opened_save_id(manifest: Mapping[str, object] | None) -> str:
     return str(_as_map(settings.get("extensions")).get(LAST_OPENED_SAVE_ID_KEY, "")).strip()
 
 
+def instance_resolution_policy_id(manifest: Mapping[str, object] | None) -> str:
+    payload = _as_map(manifest)
+    token = str(payload.get("resolution_policy_id", "")).strip()
+    if token:
+        return token
+    resolutions = list(payload.get("provides_resolutions") or [])
+    for row in resolutions:
+        policy_id = str(_as_map(row).get("resolution_policy_id", "")).strip()
+        if policy_id:
+            return policy_id
+    return ""
+
+
+def instance_provides_resolutions(manifest: Mapping[str, object] | None) -> List[dict]:
+    payload = _as_map(manifest)
+    return list(
+        normalize_provides_resolutions(
+            payload.get("provides_resolutions"),
+            instance_id=str(payload.get("instance_id", "")).strip(),
+            resolution_policy_id=instance_resolution_policy_id(payload),
+        )
+    )
+
+
 def _normalize_embedded_builds(values: object) -> Dict[str, dict]:
     payload = _as_map(values)
     out: Dict[str, dict] = {}
@@ -345,6 +375,14 @@ def normalize_instance_manifest(payload: Mapping[str, object]) -> dict:
     normalized["save_refs"] = save_refs
     normalized["required_product_builds"] = _normalize_required_product_builds(manifest.get("required_product_builds"))
     normalized["required_contract_ranges"] = _normalize_required_contract_ranges(manifest.get("required_contract_ranges"))
+    normalized["resolution_policy_id"] = str(manifest.get("resolution_policy_id", "")).strip()
+    normalized["provides_resolutions"] = instance_provides_resolutions(
+        {
+            "instance_id": str(manifest.get("instance_id", "")).strip(),
+            "resolution_policy_id": str(manifest.get("resolution_policy_id", "")).strip(),
+            "provides_resolutions": manifest.get("provides_resolutions"),
+        }
+    )
     normalized["store_root"] = _normalize_store_ref(manifest.get("store_root"))
     normalized["embedded_artifacts"] = _normalize_embedded_artifacts(manifest.get("embedded_artifacts"))
     normalized["extensions"] = extensions
@@ -452,6 +490,52 @@ def validate_instance_manifest(
             "invalid_save_refs": invalid_save_refs,
             "instance_manifest": manifest,
         }
+    resolution_policy_id = str(manifest.get("resolution_policy_id", "")).strip()
+    if resolution_policy_id and resolution_policy_id not in RESOLUTION_POLICY_VALUES:
+        return {
+            "result": "refused",
+            "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
+            "message": "instance resolution_policy_id is invalid",
+            "instance_manifest": manifest,
+        }
+    seen_provides_ids = set()
+    for row in list(manifest.get("provides_resolutions") or []):
+        validation = validate_provides_resolution(
+            row,
+            instance_id=str(manifest.get("instance_id", "")).strip(),
+            resolution_policy_id=resolution_policy_id,
+        )
+        resolution = dict(validation.get("provides_resolution") or {})
+        provides_id = str(resolution.get("provides_id", "")).strip()
+        if validation.get("result") != "complete":
+            return {
+                "result": "refused",
+                "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
+                "provides_resolution_validation": validation,
+                "instance_manifest": manifest,
+            }
+        if str(resolution.get("instance_id", "")).strip() != str(manifest.get("instance_id", "")).strip():
+            return {
+                "result": "refused",
+                "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
+                "message": "provides resolution instance_id must match manifest instance_id",
+                "instance_manifest": manifest,
+            }
+        if resolution_policy_id and str(resolution.get("resolution_policy_id", "")).strip() != resolution_policy_id:
+            return {
+                "result": "refused",
+                "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
+                "message": "provides resolution policy must match manifest resolution_policy_id",
+                "instance_manifest": manifest,
+            }
+        if provides_id in seen_provides_ids:
+            return {
+                "result": "refused",
+                "refusal_code": REFUSAL_INSTANCE_INVALID_PROVIDES_RESOLUTION,
+                "message": "duplicate provides_id in provides_resolutions",
+                "instance_manifest": manifest,
+            }
+        seen_provides_ids.add(provides_id)
     expected = deterministic_fingerprint(manifest)
     if str(manifest.get("deterministic_fingerprint", "")).strip() != expected:
         return {

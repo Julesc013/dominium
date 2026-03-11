@@ -7,6 +7,14 @@ import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from src.compat.data_format_loader import stamp_artifact_metadata
+from src.lib.provides import (
+    REFUSAL_PROVIDES_AMBIGUOUS,
+    REFUSAL_PROVIDES_MISSING_PROVIDER,
+    infer_resolution_policy_id,
+    normalize_provides_declarations,
+    normalize_provides_resolutions,
+    resolve_providers,
+)
 from src.compat.descriptor.descriptor_engine import build_product_descriptor
 from src.geo import build_overlay_manifest, merge_overlay_view
 from src.modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
@@ -288,11 +296,17 @@ def build_verified_pack_lock(
     *,
     repo_root: str,
     bundle_id: str,
+    instance_id: str = "",
     ordered_pack_list: Sequence[Mapping[str, object]],
     mod_policy_id: str,
     overlay_conflict_policy_id: str,
     engine_contract_bundle_hash: str,
     semantic_contract_registry_hash: str,
+    resolution_policy_id: str = "",
+    required_provides_ids: Sequence[str] | None = None,
+    provides_declarations: Sequence[Mapping[str, object]] | None = None,
+    provides_resolutions: Sequence[Mapping[str, object]] | None = None,
+    provider_capability_ids: Sequence[str] | None = None,
 ) -> dict:
     ordered_rows = _ordered_pack_rows(ordered_pack_list)
     resolved_rows = [
@@ -320,6 +334,15 @@ def build_verified_pack_lock(
         "pack_compat_hashes": {row["pack_id"]: row["compat_manifest_hash"] for row in ordered_rows},
         "mod_policy_id": str(mod_policy_id).strip() or DEFAULT_MOD_POLICY_ID,
         "overlay_conflict_policy_id": str(overlay_conflict_policy_id).strip(),
+        "resolution_policy_id": str(resolution_policy_id).strip(),
+        "required_provides_ids": sorted({str(item).strip() for item in list(required_provides_ids or []) if str(item).strip()}),
+        "provides_declarations": normalize_provides_declarations(list(provides_declarations or [])),
+        "provides_resolutions": normalize_provides_resolutions(
+            list(provides_resolutions or []),
+            instance_id=str(instance_id or bundle_id or "").strip(),
+            resolution_policy_id=str(resolution_policy_id).strip(),
+        ),
+        "provider_capability_ids": sorted({str(item).strip() for item in list(provider_capability_ids or []) if str(item).strip()}),
         "engine_contract_bundle_hash": str(engine_contract_bundle_hash).strip(),
         "semantic_contract_registry_hash": str(semantic_contract_registry_hash).strip(),
         "ordered_packs": resolved_rows,
@@ -394,6 +417,9 @@ def verify_pack_set(
     bundle_id: str = "",
     mod_policy_id: str = DEFAULT_MOD_POLICY_ID,
     overlay_conflict_policy_id: str = "",
+    instance_id: str = "",
+    explicit_provides_resolutions: Sequence[Mapping[str, object]] | None = None,
+    resolution_policy_id: str = "",
     schema_repo_root: str = "",
     packs_root_rel: str = "packs",
     bundles_root_rel: str = "bundles",
@@ -506,6 +532,11 @@ def verify_pack_set(
         errors.extend(list(mod_eval.get("errors") or []))
     effective_mod_policy_id = str(mod_eval.get("mod_policy_id", "")).strip() or str(mod_policy_id).strip() or DEFAULT_MOD_POLICY_ID
     effective_conflict_policy_id = str(overlay_conflict_policy_id or mod_eval.get("overlay_conflict_policy_id", "")).strip()
+    effective_resolution_policy_id = infer_resolution_policy_id(
+        mod_policy_id=effective_mod_policy_id,
+        overlay_conflict_policy_id=effective_conflict_policy_id,
+        preferred_policy_id=str(resolution_policy_id or "").strip(),
+    )
 
     engine_semver = _current_engine_semver(root)
     engine_protocols = _engine_protocol_rows(root)
@@ -532,6 +563,38 @@ def verify_pack_set(
             refusal_codes.extend(str(row.get("code", "")).strip() for row in compat_errors)
             refused_packs.append({"pack_id": pack_id, "pack_version": str(pack_row.get("version", "")).strip(), "errors": compat_errors})
 
+    required_provides_ids: List[str] = []
+    provides_declarations: List[dict] = []
+    for pack_row in sorted(ordered_packs, key=lambda item: (str(item.get("pack_id", "")), str(item.get("version", "")))):
+        compat_manifest = dict(pack_row.get("compat_manifest") or {})
+        required_provides_ids.extend(
+            str(item).strip()
+            for item in list(compat_manifest.get("required_provides_ids") or [])
+            if str(item).strip()
+        )
+        provides_declarations.extend(list(compat_manifest.get("provides_declarations") or []))
+    provider_resolution = resolve_providers(
+        instance_id=str(instance_id or bundle_id or "pack.verify").strip() or "pack.verify",
+        required_provides_ids=required_provides_ids,
+        provider_declarations=provides_declarations,
+        explicit_resolutions=explicit_provides_resolutions,
+        resolution_policy_id=effective_resolution_policy_id,
+        mod_policy_id=effective_mod_policy_id,
+        overlay_conflict_policy_id=effective_conflict_policy_id,
+    )
+    if provider_resolution.get("result") != "complete":
+        provider_errors = [
+            _error(
+                str(row.get("code", REFUSAL_PROVIDES_MISSING_PROVIDER)).strip(),
+                "$.required_provides_ids",
+                str(row.get("message", "")).strip() or "provider resolution failed",
+            )
+            for row in list(provider_resolution.get("errors") or [])
+            if isinstance(row, Mapping)
+        ]
+        errors.extend(provider_errors)
+        refusal_codes.extend(str(row.get("code", "")).strip() for row in provider_errors)
+
     layers, property_patches, overlay_warnings = _overlay_rows_from_contributions(contributions)
     warnings.extend(overlay_warnings)
     conflicts: List[dict] = []
@@ -557,7 +620,21 @@ def verify_pack_set(
             )
 
     pack_list = _ordered_pack_rows(ordered_packs)
-    pack_lock = build_verified_pack_lock(repo_root=root, bundle_id=str(bundle_selection.get("bundle_id", "")), ordered_pack_list=ordered_packs, mod_policy_id=effective_mod_policy_id, overlay_conflict_policy_id=effective_conflict_policy_id, engine_contract_bundle_hash=engine_contract_bundle_hash, semantic_contract_registry_hash=semantic_contract_registry_hash)
+    pack_lock = build_verified_pack_lock(
+        repo_root=root,
+        bundle_id=str(bundle_selection.get("bundle_id", "")),
+        instance_id=str(instance_id or "").strip(),
+        ordered_pack_list=ordered_packs,
+        mod_policy_id=effective_mod_policy_id,
+        overlay_conflict_policy_id=effective_conflict_policy_id,
+        engine_contract_bundle_hash=engine_contract_bundle_hash,
+        semantic_contract_registry_hash=semantic_contract_registry_hash,
+        resolution_policy_id=effective_resolution_policy_id,
+        required_provides_ids=required_provides_ids,
+        provides_declarations=provides_declarations,
+        provides_resolutions=list(provider_resolution.get("provides_resolutions") or []),
+        provider_capability_ids=list(provider_resolution.get("implied_capabilities") or []),
+    )
     valid = not errors and not refused_packs
     report = _report_payload(
         engine_contract_bundle_hash=engine_contract_bundle_hash,
@@ -569,7 +646,20 @@ def verify_pack_set(
         refusal_codes=refusal_codes + [str(row.get("code", "")).strip() for row in errors if isinstance(row, Mapping)],
         warnings=warnings,
         pack_lock_hash=str(pack_lock.get("pack_lock_hash", "")).strip(),
-        extensions={"semantic_contract_registry_hash": semantic_contract_registry_hash, "bundle_id": str(bundle_selection.get("bundle_id", "")).strip(), "bundle_selection_strategy": str(bundle_selection.get("selection_strategy", "")).strip(), "overlay_conflict_policy_id": effective_conflict_policy_id, "optional_missing_pack_ids": list(bundle_selection.get("optional_missing_pack_ids") or []), "source": "PACK-COMPAT-1"},
+        extensions={
+            "semantic_contract_registry_hash": semantic_contract_registry_hash,
+            "bundle_id": str(bundle_selection.get("bundle_id", "")).strip(),
+            "bundle_selection_strategy": str(bundle_selection.get("selection_strategy", "")).strip(),
+            "overlay_conflict_policy_id": effective_conflict_policy_id,
+            "optional_missing_pack_ids": list(bundle_selection.get("optional_missing_pack_ids") or []),
+            "resolution_policy_id": effective_resolution_policy_id,
+            "required_provides_ids": sorted({str(item).strip() for item in required_provides_ids if str(item).strip()}),
+            "provides_resolutions": list(provider_resolution.get("provides_resolutions") or []),
+            "provider_capability_ids": list(provider_resolution.get("implied_capabilities") or []),
+            "provider_selection_logged": bool(provider_resolution.get("selection_logged", False)),
+            "auto_selected_provides_ids": list(provider_resolution.get("auto_selected_provides_ids") or []),
+            "source": "PACK-COMPAT-1",
+        },
     )
 
     report_schema = validate_instance(repo_root=schema_root, schema_name=PACK_COMPATIBILITY_REPORT_SCHEMA_NAME, payload=report, strict_top_level=True)
