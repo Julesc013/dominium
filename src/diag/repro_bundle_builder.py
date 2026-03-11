@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import platform
+import shutil
 from typing import Mapping, Sequence
 
 from src.meta_extensions_engine import normalize_extensions_tree
@@ -27,6 +28,8 @@ _SECRET_KEY_FRAGMENTS = (
     "signing_key",
     "token",
 )
+_LIB6_BUNDLE_MANIFEST = "bundle.manifest.json"
+_LIB6_BUNDLE_HASH_INDEX = os.path.join("hashes", "content.sha256.json")
 
 
 def _sanitize_tree(value: object) -> object:
@@ -65,6 +68,52 @@ def _repo_abs(repo_root: str, value: str) -> str:
     if os.path.isabs(token):
         return os.path.normpath(os.path.abspath(token))
     return os.path.normpath(os.path.abspath(os.path.join(repo_root, token)))
+
+
+def _find_related_bundle_roots(paths: Sequence[str]) -> list[str]:
+    roots: list[str] = []
+    seen = set()
+    for raw_path in list(paths or []):
+        token = str(raw_path or "").strip()
+        if not token:
+            continue
+        current = os.path.normpath(os.path.abspath(token))
+        if os.path.isfile(current):
+            current = os.path.dirname(current)
+        while current and os.path.isdir(current):
+            manifest_path = os.path.join(current, _LIB6_BUNDLE_MANIFEST)
+            if os.path.isfile(manifest_path):
+                norm_root = os.path.normpath(os.path.abspath(current))
+                if norm_root not in seen:
+                    seen.add(norm_root)
+                    roots.append(norm_root)
+                break
+            parent = os.path.dirname(current)
+            if parent == current:
+                break
+            current = parent
+    return sorted(roots)
+
+
+def _related_bundle_files(bundle_dir: str, candidate_paths: Sequence[str]) -> list[tuple[str, str]]:
+    files: list[tuple[str, str]] = []
+    for index, bundle_root in enumerate(_find_related_bundle_roots(candidate_paths), start=1):
+        manifest = _read_json(os.path.join(bundle_root, _LIB6_BUNDLE_MANIFEST))
+        bundle_id = str(manifest.get("bundle_id", "")).strip() or "bundle.{:02d}".format(index)
+        safe_id = "".join(ch if ch.isalnum() or ch in "._-" else "_" for ch in bundle_id)
+        rel_manifest = os.path.join("related_bundles", safe_id, _LIB6_BUNDLE_MANIFEST)
+        dest_manifest = os.path.join(bundle_dir, rel_manifest)
+        os.makedirs(os.path.dirname(dest_manifest), exist_ok=True)
+        shutil.copyfile(os.path.join(bundle_root, _LIB6_BUNDLE_MANIFEST), dest_manifest)
+        files.append((rel_manifest, dest_manifest))
+        hash_index_src = os.path.join(bundle_root, _LIB6_BUNDLE_HASH_INDEX)
+        if os.path.isfile(hash_index_src):
+            rel_index = os.path.join("related_bundles", safe_id, _LIB6_BUNDLE_HASH_INDEX)
+            dest_index = os.path.join(bundle_dir, rel_index)
+            os.makedirs(os.path.dirname(dest_index), exist_ok=True)
+            shutil.copyfile(hash_index_src, dest_index)
+            files.append((rel_index, dest_index))
+    return files
 
 
 def _read_json(path: str) -> dict:
@@ -394,6 +443,12 @@ def write_repro_bundle(
     if run_manifest_map:
         rel = os.path.join("run", "run_manifest.json")
         bundle_files.append((rel, _write_json(os.path.join(bundle_dir, rel), run_manifest_map)))
+    bundle_files.extend(
+        _related_bundle_files(
+            bundle_dir,
+            [session_spec_abs, pack_lock_abs, contract_bundle_abs, run_manifest_abs],
+        )
+    )
 
     bundle_files.append(
         (
