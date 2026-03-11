@@ -1,0 +1,165 @@
+{
+  "baseline_id": "lib.full.baseline.v1",
+  "bundle_hashes": {
+    "instance_linked": "9a700e86a98981b96bc5b98c622a1b38340387381562028a19d4debbe0ddf9b8",
+    "instance_portable": "e8864e734480455001f0df7e4e53b45371c9d3870139b055dfc67f3b60a7f300",
+    "pack": "5756dc708fa4c237a05c8f5f4ccfe9b7cce1b5c6083a22300301d172dfec3d97",
+    "save": "55c9d255890cf34506e1271b3e675261c5212858327fb28acb1ce1fc9d8d5e37"
+  },
+  "decision_log_fingerprints": {
+    "pack_verify_official": "384401cc1c8026f294903eacae50c231ed2d13bc78d1b8bd628c96dccf03b915",
+    "provider_resolution_strict": "3f47fe7a09117b3baeeba828d9a90bca7013794f2c4f7a1354115a46f5a663af",
+    "save_open_contract_mismatch": "ea8e5e50f3af4657de7c3e8fbd10e626bbee620977b5b22ab339308e320c8b06"
+  },
+  "description": "Deterministic LIB-7 regression lock for installs, instances, saves, providers, export/import, and read-only fallback.",
+  "deterministic_fingerprint": "bf696dc843e834fc3a2cd02b6883cb9a5005288988962ec70e73dce5355f0e15",
+  "fixed_seed_scenario": {
+    "scenario_fingerprint": "a01944f56a2a66332313e70156fe8b29d99c94a8c652d2de6913478839eccbb5",
+    "scenario_id": "scenario.lib7.635f8375baecd938",
+    "stress_report_fingerprint": "029d78b95e5ce504b2bd23d628b2a8c01aae2fdc1f01f56a79d1055c41568aa2"
+  },
+  "provider_resolution_outcomes": {
+    "anarchy": {
+      "ambiguous_provides_ids": [],
+      "auto_selected_provides_ids": [
+        "provides.earth.dem.v1"
+      ],
+      "provides_resolutions": [
+        {
+          "chosen_pack_id": "fork.official.dominium.dem.primary.alt.demx",
+          "deterministic_fingerprint": "eccd29d5fd8322b6829cefeed383b5de53470f23f1473afafbb9041aae90bbf6",
+          "provides_id": "provides.earth.dem.v1",
+          "resolution_policy_id": "resolve.deterministic_lowest_pack_id"
+        }
+      ],
+      "refusal_code": "",
+      "resolution_policy_id": "resolve.deterministic_lowest_pack_id",
+      "result": "complete",
+      "selection_logged": true
+    },
+    "explicit": {
+      "ambiguous_provides_ids": [],
+      "auto_selected_provides_ids": [],
+      "provides_resolutions": [
+        {
+          "chosen_pack_id": "fork.official.dominium.dem.primary.alt.demx",
+          "deterministic_fingerprint": "b0c9a82335d7951d107f06b07fa76bde0f38db74f72cccf096c7d648ee6e5cc9",
+          "provides_id": "provides.earth.dem.v1",
+          "resolution_policy_id": "resolve.explicit_required"
+        }
+      ],
+      "refusal_code": "",
+      "resolution_policy_id": "resolve.explicit_required",
+      "result": "complete",
+      "selection_logged": true
+    },
+    "strict": {
+      "ambiguous_provides_ids": [
+        "provides.earth.dem.v1"
+      ],
+      "auto_selected_provides_ids": [],
+      "provides_resolutions": [],
+      "refusal_code": "refusal.provides.ambiguous",
+      "resolution_policy_id": "resolve.strict_refuse_ambiguous",
+      "result": "refused",
+      "selection_logged": false
+    }
+  },
+  "read_only_fallback_outcomes": {
+    "contract_mismatch_read_only": {
+      "degrade_reasons": [
+        "save_contract_bundle_mismatch"
+      ],
+      "migration_applied": false,
+      "migration_chain_length": 0,
+      "migration_required": false,
+      "read_only_allowed": true,
+      "read_only_required": true,
+      "refusal_code": "",
+      "result": "complete",
+      "save_format_version": "1.0.0",
+      "save_id": "save.alpha.readonly",
+      "save_manifest_fingerprint": "89aca06408081818606e3a5b93229ddc80938ce10798e08a964545391a97ef51"
+    },
+    "different_install_read_only": {
+      "degrade_reasons": [
+        "save_created_by_build_mismatch"
+      ],
+      "migration_applied": false,
+      "migration_chain_length": 0,
+      "migration_required": false,
+      "read_only_allowed": true,
+      "read_only_required": true,
+      "refusal_code": "",
+      "result": "complete",
+      "save_format_version": "1.0.0",
+      "save_id": "save.alpha.mutable",
+      "save_manifest_fingerprint": "2eb5de12c2cef325f4191eae148a2d0194c990913f01570431397319fe0f6fc6"
+    },
+    "launcher_read_only_save": {
+      "degrade_logged": true,
+      "degrade_reasons": [
+        "save_contract_bundle_mismatch"
+      ],
+      "mode": "inspect-only",
+      "rc": 0
+    }
+  },
+  "scenario_seed": 71007,
+  "schema_version": "1.0.0",
+  "strict_refusal_outcomes": {
+    "ambiguous_strict": {
+      "pack_lock_hash": "",
+      "provider_selection_logged": false,
+      "provides_resolutions": [],
+      "refusal_codes": [
+        "refusal.provides.ambiguous"
+      ],
+      "result": "complete",
+      "valid": false
+    },
+    "different_install_refused": {
+      "degrade_reasons": [],
+      "migration_applied": false,
+      "migration_chain_length": 0,
+      "migration_required": false,
+      "read_only_allowed": false,
+      "read_only_required": false,
+      "refusal_code": "refusal.save.build_mismatch",
+      "result": "refused",
+      "save_format_version": "1.0.0",
+      "save_id": "save.alpha.mutable",
+      "save_manifest_fingerprint": "2eb5de12c2cef325f4191eae148a2d0194c990913f01570431397319fe0f6fc6"
+    },
+    "overlay_strict": {
+      "pack_lock_hash": "",
+      "provider_selection_logged": true,
+      "provides_resolutions": [
+        {
+          "chosen_pack_id": "official.dominium.dem.primary",
+          "provides_id": "provides.earth.dem.v1"
+        }
+      ],
+      "refusal_codes": [
+        "refusal.pack.conflict_in_strict"
+      ],
+      "result": "complete",
+      "valid": false
+    },
+    "provider_strict": {
+      "ambiguous_provides_ids": [
+        "provides.earth.dem.v1"
+      ],
+      "auto_selected_provides_ids": [],
+      "provides_resolutions": [],
+      "refusal_code": "refusal.provides.ambiguous",
+      "resolution_policy_id": "resolve.strict_refuse_ambiguous",
+      "result": "refused",
+      "selection_logged": false
+    }
+  },
+  "update_policy": {
+    "notes": "Baseline updates require rerunning the LIB-7 stress generator, harness, bundle verification, negotiation replay, and save-open replay under explicit LIB-REGRESSION-UPDATE review.",
+    "required_commit_tag": "LIB-REGRESSION-UPDATE"
+  }
+}
