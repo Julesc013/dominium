@@ -28,6 +28,20 @@ from src.lib.install import (
     normalize_contract_range,
     validate_install_manifest,
 )
+from src.lib.instance import (
+    INSTANCE_KIND_CLIENT,
+    INSTANCE_KIND_SERVER,
+    INSTANCE_KIND_TOOLING,
+    instance_active_modpacks,
+    instance_active_profiles,
+    instance_allow_read_only_fallback,
+    instance_data_root,
+    instance_install_id,
+    instance_last_opened_save_id,
+    instance_settings_payload,
+    instance_ui_mode_default,
+    validate_instance_manifest,
+)
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
@@ -85,6 +99,22 @@ def resolve_install_root(manifest_path: str, manifest: Dict[str, object]) -> str
     if os.path.isabs(root_token):
         return root_token
     return os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(manifest_path)), root_token))
+
+
+def resolve_install_manifest_from_instance(instance_root: str, instance_manifest: Dict[str, object]) -> str:
+    install_ref = dict(instance_manifest.get("install_ref") or {})
+    manifest_ref = str(install_ref.get("manifest_ref", "") or "").strip()
+    if manifest_ref:
+        return os.path.abspath(
+            manifest_ref if os.path.isabs(manifest_ref) else os.path.join(instance_root, manifest_ref)
+        )
+    root_path = str(install_ref.get("root_path", "") or "").strip()
+    if root_path:
+        install_root = os.path.abspath(
+            root_path if os.path.isabs(root_path) else os.path.join(instance_root, root_path)
+        )
+        return os.path.join(install_root, DEFAULT_INSTALL_MANIFEST)
+    return ""
 
 
 def sorted_unique(values: Optional[List[str]]) -> List[str]:
@@ -291,10 +321,10 @@ def list_instance_manifests(search_roots: List[str], install_id: Optional[str]) 
             manifest_path = os.path.join(root, DEFAULT_INSTANCE_MANIFEST)
         if os.path.isfile(manifest_path):
             try:
-                manifest = load_json(manifest_path)
+                manifest = dict(validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=manifest_path).get("instance_manifest") or load_json(manifest_path))
             except (OSError, ValueError):
                 continue
-            if install_id and manifest.get("install_id") != install_id:
+            if install_id and instance_install_id(manifest) != install_id:
                 continue
             results.append(normalize_instance_entry(manifest, manifest_path))
             continue
@@ -303,25 +333,30 @@ def list_instance_manifests(search_roots: List[str], install_id: Optional[str]) 
                 if DEFAULT_INSTANCE_MANIFEST in filenames:
                     manifest_path = os.path.join(dirpath, DEFAULT_INSTANCE_MANIFEST)
                     try:
-                        manifest = load_json(manifest_path)
+                        manifest = dict(validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=manifest_path).get("instance_manifest") or load_json(manifest_path))
                     except (OSError, ValueError):
                         continue
-                    if install_id and manifest.get("install_id") != install_id:
+                    if install_id and instance_install_id(manifest) != install_id:
                         continue
                     results.append(normalize_instance_entry(manifest, manifest_path))
     return sorted(results, key=lambda row: (str(row.get("instance_id", "")), str(row.get("manifest_path", ""))))
 
 
 def normalize_instance_entry(manifest: dict, manifest_path: str) -> Dict[str, object]:
+    settings = instance_settings_payload(manifest)
     return {
         "instance_id": manifest.get("instance_id"),
-        "install_id": manifest.get("install_id"),
+        "install_id": instance_install_id(manifest),
+        "instance_kind": manifest.get("instance_kind"),
         "mode": manifest.get("mode", "portable"),
-        "data_root": manifest.get("data_root"),
-        "active_profiles": manifest.get("active_profiles") or [],
-        "active_modpacks": manifest.get("active_modpacks") or [],
+        "data_root": instance_data_root(manifest),
+        "active_profiles": instance_active_profiles(manifest),
+        "active_modpacks": instance_active_modpacks(manifest),
+        "save_refs": list(manifest.get("save_refs") or []),
+        "last_opened_save_id": instance_last_opened_save_id(manifest),
+        "ui_mode_default": settings.get("ui_mode_default"),
         "manifest_path": manifest_path.replace("\\", "/"),
-        "update_channel": manifest.get("update_channel"),
+        "update_channel": settings.get("update_channel"),
     }
 
 
@@ -431,6 +466,14 @@ def resolve_pack_lock(instance_root: str, instance_manifest: dict) -> Tuple[Opti
             return payload, "hash"
     lockfile_path = resolve_lockfile(instance_root, instance_manifest.get("capability_lockfile") or "")
     return load_lockfile(lockfile_path), lockfile_path
+
+
+def resolve_profile_bundle(instance_root: str, instance_manifest: dict) -> Tuple[Optional[dict], str]:
+    profile_bundle_hash = str(instance_manifest.get("profile_bundle_hash", "")).strip()
+    if not profile_bundle_hash:
+        return None, ""
+    payload = load_instance_json_artifact(instance_root, instance_manifest, "profiles", profile_bundle_hash)
+    return payload, profile_bundle_hash
 
 
 def resolve_pack_payloads(instance_root: str, instance_manifest: dict, lockfile: Optional[dict]) -> Dict[str, str]:
@@ -554,15 +597,6 @@ def perform_preflight(args: argparse.Namespace,
                       instance_manifest_path: str,
                       profiles: List[Dict[str, object]]) -> Tuple[int, Dict[str, object]]:
     deterministic = args.deterministic
-    if not os.path.isfile(install_manifest_path):
-        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
-                                  "install manifest not found",
-                                  {"manifest": os.path.basename(install_manifest_path)})
-        report = build_compat_report("run", None, None, None, args.capability_baseline,
-                                     [], [], [], "refuse",
-                                     [refusal.get("code")], [],
-                                     deterministic, {}, refusal)
-        return 3, {"result": "refused", "compat_report": report}
     if not os.path.isfile(instance_manifest_path):
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
                                   "instance manifest not found",
@@ -573,8 +607,79 @@ def perform_preflight(args: argparse.Namespace,
                                      deterministic, {}, refusal)
         return 3, {"result": "refused", "compat_report": report}
 
+    instance_validation = validate_instance_manifest(
+        repo_root=REPO_ROOT,
+        instance_manifest_path=instance_manifest_path,
+    )
+    if instance_validation.get("result") != "complete":
+        refusal = refusal_payload(
+            5,
+            str(instance_validation.get("refusal_code", "REFUSE_INSTANCE_INVALID")).upper() or "REFUSE_INSTANCE_INVALID",
+            "instance manifest verification failed",
+            {"manifest": os.path.basename(instance_manifest_path)},
+        )
+        report = build_compat_report(
+            "run",
+            None,
+            None,
+            None,
+            args.capability_baseline,
+            [],
+            [],
+            [],
+            "refuse",
+            [str(instance_validation.get("refusal_code", ""))],
+            ["repair or recreate the selected instance"],
+            deterministic,
+            {"instance_validation": instance_validation},
+            refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+    instance_manifest = dict(instance_validation.get("instance_manifest") or {})
+    instance_id = instance_manifest.get("instance_id")
+    instance_kind = str(instance_manifest.get("instance_kind", INSTANCE_KIND_CLIENT)).strip() or INSTANCE_KIND_CLIENT
+    instance_root = os.path.dirname(instance_manifest_path)
+    data_root = resolve_data_root(instance_root, instance_data_root(instance_manifest))
+    allow_read_only_fallback = instance_allow_read_only_fallback(instance_manifest)
+    selected_save_id = str(getattr(args, "save", "") or "").strip() or instance_last_opened_save_id(instance_manifest)
+    if selected_save_id and selected_save_id not in list(instance_manifest.get("save_refs") or []):
+        refusal = refusal_payload(
+            1,
+            "REFUSE_INVALID_INTENT",
+            "requested save is not associated with this instance",
+            {"save_id": selected_save_id, "instance_id": instance_id or ""},
+        )
+        report = build_compat_report(
+            "run",
+            instance_install_id(instance_manifest),
+            instance_id,
+            None,
+            args.capability_baseline,
+            [],
+            [],
+            [],
+            "refuse",
+            [refusal.get("code")],
+            [],
+            deterministic,
+            {"instance_validation": instance_validation},
+            refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+
+    if not install_manifest_path:
+        install_manifest_path = resolve_install_manifest_from_instance(instance_root, instance_manifest)
+    if not os.path.isfile(install_manifest_path):
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
+                                  "install manifest not found",
+                                  {"manifest": os.path.basename(install_manifest_path or DEFAULT_INSTALL_MANIFEST)})
+        report = build_compat_report("run", instance_install_id(instance_manifest), instance_id, None, args.capability_baseline,
+                                     [], [], [], "refuse",
+                                     [refusal.get("code")], ["select or provide a compatible install manifest"],
+                                     deterministic, {"instance_validation": instance_validation}, refusal)
+        return 3, {"result": "refused", "compat_report": report}
+
     install_manifest = load_json(install_manifest_path)
-    instance_manifest = load_json(instance_manifest_path)
     install_validation = validate_install_manifest(
         repo_root=REPO_ROOT,
         install_manifest_path=install_manifest_path,
@@ -590,7 +695,7 @@ def perform_preflight(args: argparse.Namespace,
         report = build_compat_report(
             "run",
             install_manifest.get("install_id"),
-            instance_manifest.get("instance_id"),
+            instance_id,
             None,
             args.capability_baseline,
             [],
@@ -600,27 +705,15 @@ def perform_preflight(args: argparse.Namespace,
             [str(install_validation.get("refusal_code", ""))],
             ["repair or reinstall the selected build"],
             deterministic,
-            {"install_validation": install_validation},
+            {"install_validation": install_validation, "instance_validation": instance_validation},
             refusal,
         )
         return 3, {"result": "refused", "compat_report": report}
     install_manifest = dict(install_validation.get("install_manifest") or install_manifest)
     install_id = install_manifest.get("install_id")
-    instance_id = instance_manifest.get("instance_id")
-    if install_id and instance_manifest.get("install_id") not in (None, install_id):
-        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
-                                  "instance does not match install",
-                                  {"install_id": install_id, "instance_id": instance_id or ""})
-        report = build_compat_report("run", install_id, instance_id, None, args.capability_baseline,
-                                     [], [], [], "refuse",
-                                     [refusal.get("code")], [],
-                                     deterministic, {}, refusal)
-        return 3, {"result": "refused", "compat_report": report}
-
     install_root = resolve_install_root(install_manifest_path, install_manifest)
-    instance_root = os.path.dirname(instance_manifest_path)
-    data_root = resolve_data_root(instance_root, instance_manifest.get("data_root") or "")
     lockfile, lockfile_source = resolve_pack_lock(instance_root, instance_manifest)
+    profile_bundle_payload, profile_bundle_source = resolve_profile_bundle(instance_root, instance_manifest)
 
     if not lockfile:
         refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
@@ -629,7 +722,25 @@ def perform_preflight(args: argparse.Namespace,
         report = build_compat_report("run", install_id, instance_id, None, args.capability_baseline,
                                      [], [], [], "refuse",
                                      [refusal.get("code")], ["regenerate lockfile"],
-                                     deterministic, {}, refusal)
+                                     deterministic, {"instance_validation": instance_validation, "install_validation": install_validation}, refusal)
+        return 3, {"result": "refused", "compat_report": report}
+    if str(lockfile.get("pack_lock_hash", "")).strip() and str(lockfile.get("pack_lock_hash", "")).strip() != str(instance_manifest.get("pack_lock_hash", "")).strip():
+        refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                  "pack lock hash does not match instance manifest",
+                                  {"instance_pack_lock_hash": instance_manifest.get("pack_lock_hash"), "lockfile_pack_lock_hash": lockfile.get("pack_lock_hash")})
+        report = build_compat_report("run", install_id, instance_id, None, args.capability_baseline,
+                                     [], [], [], "refuse",
+                                     [refusal.get("code")], ["regenerate the instance pack lock"],
+                                     deterministic, {"instance_validation": instance_validation, "install_validation": install_validation}, refusal)
+        return 3, {"result": "refused", "compat_report": report}
+    if not profile_bundle_payload:
+        refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                  "profile bundle artifact missing",
+                                  {"profile_bundle_hash": str(instance_manifest.get("profile_bundle_hash", "")).strip(), "source": str(profile_bundle_source or "")})
+        report = build_compat_report("run", install_id, instance_id, None, args.capability_baseline,
+                                     [], [], [], "refuse",
+                                     [refusal.get("code")], ["materialize the profile bundle artifact"],
+                                     deterministic, {"instance_validation": instance_validation, "install_validation": install_validation}, refusal)
         return 3, {"result": "refused", "compat_report": report}
 
     required_caps = collect_required_capabilities(lockfile)
@@ -639,8 +750,13 @@ def perform_preflight(args: argparse.Namespace,
     build_mismatches = compare_required_product_builds(install_manifest, required_builds)
     required_contracts = instance_required_contract_ranges(instance_manifest)
     contract_mismatches = compare_required_contract_ranges(install_manifest, required_contracts)
+    install_switch = {
+        "instance_install_id": instance_install_id(instance_manifest),
+        "selected_install_id": str(install_id or "").strip(),
+        "switched": bool(instance_install_id(instance_manifest)) and str(instance_install_id(instance_manifest)).strip() != str(install_id or "").strip(),
+    }
 
-    profile_ids = args.profile or (instance_manifest.get("active_profiles") or [])
+    profile_ids = args.profile or instance_active_profiles(instance_manifest)
     recommended_packs = profile_recommendations(profile_ids, profiles)
     required_packs = collect_required_packs(lockfile)
     direct_pack_payloads = resolve_pack_payloads(instance_root, instance_manifest, lockfile)
@@ -653,8 +769,22 @@ def perform_preflight(args: argparse.Namespace,
                                                            direct_pack_payloads,
                                                            install_root, data_root, "optional")
 
+    instance_kind_mismatch = False
+    if instance_kind == INSTANCE_KIND_SERVER and args.run_mode in ("play", "client"):
+        instance_kind_mismatch = True
+    elif instance_kind == INSTANCE_KIND_TOOLING and args.run_mode in ("play", "client", "server"):
+        instance_kind_mismatch = True
+    elif instance_kind == INSTANCE_KIND_CLIENT and args.run_mode == "server":
+        instance_kind_mismatch = True
+
+    degrade_reasons: List[str] = []
     extensions = {
         "run_mode": args.run_mode,
+        "instance_kind": instance_kind,
+        "save_refs": list(instance_manifest.get("save_refs") or []),
+        "selected_save_id": selected_save_id,
+        "allow_read_only_fallback": allow_read_only_fallback,
+        "ui_mode_default": instance_ui_mode_default(instance_manifest),
         "required_packs": required_packs,
         "missing_packs": missing_required,
         "optional_packs": recommended_packs,
@@ -664,6 +794,9 @@ def perform_preflight(args: argparse.Namespace,
         "required_contract_ranges": required_contracts,
         "contract_range_mismatches": contract_mismatches,
         "install_validation": install_validation,
+        "instance_validation": instance_validation,
+        "install_switch": install_switch,
+        "profile_bundle_hash": str(instance_manifest.get("profile_bundle_hash", "")).strip(),
         "pack_status": required_entries + optional_entries,
     }
 
@@ -672,7 +805,21 @@ def perform_preflight(args: argparse.Namespace,
     refusal = None
     mode = "full"
 
-    if missing_caps:
+    if instance_kind_mismatch:
+        if allow_read_only_fallback or args.run_mode in ("inspect", "replay"):
+            mode = "inspect-only"
+            degrade_reasons.append("instance_kind_mismatch")
+            mitigation = ["use a run mode compatible with the instance kind for full runtime"]
+        else:
+            mode = "refuse"
+            refusal_codes = ["REFUSE_INSTANCE_KIND_MISMATCH"]
+            refusal = refusal_payload(
+                1,
+                "REFUSE_INSTANCE_KIND_MISMATCH",
+                "selected run mode is incompatible with this instance kind",
+                {"instance_kind": instance_kind, "run_mode": args.run_mode},
+            )
+    elif missing_caps:
         mode = "refuse"
         refusal_codes = ["REFUSE_CAPABILITY_MISSING"]
         refusal = refusal_payload(3, "REFUSE_CAPABILITY_MISSING",
@@ -680,8 +827,9 @@ def perform_preflight(args: argparse.Namespace,
                                   {"missing": missing_caps})
         mitigation = ["update install capabilities"]
     elif build_mismatches or contract_mismatches:
-        if args.run_mode in ("inspect", "replay"):
+        if args.run_mode in ("inspect", "replay") or allow_read_only_fallback:
             mode = "inspect-only"
+            degrade_reasons.append("read_only_contract_fallback")
             mitigation = ["select a matching install for full runtime"]
         else:
             mode = "refuse"
@@ -710,10 +858,26 @@ def perform_preflight(args: argparse.Namespace,
                                       {"missing_packs": missing_required})
         else:
             mode = "degraded"
+            degrade_reasons.append("missing_required_packs")
         mitigation = ["install missing packs"] if missing_required else []
 
     if args.run_mode in ("inspect", "replay") and mode != "refuse":
         mode = "inspect-only"
+        if "inspect_or_replay_requested" not in degrade_reasons:
+            degrade_reasons.append("inspect_or_replay_requested")
+
+    if mode in ("degraded", "frozen", "inspect-only"):
+        ui_fallbacks = {
+            "rendered": "tui",
+            "tui": "cli",
+            "cli": "cli",
+        }
+        requested_ui = str(instance_ui_mode_default(instance_manifest)).strip() or "cli"
+        extensions["ui_mode_effective"] = ui_fallbacks.get(requested_ui, "cli")
+    else:
+        extensions["ui_mode_effective"] = instance_ui_mode_default(instance_manifest)
+    extensions["degrade_reasons"] = sorted_unique(degrade_reasons)
+    extensions["degrade_logged"] = bool(degrade_reasons)
 
     report = build_compat_report("run",
                                  install_id,
@@ -763,6 +927,93 @@ def perform_preflight(args: argparse.Namespace,
     return (3 if mode == "refuse" else 0), output
 
 
+def resolve_instance_selection(args: argparse.Namespace, state: dict) -> str:
+    manifest_path = str(getattr(args, "instance_manifest", "") or "").strip()
+    if manifest_path and os.path.isfile(manifest_path):
+        return os.path.abspath(manifest_path)
+    token = str(getattr(args, "instance", "") or "").strip()
+    if token and os.path.isfile(token):
+        return os.path.abspath(token)
+    active_manifest = str(state.get("active_instance_manifest", "") or "").strip()
+    active_instance_id = str(state.get("active_instance_id", "") or "").strip()
+    if token and active_instance_id == token and active_manifest and os.path.isfile(active_manifest):
+        return os.path.abspath(active_manifest)
+    search_roots = list(getattr(args, "search", []) or [])
+    if active_manifest:
+        search_roots.append(os.path.dirname(os.path.abspath(active_manifest)))
+    candidates = list_instance_manifests(search_roots, None)
+    matches = [
+        os.path.abspath(path if os.path.isabs(path) else os.path.join(resolve_repo_root(), path))
+        for path in [str(row.get("manifest_path", "")).strip() for row in candidates]
+        if str(row.get("instance_id", "")).strip() == token and str(path).strip()
+    ]
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) > 1 and active_manifest and os.path.abspath(active_manifest) in matches:
+        return os.path.abspath(active_manifest)
+    return ""
+
+
+def resolve_install_selection(args: argparse.Namespace, state: dict, instance_root: str, instance_manifest: dict) -> str:
+    manifest_path = str(getattr(args, "install_manifest", "") or "").strip()
+    if manifest_path and os.path.isfile(manifest_path):
+        return os.path.abspath(manifest_path)
+    active_manifest = str(state.get("active_install_manifest", "") or "").strip()
+    if active_manifest and os.path.isfile(active_manifest):
+        return os.path.abspath(active_manifest)
+    inferred = resolve_install_manifest_from_instance(instance_root, instance_manifest)
+    if inferred and os.path.isfile(inferred):
+        return os.path.abspath(inferred)
+    return ""
+
+
+def run_with_resolved_manifests(args: argparse.Namespace, install_manifest_path: str, instance_manifest_path: str) -> Tuple[int, Dict[str, object]]:
+    profiles = discover_profiles([])
+    rc, payload = perform_preflight(args, install_manifest_path, instance_manifest_path, profiles)
+    report = payload.get("compat_report") if isinstance(payload, dict) else None
+    if rc != 0:
+        return rc, payload
+    mode = ""
+    if isinstance(report, dict):
+        mode = report.get("compatibility_mode") or ""
+    if mode in ("degraded", "frozen", "inspect-only") and not args.confirm:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
+                                  "confirmation required for non-full run",
+                                  {"mode": mode})
+        report = build_compat_report("run",
+                                     report.get("install_id") if report else None,
+                                     report.get("instance_id") if report else None,
+                                     None,
+                                     args.capability_baseline,
+                                     report.get("required_capabilities") if report else [],
+                                     report.get("provided_capabilities") if report else [],
+                                     report.get("missing_capabilities") if report else [],
+                                     mode,
+                                     [refusal.get("code")],
+                                     ["confirm degraded run"],
+                                     args.deterministic,
+                                     report.get("extensions") if report else {},
+                                     refusal)
+        return 3, {"result": "refused", "compat_report": report}
+    run_launcher_action(args.log_root or os.path.dirname(instance_manifest_path),
+                        "run", "COMMIT", "ok", args.deterministic,
+                        {
+                            "run_mode": args.run_mode,
+                            "save_id": (
+                                str(((report or {}).get("extensions") or {}).get("selected_save_id", "")).strip()
+                                or str(getattr(args, "save", "") or "").strip()
+                            ),
+                        })
+    payload["run_mode"] = args.run_mode
+    payload["install_manifest"] = install_manifest_path.replace("\\", "/")
+    payload["instance_manifest"] = instance_manifest_path.replace("\\", "/")
+    payload["save_id"] = (
+        str(((report or {}).get("extensions") or {}).get("selected_save_id", "")).strip()
+        or str(getattr(args, "save", "") or "").strip()
+    )
+    return 0, payload
+
+
 def run_launcher_action(log_root: str,
                         action: str,
                         state: str,
@@ -800,6 +1051,8 @@ def main() -> int:
     instances_list = instances_sub.add_parser("list")
     instances_list.add_argument("--search", action="append", default=[])
     instances_list.add_argument("--install-id", default=None)
+    instances_select = instances_sub.add_parser("select")
+    instances_select.add_argument("--manifest", required=True)
 
     instances_create = instances_sub.add_parser("create")
     instances_create.add_argument("--install-manifest", required=True)
@@ -807,6 +1060,7 @@ def main() -> int:
     instances_create.add_argument("--instance-root", default=None)
     instances_create.add_argument("--instance-id", default=None)
     instances_create.add_argument("--mode", choices=["linked", "portable"], default="portable")
+    instances_create.add_argument("--instance-kind", choices=["instance.client", "instance.server", "instance.tooling"], default="instance.client")
     instances_create.add_argument("--store-root", default=None)
     instances_create.add_argument("--profile", action="append", default=[])
     instances_create.add_argument("--modpack", action="append", default=[])
@@ -816,6 +1070,15 @@ def main() -> int:
     instances_create.add_argument("--sandbox-policy-ref", default=None)
     instances_create.add_argument("--mod-policy-id", default="mod.policy.default")
     instances_create.add_argument("--overlay-conflict-policy-id", default="overlay.conflict.default")
+    instances_create.add_argument("--default-session-template-id", default="session.template.default")
+    instances_create.add_argument("--seed-policy", choices=["fixed", "prompt", "deterministic_counter"], default="prompt")
+    instances_create.add_argument("--renderer-mode", choices=["software", "hardware_stub"], default=None)
+    instances_create.add_argument("--ui-mode-default", choices=["cli", "tui", "rendered"], default="cli")
+    instances_create.add_argument("--allow-read-only-fallback", action="store_true")
+    instances_create.add_argument("--tick-budget-policy-id", default="tick.budget.default")
+    instances_create.add_argument("--compute-profile-id", default="compute.profile.default")
+    instances_create.add_argument("--save-ref", action="append", default=[])
+    instances_create.add_argument("--last-opened-save-id", default="")
     instances_create.add_argument("--required-product-build", action="append", default=[])
     instances_create.add_argument("--required-contract-range", action="append", default=[])
     instances_create.add_argument("--update-channel", default="stable")
@@ -860,6 +1123,7 @@ def main() -> int:
     preflight.add_argument("--profile", action="append", default=[])
     preflight.add_argument("--pack-root", action="append", default=[])
     preflight.add_argument("--compat-out", default=None)
+    preflight.add_argument("--save", default="")
     preflight.add_argument("--run-mode", default="play",
                            choices=["play", "client", "server", "inspect", "replay"])
 
@@ -869,9 +1133,23 @@ def main() -> int:
     run_cmd.add_argument("--profile", action="append", default=[])
     run_cmd.add_argument("--pack-root", action="append", default=[])
     run_cmd.add_argument("--compat-out", default=None)
+    run_cmd.add_argument("--save", default="")
     run_cmd.add_argument("--run-mode", default="play",
                          choices=["play", "client", "server", "inspect", "replay"])
     run_cmd.add_argument("--confirm", action="store_true")
+
+    start_cmd = sub.add_parser("start")
+    start_cmd.add_argument("--instance", required=True)
+    start_cmd.add_argument("--instance-manifest", default=None)
+    start_cmd.add_argument("--install-manifest", default=None)
+    start_cmd.add_argument("--search", action="append", default=[])
+    start_cmd.add_argument("--profile", action="append", default=[])
+    start_cmd.add_argument("--pack-root", action="append", default=[])
+    start_cmd.add_argument("--compat-out", default=None)
+    start_cmd.add_argument("--save", default="")
+    start_cmd.add_argument("--run-mode", default="play",
+                           choices=["play", "client", "server", "inspect", "replay"])
+    start_cmd.add_argument("--confirm", action="store_true")
 
     packs = sub.add_parser("packs")
     packs_sub = packs.add_subparsers(dest="cmd")
@@ -1049,16 +1327,69 @@ def main() -> int:
         print(json.dumps(output, indent=2))
         return 0
 
+    if args.section == "instances" and args.cmd == "select":
+        state_root = resolve_state_root(args)
+        if not state_root:
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
+                                      "state root required for instance selection", {})
+            report = build_compat_report("update", None, None, None,
+                                         args.capability_baseline,
+                                         [], [], [],
+                                         "refuse", [refusal.get("code")], [],
+                                         args.deterministic, {}, refusal)
+            print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
+            return 3
+        if not os.path.isfile(args.manifest):
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
+                                      "instance manifest not found",
+                                      {"manifest": os.path.basename(args.manifest)})
+            report = build_compat_report("update", None, None, None,
+                                         args.capability_baseline,
+                                         [], [], [],
+                                         "refuse", [refusal.get("code")], [],
+                                         args.deterministic, {}, refusal)
+            print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
+            return 3
+        manifest = dict(
+            validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.manifest).get("instance_manifest")
+            or load_json(args.manifest)
+        )
+        state = load_state(state_root)
+        state.update({
+            "active_instance_manifest": args.manifest.replace("\\", "/"),
+            "active_instance_id": manifest.get("instance_id"),
+            "updated_at": now_timestamp(args.deterministic),
+        })
+        write_state(state_root, state)
+        run_launcher_action(log_root or state_root, "instances.select", "COMMIT", "ok",
+                            args.deterministic, {"instance_id": manifest.get("instance_id")})
+        report = build_compat_report("update", instance_install_id(manifest), manifest.get("instance_id"), None,
+                                     args.capability_baseline,
+                                     [], [], [],
+                                     "full", [], [],
+                                     args.deterministic, {}, None)
+        print(json.dumps({"result": "ok", "compat_report": report, "state_root": state_root}, indent=2))
+        return 0
+
     if args.section == "instances" and args.cmd in ("create", "clone", "fork", "activate"):
         ops_cli = resolve_ops_cli()
+        extra: List[str] = []
+        if args.deterministic:
+            extra.append("--deterministic")
         if args.cmd == "create":
-            extra = [
+            extra += [
                 "instances", "create",
                 "--install-manifest", args.install_manifest,
                 "--data-root", args.data_root,
                 "--mode", args.mode,
+                "--instance-kind", args.instance_kind,
                 "--mod-policy-id", args.mod_policy_id,
                 "--overlay-conflict-policy-id", args.overlay_conflict_policy_id,
+                "--default-session-template-id", args.default_session_template_id,
+                "--seed-policy", args.seed_policy,
+                "--ui-mode-default", args.ui_mode_default,
+                "--tick-budget-policy-id", args.tick_budget_policy_id,
+                "--compute-profile-id", args.compute_profile_id,
             ]
             if args.instance_root:
                 extra += ["--instance-root", args.instance_root]
@@ -1082,12 +1413,20 @@ def main() -> int:
                 extra += ["--sandbox-policy", args.sandbox_policy]
             if args.sandbox_policy_ref:
                 extra += ["--sandbox-policy-ref", args.sandbox_policy_ref]
+            if args.renderer_mode:
+                extra += ["--renderer-mode", args.renderer_mode]
+            if args.allow_read_only_fallback:
+                extra += ["--allow-read-only-fallback"]
+            for save_ref in args.save_ref:
+                extra += ["--save-ref", save_ref]
+            if args.last_opened_save_id:
+                extra += ["--last-opened-save-id", args.last_opened_save_id]
             if args.update_channel:
                 extra += ["--update-channel", args.update_channel]
             if args.created_at:
                 extra += ["--created-at", args.created_at]
         elif args.cmd == "clone":
-            extra = [
+            extra += [
                 "instances", "clone",
                 "--source-manifest", args.source_manifest,
                 "--data-root", args.data_root,
@@ -1097,7 +1436,7 @@ def main() -> int:
             if args.created_at:
                 extra += ["--created-at", args.created_at]
         elif args.cmd == "fork":
-            extra = [
+            extra += [
                 "instances", "fork",
                 "--source-manifest", args.source_manifest,
                 "--data-root", args.data_root,
@@ -1107,7 +1446,7 @@ def main() -> int:
             if args.created_at:
                 extra += ["--created-at", args.created_at]
         else:
-            extra = [
+            extra += [
                 "instances", "activate",
                 "--install-manifest", args.install_manifest,
                 "--instance-manifest", args.instance_manifest,
@@ -1139,9 +1478,12 @@ def main() -> int:
                                          args.deterministic, {}, refusal)
             print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
             return 3
-        manifest = load_json(args.instance_manifest)
+        manifest = dict(
+            validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.instance_manifest).get("instance_manifest")
+            or load_json(args.instance_manifest)
+        )
         instance_root = os.path.dirname(args.instance_manifest)
-        data_root = resolve_data_root(instance_root, manifest.get("data_root") or "")
+        data_root = resolve_data_root(instance_root, instance_data_root(manifest))
         os.remove(args.instance_manifest)
         if args.delete_data:
             shutil.rmtree(data_root, ignore_errors=True)
@@ -1188,23 +1530,21 @@ def main() -> int:
                                          args.deterministic, {}, refusal)
             print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
             return 3
-        manifest = load_json(args.instance_manifest)
-        manifest["active_profiles"] = sorted_unique(args.profile)
-        write_json(args.instance_manifest, manifest)
-        run_launcher_action(log_root or os.path.dirname(args.instance_manifest),
-                            "instances.set_profiles", "COMMIT", "ok",
-                            args.deterministic,
-                            {"instance_id": manifest.get("instance_id")})
-        report = build_compat_report("update",
-                                     manifest.get("install_id"),
-                                     manifest.get("instance_id"),
-                                     None,
-                                     args.capability_baseline,
-                                     [], [], [],
-                                     "full", [], [],
-                                     args.deterministic, {}, None)
-        print(json.dumps({"result": "ok", "compat_report": report}, indent=2))
-        return 0
+        ops_cli = resolve_ops_cli()
+        extra: List[str] = []
+        if args.deterministic:
+            extra.append("--deterministic")
+        extra += ["instances", "edit", "--instance-manifest", args.instance_manifest]
+        for profile in args.profile:
+            extra += ["--profile", profile]
+        rc, payload, _stderr = run_script(ops_cli, extra)
+        if rc == 0:
+            run_launcher_action(log_root or os.path.dirname(args.instance_manifest),
+                                "instances.set_profiles", "COMMIT", "ok",
+                                args.deterministic,
+                                {"instance_manifest": args.instance_manifest.replace("\\", "/")})
+        print(json.dumps(payload, indent=2))
+        return rc
 
     if args.section == "profiles" and args.cmd == "list":
         profiles = discover_profiles(args.profile_root)
@@ -1238,41 +1578,49 @@ def main() -> int:
         return rc
 
     if args.section == "run":
-        profiles = discover_profiles([])
-        rc, payload = perform_preflight(args, args.install_manifest, args.instance_manifest, profiles)
-        report = payload.get("compat_report") if isinstance(payload, dict) else None
-        if rc != 0:
-            print(json.dumps(payload, indent=2))
-            return rc
-        mode = ""
-        if isinstance(report, dict):
-            mode = report.get("compatibility_mode") or ""
-        if mode in ("degraded", "frozen", "inspect-only") and not args.confirm:
+        rc, payload = run_with_resolved_manifests(args, args.install_manifest, args.instance_manifest)
+        print(json.dumps(payload, indent=2))
+        return rc
+
+    if args.section == "start":
+        state_root = resolve_state_root(args)
+        state = load_state(state_root)
+        instance_manifest_path = resolve_instance_selection(args, state)
+        if not instance_manifest_path:
             refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
-                                      "confirmation required for non-full run",
-                                      {"mode": mode})
-            report = build_compat_report("run",
-                                         report.get("install_id") if report else None,
-                                         report.get("instance_id") if report else None,
-                                         None,
+                                      "instance selection could not be resolved",
+                                      {"instance": str(args.instance or "")})
+            report = build_compat_report("run", None, None, None,
                                          args.capability_baseline,
-                                         report.get("required_capabilities") if report else [],
-                                         report.get("provided_capabilities") if report else [],
-                                         report.get("missing_capabilities") if report else [],
-                                         mode,
-                                         [refusal.get("code")],
-                                         ["confirm degraded run"],
-                                         args.deterministic,
-                                         report.get("extensions") if report else {},
-                                         refusal)
+                                         [], [], [],
+                                         "refuse", [refusal.get("code")], [],
+                                         args.deterministic, {"state_root": state_root or ""}, refusal)
             print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
             return 3
-        run_launcher_action(log_root or os.path.dirname(args.instance_manifest),
-                            "run", "COMMIT", "ok", args.deterministic,
-                            {"run_mode": args.run_mode})
-        payload["run_mode"] = args.run_mode
+        instance_manifest = dict(
+            validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=instance_manifest_path).get("instance_manifest")
+            or load_json(instance_manifest_path)
+        )
+        install_manifest_path = resolve_install_selection(
+            args,
+            state,
+            os.path.dirname(instance_manifest_path),
+            instance_manifest,
+        )
+        if not install_manifest_path:
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
+                                      "install selection could not be resolved",
+                                      {"instance_manifest": os.path.basename(instance_manifest_path)})
+            report = build_compat_report("run", instance_install_id(instance_manifest), instance_manifest.get("instance_id"), None,
+                                         args.capability_baseline,
+                                         [], [], [],
+                                         "refuse", [refusal.get("code")], [],
+                                         args.deterministic, {"state_root": state_root or ""}, refusal)
+            print(json.dumps({"result": "refused", "compat_report": report}, indent=2))
+            return 3
+        rc, payload = run_with_resolved_manifests(args, install_manifest_path, instance_manifest_path)
         print(json.dumps(payload, indent=2))
-        return 0
+        return rc
 
     if args.section == "packs" and args.cmd == "list":
         install_root = ""
@@ -1283,17 +1631,23 @@ def main() -> int:
             install_manifest = load_json(args.install_manifest)
             install_root = resolve_install_root(args.install_manifest, install_manifest)
         if args.instance_manifest and os.path.isfile(args.instance_manifest):
-            instance_manifest = load_json(args.instance_manifest)
+            instance_manifest = dict(
+                validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.instance_manifest).get("instance_manifest")
+                or load_json(args.instance_manifest)
+            )
             instance_root = os.path.dirname(args.instance_manifest)
-            data_root = resolve_data_root(instance_root, instance_manifest.get("data_root") or "")
+            data_root = resolve_data_root(instance_root, instance_data_root(instance_manifest))
             if not profile_ids:
-                profile_ids = instance_manifest.get("active_profiles") or []
+                profile_ids = instance_active_profiles(instance_manifest)
         profiles = discover_profiles([])
         recommended_packs = profile_recommendations(profile_ids, profiles)
         required_packs: List[str] = []
         direct_pack_payloads: Dict[str, str] = {}
         if args.instance_manifest and os.path.isfile(args.instance_manifest):
-            manifest = load_json(args.instance_manifest)
+            manifest = dict(
+                validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.instance_manifest).get("instance_manifest")
+                or load_json(args.instance_manifest)
+            )
             lockfile, _lockfile_source = resolve_pack_lock(instance_root, manifest)
             required_packs = collect_required_packs(lockfile)
             direct_pack_payloads = resolve_pack_payloads(instance_root, manifest, lockfile)
@@ -1518,9 +1872,12 @@ def main() -> int:
     if args.section == "paths":
         data_root = args.data_root
         if not data_root and args.instance_manifest and os.path.isfile(args.instance_manifest):
-            manifest = load_json(args.instance_manifest)
+            manifest = dict(
+                validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.instance_manifest).get("instance_manifest")
+                or load_json(args.instance_manifest)
+            )
             instance_root = os.path.dirname(args.instance_manifest)
-            data_root = resolve_data_root(instance_root, manifest.get("data_root") or "")
+            data_root = resolve_data_root(instance_root, instance_data_root(manifest))
         if not data_root:
             refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
                                       "data root required", {})

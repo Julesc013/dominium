@@ -442,6 +442,8 @@ from analyzers import e432_nondeterministic_bundle_ordering_smell
 from analyzers import e433_secrets_in_bundle_smell
 from analyzers import e434_path_dependent_install_smell
 from analyzers import e435_binary_without_descriptor_smell
+from analyzers import e436_instance_without_lock_smell
+from analyzers import e437_save_locked_to_instance_smell
 
 
 ANALYZERS = (
@@ -887,6 +889,8 @@ ANALYZERS = (
     e433_secrets_in_bundle_smell,
     e434_path_dependent_install_smell,
     e435_binary_without_descriptor_smell,
+    e436_instance_without_lock_smell,
+    e437_save_locked_to_instance_smell,
 )
 
 

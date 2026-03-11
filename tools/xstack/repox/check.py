@@ -28473,6 +28473,103 @@ def _append_signal_transport_invariant_findings(
                 break
 
 
+def _append_instance_manifest_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    invariant_tokens = {
+        "INV-INSTANCE-USES-PACK-LOCK": {
+            "docs/architecture/INSTANCE_MODEL.md": (
+                "INV-INSTANCE-USES-PACK-LOCK",
+                "pack_lock_hash",
+            ),
+            "schema/lib/instance_manifest.schema": (
+                "pack_lock_hash",
+                "profile_bundle_hash",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "resolve_pack_lock(",
+                "pack lock hash does not match instance manifest",
+            ),
+            "tools/ops/ops_cli.py": (
+                "pack_lock_hash",
+                "build_instance_manifest_payload(",
+            ),
+        },
+        "INV-INSTANCE-USES-PROFILE-BUNDLE": {
+            "docs/architecture/INSTANCE_MODEL.md": (
+                "INV-INSTANCE-USES-PROFILE-BUNDLE",
+                "profile_bundle_hash",
+            ),
+            "schema/lib/instance_manifest.schema": (
+                "profile_bundle_hash",
+                "instance_kind",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "profile bundle artifact missing",
+                "resolve_profile_bundle(",
+            ),
+            "tools/ops/ops_cli.py": (
+                "profile_bundle_hash",
+                "build_profile_bundle_payload(",
+            ),
+        },
+        "INV-SAVES-NOT-EMBEDDED-IN-INSTANCE": {
+            "docs/architecture/INSTANCE_MODEL.md": (
+                "INV-SAVES-NOT-EMBEDDED-IN-INSTANCE",
+                "save_refs",
+            ),
+            "schema/lib/instance_manifest.schema": (
+                "save_refs",
+                "last_opened_save_id",
+            ),
+            "tools/ops/ops_cli.py": (
+                "clone_ignore_entries",
+                "\"saves\"",
+                "save_refs",
+            ),
+            "tools/share/share_cli.py": (
+                "save_refs",
+                "embedded_builds\"] = {}",
+            ),
+        },
+    }
+    for invariant_id, rel_paths in invariant_tokens.items():
+        for rel_path, tokens in rel_paths.items():
+            abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+            try:
+                text = open(abs_path, "r", encoding="utf-8").read()
+            except OSError:
+                text = ""
+            if not text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="required instance manifest enforcement file is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+                continue
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="required instance manifest enforcement token is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -29059,6 +29156,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_representation_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_instance_manifest_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -237,6 +237,87 @@ def _test_repair_uninstall_rollback(repo_root: str) -> None:
         shutil.rmtree(work, ignore_errors=True)
 
 
+def _test_instance_commands(repo_root: str) -> None:
+    work = tempfile.mkdtemp(prefix="setup_instance_")
+    try:
+        artifact_root = _make_artifact_root(work, with_packs=False)
+        manifest = os.path.join(artifact_root, "setup", "manifests", "product.dsumanifest")
+        install_root = os.path.join(work, "install")
+        data_root = os.path.join(work, "data")
+        env = dict(os.environ, SETUP_NETWORK_AVAILABLE="1")
+
+        rc, payload = _run_setup(repo_root, [
+            "--deterministic", "1",
+            "install",
+            "--manifest", manifest,
+            "--install-root", install_root,
+            "--data-root", data_root,
+        ], env)
+        if rc != 0 or payload.get("result") != "ok":
+            raise RuntimeError("install failed for instance command test")
+
+        install_manifest = os.path.join(install_root, "install.manifest.json")
+        instance_root = os.path.join(work, "instance")
+        clone_root = os.path.join(work, "clone")
+        bundle_root = os.path.join(work, "bundle")
+        imported_root = os.path.join(work, "imported")
+
+        rc, payload = _run_setup(repo_root, [
+            "--deterministic", "1",
+            "instance", "create",
+            "--install-manifest", install_manifest,
+            "--data-root", instance_root,
+            "--instance-id", "instance.setup.test",
+            "--save-ref", "save.alpha",
+            "--last-opened-save-id", "save.alpha",
+        ], env)
+        if rc != 0 or payload.get("result") != "ok":
+            raise RuntimeError("setup instance create failed")
+
+        instance_manifest = os.path.join(instance_root, "instance.manifest.json")
+        rc, payload = _run_setup(repo_root, [
+            "--deterministic", "1",
+            "instance", "edit",
+            "--instance-manifest", instance_manifest,
+            "--instance-kind", "instance.server",
+            "--allow-read-only-fallback",
+        ], env)
+        if rc != 0 or payload.get("result") != "ok":
+            raise RuntimeError("setup instance edit failed")
+
+        rc, payload = _run_setup(repo_root, [
+            "--deterministic", "1",
+            "instance", "clone",
+            "--source-manifest", instance_manifest,
+            "--data-root", clone_root,
+        ], env)
+        if rc != 0 or payload.get("result") != "ok":
+            raise RuntimeError("setup instance clone failed")
+
+        rc, payload = _run_setup(repo_root, [
+            "--deterministic", "1",
+            "instance", "export",
+            "--instance-manifest", instance_manifest,
+            "--out", bundle_root,
+        ], env)
+        if rc != 0 or payload.get("result") != "ok":
+            raise RuntimeError("setup instance export failed")
+
+        rc, payload = _run_setup(repo_root, [
+            "--deterministic", "1",
+            "instance", "import",
+            "--bundle", bundle_root,
+            "--out", imported_root,
+            "--confirm",
+        ], env)
+        if rc != 0 or payload.get("result") != "ok":
+            raise RuntimeError("setup instance import failed")
+        if not os.path.isfile(os.path.join(imported_root, "instance.manifest.json")):
+            raise RuntimeError("imported instance manifest missing")
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Setup install/repair/uninstall tests.")
     ap.add_argument("--repo-root", default=".")
@@ -248,6 +329,7 @@ def main() -> int:
     _test_offline_install(repo_root)
     _test_failure_rollback(repo_root)
     _test_repair_uninstall_rollback(repo_root)
+    _test_instance_commands(repo_root)
     print("setup install tests: OK")
     return 0
 

@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import shutil
+import subprocess
 import sys
 import uuid
 from datetime import datetime
@@ -226,6 +227,28 @@ def normalize_invocation_path(path: Optional[str]) -> str:
     if not path:
         return ""
     return normalize_path(path)
+
+
+def resolve_ops_cli() -> str:
+    return os.path.join(REPO_ROOT_HINT, "tools", "ops", "ops_cli.py")
+
+
+def resolve_share_cli() -> str:
+    return os.path.join(REPO_ROOT_HINT, "tools", "share", "share_cli.py")
+
+
+def run_script(path: str, args: List[str]) -> Tuple[int, Dict[str, object], str]:
+    cmd = [sys.executable, path] + list(args or [])
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout = proc.stdout.decode("utf-8", errors="ignore").strip()
+    stderr = proc.stderr.decode("utf-8", errors="ignore").strip()
+    payload: Dict[str, object] = {}
+    if stdout:
+        try:
+            payload = json.loads(stdout)
+        except ValueError:
+            payload = {}
+    return proc.returncode, payload, stderr
 
 
 def build_invocation(args: argparse.Namespace, deterministic: bool) -> dict:
@@ -1483,6 +1506,180 @@ def handle_install_registry(args: argparse.Namespace) -> int:
     return EXIT_REFUSED
 
 
+def handle_instance(args: argparse.Namespace, deterministic: bool) -> int:
+    cmd = str(getattr(args, "instance_cmd", "") or "").strip().lower()
+    if not cmd:
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "instance command is required", {})
+        output_refusal("missing instance command", refusal, args.format)
+        return EXIT_REFUSED
+
+    extra: List[str] = []
+    if deterministic:
+        extra.append("--deterministic")
+
+    if cmd == "create":
+        extra += [
+            "instances", "create",
+            "--install-manifest", args.install_manifest,
+            "--data-root", args.data_root,
+            "--mode", args.mode,
+            "--instance-kind", args.instance_kind,
+            "--mod-policy-id", args.mod_policy_id,
+            "--overlay-conflict-policy-id", args.overlay_conflict_policy_id,
+            "--default-session-template-id", args.default_session_template_id,
+            "--seed-policy", args.seed_policy,
+            "--ui-mode-default", args.ui_mode_default,
+            "--tick-budget-policy-id", args.tick_budget_policy_id,
+            "--compute-profile-id", args.compute_profile_id,
+        ]
+        if args.instance_root:
+            extra += ["--instance-root", args.instance_root]
+        if args.instance_id:
+            extra += ["--instance-id", args.instance_id]
+        if args.store_root:
+            extra += ["--store-root", args.store_root]
+        if args.capability_lockfile:
+            extra += ["--capability-lockfile", args.capability_lockfile]
+        if args.sandbox_policy:
+            extra += ["--sandbox-policy", args.sandbox_policy]
+        if args.sandbox_policy_ref:
+            extra += ["--sandbox-policy-ref", args.sandbox_policy_ref]
+        if args.renderer_mode:
+            extra += ["--renderer-mode", args.renderer_mode]
+        if args.allow_read_only_fallback:
+            extra += ["--allow-read-only-fallback"]
+        if args.update_channel:
+            extra += ["--update-channel", args.update_channel]
+        if args.created_at:
+            extra += ["--created-at", args.created_at]
+        for profile in args.profile or []:
+            extra += ["--active-profile", profile]
+        for modpack in args.modpack or []:
+            extra += ["--active-modpack", modpack]
+        for pack_root in args.pack_root or []:
+            extra += ["--pack-root", pack_root]
+        for save_ref in args.save_ref or []:
+            extra += ["--save-ref", save_ref]
+        for product_build in args.required_product_build or []:
+            extra += ["--required-product-build", product_build]
+        for contract_range in args.required_contract_range or []:
+            extra += ["--required-contract-range", contract_range]
+        if args.last_opened_save_id:
+            extra += ["--last-opened-save-id", args.last_opened_save_id]
+        rc, payload, _stderr = run_script(resolve_ops_cli(), extra)
+        write_output(payload, args.format)
+        return rc
+
+    if cmd == "clone":
+        extra += [
+            "instances", "clone",
+            "--source-manifest", args.source_manifest,
+            "--data-root", args.data_root,
+        ]
+        if args.instance_id:
+            extra += ["--instance-id", args.instance_id]
+        if args.sandbox_policy:
+            extra += ["--sandbox-policy", args.sandbox_policy]
+        if args.created_at:
+            extra += ["--created-at", args.created_at]
+        rc, payload, _stderr = run_script(resolve_ops_cli(), extra)
+        write_output(payload, args.format)
+        return rc
+
+    if cmd == "edit":
+        extra += ["instances", "edit", "--instance-manifest", args.instance_manifest]
+        if args.install_manifest:
+            extra += ["--install-manifest", args.install_manifest]
+        if args.sandbox_policy:
+            extra += ["--sandbox-policy", args.sandbox_policy]
+        if args.mode:
+            extra += ["--mode", args.mode]
+        if args.instance_kind:
+            extra += ["--instance-kind", args.instance_kind]
+        if args.store_root:
+            extra += ["--store-root", args.store_root]
+        if args.renderer_mode:
+            extra += ["--renderer-mode", args.renderer_mode]
+        if args.ui_mode_default:
+            extra += ["--ui-mode-default", args.ui_mode_default]
+        if args.allow_read_only_fallback:
+            extra += ["--allow-read-only-fallback"]
+        if args.deny_read_only_fallback:
+            extra += ["--deny-read-only-fallback"]
+        if args.tick_budget_policy_id:
+            extra += ["--tick-budget-policy-id", args.tick_budget_policy_id]
+        if args.compute_profile_id:
+            extra += ["--compute-profile-id", args.compute_profile_id]
+        if args.default_session_template_id:
+            extra += ["--default-session-template-id", args.default_session_template_id]
+        if args.seed_policy:
+            extra += ["--seed-policy", args.seed_policy]
+        if args.mod_policy_id:
+            extra += ["--mod-policy-id", args.mod_policy_id]
+        if args.overlay_conflict_policy_id:
+            extra += ["--overlay-conflict-policy-id", args.overlay_conflict_policy_id]
+        if args.last_opened_save_id is not None:
+            extra += ["--last-opened-save-id", args.last_opened_save_id]
+        for profile in args.profile or []:
+            extra += ["--profile", profile]
+        for modpack in args.modpack or []:
+            extra += ["--modpack", modpack]
+        for save_ref in args.save_ref or []:
+            extra += ["--save-ref", save_ref]
+        for product_build in args.required_product_build or []:
+            extra += ["--required-product-build", product_build]
+        for contract_range in args.required_contract_range or []:
+            extra += ["--required-contract-range", contract_range]
+        rc, payload, _stderr = run_script(resolve_ops_cli(), extra)
+        write_output(payload, args.format)
+        return rc
+
+    if cmd == "export":
+        extra += [
+            "export",
+            "--bundle-type", "instance",
+            "--artifact", args.instance_manifest,
+            "--out", args.out,
+        ]
+        if args.bundle_id:
+            extra += ["--bundle-id", args.bundle_id]
+        if args.created_at:
+            extra += ["--created-at", args.created_at]
+        if args.created_by:
+            extra += ["--created-by", args.created_by]
+        if args.tool_version:
+            extra += ["--tool-version", args.tool_version]
+        if args.trust_tier:
+            extra += ["--trust-tier", args.trust_tier]
+        rc, payload, _stderr = run_script(resolve_share_cli(), extra)
+        write_output(payload, args.format)
+        return rc
+
+    if cmd == "import":
+        if not args.confirm:
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "confirmation required for instance import", {})
+            output_refusal("instance import requires confirmation", refusal, args.format)
+            return EXIT_REFUSED
+        extra += ["import", "--bundle", args.bundle, "--confirm"]
+        if args.out:
+            extra += ["--out", args.out]
+        if args.instance_id:
+            extra += ["--instance-id", args.instance_id]
+        if args.import_mode:
+            extra += ["--import-mode", args.import_mode]
+        if args.store_root:
+            extra += ["--store-root", args.store_root]
+        for pack_id in args.available_pack or []:
+            extra += ["--available-pack", pack_id]
+        rc, payload, _stderr = run_script(resolve_share_cli(), extra)
+        write_output(payload, args.format)
+        return rc
+
+    refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown instance command", {"cmd": cmd})
+    output_refusal("unknown instance command", refusal, args.format)
+    return EXIT_REFUSED
+
+
 def handle_install(args: argparse.Namespace, deterministic: bool) -> int:
     if str(getattr(args, "registry_cmd", "") or "").strip():
         return handle_install_registry(args)
@@ -1624,6 +1821,88 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     install_cmd.add_argument("--install-mode", dest="install_mode", default="")
     install_cmd.add_argument("--store-root", dest="store_root", default="")
 
+    instance_cmd = sub.add_parser("instance")
+    instance_sub = instance_cmd.add_subparsers(dest="instance_cmd")
+
+    instance_create = instance_sub.add_parser("create")
+    instance_create.add_argument("--install-manifest", required=True)
+    instance_create.add_argument("--data-root", required=True)
+    instance_create.add_argument("--instance-root", default=None)
+    instance_create.add_argument("--instance-id", default=None)
+    instance_create.add_argument("--mode", choices=["linked", "portable"], default="portable")
+    instance_create.add_argument("--instance-kind", choices=["instance.client", "instance.server", "instance.tooling"], default="instance.client")
+    instance_create.add_argument("--store-root", default=None)
+    instance_create.add_argument("--profile", action="append", default=[])
+    instance_create.add_argument("--modpack", action="append", default=[])
+    instance_create.add_argument("--pack-root", action="append", default=[])
+    instance_create.add_argument("--capability-lockfile", default=None)
+    instance_create.add_argument("--sandbox-policy", default=None)
+    instance_create.add_argument("--sandbox-policy-ref", default=None)
+    instance_create.add_argument("--mod-policy-id", default="mod.policy.default")
+    instance_create.add_argument("--overlay-conflict-policy-id", default="overlay.conflict.default")
+    instance_create.add_argument("--default-session-template-id", default="session.template.default")
+    instance_create.add_argument("--seed-policy", choices=["fixed", "prompt", "deterministic_counter"], default="prompt")
+    instance_create.add_argument("--renderer-mode", choices=["software", "hardware_stub"], default=None)
+    instance_create.add_argument("--ui-mode-default", choices=["cli", "tui", "rendered"], default="cli")
+    instance_create.add_argument("--allow-read-only-fallback", action="store_true")
+    instance_create.add_argument("--tick-budget-policy-id", default="tick.budget.default")
+    instance_create.add_argument("--compute-profile-id", default="compute.profile.default")
+    instance_create.add_argument("--save-ref", action="append", default=[])
+    instance_create.add_argument("--last-opened-save-id", default="")
+    instance_create.add_argument("--required-product-build", action="append", default=[])
+    instance_create.add_argument("--required-contract-range", action="append", default=[])
+    instance_create.add_argument("--update-channel", default="stable")
+    instance_create.add_argument("--created-at", default=None)
+
+    instance_clone = instance_sub.add_parser("clone")
+    instance_clone.add_argument("--source-manifest", required=True)
+    instance_clone.add_argument("--data-root", required=True)
+    instance_clone.add_argument("--instance-id", default=None)
+    instance_clone.add_argument("--sandbox-policy", default=None)
+    instance_clone.add_argument("--created-at", default=None)
+
+    instance_edit = instance_sub.add_parser("edit")
+    instance_edit.add_argument("--instance-manifest", required=True)
+    instance_edit.add_argument("--install-manifest", default=None)
+    instance_edit.add_argument("--sandbox-policy", default=None)
+    instance_edit.add_argument("--mode", choices=["linked", "portable"], default=None)
+    instance_edit.add_argument("--instance-kind", choices=["instance.client", "instance.server", "instance.tooling"], default=None)
+    instance_edit.add_argument("--store-root", default=None)
+    instance_edit.add_argument("--profile", action="append", default=[])
+    instance_edit.add_argument("--modpack", action="append", default=[])
+    instance_edit.add_argument("--save-ref", action="append", default=[])
+    instance_edit.add_argument("--last-opened-save-id", default=None)
+    instance_edit.add_argument("--renderer-mode", choices=["software", "hardware_stub"], default=None)
+    instance_edit.add_argument("--ui-mode-default", choices=["cli", "tui", "rendered"], default=None)
+    instance_edit.add_argument("--allow-read-only-fallback", action="store_true")
+    instance_edit.add_argument("--deny-read-only-fallback", action="store_true")
+    instance_edit.add_argument("--tick-budget-policy-id", default=None)
+    instance_edit.add_argument("--compute-profile-id", default=None)
+    instance_edit.add_argument("--default-session-template-id", default=None)
+    instance_edit.add_argument("--seed-policy", choices=["fixed", "prompt", "deterministic_counter"], default=None)
+    instance_edit.add_argument("--mod-policy-id", default=None)
+    instance_edit.add_argument("--overlay-conflict-policy-id", default=None)
+    instance_edit.add_argument("--required-product-build", action="append", default=[])
+    instance_edit.add_argument("--required-contract-range", action="append", default=[])
+
+    instance_export = instance_sub.add_parser("export")
+    instance_export.add_argument("--instance-manifest", required=True)
+    instance_export.add_argument("--out", required=True)
+    instance_export.add_argument("--bundle-id", default=None)
+    instance_export.add_argument("--created-at", default=None)
+    instance_export.add_argument("--created-by", default=None)
+    instance_export.add_argument("--tool-version", default=None)
+    instance_export.add_argument("--trust-tier", default=None)
+
+    instance_import = instance_sub.add_parser("import")
+    instance_import.add_argument("--bundle", required=True)
+    instance_import.add_argument("--out", required=True)
+    instance_import.add_argument("--instance-id", default=None)
+    instance_import.add_argument("--import-mode", choices=["linked", "portable"], default=None)
+    instance_import.add_argument("--store-root", default=None)
+    instance_import.add_argument("--available-pack", action="append", default=[])
+    instance_import.add_argument("--confirm", action="store_true")
+
     repair_cmd = sub.add_parser("repair")
     repair_cmd.add_argument("--manifest", required=True)
     repair_cmd.add_argument("--op", default="repair")
@@ -1738,6 +2017,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
         return handle_manifest_validate(args, deterministic)
     if args.cmd == "install":
         return handle_install(args, deterministic)
+    if args.cmd == "instance":
+        return handle_instance(args, deterministic)
     if args.cmd == "repair":
         return handle_repair(args, deterministic)
     if args.cmd == "uninstall":

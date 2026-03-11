@@ -283,9 +283,14 @@ def _write_tree_artifact(artifact_root: str, category: str, source_dir: str) -> 
     }
 
 
-def store_add_artifact(store_root: str, category: str, artifact: Dict[str, object]) -> Dict[str, object]:
+def store_add_artifact(
+    store_root: str,
+    category: str,
+    artifact: Dict[str, object],
+    expected_hash: Optional[str] = None,
+) -> Dict[str, object]:
     load_store_root_manifest(store_root)
-    artifact_hash = canonical_sha256(artifact)
+    artifact_hash = str(expected_hash or canonical_sha256(artifact))
     return _write_json_artifact(
         store_artifact_root(store_root, category, artifact_hash),
         category,
@@ -472,10 +477,17 @@ def build_store_locator(instance_root: str, store_root: str, store_manifest: Dic
 
 
 def build_install_ref(instance_root: str, install_manifest_path: str, install_manifest: Dict[str, object]) -> Dict[str, object]:
+    install_root_token = str(install_manifest.get("install_root", "") or "").strip()
+    if not install_root_token or install_root_token == ".":
+        install_root_path = os.path.dirname(os.path.abspath(install_manifest_path))
+    elif os.path.isabs(install_root_token):
+        install_root_path = install_root_token
+    else:
+        install_root_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(install_manifest_path)), install_root_token))
     return {
         "install_id": str(install_manifest.get("install_id", "")).strip(),
         "manifest_ref": manifest_ref_path(instance_root, install_manifest_path),
-        "root_path": manifest_ref_path(instance_root, install_manifest.get("install_root") or os.path.dirname(install_manifest_path)),
+        "root_path": manifest_ref_path(instance_root, install_root_path),
     }
 
 

@@ -19,7 +19,6 @@ from tools.lib.content_store import (
     artifact_payload_path,
     build_store_locator,
     copy_dir as copy_tree,
-    deterministic_fingerprint,
     index_file_tree,
     initialize_store_root,
     load_artifact_manifest,
@@ -31,6 +30,11 @@ from tools.lib.content_store import (
     resolve_locator_path,
     store_add_artifact,
     store_add_tree_artifact,
+)
+from src.lib.instance import (
+    deterministic_fingerprint as instance_deterministic_fingerprint,
+    normalize_instance_manifest,
+    validate_instance_manifest,
 )
 
 
@@ -58,6 +62,17 @@ def write_json(path: str, payload: dict) -> None:
 
 def ensure_dir(path: str) -> None:
     os.makedirs(path, exist_ok=True)
+
+
+def canonical_json_text(payload: object) -> str:
+    return json.dumps(payload, ensure_ascii=True, separators=(",", ":"), sort_keys=True)
+
+
+def default_bundle_id(bundle_type: str, deterministic: bool, seed_payload: Dict[str, object]) -> str:
+    if not deterministic:
+        return str(uuid.uuid4())
+    digest = hashlib.sha256(canonical_json_text(seed_payload).encode("utf-8")).hexdigest()
+    return "bundle.{}.{}".format(str(bundle_type or "artifact").strip() or "artifact", digest[:24])
 
 
 def sha256_file(path: str) -> str:
@@ -219,6 +234,20 @@ def copy_instance_artifact(instance_root: str,
     return artifact_root, manifest
 
 
+def copy_embedded_build_files(source_root: str, dest_root: str, embedded_builds: Dict[str, object]) -> None:
+    for row in dict(embedded_builds or {}).values():
+        payload = dict(row or {})
+        for key in ("binary_ref", "descriptor_ref"):
+            rel_path = str(payload.get(key, "") or "").strip()
+            if not rel_path:
+                continue
+            source_path = rel_path if os.path.isabs(rel_path) else os.path.join(source_root, rel_path)
+            if not os.path.isfile(source_path):
+                continue
+            dest_path = os.path.join(dest_root, rel_path.replace("/", os.sep))
+            copy_file(source_path, dest_path)
+
+
 def export_instance_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     if os.path.exists(args.out):
         refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
@@ -242,7 +271,21 @@ def export_instance_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, obj
                                      args.deterministic, {}, refusal)
         return 3, {"result": "refused", "compat_report": report}
 
-    instance_manifest = load_json(args.artifact)
+    validation = validate_instance_manifest(
+        repo_root=REPO_ROOT,
+        instance_manifest_path=args.artifact,
+    )
+    if validation.get("result") != "complete":
+        refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                  "instance manifest validation failed for export",
+                                  {"artifact": os.path.basename(args.artifact)})
+        report = build_compat_report("update", None, None, None,
+                                     args.capability_baseline,
+                                     [], [], [], "refuse",
+                                     [refusal.get("code")], [],
+                                     args.deterministic, {"bundle_type": "instance"}, refusal)
+        return 3, {"result": "refused", "compat_report": report}
+    instance_manifest = dict(validation.get("instance_manifest") or load_json(args.artifact))
     instance_root = os.path.dirname(os.path.abspath(args.artifact))
     pack_lock_hash = str(instance_manifest.get("pack_lock_hash", "")).strip()
     profile_bundle_hash = str(instance_manifest.get("profile_bundle_hash", "")).strip()
@@ -360,13 +403,17 @@ def export_instance_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, obj
             ),
         })
 
+    copy_embedded_build_files(instance_root, bundle_instance_root, dict(instance_manifest.get("embedded_builds") or {}))
+
     portable_manifest = dict(instance_manifest)
     portable_manifest["mode"] = "portable"
     portable_manifest["store_root"] = {}
     portable_manifest["embedded_artifacts"] = embedded_refs
+    portable_manifest["save_refs"] = list(instance_manifest.get("save_refs") or [])
     portable_manifest["capability_lockfile"] = "lockfiles/capabilities.lock"
     portable_manifest["deterministic_fingerprint"] = ""
-    portable_manifest["deterministic_fingerprint"] = deterministic_fingerprint(portable_manifest)
+    portable_manifest = normalize_instance_manifest(portable_manifest)
+    portable_manifest["deterministic_fingerprint"] = instance_deterministic_fingerprint(portable_manifest)
 
     manifest_dest = os.path.join(bundle_instance_root, "instance.manifest.json")
     pretty_write_json(manifest_dest, portable_manifest)
@@ -398,15 +445,26 @@ def export_instance_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, obj
         content_entry(os.path.relpath(lockfile_dest, args.out), "lockfile", lockfile_dest),
         content_entry(os.path.relpath(compat_dest, args.out), "compat_report", compat_dest),
     ])
-    bundle_container = {
+    bundle_seed = {
         "bundle_type": "instance",
-        "bundle_id": args.bundle_id or str(uuid.uuid4()),
-        "created_at": args.created_at or now_timestamp(args.deterministic),
-        "created_by": args.created_by or "unknown",
-        "tool_version": args.tool_version or "unknown",
         "contents_index": contents,
         "lockfile_ref": os.path.relpath(lockfile_dest, args.out).replace("\\", "/"),
         "compat_report_ref": os.path.relpath(compat_dest, args.out).replace("\\", "/"),
+        "embedded_packs": embedded_packs,
+        "pack_refs": [parse_pack_ref(pack_id) for pack_id in ordered_pack_ids],
+        "created_at": args.created_at or now_timestamp(args.deterministic),
+        "created_by": args.created_by or "unknown",
+        "tool_version": args.tool_version or "unknown",
+    }
+    bundle_container = {
+        "bundle_type": "instance",
+        "bundle_id": args.bundle_id or default_bundle_id("instance", args.deterministic, bundle_seed),
+        "created_at": bundle_seed["created_at"],
+        "created_by": bundle_seed["created_by"],
+        "tool_version": bundle_seed["tool_version"],
+        "contents_index": contents,
+        "lockfile_ref": bundle_seed["lockfile_ref"],
+        "compat_report_ref": bundle_seed["compat_report_ref"],
         "embedded_packs": embedded_packs,
         "pack_refs": [parse_pack_ref(pack_id) for pack_id in ordered_pack_ids],
         "extensions": {},
@@ -466,7 +524,21 @@ def import_instance_bundle(args: argparse.Namespace, container: dict) -> Tuple[i
                                      args.deterministic, {"bundle_type": "instance"}, refusal)
         return 3, {"result": "refused", "compat_report": report}
 
-    manifest = load_json(manifest_path)
+    validation = validate_instance_manifest(
+        repo_root=REPO_ROOT,
+        instance_manifest_path=manifest_path,
+    )
+    if validation.get("result") != "complete":
+        refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                  "instance bundle manifest validation failed",
+                                  {"manifest": os.path.basename(manifest_path)})
+        report = build_compat_report("load", args.install_id, args.instance_id, args.runtime_id,
+                                     args.capability_baseline,
+                                     [], [], [], "refuse",
+                                     [refusal.get("code")], [],
+                                     args.deterministic, {"bundle_type": "instance"}, refusal)
+        return 3, {"result": "refused", "compat_report": report}
+    manifest = dict(validation.get("instance_manifest") or load_json(manifest_path))
     import_mode = str(args.import_mode or manifest.get("mode") or "portable").strip().lower()
     if import_mode not in ("linked", "portable"):
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
@@ -485,9 +557,27 @@ def import_instance_bundle(args: argparse.Namespace, container: dict) -> Tuple[i
         imported_manifest = load_json(imported_manifest_path)
         if args.instance_id:
             imported_manifest["instance_id"] = args.instance_id
-            imported_manifest["deterministic_fingerprint"] = ""
-            imported_manifest["deterministic_fingerprint"] = deterministic_fingerprint(imported_manifest)
-            pretty_write_json(imported_manifest_path, imported_manifest)
+        imported_manifest["save_refs"] = list(imported_manifest.get("save_refs") or [])
+        imported_manifest = normalize_instance_manifest(imported_manifest)
+        imported_manifest["deterministic_fingerprint"] = instance_deterministic_fingerprint(imported_manifest)
+        imported_validation = validate_instance_manifest(
+            repo_root=REPO_ROOT,
+            instance_manifest_path=imported_manifest_path,
+            manifest_payload=imported_manifest,
+        )
+        if imported_validation.get("result") != "complete":
+            refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                      "portable instance import validation failed",
+                                      {"instance_root": os.path.basename(args.out)})
+            shutil.rmtree(args.out, ignore_errors=True)
+            report = build_compat_report("load", args.install_id, args.instance_id, args.runtime_id,
+                                         args.capability_baseline,
+                                         [], [], [], "refuse",
+                                         [refusal.get("code")], [],
+                                         args.deterministic, {"bundle_type": "instance"}, refusal)
+            return 3, {"result": "refused", "compat_report": report}
+        imported_manifest = dict(imported_validation.get("instance_manifest") or imported_manifest)
+        pretty_write_json(imported_manifest_path, imported_manifest)
         report = build_compat_report("load",
                                      imported_manifest.get("install_id"),
                                      imported_manifest.get("instance_id"),
@@ -521,7 +611,7 @@ def import_instance_bundle(args: argparse.Namespace, container: dict) -> Tuple[i
         artifact_root = os.path.join(bundle_instance_root, artifact_path)
         if artifact_type == "json":
             payload = load_cas_json(os.path.join(artifact_root, JSON_PAYLOAD))
-            result = store_add_artifact(args.store_root, category, payload)
+            result = store_add_artifact(args.store_root, category, payload, expected_hash=artifact_hash)
         elif artifact_type == "tree":
             result = store_add_tree_artifact(args.store_root, category, artifact_payload_path(artifact_root, "tree"))
         else:
@@ -540,14 +630,37 @@ def import_instance_bundle(args: argparse.Namespace, container: dict) -> Tuple[i
     ensure_dir(args.out)
     linked_manifest = dict(manifest)
     linked_manifest["mode"] = "linked"
+    linked_manifest["install_ref"] = {
+        "install_id": str((dict(linked_manifest.get("install_ref") or {})).get("install_id", linked_manifest.get("install_id", ""))).strip()
+    }
     linked_manifest["store_root"] = build_store_locator(args.out, args.store_root, store_manifest)
+    linked_manifest["embedded_builds"] = {}
     linked_manifest["embedded_artifacts"] = []
+    linked_manifest["save_refs"] = list(manifest.get("save_refs") or [])
     linked_manifest["capability_lockfile"] = ""
     if args.instance_id:
         linked_manifest["instance_id"] = args.instance_id
-    linked_manifest["deterministic_fingerprint"] = ""
-    linked_manifest["deterministic_fingerprint"] = deterministic_fingerprint(linked_manifest)
-    pretty_write_json(os.path.join(args.out, "instance.manifest.json"), linked_manifest)
+    linked_manifest = normalize_instance_manifest(linked_manifest)
+    linked_manifest["deterministic_fingerprint"] = instance_deterministic_fingerprint(linked_manifest)
+    linked_manifest_path = os.path.join(args.out, "instance.manifest.json")
+    linked_validation = validate_instance_manifest(
+        repo_root=REPO_ROOT,
+        instance_manifest_path=linked_manifest_path,
+        manifest_payload=linked_manifest,
+    )
+    if linked_validation.get("result") != "complete":
+        refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                  "linked instance import validation failed",
+                                  {"instance_root": os.path.basename(args.out)})
+        shutil.rmtree(args.out, ignore_errors=True)
+        report = build_compat_report("load", args.install_id, args.instance_id, args.runtime_id,
+                                     args.capability_baseline,
+                                     [], [], [], "refuse",
+                                     [refusal.get("code")], [],
+                                     args.deterministic, {"bundle_type": "instance"}, refusal)
+        return 3, {"result": "refused", "compat_report": report}
+    linked_manifest = dict(linked_validation.get("instance_manifest") or linked_manifest)
+    pretty_write_json(linked_manifest_path, linked_manifest)
     report = build_compat_report("load",
                                  linked_manifest.get("install_id"),
                                  linked_manifest.get("instance_id"),
@@ -695,15 +808,26 @@ def export_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         })
 
     contents_sorted = sorted(contents, key=lambda item: item["content_path"])
-    bundle_container = {
+    bundle_seed = {
         "bundle_type": bundle_type,
-        "bundle_id": args.bundle_id or str(uuid.uuid4()),
-        "created_at": args.created_at or now_timestamp(args.deterministic),
-        "created_by": args.created_by or "unknown",
-        "tool_version": args.tool_version or "unknown",
         "contents_index": contents_sorted,
         "lockfile_ref": lock_ref,
         "compat_report_ref": compat_ref,
+        "embedded_packs": embedded_packs,
+        "pack_refs": pack_refs,
+        "created_at": args.created_at or now_timestamp(args.deterministic),
+        "created_by": args.created_by or "unknown",
+        "tool_version": args.tool_version or "unknown",
+    }
+    bundle_container = {
+        "bundle_type": bundle_type,
+        "bundle_id": args.bundle_id or default_bundle_id(bundle_type, args.deterministic, bundle_seed),
+        "created_at": bundle_seed["created_at"],
+        "created_by": bundle_seed["created_by"],
+        "tool_version": bundle_seed["tool_version"],
+        "contents_index": contents_sorted,
+        "lockfile_ref": bundle_seed["lockfile_ref"],
+        "compat_report_ref": bundle_seed["compat_report_ref"],
         "embedded_packs": embedded_packs,
         "extensions": {},
     }

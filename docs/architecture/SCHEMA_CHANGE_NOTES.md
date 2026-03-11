@@ -20,6 +20,12 @@ Template:
   Migration: <required migration steps or "none">
 
 - Date: 2026-03-11
+  Schema(s): schema/lib/instance_manifest.schema; schema/lib/instance_settings.schema; schema/instance.manifest.schema
+  Change: upgrade instance manifest contracts for LIB-2 instance kinds, save associations, portable embedded builds, and explicit pack/profile binding
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-INSTANCE-USES-PACK-LOCK; INV-INSTANCE-USES-PROFILE-BUNDLE; INV-SAVES-NOT-EMBEDDED-IN-INSTANCE
+  Migration: normalize legacy instance manifests through `src/lib/instance/instance_validator.py`; legacy adapter fields remain available for existing launcher/setup flows
+
+- Date: 2026-03-11
   Schema(s): schema/lib/install_manifest.schema; schema/lib/product_build_descriptor.schema; schema/lib/instance_manifest.schema; schema/install.manifest.schema
   Change: upgrade install manifest contracts for LIB-1 multi-install build selection, per-product binary descriptors, and instance build pinning
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-INSTALL-MANIFEST-REQUIRED; INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY; INV-BINARY-HASH-MATCHES-MANIFEST

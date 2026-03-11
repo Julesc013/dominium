@@ -1,41 +1,48 @@
 SCHEMA: lib/instance_manifest.schema
 schema_id: dominium.schema.lib.instance_manifest
-schema_version: 1.1.0
+schema_version: 2.0.0
 stability: core
 
 PURPOSE:
-- Define the LIB-0 instance storage topology for linked and portable instances.
+- Define the LIB-2 instance manifest for runnable client, server, and tooling instances.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
 - Records are open maps; unknown fields MUST be preserved.
-- No field removal or renaming without a MAJOR version bump.
+- Breaking field removal or semantic reuse requires a MAJOR version bump.
 
 NON-SEMANTICS:
 - mode declares storage topology only; it does not alter authoritative runtime behavior.
-- store_root and embedded_artifacts are adapters for artifact resolution, not semantic identities.
+- install switching and build selection change compatibility outcomes, not simulation law.
+- save_refs are associations only; instances do not own or embed save truth.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
 - tag: namespaced string; unknown values allowed.
+- bool: canonical true|false value.
 - sha256: lowercase hex SHA-256 digest.
-- path_ref: relative or canonical path string.
+- path_ref: relative or logical path string.
 - map: open key/value map; unknown keys preserved.
 
 REQUIRED SHAPE:
 record instance_manifest
   required:
     - instance_id: id
+    - instance_kind: tag
     - mode: tag
     - install_ref: install_ref
     - pack_lock_hash: sha256
     - profile_bundle_hash: sha256
     - mod_policy_id: id
     - overlay_conflict_policy_id: id
+    - default_session_template_id: id
+    - seed_policy: tag
     - instance_settings: instance_settings
+    - save_refs: [id]
     - deterministic_fingerprint: sha256
     - extensions: map
   optional:
+    - embedded_builds: map
     - store_root: store_root_ref
     - embedded_artifacts: [artifact_ref]
     - required_product_builds: map
@@ -68,20 +75,45 @@ record artifact_ref
 
 record instance_settings
   required:
-    - data_root: path_ref
+    - renderer_mode: tag
+    - ui_mode_default: tag
+    - allow_read_only_fallback: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
   optional:
+    - data_root: path_ref
     - active_profiles: [id]
     - active_modpacks: [id]
+    - tick_budget_policy_id: id
+    - compute_profile_id: id
     - sandbox_policy_ref: id
     - update_channel: tag
     - created_at: tag
     - last_used_at: tag
     - settings_extensions: map
 
+record embedded_build_descriptor
+  required:
+    - product_id: id
+    - build_id: id
+    - binary_hash: sha256
+    - endpoint_descriptor_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - binary_ref: path_ref
+    - descriptor_ref: path_ref
+    - notes: map
+
 INVARIANTS:
+- instance_kind must be `instance.client`, `instance.server`, or `instance.tooling`.
 - mode must be `linked` or `portable`.
 - linked instances must resolve reusable artifacts through store_root + hashes.
-- portable instances must list embedded_artifacts for self-contained reuse.
+- portable instances must embed lock/profile artifacts and any pinned pack artifacts required for self-contained execution.
+- portable instances may embed product builds through embedded_builds; linked instances must not depend on embedded builds.
+- save_refs are save identifiers only; instances must not embed save payloads or lock saves permanently to the instance.
+- last_opened_save_id, when recorded, must be stored in extensions under `instance.last_opened_save_id`.
 - required_product_builds, when present, pin product build selection for launcher validation.
 - required_contract_ranges, when present, pin contract-range expectations for launcher validation.
+- seed_policy must be `fixed`, `prompt`, or `deterministic_counter`.
 - deterministic_fingerprint is computed from canonical serialized content.

@@ -11,7 +11,7 @@ Scope: launcher usage (CLI canonical, TUI/GUI wrappers).
 ## Quick start (60-second rule)
 The launcher works with three primitives:
 - **Install**: read-only binaries.
-- **Instance**: mutable data root.
+- **Instance**: runnable configuration plus mutable data root.
 - **Profile**: advisory defaults (casual/hardcore/creator/server).
 - **Store**: shared reusable CAS root for linked instances.
 
@@ -19,9 +19,9 @@ Select an install, create/select an instance, pick a profile, then run:
 ```
 launcher installs list --search <root>
 launcher installs select --manifest <install_root>/install.manifest.json --state-root <state_root>
-launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode portable --profile org.dominium.profile.casual
-launcher preflight --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json
-launcher run --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json --run-mode play --confirm
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode portable --instance-kind instance.client --profile org.dominium.profile.casual --save-ref <save_id>
+launcher instances select --manifest <instance_root>/instance.manifest.json --state-root <state_root>
+launcher start --instance <instance_id|instance_manifest> --state-root <state_root> --run-mode play --confirm
 ```
 
 ## Installs
@@ -35,9 +35,10 @@ launcher installs active --state-root <state_root>
 ## Instances
 Create, clone, fork, activate, and delete instances:
 ```
-launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode portable --profile org.dominium.profile.casual
-launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode linked --store-root <store_root> --profile org.dominium.profile.casual
-launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --required-product-build game=<build_id> --required-contract-range contract.logic.eval=1:1
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode portable --instance-kind instance.client --profile org.dominium.profile.casual --save-ref <save_id>
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --mode linked --store-root <store_root> --instance-kind instance.server --profile org.dominium.profile.casual
+launcher instances create --install-manifest <install_root>/install.manifest.json --data-root <instance_root> --required-product-build game=<build_id> --required-contract-range contract.logic.eval=1:1 --allow-read-only-fallback
+launcher instances select --manifest <instance_root>/instance.manifest.json --state-root <state_root>
 launcher instances clone --source-manifest <instance_root>/instance.manifest.json --data-root <new_root>
 launcher instances fork --source-manifest <instance_root>/instance.manifest.json --data-root <new_root>
 launcher instances activate --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json
@@ -63,13 +64,17 @@ Preflight always generates a compat_report. Run modes are explicit:
 ```
 launcher preflight --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json --run-mode play
 launcher run --install-manifest <install_root>/install.manifest.json --instance-manifest <instance_root>/instance.manifest.json --run-mode play --confirm
+launcher start --instance <instance_id|instance_manifest> --save <save_id> --run-mode play --confirm
 ```
 
 Preflight validates:
 - install manifest integrity
 - binary and descriptor hashes
+- instance kind vs run mode
 - required product build pins
 - required contract ranges
+- pack lock and profile bundle presence
+- requested save association
 
 Degraded/frozen/inspect-only runs require `--confirm`.
 

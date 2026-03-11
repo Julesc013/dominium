@@ -152,6 +152,9 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-INSTALL-MANIFEST-REQUIRED | Registered installs must carry a canonical install manifest with build, contract, and store metadata. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
 | INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY | Install identity and validation must not depend on absolute host paths. | docs/architecture/INSTALL_MODEL.md | src/lib/install/install_validator.py |
 | INV-BINARY-HASH-MATCHES-MANIFEST | Installed binaries and endpoint descriptors must match the manifest-declared hashes. | docs/architecture/INSTALL_MODEL.md | tests/setup/install_manifest_tests.py |
+| INV-INSTANCE-USES-PACK-LOCK | Runnable instances must bind a canonical `pack_lock_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
+| INV-INSTANCE-USES-PROFILE-BUNDLE | Runnable instances must bind a canonical `profile_bundle_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
+| INV-SAVES-NOT-EMBEDDED-IN-INSTANCE | Instances may reference saves, but must not embed save payloads as instance-owned state. | docs/architecture/INSTANCE_MODEL.md | tests/share/share_bundle_tests.py |
 
 ## Notes
 

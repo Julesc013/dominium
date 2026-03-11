@@ -15,6 +15,16 @@ if REPO_ROOT_HINT not in sys.path:
 
 from src.compat import build_product_build_metadata, build_product_descriptor
 from src.lib.install import build_product_build_descriptor, deterministic_fingerprint
+from src.lib.instance import (
+    deterministic_fingerprint as instance_deterministic_fingerprint,
+    normalize_instance_manifest,
+)
+from tools.lib.content_store import (
+    build_install_ref,
+    build_pack_lock_payload,
+    build_profile_bundle_payload,
+    embed_json_artifact,
+)
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -147,8 +157,8 @@ def _write_install_manifest(repo_root: str, root: str, install_id: str) -> str:
     return path
 
 
-def _write_lockfile(path: str, capability_id: str, pack_id: str, missing_mode: str) -> None:
-    payload = {
+def _build_lockfile_payload(capability_id: str, pack_id: str, missing_mode: str) -> dict:
+    return {
         "lock_id": "lock.test",
         "lock_format_version": 1,
         "generated_by": "launcher.tests",
@@ -162,15 +172,93 @@ def _write_lockfile(path: str, capability_id: str, pack_id: str, missing_mode: s
         ],
         "extensions": {}
     }
+
+
+def _write_lockfile(path: str, capability_id: str, pack_id: str, missing_mode: str) -> dict:
+    payload = _build_lockfile_payload(capability_id, pack_id, missing_mode)
     _write_json(path, payload)
+    return payload
 
 
-def _write_instance_manifest(root: str, instance_id: str, install_id: str, required_product_builds: dict | None = None) -> str:
+def _write_instance_manifest(root: str,
+                             instance_id: str,
+                             install_manifest_path: str,
+                             required_product_builds: dict | None = None,
+                             allow_read_only_fallback: bool = False,
+                             instance_kind: str = "instance.client",
+                             save_refs: list[str] | None = None,
+                             last_opened_save_id: str = "",
+                             missing_mode: str = "degraded",
+                             pack_id: str = "org.dominium.pack.core") -> str:
     path = os.path.join(root, "instance.manifest.json")
+    install_manifest = json.load(open(install_manifest_path, "r", encoding="utf-8"))
+    lockfile_payload = _build_lockfile_payload("CAP_CORE", pack_id, missing_mode)
+    pack_lock_payload, pack_lock_hash = build_pack_lock_payload(
+        instance_id=instance_id,
+        pack_ids=[pack_id],
+        mod_policy_id="mod.policy.default",
+        overlay_conflict_policy_id="overlay.conflict.default",
+        source_payload=lockfile_payload,
+    )
+    profile_bundle_payload, profile_bundle_hash = build_profile_bundle_payload(
+        instance_id=instance_id,
+        profile_ids=["org.dominium.profile.casual"],
+        mod_policy_id="mod.policy.default",
+        overlay_conflict_policy_id="overlay.conflict.default",
+    )
+    embed_json_artifact(root, "locks", pack_lock_payload, expected_hash=pack_lock_hash)
+    embed_json_artifact(root, "profiles", profile_bundle_payload, expected_hash=profile_bundle_hash)
+    _write_json(os.path.join(root, "lockfiles", "capabilities.lock"), pack_lock_payload)
+    normalized_save_refs = sorted({str(item).strip() for item in list(save_refs or []) if str(item).strip()})
+    if last_opened_save_id and last_opened_save_id not in normalized_save_refs:
+        normalized_save_refs.append(last_opened_save_id)
     payload = {
         "instance_id": instance_id,
-        "install_id": install_id,
+        "instance_kind": instance_kind,
+        "install_id": install_manifest.get("install_id"),
+        "mode": "portable",
+        "install_ref": build_install_ref(root, install_manifest_path, install_manifest),
+        "embedded_builds": {},
+        "pack_lock_hash": pack_lock_hash,
+        "profile_bundle_hash": profile_bundle_hash,
+        "mod_policy_id": "mod.policy.default",
+        "overlay_conflict_policy_id": "overlay.conflict.default",
+        "default_session_template_id": "session.template.default",
+        "seed_policy": "prompt",
         "required_product_builds": required_product_builds or {},
+        "required_contract_ranges": {},
+        "instance_settings": {
+            "renderer_mode": None,
+            "ui_mode_default": "cli",
+            "allow_read_only_fallback": allow_read_only_fallback,
+            "tick_budget_policy_id": "tick.budget.default",
+            "compute_profile_id": "compute.profile.default",
+            "data_root": ".",
+            "active_profiles": ["org.dominium.profile.casual"],
+            "active_modpacks": [],
+            "sandbox_policy_ref": "sandbox.default",
+            "update_channel": "stable",
+            "extensions": {},
+            "deterministic_fingerprint": "",
+        },
+        "save_refs": normalized_save_refs,
+        "store_root": {},
+        "embedded_artifacts": [
+            {
+                "category": "locks",
+                "artifact_hash": pack_lock_hash,
+                "artifact_type": "json",
+                "artifact_path": "embedded_artifacts/locks/%s" % pack_lock_hash,
+                "artifact_id": pack_lock_payload.get("pack_lock_id"),
+            },
+            {
+                "category": "profiles",
+                "artifact_hash": profile_bundle_hash,
+                "artifact_type": "json",
+                "artifact_path": "embedded_artifacts/profiles/%s" % profile_bundle_hash,
+                "artifact_id": profile_bundle_payload.get("profile_bundle_id"),
+            },
+        ],
         "data_root": ".",
         "active_profiles": ["org.dominium.profile.casual"],
         "active_modpacks": [],
@@ -179,8 +267,14 @@ def _write_instance_manifest(root: str, instance_id: str, install_id: str, requi
         "update_channel": "stable",
         "created_at": "2000-01-01T00:00:00Z",
         "last_used_at": "2000-01-01T00:00:00Z",
-        "extensions": {}
+        "extensions": {},
+        "deterministic_fingerprint": "",
     }
+    payload["instance_settings"]["deterministic_fingerprint"] = instance_deterministic_fingerprint(payload["instance_settings"])
+    if last_opened_save_id:
+        payload["extensions"]["instance.last_opened_save_id"] = last_opened_save_id
+    payload = normalize_instance_manifest(payload)
+    payload["deterministic_fingerprint"] = instance_deterministic_fingerprint(payload)
     _write_json(path, payload)
     return path
 
@@ -206,8 +300,9 @@ def _test_enumeration(repo_root: str) -> None:
         _ensure_dir(instance_a)
         _ensure_dir(instance_b)
         install_id = installs[0].get("install_id")
-        _write_instance_manifest(instance_a, str(uuid.uuid4()), install_id)
-        _write_instance_manifest(instance_b, str(uuid.uuid4()), install_id)
+        install_manifest_path = os.path.join(install_a, "install.manifest.json")
+        _write_instance_manifest(instance_a, str(uuid.uuid4()), install_manifest_path)
+        _write_instance_manifest(instance_b, str(uuid.uuid4()), install_manifest_path)
         rc, payload = _run_launcher(repo_root, ["--deterministic", "instances", "list", "--search", work])
         if rc != 0 or payload.get("result") != "ok":
             raise RuntimeError("instance enumeration failed")
@@ -227,9 +322,7 @@ def _test_delete_confirmation(repo_root: str) -> None:
         _ensure_dir(instance_root)
         install_id = str(uuid.uuid4())
         _write_install_manifest(repo_root, install_root, install_id)
-        manifest_path = _write_instance_manifest(instance_root, str(uuid.uuid4()), install_id)
-        lock_path = os.path.join(instance_root, "lockfiles", "capabilities.lock")
-        _write_lockfile(lock_path, "CAP_CORE", "org.dominium.pack.core", "degraded")
+        manifest_path = _write_instance_manifest(instance_root, str(uuid.uuid4()), os.path.join(install_root, "install.manifest.json"))
         _write_json(os.path.join(instance_root, "user.json"), {"keep": True})
 
         rc, payload = _run_launcher(repo_root, ["instances", "delete", "--instance-manifest", manifest_path], allow_fail=True)
@@ -248,9 +341,7 @@ def _test_delete_confirmation(repo_root: str) -> None:
 
         instance_root2 = os.path.join(work, "instance2")
         _ensure_dir(instance_root2)
-        manifest_path2 = _write_instance_manifest(instance_root2, str(uuid.uuid4()), install_id)
-        _write_lockfile(os.path.join(instance_root2, "lockfiles", "capabilities.lock"),
-                        "CAP_CORE", "org.dominium.pack.core", "degraded")
+        manifest_path2 = _write_instance_manifest(instance_root2, str(uuid.uuid4()), os.path.join(install_root, "install.manifest.json"))
         _write_json(os.path.join(instance_root2, "user.json"), {"keep": True})
         rc, payload = _run_launcher(repo_root, ["instances", "delete",
                                                 "--instance-manifest", manifest_path2,
@@ -272,9 +363,13 @@ def _test_preflight_and_run(repo_root: str) -> None:
         _ensure_dir(instance_root)
         install_id = str(uuid.uuid4())
         install_manifest = _write_install_manifest(repo_root, install_root, install_id)
-        instance_manifest = _write_instance_manifest(instance_root, str(uuid.uuid4()), install_id)
-        lock_path = os.path.join(instance_root, "lockfiles", "capabilities.lock")
-        _write_lockfile(lock_path, "CAP_CORE", "org.dominium.pack.missing", "degraded")
+        instance_manifest = _write_instance_manifest(
+            instance_root,
+            str(uuid.uuid4()),
+            install_manifest,
+            missing_mode="degraded",
+            pack_id="org.dominium.pack.missing",
+        )
 
         rc, payload = _run_launcher(repo_root, ["--deterministic", "preflight",
                                                 "--install-manifest", install_manifest,
@@ -312,11 +407,9 @@ def _test_instance_build_selection(repo_root: str) -> None:
         instance_manifest = _write_instance_manifest(
             instance_root,
             str(uuid.uuid4()),
-            install_id,
+            install_manifest,
             required_product_builds={"game": "build.mismatch"},
         )
-        lock_path = os.path.join(instance_root, "lockfiles", "capabilities.lock")
-        _write_lockfile(lock_path, "CAP_CORE", "org.dominium.pack.core", "degraded")
 
         rc, payload = _run_launcher(
             repo_root,
@@ -335,6 +428,96 @@ def _test_instance_build_selection(repo_root: str) -> None:
             raise RuntimeError("expected build-selection refusal")
         if report.get("compatibility_mode") != "refuse":
             raise RuntimeError("expected refused build selection preflight")
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def _test_start_validates_packs(repo_root: str) -> None:
+    work = tempfile.mkdtemp(prefix="launcher_start_")
+    try:
+        install_root = os.path.join(work, "install")
+        instance_root = os.path.join(work, "instance")
+        _ensure_dir(install_root)
+        _ensure_dir(instance_root)
+        install_id = str(uuid.uuid4())
+        install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        instance_manifest = _write_instance_manifest(
+            instance_root,
+            str(uuid.uuid4()),
+            install_manifest,
+            save_refs=["save.alpha"],
+            last_opened_save_id="save.alpha",
+            missing_mode="degraded",
+            pack_id="org.dominium.pack.missing",
+        )
+
+        rc, payload = _run_launcher(
+            repo_root,
+            [
+                "--deterministic",
+                "start",
+                "--instance",
+                instance_manifest,
+                "--install-manifest",
+                install_manifest,
+                "--save",
+                "save.alpha",
+                "--run-mode",
+                "play",
+                "--confirm",
+            ],
+            allow_fail=False,
+        )
+        report = payload.get("compat_report") or {}
+        if rc != 0 or payload.get("result") != "ok":
+            raise RuntimeError("start failed")
+        if report.get("compatibility_mode") != "degraded":
+            raise RuntimeError("expected degraded start due to missing required pack")
+        if payload.get("save_id") != "save.alpha":
+            raise RuntimeError("selected save id was not preserved")
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def _test_instance_degrade_mode_logged(repo_root: str) -> None:
+    work = tempfile.mkdtemp(prefix="launcher_degrade_log_")
+    try:
+        install_root = os.path.join(work, "install")
+        instance_root = os.path.join(work, "instance")
+        _ensure_dir(install_root)
+        _ensure_dir(instance_root)
+        install_id = str(uuid.uuid4())
+        install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        instance_manifest = _write_instance_manifest(
+            instance_root,
+            str(uuid.uuid4()),
+            install_manifest,
+            allow_read_only_fallback=True,
+            instance_kind="instance.server",
+        )
+
+        rc, payload = _run_launcher(
+            repo_root,
+            [
+                "--deterministic",
+                "preflight",
+                "--install-manifest",
+                install_manifest,
+                "--instance-manifest",
+                instance_manifest,
+                "--run-mode",
+                "play",
+            ],
+            allow_fail=False,
+        )
+        report = payload.get("compat_report") or {}
+        extensions = report.get("extensions") or {}
+        if rc != 0 or report.get("compatibility_mode") != "inspect-only":
+            raise RuntimeError("expected inspect-only degrade for instance kind mismatch")
+        if not extensions.get("degrade_logged"):
+            raise RuntimeError("expected degrade_logged marker")
+        if "instance_kind_mismatch" not in (extensions.get("degrade_reasons") or []):
+            raise RuntimeError("expected instance_kind_mismatch degrade reason")
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -387,6 +570,8 @@ def main() -> int:
     _test_delete_confirmation(repo_root)
     _test_preflight_and_run(repo_root)
     _test_instance_build_selection(repo_root)
+    _test_start_validates_packs(repo_root)
+    _test_instance_degrade_mode_logged(repo_root)
     _test_bundle_import_refusal(repo_root)
     print("launcher cli tests: OK")
     return 0

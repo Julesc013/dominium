@@ -1,10 +1,10 @@
 SCHEMA: instance.manifest.schema
 schema_id: dominium.schema.instance_manifest
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
-- Define portable instance roots and their operational configuration.
+- Define the legacy-compatible instance manifest adapter for LIB-2 runnable instances.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -15,6 +15,7 @@ NON-SEMANTICS:
 - Instances do not imply unique installs.
 - Instances do not imply online connectivity.
 - Instances do not imply content availability.
+- Save references do not imply save ownership.
 
 CONVENTIONS:
 - uuid: canonical UUID string (lowercase, hyphenated).
@@ -28,8 +29,27 @@ CONVENTIONS:
 REQUIRED SHAPE:
 record instance_manifest
   required:
-    - instance_id: uuid
-    - install_id: uuid
+    - instance_id: id
+    - install_id: id
+    - mode: tag
+    - pack_lock_hash: id
+    - profile_bundle_hash: id
+    - mod_policy_id: id
+    - overlay_conflict_policy_id: id
+    - instance_settings: map
+    - save_refs: [id]
+    - deterministic_fingerprint: id
+    - extensions: map
+  optional:
+    - instance_kind: tag
+    - install_ref: map
+    - embedded_builds: map
+    - default_session_template_id: id
+    - seed_policy: tag
+    - store_root: map
+    - embedded_artifacts: [map]
+    - required_product_builds: map
+    - required_contract_ranges: map
     - data_root: path_ref
     - active_profiles: [id]
     - active_modpacks: [id]
@@ -38,8 +58,6 @@ record instance_manifest
     - update_channel: tag
     - created_at: timestamp
     - last_used_at: timestamp
-    - extensions: map
-  optional:
     - instance_manifest_version: integer
     - instance_tags: [tag]
     - provenance_ref: provenance_ref
@@ -49,3 +67,9 @@ TYPE DEFINITIONS:
 record provenance_ref
   required:
     - provenance_id: id
+
+INVARIANTS:
+- Legacy adapter fields (`install_id`, `data_root`, `active_profiles`, `active_modpacks`, `capability_lockfile`) remain available for compatibility only.
+- Canonical install selection uses `install_ref`, `required_product_builds`, and `required_contract_ranges`.
+- Instances must bind both `pack_lock_hash` and `profile_bundle_hash`.
+- Saves must be referenced by `save_refs`; save payloads must not be embedded under the instance root.

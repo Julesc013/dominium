@@ -18,7 +18,6 @@ from tools.lib.content_store import (
     build_pack_lock_payload,
     build_profile_bundle_payload,
     build_store_locator,
-    deterministic_fingerprint,
     embed_json_artifact,
     embed_tree_artifact,
     embedded_artifact_root,
@@ -31,6 +30,19 @@ from tools.lib.content_store import (
     store_artifact_root,
 )
 from src.lib.install import normalize_contract_range
+from src.lib.instance import (
+    INSTANCE_KIND_CLIENT,
+    deterministic_fingerprint as instance_deterministic_fingerprint,
+    instance_active_modpacks,
+    instance_active_profiles,
+    instance_data_root,
+    instance_install_id,
+    instance_settings_payload,
+    normalize_instance_manifest,
+    normalize_instance_settings,
+    stable_instance_id,
+    validate_instance_manifest,
+)
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
@@ -84,6 +96,22 @@ def resolve_install_root(manifest_path: str, manifest: Dict[str, object]) -> str
     if os.path.isabs(root_token):
         return root_token
     return os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(manifest_path)), root_token))
+
+
+def resolve_install_manifest_path(instance_root: str, instance_manifest: Dict[str, object]) -> str:
+    install_ref = dict(instance_manifest.get("install_ref") or {})
+    manifest_ref = str(install_ref.get("manifest_ref", "") or "").strip()
+    if manifest_ref:
+        return os.path.abspath(
+            manifest_ref if os.path.isabs(manifest_ref) else os.path.join(instance_root, manifest_ref)
+        )
+    root_path = str(install_ref.get("root_path", "") or "").strip()
+    if root_path:
+        install_root = os.path.abspath(
+            root_path if os.path.isabs(root_path) else os.path.join(instance_root, root_path)
+        )
+        return os.path.join(install_root, DEFAULT_INSTALL_MANIFEST)
+    return ""
 
 
 def refusal_payload(code_id: int, code: str, message: str,
@@ -351,16 +379,18 @@ def list_instance_manifests(search_roots: List[str],
             manifest_path = os.path.join(root, DEFAULT_INSTANCE_MANIFEST)
         if os.path.isfile(manifest_path):
             try:
-                manifest = load_json(manifest_path)
+                manifest = dict(validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=manifest_path).get("instance_manifest") or load_json(manifest_path))
             except (OSError, ValueError):
                 continue
-            if install_id and manifest.get("install_id") != install_id:
+            if install_id and instance_install_id(manifest) != install_id:
                 continue
             results.append({
                 "instance_id": manifest.get("instance_id"),
-                "install_id": manifest.get("install_id"),
+                "install_id": instance_install_id(manifest),
+                "instance_kind": manifest.get("instance_kind"),
                 "mode": manifest.get("mode", "portable"),
-                "data_root": manifest.get("data_root"),
+                "data_root": instance_data_root(manifest),
+                "save_ref_count": len(list(manifest.get("save_refs") or [])),
                 "manifest_path": manifest_path.replace("\\", "/"),
             })
             continue
@@ -369,16 +399,18 @@ def list_instance_manifests(search_roots: List[str],
                 if DEFAULT_INSTANCE_MANIFEST in filenames:
                     manifest_path = os.path.join(dirpath, DEFAULT_INSTANCE_MANIFEST)
                     try:
-                        manifest = load_json(manifest_path)
+                        manifest = dict(validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=manifest_path).get("instance_manifest") or load_json(manifest_path))
                     except (OSError, ValueError):
                         continue
-                    if install_id and manifest.get("install_id") != install_id:
+                    if install_id and instance_install_id(manifest) != install_id:
                         continue
                     results.append({
                         "instance_id": manifest.get("instance_id"),
-                        "install_id": manifest.get("install_id"),
+                        "install_id": instance_install_id(manifest),
+                        "instance_kind": manifest.get("instance_kind"),
                         "mode": manifest.get("mode", "portable"),
-                        "data_root": manifest.get("data_root"),
+                        "data_root": instance_data_root(manifest),
+                        "save_ref_count": len(list(manifest.get("save_refs") or [])),
                         "manifest_path": manifest_path.replace("\\", "/"),
                     })
     return sorted(results, key=lambda row: (str(row.get("instance_id", "")), str(row.get("manifest_path", ""))))
@@ -520,13 +552,6 @@ def resolve_data_root(instance_root: str, data_root: str) -> str:
     return os.path.join(instance_root, data_root)
 
 
-def normalize_instance_settings(payload: Dict[str, object]) -> Dict[str, object]:
-    settings = dict(payload)
-    settings["active_modpacks"] = sorted_unique(settings.get("active_modpacks"))
-    settings["active_profiles"] = sorted_unique(settings.get("active_profiles"))
-    return settings
-
-
 def default_mod_policy_id(args: argparse.Namespace) -> str:
     return str(getattr(args, "mod_policy_id", "") or "mod.policy.default")
 
@@ -579,6 +604,7 @@ def build_instance_manifest_payload(*,
                                     install_manifest_path: str,
                                     install_manifest: Dict[str, object],
                                     instance_id: str,
+                                    instance_kind: str,
                                     mode: str,
                                     store_root: str,
                                     store_manifest: Dict[str, object],
@@ -588,32 +614,39 @@ def build_instance_manifest_payload(*,
                                     profile_bundle_hash: str,
                                     mod_policy_id: str,
                                     overlay_conflict_policy_id: str,
+                                    default_session_template_id: str,
+                                    seed_policy: str,
                                     required_product_builds: Dict[str, str],
                                     required_contract_ranges: Dict[str, dict],
                                     pack_artifact_refs: List[Dict[str, object]],
                                     settings: Dict[str, object],
+                                    save_refs: List[str],
+                                    last_opened_save_id: str,
                                     capability_lockfile: str) -> Dict[str, object]:
     settings = normalize_instance_settings(settings)
+    extensions = dict((settings.get("extensions") or {}))
+    if last_opened_save_id:
+        extensions["instance.last_opened_save_id"] = last_opened_save_id
+    settings["extensions"] = extensions
+    settings["deterministic_fingerprint"] = ""
+    settings["deterministic_fingerprint"] = instance_deterministic_fingerprint(settings)
     payload = {
         "instance_id": instance_id,
+        "instance_kind": instance_kind,
         "install_id": install_manifest.get("install_id"),
         "mode": mode,
         "install_ref": build_install_ref(instance_root, install_manifest_path, install_manifest),
+        "embedded_builds": {},
         "pack_lock_hash": pack_lock_hash,
         "profile_bundle_hash": profile_bundle_hash,
         "mod_policy_id": mod_policy_id,
         "overlay_conflict_policy_id": overlay_conflict_policy_id,
+        "default_session_template_id": default_session_template_id,
+        "seed_policy": seed_policy,
         "required_product_builds": dict((key, required_product_builds[key]) for key in sorted(required_product_builds.keys())),
         "required_contract_ranges": dict((key, required_contract_ranges[key]) for key in sorted(required_contract_ranges.keys())),
-        "instance_settings": {
-            "active_profiles": settings.get("active_profiles") or [],
-            "active_modpacks": settings.get("active_modpacks") or [],
-            "data_root": settings.get("data_root") or ".",
-            "sandbox_policy_ref": settings.get("sandbox_policy_ref") or "sandbox.default",
-            "update_channel": settings.get("update_channel") or "stable",
-            "created_at": settings.get("created_at"),
-            "last_used_at": settings.get("last_used_at"),
-        },
+        "instance_settings": settings,
+        "save_refs": sorted_unique(save_refs),
         "store_root": build_store_locator(instance_root, store_root, store_manifest) if mode == "linked" else {},
         "embedded_artifacts": [],
         "data_root": settings.get("data_root") or ".",
@@ -624,7 +657,7 @@ def build_instance_manifest_payload(*,
         "update_channel": settings.get("update_channel") or "stable",
         "created_at": settings.get("created_at"),
         "last_used_at": settings.get("last_used_at"),
-        "extensions": {},
+        "extensions": dict((settings.get("extensions") or {})),
         "deterministic_fingerprint": "",
     }
     if mode == "portable":
@@ -648,7 +681,10 @@ def build_instance_manifest_payload(*,
                 artifact_id=str(profile_bundle_payload.get("profile_bundle_id", "")),
             ),
         ] + list(pack_artifact_refs)
-    payload["deterministic_fingerprint"] = deterministic_fingerprint(payload)
+    if last_opened_save_id:
+        payload["extensions"]["instance.last_opened_save_id"] = last_opened_save_id
+    payload = normalize_instance_manifest(payload)
+    payload["deterministic_fingerprint"] = instance_deterministic_fingerprint(payload)
     return payload
 
 
@@ -726,10 +762,17 @@ def materialize_instance_artifacts(*,
     )
 
 
+def clone_ignore_entries(_src: str, names: List[str]) -> List[str]:
+    ignored = []
+    for name in list(names or []):
+        if name in ("saves", "ops", "compat", DEFAULT_ACTIVE_INSTANCE):
+            ignored.append(name)
+    return ignored
+
+
 def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     install_manifest = load_json(args.install_manifest)
     install_id = install_manifest.get("install_id")
-    instance_id = args.instance_id or str(uuid.uuid4())
     data_root = args.data_root
     instance_root = args.data_root
     if args.instance_root:
@@ -744,6 +787,41 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     tx_id = args.transaction_id or str(uuid.uuid4())
     sandbox = load_sandbox_policy(args.sandbox_policy) if args.sandbox_policy else {}
     provided_caps = capabilities_from_manifest(install_manifest)
+    required_product_builds = parse_required_product_builds(getattr(args, "required_product_build", []))
+    if not required_product_builds:
+        required_product_builds = install_product_builds(install_manifest)
+    required_contract_ranges = parse_required_contract_ranges(getattr(args, "required_contract_range", []))
+    if not required_contract_ranges:
+        required_contract_ranges = install_supported_contract_ranges(install_manifest)
+    instance_kind = str(getattr(args, "instance_kind", INSTANCE_KIND_CLIENT) or INSTANCE_KIND_CLIENT).strip() or INSTANCE_KIND_CLIENT
+    default_session_template_id = str(
+        getattr(args, "default_session_template_id", "") or "session.template.default"
+    ).strip() or "session.template.default"
+    seed_policy = str(getattr(args, "seed_policy", "") or "prompt").strip() or "prompt"
+    save_refs = sorted_unique(getattr(args, "save_ref", []) or [])
+    last_opened_save_id = str(getattr(args, "last_opened_save_id", "") or "").strip()
+    if last_opened_save_id and last_opened_save_id not in save_refs:
+        save_refs = sorted(set(save_refs + [last_opened_save_id]))
+    if args.instance_id:
+        instance_id = str(args.instance_id).strip()
+    elif deterministic:
+        instance_id = stable_instance_id(
+            {
+                "install_id": str(install_id or "").strip(),
+                "instance_kind": instance_kind,
+                "mode": mode,
+                "mod_policy_id": mod_policy_id,
+                "overlay_conflict_policy_id": overlay_conflict_policy_id,
+                "active_profiles": sorted_unique(getattr(args, "active_profiles", []) or []),
+                "active_modpacks": sorted_unique(getattr(args, "active_modpacks", []) or []),
+                "required_product_builds": required_product_builds,
+                "required_contract_ranges": required_contract_ranges,
+                "default_session_template_id": default_session_template_id,
+                "seed_policy": seed_policy,
+            }
+        )
+    else:
+        instance_id = str(uuid.uuid4())
 
     if not install_id:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
@@ -862,12 +940,6 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         candidate_instance_root = os.path.abspath(instance_root)
         if candidate_data_root != candidate_instance_root:
             manifest_data_root = safe_rel(candidate_data_root, candidate_instance_root)
-    required_product_builds = parse_required_product_builds(getattr(args, "required_product_build", []))
-    if not required_product_builds:
-        required_product_builds = install_product_builds(install_manifest)
-    required_contract_ranges = parse_required_contract_ranges(getattr(args, "required_contract_range", []))
-    if not required_contract_ranges:
-        required_contract_ranges = install_supported_contract_ranges(install_manifest)
     pack_lock_payload, pack_lock_hash, profile_bundle_payload, profile_bundle_hash, pack_artifact_refs, legacy_lockfile, store_manifest = materialize_instance_artifacts(
         instance_root=instance_root,
         store_root=store_root,
@@ -885,6 +957,7 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         install_manifest_path=args.install_manifest,
         install_manifest=install_manifest,
         instance_id=instance_id,
+        instance_kind=instance_kind,
         mode=mode,
         store_root=store_root,
         store_manifest=store_manifest,
@@ -894,10 +967,17 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
         profile_bundle_hash=profile_bundle_hash,
         mod_policy_id=mod_policy_id,
         overlay_conflict_policy_id=overlay_conflict_policy_id,
+        default_session_template_id=default_session_template_id,
+        seed_policy=seed_policy,
         required_product_builds=required_product_builds,
         required_contract_ranges=required_contract_ranges,
         pack_artifact_refs=pack_artifact_refs,
         settings={
+            "renderer_mode": getattr(args, "renderer_mode", None),
+            "ui_mode_default": getattr(args, "ui_mode_default", "cli"),
+            "allow_read_only_fallback": bool(getattr(args, "allow_read_only_fallback", False)),
+            "tick_budget_policy_id": getattr(args, "tick_budget_policy_id", "tick.budget.default"),
+            "compute_profile_id": getattr(args, "compute_profile_id", "compute.profile.default"),
             "active_profiles": args.active_profiles or [],
             "active_modpacks": args.active_modpacks or [],
             "data_root": manifest_data_root,
@@ -906,8 +986,40 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
             "created_at": created_at,
             "last_used_at": created_at,
         },
+        save_refs=save_refs,
+        last_opened_save_id=last_opened_save_id,
         capability_lockfile=legacy_lockfile,
     )
+    validation = validate_instance_manifest(
+        repo_root=REPO_ROOT,
+        instance_manifest_path=manifest_path,
+        manifest_payload=payload,
+    )
+    if validation.get("result") != "complete":
+        refusal = refusal_payload(
+            5,
+            str(validation.get("refusal_code", "REFUSE_INSTANCE_INVALID")).upper() or "REFUSE_INSTANCE_INVALID",
+            "instance manifest validation failed",
+            {"instance_id": instance_id},
+        )
+        rollback_transaction(instance_root, "instances.create", tx_id, refusal, deterministic)
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+    payload = dict(validation.get("instance_manifest") or payload)
     tmp_path = manifest_path + ".tmp"
     pretty_write_json(tmp_path, payload)
     if legacy_lockfile:
@@ -962,9 +1074,12 @@ def create_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
 
 
 def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict[str, object]]:
-    source_manifest = load_json(args.source_manifest)
+    source_manifest = dict(
+        validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.source_manifest).get("instance_manifest")
+        or load_json(args.source_manifest)
+    )
     source_root = os.path.dirname(args.source_manifest)
-    install_id = source_manifest.get("install_id")
+    install_id = instance_install_id(source_manifest)
     source_mode = str(source_manifest.get("mode", "portable") or "portable").strip().lower()
     if not install_id:
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
@@ -987,11 +1102,25 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
         )
         return 3, {"result": "refused", "compat_report": report}
 
-    instance_id = args.instance_id or str(uuid.uuid4())
     target_root = args.data_root
     deterministic = args.deterministic
     tx_id = args.transaction_id or str(uuid.uuid4())
     sandbox = load_sandbox_policy(args.sandbox_policy) if args.sandbox_policy else {}
+    if args.instance_id:
+        instance_id = str(args.instance_id).strip()
+    elif deterministic:
+        instance_id = stable_instance_id(
+            {
+                "source_instance_id": str(source_manifest.get("instance_id", "")).strip(),
+                "clone_kind": "fork" if fork_only else "clone",
+                "instance_kind": str(source_manifest.get("instance_kind", "")).strip(),
+                "mode": source_mode,
+                "pack_lock_hash": str(source_manifest.get("pack_lock_hash", "")).strip(),
+                "profile_bundle_hash": str(source_manifest.get("profile_bundle_hash", "")).strip(),
+            }
+        )
+    else:
+        instance_id = str(uuid.uuid4())
 
     if not sandbox_allows(sandbox, target_root):
         refusal = refusal_payload(2, "REFUSE_LAW_FORBIDDEN",
@@ -1040,11 +1169,11 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
     stage_transaction(target_root, "instances.fork" if fork_only else "instances.clone", tx_id, deterministic)
 
     if not fork_only:
-        shutil.copytree(source_root, target_root, dirs_exist_ok=True)
+        shutil.copytree(source_root, target_root, dirs_exist_ok=True, ignore=clone_ignore_entries)
     else:
         ensure_dir(target_root)
         if source_mode == "portable":
-            for rel_path in ("embedded_artifacts", "lockfiles"):
+            for rel_path in ("embedded_artifacts", "embedded_builds", "lockfiles"):
                 src_path = os.path.join(source_root, rel_path)
                 dest_path = os.path.join(target_root, rel_path)
                 if os.path.isdir(src_path):
@@ -1061,7 +1190,48 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
         if source_store_root:
             store_manifest = initialize_store_root(source_store_root)
             payload["store_root"] = build_store_locator(target_root, source_store_root, store_manifest)
-    payload["deterministic_fingerprint"] = deterministic_fingerprint(payload)
+    source_install_manifest_path = resolve_install_manifest_path(source_root, source_manifest)
+    if source_install_manifest_path and os.path.isfile(source_install_manifest_path):
+        try:
+            source_install_manifest = load_json(source_install_manifest_path)
+        except (OSError, ValueError):
+            source_install_manifest = {}
+        if source_install_manifest:
+            payload["install_ref"] = build_install_ref(target_root, source_install_manifest_path, source_install_manifest)
+            payload["install_id"] = source_install_manifest.get("install_id") or payload.get("install_id")
+    payload = normalize_instance_manifest(payload)
+    payload["deterministic_fingerprint"] = instance_deterministic_fingerprint(payload)
+    validation = validate_instance_manifest(
+        repo_root=REPO_ROOT,
+        instance_manifest_path=manifest_path,
+        manifest_payload=payload,
+    )
+    if validation.get("result") != "complete":
+        refusal = refusal_payload(
+            5,
+            str(validation.get("refusal_code", "REFUSE_INSTANCE_INVALID")).upper() or "REFUSE_INSTANCE_INVALID",
+            "cloned instance manifest validation failed",
+            {"instance_id": instance_id},
+        )
+        shutil.rmtree(target_root, ignore_errors=True)
+        rollback_transaction(target_root, "instances.fork" if fork_only else "instances.clone", tx_id, refusal, deterministic)
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=capabilities_from_manifest(source_manifest),
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+    payload = dict(validation.get("instance_manifest") or payload)
     pretty_write_json(manifest_path, payload)
 
     if args.simulate_failure == "commit":
@@ -1110,10 +1280,191 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
     }
 
 
+def edit_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
+    deterministic = args.deterministic
+    manifest_path = args.instance_manifest
+    instance_root = os.path.dirname(os.path.abspath(manifest_path))
+    if not os.path.isfile(manifest_path):
+        install_id = ""
+        instance_id = ""
+        provided_caps: List[str] = []
+        refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "instance manifest not found", {"manifest": os.path.basename(manifest_path)})
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+
+    manifest = dict(
+        validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=manifest_path).get("instance_manifest")
+        or load_json(manifest_path)
+    )
+    install_id = instance_install_id(manifest)
+    instance_id = str(manifest.get("instance_id", "")).strip()
+    provided_caps = capabilities_from_manifest(manifest)
+    tx_id = args.transaction_id or str(uuid.uuid4())
+    sandbox = load_sandbox_policy(args.sandbox_policy) if args.sandbox_policy else {}
+
+    if not sandbox_allows(sandbox, instance_root):
+        refusal = refusal_payload(2, "REFUSE_LAW_FORBIDDEN", "sandbox denies instance root", {"path": os.path.basename(instance_root)})
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+
+    begin_transaction(instance_root, "instances.edit", tx_id, deterministic)
+    stage_transaction(instance_root, "instances.edit", tx_id, deterministic)
+
+    updated = dict(manifest)
+    if getattr(args, "instance_kind", None):
+        updated["instance_kind"] = str(args.instance_kind).strip()
+    if getattr(args, "mode", None):
+        updated["mode"] = str(args.mode).strip()
+    if getattr(args, "default_session_template_id", None):
+        updated["default_session_template_id"] = str(args.default_session_template_id).strip()
+    if getattr(args, "seed_policy", None):
+        updated["seed_policy"] = str(args.seed_policy).strip()
+    if getattr(args, "mod_policy_id", None):
+        updated["mod_policy_id"] = str(args.mod_policy_id).strip()
+    if getattr(args, "overlay_conflict_policy_id", None):
+        updated["overlay_conflict_policy_id"] = str(args.overlay_conflict_policy_id).strip()
+    if getattr(args, "required_product_build", None):
+        updated["required_product_builds"] = parse_required_product_builds(args.required_product_build)
+    if getattr(args, "required_contract_range", None):
+        updated["required_contract_ranges"] = parse_required_contract_ranges(args.required_contract_range)
+    if getattr(args, "profile", None):
+        updated["active_profiles"] = sorted_unique(args.profile)
+    if getattr(args, "modpack", None):
+        updated["active_modpacks"] = sorted_unique(args.modpack)
+    if getattr(args, "save_ref", None):
+        updated["save_refs"] = sorted_unique(args.save_ref)
+    if getattr(args, "last_opened_save_id", None) is not None:
+        updated_extensions = dict(updated.get("extensions") or {})
+        last_opened_save_id = str(args.last_opened_save_id or "").strip()
+        if last_opened_save_id:
+            updated_extensions["instance.last_opened_save_id"] = last_opened_save_id
+            updated["save_refs"] = sorted(set(list(updated.get("save_refs") or []) + [last_opened_save_id]))
+        else:
+            updated_extensions.pop("instance.last_opened_save_id", None)
+        updated["extensions"] = updated_extensions
+    if getattr(args, "install_manifest", None):
+        install_manifest = load_json(args.install_manifest)
+        updated["install_ref"] = build_install_ref(instance_root, args.install_manifest, install_manifest)
+        updated["install_id"] = install_manifest.get("install_id")
+    if getattr(args, "store_root", None):
+        updated["store_root"] = {
+            "store_id": str((dict(updated.get("store_root") or {})).get("store_id", "store.default")),
+            "root_path": safe_rel(args.store_root, instance_root),
+            "manifest_ref": safe_rel(os.path.join(args.store_root, "store.root.json"), instance_root),
+        }
+
+    settings = instance_settings_payload(updated)
+    if getattr(args, "renderer_mode", None) is not None:
+        settings["renderer_mode"] = args.renderer_mode
+    if getattr(args, "ui_mode_default", None):
+        settings["ui_mode_default"] = str(args.ui_mode_default).strip()
+    if bool(getattr(args, "allow_read_only_fallback", False)):
+        settings["allow_read_only_fallback"] = True
+    if bool(getattr(args, "deny_read_only_fallback", False)):
+        settings["allow_read_only_fallback"] = False
+    if getattr(args, "tick_budget_policy_id", None):
+        settings["tick_budget_policy_id"] = str(args.tick_budget_policy_id).strip()
+    if getattr(args, "compute_profile_id", None):
+        settings["compute_profile_id"] = str(args.compute_profile_id).strip()
+    if getattr(args, "profile", None):
+        settings["active_profiles"] = sorted_unique(args.profile)
+    if getattr(args, "modpack", None):
+        settings["active_modpacks"] = sorted_unique(args.modpack)
+    updated["instance_settings"] = settings
+    updated["data_root"] = str(settings.get("data_root", updated.get("data_root", "."))).strip() or "."
+    updated["active_profiles"] = list(settings.get("active_profiles") or [])
+    updated["active_modpacks"] = list(settings.get("active_modpacks") or [])
+    updated["sandbox_policy_ref"] = str(settings.get("sandbox_policy_ref", updated.get("sandbox_policy_ref", "sandbox.default"))).strip() or "sandbox.default"
+    updated["update_channel"] = str(settings.get("update_channel", updated.get("update_channel", "stable"))).strip() or "stable"
+    updated["last_used_at"] = now_timestamp(deterministic)
+    updated = normalize_instance_manifest(updated)
+    updated["deterministic_fingerprint"] = instance_deterministic_fingerprint(updated)
+
+    validation = validate_instance_manifest(
+        repo_root=REPO_ROOT,
+        instance_manifest_path=manifest_path,
+        manifest_payload=updated,
+    )
+    if validation.get("result") != "complete":
+        refusal = refusal_payload(
+            5,
+            str(validation.get("refusal_code", "REFUSE_INSTANCE_INVALID")).upper() or "REFUSE_INSTANCE_INVALID",
+            "instance edit validation failed",
+            {"instance_id": instance_id},
+        )
+        rollback_transaction(instance_root, "instances.edit", tx_id, refusal, deterministic)
+        report = build_compat_report(
+            context="update",
+            install_id=install_id,
+            instance_id=instance_id,
+            runtime_id=None,
+            capability_baseline=args.capability_baseline,
+            required_capabilities=[],
+            provided_capabilities=provided_caps,
+            missing_capabilities=[],
+            compatibility_mode="refuse",
+            refusal_codes=[refusal.get("code")],
+            mitigation_hints=[],
+            deterministic=deterministic,
+            refusal=refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+
+    pretty_write_json(manifest_path, dict(validation.get("instance_manifest") or updated))
+    commit_transaction(instance_root, "instances.edit", tx_id, deterministic)
+    report = build_compat_report(
+        context="update",
+        install_id=instance_install_id(updated),
+        instance_id=instance_id,
+        runtime_id=None,
+        capability_baseline=args.capability_baseline,
+        required_capabilities=[],
+        provided_capabilities=provided_caps,
+        missing_capabilities=[],
+        compatibility_mode="full",
+        refusal_codes=[],
+        mitigation_hints=[],
+        deterministic=deterministic,
+        refusal=None,
+    )
+    return 0, {"result": "ok", "compat_report": report, "instance_manifest": manifest_path.replace("\\", "/"), "transaction_id": tx_id}
+
+
 def activate_instance(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     install_manifest = load_json(args.install_manifest)
     install_root = resolve_install_root(args.install_manifest, install_manifest)
-    instance_manifest = load_json(args.instance_manifest)
+    instance_manifest = dict(
+        validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.instance_manifest).get("instance_manifest")
+        or load_json(args.instance_manifest)
+    )
     instance_id = instance_manifest.get("instance_id")
     deterministic = args.deterministic
     tx_id = args.transaction_id or str(uuid.uuid4())
@@ -1203,6 +1554,7 @@ def main() -> int:
     instances_create.add_argument("--instance-root", default=None)
     instances_create.add_argument("--instance-id", default=None)
     instances_create.add_argument("--mode", choices=["linked", "portable"], default="portable")
+    instances_create.add_argument("--instance-kind", choices=["instance.client", "instance.server", "instance.tooling"], default="instance.client")
     instances_create.add_argument("--store-root", default=None)
     instances_create.add_argument("--active-profile", action="append", default=[])
     instances_create.add_argument("--active-modpack", action="append", default=[])
@@ -1212,6 +1564,15 @@ def main() -> int:
     instances_create.add_argument("--sandbox-policy-ref", default=None)
     instances_create.add_argument("--mod-policy-id", default="mod.policy.default")
     instances_create.add_argument("--overlay-conflict-policy-id", default="overlay.conflict.default")
+    instances_create.add_argument("--default-session-template-id", default="session.template.default")
+    instances_create.add_argument("--seed-policy", choices=["fixed", "prompt", "deterministic_counter"], default="prompt")
+    instances_create.add_argument("--renderer-mode", choices=["software", "hardware_stub"], default=None)
+    instances_create.add_argument("--ui-mode-default", choices=["cli", "tui", "rendered"], default="cli")
+    instances_create.add_argument("--allow-read-only-fallback", action="store_true")
+    instances_create.add_argument("--tick-budget-policy-id", default="tick.budget.default")
+    instances_create.add_argument("--compute-profile-id", default="compute.profile.default")
+    instances_create.add_argument("--save-ref", action="append", default=[])
+    instances_create.add_argument("--last-opened-save-id", default="")
     instances_create.add_argument("--required-product-build", action="append", default=[])
     instances_create.add_argument("--required-contract-range", action="append", default=[])
     instances_create.add_argument("--update-channel", default="stable")
@@ -1233,6 +1594,30 @@ def main() -> int:
     instances_fork.add_argument("--sandbox-policy", default=None)
     instances_fork.add_argument("--created-at", default=None)
     instances_fork.add_argument("--simulate-failure", default=None)
+
+    instances_edit = instances_sub.add_parser("edit")
+    instances_edit.add_argument("--instance-manifest", required=True)
+    instances_edit.add_argument("--install-manifest", default=None)
+    instances_edit.add_argument("--sandbox-policy", default=None)
+    instances_edit.add_argument("--mode", choices=["linked", "portable"], default=None)
+    instances_edit.add_argument("--instance-kind", choices=["instance.client", "instance.server", "instance.tooling"], default=None)
+    instances_edit.add_argument("--store-root", default=None)
+    instances_edit.add_argument("--profile", action="append", default=[])
+    instances_edit.add_argument("--modpack", action="append", default=[])
+    instances_edit.add_argument("--save-ref", action="append", default=[])
+    instances_edit.add_argument("--last-opened-save-id", default=None)
+    instances_edit.add_argument("--renderer-mode", choices=["software", "hardware_stub"], default=None)
+    instances_edit.add_argument("--ui-mode-default", choices=["cli", "tui", "rendered"], default=None)
+    instances_edit.add_argument("--allow-read-only-fallback", action="store_true")
+    instances_edit.add_argument("--deny-read-only-fallback", action="store_true")
+    instances_edit.add_argument("--tick-budget-policy-id", default=None)
+    instances_edit.add_argument("--compute-profile-id", default=None)
+    instances_edit.add_argument("--default-session-template-id", default=None)
+    instances_edit.add_argument("--seed-policy", choices=["fixed", "prompt", "deterministic_counter"], default=None)
+    instances_edit.add_argument("--mod-policy-id", default=None)
+    instances_edit.add_argument("--overlay-conflict-policy-id", default=None)
+    instances_edit.add_argument("--required-product-build", action="append", default=[])
+    instances_edit.add_argument("--required-contract-range", action="append", default=[])
 
     instances_activate = instances_sub.add_parser("activate")
     instances_activate.add_argument("--install-manifest", required=True)
@@ -1334,6 +1719,11 @@ def main() -> int:
 
     if args.section == "instances" and args.cmd == "fork":
         code, output = clone_instance(args, fork_only=True)
+        print(json.dumps(output, indent=2))
+        return code
+
+    if args.section == "instances" and args.cmd == "edit":
+        code, output = edit_instance(args)
         print(json.dumps(output, indent=2))
         return code
 
