@@ -665,7 +665,7 @@ def perform_preflight(args: argparse.Namespace,
     instance_root = os.path.dirname(instance_manifest_path)
     data_root = resolve_data_root(instance_root, instance_data_root(instance_manifest))
     allow_read_only_fallback = instance_allow_read_only_fallback(instance_manifest)
-    selected_save_id = str(getattr(args, "save", "") or "").strip() or instance_last_opened_save_id(instance_manifest)
+    selected_save_id = resolve_requested_save_id(str(getattr(args, "save", "") or "").strip()) or instance_last_opened_save_id(instance_manifest)
     if selected_save_id and selected_save_id not in list(instance_manifest.get("save_refs") or []):
         refusal = refusal_payload(
             1,
@@ -1193,6 +1193,10 @@ def resolve_instance_selection(args: argparse.Namespace, state: dict) -> str:
     token = str(getattr(args, "instance", "") or "").strip()
     if token and os.path.isfile(token):
         return os.path.abspath(token)
+    if token and os.path.isdir(token):
+        candidate = os.path.join(os.path.abspath(token), DEFAULT_INSTANCE_MANIFEST)
+        if os.path.isfile(candidate):
+            return candidate
     active_manifest = str(state.get("active_instance_manifest", "") or "").strip()
     active_instance_id = str(state.get("active_instance_id", "") or "").strip()
     if token and active_instance_id == token and active_manifest and os.path.isfile(active_manifest):
@@ -1211,6 +1215,25 @@ def resolve_instance_selection(args: argparse.Namespace, state: dict) -> str:
     if len(matches) > 1 and active_manifest and os.path.abspath(active_manifest) in matches:
         return os.path.abspath(active_manifest)
     return ""
+
+
+def resolve_requested_save_id(token: str) -> str:
+    selected = str(token or "").strip()
+    if not selected:
+        return ""
+    if os.path.isdir(selected):
+        candidate = os.path.join(os.path.abspath(selected), "save.manifest.json")
+        if os.path.isfile(candidate):
+            try:
+                return str(load_json(candidate).get("save_id", "")).strip() or selected
+            except (OSError, ValueError):
+                return selected
+    if os.path.isfile(selected):
+        try:
+            return str(load_json(selected).get("save_id", "")).strip() or selected
+        except (OSError, ValueError):
+            return selected
+    return selected
 
 
 def resolve_install_selection(args: argparse.Namespace, state: dict, instance_root: str, instance_manifest: dict) -> str:

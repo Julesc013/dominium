@@ -4,6 +4,7 @@ from __future__ import print_function
 import argparse
 import base64
 import hashlib
+import importlib
 import json
 import os
 import shutil
@@ -39,6 +40,12 @@ from src.lib.install import (
     validate_install_manifest,
     verify_install_registry,
 )
+from src.lib.export import (
+    export_instance_bundle,
+    export_pack_bundle,
+    export_save_bundle,
+)
+from src.lib.save import resolve_save_manifest_path
 from tools.lib.content_store import initialize_store_root
 
 
@@ -235,6 +242,44 @@ def resolve_ops_cli() -> str:
 
 def resolve_share_cli() -> str:
     return os.path.join(REPO_ROOT_HINT, "tools", "share", "share_cli.py")
+
+
+def resolve_import_engine_module():
+    return importlib.import_module("src.lib.import")
+
+
+def resolve_instance_manifest_path(instance_id: str, explicit_path: str = "", store_root: str = "") -> str:
+    if explicit_path:
+        return normalize_path(explicit_path)
+    token = str(instance_id or "").strip()
+    if not token:
+        return ""
+    candidates = []
+    if store_root:
+        candidates.append(os.path.join(normalize_path(store_root), "instances", token, "instance.manifest.json"))
+    candidates.append(os.path.join(REPO_ROOT_HINT, "instances", token, "instance.manifest.json"))
+    for candidate in candidates:
+        if os.path.isfile(candidate):
+            return normalize_path(candidate)
+    return normalize_path(candidates[0]) if candidates else ""
+
+
+def resolve_pack_root(pack_id: str, explicit_root: str = "") -> str:
+    if explicit_root:
+        return normalize_path(explicit_root)
+    token = str(pack_id or "").strip()
+    if not token:
+        return ""
+    candidates = [
+        os.path.join(REPO_ROOT_HINT, "packs", token),
+        os.path.join(REPO_ROOT_HINT, "packs", token.split(".", 1)[0], token),
+        os.path.join(REPO_ROOT_HINT, "packs", "source", token),
+        os.path.join(REPO_ROOT_HINT, "packs", "core", token),
+    ]
+    for candidate in candidates:
+        if os.path.isdir(candidate):
+            return normalize_path(candidate)
+    return normalize_path(candidates[0])
 
 
 def run_script(path: str, args: List[str]) -> Tuple[int, Dict[str, object], str]:
@@ -1639,48 +1684,105 @@ def handle_instance(args: argparse.Namespace, deterministic: bool) -> int:
         return rc
 
     if cmd == "export":
-        extra += [
-            "export",
-            "--bundle-type", "instance",
-            "--artifact", args.instance_manifest,
-            "--out", args.out,
-        ]
-        if args.bundle_id:
-            extra += ["--bundle-id", args.bundle_id]
-        if args.created_at:
-            extra += ["--created-at", args.created_at]
-        if args.created_by:
-            extra += ["--created-by", args.created_by]
-        if args.tool_version:
-            extra += ["--tool-version", args.tool_version]
-        if args.trust_tier:
-            extra += ["--trust-tier", args.trust_tier]
-        rc, payload, _stderr = run_script(resolve_share_cli(), extra)
+        instance_manifest_path = resolve_instance_manifest_path(
+            getattr(args, "instance_id", ""),
+            explicit_path=getattr(args, "instance_manifest", ""),
+            store_root=getattr(args, "store_root", ""),
+        )
+        if not instance_manifest_path or not os.path.isfile(instance_manifest_path):
+            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "instance manifest is required for export", {})
+            output_refusal("missing instance manifest", refusal, args.format)
+            return EXIT_REFUSED
+        payload = export_instance_bundle(
+            repo_root=REPO_ROOT_HINT,
+            instance_manifest_path=instance_manifest_path,
+            out_path=normalize_path(args.out),
+            export_mode=str(getattr(args, "mode", "") or "portable").strip() or "portable",
+            bundle_id=str(getattr(args, "bundle_id", "") or "").strip(),
+        )
         write_output(payload, args.format)
-        return rc
+        return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
 
     if cmd == "import":
-        if not args.confirm:
-            refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "confirmation required for instance import", {})
-            output_refusal("instance import requires confirmation", refusal, args.format)
-            return EXIT_REFUSED
-        extra += ["import", "--bundle", args.bundle, "--confirm"]
-        if args.out:
-            extra += ["--out", args.out]
-        if args.instance_id:
-            extra += ["--instance-id", args.instance_id]
-        if args.import_mode:
-            extra += ["--import-mode", args.import_mode]
-        if args.store_root:
-            extra += ["--store-root", args.store_root]
-        for pack_id in args.available_pack or []:
-            extra += ["--available-pack", pack_id]
-        rc, payload, _stderr = run_script(resolve_share_cli(), extra)
+        import_engine = resolve_import_engine_module()
+        payload = import_engine.import_instance_bundle(
+            repo_root=REPO_ROOT_HINT,
+            bundle_path=normalize_path(args.bundle),
+            out_path=normalize_path(args.out) if args.out else "",
+            import_mode=str(getattr(args, "import_mode", "") or "").strip(),
+            store_root=normalize_path(args.store_root) if args.store_root else "",
+            instance_id=str(getattr(args, "instance_id", "") or "").strip(),
+        )
         write_output(payload, args.format)
-        return rc
+        return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
 
     refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown instance command", {"cmd": cmd})
     output_refusal("unknown instance command", refusal, args.format)
+    return EXIT_REFUSED
+
+
+def handle_save(args: argparse.Namespace) -> int:
+    cmd = str(getattr(args, "save_cmd", "") or "").strip().lower()
+    if cmd == "export":
+        save_manifest_path = str(getattr(args, "save_manifest", "") or "").strip()
+        if not save_manifest_path:
+            save_manifest_path = resolve_save_manifest_path(
+                repo_root=REPO_ROOT_HINT,
+                install_root=normalize_path(args.store_root) if args.store_root else "",
+                instance_root="",
+                instance_manifest={},
+                save_id=str(getattr(args, "save_id", "") or "").strip(),
+            )
+        if not save_manifest_path or not os.path.isfile(save_manifest_path):
+            output_refusal("missing save manifest", refusal_payload(1, "REFUSE_INVALID_INTENT", "save manifest is required for export", {}), args.format)
+            return EXIT_REFUSED
+        payload = export_save_bundle(
+            repo_root=REPO_ROOT_HINT,
+            save_manifest_path=save_manifest_path,
+            out_path=normalize_path(args.out),
+            vendor_packs=str(getattr(args, "vendor_packs", "no") or "no").strip().lower() == "yes",
+            bundle_id=str(getattr(args, "bundle_id", "") or "").strip(),
+            store_root=normalize_path(args.store_root) if args.store_root else "",
+        )
+        write_output(payload, args.format)
+        return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
+    if cmd == "import":
+        import_engine = resolve_import_engine_module()
+        payload = import_engine.import_save_bundle(
+            repo_root=REPO_ROOT_HINT,
+            bundle_path=normalize_path(args.bundle),
+            out_path=normalize_path(args.out) if args.out else "",
+            store_root=normalize_path(args.store_root) if args.store_root else "",
+        )
+        write_output(payload, args.format)
+        return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
+    output_refusal("unknown save command", refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown save command", {"cmd": cmd}), args.format)
+    return EXIT_REFUSED
+
+
+def handle_pack(args: argparse.Namespace) -> int:
+    cmd = str(getattr(args, "pack_cmd", "") or "").strip().lower()
+    if cmd == "export":
+        pack_root = resolve_pack_root(str(getattr(args, "pack_id", "") or "").strip(), explicit_root=str(getattr(args, "pack_root", "") or "").strip())
+        payload = export_pack_bundle(
+            repo_root=REPO_ROOT_HINT,
+            pack_root=pack_root,
+            out_path=normalize_path(args.out),
+            bundle_id=str(getattr(args, "bundle_id", "") or "").strip(),
+        )
+        write_output(payload, args.format)
+        return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
+    if cmd == "import":
+        import_engine = resolve_import_engine_module()
+        payload = import_engine.import_pack_bundle(
+            repo_root=REPO_ROOT_HINT,
+            bundle_path=normalize_path(args.bundle),
+            out_path=normalize_path(args.out) if args.out else "",
+            store_root=normalize_path(args.store_root) if args.store_root else "",
+        )
+        write_output(payload, args.format)
+        return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
+    output_refusal("unknown pack command", refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown pack command", {"cmd": cmd}), args.format)
     return EXIT_REFUSED
 
 
@@ -1892,22 +1994,55 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     instance_edit.add_argument("--required-contract-range", action="append", default=[])
 
     instance_export = instance_sub.add_parser("export")
-    instance_export.add_argument("--instance-manifest", required=True)
+    instance_export.add_argument("--instance-manifest", default="")
+    instance_export.add_argument("--instance-id", default="")
     instance_export.add_argument("--out", required=True)
+    instance_export.add_argument("--mode", choices=["linked", "portable"], default="portable")
     instance_export.add_argument("--bundle-id", default=None)
     instance_export.add_argument("--created-at", default=None)
     instance_export.add_argument("--created-by", default=None)
     instance_export.add_argument("--tool-version", default=None)
     instance_export.add_argument("--trust-tier", default=None)
+    instance_export.add_argument("--store-root", default=None)
 
     instance_import = instance_sub.add_parser("import")
     instance_import.add_argument("--bundle", required=True)
-    instance_import.add_argument("--out", required=True)
+    instance_import.add_argument("--out", default="")
     instance_import.add_argument("--instance-id", default=None)
     instance_import.add_argument("--import-mode", choices=["linked", "portable"], default=None)
     instance_import.add_argument("--store-root", default=None)
     instance_import.add_argument("--available-pack", action="append", default=[])
     instance_import.add_argument("--confirm", action="store_true")
+
+    save_cmd = sub.add_parser("save")
+    save_sub = save_cmd.add_subparsers(dest="save_cmd")
+
+    save_export = save_sub.add_parser("export")
+    save_export.add_argument("--save-id", default="")
+    save_export.add_argument("--save-manifest", default="")
+    save_export.add_argument("--out", required=True)
+    save_export.add_argument("--vendor-packs", choices=["yes", "no"], default="no")
+    save_export.add_argument("--bundle-id", default=None)
+    save_export.add_argument("--store-root", default="")
+
+    save_import = save_sub.add_parser("import")
+    save_import.add_argument("--bundle", required=True)
+    save_import.add_argument("--out", default="")
+    save_import.add_argument("--store-root", default="")
+
+    pack_cmd = sub.add_parser("pack")
+    pack_sub = pack_cmd.add_subparsers(dest="pack_cmd")
+
+    pack_export = pack_sub.add_parser("export")
+    pack_export.add_argument("--pack-id", default="")
+    pack_export.add_argument("--pack-root", default="")
+    pack_export.add_argument("--out", required=True)
+    pack_export.add_argument("--bundle-id", default=None)
+
+    pack_import = pack_sub.add_parser("import")
+    pack_import.add_argument("--bundle", required=True)
+    pack_import.add_argument("--out", default="")
+    pack_import.add_argument("--store-root", default="")
 
     repair_cmd = sub.add_parser("repair")
     repair_cmd.add_argument("--manifest", required=True)
@@ -2025,6 +2160,10 @@ def _legacy_main(argv: list[str] | None = None) -> int:
         return handle_install(args, deterministic)
     if args.cmd == "instance":
         return handle_instance(args, deterministic)
+    if args.cmd == "save":
+        return handle_save(args)
+    if args.cmd == "pack":
+        return handle_pack(args)
     if args.cmd == "repair":
         return handle_repair(args, deterministic)
     if args.cmd == "uninstall":
