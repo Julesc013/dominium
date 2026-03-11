@@ -346,7 +346,7 @@ def _write_pack(
 
 
 def _build_product_files(
-    workspace_root: str,
+    descriptor_repo_root: str,
     install_root: str,
     *,
     product_id: str,
@@ -358,7 +358,7 @@ def _build_product_files(
     binary_name = "dominium_{}".format(product_id)
     binary_path = os.path.join(install_root, "bin", binary_name)
     _write_text(binary_path, "{}:{}\n".format(product_id, build_id))
-    descriptor = build_product_descriptor(workspace_root, product_id=product_id, product_version=product_version)
+    descriptor = build_product_descriptor(descriptor_repo_root, product_id=product_id, product_version=product_version)
     if protocol_version_override:
         updated_rows = []
         for row in list(descriptor.get("protocol_versions_supported") or []):
@@ -384,6 +384,7 @@ def _build_product_files(
 def _build_install_manifest(
     workspace_root: str,
     *,
+    descriptor_repo_root: str,
     install_root: str,
     install_id: str,
     install_version: str,
@@ -405,7 +406,7 @@ def _build_install_manifest(
     for product_id in products:
         build_id = "build.{}.{}".format(product_id, canonical_sha256({"install_id": install_id, "product_id": product_id})[:12])
         descriptor = _build_product_files(
-            workspace_root,
+            descriptor_repo_root,
             install_root,
             product_id=product_id,
             build_id=build_id,
@@ -635,6 +636,7 @@ def generate_lib_stress_scenario(
     seed: int = DEFAULT_LIB7_SEED,
     slash_mode: str = "forward",
 ) -> dict:
+    repo_root = os.path.abspath(str(repo_root or REPO_ROOT_HINT).strip() or REPO_ROOT_HINT)
     workspace_root = os.path.abspath(str(out_root or "").strip())
     if os.path.isdir(workspace_root):
         shutil.rmtree(workspace_root)
@@ -651,6 +653,7 @@ def generate_lib_stress_scenario(
 
     install_a_manifest_path, install_a_manifest = _build_install_manifest(
         workspace_root,
+        descriptor_repo_root=repo_root,
         install_root=install_a_root,
         install_id="official.dominium.install.a",
         install_version="0.0.0",
@@ -661,6 +664,7 @@ def generate_lib_stress_scenario(
     )
     install_b_manifest_path, install_b_manifest = _build_install_manifest(
         workspace_root,
+        descriptor_repo_root=repo_root,
         install_root=install_b_root,
         install_id="fork.official.dominium.alt.b",
         install_version="0.0.0-fork",
@@ -671,6 +675,7 @@ def generate_lib_stress_scenario(
     )
     install_c_manifest_path, install_c_manifest = _build_install_manifest(
         workspace_root,
+        descriptor_repo_root=repo_root,
         install_root=install_c_root,
         install_id="official.dominium.install.legacy.c",
         install_version="0.0.0-legacy",

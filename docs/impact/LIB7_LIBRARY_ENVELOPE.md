@@ -31,6 +31,7 @@ Superseded By: none
 - launcher preflight now reruns PACK-COMPAT against resolved instance payloads instead of trusting lock presence alone
 - save-open read-only fallback, provider ambiguity refusal, and export/import roundtrips are pinned into one regression lock
 - cross-platform path spelling is normalized out of bundle hashes and stress projections
+- product descriptor emission is anchored to the repo root so in-repo and external stress workspaces produce identical install and instance bundle hashes
 
 ## Unchanged
 

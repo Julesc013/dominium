@@ -10,22 +10,23 @@ Deterministic LIB-7 regression lock established at `data/regression/lib_full_bas
 
 Fixed seed scenario:
 - `scenario.lib7.635f8375baecd938` (`seed=71007`, `slash_mode=forward`) -> `result=complete`
-- repeated-run projection hash: `595c2cd33a762c0d7c6431e39f2e524a58ea9185fd253f3cfde80d7f3b97d2eb`
-- stress report fingerprint: `029d78b95e5ce504b2bd23d628b2a8c01aae2fdc1f01f56a79d1055c41568aa2`
+- repeated-run projection hash: `6e48d97ec870ff9fc7436bce9caf3d643363bd1fd397edd931efb2ed18ae1506`
+- stress report fingerprint: `ae90db9a983a64f833d28719afe10bcd018fbc362e3c64cc99beec1b136128e1`
 
 Regression lock update control:
 - `required_commit_tag = LIB-REGRESSION-UPDATE`
 
 ## Bundle + Import Envelope
 Pinned bundle hashes:
-- `instance_linked = 9a700e86a98981b96bc5b98c622a1b38340387381562028a19d4debbe0ddf9b8`
-- `instance_portable = e8864e734480455001f0df7e4e53b45371c9d3870139b055dfc67f3b60a7f300`
+- `instance_linked = 4faca3d5a82cda3663caa96a5069f87f89f4e94c99abb15f24ebe3653a990e3c`
+- `instance_portable = af4bbbc2908cc40419260a633add35459e61449c790febfd923f51b4123b0e4d`
 - `save = 55c9d255890cf34506e1271b3e675261c5212858327fb28acb1ce1fc9d8d5e37`
 - `pack = 5756dc708fa4c237a05c8f5f4ccfe9b7cce1b5c6083a22300301d172dfec3d97`
 
 Deterministic envelope assertions:
 - repeated runs keep identical projection hashes
 - forward- and backslash-shaped scenarios keep identical bundle hashes
+- external-temp and in-repo workspaces keep identical bundle hashes
 - `tool_verify_bundle` returns `result=complete` for instance, save, and pack bundles
 - import previews complete for linked instance, portable instance, save, and pack bundles
 
@@ -64,6 +65,7 @@ Refusal counts:
 - TestX (LIB-7 required subset): PASS
   - `test_lib_stress_scenario_deterministic`
   - `test_export_import_roundtrip_hash_match`
+  - `test_bundle_hash_independent_of_workspace_root`
   - `test_provider_resolution_policies`
   - `test_strict_refuses_ambiguous_provides`
   - `test_save_read_only_fallback_logged`

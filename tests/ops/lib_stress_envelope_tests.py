@@ -72,6 +72,26 @@ def test_export_import_roundtrip_hash_match(tmp_root: str) -> None:
         raise RuntimeError("expected all LIB-7 bundle verifications to complete")
 
 
+def test_bundle_hash_independent_of_workspace_root(tmp_root: str) -> None:
+    external_report = run_lib_stress(
+        repo_root=REPO_ROOT_HINT,
+        out_root=os.path.join(tmp_root, "run_external"),
+        seed=DEFAULT_LIB7_SEED,
+        slash_mode="forward",
+    )
+    repo_local_parent = os.path.join(REPO_ROOT_HINT, "build", "tmp", "lib7_workspace_root_compare")
+    os.makedirs(repo_local_parent, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="lib7_repo_", dir=repo_local_parent) as repo_local_root:
+        repo_local_report = run_lib_stress(
+            repo_root=REPO_ROOT_HINT,
+            out_root=os.path.join(repo_local_root, "run_forward"),
+            seed=DEFAULT_LIB7_SEED,
+            slash_mode="forward",
+        )
+    if dict(external_report.get("bundle_hashes") or {}) != dict(repo_local_report.get("bundle_hashes") or {}):
+        raise RuntimeError("bundle hashes changed when the LIB-7 workspace moved inside the repo")
+
+
 def test_provider_resolution_policies(tmp_root: str) -> None:
     report = _report(tmp_root, "forward")
     outcomes = dict(report.get("provider_resolution_outcomes") or {})
@@ -140,6 +160,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as tmp_root:
         test_lib_stress_scenario_deterministic(tmp_root)
         test_export_import_roundtrip_hash_match(tmp_root)
+        test_bundle_hash_independent_of_workspace_root(tmp_root)
         test_provider_resolution_policies(tmp_root)
         test_strict_refuses_ambiguous_provides(tmp_root)
         test_save_read_only_fallback_logged(tmp_root)
