@@ -1,0 +1,39 @@
+SCHEMA: lib/bundle_item.schema
+schema_id: dominium.schema.lib.bundle_item
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical ordered content row used by LIB-6 bundles.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- Breaking field removal or semantic reuse requires a MAJOR version bump.
+
+NON-SEMANTICS:
+- Bundle items describe payload membership; they do not grant authority.
+- Path order does not define semantics beyond canonical ordering.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- path_ref: relative path within `content/`.
+- sha256: lowercase SHA-256 hex string.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record bundle_item
+  required:
+    - item_kind: tag
+    - item_id_or_hash: tag
+    - relative_path: path_ref
+    - content_hash: sha256
+    - deterministic_fingerprint: sha256
+  optional:
+    - extensions: map
+
+INVARIANTS:
+- relative_path must be relative and must not encode host-specific absolute paths.
+- content_hash must match the canonical exported file bytes.
+- deterministic_fingerprint is computed from canonical serialized content.

@@ -20,6 +20,12 @@ Template:
   Migration: <required migration steps or "none">
 
 - Date: 2026-03-11
+  Schema(s): schema/lib/bundle_manifest.schema; schema/lib/bundle_item.schema
+  Change: add LIB-6 deterministic bundle manifest and ordered bundle item contracts for export/import tooling
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-BUNDLES-DETERMINISTIC; INV-IMPORT-VALIDATES-HASHES
+  Migration: legacy `bundle.container.json` remains a compatibility surface until LIB-6 export/import engines fully replace it
+
+- Date: 2026-03-11
   Schema(s): schema/lib/provides_declaration.schema; schema/lib/provides_resolution.schema; schema/lib/instance_manifest.schema; schema/instance.manifest.schema; schema/packs/pack_lock.schema; schema/packs/pack_compat_manifest.schema; schema/pack_manifest.schema
   Change: add LIB-5 fork namespacing plus deterministic provides declarations and resolution records across instance and pack-lock contracts
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-FORKS-MUST-NAMESPACE; INV-PROVIDES-RESOLUTION-DETERMINISTIC; INV-STRICT-REFUSES-AMBIGUITY
