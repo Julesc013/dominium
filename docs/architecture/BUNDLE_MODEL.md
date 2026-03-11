@@ -16,6 +16,15 @@ Scope: deterministic share bundles for saves, replays, blueprints, modpacks, and
 - `modpack`
 - `instance`
 
+## Shareable Artifact Bundle
+
+Blueprint bundles are the first LIB-4 shareable artifact bundle surface.
+
+- Primary payload: `artifacts/blueprint/<payload>.json`
+- Required sidecar: `artifacts/blueprint/shareable.artifact.manifest.json`
+- The sidecar pins `content_hash`, contract/capability requirements, degrade mode, and migration refs
+- Inspect/import must validate the sidecar before accepting the bundle
+
 ## Instance Bundle
 
 Instance bundles are the LIB-2 portable interchange primitive.
@@ -30,6 +39,7 @@ Instance bundles are the LIB-2 portable interchange primitive.
 
 - Bundle contents are indexed canonically.
 - File hashes must validate on inspect/import.
+- Shareable artifact sidecars must validate `content_hash` against the bundled payload.
 - Export/import must not depend on filesystem timestamps or OS metadata.
 - Missing required embedded artifacts are refusal outcomes.
 
@@ -44,5 +54,7 @@ Instance bundles are the LIB-2 portable interchange primitive.
 ## Related Contracts
 
 - `schema/bundle.container.schema`
+- `schema/lib/artifact_manifest.schema`
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`
+- `docs/architecture/ARTIFACT_MODEL.md`

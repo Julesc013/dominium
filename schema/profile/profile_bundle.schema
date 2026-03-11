@@ -13,8 +13,18 @@ record profile_bundle_metadata
     - engine_version_created: tag
     - deterministic_fingerprint: sha256
   optional:
+    - artifact_id: id
+    - artifact_kind_id: tag
+    - content_hash: sha256
+    - required_contract_ranges: map
+    - required_capabilities: [id]
+    - compatible_topology_profiles: [id]
+    - compatible_physics_profiles: [id]
+    - degrade_mode_id: tag
+    - migration_refs: [id]
     - migration_history: [map]
     - extensions: map
 
 INVARIANTS:
 - Profile bundles must not be silently reinterpreted across format versions.
+- LIB-4 shareable profile bundles may carry the universal artifact envelope fields without changing bundle semantics.

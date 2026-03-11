@@ -446,6 +446,8 @@ from analyzers import e436_instance_without_lock_smell
 from analyzers import e437_save_locked_to_instance_smell
 from analyzers import e438_save_without_contract_pin_smell
 from analyzers import e439_silent_save_upgrade_smell
+from analyzers import e440_manifest_missing_smell
+from analyzers import e441_artifact_hash_mismatch_smell
 
 
 ANALYZERS = (
@@ -895,6 +897,8 @@ ANALYZERS = (
     e437_save_locked_to_instance_smell,
     e438_save_without_contract_pin_smell,
     e439_silent_save_upgrade_smell,
+    e440_manifest_missing_smell,
+    e441_artifact_hash_mismatch_smell,
 )
 
 

@@ -27,6 +27,11 @@ Reusable artifacts live in a single content-addressable store rooted at:
     packs/<hash>/
     profiles/<hash>/
     blueprints/<hash>/
+    system_templates/<hash>/
+    process_definitions/<hash>/
+    logic_programs/<hash>/
+    view_presets/<hash>/
+    resource_pack_stubs/<hash>/
     locks/<hash>/
     migrations/<hash>/
     repro/<hash>/
@@ -66,6 +71,7 @@ This topology flag is a storage declaration only. It is not a gameplay/runtime m
 
 - Existing path-based manifests and loaders remain supported as compatibility adapters.
 - `capability_lockfile` paths remain non-authoritative legacy references; `pack_lock_hash` is authoritative for LIB-0 flows.
+- LIB-4 shareable artifacts may embed their manifest directly in the payload or emit a manifest sidecar that pins the payload by `content_hash`.
 - Legacy `data/` layouts remain loadable, but new reusable artifacts must resolve through CAS categories or explicit portable embeddings.
 
 ## Determinism Rules
@@ -80,7 +86,10 @@ This topology flag is a storage declaration only. It is not a gameplay/runtime m
 - `schema/lib/install_manifest.schema`
 - `schema/lib/instance_manifest.schema`
 - `schema/lib/save_manifest.schema`
+- `schema/lib/artifact_manifest.schema`
+- `schema/lib/artifact_reference.schema`
 - `docs/architecture/SAVE_MODEL.md`
 - `docs/architecture/INSTALL_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`
+- `docs/architecture/ARTIFACT_MODEL.md`
 - `docs/architecture/BUNDLE_MODEL.md`

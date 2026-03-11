@@ -8,6 +8,13 @@ import os
 import shutil
 from typing import Dict, Iterable, List, Optional, Tuple
 
+from src.lib.artifact import (
+    ARTIFACT_DEGRADE_STRICT_REFUSE,
+    ARTIFACT_KIND_PROFILE_BUNDLE,
+    artifact_kind_from_store_category,
+    canonicalize_artifact_manifest,
+)
+
 
 HASH_ALGORITHM = "sha256"
 STORE_ROOT_MANIFEST = "store.root.json"
@@ -19,6 +26,11 @@ STORE_CATEGORIES = (
     "packs",
     "profiles",
     "blueprints",
+    "system_templates",
+    "process_definitions",
+    "logic_programs",
+    "view_presets",
+    "resource_pack_stubs",
     "locks",
     "migrations",
     "repro",
@@ -148,6 +160,11 @@ def initialize_store_root(root_path: str, store_id: str = "store.default") -> Di
         os.path.join("store", "packs"),
         os.path.join("store", "profiles"),
         os.path.join("store", "blueprints"),
+        os.path.join("store", "system_templates"),
+        os.path.join("store", "process_definitions"),
+        os.path.join("store", "logic_programs"),
+        os.path.join("store", "view_presets"),
+        os.path.join("store", "resource_pack_stubs"),
         os.path.join("store", "locks"),
         os.path.join("store", "migrations"),
         os.path.join("store", "repro"),
@@ -209,6 +226,9 @@ def _artifact_manifest_payload(
         "deterministic_fingerprint": "",
         "extensions": {},
     }
+    artifact_kind_id = artifact_kind_from_store_category(category)
+    if artifact_kind_id:
+        payload["artifact_kind_id"] = artifact_kind_id
     payload["deterministic_fingerprint"] = deterministic_fingerprint(payload)
     return payload
 
@@ -451,20 +471,29 @@ def build_profile_bundle_payload(
     mod_policy_id: str,
     overlay_conflict_policy_id: str,
 ) -> Tuple[Dict[str, object], str]:
-    payload = {
+    payload = canonicalize_artifact_manifest(
+        {
         "schema_id": "dominium.schema.profile.bundle",
         "schema_version": "1.0.0",
         "format_version": "1.0.0",
+        "artifact_kind_id": ARTIFACT_KIND_PROFILE_BUNDLE,
+        "artifact_id": "profile_bundle.{}".format(instance_id),
         "profile_bundle_id": "profile_bundle.{}".format(instance_id),
         "profile_ids": sorted({str(item).strip() for item in list(profile_ids or []) if str(item).strip()}),
+        "required_contract_ranges": {},
+        "required_capabilities": [],
+        "compatible_topology_profiles": [],
+        "compatible_physics_profiles": [],
+        "degrade_mode_id": ARTIFACT_DEGRADE_STRICT_REFUSE,
+        "migration_refs": [],
         "mod_policy_id": str(mod_policy_id),
         "overlay_conflict_policy_id": str(overlay_conflict_policy_id),
         "engine_version_created": "unknown",
-        "deterministic_fingerprint": "",
         "extensions": {},
-    }
-    artifact_hash = canonical_sha256(dict(payload, deterministic_fingerprint=""))
-    payload["deterministic_fingerprint"] = deterministic_fingerprint(payload)
+        },
+        expected_kind_id=ARTIFACT_KIND_PROFILE_BUNDLE,
+    )
+    artifact_hash = canonical_sha256(payload)
     return payload, artifact_hash
 
 

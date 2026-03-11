@@ -22,6 +22,10 @@ from tools.lib.content_store import (
     resolve_instance_artifact_root,
     resolve_locator_path,
 )
+from src.lib.artifact import (
+    ARTIFACT_KIND_PROFILE_BUNDLE,
+    evaluate_artifact_load,
+)
 from src.lib.install import (
     compare_required_contract_ranges,
     compare_required_product_builds,
@@ -748,6 +752,7 @@ def perform_preflight(args: argparse.Namespace,
         return 3, {"result": "refused", "compat_report": report}
 
     save_open = {}
+    profile_bundle_open = {}
     save_manifest_path = ""
     if selected_save_id:
         save_manifest_path = resolve_save_manifest_path(
@@ -828,8 +833,46 @@ def perform_preflight(args: argparse.Namespace,
             )
             return 3, {"result": "refused", "compat_report": report}
 
-    required_caps = collect_required_capabilities(lockfile)
     provided_caps = sorted_unique(install_manifest.get("supported_capabilities") or [])
+    profile_bundle_open = evaluate_artifact_load(
+        repo_root=REPO_ROOT,
+        manifest_payload=profile_bundle_payload,
+        expected_kind_id=ARTIFACT_KIND_PROFILE_BUNDLE,
+        install_manifest=install_manifest,
+        provided_capabilities=provided_caps,
+        allow_read_only=allow_read_only_fallback or args.run_mode in ("inspect", "replay"),
+    )
+    if profile_bundle_open.get("result") != "complete":
+        refusal_code = str(profile_bundle_open.get("refusal_code", "REFUSE_PROFILE_BUNDLE_INVALID")).strip() or "REFUSE_PROFILE_BUNDLE_INVALID"
+        refusal = refusal_payload(
+            5,
+            refusal_code.upper(),
+            "profile bundle verification failed",
+            {"profile_bundle_hash": str(instance_manifest.get("profile_bundle_hash", "")).strip(), "instance_id": instance_id or ""},
+        )
+        report = build_compat_report(
+            "run",
+            install_id,
+            instance_id,
+            None,
+            args.capability_baseline,
+            [],
+            provided_caps,
+            [],
+            "refuse",
+            [refusal_code],
+            ["materialize a compatible profile bundle artifact"],
+            deterministic,
+            {
+                "instance_validation": instance_validation,
+                "install_validation": install_validation,
+                "profile_bundle_open": profile_bundle_open,
+            },
+            refusal,
+        )
+        return 3, {"result": "refused", "compat_report": report}
+
+    required_caps = collect_required_capabilities(lockfile)
     missing_caps = sorted(set(required_caps) - set(provided_caps))
     required_builds = instance_required_product_builds(instance_manifest)
     build_mismatches = compare_required_product_builds(install_manifest, required_builds)
@@ -883,6 +926,7 @@ def perform_preflight(args: argparse.Namespace,
         "contract_range_mismatches": contract_mismatches,
         "install_validation": install_validation,
         "instance_validation": instance_validation,
+        "profile_bundle_open": profile_bundle_open,
         "save_open": save_open,
         "install_switch": install_switch,
         "profile_bundle_hash": str(instance_manifest.get("profile_bundle_hash", "")).strip(),
@@ -949,6 +993,17 @@ def perform_preflight(args: argparse.Namespace,
             mode = "degraded"
             degrade_reasons.append("missing_required_packs")
         mitigation = ["install missing packs"] if missing_required else []
+
+    if mode != "refuse":
+        profile_mode = str(profile_bundle_open.get("compatibility_mode", "full")).strip() or "full"
+        if profile_mode == "inspect-only":
+            mode = "inspect-only"
+        elif profile_mode == "degraded" and mode == "full":
+            mode = "degraded"
+        if profile_bundle_open.get("degrade_reasons"):
+            degrade_reasons.extend(list(profile_bundle_open.get("degrade_reasons") or []))
+            if not mitigation:
+                mitigation = ["select a compatible profile bundle for full runtime"]
 
     if mode != "refuse" and bool(save_open.get("read_only_required")):
         mode = "inspect-only"

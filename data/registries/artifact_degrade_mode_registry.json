@@ -1,0 +1,35 @@
+{
+  "schema_id": "dominium.registry.artifact_degrade_mode_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.artifact_degrade_mode_registry",
+    "registry_version": "1.0.0",
+    "artifact_degrade_modes": [
+      {
+        "artifact_degrade_mode_id": "artifact.degrade.best_effort",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Load with deterministic feature disablement when unsupported parts are missing.",
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_degrade_mode_id": "artifact.degrade.read_only_only",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Allow inspect/read-only flows only; mutable runtime remains refused.",
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_degrade_mode_id": "artifact.degrade.strict_refuse",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.description": "Refuse load when contracts, capabilities, or topology/physics constraints mismatch.",
+          "official.source": "LIB-4"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

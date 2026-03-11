@@ -28672,6 +28672,106 @@ def _append_save_manifest_invariant_findings(
                 )
 
 
+def _append_artifact_manifest_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    invariant_tokens = {
+        "INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST": {
+            "docs/architecture/ARTIFACT_MODEL.md": (
+                "INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST",
+                "artifact_id",
+                "content_hash",
+            ),
+            "schema/lib/artifact_manifest.schema": (
+                "artifact_id",
+                "artifact_kind_id",
+                "content_hash",
+            ),
+            "tools/share/share_cli.py": (
+                "SHAREABLE_ARTIFACT_MANIFEST_NAME",
+                "_build_bundle_artifact_manifest(",
+                "validate_bundle_artifact(",
+            ),
+            "tools/lib/content_store.py": (
+                "ARTIFACT_KIND_PROFILE_BUNDLE",
+                "build_profile_bundle_payload(",
+            ),
+        },
+        "INV-ARTIFACTS-CONTENT-ADDRESSED": {
+            "docs/architecture/CONTENT_AND_STORAGE_MODEL.md": (
+                "system_templates/<hash>/",
+                "process_definitions/<hash>/",
+                "view_presets/<hash>/",
+            ),
+            "tools/lib/content_store.py": (
+                "\"system_templates\"",
+                "\"process_definitions\"",
+                "\"view_presets\"",
+            ),
+            "data/registries/artifact_kind_registry.json": (
+                "\"artifact.profile_bundle\"",
+                "\"store_category\": \"profiles\"",
+            ),
+        },
+        "INV-ARTIFACT-LOAD-VALIDATED": {
+            "docs/architecture/ARTIFACT_MODEL.md": (
+                "INV-ARTIFACT-LOAD-VALIDATED",
+                "Artifact load pipeline",
+                "No silent migration is permitted.",
+            ),
+            "src/lib/artifact/artifact_validator.py": (
+                "validate_artifact_manifest(",
+                "evaluate_artifact_load(",
+                "REFUSAL_ARTIFACT_HASH_MISMATCH",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "evaluate_artifact_load(",
+                "profile bundle verification failed",
+                "\"profile_bundle_open\": profile_bundle_open",
+            ),
+            "tools/share/share_cli.py": (
+                "validate_bundle_artifact(",
+                "artifact manifest validation failed",
+            ),
+        },
+    }
+    for invariant_id, rel_paths in invariant_tokens.items():
+        for rel_path, tokens in rel_paths.items():
+            abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+            try:
+                text = open(abs_path, "r", encoding="utf-8").read()
+            except OSError:
+                text = ""
+            if not text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="required artifact manifest enforcement file is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+                continue
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="required artifact manifest enforcement token is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -29268,6 +29368,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_save_manifest_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_artifact_manifest_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

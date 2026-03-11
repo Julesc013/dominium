@@ -28,3 +28,14 @@ record system_template
     - nested_template_refs: list
     - deterministic_fingerprint: text
     - extensions: map
+  optional:
+    - artifact_id: id
+    - artifact_kind_id: tag
+    - format_version: semver
+    - content_hash: sha256
+    - required_contract_ranges: map
+    - required_capabilities: [id]
+    - compatible_topology_profiles: [id]
+    - compatible_physics_profiles: [id]
+    - degrade_mode_id: tag
+    - migration_refs: [id]

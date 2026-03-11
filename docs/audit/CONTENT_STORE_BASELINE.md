@@ -19,6 +19,11 @@ Reference layout:
   store/packs/<hash>/
   store/profiles/<hash>/
   store/blueprints/<hash>/
+  store/system_templates/<hash>/
+  store/process_definitions/<hash>/
+  store/logic_programs/<hash>/
+  store/view_presets/<hash>/
+  store/resource_pack_stubs/<hash>/
   store/locks/<hash>/
   store/migrations/<hash>/
   store/repro/<hash>/

@@ -19,7 +19,15 @@ record blueprint
   optional:
     - format_version: semver
     - engine_version_created: tag
+    - artifact_id: id
+    - artifact_kind_id: tag
+    - content_hash: sha256
     - required_contract_ranges: map
+    - required_capabilities: [id]
+    - compatible_topology_profiles: [id]
+    - compatible_physics_profiles: [id]
+    - degrade_mode_id: tag
+    - migration_refs: [id]
     - migration_history: [map]
     - deterministic_fingerprint: sha256
     - parameters: list<parameter_def>
@@ -34,3 +42,4 @@ record parameter_def
 INVARIANTS:
 - Blueprint ids are stable content identifiers.
 - Compile must refuse if refs are unresolved.
+- LIB-4 shareable blueprint bundles may publish the universal artifact envelope as direct fields or a sidecar manifest.

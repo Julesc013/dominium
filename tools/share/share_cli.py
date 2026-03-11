@@ -31,6 +31,12 @@ from tools.lib.content_store import (
     store_add_artifact,
     store_add_tree_artifact,
 )
+from src.lib.artifact import (
+    ARTIFACT_KIND_BLUEPRINT,
+    canonicalize_artifact_manifest,
+    deterministic_fingerprint as artifact_deterministic_fingerprint,
+    evaluate_artifact_load,
+)
 from src.lib.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
@@ -39,6 +45,7 @@ from src.lib.instance import (
 
 
 BUNDLE_CONTAINER_NAME = "bundle.container.json"
+SHAREABLE_ARTIFACT_MANIFEST_NAME = "shareable.artifact.manifest.json"
 DEFAULT_CAPABILITY_BASELINE = "BASELINE_MAINLINE_CORE"
 NULL_UUID = "00000000-0000-0000-0000-000000000000"
 
@@ -196,6 +203,82 @@ def content_entry(path: str, kind: str, source_path: Optional[str] = None) -> Di
         "sha256": sha256_file(actual_path),
         "size_bytes": size,
     }
+
+
+def _bundle_artifact_kind(bundle_type: str) -> str:
+    mapping = {
+        "blueprint": ARTIFACT_KIND_BLUEPRINT,
+    }
+    return mapping.get(str(bundle_type or "").strip(), "")
+
+
+def _primary_content_entry(container: dict, kind: str) -> Dict[str, object]:
+    for entry in list(container.get("contents_index") or []):
+        if str(entry.get("content_kind", "")).strip() == str(kind or "").strip():
+            return dict(entry or {})
+    return {}
+
+
+def _artifact_manifest_rel(bundle_type: str) -> str:
+    return "artifacts/{}/{}".format(str(bundle_type or "").strip(), SHAREABLE_ARTIFACT_MANIFEST_NAME)
+
+
+def _build_bundle_artifact_manifest(bundle_type: str, artifact_path: str) -> Dict[str, object]:
+    artifact_kind = _bundle_artifact_kind(bundle_type)
+    if not artifact_kind:
+        return {}
+    payload = load_json(artifact_path)
+    manifest = canonicalize_artifact_manifest(
+        payload,
+        expected_kind_id=artifact_kind,
+        content_path=artifact_path,
+    )
+    extensions = dict(manifest.get("extensions") or {})
+    extensions["official.payload_ref"] = os.path.basename(artifact_path).replace("\\", "/")
+    manifest["extensions"] = extensions
+    manifest["deterministic_fingerprint"] = ""
+    manifest["deterministic_fingerprint"] = artifact_deterministic_fingerprint(manifest)
+    return manifest
+
+
+def validate_bundle_artifact(bundle_root: str, container: dict) -> Tuple[bool, Optional[Dict[str, object]], Dict[str, object], str]:
+    bundle_type = str(container.get("bundle_type", "")).strip()
+    artifact_kind = _bundle_artifact_kind(bundle_type)
+    if not artifact_kind:
+        return True, None, {}, ""
+    manifest_entry = _primary_content_entry(container, "artifact_manifest")
+    if not manifest_entry:
+        refusal = refusal_payload(
+            5,
+            "REFUSE_INTEGRITY_VIOLATION",
+            "shareable artifact manifest missing",
+            {"bundle_type": bundle_type},
+        )
+        return False, refusal, {}, "missing artifact manifest"
+    manifest_path = os.path.join(bundle_root, str(manifest_entry.get("content_path", "")).replace("/", os.sep))
+    manifest_payload = load_json(manifest_path)
+    extensions = dict(manifest_payload.get("extensions") or {})
+    payload_ref = str(extensions.get("official.payload_ref", "")).strip()
+    artifact_entry = _primary_content_entry(container, bundle_type)
+    artifact_path = os.path.join(bundle_root, str(artifact_entry.get("content_path", "")).replace("/", os.sep))
+    payload_path = artifact_path
+    if payload_ref:
+        payload_path = os.path.join(os.path.dirname(manifest_path), payload_ref.replace("/", os.sep))
+    artifact_load = evaluate_artifact_load(
+        repo_root=REPO_ROOT,
+        artifact_manifest_path=manifest_path,
+        expected_kind_id=artifact_kind,
+        content_path=payload_path,
+    )
+    if artifact_load.get("result") == "complete":
+        return True, None, artifact_load, ""
+    refusal = refusal_payload(
+        5,
+        str(artifact_load.get("refusal_code", "REFUSE_INTEGRITY_VIOLATION")).upper() or "REFUSE_INTEGRITY_VIOLATION",
+        "artifact manifest validation failed",
+        {"bundle_type": bundle_type},
+    )
+    return False, refusal, artifact_load, "artifact validation failed"
 
 
 def append_untracked_entries(bundle_root: str, contents: List[Dict[str, object]]) -> List[Dict[str, object]]:
@@ -730,6 +813,25 @@ def export_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     copy_file(required_artifact, artifact_dest)
     contents.append(content_entry(os.path.relpath(artifact_dest, args.out), bundle_type, artifact_dest))
 
+    artifact_manifest = {}
+    if _bundle_artifact_kind(bundle_type):
+        try:
+            artifact_manifest = _build_bundle_artifact_manifest(bundle_type, required_artifact)
+        except (OSError, ValueError, json.JSONDecodeError):
+            refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                      "shareable artifact must be valid canonical JSON",
+                                      {"bundle_type": bundle_type, "artifact": artifact_name})
+            report = build_compat_report("update", None, None, None,
+                                         args.capability_baseline,
+                                         [], [], [], "refuse",
+                                         [refusal.get("code")], [],
+                                         args.deterministic, {}, refusal)
+            shutil.rmtree(args.out, ignore_errors=True)
+            return 3, {"result": "refused", "compat_report": report}
+        artifact_manifest_dest = os.path.join(args.out, _artifact_manifest_rel(bundle_type).replace("/", os.sep))
+        write_json(artifact_manifest_dest, artifact_manifest)
+        contents.append(content_entry(os.path.relpath(artifact_manifest_dest, args.out), "artifact_manifest", artifact_manifest_dest))
+
     if args.lockfile:
         lock_dest = os.path.join(args.out, "lockfile", os.path.basename(args.lockfile))
         copy_file(args.lockfile, lock_dest)
@@ -844,9 +946,13 @@ def export_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
 
     report = build_compat_report("export", args.install_id, args.instance_id, args.runtime_id,
                                  args.capability_baseline,
-                                 [], [], [], "full", [], [],
+                                 list(artifact_manifest.get("required_capabilities") or []), [], [], "full", [], [],
                                  args.deterministic,
-                                 {"bundle_type": bundle_type, "bundle_id": bundle_container["bundle_id"]},
+                                 {
+                                     "bundle_type": bundle_type,
+                                     "bundle_id": bundle_container["bundle_id"],
+                                     "artifact_kind_id": str(artifact_manifest.get("artifact_kind_id", "")).strip(),
+                                 },
                                  None)
     return 0, {"result": "ok", "compat_report": report, "bundle_root": args.out.replace("\\", "/")}
 
@@ -875,6 +981,11 @@ def validate_container(bundle_root: str, container: dict) -> Tuple[bool, Optiona
                                   "missing lockfile",
                                   {"bundle_type": bundle_type})
         return False, refusal, "missing lockfile"
+    if _bundle_artifact_kind(str(bundle_type or "").strip()) and "artifact_manifest" not in kinds:
+        refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
+                                  "missing shareable artifact manifest",
+                                  {"bundle_type": bundle_type})
+        return False, refusal, "missing artifact manifest"
     if "compat_report" not in kinds:
         refusal = refusal_payload(5, "REFUSE_INTEGRITY_VIOLATION",
                                   "missing compat_report",
@@ -917,6 +1028,11 @@ def compute_missing_packs(container: dict, available: List[str]) -> List[str]:
 def inspect_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     container = read_container(args.bundle)
     ok, refusal, reason = validate_container(args.bundle, container)
+    artifact_ok, artifact_refusal, artifact_load, artifact_reason = validate_bundle_artifact(args.bundle, container) if ok else (False, None, {}, "")
+    if ok and not artifact_ok:
+        ok = False
+        refusal = artifact_refusal
+        reason = artifact_reason
     missing = compute_missing_packs(container, args.available_pack or [])
     mode = "inspect-only" if ok else "refuse"
     report = build_compat_report("load", args.install_id, args.instance_id, args.runtime_id,
@@ -926,7 +1042,11 @@ def inspect_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
                                  [refusal.get("code")] if refusal else [],
                                  ["install missing packs"] if missing else [],
                                  args.deterministic,
-                                 {"bundle_type": container.get("bundle_type"), "reason": reason},
+                                 {
+                                     "bundle_type": container.get("bundle_type"),
+                                     "reason": reason,
+                                     "artifact_load": artifact_load,
+                                 },
                                  refusal)
     return (3 if not ok else 0), {
         "result": "refused" if not ok else "ok",
@@ -939,6 +1059,11 @@ def inspect_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
 def import_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
     container = read_container(args.bundle)
     ok, refusal, reason = validate_container(args.bundle, container)
+    artifact_ok, artifact_refusal, artifact_load, artifact_reason = validate_bundle_artifact(args.bundle, container) if ok else (False, None, {}, "")
+    if ok and not artifact_ok:
+        ok = False
+        refusal = artifact_refusal
+        reason = artifact_reason
     if ok and container.get("bundle_type") == "instance":
         if not args.confirm:
             report = build_compat_report("load", args.install_id, args.instance_id, args.runtime_id,
@@ -946,7 +1071,7 @@ def import_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
                                          [], [], [], "full",
                                          [], [],
                                          args.deterministic,
-                                         {"bundle_type": container.get("bundle_type")},
+                                         {"bundle_type": container.get("bundle_type"), "artifact_load": artifact_load},
                                          None)
             return 0, {
                 "result": "ok",
@@ -974,7 +1099,11 @@ def import_bundle(args: argparse.Namespace) -> Tuple[int, Dict[str, object]]:
                                  [refusal.get("code")] if refusal else [],
                                  ["install missing packs"] if missing else [],
                                  args.deterministic,
-                                 {"bundle_type": container.get("bundle_type"), "reason": reason},
+                                 {
+                                     "bundle_type": container.get("bundle_type"),
+                                     "reason": reason,
+                                     "artifact_load": artifact_load,
+                                 },
                                  refusal)
 
     if not args.confirm:

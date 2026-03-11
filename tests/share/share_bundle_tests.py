@@ -62,6 +62,18 @@ def find_entry(container, kind):
     return None
 
 
+def make_blueprint(path):
+    write_json(path, {
+        "schema_version": "1.0.0",
+        "blueprint_id": "blueprint.house.test",
+        "description": "Test blueprint",
+        "bom_ref": "bom.house.test",
+        "ag_ref": "ag.house.test",
+        "tags": ["test"],
+        "extensions": {},
+    })
+
+
 def make_install_manifest(path, install_id):
     payload = {
         "install_id": install_id,
@@ -259,6 +271,35 @@ def test_replay_hash(tmp_root):
         raise AssertionError("replay hash mismatch")
 
 
+def test_blueprint_bundle_includes_artifact_manifest(tmp_root):
+    blueprint_path = os.path.join(tmp_root, "blueprint.house.test.json")
+    bundle_root = os.path.join(tmp_root, "bundle_blueprint")
+    make_blueprint(blueprint_path)
+
+    code, payload, _ = run_share([
+        "--deterministic",
+        "export",
+        "--bundle-type", "blueprint",
+        "--artifact", blueprint_path,
+        "--bundle-id", "bundle.test.blueprint",
+        "--created-at", "2000-01-01T00:00:00Z",
+        "--created-by", "test",
+        "--tool-version", "test-tool",
+        "--out", bundle_root,
+    ])
+    if code != 0 or payload.get("result") != "ok":
+        raise AssertionError("blueprint export failed")
+
+    container = load_container(bundle_root)
+    manifest_entry = find_entry(container, "artifact_manifest")
+    if not manifest_entry:
+        raise AssertionError("artifact manifest entry missing from blueprint bundle")
+
+    code, payload, _ = run_share(["inspect", "--bundle", bundle_root])
+    if code != 0 or payload.get("result") != "ok":
+        raise AssertionError("blueprint inspect failed")
+
+
 def test_portable_export_import_roundtrip_instance(tmp_root):
     install_root = os.path.join(tmp_root, "install")
     instance_root = os.path.join(tmp_root, "instance")
@@ -350,6 +391,7 @@ def main():
         test_missing_packs_detection(tmp_root)
         test_incompatible_bundle_refusal(tmp_root)
         test_replay_hash(tmp_root)
+        test_blueprint_bundle_includes_artifact_manifest(tmp_root)
         test_portable_export_import_roundtrip_instance(tmp_root)
 
     print("SHARE-0 bundle tests OK.")

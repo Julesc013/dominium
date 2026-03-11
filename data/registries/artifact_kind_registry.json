@@ -1,0 +1,67 @@
+{
+  "schema_id": "dominium.registry.artifact_kind_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.artifact_kind_registry",
+    "registry_version": "1.0.0",
+    "artifact_kinds": [
+      {
+        "artifact_kind_id": "artifact.blueprint",
+        "store_category": "blueprints",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.logic_program",
+        "store_category": "logic_programs",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.process_definition",
+        "store_category": "process_definitions",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.profile_bundle",
+        "store_category": "profiles",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.resource_pack_stub",
+        "store_category": "resource_pack_stubs",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.system_template",
+        "store_category": "system_templates",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "LIB-4"
+        }
+      },
+      {
+        "artifact_kind_id": "artifact.view_preset",
+        "store_category": "view_presets",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "LIB-4"
+        }
+      }
+    ],
+    "extensions": {}
+  }
+}

@@ -20,6 +20,12 @@ Template:
   Migration: <required migration steps or "none">
 
 - Date: 2026-03-11
+  Schema(s): schema/lib/artifact_manifest.schema; schema/lib/artifact_reference.schema; schema/profile/profile_bundle.schema; schema/materials/blueprint.schema; schema/system/system_template.schema; schema/process/process_definition.schema
+  Change: add LIB-4 shareable artifact manifest/reference contracts plus compatible payload envelope fields for profile bundles, blueprints, system templates, and process definitions
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST; INV-ARTIFACTS-CONTENT-ADDRESSED; INV-ARTIFACT-LOAD-VALIDATED
+  Migration: existing payload schemas remain loadable; LIB-4 export/store flows canonicalize the artifact envelope or sidecar through `src/lib/artifact/artifact_validator.py`
+
+- Date: 2026-03-11
   Schema(s): schema/lib/save_manifest.schema; schema/lib/migration_event.schema; schema/save.manifest.schema
   Change: upgrade save manifest contracts for LIB-3 pinned contract bundles, explicit migration lineage, and read-only fallback policy
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-SAVE-MANIFEST-REQUIRED; INV-SAVE-PINS-CONTRACTS; INV-NO-SILENT-MIGRATION
