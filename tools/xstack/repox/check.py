@@ -28857,6 +28857,92 @@ def _append_forking_provides_invariant_findings(
                         rule_id=invariant_id,
                     )
                 )
+
+
+def _append_bundle_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    invariant_tokens = {
+        "INV-BUNDLES-DETERMINISTIC": {
+            "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+                "bundle.instance.portable",
+                "`bundle_hash` is computed from the canonical ordered item-hash projection only.",
+                "filesystem timestamps do not affect `bundle_hash`",
+            ),
+            "schema/lib/bundle_manifest.schema": (
+                "included_artifacts ordering is canonical",
+                "bundle_hash is computed from the canonical ordered item projection",
+                "deterministic_fingerprint",
+            ),
+            "src/lib/bundle/bundle_manifest.py": (
+                "compute_bundle_hash(",
+                "stable_bundle_id(",
+                "verify_bundle_directory(",
+            ),
+            "src/lib/export/export_engine.py": (
+                "write_bundle_directory(",
+                "\"refusal.bundle.destination_exists\"",
+                "BUNDLE_KIND_INSTANCE_PORTABLE",
+            ),
+        },
+        "INV-NO-TIMESTAMPS-IN-ARCHIVES": {
+            "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+                "zip` with fixed timestamp `2000-01-01T00:00:00Z`",
+                "No OS-specific metadata is permitted in archive entries.",
+            ),
+            "src/lib/bundle/bundle_manifest.py": (
+                "bundle.manifest.json",
+                "hashes/content.sha256.json",
+                "bundle.manifest.json is missing",
+            ),
+            "tools/lib/tool_verify_bundle.py": (
+                "Verify a deterministic LIB-6 bundle directory.",
+                "verify_bundle_directory(",
+            ),
+        },
+        "INV-IMPORT-VALIDATES-HASHES": {
+            "docs/lib/EXPORT_IMPORT_FORMAT.md": (
+                "recompute each `content_hash`",
+                "recompute `bundle_hash`",
+                "refuse if any mismatch occurs",
+            ),
+            "src/lib/import/import_engine.py": (
+                "verify_bundle_directory(",
+                "_insert_bundle_store_artifacts(",
+                "\"refusal.bundle.artifact_hash_mismatch\"",
+            ),
+            "src/lib/bundle/bundle_manifest.py": (
+                "\"bundle_content_hash_mismatch\"",
+                "\"bundle_hash_mismatch\"",
+                "\"bundle_hash_index_mismatch\"",
+            ),
+            "tools/lib/tool_verify_bundle.py": (
+                "verify_bundle_directory(",
+                "return 0 if str(result.get(\"result\", \"\")).strip() == \"complete\" else 3",
+            ),
+        },
+    }
+    for invariant_id, rel_paths in invariant_tokens.items():
+        for rel_path, tokens in rel_paths.items():
+            abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+            try:
+                text = open(abs_path, "r", encoding="utf-8").read()
+            except OSError:
+                text = ""
+            if not text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="required LIB-6 bundle enforcement file is missing",
+                        rule_id=invariant_id,
+                    )
+                )
                 continue
             for token in tokens:
                 if token in text:
@@ -28867,7 +28953,7 @@ def _append_forking_provides_invariant_findings(
                         file_path=rel_path,
                         line_number=1,
                         snippet=token,
-                        message="required forking/provides enforcement token is missing",
+                        message="required LIB-6 bundle enforcement token is missing",
                         rule_id=invariant_id,
                     )
                 )
@@ -29474,6 +29560,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_artifact_manifest_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_bundle_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,
