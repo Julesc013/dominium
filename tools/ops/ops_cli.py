@@ -32,6 +32,7 @@ from tools.lib.content_store import (
 from src.lib.install import normalize_contract_range
 from src.lib.instance import (
     INSTANCE_KIND_CLIENT,
+    clone_instance_local,
     deterministic_fingerprint as instance_deterministic_fingerprint,
     instance_active_modpacks,
     instance_active_profiles,
@@ -1141,7 +1142,6 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
         validate_instance_manifest(repo_root=REPO_ROOT, instance_manifest_path=args.source_manifest).get("instance_manifest")
         or load_json(args.source_manifest)
     )
-    source_root = os.path.dirname(args.source_manifest)
     install_id = instance_install_id(source_manifest)
     source_mode = str(source_manifest.get("mode", "portable") or "portable").strip().lower()
     if not install_id:
@@ -1231,49 +1231,22 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
     begin_transaction(target_root, "instances.fork" if fork_only else "instances.clone", tx_id, deterministic)
     stage_transaction(target_root, "instances.fork" if fork_only else "instances.clone", tx_id, deterministic)
 
-    if not fork_only:
-        shutil.copytree(source_root, target_root, dirs_exist_ok=True, ignore=clone_ignore_entries)
-    else:
-        ensure_dir(target_root)
-        if source_mode == "portable":
-            for rel_path in ("embedded_artifacts", "embedded_builds", "lockfiles"):
-                src_path = os.path.join(source_root, rel_path)
-                dest_path = os.path.join(target_root, rel_path)
-                if os.path.isdir(src_path):
-                    shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
-
-    manifest_path = os.path.join(target_root, DEFAULT_INSTANCE_MANIFEST)
-    payload = dict(source_manifest)
-    payload["instance_id"] = instance_id
-    payload["data_root"] = payload.get("data_root", ".")
-    payload["created_at"] = args.created_at or now_timestamp(deterministic)
-    payload["last_used_at"] = args.created_at or now_timestamp(deterministic)
-    if source_mode == "linked":
-        source_store_root = resolve_locator_path(source_root, source_manifest.get("store_root"))
-        if source_store_root:
-            store_manifest = initialize_store_root(source_store_root)
-            payload["store_root"] = build_store_locator(target_root, source_store_root, store_manifest)
-    source_install_manifest_path = resolve_install_manifest_path(source_root, source_manifest)
-    if source_install_manifest_path and os.path.isfile(source_install_manifest_path):
-        try:
-            source_install_manifest = load_json(source_install_manifest_path)
-        except (OSError, ValueError):
-            source_install_manifest = {}
-        if source_install_manifest:
-            payload["install_ref"] = build_install_ref(target_root, source_install_manifest_path, source_install_manifest)
-            payload["install_id"] = source_install_manifest.get("install_id") or payload.get("install_id")
-    payload = normalize_instance_manifest(payload)
-    payload["deterministic_fingerprint"] = instance_deterministic_fingerprint(payload)
-    validation = validate_instance_manifest(
+    clone_result = clone_instance_local(
         repo_root=REPO_ROOT,
-        instance_manifest_path=manifest_path,
-        manifest_payload=payload,
+        source_manifest_path=args.source_manifest,
+        target_root=target_root,
+        instance_id=instance_id,
+        created_at=args.created_at or now_timestamp(deterministic),
+        deterministic=deterministic,
+        fork_only=fork_only,
+        duplicate_embedded_artifacts=bool(getattr(args, "duplicate_embedded_artifacts", False)),
+        store_root=str(getattr(args, "store_root", "") or "").strip(),
     )
-    if validation.get("result") != "complete":
+    if clone_result.get("result") != "complete":
         refusal = refusal_payload(
             5,
-            str(validation.get("refusal_code", "REFUSE_INSTANCE_INVALID")).upper() or "REFUSE_INSTANCE_INVALID",
-            "cloned instance manifest validation failed",
+            str(clone_result.get("refusal_code", "REFUSE_INSTANCE_INVALID")).upper() or "REFUSE_INSTANCE_INVALID",
+            str(clone_result.get("message", "cloned instance manifest validation failed")).strip() or "cloned instance manifest validation failed",
             {"instance_id": instance_id},
         )
         shutil.rmtree(target_root, ignore_errors=True)
@@ -1294,8 +1267,6 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
             refusal=refusal,
         )
         return 3, {"result": "refused", "compat_report": report}
-    payload = dict(validation.get("instance_manifest") or payload)
-    pretty_write_json(manifest_path, payload)
 
     if args.simulate_failure == "commit":
         refusal = refusal_payload(1, "REFUSE_INVALID_INTENT",
@@ -1338,7 +1309,8 @@ def clone_instance(args: argparse.Namespace, fork_only: bool) -> Tuple[int, Dict
     return 0, {
         "result": "ok",
         "compat_report": report,
-        "instance_manifest": manifest_path.replace("\\", "/"),
+        "instance_manifest": str(clone_result.get("instance_manifest_path", "")).replace("\\", "/"),
+        "clone_mode": str(clone_result.get("clone_mode", source_mode)).strip() or source_mode,
         "transaction_id": tx_id,
     }
 
@@ -1660,6 +1632,8 @@ def main() -> int:
     instances_clone.add_argument("--source-manifest", required=True)
     instances_clone.add_argument("--data-root", required=True)
     instances_clone.add_argument("--instance-id", default=None)
+    instances_clone.add_argument("--store-root", default=None)
+    instances_clone.add_argument("--duplicate-embedded-artifacts", action="store_true")
     instances_clone.add_argument("--sandbox-policy", default=None)
     instances_clone.add_argument("--created-at", default=None)
     instances_clone.add_argument("--simulate-failure", default=None)

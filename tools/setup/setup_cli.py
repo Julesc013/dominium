@@ -1578,6 +1578,10 @@ def handle_instance(args: argparse.Namespace, deterministic: bool) -> int:
         ]
         if args.instance_id:
             extra += ["--instance-id", args.instance_id]
+        if args.store_root:
+            extra += ["--store-root", args.store_root]
+        if args.duplicate_embedded_artifacts:
+            extra += ["--duplicate-embedded-artifacts"]
         if args.sandbox_policy:
             extra += ["--sandbox-policy", args.sandbox_policy]
         if args.created_at:
@@ -1858,6 +1862,8 @@ def _legacy_main(argv: list[str] | None = None) -> int:
     instance_clone.add_argument("--source-manifest", required=True)
     instance_clone.add_argument("--data-root", required=True)
     instance_clone.add_argument("--instance-id", default=None)
+    instance_clone.add_argument("--store-root", default=None)
+    instance_clone.add_argument("--duplicate-embedded-artifacts", action="store_true")
     instance_clone.add_argument("--sandbox-policy", default=None)
     instance_clone.add_argument("--created-at", default=None)
 

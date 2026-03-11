@@ -1,5 +1,6 @@
 """Instance manifest helpers."""
 
+from .instance_clone import clone_instance_local
 from .instance_validator import (
     INSTANCE_KIND_CLIENT,
     INSTANCE_KIND_SERVER,
@@ -31,6 +32,7 @@ from .instance_validator import (
 )
 
 __all__ = [
+    "clone_instance_local",
     "INSTANCE_KIND_CLIENT",
     "INSTANCE_KIND_SERVER",
     "INSTANCE_KIND_TOOLING",
