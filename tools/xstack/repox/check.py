@@ -28959,6 +28959,204 @@ def _append_bundle_invariant_findings(
                 )
 
 
+def _append_lib_envelope_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    invariant_tokens = {
+        "INV-LIB-DETERMINISTIC": {
+            "tools/lib/lib_stress_common.py": (
+                "\"stress_scenario_deterministic\"",
+                "\"stable_across_repeated_runs\"",
+                "\"bundle_hash_stable\"",
+                "\"projection_hashes\"",
+            ),
+            "tools/lib/tool_run_lib_stress.py": (
+                "Run the LIB-7 deterministic library stress harness.",
+                "run_lib_stress(",
+                "--slash-mode",
+                "--baseline-out",
+            ),
+            "docs/audit/LIB_FINAL_BASELINE.md": (
+                "repeated runs keep identical projection hashes",
+                "forward- and backslash-shaped scenarios keep identical bundle hashes",
+                "cross-platform bundle hash stability is covered",
+            ),
+            "data/regression/lib_full_baseline.json": (
+                "\"baseline_id\": \"lib.full.baseline.v1\"",
+                "\"scenario_seed\": 71007",
+                "\"bundle_hashes\"",
+                "\"decision_log_fingerprints\"",
+            ),
+        },
+        "INV-NO-PATH-SEMANTICS": {
+            "docs/audit/LIB7_RETRO_AUDIT.md": (
+                "path-based semantics",
+                "slash-mode",
+                "normalize/separate path spelling from content identity",
+            ),
+            "tools/lib/lib_stress_common.py": (
+                "def _norm(",
+                "def _slash(",
+                "slash_mode",
+                "replace(\"\\\\\", \"/\")",
+            ),
+            "tests/ops/lib_stress_envelope_tests.py": (
+                "test_cross_platform_lib_hash_match",
+                "_report(tmp_root, \"forward\")",
+                "_report(tmp_root, \"backward\")",
+            ),
+        },
+        "INV-EXPORT-IMPORT-VERIFIED": {
+            "tools/lib/lib_stress_common.py": (
+                "\"import_results\"",
+                "\"bundle_verifications\"",
+                "\"tools/lib/tool_verify_bundle.py\"",
+                "import_instance_bundle(",
+            ),
+            "docs/audit/LIB_FINAL_BASELINE.md": (
+                "`tool_verify_bundle` returns `result=complete`",
+                "import previews complete for linked instance, portable instance, save, and pack bundles",
+            ),
+            "tests/ops/lib_stress_envelope_tests.py": (
+                "test_export_import_roundtrip_hash_match",
+                "bundle_verifications",
+                "import_results",
+            ),
+        },
+        "INV-PROVIDER-RESOLUTION-RECORDED": {
+            "tools/lib/lib_stress_common.py": (
+                "\"provider_resolution_recorded\"",
+                "\"provider_selection_logged\"",
+                "\"selection_logged\"",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "\"provider_resolution\": provider_resolution",
+                "\"provider_selection_logged\": bool(provider_resolution.get(\"selection_logged\", False))",
+            ),
+            "docs/audit/LIB_FINAL_BASELINE.md": (
+                "selection_logged = true",
+                "strict policy refuses ambiguity with `refusal.provides.ambiguous`",
+                "anarchy policy completes deterministically",
+            ),
+            "data/regression/lib_full_baseline.json": (
+                "\"provider_resolution_outcomes\"",
+                "\"selection_logged\": true",
+                "\"required_commit_tag\": \"LIB-REGRESSION-UPDATE\"",
+            ),
+        },
+    }
+    for invariant_id, rel_paths in invariant_tokens.items():
+        for rel_path, tokens in rel_paths.items():
+            text = _file_text(repo_root, rel_path)
+            if not text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="required LIB-7 envelope file is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+                continue
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="required LIB-7 envelope token is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+
+    regression_rel = "data/regression/lib_full_baseline.json"
+    regression_payload, regression_err = _load_json_object(repo_root, regression_rel)
+    if regression_err:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=regression_rel,
+                message="LIB regression lock baseline is required",
+                rule_id="INV-LIB-DETERMINISTIC",
+            )
+        )
+        return
+    required_fields = (
+        "baseline_id",
+        "schema_version",
+        "description",
+        "scenario_seed",
+        "fixed_seed_scenario",
+        "bundle_hashes",
+        "provider_resolution_outcomes",
+        "strict_refusal_outcomes",
+        "read_only_fallback_outcomes",
+        "decision_log_fingerprints",
+        "update_policy",
+        "deterministic_fingerprint",
+    )
+    for token in required_fields:
+        if token in regression_payload:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet=token,
+                message="LIB regression lock missing required baseline field",
+                rule_id="INV-LIB-DETERMINISTIC",
+            )
+        )
+    update_policy = dict(regression_payload.get("update_policy") or {})
+    if str(update_policy.get("required_commit_tag", "")).strip() != "LIB-REGRESSION-UPDATE":
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=regression_rel,
+                line_number=1,
+                snippet="required_commit_tag",
+                message="LIB regression lock updates must require LIB-REGRESSION-UPDATE tag",
+                rule_id="INV-LIB-DETERMINISTIC",
+            )
+        )
+    try:
+        proc = subprocess.run(
+            ["git", "log", "-1", "--pretty=%s", "--", regression_rel],
+            cwd=repo_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            errors="replace",
+            check=False,
+        )
+    except OSError:
+        proc = None
+    if proc and int(proc.returncode) == 0:
+        subject = str(proc.stdout or "").strip()
+        if subject and "LIB-REGRESSION-UPDATE" not in subject:
+            findings.append(
+                _finding(
+                    severity=severity,
+                    file_path=regression_rel,
+                    line_number=1,
+                    snippet=subject[:140],
+                    message="latest LIB regression lock commit must include 'LIB-REGRESSION-UPDATE'",
+                    rule_id="INV-LIB-DETERMINISTIC",
+                )
+            )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -29565,6 +29763,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_bundle_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_lib_envelope_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

@@ -37,9 +37,10 @@ Relevant invariants and canon:
    - `tools/launcher/launcher_cli.py` already records `degrade_logged` and `degrade_reasons` for read-only fallback.
    - No silent save migration was found.
 
-4. Path-based semantics are mostly contained, but path search order still exists in lookup helpers.
+4. path-based semantics are mostly contained, but path search order still exists in lookup helpers.
    - `resolve_save_manifest_path(...)`, `resolve_instance_manifest_path(...)`, and launcher/install lookup helpers search deterministic candidate roots.
    - Hashes and fingerprints do not depend on those absolute paths, but the lookup order remains an environment-sensitive operational surface that should be covered by stress tests.
+   - LIB-7 should normalize/separate path spelling from content identity and exercise both forward and backward slash-mode variants.
 
 5. Provider resolution is deterministic, but there is no committed regression lock for provider outcomes inside the full LIB envelope.
    - `src/lib/provides/provider_resolution.py` records `selection_mode`, `selection_logged`, and deterministic fingerprints.
