@@ -1,0 +1,23 @@
+SCHEMA: diag/replay_request.schema
+schema_id: dominium.schema.diag.replay_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic replay request for a DIAG-0 repro bundle.
+
+NON-SEMANTICS:
+- ReplayRequest does not mutate truth.
+
+REQUIRED SHAPE:
+record replay_request
+  required:
+    - schema_version: tag
+    - bundle_path: text
+    - tick_window: int
+    - include_views: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- replay requests must be serializable deterministically

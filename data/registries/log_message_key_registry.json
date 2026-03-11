@@ -16,6 +16,7 @@
       { "message_key": "compat.negotiation.read_only", "category_id": "compat", "description": "Read-only compatibility mode was negotiated." },
       { "message_key": "compat.negotiation.refused", "category_id": "compat", "description": "Compatibility negotiation refused the connection." },
       { "message_key": "compat.negotiation.result", "category_id": "compat", "description": "Compatibility negotiation completed successfully." },
+      { "message_key": "diag.capture.written", "category_id": "diag", "description": "Deterministic DIAG-0 repro bundle was written." },
       { "message_key": "diag.snapshot.written", "category_id": "diag", "description": "Deterministic diagnostic snapshot bundle was written." },
       { "message_key": "ipc.attach.accepted", "category_id": "ipc", "description": "A negotiated IPC attach session was accepted." },
       { "message_key": "ipc.attach.refused", "category_id": "ipc", "description": "An IPC attach session was refused explicitly." },

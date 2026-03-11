@@ -10419,6 +10419,145 @@ def check_log_merge_stable(repo_root):
     return violations
 
 
+def check_repro_bundle_deterministic(repo_root):
+    invariant_id = "INV-REPRO-BUNDLE-DETERMINISTIC"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "diag", "REPRO_BUNDLE_MODEL.md")
+    baseline_rel = os.path.join("docs", "audit", "REPRO_BUNDLE_BASELINE.md")
+    schema_rel = os.path.join("schema", "diag", "repro_bundle_manifest.schema")
+    builder_rel = os.path.join("src", "diag", "repro_bundle_builder.py")
+    replay_rel = os.path.join("tools", "diag", "tool_replay_bundle.py")
+    probe_rel = os.path.join("tools", "diag", "diag0_probe.py")
+    test_rel = os.path.join("tools", "xstack", "testx", "tests", "test_bundle_hash_stable.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "Bundle directory ordering is deterministic",
+            "`tool_replay_bundle` verifies:",
+            "proof-anchor window hash equivalence",
+            "structured log-window hash equivalence",
+        ),
+        baseline_rel: (
+            "DIAG-0 promotes deterministic repro capture to a first-class offline artifact.",
+            "bundle hash",
+            "proof-window hash",
+            "log-window hash",
+        ),
+        schema_rel: (
+            "proof_window_hash: sha256",
+            "canonical_event_hash: sha256",
+            "log_window_hash: sha256",
+        ),
+        builder_rel: (
+            "def write_repro_bundle(",
+            "def verify_repro_bundle(",
+            "sorted(bundle_files",
+            'canonical_sha256({"files": file_rows})',
+            '"proof_window_hash"',
+            '"canonical_event_hash"',
+            '"log_window_hash"',
+        ),
+        replay_rel: (
+            "Replay a deterministic DIAG-0 repro bundle.",
+            "replay_diag0_bundle(",
+        ),
+        probe_rel: (
+            "capture_diag0_bundle(",
+            "replay_diag0_bundle(",
+        ),
+        test_rel: (
+            "repro bundle hash is stable across repeated captures",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing repro-bundle determinism marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    forbidden_tokens = ("random.", "uuid.uuid4(", "os.urandom(", "time.time(", "datetime.utcnow(")
+    for rel in (builder_rel, replay_rel, probe_rel):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            continue
+        text = read_text(path) or ""
+        for token in forbidden_tokens:
+            if token in text:
+                violations.append(
+                    "{}: forbidden nondeterministic repro-bundle token '{}' in {}".format(
+                        invariant_id,
+                        token,
+                        normalize_path(rel),
+                    )
+                )
+                break
+    return violations
+
+
+def check_repro_bundle_no_secrets(repo_root):
+    invariant_id = "INV-REPRO-BUNDLE-NO-SECRETS"
+    if is_override_active(repo_root, invariant_id):
+        return []
+
+    doctrine_rel = os.path.join("docs", "diag", "REPRO_BUNDLE_MODEL.md")
+    baseline_rel = os.path.join("docs", "audit", "REPRO_BUNDLE_BASELINE.md")
+    builder_rel = os.path.join("src", "diag", "repro_bundle_builder.py")
+    test_rel = os.path.join("tools", "xstack", "testx", "tests", "test_no_secrets_in_bundle.py")
+
+    violations = []
+    required_tokens = {
+        doctrine_rel: (
+            "Bundles must exclude:",
+            "account secrets",
+            "signing keys",
+            "machine identifiers beyond coarse host meta",
+        ),
+        baseline_rel: (
+            "secret-like keys are stripped before bundle serialization",
+            "account secrets, auth tokens, signing keys, and machine identifiers are not emitted",
+        ),
+        builder_rel: (
+            "_SECRET_KEY_FRAGMENTS",
+            "_sanitize_tree(",
+            '"account_secret"',
+            '"machine_id"',
+            '"private_key"',
+            '"signing_key"',
+        ),
+        test_rel: (
+            "repro bundle strips secret-like fields",
+        ),
+    }
+    for rel, tokens in sorted(required_tokens.items()):
+        path = os.path.join(repo_root, rel.replace("/", os.sep))
+        if not os.path.isfile(path):
+            violations.append("{}: missing {}".format(invariant_id, normalize_path(rel)))
+            continue
+        text = read_text(path) or ""
+        missing = [token for token in tokens if token not in text]
+        if missing:
+            violations.append(
+                "{}: {} missing repro-bundle secret-stripping marker(s): {}".format(
+                    invariant_id,
+                    normalize_path(rel),
+                    ", ".join(missing[:4]),
+                )
+            )
+    return violations
+
+
 def check_refinement_budgeted(repo_root):
     invariant_id = "INV-REFINEMENT-BUDGETED"
     if is_override_active(repo_root, invariant_id):
@@ -13784,6 +13923,15 @@ def main() -> int:
                 lambda: check_artifacts_must_have_format_version(repo_root),
                 lambda: check_no_silent_format_interpretation(repo_root),
                 lambda: check_migrations_logged(repo_root),
+            ],
+        },
+        {
+            "group_id": "repox.runtime.diag",
+            "scope_subtrees": ("src", "tools", "schema", "schemas", "docs"),
+            "artifact_classes": ("CANONICAL", "DERIVED_VIEW"),
+            "checks": [
+                lambda: check_repro_bundle_deterministic(repo_root),
+                lambda: check_repro_bundle_no_secrets(repo_root),
             ],
         },
         {

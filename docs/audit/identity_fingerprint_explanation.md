@@ -50,3 +50,4 @@ Superseded By: none
   - 2026-03-11: refreshed for PACK-COMPAT-2 data format versioning registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX format-compat discipline additions, and PACK-COMPAT-2 TestX additions
   - 2026-03-11: refreshed for APPSHELL-0 shell constitution registration in `docs/architecture/CANON_INDEX.md`/`docs/architecture/CONTRACTS_INDEX.md`, RepoX/AuditX AppShell adoption discipline additions, and APPSHELL-0 TestX additions
   - 2026-03-11: refreshed for APPSHELL-3 TUI doctrine registration in `docs/architecture/CANON_INDEX.md`, RepoX/AuditX TUI discipline additions, and APPSHELL-3 TestX additions
+  - 2026-03-11: refreshed for DIAG-0 repro bundle doctrine registration in `docs/architecture/CANON_INDEX.md`/`docs/architecture/CONTRACTS_INDEX.md`, RepoX/AuditX repro-bundle discipline additions, and DIAG-0 TestX additions

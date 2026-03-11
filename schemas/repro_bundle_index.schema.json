@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Repro Bundle Index Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bundle_version",
+    "file_count",
+    "files",
+    "bundle_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "bundle_version": { "type": "string", "const": "1.0.0" },
+    "file_count": { "type": "integer", "minimum": 0 },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rel_path", "content_hash", "size_bytes"],
+        "additionalProperties": false,
+        "properties": {
+          "rel_path": { "type": "string", "minLength": 1 },
+          "content_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+          "size_bytes": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "bundle_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "extensions": { "type": "object", "additionalProperties": true }
+  }
+}

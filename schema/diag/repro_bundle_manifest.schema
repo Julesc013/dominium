@@ -1,0 +1,44 @@
+SCHEMA: diag/repro_bundle_manifest.schema
+schema_id: dominium.schema.diag.repro_bundle_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic top-level manifest for a DIAG-0 repro bundle.
+
+NON-SEMANTICS:
+- ReproBundleManifest does not mutate truth.
+- ReproBundleManifest does not auto-migrate saves or packs.
+
+REQUIRED SHAPE:
+record repro_bundle_manifest
+  required:
+    - schema_version: tag
+    - bundle_version: tag
+    - created_by_product_id: id
+    - build_id: text
+    - seed: text
+    - session_id: text
+    - session_template_id: text
+    - contract_bundle_hash: text
+    - semantic_contract_registry_hash: text
+    - pack_lock_hash: text
+    - overlay_manifest_hash: text
+    - proof_anchor_count: int
+    - canonical_event_count: int
+    - log_event_count: int
+    - view_fingerprint_count: int
+    - proof_window_hash: sha256
+    - canonical_event_hash: sha256
+    - log_window_hash: sha256
+    - environment_summary: map
+    - included_artifacts: [text]
+    - bundle_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- included_artifacts ordering is deterministic
+- bundle_hash is derived from ordered file hashes only
+- proof_window_hash, canonical_event_hash, and log_window_hash must match the captured replay window material exactly
+- environment_summary is host-meta only and not a truth input

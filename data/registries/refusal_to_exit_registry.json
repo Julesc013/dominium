@@ -126,6 +126,16 @@
         }
       },
       {
+        "mapping_id": "mapping.refusal.diag.prefix",
+        "refusal_prefix": "refusal.diag.",
+        "exit_code": 50,
+        "description": "Deterministic repro-bundle capture and replay refusals map to the refusal range.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "official.source": "DIAG-0"
+        }
+      },
+      {
         "mapping_id": "mapping.refusal.io.prefix",
         "refusal_prefix": "refusal.io.",
         "exit_code": 40,

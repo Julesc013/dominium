@@ -9,7 +9,7 @@ import subprocess
 import threading
 from typing import Mapping, Sequence
 
-from src.appshell.diag import write_diag_snapshot_bundle
+from src.diag import write_repro_bundle
 from src.appshell.ipc import (
     attach_ipc_endpoint,
     discover_ipc_endpoints,
@@ -311,6 +311,7 @@ def _build_process_rows(repo_root: str, run_spec: Mapping[str, object]) -> list[
         _append_arg(args, "--mod-policy-id", str(run_spec.get("mod_policy_id", "")).strip())
         _append_arg(args, "--overlay-conflict-policy-id", str(run_spec.get("overlay_conflict_policy_id", "")).strip())
         _append_arg(args, "--ipc-manifest-path", str(run_spec.get("ipc_manifest_path", "")).strip())
+        _append_arg(args, "--run-manifest-path", str((dict(run_spec.get("runtime_paths") or {})).get("manifest_path", "")).strip())
         _append_arg(args, "--pid-stub", pid_stub)
         out.append(
             {
@@ -585,18 +586,22 @@ class SupervisorEngine:
         return payload
 
     def _process_diag_bundle(self, product_id: str, process_row: Mapping[str, object]) -> str:
-        payload = write_diag_snapshot_bundle(
+        product_token = str(product_id).strip()
+        payload = write_repro_bundle(
             repo_root=self.repo_root,
-            product_id=str(product_id).strip(),
-            descriptor_payload=emit_product_descriptor(self.repo_root, product_id=str(product_id).strip()),
-            out_dir=os.path.join(self.runtime_paths["diag_root"], str(product_id).strip()),
-            session_spec_path=_runtime_abs(self.repo_root, str(self.run_spec.get("session_template_path", "")).strip()),
+            created_by_product_id=product_token,
+            build_id=str(dict(emit_product_descriptor(self.repo_root, product_id=product_token).get("version") or {}).get("build_id", "")).strip(),
+            out_dir=os.path.join(self.runtime_paths["diag_root"], product_token),
+            descriptor_payloads=[emit_product_descriptor(self.repo_root, product_id=product_token)],
+            run_manifest_payload=dict(self.run_spec.get("run_manifest") or {}),
             pack_lock_path=_runtime_abs(self.repo_root, str(self.run_spec.get("pack_lock_path", "")).strip()),
             contract_bundle_hash=str(self.run_spec.get("contract_bundle_hash", "")).strip(),
-            proof_anchor_dir="",
-            log_events=list(self._aggregated_logs[-16:]),
-            log_tail=16,
+            seed=str(self.run_spec.get("seed", "")).strip(),
+            session_id=str(self.run_spec.get("session_id", "")).strip(),
+            session_template_id=str(self.run_spec.get("session_template_id", "")).strip(),
+            log_events=[dict(row) for row in list(self._aggregated_logs[-32:]) if str(dict(row).get("source_product_id", "")).strip() == product_token],
             ipc_attach_rows=[dict(process_row)],
+            environment_summary={"supervisor_policy_id": str(self.run_spec.get("supervisor_policy_id", "")).strip()},
         )
         return str(payload.get("bundle_dir", "")).replace("\\", "/")
 

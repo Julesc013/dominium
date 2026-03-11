@@ -140,6 +140,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-SUPERVISOR-DETERMINISTIC`
 - `INV-NO-WALLCLOCK-POLLING`
 - `INV-LOG-MERGE-STABLE`
+- `INV-REPRO-BUNDLE-DETERMINISTIC`
+- `INV-REPRO-BUNDLE-NO-SECRETS`
 - `INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS`
 - `INV-DEGRADE-PLAN-DECLARED`
 - `INV-UNKNOWN-CAP-IGNORED-DETERMINISTICALLY`
@@ -692,6 +694,18 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when APPSHELL-6 doctrine, supervisor engine, probe, or tests stop declaring the canonical merged-log ordering `(source_product_id, seq_no, endpoint_id, event_id)`.
 - Fails when aggregated supervisor logs stop being produced from a deterministic sort key or lose replay coverage.
 - Preserves a stable cross-process log view for TUI, diagnostics, and repro bundles.
+
+### INV-REPRO-BUNDLE-DETERMINISTIC
+
+- Fails when the DIAG-0 repro-bundle doctrine, schema family, builder, replay tool, or capture command stop declaring deterministic file ordering and hash-chain verification.
+- Fails when bundle replay stops verifying stored proof/event/log window hashes or the governed capture surface regains unstable file ordering.
+- Preserves offline repro bundles as portable deterministic artifacts instead of ad hoc diagnostic dumps.
+
+### INV-REPRO-BUNDLE-NO-SECRETS
+
+- Fails when the DIAG-0 privacy doctrine or repro-bundle builder stop stripping secret-like fields before serialization.
+- Fails when governed DIAG-0 tests or builder markers no longer prove that account tokens, signing keys, and machine identifiers are excluded from captured bundles.
+- Preserves offline supportability without leaking host or account secrets.
 
 ### INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS
 

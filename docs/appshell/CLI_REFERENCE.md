@@ -25,6 +25,7 @@ This reference is generated from `data/registries/command_registry.json` and
 | `console detach` | Detach a logical local IPC console session. | `refusal.io.invalid_args` |
 | `console enter` | Open the deterministic REPL console session stub for the current product. | - |
 | `console sessions` | List discovered local IPC console endpoints in deterministic order. | `refusal.io.invalid_args` |
+| `diag capture` | Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs. | `refusal.io.invalid_args` |
 | `diag snapshot` | Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors. | `refusal.io.invalid_args` |
 | `launcher attach` | Attach launcher TUI/CLI to supervised child IPC consoles in deterministic order. | `refusal.io.invalid_args`, `refusal.supervisor.not_running` |
 | `launcher start` | Start a deterministic supervised local singleplayer or headless server run. | `refusal.io.invalid_args`, `refusal.pack.contract_range_mismatch`, `refusal.supervisor.already_running`, `refusal.supervisor.endpoint_unreached` |
@@ -63,6 +64,7 @@ This reference is generated from `data/registries/command_registry.json` and
 | `refusal.contract.*` | `30` | Contract mismatches map to the contract/compatibility range. |
 | `refusal.debug.*` | `50` | Debug/gating refusals map to the refusal range except where explicitly overridden. |
 | `refusal.debug.command_unknown` | `10` | Unknown registered-command tokens map to usage-range exits. |
+| `refusal.diag.*` | `50` | Deterministic repro-bundle capture and replay refusals map to the refusal range. |
 | `refusal.io.*` | `40` | IO/host-shell failures map to the transport and IO-shell range. |
 | `refusal.io.invalid_args` | `10` | Invalid command arguments map to usage-range exits. |
 | `refusal.io.profile_not_found` | `20` | Missing profile bundles are treated as pack/profile surface failures. |
@@ -88,6 +90,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
+- `diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -114,6 +117,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
+- `diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -137,6 +141,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
+- `diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -160,6 +165,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
+- `diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `launcher attach`: Attach launcher TUI/CLI to supervised child IPC consoles in deterministic order.
 - `launcher start`: Start a deterministic supervised local singleplayer or headless server run.
@@ -188,6 +194,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
+- `diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -212,6 +219,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
+- `diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.
@@ -236,6 +244,7 @@ This reference is generated from `data/registries/command_registry.json` and
 - `console detach`: Detach a logical local IPC console session.
 - `console enter`: Open the deterministic REPL console session stub for the current product.
 - `console sessions`: List discovered local IPC console endpoints in deterministic order.
+- `diag capture`: Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.
 - `diag snapshot`: Write a deterministic offline diagnostic snapshot bundle with descriptor, logs, and proof anchors.
 - `packs build-lock`: Verify packs offline and emit a deterministic pack lock plus compatibility report.
 - `packs list`: List available pack manifests in deterministic order.

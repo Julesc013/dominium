@@ -64,6 +64,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--mod-policy-id", default="")
     parser.add_argument("--overlay-conflict-policy-id", default="")
     parser.add_argument("--ipc-manifest-path", default="")
+    parser.add_argument("--run-manifest-path", default="")
     parser.add_argument("--pid-stub", default="")
     args = parser.parse_args(argv)
 
@@ -91,11 +92,15 @@ def main(argv: list[str] | None = None) -> int:
         manifest_path=str(args.ipc_manifest_path or "").strip(),
         session_metadata={
             "contract_bundle_hash": str(args.contract_bundle_hash or "").strip(),
+            "contract_bundle_path": "",
+            "pack_lock_path": str(args.pack_lock_path or "").strip(),
             "pack_lock_hash": str(args.pack_lock_hash or "").strip(),
             "mod_policy_id": str(args.mod_policy_id or "").strip(),
             "overlay_conflict_policy_id": str(args.overlay_conflict_policy_id or "").strip(),
             "profile_bundle_path": str(args.profile_bundle_path or "").strip(),
+            "run_manifest_path": str(args.run_manifest_path or "").strip(),
             "seed": str(args.seed or "0").strip() or "0",
+            "session_id": session_id,
             "session_template_id": str(args.session_template_id or "").strip(),
             "pid_stub": pid_stub,
         },

@@ -594,6 +594,39 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-REPRO-BUNDLE-DETERMINISTIC",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/diag/REPRO_BUNDLE_MODEL.md",
+        "docs/audit/REPRO_BUNDLE_BASELINE.md",
+        "schema/diag",
+        "schemas/repro_bundle_manifest.schema.json",
+        "schemas/repro_bundle_index.schema.json",
+        "schemas/replay_request.schema.json",
+        "schemas/replay_result.schema.json",
+        "src/diag",
+        "tools/diag",
+        "src/appshell/commands/command_engine.py",
+        "src/appshell/supervisor/supervisor_engine.py",
+        "src/server/server_console.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-repro-bundle-deterministic",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-REPRO-BUNDLE-NO-SECRETS",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/diag/REPRO_BUNDLE_MODEL.md",
+        "docs/audit/REPRO_BUNDLE_BASELINE.md",
+        "src/diag",
+        "tools/diag",
+        "tools/xstack/testx/tests/test_no_secrets_in_bundle.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-repro-bundle-no-secrets",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-NEGOTIATION-REQUIRED-FOR-CONNECTIONS",
       "severity": "FAIL",
       "scope_paths": [

@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-03-10
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
@@ -316,6 +316,7 @@ execution artifacts and are not authoritative.
 - `docs/appshell/LOGGING_AND_TRACING.md`
 - `docs/appshell/SUPERVISOR_MODEL.md`
 - `docs/appshell/TUI_FRAMEWORK.md`
+- `docs/diag/REPRO_BUNDLE_MODEL.md`
 - `docs/server/LOCAL_SINGLEPLAYER_MODEL.md`
 - `docs/server/SERVER_MVP_BASELINE.md`
 - `docs/server/SERVER_SETTINGS.md`
@@ -364,6 +365,8 @@ execution artifacts and are not authoritative.
 - `docs/audit/APPSHELL_IPC_BASELINE.md`
 - `docs/audit/APPSHELL_LOGGING_BASELINE.md`
 - `docs/audit/APPSHELL_TUI_BASELINE.md`
+- `docs/audit/DIAG0_RETRO_AUDIT.md`
+- `docs/audit/REPRO_BUNDLE_BASELINE.md`
 - `docs/appshell/CLI_REFERENCE.md`
 - `docs/audit/CAP_NEGOTIATION_BASELINE.md`
 - `docs/audit/CAP_NEG1_RETRO_AUDIT.md`

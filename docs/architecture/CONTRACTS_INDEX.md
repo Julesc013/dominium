@@ -1,5 +1,5 @@
 Status: CANONICAL
-Last Reviewed: 2026-03-10
+Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 
@@ -179,6 +179,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/compat/NEGOTIATION_HANDSHAKES.md` | EVOLVING | Deterministic client/server and IPC attach negotiation handshake flow |
 | `docs/compat/DEGRADE_LADDERS.md` | EVOLVING | Deterministic per-product degrade ladders and explicit fallback mapping |
 | `docs/compat/DATA_FORMAT_VERSIONING.md` | EVOLVING | Deterministic persistent artifact format versioning, migration hooks, and read-only fallback rules |
+| `docs/diag/REPRO_BUNDLE_MODEL.md` | EVOLVING | Deterministic offline repro bundle contents, privacy stripping, and replay verification workflow |
 | `docs/ops/SERVER_SCOPE.md` | EVOLVING | Server scope and guarantees |
 | `docs/ops/LOGGING_MODEL.md` | EVOLVING | Server logging format and rotation |
 | `docs/ops/LONG_RUN_EXPECTATIONS.md` | EVOLVING | Long-run stability expectations |
@@ -303,6 +304,10 @@ Schemas are the authoritative data-shape contracts. Start here:
 - `schema/appshell/refusal_code_registry.schema`
 - `schema/appshell/command_descriptor.schema`
 - `schema/appshell/tui_panel_descriptor.schema`
+- `schema/diag/repro_bundle_manifest.schema`
+- `schema/diag/repro_bundle_index.schema`
+- `schema/diag/replay_request.schema`
+- `schema/diag/replay_result.schema`
 
 
 

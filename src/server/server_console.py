@@ -7,6 +7,9 @@ from typing import Mapping
 
 from src.compat import build_compat_status_payload
 from src.compat.data_format_loader import stamp_artifact_metadata
+from src.compat import emit_product_descriptor
+from src.diag import write_repro_bundle
+from src.appshell.logging import get_current_log_engine
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, write_canonical_json
 
@@ -130,29 +133,55 @@ def emit_diag_bundle_stub(server_boot_payload: Mapping[str, object], output_path
     repo_root = str((dict(server_boot_payload or {})).get("repo_root", "")).strip()
     runtime = _runtime(server_boot_payload)
     server = dict(runtime.get("server") or {})
-    payload = {
-        "schema_version": "1.0.0",
-        "tick": int(server.get("network_tick", 0) or 0),
-        "save_id": str(runtime.get("save_id", "")).strip(),
-        "client_count": len(dict(runtime.get("server_mvp_connections") or {})),
-        "proof_anchor_count": len(list(runtime.get("server_mvp_proof_anchors") or [])),
-        "extensions": {},
-    }
-    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload))
     if str(output_path or "").strip():
         out_abs = os.path.normpath(os.path.abspath(str(output_path)))
+        out_dir = os.path.splitext(out_abs)[0] if os.path.splitext(out_abs)[1] else out_abs
     else:
-        out_abs = os.path.join(
+        out_dir = os.path.join(
             repo_root,
             "build",
             "server",
             str(runtime.get("save_id", "save.server.mvp")),
             "diag",
-            "diag_bundle.stub.json",
         )
-    os.makedirs(os.path.dirname(out_abs), exist_ok=True)
-    write_canonical_json(out_abs, payload)
-    return {"result": "complete", "diag_bundle_path": norm(os.path.relpath(out_abs, repo_root))}
+    logger = get_current_log_engine()
+    descriptor = emit_product_descriptor(repo_root, product_id="server")
+    materialized_paths = dict((dict(server_boot_payload or {})).get("materialized_paths") or {})
+    save_id = str(runtime.get("save_id", "")).strip() or str((dict(server_boot_payload or {}).get("session_spec") or {}).get("save_id", "")).strip()
+    contract_bundle_path = str(materialized_paths.get("universe_contract_bundle_path", "")).strip()
+    if not contract_bundle_path and save_id:
+        candidate = os.path.join(repo_root, "saves", save_id, "universe_contract_bundle.json")
+        if os.path.isfile(candidate):
+            contract_bundle_path = candidate
+    pack_lock_payload = dict((dict(server_boot_payload or {})).get("effective_lock_payload") or {})
+    proof_rows = [dict(row) for row in list(runtime.get("server_mvp_proof_anchors") or []) if isinstance(row, dict)]
+    canonical_rows = [dict(row) for row in list(server.get("hash_anchor_frames") or []) if isinstance(row, dict)]
+    canonical_rows.extend([dict(row) for row in list(server.get("control_proof_bundles") or []) if isinstance(row, dict)])
+    bundle = write_repro_bundle(
+        repo_root=repo_root,
+        created_by_product_id="server",
+        build_id=str(dict(descriptor.get("version") or {}).get("build_id", "")).strip(),
+        out_dir=out_dir,
+        descriptor_payloads=[descriptor],
+        session_spec_payload=dict((dict(server_boot_payload or {}).get("session_spec") or {})),
+        contract_bundle_path=contract_bundle_path,
+        pack_lock_payload=pack_lock_payload,
+        semantic_contract_registry_hash=str((dict(runtime.get("server_mvp") or {})).get("semantic_contract_registry_hash", "")).strip(),
+        contract_bundle_hash=str((dict(runtime.get("server_mvp") or {})).get("contract_bundle_hash", "")).strip(),
+        overlay_manifest_hash=str((dict(runtime.get("server_mvp") or {})).get("overlay_manifest_hash", "")).strip(),
+        seed=str((dict(server_boot_payload or {}).get("session_spec") or {}).get("selected_seed", "")).strip(),
+        session_id=save_id,
+        session_template_id=str((dict(server_boot_payload or {}).get("session_spec") or {}).get("template_id", "")).strip(),
+        proof_anchor_rows=proof_rows,
+        canonical_event_rows=canonical_rows,
+        log_events=list(logger.ring_events() if logger is not None else []),
+    )
+    return {
+        "result": "complete",
+        "diag_bundle_path": norm(os.path.relpath(str(bundle.get("manifest_path", "")).replace("/", os.sep), repo_root)),
+        "bundle_dir": str(bundle.get("bundle_dir", "")).replace("\\", "/"),
+        "bundle_hash": str(bundle.get("bundle_hash", "")).strip(),
+    }
 
 
 def dispatch_server_console_command(

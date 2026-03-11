@@ -13,6 +13,7 @@ from src.appshell.compat_adapter import build_version_payload, emit_descriptor_p
 from src.appshell.config_loader import list_pack_manifests, list_profile_bundles
 from src.appshell.console_repl import build_console_session_stub
 from src.appshell.diag import write_diag_snapshot_bundle
+from src.diag import write_repro_bundle
 from src.appshell.ipc import (
     attach_ipc_endpoint,
     detach_ipc_session,
@@ -459,6 +460,96 @@ def _run_diag_snapshot_command(repo_root: str, product_id: str, args: Sequence[s
     return _json_dispatch(snapshot)
 
 
+def _run_diag_capture_command(repo_root: str, product_id: str, args: Sequence[str]) -> dict:
+    parser = argparse.ArgumentParser(prog="diag capture", add_help=False)
+    parser.add_argument("--out", default="")
+    parser.add_argument("--out-dir", default="")
+    parser.add_argument("--window", type=int, default=32)
+    parser.add_argument("--include-views", action="store_true")
+    parser.add_argument("--session-spec-path", default="")
+    parser.add_argument("--pack-lock-path", default="")
+    parser.add_argument("--contract-bundle-path", default="")
+    parser.add_argument("--run-manifest-path", default="")
+    parser.add_argument("--proof-anchor-dir", default="")
+    parser.add_argument("--overlay-manifest-hash", default="")
+    parser.add_argument("--seed", default="")
+    parser.add_argument("--session-template-id", default="")
+    parsed, refusal = _parse_command_args(repo_root, parser, "diag capture", args)
+    if refusal is not None:
+        return _json_dispatch(refusal, _exit_code_for_refusal(repo_root, str(refusal.get("refusal_code", ""))))
+
+    version_payload = build_version_payload(repo_root, product_id=product_id)
+    logger = get_current_log_engine()
+    ipc_server = get_current_ipc_endpoint_server()
+    ipc_meta = dict(getattr(ipc_server, "session_metadata", {}) or {}) if ipc_server is not None else {}
+    supervisor_engine = get_current_supervisor_engine()
+    supervisor_run_spec = dict(getattr(supervisor_engine, "run_spec", {}) or {}) if supervisor_engine is not None else {}
+    supervisor_paths = dict(getattr(supervisor_engine, "runtime_paths", {}) or {}) if supervisor_engine is not None else {}
+
+    session_spec_path = str(getattr(parsed, "session_spec_path", "")).strip() or str(ipc_meta.get("session_spec_path", "")).strip()
+    contract_bundle_path = str(getattr(parsed, "contract_bundle_path", "")).strip() or str(ipc_meta.get("contract_bundle_path", "")).strip()
+    if (not contract_bundle_path) and session_spec_path:
+        save_dir = os.path.dirname(os.path.normpath(os.path.abspath(session_spec_path)))
+        candidate = os.path.join(save_dir, "universe_contract_bundle.json")
+        if os.path.isfile(candidate):
+            contract_bundle_path = candidate
+    pack_lock_path = (
+        str(getattr(parsed, "pack_lock_path", "")).strip()
+        or str(ipc_meta.get("pack_lock_path", "")).strip()
+        or str(supervisor_run_spec.get("pack_lock_path", "")).strip()
+    )
+    run_manifest_path = (
+        str(getattr(parsed, "run_manifest_path", "")).strip()
+        or str(ipc_meta.get("run_manifest_path", "")).strip()
+        or str(supervisor_paths.get("manifest_path", "")).strip()
+    )
+    proof_anchor_dir = (
+        str(getattr(parsed, "proof_anchor_dir", "")).strip()
+        or str(ipc_meta.get("proof_anchor_dir", "")).strip()
+    )
+    bundle_result = write_repro_bundle(
+        repo_root=repo_root,
+        created_by_product_id=product_id,
+        build_id=str(version_payload.get("build_id", "")).strip(),
+        out_dir=str(getattr(parsed, "out_dir", "")).strip() or str(getattr(parsed, "out", "")).strip(),
+        window=int(max(0, int(getattr(parsed, "window", 32) or 32))),
+        include_views=bool(getattr(parsed, "include_views", False)),
+        descriptor_payloads=[emit_descriptor_payload(repo_root, product_id=product_id)],
+        run_manifest_path=run_manifest_path,
+        session_spec_path=session_spec_path,
+        contract_bundle_path=contract_bundle_path,
+        pack_lock_path=pack_lock_path,
+        semantic_contract_registry_hash=str(ipc_meta.get("semantic_contract_registry_hash", "")).strip(),
+        contract_bundle_hash=str(ipc_meta.get("contract_bundle_hash", "")).strip() or str(supervisor_run_spec.get("contract_bundle_hash", "")).strip(),
+        overlay_manifest_hash=(
+            str(getattr(parsed, "overlay_manifest_hash", "")).strip()
+            or str(ipc_meta.get("overlay_manifest_hash", "")).strip()
+            or str(supervisor_run_spec.get("overlay_manifest_hash", "")).strip()
+        ),
+        seed=str(getattr(parsed, "seed", "")).strip() or str(ipc_meta.get("seed", "")).strip() or str(supervisor_run_spec.get("seed", "")).strip(),
+        session_id=str(ipc_meta.get("session_id", "")).strip(),
+        session_template_id=(
+            str(getattr(parsed, "session_template_id", "")).strip()
+            or str(ipc_meta.get("session_template_id", "")).strip()
+            or str(supervisor_run_spec.get("session_template_id", "")).strip()
+        ),
+        proof_anchor_dir=proof_anchor_dir,
+        log_events=list(logger.ring_events() if logger is not None else []),
+        ipc_attach_rows=list(ipc_server.recent_attach_records() if ipc_server is not None else []),
+    )
+    log_emit(
+        category="diag",
+        severity="info",
+        message_key="diag.capture.written",
+        params={
+            "product_id": str(product_id).strip(),
+            "bundle_dir": str(bundle_result.get("bundle_dir", "")).replace("\\", "/"),
+            "bundle_hash": str(bundle_result.get("bundle_hash", "")).strip(),
+        },
+    )
+    return _json_dispatch(bundle_result)
+
+
 def _run_console_command(repo_root: str, product_id: str) -> dict:
     rows = build_command_rows(repo_root, product_id)
     return _json_dispatch(build_console_session_stub(product_id, rows))
@@ -789,6 +880,8 @@ def dispatch_registered_command(
         return _run_diag_command(repo_root, product_id, mode_id)
     if handler_id == "diag_snapshot":
         return _run_diag_snapshot_command(repo_root, product_id, remaining)
+    if handler_id == "diag_capture":
+        return _run_diag_capture_command(repo_root, product_id, remaining)
     if handler_id == "console_enter":
         return _run_console_command(repo_root, product_id)
     if handler_id == "console_sessions":

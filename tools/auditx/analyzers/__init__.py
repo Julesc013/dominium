@@ -436,6 +436,10 @@ from analyzers import e426_tui_truth_leak_smell
 from analyzers import e427_wallclock_refresh_smell
 from analyzers import e428_ad_hoc_ipc_protocol_smell
 from analyzers import e429_unnegotiated_attach_smell
+from analyzers import e430_nondeterministic_supervisor_smell
+from analyzers import e431_wallclock_polling_smell
+from analyzers import e432_nondeterministic_bundle_ordering_smell
+from analyzers import e433_secrets_in_bundle_smell
 
 
 ANALYZERS = (
@@ -875,6 +879,10 @@ ANALYZERS = (
     e427_wallclock_refresh_smell,
     e428_ad_hoc_ipc_protocol_smell,
     e429_unnegotiated_attach_smell,
+    e430_nondeterministic_supervisor_smell,
+    e431_wallclock_polling_smell,
+    e432_nondeterministic_bundle_ordering_smell,
+    e433_secrets_in_bundle_smell,
 )
 
 

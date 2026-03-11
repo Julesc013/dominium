@@ -71,6 +71,16 @@
         "description": "Debug or diagnostic surface is not allowed."
       },
       {
+        "refusal_code": "refusal.diag.bundle_hash_mismatch",
+        "family": "diag",
+        "description": "A deterministic repro bundle failed hash verification."
+      },
+      {
+        "refusal_code": "refusal.diag.secrets_detected",
+        "family": "diag",
+        "description": "A repro bundle capture attempted to include a forbidden secret-like field."
+      },
+      {
         "refusal_code": "refusal.debug.command_unavailable",
         "family": "debug",
         "description": "A declared command namespace is not yet bound in the current AppShell phase."

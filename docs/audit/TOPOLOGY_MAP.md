@@ -4,29 +4,29 @@ Version: 1.0.0
 # System Topology Map
 
 - topology_id: `dominium.audit.topology_map`
-- repository_hash: `HEAD:cf16fe6e831c00b9f9b2ef83d9adf6ff0018ab42`
+- repository_hash: `HEAD:7b3039a11744168fa29608b99522abe9d708e4f9`
 - generated_tick: `0`
-- deterministic_fingerprint: `a0c0833dc4821671c5af9afdf0a590bc8d77a8c1ff5447051e19a636df17b1a9`
+- deterministic_fingerprint: `2bfa98e1bd1cb2ad2668b9e4a671361050964d840623b9e0d27dc86c49aee640`
 
 ## Counts
-- node_count: 4883
-- edge_count: 10142
+- node_count: 4903
+- edge_count: 10185
 
 ## Node Kinds
 - contract_set: 147
-- module: 96
+- module: 97
 - policy_set: 308
 - process_family: 393
 - registry: 370
-- schema: 1293
-- tool: 2276
+- schema: 1301
+- tool: 2287
 
 ## Edge Kinds
-- consumes: 4692
-- depends_on: 2746
+- consumes: 4716
+- depends_on: 2757
 - enforces: 955
 - produces: 1
-- validates: 1748
+- validates: 1756
 
 ## Major Runtime Modules
 - `module:client`
@@ -86,13 +86,13 @@ Version: 1.0.0
 - `module:src/control/negotiation/negotiation_kernel.py`
 - `module:src/control/view/view_engine.py`
 - `module:src/core`
+- `module:src/diag`
 - `module:src/diegetics`
 - `module:src/electric`
 - `module:src/embodiment`
 - `module:src/epistemics`
 - `module:src/field`
 - `module:src/fields`
-- `module:src/fluid`
 
 ## Control Subsystem Nodes
 - `module:src/control/control_plane_engine.py`

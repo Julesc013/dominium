@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Repro Bundle Replay Result Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bundle_hash",
+    "hash_match",
+    "proof_hash_match",
+    "mismatch_details",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "bundle_hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "hash_match": { "type": "boolean" },
+    "proof_hash_match": { "type": "boolean" },
+    "mismatch_details": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "extensions": { "type": "object", "additionalProperties": true }
+  }
+}

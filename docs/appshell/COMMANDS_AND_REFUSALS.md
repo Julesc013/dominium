@@ -55,6 +55,8 @@ Alias rules:
 - `console` aliases `console enter`
 - `diag snapshot` is the canonical APPSHELL-2 diagnostic bundle subcommand under
   the stable `diag` root surface
+- `diag capture` is the canonical DIAG-0 deterministic repro bundle subcommand
+  under the stable `diag` root surface
 
 ## Namespaces
 
@@ -66,6 +68,7 @@ The stable namespaced command trees are:
 - `profiles list`
 - `profiles show`
 - `diag snapshot`
+- `diag capture`
 - `session.*`
 - `engine.*`
 - `game.*`
@@ -129,6 +132,8 @@ The APPSHELL-1 command plane remains offline-capable.
 - `profiles list/show` inspect local bundle surfaces only
 - `diag snapshot` writes a deterministic offline diagnostic bundle from local
   descriptor/session/pack/log/proof surfaces only
+- `diag capture` writes the DIAG-0 deterministic repro bundle from local
+  descriptor/run/session/pack/proof/log surfaces only
 
 ## Unavailable Namespace Rule
 

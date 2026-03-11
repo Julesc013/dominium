@@ -112,6 +112,21 @@
       },
       {
         "schema_version": "1.1.0",
+        "command_id": "command.diag_capture",
+        "command_path": "diag capture",
+        "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],
+        "description": "Write a deterministic DIAG-0 repro bundle with logs, proof anchors, canonical events, and pinned runtime inputs.",
+        "supported_mode_ids": ["cli", "headless", "rendered", "tui"],
+        "args_schema_id": "dominium.schema.appshell.args.diag_capture",
+        "output_schema_id": "dominium.schema.diag.repro_bundle_manifest",
+        "refusal_codes": ["refusal.io.invalid_args"],
+        "exit_code_mapping_id": "exit.pack_profile",
+        "handler_id": "diag_capture",
+        "deterministic_fingerprint": "",
+        "extensions": { "official.source": "DIAG-0" }
+      },
+      {
+        "schema_version": "1.1.0",
         "command_id": "command.console",
         "command_path": "console",
         "product_ids": ["client", "engine", "game", "launcher", "server", "setup", "tool.attach_console_stub"],

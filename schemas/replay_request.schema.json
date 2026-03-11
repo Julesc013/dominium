@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Repro Bundle Replay Request Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "bundle_path",
+    "tick_window",
+    "include_views",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "bundle_path": { "type": "string", "minLength": 1 },
+    "tick_window": { "type": "integer", "minimum": 0 },
+    "include_views": { "type": "boolean" },
+    "deterministic_fingerprint": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "extensions": { "type": "object", "additionalProperties": true }
+  }
+}

@@ -1,0 +1,25 @@
+SCHEMA: diag/replay_result.schema
+schema_id: dominium.schema.diag.replay_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic replay verification results for a DIAG-0 repro bundle.
+
+NON-SEMANTICS:
+- ReplayResult does not mutate truth.
+
+REQUIRED SHAPE:
+record replay_result
+  required:
+    - schema_version: tag
+    - bundle_hash: sha256
+    - hash_match: bool
+    - proof_hash_match: bool
+    - mismatch_details: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- mismatch_details ordering is deterministic
+- a valid replay result must explain any hash mismatch explicitly
