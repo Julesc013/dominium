@@ -87,6 +87,7 @@ Supported kinds:
 ## Related Contracts
 
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
+- `docs/architecture/SAVE_MODEL.md`
 - `docs/architecture/LOCKFILES.md`
 - `docs/distribution/LAUNCHER_GUIDE.md`
 - `docs/audit/INSTANCE_MANIFEST_BASELINE.md`

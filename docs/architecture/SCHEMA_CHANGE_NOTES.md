@@ -20,6 +20,12 @@ Template:
   Migration: <required migration steps or "none">
 
 - Date: 2026-03-11
+  Schema(s): schema/lib/save_manifest.schema; schema/lib/migration_event.schema; schema/save.manifest.schema
+  Change: upgrade save manifest contracts for LIB-3 pinned contract bundles, explicit migration lineage, and read-only fallback policy
+  Invariants: INV-SCHEMA-VERSION-BUMP; INV-SAVE-MANIFEST-REQUIRED; INV-SAVE-PINS-CONTRACTS; INV-NO-SILENT-MIGRATION
+  Migration: normalize legacy save manifests through `src/lib/save/save_validator.py`; legacy adapter field `contract_bundle_hash` remains available for compatibility
+
+- Date: 2026-03-11
   Schema(s): schema/lib/instance_manifest.schema; schema/lib/instance_settings.schema; schema/instance.manifest.schema
   Change: upgrade instance manifest contracts for LIB-2 instance kinds, save associations, portable embedded builds, and explicit pack/profile binding
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-INSTANCE-USES-PACK-LOCK; INV-INSTANCE-USES-PROFILE-BUNDLE; INV-SAVES-NOT-EMBEDDED-IN-INSTANCE

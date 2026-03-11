@@ -40,6 +40,7 @@ Reusable artifacts live in a single content-addressable store rooted at:
     save.manifest.json
     state.snapshots/
     patches/
+    proofs/
 
   exports/
     <bundle_id>.bundle
@@ -79,6 +80,7 @@ This topology flag is a storage declaration only. It is not a gameplay/runtime m
 - `schema/lib/install_manifest.schema`
 - `schema/lib/instance_manifest.schema`
 - `schema/lib/save_manifest.schema`
+- `docs/architecture/SAVE_MODEL.md`
 - `docs/architecture/INSTALL_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`
 - `docs/architecture/BUNDLE_MODEL.md`

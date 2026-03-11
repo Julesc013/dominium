@@ -42,6 +42,10 @@ from src.lib.instance import (
     instance_ui_mode_default,
     validate_instance_manifest,
 )
+from src.lib.save import (
+    evaluate_save_open,
+    resolve_save_manifest_path,
+)
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"
@@ -743,6 +747,87 @@ def perform_preflight(args: argparse.Namespace,
                                      deterministic, {"instance_validation": instance_validation, "install_validation": install_validation}, refusal)
         return 3, {"result": "refused", "compat_report": report}
 
+    save_open = {}
+    save_manifest_path = ""
+    if selected_save_id:
+        save_manifest_path = resolve_save_manifest_path(
+            repo_root=REPO_ROOT,
+            install_root=install_root,
+            instance_root=instance_root,
+            instance_manifest=instance_manifest,
+            save_id=selected_save_id,
+        )
+        if not save_manifest_path or not os.path.isfile(save_manifest_path):
+            refusal = refusal_payload(
+                5,
+                "REFUSE_INTEGRITY_VIOLATION",
+                "save manifest not found",
+                {"save_id": selected_save_id, "instance_id": instance_id or ""},
+            )
+            report = build_compat_report(
+                "run",
+                install_id,
+                instance_id,
+                None,
+                args.capability_baseline,
+                [],
+                [],
+                [],
+                "refuse",
+                [refusal.get("code")],
+                ["restore the selected save manifest or choose another save"],
+                deterministic,
+                {
+                    "instance_validation": instance_validation,
+                    "install_validation": install_validation,
+                    "selected_save_id": selected_save_id,
+                },
+                refusal,
+            )
+            return 3, {"result": "refused", "compat_report": report}
+        save_open = evaluate_save_open(
+            repo_root=REPO_ROOT,
+            save_manifest_path=save_manifest_path,
+            instance_manifest=instance_manifest,
+            install_manifest=install_manifest,
+            pack_lock_payload=lockfile,
+            run_mode=args.run_mode,
+            instance_allow_read_only_fallback=allow_read_only_fallback,
+            allow_save_migration=bool(getattr(args, "allow_save_migration", False)),
+            migration_tick=int(getattr(args, "migration_tick", 0) or 0),
+            migration_id=str(getattr(args, "save_migration_id", "") or "").strip(),
+        )
+        if save_open.get("result") != "complete":
+            refusal_code = str(save_open.get("refusal_code", "REFUSE_SAVE_INVALID")).strip() or "REFUSE_SAVE_INVALID"
+            refusal = refusal_payload(
+                5,
+                refusal_code.upper(),
+                "save manifest verification failed",
+                {"save_id": selected_save_id, "instance_id": instance_id or ""},
+            )
+            report = build_compat_report(
+                "run",
+                install_id,
+                instance_id,
+                None,
+                args.capability_baseline,
+                [],
+                [],
+                [],
+                "refuse",
+                [refusal_code],
+                ["select a compatible save, use inspect/replay with read-only allowed, or run an explicit save migration"],
+                deterministic,
+                {
+                    "instance_validation": instance_validation,
+                    "install_validation": install_validation,
+                    "save_open": save_open,
+                    "selected_save_id": selected_save_id,
+                },
+                refusal,
+            )
+            return 3, {"result": "refused", "compat_report": report}
+
     required_caps = collect_required_capabilities(lockfile)
     provided_caps = sorted_unique(install_manifest.get("supported_capabilities") or [])
     missing_caps = sorted(set(required_caps) - set(provided_caps))
@@ -783,7 +868,10 @@ def perform_preflight(args: argparse.Namespace,
         "instance_kind": instance_kind,
         "save_refs": list(instance_manifest.get("save_refs") or []),
         "selected_save_id": selected_save_id,
+        "selected_save_manifest": save_manifest_path.replace("\\", "/") if save_manifest_path else "",
         "allow_read_only_fallback": allow_read_only_fallback,
+        "save_migration_applied": bool(save_open.get("migration_applied", False)),
+        "save_migration_required": bool(save_open.get("migration_required", False)),
         "ui_mode_default": instance_ui_mode_default(instance_manifest),
         "required_packs": required_packs,
         "missing_packs": missing_required,
@@ -795,6 +883,7 @@ def perform_preflight(args: argparse.Namespace,
         "contract_range_mismatches": contract_mismatches,
         "install_validation": install_validation,
         "instance_validation": instance_validation,
+        "save_open": save_open,
         "install_switch": install_switch,
         "profile_bundle_hash": str(instance_manifest.get("profile_bundle_hash", "")).strip(),
         "pack_status": required_entries + optional_entries,
@@ -860,6 +949,13 @@ def perform_preflight(args: argparse.Namespace,
             mode = "degraded"
             degrade_reasons.append("missing_required_packs")
         mitigation = ["install missing packs"] if missing_required else []
+
+    if mode != "refuse" and bool(save_open.get("read_only_required")):
+        mode = "inspect-only"
+        degrade_reasons.extend(list(save_open.get("degrade_reasons") or []))
+        if save_open.get("migration_applied"):
+            extensions["save_migration_applied"] = True
+        mitigation = ["select a matching install/save combination for mutable runtime"] if not mitigation else mitigation
 
     if args.run_mode in ("inspect", "replay") and mode != "refuse":
         mode = "inspect-only"
@@ -1124,6 +1220,9 @@ def main() -> int:
     preflight.add_argument("--pack-root", action="append", default=[])
     preflight.add_argument("--compat-out", default=None)
     preflight.add_argument("--save", default="")
+    preflight.add_argument("--allow-save-migration", action="store_true")
+    preflight.add_argument("--save-migration-id", default="")
+    preflight.add_argument("--migration-tick", type=int, default=0)
     preflight.add_argument("--run-mode", default="play",
                            choices=["play", "client", "server", "inspect", "replay"])
 
@@ -1134,6 +1233,9 @@ def main() -> int:
     run_cmd.add_argument("--pack-root", action="append", default=[])
     run_cmd.add_argument("--compat-out", default=None)
     run_cmd.add_argument("--save", default="")
+    run_cmd.add_argument("--allow-save-migration", action="store_true")
+    run_cmd.add_argument("--save-migration-id", default="")
+    run_cmd.add_argument("--migration-tick", type=int, default=0)
     run_cmd.add_argument("--run-mode", default="play",
                          choices=["play", "client", "server", "inspect", "replay"])
     run_cmd.add_argument("--confirm", action="store_true")
@@ -1147,6 +1249,9 @@ def main() -> int:
     start_cmd.add_argument("--pack-root", action="append", default=[])
     start_cmd.add_argument("--compat-out", default=None)
     start_cmd.add_argument("--save", default="")
+    start_cmd.add_argument("--allow-save-migration", action="store_true")
+    start_cmd.add_argument("--save-migration-id", default="")
+    start_cmd.add_argument("--migration-tick", type=int, default=0)
     start_cmd.add_argument("--run-mode", default="play",
                            choices=["play", "client", "server", "inspect", "replay"])
     start_cmd.add_argument("--confirm", action="store_true")

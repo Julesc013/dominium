@@ -444,6 +444,8 @@ from analyzers import e434_path_dependent_install_smell
 from analyzers import e435_binary_without_descriptor_smell
 from analyzers import e436_instance_without_lock_smell
 from analyzers import e437_save_locked_to_instance_smell
+from analyzers import e438_save_without_contract_pin_smell
+from analyzers import e439_silent_save_upgrade_smell
 
 
 ANALYZERS = (
@@ -891,6 +893,8 @@ ANALYZERS = (
     e435_binary_without_descriptor_smell,
     e436_instance_without_lock_smell,
     e437_save_locked_to_instance_smell,
+    e438_save_without_contract_pin_smell,
+    e439_silent_save_upgrade_smell,
 )
 
 

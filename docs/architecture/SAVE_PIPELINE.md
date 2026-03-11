@@ -171,6 +171,9 @@ No silent fallback is allowed.
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 
 
+- `docs/architecture/SAVE_MODEL.md`
+
+
 - `docs/architecture/REFUSAL_SEMANTICS.md`
 
 

@@ -114,6 +114,9 @@ COMMIT_RECORD
 ## See also
 
 
+- `docs/architecture/SAVE_MODEL.md`
+
+
 - `docs/architecture/SAVE_PIPELINE.md`
 
 

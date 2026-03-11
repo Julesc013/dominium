@@ -28570,6 +28570,108 @@ def _append_instance_manifest_invariant_findings(
                 )
 
 
+def _append_save_manifest_invariant_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    invariant_tokens = {
+        "INV-SAVE-MANIFEST-REQUIRED": {
+            "docs/architecture/SAVE_MODEL.md": (
+                "INV-SAVE-MANIFEST-REQUIRED",
+                "save.manifest.json",
+            ),
+            "schema/lib/save_manifest.schema": (
+                "save_format_version",
+                "migration_chain",
+            ),
+            "src/lib/save/save_validator.py": (
+                "REFUSAL_SAVE_MANIFEST_REQUIRED",
+                "validate_save_manifest(",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "resolve_save_manifest_path(",
+                "save manifest not found",
+            ),
+        },
+        "INV-SAVE-PINS-CONTRACTS": {
+            "docs/architecture/SAVE_MODEL.md": (
+                "INV-SAVE-PINS-CONTRACTS",
+                "universe_contract_bundle_hash",
+                "pack_lock_hash",
+            ),
+            "schema/lib/save_manifest.schema": (
+                "universe_contract_bundle_hash",
+                "pack_lock_hash",
+                "allow_read_only_open",
+            ),
+            "src/lib/save/save_validator.py": (
+                "load_save_contract_bundle(",
+                "REFUSAL_SAVE_CONTRACT_MISMATCH",
+                "REFUSAL_SAVE_PACK_LOCK_MISMATCH",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "evaluate_save_open(",
+                "save manifest verification failed",
+                "\"save_open\": save_open",
+            ),
+        },
+        "INV-NO-SILENT-MIGRATION": {
+            "docs/architecture/SAVE_MODEL.md": (
+                "INV-NO-SILENT-MIGRATION",
+                "explicit invoke-only",
+            ),
+            "schema/lib/migration_event.schema": (
+                "migration application remains explicit invoke-only",
+                "tick_applied",
+            ),
+            "src/lib/save/save_validator.py": (
+                "migrate_save_manifest(",
+                "allow_save_migration",
+                "REFUSAL_SAVE_MIGRATION_REQUIRED",
+            ),
+            "tools/launcher/launcher_cli.py": (
+                "--allow-save-migration",
+                "--save-migration-id",
+                "--migration-tick",
+            ),
+        },
+    }
+    for invariant_id, rel_paths in invariant_tokens.items():
+        for rel_path, tokens in rel_paths.items():
+            abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
+            try:
+                text = open(abs_path, "r", encoding="utf-8").read()
+            except OSError:
+                text = ""
+            if not text:
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet="",
+                        message="required save manifest enforcement file is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+                continue
+            for token in tokens:
+                if token in text:
+                    continue
+                findings.append(
+                    _finding(
+                        severity=severity,
+                        file_path=rel_path,
+                        line_number=1,
+                        snippet=token,
+                        message="required save manifest enforcement token is missing",
+                        rule_id=invariant_id,
+                    )
+                )
+
+
 def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     files = _scan_files(repo_root)
@@ -29161,6 +29263,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_instance_manifest_invariant_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_save_manifest_invariant_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

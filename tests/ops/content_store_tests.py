@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -15,6 +16,11 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 from tools.lib.content_store import canonical_sha256, initialize_store_root, store_add_artifact, store_verify
+from src.compat import build_product_build_metadata, build_product_descriptor
+from src.lib.install import (
+    build_product_build_descriptor,
+    deterministic_fingerprint as install_deterministic_fingerprint,
+)
 
 
 OPS_CLI = os.path.join(REPO_ROOT, "tools", "ops", "ops_cli.py")
@@ -44,25 +50,80 @@ def load_json(path: str) -> dict:
 
 
 def make_install_manifest(path: str, install_id: str, root: str) -> None:
-    write_json(path, {
+    os.makedirs(os.path.join(root, "bin"), exist_ok=True)
+    registry_payload = json.load(open(os.path.join(REPO_ROOT, "data", "registries", "semantic_contract_registry.json"), "r", encoding="utf-8"))
+    write_json(os.path.join(root, "semantic_contract_registry.json"), registry_payload)
+    game_bin = os.path.join(root, "bin", "dominium_game")
+    with open(game_bin, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("runtime\n")
+    game_descriptor = build_product_descriptor(REPO_ROOT, product_id="game", product_version="0.1.0")
+    descriptor_path = os.path.join(root, "bin", "dominium_game.descriptor.json")
+    write_json(descriptor_path, game_descriptor)
+    build_meta = build_product_build_metadata(REPO_ROOT, "game")
+    product_build_descriptor = build_product_build_descriptor(
+        product_id="game",
+        build_id=str(build_meta.get("build_id", "")).strip(),
+        binary_hash=hashlib.sha256(open(game_bin, "rb").read()).hexdigest(),
+        endpoint_descriptor_hash=canonical_sha256(game_descriptor),
+        binary_ref="bin/dominium_game",
+        descriptor_ref="bin/dominium_game.descriptor.json",
+        product_version="0.1.0",
+    )
+    payload = {
         "install_id": install_id,
-        "install_root": root,
-        "binaries": {
-            "engine": {"product_id": "org.dominium.engine", "product_version": "0.1.0", "build_id": "engine.001"},
-            "game": {"product_id": "org.dominium.game", "product_version": "0.1.0", "build_id": "game.001"},
+        "install_version": "0.1.0",
+        "install_root": ".",
+        "product_builds": {
+            "game": str(build_meta.get("build_id", "")).strip(),
         },
-        "supported_capabilities": [],
+        "semantic_contract_registry_hash": canonical_sha256(registry_payload),
+        "supported_protocol_versions": {
+            str(row.get("protocol_id")): row
+            for row in list(game_descriptor.get("protocol_versions_supported") or [])
+        },
+        "supported_contract_ranges": {
+            str(row.get("contract_category_id")): row
+            for row in list(game_descriptor.get("semantic_contract_versions_supported") or [])
+        },
+        "default_mod_policy_id": "mod.policy.default",
+        "store_root_ref": {
+            "store_id": "store.default",
+            "root_path": "store",
+            "manifest_ref": "store.root.json",
+        },
+        "mode": "portable",
+        "binaries": {
+            "game": {
+                "product_id": "game",
+                "product_version": "0.1.0",
+                "build_id": str(build_meta.get("build_id", "")).strip(),
+                "binary_ref": "bin/dominium_game",
+                "descriptor_ref": "bin/dominium_game.descriptor.json",
+                "binary_hash": product_build_descriptor["binary_hash"],
+                "endpoint_descriptor_hash": product_build_descriptor["endpoint_descriptor_hash"],
+                "extensions": {},
+            }
+        },
+        "product_build_descriptors": {
+            "game": product_build_descriptor,
+        },
+        "supported_capabilities": ["CAP_CORE"],
         "protocol_versions": {
-            "network": "net@1",
-            "save": "save@1",
-            "mod": "mod@1",
-            "replay": "replay@1",
+            "network": "v1",
+            "save": "v1",
+            "mod": "v1",
+            "replay": "v1"
         },
         "build_identity": 1,
-        "trust_tier": "local",
+        "trust_tier": "official",
         "created_at": "2000-01-01T00:00:00Z",
-        "extensions": {},
-    })
+        "extensions": {
+            "official.semantic_contract_registry_ref": "semantic_contract_registry.json",
+        },
+        "deterministic_fingerprint": "",
+    }
+    payload["deterministic_fingerprint"] = install_deterministic_fingerprint(payload)
+    write_json(path, payload)
 
 
 def make_pack(root: str, pack_id: str, pack_version: str = "1.0.0") -> str:

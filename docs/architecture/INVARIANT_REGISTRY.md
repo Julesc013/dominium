@@ -155,6 +155,9 @@ It complements (does not replace) `docs/architecture/INVARIANTS.md`.
 | INV-INSTANCE-USES-PACK-LOCK | Runnable instances must bind a canonical `pack_lock_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
 | INV-INSTANCE-USES-PROFILE-BUNDLE | Runnable instances must bind a canonical `profile_bundle_hash`. | docs/architecture/INSTANCE_MODEL.md | tests/launcher/launcher_cli_tests.py |
 | INV-SAVES-NOT-EMBEDDED-IN-INSTANCE | Instances may reference saves, but must not embed save payloads as instance-owned state. | docs/architecture/INSTANCE_MODEL.md | tests/share/share_bundle_tests.py |
+| INV-SAVE-MANIFEST-REQUIRED | Selected saves must carry a canonical save manifest before launcher/runtime open. | docs/architecture/SAVE_MODEL.md | tests/ops/save_manifest_tests.py |
+| INV-SAVE-PINS-CONTRACTS | Saves must pin their universe contract bundle and pack lock identity. | docs/architecture/SAVE_MODEL.md | tests/launcher/launcher_cli_tests.py |
+| INV-NO-SILENT-MIGRATION | Save migration and read-only fallback must remain explicit and auditable. | docs/architecture/SAVE_MODEL.md | tests/ops/save_manifest_tests.py |
 
 ## Notes
 

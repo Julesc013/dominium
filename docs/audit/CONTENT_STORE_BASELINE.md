@@ -24,6 +24,9 @@ Reference layout:
   store/repro/<hash>/
   instances/<instance_id>/instance.manifest.json
   saves/<save_id>/save.manifest.json
+  saves/<save_id>/state.snapshots/
+  saves/<save_id>/patches/
+  saves/<save_id>/proofs/
   exports/<bundle_id>.bundle
 ```
 

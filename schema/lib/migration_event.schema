@@ -1,0 +1,40 @@
+SCHEMA: lib/migration_event.schema
+schema_id: dominium.schema.lib.migration_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic save migration events recorded in LIB-3 save manifests.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Migration events record explicit compatibility history only.
+- Migration events do not authorize silent upgrades.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- semver: semantic version string `major.minor.patch`.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record migration_event
+  required:
+    - event_id: id
+    - from_version: semver
+    - to_version: semver
+    - migration_id: id
+    - tick_applied: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - notes: map
+
+INVARIANTS:
+- migration events are append-only compatibility lineage records.
+- event_id and deterministic_fingerprint must be stable for identical canonical event content.
+- migration application remains explicit invoke-only.

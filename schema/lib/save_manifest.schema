@@ -1,10 +1,10 @@
 SCHEMA: lib/save_manifest.schema
 schema_id: dominium.schema.lib.save_manifest
-schema_version: 1.0.0
+schema_version: 1.1.0
 stability: core
 
 PURPOSE:
-- Define the LIB-0 save descriptor that pins universe, contract, pack lock, and migration identity by hash.
+- Define the LIB-3 save descriptor that pins universe, contracts, pack lock, and migration lineage by deterministic identity.
 
 STABILITY GUARANTEES:
 - Required fields MUST exist.
@@ -12,28 +12,46 @@ STABILITY GUARANTEES:
 - No field removal or renaming without a MAJOR version bump.
 
 NON-SEMANTICS:
-- The save manifest does not embed filesystem paths.
-- migration_chain records compatibility lineage only; it does not perform migration.
+- The save manifest does not imply instance ownership.
+- The save manifest does not authorize silent migration.
+- Filesystem paths may locate data but never define save identity.
 
 CONVENTIONS:
 - id: stable namespaced string; opaque.
 - sha256: lowercase hex SHA-256 digest.
+- semver: semantic version string `major.minor.patch`.
+- integer: non-negative whole number.
+- path_ref: relative or canonical path string (relative to save root when possible).
 - map: open key/value map; unknown keys preserved.
 
 REQUIRED SHAPE:
 record save_manifest
   required:
     - save_id: id
+    - save_format_version: semver
     - universe_identity_hash: sha256
-    - contract_bundle_hash: sha256
+    - universe_contract_bundle_hash: sha256
+    - generator_version_id: id
+    - realism_profile_id: id
     - pack_lock_hash: sha256
-    - migration_chain: [sha256]
+    - overlay_manifest_hash: sha256
+    - mod_policy_id: id
+    - created_by_build_id: id
+    - migration_chain: [map]
+    - allow_read_only_open: bool
     - deterministic_fingerprint: sha256
     - extensions: map
   optional:
+    - semantic_contract_registry_hash: sha256
+    - contract_bundle_hash: sha256
+    - contract_bundle_ref: path_ref
+    - state_snapshots_ref: path_ref
+    - patches_ref: path_ref
+    - proofs_ref: path_ref
     - notes: map
 
 INVARIANTS:
-- save identity is hash-pinned to universe, contracts, and pack lock.
-- migration_chain ordering is canonical and deterministic.
+- save identity is pinned to universe, contract bundle, pack lock, overlay, and creator build identity.
+- migration_chain ordering is canonical, deterministic, and append-only.
 - deterministic_fingerprint is computed from canonical serialized content.
+- `allow_read_only_open` is explicit; read-only fallback must never be silent.

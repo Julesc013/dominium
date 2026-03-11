@@ -19,6 +19,10 @@ from src.lib.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
 )
+from src.lib.save import (
+    deterministic_fingerprint as save_deterministic_fingerprint,
+    normalize_save_manifest,
+)
 from tools.lib.content_store import (
     build_install_ref,
     build_pack_lock_payload,
@@ -37,6 +41,34 @@ def _write_json(path: str, payload: dict) -> None:
     with open(path, "w", encoding="utf-8", newline="\n") as handle:
         json.dump(payload, handle, indent=2, sort_keys=False)
         handle.write("\n")
+
+
+def _write_pack(root: str, pack_id: str) -> None:
+    pack_root = os.path.join(root, "packs", pack_id)
+    _ensure_dir(pack_root)
+    with open(os.path.join(pack_root, "pack.toml"), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write('pack_id = "{}"\n'.format(pack_id))
+        handle.write('pack_version = "1.0.0"\n')
+    with open(os.path.join(pack_root, "content.txt"), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("content\n")
+
+
+def _build_contract_bundle_payload(install_manifest: dict, bundle_id: str) -> tuple[dict, str]:
+    payload = {
+        "schema_id": "dominium.schema.universe_contract_bundle",
+        "schema_version": "1.0.0",
+        "bundle_id": bundle_id,
+        "contracts": [
+            {
+                "contract_category_id": "contract.logic.eval",
+                "version": 1,
+            }
+        ],
+        "extensions": {
+            "semantic_contract_registry_hash": str(install_manifest.get("semantic_contract_registry_hash", "")).strip(),
+        },
+    }
+    return payload, canonical_sha256(payload)
 
 
 def _run_launcher(repo_root: str, args: list, allow_fail: bool = False):
@@ -157,7 +189,13 @@ def _write_install_manifest(repo_root: str, root: str, install_id: str) -> str:
     return path
 
 
-def _build_lockfile_payload(capability_id: str, pack_id: str, missing_mode: str) -> dict:
+def _build_lockfile_payload(
+    capability_id: str,
+    pack_id: str,
+    missing_mode: str,
+    engine_contract_bundle_hash: str = "",
+    semantic_contract_registry_hash: str = "",
+) -> dict:
     return {
         "lock_id": "lock.test",
         "lock_format_version": 1,
@@ -170,6 +208,8 @@ def _build_lockfile_payload(capability_id: str, pack_id: str, missing_mode: str)
                 "provider_pack_id": pack_id
             }
         ],
+        "engine_contract_bundle_hash": str(engine_contract_bundle_hash or "").strip(),
+        "semantic_contract_registry_hash": str(semantic_contract_registry_hash or "").strip(),
         "extensions": {}
     }
 
@@ -189,10 +229,18 @@ def _write_instance_manifest(root: str,
                              save_refs: list[str] | None = None,
                              last_opened_save_id: str = "",
                              missing_mode: str = "degraded",
-                             pack_id: str = "org.dominium.pack.core") -> str:
+                             pack_id: str = "org.dominium.pack.core",
+                             engine_contract_bundle_hash: str = "",
+                             semantic_contract_registry_hash: str = "") -> str:
     path = os.path.join(root, "instance.manifest.json")
     install_manifest = json.load(open(install_manifest_path, "r", encoding="utf-8"))
-    lockfile_payload = _build_lockfile_payload("CAP_CORE", pack_id, missing_mode)
+    lockfile_payload = _build_lockfile_payload(
+        "CAP_CORE",
+        pack_id,
+        missing_mode,
+        engine_contract_bundle_hash=engine_contract_bundle_hash,
+        semantic_contract_registry_hash=semantic_contract_registry_hash,
+    )
     pack_lock_payload, pack_lock_hash = build_pack_lock_payload(
         instance_id=instance_id,
         pack_ids=[pack_id],
@@ -275,6 +323,50 @@ def _write_instance_manifest(root: str,
         payload["extensions"]["instance.last_opened_save_id"] = last_opened_save_id
     payload = normalize_instance_manifest(payload)
     payload["deterministic_fingerprint"] = instance_deterministic_fingerprint(payload)
+    _write_json(path, payload)
+    return path
+
+
+def _write_save_manifest(
+    install_root: str,
+    save_id: str,
+    *,
+    pack_lock_hash: str,
+    contract_bundle_payload: dict,
+    created_by_build_id: str,
+    semantic_contract_registry_hash: str = "",
+    allow_read_only_open: bool = False,
+    save_format_version: str = "1.0.0",
+) -> str:
+    save_root = os.path.join(install_root, "saves", save_id)
+    _ensure_dir(os.path.join(save_root, "state.snapshots"))
+    _ensure_dir(os.path.join(save_root, "patches"))
+    _write_json(os.path.join(save_root, "universe_contract_bundle.json"), contract_bundle_payload)
+    _write_json(os.path.join(save_root, "state.snapshots", "snapshot.000.json"), {"tick": 0})
+    _write_json(os.path.join(save_root, "patches", "overlay.000.json"), {"patch": 0})
+    payload = {
+        "save_id": save_id,
+        "save_format_version": save_format_version,
+        "universe_identity_hash": canonical_sha256({"save_id": save_id, "universe": "test"}),
+        "universe_contract_bundle_hash": canonical_sha256(contract_bundle_payload),
+        "semantic_contract_registry_hash": str(semantic_contract_registry_hash or "").strip(),
+        "generator_version_id": "generator.test",
+        "realism_profile_id": "realism.profile.default",
+        "pack_lock_hash": pack_lock_hash,
+        "overlay_manifest_hash": canonical_sha256({"save_id": save_id, "overlay": "default"}),
+        "mod_policy_id": "mod.policy.default",
+        "created_by_build_id": created_by_build_id,
+        "migration_chain": [],
+        "allow_read_only_open": bool(allow_read_only_open),
+        "contract_bundle_ref": "universe_contract_bundle.json",
+        "state_snapshots_ref": "state.snapshots",
+        "patches_ref": "patches",
+        "extensions": {},
+        "deterministic_fingerprint": "",
+    }
+    payload = normalize_save_manifest(payload)
+    payload["deterministic_fingerprint"] = save_deterministic_fingerprint(payload)
+    path = os.path.join(save_root, "save.manifest.json")
     _write_json(path, payload)
     return path
 
@@ -441,6 +533,11 @@ def _test_start_validates_packs(repo_root: str) -> None:
         _ensure_dir(instance_root)
         install_id = str(uuid.uuid4())
         install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        install_payload = json.load(open(install_manifest, "r", encoding="utf-8"))
+        contract_bundle_payload, _contract_bundle_hash = _build_contract_bundle_payload(
+            install_payload,
+            "bundle.contract.start",
+        )
         instance_manifest = _write_instance_manifest(
             instance_root,
             str(uuid.uuid4()),
@@ -449,6 +546,15 @@ def _test_start_validates_packs(repo_root: str) -> None:
             last_opened_save_id="save.alpha",
             missing_mode="degraded",
             pack_id="org.dominium.pack.missing",
+        )
+        instance_payload = json.load(open(instance_manifest, "r", encoding="utf-8"))
+        _write_save_manifest(
+            install_root,
+            "save.alpha",
+            pack_lock_hash=str(instance_payload.get("pack_lock_hash", "")).strip(),
+            contract_bundle_payload=contract_bundle_payload,
+            created_by_build_id=str((install_payload.get("product_builds") or {}).get("game", "")).strip(),
+            semantic_contract_registry_hash=str(install_payload.get("semantic_contract_registry_hash", "")).strip(),
         )
 
         rc, payload = _run_launcher(
@@ -475,6 +581,142 @@ def _test_start_validates_packs(repo_root: str) -> None:
             raise RuntimeError("expected degraded start due to missing required pack")
         if payload.get("save_id") != "save.alpha":
             raise RuntimeError("selected save id was not preserved")
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def _test_save_open_refuses_contract_mismatch(repo_root: str) -> None:
+    work = tempfile.mkdtemp(prefix="launcher_save_refuse_")
+    try:
+        install_root = os.path.join(work, "install")
+        instance_root = os.path.join(work, "instance")
+        _ensure_dir(install_root)
+        _ensure_dir(instance_root)
+        install_id = str(uuid.uuid4())
+        install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        _write_pack(install_root, "org.dominium.pack.core")
+        install_payload = json.load(open(install_manifest, "r", encoding="utf-8"))
+        instance_contract_payload, instance_contract_hash = _build_contract_bundle_payload(
+            install_payload,
+            "bundle.contract.instance",
+        )
+        save_contract_payload, _save_contract_hash = _build_contract_bundle_payload(
+            install_payload,
+            "bundle.contract.save",
+        )
+        instance_manifest = _write_instance_manifest(
+            instance_root,
+            str(uuid.uuid4()),
+            install_manifest,
+            save_refs=["save.alpha"],
+            last_opened_save_id="save.alpha",
+            pack_id="org.dominium.pack.core",
+            engine_contract_bundle_hash=instance_contract_hash,
+            semantic_contract_registry_hash=str(install_payload.get("semantic_contract_registry_hash", "")).strip(),
+        )
+        del instance_contract_payload
+        instance_payload = json.load(open(instance_manifest, "r", encoding="utf-8"))
+        _write_save_manifest(
+            install_root,
+            "save.alpha",
+            pack_lock_hash=str(instance_payload.get("pack_lock_hash", "")).strip(),
+            contract_bundle_payload=save_contract_payload,
+            created_by_build_id=str((install_payload.get("product_builds") or {}).get("game", "")).strip(),
+            semantic_contract_registry_hash=str(install_payload.get("semantic_contract_registry_hash", "")).strip(),
+            allow_read_only_open=False,
+        )
+
+        rc, payload = _run_launcher(
+            repo_root,
+            [
+                "--deterministic",
+                "preflight",
+                "--install-manifest",
+                install_manifest,
+                "--instance-manifest",
+                instance_manifest,
+                "--save",
+                "save.alpha",
+                "--run-mode",
+                "play",
+            ],
+            allow_fail=True,
+        )
+        report = payload.get("compat_report") or {}
+        if rc == 0:
+            raise RuntimeError("expected refusal for contract mismatch")
+        if report.get("compatibility_mode") != "refuse":
+            raise RuntimeError("expected refuse mode for contract mismatch")
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+def _test_save_open_read_only_when_allowed(repo_root: str) -> None:
+    work = tempfile.mkdtemp(prefix="launcher_save_read_only_")
+    try:
+        install_root = os.path.join(work, "install")
+        instance_root = os.path.join(work, "instance")
+        _ensure_dir(install_root)
+        _ensure_dir(instance_root)
+        install_id = str(uuid.uuid4())
+        install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        _write_pack(install_root, "org.dominium.pack.core")
+        install_payload = json.load(open(install_manifest, "r", encoding="utf-8"))
+        instance_contract_payload, instance_contract_hash = _build_contract_bundle_payload(
+            install_payload,
+            "bundle.contract.instance.read_only",
+        )
+        save_contract_payload, _save_contract_hash = _build_contract_bundle_payload(
+            install_payload,
+            "bundle.contract.save.read_only",
+        )
+        instance_manifest = _write_instance_manifest(
+            instance_root,
+            str(uuid.uuid4()),
+            install_manifest,
+            allow_read_only_fallback=True,
+            save_refs=["save.alpha"],
+            last_opened_save_id="save.alpha",
+            pack_id="org.dominium.pack.core",
+            engine_contract_bundle_hash=instance_contract_hash,
+            semantic_contract_registry_hash=str(install_payload.get("semantic_contract_registry_hash", "")).strip(),
+        )
+        del instance_contract_payload
+        instance_payload = json.load(open(instance_manifest, "r", encoding="utf-8"))
+        _write_save_manifest(
+            install_root,
+            "save.alpha",
+            pack_lock_hash=str(instance_payload.get("pack_lock_hash", "")).strip(),
+            contract_bundle_payload=save_contract_payload,
+            created_by_build_id=str((install_payload.get("product_builds") or {}).get("game", "")).strip(),
+            semantic_contract_registry_hash=str(install_payload.get("semantic_contract_registry_hash", "")).strip(),
+            allow_read_only_open=True,
+        )
+
+        rc, payload = _run_launcher(
+            repo_root,
+            [
+                "--deterministic",
+                "preflight",
+                "--install-manifest",
+                install_manifest,
+                "--instance-manifest",
+                instance_manifest,
+                "--save",
+                "save.alpha",
+                "--run-mode",
+                "play",
+            ],
+            allow_fail=False,
+        )
+        report = payload.get("compat_report") or {}
+        extensions = report.get("extensions") or {}
+        if rc != 0 or report.get("compatibility_mode") != "inspect-only":
+            raise RuntimeError("expected inspect-only mode for save read-only fallback")
+        if not extensions.get("degrade_logged"):
+            raise RuntimeError("expected save degrade to be logged")
+        if "save_engine_contract_mismatch" not in (extensions.get("degrade_reasons") or []):
+            raise RuntimeError("expected save contract mismatch degrade reason")
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -571,6 +813,8 @@ def main() -> int:
     _test_preflight_and_run(repo_root)
     _test_instance_build_selection(repo_root)
     _test_start_validates_packs(repo_root)
+    _test_save_open_refuses_contract_mismatch(repo_root)
+    _test_save_open_read_only_when_allowed(repo_root)
     _test_instance_degrade_mode_logged(repo_root)
     _test_bundle_import_refusal(repo_root)
     print("launcher cli tests: OK")

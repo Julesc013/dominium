@@ -75,6 +75,9 @@ Preflight validates:
 - required contract ranges
 - pack lock and profile bundle presence
 - requested save association
+- selected save manifest integrity
+- pinned save contract bundle hash and runtime pack lock alignment
+- explicit save migration or inspect-only read-only fallback
 
 Degraded/frozen/inspect-only runs require `--confirm`.
 
