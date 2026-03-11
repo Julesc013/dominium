@@ -27,8 +27,10 @@ from tools.lib.content_store import (
     build_install_ref,
     build_pack_lock_payload,
     build_profile_bundle_payload,
+    embed_tree_artifact,
     embed_json_artifact,
 )
+from tools.compatx.core.semantic_contract_validator import build_default_universe_contract_bundle
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -46,28 +48,96 @@ def _write_json(path: str, payload: dict) -> None:
 def _write_pack(root: str, pack_id: str) -> None:
     pack_root = os.path.join(root, "packs", pack_id)
     _ensure_dir(pack_root)
-    with open(os.path.join(pack_root, "pack.toml"), "w", encoding="utf-8", newline="\n") as handle:
-        handle.write('pack_id = "{}"\n'.format(pack_id))
-        handle.write('pack_version = "1.0.0"\n')
-    with open(os.path.join(pack_root, "content.txt"), "w", encoding="utf-8", newline="\n") as handle:
-        handle.write("content\n")
+    contribution_rel = os.path.join("data", "registry.json")
+    manifest = {
+        "schema_version": "1.0.0",
+        "pack_id": str(pack_id).strip(),
+        "version": "1.0.0",
+        "compatibility": {
+            "session_spec_min": "1.0.0",
+            "session_spec_max": "1.0.0",
+        },
+        "dependencies": [],
+        "contribution_types": ["registry_entries"],
+        "contributions": [
+            {
+                "type": "registry_entries",
+                "id": "{}.registry".format(pack_id),
+                "path": contribution_rel.replace("\\", "/"),
+            }
+        ],
+        "canonical_hash": "",
+        "signature_status": "signed",
+    }
+    manifest["canonical_hash"] = canonical_sha256(dict(manifest, canonical_hash=""))
+    _write_json(os.path.join(pack_root, "pack.json"), manifest)
+    _write_json(
+        os.path.join(pack_root, contribution_rel),
+        {
+            "contrib_id": "{}.registry".format(pack_id),
+            "type": "registry_entries",
+            "version": "1.0.0",
+        },
+    )
+
+    trust_payload = {
+        "schema_version": "1.0.0",
+        "pack_id": str(pack_id).strip(),
+        "trust_level_id": "trust.local_dev",
+        "signature_hash": "sig.{}".format(canonical_sha256({"pack_id": pack_id, "signature_status": "signed"})[:16]),
+        "deterministic_fingerprint": "",
+        "extensions": {},
+    }
+    trust_payload["deterministic_fingerprint"] = canonical_sha256(dict(trust_payload, deterministic_fingerprint=""))
+    _write_json(os.path.join(pack_root, "pack.trust.json"), trust_payload)
+
+    capabilities_payload = {
+        "schema_version": "1.0.0",
+        "pack_id": str(pack_id).strip(),
+        "capability_ids": [],
+        "deterministic_fingerprint": "",
+        "extensions": {},
+    }
+    capabilities_payload["deterministic_fingerprint"] = canonical_sha256(dict(capabilities_payload, deterministic_fingerprint=""))
+    _write_json(os.path.join(pack_root, "pack.capabilities.json"), capabilities_payload)
+
+    compat_payload = {
+        "schema_version": "1.0.0",
+        "pack_id": str(pack_id).strip(),
+        "pack_version": "1.0.0",
+        "trust_level_id": "trust.local_dev",
+        "capability_ids": [],
+        "required_contract_ranges": {},
+        "required_protocol_ranges": {},
+        "supported_engine_version_range": {},
+        "required_registry_ids": [],
+        "provides_declarations": [],
+        "required_provides_ids": [],
+        "provides": [],
+        "degrade_mode_id": "pack.degrade.strict_refuse",
+        "migration_refs": [],
+        "deterministic_fingerprint": "",
+        "extensions": {},
+    }
+    compat_payload["deterministic_fingerprint"] = canonical_sha256(dict(compat_payload, deterministic_fingerprint=""))
+    _write_json(os.path.join(pack_root, "pack.compat.json"), compat_payload)
 
 
 def _build_contract_bundle_payload(install_manifest: dict, bundle_id: str) -> tuple[dict, str]:
-    payload = {
-        "schema_id": "dominium.schema.universe_contract_bundle",
-        "schema_version": "1.0.0",
-        "bundle_id": bundle_id,
-        "contracts": [
-            {
-                "contract_category_id": "contract.logic.eval",
-                "version": 1,
-            }
-        ],
-        "extensions": {
-            "semantic_contract_registry_hash": str(install_manifest.get("semantic_contract_registry_hash", "")).strip(),
-        },
-    }
+    registry_payload = json.load(
+        open(
+            os.path.join(REPO_ROOT_HINT, "data", "registries", "semantic_contract_registry.json"),
+            "r",
+            encoding="utf-8",
+        )
+    )
+    payload = build_default_universe_contract_bundle(
+        registry_payload
+    )
+    payload["extensions"] = dict(payload.get("extensions") or {})
+    payload["extensions"]["bundle_id"] = str(bundle_id).strip()
+    payload["extensions"]["semantic_contract_registry_hash"] = str(install_manifest.get("semantic_contract_registry_hash", "")).strip()
+    payload["deterministic_fingerprint"] = canonical_sha256(dict(payload, deterministic_fingerprint=""))
     return payload, canonical_sha256(payload)
 
 
@@ -147,7 +217,7 @@ def _write_install_manifest(repo_root: str, root: str, install_id: str) -> str:
             str(row.get("contract_category_id")): row
             for row in list(game_descriptor.get("semantic_contract_versions_supported") or [])
         },
-        "default_mod_policy_id": "mod.policy.default",
+        "default_mod_policy_id": "mod_policy.lab",
         "store_root_ref": {
             "store_id": "store.default",
             "root_path": "store",
@@ -234,6 +304,25 @@ def _write_instance_manifest(root: str,
                              semantic_contract_registry_hash: str = "") -> str:
     path = os.path.join(root, "instance.manifest.json")
     install_manifest = json.load(open(install_manifest_path, "r", encoding="utf-8"))
+    pack_hashes = {}
+    embedded_pack_artifacts = []
+    pack_token = str(pack_id or "").strip()
+    if pack_token:
+        pack_root = os.path.join(os.path.dirname(os.path.abspath(install_manifest_path)), "packs", pack_token)
+        if os.path.isdir(pack_root):
+            embed_result = embed_tree_artifact(root, "packs", pack_root)
+            pack_hash = str(embed_result.get("artifact_hash", "")).strip()
+            if pack_hash:
+                pack_hashes[pack_token] = pack_hash
+                embedded_pack_artifacts.append(
+                    {
+                        "category": "packs",
+                        "artifact_hash": pack_hash,
+                        "artifact_type": "tree",
+                        "artifact_path": "embedded_artifacts/packs/%s" % pack_hash,
+                        "artifact_id": pack_token,
+                    }
+                )
     lockfile_payload = _build_lockfile_payload(
         "CAP_CORE",
         pack_id,
@@ -241,18 +330,19 @@ def _write_instance_manifest(root: str,
         engine_contract_bundle_hash=engine_contract_bundle_hash,
         semantic_contract_registry_hash=semantic_contract_registry_hash,
     )
+    lockfile_payload["pack_hashes"] = dict(pack_hashes)
     pack_lock_payload, pack_lock_hash = build_pack_lock_payload(
         instance_id=instance_id,
         pack_ids=[pack_id],
-        mod_policy_id="mod.policy.default",
-        overlay_conflict_policy_id="overlay.conflict.default",
+        mod_policy_id="mod_policy.lab",
+        overlay_conflict_policy_id="overlay.conflict.last_wins",
         source_payload=lockfile_payload,
     )
     profile_bundle_payload, profile_bundle_hash = build_profile_bundle_payload(
         instance_id=instance_id,
         profile_ids=["org.dominium.profile.casual"],
-        mod_policy_id="mod.policy.default",
-        overlay_conflict_policy_id="overlay.conflict.default",
+        mod_policy_id="mod_policy.lab",
+        overlay_conflict_policy_id="overlay.conflict.last_wins",
     )
     embed_json_artifact(root, "locks", pack_lock_payload, expected_hash=pack_lock_hash)
     embed_json_artifact(root, "profiles", profile_bundle_payload, expected_hash=profile_bundle_hash)
@@ -269,8 +359,8 @@ def _write_instance_manifest(root: str,
         "embedded_builds": {},
         "pack_lock_hash": pack_lock_hash,
         "profile_bundle_hash": profile_bundle_hash,
-        "mod_policy_id": "mod.policy.default",
-        "overlay_conflict_policy_id": "overlay.conflict.default",
+        "mod_policy_id": "mod_policy.lab",
+        "overlay_conflict_policy_id": "overlay.conflict.last_wins",
         "default_session_template_id": "session.template.default",
         "seed_policy": "prompt",
         "required_product_builds": required_product_builds or {},
@@ -291,7 +381,7 @@ def _write_instance_manifest(root: str,
         },
         "save_refs": normalized_save_refs,
         "store_root": {},
-        "embedded_artifacts": [
+        "embedded_artifacts": embedded_pack_artifacts + [
             {
                 "category": "locks",
                 "artifact_hash": pack_lock_hash,
@@ -354,7 +444,7 @@ def _write_save_manifest(
         "realism_profile_id": "realism.profile.default",
         "pack_lock_hash": pack_lock_hash,
         "overlay_manifest_hash": canonical_sha256({"save_id": save_id, "overlay": "default"}),
-        "mod_policy_id": "mod.policy.default",
+        "mod_policy_id": "mod_policy.lab",
         "created_by_build_id": created_by_build_id,
         "migration_chain": [],
         "allow_read_only_open": bool(allow_read_only_open),
@@ -465,24 +555,29 @@ def _test_preflight_and_run(repo_root: str) -> None:
 
         rc, payload = _run_launcher(repo_root, ["--deterministic", "preflight",
                                                 "--install-manifest", install_manifest,
-                                                "--instance-manifest", instance_manifest])
+                                                "--instance-manifest", instance_manifest], allow_fail=True)
         report = payload.get("compat_report") or {}
-        if rc != 0 or report.get("compatibility_mode") != "degraded":
-            raise RuntimeError("expected degraded preflight")
+        if rc == 0 or report.get("compatibility_mode") != "refuse":
+            raise RuntimeError("expected pack verification refusal during preflight")
+        if "refusal.pack.missing_payload" not in (report.get("refusal_codes") or []):
+            raise RuntimeError("expected missing pack payload refusal during preflight")
 
         rc, payload = _run_launcher(repo_root, ["run",
                                                 "--install-manifest", install_manifest,
                                                 "--instance-manifest", instance_manifest],
                                     allow_fail=True)
         if rc == 0:
-            raise RuntimeError("run should require confirmation in degraded mode")
+            raise RuntimeError("run should refuse when pack verification fails")
 
         rc, payload = _run_launcher(repo_root, ["run",
                                                 "--install-manifest", install_manifest,
                                                 "--instance-manifest", instance_manifest,
-                                                "--confirm"], allow_fail=False)
-        if rc != 0 or payload.get("result") != "ok":
-            raise RuntimeError("confirmed run failed")
+                                                "--confirm"], allow_fail=True)
+        report = payload.get("compat_report") or {}
+        if rc == 0 or payload.get("result") != "refused":
+            raise RuntimeError("confirmed run should still refuse invalid pack payloads")
+        if "refusal.pack.missing_payload" not in (report.get("refusal_codes") or []):
+            raise RuntimeError("expected missing pack payload refusal for confirmed run")
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -496,6 +591,7 @@ def _test_instance_build_selection(repo_root: str) -> None:
         _ensure_dir(instance_root)
         install_id = str(uuid.uuid4())
         install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        _write_pack(install_root, "org.dominium.pack.core")
         instance_manifest = _write_instance_manifest(
             instance_root,
             str(uuid.uuid4()),
@@ -572,15 +668,15 @@ def _test_start_validates_packs(repo_root: str) -> None:
                 "play",
                 "--confirm",
             ],
-            allow_fail=False,
+            allow_fail=True,
         )
         report = payload.get("compat_report") or {}
-        if rc != 0 or payload.get("result") != "ok":
-            raise RuntimeError("start failed")
-        if report.get("compatibility_mode") != "degraded":
-            raise RuntimeError("expected degraded start due to missing required pack")
-        if payload.get("save_id") != "save.alpha":
-            raise RuntimeError("selected save id was not preserved")
+        if rc == 0 or payload.get("result") != "refused":
+            raise RuntimeError("start should refuse when pack verification fails")
+        if report.get("compatibility_mode") != "refuse":
+            raise RuntimeError("expected refusal mode for missing pack payload")
+        if "refusal.pack.missing_payload" not in (report.get("refusal_codes") or []):
+            raise RuntimeError("expected missing pack payload refusal during start")
     finally:
         shutil.rmtree(work, ignore_errors=True)
 
@@ -730,6 +826,7 @@ def _test_instance_degrade_mode_logged(repo_root: str) -> None:
         _ensure_dir(instance_root)
         install_id = str(uuid.uuid4())
         install_manifest = _write_install_manifest(repo_root, install_root, install_id)
+        _write_pack(install_root, "org.dominium.pack.core")
         instance_manifest = _write_instance_manifest(
             instance_root,
             str(uuid.uuid4()),
