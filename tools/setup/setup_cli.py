@@ -682,6 +682,33 @@ def output_ok(message: str, details: dict, fmt: str) -> None:
     write_output(payload, fmt)
 
 
+def bridge_engine_payload(payload: dict, success_message: str) -> dict:
+    result = str((payload or {}).get("result", "")).strip()
+    if result == "complete":
+        bridged = {
+            "result": "ok",
+            "message": success_message,
+            "details": dict(payload or {}),
+        }
+        bridged["details"].setdefault("engine_result", result)
+        return bridged
+    if result == "refusal":
+        refusal = dict((payload or {}).get("refusal") or {})
+        return {
+            "result": "refused",
+            "message": str((payload or {}).get("message", "")).strip() or "operation refused",
+            "refusal": refusal,
+            "details": dict(payload or {}),
+        }
+    if result == "error":
+        return {
+            "result": "error",
+            "message": str((payload or {}).get("message", "")).strip() or "operation failed",
+            "details": dict(payload or {}),
+        }
+    return dict(payload or {})
+
+
 def _compat_root(path: Optional[str]) -> str:
     token = normalize_path(path or "")
     return token
@@ -1700,7 +1727,7 @@ def handle_instance(args: argparse.Namespace, deterministic: bool) -> int:
             export_mode=str(getattr(args, "mode", "") or "portable").strip() or "portable",
             bundle_id=str(getattr(args, "bundle_id", "") or "").strip(),
         )
-        write_output(payload, args.format)
+        write_output(bridge_engine_payload(payload, "instance export ok"), args.format)
         return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
 
     if cmd == "import":
@@ -1713,7 +1740,7 @@ def handle_instance(args: argparse.Namespace, deterministic: bool) -> int:
             store_root=normalize_path(args.store_root) if args.store_root else "",
             instance_id=str(getattr(args, "instance_id", "") or "").strip(),
         )
-        write_output(payload, args.format)
+        write_output(bridge_engine_payload(payload, "instance import ok"), args.format)
         return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
 
     refusal = refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown instance command", {"cmd": cmd})
@@ -1744,7 +1771,7 @@ def handle_save(args: argparse.Namespace) -> int:
             bundle_id=str(getattr(args, "bundle_id", "") or "").strip(),
             store_root=normalize_path(args.store_root) if args.store_root else "",
         )
-        write_output(payload, args.format)
+        write_output(bridge_engine_payload(payload, "save export ok"), args.format)
         return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
     if cmd == "import":
         import_engine = resolve_import_engine_module()
@@ -1754,7 +1781,7 @@ def handle_save(args: argparse.Namespace) -> int:
             out_path=normalize_path(args.out) if args.out else "",
             store_root=normalize_path(args.store_root) if args.store_root else "",
         )
-        write_output(payload, args.format)
+        write_output(bridge_engine_payload(payload, "save import ok"), args.format)
         return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
     output_refusal("unknown save command", refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown save command", {"cmd": cmd}), args.format)
     return EXIT_REFUSED
@@ -1770,7 +1797,7 @@ def handle_pack(args: argparse.Namespace) -> int:
             out_path=normalize_path(args.out),
             bundle_id=str(getattr(args, "bundle_id", "") or "").strip(),
         )
-        write_output(payload, args.format)
+        write_output(bridge_engine_payload(payload, "pack export ok"), args.format)
         return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
     if cmd == "import":
         import_engine = resolve_import_engine_module()
@@ -1780,7 +1807,7 @@ def handle_pack(args: argparse.Namespace) -> int:
             out_path=normalize_path(args.out) if args.out else "",
             store_root=normalize_path(args.store_root) if args.store_root else "",
         )
-        write_output(payload, args.format)
+        write_output(bridge_engine_payload(payload, "pack import ok"), args.format)
         return EXIT_OK if str(payload.get("result", "")).strip() == "complete" else EXIT_REFUSED
     output_refusal("unknown pack command", refusal_payload(1, "REFUSE_INVALID_INTENT", "unknown pack command", {"cmd": cmd}), args.format)
     return EXIT_REFUSED
