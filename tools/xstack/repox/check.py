@@ -1032,6 +1032,13 @@ TIME_ANCHOR_VERIFY_TOOL_PATH = "tools/time/tool_verify_longrun_ticks.py"
 TIME_ANCHOR_COMPACTION_TOOL_PATH = "tools/time/tool_compaction_anchor_check.py"
 TIME_ANCHOR_BASELINE_PATH = "docs/audit/TIME_ANCHOR_BASELINE.md"
 
+ARCH_AUDIT_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT0_RETRO_AUDIT.md"
+ARCH_AUDIT_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT_CONSTITUTION.md"
+ARCH_AUDIT_TOOL_PATH = "tools/audit/tool_run_arch_audit.py"
+ARCH_AUDIT_REPORT_PATH = "docs/audit/ARCH_AUDIT_REPORT.md"
+ARCH_AUDIT_REPORT_JSON_PATH = "data/audit/arch_audit_report.json"
+ARCH_AUDIT_BASELINE_PATH = "docs/audit/ARCH_AUDIT_BASELINE.md"
+
 CONSISTENCY_MATRIX_PATH = "docs/audit/CROSS_SYSTEM_CONSISTENCY_MATRIX.md"
 CONSISTENCY_MATRIX_REQUIRED_SYSTEMS = (
     "Engine",
@@ -7422,6 +7429,98 @@ def _append_time_anchor_findings(
                 line_number=int(row.get("line", 0) or 0),
                 snippet=str(row.get("message", ""))[:160],
                 message=str(row.get("message", "")).strip() or "mixed-width tick violation detected",
+                rule_id=rule_id,
+            )
+        )
+
+
+def _append_arch_audit_findings(
+    findings: List[Dict[str, object]],
+    repo_root: str,
+    profile: str,
+) -> None:
+    severity = _invariant_severity(profile)
+    release_rule_id = "INV-ARCH-AUDIT-MUST-PASS-BEFORE-RELEASE"
+    truth_rule_id = "INV-NO-PRESENTATION-IN-TRUTH"
+    required_files = (
+        (ARCH_AUDIT_RETRO_AUDIT_PATH, "ARCH-AUDIT-0 retro audit is required"),
+        (ARCH_AUDIT_CONSTITUTION_PATH, "ARCH-AUDIT constitution is required"),
+        (ARCH_AUDIT_TOOL_PATH, "ARCH-AUDIT tool is required"),
+        (ARCH_AUDIT_REPORT_PATH, "ARCH-AUDIT markdown report is required"),
+        (ARCH_AUDIT_REPORT_JSON_PATH, "ARCH-AUDIT JSON report is required"),
+        ("tools/auditx/analyzers/e453_presentation_in_truth_smell.py", "PresentationInTruthSmell analyzer is required"),
+        ("tools/auditx/analyzers/e454_renderer_truth_leak_smell.py", "RendererTruthLeakSmell analyzer is required"),
+        ("tools/auditx/analyzers/e455_duplicate_semantic_engine_smell.py", "DuplicateSemanticEngineSmell analyzer is required"),
+        ("tools/auditx/analyzers/e456_wallclock_in_truth_smell.py", "WallclockInTruthSmell analyzer is required"),
+        ("tools/auditx/analyzers/e457_unnamed_rng_smell.py", "UnnamedRNGSmell analyzer is required"),
+        ("tools/xstack/testx/tests/test_arch_audit_tool_runs.py", "ARCH-AUDIT tool TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_arch_audit_detects_forbidden_patterns.py", "ARCH-AUDIT forbidden-pattern TestX coverage is required"),
+        ("tools/xstack/testx/tests/test_arch_audit_reports_deterministically.py", "ARCH-AUDIT determinism TestX coverage is required"),
+        (ARCH_AUDIT_BASELINE_PATH, "ARCH-AUDIT baseline report is required"),
+    )
+    for rel_path, message in required_files:
+        if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=rel_path,
+                line_number=1,
+                snippet=rel_path,
+                message=message,
+                rule_id=release_rule_id,
+            )
+        )
+
+    constitution_text = _file_text(repo_root, ARCH_AUDIT_CONSTITUTION_PATH).lower()
+    for token, message in (
+        ("truth purity", "ARCH-AUDIT constitution must define Truth Purity"),
+        ("derivation discipline", "ARCH-AUDIT constitution must define Derivation Discipline"),
+        ("single source of meaning", "ARCH-AUDIT constitution must define Single Source Of Meaning"),
+        ("determinism discipline", "ARCH-AUDIT constitution must define Determinism Discipline"),
+        ("stability markers", "ARCH-AUDIT constitution must define Stability Markers"),
+        ("compatibility discipline", "ARCH-AUDIT constitution must define Compatibility Discipline"),
+    ):
+        if token in constitution_text:
+            continue
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=ARCH_AUDIT_CONSTITUTION_PATH,
+                line_number=1,
+                snippet=token,
+                message=message,
+                rule_id=release_rule_id,
+            )
+        )
+
+    try:
+        from tools.audit.arch_audit_common import run_arch_audit
+    except Exception as exc:
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=ARCH_AUDIT_TOOL_PATH,
+                line_number=1,
+                snippet="run_arch_audit",
+                message="unable to import ARCH-AUDIT tool ({})".format(str(exc)),
+                rule_id=release_rule_id,
+            )
+        )
+        return
+
+    report = run_arch_audit(repo_root)
+    for row in list(report.get("blocking_findings") or []):
+        finding_row = dict(row or {})
+        category = str(finding_row.get("category", "")).strip()
+        rule_id = truth_rule_id if category == "truth_purity" else release_rule_id
+        findings.append(
+            _finding(
+                severity=severity,
+                file_path=str(finding_row.get("path", "")).replace("\\", "/"),
+                line_number=int(finding_row.get("line", 0) or 0),
+                snippet=str(finding_row.get("snippet", ""))[:160],
+                message=str(finding_row.get("message", "")).strip() or "ARCH-AUDIT blocking finding detected",
                 rule_id=rule_id,
             )
         )
@@ -30921,6 +31020,11 @@ def run_repox_check(repo_root: str, profile: str) -> Dict[str, object]:
         profile=token,
     )
     _append_time_anchor_findings(
+        findings=findings,
+        repo_root=repo_root,
+        profile=token,
+    )
+    _append_arch_audit_findings(
         findings=findings,
         repo_root=repo_root,
         profile=token,

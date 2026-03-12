@@ -458,6 +458,11 @@ from analyzers import e449_missing_stability_marker_smell
 from analyzers import e450_stable_changed_without_contract_bump_smell
 from analyzers import e451_provisional_without_replacement_smell
 from analyzers import e452_mixed_tick_width_smell
+from analyzers import e453_presentation_in_truth_smell
+from analyzers import e454_renderer_truth_leak_smell
+from analyzers import e455_duplicate_semantic_engine_smell
+from analyzers import e456_wallclock_in_truth_smell
+from analyzers import e457_unnamed_rng_smell
 
 
 ANALYZERS = (
@@ -919,6 +924,11 @@ ANALYZERS = (
     e450_stable_changed_without_contract_bump_smell,
     e451_provisional_without_replacement_smell,
     e452_mixed_tick_width_smell,
+    e453_presentation_in_truth_smell,
+    e454_renderer_truth_leak_smell,
+    e455_duplicate_semantic_engine_smell,
+    e456_wallclock_in_truth_smell,
+    e457_unnamed_rng_smell,
 )
 
 
