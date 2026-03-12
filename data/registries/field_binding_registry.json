@@ -140,6 +140,102 @@
       },
       {
         "schema_version": "1.0.0",
+        "field_id": "field.stellar_density_proxy",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "galaxy_r3",
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy field binding rows; galaxy proxy bindings remain loadable but may be refined when dynamic galaxy domain packs own large-scale field layouts.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field bindings with dynamic galaxy domain pack bindings.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e2e899c55c2593e9b4e06666ee971422adb104414fe9af3e6afb97c414ea607d",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.metallicity_proxy",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "galaxy_r3",
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy field binding rows; galaxy proxy bindings remain loadable but may be refined when dynamic galaxy domain packs own large-scale field layouts.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field bindings with dynamic galaxy domain pack bindings.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e2e899c55c2593e9b4e06666ee971422adb104414fe9af3e6afb97c414ea607d",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.radiation_background_proxy",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "galaxy_r3",
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy field binding rows; galaxy proxy bindings remain loadable but may be refined when dynamic galaxy domain packs own large-scale field layouts.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field bindings with dynamic galaxy domain pack bindings.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e2e899c55c2593e9b4e06666ee971422adb104414fe9af3e6afb97c414ea607d",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_id": "field.galactic_region_id",
+        "topology_profile_id": "geo.topology.r3_infinite",
+        "partition_profile_id": "geo.partition.grid_zd",
+        "storage_kind": "cell",
+        "interpolation_policy_id": "interp.nearest",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "metric_profile_id": "geo.metric.euclidean",
+          "binding_scope": "galaxy_r3",
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy field binding rows; galaxy proxy bindings remain loadable but may be refined when dynamic galaxy domain packs own large-scale field layouts.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field bindings with dynamic galaxy domain pack bindings.",
+          "contract_id": "",
+          "deterministic_fingerprint": "e2e899c55c2593e9b4e06666ee971422adb104414fe9af3e6afb97c414ea607d",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "field_id": "field.pollution.smoke_particulate_concentration",
         "topology_profile_id": "geo.topology.r3_infinite",
         "partition_profile_id": "geo.partition.grid_zd",

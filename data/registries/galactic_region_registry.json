@@ -1,0 +1,93 @@
+{
+  "schema_id": "dominium.registry.galaxy.galactic_region_registry",
+  "schema_version": "1.0.0",
+  "record": {
+    "registry_id": "dominium.registry.galaxy.galactic_region_registry",
+    "registry_version": "1.0.0",
+    "galactic_regions": [
+      {
+        "schema_version": "1.0.0",
+        "region_id": "region.bulge",
+        "field_scalar_code": 1,
+        "description": "Coarse GAL-0 bulge region proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galactic region registry entries; coarse region ids remain loadable but will be replaced by dynamic galaxy domain packs.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galactic region ids with dynamic galaxy domain pack semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6934cba9863cd95d19404ae3d722ef7d267734cfa484efa9e998562f98defbdc",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "region_id": "region.inner_disk",
+        "field_scalar_code": 2,
+        "description": "Coarse GAL-0 inner-disk region proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galactic region registry entries; coarse region ids remain loadable but will be replaced by dynamic galaxy domain packs.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galactic region ids with dynamic galaxy domain pack semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6934cba9863cd95d19404ae3d722ef7d267734cfa484efa9e998562f98defbdc",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "region_id": "region.outer_disk",
+        "field_scalar_code": 3,
+        "description": "Coarse GAL-0 outer-disk region proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galactic region registry entries; coarse region ids remain loadable but will be replaced by dynamic galaxy domain packs.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galactic region ids with dynamic galaxy domain pack semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6934cba9863cd95d19404ae3d722ef7d267734cfa484efa9e998562f98defbdc",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "region_id": "region.halo",
+        "field_scalar_code": 4,
+        "description": "Coarse GAL-0 halo region proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galactic region registry entries; coarse region ids remain loadable but will be replaced by dynamic galaxy domain packs.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galactic region ids with dynamic galaxy domain pack semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "6934cba9863cd95d19404ae3d722ef7d267734cfa484efa9e998562f98defbdc",
+          "extensions": {}
+        }
+      }
+    ],
+    "extensions": {
+      "source": "GAL0-2"
+    }
+  }
+}

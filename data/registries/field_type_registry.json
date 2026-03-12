@@ -229,6 +229,139 @@
       },
       {
         "schema_version": "1.0.0",
+        "field_type_id": "field.stellar_density_proxy",
+        "field_id": "field.stellar_density_proxy",
+        "description": "Deterministic GAL-0 galaxy-cell stellar density proxy scalar permille.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "encoding_kind": "normalized_permille",
+          "semantic_range": "0..1000",
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy proxy field semantics; scalar values remain loadable but will be replaced by dynamic galaxy domain pack semantics.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field semantics with dynamic galaxy domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b46e9ee065e976ce5bb508fa50a86ac70097ed710fc3d4265efdc257d4912c86",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.metallicity_proxy",
+        "field_id": "field.metallicity_proxy",
+        "description": "Deterministic GAL-0 galaxy-cell metallicity proxy scalar permille.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "encoding_kind": "normalized_permille",
+          "semantic_range": "0..1000",
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy proxy field semantics; scalar values remain loadable but will be replaced by dynamic galaxy domain pack semantics.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field semantics with dynamic galaxy domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b46e9ee065e976ce5bb508fa50a86ac70097ed710fc3d4265efdc257d4912c86",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.radiation_background_proxy",
+        "field_id": "field.radiation_background_proxy",
+        "description": "Deterministic GAL-0 galaxy-cell background radiation proxy scalar permille.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "encoding_kind": "normalized_permille",
+          "semantic_range": "0..1000",
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy proxy field semantics; scalar values remain loadable but will be replaced by dynamic galaxy domain pack semantics.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field semantics with dynamic galaxy domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b46e9ee065e976ce5bb508fa50a86ac70097ed710fc3d4265efdc257d4912c86",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "field_type_id": "field.galactic_region_id",
+        "field_id": "field.galactic_region_id",
+        "description": "Deterministic GAL-0 galaxy-cell categorical galactic region code.",
+        "value_kind": "scalar",
+        "dimension_vector": {
+          "M": 0,
+          "L": 0,
+          "T": 0,
+          "Q": 0,
+          "THETA": 0,
+          "I": 0
+        },
+        "default_value": 0,
+        "update_policy_id": "field.profile_defined",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "encoding_kind": "enum_code",
+          "registry_rel_path": "data/registries/galactic_region_registry.json",
+          "reserved_zero_unknown": true,
+          "source": "GAL0-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-0 galaxy proxy field semantics; scalar values remain loadable but will be replaced by dynamic galaxy domain pack semantics.",
+          "future_series": "GAL+/ASTRO",
+          "replacement_target": "Replace GAL-0 galaxy proxy field semantics with dynamic galaxy domain packs.",
+          "contract_id": "",
+          "deterministic_fingerprint": "b46e9ee065e976ce5bb508fa50a86ac70097ed710fc3d4265efdc257d4912c86",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "field_type_id": "field.radiation",
         "field_id": "field.radiation",
         "description": "Legacy radiation field alias. Prefer field.radiation_intensity.",
