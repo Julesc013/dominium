@@ -9,6 +9,7 @@ from src.compat import build_compat_status_payload
 from src.compat.data_format_loader import stamp_artifact_metadata
 from src.compat import emit_product_descriptor
 from src.diag import write_repro_bundle
+from src.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
 from src.appshell.logging import get_current_log_engine
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, write_canonical_json
@@ -31,6 +32,7 @@ def server_status(server_boot_payload: Mapping[str, object]) -> dict:
         "client_count": len(connections),
         "queued_intents": len(list(server.get("intent_queue") or [])),
         "proof_anchor_count": len(list(runtime.get("server_mvp_proof_anchors") or [])),
+        "epoch_anchor_count": len(list(runtime.get("server_mvp_epoch_anchors") or [])),
         "save_id": str((dict(server_boot_payload or {}).get("session_spec") or {}).get("save_id", "")).strip(),
     }
 
@@ -121,11 +123,45 @@ def save_snapshot(server_boot_payload: Mapping[str, object], output_path: str = 
         semantic_contract_bundle_hash=str((dict(runtime.get("server_mvp") or {})).get("contract_bundle_hash", "")).strip(),
     )
     write_canonical_json(out_abs, payload)
+    epoch_anchor_result = emit_epoch_anchor(
+        repo_root=repo_root,
+        anchor_root_path=os.path.join(
+            repo_root,
+            "build",
+            "server",
+            str(runtime.get("save_id", "save.server.mvp")),
+            "epoch_anchors",
+        ),
+        tick=int(tick),
+        truth_hash=canonical_sha256(dict(payload)),
+        contract_bundle_hash=str((dict(runtime.get("server_mvp") or {})).get("contract_bundle_hash", "")).strip(),
+        pack_lock_hash=str(server.get("pack_lock_hash", "")).strip(),
+        overlay_manifest_hash=str((dict(runtime.get("server_mvp") or {})).get("overlay_manifest_hash", "")).strip(),
+        reason=ANCHOR_REASON_SAVE,
+        policy_id=str((dict(runtime.get("server_mvp") or {})).get("time_anchor_policy_id", "time.anchor.mvp_default")).strip()
+        or "time.anchor.mvp_default",
+        extensions={
+            "source_artifact_kind": "save_snapshot",
+            "snapshot_path": norm(os.path.relpath(out_abs, repo_root)),
+            "snapshot_hash": canonical_sha256(dict(payload)),
+        },
+    )
+    if str(epoch_anchor_result.get("result", "")) == "complete":
+        epoch_rows = list(runtime.get("server_mvp_epoch_anchors") or [])
+        epoch_rows.append(dict(epoch_anchor_result.get("anchor") or {}))
+        runtime["server_mvp_epoch_anchors"] = sorted(
+            (dict(row) for row in epoch_rows if isinstance(row, dict)),
+            key=lambda row: (
+                int(row.get("tick", 0) or 0),
+                str(row.get("anchor_id", "")),
+            ),
+        )
     return {
         "result": "complete",
         "snapshot_path": norm(os.path.relpath(out_abs, repo_root)),
         "snapshot_hash": canonical_sha256(payload),
         "tick": int(tick),
+        "epoch_anchor_path": str(epoch_anchor_result.get("anchor_path", "")).strip(),
     }
 
 
@@ -157,6 +193,7 @@ def emit_diag_bundle_stub(server_boot_payload: Mapping[str, object], output_path
     proof_rows = [dict(row) for row in list(runtime.get("server_mvp_proof_anchors") or []) if isinstance(row, dict)]
     canonical_rows = [dict(row) for row in list(server.get("hash_anchor_frames") or []) if isinstance(row, dict)]
     canonical_rows.extend([dict(row) for row in list(server.get("control_proof_bundles") or []) if isinstance(row, dict)])
+    canonical_rows.extend([dict(row) for row in list(runtime.get("server_mvp_epoch_anchors") or []) if isinstance(row, dict)])
     bundle = write_repro_bundle(
         repo_root=repo_root,
         created_by_product_id="server",

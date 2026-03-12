@@ -8,6 +8,8 @@ from src.meta.numeric import deterministic_mul_div
 from src.models import constitutive_model_rows_by_id, evaluate_time_mapping_model, model_type_rows_by_id
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
+from .tick_t import TickT, normalize_tick_t
+
 
 def _as_int(value: object, default_value: int = 0) -> int:
     try:
@@ -200,7 +202,7 @@ def build_time_mapping_cache_row(
     mapping_id: str,
     temporal_domain_id: str,
     scope_id: str,
-    canonical_tick: int,
+    canonical_tick: TickT,
     domain_time_value: object,
     delta_domain_time: int,
     model_id: str,
@@ -212,7 +214,7 @@ def build_time_mapping_cache_row(
         "mapping_id": str(mapping_id or "").strip(),
         "temporal_domain_id": _normalize_temporal_domain_id(temporal_domain_id),
         "scope_id": str(scope_id or "").strip() or "global",
-        "canonical_tick": int(max(0, _as_int(canonical_tick, 0))),
+        "canonical_tick": int(normalize_tick_t(canonical_tick, 0)),
         "domain_time_value": _normalize_domain_value(domain_time_value, 0),
         "delta_domain_time": int(_as_int(delta_domain_time, 0)),
         "model_id": str(model_id or "").strip(),
@@ -274,7 +276,7 @@ def build_time_stamp_artifact(
     *,
     stamp_id: str,
     temporal_domain_id: str,
-    canonical_tick: int,
+    canonical_tick: TickT,
     domain_time_value: object,
     issuer_subject_id: str,
     extensions: Mapping[str, object] | None = None,
@@ -283,7 +285,7 @@ def build_time_stamp_artifact(
         "schema_version": "1.0.0",
         "stamp_id": str(stamp_id or "").strip(),
         "temporal_domain_id": _normalize_temporal_domain_id(temporal_domain_id),
-        "canonical_tick": int(max(0, _as_int(canonical_tick, 0))),
+        "canonical_tick": int(normalize_tick_t(canonical_tick, 0)),
         "domain_time_value": _normalize_domain_value(domain_time_value, 0),
         "issuer_subject_id": str(issuer_subject_id or "").strip() or "system.time_mapping_engine",
         "deterministic_fingerprint": "",
@@ -324,14 +326,14 @@ def build_proper_time_state(
     *,
     target_id: str,
     accumulated_proper_time: int,
-    last_update_tick: int,
+    last_update_tick: TickT,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     payload = {
         "schema_version": "1.0.0",
         "target_id": str(target_id or "").strip(),
         "accumulated_proper_time": int(max(0, _as_int(accumulated_proper_time, 0))),
-        "last_update_tick": int(max(0, _as_int(last_update_tick, 0))),
+        "last_update_tick": int(normalize_tick_t(last_update_tick, 0)),
         "deterministic_fingerprint": "",
         "extensions": _canon(_as_map(extensions)),
     }
@@ -368,7 +370,7 @@ def build_time_adjust_event(
     originating_receipt_id: str,
     sync_policy_id: str,
     temporal_domain_id: str,
-    canonical_tick: int,
+    canonical_tick: TickT,
     extensions: Mapping[str, object] | None = None,
 ) -> dict:
     payload = {
@@ -376,7 +378,7 @@ def build_time_adjust_event(
         "adjust_id": str(adjust_id or "").strip(),
         "target_id": str(target_id or "").strip(),
         "temporal_domain_id": _normalize_temporal_domain_id(temporal_domain_id),
-        "canonical_tick": int(max(0, _as_int(canonical_tick, 0))),
+        "canonical_tick": int(normalize_tick_t(canonical_tick, 0)),
         "previous_domain_time": int(_as_int(previous_domain_time, 0)),
         "new_domain_time": int(_as_int(new_domain_time, 0)),
         "adjustment_delta": int(_as_int(adjustment_delta, 0)),
@@ -430,7 +432,7 @@ def _apply_drift_policy(
     base_delta: int,
     mapping_id: str,
     scope_id: str,
-    canonical_tick: int,
+    canonical_tick: TickT,
     drift_policy_row: Mapping[str, object] | None,
 ) -> tuple[int, dict]:
     policy = dict(drift_policy_row or {})
@@ -466,7 +468,7 @@ def _apply_drift_policy(
             {
                 "mapping_id": str(mapping_id or "").strip(),
                 "scope_id": str(scope_id or "").strip(),
-                "canonical_tick": int(max(0, _as_int(canonical_tick, 0))),
+                "canonical_tick": int(normalize_tick_t(canonical_tick, 0)),
                 "deterministic_rng_stream": rng_stream,
             }
         )
@@ -494,7 +496,7 @@ def _apply_drift_policy(
 
 def evaluate_time_mappings(
     *,
-    current_tick: int,
+    current_tick: TickT,
     time_mapping_rows: object,
     temporal_domain_rows: object,
     model_rows: object,
@@ -509,7 +511,7 @@ def evaluate_time_mappings(
     issuer_subject_id: str = "system.time_mapping_engine",
     max_cost_units: int = 256,
 ) -> dict:
-    tick = int(max(0, _as_int(current_tick, 0)))
+    tick = int(normalize_tick_t(current_tick, 0))
     mappings = normalize_time_mapping_rows(time_mapping_rows)
     temporal_domains = normalize_temporal_domain_rows(temporal_domain_rows)
     del temporal_domains

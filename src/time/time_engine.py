@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Tuple
 
+from .tick_t import TickOverflowImminentError, TickT, advance_tick_value, normalize_tick_t
+
 
 DEFAULT_RATE_PERMILLE = 1000
 DEFAULT_DT_PERMILLE = 1000
@@ -102,7 +104,7 @@ def ensure_simulation_time(state: dict) -> dict:
     if not isinstance(payload, dict):
         payload = {"tick": 0, "timestamp_utc": "1970-01-01T00:00:00Z"}
         state["simulation_time"] = payload
-    payload["tick"] = max(0, _as_int(payload.get("tick", 0), 0))
+    payload["tick"] = int(normalize_tick_t(payload.get("tick", 0), 0))
     payload["timestamp_utc"] = str(payload.get("timestamp_utc", "1970-01-01T00:00:00Z"))
     payload["sim_time_permille"] = max(0, _as_int(payload.get("sim_time_permille", 0), 0))
     payload["last_dt_permille"] = max(0, _as_int(payload.get("last_dt_permille", DEFAULT_DT_PERMILLE), DEFAULT_DT_PERMILLE))
@@ -250,7 +252,11 @@ def advance_time(state: dict, policy_context: dict | None = None, steps: int = 1
         effective_rate = _resolved_rate_permille(control, policy)
         dt_permille = _tick_dt_permille(control, policy, dt_rule)
 
-        sim["tick"] = int(sim.get("tick", 0)) + 1
+        try:
+            next_tick: TickT = advance_tick_value(sim.get("tick", 0), 1)
+        except TickOverflowImminentError:
+            raise
+        sim["tick"] = int(next_tick)
         sim["sim_time_permille"] = int(sim.get("sim_time_permille", 0)) + int(dt_permille)
         sim["last_dt_permille"] = int(dt_permille)
 

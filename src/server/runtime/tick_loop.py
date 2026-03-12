@@ -6,6 +6,7 @@ import os
 from typing import Mapping
 
 from src.net.policies.policy_server_authoritative import advance_authoritative_tick
+from src.time import ANCHOR_REASON_INTERVAL, emit_epoch_anchor
 from src.server.net.loopback_transport import broadcast_tick_stream, service_loopback_control_channel, stream_server_log_event
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, write_canonical_json
@@ -36,6 +37,10 @@ def _artifact_root_abs(repo_root: str, runtime: Mapping[str, object] | None) -> 
         save_id = str((dict(runtime or {}).get("save_id", "")).strip() or "save.server.mvp")
         return os.path.join(repo_root, "build", "server", save_id)
     return os.path.join(repo_root, rel.replace("/", os.sep))
+
+
+def _epoch_anchor_root_abs(repo_root: str, runtime: Mapping[str, object] | None) -> str:
+    return os.path.join(_artifact_root_abs(repo_root, runtime), "epoch_anchors")
 
 
 def build_server_proof_anchor(server_boot_payload: Mapping[str, object], step_payload: Mapping[str, object]) -> dict:
@@ -107,6 +112,8 @@ def advance_server_tick(
     interval = int(meta.get("proof_anchor_interval_ticks", 1) or 1)
     proof_anchor = {}
     proof_anchor_path = ""
+    epoch_anchor = {}
+    epoch_anchor_path = ""
     if emit_anchor and int(tick) % max(1, interval) == 0:
         proof_anchor = build_server_proof_anchor(server_boot_payload, step)
         anchor_dir = os.path.join(_artifact_root_abs(repo_root, runtime), "proof_anchors")
@@ -129,6 +136,48 @@ def advance_server_tick(
             message_key="server.proof_anchor.emitted",
             params={"proof_anchor_path": proof_anchor_path},
         )
+        epoch_anchor_result = emit_epoch_anchor(
+            repo_root=repo_root,
+            anchor_root_path=_epoch_anchor_root_abs(repo_root, runtime),
+            tick=int(tick),
+            truth_hash=str((dict(step.get("hash_anchor_frame") or {})).get("composite_hash", "")).strip()
+            or str((dict(runtime.get("server") or {})).get("last_tick_hash", "")).strip(),
+            contract_bundle_hash=str(meta.get("contract_bundle_hash", "")).strip(),
+            pack_lock_hash=str((dict(runtime.get("server") or {})).get("pack_lock_hash", "")).strip(),
+            overlay_manifest_hash=str(meta.get("overlay_manifest_hash", "")).strip(),
+            reason=ANCHOR_REASON_INTERVAL,
+            policy_id=str(meta.get("time_anchor_policy_id", "time.anchor.mvp_default")).strip() or "time.anchor.mvp_default",
+            extensions={
+                "hash_anchor_frame_hash": canonical_sha256(dict(step.get("hash_anchor_frame") or {})),
+                "server_proof_anchor_hash": canonical_sha256(dict(proof_anchor or {})),
+                "tick_hash": str((dict(runtime.get("server") or {})).get("last_tick_hash", "")).strip(),
+                "control_proof_hash": str((dict(step.get("control_proof_bundle") or {})).get("control_proof_hash", "")).strip()
+                or str((dict((dict(step.get("hash_anchor_frame") or {})).get("extensions") or {})).get("control_proof_hash", "")).strip(),
+            },
+        )
+        if str(epoch_anchor_result.get("result", "")) == "complete":
+            epoch_anchor = dict(epoch_anchor_result.get("anchor") or {})
+            epoch_anchor_path = str(epoch_anchor_result.get("anchor_path", "")).strip()
+            epoch_rows = list(runtime.get("server_mvp_epoch_anchors") or [])
+            epoch_rows.append(dict(epoch_anchor))
+            runtime["server_mvp_epoch_anchors"] = sorted(
+                (dict(row) for row in epoch_rows if isinstance(row, dict)),
+                key=lambda row: (
+                    int(row.get("tick", 0) or 0),
+                    str(row.get("anchor_id", "")),
+                ),
+            )
+            stream_server_log_event(
+                server_boot_payload,
+                tick=int(tick),
+                level="info",
+                message="epoch anchor emitted",
+                source="server.tick_loop",
+                message_key="server.epoch_anchor.emitted",
+                params={"epoch_anchor_path": epoch_anchor_path},
+            )
+        elif str(epoch_anchor_result.get("result", "")) == "refused":
+            return dict(epoch_anchor_result)
 
     tick_stream = {}
     if stream_ticks:
@@ -156,6 +205,8 @@ def advance_server_tick(
         "control_channel": dict(control_channel),
         "proof_anchor": dict(proof_anchor),
         "proof_anchor_path": proof_anchor_path,
+        "epoch_anchor": dict(epoch_anchor),
+        "epoch_anchor_path": epoch_anchor_path,
         "tick_stream": dict(tick_stream),
         "log_event": dict(log_event),
         "hash_anchor_frame": dict(step.get("hash_anchor_frame") or {}),
@@ -173,6 +224,7 @@ def run_server_ticks(server_boot_payload: Mapping[str, object], ticks: int) -> d
             {
                 "tick": int(step.get("tick", 0) or 0),
                 "proof_anchor_path": str(step.get("proof_anchor_path", "")).strip(),
+                "epoch_anchor_path": str(step.get("epoch_anchor_path", "")).strip(),
                 "hash_anchor_frame_hash": canonical_sha256(dict(step.get("hash_anchor_frame") or {})),
             }
         )

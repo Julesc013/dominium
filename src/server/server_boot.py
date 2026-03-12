@@ -841,6 +841,7 @@ def boot_server_runtime(
         "overlay_conflict_policy_id": selected_overlay_conflict_policy_id or actual_overlay_conflict_policy_id,
         "overlay_manifest_hash": str(universe_state.get("overlay_manifest_hash", "")).strip(),
         "proof_anchor_interval_ticks": int(server_config.get("proof_anchor_interval_ticks", 1) or 1),
+        "time_anchor_policy_id": "time.anchor.mvp_default",
         "artifact_root": norm(os.path.relpath(artifact_root, repo_root)),
         "listener_endpoint": str(network_payload.get("endpoint", "")).strip(),
         "listener_peer_id": str(network_payload.get("server_peer_id", "")).strip(),
@@ -861,6 +862,7 @@ def boot_server_runtime(
     }
     runtime["server_mvp_connections"] = {}
     runtime["server_mvp_proof_anchors"] = []
+    runtime["server_mvp_epoch_anchors"] = []
     runtime["server_mvp_console_log"] = []
     return {
         "result": "complete",

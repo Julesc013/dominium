@@ -262,6 +262,7 @@ def run_server_window(
     meta = dict(runtime.get("server_mvp") or {})
     connections = dict(runtime.get("server_mvp_connections") or {})
     anchors = [dict(row) for row in list(runtime.get("server_mvp_proof_anchors") or []) if isinstance(row, dict)]
+    epoch_anchors = [dict(row) for row in list(runtime.get("server_mvp_epoch_anchors") or []) if isinstance(row, dict)]
     client_messages = drain_client_messages(repo_root_abs, client_transport)
     tick_stream_messages = [
         row
@@ -270,6 +271,7 @@ def run_server_window(
         and str(row.get("payload_schema_id", "")).strip() == "server.tick_stream.stub.v1"
     ]
     anchor_ticks = [int(row.get("tick", 0) or 0) for row in anchors]
+    epoch_anchor_ticks = [int(row.get("tick", 0) or 0) for row in epoch_anchors]
     summary = {
         "result": "complete" if str(tick_report.get("result", "")) == "complete" else str(tick_report.get("result", "")).strip(),
         "save_id": str(fixture.get("save_id", "")).strip(),
@@ -291,6 +293,8 @@ def run_server_window(
         "proof_anchor_interval_ticks": int(meta.get("proof_anchor_interval_ticks", 0) or 0),
         "proof_anchor_ticks": anchor_ticks,
         "proof_anchor_hashes": [canonical_sha256(row) for row in anchors],
+        "epoch_anchor_ticks": epoch_anchor_ticks,
+        "epoch_anchor_hashes": [canonical_sha256(row) for row in epoch_anchors],
         "proof_anchor_contract_hashes": [
             {
                 "contract_bundle_hash": str(row.get("contract_bundle_hash", "")).strip(),
@@ -318,6 +322,7 @@ def run_server_window(
             "final_tick": int(summary.get("final_tick", 0)),
             "connection_ids": list(summary.get("connection_ids") or []),
             "proof_anchor_hashes": list(summary.get("proof_anchor_hashes") or []),
+            "epoch_anchor_hashes": list(summary.get("epoch_anchor_hashes") or []),
             "tick_hash": str(summary.get("tick_hash", "")).strip(),
             "mod_policy_id": str(summary.get("mod_policy_id", "")).strip(),
             "contract_bundle_hash": str(summary.get("contract_bundle_hash", "")).strip(),
