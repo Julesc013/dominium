@@ -1,0 +1,32 @@
+SCHEMA: worldgen/galaxy_object_stub.schema
+schema_id: dominium.schema.worldgen.galaxy_object_stub
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define the deterministic GAL-1 compact-object stub model emitted for static galaxy hazards and landmarks.
+- Preserve stable object identity, galaxy-frame anchoring, bounded hazard metadata, and replay-safe fingerprints.
+
+NON-SEMANTICS:
+- This schema does not encode stellar lifecycle simulation.
+- This schema does not imply authored catalogs or dynamic gas dynamics.
+- This schema does not replace future ASTRO-DOMAIN object models.
+
+REQUIRED SHAPE:
+record galaxy_object_stub
+  required:
+    - schema_version: semver
+    - object_id: sha256
+    - kind: enum(kind.black_hole_stub|kind.nebula_stub|kind.supernova_remnant_stub)
+    - position_ref: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - mass_proxy: map
+    - radius_proxy: map
+    - hazard_strength_proxy: map
+
+INVARIANTS:
+- central black-hole stubs are anchored to the galaxy-origin frame
+- nebula and remnant stubs remain sparse and bounded per source cell
+- hazard proxies are advisory only and must not imply dynamic chemistry or event simulation

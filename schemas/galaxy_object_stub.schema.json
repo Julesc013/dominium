@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Galaxy Object Stub Schema",
+  "version": "1.0.0",
+  "description": "Deterministic GAL-1 compact-object stub model for static galaxy hazards and landmarks.",
+  "x-doc-ref": [
+    "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "object_id",
+    "kind",
+    "position_ref",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "kind.black_hole_stub",
+        "kind.nebula_stub",
+        "kind.supernova_remnant_stub"
+      ]
+    },
+    "position_ref": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "mass_proxy": {
+      "type": "object",
+      "required": [
+        "unit",
+        "value"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "radius_proxy": {
+      "type": "object",
+      "required": [
+        "unit",
+        "value"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "hazard_strength_proxy": {
+      "type": "object",
+      "required": [
+        "unit",
+        "value"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "object_id": "a7af8693b25b81f3124f2a92cfe61a6ca8db9868c6f0f6853222702e4a98b4e8",
+      "kind": "kind.black_hole_stub",
+      "position_ref": {
+        "object_id": "a7af8693b25b81f3124f2a92cfe61a6ca8db9868c6f0f6853222702e4a98b4e8",
+        "frame_id": "frame.milky_way.galactic",
+        "local_position": [
+          0,
+          0,
+          0
+        ]
+      },
+      "mass_proxy": {
+        "unit": "solar_mass_stub",
+        "value": 4300000
+      },
+      "radius_proxy": {
+        "unit": "parsec_stub",
+        "value": 1
+      },
+      "hazard_strength_proxy": {
+        "unit": "permille",
+        "value": 1000
+      },
+      "deterministic_fingerprint": "7f930095095c9882bfb89cadf1b8db9dc4b2dc7ecfe2c1832b3648c7dccfc66e",
+      "extensions": {
+        "source": "GAL1-2",
+        "geo_cell_key": {
+          "chart_id": "chart.global.r3",
+          "index_tuple": [
+            0,
+            0,
+            0
+          ],
+          "refinement_level": 0,
+          "partition_profile_id": "geo.partition.grid_zd",
+          "topology_profile_id": "geo.topology.r3_infinite",
+          "extensions": {}
+        }
+      }
+    }
+  ]
+}

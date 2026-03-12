@@ -57,6 +57,66 @@
       },
       {
         "schema_version": "1.0.0",
+        "object_kind_id": "kind.black_hole_stub",
+        "description": "Deterministic GAL-1 compact-object stub anchored to a galaxy cell lineage for the central supermassive black hole proxy.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "celestial_hazard_stub",
+          "source": "GAL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-1 galaxy object stub kinds; stub kind ids remain loadable but will be replaced by ASTRO-DOMAIN lifecycle and gas dynamics systems.",
+          "future_series": "ASTRO-DOMAIN",
+          "replacement_target": "Replace GAL-1 compact object stub kinds with ASTRO-DOMAIN lifecycle and gas dynamics semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "112b51a55aeed606bad75931b813c351f3aaace487bbb3becfd487f054084492",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.nebula_stub",
+        "description": "Deterministic GAL-1 nebula stub anchored to a galaxy cell lineage for sparse procedural environmental points of interest.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "celestial_hazard_stub",
+          "source": "GAL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-1 galaxy object stub kinds; stub kind ids remain loadable but will be replaced by ASTRO-DOMAIN lifecycle and gas dynamics systems.",
+          "future_series": "ASTRO-DOMAIN",
+          "replacement_target": "Replace GAL-1 compact object stub kinds with ASTRO-DOMAIN lifecycle and gas dynamics semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "112b51a55aeed606bad75931b813c351f3aaace487bbb3becfd487f054084492",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
+        "object_kind_id": "kind.supernova_remnant_stub",
+        "description": "Deterministic GAL-1 remnant stub anchored to a galaxy cell lineage for sparse procedural hazard and lore hooks.",
+        "deterministic_fingerprint": "",
+        "extensions": {
+          "category": "celestial_hazard_stub",
+          "source": "GAL1-2"
+        },
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "Conservative provisional classification for GAL-1 galaxy object stub kinds; stub kind ids remain loadable but will be replaced by ASTRO-DOMAIN lifecycle and gas dynamics systems.",
+          "future_series": "ASTRO-DOMAIN",
+          "replacement_target": "Replace GAL-1 compact object stub kinds with ASTRO-DOMAIN lifecycle and gas dynamics semantics.",
+          "contract_id": "",
+          "deterministic_fingerprint": "112b51a55aeed606bad75931b813c351f3aaace487bbb3becfd487f054084492",
+          "extensions": {}
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "object_kind_id": "kind.surface_tile",
         "description": "Deterministic surface or atlas tile object derived from a GEO partition cell.",
         "deterministic_fingerprint": "",
