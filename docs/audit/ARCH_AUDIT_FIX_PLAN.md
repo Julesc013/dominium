@@ -73,3 +73,5 @@
 - Validation fingerprints retained:
   - `contract_pin_scan`: `a7c536eb1111df1e8cdf915046b2f17f02fff8d6f89e7198abda93ef2e54a9c3`
   - `pack_compat_scan`: `bbefa5521bb743d8c6c47618803c3fc2fce4c745b0ec5ee064a0c6b25b91af65`
+- Validation follow-up:
+  - Added `contract.cap_neg.negotiation` and `contract.pack.compat` to the default client product contract set so the default CAP-NEG fixture no longer refuses before determinism evaluation.

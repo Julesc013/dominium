@@ -15,6 +15,7 @@
 
 - Replaced float-based truth-side GEO index calculations with canonical integer floor-division.
 - Replaced unordered truth-side map iteration with explicit sorted traversal in field, GEO, LOGIC, and refinement pipelines.
+- Completed the default client compatibility contract set so CAP-NEG default negotiation records evaluate deterministically instead of refusing on missing self-declared contract categories.
 - Left truth-purity, duplicate-engine, stability-marker, and compatibility families unchanged because the rerun confirmed they were already clean.
 
 ## Remaining Provisional Exceptions

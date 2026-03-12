@@ -28,6 +28,22 @@
         "default_semantic_contract_versions_supported": [
           {
             "schema_version": "1.0.0",
+            "contract_category_id": "contract.cap_neg.negotiation",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "contract_category_id": "contract.pack.compat",
+            "min_version": 1,
+            "max_version": 1,
+            "deterministic_fingerprint": "",
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
             "contract_category_id": "contract.worldgen.refinement",
             "min_version": 1,
             "max_version": 1,
